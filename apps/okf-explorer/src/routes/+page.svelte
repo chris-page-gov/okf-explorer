@@ -2043,7 +2043,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={copyRoute}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if isUrl(largeDetail.dataset.source_api_url)}
                   <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">Open API</a>
                   <button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
@@ -2126,7 +2126,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>Dataset</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={copyRoute}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>Clear inspection</button>{/if}
               </div>
               <dl>
@@ -2163,7 +2163,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={copyRoute}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
               </div>
               <dl>
                 <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
@@ -2201,7 +2201,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={copyRoute}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if !largeRelationships.length}<button type="button" onclick={() => void ensureLargeRelationships()}>Load full relationships</button>{/if}
               </div>
               <dl>
