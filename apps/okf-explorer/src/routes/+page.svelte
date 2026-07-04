@@ -122,6 +122,7 @@
   let largeInspectedRoute = $state('');
   let largeHighlightedRoute = $state('');
   let largeHighlightedEdge = $state('');
+  let largeInspectedEdge = $state<LargeGraphEdge | null>(null);
   let largeExpandedStackRoute = $state('');
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
@@ -133,6 +134,10 @@
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
+  let largeApiRoute = $state('');
+  let largeApiJson = $state<unknown>(null);
+  let largeApiLoading = $state(false);
+  let largeApiError = $state('');
   let activeFacetKey = $state('publisher');
   let pins = $state<string[]>([]);
   let graphZoom = $state(1);
@@ -273,7 +278,9 @@
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
     largeExpandedStackRoute = '';
+    clearLargeApiPanel();
     largeAppliedQuery = '';
     largeResults = [];
     largeSuggestions = [];
@@ -410,6 +417,8 @@
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
@@ -421,6 +430,8 @@
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
@@ -436,6 +447,8 @@
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
     activeView = 'graph';
     void hydrateForView('graph');
     syncExplorerUrl();
@@ -465,8 +478,32 @@
       largeInspectedRoute = '';
       largeHighlightedRoute = largeSelectedRoute;
       largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      clearLargeApiPanel();
     } else {
       inspectedId = '';
+    }
+  }
+
+  function clearLargeApiPanel() {
+    largeApiRoute = '';
+    largeApiJson = null;
+    largeApiError = '';
+    largeApiLoading = false;
+  }
+
+  async function loadLargeApiJson(route: string, url: unknown) {
+    if (!route || !isUrl(url)) return;
+    largeApiRoute = route;
+    largeApiJson = null;
+    largeApiError = '';
+    largeApiLoading = true;
+    try {
+      largeApiJson = await fetchJson<unknown>(url);
+    } catch (err) {
+      largeApiError = err instanceof Error ? err.message : String(err);
+    } finally {
+      largeApiLoading = false;
     }
   }
 
@@ -562,6 +599,21 @@
     return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
   }
 
+  function trimmedEdgePoints(source: GraphPoint, target: GraphPoint, pad = 28) {
+    const dx = target.x - source.x;
+    const dy = target.y - source.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const trim = Math.min(pad, length / 3);
+    const ux = dx / length;
+    const uy = dy / length;
+    return {
+      x1: source.x + ux * trim,
+      y1: source.y + uy * trim,
+      x2: target.x - ux * trim,
+      y2: target.y - uy * trim
+    };
+  }
+
   function graphModel() {
     const nodes = selectedNode
       ? [selectedNode, ...relatedNodes(selectedNode)].filter((node, index, all) => all.findIndex((item) => item.id === node.id) === index)
@@ -594,6 +646,8 @@
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
       largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      clearLargeApiPanel();
       largeSearching = false;
       largePreserveSelectionUntilSearch = false;
       syncExplorerUrl();
@@ -609,6 +663,8 @@
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
       largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      clearLargeApiPanel();
     }
     largeSearching = true;
     syncExplorerUrl();
@@ -636,6 +692,8 @@
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     syncExplorerUrl();
@@ -691,6 +749,8 @@
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
       largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      clearLargeApiPanel();
       return;
     }
     if (largeSelectedRoute && !largeRouteInReduction(largeSelectedRoute)) largeSelectedRoute = '';
@@ -889,6 +949,42 @@
   function datasetsForMetadataRoute(route: string, limit = 80): LargeDataset[] {
     if (!largeIndex) return [];
     return largeVisibleDatasets.filter((dataset) => datasetMatchesMetadataRoute(dataset, route)).slice(0, limit);
+  }
+
+  function resourcesForMetadataRoute(route: string, limit = 80): LargeResource[] {
+    if (!largeIndex || !route) return [];
+    const kind = routeKind(route);
+    const value = routeValue(route);
+    if (kind === 'resource') {
+      const resource = largeIndex.resourceById.get(value);
+      return resource ? [resource] : [];
+    }
+    const resources: LargeResource[] = [];
+    for (const dataset of datasetsForMetadataRoute(route, 220)) {
+      for (const resource of largeIndex.resourcesByDataset.get(dataset.name) || []) {
+        if (kind === 'format' && resource.format !== value) continue;
+        if (kind === 'host' && resource.host !== value) continue;
+        if (kind === 'resource_type' && (resource.resource_type || 'unknown') !== value) continue;
+        resources.push(resource);
+        if (resources.length >= limit) return resources;
+      }
+    }
+    return resources;
+  }
+
+  function routeTypeLabel(route: string): string {
+    const kind = routeKind(route);
+    if (kind === 'format') return 'Format';
+    if (kind === 'license') return 'Licence';
+    if (kind === 'tag') return 'Tag';
+    if (kind === 'host') return 'Host';
+    if (kind === 'resource_type') return 'Resource type';
+    if (kind === 'resource-stack') return 'Resource stack';
+    return kind ? `${kind.slice(0, 1).toUpperCase()}${kind.slice(1).replace(/_/g, ' ')}` : 'Route';
+  }
+
+  function relationshipTitle(edge: LargeGraphEdge): string {
+    return `${largeLabelForRoute(edge.source)} \u2192 ${edge.label} \u2192 ${largeLabelForRoute(edge.target)}`;
   }
 
   function resolveLargeDetail(route: string): LargeDetail | null {
@@ -1136,6 +1232,16 @@
     return { x: point.x - 28, y: point.y - 28, w: 56, h: 56 };
   }
 
+  function graphCombinedHitBox(node: LargeGraphNode, point: GraphPoint, label: GraphLabel): GraphBox | null {
+    const nodeBox = graphNodeBox(node, point);
+    if (!nodeBox) return label.box;
+    const x = Math.min(nodeBox.x, label.box.x) - 3;
+    const y = Math.min(nodeBox.y, label.box.y) - 3;
+    const right = Math.max(nodeBox.x + nodeBox.w, label.box.x + label.box.w) + 3;
+    const bottom = Math.max(nodeBox.y + nodeBox.h, label.box.y + label.box.h) + 3;
+    return { x, y, w: right - x, h: bottom - y };
+  }
+
   function graphLabelBox(text: string, x: number, y: number, anchor: GraphLabel['anchor']): GraphBox {
     const w = Math.min(240, text.length * 6.8 + 14);
     const h = 19;
@@ -1251,8 +1357,16 @@
   }
 
   function inspectLargeEdge(edge: LargeGraphEdge) {
-    inspectLargeRoute(edge.target);
+    largeInspectedEdge = edge;
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
     largeHighlightedEdge = graphEdgeKey(edge);
+    clearLargeApiPanel();
+    rightCollapsed = false;
+  }
+
+  function inspectLargeRelationship(relationship: LargeRelationship) {
+    inspectLargeEdge({ source: relationship.source, target: relationship.target, label: relationship.kind });
   }
 
   function graphViewBox(): string {
@@ -1277,7 +1391,7 @@
   function beginGraphPan(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
     const target = event.target;
-    if (target instanceof Element && target.closest('[data-route]')) return;
+    if (target instanceof Element && target.closest('[data-route], [data-edge]')) return;
     graphDrag = { x: event.clientX, y: event.clientY, box: { ...graphViewport }, moved: false };
     (event.currentTarget as SVGSVGElement).setPointerCapture?.(event.pointerId);
   }
@@ -1311,6 +1425,7 @@
       return;
     }
     largeHighlightedEdge = '';
+    largeInspectedEdge = null;
     inspectLargeRoute(route);
   }
 
@@ -1606,17 +1721,43 @@
                 onpointercancel={endGraphPan}
                 onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
               >
+                <defs>
+                  <marker id="graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
+                  </marker>
+                  <marker id="graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
+                  </marker>
+                </defs>
                 {#each model.relationships as relationship}
                   {@const sourcePos = positions.get(relationship.source)}
                   {@const targetPos = positions.get(relationship.target)}
                   {#if sourcePos && targetPos}
+                    {@const edgeHighlighted = shouldHighlightGraphEdge(relationship, model)}
+                    {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos)}
                     <line
-                      class:highlight={shouldHighlightGraphEdge(relationship, model)}
+                      class:highlight={edgeHighlighted}
                       x1={sourcePos.x}
                       y1={sourcePos.y}
                       x2={targetPos.x}
                       y2={targetPos.y}
-                    />
+                      marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
+                    ></line>
+                    <line
+                      class="edge-hit"
+                      data-edge={graphEdgeKey(relationship)}
+                      role="button"
+                      tabindex="0"
+                      aria-label={relationshipTitle(relationship)}
+                      x1={edgeHit.x1}
+                      y1={edgeHit.y1}
+                      x2={edgeHit.x2}
+                      y2={edgeHit.y2}
+                      onclick={() => inspectLargeEdge(relationship)}
+                      onkeydown={(event) => keyboardActivate(event, () => inspectLargeEdge(relationship))}
+                    >
+                      <title>{relationshipTitle(relationship)}</title>
+                    </line>
                   {/if}
                 {/each}
                 {#each edgeLabels as edgeLabel}
@@ -1625,6 +1766,7 @@
                 {#each model.nodes as node}
                   {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(node.id)}
+                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
@@ -1637,6 +1779,9 @@
                     onkeydown={(event) => keyboardActivate(event, () => inspectLargeRoute(node.id))}
                   >
                     <title>{node.label}</title>
+                    {#if combinedHit}
+                      <rect class="node-hit cluster-hit" x={combinedHit.x} y={combinedHit.y} width={combinedHit.w} height={combinedHit.h} rx="6"></rect>
+                    {/if}
                     {#if node.type === 'resource-stack'}
                       <rect class="node-hit" x={pos.x - 32} y={pos.y - 25} width="64" height="50" rx="6"></rect>
                       <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
@@ -1671,7 +1816,7 @@
                       type="button"
                       onclick={() => inspectLargeEdge(relationship)}
                     >
-                      {largeLabelForRoute(relationship.source)} · {relationship.label} · {largeLabelForRoute(relationship.target)}
+                      {largeLabelForRoute(relationship.source)} → {relationship.label} → {largeLabelForRoute(relationship.target)}
                     </button>
                   {/each}
                 </div>
@@ -1692,7 +1837,7 @@
             </div>
             <section class="links-view">
               {#each (largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? routeRelationships(largeSelectedRoute, 180) : largeRelationships.filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source))).slice(0, 180)) as relationship}
-                <button type="button" onclick={() => inspectLargeRoute(relationship.target)}>
+                <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
                   <strong>{largeLabelForRoute(relationship.source)}</strong>
                   <span>{relationship.kind}</span>
                   <strong>{largeLabelForRoute(relationship.target)}</strong>
@@ -1857,7 +2002,28 @@
       </div>
       <div class="detail">
         {#if source?.kind === 'large'}
-          {#if largeDetail}
+          {#if largeInspectedEdge}
+            <span class="badge">Relationship</span>
+            <h2>{largeLabelForRoute(largeInspectedEdge.source)} → {largeLabelForRoute(largeInspectedEdge.target)}</h2>
+            <p>{largeInspectedEdge.label}</p>
+            <div class="detail-actions">
+              <button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.source || '')}>Inspect source</button>
+              <button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.target || '')}>Inspect target</button>
+              <button type="button" onclick={clearInspection}>Clear relationship</button>
+            </div>
+            <dl>
+              <dt>Direction</dt><dd>Source → target</dd>
+              <dt>Source</dt><dd><button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.source || '')}>{largeLabelForRoute(largeInspectedEdge.source)}</button></dd>
+              <dt>Type</dt><dd>{largeInspectedEdge.label}</dd>
+              <dt>Target</dt><dd><button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.target || '')}>{largeLabelForRoute(largeInspectedEdge.target)}</button></dd>
+              <dt>Source route</dt><dd>{largeInspectedEdge.source}</dd>
+              <dt>Target route</dt><dd>{largeInspectedEdge.target}</dd>
+            </dl>
+            <details class="json-panel">
+              <summary>Relationship JSON</summary>
+              <pre>{jsonText({ source: largeInspectedEdge.source, target: largeInspectedEdge.target, kind: largeInspectedEdge.label })}</pre>
+            </details>
+          {:else if largeDetail}
             {#if largeDetail.kind === 'dataset'}
               <span class="badge">Dataset</span>
               <h2>{largeDetail.dataset.title}</h2>
@@ -1866,6 +2032,12 @@
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={copyRoute}>Copy route</button>
+                {#if isUrl(largeDetail.dataset.source_api_url)}
+                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">Open API</a>
+                  <button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
+                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading API JSON' : 'Show API JSON'}
+                  </button>
+                {/if}
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
               <dl>
@@ -1916,8 +2088,8 @@
               {#if largeDetail.relationships.length}
                 <h3>Relationships</h3>
                 {#each largeDetail.relationships.slice(0, 24) as relationship}
-                  <button type="button" onclick={() => inspectLargeRoute(relationship.source === largeDetail?.route ? relationship.target : relationship.source)}>
-                    {relationship.kind} · {largeLabelForRoute(relationship.source === largeDetail.route ? relationship.target : relationship.source)}
+                  <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
+                    {largeLabelForRoute(relationship.source)} → {relationship.kind} → {largeLabelForRoute(relationship.target)}
                   </button>
                 {/each}
               {/if}
@@ -1925,6 +2097,16 @@
                 <summary>Local normalized dataset JSON</summary>
                 <pre>{jsonText(largeDetail.dataset)}</pre>
               </details>
+              {#if largeApiRoute === largeDetail.route}
+                {#if largeApiError}
+                  <p class="error">API JSON could not be loaded: {largeApiError}</p>
+                {:else if largeApiJson}
+                  <details class="json-panel" open>
+                    <summary>Source API JSON</summary>
+                    <pre>{jsonText(largeApiJson)}</pre>
+                  </details>
+                {/if}
+              {/if}
             {:else if largeDetail.kind === 'resource'}
               <span class="badge">Resource</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
@@ -2000,12 +2182,50 @@
               </dl>
               <button type="button" onclick={() => void ensureLargeFullIndex()}>Load full record</button>
             {:else}
-              <span class="badge">{routeKind(largeDetail.route)}</span>
+              {@const routeDatasets = datasetsForMetadataRoute(largeDetail.route, 40)}
+              {@const routeResources = resourcesForMetadataRoute(largeDetail.route, 40)}
+              <span class="badge">{routeTypeLabel(largeDetail.route)}</span>
               <h2>{largeDetail.label}</h2>
+              <div class="detail-actions">
+                <button type="button" onclick={() => void selectView('graph')}>Graph</button>
+                <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
+                <button type="button" onclick={copyRoute}>Copy route</button>
+                {#if !largeRelationships.length}<button type="button" onclick={() => void ensureLargeRelationships()}>Load full relationships</button>{/if}
+              </div>
               <dl>
                 <dt>Route</dt><dd>{largeDetail.route}</dd>
-                <dt>Links</dt><dd>{largeDetail.relationships.length}</dd>
+                <dt>Kind</dt><dd>{routeKind(largeDetail.route)}</dd>
+                <dt>Relationship</dt><dd>{metadataRelationshipLabel(largeDetail.route)}</dd>
+                <dt>Datasets</dt><dd>{routeDatasets.length.toLocaleString()} in current reduction</dd>
+                <dt>Resources</dt><dd>{routeResources.length.toLocaleString()} in current reduction</dd>
+                <dt>Full links</dt><dd>{largeRelationships.length ? largeDetail.relationships.length.toLocaleString() : 'Not loaded'}</dd>
               </dl>
+              {#if routeDatasets.length}
+                <h3>Datasets in current reduction</h3>
+                {#each routeDatasets.slice(0, 12) as dataset}
+                  <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
+                    <strong>{dataset.title}</strong>
+                    <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                  </button>
+                {/each}
+              {/if}
+              {#if routeResources.length}
+                <h3>Resources in current reduction</h3>
+                {#each routeResources.slice(0, 12) as resource}
+                  <button type="button" onclick={() => inspectLargeRoute(resourceRoute(resource))}>
+                    <strong>{resource.name || resource.id}</strong>
+                    <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                  </button>
+                {/each}
+              {/if}
+              {#if largeDetail.relationships.length}
+                <h3>Loaded relationships</h3>
+                {#each largeDetail.relationships.slice(0, 24) as relationship}
+                  <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
+                    {largeLabelForRoute(relationship.source)} → {relationship.kind} → {largeLabelForRoute(relationship.target)}
+                  </button>
+                {/each}
+              {/if}
             {/if}
           {:else}
             <h2>{source.descriptor.title}</h2>

@@ -584,11 +584,19 @@ input:focus {
 .graph line {
   stroke: #9aaaba;
   stroke-width: 1.2;
+  pointer-events: none;
 }
 
 .graph line.highlight {
   stroke: var(--accent);
   stroke-width: 3;
+}
+
+.graph .edge-hit {
+  stroke: transparent;
+  stroke-width: 10;
+  pointer-events: stroke;
+  cursor: pointer;
 }
 
 .graph g {
@@ -794,25 +802,48 @@ input:focus {
   margin: 10px 0;
 }
 
+.detail-actions .button {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+}
+
 .detail dl {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
+  grid-template-columns: minmax(92px, 34%) minmax(0, 1fr);
   gap: 6px;
   border-top: 1px solid var(--line);
   padding-top: 10px;
 }
 
 .detail dt {
+  min-width: 0;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .detail dd {
+  min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
 }
 
+.detail dd button,
+.detail button {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .detail a {
   color: #0645d8;
+  overflow-wrap: anywhere;
 }
 
 .metadata-section {
