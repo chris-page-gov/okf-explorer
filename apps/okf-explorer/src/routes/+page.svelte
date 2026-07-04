@@ -32,7 +32,7 @@
     { id: 'resources', label: 'Resources' }
   ];
   const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources']);
-  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['graph', 'links']);
+  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['links']);
   const LARGE_FACET_KEYS = ['publisher', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
@@ -125,6 +125,7 @@
   let largeExpandedStackRoute = $state('');
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
+  let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
   let largeFacetFilters = $state<Record<string, string[]>>({});
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
@@ -278,6 +279,7 @@
     largeSuggestions = [];
     largeIndex = null;
     largeRelationships = [];
+    largeRelationshipsByRoute = new Map();
     largeFacetFilters = {};
     largePreserveSelectionUntilSearch = false;
     activeFacetKey = 'publisher';
@@ -377,7 +379,10 @@
     if (source?.kind !== 'large') return [];
     largeRelationshipsLoading = true;
     try {
-      largeRelationships = await source.loadRelationships();
+      if (!largeRelationships.length) {
+        largeRelationships = await source.loadRelationships();
+        largeRelationshipsByRoute = indexLargeRelationships(largeRelationships);
+      }
       return largeRelationships;
     } catch (err) {
       error = err instanceof Error ? err.message : String(err);
@@ -412,7 +417,7 @@
   }
 
   function inspectLargeRoute(route: string) {
-    if (!largeRouteInReduction(route)) return;
+    if (!largeRouteCanInteract(route)) return;
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
     largeHighlightedEdge = '';
@@ -426,7 +431,7 @@
       largeExpandedStackRoute = route.replace(/^resource-stack\//, '');
       return;
     }
-    if (!largeRouteInReduction(route)) return;
+    if (!largeRouteCanInteract(route)) return;
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
@@ -658,6 +663,26 @@
     return true;
   }
 
+  function largeRouteKnown(route: string): boolean {
+    if (!route || !largeIndex) return Boolean(route);
+    const kind = routeKind(route);
+    const value = routeValue(route);
+    if (kind === 'dataset') {
+      return largeIndex.datasetByName.has(value) || largeResults.some((result) => result.name === value);
+    }
+    if (kind === 'resource') return largeIndex.resourceById.has(value);
+    if (kind === 'publisher') return largeIndex.publisherByName.has(value);
+    if (kind === 'resource-stack') return largeRouteKnown(value);
+    return Boolean(value || route);
+  }
+
+  function largeRouteCanInteract(route: string): boolean {
+    if (!route) return false;
+    if (largeRouteInReduction(route)) return true;
+    if (activeView !== 'graph') return false;
+    return largeRouteKnown(route);
+  }
+
   function reconcileLargeSelection(preserveIfStillVisible = true) {
     if (source?.kind !== 'large') return;
     if (preserveIfStillVisible && largePreserveSelectionUntilSearch && largeAppliedQuery.trim() && !largeResults.length) return;
@@ -716,6 +741,19 @@
       return [publisherFamily(publisher || dataset)];
     }
     return [];
+  }
+
+  function indexLargeRelationships(relationships: LargeRelationship[]): Map<string, LargeRelationship[]> {
+    const index = new Map<string, LargeRelationship[]>();
+    for (const relationship of relationships) {
+      const sourceRows = index.get(relationship.source) || [];
+      sourceRows.push(relationship);
+      index.set(relationship.source, sourceRows);
+      const targetRows = index.get(relationship.target) || [];
+      targetRows.push(relationship);
+      index.set(relationship.target, targetRows);
+    }
+    return index;
   }
 
   function publisherFamily(value: LargePublisher | LargeDataset): string {
@@ -809,6 +847,8 @@
 
   function routeRelationships(route: string, limit = 120): LargeRelationship[] {
     if (!route || !largeRelationships.length) return [];
+    const indexedRows = largeRelationshipsByRoute.get(route);
+    if (indexedRows) return indexedRows.slice(0, limit);
     const rows: LargeRelationship[] = [];
     for (const relationship of largeRelationships) {
       if (relationship.source === route || relationship.target === route) {
@@ -817,6 +857,38 @@
       }
     }
     return rows;
+  }
+
+  function metadataRelationshipLabel(route: string): string {
+    const kind = routeKind(route);
+    if (kind === 'publisher') return 'published by';
+    if (kind === 'format') return 'has format';
+    if (kind === 'tag') return 'tagged';
+    if (kind === 'license') return 'licensed as';
+    if (kind === 'host') return 'landing host';
+    if (kind === 'resource_type') return 'has resource type';
+    if (kind === 'resource') return 'has resource';
+    return 'related';
+  }
+
+  function datasetMatchesMetadataRoute(dataset: LargeDataset, route: string): boolean {
+    if (!largeIndex || !route) return false;
+    const kind = routeKind(route);
+    const value = routeValue(route);
+    if (kind === 'dataset') return dataset.name === value;
+    if (kind === 'publisher') return dataset.publisher === value;
+    if (kind === 'format') return (dataset.formats || []).includes(value);
+    if (kind === 'tag') return (dataset.tags || []).includes(value);
+    if (kind === 'license') return dataset.license_id === value;
+    if (kind === 'host') return largeDatasetFacetValues(dataset, 'host').includes(value);
+    if (kind === 'resource_type') return largeDatasetFacetValues(dataset, 'resource_type').includes(value);
+    if (kind === 'resource') return largeIndex.resourceById.get(value)?.dataset === dataset.name;
+    return false;
+  }
+
+  function datasetsForMetadataRoute(route: string, limit = 80): LargeDataset[] {
+    if (!largeIndex) return [];
+    return largeVisibleDatasets.filter((dataset) => datasetMatchesMetadataRoute(dataset, route)).slice(0, limit);
   }
 
   function resolveLargeDetail(route: string): LargeDetail | null {
@@ -859,21 +931,25 @@
   }
 
   function resolveVisibleLargeDetail(route: string): LargeDetail | null {
-    if (!route || !largeRouteInReduction(route)) return null;
+    if (!largeRouteCanInteract(route)) return null;
     return resolveLargeDetail(route);
   }
 
   function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
-    const selectedCenter = largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? largeSelectedRoute : '';
+    const selectedCenter = largeSelectedRoute && largeRouteCanInteract(largeSelectedRoute) ? largeSelectedRoute : '';
     const center = selectedCenter;
     const nodeMap = new Map<string, LargeGraphNode>();
     const edges: LargeGraphEdge[] = [];
+    const edgeKeys = new Set<string>();
 
     const addNode = (id: string, type = routeKind(id), label = largeLabelForRoute(id), count?: number, stackFor?: string) => {
       if (!id) return;
       if (!nodeMap.has(id)) nodeMap.set(id, { id, label, type, count, stackFor });
     };
     const addEdge = (sourceId: string, targetId: string, label: string) => {
+      const key = `${sourceId}\u0000${targetId}\u0000${label}`;
+      if (edgeKeys.has(key)) return;
+      edgeKeys.add(key);
       addNode(sourceId);
       addNode(targetId);
       edges.push({ source: sourceId, target: targetId, label });
@@ -914,6 +990,12 @@
         } else {
           for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), 'has resource');
         }
+      }
+    } else if (largeIndex && center) {
+      const relationshipLabel = metadataRelationshipLabel(center);
+      for (const dataset of datasetsForMetadataRoute(center, 84)) {
+        const datasetId = datasetRoute(dataset);
+        addEdge(datasetId, center, relationshipLabel);
       }
     } else if (!center && largeIndex) {
       for (const dataset of largeVisibleDatasets.slice(0, 64)) {
@@ -1194,6 +1276,8 @@
 
   function beginGraphPan(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
+    const target = event.target;
+    if (target instanceof Element && target.closest('[data-route]')) return;
     graphDrag = { x: event.clientX, y: event.clientY, box: { ...graphViewport }, moved: false };
     (event.currentTarget as SVGSVGElement).setPointerCapture?.(event.pointerId);
   }
@@ -1545,6 +1629,7 @@
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
                     data-type={node.type}
+                    data-route={node.id}
                     role="button"
                     tabindex="0"
                     onclick={() => graphNodeClick(node.id)}
@@ -1571,6 +1656,7 @@
                       <circle cx={pos.x} cy={pos.y} r={node.id === largeSelectedRoute ? 12 : 9} fill={largeTypeColor(node.type)}></circle>
                     {/if}
                     {#if label}
+                      <rect class="label-hit" x={label.box.x} y={label.box.y} width={label.box.w} height={label.box.h} rx="4"></rect>
                       <text class:rotating={!label.stable} x={label.x} y={label.y} text-anchor={label.anchor}>{label.text}</text>
                     {/if}
                   </g>

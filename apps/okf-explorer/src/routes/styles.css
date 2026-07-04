@@ -616,7 +616,8 @@ input:focus {
   outline: 3px solid var(--focus);
 }
 
-.node-hit {
+.node-hit,
+.label-hit {
   fill: transparent;
   stroke: transparent;
   pointer-events: all;
