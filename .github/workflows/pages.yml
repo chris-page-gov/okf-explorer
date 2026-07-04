@@ -19,7 +19,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+
+      - name: Install OKF Explorer dependencies
+        working-directory: apps/okf-explorer
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate Svelte OKF Explorer
+        working-directory: apps/okf-explorer
+        run: pnpm check
+
+      - name: Build Svelte OKF Explorer
+        working-directory: apps/okf-explorer
+        run: pnpm build
 
       - name: Validate OKF bundle
         run: python3 scripts/check_okf.py
@@ -31,10 +55,10 @@ jobs:
         run: python3 scripts/build_site.py
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -47,4 +71,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
