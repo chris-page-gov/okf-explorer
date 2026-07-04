@@ -694,6 +694,11 @@ input:focus {
   background: var(--surface-2);
 }
 
+.edge-panel button.active {
+  background: #e8f2ff;
+  outline: 2px solid var(--focus);
+}
+
 .graph-caption {
   margin: 0;
   color: var(--muted);

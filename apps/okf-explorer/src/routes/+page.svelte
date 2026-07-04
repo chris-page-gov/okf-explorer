@@ -121,6 +121,7 @@
   let largeSelectedRoute = $state('');
   let largeInspectedRoute = $state('');
   let largeHighlightedRoute = $state('');
+  let largeHighlightedEdge = $state('');
   let largeExpandedStackRoute = $state('');
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
@@ -270,6 +271,7 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
     largeExpandedStackRoute = '';
     largeAppliedQuery = '';
     largeResults = [];
@@ -299,6 +301,7 @@
         if (hash && hash !== 'overview') {
           largeSelectedRoute = hash;
           largeInspectedRoute = hash;
+          largeHighlightedRoute = hash;
           if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
         }
         if (query) void runLargeSearch(query, { preserveSelection: true });
@@ -401,6 +404,7 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeHighlightedEdge = '';
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
@@ -411,6 +415,7 @@
     if (!largeRouteInReduction(route)) return;
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
+    largeHighlightedEdge = '';
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
@@ -425,6 +430,7 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeHighlightedEdge = '';
     activeView = 'graph';
     void hydrateForView('graph');
     syncExplorerUrl();
@@ -453,6 +459,7 @@
     if (source?.kind === 'large') {
       largeInspectedRoute = '';
       largeHighlightedRoute = largeSelectedRoute;
+      largeHighlightedEdge = '';
     } else {
       inspectedId = '';
     }
@@ -581,6 +588,7 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeHighlightedEdge = '';
       largeSearching = false;
       largePreserveSelectionUntilSearch = false;
       syncExplorerUrl();
@@ -595,6 +603,7 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeHighlightedEdge = '';
     }
     largeSearching = true;
     syncExplorerUrl();
@@ -621,6 +630,7 @@
     largeSelectedRoute = result.open || `dataset/${result.name}`;
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
+    largeHighlightedEdge = '';
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     syncExplorerUrl();
@@ -655,11 +665,13 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeHighlightedEdge = '';
       return;
     }
     if (largeSelectedRoute && !largeRouteInReduction(largeSelectedRoute)) largeSelectedRoute = '';
     if (largeInspectedRoute && !largeRouteInReduction(largeInspectedRoute)) largeInspectedRoute = '';
     if (largeHighlightedRoute && !largeRouteInReduction(largeHighlightedRoute)) largeHighlightedRoute = '';
+    if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';
   }
 
   function visibleLargeDatasets(): LargeDataset[] {
@@ -1142,6 +1154,25 @@
     }));
   }
 
+  function graphEdgeKey(edge: LargeGraphEdge): string {
+    return `${edge.source}>${edge.target}:${edge.label}`;
+  }
+
+  function shouldHighlightGraphEdge(edge: LargeGraphEdge, model: ReturnType<typeof largeGraphModel>): boolean {
+    if (largeHighlightedEdge) return graphEdgeKey(edge) === largeHighlightedEdge;
+    if (!largeHighlightedRoute) return false;
+    const touchesHighlighted = edge.source === largeHighlightedRoute || edge.target === largeHighlightedRoute;
+    if (!touchesHighlighted) return false;
+    if (model.center) return edge.source === model.center || edge.target === model.center;
+    const highlightedFanOut = model.relationships.filter((item) => item.source === largeHighlightedRoute || item.target === largeHighlightedRoute).length;
+    return highlightedFanOut <= 12;
+  }
+
+  function inspectLargeEdge(edge: LargeGraphEdge) {
+    inspectLargeRoute(edge.target);
+    largeHighlightedEdge = graphEdgeKey(edge);
+  }
+
   function graphViewBox(): string {
     return `${graphViewport.x} ${graphViewport.y} ${graphViewport.w} ${graphViewport.h}`;
   }
@@ -1195,6 +1226,7 @@
       graphSuppressClick = false;
       return;
     }
+    largeHighlightedEdge = '';
     inspectLargeRoute(route);
   }
 
@@ -1495,7 +1527,7 @@
                   {@const targetPos = positions.get(relationship.target)}
                   {#if sourcePos && targetPos}
                     <line
-                      class:highlight={largeHighlightedRoute === relationship.source || largeHighlightedRoute === relationship.target}
+                      class:highlight={shouldHighlightGraphEdge(relationship, model)}
                       x1={sourcePos.x}
                       y1={sourcePos.y}
                       x2={targetPos.x}
@@ -1548,7 +1580,11 @@
                 <strong>Relationships ({model.relationships.length})</strong>
                 <div>
                   {#each model.relationships.slice(0, 42) as relationship}
-                    <button type="button" onclick={() => { largeHighlightedRoute = relationship.target; inspectLargeRoute(relationship.target); }}>
+                    <button
+                      class:active={largeHighlightedEdge === graphEdgeKey(relationship)}
+                      type="button"
+                      onclick={() => inspectLargeEdge(relationship)}
+                    >
                       {largeLabelForRoute(relationship.source)} · {relationship.label} · {largeLabelForRoute(relationship.target)}
                     </button>
                   {/each}
