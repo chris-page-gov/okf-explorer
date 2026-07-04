@@ -31,8 +31,8 @@
     { id: 'type', label: 'Type' },
     { id: 'resources', label: 'Resources' }
   ];
-  const FULL_INDEX_VIEWS = new Set<ViewMode>(['links', 'timeline', 'type', 'resources']);
-  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['links']);
+  const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources']);
+  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['graph', 'links']);
   const LARGE_FACET_KEYS = ['publisher', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
@@ -86,6 +86,18 @@
     label: string;
   };
 
+  type GraphPoint = { x: number; y: number };
+  type GraphBox = { x: number; y: number; w: number; h: number };
+  type GraphLabel = {
+    x: number;
+    y: number;
+    anchor: 'start' | 'end' | 'middle';
+    text: string;
+    box: GraphBox;
+    stable: boolean;
+  };
+  type GraphViewport = { x: number; y: number; w: number; h: number; baseW: number; baseH: number };
+
   let bundleUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
   let error = $state('');
@@ -121,6 +133,12 @@
   let largeSearchRequest = 0;
   let activeFacetKey = $state('publisher');
   let pins = $state<string[]>([]);
+  let graphZoom = $state(1);
+  let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
+  let graphDrag = $state<{ x: number; y: number; box: GraphViewport; moved: boolean } | null>(null);
+  let graphSuppressClick = $state(false);
+  let graphLabelPhase = $state(0);
+  let spreadPins = $state(false);
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -171,7 +189,13 @@
   onMount(() => {
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
-    return () => window.removeEventListener('popstate', applyBrowserRoute);
+    const labelTimer = window.setInterval(() => {
+      if (activeView === 'graph') graphLabelPhase = (graphLabelPhase + 1) % 100000;
+    }, 2200);
+    return () => {
+      window.removeEventListener('popstate', applyBrowserRoute);
+      window.clearInterval(labelTimer);
+    };
   });
 
   async function initialize() {
@@ -379,6 +403,7 @@
     largeHighlightedRoute = route;
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
     syncExplorerUrl();
   }
 
@@ -388,6 +413,7 @@
     largeHighlightedRoute = route;
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
   }
 
   function recenterLargeRoute(route: string) {
@@ -421,6 +447,40 @@
     if (!route) return;
     pins = [route, ...pins.filter((item) => item !== route)].slice(0, 20);
     savePins();
+  }
+
+  function clearInspection() {
+    if (source?.kind === 'large') {
+      largeInspectedRoute = '';
+      largeHighlightedRoute = largeSelectedRoute;
+    } else {
+      inspectedId = '';
+    }
+  }
+
+  function navigateBack() {
+    if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
+      clearInspection();
+      return;
+    }
+    if (source?.kind === 'small' && inspectedId) {
+      clearInspection();
+      return;
+    }
+    window.history.back();
+  }
+
+  function navigateForward() {
+    window.history.forward();
+  }
+
+  function exportPins() {
+    const payload = {
+      exported_at: new Date().toISOString(),
+      bundle: bundleUrl,
+      pins
+    };
+    void navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
   }
 
   function loadPins() {
@@ -682,6 +742,21 @@
       .trim();
   }
 
+  function displayValue(value: unknown): string {
+    if (value === undefined || value === null || value === '') return 'None';
+    if (Array.isArray(value)) return value.length ? value.map((item) => displayValue(item)).join(', ') : 'None';
+    if (typeof value === 'object') return JSON.stringify(value);
+    return String(value);
+  }
+
+  function isUrl(value: unknown): value is string {
+    return typeof value === 'string' && /^https?:\/\//i.test(value);
+  }
+
+  function jsonText(value: unknown): string {
+    return JSON.stringify(value, null, 2);
+  }
+
   function datasetRoute(dataset: LargeDataset | SearchResultDoc): string {
     const open = (dataset as SearchResultDoc).open;
     return typeof open === 'string' && open ? open : `dataset/${dataset.name}`;
@@ -713,8 +788,9 @@
     if (kind === 'resource') return largeIndex?.resourceById.get(value)?.name || value;
     if (kind === 'publisher') return largeIndex?.publisherByName.get(value)?.title || value;
     if (kind === 'resource-stack') {
-      const dataset = largeIndex?.datasetByName.get(value);
-      return `Resources: ${dataset?.title || value}`;
+      const datasetName = value.replace(/^dataset\//, '');
+      const dataset = largeIndex?.datasetByName.get(datasetName);
+      return `Resources: ${dataset?.title || datasetName}`;
     }
     return value || route;
   }
@@ -777,8 +853,7 @@
 
   function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
     const selectedCenter = largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? largeSelectedRoute : '';
-    const compactResultCenter = !largeIndex && largeResults[0] ? datasetRoute(largeResults[0]) : '';
-    const center = selectedCenter || (largeVisibleDatasets[0] ? datasetRoute(largeVisibleDatasets[0]) : compactResultCenter);
+    const center = selectedCenter;
     const nodeMap = new Map<string, LargeGraphNode>();
     const edges: LargeGraphEdge[] = [];
 
@@ -828,11 +903,17 @@
           for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), 'has resource');
         }
       }
-    } else if (largeIndex && !center) {
-      for (const dataset of largeVisibleDatasets.slice(0, 42)) {
+    } else if (!center && largeIndex) {
+      for (const dataset of largeVisibleDatasets.slice(0, 64)) {
         const datasetId = datasetRoute(dataset);
         addNode(datasetId, 'dataset', dataset.title);
         if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
+      }
+    } else if (!center && !largeIndex) {
+      for (const result of largeResults.slice(0, 42)) {
+        const datasetId = datasetRoute(result);
+        addNode(datasetId, 'dataset', result.title);
+        if (result.publisher) addEdge(datasetId, publisherRoute(result.publisher), 'published by');
       }
     }
 
@@ -847,35 +928,274 @@
     return { center, nodes: [...nodeMap.values()].slice(0, 140), relationships: edges.slice(0, 160) };
   }
 
+  function placeArc(positions: Map<string, GraphPoint>, nodes: LargeGraphNode[], cx: number, cy: number, radius: number, start: number, end: number) {
+    if (!nodes.length) return;
+    nodes.forEach((node, index) => {
+      const t = nodes.length === 1 ? 0.5 : index / (nodes.length - 1);
+      const angle = start + (end - start) * t;
+      positions.set(node.id, { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius });
+    });
+  }
+
+  function placeGrid(
+    positions: Map<string, GraphPoint>,
+    nodes: LargeGraphNode[],
+    startX: number,
+    startY: number,
+    columns: number,
+    cellW: number,
+    cellH: number
+  ) {
+    nodes.forEach((node, index) => {
+      const row = Math.floor(index / columns);
+      const col = index % columns;
+      positions.set(node.id, { x: startX + col * cellW, y: startY + row * cellH });
+    });
+  }
+
   function largeGraphPositions(model: ReturnType<typeof largeGraphModel>) {
     const center = model.center && model.nodes.some((node) => node.id === model.center) ? model.center : model.nodes[0]?.id;
-    const positions = new Map<string, { x: number; y: number }>();
+    const positions = new Map<string, GraphPoint>();
+    if (model.center && center) {
+      const centerType = routeKind(center);
+      const cx = centerType === 'publisher' ? GRAPH_WIDTH * 0.27 : GRAPH_WIDTH * 0.5;
+      const cy = GRAPH_HEIGHT * 0.54;
+      positions.set(center, { x: cx, y: cy });
+      const groups: Record<string, LargeGraphNode[]> = {
+        publisher: [],
+        dataset: [],
+        resource: [],
+        'resource-stack': [],
+        format: [],
+        license: [],
+        tag: [],
+        host: [],
+        resource_type: [],
+        route: []
+      };
+      for (const node of model.nodes.filter((item) => item.id !== center)) {
+        const key = groups[node.type] ? node.type : 'route';
+        groups[key].push(node);
+      }
+      Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
+      if (centerType === 'publisher') {
+        placeGrid(positions, [...groups.dataset, ...groups.resource], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
+        placeArc(positions, [...groups.format, ...groups.license, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
+      } else {
+        placeArc(positions, groups.publisher, cx, cy, GRAPH_HEIGHT * 0.31, -0.22, 0.25);
+        placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.13, GRAPH_HEIGHT * 0.18, 5, 82, 64);
+        placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
+        placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.35, 2.18, 3.82);
+        placeArc(positions, [...groups.host, ...groups.resource_type, ...groups.dataset, ...groups.route], cx, cy, GRAPH_HEIGHT * 0.28, -1.08, -0.55);
+      }
+      return positions;
+    }
     if (center) positions.set(center, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 });
     const others = model.nodes.filter((node) => node.id !== center);
-    const grouped: Record<string, LargeGraphNode[]> = {};
-    for (const node of others) {
-      const type = node.type || 'route';
-      grouped[type] = [...(grouped[type] || []), node];
-    }
-    const groups = Object.values(grouped);
-    groups.forEach((group, groupIndex) => {
-      const radius = 150 + groupIndex * 58;
-      group.forEach((node, index) => {
-        positions.set(node.id, graphPosition(index, group.length, radius, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2));
-      });
-    });
+    const publishers = model.nodes.filter((node) => node.type === 'publisher').sort((left, right) => left.label.localeCompare(right.label));
+    const datasets = model.nodes.filter((node) => node.type === 'dataset').sort((left, right) => left.label.localeCompare(right.label));
+    const other = others.filter((node) => node.type !== 'publisher' && node.type !== 'dataset');
+    const columns = Math.max(1, Math.ceil(Math.sqrt(datasets.length)));
+    const cellW = Math.min(92, (GRAPH_WIDTH * 0.58) / columns);
+    const cellH = 58;
+    const rows = Math.ceil(datasets.length / columns);
+    placeGrid(positions, datasets, GRAPH_WIDTH * 0.18, GRAPH_HEIGHT * 0.5 - ((rows - 1) * cellH) / 2, columns, cellW, cellH);
+    placeArc(positions, publishers, GRAPH_WIDTH * 0.78, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.28, -1.0, 1.0);
+    placeArc(positions, other, GRAPH_WIDTH * 0.5, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.36, 1.35, 4.92);
     return positions;
   }
 
   function largeTypeColor(type: string) {
     if (type === 'dataset') return '#0b6bcb';
-    if (type === 'resource') return '#007a5a';
-    if (type === 'resource-stack') return '#5d3fd3';
-    if (type === 'publisher') return '#b36b00';
-    if (type === 'format') return '#7f5f01';
-    if (type === 'tag') return '#b93386';
-    if (type === 'license') return '#596773';
+    if (type === 'resource') return '#5694ca';
+    if (type === 'resource-stack') return '#1d70b8';
+    if (type === 'publisher') return '#00703c';
+    if (type === 'format') return '#4c2c92';
+    if (type === 'tag') return '#d4351c';
+    if (type === 'license') return '#b58800';
+    if (type === 'host' || type === 'resource_type') return '#5d6b78';
     return '#607080';
+  }
+
+  function graphLegendItems() {
+    return [
+      ['dataset', 'dataset'],
+      ['publisher', 'publisher'],
+      ['resource', 'resource'],
+      ['format', 'format'],
+      ['license', 'licence'],
+      ['tag', 'tag'],
+      ['host', 'host/other']
+    ];
+  }
+
+  function shortLabel(value = '', max = 42): string {
+    const text = stripHtml(String(value)).replace(/\s+/g, ' ').trim();
+    return text.length > max ? `${text.slice(0, Math.max(0, max - 1))}…` : text;
+  }
+
+  function graphNodeBox(node: LargeGraphNode, point?: GraphPoint): GraphBox | null {
+    if (!point) return null;
+    if (node.type === 'resource-stack') return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
+    if (node.type === 'resource') return { x: point.x - 30, y: point.y - 24, w: 60, h: 48 };
+    if (node.type === 'dataset') return { x: point.x - 31, y: point.y - 25, w: 62, h: 50 };
+    return { x: point.x - 28, y: point.y - 28, w: 56, h: 56 };
+  }
+
+  function graphLabelBox(text: string, x: number, y: number, anchor: GraphLabel['anchor']): GraphBox {
+    const w = Math.min(240, text.length * 6.8 + 14);
+    const h = 19;
+    const left = anchor === 'end' ? x - w : anchor === 'middle' ? x - w / 2 : x;
+    return { x: left, y: y - 15, w, h };
+  }
+
+  function graphLabelCandidates(node: LargeGraphNode, point: GraphPoint): GraphLabel[] {
+    const text = shortLabel(node.label, node.type === 'publisher' ? 44 : 40);
+    const gap = node.type === 'resource' || node.type === 'dataset' || node.type === 'resource-stack' ? 36 : 30;
+    return [
+      { x: point.x + gap, y: point.y + 5, anchor: 'start' as const },
+      { x: point.x - gap, y: point.y + 5, anchor: 'end' as const },
+      { x: point.x, y: point.y - gap, anchor: 'middle' as const },
+      { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const }
+    ].map((candidate) => ({ ...candidate, text, box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor), stable: true }));
+  }
+
+  function boxesOverlap(left: GraphBox, right: GraphBox): boolean {
+    return left.x < right.x + right.w && left.x + left.w > right.x && left.y < right.y + right.h && left.y + left.h > right.y;
+  }
+
+  function pickGraphLabel(node: LargeGraphNode, point: GraphPoint, blockers: GraphBox[]): GraphLabel | null {
+    return graphLabelCandidates(node, point).find((label) => !blockers.some((box) => boxesOverlap(label.box, box))) || null;
+  }
+
+  function graphLabelPriority(node: LargeGraphNode, alwaysId: string): number {
+    if (node.id === alwaysId) return 0;
+    if (node.type === 'publisher') return 1;
+    if (node.type === 'dataset') return 2;
+    if (['format', 'license', 'tag', 'host', 'resource_type'].includes(node.type)) return 3;
+    return 4;
+  }
+
+  function graphLabelLayers(nodes: LargeGraphNode[], positions: Map<string, GraphPoint>, alwaysId: string) {
+    const labelBudget = nodes.length > 58 ? 18 : nodes.length > 34 ? 28 : 70;
+    const labelable = [...nodes]
+      .sort((left, right) => graphLabelPriority(left, alwaysId) - graphLabelPriority(right, alwaysId) || left.label.localeCompare(right.label))
+      .slice(0, labelBudget);
+    const blockers = nodes.map((node) => graphNodeBox(node, positions.get(node.id))).filter((box): box is GraphBox => Boolean(box));
+    const layout = new Map<string, GraphLabel>();
+    const always = labelable.filter((node) => node.id === alwaysId || node.type === 'publisher');
+    for (const node of always) {
+      const point = positions.get(node.id);
+      if (!point) continue;
+      const label = pickGraphLabel(node, point, blockers);
+      if (label) {
+        layout.set(node.id, label);
+        blockers.push(label.box);
+      }
+    }
+
+    const candidates = labelable
+      .filter((node) => !layout.has(node.id))
+      .map((node) => {
+        const point = positions.get(node.id);
+        const label = point ? pickGraphLabel(node, point, blockers) : null;
+        return label ? { node, label } : null;
+      })
+      .filter((value): value is { node: LargeGraphNode; label: GraphLabel } => Boolean(value));
+
+    const stable: Array<{ node: LargeGraphNode; label: GraphLabel }> = [];
+    const rotating: Array<{ node: LargeGraphNode; label: GraphLabel }> = [];
+    for (let index = 0; index < candidates.length; index += 1) {
+      const candidate = candidates[index];
+      const conflict = candidates.some((other, otherIndex) => otherIndex !== index && boxesOverlap(candidate.label.box, other.label.box));
+      if (conflict) rotating.push(candidate);
+      else stable.push(candidate);
+    }
+    stable.forEach(({ node, label }) => layout.set(node.id, { ...label, stable: true }));
+    const layers: Array<Array<{ node: LargeGraphNode; label: GraphLabel }>> = [];
+    for (const candidate of rotating) {
+      const layer = layers.find((items) => !items.some((item) => boxesOverlap(item.label.box, candidate.label.box)));
+      if (layer) layer.push(candidate);
+      else layers.push([candidate]);
+    }
+    const activeLayer = layers.length ? layers[graphLabelPhase % layers.length] : [];
+    activeLayer.forEach(({ node, label }) => layout.set(node.id, { ...label, stable: false }));
+    return layout;
+  }
+
+  function edgeKindLabels(model: ReturnType<typeof largeGraphModel>, positions: Map<string, GraphPoint>) {
+    const groups = new Map<string, { label: string; count: number; x: number; y: number }>();
+    for (const relationship of model.relationships) {
+      const source = positions.get(relationship.source);
+      const target = positions.get(relationship.target);
+      if (!source || !target) continue;
+      const group = groups.get(relationship.label) || { label: relationship.label, count: 0, x: 0, y: 0 };
+      group.count += 1;
+      group.x += (source.x + target.x) / 2;
+      group.y += (source.y + target.y) / 2;
+      groups.set(relationship.label, group);
+    }
+    return [...groups.values()].map((group, index, all) => ({
+      text: `${group.label}${group.count > 1 ? ` x${group.count}` : ''}`,
+      x: group.x / group.count + 8,
+      y: group.y / group.count + (index - (all.length - 1) / 2) * 15 - 6
+    }));
+  }
+
+  function graphViewBox(): string {
+    return `${graphViewport.x} ${graphViewport.y} ${graphViewport.w} ${graphViewport.h}`;
+  }
+
+  function resetGraphView() {
+    graphZoom = 1;
+    graphViewport = { x: 0, y: 0, w: GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: GRAPH_WIDTH, baseH: GRAPH_HEIGHT };
+  }
+
+  function setGraphZoom(value: number) {
+    const cx = graphViewport.x + graphViewport.w / 2;
+    const cy = graphViewport.y + graphViewport.h / 2;
+    const nextZoom = Math.max(0.45, Math.min(4, value));
+    const w = graphViewport.baseW / nextZoom;
+    const h = graphViewport.baseH / nextZoom;
+    graphZoom = nextZoom;
+    graphViewport = { ...graphViewport, x: cx - w / 2, y: cy - h / 2, w, h };
+  }
+
+  function beginGraphPan(event: PointerEvent) {
+    if (event.button !== undefined && event.button !== 0) return;
+    graphDrag = { x: event.clientX, y: event.clientY, box: { ...graphViewport }, moved: false };
+    (event.currentTarget as SVGSVGElement).setPointerCapture?.(event.pointerId);
+  }
+
+  function moveGraphPan(event: PointerEvent) {
+    if (!graphDrag) return;
+    const svg = event.currentTarget as SVGSVGElement;
+    const dx = event.clientX - graphDrag.x;
+    const dy = event.clientY - graphDrag.y;
+    if (Math.hypot(dx, dy) <= 3 && !graphDrag.moved) return;
+    event.preventDefault();
+    graphSuppressClick = true;
+    graphDrag = { ...graphDrag, moved: true };
+    graphViewport = {
+      ...graphViewport,
+      x: graphDrag.box.x - dx * (graphViewport.w / (svg.clientWidth || graphViewport.baseW)),
+      y: graphDrag.box.y - dy * (graphViewport.h / (svg.clientHeight || graphViewport.baseH))
+    };
+  }
+
+  function endGraphPan(event: PointerEvent) {
+    const moved = graphDrag?.moved;
+    graphDrag = null;
+    (event.currentTarget as SVGSVGElement).releasePointerCapture?.(event.pointerId);
+    if (moved) window.setTimeout(() => (graphSuppressClick = false), 80);
+  }
+
+  function graphNodeClick(route: string) {
+    if (graphSuppressClick) {
+      graphSuppressClick = false;
+      return;
+    }
+    inspectLargeRoute(route);
   }
 
   function beginResize(side: 'left' | 'right', event: PointerEvent) {
@@ -1050,6 +1370,10 @@
 
     <section class="stage">
       <div class="stage-bar">
+        <div class="nav-controls" aria-label="History navigation">
+          <button type="button" title="Back" aria-label="Back" onclick={navigateBack}>←</button>
+          <button type="button" title="Forward" aria-label="Forward" onclick={navigateForward}>→</button>
+        </div>
         <div class="crumbs">
           {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {activeView}
           {#if source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)} / {largeLabelForRoute(largeInspectedRoute || largeSelectedRoute)}{/if}
@@ -1064,11 +1388,13 @@
 
       {#if source?.kind === 'large'}
         <section class="large-view">
-          <div class="metrics">
-            {#each Object.entries(source.manifest.counts).slice(0, 4) as [key, value]}
-              <article><strong>{value.toLocaleString()}</strong><span>{key.replaceAll('_', ' ')}</span></article>
-            {/each}
-          </div>
+          {#if activeView === 'reader'}
+            <div class="metrics">
+              {#each Object.entries(source.manifest.counts).slice(0, 4) as [key, value]}
+                <article><strong>{value.toLocaleString()}</strong><span>{key.replaceAll('_', ' ')}</span></article>
+              {/each}
+            </div>
+          {/if}
 
           {#if activeView === 'reader'}
             {#if largeQuery}
@@ -1134,37 +1460,109 @@
           {:else if activeView === 'graph'}
             {@const model = largeGraphModel()}
             {@const positions = largeGraphPositions(model)}
-            <div class="view-heading">
-              <h2>Graph</h2>
-              <span>{model.nodes.length} nodes · {model.relationships.length} relationships</span>
-            </div>
-            <svg class="graph" viewBox={`0 0 ${GRAPH_WIDTH} ${GRAPH_HEIGHT}`} role="img" aria-label="Large corpus graph">
-              {#each model.relationships as relationship}
-                {@const sourcePos = positions.get(relationship.source)}
-                {@const targetPos = positions.get(relationship.target)}
-                {#if sourcePos && targetPos}
-                  <line class:highlight={largeHighlightedRoute === relationship.source || largeHighlightedRoute === relationship.target} x1={sourcePos.x} y1={sourcePos.y} x2={targetPos.x} y2={targetPos.y} />
-                  <text class="edge-label" x={(sourcePos.x + targetPos.x) / 2} y={(sourcePos.y + targetPos.y) / 2}>{relationship.label}</text>
-                {/if}
-              {/each}
-              {#each model.nodes as node}
-                {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
-                <g
-                  class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
-                  role="button"
-                  tabindex="0"
-                  onclick={() => inspectLargeRoute(node.id)}
-                  ondblclick={() => recenterLargeRoute(node.id)}
-                  onkeydown={(event) => keyboardActivate(event, () => inspectLargeRoute(node.id))}
-                >
-                  <circle cx={pos.x} cy={pos.y} r={node.type === 'resource-stack' ? 18 : node.id === largeSelectedRoute ? 15 : 10} fill={largeTypeColor(node.type)}></circle>
-                  <text x={pos.x + 16} y={pos.y + 5}>{node.label}</text>
-                  {#if node.count}
-                    <text class="stack-count" x={pos.x - 5} y={pos.y + 4}>{node.count}</text>
+            {@const labels = graphLabelLayers(model.nodes, positions, model.center)}
+            {@const edgeLabels = edgeKindLabels(model, positions)}
+            <div class="graph-shell">
+              <div class="graph-controls">
+                <div class="graph-buttons" aria-label="Graph controls">
+                  <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
+                  <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
+                  <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
+                </div>
+                <div class="graph-summary">
+                  <strong>{model.nodes.length}</strong> nodes · <strong>{model.relationships.length}</strong> relationships
+                </div>
+                <div class="legend" aria-label="Node type key">
+                  {#each graphLegendItems() as [type, label]}
+                    <span><i style={`background:${largeTypeColor(type)}`}></i>{label}</span>
+                  {/each}
+                </div>
+              </div>
+              <svg
+                class="graph"
+                class:dragging={Boolean(graphDrag)}
+                viewBox={graphViewBox()}
+                role="img"
+                aria-label="Large corpus graph"
+                onpointerdown={beginGraphPan}
+                onpointermove={moveGraphPan}
+                onpointerup={endGraphPan}
+                onpointercancel={endGraphPan}
+                onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
+              >
+                {#each model.relationships as relationship}
+                  {@const sourcePos = positions.get(relationship.source)}
+                  {@const targetPos = positions.get(relationship.target)}
+                  {#if sourcePos && targetPos}
+                    <line
+                      class:highlight={largeHighlightedRoute === relationship.source || largeHighlightedRoute === relationship.target}
+                      x1={sourcePos.x}
+                      y1={sourcePos.y}
+                      x2={targetPos.x}
+                      y2={targetPos.y}
+                    />
                   {/if}
-                </g>
-              {/each}
-            </svg>
+                {/each}
+                {#each edgeLabels as edgeLabel}
+                  <text class="edge-label" x={edgeLabel.x} y={edgeLabel.y}>{edgeLabel.text}</text>
+                {/each}
+                {#each model.nodes as node}
+                  {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
+                  {@const label = labels.get(node.id)}
+                  <g
+                    class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
+                    class:spotlight={node.id === largeHighlightedRoute}
+                    data-type={node.type}
+                    role="button"
+                    tabindex="0"
+                    onclick={() => graphNodeClick(node.id)}
+                    ondblclick={() => recenterLargeRoute(node.id)}
+                    onkeydown={(event) => keyboardActivate(event, () => inspectLargeRoute(node.id))}
+                  >
+                    <title>{node.label}</title>
+                    {#if node.type === 'resource-stack'}
+                      <rect class="node-hit" x={pos.x - 32} y={pos.y - 25} width="64" height="50" rx="6"></rect>
+                      <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
+                      <rect class="stack-card stack-card-mid" x={pos.x - 20} y={pos.y - 14} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
+                      <rect class="stack-card" x={pos.x - 16} y={pos.y - 11} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
+                      <text class="stack-count" x={pos.x + 5} y={pos.y + 7}>{node.count}</text>
+                    {:else if node.type === 'resource'}
+                      <rect class="node-hit" x={pos.x - 25} y={pos.y - 19} width="50" height="38" rx="6"></rect>
+                      <rect class="resource-card" x={pos.x - 16} y={pos.y - 11} width="32" height="22" rx="4" fill={largeTypeColor(node.type)}></rect>
+                      <line class="card-line" x1={pos.x - 10} y1={pos.y - 3} x2={pos.x + 10} y2={pos.y - 3}></line>
+                      <line class="card-line" x1={pos.x - 10} y1={pos.y + 4} x2={pos.x + 7} y2={pos.y + 4}></line>
+                    {:else if node.type === 'dataset'}
+                      <rect class="node-hit" x={pos.x - 26} y={pos.y - 20} width="52" height="40" rx="6"></rect>
+                      <rect class="dataset-card" x={pos.x - 18} y={pos.y - 12} width="36" height="24" rx="5" fill={largeTypeColor(node.type)}></rect>
+                    {:else}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="20"></circle>
+                      <circle cx={pos.x} cy={pos.y} r={node.id === largeSelectedRoute ? 12 : 9} fill={largeTypeColor(node.type)}></circle>
+                    {/if}
+                    {#if label}
+                      <text class:rotating={!label.stable} x={label.x} y={label.y} text-anchor={label.anchor}>{label.text}</text>
+                    {/if}
+                  </g>
+                {/each}
+              </svg>
+              <div class="edge-panel">
+                <strong>Relationships ({model.relationships.length})</strong>
+                <div>
+                  {#each model.relationships.slice(0, 42) as relationship}
+                    <button type="button" onclick={() => { largeHighlightedRoute = relationship.target; inspectLargeRoute(relationship.target); }}>
+                      {largeLabelForRoute(relationship.source)} · {relationship.label} · {largeLabelForRoute(relationship.target)}
+                    </button>
+                  {/each}
+                </div>
+              </div>
+              <p class="graph-caption">
+                {#if model.center}
+                  Showing {model.nodes.length} nodes directly related to {largeLabelForRoute(model.center)}.
+                {:else}
+                  Showing {model.nodes.length} nodes from the current left-panel reduction.
+                {/if}
+                Drag to pan, use +/- or the mouse wheel to zoom, single-click to inspect, double-click to centre or expand a resource stack.
+              </p>
+            </div>
           {:else if activeView === 'links'}
             <div class="view-heading">
               <h2>Links</h2>
@@ -1314,6 +1712,19 @@
       {:else}
         <section class="empty-state">Load an OKF bundle or large-corpus descriptor.</section>
       {/if}
+      <div class="pins-bar">
+        <div class="pin-actions">
+          <button type="button" onclick={() => (spreadPins = !spreadPins)}>{spreadPins ? 'Compact pins' : 'Spread pins'}</button>
+          <button type="button" onclick={exportPins}>Export pins</button>
+        </div>
+        {#if pinnedLabels.length}
+          <div class="pin-list" class:spread={spreadPins}>
+            {#each pinnedLabels as pin}
+              <button type="button" onclick={() => source?.kind === 'large' ? selectLargeRoute(pin.route) : (selectedId = pin.route)}>{pin.label}</button>
+            {/each}
+          </div>
+        {/if}
+      </div>
     </section>
 
     <button class="splitter" aria-label="Resize details" type="button" onpointerdown={(event) => beginResize('right', event)}></button>
@@ -1333,18 +1744,46 @@
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={copyRoute}>Copy route</button>
+                {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
               <dl>
-                <dt>Publisher</dt><dd>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</dd>
+                <dt>Publisher</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
                 <dt>Resources</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
                 <dt>Licence</dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}</dd>
-                <dt>Modified</dt><dd>{largeDetail.dataset.metadata_modified || largeDetail.dataset.timestamp || 'None'}</dd>
-                <dt>API</dt><dd>{largeDetail.dataset.source_api_url || 'None'}</dd>
+                <dt>Landing URL</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
+                <dt>API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>
               </dl>
               <div class="chips">
                 {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<span class="chip">{format}</span>{/each}
                 {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<span class="chip">{tag}</span>{/each}
               </div>
+              <section class="metadata-section">
+                <h3>Dataset metadata</h3>
+                <dl>
+                  <dt>Package name</dt><dd>{largeDetail.dataset.name}</dd>
+                  <dt>Package ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
+                  <dt>State</dt><dd>{displayValue(largeDetail.dataset.state)}</dd>
+                  <dt>Type</dt><dd>{displayValue(largeDetail.dataset.type)}</dd>
+                  <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
+                  <dt>Private</dt><dd>{displayValue(largeDetail.dataset.private)}</dd>
+                  <dt>Created</dt><dd>{displayValue(largeDetail.dataset.metadata_created)}</dd>
+                  <dt>Modified</dt><dd>{displayValue(largeDetail.dataset.metadata_modified)}</dd>
+                  <dt>Timeline date</dt><dd>{displayValue(largeDetail.dataset.timestamp)}</dd>
+                  <dt>Formats</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
+                  <dt>Groups</dt><dd>{displayValue(largeDetail.dataset.groups)}</dd>
+                  <dt>Resource hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
+                </dl>
+              </section>
+              {#if largeDetail.dataset.extras && Object.keys(largeDetail.dataset.extras).length}
+                <section class="metadata-section">
+                  <h3>CKAN extras</h3>
+                  <dl>
+                    {#each Object.entries(largeDetail.dataset.extras).slice(0, 40) as [key, value]}
+                      <dt>{key}</dt><dd>{displayValue(value)}</dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
               <h3>Resources</h3>
               {#each largeDetail.resources.slice(0, 30) as resource}
                 <button type="button" onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }} ondblclick={() => recenterLargeRoute(resourceRoute(resource))}>
@@ -1360,6 +1799,10 @@
                   </button>
                 {/each}
               {/if}
+              <details class="json-panel">
+                <summary>Local normalized dataset JSON</summary>
+                <pre>{jsonText(largeDetail.dataset)}</pre>
+              </details>
             {:else if largeDetail.kind === 'resource'}
               <span class="badge">Resource</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
@@ -1367,27 +1810,62 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>Dataset</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
+                <button type="button" onclick={copyRoute}>Copy route</button>
+                {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>Clear inspection</button>{/if}
               </div>
               <dl>
                 <dt>Dataset</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
                 <dt>Format</dt><dd>{largeDetail.resource.format || 'unknown'}</dd>
                 <dt>Host</dt><dd>{largeDetail.resource.host || 'unknown'}</dd>
                 <dt>Type</dt><dd>{largeDetail.resource.resource_type || 'unknown'}</dd>
-                <dt>URL</dt><dd>{largeDetail.resource.url || 'None'}</dd>
+                <dt>URL</dt><dd>{#if isUrl(largeDetail.resource.url)}<a href={largeDetail.resource.url} target="_blank" rel="noopener">{largeDetail.resource.url}</a>{:else}{displayValue(largeDetail.resource.url)}{/if}</dd>
+                <dt>GOV.UK path</dt><dd>{displayValue(largeDetail.resource.govuk_content_path)}</dd>
               </dl>
+              <section class="metadata-section">
+                <h3>Resource metadata</h3>
+                <dl>
+                  <dt>Resource ID</dt><dd>{largeDetail.resource.id}</dd>
+                  <dt>State</dt><dd>{displayValue(largeDetail.resource.state)}</dd>
+                  <dt>Position</dt><dd>{displayValue(largeDetail.resource.position)}</dd>
+                  <dt>Created</dt><dd>{displayValue(largeDetail.resource.created)}</dd>
+                  <dt>Last modified</dt><dd>{displayValue(largeDetail.resource.last_modified)}</dd>
+                  <dt>Metadata modified</dt><dd>{displayValue(largeDetail.resource.metadata_modified)}</dd>
+                  <dt>Size</dt><dd>{displayValue(largeDetail.resource.size)}</dd>
+                  <dt>Hash</dt><dd>{displayValue(largeDetail.resource.hash)}</dd>
+                  <dt>Schema URL</dt><dd>{#if isUrl(largeDetail.resource.schema_url)}<a href={largeDetail.resource.schema_url} target="_blank" rel="noopener">{largeDetail.resource.schema_url}</a>{:else}{displayValue(largeDetail.resource.schema_url)}{/if}</dd>
+                  <dt>Schema type</dt><dd>{displayValue(largeDetail.resource.schema_type)}</dd>
+                </dl>
+              </section>
+              <details class="json-panel">
+                <summary>Local normalized resource JSON</summary>
+                <pre>{jsonText(largeDetail.resource)}</pre>
+              </details>
             {:else if largeDetail.kind === 'publisher'}
               <span class="badge">Publisher</span>
               <h2>{largeDetail.publisher.title}</h2>
               <p>{stripHtml(largeDetail.publisher.description || '')}</p>
+              <div class="detail-actions">
+                <button type="button" onclick={() => void selectView('graph')}>Graph</button>
+                <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
+                <button type="button" onclick={copyRoute}>Copy route</button>
+              </div>
               <dl>
+                <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
                 <dt>Datasets</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
                 <dt>Resources</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
                 <dt>State</dt><dd>{largeDetail.publisher.state || 'unknown'}</dd>
+                <dt>Publisher ID</dt><dd>{displayValue(largeDetail.publisher.id)}</dd>
+                <dt>Type</dt><dd>{displayValue(largeDetail.publisher.type)}</dd>
+                <dt>Approval status</dt><dd>{displayValue(largeDetail.publisher.approval_status)}</dd>
               </dl>
               <h3>Datasets</h3>
               {#each largeDetail.datasets.slice(0, 40) as dataset}
                 <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
               {/each}
+              <details class="json-panel">
+                <summary>Local normalized publisher JSON</summary>
+                <pre>{jsonText(largeDetail.publisher)}</pre>
+              </details>
             {:else if largeDetail.kind === 'search'}
               <span class="badge">Dataset</span>
               <h2>{largeDetail.result.title}</h2>
