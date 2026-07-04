@@ -32,7 +32,7 @@
     { id: 'resources', label: 'Resources' }
   ];
   const FULL_INDEX_VIEWS = new Set<ViewMode>(['links', 'timeline', 'type', 'resources']);
-  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['graph', 'links']);
+  const RELATIONSHIP_VIEWS = new Set<ViewMode>(['links']);
   const LARGE_FACET_KEYS = ['publisher', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
@@ -103,6 +103,7 @@
   let history = $state<BundleRegistryEntry[]>([]);
   let suggestionsOpen = $state(false);
   let largeQuery = $state('');
+  let largeAppliedQuery = $state('');
   let largeResults = $state<SearchResultDoc[]>([]);
   let largeSuggestions = $state<SearchSuggestion[]>([]);
   let largeSelectedRoute = $state('');
@@ -115,6 +116,7 @@
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
   let largeSearching = $state(false);
+  let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
   let activeFacetKey = $state('publisher');
@@ -157,10 +159,11 @@
   let largeResultOrder: Map<string, number> = $derived(new Map(largeResults.map((result, index) => [result.name, index])));
   let largeVisibleDatasets: LargeDataset[] = $derived(largeIndex ? visibleLargeDatasets() : []);
   let largeVisibleDatasetNames: Set<string> = $derived(new Set(largeVisibleDatasets.map((dataset) => dataset.name)));
+  let visibleLargeSearchCount: number = $derived(largeIndex && largeAppliedQuery.trim() ? largeVisibleDatasets.length : largeResults.length);
   let largeVisibleResources: LargeResource[] = $derived(
     largeIndex ? largeVisibleDatasets.flatMap((dataset) => largeIndex?.resourcesByDataset.get(dataset.name) || []).slice(0, 600) : []
   );
-  let largeDetail: LargeDetail | null = $derived(resolveLargeDetail(largeInspectedRoute || largeSelectedRoute));
+  let largeDetail: LargeDetail | null = $derived(resolveVisibleLargeDetail(largeInspectedRoute || largeSelectedRoute));
   let largeFacetKeys: string[] = $derived(largeIndex ? Object.keys(largeIndex.facets) : Object.keys(source?.kind === 'large' ? source.overview.facet_previews || {} : {}));
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, 0));
   let pinnedLabels: Array<{ route: string; label: string }> = $derived(pins.map((route) => ({ route, label: largeLabelForRoute(route) })));
@@ -226,7 +229,8 @@
     if (source?.kind === 'large') {
       largeSelectedRoute = hash && hash !== 'overview' ? hash : '';
       largeInspectedRoute = '';
-      if (largeSelectedRoute) void ensureLargeFullIndex();
+      if (largeSelectedRoute && FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+      reconcileLargeSelection();
     } else if (smallCorpus && hash && smallCorpus.nodes[hash]) {
       selectedId = hash;
       inspectedId = '';
@@ -243,11 +247,13 @@
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
     largeExpandedStackRoute = '';
+    largeAppliedQuery = '';
     largeResults = [];
     largeSuggestions = [];
     largeIndex = null;
     largeRelationships = [];
     largeFacetFilters = {};
+    largePreserveSelectionUntilSearch = false;
     activeFacetKey = 'publisher';
     largeSearchClient?.destroy();
     largeSearchClient = null;
@@ -269,9 +275,9 @@
         if (hash && hash !== 'overview') {
           largeSelectedRoute = hash;
           largeInspectedRoute = hash;
-          void ensureLargeFullIndex();
+          if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
         }
-        if (query) void runLargeSearch(query);
+        if (query) void runLargeSearch(query, { preserveSelection: true });
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
       } else {
         const corpus = normalizeSmallBundle(raw);
@@ -330,6 +336,7 @@
     try {
       largeIndex = await source.loadFullIndex();
       if (!activeFacetKey) activeFacetKey = Object.keys(largeIndex.facets)[0] || 'publisher';
+      reconcileLargeSelection();
       return largeIndex;
     } catch (err) {
       error = err instanceof Error ? err.message : String(err);
@@ -366,19 +373,21 @@
   }
 
   function selectLargeRoute(route: string) {
+    if (!largeRouteInReduction(route)) return;
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
     rightCollapsed = false;
-    void ensureLargeFullIndex();
+    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     syncExplorerUrl();
   }
 
   function inspectLargeRoute(route: string) {
+    if (!largeRouteInReduction(route)) return;
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
     rightCollapsed = false;
-    void ensureLargeFullIndex();
+    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
   }
 
   function recenterLargeRoute(route: string) {
@@ -386,6 +395,7 @@
       largeExpandedStackRoute = route.replace(/^resource-stack\//, '');
       return;
     }
+    if (!largeRouteInReduction(route)) return;
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
@@ -451,10 +461,12 @@
       largeFacetFilters = rest;
     }
     void ensureLargeFullIndex();
+    reconcileLargeSelection();
   }
 
   function clearLargeFilters() {
     largeFacetFilters = {};
+    reconcileLargeSelection();
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -498,19 +510,34 @@
     );
   }
 
-  async function runLargeSearch(query: string) {
+  async function runLargeSearch(query: string, options: { preserveSelection?: boolean } = {}) {
     largeQuery = query;
-    if (!query.trim()) {
+    const trimmed = query.trim();
+    const requestId = ++largeSearchRequest;
+    if (!trimmed) {
+      largeAppliedQuery = '';
       largeResults = [];
       largeSuggestions = [];
       largeSelectedRoute = '';
       largeInspectedRoute = '';
+      largeHighlightedRoute = '';
+      largeSearching = false;
+      largePreserveSelectionUntilSearch = false;
       syncExplorerUrl();
       return;
     }
     if (!largeSearchClient) return;
-    const requestId = ++largeSearchRequest;
+    largeAppliedQuery = trimmed;
+    largeResults = [];
+    largeSuggestions = [];
+    largePreserveSelectionUntilSearch = Boolean(options.preserveSelection);
+    if (!options.preserveSelection) {
+      largeSelectedRoute = '';
+      largeInspectedRoute = '';
+      largeHighlightedRoute = '';
+    }
     largeSearching = true;
+    syncExplorerUrl();
     await new Promise((resolve) => setTimeout(resolve, 160));
     if (requestId !== largeSearchRequest) return;
     try {
@@ -519,8 +546,11 @@
       largeResults = results;
       largeSuggestions = suggestions;
       if (!largeSelectedRoute && results[0]) largeHighlightedRoute = `dataset/${results[0].name}`;
+      largePreserveSelectionUntilSearch = false;
+      reconcileLargeSelection(Boolean(options.preserveSelection));
       syncExplorerUrl();
     } catch (err) {
+      if (requestId === largeSearchRequest) largePreserveSelectionUntilSearch = false;
       error = err instanceof Error ? err.message : String(err);
     } finally {
       if (requestId === largeSearchRequest) largeSearching = false;
@@ -532,13 +562,49 @@
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
     rightCollapsed = false;
-    void ensureLargeFullIndex();
+    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     syncExplorerUrl();
+  }
+
+  function largeRouteInReduction(route: string): boolean {
+    if (!route) return true;
+    const kind = routeKind(route);
+    const value = routeValue(route);
+    if (!largeIndex) {
+      return kind !== 'dataset' || !largeAppliedQuery.trim() || largeResultNames.has(value);
+    }
+    if (kind === 'dataset') return largeVisibleDatasetNames.has(value);
+    if (kind === 'resource') {
+      const resource = largeIndex.resourceById.get(value);
+      return Boolean(resource && largeVisibleDatasetNames.has(resource.dataset));
+    }
+    if (kind === 'publisher') return largeVisibleDatasets.some((dataset) => dataset.publisher === value);
+    if (kind === 'format') return largeVisibleDatasets.some((dataset) => (dataset.formats || []).includes(value));
+    if (kind === 'tag') return largeVisibleDatasets.some((dataset) => (dataset.tags || []).includes(value));
+    if (kind === 'license') return largeVisibleDatasets.some((dataset) => dataset.license_id === value);
+    if (kind === 'host') return largeVisibleDatasets.some((dataset) => largeDatasetFacetValues(dataset, 'host').includes(value));
+    if (kind === 'resource_type') return largeVisibleDatasets.some((dataset) => largeDatasetFacetValues(dataset, 'resource_type').includes(value));
+    if (kind === 'resource-stack') return largeRouteInReduction(value);
+    return true;
+  }
+
+  function reconcileLargeSelection(preserveIfStillVisible = true) {
+    if (source?.kind !== 'large') return;
+    if (preserveIfStillVisible && largePreserveSelectionUntilSearch && largeAppliedQuery.trim() && !largeResults.length) return;
+    if (!preserveIfStillVisible) {
+      largeSelectedRoute = '';
+      largeInspectedRoute = '';
+      largeHighlightedRoute = '';
+      return;
+    }
+    if (largeSelectedRoute && !largeRouteInReduction(largeSelectedRoute)) largeSelectedRoute = '';
+    if (largeInspectedRoute && !largeRouteInReduction(largeInspectedRoute)) largeInspectedRoute = '';
+    if (largeHighlightedRoute && !largeRouteInReduction(largeHighlightedRoute)) largeHighlightedRoute = '';
   }
 
   function visibleLargeDatasets(): LargeDataset[] {
     if (!largeIndex) return [];
-    const queryActive = Boolean(largeQuery.trim());
+    const queryActive = Boolean(largeAppliedQuery.trim());
     const rows = largeIndex.datasets.filter((dataset) => {
       if (queryActive && !largeResultNames.has(dataset.name)) return false;
       for (const [key, selected] of Object.entries(largeFacetFilters)) {
@@ -704,8 +770,15 @@
     return { kind: 'route', route, label: largeLabelForRoute(route), relationships: routeRelationships(route) };
   }
 
-  function largeGraphModel(): { nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
-    const center = largeSelectedRoute || (largeVisibleDatasets[0] ? datasetRoute(largeVisibleDatasets[0]) : '');
+  function resolveVisibleLargeDetail(route: string): LargeDetail | null {
+    if (!route || !largeRouteInReduction(route)) return null;
+    return resolveLargeDetail(route);
+  }
+
+  function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
+    const selectedCenter = largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? largeSelectedRoute : '';
+    const compactResultCenter = !largeIndex && largeResults[0] ? datasetRoute(largeResults[0]) : '';
+    const center = selectedCenter || (largeVisibleDatasets[0] ? datasetRoute(largeVisibleDatasets[0]) : compactResultCenter);
     const nodeMap = new Map<string, LargeGraphNode>();
     const edges: LargeGraphEdge[] = [];
 
@@ -721,15 +794,24 @@
 
     if (center) addNode(center);
     if (center && largeRelationships.length) {
-      for (const relationship of largeRelationships) {
-        if (relationship.source === center || relationship.target === center) {
-          addEdge(relationship.source, relationship.target, relationship.kind);
-          if (edges.length >= 120) break;
-        }
+      for (const relationship of routeRelationships(center, 120)) {
+        addEdge(relationship.source, relationship.target, relationship.kind);
       }
     }
 
-    if (largeIndex && center.startsWith('dataset/')) {
+    if (!largeIndex && center.startsWith('dataset/')) {
+      const result = largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
+      if (result) {
+        if (result.publisher) addEdge(center, publisherRoute(result.publisher), 'published by');
+        for (const format of (result.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
+        for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
+        if (result.resource_count > 0) {
+          const stackId = `resource-stack/${center}`;
+          addNode(stackId, 'resource-stack', `Resources (${result.resource_count})`, result.resource_count, center);
+          edges.push({ source: center, target: stackId, label: 'has resources' });
+        }
+      }
+    } else if (largeIndex && center.startsWith('dataset/')) {
       const datasetName = routeValue(center);
       const dataset = largeIndex.datasetByName.get(datasetName);
       if (dataset) {
@@ -762,11 +844,11 @@
       }
     }
 
-    return { nodes: [...nodeMap.values()].slice(0, 140), relationships: edges.slice(0, 160) };
+    return { center, nodes: [...nodeMap.values()].slice(0, 140), relationships: edges.slice(0, 160) };
   }
 
   function largeGraphPositions(model: ReturnType<typeof largeGraphModel>) {
-    const center = largeSelectedRoute && model.nodes.some((node) => node.id === largeSelectedRoute) ? largeSelectedRoute : model.nodes[0]?.id;
+    const center = model.center && model.nodes.some((node) => node.id === model.center) ? model.center : model.nodes[0]?.id;
     const positions = new Map<string, { x: number; y: number }>();
     if (center) positions.set(center, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 });
     const others = model.nodes.filter((node) => node.id !== center);
@@ -897,22 +979,25 @@
               <span>Filters {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
               <button type="button" onclick={clearLargeFilters}>Clear</button>
             </div>
-            <div class="facet-tabs" aria-label="Facet groups">
+            <div class="facet-sections" aria-label="Facet filters">
               {#each (largeFacetKeys.length ? largeFacetKeys : LARGE_FACET_KEYS) as key}
-                <button class:active={activeFacetKey === key} type="button" onclick={() => { activeFacetKey = key; void ensureLargeFullIndex(); }}>
-                  {key.replaceAll('_', ' ')}
-                </button>
-              {/each}
-            </div>
-            <div class="facet-values">
-              {#each largeFacetRows(activeFacetKey).slice(0, 18) as value}
-                <button
-                  class:active={(largeFacetFilters[activeFacetKey] || []).includes(value.value)}
-                  type="button"
-                  onclick={() => toggleLargeFacet(activeFacetKey, value.value)}
-                >
-                  <span>{value.value}</span><small>{value.count.toLocaleString()}</small>
-                </button>
+                {@const selectedFacetCount = (largeFacetFilters[key] || []).length}
+                <details class="facet-section" open={activeFacetKey === key || selectedFacetCount > 0}>
+                  <summary onclick={() => { activeFacetKey = key; void ensureLargeFullIndex(); }}>
+                    <span>{key.replaceAll('_', ' ')}</span><small>{selectedFacetCount}</small>
+                  </summary>
+                  <div class="facet-values">
+                    {#each largeFacetRows(key).slice(0, 18) as value}
+                      <button
+                        class:active={(largeFacetFilters[key] || []).includes(value.value)}
+                        type="button"
+                        onclick={() => toggleLargeFacet(key, value.value)}
+                      >
+                        <span>{value.value}</span><small>{value.count.toLocaleString()}</small>
+                      </button>
+                    {/each}
+                  </div>
+                </details>
               {/each}
             </div>
           </section>
@@ -923,6 +1008,15 @@
                 <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                   <strong>{dataset.title}</strong>
                   <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                </button>
+              {/each}
+            </div>
+          {:else if largeResults.length}
+            <div class="node-list">
+              {#each largeResults.slice(0, 80) as result}
+                <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
+                  <strong>{result.title}</strong>
+                  <span>{result.publisher_title || result.publisher || 'Unknown publisher'} · {result.resource_count || 0} resources</span>
                 </button>
               {/each}
             </div>
@@ -980,18 +1074,30 @@
             {#if largeQuery}
               <div class="view-heading">
                 <h2>Search Results</h2>
-                <span>{largeSearching ? 'Searching static index...' : `${largeResults.length.toLocaleString()} shown`}</span>
+                <span>{largeSearching ? 'Searching static index...' : `${visibleLargeSearchCount.toLocaleString()} shown`}</span>
               </div>
               <div class="result-list">
-                {#each largeResults as result}
-                  <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
-                    <strong>{result.title}</strong>
-                    <span>{result.publisher_title} · {result.resource_count} resources · score {result.score}</span>
-                    <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
-                  </button>
+                {#if largeIndex}
+                  {#each largeVisibleDatasets.slice(0, 160) as dataset}
+                    <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
+                      <strong>{dataset.title}</strong>
+                      <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                      <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
+                    </button>
+                  {:else}
+                    <p class="muted">No static-search matches in the current reduction.</p>
+                  {/each}
                 {:else}
-                  <p class="muted">No static-search matches.</p>
-                {/each}
+                  {#each largeResults as result}
+                    <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
+                      <strong>{result.title}</strong>
+                      <span>{result.publisher_title} · {result.resource_count} resources · score {result.score}</span>
+                      <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
+                    </button>
+                  {:else}
+                    <p class="muted">No static-search matches.</p>
+                  {/each}
+                {/if}
               </div>
             {:else if largeIndex}
               <div class="view-heading">
@@ -1065,7 +1171,7 @@
               <span>{largeRelationships.length ? 'relationship chunks loaded' : 'loading on demand'}</span>
             </div>
             <section class="links-view">
-              {#each (largeSelectedRoute ? routeRelationships(largeSelectedRoute, 180) : largeRelationships.filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source))).slice(0, 180)) as relationship}
+              {#each (largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? routeRelationships(largeSelectedRoute, 180) : largeRelationships.filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source))).slice(0, 180)) as relationship}
                 <button type="button" onclick={() => inspectLargeRoute(relationship.target)}>
                   <strong>{largeLabelForRoute(relationship.source)}</strong>
                   <span>{relationship.kind}</span>

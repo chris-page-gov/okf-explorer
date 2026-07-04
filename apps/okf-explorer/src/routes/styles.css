@@ -100,7 +100,6 @@ input:focus {
 .type-filters button.active,
 .node-list button.active,
 .result-list button.active,
-.facet-tabs button.active,
 .facet-values button.active,
 .type-view button.active {
   background: var(--accent);
@@ -420,22 +419,43 @@ input:focus {
   color: var(--muted);
 }
 
-.facet-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+.facet-sections {
+  display: grid;
+  gap: 6px;
 }
 
-.facet-tabs button {
-  min-height: 28px;
-  padding: 0 8px;
-  border-style: dashed;
+.facet-section {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.facet-section summary {
+  min-height: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.facet-section summary small {
+  min-width: 24px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   color: var(--muted);
+  background: var(--surface-2);
 }
 
 .facet-values {
   display: grid;
   gap: 5px;
+  padding: 0 8px 8px;
 }
 
 .facet-values button {
