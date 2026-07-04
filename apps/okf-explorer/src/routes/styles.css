@@ -92,10 +92,17 @@ input:focus {
   gap: 6px;
 }
 
+.tabs button {
+  font-weight: 700;
+}
+
 .tabs button.active,
 .type-filters button.active,
 .node-list button.active,
-.result-list button.active {
+.result-list button.active,
+.facet-tabs button.active,
+.facet-values button.active,
+.type-view button.active {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
@@ -279,7 +286,8 @@ input:focus {
 
 .stage-actions,
 .suggestions,
-.chips {
+.chips,
+.detail-actions {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -292,7 +300,10 @@ input:focus {
 .links-view,
 .timeline-view,
 .type-view,
-.large-view {
+.large-view,
+.facet-preview,
+.pinned-list,
+.resource-stack-view {
   display: grid;
   gap: 10px;
 }
@@ -314,7 +325,10 @@ input:focus {
 .result-list button,
 .overview-grid button,
 .links-view button,
-.detail button {
+.detail button,
+.pinned-list button,
+.facet-values button,
+.resource-stack-view button {
   height: auto;
   display: grid;
   gap: 3px;
@@ -335,9 +349,26 @@ input:focus {
   margin-top: 12px;
 }
 
+.pinned-list {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.pinned-list h2,
+.facet-preview h2 {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
 .node-list span,
 .result-list span,
 .overview-grid span,
+.facet-values small,
+.resource-stack-view span,
 .muted {
   color: var(--muted);
 }
@@ -370,6 +401,51 @@ input:focus {
 .metrics strong {
   display: block;
   font-size: 24px;
+}
+
+.view-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+
+.view-heading h2 {
+  margin: 0;
+}
+
+.view-heading span {
+  color: var(--muted);
+}
+
+.facet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.facet-tabs button {
+  min-height: 28px;
+  padding: 0 8px;
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.facet-values {
+  display: grid;
+  gap: 5px;
+}
+
+.facet-values button {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.facet-values span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .reader-view {
@@ -415,6 +491,11 @@ input:focus {
   stroke-width: 1.2;
 }
 
+.graph line.highlight {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+
 .graph g {
   cursor: pointer;
 }
@@ -438,6 +519,20 @@ input:focus {
   stroke-width: 4px;
 }
 
+.graph .edge-label {
+  fill: var(--muted);
+  font-size: 10px;
+  stroke-width: 3px;
+}
+
+.graph .stack-count {
+  fill: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  stroke: transparent;
+  text-anchor: middle;
+}
+
 .timeline-view button {
   display: grid;
   grid-template-columns: 110px minmax(0, 1fr);
@@ -448,6 +543,24 @@ input:focus {
   border-radius: 6px;
   cursor: pointer;
   text-align: left;
+}
+
+.timeline-axis {
+  position: relative;
+}
+
+.timeline-axis::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 151px;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline-axis button {
+  position: relative;
 }
 
 .overview-grid {
@@ -464,6 +577,49 @@ input:focus {
   border-radius: 999px;
   background: var(--surface-2);
   padding: 2px 9px;
+}
+
+.resource-stack-view article {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.resource-stack-view .stack-heading {
+  width: 100%;
+  border-color: transparent;
+  background: var(--surface-2);
+}
+
+.resource-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.resource-stack button {
+  position: relative;
+}
+
+.resource-stack button::before {
+  content: "";
+  position: absolute;
+  inset: 5px 5px auto auto;
+  width: 26px;
+  height: 15px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: .88;
+}
+
+.resource-stack button.highlight {
+  outline: 3px solid var(--focus);
+}
+
+.detail-actions {
+  margin: 10px 0;
 }
 
 .detail dl {

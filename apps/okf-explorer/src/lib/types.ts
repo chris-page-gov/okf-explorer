@@ -1,4 +1,4 @@
-export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type';
+export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type' | 'resources';
 
 export type OkfNode = {
   id: string;
@@ -140,6 +140,129 @@ export type SearchSuggestion = {
   df: number;
 };
 
+export type LargeFacetRow = {
+  value: string;
+  count: number;
+};
+
+export type LargeDataset = {
+  id?: string;
+  name: string;
+  title: string;
+  notes?: string;
+  publisher?: string;
+  publisher_title?: string;
+  resource_count?: number;
+  resource_ids?: string[];
+  formats?: string[];
+  tags?: string[];
+  timestamp?: string;
+  metadata_created?: string;
+  metadata_modified?: string;
+  license_id?: string;
+  license_title?: string;
+  host?: string;
+  resource_hosts?: string[];
+  govuk_content_paths?: string[];
+  source_api_url?: string;
+  url?: string;
+  state?: string;
+  type?: string;
+  isopen?: boolean;
+  private?: boolean;
+  extras?: Record<string, unknown>;
+  groups?: unknown[];
+  [key: string]: unknown;
+};
+
+export type LargeResource = {
+  id: string;
+  dataset: string;
+  name?: string;
+  description?: string;
+  format?: string;
+  host?: string;
+  url?: string;
+  resource_type?: string;
+  position?: number;
+  created?: string;
+  metadata_modified?: string;
+  last_modified?: string;
+  govuk_content_path?: string;
+  schema_type?: string;
+  schema_url?: string;
+  size?: number | null;
+  state?: string;
+  [key: string]: unknown;
+};
+
+export type LargePublisher = {
+  id?: string;
+  name: string;
+  title: string;
+  description?: string;
+  dataset_count?: number;
+  resource_count?: number;
+  state?: string;
+  approval_status?: string;
+  type?: string;
+  [key: string]: unknown;
+};
+
+export type LargeRelationship = {
+  source: string;
+  target: string;
+  kind: string;
+  [key: string]: unknown;
+};
+
+export type LargeGraphIndex = {
+  edge_counts?: Array<{ kind: string; count: number }>;
+  node_counts?: Record<string, number>;
+  relationship_index?: string;
+  top_publishers?: Array<{ id: string; label: string; dataset_count?: number; resource_count?: number }>;
+  [key: string]: unknown;
+};
+
+export type LargeGovukContent = Record<
+  string,
+  {
+    path?: string;
+    base_path?: string;
+    title?: string;
+    description?: string;
+    document_type?: string;
+    schema_name?: string;
+    public_updated_at?: string;
+    web_url?: string;
+    [key: string]: unknown;
+  }
+>;
+
+export type LargeFullIndex = {
+  datasets: LargeDataset[];
+  resources: LargeResource[];
+  publishers: LargePublisher[];
+  facets: Record<string, LargeFacetRow[]>;
+  graph: LargeGraphIndex;
+  govukContent: LargeGovukContent;
+  datasetByName: Map<string, LargeDataset>;
+  resourceById: Map<string, LargeResource>;
+  publisherByName: Map<string, LargePublisher>;
+  resourcesByDataset: Map<string, LargeResource[]>;
+};
+
+export type LargeCorpusSource = {
+  kind: 'large';
+  url: string;
+  baseUrl: string;
+  descriptor: LargeCorpusDescriptor;
+  manifest: LargeDataManifest;
+  overview: LargeOverview;
+  loadFullIndex: () => Promise<LargeFullIndex>;
+  loadRelationships: () => Promise<LargeRelationship[]>;
+};
+
 export type BundleRegistryEntry = {
   id?: string;
   label?: string;
@@ -156,11 +279,4 @@ export type LoadedSource =
       title: string;
       corpus: NormalizedCorpus;
     }
-  | {
-      kind: 'large';
-      url: string;
-      baseUrl: string;
-      descriptor: LargeCorpusDescriptor;
-      manifest: LargeDataManifest;
-      overview: LargeOverview;
-    };
+  | LargeCorpusSource;

@@ -5,16 +5,16 @@ Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 This repository now plays two roles:
 
 - `apps/okf-explorer/` is the canonical SvelteKit OKF Explorer source.
-- `explorer/` is the current dependency-free static OKF Explorer PWA and
-  compatibility surface.
+- `explorer/` is the dependency-free static OKF Explorer PWA and compatibility
+  surface while the Svelte app is rolled out.
 - The existing AI infrastructure Markdown corpus is the bundled sample/default
   OKF dataset used to exercise the explorer.
 
 The repository contains:
 
-- `explorer/` - the hosted static explorer app.
-- `apps/okf-explorer/` - Svelte 5 / SvelteKit 2 / Vite 8 source for the next
-  OKF Explorer implementation.
+- `explorer/` - the hosted compatibility explorer app.
+- `apps/okf-explorer/` - Svelte 5 / SvelteKit 2 / Vite 8 source for the
+  definitive OKF Explorer implementation.
 - `okf.config.json` - local corpus configuration.
 - `okf-bundle.json` - generated bundle consumed by the explorer.
 - `okf-registry.json` - starter registry for discoverable bundles and Bundle
@@ -38,10 +38,12 @@ suggestions while typing in the Bundle URL field.
 
 ## Svelte Explorer
 
-The Svelte implementation is built as a static app and is intended to become
-the definitive OKF Explorer once parity is complete. It supports the existing
-monolithic `okf-bundle.json` reader and the new large-corpus
-`okf-explorer.json` descriptor path with worker-backed static search.
+The Svelte implementation is built as a static app and is the canonical OKF
+Explorer product source. It supports the existing monolithic `okf-bundle.json`
+reader and the large-corpus `okf-explorer.json` descriptor path with
+worker-backed static search, lazy full-record hydration, relationship graph
+loading, scoped timeline/link/type/resource views, resource stacks, persistent
+bundle URL history, and route-addressable detail panels.
 
 ```sh
 cd apps/okf-explorer
@@ -51,8 +53,8 @@ pnpm build
 ```
 
 When `apps/okf-explorer/build/` exists, `python3 scripts/build_site.py` copies
-it to `_site/next/` so it can be tested without replacing the current root
-Explorer.
+it to `_site/next/`. The root `index.html` remains the compatibility Explorer
+until the public cutover is made deliberately.
 
 ## Validate And Build
 
@@ -64,10 +66,9 @@ python3 scripts/build_site.py
 ```
 
 The build writes a GitHub Pages-ready static site to `_site/`. The site uses
-the OKF Explorer as `index.html`, publishes `okf-bundle.json`, preserves
-`viewer.html` and `view.html` for compatibility, optionally publishes the
-Svelte preview under `next/`, and copies the public OKF Markdown corpus beside
-it.
+the compatibility OKF Explorer as `index.html`, publishes `okf-bundle.json`,
+preserves `viewer.html` and `view.html`, publishes the Svelte Explorer under
+`next/` when built, and copies the public OKF Markdown corpus beside it.
 
 To regenerate the explorer bundle after Markdown changes:
 
