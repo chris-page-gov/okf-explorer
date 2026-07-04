@@ -135,9 +135,11 @@
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
   let largeApiRoute = $state('');
+  let largeApiUrl = $state('');
   let largeApiJson = $state<unknown>(null);
   let largeApiLoading = $state(false);
   let largeApiError = $state('');
+  let largeApiRequest = 0;
   let activeFacetKey = $state('publisher');
   let pins = $state<string[]>([]);
   let graphZoom = $state(1);
@@ -230,7 +232,7 @@
     return new URL(url, location.href).toString();
   }
 
-  function syncExplorerUrl() {
+  function buildExplorerUrl(route: string): string {
     const next = new URL(location.href);
     const absoluteDefault = toAbsoluteUrl(DEFAULT_BUNDLE);
     if (bundleUrl === absoluteDefault) next.searchParams.delete('bundle');
@@ -239,9 +241,13 @@
     else next.searchParams.set('view', activeView);
     if (source?.kind === 'large' && largeQuery.trim()) next.searchParams.set('q', largeQuery.trim());
     else next.searchParams.delete('q');
-    const route = source?.kind === 'large' ? largeSelectedRoute : selectedId;
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
-    window.history.replaceState(null, '', next);
+    return next.toString();
+  }
+
+  function syncExplorerUrl() {
+    const route = source?.kind === 'large' ? largeSelectedRoute : selectedId;
+    window.history.replaceState(null, '', buildExplorerUrl(route));
   }
 
   function syncBundleUrlParam(url: string) {
@@ -454,15 +460,13 @@
     syncExplorerUrl();
   }
 
-  function copyRoute() {
+  function copyRoute(routeOverride?: string | Event) {
+    const explicitRoute = typeof routeOverride === 'string' ? routeOverride : '';
     let route = location.href;
     if (source?.kind === 'small' && detailNode) {
-      const next = new URL(location.href);
-      next.hash = detailNode.id;
-      route = next.toString();
+      route = buildExplorerUrl(explicitRoute || detailNode.id);
     } else if (source?.kind === 'large') {
-      syncExplorerUrl();
-      route = location.href;
+      route = buildExplorerUrl(explicitRoute || largeInspectedRoute || largeSelectedRoute);
     }
     void navigator.clipboard?.writeText(route);
   }
@@ -486,7 +490,9 @@
   }
 
   function clearLargeApiPanel() {
+    largeApiRequest += 1;
     largeApiRoute = '';
+    largeApiUrl = '';
     largeApiJson = null;
     largeApiError = '';
     largeApiLoading = false;
@@ -494,16 +500,22 @@
 
   async function loadLargeApiJson(route: string, url: unknown) {
     if (!route || !isUrl(url)) return;
+    const requestId = largeApiRequest + 1;
+    largeApiRequest = requestId;
     largeApiRoute = route;
+    largeApiUrl = url;
     largeApiJson = null;
     largeApiError = '';
     largeApiLoading = true;
     try {
-      largeApiJson = await fetchJson<unknown>(url);
+      const nextJson = await fetchJson<unknown>(url);
+      if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
+      largeApiJson = nextJson;
     } catch (err) {
+      if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
       largeApiError = err instanceof Error ? err.message : String(err);
     } finally {
-      largeApiLoading = false;
+      if (requestId === largeApiRequest && largeApiRoute === route && largeApiUrl === url) largeApiLoading = false;
     }
   }
 
