@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101820">
+<title>OKF Explorer</title>
+<link rel="icon" href="data:,">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="titleBlock">
+      <h1 id="appTitle">OKF Explorer</h1>
+      <p id="bundleMeta"></p>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <button class="tab active" data-view="reader">Reader</button>
+      <button class="tab" data-view="graph">Graph</button>
+      <button class="tab" data-view="links">Links</button>
+      <button class="tab" data-view="timeline">Timeline</button>
+    </nav>
+    <form id="bundleForm" class="bundleForm">
+      <div class="bundleUrlBox">
+        <input id="bundleUrl" name="bundle" type="text" placeholder="Bundle URL" autocomplete="off" aria-controls="bundleSuggestions" aria-expanded="false">
+        <div id="bundleSuggestions" class="bundleSuggestions" role="listbox" hidden></div>
+      </div>
+      <button type="submit">Load</button>
+      <label class="filePick">
+        <input id="bundleFile" type="file" accept="application/json,.json">
+        File
+      </label>
+    </form>
+  </header>
+
+  <main id="workspace" class="workspace">
+    <aside class="sidebar">
+      <div class="panelBar">
+        <button id="toggleLeft" class="iconButton" type="button" title="Fold navigation" aria-label="Fold navigation">‹</button>
+      </div>
+      <div class="sidebarTools">
+        <select id="corpusSelect" aria-label="Corpus"></select>
+        <input id="search" type="search" placeholder="Search">
+        <div id="typeFilters" class="typeFilters" aria-label="Show node types"></div>
+      </div>
+      <div id="pageList" class="pageList"></div>
+    </aside>
+
+    <div class="splitter leftSplitter" data-resize="left" role="separator" aria-orientation="vertical" aria-label="Resize navigation"></div>
+
+    <section class="stage">
+      <div class="stageChrome">
+        <div id="crumbs" class="crumbs"></div>
+        <div class="stageActions">
+          <button id="copyRoute" class="actionButton" type="button">Copy route</button>
+          <button id="pinPage" class="actionButton" type="button">Pin</button>
+        </div>
+      </div>
+      <div id="graphToolbar" class="graphToolbar">
+        <div class="graphButtons" aria-label="Graph controls">
+          <button id="zoomOut" class="iconButton" type="button" title="Zoom out" aria-label="Zoom out">−</button>
+          <button id="zoomReset" class="iconButton wide" type="button" title="Reset graph" aria-label="Reset graph">100%</button>
+          <button id="zoomIn" class="iconButton" type="button" title="Zoom in" aria-label="Zoom in">+</button>
+        </div>
+        <p id="graphHint" class="graphHint"></p>
+      </div>
+      <div id="status" class="status" hidden></div>
+      <div id="graphCanvas" class="graphCanvas">
+        <svg id="graph" class="graph" role="img" aria-label="OKF graph"></svg>
+        <div id="graphHotspots" class="graphHotspots" aria-hidden="false"></div>
+      </div>
+      <article id="panel" class="panel"></article>
+      <section id="edgePanel" class="edgePanel" hidden></section>
+      <section id="pinsPanel" class="pinsPanel" hidden></section>
+    </section>
+
+    <div class="splitter rightSplitter" data-resize="right" role="separator" aria-orientation="vertical" aria-label="Resize details"></div>
+
+    <aside class="inspector">
+      <div class="panelBar">
+        <button id="toggleRight" class="iconButton" type="button" title="Fold details" aria-label="Fold details">›</button>
+      </div>
+      <article id="detail" class="detail"></article>
+    </aside>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

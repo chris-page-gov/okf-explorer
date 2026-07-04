@@ -1,0 +1,166 @@
+export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type';
+
+export type OkfNode = {
+  id: string;
+  title: string;
+  type?: string;
+  section?: string;
+  source?: string;
+  description?: string;
+  summary?: string;
+  timestamp?: string;
+  aliases?: string[];
+  tags?: string[];
+  body?: string;
+  [key: string]: unknown;
+};
+
+export type OkfRelationship = {
+  source: string;
+  target: string;
+  kind?: string;
+  type?: string;
+  label?: string;
+  [key: string]: unknown;
+};
+
+export type NormalizedCorpus = {
+  id: string;
+  title: string;
+  description?: string;
+  nodes: Record<string, OkfNode>;
+  relationships: OkfRelationship[];
+  meta?: Record<string, unknown>;
+};
+
+export type OkfBundle = {
+  okf_version?: string;
+  version?: string;
+  title?: string;
+  meta?: {
+    title?: string;
+    description?: string;
+    generated_at?: string;
+    [key: string]: unknown;
+  };
+  corpora?: Record<string, Partial<NormalizedCorpus>>;
+  nodes?: Record<string, OkfNode>;
+  relationships?: OkfRelationship[];
+};
+
+export type LargeCorpusDescriptor = {
+  schema: 'okf-explorer-large-corpus.v1' | string;
+  kind: 'okf-large-corpus' | string;
+  title: string;
+  description?: string;
+  generated_at?: string;
+  entrypoints: {
+    viewer?: string;
+    data_manifest: string;
+    overview_index?: string;
+    search_manifest?: string;
+    notes?: string;
+    performance?: string;
+  };
+  counts: Record<string, number>;
+  performance?: Record<string, unknown>;
+  source?: Record<string, unknown>;
+};
+
+export type LargeDataManifest = {
+  title: string;
+  generated_at: string;
+  counts: Record<string, number>;
+  indexes: {
+    overview: string;
+    search?: string;
+    facets?: string;
+    graph?: string;
+    govuk_content?: string;
+  };
+  chunks: Record<string, string[]>;
+  performance?: Record<string, unknown>;
+  search?: {
+    schema: string;
+    documents: number;
+    tokens: number;
+    result_limit: number;
+  };
+};
+
+export type LargeSearchManifest = {
+  schema: 'gov-ckan-static-search.v1' | string;
+  token_min_length: number;
+  prefix_min_length: number;
+  lexicon_shard_length: number;
+  result_limit: number;
+  result_doc_chunk_size: number;
+  weights: Record<string, number>;
+  field_masks: Record<string, number>;
+  counts: Record<string, number>;
+  entrypoints: {
+    lexicon: Record<string, string>;
+    prefixes: Record<string, string>;
+    postings: string[];
+    result_docs: string[];
+    facets: string;
+    doc_map: string;
+  };
+};
+
+export type LargeOverview = {
+  schema: string;
+  title: string;
+  generated_at: string;
+  counts: Record<string, number>;
+  top_publishers?: Array<Record<string, unknown>>;
+  recent_datasets?: SearchResultDoc[];
+  format_counts?: Array<{ value: string; count: number }>;
+  facet_previews?: Record<string, Array<{ value: string; count: number }>>;
+  notices?: string[];
+};
+
+export type SearchResultDoc = {
+  ordinal: number;
+  name: string;
+  title: string;
+  publisher: string;
+  publisher_title: string;
+  resource_count: number;
+  formats: string[];
+  tags: string[];
+  timestamp?: string;
+  notes?: string;
+  open: string;
+  score?: number;
+};
+
+export type SearchSuggestion = {
+  token: string;
+  df: number;
+};
+
+export type BundleRegistryEntry = {
+  id?: string;
+  label?: string;
+  title?: string;
+  url: string;
+  description?: string;
+  kind?: 'bundle' | 'large-corpus' | 'history' | string;
+};
+
+export type LoadedSource =
+  | {
+      kind: 'small';
+      url: string;
+      title: string;
+      corpus: NormalizedCorpus;
+    }
+  | {
+      kind: 'large';
+      url: string;
+      baseUrl: string;
+      descriptor: LargeCorpusDescriptor;
+      manifest: LargeDataManifest;
+      overview: LargeOverview;
+    };

@@ -1,0 +1,8 @@
+{
+  "name": "OKF Explorer",
+  "short_name": "OKF Explorer",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#eef2f5",
+  "theme_color": "#101820"
+}

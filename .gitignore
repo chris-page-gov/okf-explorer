@@ -14,3 +14,8 @@ __pycache__/
 .env.*
 .venv/
 venv/
+
+node_modules/
+apps/*/node_modules/
+apps/*/.svelte-kit/
+apps/*/build/

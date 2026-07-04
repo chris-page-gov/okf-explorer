@@ -1,0 +1,28 @@
+{
+  "profile": "OKF v0.1 + explorer bundle",
+  "siteTitle": "OKF Explorer",
+  "defaultBundle": "okf-bundle.json",
+  "corpora": [
+    {
+      "id": "ai-infrastructure-wiki",
+      "label": "AI Infrastructure",
+      "title": "AI Infrastructure OKF Wiki",
+      "subtitle": "Agent-ready infrastructure, federated AI, standards, frameworks, research, and UK public-sector implications.",
+      "root": "index.md",
+      "sourceRoot": ".",
+      "markdownUrl": "index.md",
+      "sectionOrder": [
+        "root",
+        "document",
+        "stack",
+        "standards",
+        "federated",
+        "frameworks",
+        "research",
+        "uk-government",
+        "organisations",
+        "glossary"
+      ]
+    }
+  ]
+}
