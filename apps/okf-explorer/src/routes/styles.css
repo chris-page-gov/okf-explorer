@@ -266,13 +266,28 @@ input:focus {
   top: 0;
   z-index: 2;
   min-height: 48px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
   padding: 8px 12px;
   background: rgba(255, 255, 255, .92);
   border-bottom: 1px solid var(--line);
+}
+
+.nav-controls,
+.graph-buttons,
+.pin-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nav-controls button {
+  width: 34px;
+  border-radius: 999px;
+  background: #eef5fb;
+  font-weight: 800;
 }
 
 .crumbs {
@@ -500,15 +515,76 @@ input:focus {
   font-size: 22px;
 }
 
+.graph-shell {
+  min-height: 680px;
+  display: grid;
+  grid-template-rows: auto minmax(560px, 1fr) auto auto;
+  gap: 8px;
+}
+
+.graph-controls {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .88);
+}
+
+.graph-buttons button {
+  min-width: 38px;
+  font-weight: 800;
+}
+
+.graph-summary {
+  color: var(--muted);
+  text-align: center;
+}
+
+.legend {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  color: var(--muted);
+}
+
+.legend span {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.legend i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--line-strong);
+}
+
 .graph {
   width: 100%;
   min-height: 620px;
   background: #f8fafc;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.graph.dragging {
+  cursor: grabbing;
 }
 
 .graph line {
   stroke: #9aaaba;
   stroke-width: 1.2;
+  pointer-events: none;
 }
 
 .graph line.highlight {
@@ -516,20 +592,58 @@ input:focus {
   stroke-width: 3;
 }
 
+.graph .edge-hit {
+  stroke: transparent;
+  stroke-width: 10;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
 .graph g {
   cursor: pointer;
 }
 
-.graph circle {
-  fill: var(--accent);
+.graph circle,
+.graph rect {
   stroke: #fff;
   stroke-width: 2;
 }
 
-.graph g.active circle {
-  fill: var(--warn);
+.graph g.active circle,
+.graph g.active rect.dataset-card,
+.graph g.active rect.resource-card,
+.graph g.active rect.stack-card {
   stroke: var(--ink);
   stroke-width: 3;
+}
+
+.graph g.spotlight circle,
+.graph g.spotlight rect.dataset-card,
+.graph g.spotlight rect.resource-card,
+.graph g.spotlight rect.stack-card {
+  outline: 3px solid var(--focus);
+}
+
+.node-hit,
+.label-hit {
+  fill: transparent;
+  stroke: transparent;
+  pointer-events: all;
+}
+
+.stack-card-back {
+  opacity: .42;
+}
+
+.stack-card-mid {
+  opacity: .66;
+}
+
+.card-line {
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: .9;
+  pointer-events: none;
 }
 
 .graph text {
@@ -537,6 +651,8 @@ input:focus {
   paint-order: stroke;
   stroke: #fff;
   stroke-width: 4px;
+  stroke-linejoin: round;
+  pointer-events: none;
 }
 
 .graph .edge-label {
@@ -551,6 +667,50 @@ input:focus {
   font-weight: 800;
   stroke: transparent;
   text-anchor: middle;
+}
+
+.graph text.rotating {
+  fill: #33485c;
+}
+
+.edge-panel {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .9);
+  padding: 8px;
+}
+
+.edge-panel div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 4px;
+  max-height: 126px;
+  overflow: auto;
+  margin-top: 6px;
+}
+
+.edge-panel button {
+  height: auto;
+  min-height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.edge-panel button:hover,
+.edge-panel button:focus {
+  background: var(--surface-2);
+}
+
+.edge-panel button.active {
+  background: #e8f2ff;
+  outline: 2px solid var(--focus);
+}
+
+.graph-caption {
+  margin: 0;
+  color: var(--muted);
 }
 
 .timeline-view button {
@@ -642,21 +802,119 @@ input:focus {
   margin: 10px 0;
 }
 
+.detail-actions .button {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+}
+
 .detail dl {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
+  grid-template-columns: minmax(92px, 34%) minmax(0, 1fr);
   gap: 6px;
   border-top: 1px solid var(--line);
   padding-top: 10px;
 }
 
 .detail dt {
+  min-width: 0;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .detail dd {
+  min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
+}
+
+.detail dd button,
+.detail button {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.detail a {
+  color: #0645d8;
+  overflow-wrap: anywhere;
+}
+
+.metadata-section {
+  margin-top: 14px;
+}
+
+.metadata-section h3,
+.detail h3 {
+  margin: 14px 0 7px;
+  font-size: 15px;
+}
+
+.json-panel {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.json-panel summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 700;
+  background: var(--surface-2);
+}
+
+.json-panel pre {
+  margin: 0;
+  max-height: 340px;
+  overflow: auto;
+  padding: 10px;
+  background: #eef3f8;
+  white-space: pre-wrap;
+}
+
+.pins-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 8px 12px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, .94);
+}
+
+.pin-list {
+  display: flex;
+  gap: 6px;
+  overflow: auto;
+}
+
+.pin-list.spread {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.pin-list button {
+  max-width: 220px;
+  height: auto;
+  min-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pin-list.spread button {
+  min-width: 220px;
+  white-space: normal;
 }
 
 @media (max-width: 980px) {
