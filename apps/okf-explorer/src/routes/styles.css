@@ -412,6 +412,18 @@ input:focus {
   padding: 12px;
 }
 
+.type-view article.muted-card {
+  opacity: .72;
+}
+
+.type-view article p {
+  margin: 0 0 8px;
+}
+
+.compact-type-view {
+  padding-top: 0;
+}
+
 .metrics strong {
   display: block;
   font-size: 24px;

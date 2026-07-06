@@ -368,8 +368,20 @@
 
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
+    if (largeIsOverviewContext()) return;
     if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
+  }
+
+  function largeIsOverviewContext(): boolean {
+    if (source?.kind !== 'large') return false;
+    return (
+      !largeSelectedRoute &&
+      !largeInspectedRoute &&
+      !largeAppliedQuery.trim() &&
+      !largeQuery.trim() &&
+      activeLargeFilterCount === 0
+    );
   }
 
   async function ensureLargeFullIndex(): Promise<LargeFullIndex | null> {
@@ -444,6 +456,12 @@
   }
 
   function recenterLargeRoute(route: string) {
+    const facetRoute = routeForAnalysisNode(route);
+    if (facetRoute) {
+      applyAnalysisFacet(facetRoute.key, facetRoute.value);
+      activeView = 'graph';
+      return;
+    }
     if (route.startsWith('resource-stack/')) {
       largeExpandedStackRoute = route.replace(/^resource-stack\//, '');
       return;
@@ -851,6 +869,127 @@
       .slice(0, 18);
   }
 
+  function largeAnalysis() {
+    return source?.kind === 'large' ? source.analysis : undefined;
+  }
+
+  function facetLabel(key: string): string {
+    return key.replaceAll('_', ' ');
+  }
+
+  function formatPercent(value: number | undefined): string {
+    if (value === undefined || Number.isNaN(value)) return 'n/a';
+    return `${Math.round(value * 100)}%`;
+  }
+
+  function applyAnalysisFacet(key: string, value: string) {
+    largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
+    largeSelectedRoute = '';
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
+    void ensureLargeFullIndex();
+    syncExplorerUrl();
+  }
+
+  function routeForAnalysisNode(id: string): { key: string; value: string } | null {
+    if (!id.startsWith('facet/')) return null;
+    const [, key, ...valueParts] = id.split('/');
+    const value = valueParts.join('/');
+    return key && value ? { key, value } : null;
+  }
+
+  function analysisFacetRows() {
+    const analysis = largeAnalysis();
+    if (analysis?.facet_analysis?.length) {
+      const tierWeight: Record<string, number> = { primary: 0, secondary: 1, advanced: 2, suppressed: 3 };
+      return [...analysis.facet_analysis].sort(
+        (left, right) =>
+          (tierWeight[left.recommendation] ?? 2) - (tierWeight[right.recommendation] ?? 2) ||
+          right.expected_reduction - left.expected_reduction ||
+          left.label.localeCompare(right.label)
+      );
+    }
+    return Object.entries(source?.kind === 'large' ? source.overview.facet_previews || {} : {}).map(([key, values]) => ({
+      key,
+      label: facetLabel(key),
+      coverage: 0,
+      cardinality: values.length,
+      top_share: values[0]?.count ? 1 : 0,
+      entropy: 0,
+      expected_reduction: 0,
+      recommended_control: 'chips',
+      recommendation: 'secondary',
+      values
+    }));
+  }
+
+  function analysisTimelineBuckets() {
+    return largeAnalysis()?.timeline_overview?.buckets || [];
+  }
+
+  function analysisRelationshipTypes() {
+    return largeAnalysis()?.relationship_overview?.types || [];
+  }
+
+  function analysisTopConnected() {
+    return largeAnalysis()?.relationship_overview?.top_connected || [];
+  }
+
+  function analysisResourceStacks() {
+    return largeAnalysis()?.resource_overview?.high_resource_datasets || [];
+  }
+
+  function analysisResourceDistributionRows() {
+    const distributions = largeAnalysis()?.resource_overview?.distributions || {};
+    return Object.entries(distributions)
+      .flatMap(([key, rows]) =>
+        rows.slice(0, 8).map((row) => ({
+          key,
+          value: row.value,
+          count: row.count
+        }))
+      )
+      .slice(0, 32);
+  }
+
+  function overviewEntryPoints() {
+    const analysis = largeAnalysis();
+    const publisherEntries = (source?.kind === 'large' ? source.overview.top_publishers || [] : []).slice(0, 6).map((item) => ({
+      label: String(item.label || item.id || 'Publisher'),
+      meta: `${Number(item.dataset_count || 0).toLocaleString()} datasets`,
+      route: `facet/publisher/${String(item.id || '').replace(/^publisher\//, '')}`
+    }));
+    const recentEntries = (source?.kind === 'large' ? source.overview.recent_datasets || [] : []).slice(0, 6).map((item) => ({
+      label: item.title,
+      meta: `${item.publisher_title} · ${item.resource_count} resources`,
+      route: datasetRoute(item)
+    }));
+    const analysisEntries =
+      analysis?.graph_overview?.nodes
+        .filter((node) => node.id.startsWith('facet/'))
+        .slice(0, 6)
+        .map((node) => ({
+          label: node.label,
+          meta: `${(node.count || 0).toLocaleString()} records`,
+          route: node.id
+        })) || [];
+    return [...analysisEntries, ...publisherEntries, ...recentEntries].slice(0, 12);
+  }
+
+  function openOverviewEntry(route: string) {
+    const facetRoute = routeForAnalysisNode(route);
+    if (facetRoute) {
+      applyAnalysisFacet(facetRoute.key, facetRoute.value);
+      return;
+    }
+    const overviewResult = source?.kind === 'large' ? source.overview.recent_datasets?.find((item) => datasetRoute(item) === route) : undefined;
+    if (overviewResult) chooseLargeResult(overviewResult);
+    else selectLargeRoute(route);
+  }
+
   function stripHtml(value = '') {
     return value
       .replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -1044,6 +1183,24 @@
   }
 
   function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
+    const analysis = largeAnalysis();
+    if (largeIsOverviewContext() && analysis?.graph_overview?.nodes?.length) {
+      return {
+        center: '',
+        nodes: analysis.graph_overview.nodes.map((node) => ({
+          id: node.id,
+          label: node.label,
+          type: node.type,
+          count: node.count
+        })),
+        relationships: (analysis.graph_overview.edges || []).map((edge) => ({
+          source: edge.source,
+          target: edge.target,
+          label: edge.count ? `${edge.label} x${edge.count.toLocaleString()}` : edge.label
+        }))
+      };
+    }
+
     const selectedCenter = largeSelectedRoute && largeRouteCanInteract(largeSelectedRoute) ? largeSelectedRoute : '';
     const center = selectedCenter;
     const nodeMap = new Map<string, LargeGraphNode>();
@@ -1436,6 +1593,11 @@
       graphSuppressClick = false;
       return;
     }
+    const facetRoute = routeForAnalysisNode(route);
+    if (facetRoute) {
+      applyAnalysisFacet(facetRoute.key, facetRoute.value);
+      return;
+    }
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     inspectLargeRoute(route);
@@ -1668,6 +1830,44 @@
                   {/each}
                 {/if}
               </div>
+            {:else if largeIsOverviewContext()}
+              {@const analysis = largeAnalysis()}
+              <div class="view-heading">
+                <h2>{analysis?.summary?.title || source.overview.title}</h2>
+                <span>overview context</span>
+              </div>
+              <p>{analysis?.summary?.description || 'Metadata-first overview of the large OKF corpus before full record hydration.'}</p>
+              {#if analysis?.narrative?.body}
+                <p class="muted">{analysis.narrative.body}</p>
+              {:else}
+                <p class="muted">Search loads generated static shards; facets and deep links hydrate records only when needed. Graph and links start from generated aggregate analysis.</p>
+              {/if}
+              <div class="overview-grid">
+                <section>
+                  <h3>Entry points</h3>
+                  {#each overviewEntryPoints() as entry}
+                    <button type="button" onclick={() => openOverviewEntry(entry.route)}>
+                      {entry.label}<span>{entry.meta}</span>
+                    </button>
+                  {/each}
+                </section>
+                <section>
+                  <h3>Formats</h3>
+                  {#each (source.overview.format_counts || []).slice(0, 14) as format}
+                    <button type="button" onclick={() => applyAnalysisFacet('format', format.value)}>
+                      {format.value}<span>{format.count.toLocaleString()} resources</span>
+                    </button>
+                  {/each}
+                </section>
+                {#if analysis?.summary?.notices?.length || source.overview.notices?.length}
+                  <section>
+                    <h3>Notes</h3>
+                    {#each (analysis?.summary?.notices || source.overview.notices || []).slice(0, 4) as notice}
+                      <p class="muted">{notice}</p>
+                    {/each}
+                  </section>
+                {/if}
+              </div>
             {:else if largeIndex}
               <div class="view-heading">
                 <h2>Datasets</h2>
@@ -1843,81 +2043,174 @@
               </p>
             </div>
           {:else if activeView === 'links'}
-            <div class="view-heading">
-              <h2>Links</h2>
-              <span>{largeRelationships.length ? 'relationship chunks loaded' : 'loading on demand'}</span>
-            </div>
-            <section class="links-view">
-              {#each (largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? routeRelationships(largeSelectedRoute, 180) : largeRelationships.filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source))).slice(0, 180)) as relationship}
-                <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
-                  <strong>{largeLabelForRoute(relationship.source)}</strong>
-                  <span>{relationship.kind}</span>
-                  <strong>{largeLabelForRoute(relationship.target)}</strong>
-                </button>
-              {:else}
-                <p class="muted">Select a dataset or open graph/links to load relationship chunks.</p>
-              {/each}
-            </section>
-          {:else if activeView === 'timeline'}
-            <div class="view-heading">
-              <h2>Timeline</h2>
-              <span>{largeVisibleDatasets.length.toLocaleString()} datasets in current reduction</span>
-            </div>
-            <section class="timeline-view timeline-axis">
-              {#each largeVisibleDatasets.filter((dataset) => dataset.timestamp || dataset.metadata_modified).slice(0, 180) as dataset, index}
-                <button style={`--row:${index}`} type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
-                  <time>{String(dataset.timestamp || dataset.metadata_modified).slice(0, 10)}</time>
-                  <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'}</span></div>
-                </button>
-              {/each}
-            </section>
-          {:else if activeView === 'type'}
-            <div class="view-heading">
-              <h2>Types And Facets</h2>
-              <span>filter chips affect every display</span>
-            </div>
-            <section class="type-view">
-              {#each LARGE_FACET_KEYS as key}
-                <article>
-                  <h2>{key.replaceAll('_', ' ')}</h2>
-                  {#each largeFacetRows(key).slice(0, 12) as row}
-                    <button class:active={(largeFacetFilters[key] || []).includes(row.value)} type="button" onclick={() => toggleLargeFacet(key, row.value)}>
-                      {row.value}<span>{row.count.toLocaleString()}</span>
-                    </button>
-                  {/each}
-                </article>
-              {/each}
-            </section>
-          {:else if activeView === 'resources'}
-            <div class="view-heading">
-              <h2>Resource Stack</h2>
-              <span>{largeVisibleResources.length.toLocaleString()} resources shown from current reduction</span>
-            </div>
-            <section class="resource-stack-view">
-              {#each largeVisibleDatasets.filter((dataset) => (largeIndex?.resourcesByDataset.get(dataset.name) || []).length).slice(0, 80) as dataset}
-                {@const resources = largeIndex?.resourcesByDataset.get(dataset.name) || []}
-                <article>
-                  <button class="stack-heading" type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
-                    <strong>{dataset.title}</strong>
-                    <span>{resources.length} resources · {dataset.publisher_title || dataset.publisher}</span>
+            {#if largeIsOverviewContext()}
+              <div class="view-heading">
+                <h2>Relationship Overview</h2>
+                <span>summaries before relationship hydration</span>
+              </div>
+              <section class="links-view relationship-overview">
+                {#each analysisRelationshipTypes().slice(0, 24) as row}
+                  <button type="button" onclick={() => void ensureLargeRelationships()}>
+                    <strong>{row.kind}</strong>
+                    <span>{row.count.toLocaleString()} relationships</span>
+                    <strong>{(row.samples || []).slice(0, 2).map((item) => item.label || `${largeLabelForRoute(item.source)} to ${largeLabelForRoute(item.target)}`).join(' · ')}</strong>
                   </button>
-                  <div class="resource-stack">
-                    {#each resources.slice(0, 12) as resource}
-                      <button
-                        class:highlight={largeHighlightedRoute === resourceRoute(resource)}
-                        type="button"
-                        onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }}
-                        ondblclick={() => recenterLargeRoute(resourceRoute(resource))}
-                      >
-                        <strong>{resource.name || resource.id}</strong>
-                        <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                {:else}
+                  <p class="muted">Relationship summaries are not available for this bundle yet.</p>
+                {/each}
+              </section>
+              {#if analysisTopConnected().length}
+                <section class="type-view compact-type-view">
+                  <article>
+                    <h2>Top connected groups</h2>
+                    {#each analysisTopConnected().slice(0, 16) as node}
+                      <button type="button" onclick={() => openOverviewEntry(node.id)}>
+                        {node.label}<span>{node.count.toLocaleString()}</span>
                       </button>
                     {/each}
-                    {#if resources.length > 12}<span class="chip">+{resources.length - 12} more</span>{/if}
-                  </div>
-                </article>
-              {/each}
+                  </article>
+                </section>
+              {/if}
+            {:else}
+              <div class="view-heading">
+                <h2>Links</h2>
+                <span>{largeRelationships.length ? 'relationship chunks loaded' : 'loading on demand'}</span>
+              </div>
+              <section class="links-view">
+                {#each (largeSelectedRoute && largeRouteInReduction(largeSelectedRoute) ? routeRelationships(largeSelectedRoute, 180) : largeRelationships.filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source))).slice(0, 180)) as relationship}
+                  <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
+                    <strong>{largeLabelForRoute(relationship.source)}</strong>
+                    <span>{relationship.kind}</span>
+                    <strong>{largeLabelForRoute(relationship.target)}</strong>
+                  </button>
+                {:else}
+                  <p class="muted">Select a dataset or open graph/links to load relationship chunks.</p>
+                {/each}
+              </section>
+            {/if}
+          {:else if activeView === 'timeline'}
+            {#if largeIsOverviewContext()}
+              <div class="view-heading">
+                <h2>Timeline Distribution</h2>
+                <span>{source.manifest.counts.datasets.toLocaleString()} datasets in overview</span>
+              </div>
+              <section class="timeline-view timeline-axis">
+                {#each analysisTimelineBuckets().slice(0, 90) as bucket, index}
+                  <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisFacet('update_year', bucket.id.replace(/^year:/, ''))}>
+                    <time>{bucket.label}</time>
+                    <div>
+                      <strong>{bucket.count.toLocaleString()} datasets</strong>
+                      <span>{(bucket.samples || []).slice(0, 2).map((item) => item.title).join(' · ')}</span>
+                    </div>
+                  </button>
+                {:else}
+                  <p class="muted">Timeline distribution is not available for this bundle yet.</p>
+                {/each}
+              </section>
+            {:else}
+              <div class="view-heading">
+                <h2>Timeline</h2>
+                <span>{largeVisibleDatasets.length.toLocaleString()} datasets in current reduction</span>
+              </div>
+              <section class="timeline-view timeline-axis">
+                {#each largeVisibleDatasets.filter((dataset) => dataset.timestamp || dataset.metadata_modified).slice(0, 180) as dataset, index}
+                  <button style={`--row:${index}`} type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
+                    <time>{String(dataset.timestamp || dataset.metadata_modified).slice(0, 10)}</time>
+                    <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'}</span></div>
+                  </button>
+                {/each}
+              </section>
+            {/if}
+          {:else if activeView === 'type'}
+            <div class="view-heading">
+              <h2>Facets And Dimensions</h2>
+              <span>{largeIsOverviewContext() ? 'ordered by generated facet quality' : 'filter chips affect every display'}</span>
+            </div>
+            <section class="type-view">
+              {#if largeIsOverviewContext()}
+                {#each analysisFacetRows() as facet}
+                  <article class:muted-card={facet.recommendation === 'suppressed'}>
+                    <h2>{facet.label}</h2>
+                    <p class="muted">
+                      {facet.recommendation} · {facet.recommended_control} · coverage {formatPercent(facet.coverage)} · cardinality {facet.cardinality.toLocaleString()} · expected reduction {formatPercent(facet.expected_reduction)}
+                    </p>
+                    {#each (facet.values || []).slice(0, 12) as row}
+                      <button type="button" onclick={() => applyAnalysisFacet(facet.key, row.value)}>
+                        {row.value}<span>{row.count.toLocaleString()}</span>
+                      </button>
+                    {/each}
+                  </article>
+                {/each}
+              {:else}
+                {#each LARGE_FACET_KEYS as key}
+                  <article>
+                    <h2>{key.replaceAll('_', ' ')}</h2>
+                    {#each largeFacetRows(key).slice(0, 12) as row}
+                      <button class:active={(largeFacetFilters[key] || []).includes(row.value)} type="button" onclick={() => toggleLargeFacet(key, row.value)}>
+                        {row.value}<span>{row.count.toLocaleString()}</span>
+                      </button>
+                    {/each}
+                  </article>
+                {/each}
+              {/if}
             </section>
+          {:else if activeView === 'resources'}
+            {#if largeIsOverviewContext()}
+              <div class="view-heading">
+                <h2>Resource Landscape</h2>
+                <span>{(largeAnalysis()?.resource_overview?.total_resources || source.manifest.counts.resources || 0).toLocaleString()} resources in overview</span>
+              </div>
+              <div class="overview-grid">
+                <section>
+                  <h3>High-volume stacks</h3>
+                  {#each analysisResourceStacks().slice(0, 16) as stack}
+                    <button type="button" onclick={() => openOverviewEntry(stack.route)}>
+                      {stack.label}<span>{stack.count.toLocaleString()} resources · {stack.publisher || 'unknown publisher'}</span>
+                    </button>
+                  {:else}
+                    <p class="muted">Resource-stack summaries are not available for this bundle yet.</p>
+                  {/each}
+                </section>
+                <section>
+                  <h3>Resource dimensions</h3>
+                  {#each analysisResourceDistributionRows() as row}
+                    <button type="button" onclick={() => applyAnalysisFacet(row.key, row.value)}>
+                      {row.value}<span>{row.key} · {row.count.toLocaleString()}</span>
+                    </button>
+                  {/each}
+                </section>
+              </div>
+            {:else}
+              <div class="view-heading">
+                <h2>Resource Stack</h2>
+                <span>{largeVisibleResources.length.toLocaleString()} resources shown from current reduction</span>
+              </div>
+              <section class="resource-stack-view">
+                {#each largeVisibleDatasets.filter((dataset) => (largeIndex?.resourcesByDataset.get(dataset.name) || []).length).slice(0, 80) as dataset}
+                  {@const resources = largeIndex?.resourcesByDataset.get(dataset.name) || []}
+                  <article>
+                    <button class="stack-heading" type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
+                      <strong>{dataset.title}</strong>
+                      <span>{resources.length} resources · {dataset.publisher_title || dataset.publisher}</span>
+                    </button>
+                    <div class="resource-stack">
+                      {#each resources.slice(0, 12) as resource}
+                        <button
+                          class:highlight={largeHighlightedRoute === resourceRoute(resource)}
+                          type="button"
+                          onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }}
+                          ondblclick={() => recenterLargeRoute(resourceRoute(resource))}
+                        >
+                          <strong>{resource.name || resource.id}</strong>
+                          <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                        </button>
+                      {/each}
+                      {#if resources.length > 12}<span class="chip">+{resources.length - 12} more</span>{/if}
+                    </div>
+                  </article>
+                {/each}
+              </section>
+            {/if}
           {/if}
         </section>
       {:else if smallCorpus}
