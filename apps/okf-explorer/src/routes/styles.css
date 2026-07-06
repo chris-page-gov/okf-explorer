@@ -314,6 +314,7 @@ input:focus {
 .links-view,
 .timeline-view,
 .type-view,
+.narrative-view,
 .large-view,
 .facet-preview,
 .pinned-list,
@@ -342,6 +343,7 @@ input:focus {
 .detail button,
 .pinned-list button,
 .facet-values button,
+.facet-hierarchy button,
 .resource-stack-view button {
   height: auto;
   display: grid;
@@ -382,7 +384,10 @@ input:focus {
 .result-list span,
 .overview-grid span,
 .facet-values small,
+.facet-hint,
+.facet-hierarchy small,
 .resource-stack-view span,
+.narrative-view span,
 .muted {
   color: var(--muted);
 }
@@ -392,6 +397,7 @@ input:focus {
 .links-view,
 .timeline-view,
 .type-view,
+.narrative-view,
 .empty-state {
   padding: 18px;
 }
@@ -410,6 +416,18 @@ input:focus {
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 12px;
+}
+
+.type-view article.muted-card {
+  opacity: .72;
+}
+
+.type-view article p {
+  margin: 0 0 8px;
+}
+
+.compact-type-view {
+  padding-top: 0;
 }
 
 .metrics strong {
@@ -473,9 +491,40 @@ input:focus {
   padding: 0 8px 8px;
 }
 
+.facet-hint {
+  margin: -2px 8px 7px;
+  font-size: 12px;
+}
+
+.facet-hierarchy {
+  display: grid;
+  gap: 5px;
+  padding: 0 8px 8px;
+}
+
+.facet-hierarchy strong {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
 .facet-values button {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
+}
+
+.facet-hierarchy button {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border-color: var(--line);
+  background: var(--surface-2);
+}
+
+.facet-hierarchy button.child,
+.type-view button.child {
+  margin-left: 14px;
+  border-left: 3px solid var(--line-strong);
 }
 
 .facet-values span {
@@ -747,6 +796,37 @@ input:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
+}
+
+.narrative-view article,
+.ontology-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.narrative-view h2,
+.narrative-view h3,
+.ontology-panel h3 {
+  margin: 0 0 8px;
+}
+
+.narrative-view p,
+.ontology-panel p {
+  margin: 0 0 10px;
+}
+
+.ontology-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.ontology-panel article {
+  display: grid;
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
 }
 
 .chip {

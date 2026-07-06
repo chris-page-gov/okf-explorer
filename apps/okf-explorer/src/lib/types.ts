@@ -1,4 +1,4 @@
-export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type' | 'resources';
+export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type' | 'resources' | 'narrative';
 
 export type OkfNode = {
   id: string;
@@ -58,6 +58,7 @@ export type LargeCorpusDescriptor = {
     viewer?: string;
     data_manifest: string;
     overview_index?: string;
+    analysis_overview?: string;
     search_manifest?: string;
     notes?: string;
     performance?: string;
@@ -73,6 +74,7 @@ export type LargeDataManifest = {
   counts: Record<string, number>;
   indexes: {
     overview: string;
+    analysis?: string;
     search?: string;
     facets?: string;
     graph?: string;
@@ -118,6 +120,69 @@ export type LargeOverview = {
   format_counts?: Array<{ value: string; count: number }>;
   facet_previews?: Record<string, Array<{ value: string; count: number }>>;
   notices?: string[];
+};
+
+export type LargeAnalysisOverview = {
+  schema: 'okf-explorer-analysis.v1' | string;
+  generated_at: string;
+  source_bundle?: string;
+  summary?: {
+    title?: string;
+    description?: string;
+    record_count?: number;
+    resource_count?: number;
+    relationship_count?: number;
+    notices?: string[];
+  };
+  graph_overview?: {
+    nodes: Array<{ id: string; label: string; type: string; count?: number; route?: string; context?: Record<string, unknown> }>;
+    edges: Array<{ source: string; target: string; label: string; count?: number; context?: Record<string, unknown> }>;
+  };
+  timeline_overview?: {
+    buckets: Array<{ id: string; label: string; count: number; route?: string; samples?: SearchResultDoc[] }>;
+  };
+  relationship_overview?: {
+    types: Array<{ kind: string; count: number; samples?: Array<{ source: string; target: string; label?: string }> }>;
+    top_connected?: Array<{ id: string; label: string; type: string; count: number }>;
+  };
+  resource_overview?: {
+    total_resources?: number;
+    high_resource_datasets?: Array<{ route: string; label: string; count: number; publisher?: string; samples?: Array<{ id: string; label: string; format?: string; host?: string }> }>;
+    distributions?: Record<string, Array<{ value: string; count: number }>>;
+  };
+  facet_analysis?: Array<{
+    key: string;
+    label: string;
+    coverage: number;
+    cardinality: number;
+    top_share: number;
+    entropy: number;
+    expected_reduction: number;
+    recommended_control: string;
+    recommendation: 'primary' | 'secondary' | 'advanced' | 'suppressed' | string;
+    hierarchy_available?: boolean;
+    values?: Array<{ value: string; count: number }>;
+  }>;
+  hierarchies?: Array<{
+    id: string;
+    label: string;
+    facet: string;
+    levels: string[];
+    values: Array<{ id: string; label: string; count: number; route?: string; children?: Array<{ id: string; label: string; count: number; route?: string }> }>;
+  }>;
+  ontology_candidates?: Array<{
+    id: string;
+    label: string;
+    confidence: number;
+    coverage: number;
+    classes?: string[];
+    properties?: string[];
+    notes?: string[];
+  }>;
+  narrative?: {
+    title?: string;
+    body?: string;
+  };
 };
 
 export type SearchResultDoc = {
@@ -259,6 +324,7 @@ export type LargeCorpusSource = {
   descriptor: LargeCorpusDescriptor;
   manifest: LargeDataManifest;
   overview: LargeOverview;
+  analysis?: LargeAnalysisOverview;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: () => Promise<LargeRelationship[]>;
 };

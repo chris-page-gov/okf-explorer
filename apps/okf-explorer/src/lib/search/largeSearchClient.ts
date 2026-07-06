@@ -23,6 +23,7 @@ export class LargeSearchClient {
         pending.resolve(event.data.manifest);
       } else if (event.data.type === 'results') pending.resolve(event.data.results || []);
       else if (event.data.type === 'suggestions') pending.resolve(event.data.suggestions || []);
+      else pending.reject(new Error(`Unknown search worker response: ${event.data.type}`));
     };
   }
 

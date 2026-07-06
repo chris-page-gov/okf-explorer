@@ -2,6 +2,33 @@
 
 Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 
+## Open The Hosted Explorer
+
+The Svelte OKF Explorer can load OKF bundles from this repository or from any
+other public HTTPS URL.
+
+- [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
+- [Read the illustrated "make and publish your own OKF bundle" manual][manual]
+
+The CKAN example demonstrates the main no-install workflow: the Explorer is
+hosted by this repository, while the bundle descriptor and generated data live
+in the separate
+[`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
+repository.
+
+To open your own public bundle, use this URL pattern:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_BUNDLE_OR_DESCRIPTOR_URL
+```
+
+For example, a small bundle published at
+`https://example.github.io/my-okf/okf-bundle.json` opens as:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
+```
+
 This repository now plays two roles:
 
 - `apps/okf-explorer/` is the canonical SvelteKit OKF Explorer source.
@@ -19,6 +46,11 @@ The repository contains:
 - `okf-bundle.json` - generated bundle consumed by the explorer.
 - `okf-registry.json` - starter registry for discoverable bundles and Bundle
   URL suggestions.
+- `docs/explorer-overview-context.md` - design specification for generated
+  overview contexts, facet analysis, hierarchy support, and Explorer analysis
+  extensions.
+- `docs/use-okf-explorer.md` - novice-friendly manual for generating,
+  publishing, and browsing OKF bundles with the hosted Svelte Explorer.
 - `viewer.html` - legacy self-contained interactive graph and reader.
 - `view.html` - compatibility alias for the legacy viewer.
 - `index.md`, `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`,
@@ -35,6 +67,27 @@ generated local bundle. The legacy single-file viewer remains available at
 The Explorer reads `okf-registry.json` for example bundle destinations and keeps
 recently loaded Bundle URLs in browser local storage, then offers matching
 suggestions while typing in the Bundle URL field.
+
+The Explorer product/data-contract direction is documented in
+[docs/explorer-overview-context.md](docs/explorer-overview-context.md). It
+defines the generated overview context expected by Reader, Graph, Links,
+Timeline, Type, Resources, and Narrative views, including how small bundles can
+embed analysis inline while large bundles reference chunked analysis artifacts.
+
+## Relationship To The CKAN Fixture
+
+This repository is the generic OKF Explorer product repo: it owns the Svelte
+Explorer, bundle conventions, reusable viewer behaviour, registry examples, and
+the AI infrastructure sample bundle. The GOV.UK CKAN large-corpus fixture lives
+in
+[`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
+because that repository preserves the historical path from the original dark
+data challenge to the generalized OKF large-corpus builder. The CKAN descriptor
+is listed in `okf-registry.json` so this Explorer can load and validate that
+external bundle without copying its generated corpus here.
+
+Direct CKAN example:
+[GOV.UK CKAN in the hosted Svelte Explorer][ckan-example]
 
 ## Svelte Explorer
 
@@ -89,3 +142,6 @@ The viewer and build/validation scripts are licensed under the
 The included workflow publishes the static site from `_site/` when pushed to
 `main`, after validation passes. In the GitHub repository settings, configure
 Pages to use **GitHub Actions** as the source.
+
+[ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[manual]: docs/use-okf-explorer.md

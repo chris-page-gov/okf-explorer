@@ -1,0 +1,20 @@
+{
+  "schema": "okf-explorer-registry.v0",
+  "title": "OKF Explorer Registry",
+  "bundles": [
+    {
+      "id": "ai-infrastructure-wiki",
+      "label": "AI Infrastructure",
+      "url": "okf-bundle.json",
+      "kind": "local-sample",
+      "description": "Default OKF bundle generated from this repository's Markdown corpus."
+    },
+    {
+      "id": "gov-ckan-large-corpus",
+      "label": "GOV.UK CKAN large corpus",
+      "url": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json",
+      "kind": "large-corpus",
+      "description": "Largest current OKF large-corpus fixture, using chunked CKAN metadata and static search shards."
+    }
+  ]
+}
