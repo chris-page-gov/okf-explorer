@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/apps/okf-explorer"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 5
+    groups:
+      okf-explorer-stack:
+        patterns:
+          - "@sveltejs/*"
+          - "@vitest/*"
+          - "svelte"
+          - "svelte-check"
+          - "typescript"
+          - "vite"
+          - "vitest"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:30"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
