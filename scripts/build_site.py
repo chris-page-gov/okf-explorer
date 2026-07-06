@@ -36,6 +36,7 @@ PUBLIC_DIRS = [
     "standards",
     "uk-government",
     "explorer",
+    "docs",
 ]
 FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}

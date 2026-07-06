@@ -1,6 +1,7 @@
 import type {
   LargeCorpusDescriptor,
   LargeCorpusSource,
+  LargeAnalysisOverview,
   LargeDataManifest,
   LargeDataset,
   LargeFullIndex,
@@ -45,6 +46,10 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const manifest = await fetchJson<LargeDataManifest>(resolveUrl(descriptor.entrypoints.data_manifest, baseUrl));
   const overviewPath = descriptor.entrypoints.overview_index || manifest.indexes.overview;
   const overview = await fetchJson<LargeOverview>(resolveUrl(overviewPath, baseUrl));
+  const analysisPath = descriptor.entrypoints.analysis_overview || manifest.indexes.analysis;
+  const analysis = analysisPath
+    ? await fetchJson<LargeAnalysisOverview>(resolveUrl(analysisPath, baseUrl)).catch(() => undefined)
+    : undefined;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
   let relationshipsPromise: Promise<LargeRelationship[]> | null = null;
 
@@ -55,6 +60,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     descriptor,
     manifest,
     overview,
+    analysis,
     loadFullIndex() {
       if (!fullIndexPromise) {
         fullIndexPromise = (async () => {
