@@ -56,7 +56,7 @@
   ];
   const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources', 'narrative']);
   const RELATIONSHIP_VIEWS = new Set<ViewMode>();
-  const LARGE_FACET_KEYS = ['publisher', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
+  const LARGE_FACET_KEYS = ['publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
 
@@ -811,6 +811,7 @@
     }
     if (kind === 'publisher') return largeVisibleDatasets.some((dataset) => dataset.publisher === value);
     if (kind === 'format') return largeVisibleDatasets.some((dataset) => (dataset.formats || []).includes(value));
+    if (kind === 'topic') return largeVisibleDatasets.some((dataset) => (dataset.topics || []).includes(value));
     if (kind === 'tag') return largeVisibleDatasets.some((dataset) => (dataset.tags || []).includes(value));
     if (kind === 'license') return largeVisibleDatasets.some((dataset) => dataset.license_id === value);
     if (kind === 'host') return largeVisibleDatasets.some((dataset) => largeDatasetFacetValues(dataset, 'host').includes(value));
@@ -881,6 +882,7 @@
     if (!largeIndex) return [];
     if (key === 'publisher') return dataset.publisher ? [dataset.publisher] : [];
     if (key === 'format') return dataset.formats || [];
+    if (key === 'topic') return dataset.topics || [];
     if (key === 'tag') return dataset.tags || [];
     if (key === 'license') return dataset.license_id ? [dataset.license_id] : [];
     if (key === 'host') return [dataset.host, ...(dataset.resource_hosts || [])].filter((value): value is string => Boolean(value));
@@ -1187,6 +1189,7 @@
     const kind = routeKind(route);
     if (kind === 'publisher') return 'published by';
     if (kind === 'format') return 'has format';
+    if (kind === 'topic') return 'classified as';
     if (kind === 'tag') return 'tagged';
     if (kind === 'license') return 'licensed as';
     if (kind === 'host') return 'landing host';
@@ -1204,6 +1207,7 @@
     if (kind === 'dataset') return dataset.name === value;
     if (kind === 'publisher') return dataset.publisher === value;
     if (kind === 'format') return (dataset.formats || []).includes(value);
+    if (kind === 'topic') return (dataset.topics || []).includes(value);
     if (kind === 'tag') return (dataset.tags || []).includes(value);
     if (kind === 'license') return dataset.license_id === value;
     if (kind === 'host') return largeDatasetFacetValues(dataset, 'host').includes(value);
@@ -1246,6 +1250,7 @@
     if (analysisFacet) return facetLabel(analysisFacet.key);
     const kind = routeKind(route);
     if (kind === 'format') return 'Format';
+    if (kind === 'topic') return 'Controlled topic';
     if (kind === 'license') return 'Licence';
     if (kind === 'tag') return 'Tag';
     if (kind === 'host') return 'Host';
@@ -1353,6 +1358,7 @@
       if (result) {
         if (result.publisher) addEdge(center, publisherRoute(result.publisher), 'published by');
         for (const format of (result.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
+        for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
         for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
         if (result.resource_count > 0) {
           const stackId = `resource-stack/${center}`;
@@ -1366,6 +1372,7 @@
       if (dataset) {
         if (dataset.publisher) addEdge(center, publisherRoute(dataset.publisher), 'published by');
         for (const format of (dataset.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
+        for (const topic of (dataset.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
         for (const tag of (dataset.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
         if (dataset.license_id) addEdge(center, `license/${dataset.license_id}`, 'licensed as');
         const resources = largeIndex.resourcesByDataset.get(dataset.name) || [];
@@ -1442,6 +1449,7 @@
     const groups: Record<string, LargeGraphNode[]> = {
       publisher_family: [],
       format: [],
+      topic: [],
       tag: [],
       license: [],
       host: [],
@@ -1456,7 +1464,8 @@
     Object.values(groups).forEach((nodes) => nodes.sort((left, right) => (right.count || 0) - (left.count || 0) || left.label.localeCompare(right.label)));
 
     placeGrid(positions, groups.format.slice(0, 10), GRAPH_WIDTH * 0.17, GRAPH_HEIGHT * 0.12, 5, 102, 52);
-    placeGrid(positions, groups.tag.slice(0, 10), GRAPH_WIDTH * 0.08, GRAPH_HEIGHT * 0.28, 1, 88, 44);
+    placeGrid(positions, groups.topic.slice(0, 10), GRAPH_WIDTH * 0.07, GRAPH_HEIGHT * 0.16, 1, 96, 44);
+    placeGrid(positions, groups.tag.slice(0, 6), GRAPH_WIDTH * 0.08, GRAPH_HEIGHT * 0.58, 1, 88, 44);
     placeGrid(positions, groups.update_year.slice(0, 8), GRAPH_WIDTH * 0.27, GRAPH_HEIGHT * 0.35, 2, 86, 54);
     placeGrid(positions, groups.license.slice(0, 6), GRAPH_WIDTH * 0.35, GRAPH_HEIGHT * 0.79, 6, 76, 48);
     placeGrid(positions, groups.host.slice(0, 8), GRAPH_WIDTH * 0.76, GRAPH_HEIGHT * 0.12, 1, 92, 48);
@@ -1480,6 +1489,7 @@
         resource: [],
         'resource-stack': [],
         format: [],
+        topic: [],
         license: [],
         tag: [],
         host: [],
@@ -1493,12 +1503,13 @@
       Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
       if (centerType === 'publisher') {
         placeGrid(positions, [...groups.dataset, ...groups.resource], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
-        placeArc(positions, [...groups.format, ...groups.license, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
+        placeArc(positions, [...groups.format, ...groups.license, ...groups.topic, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
       } else {
         placeArc(positions, groups.publisher, cx, cy, GRAPH_HEIGHT * 0.31, -0.22, 0.25);
         placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.13, GRAPH_HEIGHT * 0.18, 5, 82, 64);
         placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
-        placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.35, 2.18, 3.82);
+        placeArc(positions, groups.topic, cx, cy, GRAPH_HEIGHT * 0.34, 2.05, 2.75);
+        placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.37, 2.85, 3.82);
         placeArc(positions, [...groups.host, ...groups.resource_type, ...groups.dataset, ...groups.route], cx, cy, GRAPH_HEIGHT * 0.28, -1.08, -0.55);
       }
       return positions;
@@ -1524,6 +1535,7 @@
     if (type === 'resource-stack') return '#1d70b8';
     if (type === 'publisher') return '#00703c';
     if (type === 'format') return '#4c2c92';
+    if (type === 'topic') return '#007a7a';
     if (type === 'tag') return '#d4351c';
     if (type === 'license') return '#b58800';
     if (type === 'host' || type === 'resource_type') return '#5d6b78';
@@ -1536,6 +1548,7 @@
       ['publisher', 'publisher'],
       ['resource', 'resource'],
       ['format', 'format'],
+      ['topic', 'topic'],
       ['license', 'licence'],
       ['tag', 'tag'],
       ['host', 'host/other']
@@ -1603,7 +1616,7 @@
     if (node.id === alwaysId) return 0;
     if (node.type === 'publisher') return 1;
     if (node.type === 'dataset') return 2;
-    if (['format', 'license', 'tag', 'host', 'resource_type'].includes(node.type)) return 3;
+    if (['format', 'topic', 'license', 'tag', 'host', 'resource_type'].includes(node.type)) return 3;
     return 4;
   }
 
@@ -2784,10 +2797,13 @@
                 <dt>Publisher</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
                 <dt>Resources</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
                 <dt>Licence</dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}</dd>
+                <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
+                <dt>Quality</dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
                 <dt>Landing URL</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
                 <dt>API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>
               </dl>
               <div class="chips">
+                {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<span class="chip topic-chip">{topic}</span>{/each}
                 {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<span class="chip">{format}</span>{/each}
                 {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<span class="chip">{tag}</span>{/each}
               </div>
@@ -2804,10 +2820,35 @@
                   <dt>Modified</dt><dd>{displayValue(largeDetail.dataset.metadata_modified)}</dd>
                   <dt>Timeline date</dt><dd>{displayValue(largeDetail.dataset.timestamp)}</dd>
                   <dt>Formats</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
+                  <dt>Topics</dt><dd>{displayValue(largeDetail.dataset.topics)}</dd>
+                  <dt>Source licence</dt><dd>{displayValue([largeDetail.dataset.license_source_id, largeDetail.dataset.license_source_title].filter(Boolean))}</dd>
+                  <dt>Licence confidence</dt><dd>{formatPercent(largeDetail.dataset.license_confidence)}</dd>
+                  <dt>Publisher concept</dt><dd>{displayValue(largeDetail.dataset.publisher_concept_id)}</dd>
                   <dt>Groups</dt><dd>{displayValue(largeDetail.dataset.groups)}</dd>
                   <dt>Resource hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
               </section>
+              {#if largeDetail.dataset.quality}
+                <section class="metadata-section">
+                  <h3>Quality signals</h3>
+                  <dl>
+                    <dt>Overall</dt><dd>{formatPercent(largeDetail.dataset.quality.overall)}</dd>
+                    {#each Object.entries(largeDetail.dataset.quality.metrics || {}) as [key, value]}
+                      <dt>{key.replaceAll('_', ' ')}</dt><dd>{typeof value === 'number' ? formatPercent(value) : displayValue(value)}</dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
+              {#if largeDetail.dataset.provenance}
+                <section class="metadata-section">
+                  <h3>Provenance</h3>
+                  <dl>
+                    {#each Object.entries(largeDetail.dataset.provenance).slice(0, 14) as [key, value]}
+                      <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
               {#if largeDetail.dataset.extras && Object.keys(largeDetail.dataset.extras).length}
                 <section class="metadata-section">
                   <h3>CKAN extras</h3>
@@ -2860,6 +2901,9 @@
               <dl>
                 <dt>Dataset</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
                 <dt>Format</dt><dd>{largeDetail.resource.format || 'unknown'}</dd>
+                <dt>Source format</dt><dd>{displayValue(largeDetail.resource.source_format)}</dd>
+                <dt>Format confidence</dt><dd>{formatPercent(largeDetail.resource.format_confidence)}</dd>
+                <dt>Concept ID</dt><dd>{displayValue(largeDetail.resource.concept_id)}</dd>
                 <dt>Host</dt><dd>{largeDetail.resource.host || 'unknown'}</dd>
                 <dt>Type</dt><dd>{largeDetail.resource.resource_type || 'unknown'}</dd>
                 <dt>URL</dt><dd>{#if isUrl(largeDetail.resource.url)}<a href={largeDetail.resource.url} target="_blank" rel="noopener">{largeDetail.resource.url}</a>{:else}{displayValue(largeDetail.resource.url)}{/if}</dd>
@@ -2880,6 +2924,16 @@
                   <dt>Schema type</dt><dd>{displayValue(largeDetail.resource.schema_type)}</dd>
                 </dl>
               </section>
+              {#if largeDetail.resource.provenance}
+                <section class="metadata-section">
+                  <h3>Provenance</h3>
+                  <dl>
+                    {#each Object.entries(largeDetail.resource.provenance).slice(0, 14) as [key, value]}
+                      <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
               <details class="json-panel">
                 <summary>Local normalized resource JSON</summary>
                 <pre>{jsonText(largeDetail.resource)}</pre>
@@ -2895,6 +2949,7 @@
               </div>
               <dl>
                 <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
+                <dt>Concept ID</dt><dd>{displayValue(largeDetail.publisher.concept_id)}</dd>
                 <dt>Datasets</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
                 <dt>Resources</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
                 <dt>State</dt><dd>{largeDetail.publisher.state || 'unknown'}</dd>
@@ -2902,6 +2957,16 @@
                 <dt>Type</dt><dd>{displayValue(largeDetail.publisher.type)}</dd>
                 <dt>Approval status</dt><dd>{displayValue(largeDetail.publisher.approval_status)}</dd>
               </dl>
+              {#if largeDetail.publisher.provenance}
+                <section class="metadata-section">
+                  <h3>Provenance</h3>
+                  <dl>
+                    {#each Object.entries(largeDetail.publisher.provenance).slice(0, 12) as [key, value]}
+                      <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
               <h3>Datasets</h3>
               {#each largeDetail.datasets.slice(0, 40) as dataset}
                 <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
@@ -2917,6 +2982,8 @@
               <dl>
                 <dt>Publisher</dt><dd>{largeDetail.result.publisher_title}</dd>
                 <dt>Resources</dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
+                <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
+                <dt>Quality</dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
                 <dt>Route</dt><dd>{largeDetail.result.open}</dd>
                 <dt>Timestamp</dt><dd>{largeDetail.result.timestamp || 'None'}</dd>
               </dl>

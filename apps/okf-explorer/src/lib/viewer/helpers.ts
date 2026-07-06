@@ -12,6 +12,7 @@ export function colorForType(type = 'Node'): string {
     resource: '#5694ca',
     publisher: '#00703c',
     format: '#4c2c92',
+    topic: '#007a7a',
     tag: '#d4351c',
     license: '#b58800',
     licence: '#b58800',
