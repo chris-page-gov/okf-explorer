@@ -38,7 +38,8 @@
     relationshipTitle as formatRelationshipTitle,
     routeForAnalysisNode,
     smallRelationshipKind as getSmallRelationshipKind,
-    smallRelationshipTitle as getSmallRelationshipTitle
+    smallRelationshipTitle as getSmallRelationshipTitle,
+    timelineBucketFacetFilter
   } from '$lib/viewer/helpers';
   import './styles.css';
 
@@ -888,6 +889,20 @@
       const stamp = dataset.metadata_modified || dataset.timestamp || '';
       return stamp ? [String(stamp).slice(0, 4)] : [];
     }
+    if (key === 'update_month') {
+      const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
+      return /^\d{4}-\d{2}/.test(stamp) ? [stamp.slice(0, 7)] : [];
+    }
+    if (key === 'update_date') {
+      const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
+      return /^\d{4}-\d{2}-\d{2}/.test(stamp) ? [stamp.slice(0, 10)] : [];
+    }
+    if (key === 'update_decade') {
+      const year = Number(String(dataset.metadata_modified || dataset.timestamp || '').slice(0, 4));
+      if (!Number.isFinite(year)) return [];
+      const decade = String(Math.floor(year / 10) * 10);
+      return [decade, `${decade}s`];
+    }
     if (key === 'resource_type') return [...new Set((largeIndex.resourcesByDataset.get(dataset.name) || []).map((resource) => resource.resource_type || 'unknown'))];
     if (key === 'publisher_state') {
       const publisher = dataset.publisher ? largeIndex.publisherByName.get(dataset.publisher) : null;
@@ -950,6 +965,12 @@
     clearLargeApiPanel();
     void ensureLargeFullIndex();
     syncExplorerUrl();
+  }
+
+  function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
+    const filter = timelineBucketFacetFilter(bucket);
+    if (!filter) return;
+    applyAnalysisFacet(filter.key, filter.value);
   }
 
   function analysisFacetRows() {
@@ -2247,7 +2268,7 @@
               </div>
               <section class="timeline-view timeline-axis">
                 {#each analysisTimelineBuckets().slice(0, 90) as bucket, index}
-                  <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisFacet('update_year', bucket.id.replace(/^year:/, ''))}>
+                  <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisTimelineBucket(bucket)}>
                     <time>{bucket.label}</time>
                     <div>
                       <strong>{bucket.count.toLocaleString()} datasets</strong>

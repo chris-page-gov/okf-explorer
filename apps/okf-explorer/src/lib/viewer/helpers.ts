@@ -4,6 +4,7 @@ export type AnalysisFacet = NonNullable<LargeAnalysisOverview['facet_analysis']>
 export type AnalysisHierarchy = NonNullable<LargeAnalysisOverview['hierarchies']>[number];
 export type AnalysisHierarchyValue = AnalysisHierarchy['values'][number];
 export type AnalysisHierarchyChild = NonNullable<AnalysisHierarchyValue['children']>[number];
+export type AnalysisTimelineBucket = NonNullable<LargeAnalysisOverview['timeline_overview']>['buckets'][number];
 
 export function colorForType(type = 'Node'): string {
   const known: Record<string, string> = {
@@ -49,6 +50,27 @@ export function routeForAnalysisNode(id: string): { key: string; value: string }
   const [, key, ...valueParts] = id.split('/');
   const value = valueParts.join('/');
   return key && value ? { key, value } : null;
+}
+
+export function timelineBucketFacetFilter(bucket: AnalysisTimelineBucket): { key: string; value: string } | null {
+  const explicitRoute = bucket.route?.trim();
+  if (explicitRoute) {
+    const routeFacet = routeForAnalysisNode(explicitRoute);
+    if (routeFacet) return routeFacet;
+    const routeYear = yearBucketValue(explicitRoute);
+    if (routeYear) return { key: 'update_year', value: routeYear };
+  }
+
+  const id = bucket.id.trim();
+  const idFacet = routeForAnalysisNode(id);
+  if (idFacet) return idFacet;
+  const idYear = yearBucketValue(id);
+  return idYear ? { key: 'update_year', value: idYear } : null;
+}
+
+function yearBucketValue(value: string): string | null {
+  const match = /^(?:year|update_year):(\d{4})$/.exec(value);
+  return match?.[1] || null;
 }
 
 export function analysisFacetRows(

@@ -17,7 +17,8 @@ import {
   relationshipTitle,
   routeForAnalysisNode,
   smallRelationshipKind,
-  smallRelationshipTitle
+  smallRelationshipTitle,
+  timelineBucketFacetFilter
 } from './helpers';
 
 const analysis: LargeAnalysisOverview = {
@@ -186,6 +187,26 @@ describe('viewer helpers', () => {
     };
     expect(analysisHierarchyValueForRoute(routeBasedHierarchy, 'facet/tag/parent')?.value.label).toBe('Parent');
     expect(analysisHierarchyValueForRoute(routeBasedHierarchy, 'facet/tag/child')?.parent?.label).toBe('Parent');
+  });
+
+  it('resolves timeline bucket filters without forcing non-year buckets into update_year', () => {
+    expect(timelineBucketFacetFilter({ id: 'year:2026', label: '2026', count: 3 })).toEqual({
+      key: 'update_year',
+      value: '2026'
+    });
+    expect(timelineBucketFacetFilter({ id: 'month:2026-07', label: 'Jul 2026', count: 2 })).toBeNull();
+    expect(timelineBucketFacetFilter({ id: 'month:2026-07', label: 'Jul 2026', count: 2, route: 'facet/update_month/2026-07' })).toEqual({
+      key: 'update_month',
+      value: '2026-07'
+    });
+    expect(timelineBucketFacetFilter({ id: 'band:recent', label: 'Recent', count: 4, route: 'facet/tag/recent releases' })).toEqual({
+      key: 'tag',
+      value: 'recent releases'
+    });
+    expect(timelineBucketFacetFilter({ id: 'custom:recent', label: 'Recent', count: 4, route: 'year:2025' })).toEqual({
+      key: 'update_year',
+      value: '2025'
+    });
   });
 
   it('formats concrete and aggregate relationship titles', () => {
