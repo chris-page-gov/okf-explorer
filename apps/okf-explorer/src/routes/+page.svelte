@@ -368,7 +368,7 @@
 
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
-    if (largeIsOverviewContext()) return;
+    if (largeHasAnalysisOverview(view)) return;
     if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
   }
@@ -382,6 +382,29 @@
       !largeQuery.trim() &&
       activeLargeFilterCount === 0
     );
+  }
+
+  function largeHasAnalysisOverview(view: ViewMode = activeView): boolean {
+    if (!largeIsOverviewContext()) return false;
+    const analysis = largeAnalysis();
+    if (!analysis) return false;
+    if (view === 'reader') {
+      return Boolean(analysis.summary || analysis.narrative || analysis.graph_overview?.nodes?.length || analysis.facet_analysis?.length);
+    }
+    if (view === 'graph') return Boolean(analysis.graph_overview?.nodes?.length);
+    if (view === 'links') {
+      return Boolean(analysis.relationship_overview?.types?.length || analysis.relationship_overview?.top_connected?.length);
+    }
+    if (view === 'timeline') return Boolean(analysis.timeline_overview?.buckets?.length);
+    if (view === 'type') return Boolean(analysis.facet_analysis?.length);
+    if (view === 'resources') {
+      const distributions = analysis.resource_overview?.distributions;
+      return Boolean(
+        analysis.resource_overview?.high_resource_datasets?.length ||
+          (distributions && Object.values(distributions).some((rows) => rows.length))
+      );
+    }
+    return false;
   }
 
   async function ensureLargeFullIndex(): Promise<LargeFullIndex | null> {
@@ -1184,7 +1207,7 @@
 
   function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
     const analysis = largeAnalysis();
-    if (largeIsOverviewContext() && analysis?.graph_overview?.nodes?.length) {
+    if (largeHasAnalysisOverview('graph') && analysis?.graph_overview?.nodes?.length) {
       return {
         center: '',
         nodes: analysis.graph_overview.nodes.map((node) => ({
@@ -1830,7 +1853,7 @@
                   {/each}
                 {/if}
               </div>
-            {:else if largeIsOverviewContext()}
+            {:else if largeHasAnalysisOverview('reader')}
               {@const analysis = largeAnalysis()}
               <div class="view-heading">
                 <h2>{analysis?.summary?.title || source.overview.title}</h2>
@@ -2043,7 +2066,7 @@
               </p>
             </div>
           {:else if activeView === 'links'}
-            {#if largeIsOverviewContext()}
+            {#if largeHasAnalysisOverview('links')}
               <div class="view-heading">
                 <h2>Relationship Overview</h2>
                 <span>summaries before relationship hydration</span>
@@ -2089,7 +2112,7 @@
               </section>
             {/if}
           {:else if activeView === 'timeline'}
-            {#if largeIsOverviewContext()}
+            {#if largeHasAnalysisOverview('timeline')}
               <div class="view-heading">
                 <h2>Timeline Distribution</h2>
                 <span>{source.manifest.counts.datasets.toLocaleString()} datasets in overview</span>
@@ -2124,10 +2147,10 @@
           {:else if activeView === 'type'}
             <div class="view-heading">
               <h2>Facets And Dimensions</h2>
-              <span>{largeIsOverviewContext() ? 'ordered by generated facet quality' : 'filter chips affect every display'}</span>
+              <span>{largeHasAnalysisOverview('type') ? 'ordered by generated facet quality' : 'filter chips affect every display'}</span>
             </div>
             <section class="type-view">
-              {#if largeIsOverviewContext()}
+              {#if largeHasAnalysisOverview('type')}
                 {#each analysisFacetRows() as facet}
                   <article class:muted-card={facet.recommendation === 'suppressed'}>
                     <h2>{facet.label}</h2>
@@ -2155,7 +2178,7 @@
               {/if}
             </section>
           {:else if activeView === 'resources'}
-            {#if largeIsOverviewContext()}
+            {#if largeHasAnalysisOverview('resources')}
               <div class="view-heading">
                 <h2>Resource Landscape</h2>
                 <span>{(largeAnalysis()?.resource_overview?.total_resources || source.manifest.counts.resources || 0).toLocaleString()} resources in overview</span>
