@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
     LargeDataset,
@@ -20,6 +21,25 @@
   import { loadLargeCorpus } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
+  import {
+    analysisFacetForKey as findAnalysisFacetForKey,
+    analysisFacetRows as getAnalysisFacetRows,
+    analysisHierarchiesForFacet as findAnalysisHierarchiesForFacet,
+    analysisHierarchyValueForRoute as findAnalysisHierarchyValueForRoute,
+    analysisLabelForRoute,
+    analysisNodeForRoute as findAnalysisNodeForRoute,
+    colorForType,
+    displayValue,
+    facetLabel,
+    facetSummary as getFacetSummary,
+    formatPercent,
+    isHttpUrl as isUrl,
+    orderedFacetKeys,
+    relationshipTitle as formatRelationshipTitle,
+    routeForAnalysisNode,
+    smallRelationshipKind as getSmallRelationshipKind,
+    smallRelationshipTitle as getSmallRelationshipTitle
+  } from '$lib/viewer/helpers';
   import './styles.css';
 
   const DEFAULT_BUNDLE = '../okf-bundle.json';
@@ -251,7 +271,7 @@
 
   function syncExplorerUrl() {
     const route = source?.kind === 'large' ? largeSelectedRoute : selectedId;
-    window.history.replaceState(null, '', buildExplorerUrl(route));
+    replaceState(buildExplorerUrl(route), {});
   }
 
   function syncBundleUrlParam(url: string) {
@@ -623,12 +643,6 @@
     visibleTypes = new Set(typeList);
   }
 
-  function colorForType(type = 'Node'): string {
-    const palette = ['#0b6bcb', '#00703c', '#4c2c92', '#d4351c', '#b58800', '#1d70b8', '#5d6b78', '#b10e73'];
-    const index = Math.abs([...type].reduce((total, char) => total + char.charCodeAt(0), 0)) % palette.length;
-    return palette[index];
-  }
-
   function toggleLargeFacet(key: string, value: string) {
     const current = new Set(largeFacetFilters[key] || []);
     if (current.has(value)) current.delete(value);
@@ -695,13 +709,11 @@
   }
 
   function smallRelationshipKind(relationship: OkfRelationship): string {
-    return relationship.kind || relationship.label || relationship.type || 'related';
+    return getSmallRelationshipKind(relationship);
   }
 
   function smallRelationshipTitle(relationship: OkfRelationship): string {
-    return `${smallCorpus?.nodes[relationship.source]?.title || relationship.source} \u2192 ${smallRelationshipKind(relationship)} \u2192 ${
-      smallCorpus?.nodes[relationship.target]?.title || relationship.target
-    }`;
+    return getSmallRelationshipTitle(relationship, smallCorpus?.nodes);
   }
 
   function inspectSmallRelationship(relationship: OkfRelationship) {
@@ -928,15 +940,6 @@
     return source?.kind === 'large' ? source.analysis : undefined;
   }
 
-  function facetLabel(key: string): string {
-    return key.replaceAll('_', ' ');
-  }
-
-  function formatPercent(value: number | undefined): string {
-    if (value === undefined || Number.isNaN(value)) return 'n/a';
-    return `${Math.round(value * 100)}%`;
-  }
-
   function applyAnalysisFacet(key: string, value: string) {
     largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
     largeSelectedRoute = '';
@@ -949,36 +952,8 @@
     syncExplorerUrl();
   }
 
-  function routeForAnalysisNode(id: string): { key: string; value: string } | null {
-    if (!id.startsWith('facet/')) return null;
-    const [, key, ...valueParts] = id.split('/');
-    const value = valueParts.join('/');
-    return key && value ? { key, value } : null;
-  }
-
   function analysisFacetRows() {
-    const analysis = largeAnalysis();
-    if (analysis?.facet_analysis?.length) {
-      const tierWeight: Record<string, number> = { primary: 0, secondary: 1, advanced: 2, suppressed: 3 };
-      return [...analysis.facet_analysis].sort(
-        (left, right) =>
-          (tierWeight[left.recommendation] ?? 2) - (tierWeight[right.recommendation] ?? 2) ||
-          right.expected_reduction - left.expected_reduction ||
-          left.label.localeCompare(right.label)
-      );
-    }
-    return Object.entries(source?.kind === 'large' ? source.overview.facet_previews || {} : {}).map(([key, values]) => ({
-      key,
-      label: facetLabel(key),
-      coverage: 0,
-      cardinality: values.length,
-      top_share: values[0]?.count ? 1 : 0,
-      entropy: 0,
-      expected_reduction: 0,
-      recommended_control: 'chips',
-      recommendation: 'secondary',
-      values
-    }));
+    return getAnalysisFacetRows(largeAnalysis(), source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
   function analysisTimelineBuckets() {
@@ -1011,42 +986,27 @@
   }
 
   function analysisNodeForRoute(route: string) {
-    const analysis = largeAnalysis();
-    return analysis?.graph_overview?.nodes?.find((node) => node.id === route) || null;
+    return findAnalysisNodeForRoute(largeAnalysis(), route);
   }
 
   function analysisFacetForKey(key: string) {
-    return analysisFacetRows().find((facet) => facet.key === key) || null;
+    return findAnalysisFacetForKey(largeAnalysis(), key, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
   function analysisHierarchiesForFacet(key: string) {
-    return (largeAnalysis()?.hierarchies || []).filter((hierarchy) => hierarchy.facet === key);
+    return findAnalysisHierarchiesForFacet(largeAnalysis(), key);
   }
 
   function analysisHierarchyValueForRoute(route: string) {
-    for (const hierarchy of largeAnalysis()?.hierarchies || []) {
-      for (const value of hierarchy.values || []) {
-        if (value.route === route || value.id === route) return { hierarchy, value };
-        const child = (value.children || []).find((item) => item.route === route || item.id === route);
-        if (child) return { hierarchy, value: child, parent: value };
-      }
-    }
-    return null;
+    return findAnalysisHierarchyValueForRoute(largeAnalysis(), route);
   }
 
   function orderedLargeFacetKeys() {
-    const keys = [
-      ...analysisFacetRows().map((facet) => facet.key),
-      ...largeFacetKeys,
-      ...LARGE_FACET_KEYS
-    ];
-    return [...new Set(keys)].filter(Boolean);
+    return orderedFacetKeys(largeAnalysis(), largeFacetKeys, LARGE_FACET_KEYS, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
   function facetSummary(key: string): string {
-    const facet = analysisFacetForKey(key);
-    if (!facet) return '';
-    return `${facet.recommendation} · ${facet.recommended_control} · reduction ${formatPercent(facet.expected_reduction)}`;
+    return getFacetSummary(largeAnalysis(), key, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
   function currentLargeContextLabel(): string {
@@ -1142,17 +1102,6 @@
       .trim();
   }
 
-  function displayValue(value: unknown): string {
-    if (value === undefined || value === null || value === '') return 'None';
-    if (Array.isArray(value)) return value.length ? value.map((item) => displayValue(item)).join(', ') : 'None';
-    if (typeof value === 'object') return JSON.stringify(value);
-    return String(value);
-  }
-
-  function isUrl(value: unknown): value is string {
-    return typeof value === 'string' && /^https?:\/\//i.test(value);
-  }
-
   function jsonText(value: unknown): string {
     return JSON.stringify(value, null, 2);
   }
@@ -1180,12 +1129,8 @@
 
   function largeLabelForRoute(route: string): string {
     if (!route) return 'Overview';
-    const analysisNode = analysisNodeForRoute(route);
-    if (analysisNode) return analysisNode.label;
-    const hierarchyValue = analysisHierarchyValueForRoute(route);
-    if (hierarchyValue) return hierarchyValue.value.label;
-    const analysisFacet = routeForAnalysisNode(route);
-    if (analysisFacet) return analysisFacet.value;
+    const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
+    if (analysisLabel) return analysisLabel;
     const kind = routeKind(route);
     const value = routeValue(route);
     if (kind === 'dataset') {
@@ -1289,10 +1234,7 @@
   }
 
   function relationshipTitle(edge: LargeGraphEdge): string {
-    if (!edge.source || !edge.target) {
-      return `${edge.label}${edge.count ? ` (${edge.count.toLocaleString()} relationships)` : ''}`;
-    }
-    return `${largeLabelForRoute(edge.source)} \u2192 ${edge.label} \u2192 ${largeLabelForRoute(edge.target)}`;
+    return formatRelationshipTitle(edge, largeLabelForRoute);
   }
 
   function resolveLargeDetail(route: string): LargeDetail | null {
