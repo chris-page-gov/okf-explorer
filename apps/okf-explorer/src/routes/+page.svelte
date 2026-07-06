@@ -1316,7 +1316,8 @@
         relationships: (analysis.graph_overview.edges || []).map((edge) => ({
           source: edge.source,
           target: edge.target,
-          label: edge.count ? `${edge.label} x${edge.count.toLocaleString()}` : edge.label
+          label: edge.label,
+          count: edge.count
         }))
       };
     }
@@ -1432,7 +1433,40 @@
     });
   }
 
+  function largeOverviewGraphPositions(model: ReturnType<typeof largeGraphModel>) {
+    const positions = new Map<string, GraphPoint>();
+    const root = model.nodes.find((node) => node.id === 'corpus/overview') || model.nodes[0];
+    if (!root) return positions;
+    positions.set(root.id, { x: GRAPH_WIDTH * 0.49, y: GRAPH_HEIGHT * 0.53 });
+
+    const groups: Record<string, LargeGraphNode[]> = {
+      publisher_family: [],
+      format: [],
+      tag: [],
+      license: [],
+      host: [],
+      update_year: [],
+      other: []
+    };
+    for (const node of model.nodes.filter((item) => item.id !== root.id)) {
+      const facet = routeForAnalysisNode(node.id)?.key || node.type;
+      const key = groups[facet] ? facet : 'other';
+      groups[key].push(node);
+    }
+    Object.values(groups).forEach((nodes) => nodes.sort((left, right) => (right.count || 0) - (left.count || 0) || left.label.localeCompare(right.label)));
+
+    placeGrid(positions, groups.format.slice(0, 10), GRAPH_WIDTH * 0.17, GRAPH_HEIGHT * 0.12, 5, 102, 52);
+    placeGrid(positions, groups.tag.slice(0, 10), GRAPH_WIDTH * 0.08, GRAPH_HEIGHT * 0.28, 1, 88, 44);
+    placeGrid(positions, groups.update_year.slice(0, 8), GRAPH_WIDTH * 0.27, GRAPH_HEIGHT * 0.35, 2, 86, 54);
+    placeGrid(positions, groups.license.slice(0, 6), GRAPH_WIDTH * 0.35, GRAPH_HEIGHT * 0.79, 6, 76, 48);
+    placeGrid(positions, groups.host.slice(0, 8), GRAPH_WIDTH * 0.76, GRAPH_HEIGHT * 0.12, 1, 92, 48);
+    placeGrid(positions, groups.publisher_family.slice(0, 6), GRAPH_WIDTH * 0.76, GRAPH_HEIGHT * 0.53, 1, 92, 50);
+    placeGrid(positions, groups.other, GRAPH_WIDTH * 0.55, GRAPH_HEIGHT * 0.25, 2, 94, 54);
+    return positions;
+  }
+
   function largeGraphPositions(model: ReturnType<typeof largeGraphModel>) {
+    if (!model.center && model.nodes.some((node) => node.id === 'corpus/overview')) return largeOverviewGraphPositions(model);
     const center = model.center && model.nodes.some((node) => node.id === model.center) ? model.center : model.nodes[0]?.id;
     const positions = new Map<string, GraphPoint>();
     if (model.center && center) {
@@ -1538,15 +1572,23 @@
     return { x: left, y: y - 15, w, h };
   }
 
+  function graphLabelInsideBounds(label: GraphLabel): boolean {
+    return label.box.x >= 6 && label.box.y >= 6 && label.box.x + label.box.w <= GRAPH_WIDTH - 6 && label.box.y + label.box.h <= GRAPH_HEIGHT - 6;
+  }
+
   function graphLabelCandidates(node: LargeGraphNode, point: GraphPoint): GraphLabel[] {
     const text = shortLabel(node.label, node.type === 'publisher' ? 44 : 40);
     const gap = node.type === 'resource' || node.type === 'dataset' || node.type === 'resource-stack' ? 36 : 30;
-    return [
-      { x: point.x + gap, y: point.y + 5, anchor: 'start' as const },
-      { x: point.x - gap, y: point.y + 5, anchor: 'end' as const },
+    const right = { x: point.x + gap, y: point.y + 5, anchor: 'start' as const };
+    const left = { x: point.x - gap, y: point.y + 5, anchor: 'end' as const };
+    const lateral = point.x > GRAPH_WIDTH * 0.66 ? [left, right] : [right, left];
+    const labels = [
+      ...lateral,
       { x: point.x, y: point.y - gap, anchor: 'middle' as const },
       { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const }
     ].map((candidate) => ({ ...candidate, text, box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor), stable: true }));
+    const bounded = labels.filter(graphLabelInsideBounds);
+    return bounded.length ? bounded : labels;
   }
 
   function boxesOverlap(left: GraphBox, right: GraphBox): boolean {
@@ -1572,7 +1614,7 @@
       .slice(0, labelBudget);
     const blockers = nodes.map((node) => graphNodeBox(node, positions.get(node.id))).filter((box): box is GraphBox => Boolean(box));
     const layout = new Map<string, GraphLabel>();
-    const always = labelable.filter((node) => node.id === alwaysId || node.type === 'publisher');
+    const always = alwaysId ? labelable.filter((node) => node.id === alwaysId || node.type === 'publisher') : [];
     for (const node of always) {
       const point = positions.get(node.id);
       if (!point) continue;
@@ -1613,21 +1655,21 @@
   }
 
   function edgeKindLabels(model: ReturnType<typeof largeGraphModel>, positions: Map<string, GraphPoint>) {
-    const groups = new Map<string, { label: string; count: number; x: number; y: number }>();
+    const groups = new Map<string, { label: string; edgeCount: number; x: number; y: number }>();
     for (const relationship of model.relationships) {
       const source = positions.get(relationship.source);
       const target = positions.get(relationship.target);
       if (!source || !target) continue;
-      const group = groups.get(relationship.label) || { label: relationship.label, count: 0, x: 0, y: 0 };
-      group.count += 1;
+      const group = groups.get(relationship.label) || { label: relationship.label, edgeCount: 0, x: 0, y: 0 };
+      group.edgeCount += 1;
       group.x += (source.x + target.x) / 2;
       group.y += (source.y + target.y) / 2;
       groups.set(relationship.label, group);
     }
     return [...groups.values()].map((group, index, all) => ({
-      text: `${group.label}${group.count > 1 ? ` x${group.count}` : ''}`,
-      x: group.x / group.count + 8,
-      y: group.y / group.count + (index - (all.length - 1) / 2) * 15 - 6
+      text: `${group.label}${group.edgeCount > 1 ? ` x${group.edgeCount}` : ''}`,
+      x: group.x / group.edgeCount + 8,
+      y: group.y / group.edgeCount + (index - (all.length - 1) / 2) * 16 - 6
     }));
   }
 
