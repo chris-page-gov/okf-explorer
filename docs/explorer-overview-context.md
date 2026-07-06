@@ -57,6 +57,7 @@ For the GOV.UK CKAN large corpus, the current left-panel inputs represent:
 
 - `search`: static search over generated search artifacts.
 - `publisher`: CKAN organization slug.
+- `topic`: generated controlled topic.
 - `format`: resource format values.
 - `tag`: CKAN tags.
 - `license`: normalized licence values.
@@ -119,6 +120,35 @@ The expected path for large corpora is:
 ```text
 data/analysis/overview.json
 ```
+
+## Generated Concept Enrichment
+
+Large-corpus builders should emit deterministic concept semantics before the
+Explorer tries to render a graph:
+
+- `concept_id`: stable logical OKF path for every generated concept. For CKAN
+  datasets this should be publisher-scoped, for example
+  `datasets/city-of-york-council/brownfield-land-register.md`.
+- `publisher` concepts: one authority record per publisher under logical paths
+  such as `publishers/city-of-york-council.md`.
+- Canonical `license_id`: collapse source variants such as `not specified`,
+  `not-specified`, and `notspecified`; map OGL variants such as `uk-ogl`,
+  `OGL-UK-3.0`, and `ogl` to one controlled value.
+- Canonical `format`: collapse source variants such as `CSV`, `.csv`, and
+  `text/csv`; preserve source values separately so no evidence is lost.
+- `topics`: generated controlled topics in addition to raw source tags.
+- `quality`: deterministic metadata-quality metrics suitable for ranking and
+  triage. Resource download success must be explicit: either checked with
+  recorded evidence or marked not checked.
+- `provenance`: source IDs, source URLs, harvest/generation timestamps,
+  enrichment version, and transformation pipeline version.
+
+Relationship output should prefer explicit verbs over generic links. Builders
+should emit relationships such as `download resource`, `API endpoint`,
+`documentation`, `licence`, `maintainer`, `spatial coverage`,
+`temporal coverage`, `derived from`, and `supersedes` where metadata supports
+them, while keeping compatibility relationships such as `published by` and
+`has resource` when existing viewers depend on them.
 
 The large-corpus descriptor should advertise it:
 

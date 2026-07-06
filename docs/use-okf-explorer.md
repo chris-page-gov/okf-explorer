@@ -39,14 +39,49 @@ flowchart LR
 ## What You Should See In The CKAN Example
 
 1. Reader opens with a lightweight overview of the GOV.UK CKAN corpus.
-2. The left panel contains search and facets such as publisher, format, tag,
-   licence, host, resource type, and update year.
+2. The left panel contains search and facets such as publisher, controlled
+   topic, format, tag, licence, host, resource type, and update year.
 3. Searching for `IAPT` reduces the Reader and Graph views to relevant datasets.
 4. Graph shows a bounded context, node-type key, zoom controls, and relationship
    labels without loading every relationship first.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
+
+## Large-Corpus Enrichment Contract
+
+The GOV.UK CKAN example is not just a raw CKAN dump. The builder generates a
+large-corpus OKF model designed for AI agents and human exploration:
+
+- Stable concept identifiers: datasets expose logical paths such as
+  `datasets/<publisher>/<package>.md`, publishers expose
+  `publishers/<publisher>.md`, and resources expose
+  `resources/<package>/<position>-<resource>.md`.
+- Canonical licences: variants such as `not specified`, `not-specified`, and
+  `notspecified` collapse to `not-specified`; OGL variants such as `uk-ogl`,
+  `OGL-UK-3.0`, and `ogl` collapse to `uk-ogl`.
+- Canonical formats: variants such as `CSV`, `.csv`, and `text/csv` collapse to
+  `CSV`; `PDF`, `.pdf`, and `application/pdf` collapse to `PDF`.
+- Publisher authority records: one canonical publisher record is generated per
+  CKAN organization, and datasets reference that publisher concept.
+- Richer relationships: the bundle can expose `published by`, `publisher
+  authority`, `download resource`, `API endpoint`, `documentation`, `licence`,
+  `maintainer`, `temporal coverage`, `spatial coverage`, `derived from`, and
+  `supersedes` relationships where source metadata supports them.
+- Controlled topics: raw CKAN tags are supplemented with higher-level topics
+  such as Transport, Planning, Environment, Public Health, Education,
+  Consultation, Finance, Housing, Geospatial, and Business And Economy.
+- Quality signals: each dataset receives deterministic metadata scores for
+  completeness, licence confidence, update recency, resource availability, API
+  availability, and format confidence. Download success is recorded as
+  `not checked` because the static generator does not download resource bodies.
+- Provenance: generated concepts record CKAN package ID, CKAN name, source API
+  URL, harvest timestamp, generation timestamp, enrichment version, and
+  transformation pipeline version.
+
+These fields are visible in the Explorer detail card after opening a dataset,
+resource, or publisher. They are also present in the local normalized JSON for
+agent use.
 
 ## URL Patterns
 
