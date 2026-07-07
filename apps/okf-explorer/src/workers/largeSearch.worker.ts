@@ -38,13 +38,14 @@ function resolvePath(path: string): string {
 
 async function fetchJson<T>(url: string): Promise<T> {
   if (!jsonCache.has(url)) {
-    jsonCache.set(
-      url,
-      fetch(url).then((response) => {
-        if (!response.ok) throw new Error(`${url}: ${response.status} ${response.statusText}`);
-        return response.json() as Promise<T>;
-      })
-    );
+    const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal ? AbortSignal.timeout(30000) : undefined;
+    const request = fetch(url, { signal }).then((response) => {
+      if (!response.ok) throw new Error(`${url}: ${response.status} ${response.statusText}`);
+      return response.json() as Promise<T>;
+    });
+    // Drop failed fetches from the cache so transient errors can be retried.
+    request.catch(() => jsonCache.delete(url));
+    jsonCache.set(url, request);
   }
   return (await jsonCache.get(url)) as T;
 }

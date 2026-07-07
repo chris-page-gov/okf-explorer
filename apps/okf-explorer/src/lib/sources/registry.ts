@@ -15,7 +15,11 @@ export function loadHistory(): BundleRegistryEntry[] {
 export function rememberHistory(entry: BundleRegistryEntry): BundleRegistryEntry[] {
   const history = loadHistory().filter((item) => item.url !== entry.url);
   const next = [{ ...entry, kind: entry.kind || 'history' }, ...history].slice(0, 20);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  } catch {
+    // Ignore storage failures (quota, private browsing); history is best-effort.
+  }
   return next;
 }
 
