@@ -1,12 +1,1 @@
-[
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "blob"
-  },
-  {
-    "df": 4,
-    "postings": "data/search/postings-0.json",
-    "token": "blood"
-  }
-]
+[{"df":14,"postings":"data/search/postings/bl.json","token":"blaby"},{"df":14,"postings":"data/search/postings/bl.json","token":"blaby-district-council"},{"df":9,"postings":"data/search/postings/bl.json","token":"black"},{"df":37,"postings":"data/search/postings/bl.json","token":"blackpool"},{"df":2,"postings":"data/search/postings/bl.json","token":"blackpool-aerodrome-safeguarding-2006"},{"df":37,"postings":"data/search/postings/bl.json","token":"blackpool-borough-council"},{"df":1,"postings":"data/search/postings/bl.json","token":"blackpool-inspire-wfs-download-service"},{"df":3,"postings":"data/search/postings/bl.json","token":"blackpool-inspire-wms-view-service"},{"df":4,"postings":"data/search/postings/bl.json","token":"blackwater"},{"df":2,"postings":"data/search/postings/bl.json","token":"blackwater-railtrail"},{"df":2,"postings":"data/search/postings/bl.json","token":"blackwater-railtrail-rec11"},{"df":1,"postings":"data/search/postings/bl.json","token":"blaenau"},{"df":2,"postings":"data/search/postings/bl.json","token":"blanket"},{"df":2,"postings":"data/search/postings/bl.json","token":"bledlow-cum-saunderton"},{"df":2,"postings":"data/search/postings/bl.json","token":"bledlow-cum-saunderton-neighbourhood-plan-2017"},{"df":2,"postings":"data/search/postings/bl.json","token":"blob"},{"df":46,"postings":"data/search/postings/bl.json","token":"block"},{"df":109,"postings":"data/search/postings/bl.json","token":"blocks"},{"df":1,"postings":"data/search/postings/bl.json","token":"blood"},{"df":2,"postings":"data/search/postings/bl.json","token":"blpu"},{"df":9,"postings":"data/search/postings/bl.json","token":"blr"},{"df":2,"postings":"data/search/postings/bl.json","token":"blr_2025_maps_region"},{"df":2,"postings":"data/search/postings/bl.json","token":"blue"},{"df":13,"postings":"data/search/postings/bl.json","token":"bluesky"}]

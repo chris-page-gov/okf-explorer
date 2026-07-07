@@ -1,7 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "old"
-  }
-]
+[{"df":1,"postings":"data/search/postings/ol.json","token":"ol"},{"df":2,"postings":"data/search/postings/ol.json","token":"old"},{"df":5,"postings":"data/search/postings/ol.json","token":"older"},{"df":1,"postings":"data/search/postings/ol.json","token":"older-people-economic-activity"},{"df":1,"postings":"data/search/postings/ol.json","token":"older-people-net-internal-migration"},{"df":1,"postings":"data/search/postings/ol.json","token":"older-people-sex-ratios"},{"df":31,"postings":"data/search/postings/ol.json","token":"oldham"},{"df":31,"postings":"data/search/postings/ol.json","token":"oldham-council"},{"df":2,"postings":"data/search/postings/ol.json","token":"oldham-council-inspire-ogc-wfs-service"},{"df":2,"postings":"data/search/postings/ol.json","token":"oldham-council-inspire-ogc-wms-service"},{"df":1,"postings":"data/search/postings/ol.json","token":"olwg"}]

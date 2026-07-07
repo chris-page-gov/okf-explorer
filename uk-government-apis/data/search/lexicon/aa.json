@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "aa"
-  }
-]
+[{"df":2,"postings":"data/search/postings/aa.json","token":"aa"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa1c37d995f24db98ae9b7153ea6b667"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa2a48fd56f2450f9993fd6e88b25ae4"},{"df":1,"postings":"data/search/postings/aa.json","token":"aa2b1344-1644-4e9a-8bec-a852be9ac30e"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa4c32f34b1c4781a33580fa6a8bcce1"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa58a213243343139340e512abe5721c"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa7649f2ae334a10b4f2f383c75dbea4"},{"df":4,"postings":"data/search/postings/aa.json","token":"aa76bed21d7e4207927738b5f9f13a26"},{"df":9,"postings":"data/search/postings/aa.json","token":"aa77110388194b819578bb6a5d74ad57"},{"df":4,"postings":"data/search/postings/aa.json","token":"aa8baa1d64ea4b419bf59679891b8b1f"},{"df":2,"postings":"data/search/postings/aa.json","token":"aab1b35c0d4d44d08b2233eb4a08df2a_0"},{"df":4,"postings":"data/search/postings/aa.json","token":"aabfc49e04c74830807991c8b8c0f062"},{"df":4,"postings":"data/search/postings/aa.json","token":"aac4b0e53e894ea3b8499b3aa6190fcb"}]

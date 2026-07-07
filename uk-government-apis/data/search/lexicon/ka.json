@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "kadoe"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "kadoe-description.html"
-  }
-]
+[{"df":1,"postings":"data/search/postings/ka.json","token":"kadoe"},{"df":1,"postings":"data/search/postings/ka.json","token":"kadoe-description.html"}]

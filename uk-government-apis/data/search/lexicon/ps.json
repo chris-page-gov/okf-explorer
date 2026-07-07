@@ -1,17 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "psis"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "psl"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "psychiatric"
-  }
-]
+[{"df":4,"postings":"data/search/postings/ps.json","token":"ps2"},{"df":1,"postings":"data/search/postings/ps.json","token":"psga"},{"df":3,"postings":"data/search/postings/ps.json","token":"psma"},{"df":1,"postings":"data/search/postings/ps.json","token":"psma-inspire-wms-v1_0.doc"},{"df":1,"postings":"data/search/postings/ps.json","token":"psnci"},{"df":6,"postings":"data/search/postings/ps.json","token":"pspo"}]

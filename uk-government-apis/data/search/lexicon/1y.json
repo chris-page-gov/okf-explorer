@@ -1,7 +1,1 @@
-[
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "1-year"
-  }
-]
+[{"df":2,"postings":"data/search/postings/1y.json","token":"1-year"}]

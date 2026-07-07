@@ -1,12 +1,1 @@
-[
-  {
-    "df": 8,
-    "postings": "data/search/postings-0.json",
-    "token": "ireland"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "irr"
-  }
-]
+[{"df":581,"postings":"data/search/postings/ir.json","token":"ireland"},{"df":116,"postings":"data/search/postings/ir.json","token":"irish"},{"df":1,"postings":"data/search/postings/ir.json","token":"irishsea_final_may2016.zip"},{"df":1,"postings":"data/search/postings/ir.json","token":"ironstone"},{"df":1,"postings":"data/search/postings/ir.json","token":"irr"},{"df":1,"postings":"data/search/postings/ir.json","token":"irreplaceable"},{"df":4,"postings":"data/search/postings/ir.json","token":"irrespective"},{"df":2,"postings":"data/search/postings/ir.json","token":"irs"}]

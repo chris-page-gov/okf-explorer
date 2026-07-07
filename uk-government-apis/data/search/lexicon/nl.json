@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nlisted"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nlisting"
-  }
-]
+[{"df":1,"postings":"data/search/postings/nl.json","token":"nlincs_mapsources"},{"df":1,"postings":"data/search/postings/nl.json","token":"nlud"}]

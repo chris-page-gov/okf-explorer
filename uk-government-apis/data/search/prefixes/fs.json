@@ -1,8 +1,1 @@
-{
-  "fsa": [
-    {
-      "df": 2,
-      "token": "fsa"
-    }
-  ]
-}
+{"fsa":[{"df":2,"token":"fsa"}]}

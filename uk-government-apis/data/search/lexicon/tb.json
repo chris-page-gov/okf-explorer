@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "tbr"
-  }
-]
+[{"df":1,"postings":"data/search/postings/tb.json","token":"tb"},{"df":2,"postings":"data/search/postings/tb.json","token":"tb-c11"},{"df":2,"postings":"data/search/postings/tb.json","token":"tb-housing-allocations1"},{"df":2,"postings":"data/search/postings/tb.json","token":"tb-policy-s6-local-shopping-frontage1"},{"df":2,"postings":"data/search/postings/tb.json","token":"tb-ss1-ddb1"},{"df":1,"postings":"data/search/postings/tb.json","token":"tb53pf47"},{"df":1,"postings":"data/search/postings/tb.json","token":"tb_c1"},{"df":1,"postings":"data/search/postings/tb.json","token":"tb_housing_allocations"},{"df":1,"postings":"data/search/postings/tb.json","token":"tb_policy_s6_local_shopping_frontage"},{"df":3,"postings":"data/search/postings/tb.json","token":"tbc"},{"df":1,"postings":"data/search/postings/tb.json","token":"tbh"},{"df":1,"postings":"data/search/postings/tb.json","token":"tbr"}]

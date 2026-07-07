@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "gca"
-  }
-]
+[{"df":1,"postings":"data/search/postings/gc.json","token":"gca"},{"df":1,"postings":"data/search/postings/gc.json","token":"gcb_in_united_kingdom"}]

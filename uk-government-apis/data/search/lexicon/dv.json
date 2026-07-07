@@ -1,7 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "dvla"
-  }
-]
+[{"df":1,"postings":"data/search/postings/dv.json","token":"dvl_article_4"},{"df":1,"postings":"data/search/postings/dv.json","token":"dvl_conservation_areas"},{"df":1,"postings":"data/search/postings/dv.json","token":"dvl_listed_buildings"},{"df":3,"postings":"data/search/postings/dv.json","token":"dvla"}]

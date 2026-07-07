@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "hdr"
-  }
-]
+[{"df":1,"postings":"data/search/postings/hd.json","token":"hda"},{"df":1,"postings":"data/search/postings/hd.json","token":"hdas"},{"df":2,"postings":"data/search/postings/hd.json","token":"hdc"},{"df":1,"postings":"data/search/postings/hd.json","token":"hdc_3825_lb_ogl_wgs84"},{"df":1,"postings":"data/search/postings/hd.json","token":"hdc_open_government_licence_map"}]

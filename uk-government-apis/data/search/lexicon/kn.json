@@ -1,17 +1,1 @@
-[
-  {
-    "df": 16,
-    "postings": "data/search/postings-0.json",
-    "token": "know"
-  },
-  {
-    "df": 23,
-    "postings": "data/search/postings-0.json",
-    "token": "known"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "knows"
-  }
-]
+[{"df":1,"postings":"data/search/postings/kn.json","token":"knight"},{"df":8,"postings":"data/search/postings/kn.json","token":"know"},{"df":15,"postings":"data/search/postings/kn.json","token":"knowledge"},{"df":209,"postings":"data/search/postings/kn.json","token":"known"},{"df":1,"postings":"data/search/postings/kn.json","token":"knows"},{"df":16,"postings":"data/search/postings/kn.json","token":"knowsley"},{"df":16,"postings":"data/search/postings/kn.json","token":"knowsley-borough-council"},{"df":2,"postings":"data/search/postings/kn.json","token":"knowsley-residential-areas"},{"df":2,"postings":"data/search/postings/kn.json","token":"knowsley-tree-preservation-orders"}]

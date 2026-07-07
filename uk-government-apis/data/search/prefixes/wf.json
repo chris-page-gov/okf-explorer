@@ -1,8 +1,1 @@
-{
-  "wfs": [
-    {
-      "df": 1,
-      "token": "wfs"
-    }
-  ]
-}
+{"wfd":[{"df":3,"token":"wfd95"}],"wfd9":[{"df":3,"token":"wfd95"}],"wfd95":[{"df":3,"token":"wfd95"}],"wfs":[{"df":2495,"token":"wfs"},{"df":836,"token":"wfsserver"},{"df":16,"token":"wfs.svc"},{"df":7,"token":"wfs.exe"},{"df":6,"token":"wfs_wms"},{"df":1,"token":"wfs.impl"}],"wfs.":[{"df":16,"token":"wfs.svc"},{"df":7,"token":"wfs.exe"},{"df":1,"token":"wfs.impl"}],"wfs.e":[{"df":7,"token":"wfs.exe"}],"wfs.ex":[{"df":7,"token":"wfs.exe"}],"wfs.exe":[{"df":7,"token":"wfs.exe"}],"wfs.i":[{"df":1,"token":"wfs.impl"}],"wfs.im":[{"df":1,"token":"wfs.impl"}],"wfs.imp":[{"df":1,"token":"wfs.impl"}],"wfs.impl":[{"df":1,"token":"wfs.impl"}],"wfs.s":[{"df":16,"token":"wfs.svc"}],"wfs.sv":[{"df":16,"token":"wfs.svc"}],"wfs.svc":[{"df":16,"token":"wfs.svc"}],"wfs_":[{"df":6,"token":"wfs_wms"}],"wfs_w":[{"df":6,"token":"wfs_wms"}],"wfs_wm":[{"df":6,"token":"wfs_wms"}],"wfs_wms":[{"df":6,"token":"wfs_wms"}],"wfss":[{"df":836,"token":"wfsserver"}],"wfsse":[{"df":836,"token":"wfsserver"}],"wfsser":[{"df":836,"token":"wfsserver"}],"wfsserv":[{"df":836,"token":"wfsserver"}],"wfsserve":[{"df":836,"token":"wfsserver"}]}

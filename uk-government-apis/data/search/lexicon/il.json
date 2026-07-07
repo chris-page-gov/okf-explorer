@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "illness"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "illustrates"
-  }
-]
+[{"df":7,"postings":"data/search/postings/il.json","token":"il"},{"df":22,"postings":"data/search/postings/il.json","token":"ilkley"},{"df":7,"postings":"data/search/postings/il.json","token":"ilkley-moor-water-level-monitor"},{"df":2,"postings":"data/search/postings/il.json","token":"ill-considered"},{"df":5,"postings":"data/search/postings/il.json","token":"illegal"},{"df":1,"postings":"data/search/postings/il.json","token":"illness"},{"df":6,"postings":"data/search/postings/il.json","token":"illustrate"},{"df":24,"postings":"data/search/postings/il.json","token":"illustrates"},{"df":7,"postings":"data/search/postings/il.json","token":"illustrating"},{"df":1,"postings":"data/search/postings/il.json","token":"illustrative"}]

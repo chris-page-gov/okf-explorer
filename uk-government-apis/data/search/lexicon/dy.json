@@ -1,7 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "dynamic"
-  }
-]
+[{"df":6,"postings":"data/search/postings/dy.json","token":"dynamic"},{"df":2,"postings":"data/search/postings/dy.json","token":"dynamiccoast"}]

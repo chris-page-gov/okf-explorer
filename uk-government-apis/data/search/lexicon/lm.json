@@ -1,12 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "lmk"
-  },
-  {
-    "df": 6,
-    "postings": "data/search/postings-0.json",
-    "token": "lmk-key"
-  }
-]
+[{"df":3,"postings":"data/search/postings/lm.json","token":"lmk"},{"df":6,"postings":"data/search/postings/lm.json","token":"lmk-key"}]

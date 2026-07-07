@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "rs1"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "rsassa-pkcs1-v1_5"
-  }
-]
+[{"df":1,"postings":"data/search/postings/rs.json","token":"rs1"},{"df":1,"postings":"data/search/postings/rs.json","token":"rsassa-pkcs1-v1_5"}]

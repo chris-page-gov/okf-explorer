@@ -1,0 +1,47 @@
+{
+  "https://api.os.uk": {
+    "title": "Welcome to Ordnance Survey's APIs",
+    "description": "Access geospatial data made available by OS.",
+    "source_url": "https://api.os.uk/",
+    "links": [
+      {
+        "href": "https://api.os.uk/maps",
+        "rel": "api-grouping",
+        "type": "application/json",
+        "title": "OS Mapping APIs"
+      }
+    ]
+  },
+  "https://api.os.uk/maps": {
+    "title": "OS Mapping APIs",
+    "description": "The available Mapping APIs offered by Ordnance Survey.",
+    "source_url": "https://api.os.uk/maps",
+    "links": [
+      {
+        "href": "https://api.os.uk/maps/raster",
+        "rel": "api-grouping",
+        "type": "application/json",
+        "title": "OS Maps API"
+      }
+    ]
+  },
+  "https://api.os.uk/maps/raster": {
+    "title": "OS Maps API",
+    "description": "Ordnance Survey raster map service.",
+    "source_url": "https://api.os.uk/maps/raster",
+    "links": [
+      {
+        "href": "https://api.os.uk/maps/raster/v1/wmts",
+        "rel": "service-endpoint",
+        "type": "application/xml",
+        "title": "OS Maps API - WMTS"
+      },
+      {
+        "href": "https://osdatahub.os.uk/docs/wmts/overview",
+        "rel": "documentation",
+        "type": "text/html",
+        "title": "OS Maps API: Overview"
+      }
+    ]
+  }
+}

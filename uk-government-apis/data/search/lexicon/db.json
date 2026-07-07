@@ -1,17 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "db"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "dbs"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "dbt"
-  }
-]
+[{"df":1,"postings":"data/search/postings/db.json","token":"db"},{"df":4,"postings":"data/search/postings/db.json","token":"db1e8af0f59f4aaf8ec5d21afe8f26b0"},{"df":9,"postings":"data/search/postings/db.json","token":"db247db4d43b41e486520025a08470e5"},{"df":9,"postings":"data/search/postings/db.json","token":"db536b4323db4af8a48fce0198587df1"},{"df":9,"postings":"data/search/postings/db.json","token":"db60171c73d649fb82d4d19a1b3f99f3"},{"df":9,"postings":"data/search/postings/db.json","token":"db77adcd7dff48b9bf0d118676902df5"},{"df":9,"postings":"data/search/postings/db.json","token":"db8f55b737474df69cebdd0b76deff3f"},{"df":4,"postings":"data/search/postings/db.json","token":"db9328469faa4fd9badfb532dfbcb32b"},{"df":9,"postings":"data/search/postings/db.json","token":"dba0e31028394c2cb4aab330c107e02b"},{"df":1,"postings":"data/search/postings/db.json","token":"dbt"}]

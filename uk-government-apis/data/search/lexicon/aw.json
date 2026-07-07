@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "awarding"
-  },
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "aware"
-  }
-]
+[{"df":18,"postings":"data/search/postings/aw.json","token":"award"},{"df":30,"postings":"data/search/postings/aw.json","token":"awarded"},{"df":1,"postings":"data/search/postings/aw.json","token":"awarding"},{"df":14,"postings":"data/search/postings/aw.json","token":"awards"},{"df":97,"postings":"data/search/postings/aw.json","token":"aware"},{"df":1,"postings":"data/search/postings/aw.json","token":"awareness"},{"df":3,"postings":"data/search/postings/aw.json","token":"away"},{"df":1,"postings":"data/search/postings/aw.json","token":"aways"},{"df":1,"postings":"data/search/postings/aw.json","token":"awdurdodir"},{"df":6,"postings":"data/search/postings/aw.json","token":"aws2.caris.com"}]

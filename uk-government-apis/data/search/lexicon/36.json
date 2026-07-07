@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "365"
-  }
-]
+[{"df":7,"postings":"data/search/postings/36.json","token":"3.6mb"},{"df":447,"postings":"data/search/postings/36.json","token":"36"},{"df":7,"postings":"data/search/postings/36.json","token":"36.3"},{"df":9,"postings":"data/search/postings/36.json","token":"360001be878b421fa985de31f9d26610"},{"df":9,"postings":"data/search/postings/36.json","token":"361be5d5019f495f9b2e09e067260e18"},{"df":3,"postings":"data/search/postings/36.json","token":"362"},{"df":3,"postings":"data/search/postings/36.json","token":"363"},{"df":3,"postings":"data/search/postings/36.json","token":"364"},{"df":1,"postings":"data/search/postings/36.json","token":"364593.178000"},{"df":9,"postings":"data/search/postings/36.json","token":"364ad086a1d34a95bf5ccc69d8956aa1"},{"df":3,"postings":"data/search/postings/36.json","token":"365"},{"df":7,"postings":"data/search/postings/36.json","token":"365kb"},{"df":3,"postings":"data/search/postings/36.json","token":"366"},{"df":1,"postings":"data/search/postings/36.json","token":"366729f85f3949e3815b77e82235c4a6_12"},{"df":3,"postings":"data/search/postings/36.json","token":"367"},{"df":3,"postings":"data/search/postings/36.json","token":"368"},{"df":7,"postings":"data/search/postings/36.json","token":"368kb"},{"df":3,"postings":"data/search/postings/36.json","token":"369"},{"df":4,"postings":"data/search/postings/36.json","token":"369640e162e94c86bf79958d118d1d00"},{"df":9,"postings":"data/search/postings/36.json","token":"36b8c274f3aa4a0dacef053f185902b8"},{"df":9,"postings":"data/search/postings/36.json","token":"36da371d8a424d659ed5f2cb11b06447"},{"df":14,"postings":"data/search/postings/36.json","token":"36kb"}]

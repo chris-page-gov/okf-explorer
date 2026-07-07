@@ -1,8 +1,1 @@
-{
-  "ehr": [
-    {
-      "df": 1,
-      "token": "ehr"
-    }
-  ]
-}
+{"ehr":[{"df":1,"token":"ehr"}]}

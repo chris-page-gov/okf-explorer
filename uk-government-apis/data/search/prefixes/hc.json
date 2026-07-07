@@ -1,8 +1,1 @@
-{
-  "hc5": [
-    {
-      "df": 1,
-      "token": "hc5"
-    }
-  ]
-}
+{"hc1":[{"df":3,"token":"hc14-open-space-and-recreation"},{"df":2,"token":"hc14_open_space_and_outdoor_recreation"},{"df":2,"token":"hc16_schools"},{"df":1,"token":"hc14"}],"hc14":[{"df":3,"token":"hc14-open-space-and-recreation"},{"df":2,"token":"hc14_open_space_and_outdoor_recreation"},{"df":1,"token":"hc14"}],"hc14-":[{"df":3,"token":"hc14-open-space-and-recreation"}],"hc14-o":[{"df":3,"token":"hc14-open-space-and-recreation"}],"hc14-op":[{"df":3,"token":"hc14-open-space-and-recreation"}],"hc14-ope":[{"df":3,"token":"hc14-open-space-and-recreation"}],"hc14_":[{"df":2,"token":"hc14_open_space_and_outdoor_recreation"}],"hc14_o":[{"df":2,"token":"hc14_open_space_and_outdoor_recreation"}],"hc14_op":[{"df":2,"token":"hc14_open_space_and_outdoor_recreation"}],"hc14_ope":[{"df":2,"token":"hc14_open_space_and_outdoor_recreation"}],"hc16":[{"df":2,"token":"hc16_schools"}],"hc16_":[{"df":2,"token":"hc16_schools"}],"hc16_s":[{"df":2,"token":"hc16_schools"}],"hc16_sc":[{"df":2,"token":"hc16_schools"}],"hc16_sch":[{"df":2,"token":"hc16_schools"}],"hc2":[{"df":2,"token":"hc2_housing_site_allocations"},{"df":1,"token":"hc2"}],"hc2_":[{"df":2,"token":"hc2_housing_site_allocations"}],"hc2_h":[{"df":2,"token":"hc2_housing_site_allocations"}],"hc2_ho":[{"df":2,"token":"hc2_housing_site_allocations"}],"hc2_hou":[{"df":2,"token":"hc2_housing_site_allocations"}],"hc2_hous":[{"df":2,"token":"hc2_housing_site_allocations"}],"hc6":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"},{"df":1,"token":"hc6"}],"hc6_":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"}],"hc6_g":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"}],"hc6_gy":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"}],"hc6_gyp":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"}],"hc6_gyps":[{"df":2,"token":"hc6_gypsy_and_traveller_provision"}],"hca":[{"df":7,"token":"hca"}]}

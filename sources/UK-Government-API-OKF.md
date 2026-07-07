@@ -345,6 +345,53 @@ I would build the corpus from these source classes:
 | Manual curation/self-declaration           | Needed for restricted/internal APIs and access policy.                                                                                                                            |
 | Validation/enrichment pipeline             | Contract validation, link checking, freshness checks, security linting, standards conformance and quality scoring.                                                                |
 
+### Source tiers and adapters
+
+The enriched pack must not treat every discovered URL as the same kind of API.
+It should record the source tier, adapter, evidence and confidence for each
+record so the Explorer can distinguish declared API products from observed data
+service endpoints.
+
+| Source tier               | Meaning                                                                                                              | Initial adapters                                                                                                                     |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `declared_api_catalogue`  | A named API product declared through the GOV.UK API Catalogue or an equivalent authoritative catalogue submission.    | `api_gov_uk_catalogue` for `https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv`.                        |
+| `provider_native_api`     | A provider-owned API root, index or developer portal that describes its own APIs and endpoint groups.                 | `ordnance_survey_api_os_uk` for `https://api.os.uk/`; `ons_beta_api` for `https://api.beta.ons.gov.uk/v1` and ONS Developer Hub.     |
+| `data_access_endpoint`    | A dataset/resource endpoint that exposes government data through a service protocol but is not itself a declared API product. | `data_gov_uk_ckan` over paginated CKAN `package_search` records for WMS, WFS, WMTS, WCS, OGC API, ArcGIS/Esri REST, SPARQL and API. |
+| `contract_discovery`      | A discovered machine-readable contract or capability document that describes endpoints, operations or schemas.        | OpenAPI, WSDL, OGC capabilities, SPARQL service descriptions, ArcGIS service metadata and provider-published YAML/JSON contracts.    |
+| `provider_portal_allowlist` | Official public-sector domains selected for targeted enrichment. No broad web crawling in v1.                      | Provider domains with explicit allowlist entries and source notes.                                                                    |
+
+The initial provider-native adapters should include two known high-value
+sources:
+
+- **Ordnance Survey**: recursively traverse `https://api.os.uk/` JSON link
+  documents. The root groups APIs into mapping, features, search, downloads and
+  positioning. Service endpoints, documentation links and service descriptions
+  should be retained as typed evidence.
+- **Office for National Statistics**: model `https://api.beta.ons.gov.uk/v1` as
+  the ONS Beta API product. Harvest the published datasets endpoint as `Data
+  Product` records and record endpoint templates for datasets, editions,
+  versions, observations/filtering, code lists and topics. The ONS Developer
+  Hub states the API is open and unrestricted with no API keys required.
+
+### Canonical counts
+
+The descriptor and overview must separate breadth from assurance. The following
+counts are canonical:
+
+| Count                          | Meaning                                                                                   |
+| ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `declared_api_products`        | API products declared by GOV.UK API Catalogue or equivalent official catalogue source.     |
+| `provider_native_api_products` | Provider-owned API products or API groups discovered from official provider API indexes.   |
+| `data_access_endpoints`        | Data service endpoint records harvested from data.gov.uk, provider indexes or contracts.   |
+| `data_products`                | Dataset/data-product records exposed by one or more APIs or endpoint templates.            |
+| `contracts`                    | OpenAPI, WSDL, OGC capabilities, SPARQL service descriptions or ArcGIS metadata records.   |
+| `operations`                   | Parsed or templated callable operations.                                                   |
+| `schemas`                      | Parsed schemas, code lists, dimensions or schema-like structures.                          |
+
+The Explorer should continue to expose compatibility counts such as `datasets`,
+`resources`, `publishers` and `relationships`, but those are implementation
+containers, not the authoritative API estate counts.
+
 For the “all UK Government APIs” ambition, I would distinguish three statuses:
 
 | Status     | Meaning                                                                                                 |
@@ -694,15 +741,21 @@ For large scale, publish like the CKAN fixture: a small descriptor and overview 
 A practical first phase would be:
 
 1. **Harvest GOV.UK API Catalogue** into `API Product` concepts.
-2. **Normalise organisations** against a canonical public-body list.
-3. **Classify visibility/access** from catalogue and documentation text.
-4. **Find contracts**: OpenAPI, AsyncAPI, WSDL, GraphQL schemas, docs pages.
-5. **Generate right-card metadata**: owner, source, access conditions, docs, known endpoints, contract availability.
-6. **Build analysis overview**: counts, facets, warnings, top publishers, missing contracts.
-7. **Add typed relationships**: publisher, docs, contract, service, standards.
-8. **Add scorecard v0**: documentation, contract, lifecycle, access clarity.
-9. **Render samples as static placeholders only**.
-10. **Do not implement credential storage in v0**; model credential requirements only.
+2. **Harvest provider-native APIs** from the initial allowlist: Ordnance Survey
+   `api.os.uk` and the ONS Beta API.
+3. **Harvest data.gov.uk API-like resources** as `Data Access API Endpoint`
+   records, not as declared API products.
+4. **Normalise organisations** against a canonical public-body list.
+5. **Classify visibility/access** from catalogue and documentation text.
+6. **Find contracts**: OpenAPI, AsyncAPI, WSDL, OGC capabilities, SPARQL service
+   descriptions, ArcGIS service metadata and docs pages.
+7. **Generate right-card metadata**: owner, source, access conditions, docs, known endpoints, contract availability.
+8. **Build analysis overview**: split counts, facets, warnings, top publishers, missing contracts.
+9. **Add typed relationships**: publisher, docs, contract, service, standards,
+   data-product, endpoint and provider-portal relationships.
+10. **Add scorecard v0**: documentation, contract, lifecycle, access clarity.
+11. **Render samples as static placeholders only**.
+12. **Do not implement credential storage in v0**; model credential requirements only.
 
 Then phase two:
 

@@ -1,7 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "mfn"
-  }
-]
+[{"df":14,"postings":"data/search/postings/mf.json","token":"mfa"},{"df":1,"postings":"data/search/postings/mf.json","token":"mfap"},{"df":1,"postings":"data/search/postings/mf.json","token":"mfap1"},{"df":3,"postings":"data/search/postings/mf.json","token":"mfb"}]

@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "58"
-  }
-]
+[{"df":7,"postings":"data/search/postings/58.json","token":"5.8"},{"df":49,"postings":"data/search/postings/58.json","token":"58"},{"df":4,"postings":"data/search/postings/58.json","token":"580000.0"},{"df":4,"postings":"data/search/postings/58.json","token":"58175f529c064279a6ba48472eb61264"},{"df":9,"postings":"data/search/postings/58.json","token":"58235b7c68214270965eda6213a4936a"},{"df":9,"postings":"data/search/postings/58.json","token":"58247b4f427443d381d7d82e3a7565e1"},{"df":9,"postings":"data/search/postings/58.json","token":"583640bf6fe84908b7910290ad4c119d"},{"df":9,"postings":"data/search/postings/58.json","token":"5872228424e64df297376651a6cb3ffa"},{"df":12,"postings":"data/search/postings/58.json","token":"588"},{"df":10,"postings":"data/search/postings/58.json","token":"58b0dfa605d5459b80bf08082999b27c_0"},{"df":1,"postings":"data/search/postings/58.json","token":"58b0dfa605d5459b80bf08082999b27c_0.csv"},{"df":1,"postings":"data/search/postings/58.json","token":"58b0dfa605d5459b80bf08082999b27c_0.geojson"},{"df":1,"postings":"data/search/postings/58.json","token":"58b0dfa605d5459b80bf08082999b27c_0.kml"},{"df":1,"postings":"data/search/postings/58.json","token":"58b0dfa605d5459b80bf08082999b27c_0.zip"},{"df":9,"postings":"data/search/postings/58.json","token":"58b8efa7b26d4f528ddc04e6be5fbc81"},{"df":4,"postings":"data/search/postings/58.json","token":"58bb0575f5f7477ab7a19a3c0366153d"},{"df":9,"postings":"data/search/postings/58.json","token":"58e0179684854a9bab22c3af9825de20"},{"df":4,"postings":"data/search/postings/58.json","token":"58e34e32a0194f1597d477f5ba93961b"}]

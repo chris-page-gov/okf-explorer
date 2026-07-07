@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "srv"
-  }
-]
+[{"df":1,"postings":"data/search/postings/sr.json","token":"sr1"},{"df":1,"postings":"data/search/postings/sr.json","token":"sr10"},{"df":1,"postings":"data/search/postings/sr.json","token":"sr1a"},{"df":1,"postings":"data/search/postings/sr.json","token":"sr2"},{"df":24,"postings":"data/search/postings/sr.json","token":"srs"},{"df":19,"postings":"data/search/postings/sr.json","token":"srsname"},{"df":1,"postings":"data/search/postings/sr.json","token":"srv"},{"df":2,"postings":"data/search/postings/sr.json","token":"srz"}]

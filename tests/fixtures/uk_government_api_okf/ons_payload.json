@@ -1,0 +1,55 @@
+{
+  "root": {
+    "api": {
+      "data": {
+        "requestHandlers": {
+          "GET": {
+            "handlerMethod": "read"
+          }
+        }
+      }
+    }
+  },
+  "datasets": [
+    {
+      "id": "trade",
+      "title": "Trade in goods",
+      "description": "Country by commodity data on the UK's trade in goods.",
+      "last_updated": "2026-02-19T09:48:58.687Z",
+      "state": "published",
+      "release_frequency": "Monthly",
+      "links": {
+        "self": {
+          "href": "https://api.beta.ons.gov.uk/v1/datasets/trade"
+        },
+        "latest_version": {
+          "href": "https://api.beta.ons.gov.uk/v1/datasets/trade/editions/time-series/versions/65"
+        }
+      }
+    }
+  ],
+  "topics": [
+    {
+      "id": "1245",
+      "slug": "economy",
+      "title": "Economy",
+      "description": "UK economic activity.",
+      "state": "published",
+      "links": {
+        "self": {
+          "href": "https://api.beta.ons.gov.uk/v1/topics/1245"
+        }
+      }
+    }
+  ],
+  "code_lists": [
+    {
+      "links": {
+        "self": {
+          "id": "trade-direction",
+          "href": "http://api.beta.ons.gov.uk/v1/code-lists/trade-direction"
+        }
+      }
+    }
+  ]
+}

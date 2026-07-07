@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "dfe"
-  },
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "dfe-digital"
-  }
-]
+[{"df":9,"postings":"data/search/postings/df.json","token":"df1c9d2e44ba4ffeba31f9b110d84643"},{"df":9,"postings":"data/search/postings/df.json","token":"df2e1177524c42db9ba054a86b8f32c3"},{"df":4,"postings":"data/search/postings/df.json","token":"df31d3055d1848aca9049a5cec462c8e"},{"df":4,"postings":"data/search/postings/df.json","token":"df34a59d9f0446b5b107edb0a8e13ab8"},{"df":9,"postings":"data/search/postings/df.json","token":"df8297765dd04c469c33b0c34adac822"},{"df":4,"postings":"data/search/postings/df.json","token":"df834d6d654d4f4a9a211fdbbb8893bd"},{"df":4,"postings":"data/search/postings/df.json","token":"df9a8775ad9e432fada2d928c587c3dd"},{"df":9,"postings":"data/search/postings/df.json","token":"dfa11483a57a4b98b73278eeb744d260"},{"df":1,"postings":"data/search/postings/df.json","token":"dfe"},{"df":3,"postings":"data/search/postings/df.json","token":"dfe-digital"},{"df":4,"postings":"data/search/postings/df.json","token":"dfe0fe8c1654499dbab1e548edb2eeec"},{"df":5,"postings":"data/search/postings/df.json","token":"dfed51019a8a47cdaaec4f1e4f6443f8"},{"df":9,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_0"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_0.csv"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_0.geojson"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_0.kml"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_0.zip"},{"df":7,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_1"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_1.csv"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_1.geojson"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_1.kml"},{"df":1,"postings":"data/search/postings/df.json","token":"dff11a0421c9494e9360277d47cf6cad_1.zip"}]

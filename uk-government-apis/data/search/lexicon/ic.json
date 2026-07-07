@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "icd"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "icd-10"
-  }
-]
+[{"df":77,"postings":"data/search/postings/ic.json","token":"icb"},{"df":7,"postings":"data/search/postings/ic.json","token":"icb22"},{"df":26,"postings":"data/search/postings/ic.json","token":"icb22cd"},{"df":14,"postings":"data/search/postings/ic.json","token":"icb22cdh"},{"df":19,"postings":"data/search/postings/ic.json","token":"icb22nm"},{"df":12,"postings":"data/search/postings/ic.json","token":"icb22nmw"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb23cd"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb23cdh"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb23nm"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb24cd"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb24cdh"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb24nm"},{"df":7,"postings":"data/search/postings/ic.json","token":"icb25cd"},{"df":7,"postings":"data/search/postings/ic.json","token":"icb25cdh"},{"df":7,"postings":"data/search/postings/ic.json","token":"icb25nm"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb26cd"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb26cdh"},{"df":28,"postings":"data/search/postings/ic.json","token":"icb26nm"},{"df":1,"postings":"data/search/postings/ic.json","token":"icb_apr_2023_en_nc"},{"df":1,"postings":"data/search/postings/ic.json","token":"icb_apr_2026_en_nc"},{"df":1,"postings":"data/search/postings/ic.json","token":"icb_dec_2024_en_nc"},{"df":1,"postings":"data/search/postings/ic.json","token":"icb_jul_2022_en_bgc_v3"},{"df":1,"postings":"data/search/postings/ic.json","token":"icb_jul_2022_en_buc_v3"},{"df":1,"postings":"data/search/postings/ic.json","token":"icd"},{"df":1,"postings":"data/search/postings/ic.json","token":"icd-10"},{"df":1,"postings":"data/search/postings/ic.json","token":"ice"},{"df":70,"postings":"data/search/postings/ic.json","token":"ices"}]

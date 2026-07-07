@@ -1,7 +1,1 @@
-[
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "equivalent"
-  }
-]
+[{"df":8,"postings":"data/search/postings/eq.json","token":"equal"},{"df":2,"postings":"data/search/postings/eq.json","token":"equals"},{"df":8,"postings":"data/search/postings/eq.json","token":"equates"},{"df":1,"postings":"data/search/postings/eq.json","token":"equations"},{"df":1,"postings":"data/search/postings/eq.json","token":"equest"},{"df":3,"postings":"data/search/postings/eq.json","token":"equipment"},{"df":2,"postings":"data/search/postings/eq.json","token":"equipped"},{"df":9,"postings":"data/search/postings/eq.json","token":"equity"},{"df":1,"postings":"data/search/postings/eq.json","token":"equity-loans-ons"},{"df":1,"postings":"data/search/postings/eq.json","token":"equity-loans-ons-parl-cons"},{"df":1,"postings":"data/search/postings/eq.json","token":"equity-loans-postcode-dis"},{"df":1,"postings":"data/search/postings/eq.json","token":"equity-loans-postcode-sec"},{"df":19,"postings":"data/search/postings/eq.json","token":"equivalents"}]

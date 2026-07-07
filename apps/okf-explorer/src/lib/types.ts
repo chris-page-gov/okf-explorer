@@ -215,6 +215,11 @@ export type SearchResultDoc = {
   documentation_host?: string;
   access_model?: string;
   contract_status?: string;
+  record_type?: string;
+  source_tier?: string;
+  source_adapter?: string;
+  confidence?: string;
+  protocol?: string[];
   documentation?: string;
   url?: string;
   open: string;
@@ -267,6 +272,11 @@ export type LargeDataset = {
   url?: string;
   state?: string;
   type?: string;
+  record_type?: string;
+  source_tier?: string;
+  source_adapter?: string;
+  confidence?: string;
+  protocol?: string[];
   isopen?: boolean;
   private?: boolean;
   extras?: Record<string, unknown>;
