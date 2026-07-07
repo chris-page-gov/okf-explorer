@@ -8,6 +8,7 @@ The Svelte OKF Explorer can load OKF bundles from this repository or from any
 other public HTTPS URL.
 
 - [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
+- [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
 - [Read the illustrated "make and publish your own OKF bundle" manual][manual]
 
 The CKAN example demonstrates the main no-install workflow: the Explorer is
@@ -15,6 +16,19 @@ hosted by this repository, while the bundle descriptor and generated data live
 in the separate
 [`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
 repository.
+
+The UK Government APIs exemplar is published as a large-corpus OKF descriptor:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+```
+
+During pull-request review, the same descriptor can be loaded from the branch
+snapshot before GitHub Pages has been updated:
+
+```text
+https://raw.githubusercontent.com/chris-page-gov/ai-infrastructure-wiki/codex/UK-Government-API-OKF/uk-government-apis/okf-explorer.json
+```
 
 To open your own public bundle, use this URL pattern:
 
@@ -154,4 +168,5 @@ The included workflow publishes the static site from `_site/` when pushed to
 Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 [manual]: docs/use-okf-explorer.md
