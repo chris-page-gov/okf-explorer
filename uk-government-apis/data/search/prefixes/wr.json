@@ -1,0 +1,82 @@
+{
+  "wre": [
+    {
+      "df": 1,
+      "token": "wreck"
+    },
+    {
+      "df": 1,
+      "token": "wrecks"
+    }
+  ],
+  "wrec": [
+    {
+      "df": 1,
+      "token": "wreck"
+    },
+    {
+      "df": 1,
+      "token": "wrecks"
+    }
+  ],
+  "wreck": [
+    {
+      "df": 1,
+      "token": "wreck"
+    },
+    {
+      "df": 1,
+      "token": "wrecks"
+    }
+  ],
+  "wrecks": [
+    {
+      "df": 1,
+      "token": "wrecks"
+    }
+  ],
+  "wri": [
+    {
+      "df": 5,
+      "token": "write"
+    },
+    {
+      "df": 1,
+      "token": "writing"
+    }
+  ],
+  "writ": [
+    {
+      "df": 5,
+      "token": "write"
+    },
+    {
+      "df": 1,
+      "token": "writing"
+    }
+  ],
+  "write": [
+    {
+      "df": 5,
+      "token": "write"
+    }
+  ],
+  "writi": [
+    {
+      "df": 1,
+      "token": "writing"
+    }
+  ],
+  "writin": [
+    {
+      "df": 1,
+      "token": "writing"
+    }
+  ],
+  "writing": [
+    {
+      "df": 1,
+      "token": "writing"
+    }
+  ]
+}

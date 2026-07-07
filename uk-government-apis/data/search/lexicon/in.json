@@ -1,0 +1,592 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "in-app"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "inactive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inbound"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inbox"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "incapacity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "incident"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "incidents"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "include"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "included"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "includes"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "including"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inclusion"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "income"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "incomplete"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "incorporate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "increase"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "increases"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "indent"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "independent"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "index"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "index.html"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "indicate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "indicated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "indicates"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "indicative"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "indicator"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "individual"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-benefits"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-calculations-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-employment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-income"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-losses-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individual-tax"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individually"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "individuals"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "industry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "infant"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "infirmary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "info"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "inform"
+  },
+  {
+    "df": 99,
+    "postings": "data/search/postings-0.json",
+    "token": "information"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "information-standards"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "information.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "information.one"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "information.spine"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "information.the"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "informational"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "informationas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "informationthere"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "informationyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "informative"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "infrastructure"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "initial"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "initiative"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "injury"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inland"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "innovative"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "innovators"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "inpatient"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "input"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inputs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inside"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "insight"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "insights"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "insolvency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "insolvency-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "insolvency-service-debt-respite-scheme-breathing-space"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "inspire"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inspire.ec.europa.eu"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "install"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "installations"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "instance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "instant"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "instead"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "instead.it"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "insteadthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "institutions"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "insurance"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "integrate"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "integrated"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "integrating"
+  },
+  {
+    "df": 27,
+    "postings": "data/search/postings-0.json",
+    "token": "integration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "integrations"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "intelligent"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "intended"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "interact"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "interaction"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interaction.for"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "interactions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interactions.this"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "interactive"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "interacts"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "interest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interest-free"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interest-restriction-return"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "interested"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "interface"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interim"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "intermediary"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "internal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "internal-only"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "international"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "internet"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "intersect"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "interval"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "intrinsic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "introduced"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "introduces"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "introduction"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "inventory"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "invest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "investigation"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "investigations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "investing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "involve"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "involved"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "involves"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "involving"
+  }
+]

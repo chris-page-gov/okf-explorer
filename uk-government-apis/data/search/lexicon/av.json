@@ -1,0 +1,32 @@
+[
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "availability"
+  },
+  {
+    "df": 44,
+    "postings": "data/search/postings-0.json",
+    "token": "available"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "available.a"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "available.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "avcs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "avcs-online-discovery-api"
+  }
+]

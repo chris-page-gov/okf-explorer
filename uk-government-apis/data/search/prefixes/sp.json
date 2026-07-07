@@ -1,0 +1,646 @@
+{
+  "spa": [
+    {
+      "df": 5,
+      "token": "spatial"
+    },
+    {
+      "df": 4,
+      "token": "sparql"
+    },
+    {
+      "df": 1,
+      "token": "space"
+    },
+    {
+      "df": 1,
+      "token": "spaces"
+    },
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spac": [
+    {
+      "df": 1,
+      "token": "space"
+    },
+    {
+      "df": 1,
+      "token": "spaces"
+    }
+  ],
+  "space": [
+    {
+      "df": 1,
+      "token": "space"
+    },
+    {
+      "df": 1,
+      "token": "spaces"
+    }
+  ],
+  "spaces": [
+    {
+      "df": 1,
+      "token": "spaces"
+    }
+  ],
+  "spar": [
+    {
+      "df": 4,
+      "token": "sparql"
+    }
+  ],
+  "sparq": [
+    {
+      "df": 4,
+      "token": "sparql"
+    }
+  ],
+  "sparql": [
+    {
+      "df": 4,
+      "token": "sparql"
+    }
+  ],
+  "spat": [
+    {
+      "df": 5,
+      "token": "spatial"
+    },
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spati": [
+    {
+      "df": 5,
+      "token": "spatial"
+    },
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spatia": [
+    {
+      "df": 5,
+      "token": "spatial"
+    },
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spatial": [
+    {
+      "df": 5,
+      "token": "spatial"
+    },
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spatiald": [
+    {
+      "df": 1,
+      "token": "spatialdata.gov.scot"
+    }
+  ],
+  "spe": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "spec"
+    },
+    {
+      "df": 1,
+      "token": "special"
+    },
+    {
+      "df": 1,
+      "token": "specialist"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    },
+    {
+      "df": 1,
+      "token": "specify"
+    }
+  ],
+  "spec": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "spec"
+    },
+    {
+      "df": 1,
+      "token": "special"
+    },
+    {
+      "df": 1,
+      "token": "specialist"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    },
+    {
+      "df": 1,
+      "token": "specify"
+    }
+  ],
+  "speci": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "special"
+    },
+    {
+      "df": 1,
+      "token": "specialist"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    },
+    {
+      "df": 1,
+      "token": "specify"
+    }
+  ],
+  "specia": [
+    {
+      "df": 1,
+      "token": "special"
+    },
+    {
+      "df": 1,
+      "token": "specialist"
+    }
+  ],
+  "special": [
+    {
+      "df": 1,
+      "token": "special"
+    },
+    {
+      "df": 1,
+      "token": "specialist"
+    }
+  ],
+  "speciali": [
+    {
+      "df": 1,
+      "token": "specialist"
+    }
+  ],
+  "specif": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    },
+    {
+      "df": 1,
+      "token": "specify"
+    }
+  ],
+  "specifi": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    }
+  ],
+  "specific": [
+    {
+      "df": 23,
+      "token": "specific"
+    },
+    {
+      "df": 6,
+      "token": "specification"
+    },
+    {
+      "df": 6,
+      "token": "specifications"
+    },
+    {
+      "df": 4,
+      "token": "specifications.before"
+    },
+    {
+      "df": 3,
+      "token": "specifically"
+    },
+    {
+      "df": 1,
+      "token": "specification.you"
+    }
+  ],
+  "specifie": [
+    {
+      "df": 9,
+      "token": "specified"
+    },
+    {
+      "df": 1,
+      "token": "specifies"
+    }
+  ],
+  "specify": [
+    {
+      "df": 1,
+      "token": "specify"
+    }
+  ],
+  "spi": [
+    {
+      "df": 13,
+      "token": "spine"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    },
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    },
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spin": [
+    {
+      "df": 13,
+      "token": "spine"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    },
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    },
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spine": [
+    {
+      "df": 13,
+      "token": "spine"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    },
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    },
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spine-": [
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    },
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    }
+  ],
+  "spine-d": [
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    }
+  ],
+  "spine-di": [
+    {
+      "df": 1,
+      "token": "spine-directory-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "spine-directory-service-ldap"
+    }
+  ],
+  "spine-e": [
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    }
+  ],
+  "spine-el": [
+    {
+      "df": 1,
+      "token": "spine-electronic-prescription-service-tracker-rest"
+    }
+  ],
+  "spine.": [
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spine.a": [
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spine.as": [
+    {
+      "df": 1,
+      "token": "spine.as"
+    }
+  ],
+  "spl": [
+    {
+      "df": 2,
+      "token": "split"
+    },
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "spli": [
+    {
+      "df": 2,
+      "token": "split"
+    },
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "split": [
+    {
+      "df": 2,
+      "token": "split"
+    },
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "splitt": [
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "splitti": [
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "splittin": [
+    {
+      "df": 1,
+      "token": "splitting"
+    }
+  ],
+  "spo": [
+    {
+      "df": 2,
+      "token": "sports"
+    },
+    {
+      "df": 2,
+      "token": "spot"
+    },
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "spon": [
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "spons": [
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "sponso": [
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "sponsor": [
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "sponsore": [
+    {
+      "df": 1,
+      "token": "sponsored"
+    }
+  ],
+  "spor": [
+    {
+      "df": 2,
+      "token": "sports"
+    }
+  ],
+  "sport": [
+    {
+      "df": 2,
+      "token": "sports"
+    }
+  ],
+  "sports": [
+    {
+      "df": 2,
+      "token": "sports"
+    }
+  ],
+  "spot": [
+    {
+      "df": 2,
+      "token": "spot"
+    }
+  ]
+}

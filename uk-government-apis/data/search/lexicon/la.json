@@ -1,0 +1,112 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "lab"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "laboratories"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "laboratories.this"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "laboratory"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lag"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "land"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "land_charges_bankruptcy_search"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "land_charges_full_search"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "landing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "landowner"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "landregistry.github.io"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "landslide"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "language"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "large"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "larger"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "last"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lasting"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "latest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "latest-activity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "laws"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "layer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "layers"
+  }
+]

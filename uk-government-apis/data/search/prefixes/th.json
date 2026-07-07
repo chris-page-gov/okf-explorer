@@ -1,0 +1,712 @@
+{
+  "tha": [
+    {
+      "df": 73,
+      "token": "that"
+    },
+    {
+      "df": 7,
+      "token": "than"
+    }
+  ],
+  "than": [
+    {
+      "df": 7,
+      "token": "than"
+    }
+  ],
+  "that": [
+    {
+      "df": 73,
+      "token": "that"
+    }
+  ],
+  "the": [
+    {
+      "df": 48,
+      "token": "their"
+    },
+    {
+      "df": 32,
+      "token": "these"
+    },
+    {
+      "df": 21,
+      "token": "they"
+    },
+    {
+      "df": 12,
+      "token": "there"
+    },
+    {
+      "df": 9,
+      "token": "them"
+    },
+    {
+      "df": 7,
+      "token": "then"
+    },
+    {
+      "df": 3,
+      "token": "therefore"
+    },
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    },
+    {
+      "df": 1,
+      "token": "the-list"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    },
+    {
+      "df": 1,
+      "token": "themdbs"
+    },
+    {
+      "df": 1,
+      "token": "themes"
+    },
+    {
+      "df": 1,
+      "token": "theyre"
+    }
+  ],
+  "the-": [
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    },
+    {
+      "df": 1,
+      "token": "the-list"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    }
+  ],
+  "the-a": [
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    }
+  ],
+  "the-ap": [
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    }
+  ],
+  "the-app": [
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    }
+  ],
+  "the-appr": [
+    {
+      "df": 2,
+      "token": "the-apprenticeship-service"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-display-vacancy-advert-api"
+    },
+    {
+      "df": 1,
+      "token": "the-apprenticeship-service-recruitment-api"
+    }
+  ],
+  "the-l": [
+    {
+      "df": 1,
+      "token": "the-list"
+    }
+  ],
+  "the-li": [
+    {
+      "df": 1,
+      "token": "the-list"
+    }
+  ],
+  "the-lis": [
+    {
+      "df": 1,
+      "token": "the-list"
+    }
+  ],
+  "the-list": [
+    {
+      "df": 1,
+      "token": "the-list"
+    }
+  ],
+  "the-n": [
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    }
+  ],
+  "the-na": [
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    }
+  ],
+  "the-nat": [
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    }
+  ],
+  "the-nati": [
+    {
+      "df": 1,
+      "token": "the-national-archives"
+    },
+    {
+      "df": 1,
+      "token": "the-national-archives-discovery"
+    }
+  ],
+  "thei": [
+    {
+      "df": 48,
+      "token": "their"
+    }
+  ],
+  "their": [
+    {
+      "df": 48,
+      "token": "their"
+    }
+  ],
+  "them": [
+    {
+      "df": 9,
+      "token": "them"
+    },
+    {
+      "df": 1,
+      "token": "themdbs"
+    },
+    {
+      "df": 1,
+      "token": "themes"
+    }
+  ],
+  "themd": [
+    {
+      "df": 1,
+      "token": "themdbs"
+    }
+  ],
+  "themdb": [
+    {
+      "df": 1,
+      "token": "themdbs"
+    }
+  ],
+  "themdbs": [
+    {
+      "df": 1,
+      "token": "themdbs"
+    }
+  ],
+  "theme": [
+    {
+      "df": 1,
+      "token": "themes"
+    }
+  ],
+  "themes": [
+    {
+      "df": 1,
+      "token": "themes"
+    }
+  ],
+  "then": [
+    {
+      "df": 7,
+      "token": "then"
+    }
+  ],
+  "ther": [
+    {
+      "df": 12,
+      "token": "there"
+    },
+    {
+      "df": 3,
+      "token": "therefore"
+    }
+  ],
+  "there": [
+    {
+      "df": 12,
+      "token": "there"
+    },
+    {
+      "df": 3,
+      "token": "therefore"
+    }
+  ],
+  "theref": [
+    {
+      "df": 3,
+      "token": "therefore"
+    }
+  ],
+  "therefo": [
+    {
+      "df": 3,
+      "token": "therefore"
+    }
+  ],
+  "therefor": [
+    {
+      "df": 3,
+      "token": "therefore"
+    }
+  ],
+  "thes": [
+    {
+      "df": 32,
+      "token": "these"
+    }
+  ],
+  "these": [
+    {
+      "df": 32,
+      "token": "these"
+    }
+  ],
+  "they": [
+    {
+      "df": 21,
+      "token": "they"
+    },
+    {
+      "df": 1,
+      "token": "theyre"
+    }
+  ],
+  "theyr": [
+    {
+      "df": 1,
+      "token": "theyre"
+    }
+  ],
+  "theyre": [
+    {
+      "df": 1,
+      "token": "theyre"
+    }
+  ],
+  "thi": [
+    {
+      "df": 161,
+      "token": "this"
+    },
+    {
+      "df": 4,
+      "token": "third"
+    },
+    {
+      "df": 3,
+      "token": "things"
+    },
+    {
+      "df": 1,
+      "token": "thing"
+    },
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "thin": [
+    {
+      "df": 3,
+      "token": "things"
+    },
+    {
+      "df": 1,
+      "token": "thing"
+    }
+  ],
+  "thing": [
+    {
+      "df": 3,
+      "token": "things"
+    },
+    {
+      "df": 1,
+      "token": "thing"
+    }
+  ],
+  "things": [
+    {
+      "df": 3,
+      "token": "things"
+    }
+  ],
+  "thir": [
+    {
+      "df": 4,
+      "token": "third"
+    },
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "third": [
+    {
+      "df": 4,
+      "token": "third"
+    },
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "thirdp": [
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "thirdpa": [
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "thirdpar": [
+    {
+      "df": 1,
+      "token": "thirdparty-access"
+    }
+  ],
+  "this": [
+    {
+      "df": 161,
+      "token": "this"
+    }
+  ],
+  "tho": [
+    {
+      "df": 8,
+      "token": "those"
+    },
+    {
+      "df": 1,
+      "token": "thorough"
+    },
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thor": [
+    {
+      "df": 1,
+      "token": "thorough"
+    }
+  ],
+  "thoro": [
+    {
+      "df": 1,
+      "token": "thorough"
+    }
+  ],
+  "thorou": [
+    {
+      "df": 1,
+      "token": "thorough"
+    }
+  ],
+  "thoroug": [
+    {
+      "df": 1,
+      "token": "thorough"
+    }
+  ],
+  "thorough": [
+    {
+      "df": 1,
+      "token": "thorough"
+    }
+  ],
+  "thos": [
+    {
+      "df": 8,
+      "token": "those"
+    }
+  ],
+  "those": [
+    {
+      "df": 8,
+      "token": "those"
+    }
+  ],
+  "thou": [
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thous": [
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thousa": [
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thousan": [
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thousand": [
+    {
+      "df": 1,
+      "token": "thousand"
+    },
+    {
+      "df": 1,
+      "token": "thousands"
+    }
+  ],
+  "thr": [
+    {
+      "df": 10,
+      "token": "through"
+    },
+    {
+      "df": 6,
+      "token": "three"
+    },
+    {
+      "df": 1,
+      "token": "threshold"
+    },
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "thre": [
+    {
+      "df": 6,
+      "token": "three"
+    },
+    {
+      "df": 1,
+      "token": "threshold"
+    }
+  ],
+  "three": [
+    {
+      "df": 6,
+      "token": "three"
+    }
+  ],
+  "thres": [
+    {
+      "df": 1,
+      "token": "threshold"
+    }
+  ],
+  "thresh": [
+    {
+      "df": 1,
+      "token": "threshold"
+    }
+  ],
+  "thresho": [
+    {
+      "df": 1,
+      "token": "threshold"
+    }
+  ],
+  "threshol": [
+    {
+      "df": 1,
+      "token": "threshold"
+    }
+  ],
+  "thro": [
+    {
+      "df": 10,
+      "token": "through"
+    },
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "throu": [
+    {
+      "df": 10,
+      "token": "through"
+    },
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "throug": [
+    {
+      "df": 10,
+      "token": "through"
+    },
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "through": [
+    {
+      "df": 10,
+      "token": "through"
+    },
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "througho": [
+    {
+      "df": 1,
+      "token": "throughout"
+    }
+  ],
+  "thu": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ],
+  "thum": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ],
+  "thumb": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ],
+  "thumbn": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ],
+  "thumbna": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ],
+  "thumbnai": [
+    {
+      "df": 1,
+      "token": "thumbnail"
+    }
+  ]
+}

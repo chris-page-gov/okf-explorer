@@ -1,0 +1,266 @@
+{
+  "cur": [
+    {
+      "df": 20,
+      "token": "currently"
+    },
+    {
+      "df": 14,
+      "token": "current"
+    }
+  ],
+  "curr": [
+    {
+      "df": 20,
+      "token": "currently"
+    },
+    {
+      "df": 14,
+      "token": "current"
+    }
+  ],
+  "curre": [
+    {
+      "df": 20,
+      "token": "currently"
+    },
+    {
+      "df": 14,
+      "token": "current"
+    }
+  ],
+  "curren": [
+    {
+      "df": 20,
+      "token": "currently"
+    },
+    {
+      "df": 14,
+      "token": "current"
+    }
+  ],
+  "current": [
+    {
+      "df": 20,
+      "token": "currently"
+    },
+    {
+      "df": 14,
+      "token": "current"
+    }
+  ],
+  "currentl": [
+    {
+      "df": 20,
+      "token": "currently"
+    }
+  ],
+  "cus": [
+    {
+      "df": 38,
+      "token": "customs"
+    },
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "custom"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    },
+    {
+      "df": 1,
+      "token": "custodian"
+    },
+    {
+      "df": 1,
+      "token": "customise"
+    },
+    {
+      "df": 1,
+      "token": "customizable"
+    },
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ],
+  "cust": [
+    {
+      "df": 38,
+      "token": "customs"
+    },
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "custom"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    },
+    {
+      "df": 1,
+      "token": "custodian"
+    },
+    {
+      "df": 1,
+      "token": "customise"
+    },
+    {
+      "df": 1,
+      "token": "customizable"
+    },
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ],
+  "custo": [
+    {
+      "df": 38,
+      "token": "customs"
+    },
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "custom"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    },
+    {
+      "df": 1,
+      "token": "custodian"
+    },
+    {
+      "df": 1,
+      "token": "customise"
+    },
+    {
+      "df": 1,
+      "token": "customizable"
+    },
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ],
+  "custod": [
+    {
+      "df": 1,
+      "token": "custodian"
+    }
+  ],
+  "custodi": [
+    {
+      "df": 1,
+      "token": "custodian"
+    }
+  ],
+  "custodia": [
+    {
+      "df": 1,
+      "token": "custodian"
+    }
+  ],
+  "custom": [
+    {
+      "df": 38,
+      "token": "customs"
+    },
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "custom"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    },
+    {
+      "df": 1,
+      "token": "customise"
+    },
+    {
+      "df": 1,
+      "token": "customizable"
+    },
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ],
+  "custome": [
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    }
+  ],
+  "customer": [
+    {
+      "df": 4,
+      "token": "customer"
+    },
+    {
+      "df": 3,
+      "token": "customers"
+    }
+  ],
+  "customi": [
+    {
+      "df": 1,
+      "token": "customise"
+    },
+    {
+      "df": 1,
+      "token": "customizable"
+    }
+  ],
+  "customis": [
+    {
+      "df": 1,
+      "token": "customise"
+    }
+  ],
+  "customiz": [
+    {
+      "df": 1,
+      "token": "customizable"
+    }
+  ],
+  "customs": [
+    {
+      "df": 38,
+      "token": "customs"
+    },
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ],
+  "customs-": [
+    {
+      "df": 1,
+      "token": "customs-inventory-linking-exports"
+    }
+  ]
+}

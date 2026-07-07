@@ -15,6 +15,13 @@
       "url": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json",
       "kind": "large-corpus",
       "description": "Largest current OKF large-corpus fixture, using chunked CKAN metadata and static search shards."
+    },
+    {
+      "id": "uk-government-apis",
+      "label": "UK Government APIs OKF",
+      "url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json",
+      "kind": "large-corpus",
+      "description": "Generated API-domain OKF exemplar sourced from the GOV.UK API Catalogue."
     }
   ]
 }

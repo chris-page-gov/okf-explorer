@@ -1,0 +1,82 @@
+[
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "wales"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "walk-in"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wallets"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "want"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wants"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ward"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wards"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "warnings"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "was"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "waste"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "watch"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "water"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "water-quality"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "way"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "way.the"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ways"
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "it.": [
+    {
+      "df": 2,
+      "token": "it.you"
+    }
+  ],
+  "it.y": [
+    {
+      "df": 2,
+      "token": "it.you"
+    }
+  ],
+  "it.yo": [
+    {
+      "df": 2,
+      "token": "it.you"
+    }
+  ],
+  "it.you": [
+    {
+      "df": 2,
+      "token": "it.you"
+    }
+  ],
+  "ite": [
+    {
+      "df": 4,
+      "token": "items"
+    },
+    {
+      "df": 3,
+      "token": "item"
+    }
+  ],
+  "item": [
+    {
+      "df": 4,
+      "token": "items"
+    },
+    {
+      "df": 3,
+      "token": "item"
+    }
+  ],
+  "items": [
+    {
+      "df": 4,
+      "token": "items"
+    }
+  ],
+  "itk": [
+    {
+      "df": 4,
+      "token": "itk3"
+    }
+  ],
+  "itk3": [
+    {
+      "df": 4,
+      "token": "itk3"
+    }
+  ],
+  "its": [
+    {
+      "df": 12,
+      "token": "its"
+    }
+  ]
+}

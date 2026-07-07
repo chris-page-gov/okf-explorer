@@ -1,0 +1,32 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ambulance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ambulance-data-submission-fhir"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "amend"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "amendments"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "amount"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "amounts"
+  }
+]

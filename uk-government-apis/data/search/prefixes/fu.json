@@ -1,0 +1,306 @@
+{
+  "fue": [
+    {
+      "df": 1,
+      "token": "fuel"
+    }
+  ],
+  "fuel": [
+    {
+      "df": 1,
+      "token": "fuel"
+    }
+  ],
+  "ful": [
+    {
+      "df": 20,
+      "token": "full"
+    },
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "fully"
+    }
+  ],
+  "full": [
+    {
+      "df": 20,
+      "token": "full"
+    },
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "fully"
+    }
+  ],
+  "full-": [
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    }
+  ],
+  "full-d": [
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    }
+  ],
+  "full-dr": [
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    }
+  ],
+  "full-dri": [
+    {
+      "df": 1,
+      "token": "full-driver-enquiry"
+    }
+  ],
+  "fulls": [
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    }
+  ],
+  "fullse": [
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    }
+  ],
+  "fullsea": [
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    }
+  ],
+  "fullsear": [
+    {
+      "df": 1,
+      "token": "fullsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "fullsearchv2_1webservice"
+    }
+  ],
+  "fully": [
+    {
+      "df": 1,
+      "token": "fully"
+    }
+  ],
+  "fun": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 3,
+      "token": "funded"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "func": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "funct": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "functi": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "functio": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "function": [
+    {
+      "df": 5,
+      "token": "functionality"
+    },
+    {
+      "df": 4,
+      "token": "functions"
+    },
+    {
+      "df": 2,
+      "token": "functional"
+    }
+  ],
+  "fund": [
+    {
+      "df": 3,
+      "token": "funded"
+    }
+  ],
+  "funde": [
+    {
+      "df": 3,
+      "token": "funded"
+    }
+  ],
+  "funded": [
+    {
+      "df": 3,
+      "token": "funded"
+    }
+  ],
+  "fur": [
+    {
+      "df": 8,
+      "token": "further"
+    }
+  ],
+  "furt": [
+    {
+      "df": 8,
+      "token": "further"
+    }
+  ],
+  "furth": [
+    {
+      "df": 8,
+      "token": "further"
+    }
+  ],
+  "furthe": [
+    {
+      "df": 8,
+      "token": "further"
+    }
+  ],
+  "further": [
+    {
+      "df": 8,
+      "token": "further"
+    }
+  ],
+  "fut": [
+    {
+      "df": 10,
+      "token": "future"
+    }
+  ],
+  "futu": [
+    {
+      "df": 10,
+      "token": "future"
+    }
+  ],
+  "futur": [
+    {
+      "df": 10,
+      "token": "future"
+    }
+  ],
+  "future": [
+    {
+      "df": 10,
+      "token": "future"
+    }
+  ],
+  "fuz": [
+    {
+      "df": 1,
+      "token": "fuzzy"
+    }
+  ],
+  "fuzz": [
+    {
+      "df": 1,
+      "token": "fuzzy"
+    }
+  ],
+  "fuzzy": [
+    {
+      "df": 1,
+      "token": "fuzzy"
+    }
+  ]
+}

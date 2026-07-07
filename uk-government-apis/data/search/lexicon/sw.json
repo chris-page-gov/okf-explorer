@@ -1,0 +1,22 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "swagger"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "swagger-ui.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "swimming"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "switch"
+  }
+]

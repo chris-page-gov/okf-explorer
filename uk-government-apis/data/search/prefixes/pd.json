@@ -1,0 +1,36 @@
+{
+  "pdf": [
+    {
+      "df": 2,
+      "token": "pdf"
+    }
+  ],
+  "pds": [
+    {
+      "df": 11,
+      "token": "pds"
+    },
+    {
+      "df": 1,
+      "token": "pds.it"
+    }
+  ],
+  "pds.": [
+    {
+      "df": 1,
+      "token": "pds.it"
+    }
+  ],
+  "pds.i": [
+    {
+      "df": 1,
+      "token": "pds.it"
+    }
+  ],
+  "pds.it": [
+    {
+      "df": 1,
+      "token": "pds.it"
+    }
+  ]
+}

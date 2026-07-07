@@ -1,0 +1,47 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.cefas.co.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.eionet.europa.eu"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "www.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.nationalarchives.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.notifications.service.gov.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "www.ogc.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.trade-tariff.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.w3.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "www.westberks.gov.uk"
+  }
+]

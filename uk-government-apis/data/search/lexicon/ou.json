@@ -1,0 +1,72 @@
+[
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "our"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "our-planning-services"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "out"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "out-of-hours"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outbound"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outbox"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outbreak"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "outcome"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "outcomes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outcomethis"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "outline"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outpatient"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outpost-api-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "outside"
+  }
+]

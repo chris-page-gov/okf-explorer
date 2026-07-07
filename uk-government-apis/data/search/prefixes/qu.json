@@ -1,0 +1,386 @@
+{
+  "qua": [
+    {
+      "df": 8,
+      "token": "quality"
+    },
+    {
+      "df": 1,
+      "token": "qualifications"
+    },
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "qual": [
+    {
+      "df": 8,
+      "token": "quality"
+    },
+    {
+      "df": 1,
+      "token": "qualifications"
+    },
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "quali": [
+    {
+      "df": 8,
+      "token": "quality"
+    },
+    {
+      "df": 1,
+      "token": "qualifications"
+    },
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "qualif": [
+    {
+      "df": 1,
+      "token": "qualifications"
+    },
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "qualifi": [
+    {
+      "df": 1,
+      "token": "qualifications"
+    },
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "qualific": [
+    {
+      "df": 1,
+      "token": "qualifications"
+    }
+  ],
+  "qualifie": [
+    {
+      "df": 1,
+      "token": "qualified"
+    }
+  ],
+  "qualit": [
+    {
+      "df": 8,
+      "token": "quality"
+    }
+  ],
+  "quality": [
+    {
+      "df": 8,
+      "token": "quality"
+    }
+  ],
+  "que": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 9,
+      "token": "query"
+    },
+    {
+      "df": 3,
+      "token": "queries"
+    },
+    {
+      "df": 3,
+      "token": "querying"
+    },
+    {
+      "df": 1,
+      "token": "queried"
+    },
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    },
+    {
+      "df": 1,
+      "token": "queues"
+    }
+  ],
+  "quer": [
+    {
+      "df": 9,
+      "token": "query"
+    },
+    {
+      "df": 3,
+      "token": "queries"
+    },
+    {
+      "df": 3,
+      "token": "querying"
+    },
+    {
+      "df": 1,
+      "token": "queried"
+    },
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    }
+  ],
+  "queri": [
+    {
+      "df": 3,
+      "token": "queries"
+    },
+    {
+      "df": 1,
+      "token": "queried"
+    }
+  ],
+  "querie": [
+    {
+      "df": 3,
+      "token": "queries"
+    },
+    {
+      "df": 1,
+      "token": "queried"
+    }
+  ],
+  "queried": [
+    {
+      "df": 1,
+      "token": "queried"
+    }
+  ],
+  "queries": [
+    {
+      "df": 3,
+      "token": "queries"
+    }
+  ],
+  "query": [
+    {
+      "df": 9,
+      "token": "query"
+    },
+    {
+      "df": 3,
+      "token": "querying"
+    },
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    }
+  ],
+  "query-": [
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    }
+  ],
+  "query-a": [
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    }
+  ],
+  "query-ac": [
+    {
+      "df": 1,
+      "token": "query-accredited-system-information-soap"
+    }
+  ],
+  "queryi": [
+    {
+      "df": 3,
+      "token": "querying"
+    }
+  ],
+  "queryin": [
+    {
+      "df": 3,
+      "token": "querying"
+    }
+  ],
+  "querying": [
+    {
+      "df": 3,
+      "token": "querying"
+    }
+  ],
+  "ques": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    }
+  ],
+  "quest": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    }
+  ],
+  "questi": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    }
+  ],
+  "questio": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    }
+  ],
+  "question": [
+    {
+      "df": 11,
+      "token": "questions"
+    },
+    {
+      "df": 1,
+      "token": "question"
+    }
+  ],
+  "queu": [
+    {
+      "df": 1,
+      "token": "queues"
+    }
+  ],
+  "queue": [
+    {
+      "df": 1,
+      "token": "queues"
+    }
+  ],
+  "queues": [
+    {
+      "df": 1,
+      "token": "queues"
+    }
+  ],
+  "qui": [
+    {
+      "df": 2,
+      "token": "quick"
+    },
+    {
+      "df": 1,
+      "token": "quit"
+    }
+  ],
+  "quic": [
+    {
+      "df": 2,
+      "token": "quick"
+    }
+  ],
+  "quick": [
+    {
+      "df": 2,
+      "token": "quick"
+    }
+  ],
+  "quit": [
+    {
+      "df": 1,
+      "token": "quit"
+    }
+  ],
+  "quo": [
+    {
+      "df": 4,
+      "token": "quota"
+    },
+    {
+      "df": 1,
+      "token": "quotas"
+    },
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ],
+  "quot": [
+    {
+      "df": 4,
+      "token": "quota"
+    },
+    {
+      "df": 1,
+      "token": "quotas"
+    },
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ],
+  "quota": [
+    {
+      "df": 4,
+      "token": "quota"
+    },
+    {
+      "df": 1,
+      "token": "quotas"
+    },
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ],
+  "quotas": [
+    {
+      "df": 1,
+      "token": "quotas"
+    },
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ],
+  "quotas-": [
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ],
+  "quotas-i": [
+    {
+      "df": 1,
+      "token": "quotas-including-current-volumes"
+    }
+  ]
+}

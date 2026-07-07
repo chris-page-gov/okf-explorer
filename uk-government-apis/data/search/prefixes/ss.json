@@ -1,0 +1,20 @@
+{
+  "ssb": [
+    {
+      "df": 1,
+      "token": "ssb"
+    }
+  ],
+  "ssn": [
+    {
+      "df": 1,
+      "token": "ssn"
+    }
+  ],
+  "sso": [
+    {
+      "df": 1,
+      "token": "sso"
+    }
+  ]
+}

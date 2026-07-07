@@ -1,0 +1,82 @@
+[
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "wide"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "widely"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "widgets"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wife"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wiki"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wiki.office.uc.dwpcloud.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wiki.open311.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wild"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "will"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "window"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "windows"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wiski"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "withdraw"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "withdrawal"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "within"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "without"
+  }
+]

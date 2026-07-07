@@ -1,0 +1,482 @@
+{
+  "dra": [
+    {
+      "df": 1,
+      "token": "draft"
+    },
+    {
+      "df": 1,
+      "token": "drawn"
+    }
+  ],
+  "draf": [
+    {
+      "df": 1,
+      "token": "draft"
+    }
+  ],
+  "draft": [
+    {
+      "df": 1,
+      "token": "draft"
+    }
+  ],
+  "draw": [
+    {
+      "df": 1,
+      "token": "drawn"
+    }
+  ],
+  "drawn": [
+    {
+      "df": 1,
+      "token": "drawn"
+    }
+  ],
+  "dri": [
+    {
+      "df": 6,
+      "token": "driver"
+    },
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 3,
+      "token": "driving"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-find"
+    },
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    }
+  ],
+  "driv": [
+    {
+      "df": 6,
+      "token": "driver"
+    },
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 3,
+      "token": "driving"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-find"
+    },
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    }
+  ],
+  "drive": [
+    {
+      "df": 6,
+      "token": "driver"
+    },
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-find"
+    },
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    },
+    {
+      "df": 1,
+      "token": "drivers"
+    }
+  ],
+  "driver": [
+    {
+      "df": 6,
+      "token": "driver"
+    },
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-find"
+    },
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    },
+    {
+      "df": 1,
+      "token": "drivers"
+    }
+  ],
+  "driver-": [
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-find"
+    },
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    }
+  ],
+  "driver-a": [
+    {
+      "df": 6,
+      "token": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+    },
+    {
+      "df": 1,
+      "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+    }
+  ],
+  "driver-f": [
+    {
+      "df": 1,
+      "token": "driver-find"
+    }
+  ],
+  "driver-i": [
+    {
+      "df": 1,
+      "token": "driver-image"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-description.html"
+    },
+    {
+      "df": 1,
+      "token": "driver-image-service"
+    }
+  ],
+  "driver-v": [
+    {
+      "df": 6,
+      "token": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "driver-view"
+    },
+    {
+      "df": 1,
+      "token": "driver-view-description.html"
+    }
+  ],
+  "drivers": [
+    {
+      "df": 1,
+      "token": "drivers"
+    },
+    {
+      "df": 1,
+      "token": "drivers-find"
+    },
+    {
+      "df": 1,
+      "token": "drivers-find-description.html"
+    }
+  ],
+  "drivers-": [
+    {
+      "df": 1,
+      "token": "drivers-find"
+    },
+    {
+      "df": 1,
+      "token": "drivers-find-description.html"
+    }
+  ],
+  "drivi": [
+    {
+      "df": 3,
+      "token": "driving"
+    },
+    {
+      "df": 1,
+      "token": "driving-licences"
+    }
+  ],
+  "drivin": [
+    {
+      "df": 3,
+      "token": "driving"
+    },
+    {
+      "df": 1,
+      "token": "driving-licences"
+    }
+  ],
+  "driving": [
+    {
+      "df": 3,
+      "token": "driving"
+    },
+    {
+      "df": 1,
+      "token": "driving-licences"
+    }
+  ],
+  "driving-": [
+    {
+      "df": 1,
+      "token": "driving-licences"
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "fla": [
+    {
+      "df": 2,
+      "token": "flags"
+    },
+    {
+      "df": 2,
+      "token": "flat"
+    },
+    {
+      "df": 1,
+      "token": "flag"
+    },
+    {
+      "df": 1,
+      "token": "flagthe"
+    },
+    {
+      "df": 1,
+      "token": "flask"
+    }
+  ],
+  "flag": [
+    {
+      "df": 2,
+      "token": "flags"
+    },
+    {
+      "df": 1,
+      "token": "flag"
+    },
+    {
+      "df": 1,
+      "token": "flagthe"
+    }
+  ],
+  "flags": [
+    {
+      "df": 2,
+      "token": "flags"
+    }
+  ],
+  "flagt": [
+    {
+      "df": 1,
+      "token": "flagthe"
+    }
+  ],
+  "flagth": [
+    {
+      "df": 1,
+      "token": "flagthe"
+    }
+  ],
+  "flagthe": [
+    {
+      "df": 1,
+      "token": "flagthe"
+    }
+  ],
+  "flas": [
+    {
+      "df": 1,
+      "token": "flask"
+    }
+  ],
+  "flask": [
+    {
+      "df": 1,
+      "token": "flask"
+    }
+  ],
+  "flat": [
+    {
+      "df": 2,
+      "token": "flat"
+    }
+  ],
+  "fle": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flex": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flexi": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flexib": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flexibl": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flexible": [
+    {
+      "df": 1,
+      "token": "flexible"
+    }
+  ],
+  "flo": [
+    {
+      "df": 5,
+      "token": "flow"
+    },
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    },
+    {
+      "df": 3,
+      "token": "flood"
+    },
+    {
+      "df": 1,
+      "token": "floods"
+    },
+    {
+      "df": 1,
+      "token": "flows"
+    }
+  ],
+  "floo": [
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    },
+    {
+      "df": 3,
+      "token": "flood"
+    },
+    {
+      "df": 1,
+      "token": "floods"
+    }
+  ],
+  "flood": [
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    },
+    {
+      "df": 3,
+      "token": "flood"
+    },
+    {
+      "df": 1,
+      "token": "floods"
+    }
+  ],
+  "flood-": [
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    }
+  ],
+  "flood-m": [
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    }
+  ],
+  "flood-mo": [
+    {
+      "df": 4,
+      "token": "flood-monitoring"
+    }
+  ],
+  "floods": [
+    {
+      "df": 1,
+      "token": "floods"
+    }
+  ],
+  "flow": [
+    {
+      "df": 5,
+      "token": "flow"
+    },
+    {
+      "df": 1,
+      "token": "flows"
+    }
+  ],
+  "flows": [
+    {
+      "df": 1,
+      "token": "flows"
+    }
+  ],
+  "flu": [
+    {
+      "df": 1,
+      "token": "flu"
+    }
+  ]
+}

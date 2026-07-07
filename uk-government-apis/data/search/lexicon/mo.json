@@ -1,0 +1,152 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "mobile"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "mode"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "model"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "modelling"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "modern"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "modes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "modesthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "modified"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "module"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "modules"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "moment"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "money"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "money-to-prisoners"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "money-to-prisoners-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "monitor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "monitored"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "monitoring"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "monitors"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "monolithic"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "month"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "months"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "monument"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "monuments"
+  },
+  {
+    "df": 46,
+    "postings": "data/search/postings-0.json",
+    "token": "more"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mortgaged"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "mortgages"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "most"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "movement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "movements"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "moving"
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "it.you"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "item"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "items"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "itk3"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "its"
+  }
+]

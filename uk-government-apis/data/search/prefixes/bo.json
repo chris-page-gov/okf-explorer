@@ -1,0 +1,298 @@
+{
+  "bod": [
+    {
+      "df": 1,
+      "token": "bodies"
+    },
+    {
+      "df": 1,
+      "token": "body"
+    }
+  ],
+  "bodi": [
+    {
+      "df": 1,
+      "token": "bodies"
+    }
+  ],
+  "bodie": [
+    {
+      "df": 1,
+      "token": "bodies"
+    }
+  ],
+  "bodies": [
+    {
+      "df": 1,
+      "token": "bodies"
+    }
+  ],
+  "body": [
+    {
+      "df": 1,
+      "token": "body"
+    }
+  ],
+  "boo": [
+    {
+      "df": 5,
+      "token": "book"
+    },
+    {
+      "df": 5,
+      "token": "booking"
+    },
+    {
+      "df": 3,
+      "token": "bookings"
+    },
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "book": [
+    {
+      "df": 5,
+      "token": "book"
+    },
+    {
+      "df": 5,
+      "token": "booking"
+    },
+    {
+      "df": 3,
+      "token": "bookings"
+    },
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "booki": [
+    {
+      "df": 5,
+      "token": "booking"
+    },
+    {
+      "df": 3,
+      "token": "bookings"
+    },
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "bookin": [
+    {
+      "df": 5,
+      "token": "booking"
+    },
+    {
+      "df": 3,
+      "token": "bookings"
+    },
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "booking": [
+    {
+      "df": 5,
+      "token": "booking"
+    },
+    {
+      "df": 3,
+      "token": "bookings"
+    },
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "booking-": [
+    {
+      "df": 1,
+      "token": "booking-and-referral-fhir"
+    }
+  ],
+  "bookings": [
+    {
+      "df": 3,
+      "token": "bookings"
+    }
+  ],
+  "bor": [
+    {
+      "df": 1,
+      "token": "borehole"
+    },
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "bore": [
+    {
+      "df": 1,
+      "token": "borehole"
+    }
+  ],
+  "boreh": [
+    {
+      "df": 1,
+      "token": "borehole"
+    }
+  ],
+  "boreho": [
+    {
+      "df": 1,
+      "token": "borehole"
+    }
+  ],
+  "borehol": [
+    {
+      "df": 1,
+      "token": "borehole"
+    }
+  ],
+  "borehole": [
+    {
+      "df": 1,
+      "token": "borehole"
+    }
+  ],
+  "boro": [
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "borou": [
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "boroug": [
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "borough": [
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "boroughs": [
+    {
+      "df": 1,
+      "token": "boroughs"
+    }
+  ],
+  "bot": [
+    {
+      "df": 5,
+      "token": "both"
+    }
+  ],
+  "both": [
+    {
+      "df": 5,
+      "token": "both"
+    }
+  ],
+  "bou": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "boun": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "bound": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "boundi": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "boundin": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "bounding": [
+    {
+      "df": 1,
+      "token": "bounding"
+    }
+  ],
+  "bow": [
+    {
+      "df": 1,
+      "token": "bowel"
+    },
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "bowe": [
+    {
+      "df": 1,
+      "token": "bowel"
+    },
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "bowel": [
+    {
+      "df": 1,
+      "token": "bowel"
+    },
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "bowel-": [
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "bowel-c": [
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "bowel-ca": [
+    {
+      "df": 1,
+      "token": "bowel-cancer-screening-edifact"
+    }
+  ],
+  "box": [
+    {
+      "df": 1,
+      "token": "box"
+    }
+  ]
+}

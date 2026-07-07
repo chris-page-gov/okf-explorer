@@ -1,0 +1,62 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flag"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "flags"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flagthe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flask"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "flat"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flexible"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "flood"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "flood-monitoring"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "floods"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "flow"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flows"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "flu"
+  }
+]

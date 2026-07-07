@@ -1,0 +1,112 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lead"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lease"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "leased"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "leases"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "least"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "leave"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "led"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "leeds"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "legal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "legislation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "legislation.gov.uk"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "lenders"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "let"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "lets"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "letter"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "letters"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "level"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "levels"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "levelthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "levelto"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "levelyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "leverage"
+  }
+]

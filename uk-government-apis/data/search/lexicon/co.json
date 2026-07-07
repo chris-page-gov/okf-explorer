@@ -1,0 +1,812 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "coast"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "coastal"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "code"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "codebase"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "coded"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "codes"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "codesyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "codethis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "collect"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "collected"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "collecting"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "collection"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "collections"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "collects"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "column"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "combination"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "combined"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "combines"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "combining"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "coming"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "comments"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "commercial"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "commercially"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "commissioning"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "commitment"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "commodities"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "commodity"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "common"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "common-transit-convention-traders"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "communicate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "communication"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "communications"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "communities"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "community"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "companies"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "companies-house"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "companies-house-companies-house"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "companies-house-companies-house-streaming"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "company"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "compatibility"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "compatible"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "compiled"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "complements"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "complete"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "completed"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "completes"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "completion"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "complex"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "comply"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "component"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "components"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "composition"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "comprehensive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "comprehensively"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "computer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "computerised"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "concerns"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "concise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "conditional"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "conditions"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "conference"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "confidence"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "configuration"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "confirm"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "confirmation"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "conformance"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "conforming"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "conforms"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "conjunction"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "connect"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "connected"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "connection"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "connections"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "connectivity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "connects"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "consent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consents"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "conservation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "conservation_areas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "considerations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "considered"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consignment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consignments"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consistency"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "consistent"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consisting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consolidation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "constantly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "constituency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "constructed"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "construction"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "consultant"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "consultation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consultations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consultationthis"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consume"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consumer"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "consumers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "consuming"
+  },
+  {
+    "df": 21,
+    "postings": "data/search/postings-0.json",
+    "token": "contact"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "contacts"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "contain"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contained"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "containing"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "contains"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "content"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "content-api.publishing.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contents"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "context"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "context.it"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "continuing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "continuous"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contract"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contractmap"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contractor"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "contractors"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contribution-based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "contributions"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "control"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "controlled"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "controls"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "convenience"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "convenient"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "convention"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "conversation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "conversations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "conversion"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "convert"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "converted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "converter"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "converts"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "conveyance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "conveying"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "copied"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "copy"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "coronavirus"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "correct"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "correspondence"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "correspondencev2_1pollrequestwebservice"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "cost"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "costs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "costsgos6"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "could"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "council"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "councils"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "count"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "countries"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "country"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "countryside"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "couple"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "courses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "court"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "courtfinder"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "courts"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "courts-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cover"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "coverage"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "covering"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "covers"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "covid-19"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "covid-19-test-results-fhir"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "twi": [
+    {
+      "df": 2,
+      "token": "twice"
+    }
+  ],
+  "twic": [
+    {
+      "df": 2,
+      "token": "twice"
+    }
+  ],
+  "twice": [
+    {
+      "df": 2,
+      "token": "twice"
+    }
+  ],
+  "two": [
+    {
+      "df": 3,
+      "token": "two"
+    }
+  ]
+}

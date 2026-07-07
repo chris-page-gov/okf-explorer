@@ -1,0 +1,97 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hold"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "holds"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "holidays"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "home"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "home.esd.org.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "homeeach"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "homes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hope"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "hospital"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "hospitals"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "host"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hosted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hour"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hourly"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "hours"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "house"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "housing"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "how"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "however"
+  }
+]

@@ -1,0 +1,368 @@
+{
+  "our": [
+    {
+      "df": 25,
+      "token": "our"
+    },
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "our-": [
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "our-p": [
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "our-pl": [
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "our-pla": [
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "our-plan": [
+    {
+      "df": 1,
+      "token": "our-planning-services"
+    }
+  ],
+  "out": [
+    {
+      "df": 12,
+      "token": "out"
+    },
+    {
+      "df": 5,
+      "token": "outcome"
+    },
+    {
+      "df": 3,
+      "token": "outcomes"
+    },
+    {
+      "df": 3,
+      "token": "outline"
+    },
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    },
+    {
+      "df": 1,
+      "token": "outbound"
+    },
+    {
+      "df": 1,
+      "token": "outbox"
+    },
+    {
+      "df": 1,
+      "token": "outbreak"
+    },
+    {
+      "df": 1,
+      "token": "outcomethis"
+    },
+    {
+      "df": 1,
+      "token": "outpatient"
+    },
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    },
+    {
+      "df": 1,
+      "token": "outside"
+    }
+  ],
+  "out-": [
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    }
+  ],
+  "out-o": [
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    }
+  ],
+  "out-of": [
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    }
+  ],
+  "out-of-": [
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    }
+  ],
+  "out-of-h": [
+    {
+      "df": 2,
+      "token": "out-of-hours"
+    }
+  ],
+  "outb": [
+    {
+      "df": 1,
+      "token": "outbound"
+    },
+    {
+      "df": 1,
+      "token": "outbox"
+    },
+    {
+      "df": 1,
+      "token": "outbreak"
+    }
+  ],
+  "outbo": [
+    {
+      "df": 1,
+      "token": "outbound"
+    },
+    {
+      "df": 1,
+      "token": "outbox"
+    }
+  ],
+  "outbou": [
+    {
+      "df": 1,
+      "token": "outbound"
+    }
+  ],
+  "outboun": [
+    {
+      "df": 1,
+      "token": "outbound"
+    }
+  ],
+  "outbound": [
+    {
+      "df": 1,
+      "token": "outbound"
+    }
+  ],
+  "outbox": [
+    {
+      "df": 1,
+      "token": "outbox"
+    }
+  ],
+  "outbr": [
+    {
+      "df": 1,
+      "token": "outbreak"
+    }
+  ],
+  "outbre": [
+    {
+      "df": 1,
+      "token": "outbreak"
+    }
+  ],
+  "outbrea": [
+    {
+      "df": 1,
+      "token": "outbreak"
+    }
+  ],
+  "outbreak": [
+    {
+      "df": 1,
+      "token": "outbreak"
+    }
+  ],
+  "outc": [
+    {
+      "df": 5,
+      "token": "outcome"
+    },
+    {
+      "df": 3,
+      "token": "outcomes"
+    },
+    {
+      "df": 1,
+      "token": "outcomethis"
+    }
+  ],
+  "outco": [
+    {
+      "df": 5,
+      "token": "outcome"
+    },
+    {
+      "df": 3,
+      "token": "outcomes"
+    },
+    {
+      "df": 1,
+      "token": "outcomethis"
+    }
+  ],
+  "outcom": [
+    {
+      "df": 5,
+      "token": "outcome"
+    },
+    {
+      "df": 3,
+      "token": "outcomes"
+    },
+    {
+      "df": 1,
+      "token": "outcomethis"
+    }
+  ],
+  "outcome": [
+    {
+      "df": 5,
+      "token": "outcome"
+    },
+    {
+      "df": 3,
+      "token": "outcomes"
+    },
+    {
+      "df": 1,
+      "token": "outcomethis"
+    }
+  ],
+  "outcomes": [
+    {
+      "df": 3,
+      "token": "outcomes"
+    }
+  ],
+  "outcomet": [
+    {
+      "df": 1,
+      "token": "outcomethis"
+    }
+  ],
+  "outl": [
+    {
+      "df": 3,
+      "token": "outline"
+    }
+  ],
+  "outli": [
+    {
+      "df": 3,
+      "token": "outline"
+    }
+  ],
+  "outlin": [
+    {
+      "df": 3,
+      "token": "outline"
+    }
+  ],
+  "outline": [
+    {
+      "df": 3,
+      "token": "outline"
+    }
+  ],
+  "outp": [
+    {
+      "df": 1,
+      "token": "outpatient"
+    },
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    }
+  ],
+  "outpa": [
+    {
+      "df": 1,
+      "token": "outpatient"
+    }
+  ],
+  "outpat": [
+    {
+      "df": 1,
+      "token": "outpatient"
+    }
+  ],
+  "outpati": [
+    {
+      "df": 1,
+      "token": "outpatient"
+    }
+  ],
+  "outpatie": [
+    {
+      "df": 1,
+      "token": "outpatient"
+    }
+  ],
+  "outpo": [
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    }
+  ],
+  "outpos": [
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    }
+  ],
+  "outpost": [
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    }
+  ],
+  "outpost-": [
+    {
+      "df": 1,
+      "token": "outpost-api-service"
+    }
+  ],
+  "outs": [
+    {
+      "df": 1,
+      "token": "outside"
+    }
+  ],
+  "outsi": [
+    {
+      "df": 1,
+      "token": "outside"
+    }
+  ],
+  "outsid": [
+    {
+      "df": 1,
+      "token": "outside"
+    }
+  ],
+  "outside": [
+    {
+      "df": 1,
+      "token": "outside"
+    }
+  ]
+}

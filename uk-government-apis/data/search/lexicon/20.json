@@ -1,0 +1,62 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "2.0"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "20"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "2000"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "2005"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "2014"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "2017"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "2020"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "2021"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "2022"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "2023"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "20api.pdf"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "20search"
+  }
+]

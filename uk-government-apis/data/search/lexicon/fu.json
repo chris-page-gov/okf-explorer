@@ -1,0 +1,67 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fuel"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "full"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "full-driver-enquiry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fullsearchv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fullsearchv2_1webservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fully"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "functional"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "functionality"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "functions"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "funded"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "further"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "future"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fuzzy"
+  }
+]

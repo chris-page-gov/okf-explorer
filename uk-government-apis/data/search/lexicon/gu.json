@@ -1,0 +1,47 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "guernsey"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guernsey.this"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "guidance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guidance.data.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guide"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guidelines"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guides"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guides.statistics.gov.scot"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "guids"
+  }
+]

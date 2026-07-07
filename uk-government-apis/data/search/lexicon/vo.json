@@ -1,0 +1,47 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "voa"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vocab-ssn"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "volumes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "voluntarily"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "volunteer-run"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vote"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "voucher"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vouchers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "voyage"
+  }
+]

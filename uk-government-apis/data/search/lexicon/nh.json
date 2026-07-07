@@ -1,0 +1,577 @@
+[
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "nhais"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhais-gp-links"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhere"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "nheritage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhistoric"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhle"
+  },
+  {
+    "df": 94,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-app"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-booking-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-cis-authentication-spine-security-broker"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-cis2-care-identity-authentication"
+  },
+  {
+    "df": 93,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-access-control-service-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-alerts-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-ambulance-data-submission-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-booking-and-referral-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-bowel-cancer-screening-edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-cervical-screening-edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-covid-19-test-results-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-cyber-alerts-rest-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-data-registers-service-rest-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-demographics-batch-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-digital-child-health-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-digital-medicine-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-directory-of-healthcare-services-service-search-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-directory-of-services-urgent-and-emergency-care-rest-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-directory-of-services-urgent-and-emergency-care-soap-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-e-referral-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-e-referral-service-fhir-api-hscn"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-e-referral-service-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-e-referral-service-patient-care-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-electronic-prescription-service-directory-of-services-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-electronic-prescription-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-electronic-prescription-service-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-electronic-prescription-service-tracker-rest-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-electronic-transmission-of-prescriptions-web-services-soap-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-female-genital-mutilation-information-sharing-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-fhir-converter-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gazetteer-service-soap-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-general-practice-extraction-service-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-access-document-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-access-record-html-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-access-record-structured-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-appointment-management-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-patient-facing-access-record-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-patient-facing-appointment-management-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-patient-facing-prescriptions-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-patient-facing-user-permissions-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-connect-send-document-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp-registrations-management-information-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp2gp-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-gp2gp-management-information-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-health-research-data-catalogue-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-hello-world-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-immunisation-history-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-message-exchange-for-social-care-and-health-mesh-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-national-data-opt-out-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-national-data-opt-out-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-national-event-management-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-national-health-application-and-infrastructure-services-nhais-gp-links"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-national-record-locator-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-app-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-booking-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-cis-authentication-spine-security-broker-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-cis2-care-identity-authentication-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-login-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhs-syndicated-content-rest-apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-nhsmail-apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-online-consultation-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-ophthalmic-payments-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-ordnance-survey-places-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-organisation-data-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-organisation-data-service-ord-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-out-of-hours"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-pathology-messaging-edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-pathology-messaging-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-pathology-messaging-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-patient-care-aggregator-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-patient-care-aggregator-record-service-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-personal-demographics-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-personal-demographics-service-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-personal-demographics-service-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-personal-demographics-service-notifications-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-personal-demographics-service-smsp-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-query-accredited-system-information-soap-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-radiology-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-reasonable-adjustment-flag-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-signing-service-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-spine-directory-service-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-spine-directory-service-ldap-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-summary-care-record-fhir-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-summary-care-record-hl7-v3-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-technology-reference-update-distribution-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-terminology-server-fhir-apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-transfer-of-care-emergency-care-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-transfer-of-care-inpatient-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-transfer-of-care-mental-health-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-transfer-of-care-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-transfer-of-care-outpatient-clinic-letter-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-urgent-and-emergency-care-continuous-quality-improvement-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-vaccination"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-vaccination-adverse-reactions-covid-19"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-digital-vaccination-events-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-login"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-login-for-partners-and-developers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs-syndicated-content"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs003"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs004"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhs111"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhsmail"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nhsmail.you"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "nhttps"
+  }
+]

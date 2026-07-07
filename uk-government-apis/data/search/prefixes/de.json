@@ -1,0 +1,3002 @@
+{
+  "de-": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "de-r": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "de-re": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "de-reg": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "de-regi": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "de-regis": [
+    {
+      "df": 1,
+      "token": "de-register"
+    }
+  ],
+  "dea": [
+    {
+      "df": 3,
+      "token": "death"
+    },
+    {
+      "df": 1,
+      "token": "dealers"
+    },
+    {
+      "df": 1,
+      "token": "deals"
+    }
+  ],
+  "deal": [
+    {
+      "df": 1,
+      "token": "dealers"
+    },
+    {
+      "df": 1,
+      "token": "deals"
+    }
+  ],
+  "deale": [
+    {
+      "df": 1,
+      "token": "dealers"
+    }
+  ],
+  "dealer": [
+    {
+      "df": 1,
+      "token": "dealers"
+    }
+  ],
+  "dealers": [
+    {
+      "df": 1,
+      "token": "dealers"
+    }
+  ],
+  "deals": [
+    {
+      "df": 1,
+      "token": "deals"
+    }
+  ],
+  "deat": [
+    {
+      "df": 3,
+      "token": "death"
+    }
+  ],
+  "death": [
+    {
+      "df": 3,
+      "token": "death"
+    }
+  ],
+  "deb": [
+    {
+      "df": 2,
+      "token": "debt"
+    },
+    {
+      "df": 1,
+      "token": "debit"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "debi": [
+    {
+      "df": 1,
+      "token": "debit"
+    }
+  ],
+  "debit": [
+    {
+      "df": 1,
+      "token": "debit"
+    }
+  ],
+  "debt": [
+    {
+      "df": 2,
+      "token": "debt"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "debt-": [
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "debt-r": [
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "debt-re": [
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "debt-res": [
+    {
+      "df": 1,
+      "token": "debt-respite-scheme"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+    },
+    {
+      "df": 1,
+      "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+    }
+  ],
+  "dec": [
+    {
+      "df": 4,
+      "token": "december"
+    },
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 3,
+      "token": "declarable"
+    },
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decide"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    },
+    {
+      "df": 1,
+      "token": "decline"
+    }
+  ],
+  "dece": [
+    {
+      "df": 4,
+      "token": "december"
+    }
+  ],
+  "decem": [
+    {
+      "df": 4,
+      "token": "december"
+    }
+  ],
+  "decemb": [
+    {
+      "df": 4,
+      "token": "december"
+    }
+  ],
+  "decembe": [
+    {
+      "df": 4,
+      "token": "december"
+    }
+  ],
+  "december": [
+    {
+      "df": 4,
+      "token": "december"
+    }
+  ],
+  "deci": [
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decide"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    }
+  ],
+  "decid": [
+    {
+      "df": 1,
+      "token": "decide"
+    }
+  ],
+  "decide": [
+    {
+      "df": 1,
+      "token": "decide"
+    }
+  ],
+  "decis": [
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    }
+  ],
+  "decisi": [
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    }
+  ],
+  "decisio": [
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    }
+  ],
+  "decision": [
+    {
+      "df": 3,
+      "token": "decisions"
+    },
+    {
+      "df": 2,
+      "token": "decision"
+    },
+    {
+      "df": 1,
+      "token": "decisions.this"
+    }
+  ],
+  "decl": [
+    {
+      "df": 3,
+      "token": "declarable"
+    },
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    },
+    {
+      "df": 1,
+      "token": "decline"
+    }
+  ],
+  "decla": [
+    {
+      "df": 3,
+      "token": "declarable"
+    },
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    }
+  ],
+  "declar": [
+    {
+      "df": 3,
+      "token": "declarable"
+    },
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    }
+  ],
+  "declara": [
+    {
+      "df": 3,
+      "token": "declarable"
+    },
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    }
+  ],
+  "declarab": [
+    {
+      "df": 3,
+      "token": "declarable"
+    }
+  ],
+  "declarat": [
+    {
+      "df": 3,
+      "token": "declarations"
+    },
+    {
+      "df": 1,
+      "token": "declaration"
+    }
+  ],
+  "decli": [
+    {
+      "df": 1,
+      "token": "decline"
+    }
+  ],
+  "declin": [
+    {
+      "df": 1,
+      "token": "decline"
+    }
+  ],
+  "decline": [
+    {
+      "df": 1,
+      "token": "decline"
+    }
+  ],
+  "ded": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduct"
+    },
+    {
+      "df": 1,
+      "token": "deducted"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "dedu": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduct"
+    },
+    {
+      "df": 1,
+      "token": "deducted"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "deduc": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduct"
+    },
+    {
+      "df": 1,
+      "token": "deducted"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "deduct": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduct"
+    },
+    {
+      "df": 1,
+      "token": "deducted"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "deducte": [
+    {
+      "df": 1,
+      "token": "deducted"
+    }
+  ],
+  "deducted": [
+    {
+      "df": 1,
+      "token": "deducted"
+    }
+  ],
+  "deducti": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "deductio": [
+    {
+      "df": 2,
+      "token": "deductions"
+    },
+    {
+      "df": 1,
+      "token": "deduction"
+    }
+  ],
+  "dee": [
+    {
+      "df": 1,
+      "token": "deed"
+    },
+    {
+      "df": 1,
+      "token": "deems"
+    }
+  ],
+  "deed": [
+    {
+      "df": 1,
+      "token": "deed"
+    }
+  ],
+  "deem": [
+    {
+      "df": 1,
+      "token": "deems"
+    }
+  ],
+  "deems": [
+    {
+      "df": 1,
+      "token": "deems"
+    }
+  ],
+  "def": [
+    {
+      "df": 11,
+      "token": "defra"
+    },
+    {
+      "df": 5,
+      "token": "defined"
+    },
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 2,
+      "token": "defer"
+    },
+    {
+      "df": 1,
+      "token": "defence"
+    },
+    {
+      "df": 1,
+      "token": "defences"
+    },
+    {
+      "df": 1,
+      "token": "deferred"
+    },
+    {
+      "df": 1,
+      "token": "define"
+    },
+    {
+      "df": 1,
+      "token": "defines"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    },
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "defe": [
+    {
+      "df": 2,
+      "token": "defer"
+    },
+    {
+      "df": 1,
+      "token": "defence"
+    },
+    {
+      "df": 1,
+      "token": "defences"
+    },
+    {
+      "df": 1,
+      "token": "deferred"
+    }
+  ],
+  "defen": [
+    {
+      "df": 1,
+      "token": "defence"
+    },
+    {
+      "df": 1,
+      "token": "defences"
+    }
+  ],
+  "defenc": [
+    {
+      "df": 1,
+      "token": "defence"
+    },
+    {
+      "df": 1,
+      "token": "defences"
+    }
+  ],
+  "defence": [
+    {
+      "df": 1,
+      "token": "defence"
+    },
+    {
+      "df": 1,
+      "token": "defences"
+    }
+  ],
+  "defences": [
+    {
+      "df": 1,
+      "token": "defences"
+    }
+  ],
+  "defer": [
+    {
+      "df": 2,
+      "token": "defer"
+    },
+    {
+      "df": 1,
+      "token": "deferred"
+    }
+  ],
+  "deferr": [
+    {
+      "df": 1,
+      "token": "deferred"
+    }
+  ],
+  "deferre": [
+    {
+      "df": 1,
+      "token": "deferred"
+    }
+  ],
+  "deferred": [
+    {
+      "df": 1,
+      "token": "deferred"
+    }
+  ],
+  "defi": [
+    {
+      "df": 5,
+      "token": "defined"
+    },
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 1,
+      "token": "define"
+    },
+    {
+      "df": 1,
+      "token": "defines"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    }
+  ],
+  "defin": [
+    {
+      "df": 5,
+      "token": "defined"
+    },
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 1,
+      "token": "define"
+    },
+    {
+      "df": 1,
+      "token": "defines"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    }
+  ],
+  "define": [
+    {
+      "df": 5,
+      "token": "defined"
+    },
+    {
+      "df": 1,
+      "token": "define"
+    },
+    {
+      "df": 1,
+      "token": "defines"
+    }
+  ],
+  "defined": [
+    {
+      "df": 5,
+      "token": "defined"
+    }
+  ],
+  "defines": [
+    {
+      "df": 1,
+      "token": "defines"
+    }
+  ],
+  "defini": [
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    }
+  ],
+  "definit": [
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    }
+  ],
+  "definiti": [
+    {
+      "df": 4,
+      "token": "definitive"
+    },
+    {
+      "df": 1,
+      "token": "definition"
+    }
+  ],
+  "defr": [
+    {
+      "df": 11,
+      "token": "defra"
+    },
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "defra": [
+    {
+      "df": 11,
+      "token": "defra"
+    },
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "defra-": [
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "defra-u": [
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "defra-uk": [
+    {
+      "df": 1,
+      "token": "defra-uk-air-sensor-observation-service"
+    }
+  ],
+  "deg": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "degr": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "degra": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "degrad": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "degrade": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "degrades": [
+    {
+      "df": 1,
+      "token": "degradesyou"
+    }
+  ],
+  "del": [
+    {
+      "df": 3,
+      "token": "delete"
+    },
+    {
+      "df": 2,
+      "token": "deliver"
+    },
+    {
+      "df": 1,
+      "token": "delays"
+    },
+    {
+      "df": 1,
+      "token": "deleted"
+    },
+    {
+      "df": 1,
+      "token": "deleting"
+    },
+    {
+      "df": 1,
+      "token": "delivered"
+    },
+    {
+      "df": 1,
+      "token": "deliveries"
+    },
+    {
+      "df": 1,
+      "token": "delivers"
+    },
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "dela": [
+    {
+      "df": 1,
+      "token": "delays"
+    }
+  ],
+  "delay": [
+    {
+      "df": 1,
+      "token": "delays"
+    }
+  ],
+  "delays": [
+    {
+      "df": 1,
+      "token": "delays"
+    }
+  ],
+  "dele": [
+    {
+      "df": 3,
+      "token": "delete"
+    },
+    {
+      "df": 1,
+      "token": "deleted"
+    },
+    {
+      "df": 1,
+      "token": "deleting"
+    }
+  ],
+  "delet": [
+    {
+      "df": 3,
+      "token": "delete"
+    },
+    {
+      "df": 1,
+      "token": "deleted"
+    },
+    {
+      "df": 1,
+      "token": "deleting"
+    }
+  ],
+  "delete": [
+    {
+      "df": 3,
+      "token": "delete"
+    },
+    {
+      "df": 1,
+      "token": "deleted"
+    }
+  ],
+  "deleted": [
+    {
+      "df": 1,
+      "token": "deleted"
+    }
+  ],
+  "deleti": [
+    {
+      "df": 1,
+      "token": "deleting"
+    }
+  ],
+  "deletin": [
+    {
+      "df": 1,
+      "token": "deleting"
+    }
+  ],
+  "deleting": [
+    {
+      "df": 1,
+      "token": "deleting"
+    }
+  ],
+  "deli": [
+    {
+      "df": 2,
+      "token": "deliver"
+    },
+    {
+      "df": 1,
+      "token": "delivered"
+    },
+    {
+      "df": 1,
+      "token": "deliveries"
+    },
+    {
+      "df": 1,
+      "token": "delivers"
+    },
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "deliv": [
+    {
+      "df": 2,
+      "token": "deliver"
+    },
+    {
+      "df": 1,
+      "token": "delivered"
+    },
+    {
+      "df": 1,
+      "token": "deliveries"
+    },
+    {
+      "df": 1,
+      "token": "delivers"
+    },
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "delive": [
+    {
+      "df": 2,
+      "token": "deliver"
+    },
+    {
+      "df": 1,
+      "token": "delivered"
+    },
+    {
+      "df": 1,
+      "token": "deliveries"
+    },
+    {
+      "df": 1,
+      "token": "delivers"
+    },
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "deliver": [
+    {
+      "df": 2,
+      "token": "deliver"
+    },
+    {
+      "df": 1,
+      "token": "delivered"
+    },
+    {
+      "df": 1,
+      "token": "deliveries"
+    },
+    {
+      "df": 1,
+      "token": "delivers"
+    },
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "delivere": [
+    {
+      "df": 1,
+      "token": "delivered"
+    }
+  ],
+  "deliveri": [
+    {
+      "df": 1,
+      "token": "deliveries"
+    }
+  ],
+  "delivers": [
+    {
+      "df": 1,
+      "token": "delivers"
+    }
+  ],
+  "delivery": [
+    {
+      "df": 1,
+      "token": "delivery"
+    }
+  ],
+  "dem": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demand"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "dema": [
+    {
+      "df": 1,
+      "token": "demand"
+    }
+  ],
+  "deman": [
+    {
+      "df": 1,
+      "token": "demand"
+    }
+  ],
+  "demand": [
+    {
+      "df": 1,
+      "token": "demand"
+    }
+  ],
+  "demo": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "demog": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "demogr": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "demogra": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "demograp": [
+    {
+      "df": 12,
+      "token": "demographics"
+    },
+    {
+      "df": 6,
+      "token": "demographic"
+    },
+    {
+      "df": 1,
+      "token": "demographics-batch-service"
+    }
+  ],
+  "den": [
+    {
+      "df": 1,
+      "token": "denoting"
+    },
+    {
+      "df": 1,
+      "token": "dental"
+    },
+    {
+      "df": 1,
+      "token": "dentistry"
+    },
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "deno": [
+    {
+      "df": 1,
+      "token": "denoting"
+    }
+  ],
+  "denot": [
+    {
+      "df": 1,
+      "token": "denoting"
+    }
+  ],
+  "denoti": [
+    {
+      "df": 1,
+      "token": "denoting"
+    }
+  ],
+  "denotin": [
+    {
+      "df": 1,
+      "token": "denoting"
+    }
+  ],
+  "denoting": [
+    {
+      "df": 1,
+      "token": "denoting"
+    }
+  ],
+  "dent": [
+    {
+      "df": 1,
+      "token": "dental"
+    },
+    {
+      "df": 1,
+      "token": "dentistry"
+    },
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "denta": [
+    {
+      "df": 1,
+      "token": "dental"
+    }
+  ],
+  "dental": [
+    {
+      "df": 1,
+      "token": "dental"
+    }
+  ],
+  "denti": [
+    {
+      "df": 1,
+      "token": "dentistry"
+    },
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "dentis": [
+    {
+      "df": 1,
+      "token": "dentistry"
+    },
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "dentist": [
+    {
+      "df": 1,
+      "token": "dentistry"
+    },
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "dentistr": [
+    {
+      "df": 1,
+      "token": "dentistry"
+    }
+  ],
+  "dentists": [
+    {
+      "df": 1,
+      "token": "dentists"
+    }
+  ],
+  "dep": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 3,
+      "token": "depending"
+    },
+    {
+      "df": 2,
+      "token": "depictions"
+    },
+    {
+      "df": 2,
+      "token": "deployment"
+    },
+    {
+      "df": 1,
+      "token": "departed"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    }
+  ],
+  "depa": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 1,
+      "token": "departed"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-explore-education-statistics-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-teacher-training-api"
+    }
+  ],
+  "depar": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 1,
+      "token": "departed"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-explore-education-statistics-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-teacher-training-api"
+    }
+  ],
+  "depart": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 1,
+      "token": "departed"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-explore-education-statistics-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-teacher-training-api"
+    }
+  ],
+  "departe": [
+    {
+      "df": 1,
+      "token": "departed"
+    }
+  ],
+  "departed": [
+    {
+      "df": 1,
+      "token": "departed"
+    }
+  ],
+  "departm": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-explore-education-statistics-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-teacher-training-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-transport"
+    }
+  ],
+  "departme": [
+    {
+      "df": 26,
+      "token": "department"
+    },
+    {
+      "df": 11,
+      "token": "department-for-work-and-pensions"
+    },
+    {
+      "df": 8,
+      "token": "departments"
+    },
+    {
+      "df": 6,
+      "token": "department-for-business-and-trade"
+    },
+    {
+      "df": 4,
+      "token": "department-for-education"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "department-for-business-and-trade-uk-trade-quotas"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-dfe-eapim-platform-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-explore-education-statistics-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-education-teacher-training-api"
+    },
+    {
+      "df": 1,
+      "token": "department-for-transport"
+    }
+  ],
+  "departu": [
+    {
+      "df": 1,
+      "token": "departure"
+    },
+    {
+      "df": 1,
+      "token": "departures"
+    }
+  ],
+  "departur": [
+    {
+      "df": 1,
+      "token": "departure"
+    },
+    {
+      "df": 1,
+      "token": "departures"
+    }
+  ],
+  "depe": [
+    {
+      "df": 3,
+      "token": "depending"
+    }
+  ],
+  "depen": [
+    {
+      "df": 3,
+      "token": "depending"
+    }
+  ],
+  "depend": [
+    {
+      "df": 3,
+      "token": "depending"
+    }
+  ],
+  "dependi": [
+    {
+      "df": 3,
+      "token": "depending"
+    }
+  ],
+  "dependin": [
+    {
+      "df": 3,
+      "token": "depending"
+    }
+  ],
+  "depi": [
+    {
+      "df": 2,
+      "token": "depictions"
+    },
+    {
+      "df": 1,
+      "token": "depicting"
+    }
+  ],
+  "depic": [
+    {
+      "df": 2,
+      "token": "depictions"
+    },
+    {
+      "df": 1,
+      "token": "depicting"
+    }
+  ],
+  "depict": [
+    {
+      "df": 2,
+      "token": "depictions"
+    },
+    {
+      "df": 1,
+      "token": "depicting"
+    }
+  ],
+  "depicti": [
+    {
+      "df": 2,
+      "token": "depictions"
+    },
+    {
+      "df": 1,
+      "token": "depicting"
+    }
+  ],
+  "depictin": [
+    {
+      "df": 1,
+      "token": "depicting"
+    }
+  ],
+  "depictio": [
+    {
+      "df": 2,
+      "token": "depictions"
+    }
+  ],
+  "depl": [
+    {
+      "df": 2,
+      "token": "deployment"
+    },
+    {
+      "df": 1,
+      "token": "deployed"
+    }
+  ],
+  "deplo": [
+    {
+      "df": 2,
+      "token": "deployment"
+    },
+    {
+      "df": 1,
+      "token": "deployed"
+    }
+  ],
+  "deploy": [
+    {
+      "df": 2,
+      "token": "deployment"
+    },
+    {
+      "df": 1,
+      "token": "deployed"
+    }
+  ],
+  "deploye": [
+    {
+      "df": 1,
+      "token": "deployed"
+    }
+  ],
+  "deployed": [
+    {
+      "df": 1,
+      "token": "deployed"
+    }
+  ],
+  "deploym": [
+    {
+      "df": 2,
+      "token": "deployment"
+    }
+  ],
+  "deployme": [
+    {
+      "df": 2,
+      "token": "deployment"
+    }
+  ],
+  "depr": [
+    {
+      "df": 1,
+      "token": "deprecated"
+    }
+  ],
+  "depre": [
+    {
+      "df": 1,
+      "token": "deprecated"
+    }
+  ],
+  "deprec": [
+    {
+      "df": 1,
+      "token": "deprecated"
+    }
+  ],
+  "depreca": [
+    {
+      "df": 1,
+      "token": "deprecated"
+    }
+  ],
+  "deprecat": [
+    {
+      "df": 1,
+      "token": "deprecated"
+    }
+  ],
+  "dept": [
+    {
+      "df": 1,
+      "token": "depth"
+    },
+    {
+      "df": 1,
+      "token": "depths"
+    }
+  ],
+  "depth": [
+    {
+      "df": 1,
+      "token": "depth"
+    },
+    {
+      "df": 1,
+      "token": "depths"
+    }
+  ],
+  "depths": [
+    {
+      "df": 1,
+      "token": "depths"
+    }
+  ],
+  "depu": [
+    {
+      "df": 1,
+      "token": "deputy"
+    }
+  ],
+  "deput": [
+    {
+      "df": 1,
+      "token": "deputy"
+    }
+  ],
+  "deputy": [
+    {
+      "df": 1,
+      "token": "deputy"
+    }
+  ],
+  "der": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    },
+    {
+      "df": 1,
+      "token": "derivative"
+    },
+    {
+      "df": 1,
+      "token": "derived"
+    }
+  ],
+  "dere": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    }
+  ],
+  "dereg": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    }
+  ],
+  "deregi": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    }
+  ],
+  "deregis": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    }
+  ],
+  "deregist": [
+    {
+      "df": 1,
+      "token": "deregistration"
+    }
+  ],
+  "deri": [
+    {
+      "df": 1,
+      "token": "derivative"
+    },
+    {
+      "df": 1,
+      "token": "derived"
+    }
+  ],
+  "deriv": [
+    {
+      "df": 1,
+      "token": "derivative"
+    },
+    {
+      "df": 1,
+      "token": "derived"
+    }
+  ],
+  "deriva": [
+    {
+      "df": 1,
+      "token": "derivative"
+    }
+  ],
+  "derivat": [
+    {
+      "df": 1,
+      "token": "derivative"
+    }
+  ],
+  "derivati": [
+    {
+      "df": 1,
+      "token": "derivative"
+    }
+  ],
+  "derive": [
+    {
+      "df": 1,
+      "token": "derived"
+    }
+  ],
+  "derived": [
+    {
+      "df": 1,
+      "token": "derived"
+    }
+  ],
+  "des": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    },
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 3,
+      "token": "designed"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    },
+    {
+      "df": 2,
+      "token": "designated"
+    },
+    {
+      "df": 1,
+      "token": "designers"
+    },
+    {
+      "df": 1,
+      "token": "desktop"
+    },
+    {
+      "df": 1,
+      "token": "despatch"
+    },
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "desc": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    },
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    }
+  ],
+  "descr": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    },
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    }
+  ],
+  "descri": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    },
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    }
+  ],
+  "describ": [
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    }
+  ],
+  "describe": [
+    {
+      "df": 3,
+      "token": "describe"
+    },
+    {
+      "df": 3,
+      "token": "describes"
+    },
+    {
+      "df": 2,
+      "token": "described"
+    }
+  ],
+  "descrip": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    }
+  ],
+  "descript": [
+    {
+      "df": 7,
+      "token": "description"
+    },
+    {
+      "df": 4,
+      "token": "descriptions"
+    }
+  ],
+  "desi": [
+    {
+      "df": 3,
+      "token": "designed"
+    },
+    {
+      "df": 2,
+      "token": "designated"
+    },
+    {
+      "df": 1,
+      "token": "designers"
+    }
+  ],
+  "desig": [
+    {
+      "df": 3,
+      "token": "designed"
+    },
+    {
+      "df": 2,
+      "token": "designated"
+    },
+    {
+      "df": 1,
+      "token": "designers"
+    }
+  ],
+  "design": [
+    {
+      "df": 3,
+      "token": "designed"
+    },
+    {
+      "df": 2,
+      "token": "designated"
+    },
+    {
+      "df": 1,
+      "token": "designers"
+    }
+  ],
+  "designa": [
+    {
+      "df": 2,
+      "token": "designated"
+    }
+  ],
+  "designat": [
+    {
+      "df": 2,
+      "token": "designated"
+    }
+  ],
+  "designe": [
+    {
+      "df": 3,
+      "token": "designed"
+    },
+    {
+      "df": 1,
+      "token": "designers"
+    }
+  ],
+  "designed": [
+    {
+      "df": 3,
+      "token": "designed"
+    }
+  ],
+  "designer": [
+    {
+      "df": 1,
+      "token": "designers"
+    }
+  ],
+  "desk": [
+    {
+      "df": 1,
+      "token": "desktop"
+    }
+  ],
+  "deskt": [
+    {
+      "df": 1,
+      "token": "desktop"
+    }
+  ],
+  "deskto": [
+    {
+      "df": 1,
+      "token": "desktop"
+    }
+  ],
+  "desktop": [
+    {
+      "df": 1,
+      "token": "desktop"
+    }
+  ],
+  "desp": [
+    {
+      "df": 1,
+      "token": "despatch"
+    }
+  ],
+  "despa": [
+    {
+      "df": 1,
+      "token": "despatch"
+    }
+  ],
+  "despat": [
+    {
+      "df": 1,
+      "token": "despatch"
+    }
+  ],
+  "despatc": [
+    {
+      "df": 1,
+      "token": "despatch"
+    }
+  ],
+  "despatch": [
+    {
+      "df": 1,
+      "token": "despatch"
+    }
+  ],
+  "dest": [
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "desti": [
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "destin": [
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "destina": [
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "destinat": [
+    {
+      "df": 1,
+      "token": "destination"
+    }
+  ],
+  "det": [
+    {
+      "df": 73,
+      "token": "details"
+    },
+    {
+      "df": 5,
+      "token": "detailed"
+    },
+    {
+      "df": 3,
+      "token": "detailsyou"
+    },
+    {
+      "df": 1,
+      "token": "detail"
+    },
+    {
+      "df": 1,
+      "token": "details.update"
+    },
+    {
+      "df": 1,
+      "token": "detailsdata"
+    },
+    {
+      "df": 1,
+      "token": "detailsthis"
+    },
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "deta": [
+    {
+      "df": 73,
+      "token": "details"
+    },
+    {
+      "df": 5,
+      "token": "detailed"
+    },
+    {
+      "df": 3,
+      "token": "detailsyou"
+    },
+    {
+      "df": 1,
+      "token": "detail"
+    },
+    {
+      "df": 1,
+      "token": "details.update"
+    },
+    {
+      "df": 1,
+      "token": "detailsdata"
+    },
+    {
+      "df": 1,
+      "token": "detailsthis"
+    }
+  ],
+  "detai": [
+    {
+      "df": 73,
+      "token": "details"
+    },
+    {
+      "df": 5,
+      "token": "detailed"
+    },
+    {
+      "df": 3,
+      "token": "detailsyou"
+    },
+    {
+      "df": 1,
+      "token": "detail"
+    },
+    {
+      "df": 1,
+      "token": "details.update"
+    },
+    {
+      "df": 1,
+      "token": "detailsdata"
+    },
+    {
+      "df": 1,
+      "token": "detailsthis"
+    }
+  ],
+  "detail": [
+    {
+      "df": 73,
+      "token": "details"
+    },
+    {
+      "df": 5,
+      "token": "detailed"
+    },
+    {
+      "df": 3,
+      "token": "detailsyou"
+    },
+    {
+      "df": 1,
+      "token": "detail"
+    },
+    {
+      "df": 1,
+      "token": "details.update"
+    },
+    {
+      "df": 1,
+      "token": "detailsdata"
+    },
+    {
+      "df": 1,
+      "token": "detailsthis"
+    }
+  ],
+  "detaile": [
+    {
+      "df": 5,
+      "token": "detailed"
+    }
+  ],
+  "detailed": [
+    {
+      "df": 5,
+      "token": "detailed"
+    }
+  ],
+  "details": [
+    {
+      "df": 73,
+      "token": "details"
+    },
+    {
+      "df": 3,
+      "token": "detailsyou"
+    },
+    {
+      "df": 1,
+      "token": "details.update"
+    },
+    {
+      "df": 1,
+      "token": "detailsdata"
+    },
+    {
+      "df": 1,
+      "token": "detailsthis"
+    }
+  ],
+  "details.": [
+    {
+      "df": 1,
+      "token": "details.update"
+    }
+  ],
+  "detailsd": [
+    {
+      "df": 1,
+      "token": "detailsdata"
+    }
+  ],
+  "detailst": [
+    {
+      "df": 1,
+      "token": "detailsthis"
+    }
+  ],
+  "detailsy": [
+    {
+      "df": 3,
+      "token": "detailsyou"
+    }
+  ],
+  "dete": [
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "deter": [
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "determ": [
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "determi": [
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "determin": [
+    {
+      "df": 1,
+      "token": "determined"
+    }
+  ],
+  "dev": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 14,
+      "token": "development"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 3,
+      "token": "develop"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 2,
+      "token": "devices"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "deve": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 14,
+      "token": "development"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 3,
+      "token": "develop"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "devel": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 14,
+      "token": "development"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 3,
+      "token": "develop"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "develo": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 14,
+      "token": "development"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 3,
+      "token": "develop"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "develop": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 14,
+      "token": "development"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 3,
+      "token": "develop"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "develope": [
+    {
+      "df": 109,
+      "token": "developer"
+    },
+    {
+      "df": 30,
+      "token": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "df": 15,
+      "token": "developers"
+    },
+    {
+      "df": 6,
+      "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "developer.admiralty.co.uk"
+    },
+    {
+      "df": 2,
+      "token": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developed"
+    },
+    {
+      "df": 1,
+      "token": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.beta.ons.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "developer.if"
+    },
+    {
+      "df": 1,
+      "token": "developers.arcgis.com"
+    }
+  ],
+  "developm": [
+    {
+      "df": 14,
+      "token": "development"
+    }
+  ],
+  "devi": [
+    {
+      "df": 2,
+      "token": "devices"
+    }
+  ],
+  "devic": [
+    {
+      "df": 2,
+      "token": "devices"
+    }
+  ],
+  "device": [
+    {
+      "df": 2,
+      "token": "devices"
+    }
+  ],
+  "devices": [
+    {
+      "df": 2,
+      "token": "devices"
+    }
+  ]
+}

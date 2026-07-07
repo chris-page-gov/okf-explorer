@@ -1,0 +1,67 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bodies"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "body"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "book"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "booking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "booking-and-referral-fhir"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "bookings"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "borehole"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "boroughs"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "both"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bounding"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bowel"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bowel-cancer-screening-edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "box"
+  }
+]

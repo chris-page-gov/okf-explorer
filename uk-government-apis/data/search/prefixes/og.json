@@ -1,0 +1,112 @@
+{
+  "ogc": [
+    {
+      "df": 14,
+      "token": "ogc-api"
+    },
+    {
+      "df": 4,
+      "token": "ogc"
+    },
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogc-": [
+    {
+      "df": 14,
+      "token": "ogc-api"
+    }
+  ],
+  "ogc-a": [
+    {
+      "df": 14,
+      "token": "ogc-api"
+    }
+  ],
+  "ogc-ap": [
+    {
+      "df": 14,
+      "token": "ogc-api"
+    }
+  ],
+  "ogc-api": [
+    {
+      "df": 14,
+      "token": "ogc-api"
+    }
+  ],
+  "ogca": [
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogcap": [
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogcapi": [
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogcapi.": [
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogcapi.b": [
+    {
+      "df": 1,
+      "token": "ogcapi.bgs.ac.uk"
+    }
+  ],
+  "ogcapi.o": [
+    {
+      "df": 2,
+      "token": "ogcapi.ogc.org"
+    }
+  ]
+}

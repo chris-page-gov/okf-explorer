@@ -1,0 +1,27 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "ntest"
+  },
+  {
+    "df": 48,
+    "postings": "data/search/postings-0.json",
+    "token": "nthe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nthere"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "nthese"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "nthis"
+  }
+]

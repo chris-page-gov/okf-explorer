@@ -1,0 +1,72 @@
+{
+  "htm": [
+    {
+      "df": 8,
+      "token": "html"
+    },
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "html": [
+    {
+      "df": 8,
+      "token": "html"
+    },
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "html_": [
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "html_d": [
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "html_de": [
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "html_des": [
+    {
+      "df": 1,
+      "token": "html_description"
+    }
+  ],
+  "htt": [
+    {
+      "df": 234,
+      "token": "https"
+    },
+    {
+      "df": 15,
+      "token": "http"
+    }
+  ],
+  "http": [
+    {
+      "df": 234,
+      "token": "https"
+    },
+    {
+      "df": 15,
+      "token": "http"
+    }
+  ],
+  "https": [
+    {
+      "df": 234,
+      "token": "https"
+    }
+  ]
+}

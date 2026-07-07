@@ -1,0 +1,57 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sha-1"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "share"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "shared"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "sharing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "shore-based"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "shortlist"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "should"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "show"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "showing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "shown"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "shows"
+  }
+]

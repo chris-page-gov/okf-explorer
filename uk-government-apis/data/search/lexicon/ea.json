@@ -1,0 +1,77 @@
+[
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "each"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eapim"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eapim-platform-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "earlier"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "early"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "earlycompletionv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "earner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "earnings"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "earthquake"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ease"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "easier"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "easily"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "easy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "easy-to-understand"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "easy-to-use"
+  }
+]

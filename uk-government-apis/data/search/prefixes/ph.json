@@ -1,0 +1,242 @@
+{
+  "pha": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacies"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "phar": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacies"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "pharm": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacies"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "pharma": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacies"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "pharmac": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacies"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "pharmaci": [
+    {
+      "df": 1,
+      "token": "pharmacies"
+    }
+  ],
+  "pharmacy": [
+    {
+      "df": 5,
+      "token": "pharmacy"
+    },
+    {
+      "df": 1,
+      "token": "pharmacy.you"
+    },
+    {
+      "df": 1,
+      "token": "pharmacythe"
+    }
+  ],
+  "pho": [
+    {
+      "df": 2,
+      "token": "phone"
+    },
+    {
+      "df": 1,
+      "token": "phonetics"
+    },
+    {
+      "df": 1,
+      "token": "photo"
+    },
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "phon": [
+    {
+      "df": 2,
+      "token": "phone"
+    },
+    {
+      "df": 1,
+      "token": "phonetics"
+    }
+  ],
+  "phone": [
+    {
+      "df": 2,
+      "token": "phone"
+    },
+    {
+      "df": 1,
+      "token": "phonetics"
+    }
+  ],
+  "phonet": [
+    {
+      "df": 1,
+      "token": "phonetics"
+    }
+  ],
+  "phoneti": [
+    {
+      "df": 1,
+      "token": "phonetics"
+    }
+  ],
+  "phonetic": [
+    {
+      "df": 1,
+      "token": "phonetics"
+    }
+  ],
+  "phot": [
+    {
+      "df": 1,
+      "token": "photo"
+    },
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "photo": [
+    {
+      "df": 1,
+      "token": "photo"
+    },
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "photog": [
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "photogr": [
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "photogra": [
+    {
+      "df": 1,
+      "token": "photographs"
+    }
+  ],
+  "phy": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ],
+  "phys": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ],
+  "physi": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ],
+  "physic": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ],
+  "physica": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ],
+  "physical": [
+    {
+      "df": 2,
+      "token": "physical"
+    }
+  ]
+}

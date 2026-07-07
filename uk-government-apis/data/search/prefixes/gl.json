@@ -1,0 +1,74 @@
+{
+  "gla": [
+    {
+      "df": 1,
+      "token": "glasses"
+    }
+  ],
+  "glas": [
+    {
+      "df": 1,
+      "token": "glasses"
+    }
+  ],
+  "glass": [
+    {
+      "df": 1,
+      "token": "glasses"
+    }
+  ],
+  "glasse": [
+    {
+      "df": 1,
+      "token": "glasses"
+    }
+  ],
+  "glasses": [
+    {
+      "df": 1,
+      "token": "glasses"
+    }
+  ],
+  "glh": [
+    {
+      "df": 1,
+      "token": "glher"
+    }
+  ],
+  "glhe": [
+    {
+      "df": 1,
+      "token": "glher"
+    }
+  ],
+  "glher": [
+    {
+      "df": 1,
+      "token": "glher"
+    }
+  ],
+  "glo": [
+    {
+      "df": 3,
+      "token": "global"
+    }
+  ],
+  "glob": [
+    {
+      "df": 3,
+      "token": "global"
+    }
+  ],
+  "globa": [
+    {
+      "df": 3,
+      "token": "global"
+    }
+  ],
+  "global": [
+    {
+      "df": 3,
+      "token": "global"
+    }
+  ]
+}

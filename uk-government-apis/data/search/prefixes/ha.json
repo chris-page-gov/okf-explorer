@@ -1,0 +1,298 @@
+{
+  "hae": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "haem": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "haema": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "haemat": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "haemato": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "haematol": [
+    {
+      "df": 1,
+      "token": "haematology"
+    }
+  ],
+  "han": [
+    {
+      "df": 2,
+      "token": "handles"
+    },
+    {
+      "df": 1,
+      "token": "handle"
+    },
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "hand": [
+    {
+      "df": 2,
+      "token": "handles"
+    },
+    {
+      "df": 1,
+      "token": "handle"
+    },
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "handl": [
+    {
+      "df": 2,
+      "token": "handles"
+    },
+    {
+      "df": 1,
+      "token": "handle"
+    },
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "handle": [
+    {
+      "df": 2,
+      "token": "handles"
+    },
+    {
+      "df": 1,
+      "token": "handle"
+    }
+  ],
+  "handles": [
+    {
+      "df": 2,
+      "token": "handles"
+    }
+  ],
+  "handli": [
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "handlin": [
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "handling": [
+    {
+      "df": 1,
+      "token": "handling"
+    }
+  ],
+  "hap": [
+    {
+      "df": 1,
+      "token": "happen"
+    },
+    {
+      "df": 1,
+      "token": "happens"
+    }
+  ],
+  "happ": [
+    {
+      "df": 1,
+      "token": "happen"
+    },
+    {
+      "df": 1,
+      "token": "happens"
+    }
+  ],
+  "happe": [
+    {
+      "df": 1,
+      "token": "happen"
+    },
+    {
+      "df": 1,
+      "token": "happens"
+    }
+  ],
+  "happen": [
+    {
+      "df": 1,
+      "token": "happen"
+    },
+    {
+      "df": 1,
+      "token": "happens"
+    }
+  ],
+  "happens": [
+    {
+      "df": 1,
+      "token": "happens"
+    }
+  ],
+  "har": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    },
+    {
+      "df": 1,
+      "token": "harmonises"
+    },
+    {
+      "df": 1,
+      "token": "harvest"
+    }
+  ],
+  "har_": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    }
+  ],
+  "har_2": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    }
+  ],
+  "har_20": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    }
+  ],
+  "har_202": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    }
+  ],
+  "har_2021": [
+    {
+      "df": 1,
+      "token": "har_2021_othr"
+    }
+  ],
+  "harm": [
+    {
+      "df": 1,
+      "token": "harmonises"
+    }
+  ],
+  "harmo": [
+    {
+      "df": 1,
+      "token": "harmonises"
+    }
+  ],
+  "harmon": [
+    {
+      "df": 1,
+      "token": "harmonises"
+    }
+  ],
+  "harmoni": [
+    {
+      "df": 1,
+      "token": "harmonises"
+    }
+  ],
+  "harmonis": [
+    {
+      "df": 1,
+      "token": "harmonises"
+    }
+  ],
+  "harv": [
+    {
+      "df": 1,
+      "token": "harvest"
+    }
+  ],
+  "harve": [
+    {
+      "df": 1,
+      "token": "harvest"
+    }
+  ],
+  "harves": [
+    {
+      "df": 1,
+      "token": "harvest"
+    }
+  ],
+  "harvest": [
+    {
+      "df": 1,
+      "token": "harvest"
+    }
+  ],
+  "has": [
+    {
+      "df": 25,
+      "token": "has"
+    }
+  ],
+  "hav": [
+    {
+      "df": 26,
+      "token": "have"
+    },
+    {
+      "df": 1,
+      "token": "having"
+    }
+  ],
+  "have": [
+    {
+      "df": 26,
+      "token": "have"
+    }
+  ],
+  "havi": [
+    {
+      "df": 1,
+      "token": "having"
+    }
+  ],
+  "havin": [
+    {
+      "df": 1,
+      "token": "having"
+    }
+  ],
+  "having": [
+    {
+      "df": 1,
+      "token": "having"
+    }
+  ]
+}

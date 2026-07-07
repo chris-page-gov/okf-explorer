@@ -1,0 +1,37 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "null"
+  },
+  {
+    "df": 29,
+    "postings": "data/search/postings-0.json",
+    "token": "number"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "number.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "numberlocal"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "numbers"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "nurse"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "nuse"
+  }
+]

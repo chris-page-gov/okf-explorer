@@ -1,0 +1,122 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "oracle"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ord"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ord-compatible"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "order"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-download-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-features-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-linked-identifiers-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-maps-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-names-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-oauth-2-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-places-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-os-vector-tile-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ordnance-survey-places-api"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "organisation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "organisation-data-service-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "organisation-data-service-ord"
+  },
+  {
+    "df": 22,
+    "postings": "data/search/postings-0.json",
+    "token": "organisations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "organisations.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "organised"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "original"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "originally"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "originals"
+  }
+]

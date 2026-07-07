@@ -1,0 +1,66 @@
+{
+  "jus": [
+    {
+      "df": 6,
+      "token": "justice"
+    },
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    },
+    {
+      "df": 2,
+      "token": "just"
+    }
+  ],
+  "just": [
+    {
+      "df": 6,
+      "token": "justice"
+    },
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    },
+    {
+      "df": 2,
+      "token": "just"
+    }
+  ],
+  "justi": [
+    {
+      "df": 6,
+      "token": "justice"
+    },
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    }
+  ],
+  "justic": [
+    {
+      "df": 6,
+      "token": "justice"
+    },
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    }
+  ],
+  "justice": [
+    {
+      "df": 6,
+      "token": "justice"
+    },
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    }
+  ],
+  "justice-": [
+    {
+      "df": 6,
+      "token": "justice-and-policing"
+    }
+  ]
+}

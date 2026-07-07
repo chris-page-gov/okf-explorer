@@ -1,0 +1,27 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "oc1titleknownv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "occasionally"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "occult"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "occur"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "occurs"
+  }
+]

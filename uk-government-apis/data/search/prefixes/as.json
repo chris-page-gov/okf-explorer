@@ -1,0 +1,470 @@
+{
+  "ash": [
+    {
+      "df": 1,
+      "token": "ashore"
+    }
+  ],
+  "asho": [
+    {
+      "df": 1,
+      "token": "ashore"
+    }
+  ],
+  "ashor": [
+    {
+      "df": 1,
+      "token": "ashore"
+    }
+  ],
+  "ashore": [
+    {
+      "df": 1,
+      "token": "ashore"
+    }
+  ],
+  "asi": [
+    {
+      "df": 2,
+      "token": "asid"
+    },
+    {
+      "df": 1,
+      "token": "asids"
+    }
+  ],
+  "asid": [
+    {
+      "df": 2,
+      "token": "asid"
+    },
+    {
+      "df": 1,
+      "token": "asids"
+    }
+  ],
+  "asids": [
+    {
+      "df": 1,
+      "token": "asids"
+    }
+  ],
+  "ask": [
+    {
+      "df": 12,
+      "token": "ask"
+    }
+  ],
+  "asp": [
+    {
+      "df": 1,
+      "token": "aspects"
+    }
+  ],
+  "aspe": [
+    {
+      "df": 1,
+      "token": "aspects"
+    }
+  ],
+  "aspec": [
+    {
+      "df": 1,
+      "token": "aspects"
+    }
+  ],
+  "aspect": [
+    {
+      "df": 1,
+      "token": "aspects"
+    }
+  ],
+  "aspects": [
+    {
+      "df": 1,
+      "token": "aspects"
+    }
+  ],
+  "ass": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 4,
+      "token": "assets"
+    },
+    {
+      "df": 2,
+      "token": "assessed"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 2,
+      "token": "asset"
+    },
+    {
+      "df": 2,
+      "token": "assurance"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    },
+    {
+      "df": 1,
+      "token": "asset-management"
+    },
+    {
+      "df": 1,
+      "token": "assigned"
+    },
+    {
+      "df": 1,
+      "token": "assigns"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "asse": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 4,
+      "token": "assets"
+    },
+    {
+      "df": 2,
+      "token": "assessed"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 2,
+      "token": "asset"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    },
+    {
+      "df": 1,
+      "token": "asset-management"
+    }
+  ],
+  "asses": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 2,
+      "token": "assessed"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    }
+  ],
+  "assess": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 2,
+      "token": "assessed"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    }
+  ],
+  "assesse": [
+    {
+      "df": 2,
+      "token": "assessed"
+    }
+  ],
+  "assessed": [
+    {
+      "df": 2,
+      "token": "assessed"
+    }
+  ],
+  "assessm": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    }
+  ],
+  "assessme": [
+    {
+      "df": 13,
+      "token": "assessment"
+    },
+    {
+      "df": 2,
+      "token": "assessments"
+    },
+    {
+      "df": 1,
+      "token": "assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "assessment.as"
+    }
+  ],
+  "asset": [
+    {
+      "df": 4,
+      "token": "assets"
+    },
+    {
+      "df": 2,
+      "token": "asset"
+    },
+    {
+      "df": 1,
+      "token": "asset-management"
+    }
+  ],
+  "asset-": [
+    {
+      "df": 1,
+      "token": "asset-management"
+    }
+  ],
+  "asset-m": [
+    {
+      "df": 1,
+      "token": "asset-management"
+    }
+  ],
+  "asset-ma": [
+    {
+      "df": 1,
+      "token": "asset-management"
+    }
+  ],
+  "assets": [
+    {
+      "df": 4,
+      "token": "assets"
+    }
+  ],
+  "assi": [
+    {
+      "df": 1,
+      "token": "assigned"
+    },
+    {
+      "df": 1,
+      "token": "assigns"
+    }
+  ],
+  "assig": [
+    {
+      "df": 1,
+      "token": "assigned"
+    },
+    {
+      "df": 1,
+      "token": "assigns"
+    }
+  ],
+  "assign": [
+    {
+      "df": 1,
+      "token": "assigned"
+    },
+    {
+      "df": 1,
+      "token": "assigns"
+    }
+  ],
+  "assigne": [
+    {
+      "df": 1,
+      "token": "assigned"
+    }
+  ],
+  "assigned": [
+    {
+      "df": 1,
+      "token": "assigned"
+    }
+  ],
+  "assigns": [
+    {
+      "df": 1,
+      "token": "assigns"
+    }
+  ],
+  "asso": [
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "assoc": [
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "associ": [
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "associa": [
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "associat": [
+    {
+      "df": 5,
+      "token": "associated"
+    },
+    {
+      "df": 1,
+      "token": "association"
+    }
+  ],
+  "assu": [
+    {
+      "df": 2,
+      "token": "assurance"
+    }
+  ],
+  "assur": [
+    {
+      "df": 2,
+      "token": "assurance"
+    }
+  ],
+  "assura": [
+    {
+      "df": 2,
+      "token": "assurance"
+    }
+  ],
+  "assuran": [
+    {
+      "df": 2,
+      "token": "assurance"
+    }
+  ],
+  "assuranc": [
+    {
+      "df": 2,
+      "token": "assurance"
+    }
+  ],
+  "asy": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ],
+  "asyn": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ],
+  "async": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ],
+  "asynch": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ],
+  "asynchr": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ],
+  "asynchro": [
+    {
+      "df": 4,
+      "token": "asynchronous"
+    }
+  ]
+}

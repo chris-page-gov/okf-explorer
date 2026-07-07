@@ -1,0 +1,338 @@
+{
+  "wid": [
+    {
+      "df": 6,
+      "token": "wide"
+    },
+    {
+      "df": 3,
+      "token": "widely"
+    },
+    {
+      "df": 1,
+      "token": "widgets"
+    }
+  ],
+  "wide": [
+    {
+      "df": 6,
+      "token": "wide"
+    },
+    {
+      "df": 3,
+      "token": "widely"
+    }
+  ],
+  "widel": [
+    {
+      "df": 3,
+      "token": "widely"
+    }
+  ],
+  "widely": [
+    {
+      "df": 3,
+      "token": "widely"
+    }
+  ],
+  "widg": [
+    {
+      "df": 1,
+      "token": "widgets"
+    }
+  ],
+  "widge": [
+    {
+      "df": 1,
+      "token": "widgets"
+    }
+  ],
+  "widget": [
+    {
+      "df": 1,
+      "token": "widgets"
+    }
+  ],
+  "widgets": [
+    {
+      "df": 1,
+      "token": "widgets"
+    }
+  ],
+  "wif": [
+    {
+      "df": 1,
+      "token": "wife"
+    }
+  ],
+  "wife": [
+    {
+      "df": 1,
+      "token": "wife"
+    }
+  ],
+  "wik": [
+    {
+      "df": 1,
+      "token": "wiki"
+    },
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    },
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wiki": [
+    {
+      "df": 1,
+      "token": "wiki"
+    },
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    },
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wiki.": [
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    },
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wiki.o": [
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    },
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wiki.of": [
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    }
+  ],
+  "wiki.off": [
+    {
+      "df": 1,
+      "token": "wiki.office.uc.dwpcloud.uk"
+    }
+  ],
+  "wiki.op": [
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wiki.ope": [
+    {
+      "df": 1,
+      "token": "wiki.open311.org"
+    }
+  ],
+  "wil": [
+    {
+      "df": 26,
+      "token": "will"
+    },
+    {
+      "df": 1,
+      "token": "wild"
+    }
+  ],
+  "wild": [
+    {
+      "df": 1,
+      "token": "wild"
+    }
+  ],
+  "will": [
+    {
+      "df": 26,
+      "token": "will"
+    }
+  ],
+  "win": [
+    {
+      "df": 1,
+      "token": "window"
+    },
+    {
+      "df": 1,
+      "token": "windows"
+    }
+  ],
+  "wind": [
+    {
+      "df": 1,
+      "token": "window"
+    },
+    {
+      "df": 1,
+      "token": "windows"
+    }
+  ],
+  "windo": [
+    {
+      "df": 1,
+      "token": "window"
+    },
+    {
+      "df": 1,
+      "token": "windows"
+    }
+  ],
+  "window": [
+    {
+      "df": 1,
+      "token": "window"
+    },
+    {
+      "df": 1,
+      "token": "windows"
+    }
+  ],
+  "windows": [
+    {
+      "df": 1,
+      "token": "windows"
+    }
+  ],
+  "wis": [
+    {
+      "df": 1,
+      "token": "wiski"
+    }
+  ],
+  "wisk": [
+    {
+      "df": 1,
+      "token": "wiski"
+    }
+  ],
+  "wiski": [
+    {
+      "df": 1,
+      "token": "wiski"
+    }
+  ],
+  "wit": [
+    {
+      "df": 18,
+      "token": "within"
+    },
+    {
+      "df": 5,
+      "token": "without"
+    },
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "with": [
+    {
+      "df": 18,
+      "token": "within"
+    },
+    {
+      "df": 5,
+      "token": "without"
+    },
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "withd": [
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "withdr": [
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "withdra": [
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "withdraw": [
+    {
+      "df": 2,
+      "token": "withdraw"
+    },
+    {
+      "df": 1,
+      "token": "withdrawal"
+    }
+  ],
+  "withi": [
+    {
+      "df": 18,
+      "token": "within"
+    }
+  ],
+  "within": [
+    {
+      "df": 18,
+      "token": "within"
+    }
+  ],
+  "witho": [
+    {
+      "df": 5,
+      "token": "without"
+    }
+  ],
+  "withou": [
+    {
+      "df": 5,
+      "token": "without"
+    }
+  ],
+  "without": [
+    {
+      "df": 5,
+      "token": "without"
+    }
+  ]
+}

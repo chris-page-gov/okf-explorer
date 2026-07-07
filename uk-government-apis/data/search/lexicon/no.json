@@ -1,0 +1,172 @@
+[
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "no"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nodes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nominated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nomination"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nomis"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "non-clinical"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "non-domestic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "non-domestic-cert"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "non-domestic-recommendations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "non-domestic-search"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "non-nhs"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "non-primary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "non-technical"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nonly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "normally"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "northern"
+  },
+  {
+    "df": 48,
+    "postings": "data/search/postings-0.json",
+    "token": "not"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "not-sign-delimited"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "not-specified"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notations"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "note"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nother"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notice"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "notices"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "noticeyou"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "notification"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "notifications"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notifications.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notifies"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "notify"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nottheir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "notuse"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "now"
+  }
+]

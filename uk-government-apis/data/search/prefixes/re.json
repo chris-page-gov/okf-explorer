@@ -1,0 +1,4582 @@
+{
+  "re-": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    },
+    {
+      "df": 1,
+      "token": "re-schedule"
+    },
+    {
+      "df": 1,
+      "token": "re-sellers"
+    },
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "re-b": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    }
+  ],
+  "re-bo": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    }
+  ],
+  "re-boo": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    }
+  ],
+  "re-book": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    }
+  ],
+  "re-booki": [
+    {
+      "df": 1,
+      "token": "re-booking"
+    }
+  ],
+  "re-s": [
+    {
+      "df": 1,
+      "token": "re-schedule"
+    },
+    {
+      "df": 1,
+      "token": "re-sellers"
+    }
+  ],
+  "re-sc": [
+    {
+      "df": 1,
+      "token": "re-schedule"
+    }
+  ],
+  "re-sch": [
+    {
+      "df": 1,
+      "token": "re-schedule"
+    }
+  ],
+  "re-sche": [
+    {
+      "df": 1,
+      "token": "re-schedule"
+    }
+  ],
+  "re-sched": [
+    {
+      "df": 1,
+      "token": "re-schedule"
+    }
+  ],
+  "re-se": [
+    {
+      "df": 1,
+      "token": "re-sellers"
+    }
+  ],
+  "re-sel": [
+    {
+      "df": 1,
+      "token": "re-sellers"
+    }
+  ],
+  "re-sell": [
+    {
+      "df": 1,
+      "token": "re-sellers"
+    }
+  ],
+  "re-selle": [
+    {
+      "df": 1,
+      "token": "re-sellers"
+    }
+  ],
+  "re-u": [
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "re-us": [
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "re-usa": [
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "re-usab": [
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "re-usabl": [
+    {
+      "df": 1,
+      "token": "re-usable"
+    }
+  ],
+  "rea": [
+    {
+      "df": 11,
+      "token": "read"
+    },
+    {
+      "df": 7,
+      "token": "real-time"
+    },
+    {
+      "df": 4,
+      "token": "real"
+    },
+    {
+      "df": 3,
+      "token": "ready"
+    },
+    {
+      "df": 2,
+      "token": "read-only"
+    },
+    {
+      "df": 2,
+      "token": "readiness"
+    },
+    {
+      "df": 2,
+      "token": "reading"
+    },
+    {
+      "df": 2,
+      "token": "readings"
+    },
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    },
+    {
+      "df": 1,
+      "token": "readable"
+    },
+    {
+      "df": 1,
+      "token": "reader"
+    },
+    {
+      "df": 1,
+      "token": "reallocated"
+    },
+    {
+      "df": 1,
+      "token": "realtime"
+    },
+    {
+      "df": 1,
+      "token": "reason"
+    },
+    {
+      "df": 1,
+      "token": "reasonable"
+    }
+  ],
+  "reac": [
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    }
+  ],
+  "react": [
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    }
+  ],
+  "reacti": [
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    }
+  ],
+  "reactio": [
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    }
+  ],
+  "reaction": [
+    {
+      "df": 1,
+      "token": "reactions"
+    },
+    {
+      "df": 1,
+      "token": "reactions.you"
+    }
+  ],
+  "read": [
+    {
+      "df": 11,
+      "token": "read"
+    },
+    {
+      "df": 3,
+      "token": "ready"
+    },
+    {
+      "df": 2,
+      "token": "read-only"
+    },
+    {
+      "df": 2,
+      "token": "readiness"
+    },
+    {
+      "df": 2,
+      "token": "reading"
+    },
+    {
+      "df": 2,
+      "token": "readings"
+    },
+    {
+      "df": 1,
+      "token": "readable"
+    },
+    {
+      "df": 1,
+      "token": "reader"
+    }
+  ],
+  "read-": [
+    {
+      "df": 2,
+      "token": "read-only"
+    }
+  ],
+  "read-o": [
+    {
+      "df": 2,
+      "token": "read-only"
+    }
+  ],
+  "read-on": [
+    {
+      "df": 2,
+      "token": "read-only"
+    }
+  ],
+  "read-onl": [
+    {
+      "df": 2,
+      "token": "read-only"
+    }
+  ],
+  "reada": [
+    {
+      "df": 1,
+      "token": "readable"
+    }
+  ],
+  "readab": [
+    {
+      "df": 1,
+      "token": "readable"
+    }
+  ],
+  "readabl": [
+    {
+      "df": 1,
+      "token": "readable"
+    }
+  ],
+  "readable": [
+    {
+      "df": 1,
+      "token": "readable"
+    }
+  ],
+  "reade": [
+    {
+      "df": 1,
+      "token": "reader"
+    }
+  ],
+  "reader": [
+    {
+      "df": 1,
+      "token": "reader"
+    }
+  ],
+  "readi": [
+    {
+      "df": 2,
+      "token": "readiness"
+    },
+    {
+      "df": 2,
+      "token": "reading"
+    },
+    {
+      "df": 2,
+      "token": "readings"
+    }
+  ],
+  "readin": [
+    {
+      "df": 2,
+      "token": "readiness"
+    },
+    {
+      "df": 2,
+      "token": "reading"
+    },
+    {
+      "df": 2,
+      "token": "readings"
+    }
+  ],
+  "readine": [
+    {
+      "df": 2,
+      "token": "readiness"
+    }
+  ],
+  "readines": [
+    {
+      "df": 2,
+      "token": "readiness"
+    }
+  ],
+  "reading": [
+    {
+      "df": 2,
+      "token": "reading"
+    },
+    {
+      "df": 2,
+      "token": "readings"
+    }
+  ],
+  "readings": [
+    {
+      "df": 2,
+      "token": "readings"
+    }
+  ],
+  "ready": [
+    {
+      "df": 3,
+      "token": "ready"
+    }
+  ],
+  "real": [
+    {
+      "df": 7,
+      "token": "real-time"
+    },
+    {
+      "df": 4,
+      "token": "real"
+    },
+    {
+      "df": 1,
+      "token": "reallocated"
+    },
+    {
+      "df": 1,
+      "token": "realtime"
+    }
+  ],
+  "real-": [
+    {
+      "df": 7,
+      "token": "real-time"
+    }
+  ],
+  "real-t": [
+    {
+      "df": 7,
+      "token": "real-time"
+    }
+  ],
+  "real-ti": [
+    {
+      "df": 7,
+      "token": "real-time"
+    }
+  ],
+  "real-tim": [
+    {
+      "df": 7,
+      "token": "real-time"
+    }
+  ],
+  "reall": [
+    {
+      "df": 1,
+      "token": "reallocated"
+    }
+  ],
+  "reallo": [
+    {
+      "df": 1,
+      "token": "reallocated"
+    }
+  ],
+  "realloc": [
+    {
+      "df": 1,
+      "token": "reallocated"
+    }
+  ],
+  "realloca": [
+    {
+      "df": 1,
+      "token": "reallocated"
+    }
+  ],
+  "realt": [
+    {
+      "df": 1,
+      "token": "realtime"
+    }
+  ],
+  "realti": [
+    {
+      "df": 1,
+      "token": "realtime"
+    }
+  ],
+  "realtim": [
+    {
+      "df": 1,
+      "token": "realtime"
+    }
+  ],
+  "realtime": [
+    {
+      "df": 1,
+      "token": "realtime"
+    }
+  ],
+  "reas": [
+    {
+      "df": 1,
+      "token": "reason"
+    },
+    {
+      "df": 1,
+      "token": "reasonable"
+    },
+    {
+      "df": 1,
+      "token": "reasonable-adjustment-flag-fhir"
+    },
+    {
+      "df": 1,
+      "token": "reasons"
+    },
+    {
+      "df": 1,
+      "token": "reassessment"
+    }
+  ],
+  "reaso": [
+    {
+      "df": 1,
+      "token": "reason"
+    },
+    {
+      "df": 1,
+      "token": "reasonable"
+    },
+    {
+      "df": 1,
+      "token": "reasonable-adjustment-flag-fhir"
+    },
+    {
+      "df": 1,
+      "token": "reasons"
+    }
+  ],
+  "reason": [
+    {
+      "df": 1,
+      "token": "reason"
+    },
+    {
+      "df": 1,
+      "token": "reasonable"
+    },
+    {
+      "df": 1,
+      "token": "reasonable-adjustment-flag-fhir"
+    },
+    {
+      "df": 1,
+      "token": "reasons"
+    }
+  ],
+  "reasona": [
+    {
+      "df": 1,
+      "token": "reasonable"
+    },
+    {
+      "df": 1,
+      "token": "reasonable-adjustment-flag-fhir"
+    }
+  ],
+  "reasonab": [
+    {
+      "df": 1,
+      "token": "reasonable"
+    },
+    {
+      "df": 1,
+      "token": "reasonable-adjustment-flag-fhir"
+    }
+  ],
+  "reasons": [
+    {
+      "df": 1,
+      "token": "reasons"
+    }
+  ],
+  "reass": [
+    {
+      "df": 1,
+      "token": "reassessment"
+    }
+  ],
+  "reasse": [
+    {
+      "df": 1,
+      "token": "reassessment"
+    }
+  ],
+  "reasses": [
+    {
+      "df": 1,
+      "token": "reassessment"
+    }
+  ],
+  "reassess": [
+    {
+      "df": 1,
+      "token": "reassessment"
+    }
+  ],
+  "rec": [
+    {
+      "df": 33,
+      "token": "receive"
+    },
+    {
+      "df": 30,
+      "token": "record"
+    },
+    {
+      "df": 23,
+      "token": "records"
+    },
+    {
+      "df": 4,
+      "token": "received"
+    },
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 2,
+      "token": "recent"
+    },
+    {
+      "df": 2,
+      "token": "recently"
+    },
+    {
+      "df": 2,
+      "token": "recognition"
+    },
+    {
+      "df": 2,
+      "token": "recorded"
+    },
+    {
+      "df": 2,
+      "token": "recording"
+    },
+    {
+      "df": 2,
+      "token": "recruitment"
+    },
+    {
+      "df": 1,
+      "token": "recall"
+    },
+    {
+      "df": 1,
+      "token": "receipt"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    }
+  ],
+  "reca": [
+    {
+      "df": 1,
+      "token": "recall"
+    }
+  ],
+  "recal": [
+    {
+      "df": 1,
+      "token": "recall"
+    }
+  ],
+  "recall": [
+    {
+      "df": 1,
+      "token": "recall"
+    }
+  ],
+  "rece": [
+    {
+      "df": 33,
+      "token": "receive"
+    },
+    {
+      "df": 4,
+      "token": "received"
+    },
+    {
+      "df": 2,
+      "token": "recent"
+    },
+    {
+      "df": 2,
+      "token": "recently"
+    },
+    {
+      "df": 1,
+      "token": "receipt"
+    }
+  ],
+  "recei": [
+    {
+      "df": 33,
+      "token": "receive"
+    },
+    {
+      "df": 4,
+      "token": "received"
+    },
+    {
+      "df": 1,
+      "token": "receipt"
+    }
+  ],
+  "receip": [
+    {
+      "df": 1,
+      "token": "receipt"
+    }
+  ],
+  "receipt": [
+    {
+      "df": 1,
+      "token": "receipt"
+    }
+  ],
+  "receiv": [
+    {
+      "df": 33,
+      "token": "receive"
+    },
+    {
+      "df": 4,
+      "token": "received"
+    }
+  ],
+  "receive": [
+    {
+      "df": 33,
+      "token": "receive"
+    },
+    {
+      "df": 4,
+      "token": "received"
+    }
+  ],
+  "received": [
+    {
+      "df": 4,
+      "token": "received"
+    }
+  ],
+  "recen": [
+    {
+      "df": 2,
+      "token": "recent"
+    },
+    {
+      "df": 2,
+      "token": "recently"
+    }
+  ],
+  "recent": [
+    {
+      "df": 2,
+      "token": "recent"
+    },
+    {
+      "df": 2,
+      "token": "recently"
+    }
+  ],
+  "recentl": [
+    {
+      "df": 2,
+      "token": "recently"
+    }
+  ],
+  "recently": [
+    {
+      "df": 2,
+      "token": "recently"
+    }
+  ],
+  "reco": [
+    {
+      "df": 30,
+      "token": "record"
+    },
+    {
+      "df": 23,
+      "token": "records"
+    },
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 2,
+      "token": "recognition"
+    },
+    {
+      "df": 2,
+      "token": "recorded"
+    },
+    {
+      "df": 2,
+      "token": "recording"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    },
+    {
+      "df": 1,
+      "token": "recommends"
+    },
+    {
+      "df": 1,
+      "token": "reconfiguration"
+    },
+    {
+      "df": 1,
+      "token": "record-keeping"
+    },
+    {
+      "df": 1,
+      "token": "record.you"
+    },
+    {
+      "df": 1,
+      "token": "recordthis"
+    }
+  ],
+  "recog": [
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 2,
+      "token": "recognition"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    }
+  ],
+  "recogn": [
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 2,
+      "token": "recognition"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    }
+  ],
+  "recogni": [
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 2,
+      "token": "recognition"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    }
+  ],
+  "recognis": [
+    {
+      "df": 3,
+      "token": "recognise"
+    },
+    {
+      "df": 1,
+      "token": "recognises"
+    }
+  ],
+  "recognit": [
+    {
+      "df": 2,
+      "token": "recognition"
+    }
+  ],
+  "recom": [
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    },
+    {
+      "df": 1,
+      "token": "recommends"
+    }
+  ],
+  "recomm": [
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    },
+    {
+      "df": 1,
+      "token": "recommends"
+    }
+  ],
+  "recomme": [
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    },
+    {
+      "df": 1,
+      "token": "recommends"
+    }
+  ],
+  "recommen": [
+    {
+      "df": 3,
+      "token": "recommendations"
+    },
+    {
+      "df": 1,
+      "token": "recommended"
+    },
+    {
+      "df": 1,
+      "token": "recommends"
+    }
+  ],
+  "recon": [
+    {
+      "df": 1,
+      "token": "reconfiguration"
+    }
+  ],
+  "reconf": [
+    {
+      "df": 1,
+      "token": "reconfiguration"
+    }
+  ],
+  "reconfi": [
+    {
+      "df": 1,
+      "token": "reconfiguration"
+    }
+  ],
+  "reconfig": [
+    {
+      "df": 1,
+      "token": "reconfiguration"
+    }
+  ],
+  "recor": [
+    {
+      "df": 30,
+      "token": "record"
+    },
+    {
+      "df": 23,
+      "token": "records"
+    },
+    {
+      "df": 2,
+      "token": "recorded"
+    },
+    {
+      "df": 2,
+      "token": "recording"
+    },
+    {
+      "df": 1,
+      "token": "record-keeping"
+    },
+    {
+      "df": 1,
+      "token": "record.you"
+    },
+    {
+      "df": 1,
+      "token": "recordthis"
+    }
+  ],
+  "record": [
+    {
+      "df": 30,
+      "token": "record"
+    },
+    {
+      "df": 23,
+      "token": "records"
+    },
+    {
+      "df": 2,
+      "token": "recorded"
+    },
+    {
+      "df": 2,
+      "token": "recording"
+    },
+    {
+      "df": 1,
+      "token": "record-keeping"
+    },
+    {
+      "df": 1,
+      "token": "record.you"
+    },
+    {
+      "df": 1,
+      "token": "recordthis"
+    }
+  ],
+  "record-": [
+    {
+      "df": 1,
+      "token": "record-keeping"
+    }
+  ],
+  "record-k": [
+    {
+      "df": 1,
+      "token": "record-keeping"
+    }
+  ],
+  "record.": [
+    {
+      "df": 1,
+      "token": "record.you"
+    }
+  ],
+  "record.y": [
+    {
+      "df": 1,
+      "token": "record.you"
+    }
+  ],
+  "recorde": [
+    {
+      "df": 2,
+      "token": "recorded"
+    }
+  ],
+  "recorded": [
+    {
+      "df": 2,
+      "token": "recorded"
+    }
+  ],
+  "recordi": [
+    {
+      "df": 2,
+      "token": "recording"
+    }
+  ],
+  "recordin": [
+    {
+      "df": 2,
+      "token": "recording"
+    }
+  ],
+  "records": [
+    {
+      "df": 23,
+      "token": "records"
+    }
+  ],
+  "recordt": [
+    {
+      "df": 1,
+      "token": "recordthis"
+    }
+  ],
+  "recordth": [
+    {
+      "df": 1,
+      "token": "recordthis"
+    }
+  ],
+  "recr": [
+    {
+      "df": 2,
+      "token": "recruitment"
+    }
+  ],
+  "recru": [
+    {
+      "df": 2,
+      "token": "recruitment"
+    }
+  ],
+  "recrui": [
+    {
+      "df": 2,
+      "token": "recruitment"
+    }
+  ],
+  "recruit": [
+    {
+      "df": 2,
+      "token": "recruitment"
+    }
+  ],
+  "recruitm": [
+    {
+      "df": 2,
+      "token": "recruitment"
+    }
+  ],
+  "red": [
+    {
+      "df": 3,
+      "token": "reduced"
+    },
+    {
+      "df": 2,
+      "token": "reduce"
+    },
+    {
+      "df": 1,
+      "token": "redirects"
+    },
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "redi": [
+    {
+      "df": 1,
+      "token": "redirects"
+    }
+  ],
+  "redir": [
+    {
+      "df": 1,
+      "token": "redirects"
+    }
+  ],
+  "redire": [
+    {
+      "df": 1,
+      "token": "redirects"
+    }
+  ],
+  "redirec": [
+    {
+      "df": 1,
+      "token": "redirects"
+    }
+  ],
+  "redirect": [
+    {
+      "df": 1,
+      "token": "redirects"
+    }
+  ],
+  "redu": [
+    {
+      "df": 3,
+      "token": "reduced"
+    },
+    {
+      "df": 2,
+      "token": "reduce"
+    },
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "reduc": [
+    {
+      "df": 3,
+      "token": "reduced"
+    },
+    {
+      "df": 2,
+      "token": "reduce"
+    },
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "reduce": [
+    {
+      "df": 3,
+      "token": "reduced"
+    },
+    {
+      "df": 2,
+      "token": "reduce"
+    }
+  ],
+  "reduced": [
+    {
+      "df": 3,
+      "token": "reduced"
+    }
+  ],
+  "reduci": [
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "reducin": [
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "reducing": [
+    {
+      "df": 1,
+      "token": "reducing"
+    }
+  ],
+  "ref": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 5,
+      "token": "referred"
+    },
+    {
+      "df": 2,
+      "token": "refer"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 2,
+      "token": "referrer"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    },
+    {
+      "df": 1,
+      "token": "refers"
+    },
+    {
+      "df": 1,
+      "token": "refund"
+    },
+    {
+      "df": 1,
+      "token": "refunded"
+    },
+    {
+      "df": 1,
+      "token": "refunds"
+    }
+  ],
+  "refe": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 5,
+      "token": "referred"
+    },
+    {
+      "df": 2,
+      "token": "refer"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 2,
+      "token": "referrer"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    },
+    {
+      "df": 1,
+      "token": "refers"
+    }
+  ],
+  "refer": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 5,
+      "token": "referred"
+    },
+    {
+      "df": 2,
+      "token": "refer"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 2,
+      "token": "referrer"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    },
+    {
+      "df": 1,
+      "token": "refers"
+    }
+  ],
+  "refere": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    }
+  ],
+  "referen": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    }
+  ],
+  "referenc": [
+    {
+      "df": 15,
+      "token": "reference"
+    },
+    {
+      "df": 2,
+      "token": "references"
+    }
+  ],
+  "referr": [
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 5,
+      "token": "referred"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 2,
+      "token": "referrer"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    }
+  ],
+  "referra": [
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    }
+  ],
+  "referral": [
+    {
+      "df": 8,
+      "token": "referrals"
+    },
+    {
+      "df": 7,
+      "token": "referral"
+    },
+    {
+      "df": 2,
+      "token": "referralyou"
+    },
+    {
+      "df": 1,
+      "token": "referralaccess"
+    }
+  ],
+  "referre": [
+    {
+      "df": 5,
+      "token": "referred"
+    },
+    {
+      "df": 2,
+      "token": "referrer"
+    }
+  ],
+  "referred": [
+    {
+      "df": 5,
+      "token": "referred"
+    }
+  ],
+  "referrer": [
+    {
+      "df": 2,
+      "token": "referrer"
+    }
+  ],
+  "refers": [
+    {
+      "df": 1,
+      "token": "refers"
+    }
+  ],
+  "refu": [
+    {
+      "df": 1,
+      "token": "refund"
+    },
+    {
+      "df": 1,
+      "token": "refunded"
+    },
+    {
+      "df": 1,
+      "token": "refunds"
+    }
+  ],
+  "refun": [
+    {
+      "df": 1,
+      "token": "refund"
+    },
+    {
+      "df": 1,
+      "token": "refunded"
+    },
+    {
+      "df": 1,
+      "token": "refunds"
+    }
+  ],
+  "refund": [
+    {
+      "df": 1,
+      "token": "refund"
+    },
+    {
+      "df": 1,
+      "token": "refunded"
+    },
+    {
+      "df": 1,
+      "token": "refunds"
+    }
+  ],
+  "refunde": [
+    {
+      "df": 1,
+      "token": "refunded"
+    }
+  ],
+  "refunded": [
+    {
+      "df": 1,
+      "token": "refunded"
+    }
+  ],
+  "refunds": [
+    {
+      "df": 1,
+      "token": "refunds"
+    }
+  ],
+  "reg": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 15,
+      "token": "registry"
+    },
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    },
+    {
+      "df": 2,
+      "token": "regardless"
+    },
+    {
+      "df": 2,
+      "token": "regional"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    },
+    {
+      "df": 1,
+      "token": "regularly"
+    },
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    }
+  ],
+  "rega": [
+    {
+      "df": 2,
+      "token": "regardless"
+    }
+  ],
+  "regar": [
+    {
+      "df": 2,
+      "token": "regardless"
+    }
+  ],
+  "regard": [
+    {
+      "df": 2,
+      "token": "regardless"
+    }
+  ],
+  "regardl": [
+    {
+      "df": 2,
+      "token": "regardless"
+    }
+  ],
+  "regardle": [
+    {
+      "df": 2,
+      "token": "regardless"
+    }
+  ],
+  "regi": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 15,
+      "token": "registry"
+    },
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    },
+    {
+      "df": 2,
+      "token": "regional"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    }
+  ],
+  "regio": [
+    {
+      "df": 2,
+      "token": "regional"
+    }
+  ],
+  "region": [
+    {
+      "df": 2,
+      "token": "regional"
+    }
+  ],
+  "regiona": [
+    {
+      "df": 2,
+      "token": "regional"
+    }
+  ],
+  "regional": [
+    {
+      "df": 2,
+      "token": "regional"
+    }
+  ],
+  "regis": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 15,
+      "token": "registry"
+    },
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    }
+  ],
+  "regist": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 15,
+      "token": "registry"
+    },
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    }
+  ],
+  "registe": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    }
+  ],
+  "register": [
+    {
+      "df": 30,
+      "token": "registered"
+    },
+    {
+      "df": 25,
+      "token": "register"
+    },
+    {
+      "df": 2,
+      "token": "registers"
+    },
+    {
+      "df": 1,
+      "token": "register-api.ofqual.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "registering"
+    }
+  ],
+  "registr": [
+    {
+      "df": 15,
+      "token": "registry"
+    },
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    }
+  ],
+  "registra": [
+    {
+      "df": 14,
+      "token": "registration"
+    },
+    {
+      "df": 5,
+      "token": "registrations"
+    }
+  ],
+  "registry": [
+    {
+      "df": 15,
+      "token": "registry"
+    }
+  ],
+  "regu": [
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "regularly"
+    },
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    },
+    {
+      "df": 1,
+      "token": "regulators"
+    }
+  ],
+  "regul": [
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "regularly"
+    },
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    },
+    {
+      "df": 1,
+      "token": "regulators"
+    }
+  ],
+  "regula": [
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "regularly"
+    },
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    },
+    {
+      "df": 1,
+      "token": "regulators"
+    }
+  ],
+  "regular": [
+    {
+      "df": 1,
+      "token": "regularly"
+    }
+  ],
+  "regularl": [
+    {
+      "df": 1,
+      "token": "regularly"
+    }
+  ],
+  "regulat": [
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    },
+    {
+      "df": 1,
+      "token": "regulators"
+    }
+  ],
+  "regulate": [
+    {
+      "df": 1,
+      "token": "regulate"
+    },
+    {
+      "df": 1,
+      "token": "regulated"
+    }
+  ],
+  "regulati": [
+    {
+      "df": 2,
+      "token": "regulations"
+    },
+    {
+      "df": 1,
+      "token": "regulation"
+    }
+  ],
+  "regulato": [
+    {
+      "df": 2,
+      "token": "regulatory"
+    },
+    {
+      "df": 1,
+      "token": "regulators"
+    }
+  ],
+  "rej": [
+    {
+      "df": 2,
+      "token": "reject"
+    }
+  ],
+  "reje": [
+    {
+      "df": 2,
+      "token": "reject"
+    }
+  ],
+  "rejec": [
+    {
+      "df": 2,
+      "token": "reject"
+    }
+  ],
+  "reject": [
+    {
+      "df": 2,
+      "token": "reject"
+    }
+  ],
+  "rel": [
+    {
+      "df": 11,
+      "token": "relevant"
+    },
+    {
+      "df": 8,
+      "token": "related"
+    },
+    {
+      "df": 6,
+      "token": "relating"
+    },
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 3,
+      "token": "relates"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    },
+    {
+      "df": 1,
+      "token": "relative"
+    },
+    {
+      "df": 1,
+      "token": "release"
+    },
+    {
+      "df": 1,
+      "token": "released"
+    },
+    {
+      "df": 1,
+      "token": "reliable"
+    },
+    {
+      "df": 1,
+      "token": "relief"
+    }
+  ],
+  "rela": [
+    {
+      "df": 8,
+      "token": "related"
+    },
+    {
+      "df": 6,
+      "token": "relating"
+    },
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 3,
+      "token": "relates"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    },
+    {
+      "df": 1,
+      "token": "relative"
+    }
+  ],
+  "relat": [
+    {
+      "df": 8,
+      "token": "related"
+    },
+    {
+      "df": 6,
+      "token": "relating"
+    },
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 3,
+      "token": "relates"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    },
+    {
+      "df": 1,
+      "token": "relative"
+    }
+  ],
+  "relate": [
+    {
+      "df": 8,
+      "token": "related"
+    },
+    {
+      "df": 3,
+      "token": "relates"
+    }
+  ],
+  "related": [
+    {
+      "df": 8,
+      "token": "related"
+    }
+  ],
+  "relates": [
+    {
+      "df": 3,
+      "token": "relates"
+    }
+  ],
+  "relati": [
+    {
+      "df": 6,
+      "token": "relating"
+    },
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    },
+    {
+      "df": 1,
+      "token": "relative"
+    }
+  ],
+  "relatin": [
+    {
+      "df": 6,
+      "token": "relating"
+    }
+  ],
+  "relating": [
+    {
+      "df": 6,
+      "token": "relating"
+    }
+  ],
+  "relatio": [
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    }
+  ],
+  "relation": [
+    {
+      "df": 5,
+      "token": "relationships"
+    },
+    {
+      "df": 1,
+      "token": "relationships.we"
+    }
+  ],
+  "relativ": [
+    {
+      "df": 1,
+      "token": "relative"
+    }
+  ],
+  "relative": [
+    {
+      "df": 1,
+      "token": "relative"
+    }
+  ],
+  "rele": [
+    {
+      "df": 11,
+      "token": "relevant"
+    },
+    {
+      "df": 1,
+      "token": "release"
+    },
+    {
+      "df": 1,
+      "token": "released"
+    }
+  ],
+  "relea": [
+    {
+      "df": 1,
+      "token": "release"
+    },
+    {
+      "df": 1,
+      "token": "released"
+    }
+  ],
+  "releas": [
+    {
+      "df": 1,
+      "token": "release"
+    },
+    {
+      "df": 1,
+      "token": "released"
+    }
+  ],
+  "release": [
+    {
+      "df": 1,
+      "token": "release"
+    },
+    {
+      "df": 1,
+      "token": "released"
+    }
+  ],
+  "released": [
+    {
+      "df": 1,
+      "token": "released"
+    }
+  ],
+  "relev": [
+    {
+      "df": 11,
+      "token": "relevant"
+    }
+  ],
+  "releva": [
+    {
+      "df": 11,
+      "token": "relevant"
+    }
+  ],
+  "relevan": [
+    {
+      "df": 11,
+      "token": "relevant"
+    }
+  ],
+  "relevant": [
+    {
+      "df": 11,
+      "token": "relevant"
+    }
+  ],
+  "reli": [
+    {
+      "df": 1,
+      "token": "reliable"
+    },
+    {
+      "df": 1,
+      "token": "relief"
+    }
+  ],
+  "relia": [
+    {
+      "df": 1,
+      "token": "reliable"
+    }
+  ],
+  "reliab": [
+    {
+      "df": 1,
+      "token": "reliable"
+    }
+  ],
+  "reliabl": [
+    {
+      "df": 1,
+      "token": "reliable"
+    }
+  ],
+  "reliable": [
+    {
+      "df": 1,
+      "token": "reliable"
+    }
+  ],
+  "relie": [
+    {
+      "df": 1,
+      "token": "relief"
+    }
+  ],
+  "relief": [
+    {
+      "df": 1,
+      "token": "relief"
+    }
+  ],
+  "rem": [
+    {
+      "df": 2,
+      "token": "remains"
+    },
+    {
+      "df": 2,
+      "token": "remove"
+    },
+    {
+      "df": 2,
+      "token": "removed"
+    },
+    {
+      "df": 1,
+      "token": "removes"
+    }
+  ],
+  "rema": [
+    {
+      "df": 2,
+      "token": "remains"
+    }
+  ],
+  "remai": [
+    {
+      "df": 2,
+      "token": "remains"
+    }
+  ],
+  "remain": [
+    {
+      "df": 2,
+      "token": "remains"
+    }
+  ],
+  "remains": [
+    {
+      "df": 2,
+      "token": "remains"
+    }
+  ],
+  "remo": [
+    {
+      "df": 2,
+      "token": "remove"
+    },
+    {
+      "df": 2,
+      "token": "removed"
+    },
+    {
+      "df": 1,
+      "token": "removes"
+    }
+  ],
+  "remov": [
+    {
+      "df": 2,
+      "token": "remove"
+    },
+    {
+      "df": 2,
+      "token": "removed"
+    },
+    {
+      "df": 1,
+      "token": "removes"
+    }
+  ],
+  "remove": [
+    {
+      "df": 2,
+      "token": "remove"
+    },
+    {
+      "df": 2,
+      "token": "removed"
+    },
+    {
+      "df": 1,
+      "token": "removes"
+    }
+  ],
+  "removed": [
+    {
+      "df": 2,
+      "token": "removed"
+    }
+  ],
+  "removes": [
+    {
+      "df": 1,
+      "token": "removes"
+    }
+  ],
+  "ren": [
+    {
+      "df": 1,
+      "token": "render"
+    },
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "rend": [
+    {
+      "df": 1,
+      "token": "render"
+    }
+  ],
+  "rende": [
+    {
+      "df": 1,
+      "token": "render"
+    }
+  ],
+  "render": [
+    {
+      "df": 1,
+      "token": "render"
+    }
+  ],
+  "reno": [
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "renow": [
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "renown": [
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "renowne": [
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "renowned": [
+    {
+      "df": 1,
+      "token": "renowned"
+    }
+  ],
+  "rep": [
+    {
+      "df": 13,
+      "token": "replace"
+    },
+    {
+      "df": 7,
+      "token": "replaced"
+    },
+    {
+      "df": 6,
+      "token": "reported"
+    },
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 4,
+      "token": "reports"
+    },
+    {
+      "df": 3,
+      "token": "replacement"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 2,
+      "token": "replies"
+    },
+    {
+      "df": 2,
+      "token": "report"
+    },
+    {
+      "df": 1,
+      "token": "repair"
+    },
+    {
+      "df": 1,
+      "token": "repairs"
+    },
+    {
+      "df": 1,
+      "token": "repayment"
+    },
+    {
+      "df": 1,
+      "token": "repeat"
+    },
+    {
+      "df": 1,
+      "token": "replaces"
+    },
+    {
+      "df": 1,
+      "token": "replacing"
+    }
+  ],
+  "repa": [
+    {
+      "df": 1,
+      "token": "repair"
+    },
+    {
+      "df": 1,
+      "token": "repairs"
+    },
+    {
+      "df": 1,
+      "token": "repayment"
+    }
+  ],
+  "repai": [
+    {
+      "df": 1,
+      "token": "repair"
+    },
+    {
+      "df": 1,
+      "token": "repairs"
+    }
+  ],
+  "repair": [
+    {
+      "df": 1,
+      "token": "repair"
+    },
+    {
+      "df": 1,
+      "token": "repairs"
+    }
+  ],
+  "repairs": [
+    {
+      "df": 1,
+      "token": "repairs"
+    }
+  ],
+  "repay": [
+    {
+      "df": 1,
+      "token": "repayment"
+    }
+  ],
+  "repaym": [
+    {
+      "df": 1,
+      "token": "repayment"
+    }
+  ],
+  "repayme": [
+    {
+      "df": 1,
+      "token": "repayment"
+    }
+  ],
+  "repaymen": [
+    {
+      "df": 1,
+      "token": "repayment"
+    }
+  ],
+  "repe": [
+    {
+      "df": 1,
+      "token": "repeat"
+    }
+  ],
+  "repea": [
+    {
+      "df": 1,
+      "token": "repeat"
+    }
+  ],
+  "repeat": [
+    {
+      "df": 1,
+      "token": "repeat"
+    }
+  ],
+  "repl": [
+    {
+      "df": 13,
+      "token": "replace"
+    },
+    {
+      "df": 7,
+      "token": "replaced"
+    },
+    {
+      "df": 3,
+      "token": "replacement"
+    },
+    {
+      "df": 2,
+      "token": "replies"
+    },
+    {
+      "df": 1,
+      "token": "replaces"
+    },
+    {
+      "df": 1,
+      "token": "replacing"
+    },
+    {
+      "df": 1,
+      "token": "replicated"
+    }
+  ],
+  "repla": [
+    {
+      "df": 13,
+      "token": "replace"
+    },
+    {
+      "df": 7,
+      "token": "replaced"
+    },
+    {
+      "df": 3,
+      "token": "replacement"
+    },
+    {
+      "df": 1,
+      "token": "replaces"
+    },
+    {
+      "df": 1,
+      "token": "replacing"
+    }
+  ],
+  "replac": [
+    {
+      "df": 13,
+      "token": "replace"
+    },
+    {
+      "df": 7,
+      "token": "replaced"
+    },
+    {
+      "df": 3,
+      "token": "replacement"
+    },
+    {
+      "df": 1,
+      "token": "replaces"
+    },
+    {
+      "df": 1,
+      "token": "replacing"
+    }
+  ],
+  "replace": [
+    {
+      "df": 13,
+      "token": "replace"
+    },
+    {
+      "df": 7,
+      "token": "replaced"
+    },
+    {
+      "df": 3,
+      "token": "replacement"
+    },
+    {
+      "df": 1,
+      "token": "replaces"
+    }
+  ],
+  "replaced": [
+    {
+      "df": 7,
+      "token": "replaced"
+    }
+  ],
+  "replacem": [
+    {
+      "df": 3,
+      "token": "replacement"
+    }
+  ],
+  "replaces": [
+    {
+      "df": 1,
+      "token": "replaces"
+    }
+  ],
+  "replaci": [
+    {
+      "df": 1,
+      "token": "replacing"
+    }
+  ],
+  "replacin": [
+    {
+      "df": 1,
+      "token": "replacing"
+    }
+  ],
+  "repli": [
+    {
+      "df": 2,
+      "token": "replies"
+    },
+    {
+      "df": 1,
+      "token": "replicated"
+    }
+  ],
+  "replic": [
+    {
+      "df": 1,
+      "token": "replicated"
+    }
+  ],
+  "replica": [
+    {
+      "df": 1,
+      "token": "replicated"
+    }
+  ],
+  "replicat": [
+    {
+      "df": 1,
+      "token": "replicated"
+    }
+  ],
+  "replie": [
+    {
+      "df": 2,
+      "token": "replies"
+    }
+  ],
+  "replies": [
+    {
+      "df": 2,
+      "token": "replies"
+    }
+  ],
+  "repo": [
+    {
+      "df": 6,
+      "token": "reported"
+    },
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 4,
+      "token": "reports"
+    },
+    {
+      "df": 2,
+      "token": "report"
+    },
+    {
+      "df": 1,
+      "token": "report-writing"
+    },
+    {
+      "df": 1,
+      "token": "reportingthis"
+    },
+    {
+      "df": 1,
+      "token": "repos"
+    },
+    {
+      "df": 1,
+      "token": "repository"
+    }
+  ],
+  "repor": [
+    {
+      "df": 6,
+      "token": "reported"
+    },
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 4,
+      "token": "reports"
+    },
+    {
+      "df": 2,
+      "token": "report"
+    },
+    {
+      "df": 1,
+      "token": "report-writing"
+    },
+    {
+      "df": 1,
+      "token": "reportingthis"
+    }
+  ],
+  "report": [
+    {
+      "df": 6,
+      "token": "reported"
+    },
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 4,
+      "token": "reports"
+    },
+    {
+      "df": 2,
+      "token": "report"
+    },
+    {
+      "df": 1,
+      "token": "report-writing"
+    },
+    {
+      "df": 1,
+      "token": "reportingthis"
+    }
+  ],
+  "report-": [
+    {
+      "df": 1,
+      "token": "report-writing"
+    }
+  ],
+  "report-w": [
+    {
+      "df": 1,
+      "token": "report-writing"
+    }
+  ],
+  "reporte": [
+    {
+      "df": 6,
+      "token": "reported"
+    }
+  ],
+  "reported": [
+    {
+      "df": 6,
+      "token": "reported"
+    }
+  ],
+  "reporti": [
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 1,
+      "token": "reportingthis"
+    }
+  ],
+  "reportin": [
+    {
+      "df": 4,
+      "token": "reporting"
+    },
+    {
+      "df": 1,
+      "token": "reportingthis"
+    }
+  ],
+  "reports": [
+    {
+      "df": 4,
+      "token": "reports"
+    }
+  ],
+  "repos": [
+    {
+      "df": 1,
+      "token": "repos"
+    },
+    {
+      "df": 1,
+      "token": "repository"
+    }
+  ],
+  "reposi": [
+    {
+      "df": 1,
+      "token": "repository"
+    }
+  ],
+  "reposit": [
+    {
+      "df": 1,
+      "token": "repository"
+    }
+  ],
+  "reposito": [
+    {
+      "df": 1,
+      "token": "repository"
+    }
+  ],
+  "repr": [
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 1,
+      "token": "representatives"
+    },
+    {
+      "df": 1,
+      "token": "represented"
+    },
+    {
+      "df": 1,
+      "token": "represents"
+    }
+  ],
+  "repre": [
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 1,
+      "token": "representatives"
+    },
+    {
+      "df": 1,
+      "token": "represented"
+    },
+    {
+      "df": 1,
+      "token": "represents"
+    }
+  ],
+  "repres": [
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 1,
+      "token": "representatives"
+    },
+    {
+      "df": 1,
+      "token": "represented"
+    },
+    {
+      "df": 1,
+      "token": "represents"
+    }
+  ],
+  "represe": [
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 1,
+      "token": "representatives"
+    },
+    {
+      "df": 1,
+      "token": "represented"
+    },
+    {
+      "df": 1,
+      "token": "represents"
+    }
+  ],
+  "represen": [
+    {
+      "df": 5,
+      "token": "representation"
+    },
+    {
+      "df": 3,
+      "token": "represent"
+    },
+    {
+      "df": 1,
+      "token": "representatives"
+    },
+    {
+      "df": 1,
+      "token": "represented"
+    },
+    {
+      "df": 1,
+      "token": "represents"
+    }
+  ],
+  "req": [
+    {
+      "df": 29,
+      "token": "request"
+    },
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 8,
+      "token": "require"
+    },
+    {
+      "df": 8,
+      "token": "required"
+    },
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 4,
+      "token": "requires"
+    },
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 2,
+      "token": "requesting"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    },
+    {
+      "df": 1,
+      "token": "request.for"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    },
+    {
+      "df": 1,
+      "token": "requestor"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    },
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "requ": [
+    {
+      "df": 29,
+      "token": "request"
+    },
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 8,
+      "token": "require"
+    },
+    {
+      "df": 8,
+      "token": "required"
+    },
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 4,
+      "token": "requires"
+    },
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 2,
+      "token": "requesting"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    },
+    {
+      "df": 1,
+      "token": "request.for"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    },
+    {
+      "df": 1,
+      "token": "requestor"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    },
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "reque": [
+    {
+      "df": 29,
+      "token": "request"
+    },
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 2,
+      "token": "requesting"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 1,
+      "token": "request.for"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    },
+    {
+      "df": 1,
+      "token": "requestor"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    }
+  ],
+  "reques": [
+    {
+      "df": 29,
+      "token": "request"
+    },
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 2,
+      "token": "requesting"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 1,
+      "token": "request.for"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    },
+    {
+      "df": 1,
+      "token": "requestor"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    }
+  ],
+  "request": [
+    {
+      "df": 29,
+      "token": "request"
+    },
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 2,
+      "token": "requesting"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 1,
+      "token": "request.for"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    },
+    {
+      "df": 1,
+      "token": "requestor"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    }
+  ],
+  "request.": [
+    {
+      "df": 1,
+      "token": "request.for"
+    }
+  ],
+  "requeste": [
+    {
+      "df": 3,
+      "token": "requested"
+    },
+    {
+      "df": 1,
+      "token": "requester"
+    }
+  ],
+  "requesti": [
+    {
+      "df": 2,
+      "token": "requesting"
+    }
+  ],
+  "requesto": [
+    {
+      "df": 1,
+      "token": "requestor"
+    }
+  ],
+  "requests": [
+    {
+      "df": 12,
+      "token": "requests"
+    },
+    {
+      "df": 2,
+      "token": "requeststhis"
+    },
+    {
+      "df": 1,
+      "token": "requestscommon"
+    }
+  ],
+  "requi": [
+    {
+      "df": 8,
+      "token": "require"
+    },
+    {
+      "df": 8,
+      "token": "required"
+    },
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 4,
+      "token": "requires"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    },
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "requir": [
+    {
+      "df": 8,
+      "token": "require"
+    },
+    {
+      "df": 8,
+      "token": "required"
+    },
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 4,
+      "token": "requires"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    }
+  ],
+  "require": [
+    {
+      "df": 8,
+      "token": "require"
+    },
+    {
+      "df": 8,
+      "token": "required"
+    },
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 4,
+      "token": "requires"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    }
+  ],
+  "required": [
+    {
+      "df": 8,
+      "token": "required"
+    }
+  ],
+  "requirem": [
+    {
+      "df": 6,
+      "token": "requirement"
+    },
+    {
+      "df": 2,
+      "token": "requirements"
+    }
+  ],
+  "requires": [
+    {
+      "df": 4,
+      "token": "requires"
+    }
+  ],
+  "requis": [
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "requisi": [
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "requisit": [
+    {
+      "df": 1,
+      "token": "requisition"
+    }
+  ],
+  "res": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    },
+    {
+      "df": 17,
+      "token": "rest"
+    },
+    {
+      "df": 14,
+      "token": "results"
+    },
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 12,
+      "token": "result"
+    },
+    {
+      "df": 7,
+      "token": "restful"
+    },
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    },
+    {
+      "df": 1,
+      "token": "resident"
+    },
+    {
+      "df": 1,
+      "token": "resilient"
+    },
+    {
+      "df": 1,
+      "token": "respect"
+    },
+    {
+      "df": 1,
+      "token": "respite"
+    }
+  ],
+  "rese": [
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    }
+  ],
+  "resea": [
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    }
+  ],
+  "resear": [
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    }
+  ],
+  "researc": [
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    }
+  ],
+  "research": [
+    {
+      "df": 4,
+      "token": "research"
+    },
+    {
+      "df": 1,
+      "token": "researchers"
+    }
+  ],
+  "resi": [
+    {
+      "df": 1,
+      "token": "resident"
+    },
+    {
+      "df": 1,
+      "token": "resilient"
+    }
+  ],
+  "resid": [
+    {
+      "df": 1,
+      "token": "resident"
+    }
+  ],
+  "reside": [
+    {
+      "df": 1,
+      "token": "resident"
+    }
+  ],
+  "residen": [
+    {
+      "df": 1,
+      "token": "resident"
+    }
+  ],
+  "resident": [
+    {
+      "df": 1,
+      "token": "resident"
+    }
+  ],
+  "resil": [
+    {
+      "df": 1,
+      "token": "resilient"
+    }
+  ],
+  "resili": [
+    {
+      "df": 1,
+      "token": "resilient"
+    }
+  ],
+  "resilie": [
+    {
+      "df": 1,
+      "token": "resilient"
+    }
+  ],
+  "resilien": [
+    {
+      "df": 1,
+      "token": "resilient"
+    }
+  ],
+  "reso": [
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    }
+  ],
+  "resou": [
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    }
+  ],
+  "resour": [
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    }
+  ],
+  "resourc": [
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    }
+  ],
+  "resource": [
+    {
+      "df": 6,
+      "token": "resources"
+    },
+    {
+      "df": 4,
+      "token": "resource"
+    }
+  ],
+  "resp": [
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "respect"
+    },
+    {
+      "df": 1,
+      "token": "respite"
+    },
+    {
+      "df": 1,
+      "token": "respond"
+    },
+    {
+      "df": 1,
+      "token": "responsefor"
+    },
+    {
+      "df": 1,
+      "token": "responsible"
+    }
+  ],
+  "respe": [
+    {
+      "df": 1,
+      "token": "respect"
+    }
+  ],
+  "respec": [
+    {
+      "df": 1,
+      "token": "respect"
+    }
+  ],
+  "respect": [
+    {
+      "df": 1,
+      "token": "respect"
+    }
+  ],
+  "respi": [
+    {
+      "df": 1,
+      "token": "respite"
+    }
+  ],
+  "respit": [
+    {
+      "df": 1,
+      "token": "respite"
+    }
+  ],
+  "respite": [
+    {
+      "df": 1,
+      "token": "respite"
+    }
+  ],
+  "respo": [
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "respond"
+    },
+    {
+      "df": 1,
+      "token": "responsefor"
+    },
+    {
+      "df": 1,
+      "token": "responsible"
+    }
+  ],
+  "respon": [
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "respond"
+    },
+    {
+      "df": 1,
+      "token": "responsefor"
+    },
+    {
+      "df": 1,
+      "token": "responsible"
+    }
+  ],
+  "respond": [
+    {
+      "df": 1,
+      "token": "respond"
+    }
+  ],
+  "respons": [
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "responsefor"
+    },
+    {
+      "df": 1,
+      "token": "responsible"
+    }
+  ],
+  "response": [
+    {
+      "df": 13,
+      "token": "response"
+    },
+    {
+      "df": 4,
+      "token": "responses"
+    },
+    {
+      "df": 1,
+      "token": "responsefor"
+    }
+  ],
+  "responsi": [
+    {
+      "df": 2,
+      "token": "responsibility"
+    },
+    {
+      "df": 1,
+      "token": "responsible"
+    }
+  ],
+  "rest": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    },
+    {
+      "df": 17,
+      "token": "rest"
+    },
+    {
+      "df": 7,
+      "token": "restful"
+    },
+    {
+      "df": 1,
+      "token": "restriction"
+    },
+    {
+      "df": 1,
+      "token": "restrictions"
+    },
+    {
+      "df": 1,
+      "token": "restrictition"
+    }
+  ],
+  "rest-": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    }
+  ],
+  "rest-h": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    }
+  ],
+  "rest-ht": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    }
+  ],
+  "rest-htt": [
+    {
+      "df": 132,
+      "token": "rest-http"
+    }
+  ],
+  "restf": [
+    {
+      "df": 7,
+      "token": "restful"
+    }
+  ],
+  "restfu": [
+    {
+      "df": 7,
+      "token": "restful"
+    }
+  ],
+  "restful": [
+    {
+      "df": 7,
+      "token": "restful"
+    }
+  ],
+  "restr": [
+    {
+      "df": 1,
+      "token": "restriction"
+    },
+    {
+      "df": 1,
+      "token": "restrictions"
+    },
+    {
+      "df": 1,
+      "token": "restrictition"
+    }
+  ],
+  "restri": [
+    {
+      "df": 1,
+      "token": "restriction"
+    },
+    {
+      "df": 1,
+      "token": "restrictions"
+    },
+    {
+      "df": 1,
+      "token": "restrictition"
+    }
+  ],
+  "restric": [
+    {
+      "df": 1,
+      "token": "restriction"
+    },
+    {
+      "df": 1,
+      "token": "restrictions"
+    },
+    {
+      "df": 1,
+      "token": "restrictition"
+    }
+  ],
+  "restrict": [
+    {
+      "df": 1,
+      "token": "restriction"
+    },
+    {
+      "df": 1,
+      "token": "restrictions"
+    },
+    {
+      "df": 1,
+      "token": "restrictition"
+    }
+  ],
+  "resu": [
+    {
+      "df": 14,
+      "token": "results"
+    },
+    {
+      "df": 12,
+      "token": "result"
+    },
+    {
+      "df": 1,
+      "token": "results.it"
+    },
+    {
+      "df": 1,
+      "token": "results.this"
+    },
+    {
+      "df": 1,
+      "token": "results.you"
+    }
+  ],
+  "resul": [
+    {
+      "df": 14,
+      "token": "results"
+    },
+    {
+      "df": 12,
+      "token": "result"
+    },
+    {
+      "df": 1,
+      "token": "results.it"
+    },
+    {
+      "df": 1,
+      "token": "results.this"
+    },
+    {
+      "df": 1,
+      "token": "results.you"
+    }
+  ],
+  "result": [
+    {
+      "df": 14,
+      "token": "results"
+    },
+    {
+      "df": 12,
+      "token": "result"
+    },
+    {
+      "df": 1,
+      "token": "results.it"
+    },
+    {
+      "df": 1,
+      "token": "results.this"
+    },
+    {
+      "df": 1,
+      "token": "results.you"
+    }
+  ],
+  "results": [
+    {
+      "df": 14,
+      "token": "results"
+    },
+    {
+      "df": 1,
+      "token": "results.it"
+    },
+    {
+      "df": 1,
+      "token": "results.this"
+    },
+    {
+      "df": 1,
+      "token": "results.you"
+    }
+  ],
+  "results.": [
+    {
+      "df": 1,
+      "token": "results.it"
+    },
+    {
+      "df": 1,
+      "token": "results.this"
+    },
+    {
+      "df": 1,
+      "token": "results.you"
+    }
+  ],
+  "ret": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 12,
+      "token": "returns"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    },
+    {
+      "df": 9,
+      "token": "returned"
+    },
+    {
+      "df": 6,
+      "token": "return"
+    },
+    {
+      "df": 2,
+      "token": "retail"
+    },
+    {
+      "df": 2,
+      "token": "retirement"
+    },
+    {
+      "df": 1,
+      "token": "retain"
+    },
+    {
+      "df": 1,
+      "token": "retired"
+    },
+    {
+      "df": 1,
+      "token": "retreiving"
+    },
+    {
+      "df": 1,
+      "token": "retrieving"
+    },
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "reta": [
+    {
+      "df": 2,
+      "token": "retail"
+    },
+    {
+      "df": 1,
+      "token": "retain"
+    }
+  ],
+  "retai": [
+    {
+      "df": 2,
+      "token": "retail"
+    },
+    {
+      "df": 1,
+      "token": "retain"
+    }
+  ],
+  "retail": [
+    {
+      "df": 2,
+      "token": "retail"
+    }
+  ],
+  "retain": [
+    {
+      "df": 1,
+      "token": "retain"
+    }
+  ],
+  "reti": [
+    {
+      "df": 2,
+      "token": "retirement"
+    },
+    {
+      "df": 1,
+      "token": "retired"
+    }
+  ],
+  "retir": [
+    {
+      "df": 2,
+      "token": "retirement"
+    },
+    {
+      "df": 1,
+      "token": "retired"
+    }
+  ],
+  "retire": [
+    {
+      "df": 2,
+      "token": "retirement"
+    },
+    {
+      "df": 1,
+      "token": "retired"
+    }
+  ],
+  "retired": [
+    {
+      "df": 1,
+      "token": "retired"
+    }
+  ],
+  "retirem": [
+    {
+      "df": 2,
+      "token": "retirement"
+    }
+  ],
+  "retireme": [
+    {
+      "df": 2,
+      "token": "retirement"
+    }
+  ],
+  "retr": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    },
+    {
+      "df": 1,
+      "token": "retreiving"
+    },
+    {
+      "df": 1,
+      "token": "retrieving"
+    }
+  ],
+  "retre": [
+    {
+      "df": 1,
+      "token": "retreiving"
+    }
+  ],
+  "retrei": [
+    {
+      "df": 1,
+      "token": "retreiving"
+    }
+  ],
+  "retreiv": [
+    {
+      "df": 1,
+      "token": "retreiving"
+    }
+  ],
+  "retreivi": [
+    {
+      "df": 1,
+      "token": "retreiving"
+    }
+  ],
+  "retri": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    },
+    {
+      "df": 1,
+      "token": "retrieving"
+    }
+  ],
+  "retrie": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    },
+    {
+      "df": 1,
+      "token": "retrieving"
+    }
+  ],
+  "retriev": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    },
+    {
+      "df": 1,
+      "token": "retrieving"
+    }
+  ],
+  "retrieve": [
+    {
+      "df": 36,
+      "token": "retrieve"
+    },
+    {
+      "df": 9,
+      "token": "retrieves"
+    }
+  ],
+  "retrievi": [
+    {
+      "df": 1,
+      "token": "retrieving"
+    }
+  ],
+  "retu": [
+    {
+      "df": 12,
+      "token": "returns"
+    },
+    {
+      "df": 9,
+      "token": "returned"
+    },
+    {
+      "df": 6,
+      "token": "return"
+    },
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "retur": [
+    {
+      "df": 12,
+      "token": "returns"
+    },
+    {
+      "df": 9,
+      "token": "returned"
+    },
+    {
+      "df": 6,
+      "token": "return"
+    },
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "return": [
+    {
+      "df": 12,
+      "token": "returns"
+    },
+    {
+      "df": 9,
+      "token": "returned"
+    },
+    {
+      "df": 6,
+      "token": "return"
+    },
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "returne": [
+    {
+      "df": 9,
+      "token": "returned"
+    }
+  ],
+  "returned": [
+    {
+      "df": 9,
+      "token": "returned"
+    }
+  ],
+  "returni": [
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "returnin": [
+    {
+      "df": 1,
+      "token": "returning"
+    }
+  ],
+  "returns": [
+    {
+      "df": 12,
+      "token": "returns"
+    }
+  ],
+  "reu": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "reus": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "reusa": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "reusab": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "reusabl": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "reusable": [
+    {
+      "df": 1,
+      "token": "reusable"
+    }
+  ],
+  "rev": [
+    {
+      "df": 31,
+      "token": "revenue"
+    },
+    {
+      "df": 6,
+      "token": "review"
+    },
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    },
+    {
+      "df": 1,
+      "token": "reviews"
+    },
+    {
+      "df": 1,
+      "token": "revoke"
+    }
+  ],
+  "reve": [
+    {
+      "df": 31,
+      "token": "revenue"
+    },
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    }
+  ],
+  "reven": [
+    {
+      "df": 31,
+      "token": "revenue"
+    },
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    }
+  ],
+  "revenu": [
+    {
+      "df": 31,
+      "token": "revenue"
+    },
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    }
+  ],
+  "revenue": [
+    {
+      "df": 31,
+      "token": "revenue"
+    },
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    }
+  ],
+  "revenue-": [
+    {
+      "df": 1,
+      "token": "revenue-generating"
+    }
+  ],
+  "revi": [
+    {
+      "df": 6,
+      "token": "review"
+    },
+    {
+      "df": 1,
+      "token": "reviews"
+    }
+  ],
+  "revie": [
+    {
+      "df": 6,
+      "token": "review"
+    },
+    {
+      "df": 1,
+      "token": "reviews"
+    }
+  ],
+  "review": [
+    {
+      "df": 6,
+      "token": "review"
+    },
+    {
+      "df": 1,
+      "token": "reviews"
+    }
+  ],
+  "reviews": [
+    {
+      "df": 1,
+      "token": "reviews"
+    }
+  ],
+  "revo": [
+    {
+      "df": 1,
+      "token": "revoke"
+    }
+  ],
+  "revok": [
+    {
+      "df": 1,
+      "token": "revoke"
+    }
+  ],
+  "revoke": [
+    {
+      "df": 1,
+      "token": "revoke"
+    }
+  ]
+}

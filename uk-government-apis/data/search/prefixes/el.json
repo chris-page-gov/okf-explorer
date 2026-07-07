@@ -1,0 +1,304 @@
+{
+  "ele": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "elective"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    },
+    {
+      "df": 1,
+      "token": "elements"
+    },
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "elec": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "elective"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    }
+  ],
+  "elect": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "elective"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    }
+  ],
+  "electi": [
+    {
+      "df": 1,
+      "token": "elective"
+    }
+  ],
+  "electiv": [
+    {
+      "df": 1,
+      "token": "elective"
+    }
+  ],
+  "elective": [
+    {
+      "df": 1,
+      "token": "elective"
+    }
+  ],
+  "electr": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    }
+  ],
+  "electro": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    }
+  ],
+  "electron": [
+    {
+      "df": 17,
+      "token": "electronic"
+    },
+    {
+      "df": 2,
+      "token": "electronically"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-directory-of-services"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "electronic-prescription-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "electronic-transmission-of-prescriptions-web-services-soap"
+    }
+  ],
+  "elem": [
+    {
+      "df": 1,
+      "token": "elements"
+    }
+  ],
+  "eleme": [
+    {
+      "df": 1,
+      "token": "elements"
+    }
+  ],
+  "elemen": [
+    {
+      "df": 1,
+      "token": "elements"
+    }
+  ],
+  "element": [
+    {
+      "df": 1,
+      "token": "elements"
+    }
+  ],
+  "elements": [
+    {
+      "df": 1,
+      "token": "elements"
+    }
+  ],
+  "elev": [
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "eleva": [
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "elevat": [
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "elevati": [
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "elevatio": [
+    {
+      "df": 1,
+      "token": "elevations"
+    }
+  ],
+  "eli": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "elig": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "eligi": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "eligib": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "eligibl": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "eligible": [
+    {
+      "df": 1,
+      "token": "eligible"
+    }
+  ],
+  "els": [
+    {
+      "df": 1,
+      "token": "else"
+    }
+  ],
+  "else": [
+    {
+      "df": 1,
+      "token": "else"
+    }
+  ]
+}

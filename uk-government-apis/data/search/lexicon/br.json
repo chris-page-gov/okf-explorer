@@ -1,0 +1,92 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "br"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "brand"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "branding"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breaches"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breaking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breathing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breathing-space"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breathing-space-scheme"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "breeze"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bring"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "british"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "britishgeologicalsurvey"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "broken"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "broker"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "brokered"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "brokers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "brought"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "browsing"
+  }
+]

@@ -1,0 +1,164 @@
+{
+  "hyd": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    },
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hydr": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    },
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hydro": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    },
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hydrog": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    }
+  ],
+  "hydrogr": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    }
+  ],
+  "hydrogra": [
+    {
+      "df": 4,
+      "token": "hydrographic"
+    }
+  ],
+  "hydrol": [
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hydrolo": [
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hydrolog": [
+    {
+      "df": 1,
+      "token": "hydrology"
+    }
+  ],
+  "hyg": [
+    {
+      "df": 1,
+      "token": "hygiene"
+    }
+  ],
+  "hygi": [
+    {
+      "df": 1,
+      "token": "hygiene"
+    }
+  ],
+  "hygie": [
+    {
+      "df": 1,
+      "token": "hygiene"
+    }
+  ],
+  "hygien": [
+    {
+      "df": 1,
+      "token": "hygiene"
+    }
+  ],
+  "hygiene": [
+    {
+      "df": 1,
+      "token": "hygiene"
+    }
+  ],
+  "hyp": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    },
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ],
+  "hype": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    },
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ],
+  "hyper": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    },
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ],
+  "hyperl": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    }
+  ],
+  "hyperli": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    }
+  ],
+  "hyperlin": [
+    {
+      "df": 1,
+      "token": "hyperlink"
+    }
+  ],
+  "hypert": [
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ],
+  "hypertr": [
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ],
+  "hypertro": [
+    {
+      "df": 1,
+      "token": "hypertropia"
+    }
+  ]
+}

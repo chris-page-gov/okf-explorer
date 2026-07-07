@@ -1,0 +1,72 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "graduate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "grant"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "granular"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "graphical"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "greater"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "greater-london-archaeological-priority-areas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "greater-london-archaeology-advisory-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "greater_london___archaeological_priority_areas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "greenspaces"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "grid"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gross"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "group"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "groups"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "growing"
+  }
+]

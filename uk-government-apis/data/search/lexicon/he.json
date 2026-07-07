@@ -1,0 +1,117 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "he"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "he_aim_data"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "header"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "headings"
+  },
+  {
+    "df": 97,
+    "postings": "data/search/postings-0.json",
+    "token": "health"
+  },
+  {
+    "df": 97,
+    "postings": "data/search/postings-0.json",
+    "token": "health-and-care"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "health-related"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "health-research-data-catalogue"
+  },
+  {
+    "df": 28,
+    "postings": "data/search/postings-0.json",
+    "token": "healthcare"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "healthy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hearing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "heart"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "heavy"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "height"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "heightened"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "held"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hello"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hello-world"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "help"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "helps"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "her"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "here"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "heritage"
+  }
+]

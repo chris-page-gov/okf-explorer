@@ -1,0 +1,38 @@
+{
+  "oau": [
+    {
+      "df": 1,
+      "token": "oauth"
+    },
+    {
+      "df": 1,
+      "token": "oauth2"
+    }
+  ],
+  "oaut": [
+    {
+      "df": 1,
+      "token": "oauth"
+    },
+    {
+      "df": 1,
+      "token": "oauth2"
+    }
+  ],
+  "oauth": [
+    {
+      "df": 1,
+      "token": "oauth"
+    },
+    {
+      "df": 1,
+      "token": "oauth2"
+    }
+  ],
+  "oauth2": [
+    {
+      "df": 1,
+      "token": "oauth2"
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "practical"
+  },
+  {
+    "df": 22,
+    "postings": "data/search/postings-0.json",
+    "token": "practice"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "practice.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "practice.you"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "practices"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "practicesnote"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "practicesyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "practitioner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pragmatic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pre-defined"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pre-lodged"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pre-registration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pre-visit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "precipitation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "predicted"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "predictions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prefer"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "preferences"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "preferential"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "preferred"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pregnancy"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "premium"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prepare"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "prescriber"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prescribers"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "prescribing"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "prescription"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prescriptiona"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prescriptioncreating"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "prescriptions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prescriptionsas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "presence"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "present"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "preservation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "preserved"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pressure"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prevent"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "prevents"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "preview"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "previous"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "previously"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "primarily"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "primary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prin"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "principal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "principles"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "printing"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "priority"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prisms"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "prison"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prison-api"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "prisoner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prisoners"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "privacy"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "private"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "privately"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "proactively"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "probation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "problem"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "problems"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "process"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "process.it"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "process.the"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "process.this"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "processed"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "processes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "processing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "processwe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "produce"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "producer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "producers"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "product"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "production"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "products"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "productsyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "professionals"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "profile"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "programmatic"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "programmatically"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "programme"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "programming"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "progress"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "project"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "projections"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "projects"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "proper"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "properties"
+  },
+  {
+    "df": 55,
+    "postings": "data/search/postings-0.json",
+    "token": "property"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "property-level"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "propertys"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "proposed"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "protect"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "protected"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "protection"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "protections"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "protects"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "protocol"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prove"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "provenance"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "provide"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "provided"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "provider"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "providers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "providersas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "providerscp-is"
+  },
+  {
+    "df": 50,
+    "postings": "data/search/postings-0.json",
+    "token": "provides"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "providing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "provision"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "prt"
+  }
+]

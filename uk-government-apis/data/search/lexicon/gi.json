@@ -1,0 +1,32 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gis"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "github.com"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gitlab.com"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "give"
+  },
+  {
+    "df": 19,
+    "postings": "data/search/postings-0.json",
+    "token": "given"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "gives"
+  }
+]

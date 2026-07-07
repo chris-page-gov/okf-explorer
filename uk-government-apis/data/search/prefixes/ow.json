@@ -1,0 +1,84 @@
+{
+  "own": [
+    {
+      "df": 11,
+      "token": "own"
+    },
+    {
+      "df": 2,
+      "token": "owned"
+    },
+    {
+      "df": 1,
+      "token": "owner"
+    },
+    {
+      "df": 1,
+      "token": "owners"
+    },
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ],
+  "owne": [
+    {
+      "df": 2,
+      "token": "owned"
+    },
+    {
+      "df": 1,
+      "token": "owner"
+    },
+    {
+      "df": 1,
+      "token": "owners"
+    },
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ],
+  "owned": [
+    {
+      "df": 2,
+      "token": "owned"
+    }
+  ],
+  "owner": [
+    {
+      "df": 1,
+      "token": "owner"
+    },
+    {
+      "df": 1,
+      "token": "owners"
+    },
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ],
+  "owners": [
+    {
+      "df": 1,
+      "token": "owners"
+    },
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ],
+  "ownersh": [
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ],
+  "ownershi": [
+    {
+      "df": 1,
+      "token": "ownership"
+    }
+  ]
+}

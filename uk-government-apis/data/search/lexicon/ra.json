@@ -1,0 +1,97 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "radioactive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "radiology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "radiology-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "radius"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rain"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "rainfall"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "raingauges"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "raise"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "range"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ranges"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rangeyou"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ras"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ras-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "raster"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "rate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rateable"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "rates"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rating"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ratings"
+  }
+]

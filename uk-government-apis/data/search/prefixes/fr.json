@@ -1,0 +1,324 @@
+{
+  "fre": [
+    {
+      "df": 14,
+      "token": "free"
+    },
+    {
+      "df": 1,
+      "token": "freely"
+    },
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    },
+    {
+      "df": 1,
+      "token": "frequently"
+    },
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "free": [
+    {
+      "df": 14,
+      "token": "free"
+    },
+    {
+      "df": 1,
+      "token": "freely"
+    }
+  ],
+  "freel": [
+    {
+      "df": 1,
+      "token": "freely"
+    }
+  ],
+  "freely": [
+    {
+      "df": 1,
+      "token": "freely"
+    }
+  ],
+  "freq": [
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    },
+    {
+      "df": 1,
+      "token": "frequently"
+    }
+  ],
+  "frequ": [
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    },
+    {
+      "df": 1,
+      "token": "frequently"
+    }
+  ],
+  "freque": [
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    },
+    {
+      "df": 1,
+      "token": "frequently"
+    }
+  ],
+  "frequen": [
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    },
+    {
+      "df": 1,
+      "token": "frequently"
+    }
+  ],
+  "frequenc": [
+    {
+      "df": 1,
+      "token": "frequencies"
+    },
+    {
+      "df": 1,
+      "token": "frequencyat"
+    },
+    {
+      "df": 1,
+      "token": "frequencythe"
+    }
+  ],
+  "frequent": [
+    {
+      "df": 1,
+      "token": "frequently"
+    }
+  ],
+  "fres": [
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "fresh": [
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "freshw": [
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "freshwa": [
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "freshwat": [
+    {
+      "df": 1,
+      "token": "freshwater"
+    }
+  ],
+  "fro": [
+    {
+      "df": 1,
+      "token": "front"
+    },
+    {
+      "df": 1,
+      "token": "frontend"
+    },
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    },
+    {
+      "df": 1,
+      "token": "frost"
+    },
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ],
+  "fron": [
+    {
+      "df": 1,
+      "token": "front"
+    },
+    {
+      "df": 1,
+      "token": "frontend"
+    },
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    }
+  ],
+  "front": [
+    {
+      "df": 1,
+      "token": "front"
+    },
+    {
+      "df": 1,
+      "token": "frontend"
+    },
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    }
+  ],
+  "fronte": [
+    {
+      "df": 1,
+      "token": "frontend"
+    }
+  ],
+  "fronten": [
+    {
+      "df": 1,
+      "token": "frontend"
+    }
+  ],
+  "frontend": [
+    {
+      "df": 1,
+      "token": "frontend"
+    }
+  ],
+  "fronti": [
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    }
+  ],
+  "frontie": [
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    }
+  ],
+  "frontier": [
+    {
+      "df": 1,
+      "token": "frontier"
+    },
+    {
+      "df": 1,
+      "token": "frontiers"
+    }
+  ],
+  "fros": [
+    {
+      "df": 1,
+      "token": "frost"
+    },
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ],
+  "frost": [
+    {
+      "df": 1,
+      "token": "frost"
+    },
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ],
+  "frost-": [
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ],
+  "frost-s": [
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ],
+  "frost-se": [
+    {
+      "df": 1,
+      "token": "frost-server"
+    }
+  ]
+}

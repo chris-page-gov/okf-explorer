@@ -1,0 +1,52 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "urgency.you"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "urgent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "urgent-and-emergency-care-continuous-quality-improvement-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uri"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uris"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "url"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "url-encoded-resource-uri"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "url.please"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "urls"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "urlsfor"
+  }
+]

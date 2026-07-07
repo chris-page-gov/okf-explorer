@@ -1,0 +1,80 @@
+{
+  "you": [
+    {
+      "df": 110,
+      "token": "you"
+    },
+    {
+      "df": 46,
+      "token": "your"
+    },
+    {
+      "df": 5,
+      "token": "youre"
+    },
+    {
+      "df": 1,
+      "token": "youll"
+    },
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ],
+  "youl": [
+    {
+      "df": 1,
+      "token": "youll"
+    }
+  ],
+  "youll": [
+    {
+      "df": 1,
+      "token": "youll"
+    }
+  ],
+  "your": [
+    {
+      "df": 46,
+      "token": "your"
+    },
+    {
+      "df": 5,
+      "token": "youre"
+    },
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ],
+  "youre": [
+    {
+      "df": 5,
+      "token": "youre"
+    }
+  ],
+  "yours": [
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ],
+  "yourse": [
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ],
+  "yoursel": [
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ],
+  "yourself": [
+    {
+      "df": 1,
+      "token": "yourself"
+    }
+  ]
+}

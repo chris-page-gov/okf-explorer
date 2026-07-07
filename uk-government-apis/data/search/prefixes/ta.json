@@ -1,0 +1,442 @@
+{
+  "tab": [
+    {
+      "df": 3,
+      "token": "table"
+    },
+    {
+      "df": 3,
+      "token": "tables"
+    },
+    {
+      "df": 2,
+      "token": "tablet"
+    }
+  ],
+  "tabl": [
+    {
+      "df": 3,
+      "token": "table"
+    },
+    {
+      "df": 3,
+      "token": "tables"
+    },
+    {
+      "df": 2,
+      "token": "tablet"
+    }
+  ],
+  "table": [
+    {
+      "df": 3,
+      "token": "table"
+    },
+    {
+      "df": 3,
+      "token": "tables"
+    },
+    {
+      "df": 2,
+      "token": "tablet"
+    }
+  ],
+  "tables": [
+    {
+      "df": 3,
+      "token": "tables"
+    }
+  ],
+  "tablet": [
+    {
+      "df": 2,
+      "token": "tablet"
+    }
+  ],
+  "tak": [
+    {
+      "df": 5,
+      "token": "take"
+    },
+    {
+      "df": 3,
+      "token": "taken"
+    },
+    {
+      "df": 3,
+      "token": "takes"
+    },
+    {
+      "df": 1,
+      "token": "taking"
+    }
+  ],
+  "take": [
+    {
+      "df": 5,
+      "token": "take"
+    },
+    {
+      "df": 3,
+      "token": "taken"
+    },
+    {
+      "df": 3,
+      "token": "takes"
+    }
+  ],
+  "taken": [
+    {
+      "df": 3,
+      "token": "taken"
+    }
+  ],
+  "takes": [
+    {
+      "df": 3,
+      "token": "takes"
+    }
+  ],
+  "taki": [
+    {
+      "df": 1,
+      "token": "taking"
+    }
+  ],
+  "takin": [
+    {
+      "df": 1,
+      "token": "taking"
+    }
+  ],
+  "taking": [
+    {
+      "df": 1,
+      "token": "taking"
+    }
+  ],
+  "tal": [
+    {
+      "df": 1,
+      "token": "talking"
+    },
+    {
+      "df": 1,
+      "token": "talks"
+    }
+  ],
+  "talk": [
+    {
+      "df": 1,
+      "token": "talking"
+    },
+    {
+      "df": 1,
+      "token": "talks"
+    }
+  ],
+  "talki": [
+    {
+      "df": 1,
+      "token": "talking"
+    }
+  ],
+  "talkin": [
+    {
+      "df": 1,
+      "token": "talking"
+    }
+  ],
+  "talking": [
+    {
+      "df": 1,
+      "token": "talking"
+    }
+  ],
+  "talks": [
+    {
+      "df": 1,
+      "token": "talks"
+    }
+  ],
+  "tar": [
+    {
+      "df": 5,
+      "token": "tariff"
+    },
+    {
+      "df": 3,
+      "token": "target"
+    },
+    {
+      "df": 3,
+      "token": "tariffs"
+    }
+  ],
+  "targ": [
+    {
+      "df": 3,
+      "token": "target"
+    }
+  ],
+  "targe": [
+    {
+      "df": 3,
+      "token": "target"
+    }
+  ],
+  "target": [
+    {
+      "df": 3,
+      "token": "target"
+    }
+  ],
+  "tari": [
+    {
+      "df": 5,
+      "token": "tariff"
+    },
+    {
+      "df": 3,
+      "token": "tariffs"
+    }
+  ],
+  "tarif": [
+    {
+      "df": 5,
+      "token": "tariff"
+    },
+    {
+      "df": 3,
+      "token": "tariffs"
+    }
+  ],
+  "tariff": [
+    {
+      "df": 5,
+      "token": "tariff"
+    },
+    {
+      "df": 3,
+      "token": "tariffs"
+    }
+  ],
+  "tariffs": [
+    {
+      "df": 3,
+      "token": "tariffs"
+    }
+  ],
+  "tas": [
+    {
+      "df": 2,
+      "token": "task"
+    },
+    {
+      "df": 2,
+      "token": "tasks"
+    }
+  ],
+  "task": [
+    {
+      "df": 2,
+      "token": "task"
+    },
+    {
+      "df": 2,
+      "token": "tasks"
+    }
+  ],
+  "tasks": [
+    {
+      "df": 2,
+      "token": "tasks"
+    }
+  ],
+  "tax": [
+    {
+      "df": 38,
+      "token": "tax"
+    },
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    },
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxable"
+    },
+    {
+      "df": 1,
+      "token": "taxonomies"
+    },
+    {
+      "df": 1,
+      "token": "taxonomy"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ],
+  "tax-": [
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    }
+  ],
+  "tax-a": [
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    }
+  ],
+  "tax-an": [
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    }
+  ],
+  "tax-and": [
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    }
+  ],
+  "tax-and-": [
+    {
+      "df": 38,
+      "token": "tax-and-customs"
+    }
+  ],
+  "taxa": [
+    {
+      "df": 1,
+      "token": "taxable"
+    }
+  ],
+  "taxab": [
+    {
+      "df": 1,
+      "token": "taxable"
+    }
+  ],
+  "taxabl": [
+    {
+      "df": 1,
+      "token": "taxable"
+    }
+  ],
+  "taxable": [
+    {
+      "df": 1,
+      "token": "taxable"
+    }
+  ],
+  "taxo": [
+    {
+      "df": 1,
+      "token": "taxonomies"
+    },
+    {
+      "df": 1,
+      "token": "taxonomy"
+    }
+  ],
+  "taxon": [
+    {
+      "df": 1,
+      "token": "taxonomies"
+    },
+    {
+      "df": 1,
+      "token": "taxonomy"
+    }
+  ],
+  "taxono": [
+    {
+      "df": 1,
+      "token": "taxonomies"
+    },
+    {
+      "df": 1,
+      "token": "taxonomy"
+    }
+  ],
+  "taxonom": [
+    {
+      "df": 1,
+      "token": "taxonomies"
+    },
+    {
+      "df": 1,
+      "token": "taxonomy"
+    }
+  ],
+  "taxonomi": [
+    {
+      "df": 1,
+      "token": "taxonomies"
+    }
+  ],
+  "taxonomy": [
+    {
+      "df": 1,
+      "token": "taxonomy"
+    }
+  ],
+  "taxp": [
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ],
+  "taxpa": [
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ],
+  "taxpay": [
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ],
+  "taxpaye": [
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ],
+  "taxpayer": [
+    {
+      "df": 3,
+      "token": "taxpayer"
+    },
+    {
+      "df": 1,
+      "token": "taxpayers"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "ema": [
+    {
+      "df": 6,
+      "token": "email"
+    },
+    {
+      "df": 2,
+      "token": "emails"
+    }
+  ],
+  "emai": [
+    {
+      "df": 6,
+      "token": "email"
+    },
+    {
+      "df": 2,
+      "token": "emails"
+    }
+  ],
+  "email": [
+    {
+      "df": 6,
+      "token": "email"
+    },
+    {
+      "df": 2,
+      "token": "emails"
+    }
+  ],
+  "emails": [
+    {
+      "df": 2,
+      "token": "emails"
+    }
+  ],
+  "emb": [
+    {
+      "df": 1,
+      "token": "embed"
+    }
+  ],
+  "embe": [
+    {
+      "df": 1,
+      "token": "embed"
+    }
+  ],
+  "embed": [
+    {
+      "df": 1,
+      "token": "embed"
+    }
+  ],
+  "eme": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emer": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emerg": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emerge": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emergen": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emergenc": [
+    {
+      "df": 15,
+      "token": "emergency"
+    }
+  ],
+  "emp": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    },
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employees"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ],
+  "empl": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    },
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employees"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ],
+  "emplo": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    },
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employees"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ],
+  "employ": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    },
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employees"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ],
+  "employe": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    },
+    {
+      "df": 1,
+      "token": "employees"
+    }
+  ],
+  "employee": [
+    {
+      "df": 1,
+      "token": "employees"
+    }
+  ],
+  "employer": [
+    {
+      "df": 4,
+      "token": "employer"
+    },
+    {
+      "df": 3,
+      "token": "employers"
+    }
+  ],
+  "employm": [
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ],
+  "employme": [
+    {
+      "df": 3,
+      "token": "employment"
+    },
+    {
+      "df": 1,
+      "token": "employments"
+    }
+  ]
+}

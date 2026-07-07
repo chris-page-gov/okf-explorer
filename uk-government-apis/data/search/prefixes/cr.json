@@ -1,0 +1,466 @@
+{
+  "cre": [
+    {
+      "df": 21,
+      "token": "create"
+    },
+    {
+      "df": 5,
+      "token": "created"
+    },
+    {
+      "df": 4,
+      "token": "creating"
+    },
+    {
+      "df": 1,
+      "token": "creates"
+    },
+    {
+      "df": 1,
+      "token": "creators"
+    },
+    {
+      "df": 1,
+      "token": "credential"
+    },
+    {
+      "df": 1,
+      "token": "credit"
+    },
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "crea": [
+    {
+      "df": 21,
+      "token": "create"
+    },
+    {
+      "df": 5,
+      "token": "created"
+    },
+    {
+      "df": 4,
+      "token": "creating"
+    },
+    {
+      "df": 1,
+      "token": "creates"
+    },
+    {
+      "df": 1,
+      "token": "creators"
+    }
+  ],
+  "creat": [
+    {
+      "df": 21,
+      "token": "create"
+    },
+    {
+      "df": 5,
+      "token": "created"
+    },
+    {
+      "df": 4,
+      "token": "creating"
+    },
+    {
+      "df": 1,
+      "token": "creates"
+    },
+    {
+      "df": 1,
+      "token": "creators"
+    }
+  ],
+  "create": [
+    {
+      "df": 21,
+      "token": "create"
+    },
+    {
+      "df": 5,
+      "token": "created"
+    },
+    {
+      "df": 1,
+      "token": "creates"
+    }
+  ],
+  "created": [
+    {
+      "df": 5,
+      "token": "created"
+    }
+  ],
+  "creates": [
+    {
+      "df": 1,
+      "token": "creates"
+    }
+  ],
+  "creati": [
+    {
+      "df": 4,
+      "token": "creating"
+    }
+  ],
+  "creatin": [
+    {
+      "df": 4,
+      "token": "creating"
+    }
+  ],
+  "creating": [
+    {
+      "df": 4,
+      "token": "creating"
+    }
+  ],
+  "creato": [
+    {
+      "df": 1,
+      "token": "creators"
+    }
+  ],
+  "creator": [
+    {
+      "df": 1,
+      "token": "creators"
+    }
+  ],
+  "creators": [
+    {
+      "df": 1,
+      "token": "creators"
+    }
+  ],
+  "cred": [
+    {
+      "df": 1,
+      "token": "credential"
+    },
+    {
+      "df": 1,
+      "token": "credit"
+    },
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "crede": [
+    {
+      "df": 1,
+      "token": "credential"
+    }
+  ],
+  "creden": [
+    {
+      "df": 1,
+      "token": "credential"
+    }
+  ],
+  "credent": [
+    {
+      "df": 1,
+      "token": "credential"
+    }
+  ],
+  "credenti": [
+    {
+      "df": 1,
+      "token": "credential"
+    }
+  ],
+  "credi": [
+    {
+      "df": 1,
+      "token": "credit"
+    },
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "credit": [
+    {
+      "df": 1,
+      "token": "credit"
+    },
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "credito": [
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "creditor": [
+    {
+      "df": 1,
+      "token": "creditors"
+    }
+  ],
+  "cri": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "crime"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    },
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "crim": [
+    {
+      "df": 1,
+      "token": "crime"
+    }
+  ],
+  "crime": [
+    {
+      "df": 1,
+      "token": "crime"
+    }
+  ],
+  "crit": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    },
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "crite": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    },
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "criter": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    },
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "criteri": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    },
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "criteria": [
+    {
+      "df": 3,
+      "token": "criteria"
+    },
+    {
+      "df": 1,
+      "token": "criteria.it"
+    },
+    {
+      "df": 1,
+      "token": "criteria.you"
+    }
+  ],
+  "criterio": [
+    {
+      "df": 1,
+      "token": "criterion"
+    }
+  ],
+  "crm": [
+    {
+      "df": 1,
+      "token": "crm"
+    }
+  ],
+  "cro": [
+    {
+      "df": 1,
+      "token": "cross"
+    },
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "cros": [
+    {
+      "df": 1,
+      "token": "cross"
+    }
+  ],
+  "cross": [
+    {
+      "df": 1,
+      "token": "cross"
+    }
+  ],
+  "crow": [
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "crown": [
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "crown-": [
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "crown-c": [
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "crown-co": [
+    {
+      "df": 1,
+      "token": "crown-commercial-service"
+    }
+  ],
+  "cry": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    },
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ],
+  "cryp": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    }
+  ],
+  "crypt": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    }
+  ],
+  "crypto": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    }
+  ],
+  "cryptog": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    }
+  ],
+  "cryptogr": [
+    {
+      "df": 1,
+      "token": "cryptographic"
+    }
+  ],
+  "crys": [
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ],
+  "cryst": [
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ],
+  "crysta": [
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ],
+  "crystal": [
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ],
+  "crystall": [
+    {
+      "df": 1,
+      "token": "crystallisation"
+    }
+  ]
+}

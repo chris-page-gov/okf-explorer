@@ -1,0 +1,27 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ai-enabled"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "aided"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "aimed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "air"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "airborne-remote-sensing"
+  }
+]

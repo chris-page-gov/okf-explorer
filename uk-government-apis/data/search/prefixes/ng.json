@@ -1,0 +1,44 @@
+{
+  "nge": [
+    {
+      "df": 1,
+      "token": "nget"
+    }
+  ],
+  "nget": [
+    {
+      "df": 1,
+      "token": "nget"
+    }
+  ],
+  "ngo": [
+    {
+      "df": 1,
+      "token": "ngov.uk"
+    }
+  ],
+  "ngov": [
+    {
+      "df": 1,
+      "token": "ngov.uk"
+    }
+  ],
+  "ngov.": [
+    {
+      "df": 1,
+      "token": "ngov.uk"
+    }
+  ],
+  "ngov.u": [
+    {
+      "df": 1,
+      "token": "ngov.uk"
+    }
+  ],
+  "ngov.uk": [
+    {
+      "df": 1,
+      "token": "ngov.uk"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "road"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "roadmap"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "roads"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "role"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "role-based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "role.as"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "roles"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rolesto"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "room"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "root"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "round"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "route"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "routes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "routing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "roving"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "royal"
+  }
+]

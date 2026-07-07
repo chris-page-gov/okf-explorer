@@ -1,0 +1,27 @@
+[
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "due"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "duration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "during"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "duties"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "duty"
+  }
+]

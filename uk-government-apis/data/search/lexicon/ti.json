@@ -1,0 +1,82 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "tidal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tidal-api-foundation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tidal-api-premium"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tide"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tidegauge"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tiers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tile"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "time"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "timeframes"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "times"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "timetables"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "timing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tipping"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "title"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "title_number"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "titles"
+  }
+]

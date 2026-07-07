@@ -1,0 +1,152 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "teach"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "teacher"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "teacher-training-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "teaching"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "team"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "teams"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "technical"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "technology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "technology-reference-update-distribution-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "telemetry"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "telephone"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "telephony"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "tell"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "templates"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "temporary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tenure"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "term"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "terminologies"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "terminology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "terminology-server-fhir"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "terms"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "territories"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "territory"
+  },
+  {
+    "df": 22,
+    "postings": "data/search/postings-0.json",
+    "token": "test"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "test-api.service.hmrc.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "testgos3"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "testing"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "tests"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "testyou"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "text"
+  }
+]

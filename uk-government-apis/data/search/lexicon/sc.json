@@ -1,0 +1,142 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scalable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scanning"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scc"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scc-directory-of-support-services"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scci2075"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scenarios"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "schedule"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "scheduled"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "schema"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "schemas"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "scheme"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "school"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "science"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scientists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scope"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "scotland"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scotlandor"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "scottish"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "scottish-government"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scottish-government-geonetwork-rest-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scottish-government-statistics-gov-scot"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "scr"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scr.gp"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "scra"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scrap"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "screening"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "scrnote"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "scrs"
+  }
+]

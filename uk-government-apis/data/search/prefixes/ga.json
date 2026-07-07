@@ -1,0 +1,128 @@
+{
+  "gar": [
+    {
+      "df": 1,
+      "token": "gardens"
+    }
+  ],
+  "gard": [
+    {
+      "df": 1,
+      "token": "gardens"
+    }
+  ],
+  "garde": [
+    {
+      "df": 1,
+      "token": "gardens"
+    }
+  ],
+  "garden": [
+    {
+      "df": 1,
+      "token": "gardens"
+    }
+  ],
+  "gardens": [
+    {
+      "df": 1,
+      "token": "gardens"
+    }
+  ],
+  "gau": [
+    {
+      "df": 1,
+      "token": "gauge"
+    },
+    {
+      "df": 1,
+      "token": "gauges"
+    }
+  ],
+  "gaug": [
+    {
+      "df": 1,
+      "token": "gauge"
+    },
+    {
+      "df": 1,
+      "token": "gauges"
+    }
+  ],
+  "gauge": [
+    {
+      "df": 1,
+      "token": "gauge"
+    },
+    {
+      "df": 1,
+      "token": "gauges"
+    }
+  ],
+  "gauges": [
+    {
+      "df": 1,
+      "token": "gauges"
+    }
+  ],
+  "gaz": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ],
+  "gaze": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ],
+  "gazet": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ],
+  "gazett": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ],
+  "gazette": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ],
+  "gazettee": [
+    {
+      "df": 2,
+      "token": "gazetteer"
+    },
+    {
+      "df": 1,
+      "token": "gazetteer-service-soap"
+    }
+  ]
+}

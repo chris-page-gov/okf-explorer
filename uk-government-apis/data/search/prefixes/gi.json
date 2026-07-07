@@ -1,0 +1,118 @@
+{
+  "gis": [
+    {
+      "df": 1,
+      "token": "gis"
+    }
+  ],
+  "git": [
+    {
+      "df": 12,
+      "token": "github.com"
+    },
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "gith": [
+    {
+      "df": 12,
+      "token": "github.com"
+    }
+  ],
+  "githu": [
+    {
+      "df": 12,
+      "token": "github.com"
+    }
+  ],
+  "github": [
+    {
+      "df": 12,
+      "token": "github.com"
+    }
+  ],
+  "github.": [
+    {
+      "df": 12,
+      "token": "github.com"
+    }
+  ],
+  "github.c": [
+    {
+      "df": 12,
+      "token": "github.com"
+    }
+  ],
+  "gitl": [
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "gitla": [
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "gitlab": [
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "gitlab.": [
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "gitlab.c": [
+    {
+      "df": 1,
+      "token": "gitlab.com"
+    }
+  ],
+  "giv": [
+    {
+      "df": 19,
+      "token": "given"
+    },
+    {
+      "df": 8,
+      "token": "give"
+    },
+    {
+      "df": 5,
+      "token": "gives"
+    }
+  ],
+  "give": [
+    {
+      "df": 19,
+      "token": "given"
+    },
+    {
+      "df": 8,
+      "token": "give"
+    },
+    {
+      "df": 5,
+      "token": "gives"
+    }
+  ],
+  "given": [
+    {
+      "df": 19,
+      "token": "given"
+    }
+  ],
+  "gives": [
+    {
+      "df": 5,
+      "token": "gives"
+    }
+  ]
+}

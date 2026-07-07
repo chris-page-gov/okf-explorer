@@ -1,0 +1,57 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "on-board"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "on-demand"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "once"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "one"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "online"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "online-consultation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "online_owner_verification"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "onlineownershipverificationv1_0webservice"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "only"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ons"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "onwards"
+  }
+]

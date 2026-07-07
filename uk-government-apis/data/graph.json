@@ -1,0 +1,136 @@
+{
+  "edge_counts": [
+    {
+      "count": 284,
+      "kind": "uses interaction style"
+    },
+    {
+      "count": 244,
+      "kind": "published by"
+    },
+    {
+      "count": 244,
+      "kind": "uses access model"
+    },
+    {
+      "count": 233,
+      "kind": "has endpoint"
+    },
+    {
+      "count": 227,
+      "kind": "has documentation"
+    },
+    {
+      "count": 227,
+      "kind": "has contract signal"
+    },
+    {
+      "count": 47,
+      "kind": "has licence"
+    }
+  ],
+  "node_counts": {
+    "dataset": 244,
+    "publisher": 34,
+    "resource": 507
+  },
+  "relationship_index": "data/relationships-0.json",
+  "top_publishers": [
+    {
+      "dataset_count": 93,
+      "id": "nhs-digital",
+      "label": "NHS Digital",
+      "resource_count": 186
+    },
+    {
+      "dataset_count": 31,
+      "id": "hm-revenue-customs",
+      "label": "HM Revenue Customs",
+      "resource_count": 63
+    },
+    {
+      "dataset_count": 15,
+      "id": "hm-land-registry",
+      "label": "HM Land Registry",
+      "resource_count": 30
+    },
+    {
+      "dataset_count": 12,
+      "id": "ministry-of-housing-communities-local-government",
+      "label": "Ministry of Housing Communities Local Government",
+      "resource_count": 35
+    },
+    {
+      "dataset_count": 11,
+      "id": "department-for-work-and-pensions",
+      "label": "Department for Work And Pensions",
+      "resource_count": 12
+    },
+    {
+      "dataset_count": 10,
+      "id": "environment-agency",
+      "label": "Environment Agency",
+      "resource_count": 20
+    },
+    {
+      "dataset_count": 8,
+      "id": "ordnance-survey",
+      "label": "Ordnance Survey",
+      "resource_count": 24
+    },
+    {
+      "dataset_count": 7,
+      "id": "government-digital-service",
+      "label": "Government Digital Service",
+      "resource_count": 14
+    },
+    {
+      "dataset_count": 6,
+      "id": "department-for-business-and-trade",
+      "label": "Department for Business And Trade",
+      "resource_count": 17
+    },
+    {
+      "dataset_count": 6,
+      "id": "driver-and-vehicle-licensing-agency",
+      "label": "Driver And Vehicle Licensing Agency",
+      "resource_count": 12
+    },
+    {
+      "dataset_count": 6,
+      "id": "historic-england",
+      "label": "Historic England",
+      "resource_count": 12
+    },
+    {
+      "dataset_count": 4,
+      "id": "department-for-education",
+      "label": "Department for Education",
+      "resource_count": 7
+    },
+    {
+      "dataset_count": 4,
+      "id": "ministry-of-justice",
+      "label": "Ministry of Justice",
+      "resource_count": 8
+    },
+    {
+      "dataset_count": 4,
+      "id": "uk-hydrographic-office",
+      "label": "UK Hydrographic Office",
+      "resource_count": 10
+    },
+    {
+      "dataset_count": 3,
+      "id": "bgs",
+      "label": "BGS",
+      "resource_count": 9
+    },
+    {
+      "dataset_count": 2,
+      "id": "companies-house",
+      "label": "Companies House",
+      "resource_count": 4
+    }
+  ]
+}

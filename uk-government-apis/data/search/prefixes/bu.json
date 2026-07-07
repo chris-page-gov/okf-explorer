@@ -1,0 +1,442 @@
+{
+  "buc": [
+    {
+      "df": 1,
+      "token": "bucket"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "buck": [
+    {
+      "df": 1,
+      "token": "bucket"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "bucke": [
+    {
+      "df": 1,
+      "token": "bucket"
+    }
+  ],
+  "bucket": [
+    {
+      "df": 1,
+      "token": "bucket"
+    }
+  ],
+  "bucki": [
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "buckin": [
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "bucking": [
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "buckingh": [
+    {
+      "df": 1,
+      "token": "buckinghamshire"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council"
+    },
+    {
+      "df": 1,
+      "token": "buckinghamshire-council-services"
+    }
+  ],
+  "bui": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    },
+    {
+      "df": 3,
+      "token": "build"
+    },
+    {
+      "df": 2,
+      "token": "built"
+    },
+    {
+      "df": 1,
+      "token": "builders"
+    },
+    {
+      "df": 1,
+      "token": "builds"
+    }
+  ],
+  "buil": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    },
+    {
+      "df": 3,
+      "token": "build"
+    },
+    {
+      "df": 2,
+      "token": "built"
+    },
+    {
+      "df": 1,
+      "token": "builders"
+    },
+    {
+      "df": 1,
+      "token": "builds"
+    }
+  ],
+  "build": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    },
+    {
+      "df": 3,
+      "token": "build"
+    },
+    {
+      "df": 1,
+      "token": "builders"
+    },
+    {
+      "df": 1,
+      "token": "builds"
+    }
+  ],
+  "builde": [
+    {
+      "df": 1,
+      "token": "builders"
+    }
+  ],
+  "builder": [
+    {
+      "df": 1,
+      "token": "builders"
+    }
+  ],
+  "builders": [
+    {
+      "df": 1,
+      "token": "builders"
+    }
+  ],
+  "buildi": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    }
+  ],
+  "buildin": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    }
+  ],
+  "building": [
+    {
+      "df": 9,
+      "token": "buildings"
+    },
+    {
+      "df": 6,
+      "token": "building"
+    }
+  ],
+  "builds": [
+    {
+      "df": 1,
+      "token": "builds"
+    }
+  ],
+  "built": [
+    {
+      "df": 2,
+      "token": "built"
+    }
+  ],
+  "bul": [
+    {
+      "df": 4,
+      "token": "bulk"
+    }
+  ],
+  "bulk": [
+    {
+      "df": 4,
+      "token": "bulk"
+    }
+  ],
+  "bus": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "bus"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "busi": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "busin": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "busine": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "busines": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "business": [
+    {
+      "df": 25,
+      "token": "business"
+    },
+    {
+      "df": 25,
+      "token": "business-and-economy"
+    },
+    {
+      "df": 15,
+      "token": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "df": 4,
+      "token": "businesses"
+    },
+    {
+      "df": 1,
+      "token": "business-details-api"
+    },
+    {
+      "df": 1,
+      "token": "business-rates-api"
+    }
+  ],
+  "but": [
+    {
+      "df": 12,
+      "token": "but"
+    }
+  ],
+  "buy": [
+    {
+      "df": 3,
+      "token": "buyers"
+    }
+  ],
+  "buye": [
+    {
+      "df": 3,
+      "token": "buyers"
+    }
+  ],
+  "buyer": [
+    {
+      "df": 3,
+      "token": "buyers"
+    }
+  ],
+  "buyers": [
+    {
+      "df": 3,
+      "token": "buyers"
+    }
+  ]
+}

@@ -476,6 +476,22 @@ input:focus {
   font-weight: 700;
 }
 
+.facet-section summary span {
+  min-width: 0;
+}
+
+.facet-section summary em {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .facet-section summary small {
   min-width: 24px;
   text-align: center;
@@ -483,6 +499,8 @@ input:focus {
   border-radius: 999px;
   color: var(--muted);
   background: var(--surface-2);
+  padding: 0 7px;
+  white-space: nowrap;
 }
 
 .facet-values {
@@ -494,6 +512,28 @@ input:focus {
 .facet-hint {
   margin: -2px 8px 7px;
   font-size: 12px;
+}
+
+.facet-loading,
+.context-note,
+.result-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.facet-loading {
+  margin: 0;
+  padding: 8px 2px;
+  font-weight: 700;
+}
+
+.context-note {
+  margin: 2px 0;
+  font-weight: 700;
+}
+
+.result-meta {
+  display: block;
 }
 
 .facet-hierarchy {

@@ -1,0 +1,680 @@
+{
+  "cha": [
+    {
+      "df": 13,
+      "token": "changes"
+    },
+    {
+      "df": 11,
+      "token": "change"
+    },
+    {
+      "df": 6,
+      "token": "charges"
+    },
+    {
+      "df": 3,
+      "token": "channel"
+    },
+    {
+      "df": 3,
+      "token": "charge"
+    },
+    {
+      "df": 1,
+      "token": "chances"
+    },
+    {
+      "df": 1,
+      "token": "changefor"
+    },
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    },
+    {
+      "df": 1,
+      "token": "chart"
+    },
+    {
+      "df": 1,
+      "token": "charts"
+    }
+  ],
+  "chan": [
+    {
+      "df": 13,
+      "token": "changes"
+    },
+    {
+      "df": 11,
+      "token": "change"
+    },
+    {
+      "df": 3,
+      "token": "channel"
+    },
+    {
+      "df": 1,
+      "token": "chances"
+    },
+    {
+      "df": 1,
+      "token": "changefor"
+    }
+  ],
+  "chanc": [
+    {
+      "df": 1,
+      "token": "chances"
+    }
+  ],
+  "chance": [
+    {
+      "df": 1,
+      "token": "chances"
+    }
+  ],
+  "chances": [
+    {
+      "df": 1,
+      "token": "chances"
+    }
+  ],
+  "chang": [
+    {
+      "df": 13,
+      "token": "changes"
+    },
+    {
+      "df": 11,
+      "token": "change"
+    },
+    {
+      "df": 1,
+      "token": "changefor"
+    }
+  ],
+  "change": [
+    {
+      "df": 13,
+      "token": "changes"
+    },
+    {
+      "df": 11,
+      "token": "change"
+    },
+    {
+      "df": 1,
+      "token": "changefor"
+    }
+  ],
+  "changef": [
+    {
+      "df": 1,
+      "token": "changefor"
+    }
+  ],
+  "changefo": [
+    {
+      "df": 1,
+      "token": "changefor"
+    }
+  ],
+  "changes": [
+    {
+      "df": 13,
+      "token": "changes"
+    }
+  ],
+  "chann": [
+    {
+      "df": 3,
+      "token": "channel"
+    }
+  ],
+  "channe": [
+    {
+      "df": 3,
+      "token": "channel"
+    }
+  ],
+  "channel": [
+    {
+      "df": 3,
+      "token": "channel"
+    }
+  ],
+  "char": [
+    {
+      "df": 6,
+      "token": "charges"
+    },
+    {
+      "df": 3,
+      "token": "charge"
+    },
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    },
+    {
+      "df": 1,
+      "token": "chart"
+    },
+    {
+      "df": 1,
+      "token": "charts"
+    }
+  ],
+  "chara": [
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    }
+  ],
+  "charac": [
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    }
+  ],
+  "charact": [
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    }
+  ],
+  "characte": [
+    {
+      "df": 1,
+      "token": "character"
+    },
+    {
+      "df": 1,
+      "token": "characteristics"
+    }
+  ],
+  "charg": [
+    {
+      "df": 6,
+      "token": "charges"
+    },
+    {
+      "df": 3,
+      "token": "charge"
+    }
+  ],
+  "charge": [
+    {
+      "df": 6,
+      "token": "charges"
+    },
+    {
+      "df": 3,
+      "token": "charge"
+    }
+  ],
+  "charges": [
+    {
+      "df": 6,
+      "token": "charges"
+    }
+  ],
+  "chart": [
+    {
+      "df": 1,
+      "token": "chart"
+    },
+    {
+      "df": 1,
+      "token": "charts"
+    }
+  ],
+  "charts": [
+    {
+      "df": 1,
+      "token": "charts"
+    }
+  ],
+  "che": [
+    {
+      "df": 16,
+      "token": "check"
+    },
+    {
+      "df": 2,
+      "token": "checking"
+    },
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    },
+    {
+      "df": 1,
+      "token": "checked"
+    },
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chec": [
+    {
+      "df": 16,
+      "token": "check"
+    },
+    {
+      "df": 2,
+      "token": "checking"
+    },
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    },
+    {
+      "df": 1,
+      "token": "checked"
+    }
+  ],
+  "check": [
+    {
+      "df": 16,
+      "token": "check"
+    },
+    {
+      "df": 2,
+      "token": "checking"
+    },
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    },
+    {
+      "df": 1,
+      "token": "checked"
+    }
+  ],
+  "check-": [
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    }
+  ],
+  "check-e": [
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    }
+  ],
+  "check-eo": [
+    {
+      "df": 1,
+      "token": "check-eori-number-api"
+    }
+  ],
+  "checke": [
+    {
+      "df": 1,
+      "token": "checked"
+    }
+  ],
+  "checked": [
+    {
+      "df": 1,
+      "token": "checked"
+    }
+  ],
+  "checki": [
+    {
+      "df": 2,
+      "token": "checking"
+    }
+  ],
+  "checkin": [
+    {
+      "df": 2,
+      "token": "checking"
+    }
+  ],
+  "checking": [
+    {
+      "df": 2,
+      "token": "checking"
+    }
+  ],
+  "chem": [
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chemi": [
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chemic": [
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chemica": [
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chemical": [
+    {
+      "df": 1,
+      "token": "chemical"
+    }
+  ],
+  "chi": [
+    {
+      "df": 5,
+      "token": "child"
+    },
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "childcare"
+    },
+    {
+      "df": 1,
+      "token": "childhood"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "chil": [
+    {
+      "df": 5,
+      "token": "child"
+    },
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "childcare"
+    },
+    {
+      "df": 1,
+      "token": "childhood"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "child": [
+    {
+      "df": 5,
+      "token": "child"
+    },
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "childcare"
+    },
+    {
+      "df": 1,
+      "token": "childhood"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "child-": [
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    }
+  ],
+  "child-p": [
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    }
+  ],
+  "child-pr": [
+    {
+      "df": 1,
+      "token": "child-protection-information-sharing-hl7-v3"
+    }
+  ],
+  "childc": [
+    {
+      "df": 1,
+      "token": "childcare"
+    }
+  ],
+  "childca": [
+    {
+      "df": 1,
+      "token": "childcare"
+    }
+  ],
+  "childcar": [
+    {
+      "df": 1,
+      "token": "childcare"
+    }
+  ],
+  "childh": [
+    {
+      "df": 1,
+      "token": "childhood"
+    }
+  ],
+  "childho": [
+    {
+      "df": 1,
+      "token": "childhood"
+    }
+  ],
+  "childhoo": [
+    {
+      "df": 1,
+      "token": "childhood"
+    }
+  ],
+  "childr": [
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "childre": [
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "children": [
+    {
+      "df": 2,
+      "token": "children"
+    },
+    {
+      "df": 1,
+      "token": "childrens"
+    }
+  ],
+  "cho": [
+    {
+      "df": 3,
+      "token": "choose"
+    },
+    {
+      "df": 1,
+      "token": "choice"
+    },
+    {
+      "df": 1,
+      "token": "choices"
+    },
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "choi": [
+    {
+      "df": 1,
+      "token": "choice"
+    },
+    {
+      "df": 1,
+      "token": "choices"
+    }
+  ],
+  "choic": [
+    {
+      "df": 1,
+      "token": "choice"
+    },
+    {
+      "df": 1,
+      "token": "choices"
+    }
+  ],
+  "choice": [
+    {
+      "df": 1,
+      "token": "choice"
+    },
+    {
+      "df": 1,
+      "token": "choices"
+    }
+  ],
+  "choices": [
+    {
+      "df": 1,
+      "token": "choices"
+    }
+  ],
+  "choo": [
+    {
+      "df": 3,
+      "token": "choose"
+    },
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "choos": [
+    {
+      "df": 3,
+      "token": "choose"
+    },
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "choose": [
+    {
+      "df": 3,
+      "token": "choose"
+    }
+  ],
+  "choosi": [
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "choosin": [
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "choosing": [
+    {
+      "df": 1,
+      "token": "choosing"
+    }
+  ],
+  "chu": [
+    {
+      "df": 1,
+      "token": "chunks"
+    }
+  ],
+  "chun": [
+    {
+      "df": 1,
+      "token": "chunks"
+    }
+  ],
+  "chunk": [
+    {
+      "df": 1,
+      "token": "chunks"
+    }
+  ],
+  "chunks": [
+    {
+      "df": 1,
+      "token": "chunks"
+    }
+  ]
+}

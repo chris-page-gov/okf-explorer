@@ -1,0 +1,716 @@
+{
+  "mob": [
+    {
+      "df": 3,
+      "token": "mobile"
+    }
+  ],
+  "mobi": [
+    {
+      "df": 3,
+      "token": "mobile"
+    }
+  ],
+  "mobil": [
+    {
+      "df": 3,
+      "token": "mobile"
+    }
+  ],
+  "mobile": [
+    {
+      "df": 3,
+      "token": "mobile"
+    }
+  ],
+  "mod": [
+    {
+      "df": 11,
+      "token": "model"
+    },
+    {
+      "df": 9,
+      "token": "modern"
+    },
+    {
+      "df": 3,
+      "token": "modes"
+    },
+    {
+      "df": 2,
+      "token": "mode"
+    },
+    {
+      "df": 1,
+      "token": "modelling"
+    },
+    {
+      "df": 1,
+      "token": "modesthis"
+    },
+    {
+      "df": 1,
+      "token": "modified"
+    },
+    {
+      "df": 1,
+      "token": "module"
+    },
+    {
+      "df": 1,
+      "token": "modules"
+    }
+  ],
+  "mode": [
+    {
+      "df": 11,
+      "token": "model"
+    },
+    {
+      "df": 9,
+      "token": "modern"
+    },
+    {
+      "df": 3,
+      "token": "modes"
+    },
+    {
+      "df": 2,
+      "token": "mode"
+    },
+    {
+      "df": 1,
+      "token": "modelling"
+    },
+    {
+      "df": 1,
+      "token": "modesthis"
+    }
+  ],
+  "model": [
+    {
+      "df": 11,
+      "token": "model"
+    },
+    {
+      "df": 1,
+      "token": "modelling"
+    }
+  ],
+  "modell": [
+    {
+      "df": 1,
+      "token": "modelling"
+    }
+  ],
+  "modelli": [
+    {
+      "df": 1,
+      "token": "modelling"
+    }
+  ],
+  "modellin": [
+    {
+      "df": 1,
+      "token": "modelling"
+    }
+  ],
+  "moder": [
+    {
+      "df": 9,
+      "token": "modern"
+    }
+  ],
+  "modern": [
+    {
+      "df": 9,
+      "token": "modern"
+    }
+  ],
+  "modes": [
+    {
+      "df": 3,
+      "token": "modes"
+    },
+    {
+      "df": 1,
+      "token": "modesthis"
+    }
+  ],
+  "modest": [
+    {
+      "df": 1,
+      "token": "modesthis"
+    }
+  ],
+  "modesth": [
+    {
+      "df": 1,
+      "token": "modesthis"
+    }
+  ],
+  "modesthi": [
+    {
+      "df": 1,
+      "token": "modesthis"
+    }
+  ],
+  "modi": [
+    {
+      "df": 1,
+      "token": "modified"
+    }
+  ],
+  "modif": [
+    {
+      "df": 1,
+      "token": "modified"
+    }
+  ],
+  "modifi": [
+    {
+      "df": 1,
+      "token": "modified"
+    }
+  ],
+  "modifie": [
+    {
+      "df": 1,
+      "token": "modified"
+    }
+  ],
+  "modified": [
+    {
+      "df": 1,
+      "token": "modified"
+    }
+  ],
+  "modu": [
+    {
+      "df": 1,
+      "token": "module"
+    },
+    {
+      "df": 1,
+      "token": "modules"
+    }
+  ],
+  "modul": [
+    {
+      "df": 1,
+      "token": "module"
+    },
+    {
+      "df": 1,
+      "token": "modules"
+    }
+  ],
+  "module": [
+    {
+      "df": 1,
+      "token": "module"
+    },
+    {
+      "df": 1,
+      "token": "modules"
+    }
+  ],
+  "modules": [
+    {
+      "df": 1,
+      "token": "modules"
+    }
+  ],
+  "mom": [
+    {
+      "df": 1,
+      "token": "moment"
+    }
+  ],
+  "mome": [
+    {
+      "df": 1,
+      "token": "moment"
+    }
+  ],
+  "momen": [
+    {
+      "df": 1,
+      "token": "moment"
+    }
+  ],
+  "moment": [
+    {
+      "df": 1,
+      "token": "moment"
+    }
+  ],
+  "mon": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    },
+    {
+      "df": 4,
+      "token": "money"
+    },
+    {
+      "df": 3,
+      "token": "months"
+    },
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 2,
+      "token": "month"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    },
+    {
+      "df": 1,
+      "token": "monitor"
+    },
+    {
+      "df": 1,
+      "token": "monitored"
+    },
+    {
+      "df": 1,
+      "token": "monitors"
+    },
+    {
+      "df": 1,
+      "token": "monolithic"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "mone": [
+    {
+      "df": 4,
+      "token": "money"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    }
+  ],
+  "money": [
+    {
+      "df": 4,
+      "token": "money"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    }
+  ],
+  "money-": [
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    }
+  ],
+  "money-t": [
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    }
+  ],
+  "money-to": [
+    {
+      "df": 1,
+      "token": "money-to-prisoners"
+    },
+    {
+      "df": 1,
+      "token": "money-to-prisoners-api"
+    }
+  ],
+  "moni": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    },
+    {
+      "df": 1,
+      "token": "monitor"
+    },
+    {
+      "df": 1,
+      "token": "monitored"
+    },
+    {
+      "df": 1,
+      "token": "monitors"
+    }
+  ],
+  "monit": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    },
+    {
+      "df": 1,
+      "token": "monitor"
+    },
+    {
+      "df": 1,
+      "token": "monitored"
+    },
+    {
+      "df": 1,
+      "token": "monitors"
+    }
+  ],
+  "monito": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    },
+    {
+      "df": 1,
+      "token": "monitor"
+    },
+    {
+      "df": 1,
+      "token": "monitored"
+    },
+    {
+      "df": 1,
+      "token": "monitors"
+    }
+  ],
+  "monitor": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    },
+    {
+      "df": 1,
+      "token": "monitor"
+    },
+    {
+      "df": 1,
+      "token": "monitored"
+    },
+    {
+      "df": 1,
+      "token": "monitors"
+    }
+  ],
+  "monitore": [
+    {
+      "df": 1,
+      "token": "monitored"
+    }
+  ],
+  "monitori": [
+    {
+      "df": 9,
+      "token": "monitoring"
+    }
+  ],
+  "monitors": [
+    {
+      "df": 1,
+      "token": "monitors"
+    }
+  ],
+  "mono": [
+    {
+      "df": 1,
+      "token": "monolithic"
+    }
+  ],
+  "monol": [
+    {
+      "df": 1,
+      "token": "monolithic"
+    }
+  ],
+  "monoli": [
+    {
+      "df": 1,
+      "token": "monolithic"
+    }
+  ],
+  "monolit": [
+    {
+      "df": 1,
+      "token": "monolithic"
+    }
+  ],
+  "monolith": [
+    {
+      "df": 1,
+      "token": "monolithic"
+    }
+  ],
+  "mont": [
+    {
+      "df": 3,
+      "token": "months"
+    },
+    {
+      "df": 2,
+      "token": "month"
+    }
+  ],
+  "month": [
+    {
+      "df": 3,
+      "token": "months"
+    },
+    {
+      "df": 2,
+      "token": "month"
+    }
+  ],
+  "months": [
+    {
+      "df": 3,
+      "token": "months"
+    }
+  ],
+  "monu": [
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "monum": [
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "monume": [
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "monumen": [
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "monument": [
+    {
+      "df": 3,
+      "token": "monument"
+    },
+    {
+      "df": 1,
+      "token": "monuments"
+    }
+  ],
+  "mor": [
+    {
+      "df": 46,
+      "token": "more"
+    },
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "more": [
+    {
+      "df": 46,
+      "token": "more"
+    }
+  ],
+  "mort": [
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "mortg": [
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "mortga": [
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "mortgag": [
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "mortgage": [
+    {
+      "df": 3,
+      "token": "mortgages"
+    },
+    {
+      "df": 1,
+      "token": "mortgaged"
+    }
+  ],
+  "mos": [
+    {
+      "df": 15,
+      "token": "most"
+    }
+  ],
+  "most": [
+    {
+      "df": 15,
+      "token": "most"
+    }
+  ],
+  "mov": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 3,
+      "token": "moving"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "move": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "movem": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "moveme": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "movemen": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "movement": [
+    {
+      "df": 5,
+      "token": "movement"
+    },
+    {
+      "df": 1,
+      "token": "movements"
+    }
+  ],
+  "movi": [
+    {
+      "df": 3,
+      "token": "moving"
+    }
+  ],
+  "movin": [
+    {
+      "df": 3,
+      "token": "moving"
+    }
+  ],
+  "moving": [
+    {
+      "df": 3,
+      "token": "moving"
+    }
+  ]
+}

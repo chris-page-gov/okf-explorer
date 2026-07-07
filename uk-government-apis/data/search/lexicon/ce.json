@@ -1,0 +1,77 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cefas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cefas-cefas-data-portal-apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cefas-data-hub-apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cefas.co.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "celery"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "central"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "centre"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "centre.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "centres"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "certain"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "certificate"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "certificates"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cervical"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cervical-screening-edifact"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "cet"
+  }
+]

@@ -1,0 +1,504 @@
+{
+  "sig": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 2,
+      "token": "sign"
+    },
+    {
+      "df": 2,
+      "token": "signing"
+    },
+    {
+      "df": 1,
+      "token": "sight"
+    },
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "sign-on"
+    },
+    {
+      "df": 1,
+      "token": "sign-up"
+    },
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    },
+    {
+      "df": 1,
+      "token": "signed"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    },
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "sigh": [
+    {
+      "df": 1,
+      "token": "sight"
+    }
+  ],
+  "sight": [
+    {
+      "df": 1,
+      "token": "sight"
+    }
+  ],
+  "sign": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 2,
+      "token": "sign"
+    },
+    {
+      "df": 2,
+      "token": "signing"
+    },
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "sign-on"
+    },
+    {
+      "df": 1,
+      "token": "sign-up"
+    },
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    },
+    {
+      "df": 1,
+      "token": "signed"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    },
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "sign-": [
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "sign-on"
+    },
+    {
+      "df": 1,
+      "token": "sign-up"
+    }
+  ],
+  "sign-i": [
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    }
+  ],
+  "sign-in": [
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    }
+  ],
+  "sign-in.": [
+    {
+      "df": 1,
+      "token": "sign-in.hmpps.service.justice.gov.uk"
+    }
+  ],
+  "sign-o": [
+    {
+      "df": 1,
+      "token": "sign-on"
+    }
+  ],
+  "sign-on": [
+    {
+      "df": 1,
+      "token": "sign-on"
+    }
+  ],
+  "sign-u": [
+    {
+      "df": 1,
+      "token": "sign-up"
+    }
+  ],
+  "sign-up": [
+    {
+      "df": 1,
+      "token": "sign-up"
+    }
+  ],
+  "signa": [
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    }
+  ],
+  "signat": [
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    }
+  ],
+  "signatu": [
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    }
+  ],
+  "signatur": [
+    {
+      "df": 1,
+      "token": "signature"
+    },
+    {
+      "df": 1,
+      "token": "signatures"
+    }
+  ],
+  "signe": [
+    {
+      "df": 1,
+      "token": "signed"
+    }
+  ],
+  "signed": [
+    {
+      "df": 1,
+      "token": "signed"
+    }
+  ],
+  "signi": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 2,
+      "token": "signing"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    },
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "signif": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    }
+  ],
+  "signifi": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    }
+  ],
+  "signific": [
+    {
+      "df": 3,
+      "token": "significant"
+    },
+    {
+      "df": 1,
+      "token": "significance"
+    }
+  ],
+  "signin": [
+    {
+      "df": 2,
+      "token": "signing"
+    },
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "signing": [
+    {
+      "df": 2,
+      "token": "signing"
+    },
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "signing-": [
+    {
+      "df": 1,
+      "token": "signing-service"
+    }
+  ],
+  "sim": [
+    {
+      "df": 2,
+      "token": "simple"
+    },
+    {
+      "df": 1,
+      "token": "similar"
+    },
+    {
+      "df": 1,
+      "token": "simpler"
+    }
+  ],
+  "simi": [
+    {
+      "df": 1,
+      "token": "similar"
+    }
+  ],
+  "simil": [
+    {
+      "df": 1,
+      "token": "similar"
+    }
+  ],
+  "simila": [
+    {
+      "df": 1,
+      "token": "similar"
+    }
+  ],
+  "similar": [
+    {
+      "df": 1,
+      "token": "similar"
+    }
+  ],
+  "simp": [
+    {
+      "df": 2,
+      "token": "simple"
+    },
+    {
+      "df": 1,
+      "token": "simpler"
+    }
+  ],
+  "simpl": [
+    {
+      "df": 2,
+      "token": "simple"
+    },
+    {
+      "df": 1,
+      "token": "simpler"
+    }
+  ],
+  "simple": [
+    {
+      "df": 2,
+      "token": "simple"
+    },
+    {
+      "df": 1,
+      "token": "simpler"
+    }
+  ],
+  "simpler": [
+    {
+      "df": 1,
+      "token": "simpler"
+    }
+  ],
+  "sin": [
+    {
+      "df": 14,
+      "token": "single"
+    },
+    {
+      "df": 4,
+      "token": "since"
+    }
+  ],
+  "sinc": [
+    {
+      "df": 4,
+      "token": "since"
+    }
+  ],
+  "since": [
+    {
+      "df": 4,
+      "token": "since"
+    }
+  ],
+  "sing": [
+    {
+      "df": 14,
+      "token": "single"
+    }
+  ],
+  "singl": [
+    {
+      "df": 14,
+      "token": "single"
+    }
+  ],
+  "single": [
+    {
+      "df": 14,
+      "token": "single"
+    }
+  ],
+  "sit": [
+    {
+      "df": 7,
+      "token": "sites"
+    },
+    {
+      "df": 6,
+      "token": "site"
+    },
+    {
+      "df": 1,
+      "token": "sites.you"
+    },
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "site": [
+    {
+      "df": 7,
+      "token": "sites"
+    },
+    {
+      "df": 6,
+      "token": "site"
+    },
+    {
+      "df": 1,
+      "token": "sites.you"
+    },
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "sites": [
+    {
+      "df": 7,
+      "token": "sites"
+    },
+    {
+      "df": 1,
+      "token": "sites.you"
+    },
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "sites.": [
+    {
+      "df": 1,
+      "token": "sites.you"
+    }
+  ],
+  "sites.y": [
+    {
+      "df": 1,
+      "token": "sites.you"
+    }
+  ],
+  "sites.yo": [
+    {
+      "df": 1,
+      "token": "sites.you"
+    }
+  ],
+  "sitest": [
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "sitesth": [
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "sitesthi": [
+    {
+      "df": 1,
+      "token": "sitesthis"
+    }
+  ],
+  "siz": [
+    {
+      "df": 1,
+      "token": "size"
+    }
+  ],
+  "size": [
+    {
+      "df": 1,
+      "token": "size"
+    }
+  ]
+}

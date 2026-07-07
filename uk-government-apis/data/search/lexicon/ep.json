@@ -1,0 +1,32 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "epc"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "epc.opendatacommunities.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "episode"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "eps"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eps-enabled"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "epsg"
+  }
+]

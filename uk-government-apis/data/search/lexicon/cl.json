@@ -1,0 +1,112 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "claim"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "claims"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "claimsa"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "claimyou"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "clarification"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "class"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "classes"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "classification"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "classifications"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "clean"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cleared"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "client"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "client-side"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "clients"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "clinic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "clinic.an"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "clinic.for"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "clinical"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "clinically"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "clinicians"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "close"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "closest"
+  }
+]

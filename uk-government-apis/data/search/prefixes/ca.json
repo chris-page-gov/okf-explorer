@@ -1,0 +1,1306 @@
+{
+  "cad": [
+    {
+      "df": 1,
+      "token": "cad"
+    }
+  ],
+  "cal": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 6,
+      "token": "calls"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 3,
+      "token": "call"
+    },
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 2,
+      "token": "calling"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "calc": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    }
+  ],
+  "calcu": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    }
+  ],
+  "calcul": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    }
+  ],
+  "calcula": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    }
+  ],
+  "calculat": [
+    {
+      "df": 6,
+      "token": "calculation"
+    },
+    {
+      "df": 4,
+      "token": "calculate"
+    },
+    {
+      "df": 1,
+      "token": "calculated"
+    },
+    {
+      "df": 1,
+      "token": "calculations"
+    },
+    {
+      "df": 1,
+      "token": "calculator"
+    }
+  ],
+  "cale": [
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "calen": [
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "calend": [
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "calenda": [
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "calendar": [
+    {
+      "df": 2,
+      "token": "calendar"
+    },
+    {
+      "df": 2,
+      "token": "calendars"
+    },
+    {
+      "df": 1,
+      "token": "calendars.md"
+    }
+  ],
+  "call": [
+    {
+      "df": 6,
+      "token": "calls"
+    },
+    {
+      "df": 3,
+      "token": "call"
+    },
+    {
+      "df": 2,
+      "token": "calling"
+    }
+  ],
+  "calli": [
+    {
+      "df": 2,
+      "token": "calling"
+    }
+  ],
+  "callin": [
+    {
+      "df": 2,
+      "token": "calling"
+    }
+  ],
+  "calling": [
+    {
+      "df": 2,
+      "token": "calling"
+    }
+  ],
+  "calls": [
+    {
+      "df": 6,
+      "token": "calls"
+    }
+  ],
+  "can": [
+    {
+      "df": 117,
+      "token": "can"
+    },
+    {
+      "df": 28,
+      "token": "cannot"
+    },
+    {
+      "df": 6,
+      "token": "cancel"
+    },
+    {
+      "df": 2,
+      "token": "cancelled"
+    },
+    {
+      "df": 2,
+      "token": "cancelling"
+    },
+    {
+      "df": 1,
+      "token": "cancer"
+    }
+  ],
+  "canc": [
+    {
+      "df": 6,
+      "token": "cancel"
+    },
+    {
+      "df": 2,
+      "token": "cancelled"
+    },
+    {
+      "df": 2,
+      "token": "cancelling"
+    },
+    {
+      "df": 1,
+      "token": "cancer"
+    }
+  ],
+  "cance": [
+    {
+      "df": 6,
+      "token": "cancel"
+    },
+    {
+      "df": 2,
+      "token": "cancelled"
+    },
+    {
+      "df": 2,
+      "token": "cancelling"
+    },
+    {
+      "df": 1,
+      "token": "cancer"
+    }
+  ],
+  "cancel": [
+    {
+      "df": 6,
+      "token": "cancel"
+    },
+    {
+      "df": 2,
+      "token": "cancelled"
+    },
+    {
+      "df": 2,
+      "token": "cancelling"
+    }
+  ],
+  "cancell": [
+    {
+      "df": 2,
+      "token": "cancelled"
+    },
+    {
+      "df": 2,
+      "token": "cancelling"
+    }
+  ],
+  "cancelle": [
+    {
+      "df": 2,
+      "token": "cancelled"
+    }
+  ],
+  "cancelli": [
+    {
+      "df": 2,
+      "token": "cancelling"
+    }
+  ],
+  "cancer": [
+    {
+      "df": 1,
+      "token": "cancer"
+    }
+  ],
+  "cann": [
+    {
+      "df": 28,
+      "token": "cannot"
+    }
+  ],
+  "canno": [
+    {
+      "df": 28,
+      "token": "cannot"
+    }
+  ],
+  "cannot": [
+    {
+      "df": 28,
+      "token": "cannot"
+    }
+  ],
+  "cap": [
+    {
+      "df": 3,
+      "token": "capability"
+    },
+    {
+      "df": 3,
+      "token": "captured"
+    },
+    {
+      "df": 2,
+      "token": "capacity"
+    },
+    {
+      "df": 1,
+      "token": "capable"
+    },
+    {
+      "df": 1,
+      "token": "capita"
+    },
+    {
+      "df": 1,
+      "token": "capture"
+    },
+    {
+      "df": 1,
+      "token": "captures"
+    },
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "capa": [
+    {
+      "df": 3,
+      "token": "capability"
+    },
+    {
+      "df": 2,
+      "token": "capacity"
+    },
+    {
+      "df": 1,
+      "token": "capable"
+    }
+  ],
+  "capab": [
+    {
+      "df": 3,
+      "token": "capability"
+    },
+    {
+      "df": 1,
+      "token": "capable"
+    }
+  ],
+  "capabi": [
+    {
+      "df": 3,
+      "token": "capability"
+    }
+  ],
+  "capabil": [
+    {
+      "df": 3,
+      "token": "capability"
+    }
+  ],
+  "capabili": [
+    {
+      "df": 3,
+      "token": "capability"
+    }
+  ],
+  "capabl": [
+    {
+      "df": 1,
+      "token": "capable"
+    }
+  ],
+  "capable": [
+    {
+      "df": 1,
+      "token": "capable"
+    }
+  ],
+  "capac": [
+    {
+      "df": 2,
+      "token": "capacity"
+    }
+  ],
+  "capaci": [
+    {
+      "df": 2,
+      "token": "capacity"
+    }
+  ],
+  "capacit": [
+    {
+      "df": 2,
+      "token": "capacity"
+    }
+  ],
+  "capacity": [
+    {
+      "df": 2,
+      "token": "capacity"
+    }
+  ],
+  "capi": [
+    {
+      "df": 1,
+      "token": "capita"
+    }
+  ],
+  "capit": [
+    {
+      "df": 1,
+      "token": "capita"
+    }
+  ],
+  "capita": [
+    {
+      "df": 1,
+      "token": "capita"
+    }
+  ],
+  "capt": [
+    {
+      "df": 3,
+      "token": "captured"
+    },
+    {
+      "df": 1,
+      "token": "capture"
+    },
+    {
+      "df": 1,
+      "token": "captures"
+    },
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "captu": [
+    {
+      "df": 3,
+      "token": "captured"
+    },
+    {
+      "df": 1,
+      "token": "capture"
+    },
+    {
+      "df": 1,
+      "token": "captures"
+    },
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "captur": [
+    {
+      "df": 3,
+      "token": "captured"
+    },
+    {
+      "df": 1,
+      "token": "capture"
+    },
+    {
+      "df": 1,
+      "token": "captures"
+    },
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "capture": [
+    {
+      "df": 3,
+      "token": "captured"
+    },
+    {
+      "df": 1,
+      "token": "capture"
+    },
+    {
+      "df": 1,
+      "token": "captures"
+    }
+  ],
+  "captured": [
+    {
+      "df": 3,
+      "token": "captured"
+    }
+  ],
+  "captures": [
+    {
+      "df": 1,
+      "token": "captures"
+    }
+  ],
+  "capturi": [
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "capturin": [
+    {
+      "df": 1,
+      "token": "capturing"
+    }
+  ],
+  "car": [
+    {
+      "df": 97,
+      "token": "care"
+    },
+    {
+      "df": 2,
+      "token": "card"
+    },
+    {
+      "df": 2,
+      "token": "carers"
+    },
+    {
+      "df": 2,
+      "token": "carried"
+    },
+    {
+      "df": 2,
+      "token": "carriers"
+    },
+    {
+      "df": 1,
+      "token": "card.users"
+    },
+    {
+      "df": 1,
+      "token": "cardiac"
+    },
+    {
+      "df": 1,
+      "token": "cards"
+    },
+    {
+      "df": 1,
+      "token": "care.as"
+    },
+    {
+      "df": 1,
+      "token": "care.initially"
+    },
+    {
+      "df": 1,
+      "token": "care.summary"
+    },
+    {
+      "df": 1,
+      "token": "care.this"
+    },
+    {
+      "df": 1,
+      "token": "carefully"
+    },
+    {
+      "df": 1,
+      "token": "cargo"
+    },
+    {
+      "df": 1,
+      "token": "carries"
+    },
+    {
+      "df": 1,
+      "token": "carry"
+    }
+  ],
+  "card": [
+    {
+      "df": 2,
+      "token": "card"
+    },
+    {
+      "df": 1,
+      "token": "card.users"
+    },
+    {
+      "df": 1,
+      "token": "cardiac"
+    },
+    {
+      "df": 1,
+      "token": "cards"
+    }
+  ],
+  "card.": [
+    {
+      "df": 1,
+      "token": "card.users"
+    }
+  ],
+  "card.u": [
+    {
+      "df": 1,
+      "token": "card.users"
+    }
+  ],
+  "card.us": [
+    {
+      "df": 1,
+      "token": "card.users"
+    }
+  ],
+  "card.use": [
+    {
+      "df": 1,
+      "token": "card.users"
+    }
+  ],
+  "cardi": [
+    {
+      "df": 1,
+      "token": "cardiac"
+    }
+  ],
+  "cardia": [
+    {
+      "df": 1,
+      "token": "cardiac"
+    }
+  ],
+  "cardiac": [
+    {
+      "df": 1,
+      "token": "cardiac"
+    }
+  ],
+  "cards": [
+    {
+      "df": 1,
+      "token": "cards"
+    }
+  ],
+  "care": [
+    {
+      "df": 97,
+      "token": "care"
+    },
+    {
+      "df": 2,
+      "token": "carers"
+    },
+    {
+      "df": 1,
+      "token": "care.as"
+    },
+    {
+      "df": 1,
+      "token": "care.initially"
+    },
+    {
+      "df": 1,
+      "token": "care.summary"
+    },
+    {
+      "df": 1,
+      "token": "care.this"
+    },
+    {
+      "df": 1,
+      "token": "carefully"
+    }
+  ],
+  "care.": [
+    {
+      "df": 1,
+      "token": "care.as"
+    },
+    {
+      "df": 1,
+      "token": "care.initially"
+    },
+    {
+      "df": 1,
+      "token": "care.summary"
+    },
+    {
+      "df": 1,
+      "token": "care.this"
+    }
+  ],
+  "care.a": [
+    {
+      "df": 1,
+      "token": "care.as"
+    }
+  ],
+  "care.as": [
+    {
+      "df": 1,
+      "token": "care.as"
+    }
+  ],
+  "care.i": [
+    {
+      "df": 1,
+      "token": "care.initially"
+    }
+  ],
+  "care.in": [
+    {
+      "df": 1,
+      "token": "care.initially"
+    }
+  ],
+  "care.ini": [
+    {
+      "df": 1,
+      "token": "care.initially"
+    }
+  ],
+  "care.s": [
+    {
+      "df": 1,
+      "token": "care.summary"
+    }
+  ],
+  "care.su": [
+    {
+      "df": 1,
+      "token": "care.summary"
+    }
+  ],
+  "care.sum": [
+    {
+      "df": 1,
+      "token": "care.summary"
+    }
+  ],
+  "care.t": [
+    {
+      "df": 1,
+      "token": "care.this"
+    }
+  ],
+  "care.th": [
+    {
+      "df": 1,
+      "token": "care.this"
+    }
+  ],
+  "care.thi": [
+    {
+      "df": 1,
+      "token": "care.this"
+    }
+  ],
+  "caref": [
+    {
+      "df": 1,
+      "token": "carefully"
+    }
+  ],
+  "carefu": [
+    {
+      "df": 1,
+      "token": "carefully"
+    }
+  ],
+  "careful": [
+    {
+      "df": 1,
+      "token": "carefully"
+    }
+  ],
+  "carefull": [
+    {
+      "df": 1,
+      "token": "carefully"
+    }
+  ],
+  "carer": [
+    {
+      "df": 2,
+      "token": "carers"
+    }
+  ],
+  "carers": [
+    {
+      "df": 2,
+      "token": "carers"
+    }
+  ],
+  "carg": [
+    {
+      "df": 1,
+      "token": "cargo"
+    }
+  ],
+  "cargo": [
+    {
+      "df": 1,
+      "token": "cargo"
+    }
+  ],
+  "carr": [
+    {
+      "df": 2,
+      "token": "carried"
+    },
+    {
+      "df": 2,
+      "token": "carriers"
+    },
+    {
+      "df": 1,
+      "token": "carries"
+    },
+    {
+      "df": 1,
+      "token": "carry"
+    }
+  ],
+  "carri": [
+    {
+      "df": 2,
+      "token": "carried"
+    },
+    {
+      "df": 2,
+      "token": "carriers"
+    },
+    {
+      "df": 1,
+      "token": "carries"
+    }
+  ],
+  "carrie": [
+    {
+      "df": 2,
+      "token": "carried"
+    },
+    {
+      "df": 2,
+      "token": "carriers"
+    },
+    {
+      "df": 1,
+      "token": "carries"
+    }
+  ],
+  "carried": [
+    {
+      "df": 2,
+      "token": "carried"
+    }
+  ],
+  "carrier": [
+    {
+      "df": 2,
+      "token": "carriers"
+    }
+  ],
+  "carriers": [
+    {
+      "df": 2,
+      "token": "carriers"
+    }
+  ],
+  "carries": [
+    {
+      "df": 1,
+      "token": "carries"
+    }
+  ],
+  "carry": [
+    {
+      "df": 1,
+      "token": "carry"
+    }
+  ],
+  "cars": [
+    {
+      "df": 1,
+      "token": "cars"
+    }
+  ],
+  "cas": [
+    {
+      "df": 10,
+      "token": "case"
+    },
+    {
+      "df": 6,
+      "token": "cases"
+    },
+    {
+      "df": 1,
+      "token": "case.use"
+    },
+    {
+      "df": 1,
+      "token": "cash"
+    }
+  ],
+  "case": [
+    {
+      "df": 10,
+      "token": "case"
+    },
+    {
+      "df": 6,
+      "token": "cases"
+    },
+    {
+      "df": 1,
+      "token": "case.use"
+    }
+  ],
+  "case.": [
+    {
+      "df": 1,
+      "token": "case.use"
+    }
+  ],
+  "case.u": [
+    {
+      "df": 1,
+      "token": "case.use"
+    }
+  ],
+  "case.us": [
+    {
+      "df": 1,
+      "token": "case.use"
+    }
+  ],
+  "case.use": [
+    {
+      "df": 1,
+      "token": "case.use"
+    }
+  ],
+  "cases": [
+    {
+      "df": 6,
+      "token": "cases"
+    }
+  ],
+  "cash": [
+    {
+      "df": 1,
+      "token": "cash"
+    }
+  ],
+  "cat": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 3,
+      "token": "category"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "catalog"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    },
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "cata": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 1,
+      "token": "catalog"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    }
+  ],
+  "catal": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 1,
+      "token": "catalog"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    }
+  ],
+  "catalo": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 1,
+      "token": "catalog"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    }
+  ],
+  "catalog": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 1,
+      "token": "catalog"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    }
+  ],
+  "catalogu": [
+    {
+      "df": 4,
+      "token": "catalogue.if"
+    },
+    {
+      "df": 2,
+      "token": "catalogue"
+    },
+    {
+      "df": 1,
+      "token": "catalogues"
+    }
+  ],
+  "catc": [
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    }
+  ],
+  "catch": [
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    }
+  ],
+  "catchm": [
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    }
+  ],
+  "catchme": [
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    }
+  ],
+  "catchmen": [
+    {
+      "df": 1,
+      "token": "catchment"
+    },
+    {
+      "df": 1,
+      "token": "catchment-planning"
+    }
+  ],
+  "cate": [
+    {
+      "df": 3,
+      "token": "category"
+    },
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "categ": [
+    {
+      "df": 3,
+      "token": "category"
+    },
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "catego": [
+    {
+      "df": 3,
+      "token": "category"
+    },
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "categor": [
+    {
+      "df": 3,
+      "token": "category"
+    },
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "categori": [
+    {
+      "df": 2,
+      "token": "categories"
+    },
+    {
+      "df": 1,
+      "token": "categories.capture"
+    }
+  ],
+  "category": [
+    {
+      "df": 3,
+      "token": "category"
+    }
+  ]
+}

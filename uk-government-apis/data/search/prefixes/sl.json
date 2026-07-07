@@ -1,0 +1,120 @@
+{
+  "sli": [
+    {
+      "df": 1,
+      "token": "slick"
+    },
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "slic": [
+    {
+      "df": 1,
+      "token": "slick"
+    }
+  ],
+  "slick": [
+    {
+      "df": 1,
+      "token": "slick"
+    }
+  ],
+  "slig": [
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "sligh": [
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "slight": [
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "slightl": [
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "slightly": [
+    {
+      "df": 1,
+      "token": "slightly"
+    }
+  ],
+  "slo": [
+    {
+      "df": 6,
+      "token": "slots"
+    },
+    {
+      "df": 2,
+      "token": "slot"
+    },
+    {
+      "df": 1,
+      "token": "slotsthe"
+    },
+    {
+      "df": 1,
+      "token": "slow"
+    }
+  ],
+  "slot": [
+    {
+      "df": 6,
+      "token": "slots"
+    },
+    {
+      "df": 2,
+      "token": "slot"
+    },
+    {
+      "df": 1,
+      "token": "slotsthe"
+    }
+  ],
+  "slots": [
+    {
+      "df": 6,
+      "token": "slots"
+    },
+    {
+      "df": 1,
+      "token": "slotsthe"
+    }
+  ],
+  "slotst": [
+    {
+      "df": 1,
+      "token": "slotsthe"
+    }
+  ],
+  "slotsth": [
+    {
+      "df": 1,
+      "token": "slotsthe"
+    }
+  ],
+  "slotsthe": [
+    {
+      "df": 1,
+      "token": "slotsthe"
+    }
+  ],
+  "slow": [
+    {
+      "df": 1,
+      "token": "slow"
+    }
+  ]
+}

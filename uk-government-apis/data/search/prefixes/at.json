@@ -1,0 +1,360 @@
+{
+  "atc": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "atco": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "atcoa": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "atcoar": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "atcoare": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "atcoarea": [
+    {
+      "df": 1,
+      "token": "atcoareacode"
+    },
+    {
+      "df": 1,
+      "token": "atcoareacodes"
+    }
+  ],
+  "att": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 4,
+      "token": "attends"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attach"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "attention"
+    },
+    {
+      "df": 1,
+      "token": "attorney"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ],
+  "atta": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 1,
+      "token": "attach"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    }
+  ],
+  "attac": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 1,
+      "token": "attach"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    }
+  ],
+  "attach": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 1,
+      "token": "attach"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    }
+  ],
+  "attachm": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    }
+  ],
+  "attachme": [
+    {
+      "df": 6,
+      "token": "attachments"
+    },
+    {
+      "df": 1,
+      "token": "attachment"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "attachmentv2_1webservice"
+    }
+  ],
+  "atte": [
+    {
+      "df": 4,
+      "token": "attends"
+    },
+    {
+      "df": 1,
+      "token": "attention"
+    }
+  ],
+  "atten": [
+    {
+      "df": 4,
+      "token": "attends"
+    },
+    {
+      "df": 1,
+      "token": "attention"
+    }
+  ],
+  "attend": [
+    {
+      "df": 4,
+      "token": "attends"
+    }
+  ],
+  "attends": [
+    {
+      "df": 4,
+      "token": "attends"
+    }
+  ],
+  "attent": [
+    {
+      "df": 1,
+      "token": "attention"
+    }
+  ],
+  "attenti": [
+    {
+      "df": 1,
+      "token": "attention"
+    }
+  ],
+  "attentio": [
+    {
+      "df": 1,
+      "token": "attention"
+    }
+  ],
+  "atto": [
+    {
+      "df": 1,
+      "token": "attorney"
+    }
+  ],
+  "attor": [
+    {
+      "df": 1,
+      "token": "attorney"
+    }
+  ],
+  "attorn": [
+    {
+      "df": 1,
+      "token": "attorney"
+    }
+  ],
+  "attorne": [
+    {
+      "df": 1,
+      "token": "attorney"
+    }
+  ],
+  "attorney": [
+    {
+      "df": 1,
+      "token": "attorney"
+    }
+  ],
+  "attr": [
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ],
+  "attri": [
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ],
+  "attrib": [
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ],
+  "attribu": [
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ],
+  "attribut": [
+    {
+      "df": 6,
+      "token": "attributes"
+    },
+    {
+      "df": 3,
+      "token": "attribution"
+    },
+    {
+      "df": 1,
+      "token": "attributed"
+    }
+  ]
+}

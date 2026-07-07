@@ -1,0 +1,676 @@
+{
+  "ale": [
+    {
+      "df": 5,
+      "token": "alerts"
+    },
+    {
+      "df": 4,
+      "token": "alert"
+    },
+    {
+      "df": 1,
+      "token": "alerting"
+    },
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "aler": [
+    {
+      "df": 5,
+      "token": "alerts"
+    },
+    {
+      "df": 4,
+      "token": "alert"
+    },
+    {
+      "df": 1,
+      "token": "alerting"
+    },
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "alert": [
+    {
+      "df": 5,
+      "token": "alerts"
+    },
+    {
+      "df": 4,
+      "token": "alert"
+    },
+    {
+      "df": 1,
+      "token": "alerting"
+    },
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "alerti": [
+    {
+      "df": 1,
+      "token": "alerting"
+    }
+  ],
+  "alertin": [
+    {
+      "df": 1,
+      "token": "alerting"
+    }
+  ],
+  "alerting": [
+    {
+      "df": 1,
+      "token": "alerting"
+    }
+  ],
+  "alerts": [
+    {
+      "df": 5,
+      "token": "alerts"
+    },
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "alerts-": [
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "alerts-h": [
+    {
+      "df": 1,
+      "token": "alerts-hl7-v3"
+    }
+  ],
+  "alg": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "algo": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "algor": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "algori": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "algorit": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "algorith": [
+    {
+      "df": 1,
+      "token": "algorithm"
+    }
+  ],
+  "all": [
+    {
+      "df": 38,
+      "token": "allows"
+    },
+    {
+      "df": 36,
+      "token": "all"
+    },
+    {
+      "df": 8,
+      "token": "allow"
+    },
+    {
+      "df": 3,
+      "token": "allowing"
+    },
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 2,
+      "token": "allocation"
+    },
+    {
+      "df": 2,
+      "token": "allowance"
+    },
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    },
+    {
+      "df": 1,
+      "token": "allergy"
+    },
+    {
+      "df": 1,
+      "token": "allowed"
+    }
+  ],
+  "all-": [
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    }
+  ],
+  "all-e": [
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    }
+  ],
+  "all-en": [
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    }
+  ],
+  "all-enc": [
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    }
+  ],
+  "all-enco": [
+    {
+      "df": 1,
+      "token": "all-encompassing"
+    }
+  ],
+  "alle": [
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    },
+    {
+      "df": 1,
+      "token": "allergy"
+    }
+  ],
+  "aller": [
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    },
+    {
+      "df": 1,
+      "token": "allergy"
+    }
+  ],
+  "allerg": [
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    },
+    {
+      "df": 1,
+      "token": "allergy"
+    }
+  ],
+  "allergi": [
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    }
+  ],
+  "allergie": [
+    {
+      "df": 2,
+      "token": "allergies"
+    },
+    {
+      "df": 1,
+      "token": "allergiesdata"
+    }
+  ],
+  "allergy": [
+    {
+      "df": 1,
+      "token": "allergy"
+    }
+  ],
+  "allo": [
+    {
+      "df": 38,
+      "token": "allows"
+    },
+    {
+      "df": 8,
+      "token": "allow"
+    },
+    {
+      "df": 3,
+      "token": "allowing"
+    },
+    {
+      "df": 2,
+      "token": "allocation"
+    },
+    {
+      "df": 2,
+      "token": "allowance"
+    },
+    {
+      "df": 1,
+      "token": "allowed"
+    }
+  ],
+  "alloc": [
+    {
+      "df": 2,
+      "token": "allocation"
+    }
+  ],
+  "alloca": [
+    {
+      "df": 2,
+      "token": "allocation"
+    }
+  ],
+  "allocat": [
+    {
+      "df": 2,
+      "token": "allocation"
+    }
+  ],
+  "allocati": [
+    {
+      "df": 2,
+      "token": "allocation"
+    }
+  ],
+  "allow": [
+    {
+      "df": 38,
+      "token": "allows"
+    },
+    {
+      "df": 8,
+      "token": "allow"
+    },
+    {
+      "df": 3,
+      "token": "allowing"
+    },
+    {
+      "df": 2,
+      "token": "allowance"
+    },
+    {
+      "df": 1,
+      "token": "allowed"
+    }
+  ],
+  "allowa": [
+    {
+      "df": 2,
+      "token": "allowance"
+    }
+  ],
+  "allowan": [
+    {
+      "df": 2,
+      "token": "allowance"
+    }
+  ],
+  "allowanc": [
+    {
+      "df": 2,
+      "token": "allowance"
+    }
+  ],
+  "allowe": [
+    {
+      "df": 1,
+      "token": "allowed"
+    }
+  ],
+  "allowed": [
+    {
+      "df": 1,
+      "token": "allowed"
+    }
+  ],
+  "allowi": [
+    {
+      "df": 3,
+      "token": "allowing"
+    }
+  ],
+  "allowin": [
+    {
+      "df": 3,
+      "token": "allowing"
+    }
+  ],
+  "allowing": [
+    {
+      "df": 3,
+      "token": "allowing"
+    }
+  ],
+  "allows": [
+    {
+      "df": 38,
+      "token": "allows"
+    }
+  ],
+  "alm": [
+    {
+      "df": 1,
+      "token": "almost"
+    }
+  ],
+  "almo": [
+    {
+      "df": 1,
+      "token": "almost"
+    }
+  ],
+  "almos": [
+    {
+      "df": 1,
+      "token": "almost"
+    }
+  ],
+  "almost": [
+    {
+      "df": 1,
+      "token": "almost"
+    }
+  ],
+  "alo": [
+    {
+      "df": 5,
+      "token": "along"
+    },
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "alon": [
+    {
+      "df": 5,
+      "token": "along"
+    },
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "along": [
+    {
+      "df": 5,
+      "token": "along"
+    },
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "alongs": [
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "alongsi": [
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "alongsid": [
+    {
+      "df": 1,
+      "token": "alongside"
+    }
+  ],
+  "alp": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alph": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alpha": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alphag": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alphago": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alphagov": [
+    {
+      "df": 2,
+      "token": "alphagov"
+    }
+  ],
+  "alr": [
+    {
+      "df": 2,
+      "token": "already"
+    }
+  ],
+  "alre": [
+    {
+      "df": 2,
+      "token": "already"
+    }
+  ],
+  "alrea": [
+    {
+      "df": 2,
+      "token": "already"
+    }
+  ],
+  "alread": [
+    {
+      "df": 2,
+      "token": "already"
+    }
+  ],
+  "already": [
+    {
+      "df": 2,
+      "token": "already"
+    }
+  ],
+  "als": [
+    {
+      "df": 52,
+      "token": "also"
+    }
+  ],
+  "also": [
+    {
+      "df": 52,
+      "token": "also"
+    }
+  ],
+  "alt": [
+    {
+      "df": 10,
+      "token": "alternative"
+    },
+    {
+      "df": 3,
+      "token": "alterations"
+    },
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "alte": [
+    {
+      "df": 10,
+      "token": "alternative"
+    },
+    {
+      "df": 3,
+      "token": "alterations"
+    }
+  ],
+  "alter": [
+    {
+      "df": 10,
+      "token": "alternative"
+    },
+    {
+      "df": 3,
+      "token": "alterations"
+    }
+  ],
+  "altera": [
+    {
+      "df": 3,
+      "token": "alterations"
+    }
+  ],
+  "alterat": [
+    {
+      "df": 3,
+      "token": "alterations"
+    }
+  ],
+  "alterati": [
+    {
+      "df": 3,
+      "token": "alterations"
+    }
+  ],
+  "altern": [
+    {
+      "df": 10,
+      "token": "alternative"
+    }
+  ],
+  "alterna": [
+    {
+      "df": 10,
+      "token": "alternative"
+    }
+  ],
+  "alternat": [
+    {
+      "df": 10,
+      "token": "alternative"
+    }
+  ],
+  "alth": [
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "altho": [
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "althou": [
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "althoug": [
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "although": [
+    {
+      "df": 2,
+      "token": "although"
+    }
+  ],
+  "alw": [
+    {
+      "df": 1,
+      "token": "always"
+    }
+  ],
+  "alwa": [
+    {
+      "df": 1,
+      "token": "always"
+    }
+  ],
+  "alway": [
+    {
+      "df": 1,
+      "token": "always"
+    }
+  ],
+  "always": [
+    {
+      "df": 1,
+      "token": "always"
+    }
+  ]
+}

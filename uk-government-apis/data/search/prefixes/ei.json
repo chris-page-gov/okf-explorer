@@ -1,0 +1,32 @@
+{
+  "eis": [
+    {
+      "df": 2,
+      "token": "eis"
+    }
+  ],
+  "eit": [
+    {
+      "df": 8,
+      "token": "either"
+    }
+  ],
+  "eith": [
+    {
+      "df": 8,
+      "token": "either"
+    }
+  ],
+  "eithe": [
+    {
+      "df": 8,
+      "token": "either"
+    }
+  ],
+  "either": [
+    {
+      "df": 8,
+      "token": "either"
+    }
+  ]
+}

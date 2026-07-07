@@ -1,0 +1,42 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "isa"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "isces"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "islands"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "isle"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "isles"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "issue"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "issued"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "issues"
+  }
+]

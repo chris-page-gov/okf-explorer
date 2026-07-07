@@ -1,0 +1,56 @@
+{
+  "psi": [
+    {
+      "df": 1,
+      "token": "psis"
+    }
+  ],
+  "psis": [
+    {
+      "df": 1,
+      "token": "psis"
+    }
+  ],
+  "psl": [
+    {
+      "df": 1,
+      "token": "psl"
+    }
+  ],
+  "psy": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ],
+  "psyc": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ],
+  "psych": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ],
+  "psychi": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ],
+  "psychia": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ],
+  "psychiat": [
+    {
+      "df": 1,
+      "token": "psychiatric"
+    }
+  ]
+}

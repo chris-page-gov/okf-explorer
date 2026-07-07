@@ -1,0 +1,712 @@
+{
+  "lia": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "liab": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "liabi": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "liabil": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "liabili": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "liabilit": [
+    {
+      "df": 2,
+      "token": "liability"
+    },
+    {
+      "df": 1,
+      "token": "liabilities"
+    }
+  ],
+  "lic": [
+    {
+      "df": 13,
+      "token": "licence"
+    },
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    },
+    {
+      "df": 1,
+      "token": "license"
+    },
+    {
+      "df": 1,
+      "token": "licensed"
+    },
+    {
+      "df": 1,
+      "token": "licenses"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "lice": [
+    {
+      "df": 13,
+      "token": "licence"
+    },
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    },
+    {
+      "df": 1,
+      "token": "license"
+    },
+    {
+      "df": 1,
+      "token": "licensed"
+    },
+    {
+      "df": 1,
+      "token": "licenses"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "licen": [
+    {
+      "df": 13,
+      "token": "licence"
+    },
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    },
+    {
+      "df": 1,
+      "token": "license"
+    },
+    {
+      "df": 1,
+      "token": "licensed"
+    },
+    {
+      "df": 1,
+      "token": "licenses"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "licenc": [
+    {
+      "df": 13,
+      "token": "licence"
+    },
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    }
+  ],
+  "licence": [
+    {
+      "df": 13,
+      "token": "licence"
+    },
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    }
+  ],
+  "licence.": [
+    {
+      "df": 1,
+      "token": "licence.public"
+    },
+    {
+      "df": 1,
+      "token": "licence.software"
+    }
+  ],
+  "licens": [
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "license"
+    },
+    {
+      "df": 1,
+      "token": "licensed"
+    },
+    {
+      "df": 1,
+      "token": "licenses"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "license": [
+    {
+      "df": 1,
+      "token": "license"
+    },
+    {
+      "df": 1,
+      "token": "licensed"
+    },
+    {
+      "df": 1,
+      "token": "licenses"
+    }
+  ],
+  "licensed": [
+    {
+      "df": 1,
+      "token": "licensed"
+    }
+  ],
+  "licenses": [
+    {
+      "df": 1,
+      "token": "licenses"
+    }
+  ],
+  "licensi": [
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "licensin": [
+    {
+      "df": 6,
+      "token": "licensing"
+    },
+    {
+      "df": 1,
+      "token": "licensingthis"
+    }
+  ],
+  "lif": [
+    {
+      "df": 1,
+      "token": "life"
+    },
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "life": [
+    {
+      "df": 1,
+      "token": "life"
+    },
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "lifet": [
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "lifeti": [
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "lifetim": [
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "lifetime": [
+    {
+      "df": 1,
+      "token": "lifetime"
+    }
+  ],
+  "lig": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "ligh": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "light": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "lightn": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "lightni": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "lightnin": [
+    {
+      "df": 1,
+      "token": "lightning-quick"
+    }
+  ],
+  "lik": [
+    {
+      "df": 2,
+      "token": "like"
+    },
+    {
+      "df": 1,
+      "token": "likely"
+    }
+  ],
+  "like": [
+    {
+      "df": 2,
+      "token": "like"
+    },
+    {
+      "df": 1,
+      "token": "likely"
+    }
+  ],
+  "likel": [
+    {
+      "df": 1,
+      "token": "likely"
+    }
+  ],
+  "likely": [
+    {
+      "df": 1,
+      "token": "likely"
+    }
+  ],
+  "lim": [
+    {
+      "df": 6,
+      "token": "limited"
+    },
+    {
+      "df": 1,
+      "token": "limit"
+    },
+    {
+      "df": 1,
+      "token": "lims"
+    }
+  ],
+  "limi": [
+    {
+      "df": 6,
+      "token": "limited"
+    },
+    {
+      "df": 1,
+      "token": "limit"
+    }
+  ],
+  "limit": [
+    {
+      "df": 6,
+      "token": "limited"
+    },
+    {
+      "df": 1,
+      "token": "limit"
+    }
+  ],
+  "limite": [
+    {
+      "df": 6,
+      "token": "limited"
+    }
+  ],
+  "limited": [
+    {
+      "df": 6,
+      "token": "limited"
+    }
+  ],
+  "lims": [
+    {
+      "df": 1,
+      "token": "lims"
+    }
+  ],
+  "lin": [
+    {
+      "df": 6,
+      "token": "links"
+    },
+    {
+      "df": 5,
+      "token": "link"
+    },
+    {
+      "df": 5,
+      "token": "linked"
+    },
+    {
+      "df": 5,
+      "token": "linking"
+    },
+    {
+      "df": 4,
+      "token": "line"
+    },
+    {
+      "df": 1,
+      "token": "lines"
+    },
+    {
+      "df": 1,
+      "token": "linkeddata"
+    },
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "line": [
+    {
+      "df": 4,
+      "token": "line"
+    },
+    {
+      "df": 1,
+      "token": "lines"
+    }
+  ],
+  "lines": [
+    {
+      "df": 1,
+      "token": "lines"
+    }
+  ],
+  "link": [
+    {
+      "df": 6,
+      "token": "links"
+    },
+    {
+      "df": 5,
+      "token": "link"
+    },
+    {
+      "df": 5,
+      "token": "linked"
+    },
+    {
+      "df": 5,
+      "token": "linking"
+    },
+    {
+      "df": 1,
+      "token": "linkeddata"
+    },
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "linke": [
+    {
+      "df": 5,
+      "token": "linked"
+    },
+    {
+      "df": 1,
+      "token": "linkeddata"
+    },
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "linked": [
+    {
+      "df": 5,
+      "token": "linked"
+    },
+    {
+      "df": 1,
+      "token": "linkeddata"
+    },
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "linkedd": [
+    {
+      "df": 1,
+      "token": "linkeddata"
+    }
+  ],
+  "linkedda": [
+    {
+      "df": 1,
+      "token": "linkeddata"
+    }
+  ],
+  "linkedi": [
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "linkedid": [
+    {
+      "df": 1,
+      "token": "linkedidentifiers"
+    }
+  ],
+  "linki": [
+    {
+      "df": 5,
+      "token": "linking"
+    }
+  ],
+  "linkin": [
+    {
+      "df": 5,
+      "token": "linking"
+    }
+  ],
+  "linking": [
+    {
+      "df": 5,
+      "token": "linking"
+    }
+  ],
+  "links": [
+    {
+      "df": 6,
+      "token": "links"
+    }
+  ],
+  "lis": [
+    {
+      "df": 26,
+      "token": "list"
+    },
+    {
+      "df": 8,
+      "token": "listed"
+    },
+    {
+      "df": 5,
+      "token": "lists"
+    },
+    {
+      "df": 2,
+      "token": "listing"
+    },
+    {
+      "df": 1,
+      "token": "lisa"
+    },
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "lisa": [
+    {
+      "df": 1,
+      "token": "lisa"
+    },
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "lisa-": [
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "lisa-a": [
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "lisa-ap": [
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "lisa-api": [
+    {
+      "df": 1,
+      "token": "lisa-api"
+    }
+  ],
+  "list": [
+    {
+      "df": 26,
+      "token": "list"
+    },
+    {
+      "df": 8,
+      "token": "listed"
+    },
+    {
+      "df": 5,
+      "token": "lists"
+    },
+    {
+      "df": 2,
+      "token": "listing"
+    }
+  ],
+  "liste": [
+    {
+      "df": 8,
+      "token": "listed"
+    }
+  ],
+  "listed": [
+    {
+      "df": 8,
+      "token": "listed"
+    }
+  ],
+  "listi": [
+    {
+      "df": 2,
+      "token": "listing"
+    }
+  ],
+  "listin": [
+    {
+      "df": 2,
+      "token": "listing"
+    }
+  ],
+  "listing": [
+    {
+      "df": 2,
+      "token": "listing"
+    }
+  ],
+  "lists": [
+    {
+      "df": 5,
+      "token": "lists"
+    }
+  ],
+  "liv": [
+    {
+      "df": 4,
+      "token": "live"
+    }
+  ],
+  "live": [
+    {
+      "df": 4,
+      "token": "live"
+    }
+  ]
+}

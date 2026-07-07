@@ -1,0 +1,3812 @@
+{
+  "coa": [
+    {
+      "df": 3,
+      "token": "coast"
+    },
+    {
+      "df": 1,
+      "token": "coastal"
+    }
+  ],
+  "coas": [
+    {
+      "df": 3,
+      "token": "coast"
+    },
+    {
+      "df": 1,
+      "token": "coastal"
+    }
+  ],
+  "coast": [
+    {
+      "df": 3,
+      "token": "coast"
+    },
+    {
+      "df": 1,
+      "token": "coastal"
+    }
+  ],
+  "coasta": [
+    {
+      "df": 1,
+      "token": "coastal"
+    }
+  ],
+  "coastal": [
+    {
+      "df": 1,
+      "token": "coastal"
+    }
+  ],
+  "cod": [
+    {
+      "df": 14,
+      "token": "code"
+    },
+    {
+      "df": 6,
+      "token": "codes"
+    },
+    {
+      "df": 2,
+      "token": "coded"
+    },
+    {
+      "df": 2,
+      "token": "codesyou"
+    },
+    {
+      "df": 1,
+      "token": "codebase"
+    },
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "code": [
+    {
+      "df": 14,
+      "token": "code"
+    },
+    {
+      "df": 6,
+      "token": "codes"
+    },
+    {
+      "df": 2,
+      "token": "coded"
+    },
+    {
+      "df": 2,
+      "token": "codesyou"
+    },
+    {
+      "df": 1,
+      "token": "codebase"
+    },
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "codeb": [
+    {
+      "df": 1,
+      "token": "codebase"
+    }
+  ],
+  "codeba": [
+    {
+      "df": 1,
+      "token": "codebase"
+    }
+  ],
+  "codebas": [
+    {
+      "df": 1,
+      "token": "codebase"
+    }
+  ],
+  "codebase": [
+    {
+      "df": 1,
+      "token": "codebase"
+    }
+  ],
+  "coded": [
+    {
+      "df": 2,
+      "token": "coded"
+    }
+  ],
+  "codes": [
+    {
+      "df": 6,
+      "token": "codes"
+    },
+    {
+      "df": 2,
+      "token": "codesyou"
+    }
+  ],
+  "codesy": [
+    {
+      "df": 2,
+      "token": "codesyou"
+    }
+  ],
+  "codesyo": [
+    {
+      "df": 2,
+      "token": "codesyou"
+    }
+  ],
+  "codesyou": [
+    {
+      "df": 2,
+      "token": "codesyou"
+    }
+  ],
+  "codet": [
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "codeth": [
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "codethi": [
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "codethis": [
+    {
+      "df": 1,
+      "token": "codethis"
+    }
+  ],
+  "col": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collect"
+    },
+    {
+      "df": 1,
+      "token": "collected"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    },
+    {
+      "df": 1,
+      "token": "collects"
+    },
+    {
+      "df": 1,
+      "token": "column"
+    }
+  ],
+  "coll": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collect"
+    },
+    {
+      "df": 1,
+      "token": "collected"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    },
+    {
+      "df": 1,
+      "token": "collects"
+    }
+  ],
+  "colle": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collect"
+    },
+    {
+      "df": 1,
+      "token": "collected"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    },
+    {
+      "df": 1,
+      "token": "collects"
+    }
+  ],
+  "collec": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collect"
+    },
+    {
+      "df": 1,
+      "token": "collected"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    },
+    {
+      "df": 1,
+      "token": "collects"
+    }
+  ],
+  "collect": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collect"
+    },
+    {
+      "df": 1,
+      "token": "collected"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    },
+    {
+      "df": 1,
+      "token": "collects"
+    }
+  ],
+  "collecte": [
+    {
+      "df": 1,
+      "token": "collected"
+    }
+  ],
+  "collecti": [
+    {
+      "df": 2,
+      "token": "collection"
+    },
+    {
+      "df": 2,
+      "token": "collections"
+    },
+    {
+      "df": 1,
+      "token": "collecting"
+    }
+  ],
+  "collects": [
+    {
+      "df": 1,
+      "token": "collects"
+    }
+  ],
+  "colu": [
+    {
+      "df": 1,
+      "token": "column"
+    }
+  ],
+  "colum": [
+    {
+      "df": 1,
+      "token": "column"
+    }
+  ],
+  "column": [
+    {
+      "df": 1,
+      "token": "column"
+    }
+  ],
+  "com": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    },
+    {
+      "df": 7,
+      "token": "common"
+    },
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 5,
+      "token": "combination"
+    },
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    },
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 3,
+      "token": "company"
+    },
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    },
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    }
+  ],
+  "comb": [
+    {
+      "df": 5,
+      "token": "combination"
+    },
+    {
+      "df": 1,
+      "token": "combined"
+    },
+    {
+      "df": 1,
+      "token": "combines"
+    },
+    {
+      "df": 1,
+      "token": "combining"
+    }
+  ],
+  "combi": [
+    {
+      "df": 5,
+      "token": "combination"
+    },
+    {
+      "df": 1,
+      "token": "combined"
+    },
+    {
+      "df": 1,
+      "token": "combines"
+    },
+    {
+      "df": 1,
+      "token": "combining"
+    }
+  ],
+  "combin": [
+    {
+      "df": 5,
+      "token": "combination"
+    },
+    {
+      "df": 1,
+      "token": "combined"
+    },
+    {
+      "df": 1,
+      "token": "combines"
+    },
+    {
+      "df": 1,
+      "token": "combining"
+    }
+  ],
+  "combina": [
+    {
+      "df": 5,
+      "token": "combination"
+    }
+  ],
+  "combinat": [
+    {
+      "df": 5,
+      "token": "combination"
+    }
+  ],
+  "combine": [
+    {
+      "df": 1,
+      "token": "combined"
+    },
+    {
+      "df": 1,
+      "token": "combines"
+    }
+  ],
+  "combined": [
+    {
+      "df": 1,
+      "token": "combined"
+    }
+  ],
+  "combines": [
+    {
+      "df": 1,
+      "token": "combines"
+    }
+  ],
+  "combini": [
+    {
+      "df": 1,
+      "token": "combining"
+    }
+  ],
+  "combinin": [
+    {
+      "df": 1,
+      "token": "combining"
+    }
+  ],
+  "comi": [
+    {
+      "df": 1,
+      "token": "coming"
+    }
+  ],
+  "comin": [
+    {
+      "df": 1,
+      "token": "coming"
+    }
+  ],
+  "coming": [
+    {
+      "df": 1,
+      "token": "coming"
+    }
+  ],
+  "comm": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    },
+    {
+      "df": 7,
+      "token": "common"
+    },
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    },
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 1,
+      "token": "comments"
+    },
+    {
+      "df": 1,
+      "token": "commissioning"
+    },
+    {
+      "df": 1,
+      "token": "commitment"
+    },
+    {
+      "df": 1,
+      "token": "common-transit-convention-traders"
+    },
+    {
+      "df": 1,
+      "token": "communicate"
+    },
+    {
+      "df": 1,
+      "token": "communication"
+    }
+  ],
+  "comme": [
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    },
+    {
+      "df": 1,
+      "token": "comments"
+    }
+  ],
+  "commen": [
+    {
+      "df": 1,
+      "token": "comments"
+    }
+  ],
+  "comment": [
+    {
+      "df": 1,
+      "token": "comments"
+    }
+  ],
+  "comments": [
+    {
+      "df": 1,
+      "token": "comments"
+    }
+  ],
+  "commer": [
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    }
+  ],
+  "commerc": [
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    }
+  ],
+  "commerci": [
+    {
+      "df": 4,
+      "token": "commercially"
+    },
+    {
+      "df": 2,
+      "token": "commercial"
+    }
+  ],
+  "commi": [
+    {
+      "df": 1,
+      "token": "commissioning"
+    },
+    {
+      "df": 1,
+      "token": "commitment"
+    }
+  ],
+  "commis": [
+    {
+      "df": 1,
+      "token": "commissioning"
+    }
+  ],
+  "commiss": [
+    {
+      "df": 1,
+      "token": "commissioning"
+    }
+  ],
+  "commissi": [
+    {
+      "df": 1,
+      "token": "commissioning"
+    }
+  ],
+  "commit": [
+    {
+      "df": 1,
+      "token": "commitment"
+    }
+  ],
+  "commitm": [
+    {
+      "df": 1,
+      "token": "commitment"
+    }
+  ],
+  "commitme": [
+    {
+      "df": 1,
+      "token": "commitment"
+    }
+  ],
+  "commo": [
+    {
+      "df": 7,
+      "token": "common"
+    },
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    },
+    {
+      "df": 1,
+      "token": "common-transit-convention-traders"
+    }
+  ],
+  "commod": [
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    }
+  ],
+  "commodi": [
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    }
+  ],
+  "commodit": [
+    {
+      "df": 4,
+      "token": "commodity"
+    },
+    {
+      "df": 2,
+      "token": "commodities"
+    }
+  ],
+  "common": [
+    {
+      "df": 7,
+      "token": "common"
+    },
+    {
+      "df": 1,
+      "token": "common-transit-convention-traders"
+    }
+  ],
+  "common-": [
+    {
+      "df": 1,
+      "token": "common-transit-convention-traders"
+    }
+  ],
+  "common-t": [
+    {
+      "df": 1,
+      "token": "common-transit-convention-traders"
+    }
+  ],
+  "commu": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    },
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 1,
+      "token": "communicate"
+    },
+    {
+      "df": 1,
+      "token": "communication"
+    }
+  ],
+  "commun": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    },
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 1,
+      "token": "communicate"
+    },
+    {
+      "df": 1,
+      "token": "communication"
+    }
+  ],
+  "communi": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    },
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 1,
+      "token": "communicate"
+    },
+    {
+      "df": 1,
+      "token": "communication"
+    }
+  ],
+  "communic": [
+    {
+      "df": 2,
+      "token": "communications"
+    },
+    {
+      "df": 1,
+      "token": "communicate"
+    },
+    {
+      "df": 1,
+      "token": "communication"
+    }
+  ],
+  "communit": [
+    {
+      "df": 12,
+      "token": "communities"
+    },
+    {
+      "df": 8,
+      "token": "community"
+    }
+  ],
+  "comp": [
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    },
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 3,
+      "token": "company"
+    },
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    },
+    {
+      "df": 2,
+      "token": "compatibility"
+    },
+    {
+      "df": 2,
+      "token": "complements"
+    },
+    {
+      "df": 2,
+      "token": "completion"
+    },
+    {
+      "df": 2,
+      "token": "comply"
+    },
+    {
+      "df": 2,
+      "token": "components"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house-streaming"
+    },
+    {
+      "df": 1,
+      "token": "compiled"
+    },
+    {
+      "df": 1,
+      "token": "complex"
+    }
+  ],
+  "compa": [
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 3,
+      "token": "company"
+    },
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    },
+    {
+      "df": 2,
+      "token": "compatibility"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house-streaming"
+    }
+  ],
+  "compan": [
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 3,
+      "token": "company"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house-streaming"
+    }
+  ],
+  "compani": [
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house-streaming"
+    }
+  ],
+  "companie": [
+    {
+      "df": 3,
+      "token": "companies"
+    },
+    {
+      "df": 2,
+      "token": "companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house"
+    },
+    {
+      "df": 1,
+      "token": "companies-house-companies-house-streaming"
+    }
+  ],
+  "company": [
+    {
+      "df": 3,
+      "token": "company"
+    }
+  ],
+  "compat": [
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "compatibility"
+    }
+  ],
+  "compati": [
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "compatibility"
+    }
+  ],
+  "compatib": [
+    {
+      "df": 3,
+      "token": "compatible"
+    },
+    {
+      "df": 2,
+      "token": "compatibility"
+    }
+  ],
+  "compi": [
+    {
+      "df": 1,
+      "token": "compiled"
+    }
+  ],
+  "compil": [
+    {
+      "df": 1,
+      "token": "compiled"
+    }
+  ],
+  "compile": [
+    {
+      "df": 1,
+      "token": "compiled"
+    }
+  ],
+  "compiled": [
+    {
+      "df": 1,
+      "token": "compiled"
+    }
+  ],
+  "compl": [
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    },
+    {
+      "df": 2,
+      "token": "complements"
+    },
+    {
+      "df": 2,
+      "token": "completion"
+    },
+    {
+      "df": 2,
+      "token": "comply"
+    },
+    {
+      "df": 1,
+      "token": "complex"
+    }
+  ],
+  "comple": [
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    },
+    {
+      "df": 2,
+      "token": "complements"
+    },
+    {
+      "df": 2,
+      "token": "completion"
+    },
+    {
+      "df": 1,
+      "token": "complex"
+    }
+  ],
+  "complem": [
+    {
+      "df": 2,
+      "token": "complements"
+    }
+  ],
+  "compleme": [
+    {
+      "df": 2,
+      "token": "complements"
+    }
+  ],
+  "complet": [
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    },
+    {
+      "df": 2,
+      "token": "completion"
+    }
+  ],
+  "complete": [
+    {
+      "df": 6,
+      "token": "complete"
+    },
+    {
+      "df": 6,
+      "token": "completed"
+    },
+    {
+      "df": 4,
+      "token": "completes"
+    }
+  ],
+  "completi": [
+    {
+      "df": 2,
+      "token": "completion"
+    }
+  ],
+  "complex": [
+    {
+      "df": 1,
+      "token": "complex"
+    }
+  ],
+  "comply": [
+    {
+      "df": 2,
+      "token": "comply"
+    }
+  ],
+  "compo": [
+    {
+      "df": 2,
+      "token": "components"
+    },
+    {
+      "df": 1,
+      "token": "component"
+    },
+    {
+      "df": 1,
+      "token": "composition"
+    }
+  ],
+  "compon": [
+    {
+      "df": 2,
+      "token": "components"
+    },
+    {
+      "df": 1,
+      "token": "component"
+    }
+  ],
+  "compone": [
+    {
+      "df": 2,
+      "token": "components"
+    },
+    {
+      "df": 1,
+      "token": "component"
+    }
+  ],
+  "componen": [
+    {
+      "df": 2,
+      "token": "components"
+    },
+    {
+      "df": 1,
+      "token": "component"
+    }
+  ],
+  "compos": [
+    {
+      "df": 1,
+      "token": "composition"
+    }
+  ],
+  "composi": [
+    {
+      "df": 1,
+      "token": "composition"
+    }
+  ],
+  "composit": [
+    {
+      "df": 1,
+      "token": "composition"
+    }
+  ],
+  "compr": [
+    {
+      "df": 1,
+      "token": "comprehensive"
+    },
+    {
+      "df": 1,
+      "token": "comprehensively"
+    }
+  ],
+  "compre": [
+    {
+      "df": 1,
+      "token": "comprehensive"
+    },
+    {
+      "df": 1,
+      "token": "comprehensively"
+    }
+  ],
+  "compreh": [
+    {
+      "df": 1,
+      "token": "comprehensive"
+    },
+    {
+      "df": 1,
+      "token": "comprehensively"
+    }
+  ],
+  "comprehe": [
+    {
+      "df": 1,
+      "token": "comprehensive"
+    },
+    {
+      "df": 1,
+      "token": "comprehensively"
+    }
+  ],
+  "compu": [
+    {
+      "df": 1,
+      "token": "computer"
+    },
+    {
+      "df": 1,
+      "token": "computerised"
+    }
+  ],
+  "comput": [
+    {
+      "df": 1,
+      "token": "computer"
+    },
+    {
+      "df": 1,
+      "token": "computerised"
+    }
+  ],
+  "compute": [
+    {
+      "df": 1,
+      "token": "computer"
+    },
+    {
+      "df": 1,
+      "token": "computerised"
+    }
+  ],
+  "computer": [
+    {
+      "df": 1,
+      "token": "computer"
+    },
+    {
+      "df": 1,
+      "token": "computerised"
+    }
+  ],
+  "con": [
+    {
+      "df": 21,
+      "token": "contact"
+    },
+    {
+      "df": 14,
+      "token": "connect"
+    },
+    {
+      "df": 9,
+      "token": "contains"
+    },
+    {
+      "df": 8,
+      "token": "containing"
+    },
+    {
+      "df": 8,
+      "token": "content"
+    },
+    {
+      "df": 6,
+      "token": "control"
+    },
+    {
+      "df": 5,
+      "token": "conformance"
+    },
+    {
+      "df": 5,
+      "token": "consent"
+    },
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 5,
+      "token": "controls"
+    },
+    {
+      "df": 4,
+      "token": "conforming"
+    },
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 4,
+      "token": "contacts"
+    },
+    {
+      "df": 3,
+      "token": "confirm"
+    },
+    {
+      "df": 3,
+      "token": "conforms"
+    },
+    {
+      "df": 3,
+      "token": "construction"
+    }
+  ],
+  "conc": [
+    {
+      "df": 1,
+      "token": "concerns"
+    },
+    {
+      "df": 1,
+      "token": "concise"
+    }
+  ],
+  "conce": [
+    {
+      "df": 1,
+      "token": "concerns"
+    }
+  ],
+  "concer": [
+    {
+      "df": 1,
+      "token": "concerns"
+    }
+  ],
+  "concern": [
+    {
+      "df": 1,
+      "token": "concerns"
+    }
+  ],
+  "concerns": [
+    {
+      "df": 1,
+      "token": "concerns"
+    }
+  ],
+  "conci": [
+    {
+      "df": 1,
+      "token": "concise"
+    }
+  ],
+  "concis": [
+    {
+      "df": 1,
+      "token": "concise"
+    }
+  ],
+  "concise": [
+    {
+      "df": 1,
+      "token": "concise"
+    }
+  ],
+  "cond": [
+    {
+      "df": 2,
+      "token": "conditions"
+    },
+    {
+      "df": 1,
+      "token": "conditional"
+    }
+  ],
+  "condi": [
+    {
+      "df": 2,
+      "token": "conditions"
+    },
+    {
+      "df": 1,
+      "token": "conditional"
+    }
+  ],
+  "condit": [
+    {
+      "df": 2,
+      "token": "conditions"
+    },
+    {
+      "df": 1,
+      "token": "conditional"
+    }
+  ],
+  "conditi": [
+    {
+      "df": 2,
+      "token": "conditions"
+    },
+    {
+      "df": 1,
+      "token": "conditional"
+    }
+  ],
+  "conditio": [
+    {
+      "df": 2,
+      "token": "conditions"
+    },
+    {
+      "df": 1,
+      "token": "conditional"
+    }
+  ],
+  "conf": [
+    {
+      "df": 5,
+      "token": "conformance"
+    },
+    {
+      "df": 4,
+      "token": "conforming"
+    },
+    {
+      "df": 3,
+      "token": "confirm"
+    },
+    {
+      "df": 3,
+      "token": "conforms"
+    },
+    {
+      "df": 2,
+      "token": "conference"
+    },
+    {
+      "df": 2,
+      "token": "confidence"
+    },
+    {
+      "df": 2,
+      "token": "confirmation"
+    },
+    {
+      "df": 1,
+      "token": "configuration"
+    }
+  ],
+  "confe": [
+    {
+      "df": 2,
+      "token": "conference"
+    }
+  ],
+  "confer": [
+    {
+      "df": 2,
+      "token": "conference"
+    }
+  ],
+  "confere": [
+    {
+      "df": 2,
+      "token": "conference"
+    }
+  ],
+  "conferen": [
+    {
+      "df": 2,
+      "token": "conference"
+    }
+  ],
+  "confi": [
+    {
+      "df": 3,
+      "token": "confirm"
+    },
+    {
+      "df": 2,
+      "token": "confidence"
+    },
+    {
+      "df": 2,
+      "token": "confirmation"
+    },
+    {
+      "df": 1,
+      "token": "configuration"
+    }
+  ],
+  "confid": [
+    {
+      "df": 2,
+      "token": "confidence"
+    }
+  ],
+  "confide": [
+    {
+      "df": 2,
+      "token": "confidence"
+    }
+  ],
+  "confiden": [
+    {
+      "df": 2,
+      "token": "confidence"
+    }
+  ],
+  "config": [
+    {
+      "df": 1,
+      "token": "configuration"
+    }
+  ],
+  "configu": [
+    {
+      "df": 1,
+      "token": "configuration"
+    }
+  ],
+  "configur": [
+    {
+      "df": 1,
+      "token": "configuration"
+    }
+  ],
+  "confir": [
+    {
+      "df": 3,
+      "token": "confirm"
+    },
+    {
+      "df": 2,
+      "token": "confirmation"
+    }
+  ],
+  "confirm": [
+    {
+      "df": 3,
+      "token": "confirm"
+    },
+    {
+      "df": 2,
+      "token": "confirmation"
+    }
+  ],
+  "confirma": [
+    {
+      "df": 2,
+      "token": "confirmation"
+    }
+  ],
+  "confo": [
+    {
+      "df": 5,
+      "token": "conformance"
+    },
+    {
+      "df": 4,
+      "token": "conforming"
+    },
+    {
+      "df": 3,
+      "token": "conforms"
+    }
+  ],
+  "confor": [
+    {
+      "df": 5,
+      "token": "conformance"
+    },
+    {
+      "df": 4,
+      "token": "conforming"
+    },
+    {
+      "df": 3,
+      "token": "conforms"
+    }
+  ],
+  "conform": [
+    {
+      "df": 5,
+      "token": "conformance"
+    },
+    {
+      "df": 4,
+      "token": "conforming"
+    },
+    {
+      "df": 3,
+      "token": "conforms"
+    }
+  ],
+  "conforma": [
+    {
+      "df": 5,
+      "token": "conformance"
+    }
+  ],
+  "conformi": [
+    {
+      "df": 4,
+      "token": "conforming"
+    }
+  ],
+  "conforms": [
+    {
+      "df": 3,
+      "token": "conforms"
+    }
+  ],
+  "conj": [
+    {
+      "df": 2,
+      "token": "conjunction"
+    }
+  ],
+  "conju": [
+    {
+      "df": 2,
+      "token": "conjunction"
+    }
+  ],
+  "conjun": [
+    {
+      "df": 2,
+      "token": "conjunction"
+    }
+  ],
+  "conjunc": [
+    {
+      "df": 2,
+      "token": "conjunction"
+    }
+  ],
+  "conjunct": [
+    {
+      "df": 2,
+      "token": "conjunction"
+    }
+  ],
+  "conn": [
+    {
+      "df": 14,
+      "token": "connect"
+    },
+    {
+      "df": 2,
+      "token": "connection"
+    },
+    {
+      "df": 1,
+      "token": "connected"
+    },
+    {
+      "df": 1,
+      "token": "connections"
+    },
+    {
+      "df": 1,
+      "token": "connectivity"
+    },
+    {
+      "df": 1,
+      "token": "connects"
+    }
+  ],
+  "conne": [
+    {
+      "df": 14,
+      "token": "connect"
+    },
+    {
+      "df": 2,
+      "token": "connection"
+    },
+    {
+      "df": 1,
+      "token": "connected"
+    },
+    {
+      "df": 1,
+      "token": "connections"
+    },
+    {
+      "df": 1,
+      "token": "connectivity"
+    },
+    {
+      "df": 1,
+      "token": "connects"
+    }
+  ],
+  "connec": [
+    {
+      "df": 14,
+      "token": "connect"
+    },
+    {
+      "df": 2,
+      "token": "connection"
+    },
+    {
+      "df": 1,
+      "token": "connected"
+    },
+    {
+      "df": 1,
+      "token": "connections"
+    },
+    {
+      "df": 1,
+      "token": "connectivity"
+    },
+    {
+      "df": 1,
+      "token": "connects"
+    }
+  ],
+  "connect": [
+    {
+      "df": 14,
+      "token": "connect"
+    },
+    {
+      "df": 2,
+      "token": "connection"
+    },
+    {
+      "df": 1,
+      "token": "connected"
+    },
+    {
+      "df": 1,
+      "token": "connections"
+    },
+    {
+      "df": 1,
+      "token": "connectivity"
+    },
+    {
+      "df": 1,
+      "token": "connects"
+    }
+  ],
+  "connecte": [
+    {
+      "df": 1,
+      "token": "connected"
+    }
+  ],
+  "connecti": [
+    {
+      "df": 2,
+      "token": "connection"
+    },
+    {
+      "df": 1,
+      "token": "connections"
+    },
+    {
+      "df": 1,
+      "token": "connectivity"
+    }
+  ],
+  "connects": [
+    {
+      "df": 1,
+      "token": "connects"
+    }
+  ],
+  "cons": [
+    {
+      "df": 5,
+      "token": "consent"
+    },
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 3,
+      "token": "construction"
+    },
+    {
+      "df": 3,
+      "token": "consultant"
+    },
+    {
+      "df": 3,
+      "token": "consultation"
+    },
+    {
+      "df": 2,
+      "token": "consistency"
+    },
+    {
+      "df": 2,
+      "token": "consisting"
+    },
+    {
+      "df": 2,
+      "token": "consultations"
+    },
+    {
+      "df": 2,
+      "token": "consume"
+    },
+    {
+      "df": 2,
+      "token": "consumer"
+    },
+    {
+      "df": 2,
+      "token": "consumers"
+    },
+    {
+      "df": 1,
+      "token": "consents"
+    },
+    {
+      "df": 1,
+      "token": "conservation_areas"
+    },
+    {
+      "df": 1,
+      "token": "considerations"
+    },
+    {
+      "df": 1,
+      "token": "considered"
+    }
+  ],
+  "conse": [
+    {
+      "df": 5,
+      "token": "consent"
+    },
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 1,
+      "token": "consents"
+    },
+    {
+      "df": 1,
+      "token": "conservation_areas"
+    }
+  ],
+  "consen": [
+    {
+      "df": 5,
+      "token": "consent"
+    },
+    {
+      "df": 1,
+      "token": "consents"
+    }
+  ],
+  "consent": [
+    {
+      "df": 5,
+      "token": "consent"
+    },
+    {
+      "df": 1,
+      "token": "consents"
+    }
+  ],
+  "consents": [
+    {
+      "df": 1,
+      "token": "consents"
+    }
+  ],
+  "conser": [
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 1,
+      "token": "conservation_areas"
+    }
+  ],
+  "conserv": [
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 1,
+      "token": "conservation_areas"
+    }
+  ],
+  "conserva": [
+    {
+      "df": 4,
+      "token": "conservation"
+    },
+    {
+      "df": 1,
+      "token": "conservation_areas"
+    }
+  ],
+  "consi": [
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 2,
+      "token": "consistency"
+    },
+    {
+      "df": 2,
+      "token": "consisting"
+    },
+    {
+      "df": 1,
+      "token": "considerations"
+    },
+    {
+      "df": 1,
+      "token": "considered"
+    },
+    {
+      "df": 1,
+      "token": "consignment"
+    },
+    {
+      "df": 1,
+      "token": "consignments"
+    },
+    {
+      "df": 1,
+      "token": "consists"
+    }
+  ],
+  "consid": [
+    {
+      "df": 1,
+      "token": "considerations"
+    },
+    {
+      "df": 1,
+      "token": "considered"
+    }
+  ],
+  "conside": [
+    {
+      "df": 1,
+      "token": "considerations"
+    },
+    {
+      "df": 1,
+      "token": "considered"
+    }
+  ],
+  "consider": [
+    {
+      "df": 1,
+      "token": "considerations"
+    },
+    {
+      "df": 1,
+      "token": "considered"
+    }
+  ],
+  "consig": [
+    {
+      "df": 1,
+      "token": "consignment"
+    },
+    {
+      "df": 1,
+      "token": "consignments"
+    }
+  ],
+  "consign": [
+    {
+      "df": 1,
+      "token": "consignment"
+    },
+    {
+      "df": 1,
+      "token": "consignments"
+    }
+  ],
+  "consignm": [
+    {
+      "df": 1,
+      "token": "consignment"
+    },
+    {
+      "df": 1,
+      "token": "consignments"
+    }
+  ],
+  "consis": [
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 2,
+      "token": "consistency"
+    },
+    {
+      "df": 2,
+      "token": "consisting"
+    },
+    {
+      "df": 1,
+      "token": "consists"
+    }
+  ],
+  "consist": [
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 2,
+      "token": "consistency"
+    },
+    {
+      "df": 2,
+      "token": "consisting"
+    },
+    {
+      "df": 1,
+      "token": "consists"
+    }
+  ],
+  "consiste": [
+    {
+      "df": 5,
+      "token": "consistent"
+    },
+    {
+      "df": 2,
+      "token": "consistency"
+    }
+  ],
+  "consisti": [
+    {
+      "df": 2,
+      "token": "consisting"
+    }
+  ],
+  "consists": [
+    {
+      "df": 1,
+      "token": "consists"
+    }
+  ],
+  "conso": [
+    {
+      "df": 1,
+      "token": "consolidation"
+    }
+  ],
+  "consol": [
+    {
+      "df": 1,
+      "token": "consolidation"
+    }
+  ],
+  "consoli": [
+    {
+      "df": 1,
+      "token": "consolidation"
+    }
+  ],
+  "consolid": [
+    {
+      "df": 1,
+      "token": "consolidation"
+    }
+  ],
+  "const": [
+    {
+      "df": 3,
+      "token": "construction"
+    },
+    {
+      "df": 1,
+      "token": "constantly"
+    },
+    {
+      "df": 1,
+      "token": "constituency"
+    },
+    {
+      "df": 1,
+      "token": "constructed"
+    }
+  ],
+  "consta": [
+    {
+      "df": 1,
+      "token": "constantly"
+    }
+  ],
+  "constan": [
+    {
+      "df": 1,
+      "token": "constantly"
+    }
+  ],
+  "constant": [
+    {
+      "df": 1,
+      "token": "constantly"
+    }
+  ],
+  "consti": [
+    {
+      "df": 1,
+      "token": "constituency"
+    }
+  ],
+  "constit": [
+    {
+      "df": 1,
+      "token": "constituency"
+    }
+  ],
+  "constitu": [
+    {
+      "df": 1,
+      "token": "constituency"
+    }
+  ],
+  "constr": [
+    {
+      "df": 3,
+      "token": "construction"
+    },
+    {
+      "df": 1,
+      "token": "constructed"
+    }
+  ],
+  "constru": [
+    {
+      "df": 3,
+      "token": "construction"
+    },
+    {
+      "df": 1,
+      "token": "constructed"
+    }
+  ],
+  "construc": [
+    {
+      "df": 3,
+      "token": "construction"
+    },
+    {
+      "df": 1,
+      "token": "constructed"
+    }
+  ],
+  "consu": [
+    {
+      "df": 3,
+      "token": "consultant"
+    },
+    {
+      "df": 3,
+      "token": "consultation"
+    },
+    {
+      "df": 2,
+      "token": "consultations"
+    },
+    {
+      "df": 2,
+      "token": "consume"
+    },
+    {
+      "df": 2,
+      "token": "consumer"
+    },
+    {
+      "df": 2,
+      "token": "consumers"
+    },
+    {
+      "df": 1,
+      "token": "consultationthis"
+    },
+    {
+      "df": 1,
+      "token": "consuming"
+    }
+  ],
+  "consul": [
+    {
+      "df": 3,
+      "token": "consultant"
+    },
+    {
+      "df": 3,
+      "token": "consultation"
+    },
+    {
+      "df": 2,
+      "token": "consultations"
+    },
+    {
+      "df": 1,
+      "token": "consultationthis"
+    }
+  ],
+  "consult": [
+    {
+      "df": 3,
+      "token": "consultant"
+    },
+    {
+      "df": 3,
+      "token": "consultation"
+    },
+    {
+      "df": 2,
+      "token": "consultations"
+    },
+    {
+      "df": 1,
+      "token": "consultationthis"
+    }
+  ],
+  "consulta": [
+    {
+      "df": 3,
+      "token": "consultant"
+    },
+    {
+      "df": 3,
+      "token": "consultation"
+    },
+    {
+      "df": 2,
+      "token": "consultations"
+    },
+    {
+      "df": 1,
+      "token": "consultationthis"
+    }
+  ],
+  "consum": [
+    {
+      "df": 2,
+      "token": "consume"
+    },
+    {
+      "df": 2,
+      "token": "consumer"
+    },
+    {
+      "df": 2,
+      "token": "consumers"
+    },
+    {
+      "df": 1,
+      "token": "consuming"
+    }
+  ],
+  "consume": [
+    {
+      "df": 2,
+      "token": "consume"
+    },
+    {
+      "df": 2,
+      "token": "consumer"
+    },
+    {
+      "df": 2,
+      "token": "consumers"
+    }
+  ],
+  "consumer": [
+    {
+      "df": 2,
+      "token": "consumer"
+    },
+    {
+      "df": 2,
+      "token": "consumers"
+    }
+  ],
+  "consumi": [
+    {
+      "df": 1,
+      "token": "consuming"
+    }
+  ],
+  "consumin": [
+    {
+      "df": 1,
+      "token": "consuming"
+    }
+  ],
+  "cont": [
+    {
+      "df": 21,
+      "token": "contact"
+    },
+    {
+      "df": 9,
+      "token": "contains"
+    },
+    {
+      "df": 8,
+      "token": "containing"
+    },
+    {
+      "df": 8,
+      "token": "content"
+    },
+    {
+      "df": 6,
+      "token": "control"
+    },
+    {
+      "df": 5,
+      "token": "controls"
+    },
+    {
+      "df": 4,
+      "token": "contacts"
+    },
+    {
+      "df": 3,
+      "token": "context"
+    },
+    {
+      "df": 3,
+      "token": "contractors"
+    },
+    {
+      "df": 2,
+      "token": "contain"
+    },
+    {
+      "df": 1,
+      "token": "contained"
+    },
+    {
+      "df": 1,
+      "token": "content-api.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "contents"
+    },
+    {
+      "df": 1,
+      "token": "context.it"
+    },
+    {
+      "df": 1,
+      "token": "continuing"
+    },
+    {
+      "df": 1,
+      "token": "continuous"
+    }
+  ],
+  "conta": [
+    {
+      "df": 21,
+      "token": "contact"
+    },
+    {
+      "df": 9,
+      "token": "contains"
+    },
+    {
+      "df": 8,
+      "token": "containing"
+    },
+    {
+      "df": 4,
+      "token": "contacts"
+    },
+    {
+      "df": 2,
+      "token": "contain"
+    },
+    {
+      "df": 1,
+      "token": "contained"
+    }
+  ],
+  "contac": [
+    {
+      "df": 21,
+      "token": "contact"
+    },
+    {
+      "df": 4,
+      "token": "contacts"
+    }
+  ],
+  "contact": [
+    {
+      "df": 21,
+      "token": "contact"
+    },
+    {
+      "df": 4,
+      "token": "contacts"
+    }
+  ],
+  "contacts": [
+    {
+      "df": 4,
+      "token": "contacts"
+    }
+  ],
+  "contai": [
+    {
+      "df": 9,
+      "token": "contains"
+    },
+    {
+      "df": 8,
+      "token": "containing"
+    },
+    {
+      "df": 2,
+      "token": "contain"
+    },
+    {
+      "df": 1,
+      "token": "contained"
+    }
+  ],
+  "contain": [
+    {
+      "df": 9,
+      "token": "contains"
+    },
+    {
+      "df": 8,
+      "token": "containing"
+    },
+    {
+      "df": 2,
+      "token": "contain"
+    },
+    {
+      "df": 1,
+      "token": "contained"
+    }
+  ],
+  "containe": [
+    {
+      "df": 1,
+      "token": "contained"
+    }
+  ],
+  "containi": [
+    {
+      "df": 8,
+      "token": "containing"
+    }
+  ],
+  "contains": [
+    {
+      "df": 9,
+      "token": "contains"
+    }
+  ],
+  "conte": [
+    {
+      "df": 8,
+      "token": "content"
+    },
+    {
+      "df": 3,
+      "token": "context"
+    },
+    {
+      "df": 1,
+      "token": "content-api.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "contents"
+    },
+    {
+      "df": 1,
+      "token": "context.it"
+    }
+  ],
+  "conten": [
+    {
+      "df": 8,
+      "token": "content"
+    },
+    {
+      "df": 1,
+      "token": "content-api.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "contents"
+    }
+  ],
+  "content": [
+    {
+      "df": 8,
+      "token": "content"
+    },
+    {
+      "df": 1,
+      "token": "content-api.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "contents"
+    }
+  ],
+  "content-": [
+    {
+      "df": 1,
+      "token": "content-api.publishing.service.gov.uk"
+    }
+  ],
+  "contents": [
+    {
+      "df": 1,
+      "token": "contents"
+    }
+  ],
+  "contex": [
+    {
+      "df": 3,
+      "token": "context"
+    },
+    {
+      "df": 1,
+      "token": "context.it"
+    }
+  ],
+  "context": [
+    {
+      "df": 3,
+      "token": "context"
+    },
+    {
+      "df": 1,
+      "token": "context.it"
+    }
+  ],
+  "context.": [
+    {
+      "df": 1,
+      "token": "context.it"
+    }
+  ],
+  "conti": [
+    {
+      "df": 1,
+      "token": "continuing"
+    },
+    {
+      "df": 1,
+      "token": "continuous"
+    }
+  ],
+  "contin": [
+    {
+      "df": 1,
+      "token": "continuing"
+    },
+    {
+      "df": 1,
+      "token": "continuous"
+    }
+  ],
+  "continu": [
+    {
+      "df": 1,
+      "token": "continuing"
+    },
+    {
+      "df": 1,
+      "token": "continuous"
+    }
+  ],
+  "continui": [
+    {
+      "df": 1,
+      "token": "continuing"
+    }
+  ],
+  "continuo": [
+    {
+      "df": 1,
+      "token": "continuous"
+    }
+  ],
+  "contr": [
+    {
+      "df": 6,
+      "token": "control"
+    },
+    {
+      "df": 5,
+      "token": "controls"
+    },
+    {
+      "df": 3,
+      "token": "contractors"
+    },
+    {
+      "df": 1,
+      "token": "contract"
+    },
+    {
+      "df": 1,
+      "token": "contractmap"
+    },
+    {
+      "df": 1,
+      "token": "contractor"
+    },
+    {
+      "df": 1,
+      "token": "contribution-based"
+    },
+    {
+      "df": 1,
+      "token": "contributions"
+    },
+    {
+      "df": 1,
+      "token": "controlled"
+    }
+  ],
+  "contra": [
+    {
+      "df": 3,
+      "token": "contractors"
+    },
+    {
+      "df": 1,
+      "token": "contract"
+    },
+    {
+      "df": 1,
+      "token": "contractmap"
+    },
+    {
+      "df": 1,
+      "token": "contractor"
+    }
+  ],
+  "contrac": [
+    {
+      "df": 3,
+      "token": "contractors"
+    },
+    {
+      "df": 1,
+      "token": "contract"
+    },
+    {
+      "df": 1,
+      "token": "contractmap"
+    },
+    {
+      "df": 1,
+      "token": "contractor"
+    }
+  ],
+  "contract": [
+    {
+      "df": 3,
+      "token": "contractors"
+    },
+    {
+      "df": 1,
+      "token": "contract"
+    },
+    {
+      "df": 1,
+      "token": "contractmap"
+    },
+    {
+      "df": 1,
+      "token": "contractor"
+    }
+  ],
+  "contri": [
+    {
+      "df": 1,
+      "token": "contribution-based"
+    },
+    {
+      "df": 1,
+      "token": "contributions"
+    }
+  ],
+  "contrib": [
+    {
+      "df": 1,
+      "token": "contribution-based"
+    },
+    {
+      "df": 1,
+      "token": "contributions"
+    }
+  ],
+  "contribu": [
+    {
+      "df": 1,
+      "token": "contribution-based"
+    },
+    {
+      "df": 1,
+      "token": "contributions"
+    }
+  ],
+  "contro": [
+    {
+      "df": 6,
+      "token": "control"
+    },
+    {
+      "df": 5,
+      "token": "controls"
+    },
+    {
+      "df": 1,
+      "token": "controlled"
+    }
+  ],
+  "control": [
+    {
+      "df": 6,
+      "token": "control"
+    },
+    {
+      "df": 5,
+      "token": "controls"
+    },
+    {
+      "df": 1,
+      "token": "controlled"
+    }
+  ],
+  "controll": [
+    {
+      "df": 1,
+      "token": "controlled"
+    }
+  ],
+  "controls": [
+    {
+      "df": 5,
+      "token": "controls"
+    }
+  ],
+  "conv": [
+    {
+      "df": 3,
+      "token": "convert"
+    },
+    {
+      "df": 2,
+      "token": "conversation"
+    },
+    {
+      "df": 2,
+      "token": "conversations"
+    },
+    {
+      "df": 1,
+      "token": "convenience"
+    },
+    {
+      "df": 1,
+      "token": "convenient"
+    },
+    {
+      "df": 1,
+      "token": "convention"
+    },
+    {
+      "df": 1,
+      "token": "conversion"
+    },
+    {
+      "df": 1,
+      "token": "converted"
+    },
+    {
+      "df": 1,
+      "token": "converter"
+    },
+    {
+      "df": 1,
+      "token": "converts"
+    },
+    {
+      "df": 1,
+      "token": "conveyance"
+    },
+    {
+      "df": 1,
+      "token": "conveying"
+    }
+  ],
+  "conve": [
+    {
+      "df": 3,
+      "token": "convert"
+    },
+    {
+      "df": 2,
+      "token": "conversation"
+    },
+    {
+      "df": 2,
+      "token": "conversations"
+    },
+    {
+      "df": 1,
+      "token": "convenience"
+    },
+    {
+      "df": 1,
+      "token": "convenient"
+    },
+    {
+      "df": 1,
+      "token": "convention"
+    },
+    {
+      "df": 1,
+      "token": "conversion"
+    },
+    {
+      "df": 1,
+      "token": "converted"
+    },
+    {
+      "df": 1,
+      "token": "converter"
+    },
+    {
+      "df": 1,
+      "token": "converts"
+    },
+    {
+      "df": 1,
+      "token": "conveyance"
+    },
+    {
+      "df": 1,
+      "token": "conveying"
+    }
+  ],
+  "conven": [
+    {
+      "df": 1,
+      "token": "convenience"
+    },
+    {
+      "df": 1,
+      "token": "convenient"
+    },
+    {
+      "df": 1,
+      "token": "convention"
+    }
+  ],
+  "conveni": [
+    {
+      "df": 1,
+      "token": "convenience"
+    },
+    {
+      "df": 1,
+      "token": "convenient"
+    }
+  ],
+  "convenie": [
+    {
+      "df": 1,
+      "token": "convenience"
+    },
+    {
+      "df": 1,
+      "token": "convenient"
+    }
+  ],
+  "convent": [
+    {
+      "df": 1,
+      "token": "convention"
+    }
+  ],
+  "conventi": [
+    {
+      "df": 1,
+      "token": "convention"
+    }
+  ],
+  "conver": [
+    {
+      "df": 3,
+      "token": "convert"
+    },
+    {
+      "df": 2,
+      "token": "conversation"
+    },
+    {
+      "df": 2,
+      "token": "conversations"
+    },
+    {
+      "df": 1,
+      "token": "conversion"
+    },
+    {
+      "df": 1,
+      "token": "converted"
+    },
+    {
+      "df": 1,
+      "token": "converter"
+    },
+    {
+      "df": 1,
+      "token": "converts"
+    }
+  ],
+  "convers": [
+    {
+      "df": 2,
+      "token": "conversation"
+    },
+    {
+      "df": 2,
+      "token": "conversations"
+    },
+    {
+      "df": 1,
+      "token": "conversion"
+    }
+  ],
+  "conversa": [
+    {
+      "df": 2,
+      "token": "conversation"
+    },
+    {
+      "df": 2,
+      "token": "conversations"
+    }
+  ],
+  "conversi": [
+    {
+      "df": 1,
+      "token": "conversion"
+    }
+  ],
+  "convert": [
+    {
+      "df": 3,
+      "token": "convert"
+    },
+    {
+      "df": 1,
+      "token": "converted"
+    },
+    {
+      "df": 1,
+      "token": "converter"
+    },
+    {
+      "df": 1,
+      "token": "converts"
+    }
+  ],
+  "converte": [
+    {
+      "df": 1,
+      "token": "converted"
+    },
+    {
+      "df": 1,
+      "token": "converter"
+    }
+  ],
+  "converts": [
+    {
+      "df": 1,
+      "token": "converts"
+    }
+  ],
+  "convey": [
+    {
+      "df": 1,
+      "token": "conveyance"
+    },
+    {
+      "df": 1,
+      "token": "conveying"
+    }
+  ],
+  "conveya": [
+    {
+      "df": 1,
+      "token": "conveyance"
+    }
+  ],
+  "conveyan": [
+    {
+      "df": 1,
+      "token": "conveyance"
+    }
+  ],
+  "conveyi": [
+    {
+      "df": 1,
+      "token": "conveying"
+    }
+  ],
+  "conveyin": [
+    {
+      "df": 1,
+      "token": "conveying"
+    }
+  ],
+  "cop": [
+    {
+      "df": 4,
+      "token": "copy"
+    },
+    {
+      "df": 1,
+      "token": "copied"
+    }
+  ],
+  "copi": [
+    {
+      "df": 1,
+      "token": "copied"
+    }
+  ],
+  "copie": [
+    {
+      "df": 1,
+      "token": "copied"
+    }
+  ],
+  "copied": [
+    {
+      "df": 1,
+      "token": "copied"
+    }
+  ],
+  "copy": [
+    {
+      "df": 4,
+      "token": "copy"
+    }
+  ],
+  "cor": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    },
+    {
+      "df": 5,
+      "token": "correct"
+    },
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "coro": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    }
+  ],
+  "coron": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    }
+  ],
+  "corona": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    }
+  ],
+  "coronav": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    }
+  ],
+  "coronavi": [
+    {
+      "df": 7,
+      "token": "coronavirus"
+    }
+  ],
+  "corr": [
+    {
+      "df": 5,
+      "token": "correct"
+    },
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "corre": [
+    {
+      "df": 5,
+      "token": "correct"
+    },
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "correc": [
+    {
+      "df": 5,
+      "token": "correct"
+    }
+  ],
+  "correct": [
+    {
+      "df": 5,
+      "token": "correct"
+    }
+  ],
+  "corres": [
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "corresp": [
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "correspo": [
+    {
+      "df": 2,
+      "token": "correspondence"
+    },
+    {
+      "df": 1,
+      "token": "correspondencev2_1pollrequestwebservice"
+    }
+  ],
+  "cos": [
+    {
+      "df": 4,
+      "token": "cost"
+    },
+    {
+      "df": 1,
+      "token": "costs"
+    },
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "cost": [
+    {
+      "df": 4,
+      "token": "cost"
+    },
+    {
+      "df": 1,
+      "token": "costs"
+    },
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "costs": [
+    {
+      "df": 1,
+      "token": "costs"
+    },
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "costsg": [
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "costsgo": [
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "costsgos": [
+    {
+      "df": 1,
+      "token": "costsgos6"
+    }
+  ],
+  "cou": [
+    {
+      "df": 8,
+      "token": "country"
+    },
+    {
+      "df": 7,
+      "token": "could"
+    },
+    {
+      "df": 3,
+      "token": "council"
+    },
+    {
+      "df": 3,
+      "token": "countries"
+    },
+    {
+      "df": 2,
+      "token": "count"
+    },
+    {
+      "df": 2,
+      "token": "couple"
+    },
+    {
+      "df": 1,
+      "token": "councils"
+    },
+    {
+      "df": 1,
+      "token": "countryside"
+    },
+    {
+      "df": 1,
+      "token": "courses"
+    },
+    {
+      "df": 1,
+      "token": "court"
+    },
+    {
+      "df": 1,
+      "token": "courtfinder"
+    },
+    {
+      "df": 1,
+      "token": "courts"
+    },
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "coul": [
+    {
+      "df": 7,
+      "token": "could"
+    }
+  ],
+  "could": [
+    {
+      "df": 7,
+      "token": "could"
+    }
+  ],
+  "coun": [
+    {
+      "df": 8,
+      "token": "country"
+    },
+    {
+      "df": 3,
+      "token": "council"
+    },
+    {
+      "df": 3,
+      "token": "countries"
+    },
+    {
+      "df": 2,
+      "token": "count"
+    },
+    {
+      "df": 1,
+      "token": "councils"
+    },
+    {
+      "df": 1,
+      "token": "countryside"
+    }
+  ],
+  "counc": [
+    {
+      "df": 3,
+      "token": "council"
+    },
+    {
+      "df": 1,
+      "token": "councils"
+    }
+  ],
+  "counci": [
+    {
+      "df": 3,
+      "token": "council"
+    },
+    {
+      "df": 1,
+      "token": "councils"
+    }
+  ],
+  "council": [
+    {
+      "df": 3,
+      "token": "council"
+    },
+    {
+      "df": 1,
+      "token": "councils"
+    }
+  ],
+  "councils": [
+    {
+      "df": 1,
+      "token": "councils"
+    }
+  ],
+  "count": [
+    {
+      "df": 8,
+      "token": "country"
+    },
+    {
+      "df": 3,
+      "token": "countries"
+    },
+    {
+      "df": 2,
+      "token": "count"
+    },
+    {
+      "df": 1,
+      "token": "countryside"
+    }
+  ],
+  "countr": [
+    {
+      "df": 8,
+      "token": "country"
+    },
+    {
+      "df": 3,
+      "token": "countries"
+    },
+    {
+      "df": 1,
+      "token": "countryside"
+    }
+  ],
+  "countri": [
+    {
+      "df": 3,
+      "token": "countries"
+    }
+  ],
+  "countrie": [
+    {
+      "df": 3,
+      "token": "countries"
+    }
+  ],
+  "country": [
+    {
+      "df": 8,
+      "token": "country"
+    },
+    {
+      "df": 1,
+      "token": "countryside"
+    }
+  ],
+  "countrys": [
+    {
+      "df": 1,
+      "token": "countryside"
+    }
+  ],
+  "coup": [
+    {
+      "df": 2,
+      "token": "couple"
+    }
+  ],
+  "coupl": [
+    {
+      "df": 2,
+      "token": "couple"
+    }
+  ],
+  "couple": [
+    {
+      "df": 2,
+      "token": "couple"
+    }
+  ],
+  "cour": [
+    {
+      "df": 1,
+      "token": "courses"
+    },
+    {
+      "df": 1,
+      "token": "court"
+    },
+    {
+      "df": 1,
+      "token": "courtfinder"
+    },
+    {
+      "df": 1,
+      "token": "courts"
+    },
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "cours": [
+    {
+      "df": 1,
+      "token": "courses"
+    }
+  ],
+  "course": [
+    {
+      "df": 1,
+      "token": "courses"
+    }
+  ],
+  "courses": [
+    {
+      "df": 1,
+      "token": "courses"
+    }
+  ],
+  "court": [
+    {
+      "df": 1,
+      "token": "court"
+    },
+    {
+      "df": 1,
+      "token": "courtfinder"
+    },
+    {
+      "df": 1,
+      "token": "courts"
+    },
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "courtf": [
+    {
+      "df": 1,
+      "token": "courtfinder"
+    }
+  ],
+  "courtfi": [
+    {
+      "df": 1,
+      "token": "courtfinder"
+    }
+  ],
+  "courtfin": [
+    {
+      "df": 1,
+      "token": "courtfinder"
+    }
+  ],
+  "courts": [
+    {
+      "df": 1,
+      "token": "courts"
+    },
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "courts-": [
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "courts-a": [
+    {
+      "df": 1,
+      "token": "courts-api"
+    }
+  ],
+  "cov": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 2,
+      "token": "coverage"
+    },
+    {
+      "df": 2,
+      "token": "covering"
+    },
+    {
+      "df": 2,
+      "token": "covers"
+    },
+    {
+      "df": 1,
+      "token": "cover"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ],
+  "cove": [
+    {
+      "df": 2,
+      "token": "coverage"
+    },
+    {
+      "df": 2,
+      "token": "covering"
+    },
+    {
+      "df": 2,
+      "token": "covers"
+    },
+    {
+      "df": 1,
+      "token": "cover"
+    }
+  ],
+  "cover": [
+    {
+      "df": 2,
+      "token": "coverage"
+    },
+    {
+      "df": 2,
+      "token": "covering"
+    },
+    {
+      "df": 2,
+      "token": "covers"
+    },
+    {
+      "df": 1,
+      "token": "cover"
+    }
+  ],
+  "covera": [
+    {
+      "df": 2,
+      "token": "coverage"
+    }
+  ],
+  "coverag": [
+    {
+      "df": 2,
+      "token": "coverage"
+    }
+  ],
+  "coverage": [
+    {
+      "df": 2,
+      "token": "coverage"
+    }
+  ],
+  "coveri": [
+    {
+      "df": 2,
+      "token": "covering"
+    }
+  ],
+  "coverin": [
+    {
+      "df": 2,
+      "token": "covering"
+    }
+  ],
+  "covering": [
+    {
+      "df": 2,
+      "token": "covering"
+    }
+  ],
+  "covers": [
+    {
+      "df": 2,
+      "token": "covers"
+    }
+  ],
+  "covi": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ],
+  "covid": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ],
+  "covid-": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ],
+  "covid-1": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ],
+  "covid-19": [
+    {
+      "df": 7,
+      "token": "covid-19"
+    },
+    {
+      "df": 1,
+      "token": "covid-19-test-results-fhir"
+    }
+  ]
+}

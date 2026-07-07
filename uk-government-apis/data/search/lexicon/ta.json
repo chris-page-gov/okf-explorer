@@ -1,0 +1,107 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "table"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "tables"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "tablet"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "take"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "taken"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "takes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "taking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "talking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "talks"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "target"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "tariff"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "tariffs"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "task"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "tasks"
+  },
+  {
+    "df": 38,
+    "postings": "data/search/postings-0.json",
+    "token": "tax"
+  },
+  {
+    "df": 38,
+    "postings": "data/search/postings-0.json",
+    "token": "tax-and-customs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "taxable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "taxonomies"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "taxonomy"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "taxpayer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "taxpayers"
+  }
+]

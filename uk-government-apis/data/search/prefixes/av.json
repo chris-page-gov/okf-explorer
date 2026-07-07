@@ -1,0 +1,156 @@
+{
+  "ava": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 8,
+      "token": "availability"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "avai": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 8,
+      "token": "availability"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "avail": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 8,
+      "token": "availability"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "availa": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 8,
+      "token": "availability"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "availab": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 8,
+      "token": "availability"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "availabi": [
+    {
+      "df": 8,
+      "token": "availability"
+    }
+  ],
+  "availabl": [
+    {
+      "df": 44,
+      "token": "available"
+    },
+    {
+      "df": 1,
+      "token": "available.a"
+    },
+    {
+      "df": 1,
+      "token": "available.for"
+    }
+  ],
+  "avc": [
+    {
+      "df": 1,
+      "token": "avcs"
+    },
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ],
+  "avcs": [
+    {
+      "df": 1,
+      "token": "avcs"
+    },
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ],
+  "avcs-": [
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ],
+  "avcs-o": [
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ],
+  "avcs-on": [
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ],
+  "avcs-onl": [
+    {
+      "df": 1,
+      "token": "avcs-online-discovery-api"
+    }
+  ]
+}

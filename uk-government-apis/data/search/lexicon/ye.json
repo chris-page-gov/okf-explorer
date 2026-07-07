@@ -1,0 +1,22 @@
+[
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "year"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "years"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "yellow"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "yet"
+  }
+]

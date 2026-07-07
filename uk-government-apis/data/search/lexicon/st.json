@@ -1,0 +1,267 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stable"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "staff"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "staff.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stages"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "standalone"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "standard"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "standard.if"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "standardise"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "standards"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "standards-and-collections"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "standards.a"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "standards.esd.org.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "standing"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "start"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "state"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stated"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "statement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "statementgos4"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "station"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stationreference"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "stations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stations_getstation"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "statistics"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "statistics.gov.scot"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "statistics.opendata"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "status"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "statusyou"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "still"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stop"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "storage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "store"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "stored"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "story"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "strategic"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "stream"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stream.companieshouse.gov.uk"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "streaming"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "streaming-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "streams"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "street"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "street-level"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "streets"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "striving"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "strong"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "strongly"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "structure"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "structure.for"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "structured"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "structures"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "stu3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "style"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "styles"
+  }
+]

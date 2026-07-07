@@ -1,0 +1,97 @@
+[
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-air"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-air.defra.gov.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-business-regulations"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-hydrographic-office"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-hydrographic-office-avcs-online-discovery-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-hydrographic-office-tidal-api-foundation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-hydrographic-office-tidal-api-premium"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-police"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-police-police-api"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-tariff-2021-01-01"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-tidal-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-tidal-api-foundation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-tidal-api-premium"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-trade-quotas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uk-wide"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "ukgt"
+  }
+]

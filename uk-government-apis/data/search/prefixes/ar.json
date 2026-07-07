@@ -1,0 +1,344 @@
+{
+  "arc": [
+    {
+      "df": 7,
+      "token": "arcgis"
+    },
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 2,
+      "token": "archive"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    },
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "arcg": [
+    {
+      "df": 7,
+      "token": "arcgis"
+    }
+  ],
+  "arcgi": [
+    {
+      "df": 7,
+      "token": "arcgis"
+    }
+  ],
+  "arcgis": [
+    {
+      "df": 7,
+      "token": "arcgis"
+    }
+  ],
+  "arch": [
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 2,
+      "token": "archive"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    },
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "archa": [
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    }
+  ],
+  "archae": [
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    }
+  ],
+  "archaeo": [
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    }
+  ],
+  "archaeol": [
+    {
+      "df": 4,
+      "token": "archaeological"
+    },
+    {
+      "df": 1,
+      "token": "archaeology"
+    }
+  ],
+  "archi": [
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 2,
+      "token": "archive"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    },
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "archit": [
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    }
+  ],
+  "archite": [
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    }
+  ],
+  "architec": [
+    {
+      "df": 2,
+      "token": "architectural"
+    },
+    {
+      "df": 1,
+      "token": "architects"
+    }
+  ],
+  "archiv": [
+    {
+      "df": 2,
+      "token": "archive"
+    },
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "archive": [
+    {
+      "df": 2,
+      "token": "archive"
+    },
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "archives": [
+    {
+      "df": 1,
+      "token": "archives"
+    }
+  ],
+  "are": [
+    {
+      "df": 9,
+      "token": "area"
+    },
+    {
+      "df": 9,
+      "token": "areas"
+    }
+  ],
+  "area": [
+    {
+      "df": 9,
+      "token": "area"
+    },
+    {
+      "df": 9,
+      "token": "areas"
+    }
+  ],
+  "areas": [
+    {
+      "df": 9,
+      "token": "areas"
+    }
+  ],
+  "aro": [
+    {
+      "df": 7,
+      "token": "around"
+    }
+  ],
+  "arou": [
+    {
+      "df": 7,
+      "token": "around"
+    }
+  ],
+  "aroun": [
+    {
+      "df": 7,
+      "token": "around"
+    }
+  ],
+  "around": [
+    {
+      "df": 7,
+      "token": "around"
+    }
+  ],
+  "arr": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    },
+    {
+      "df": 1,
+      "token": "arrival"
+    },
+    {
+      "df": 1,
+      "token": "arrive"
+    },
+    {
+      "df": 1,
+      "token": "arrived"
+    }
+  ],
+  "arra": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    }
+  ],
+  "arran": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    }
+  ],
+  "arrang": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    }
+  ],
+  "arrange": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    }
+  ],
+  "arrangem": [
+    {
+      "df": 3,
+      "token": "arrangement"
+    }
+  ],
+  "arri": [
+    {
+      "df": 1,
+      "token": "arrival"
+    },
+    {
+      "df": 1,
+      "token": "arrive"
+    },
+    {
+      "df": 1,
+      "token": "arrived"
+    }
+  ],
+  "arriv": [
+    {
+      "df": 1,
+      "token": "arrival"
+    },
+    {
+      "df": 1,
+      "token": "arrive"
+    },
+    {
+      "df": 1,
+      "token": "arrived"
+    }
+  ],
+  "arriva": [
+    {
+      "df": 1,
+      "token": "arrival"
+    }
+  ],
+  "arrival": [
+    {
+      "df": 1,
+      "token": "arrival"
+    }
+  ],
+  "arrive": [
+    {
+      "df": 1,
+      "token": "arrive"
+    },
+    {
+      "df": 1,
+      "token": "arrived"
+    }
+  ],
+  "arrived": [
+    {
+      "df": 1,
+      "token": "arrived"
+    }
+  ]
+}

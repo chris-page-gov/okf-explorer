@@ -1,0 +1,102 @@
+{
+  "hub": [
+    {
+      "df": 3,
+      "token": "hub"
+    },
+    {
+      "df": 3,
+      "token": "hubs"
+    }
+  ],
+  "hubs": [
+    {
+      "df": 3,
+      "token": "hubs"
+    }
+  ],
+  "hum": [
+    {
+      "df": 3,
+      "token": "human"
+    }
+  ],
+  "huma": [
+    {
+      "df": 3,
+      "token": "human"
+    }
+  ],
+  "human": [
+    {
+      "df": 3,
+      "token": "human"
+    }
+  ],
+  "hun": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hund": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hundr": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hundre": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hundred": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hundreds": [
+    {
+      "df": 1,
+      "token": "hundreds"
+    }
+  ],
+  "hus": [
+    {
+      "df": 1,
+      "token": "husband"
+    }
+  ],
+  "husb": [
+    {
+      "df": 1,
+      "token": "husband"
+    }
+  ],
+  "husba": [
+    {
+      "df": 1,
+      "token": "husband"
+    }
+  ],
+  "husban": [
+    {
+      "df": 1,
+      "token": "husband"
+    }
+  ],
+  "husband": [
+    {
+      "df": 1,
+      "token": "husband"
+    }
+  ]
+}

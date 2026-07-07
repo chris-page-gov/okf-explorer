@@ -1,0 +1,117 @@
+[
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "back"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "backend"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "backlog"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "bailiwicks"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "balances"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "band"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bank"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bank-holidays.json"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bankruptcy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bankruptcysearchv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bankruptcysearchv2_1webservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "barrier"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "barriers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bars"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "base"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "basic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "basin"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "basis"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "batch"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "batchesyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bathing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "battlefields"
+  }
+]

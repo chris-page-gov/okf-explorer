@@ -1,0 +1,47 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "feature"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "features"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "featureserver"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "federated"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "feed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "feedback"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "feedsyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "female"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "female-genital-mutilation-information-sharing-fhir"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "haematology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "handle"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "handles"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "handling"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "happen"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "happens"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "har_2021_othr"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "harmonises"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "harvest"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "has"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "have"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "having"
+  }
+]

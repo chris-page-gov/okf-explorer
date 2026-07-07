@@ -1,0 +1,27 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "ogc"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "ogc-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ogcapi"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ogcapi.bgs.ac.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ogcapi.ogc.org"
+  }
+]

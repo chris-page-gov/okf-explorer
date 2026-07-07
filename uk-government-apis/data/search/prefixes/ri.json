@@ -1,0 +1,100 @@
+{
+  "ric": [
+    {
+      "df": 2,
+      "token": "rich"
+    },
+    {
+      "df": 1,
+      "token": "richer"
+    }
+  ],
+  "rich": [
+    {
+      "df": 2,
+      "token": "rich"
+    },
+    {
+      "df": 1,
+      "token": "richer"
+    }
+  ],
+  "riche": [
+    {
+      "df": 1,
+      "token": "richer"
+    }
+  ],
+  "richer": [
+    {
+      "df": 1,
+      "token": "richer"
+    }
+  ],
+  "rig": [
+    {
+      "df": 3,
+      "token": "right"
+    }
+  ],
+  "righ": [
+    {
+      "df": 3,
+      "token": "right"
+    }
+  ],
+  "right": [
+    {
+      "df": 3,
+      "token": "right"
+    }
+  ],
+  "ris": [
+    {
+      "df": 4,
+      "token": "risk"
+    }
+  ],
+  "risk": [
+    {
+      "df": 4,
+      "token": "risk"
+    }
+  ],
+  "riv": [
+    {
+      "df": 3,
+      "token": "river"
+    },
+    {
+      "df": 1,
+      "token": "rivers"
+    }
+  ],
+  "rive": [
+    {
+      "df": 3,
+      "token": "river"
+    },
+    {
+      "df": 1,
+      "token": "rivers"
+    }
+  ],
+  "river": [
+    {
+      "df": 3,
+      "token": "river"
+    },
+    {
+      "df": 1,
+      "token": "rivers"
+    }
+  ],
+  "rivers": [
+    {
+      "df": 1,
+      "token": "rivers"
+    }
+  ]
+}

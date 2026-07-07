@@ -1,0 +1,237 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "enable"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "enables"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "enabling"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "encode"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "encoding"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "encourage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "encs"
+  },
+  {
+    "df": 24,
+    "postings": "data/search/postings-0.json",
+    "token": "end"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "end-to-end"
+  },
+  {
+    "df": 43,
+    "postings": "data/search/postings-0.json",
+    "token": "endpoint"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "endpoints"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "energy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enforcement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "engage"
+  },
+  {
+    "df": 24,
+    "postings": "data/search/postings-0.json",
+    "token": "england"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "england.most"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "england.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "englands"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "english"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enhance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enough"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enquiries"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "enquiry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enquirybypropertydescriptionv2_0pollwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enquirybypropertydescriptionv2_0webservice"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "ens"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "ensure"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "entered"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "enterprise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "entirely.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "entitled"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "entries"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "entries.for"
+  },
+  {
+    "df": 24,
+    "postings": "data/search/postings-0.json",
+    "token": "environment"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-asset-management"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-bathing-water"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-catchment-data"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-ecology-and-fish-data"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-flood-monitoring"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-hydrology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-public-registers-for-environmental-information"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-rainfall"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-tide-gauge"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "environment-agency-water-quality"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "environment.data.gov.uk"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "environmental"
+  }
+]

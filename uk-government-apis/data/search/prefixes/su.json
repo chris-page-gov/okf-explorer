@@ -1,0 +1,1262 @@
+{
+  "sub": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 7,
+      "token": "submit"
+    },
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 5,
+      "token": "subject"
+    },
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 4,
+      "token": "subset"
+    },
+    {
+      "df": 3,
+      "token": "submitting"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    },
+    {
+      "df": 2,
+      "token": "submitted"
+    },
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    },
+    {
+      "df": 1,
+      "token": "subjects"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    }
+  ],
+  "subc": [
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    }
+  ],
+  "subco": [
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    }
+  ],
+  "subcon": [
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    }
+  ],
+  "subcont": [
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    }
+  ],
+  "subcontr": [
+    {
+      "df": 1,
+      "token": "subcontractor"
+    },
+    {
+      "df": 1,
+      "token": "subcontractors"
+    }
+  ],
+  "subj": [
+    {
+      "df": 5,
+      "token": "subject"
+    },
+    {
+      "df": 1,
+      "token": "subjects"
+    }
+  ],
+  "subje": [
+    {
+      "df": 5,
+      "token": "subject"
+    },
+    {
+      "df": 1,
+      "token": "subjects"
+    }
+  ],
+  "subjec": [
+    {
+      "df": 5,
+      "token": "subject"
+    },
+    {
+      "df": 1,
+      "token": "subjects"
+    }
+  ],
+  "subject": [
+    {
+      "df": 5,
+      "token": "subject"
+    },
+    {
+      "df": 1,
+      "token": "subjects"
+    }
+  ],
+  "subjects": [
+    {
+      "df": 1,
+      "token": "subjects"
+    }
+  ],
+  "subm": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 7,
+      "token": "submit"
+    },
+    {
+      "df": 3,
+      "token": "submitting"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    },
+    {
+      "df": 2,
+      "token": "submitted"
+    }
+  ],
+  "submi": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 7,
+      "token": "submit"
+    },
+    {
+      "df": 3,
+      "token": "submitting"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    },
+    {
+      "df": 2,
+      "token": "submitted"
+    }
+  ],
+  "submis": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    }
+  ],
+  "submiss": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    }
+  ],
+  "submissi": [
+    {
+      "df": 7,
+      "token": "submission"
+    },
+    {
+      "df": 2,
+      "token": "submissions"
+    }
+  ],
+  "submit": [
+    {
+      "df": 7,
+      "token": "submit"
+    },
+    {
+      "df": 3,
+      "token": "submitting"
+    },
+    {
+      "df": 2,
+      "token": "submitted"
+    }
+  ],
+  "submitt": [
+    {
+      "df": 3,
+      "token": "submitting"
+    },
+    {
+      "df": 2,
+      "token": "submitted"
+    }
+  ],
+  "submitte": [
+    {
+      "df": 2,
+      "token": "submitted"
+    }
+  ],
+  "submitti": [
+    {
+      "df": 3,
+      "token": "submitting"
+    }
+  ],
+  "subs": [
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 4,
+      "token": "subset"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    },
+    {
+      "df": 1,
+      "token": "subscriptionthis"
+    },
+    {
+      "df": 1,
+      "token": "subsequent"
+    },
+    {
+      "df": 1,
+      "token": "subsequently"
+    },
+    {
+      "df": 1,
+      "token": "subsets"
+    },
+    {
+      "df": 1,
+      "token": "substances"
+    }
+  ],
+  "subsc": [
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    },
+    {
+      "df": 1,
+      "token": "subscriptionthis"
+    }
+  ],
+  "subscr": [
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    },
+    {
+      "df": 1,
+      "token": "subscriptionthis"
+    }
+  ],
+  "subscri": [
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    },
+    {
+      "df": 1,
+      "token": "subscriptionthis"
+    }
+  ],
+  "subscrib": [
+    {
+      "df": 5,
+      "token": "subscribed"
+    },
+    {
+      "df": 1,
+      "token": "subscribe"
+    },
+    {
+      "df": 1,
+      "token": "subscribers"
+    },
+    {
+      "df": 1,
+      "token": "subscribing"
+    }
+  ],
+  "subscrip": [
+    {
+      "df": 7,
+      "token": "subscription"
+    },
+    {
+      "df": 3,
+      "token": "subscriptions"
+    },
+    {
+      "df": 1,
+      "token": "subscriptionthis"
+    }
+  ],
+  "subse": [
+    {
+      "df": 4,
+      "token": "subset"
+    },
+    {
+      "df": 1,
+      "token": "subsequent"
+    },
+    {
+      "df": 1,
+      "token": "subsequently"
+    },
+    {
+      "df": 1,
+      "token": "subsets"
+    }
+  ],
+  "subseq": [
+    {
+      "df": 1,
+      "token": "subsequent"
+    },
+    {
+      "df": 1,
+      "token": "subsequently"
+    }
+  ],
+  "subsequ": [
+    {
+      "df": 1,
+      "token": "subsequent"
+    },
+    {
+      "df": 1,
+      "token": "subsequently"
+    }
+  ],
+  "subseque": [
+    {
+      "df": 1,
+      "token": "subsequent"
+    },
+    {
+      "df": 1,
+      "token": "subsequently"
+    }
+  ],
+  "subset": [
+    {
+      "df": 4,
+      "token": "subset"
+    },
+    {
+      "df": 1,
+      "token": "subsets"
+    }
+  ],
+  "subsets": [
+    {
+      "df": 1,
+      "token": "subsets"
+    }
+  ],
+  "subst": [
+    {
+      "df": 1,
+      "token": "substances"
+    }
+  ],
+  "substa": [
+    {
+      "df": 1,
+      "token": "substances"
+    }
+  ],
+  "substan": [
+    {
+      "df": 1,
+      "token": "substances"
+    }
+  ],
+  "substanc": [
+    {
+      "df": 1,
+      "token": "substances"
+    }
+  ],
+  "suc": [
+    {
+      "df": 34,
+      "token": "such"
+    },
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    },
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "succ": [
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    },
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "succe": [
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    },
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "succes": [
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    },
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "success": [
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    },
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "successf": [
+    {
+      "df": 2,
+      "token": "successful"
+    },
+    {
+      "df": 2,
+      "token": "successfully"
+    }
+  ],
+  "successi": [
+    {
+      "df": 2,
+      "token": "succession"
+    }
+  ],
+  "such": [
+    {
+      "df": 34,
+      "token": "such"
+    }
+  ],
+  "suf": [
+    {
+      "df": 1,
+      "token": "suffering"
+    },
+    {
+      "df": 1,
+      "token": "suffix"
+    }
+  ],
+  "suff": [
+    {
+      "df": 1,
+      "token": "suffering"
+    },
+    {
+      "df": 1,
+      "token": "suffix"
+    }
+  ],
+  "suffe": [
+    {
+      "df": 1,
+      "token": "suffering"
+    }
+  ],
+  "suffer": [
+    {
+      "df": 1,
+      "token": "suffering"
+    }
+  ],
+  "sufferi": [
+    {
+      "df": 1,
+      "token": "suffering"
+    }
+  ],
+  "sufferin": [
+    {
+      "df": 1,
+      "token": "suffering"
+    }
+  ],
+  "suffi": [
+    {
+      "df": 1,
+      "token": "suffix"
+    }
+  ],
+  "suffix": [
+    {
+      "df": 1,
+      "token": "suffix"
+    }
+  ],
+  "sui": [
+    {
+      "df": 7,
+      "token": "suite"
+    },
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suit": [
+    {
+      "df": 7,
+      "token": "suite"
+    },
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suita": [
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suitab": [
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suitabl": [
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suitable": [
+    {
+      "df": 2,
+      "token": "suitable"
+    }
+  ],
+  "suite": [
+    {
+      "df": 7,
+      "token": "suite"
+    }
+  ],
+  "sum": [
+    {
+      "df": 17,
+      "token": "summary"
+    },
+    {
+      "df": 1,
+      "token": "summaries"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "summ": [
+    {
+      "df": 17,
+      "token": "summary"
+    },
+    {
+      "df": 1,
+      "token": "summaries"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "summa": [
+    {
+      "df": 17,
+      "token": "summary"
+    },
+    {
+      "df": 1,
+      "token": "summaries"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "summar": [
+    {
+      "df": 17,
+      "token": "summary"
+    },
+    {
+      "df": 1,
+      "token": "summaries"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "summari": [
+    {
+      "df": 1,
+      "token": "summaries"
+    }
+  ],
+  "summarie": [
+    {
+      "df": 1,
+      "token": "summaries"
+    }
+  ],
+  "summary": [
+    {
+      "df": 17,
+      "token": "summary"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "summary-": [
+    {
+      "df": 1,
+      "token": "summary-care-record-fhir"
+    },
+    {
+      "df": 1,
+      "token": "summary-care-record-hl7-v3"
+    }
+  ],
+  "sup": [
+    {
+      "df": 23,
+      "token": "support"
+    },
+    {
+      "df": 5,
+      "token": "supports"
+    },
+    {
+      "df": 4,
+      "token": "supplied"
+    },
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    },
+    {
+      "df": 3,
+      "token": "supporting"
+    },
+    {
+      "df": 2,
+      "token": "supported"
+    },
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    },
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "supe": [
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    }
+  ],
+  "super": [
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    }
+  ],
+  "supers": [
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    }
+  ],
+  "superse": [
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    }
+  ],
+  "supersed": [
+    {
+      "df": 1,
+      "token": "superseded"
+    },
+    {
+      "df": 1,
+      "token": "supersedes"
+    },
+    {
+      "df": 1,
+      "token": "superseding"
+    }
+  ],
+  "supp": [
+    {
+      "df": 23,
+      "token": "support"
+    },
+    {
+      "df": 5,
+      "token": "supports"
+    },
+    {
+      "df": 4,
+      "token": "supplied"
+    },
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    },
+    {
+      "df": 3,
+      "token": "supporting"
+    },
+    {
+      "df": 2,
+      "token": "supported"
+    },
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "suppl": [
+    {
+      "df": 4,
+      "token": "supplied"
+    },
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    },
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "suppli": [
+    {
+      "df": 4,
+      "token": "supplied"
+    },
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    },
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "supplie": [
+    {
+      "df": 4,
+      "token": "supplied"
+    },
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    },
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "supplied": [
+    {
+      "df": 4,
+      "token": "supplied"
+    }
+  ],
+  "supplier": [
+    {
+      "df": 3,
+      "token": "supplier"
+    },
+    {
+      "df": 3,
+      "token": "suppliers"
+    }
+  ],
+  "supplies": [
+    {
+      "df": 1,
+      "token": "supplies"
+    }
+  ],
+  "suppo": [
+    {
+      "df": 23,
+      "token": "support"
+    },
+    {
+      "df": 5,
+      "token": "supports"
+    },
+    {
+      "df": 3,
+      "token": "supporting"
+    },
+    {
+      "df": 2,
+      "token": "supported"
+    }
+  ],
+  "suppor": [
+    {
+      "df": 23,
+      "token": "support"
+    },
+    {
+      "df": 5,
+      "token": "supports"
+    },
+    {
+      "df": 3,
+      "token": "supporting"
+    },
+    {
+      "df": 2,
+      "token": "supported"
+    }
+  ],
+  "support": [
+    {
+      "df": 23,
+      "token": "support"
+    },
+    {
+      "df": 5,
+      "token": "supports"
+    },
+    {
+      "df": 3,
+      "token": "supporting"
+    },
+    {
+      "df": 2,
+      "token": "supported"
+    }
+  ],
+  "supporte": [
+    {
+      "df": 2,
+      "token": "supported"
+    }
+  ],
+  "supporti": [
+    {
+      "df": 3,
+      "token": "supporting"
+    }
+  ],
+  "supports": [
+    {
+      "df": 5,
+      "token": "supports"
+    }
+  ],
+  "sur": [
+    {
+      "df": 10,
+      "token": "survey"
+    },
+    {
+      "df": 2,
+      "token": "surgery"
+    },
+    {
+      "df": 1,
+      "token": "sure"
+    },
+    {
+      "df": 1,
+      "token": "surveys"
+    }
+  ],
+  "sure": [
+    {
+      "df": 1,
+      "token": "sure"
+    }
+  ],
+  "surg": [
+    {
+      "df": 2,
+      "token": "surgery"
+    }
+  ],
+  "surge": [
+    {
+      "df": 2,
+      "token": "surgery"
+    }
+  ],
+  "surger": [
+    {
+      "df": 2,
+      "token": "surgery"
+    }
+  ],
+  "surgery": [
+    {
+      "df": 2,
+      "token": "surgery"
+    }
+  ],
+  "surv": [
+    {
+      "df": 10,
+      "token": "survey"
+    },
+    {
+      "df": 1,
+      "token": "surveys"
+    }
+  ],
+  "surve": [
+    {
+      "df": 10,
+      "token": "survey"
+    },
+    {
+      "df": 1,
+      "token": "surveys"
+    }
+  ],
+  "survey": [
+    {
+      "df": 10,
+      "token": "survey"
+    },
+    {
+      "df": 1,
+      "token": "surveys"
+    }
+  ],
+  "surveys": [
+    {
+      "df": 1,
+      "token": "surveys"
+    }
+  ],
+  "sus": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ],
+  "susp": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ],
+  "suspe": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ],
+  "suspec": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ],
+  "suspect": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ],
+  "suspecte": [
+    {
+      "df": 1,
+      "token": "suspected"
+    }
+  ]
+}

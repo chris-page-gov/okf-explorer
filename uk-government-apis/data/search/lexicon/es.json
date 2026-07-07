@@ -1,0 +1,32 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "esmarspqhymw9bz9"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "establish"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "estimate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "estimate-completion-date"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "estimated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "estimated_completion_date"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a004"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a005"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a006"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a007"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a024"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a025"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "a043"
+  }
+]

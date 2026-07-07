@@ -1,0 +1,37 @@
+[
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "over"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "overall"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "overarching"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "overdose"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "overdue"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "override"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "overview"
+  }
+]

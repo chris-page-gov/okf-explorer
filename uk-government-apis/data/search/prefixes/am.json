@@ -1,0 +1,156 @@
+{
+  "amb": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ambu": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ambul": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ambula": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ambulan": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ambulanc": [
+    {
+      "df": 2,
+      "token": "ambulance"
+    },
+    {
+      "df": 1,
+      "token": "ambulance-data-submission-fhir"
+    }
+  ],
+  "ame": [
+    {
+      "df": 3,
+      "token": "amend"
+    },
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amen": [
+    {
+      "df": 3,
+      "token": "amend"
+    },
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amend": [
+    {
+      "df": 3,
+      "token": "amend"
+    },
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amendm": [
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amendme": [
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amendmen": [
+    {
+      "df": 2,
+      "token": "amendments"
+    }
+  ],
+  "amo": [
+    {
+      "df": 2,
+      "token": "amount"
+    },
+    {
+      "df": 1,
+      "token": "amounts"
+    }
+  ],
+  "amou": [
+    {
+      "df": 2,
+      "token": "amount"
+    },
+    {
+      "df": 1,
+      "token": "amounts"
+    }
+  ],
+  "amoun": [
+    {
+      "df": 2,
+      "token": "amount"
+    },
+    {
+      "df": 1,
+      "token": "amounts"
+    }
+  ],
+  "amount": [
+    {
+      "df": 2,
+      "token": "amount"
+    },
+    {
+      "df": 1,
+      "token": "amounts"
+    }
+  ],
+  "amounts": [
+    {
+      "df": 1,
+      "token": "amounts"
+    }
+  ]
+}

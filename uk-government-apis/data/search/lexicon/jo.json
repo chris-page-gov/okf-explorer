@@ -1,0 +1,22 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "job"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "jobmatch"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "jobs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "journey"
+  }
+]

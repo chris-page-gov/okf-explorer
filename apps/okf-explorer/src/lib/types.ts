@@ -66,6 +66,18 @@ export type LargeCorpusDescriptor = {
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
   source?: Record<string, unknown>;
+  vocabulary?: {
+    record_singular?: string;
+    record_plural?: string;
+    resource_singular?: string;
+    resource_plural?: string;
+    publisher_singular?: string;
+    publisher_plural?: string;
+    format_plural?: string;
+    resource_stack_label?: string;
+    search_placeholder?: string;
+    [key: string]: string | undefined;
+  };
 };
 
 export type LargeDataManifest = {
@@ -198,6 +210,13 @@ export type SearchResultDoc = {
   quality_score?: number;
   timestamp?: string;
   notes?: string;
+  context_note?: string;
+  endpoint_host?: string;
+  documentation_host?: string;
+  access_model?: string;
+  contract_status?: string;
+  documentation?: string;
+  url?: string;
   open: string;
   score?: number;
 };

@@ -1,0 +1,47 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-document"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "edischarge"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "edocumentregistrationv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "edocumentregistrationv2_1webservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "edr"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "edrs"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "education"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "education-and-skills"
+  }
+]

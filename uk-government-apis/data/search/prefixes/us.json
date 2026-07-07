@@ -1,0 +1,344 @@
+{
+  "us.": [
+    {
+      "df": 1,
+      "token": "us.for"
+    },
+    {
+      "df": 1,
+      "token": "us.this"
+    }
+  ],
+  "us.f": [
+    {
+      "df": 1,
+      "token": "us.for"
+    }
+  ],
+  "us.fo": [
+    {
+      "df": 1,
+      "token": "us.for"
+    }
+  ],
+  "us.for": [
+    {
+      "df": 1,
+      "token": "us.for"
+    }
+  ],
+  "us.t": [
+    {
+      "df": 1,
+      "token": "us.this"
+    }
+  ],
+  "us.th": [
+    {
+      "df": 1,
+      "token": "us.this"
+    }
+  ],
+  "us.thi": [
+    {
+      "df": 1,
+      "token": "us.this"
+    }
+  ],
+  "us.this": [
+    {
+      "df": 1,
+      "token": "us.this"
+    }
+  ],
+  "usa": [
+    {
+      "df": 2,
+      "token": "usage"
+    },
+    {
+      "df": 1,
+      "token": "usable"
+    }
+  ],
+  "usab": [
+    {
+      "df": 1,
+      "token": "usable"
+    }
+  ],
+  "usabl": [
+    {
+      "df": 1,
+      "token": "usable"
+    }
+  ],
+  "usable": [
+    {
+      "df": 1,
+      "token": "usable"
+    }
+  ],
+  "usag": [
+    {
+      "df": 2,
+      "token": "usage"
+    }
+  ],
+  "usage": [
+    {
+      "df": 2,
+      "token": "usage"
+    }
+  ],
+  "use": [
+    {
+      "df": 129,
+      "token": "use"
+    },
+    {
+      "df": 35,
+      "token": "uses"
+    },
+    {
+      "df": 27,
+      "token": "used"
+    },
+    {
+      "df": 23,
+      "token": "user"
+    },
+    {
+      "df": 23,
+      "token": "users"
+    },
+    {
+      "df": 4,
+      "token": "useful"
+    },
+    {
+      "df": 3,
+      "token": "user-restricted"
+    },
+    {
+      "df": 1,
+      "token": "usedyou"
+    },
+    {
+      "df": 1,
+      "token": "user-defined"
+    },
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "used": [
+    {
+      "df": 27,
+      "token": "used"
+    },
+    {
+      "df": 1,
+      "token": "usedyou"
+    }
+  ],
+  "usedy": [
+    {
+      "df": 1,
+      "token": "usedyou"
+    }
+  ],
+  "usedyo": [
+    {
+      "df": 1,
+      "token": "usedyou"
+    }
+  ],
+  "usedyou": [
+    {
+      "df": 1,
+      "token": "usedyou"
+    }
+  ],
+  "usef": [
+    {
+      "df": 4,
+      "token": "useful"
+    }
+  ],
+  "usefu": [
+    {
+      "df": 4,
+      "token": "useful"
+    }
+  ],
+  "useful": [
+    {
+      "df": 4,
+      "token": "useful"
+    }
+  ],
+  "user": [
+    {
+      "df": 23,
+      "token": "user"
+    },
+    {
+      "df": 23,
+      "token": "users"
+    },
+    {
+      "df": 3,
+      "token": "user-restricted"
+    },
+    {
+      "df": 1,
+      "token": "user-defined"
+    },
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "user-": [
+    {
+      "df": 3,
+      "token": "user-restricted"
+    },
+    {
+      "df": 1,
+      "token": "user-defined"
+    }
+  ],
+  "user-d": [
+    {
+      "df": 1,
+      "token": "user-defined"
+    }
+  ],
+  "user-de": [
+    {
+      "df": 1,
+      "token": "user-defined"
+    }
+  ],
+  "user-def": [
+    {
+      "df": 1,
+      "token": "user-defined"
+    }
+  ],
+  "user-r": [
+    {
+      "df": 3,
+      "token": "user-restricted"
+    }
+  ],
+  "user-re": [
+    {
+      "df": 3,
+      "token": "user-restricted"
+    }
+  ],
+  "user-res": [
+    {
+      "df": 3,
+      "token": "user-restricted"
+    }
+  ],
+  "users": [
+    {
+      "df": 23,
+      "token": "users"
+    },
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "users.": [
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "users.y": [
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "users.yo": [
+    {
+      "df": 1,
+      "token": "users.you"
+    }
+  ],
+  "uses": [
+    {
+      "df": 35,
+      "token": "uses"
+    }
+  ],
+  "usi": [
+    {
+      "df": 54,
+      "token": "using"
+    }
+  ],
+  "usin": [
+    {
+      "df": 54,
+      "token": "using"
+    }
+  ],
+  "using": [
+    {
+      "df": 54,
+      "token": "using"
+    }
+  ],
+  "usr": [
+    {
+      "df": 1,
+      "token": "usrn"
+    }
+  ],
+  "usrn": [
+    {
+      "df": 1,
+      "token": "usrn"
+    }
+  ],
+  "usu": [
+    {
+      "df": 3,
+      "token": "usually"
+    }
+  ],
+  "usua": [
+    {
+      "df": 3,
+      "token": "usually"
+    }
+  ],
+  "usual": [
+    {
+      "df": 3,
+      "token": "usually"
+    }
+  ],
+  "usuall": [
+    {
+      "df": 3,
+      "token": "usually"
+    }
+  ],
+  "usually": [
+    {
+      "df": 3,
+      "token": "usually"
+    }
+  ]
+}

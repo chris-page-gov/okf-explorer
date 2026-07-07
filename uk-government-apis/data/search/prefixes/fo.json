@@ -1,0 +1,670 @@
+{
+  "fob": [
+    {
+      "df": 1,
+      "token": "fobt"
+    }
+  ],
+  "fobt": [
+    {
+      "df": 1,
+      "token": "fobt"
+    }
+  ],
+  "foc": [
+    {
+      "df": 1,
+      "token": "focus"
+    },
+    {
+      "df": 1,
+      "token": "focuses"
+    }
+  ],
+  "focu": [
+    {
+      "df": 1,
+      "token": "focus"
+    },
+    {
+      "df": 1,
+      "token": "focuses"
+    }
+  ],
+  "focus": [
+    {
+      "df": 1,
+      "token": "focus"
+    },
+    {
+      "df": 1,
+      "token": "focuses"
+    }
+  ],
+  "focuse": [
+    {
+      "df": 1,
+      "token": "focuses"
+    }
+  ],
+  "focuses": [
+    {
+      "df": 1,
+      "token": "focuses"
+    }
+  ],
+  "fol": [
+    {
+      "df": 31,
+      "token": "following"
+    },
+    {
+      "df": 3,
+      "token": "follow"
+    },
+    {
+      "df": 1,
+      "token": "follows"
+    }
+  ],
+  "foll": [
+    {
+      "df": 31,
+      "token": "following"
+    },
+    {
+      "df": 3,
+      "token": "follow"
+    },
+    {
+      "df": 1,
+      "token": "follows"
+    }
+  ],
+  "follo": [
+    {
+      "df": 31,
+      "token": "following"
+    },
+    {
+      "df": 3,
+      "token": "follow"
+    },
+    {
+      "df": 1,
+      "token": "follows"
+    }
+  ],
+  "follow": [
+    {
+      "df": 31,
+      "token": "following"
+    },
+    {
+      "df": 3,
+      "token": "follow"
+    },
+    {
+      "df": 1,
+      "token": "follows"
+    }
+  ],
+  "followi": [
+    {
+      "df": 31,
+      "token": "following"
+    }
+  ],
+  "followin": [
+    {
+      "df": 31,
+      "token": "following"
+    }
+  ],
+  "follows": [
+    {
+      "df": 1,
+      "token": "follows"
+    }
+  ],
+  "foo": [
+    {
+      "df": 2,
+      "token": "food"
+    },
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "food": [
+    {
+      "df": 2,
+      "token": "food"
+    },
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "food-": [
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "food-a": [
+    {
+      "df": 1,
+      "token": "food-alerts"
+    }
+  ],
+  "food-al": [
+    {
+      "df": 1,
+      "token": "food-alerts"
+    }
+  ],
+  "food-ale": [
+    {
+      "df": 1,
+      "token": "food-alerts"
+    }
+  ],
+  "food-s": [
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "food-st": [
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "food-sta": [
+    {
+      "df": 2,
+      "token": "food-standards-agency"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-alerts"
+    },
+    {
+      "df": 1,
+      "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+    }
+  ],
+  "for": [
+    {
+      "df": 20,
+      "token": "format"
+    },
+    {
+      "df": 5,
+      "token": "forwards"
+    },
+    {
+      "df": 3,
+      "token": "force"
+    },
+    {
+      "df": 3,
+      "token": "form"
+    },
+    {
+      "df": 3,
+      "token": "forms"
+    },
+    {
+      "df": 2,
+      "token": "formats"
+    },
+    {
+      "df": 2,
+      "token": "formerly"
+    },
+    {
+      "df": 1,
+      "token": "forecasting"
+    },
+    {
+      "df": 1,
+      "token": "formal"
+    },
+    {
+      "df": 1,
+      "token": "formally"
+    },
+    {
+      "df": 1,
+      "token": "formgos5"
+    },
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    },
+    {
+      "df": 1,
+      "token": "forward"
+    }
+  ],
+  "forc": [
+    {
+      "df": 3,
+      "token": "force"
+    }
+  ],
+  "force": [
+    {
+      "df": 3,
+      "token": "force"
+    }
+  ],
+  "fore": [
+    {
+      "df": 1,
+      "token": "forecasting"
+    }
+  ],
+  "forec": [
+    {
+      "df": 1,
+      "token": "forecasting"
+    }
+  ],
+  "foreca": [
+    {
+      "df": 1,
+      "token": "forecasting"
+    }
+  ],
+  "forecas": [
+    {
+      "df": 1,
+      "token": "forecasting"
+    }
+  ],
+  "forecast": [
+    {
+      "df": 1,
+      "token": "forecasting"
+    }
+  ],
+  "form": [
+    {
+      "df": 20,
+      "token": "format"
+    },
+    {
+      "df": 3,
+      "token": "form"
+    },
+    {
+      "df": 3,
+      "token": "forms"
+    },
+    {
+      "df": 2,
+      "token": "formats"
+    },
+    {
+      "df": 2,
+      "token": "formerly"
+    },
+    {
+      "df": 1,
+      "token": "formal"
+    },
+    {
+      "df": 1,
+      "token": "formally"
+    },
+    {
+      "df": 1,
+      "token": "formgos5"
+    },
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    }
+  ],
+  "forma": [
+    {
+      "df": 20,
+      "token": "format"
+    },
+    {
+      "df": 2,
+      "token": "formats"
+    },
+    {
+      "df": 1,
+      "token": "formal"
+    },
+    {
+      "df": 1,
+      "token": "formally"
+    }
+  ],
+  "formal": [
+    {
+      "df": 1,
+      "token": "formal"
+    },
+    {
+      "df": 1,
+      "token": "formally"
+    }
+  ],
+  "formall": [
+    {
+      "df": 1,
+      "token": "formally"
+    }
+  ],
+  "formally": [
+    {
+      "df": 1,
+      "token": "formally"
+    }
+  ],
+  "format": [
+    {
+      "df": 20,
+      "token": "format"
+    },
+    {
+      "df": 2,
+      "token": "formats"
+    }
+  ],
+  "formats": [
+    {
+      "df": 2,
+      "token": "formats"
+    }
+  ],
+  "forme": [
+    {
+      "df": 2,
+      "token": "formerly"
+    }
+  ],
+  "former": [
+    {
+      "df": 2,
+      "token": "formerly"
+    }
+  ],
+  "formerl": [
+    {
+      "df": 2,
+      "token": "formerly"
+    }
+  ],
+  "formerly": [
+    {
+      "df": 2,
+      "token": "formerly"
+    }
+  ],
+  "formg": [
+    {
+      "df": 1,
+      "token": "formgos5"
+    }
+  ],
+  "formgo": [
+    {
+      "df": 1,
+      "token": "formgos5"
+    }
+  ],
+  "formgos": [
+    {
+      "df": 1,
+      "token": "formgos5"
+    }
+  ],
+  "formgos5": [
+    {
+      "df": 1,
+      "token": "formgos5"
+    }
+  ],
+  "forms": [
+    {
+      "df": 3,
+      "token": "forms"
+    },
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    }
+  ],
+  "forms.": [
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    }
+  ],
+  "forms.g": [
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    }
+  ],
+  "forms.go": [
+    {
+      "df": 1,
+      "token": "forms.gos1"
+    }
+  ],
+  "forw": [
+    {
+      "df": 5,
+      "token": "forwards"
+    },
+    {
+      "df": 1,
+      "token": "forward"
+    }
+  ],
+  "forwa": [
+    {
+      "df": 5,
+      "token": "forwards"
+    },
+    {
+      "df": 1,
+      "token": "forward"
+    }
+  ],
+  "forwar": [
+    {
+      "df": 5,
+      "token": "forwards"
+    },
+    {
+      "df": 1,
+      "token": "forward"
+    }
+  ],
+  "forward": [
+    {
+      "df": 5,
+      "token": "forwards"
+    },
+    {
+      "df": 1,
+      "token": "forward"
+    }
+  ],
+  "forwards": [
+    {
+      "df": 5,
+      "token": "forwards"
+    }
+  ],
+  "fou": [
+    {
+      "df": 7,
+      "token": "found"
+    },
+    {
+      "df": 2,
+      "token": "four"
+    },
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    },
+    {
+      "df": 1,
+      "token": "foundry"
+    }
+  ],
+  "foun": [
+    {
+      "df": 7,
+      "token": "found"
+    },
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    },
+    {
+      "df": 1,
+      "token": "foundry"
+    }
+  ],
+  "found": [
+    {
+      "df": 7,
+      "token": "found"
+    },
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    },
+    {
+      "df": 1,
+      "token": "foundry"
+    }
+  ],
+  "founda": [
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    }
+  ],
+  "foundat": [
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    }
+  ],
+  "foundati": [
+    {
+      "df": 1,
+      "token": "foundation"
+    },
+    {
+      "df": 1,
+      "token": "foundations"
+    }
+  ],
+  "foundr": [
+    {
+      "df": 1,
+      "token": "foundry"
+    }
+  ],
+  "foundry": [
+    {
+      "df": 1,
+      "token": "foundry"
+    }
+  ],
+  "four": [
+    {
+      "df": 2,
+      "token": "four"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "arcgis"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "archaeological"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "archaeology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "architects"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "architectural"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "archive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "archives"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "area"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "areas"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "around"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "arrangement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "arrival"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "arrive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "arrived"
+  }
+]

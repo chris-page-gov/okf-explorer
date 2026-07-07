@@ -1,0 +1,27 @@
+[
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "own"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "owned"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "owner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "owners"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ownership"
+  }
+]

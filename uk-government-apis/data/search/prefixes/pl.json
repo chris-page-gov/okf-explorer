@@ -1,0 +1,238 @@
+{
+  "pla": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    },
+    {
+      "df": 12,
+      "token": "platform"
+    },
+    {
+      "df": 3,
+      "token": "places"
+    },
+    {
+      "df": 3,
+      "token": "plan"
+    },
+    {
+      "df": 3,
+      "token": "plans"
+    },
+    {
+      "df": 2,
+      "token": "place"
+    },
+    {
+      "df": 2,
+      "token": "planned"
+    },
+    {
+      "df": 1,
+      "token": "planfor"
+    }
+  ],
+  "plac": [
+    {
+      "df": 3,
+      "token": "places"
+    },
+    {
+      "df": 2,
+      "token": "place"
+    }
+  ],
+  "place": [
+    {
+      "df": 3,
+      "token": "places"
+    },
+    {
+      "df": 2,
+      "token": "place"
+    }
+  ],
+  "places": [
+    {
+      "df": 3,
+      "token": "places"
+    }
+  ],
+  "plan": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    },
+    {
+      "df": 3,
+      "token": "plan"
+    },
+    {
+      "df": 3,
+      "token": "plans"
+    },
+    {
+      "df": 2,
+      "token": "planned"
+    },
+    {
+      "df": 1,
+      "token": "planfor"
+    }
+  ],
+  "planf": [
+    {
+      "df": 1,
+      "token": "planfor"
+    }
+  ],
+  "planfo": [
+    {
+      "df": 1,
+      "token": "planfor"
+    }
+  ],
+  "planfor": [
+    {
+      "df": 1,
+      "token": "planfor"
+    }
+  ],
+  "plann": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    },
+    {
+      "df": 2,
+      "token": "planned"
+    }
+  ],
+  "planne": [
+    {
+      "df": 2,
+      "token": "planned"
+    }
+  ],
+  "planned": [
+    {
+      "df": 2,
+      "token": "planned"
+    }
+  ],
+  "planni": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    }
+  ],
+  "plannin": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    }
+  ],
+  "planning": [
+    {
+      "df": 55,
+      "token": "planning"
+    },
+    {
+      "df": 55,
+      "token": "planning-and-property"
+    }
+  ],
+  "plans": [
+    {
+      "df": 3,
+      "token": "plans"
+    }
+  ],
+  "plat": [
+    {
+      "df": 12,
+      "token": "platform"
+    }
+  ],
+  "platf": [
+    {
+      "df": 12,
+      "token": "platform"
+    }
+  ],
+  "platfo": [
+    {
+      "df": 12,
+      "token": "platform"
+    }
+  ],
+  "platfor": [
+    {
+      "df": 12,
+      "token": "platform"
+    }
+  ],
+  "platform": [
+    {
+      "df": 12,
+      "token": "platform"
+    }
+  ],
+  "ple": [
+    {
+      "df": 12,
+      "token": "please"
+    }
+  ],
+  "plea": [
+    {
+      "df": 12,
+      "token": "please"
+    }
+  ],
+  "pleas": [
+    {
+      "df": 12,
+      "token": "please"
+    }
+  ],
+  "please": [
+    {
+      "df": 12,
+      "token": "please"
+    }
+  ],
+  "plu": [
+    {
+      "df": 4,
+      "token": "plus"
+    }
+  ],
+  "plus": [
+    {
+      "df": 4,
+      "token": "plus"
+    }
+  ]
+}

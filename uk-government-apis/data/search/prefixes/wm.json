@@ -1,0 +1,20 @@
+{
+  "wms": [
+    {
+      "df": 1,
+      "token": "wms"
+    }
+  ],
+  "wmt": [
+    {
+      "df": 1,
+      "token": "wmts"
+    }
+  ],
+  "wmts": [
+    {
+      "df": 1,
+      "token": "wmts"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "df": 45,
+    "postings": "data/search/postings-0.json",
+    "token": "gp"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-access-document-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-access-record-html-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-access-record-structured-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-appointment-management-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-patient-facing-access-record-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-patient-facing-appointment-management-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-patient-facing-prescriptions-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-patient-facing-user-permissions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-connect-send-document-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp-registrations-management-information"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "gp.this"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "gp2gp"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gp2gp-management-information-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gpes"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "gps"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gps.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gpsoc"
+  }
+]

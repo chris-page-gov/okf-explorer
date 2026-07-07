@@ -1,0 +1,167 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ex"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "examination"
+  },
+  {
+    "df": 35,
+    "postings": "data/search/postings-0.json",
+    "token": "example"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "examples"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "except"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "exchange"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exchangethe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "execute"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "executive"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exemptions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exist"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "existance"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "existing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "expanded"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "expands"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "expect"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "expenditure"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "experience"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "explained"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "explore"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "explore-education-statistics.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "explorer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exploring"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "export"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "exports"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "extended"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "extent"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "external"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "extra"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "extract"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "extraction"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "extractions"
+  }
+]

@@ -8,6 +8,7 @@ The Svelte OKF Explorer can load OKF bundles from this repository or from any
 other public HTTPS URL.
 
 - [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
+- [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
 - [Read the illustrated "make and publish your own OKF bundle" manual][manual]
 
 The CKAN example demonstrates the main no-install workflow: the Explorer is
@@ -15,6 +16,12 @@ hosted by this repository, while the bundle descriptor and generated data live
 in the separate
 [`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
 repository.
+
+The UK Government APIs exemplar is published as a large-corpus OKF descriptor:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+```
 
 To open your own public bundle, use this URL pattern:
 
@@ -46,6 +53,8 @@ The repository contains:
 - `okf-bundle.json` - generated bundle consumed by the explorer.
 - `okf-registry.json` - starter registry for discoverable bundles and Bundle
   URL suggestions.
+- `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
+  GOV.UK API Catalogue.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
@@ -112,6 +121,7 @@ until the public cutover is made deliberately.
 ## Validate And Build
 
 ```sh
+python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
@@ -121,12 +131,19 @@ python3 scripts/build_site.py
 The build writes a GitHub Pages-ready static site to `_site/`. The site uses
 the compatibility OKF Explorer as `index.html`, publishes `okf-bundle.json`,
 preserves `viewer.html` and `view.html`, publishes the Svelte Explorer under
-`next/` when built, and copies the public OKF Markdown corpus beside it.
+`next/` when built, publishes the UK Government APIs large-corpus descriptor,
+and copies the public OKF Markdown corpus beside it.
 
 To regenerate the explorer bundle after Markdown changes:
 
 ```sh
 python3 scripts/build_okf_bundle.py
+```
+
+To regenerate the UK Government APIs exemplar from the official catalogue CSV:
+
+```sh
+python3 scripts/build_uk_government_api_okf.py
 ```
 
 ## License
@@ -144,4 +161,5 @@ The included workflow publishes the static site from `_site/` when pushed to
 Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 [manual]: docs/use-okf-explorer.md

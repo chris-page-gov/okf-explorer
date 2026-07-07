@@ -1,0 +1,446 @@
+{
+  "bra": [
+    {
+      "df": 1,
+      "token": "brand"
+    },
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "bran": [
+    {
+      "df": 1,
+      "token": "brand"
+    },
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "brand": [
+    {
+      "df": 1,
+      "token": "brand"
+    },
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "brandi": [
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "brandin": [
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "branding": [
+    {
+      "df": 1,
+      "token": "branding"
+    }
+  ],
+  "bre": [
+    {
+      "df": 1,
+      "token": "breaches"
+    },
+    {
+      "df": 1,
+      "token": "breaking"
+    },
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    },
+    {
+      "df": 1,
+      "token": "breeze"
+    }
+  ],
+  "brea": [
+    {
+      "df": 1,
+      "token": "breaches"
+    },
+    {
+      "df": 1,
+      "token": "breaking"
+    },
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    }
+  ],
+  "breac": [
+    {
+      "df": 1,
+      "token": "breaches"
+    }
+  ],
+  "breach": [
+    {
+      "df": 1,
+      "token": "breaches"
+    }
+  ],
+  "breache": [
+    {
+      "df": 1,
+      "token": "breaches"
+    }
+  ],
+  "breaches": [
+    {
+      "df": 1,
+      "token": "breaches"
+    }
+  ],
+  "break": [
+    {
+      "df": 1,
+      "token": "breaking"
+    }
+  ],
+  "breaki": [
+    {
+      "df": 1,
+      "token": "breaking"
+    }
+  ],
+  "breakin": [
+    {
+      "df": 1,
+      "token": "breaking"
+    }
+  ],
+  "breaking": [
+    {
+      "df": 1,
+      "token": "breaking"
+    }
+  ],
+  "breat": [
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    }
+  ],
+  "breath": [
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    }
+  ],
+  "breathi": [
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    }
+  ],
+  "breathin": [
+    {
+      "df": 1,
+      "token": "breathing"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space"
+    },
+    {
+      "df": 1,
+      "token": "breathing-space-scheme"
+    }
+  ],
+  "bree": [
+    {
+      "df": 1,
+      "token": "breeze"
+    }
+  ],
+  "breez": [
+    {
+      "df": 1,
+      "token": "breeze"
+    }
+  ],
+  "breeze": [
+    {
+      "df": 1,
+      "token": "breeze"
+    }
+  ],
+  "bri": [
+    {
+      "df": 3,
+      "token": "british"
+    },
+    {
+      "df": 1,
+      "token": "bring"
+    },
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "brin": [
+    {
+      "df": 1,
+      "token": "bring"
+    }
+  ],
+  "bring": [
+    {
+      "df": 1,
+      "token": "bring"
+    }
+  ],
+  "brit": [
+    {
+      "df": 3,
+      "token": "british"
+    },
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "briti": [
+    {
+      "df": 3,
+      "token": "british"
+    },
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "britis": [
+    {
+      "df": 3,
+      "token": "british"
+    },
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "british": [
+    {
+      "df": 3,
+      "token": "british"
+    },
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "britishg": [
+    {
+      "df": 1,
+      "token": "britishgeologicalsurvey"
+    }
+  ],
+  "bro": [
+    {
+      "df": 2,
+      "token": "broken"
+    },
+    {
+      "df": 1,
+      "token": "broker"
+    },
+    {
+      "df": 1,
+      "token": "brokered"
+    },
+    {
+      "df": 1,
+      "token": "brokers"
+    },
+    {
+      "df": 1,
+      "token": "brought"
+    },
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ],
+  "brok": [
+    {
+      "df": 2,
+      "token": "broken"
+    },
+    {
+      "df": 1,
+      "token": "broker"
+    },
+    {
+      "df": 1,
+      "token": "brokered"
+    },
+    {
+      "df": 1,
+      "token": "brokers"
+    }
+  ],
+  "broke": [
+    {
+      "df": 2,
+      "token": "broken"
+    },
+    {
+      "df": 1,
+      "token": "broker"
+    },
+    {
+      "df": 1,
+      "token": "brokered"
+    },
+    {
+      "df": 1,
+      "token": "brokers"
+    }
+  ],
+  "broken": [
+    {
+      "df": 2,
+      "token": "broken"
+    }
+  ],
+  "broker": [
+    {
+      "df": 1,
+      "token": "broker"
+    },
+    {
+      "df": 1,
+      "token": "brokered"
+    },
+    {
+      "df": 1,
+      "token": "brokers"
+    }
+  ],
+  "brokere": [
+    {
+      "df": 1,
+      "token": "brokered"
+    }
+  ],
+  "brokered": [
+    {
+      "df": 1,
+      "token": "brokered"
+    }
+  ],
+  "brokers": [
+    {
+      "df": 1,
+      "token": "brokers"
+    }
+  ],
+  "brou": [
+    {
+      "df": 1,
+      "token": "brought"
+    }
+  ],
+  "broug": [
+    {
+      "df": 1,
+      "token": "brought"
+    }
+  ],
+  "brough": [
+    {
+      "df": 1,
+      "token": "brought"
+    }
+  ],
+  "brought": [
+    {
+      "df": 1,
+      "token": "brought"
+    }
+  ],
+  "brow": [
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ],
+  "brows": [
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ],
+  "browsi": [
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ],
+  "browsin": [
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ],
+  "browsing": [
+    {
+      "df": 1,
+      "token": "browsing"
+    }
+  ]
+}

@@ -1,0 +1,598 @@
+{
+  "ora": [
+    {
+      "df": 1,
+      "token": "oracle"
+    }
+  ],
+  "orac": [
+    {
+      "df": 1,
+      "token": "oracle"
+    }
+  ],
+  "oracl": [
+    {
+      "df": 1,
+      "token": "oracle"
+    }
+  ],
+  "oracle": [
+    {
+      "df": 1,
+      "token": "oracle"
+    }
+  ],
+  "ord": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 7,
+      "token": "order"
+    },
+    {
+      "df": 2,
+      "token": "ord"
+    },
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "ord-": [
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    }
+  ],
+  "ord-c": [
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    }
+  ],
+  "ord-co": [
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    }
+  ],
+  "ord-com": [
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    }
+  ],
+  "ord-comp": [
+    {
+      "df": 1,
+      "token": "ord-compatible"
+    }
+  ],
+  "orde": [
+    {
+      "df": 7,
+      "token": "order"
+    }
+  ],
+  "order": [
+    {
+      "df": 7,
+      "token": "order"
+    }
+  ],
+  "ordn": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "ordna": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "ordnan": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "ordnanc": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "ordnance": [
+    {
+      "df": 10,
+      "token": "ordnance"
+    },
+    {
+      "df": 8,
+      "token": "ordnance-survey"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-download-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-features-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-linked-identifiers-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-maps-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-names-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-oauth-2-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-places-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-os-vector-tile-api"
+    },
+    {
+      "df": 1,
+      "token": "ordnance-survey-places-api"
+    }
+  ],
+  "org": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 2,
+      "token": "organised"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "orga": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 2,
+      "token": "organised"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "organ": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 2,
+      "token": "organised"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "organi": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 2,
+      "token": "organised"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "organis": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 2,
+      "token": "organised"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "organisa": [
+    {
+      "df": 22,
+      "token": "organisations"
+    },
+    {
+      "df": 11,
+      "token": "organisation"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "organisation-data-service-ord"
+    },
+    {
+      "df": 1,
+      "token": "organisations.you"
+    }
+  ],
+  "organise": [
+    {
+      "df": 2,
+      "token": "organised"
+    }
+  ],
+  "ori": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ],
+  "orig": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ],
+  "origi": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ],
+  "origin": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ],
+  "origina": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ],
+  "original": [
+    {
+      "df": 1,
+      "token": "original"
+    },
+    {
+      "df": 1,
+      "token": "originally"
+    },
+    {
+      "df": 1,
+      "token": "originals"
+    }
+  ]
+}

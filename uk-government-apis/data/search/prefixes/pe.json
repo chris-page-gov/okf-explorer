@@ -1,0 +1,568 @@
+{
+  "pen": [
+    {
+      "df": 13,
+      "token": "pensions"
+    },
+    {
+      "df": 3,
+      "token": "pension"
+    },
+    {
+      "df": 1,
+      "token": "pending"
+    }
+  ],
+  "pend": [
+    {
+      "df": 1,
+      "token": "pending"
+    }
+  ],
+  "pendi": [
+    {
+      "df": 1,
+      "token": "pending"
+    }
+  ],
+  "pendin": [
+    {
+      "df": 1,
+      "token": "pending"
+    }
+  ],
+  "pending": [
+    {
+      "df": 1,
+      "token": "pending"
+    }
+  ],
+  "pens": [
+    {
+      "df": 13,
+      "token": "pensions"
+    },
+    {
+      "df": 3,
+      "token": "pension"
+    }
+  ],
+  "pensi": [
+    {
+      "df": 13,
+      "token": "pensions"
+    },
+    {
+      "df": 3,
+      "token": "pension"
+    }
+  ],
+  "pensio": [
+    {
+      "df": 13,
+      "token": "pensions"
+    },
+    {
+      "df": 3,
+      "token": "pension"
+    }
+  ],
+  "pension": [
+    {
+      "df": 13,
+      "token": "pensions"
+    },
+    {
+      "df": 3,
+      "token": "pension"
+    }
+  ],
+  "pensions": [
+    {
+      "df": 13,
+      "token": "pensions"
+    }
+  ],
+  "peo": [
+    {
+      "df": 7,
+      "token": "people"
+    },
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "peop": [
+    {
+      "df": 7,
+      "token": "people"
+    },
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "peopl": [
+    {
+      "df": 7,
+      "token": "people"
+    },
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "people": [
+    {
+      "df": 7,
+      "token": "people"
+    },
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "peoplea": [
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "peopleac": [
+    {
+      "df": 1,
+      "token": "peopleaccredited"
+    }
+  ],
+  "per": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 6,
+      "token": "period"
+    },
+    {
+      "df": 5,
+      "token": "per"
+    },
+    {
+      "df": 4,
+      "token": "person"
+    },
+    {
+      "df": 2,
+      "token": "permissions"
+    },
+    {
+      "df": 1,
+      "token": "perfect"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    },
+    {
+      "df": 1,
+      "token": "performing"
+    },
+    {
+      "df": 1,
+      "token": "period.this"
+    },
+    {
+      "df": 1,
+      "token": "periods"
+    },
+    {
+      "df": 1,
+      "token": "permit"
+    },
+    {
+      "df": 1,
+      "token": "permitting"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    }
+  ],
+  "perf": [
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 1,
+      "token": "perfect"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    },
+    {
+      "df": 1,
+      "token": "performing"
+    }
+  ],
+  "perfe": [
+    {
+      "df": 1,
+      "token": "perfect"
+    }
+  ],
+  "perfec": [
+    {
+      "df": 1,
+      "token": "perfect"
+    }
+  ],
+  "perfect": [
+    {
+      "df": 1,
+      "token": "perfect"
+    }
+  ],
+  "perfo": [
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    },
+    {
+      "df": 1,
+      "token": "performing"
+    }
+  ],
+  "perfor": [
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    },
+    {
+      "df": 1,
+      "token": "performing"
+    }
+  ],
+  "perform": [
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    },
+    {
+      "df": 1,
+      "token": "performing"
+    }
+  ],
+  "performa": [
+    {
+      "df": 10,
+      "token": "performance"
+    },
+    {
+      "df": 1,
+      "token": "performancefor"
+    }
+  ],
+  "performi": [
+    {
+      "df": 1,
+      "token": "performing"
+    }
+  ],
+  "peri": [
+    {
+      "df": 6,
+      "token": "period"
+    },
+    {
+      "df": 1,
+      "token": "period.this"
+    },
+    {
+      "df": 1,
+      "token": "periods"
+    }
+  ],
+  "perio": [
+    {
+      "df": 6,
+      "token": "period"
+    },
+    {
+      "df": 1,
+      "token": "period.this"
+    },
+    {
+      "df": 1,
+      "token": "periods"
+    }
+  ],
+  "period": [
+    {
+      "df": 6,
+      "token": "period"
+    },
+    {
+      "df": 1,
+      "token": "period.this"
+    },
+    {
+      "df": 1,
+      "token": "periods"
+    }
+  ],
+  "period.": [
+    {
+      "df": 1,
+      "token": "period.this"
+    }
+  ],
+  "period.t": [
+    {
+      "df": 1,
+      "token": "period.this"
+    }
+  ],
+  "periods": [
+    {
+      "df": 1,
+      "token": "periods"
+    }
+  ],
+  "perm": [
+    {
+      "df": 2,
+      "token": "permissions"
+    },
+    {
+      "df": 1,
+      "token": "permit"
+    },
+    {
+      "df": 1,
+      "token": "permitting"
+    }
+  ],
+  "permi": [
+    {
+      "df": 2,
+      "token": "permissions"
+    },
+    {
+      "df": 1,
+      "token": "permit"
+    },
+    {
+      "df": 1,
+      "token": "permitting"
+    }
+  ],
+  "permis": [
+    {
+      "df": 2,
+      "token": "permissions"
+    }
+  ],
+  "permiss": [
+    {
+      "df": 2,
+      "token": "permissions"
+    }
+  ],
+  "permissi": [
+    {
+      "df": 2,
+      "token": "permissions"
+    }
+  ],
+  "permit": [
+    {
+      "df": 1,
+      "token": "permit"
+    },
+    {
+      "df": 1,
+      "token": "permitting"
+    }
+  ],
+  "permitt": [
+    {
+      "df": 1,
+      "token": "permitting"
+    }
+  ],
+  "permitti": [
+    {
+      "df": 1,
+      "token": "permitting"
+    }
+  ],
+  "pers": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 4,
+      "token": "person"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-notifications-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-smsp"
+    }
+  ],
+  "perso": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 4,
+      "token": "person"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-notifications-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-smsp"
+    }
+  ],
+  "person": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 4,
+      "token": "person"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-notifications-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-smsp"
+    }
+  ],
+  "persona": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-notifications-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-smsp"
+    }
+  ],
+  "personal": [
+    {
+      "df": 15,
+      "token": "personal"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographic-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-notifications-fhir"
+    },
+    {
+      "df": 1,
+      "token": "personal-demographics-service-smsp"
+    }
+  ]
+}

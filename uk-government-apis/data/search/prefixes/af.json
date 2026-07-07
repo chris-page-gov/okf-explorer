@@ -1,0 +1,44 @@
+{
+  "aff": [
+    {
+      "df": 1,
+      "token": "affect"
+    }
+  ],
+  "affe": [
+    {
+      "df": 1,
+      "token": "affect"
+    }
+  ],
+  "affec": [
+    {
+      "df": 1,
+      "token": "affect"
+    }
+  ],
+  "affect": [
+    {
+      "df": 1,
+      "token": "affect"
+    }
+  ],
+  "aft": [
+    {
+      "df": 5,
+      "token": "after"
+    }
+  ],
+  "afte": [
+    {
+      "df": 5,
+      "token": "after"
+    }
+  ],
+  "after": [
+    {
+      "df": 5,
+      "token": "after"
+    }
+  ]
+}

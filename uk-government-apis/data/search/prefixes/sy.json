@@ -1,0 +1,276 @@
+{
+  "sym": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "symp": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "sympt": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "sympto": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "symptom": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "symptoms": [
+    {
+      "df": 2,
+      "token": "symptoms"
+    }
+  ],
+  "syn": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    },
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    },
+    {
+      "df": 1,
+      "token": "syntax"
+    }
+  ],
+  "sync": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    }
+  ],
+  "synch": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    }
+  ],
+  "synchr": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    }
+  ],
+  "synchro": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    }
+  ],
+  "synchron": [
+    {
+      "df": 2,
+      "token": "synchronise"
+    }
+  ],
+  "synd": [
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    }
+  ],
+  "syndi": [
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    }
+  ],
+  "syndic": [
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    }
+  ],
+  "syndica": [
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    }
+  ],
+  "syndicat": [
+    {
+      "df": 2,
+      "token": "syndicated"
+    },
+    {
+      "df": 1,
+      "token": "syndicate"
+    },
+    {
+      "df": 1,
+      "token": "syndication"
+    }
+  ],
+  "synt": [
+    {
+      "df": 1,
+      "token": "syntax"
+    }
+  ],
+  "synta": [
+    {
+      "df": 1,
+      "token": "syntax"
+    }
+  ],
+  "syntax": [
+    {
+      "df": 1,
+      "token": "syntax"
+    }
+  ],
+  "sys": [
+    {
+      "df": 35,
+      "token": "system"
+    },
+    {
+      "df": 26,
+      "token": "systems"
+    },
+    {
+      "df": 1,
+      "token": "systems.you"
+    },
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ],
+  "syst": [
+    {
+      "df": 35,
+      "token": "system"
+    },
+    {
+      "df": 26,
+      "token": "systems"
+    },
+    {
+      "df": 1,
+      "token": "systems.you"
+    },
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ],
+  "syste": [
+    {
+      "df": 35,
+      "token": "system"
+    },
+    {
+      "df": 26,
+      "token": "systems"
+    },
+    {
+      "df": 1,
+      "token": "systems.you"
+    },
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ],
+  "system": [
+    {
+      "df": 35,
+      "token": "system"
+    },
+    {
+      "df": 26,
+      "token": "systems"
+    },
+    {
+      "df": 1,
+      "token": "systems.you"
+    },
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ],
+  "systems": [
+    {
+      "df": 26,
+      "token": "systems"
+    },
+    {
+      "df": 1,
+      "token": "systems.you"
+    },
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ],
+  "systems.": [
+    {
+      "df": 1,
+      "token": "systems.you"
+    }
+  ],
+  "systemsf": [
+    {
+      "df": 1,
+      "token": "systemsfor"
+    }
+  ]
+}

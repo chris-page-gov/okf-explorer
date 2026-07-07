@@ -1,0 +1,218 @@
+{
+  "cic": [
+    {
+      "df": 1,
+      "token": "cic"
+    }
+  ],
+  "cir": [
+    {
+      "df": 1,
+      "token": "circle"
+    },
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "circ": [
+    {
+      "df": 1,
+      "token": "circle"
+    },
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "circl": [
+    {
+      "df": 1,
+      "token": "circle"
+    }
+  ],
+  "circle": [
+    {
+      "df": 1,
+      "token": "circle"
+    }
+  ],
+  "circu": [
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "circum": [
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "circums": [
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "circumst": [
+    {
+      "df": 1,
+      "token": "circumstances"
+    }
+  ],
+  "cis": [
+    {
+      "df": 5,
+      "token": "cis"
+    },
+    {
+      "df": 3,
+      "token": "cis2"
+    },
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    },
+    {
+      "df": 1,
+      "token": "cis2.a"
+    }
+  ],
+  "cis-": [
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    }
+  ],
+  "cis-d": [
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    }
+  ],
+  "cis-de": [
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    }
+  ],
+  "cis-ded": [
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    }
+  ],
+  "cis-dedu": [
+    {
+      "df": 1,
+      "token": "cis-deductions-api"
+    }
+  ],
+  "cis2": [
+    {
+      "df": 3,
+      "token": "cis2"
+    },
+    {
+      "df": 1,
+      "token": "cis2.a"
+    }
+  ],
+  "cis2.": [
+    {
+      "df": 1,
+      "token": "cis2.a"
+    }
+  ],
+  "cis2.a": [
+    {
+      "df": 1,
+      "token": "cis2.a"
+    }
+  ],
+  "cit": [
+    {
+      "df": 5,
+      "token": "citizen"
+    },
+    {
+      "df": 4,
+      "token": "citizens"
+    },
+    {
+      "df": 2,
+      "token": "city"
+    }
+  ],
+  "citi": [
+    {
+      "df": 5,
+      "token": "citizen"
+    },
+    {
+      "df": 4,
+      "token": "citizens"
+    }
+  ],
+  "citiz": [
+    {
+      "df": 5,
+      "token": "citizen"
+    },
+    {
+      "df": 4,
+      "token": "citizens"
+    }
+  ],
+  "citize": [
+    {
+      "df": 5,
+      "token": "citizen"
+    },
+    {
+      "df": 4,
+      "token": "citizens"
+    }
+  ],
+  "citizen": [
+    {
+      "df": 5,
+      "token": "citizen"
+    },
+    {
+      "df": 4,
+      "token": "citizens"
+    }
+  ],
+  "citizens": [
+    {
+      "df": 4,
+      "token": "citizens"
+    }
+  ],
+  "city": [
+    {
+      "df": 2,
+      "token": "city"
+    }
+  ],
+  "civ": [
+    {
+      "df": 1,
+      "token": "civil"
+    }
+  ],
+  "civi": [
+    {
+      "df": 1,
+      "token": "civil"
+    }
+  ],
+  "civil": [
+    {
+      "df": 1,
+      "token": "civil"
+    }
+  ]
+}

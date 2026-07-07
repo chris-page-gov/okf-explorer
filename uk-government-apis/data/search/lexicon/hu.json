@@ -1,0 +1,27 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "hub"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "hubs"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "human"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hundreds"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "husband"
+  }
+]

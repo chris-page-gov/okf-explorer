@@ -1,0 +1,62 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "together"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "token"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "tokens"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "too"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "tool"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tool.if"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "tools"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "topologies"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "total"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "totals"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "towards"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "town"
+  }
+]

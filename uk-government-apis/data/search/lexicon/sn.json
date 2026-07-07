@@ -1,0 +1,22 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "snapshots"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "snomed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "snomed-ct"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "snomed-ct.to"
+  }
+]

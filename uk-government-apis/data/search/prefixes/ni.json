@@ -1,0 +1,84 @@
+{
+  "nif": [
+    {
+      "df": 4,
+      "token": "nif"
+    }
+  ],
+  "nim": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nimp": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nimpo": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nimpor": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nimport": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nimporta": [
+    {
+      "df": 1,
+      "token": "nimportant"
+    }
+  ],
+  "nin": [
+    {
+      "df": 2,
+      "token": "nin"
+    }
+  ],
+  "nip": [
+    {
+      "df": 1,
+      "token": "nipe"
+    }
+  ],
+  "nipe": [
+    {
+      "df": 1,
+      "token": "nipe"
+    }
+  ],
+  "nis": [
+    {
+      "df": 1,
+      "token": "nis"
+    }
+  ],
+  "nit": [
+    {
+      "df": 3,
+      "token": "nit"
+    },
+    {
+      "df": 1,
+      "token": "nits"
+    }
+  ],
+  "nits": [
+    {
+      "df": 1,
+      "token": "nits"
+    }
+  ]
+}

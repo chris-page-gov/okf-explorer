@@ -34,7 +34,9 @@ PUBLIC_DIRS = [
     "research",
     "stack",
     "standards",
+    "sources",
     "uk-government",
+    "uk-government-apis",
     "explorer",
     "docs",
 ]

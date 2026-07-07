@@ -30,15 +30,17 @@ Run these before publishing or cutting a release:
 
 ```sh
 cd apps/okf-explorer && pnpm install && pnpm check && pnpm build && cd ../..
+python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
 python3 scripts/build_site.py
 ```
 
-The Pages build includes the explorer app, generated OKF bundle, public OKF
-Markdown corpus, and legacy viewer, and excludes Word lock files, `.DS_Store`,
-Git internals, temporary files, and generated caches.
+The Pages build includes the explorer app, generated OKF bundle, UK Government
+APIs large-corpus exemplar, public OKF Markdown corpus, and legacy viewer, and
+excludes Word lock files, `.DS_Store`, Git internals, temporary files, and
+generated caches.
 
 ## Current Svelte Coverage
 

@@ -1,0 +1,27 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "10"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "10-digit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "100"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "1000"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "100m"
+  }
+]

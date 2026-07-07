@@ -1,0 +1,17 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cyber"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cyber-alerts-rest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cytology"
+  }
+]

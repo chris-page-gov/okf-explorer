@@ -1,0 +1,290 @@
+{
+  "www": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    },
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    },
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    },
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ],
+  "www.": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    },
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    },
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    },
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    },
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ],
+  "www.c": [
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    }
+  ],
+  "www.ce": [
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    }
+  ],
+  "www.cef": [
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    }
+  ],
+  "www.cefa": [
+    {
+      "df": 1,
+      "token": "www.cefas.co.uk"
+    }
+  ],
+  "www.e": [
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    }
+  ],
+  "www.ei": [
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    }
+  ],
+  "www.eio": [
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    }
+  ],
+  "www.eion": [
+    {
+      "df": 1,
+      "token": "www.eionet.europa.eu"
+    }
+  ],
+  "www.g": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    }
+  ],
+  "www.go": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    }
+  ],
+  "www.gov": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    }
+  ],
+  "www.gov.": [
+    {
+      "df": 7,
+      "token": "www.gov.uk"
+    }
+  ],
+  "www.n": [
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    }
+  ],
+  "www.na": [
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    }
+  ],
+  "www.nat": [
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    }
+  ],
+  "www.nati": [
+    {
+      "df": 1,
+      "token": "www.nationalarchives.gov.uk"
+    }
+  ],
+  "www.no": [
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    }
+  ],
+  "www.not": [
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    }
+  ],
+  "www.noti": [
+    {
+      "df": 1,
+      "token": "www.notifications.service.gov.uk"
+    }
+  ],
+  "www.o": [
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    }
+  ],
+  "www.og": [
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    }
+  ],
+  "www.ogc": [
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    }
+  ],
+  "www.ogc.": [
+    {
+      "df": 2,
+      "token": "www.ogc.org"
+    }
+  ],
+  "www.t": [
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    }
+  ],
+  "www.tr": [
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    }
+  ],
+  "www.tra": [
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    }
+  ],
+  "www.trad": [
+    {
+      "df": 1,
+      "token": "www.trade-tariff.service.gov.uk"
+    }
+  ],
+  "www.w": [
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    },
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ],
+  "www.w3": [
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    }
+  ],
+  "www.w3.": [
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    }
+  ],
+  "www.w3.o": [
+    {
+      "df": 1,
+      "token": "www.w3.org"
+    }
+  ],
+  "www.we": [
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ],
+  "www.wes": [
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ],
+  "www.west": [
+    {
+      "df": 1,
+      "token": "www.westberks.gov.uk"
+    }
+  ]
+}

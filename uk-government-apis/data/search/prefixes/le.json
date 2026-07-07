@@ -1,0 +1,436 @@
+{
+  "lea": [
+    {
+      "df": 3,
+      "token": "leases"
+    },
+    {
+      "df": 1,
+      "token": "lead"
+    },
+    {
+      "df": 1,
+      "token": "lease"
+    },
+    {
+      "df": 1,
+      "token": "leased"
+    },
+    {
+      "df": 1,
+      "token": "least"
+    },
+    {
+      "df": 1,
+      "token": "leave"
+    }
+  ],
+  "lead": [
+    {
+      "df": 1,
+      "token": "lead"
+    }
+  ],
+  "leas": [
+    {
+      "df": 3,
+      "token": "leases"
+    },
+    {
+      "df": 1,
+      "token": "lease"
+    },
+    {
+      "df": 1,
+      "token": "leased"
+    },
+    {
+      "df": 1,
+      "token": "least"
+    }
+  ],
+  "lease": [
+    {
+      "df": 3,
+      "token": "leases"
+    },
+    {
+      "df": 1,
+      "token": "lease"
+    },
+    {
+      "df": 1,
+      "token": "leased"
+    }
+  ],
+  "leased": [
+    {
+      "df": 1,
+      "token": "leased"
+    }
+  ],
+  "leases": [
+    {
+      "df": 3,
+      "token": "leases"
+    }
+  ],
+  "least": [
+    {
+      "df": 1,
+      "token": "least"
+    }
+  ],
+  "leav": [
+    {
+      "df": 1,
+      "token": "leave"
+    }
+  ],
+  "leave": [
+    {
+      "df": 1,
+      "token": "leave"
+    }
+  ],
+  "led": [
+    {
+      "df": 2,
+      "token": "led"
+    }
+  ],
+  "lee": [
+    {
+      "df": 1,
+      "token": "leeds"
+    }
+  ],
+  "leed": [
+    {
+      "df": 1,
+      "token": "leeds"
+    }
+  ],
+  "leeds": [
+    {
+      "df": 1,
+      "token": "leeds"
+    }
+  ],
+  "leg": [
+    {
+      "df": 5,
+      "token": "legal"
+    },
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "lega": [
+    {
+      "df": 5,
+      "token": "legal"
+    }
+  ],
+  "legal": [
+    {
+      "df": 5,
+      "token": "legal"
+    }
+  ],
+  "legi": [
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "legis": [
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "legisl": [
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "legisla": [
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "legislat": [
+    {
+      "df": 1,
+      "token": "legislation"
+    },
+    {
+      "df": 1,
+      "token": "legislation.gov.uk"
+    }
+  ],
+  "len": [
+    {
+      "df": 3,
+      "token": "lenders"
+    }
+  ],
+  "lend": [
+    {
+      "df": 3,
+      "token": "lenders"
+    }
+  ],
+  "lende": [
+    {
+      "df": 3,
+      "token": "lenders"
+    }
+  ],
+  "lender": [
+    {
+      "df": 3,
+      "token": "lenders"
+    }
+  ],
+  "lenders": [
+    {
+      "df": 3,
+      "token": "lenders"
+    }
+  ],
+  "let": [
+    {
+      "df": 13,
+      "token": "let"
+    },
+    {
+      "df": 4,
+      "token": "letters"
+    },
+    {
+      "df": 3,
+      "token": "lets"
+    },
+    {
+      "df": 3,
+      "token": "letter"
+    }
+  ],
+  "lets": [
+    {
+      "df": 3,
+      "token": "lets"
+    }
+  ],
+  "lett": [
+    {
+      "df": 4,
+      "token": "letters"
+    },
+    {
+      "df": 3,
+      "token": "letter"
+    }
+  ],
+  "lette": [
+    {
+      "df": 4,
+      "token": "letters"
+    },
+    {
+      "df": 3,
+      "token": "letter"
+    }
+  ],
+  "letter": [
+    {
+      "df": 4,
+      "token": "letters"
+    },
+    {
+      "df": 3,
+      "token": "letter"
+    }
+  ],
+  "letters": [
+    {
+      "df": 4,
+      "token": "letters"
+    }
+  ],
+  "lev": [
+    {
+      "df": 11,
+      "token": "level"
+    },
+    {
+      "df": 3,
+      "token": "levels"
+    },
+    {
+      "df": 1,
+      "token": "levelthis"
+    },
+    {
+      "df": 1,
+      "token": "levelto"
+    },
+    {
+      "df": 1,
+      "token": "levelyou"
+    },
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ],
+  "leve": [
+    {
+      "df": 11,
+      "token": "level"
+    },
+    {
+      "df": 3,
+      "token": "levels"
+    },
+    {
+      "df": 1,
+      "token": "levelthis"
+    },
+    {
+      "df": 1,
+      "token": "levelto"
+    },
+    {
+      "df": 1,
+      "token": "levelyou"
+    },
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ],
+  "level": [
+    {
+      "df": 11,
+      "token": "level"
+    },
+    {
+      "df": 3,
+      "token": "levels"
+    },
+    {
+      "df": 1,
+      "token": "levelthis"
+    },
+    {
+      "df": 1,
+      "token": "levelto"
+    },
+    {
+      "df": 1,
+      "token": "levelyou"
+    }
+  ],
+  "levels": [
+    {
+      "df": 3,
+      "token": "levels"
+    }
+  ],
+  "levelt": [
+    {
+      "df": 1,
+      "token": "levelthis"
+    },
+    {
+      "df": 1,
+      "token": "levelto"
+    }
+  ],
+  "levelth": [
+    {
+      "df": 1,
+      "token": "levelthis"
+    }
+  ],
+  "levelthi": [
+    {
+      "df": 1,
+      "token": "levelthis"
+    }
+  ],
+  "levelto": [
+    {
+      "df": 1,
+      "token": "levelto"
+    }
+  ],
+  "levely": [
+    {
+      "df": 1,
+      "token": "levelyou"
+    }
+  ],
+  "levelyo": [
+    {
+      "df": 1,
+      "token": "levelyou"
+    }
+  ],
+  "levelyou": [
+    {
+      "df": 1,
+      "token": "levelyou"
+    }
+  ],
+  "lever": [
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ],
+  "levera": [
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ],
+  "leverag": [
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ],
+  "leverage": [
+    {
+      "df": 1,
+      "token": "leverage"
+    }
+  ]
+}

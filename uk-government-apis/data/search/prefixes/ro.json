@@ -1,0 +1,304 @@
+{
+  "roa": [
+    {
+      "df": 1,
+      "token": "road"
+    },
+    {
+      "df": 1,
+      "token": "roadmap"
+    },
+    {
+      "df": 1,
+      "token": "roads"
+    }
+  ],
+  "road": [
+    {
+      "df": 1,
+      "token": "road"
+    },
+    {
+      "df": 1,
+      "token": "roadmap"
+    },
+    {
+      "df": 1,
+      "token": "roads"
+    }
+  ],
+  "roadm": [
+    {
+      "df": 1,
+      "token": "roadmap"
+    }
+  ],
+  "roadma": [
+    {
+      "df": 1,
+      "token": "roadmap"
+    }
+  ],
+  "roadmap": [
+    {
+      "df": 1,
+      "token": "roadmap"
+    }
+  ],
+  "roads": [
+    {
+      "df": 1,
+      "token": "roads"
+    }
+  ],
+  "rol": [
+    {
+      "df": 3,
+      "token": "roles"
+    },
+    {
+      "df": 2,
+      "token": "role"
+    },
+    {
+      "df": 1,
+      "token": "role-based"
+    },
+    {
+      "df": 1,
+      "token": "role.as"
+    },
+    {
+      "df": 1,
+      "token": "rolesto"
+    }
+  ],
+  "role": [
+    {
+      "df": 3,
+      "token": "roles"
+    },
+    {
+      "df": 2,
+      "token": "role"
+    },
+    {
+      "df": 1,
+      "token": "role-based"
+    },
+    {
+      "df": 1,
+      "token": "role.as"
+    },
+    {
+      "df": 1,
+      "token": "rolesto"
+    }
+  ],
+  "role-": [
+    {
+      "df": 1,
+      "token": "role-based"
+    }
+  ],
+  "role-b": [
+    {
+      "df": 1,
+      "token": "role-based"
+    }
+  ],
+  "role-ba": [
+    {
+      "df": 1,
+      "token": "role-based"
+    }
+  ],
+  "role-bas": [
+    {
+      "df": 1,
+      "token": "role-based"
+    }
+  ],
+  "role.": [
+    {
+      "df": 1,
+      "token": "role.as"
+    }
+  ],
+  "role.a": [
+    {
+      "df": 1,
+      "token": "role.as"
+    }
+  ],
+  "role.as": [
+    {
+      "df": 1,
+      "token": "role.as"
+    }
+  ],
+  "roles": [
+    {
+      "df": 3,
+      "token": "roles"
+    },
+    {
+      "df": 1,
+      "token": "rolesto"
+    }
+  ],
+  "rolest": [
+    {
+      "df": 1,
+      "token": "rolesto"
+    }
+  ],
+  "rolesto": [
+    {
+      "df": 1,
+      "token": "rolesto"
+    }
+  ],
+  "roo": [
+    {
+      "df": 2,
+      "token": "room"
+    },
+    {
+      "df": 1,
+      "token": "root"
+    }
+  ],
+  "room": [
+    {
+      "df": 2,
+      "token": "room"
+    }
+  ],
+  "root": [
+    {
+      "df": 1,
+      "token": "root"
+    }
+  ],
+  "rou": [
+    {
+      "df": 3,
+      "token": "route"
+    },
+    {
+      "df": 2,
+      "token": "routes"
+    },
+    {
+      "df": 1,
+      "token": "round"
+    },
+    {
+      "df": 1,
+      "token": "routing"
+    }
+  ],
+  "roun": [
+    {
+      "df": 1,
+      "token": "round"
+    }
+  ],
+  "round": [
+    {
+      "df": 1,
+      "token": "round"
+    }
+  ],
+  "rout": [
+    {
+      "df": 3,
+      "token": "route"
+    },
+    {
+      "df": 2,
+      "token": "routes"
+    },
+    {
+      "df": 1,
+      "token": "routing"
+    }
+  ],
+  "route": [
+    {
+      "df": 3,
+      "token": "route"
+    },
+    {
+      "df": 2,
+      "token": "routes"
+    }
+  ],
+  "routes": [
+    {
+      "df": 2,
+      "token": "routes"
+    }
+  ],
+  "routi": [
+    {
+      "df": 1,
+      "token": "routing"
+    }
+  ],
+  "routin": [
+    {
+      "df": 1,
+      "token": "routing"
+    }
+  ],
+  "routing": [
+    {
+      "df": 1,
+      "token": "routing"
+    }
+  ],
+  "rov": [
+    {
+      "df": 2,
+      "token": "roving"
+    }
+  ],
+  "rovi": [
+    {
+      "df": 2,
+      "token": "roving"
+    }
+  ],
+  "rovin": [
+    {
+      "df": 2,
+      "token": "roving"
+    }
+  ],
+  "roving": [
+    {
+      "df": 2,
+      "token": "roving"
+    }
+  ],
+  "roy": [
+    {
+      "df": 1,
+      "token": "royal"
+    }
+  ],
+  "roya": [
+    {
+      "df": 1,
+      "token": "royal"
+    }
+  ],
+  "royal": [
+    {
+      "df": 1,
+      "token": "royal"
+    }
+  ]
+}

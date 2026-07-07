@@ -1,0 +1,146 @@
+{
+  "nul": [
+    {
+      "df": 1,
+      "token": "null"
+    }
+  ],
+  "null": [
+    {
+      "df": 1,
+      "token": "null"
+    }
+  ],
+  "num": [
+    {
+      "df": 29,
+      "token": "number"
+    },
+    {
+      "df": 4,
+      "token": "numbers"
+    },
+    {
+      "df": 2,
+      "token": "number.you"
+    },
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "numb": [
+    {
+      "df": 29,
+      "token": "number"
+    },
+    {
+      "df": 4,
+      "token": "numbers"
+    },
+    {
+      "df": 2,
+      "token": "number.you"
+    },
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "numbe": [
+    {
+      "df": 29,
+      "token": "number"
+    },
+    {
+      "df": 4,
+      "token": "numbers"
+    },
+    {
+      "df": 2,
+      "token": "number.you"
+    },
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "number": [
+    {
+      "df": 29,
+      "token": "number"
+    },
+    {
+      "df": 4,
+      "token": "numbers"
+    },
+    {
+      "df": 2,
+      "token": "number.you"
+    },
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "number.": [
+    {
+      "df": 2,
+      "token": "number.you"
+    }
+  ],
+  "number.y": [
+    {
+      "df": 2,
+      "token": "number.you"
+    }
+  ],
+  "numberl": [
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "numberlo": [
+    {
+      "df": 1,
+      "token": "numberlocal"
+    }
+  ],
+  "numbers": [
+    {
+      "df": 4,
+      "token": "numbers"
+    }
+  ],
+  "nur": [
+    {
+      "df": 3,
+      "token": "nurse"
+    }
+  ],
+  "nurs": [
+    {
+      "df": 3,
+      "token": "nurse"
+    }
+  ],
+  "nurse": [
+    {
+      "df": 3,
+      "token": "nurse"
+    }
+  ],
+  "nus": [
+    {
+      "df": 3,
+      "token": "nuse"
+    }
+  ],
+  "nuse": [
+    {
+      "df": 3,
+      "token": "nuse"
+    }
+  ]
+}

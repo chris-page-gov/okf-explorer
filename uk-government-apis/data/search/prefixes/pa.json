@@ -1,0 +1,1340 @@
+{
+  "pac": [
+    {
+      "df": 1,
+      "token": "pack"
+    },
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "pack": [
+    {
+      "df": 1,
+      "token": "pack"
+    },
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "packa": [
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "packag": [
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "package": [
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "packages": [
+    {
+      "df": 1,
+      "token": "packages"
+    }
+  ],
+  "paf": [
+    {
+      "df": 1,
+      "token": "paf"
+    }
+  ],
+  "pag": [
+    {
+      "df": 3,
+      "token": "pages"
+    },
+    {
+      "df": 2,
+      "token": "page"
+    }
+  ],
+  "page": [
+    {
+      "df": 3,
+      "token": "pages"
+    },
+    {
+      "df": 2,
+      "token": "page"
+    }
+  ],
+  "pages": [
+    {
+      "df": 3,
+      "token": "pages"
+    }
+  ],
+  "pai": [
+    {
+      "df": 1,
+      "token": "paid"
+    },
+    {
+      "df": 1,
+      "token": "pain"
+    }
+  ],
+  "paid": [
+    {
+      "df": 1,
+      "token": "paid"
+    }
+  ],
+  "pain": [
+    {
+      "df": 1,
+      "token": "pain"
+    }
+  ],
+  "pan": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pand": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pande": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pandem": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pandemi": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pandemic": [
+    {
+      "df": 1,
+      "token": "pandemic"
+    }
+  ],
+  "pap": [
+    {
+      "df": 3,
+      "token": "paper"
+    },
+    {
+      "df": 2,
+      "token": "paperless"
+    },
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "pape": [
+    {
+      "df": 3,
+      "token": "paper"
+    },
+    {
+      "df": 2,
+      "token": "paperless"
+    }
+  ],
+  "paper": [
+    {
+      "df": 3,
+      "token": "paper"
+    },
+    {
+      "df": 2,
+      "token": "paperless"
+    }
+  ],
+  "paperl": [
+    {
+      "df": 2,
+      "token": "paperless"
+    }
+  ],
+  "paperle": [
+    {
+      "df": 2,
+      "token": "paperless"
+    }
+  ],
+  "paperles": [
+    {
+      "df": 2,
+      "token": "paperless"
+    }
+  ],
+  "papi": [
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "papil": [
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "papill": [
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "papillo": [
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "papillom": [
+    {
+      "df": 1,
+      "token": "papillomavirus"
+    }
+  ],
+  "par": [
+    {
+      "df": 15,
+      "token": "part"
+    },
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 6,
+      "token": "partial"
+    },
+    {
+      "df": 3,
+      "token": "parliamentary"
+    },
+    {
+      "df": 2,
+      "token": "partner"
+    },
+    {
+      "df": 2,
+      "token": "party"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    },
+    {
+      "df": 1,
+      "token": "parent"
+    },
+    {
+      "df": 1,
+      "token": "parity"
+    },
+    {
+      "df": 1,
+      "token": "parks"
+    },
+    {
+      "df": 1,
+      "token": "parsing"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    },
+    {
+      "df": 1,
+      "token": "parties"
+    },
+    {
+      "df": 1,
+      "token": "partners"
+    }
+  ],
+  "para": [
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    }
+  ],
+  "param": [
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    }
+  ],
+  "parame": [
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    }
+  ],
+  "paramet": [
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    }
+  ],
+  "paramete": [
+    {
+      "df": 7,
+      "token": "parameters"
+    },
+    {
+      "df": 1,
+      "token": "parameter"
+    },
+    {
+      "df": 1,
+      "token": "parametergeosearch"
+    }
+  ],
+  "pare": [
+    {
+      "df": 1,
+      "token": "parent"
+    }
+  ],
+  "paren": [
+    {
+      "df": 1,
+      "token": "parent"
+    }
+  ],
+  "parent": [
+    {
+      "df": 1,
+      "token": "parent"
+    }
+  ],
+  "pari": [
+    {
+      "df": 1,
+      "token": "parity"
+    }
+  ],
+  "parit": [
+    {
+      "df": 1,
+      "token": "parity"
+    }
+  ],
+  "parity": [
+    {
+      "df": 1,
+      "token": "parity"
+    }
+  ],
+  "park": [
+    {
+      "df": 1,
+      "token": "parks"
+    }
+  ],
+  "parks": [
+    {
+      "df": 1,
+      "token": "parks"
+    }
+  ],
+  "parl": [
+    {
+      "df": 3,
+      "token": "parliamentary"
+    }
+  ],
+  "parli": [
+    {
+      "df": 3,
+      "token": "parliamentary"
+    }
+  ],
+  "parlia": [
+    {
+      "df": 3,
+      "token": "parliamentary"
+    }
+  ],
+  "parliam": [
+    {
+      "df": 3,
+      "token": "parliamentary"
+    }
+  ],
+  "parliame": [
+    {
+      "df": 3,
+      "token": "parliamentary"
+    }
+  ],
+  "pars": [
+    {
+      "df": 1,
+      "token": "parsing"
+    }
+  ],
+  "parsi": [
+    {
+      "df": 1,
+      "token": "parsing"
+    }
+  ],
+  "parsin": [
+    {
+      "df": 1,
+      "token": "parsing"
+    }
+  ],
+  "parsing": [
+    {
+      "df": 1,
+      "token": "parsing"
+    }
+  ],
+  "part": [
+    {
+      "df": 15,
+      "token": "part"
+    },
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 6,
+      "token": "partial"
+    },
+    {
+      "df": 2,
+      "token": "partner"
+    },
+    {
+      "df": 2,
+      "token": "party"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    },
+    {
+      "df": 1,
+      "token": "parties"
+    },
+    {
+      "df": 1,
+      "token": "partners"
+    },
+    {
+      "df": 1,
+      "token": "partnership"
+    },
+    {
+      "df": 1,
+      "token": "parts"
+    }
+  ],
+  "parti": [
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 6,
+      "token": "partial"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    },
+    {
+      "df": 1,
+      "token": "parties"
+    }
+  ],
+  "partia": [
+    {
+      "df": 6,
+      "token": "partial"
+    }
+  ],
+  "partial": [
+    {
+      "df": 6,
+      "token": "partial"
+    }
+  ],
+  "partic": [
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    }
+  ],
+  "particu": [
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    }
+  ],
+  "particul": [
+    {
+      "df": 10,
+      "token": "particular"
+    },
+    {
+      "df": 1,
+      "token": "particularly"
+    }
+  ],
+  "partie": [
+    {
+      "df": 1,
+      "token": "parties"
+    }
+  ],
+  "parties": [
+    {
+      "df": 1,
+      "token": "parties"
+    }
+  ],
+  "partn": [
+    {
+      "df": 2,
+      "token": "partner"
+    },
+    {
+      "df": 1,
+      "token": "partners"
+    },
+    {
+      "df": 1,
+      "token": "partnership"
+    }
+  ],
+  "partne": [
+    {
+      "df": 2,
+      "token": "partner"
+    },
+    {
+      "df": 1,
+      "token": "partners"
+    },
+    {
+      "df": 1,
+      "token": "partnership"
+    }
+  ],
+  "partner": [
+    {
+      "df": 2,
+      "token": "partner"
+    },
+    {
+      "df": 1,
+      "token": "partners"
+    },
+    {
+      "df": 1,
+      "token": "partnership"
+    }
+  ],
+  "partners": [
+    {
+      "df": 1,
+      "token": "partners"
+    },
+    {
+      "df": 1,
+      "token": "partnership"
+    }
+  ],
+  "parts": [
+    {
+      "df": 1,
+      "token": "parts"
+    }
+  ],
+  "party": [
+    {
+      "df": 2,
+      "token": "party"
+    }
+  ],
+  "pas": [
+    {
+      "df": 1,
+      "token": "pass"
+    },
+    {
+      "df": 1,
+      "token": "password"
+    },
+    {
+      "df": 1,
+      "token": "past"
+    }
+  ],
+  "pass": [
+    {
+      "df": 1,
+      "token": "pass"
+    },
+    {
+      "df": 1,
+      "token": "password"
+    }
+  ],
+  "passw": [
+    {
+      "df": 1,
+      "token": "password"
+    }
+  ],
+  "passwo": [
+    {
+      "df": 1,
+      "token": "password"
+    }
+  ],
+  "passwor": [
+    {
+      "df": 1,
+      "token": "password"
+    }
+  ],
+  "password": [
+    {
+      "df": 1,
+      "token": "password"
+    }
+  ],
+  "past": [
+    {
+      "df": 1,
+      "token": "past"
+    }
+  ],
+  "pat": [
+    {
+      "df": 62,
+      "token": "patient"
+    },
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 3,
+      "token": "pathways"
+    },
+    {
+      "df": 3,
+      "token": "patientfor"
+    },
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 2,
+      "token": "patientyou"
+    },
+    {
+      "df": 2,
+      "token": "pattern"
+    },
+    {
+      "df": 1,
+      "token": "path"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    },
+    {
+      "df": 1,
+      "token": "pathway"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    }
+  ],
+  "path": [
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 3,
+      "token": "pathways"
+    },
+    {
+      "df": 1,
+      "token": "path"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    },
+    {
+      "df": 1,
+      "token": "pathway"
+    }
+  ],
+  "patho": [
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    }
+  ],
+  "pathol": [
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    }
+  ],
+  "patholo": [
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    }
+  ],
+  "patholog": [
+    {
+      "df": 4,
+      "token": "pathology"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-edifact"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-fhir"
+    },
+    {
+      "df": 1,
+      "token": "pathology-messaging-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "pathology.this"
+    }
+  ],
+  "pathw": [
+    {
+      "df": 3,
+      "token": "pathways"
+    },
+    {
+      "df": 1,
+      "token": "pathway"
+    }
+  ],
+  "pathwa": [
+    {
+      "df": 3,
+      "token": "pathways"
+    },
+    {
+      "df": 1,
+      "token": "pathway"
+    }
+  ],
+  "pathway": [
+    {
+      "df": 3,
+      "token": "pathways"
+    },
+    {
+      "df": 1,
+      "token": "pathway"
+    }
+  ],
+  "pathways": [
+    {
+      "df": 3,
+      "token": "pathways"
+    }
+  ],
+  "pati": [
+    {
+      "df": 62,
+      "token": "patient"
+    },
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 3,
+      "token": "patientfor"
+    },
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 2,
+      "token": "patientyou"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service-api"
+    },
+    {
+      "df": 1,
+      "token": "patient-centric"
+    },
+    {
+      "df": 1,
+      "token": "patient.for"
+    },
+    {
+      "df": 1,
+      "token": "patientsall"
+    },
+    {
+      "df": 1,
+      "token": "patientthis"
+    },
+    {
+      "df": 1,
+      "token": "patientuse"
+    }
+  ],
+  "patie": [
+    {
+      "df": 62,
+      "token": "patient"
+    },
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 3,
+      "token": "patientfor"
+    },
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 2,
+      "token": "patientyou"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service-api"
+    },
+    {
+      "df": 1,
+      "token": "patient-centric"
+    },
+    {
+      "df": 1,
+      "token": "patient.for"
+    },
+    {
+      "df": 1,
+      "token": "patientsall"
+    },
+    {
+      "df": 1,
+      "token": "patientthis"
+    },
+    {
+      "df": 1,
+      "token": "patientuse"
+    }
+  ],
+  "patien": [
+    {
+      "df": 62,
+      "token": "patient"
+    },
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 3,
+      "token": "patientfor"
+    },
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 2,
+      "token": "patientyou"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service-api"
+    },
+    {
+      "df": 1,
+      "token": "patient-centric"
+    },
+    {
+      "df": 1,
+      "token": "patient.for"
+    },
+    {
+      "df": 1,
+      "token": "patientsall"
+    },
+    {
+      "df": 1,
+      "token": "patientthis"
+    },
+    {
+      "df": 1,
+      "token": "patientuse"
+    }
+  ],
+  "patient": [
+    {
+      "df": 62,
+      "token": "patient"
+    },
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 3,
+      "token": "patientfor"
+    },
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 2,
+      "token": "patientyou"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service-api"
+    },
+    {
+      "df": 1,
+      "token": "patient-centric"
+    },
+    {
+      "df": 1,
+      "token": "patient.for"
+    },
+    {
+      "df": 1,
+      "token": "patientsall"
+    },
+    {
+      "df": 1,
+      "token": "patientthis"
+    },
+    {
+      "df": 1,
+      "token": "patientuse"
+    }
+  ],
+  "patient-": [
+    {
+      "df": 2,
+      "token": "patient-facing"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service"
+    },
+    {
+      "df": 1,
+      "token": "patient-care-aggregator-record-service-api"
+    },
+    {
+      "df": 1,
+      "token": "patient-centric"
+    }
+  ],
+  "patient.": [
+    {
+      "df": 1,
+      "token": "patient.for"
+    }
+  ],
+  "patientf": [
+    {
+      "df": 3,
+      "token": "patientfor"
+    }
+  ],
+  "patients": [
+    {
+      "df": 27,
+      "token": "patients"
+    },
+    {
+      "df": 1,
+      "token": "patientsall"
+    }
+  ],
+  "patientt": [
+    {
+      "df": 1,
+      "token": "patientthis"
+    }
+  ],
+  "patientu": [
+    {
+      "df": 1,
+      "token": "patientuse"
+    }
+  ],
+  "patienty": [
+    {
+      "df": 2,
+      "token": "patientyou"
+    }
+  ],
+  "patt": [
+    {
+      "df": 2,
+      "token": "pattern"
+    }
+  ],
+  "patte": [
+    {
+      "df": 2,
+      "token": "pattern"
+    }
+  ],
+  "patter": [
+    {
+      "df": 2,
+      "token": "pattern"
+    }
+  ],
+  "pattern": [
+    {
+      "df": 2,
+      "token": "pattern"
+    }
+  ],
+  "pay": [
+    {
+      "df": 5,
+      "token": "payments"
+    },
+    {
+      "df": 4,
+      "token": "paye"
+    },
+    {
+      "df": 3,
+      "token": "payload"
+    },
+    {
+      "df": 3,
+      "token": "payment"
+    },
+    {
+      "df": 1,
+      "token": "pay"
+    },
+    {
+      "df": 1,
+      "token": "payable"
+    }
+  ],
+  "paya": [
+    {
+      "df": 1,
+      "token": "payable"
+    }
+  ],
+  "payab": [
+    {
+      "df": 1,
+      "token": "payable"
+    }
+  ],
+  "payabl": [
+    {
+      "df": 1,
+      "token": "payable"
+    }
+  ],
+  "payable": [
+    {
+      "df": 1,
+      "token": "payable"
+    }
+  ],
+  "paye": [
+    {
+      "df": 4,
+      "token": "paye"
+    }
+  ],
+  "payl": [
+    {
+      "df": 3,
+      "token": "payload"
+    }
+  ],
+  "paylo": [
+    {
+      "df": 3,
+      "token": "payload"
+    }
+  ],
+  "payloa": [
+    {
+      "df": 3,
+      "token": "payload"
+    }
+  ],
+  "payload": [
+    {
+      "df": 3,
+      "token": "payload"
+    }
+  ],
+  "paym": [
+    {
+      "df": 5,
+      "token": "payments"
+    },
+    {
+      "df": 3,
+      "token": "payment"
+    }
+  ],
+  "payme": [
+    {
+      "df": 5,
+      "token": "payments"
+    },
+    {
+      "df": 3,
+      "token": "payment"
+    }
+  ],
+  "paymen": [
+    {
+      "df": 5,
+      "token": "payments"
+    },
+    {
+      "df": 3,
+      "token": "payment"
+    }
+  ],
+  "payment": [
+    {
+      "df": 5,
+      "token": "payments"
+    },
+    {
+      "df": 3,
+      "token": "payment"
+    }
+  ],
+  "payments": [
+    {
+      "df": 5,
+      "token": "payments"
+    }
+  ]
+}

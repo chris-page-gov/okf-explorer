@@ -1,0 +1,238 @@
+{
+  "e-d": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "e-do": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "e-doc": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "e-docu": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "e-docum": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "e-docume": [
+    {
+      "df": 1,
+      "token": "e-document"
+    }
+  ],
+  "edi": [
+    {
+      "df": 5,
+      "token": "edifact"
+    },
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edif": [
+    {
+      "df": 5,
+      "token": "edifact"
+    }
+  ],
+  "edifa": [
+    {
+      "df": 5,
+      "token": "edifact"
+    }
+  ],
+  "edifac": [
+    {
+      "df": 5,
+      "token": "edifact"
+    }
+  ],
+  "edifact": [
+    {
+      "df": 5,
+      "token": "edifact"
+    }
+  ],
+  "edis": [
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edisc": [
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edisch": [
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edischa": [
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edischar": [
+    {
+      "df": 1,
+      "token": "edischarge"
+    }
+  ],
+  "edo": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edoc": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edocu": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edocum": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edocume": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edocumen": [
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "edocumentregistrationv2_1webservice"
+    }
+  ],
+  "edr": [
+    {
+      "df": 1,
+      "token": "edr"
+    },
+    {
+      "df": 1,
+      "token": "edrs"
+    }
+  ],
+  "edrs": [
+    {
+      "df": 1,
+      "token": "edrs"
+    }
+  ],
+  "edu": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ],
+  "educ": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ],
+  "educa": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ],
+  "educat": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ],
+  "educati": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ],
+  "educatio": [
+    {
+      "df": 8,
+      "token": "education"
+    },
+    {
+      "df": 8,
+      "token": "education-and-skills"
+    }
+  ]
+}

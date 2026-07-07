@@ -1,0 +1,57 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "place"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "places"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "plan"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "planfor"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "planned"
+  },
+  {
+    "df": 55,
+    "postings": "data/search/postings-0.json",
+    "token": "planning"
+  },
+  {
+    "df": 55,
+    "postings": "data/search/postings-0.json",
+    "token": "planning-and-property"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "plans"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "platform"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "please"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "plus"
+  }
+]

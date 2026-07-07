@@ -1,0 +1,67 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "atcoareacode"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "atcoareacodes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attach"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attachment"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "attachments"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attachmentv2_1pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attachmentv2_1webservice"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "attends"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attention"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attorney"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "attributed"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "attributes"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "attribution"
+  }
+]

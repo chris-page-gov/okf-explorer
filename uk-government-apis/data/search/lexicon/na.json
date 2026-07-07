@@ -1,0 +1,137 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nacs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nafter"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "name"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "named"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "namedthe"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "names"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "nan"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "naptan"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "naptan.api.dft.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nas"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "nassets"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "nation"
+  },
+  {
+    "df": 32,
+    "postings": "data/search/postings-0.json",
+    "token": "national"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national-data-opt-out-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national-data-opt-out-service-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national-events-management-service-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national-insurance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national-record-locator-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "national_heritage_list_for_england_nhle_v02_view"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nationalarchives.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nationality"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nationally"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "native"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "natural"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "navcs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "navigation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "navigational"
+  }
+]

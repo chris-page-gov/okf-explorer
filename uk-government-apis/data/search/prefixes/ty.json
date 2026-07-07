@@ -1,0 +1,116 @@
+{
+  "typ": [
+    {
+      "df": 14,
+      "token": "type"
+    },
+    {
+      "df": 13,
+      "token": "types"
+    },
+    {
+      "df": 10,
+      "token": "typically"
+    },
+    {
+      "df": 1,
+      "token": "types.you"
+    },
+    {
+      "df": 1,
+      "token": "typesto"
+    }
+  ],
+  "type": [
+    {
+      "df": 14,
+      "token": "type"
+    },
+    {
+      "df": 13,
+      "token": "types"
+    },
+    {
+      "df": 1,
+      "token": "types.you"
+    },
+    {
+      "df": 1,
+      "token": "typesto"
+    }
+  ],
+  "types": [
+    {
+      "df": 13,
+      "token": "types"
+    },
+    {
+      "df": 1,
+      "token": "types.you"
+    },
+    {
+      "df": 1,
+      "token": "typesto"
+    }
+  ],
+  "types.": [
+    {
+      "df": 1,
+      "token": "types.you"
+    }
+  ],
+  "types.y": [
+    {
+      "df": 1,
+      "token": "types.you"
+    }
+  ],
+  "types.yo": [
+    {
+      "df": 1,
+      "token": "types.you"
+    }
+  ],
+  "typest": [
+    {
+      "df": 1,
+      "token": "typesto"
+    }
+  ],
+  "typesto": [
+    {
+      "df": 1,
+      "token": "typesto"
+    }
+  ],
+  "typi": [
+    {
+      "df": 10,
+      "token": "typically"
+    }
+  ],
+  "typic": [
+    {
+      "df": 10,
+      "token": "typically"
+    }
+  ],
+  "typica": [
+    {
+      "df": 10,
+      "token": "typically"
+    }
+  ],
+  "typical": [
+    {
+      "df": 10,
+      "token": "typically"
+    }
+  ],
+  "typicall": [
+    {
+      "df": 10,
+      "token": "typically"
+    }
+  ]
+}

@@ -1,0 +1,534 @@
+{
+  "cla": [
+    {
+      "df": 4,
+      "token": "claims"
+    },
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "claim"
+    },
+    {
+      "df": 2,
+      "token": "clarification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    },
+    {
+      "df": 1,
+      "token": "claimsa"
+    },
+    {
+      "df": 1,
+      "token": "claimyou"
+    },
+    {
+      "df": 1,
+      "token": "class"
+    },
+    {
+      "df": 1,
+      "token": "classes"
+    }
+  ],
+  "clai": [
+    {
+      "df": 4,
+      "token": "claims"
+    },
+    {
+      "df": 2,
+      "token": "claim"
+    },
+    {
+      "df": 1,
+      "token": "claimsa"
+    },
+    {
+      "df": 1,
+      "token": "claimyou"
+    }
+  ],
+  "claim": [
+    {
+      "df": 4,
+      "token": "claims"
+    },
+    {
+      "df": 2,
+      "token": "claim"
+    },
+    {
+      "df": 1,
+      "token": "claimsa"
+    },
+    {
+      "df": 1,
+      "token": "claimyou"
+    }
+  ],
+  "claims": [
+    {
+      "df": 4,
+      "token": "claims"
+    },
+    {
+      "df": 1,
+      "token": "claimsa"
+    }
+  ],
+  "claimsa": [
+    {
+      "df": 1,
+      "token": "claimsa"
+    }
+  ],
+  "claimy": [
+    {
+      "df": 1,
+      "token": "claimyou"
+    }
+  ],
+  "claimyo": [
+    {
+      "df": 1,
+      "token": "claimyou"
+    }
+  ],
+  "claimyou": [
+    {
+      "df": 1,
+      "token": "claimyou"
+    }
+  ],
+  "clar": [
+    {
+      "df": 2,
+      "token": "clarification"
+    }
+  ],
+  "clari": [
+    {
+      "df": 2,
+      "token": "clarification"
+    }
+  ],
+  "clarif": [
+    {
+      "df": 2,
+      "token": "clarification"
+    }
+  ],
+  "clarifi": [
+    {
+      "df": 2,
+      "token": "clarification"
+    }
+  ],
+  "clarific": [
+    {
+      "df": 2,
+      "token": "clarification"
+    }
+  ],
+  "clas": [
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    },
+    {
+      "df": 1,
+      "token": "class"
+    },
+    {
+      "df": 1,
+      "token": "classes"
+    }
+  ],
+  "class": [
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    },
+    {
+      "df": 1,
+      "token": "class"
+    },
+    {
+      "df": 1,
+      "token": "classes"
+    }
+  ],
+  "classe": [
+    {
+      "df": 1,
+      "token": "classes"
+    }
+  ],
+  "classes": [
+    {
+      "df": 1,
+      "token": "classes"
+    }
+  ],
+  "classi": [
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    }
+  ],
+  "classif": [
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    }
+  ],
+  "classifi": [
+    {
+      "df": 3,
+      "token": "classification"
+    },
+    {
+      "df": 2,
+      "token": "classifications"
+    }
+  ],
+  "cle": [
+    {
+      "df": 1,
+      "token": "clean"
+    },
+    {
+      "df": 1,
+      "token": "cleared"
+    }
+  ],
+  "clea": [
+    {
+      "df": 1,
+      "token": "clean"
+    },
+    {
+      "df": 1,
+      "token": "cleared"
+    }
+  ],
+  "clean": [
+    {
+      "df": 1,
+      "token": "clean"
+    }
+  ],
+  "clear": [
+    {
+      "df": 1,
+      "token": "cleared"
+    }
+  ],
+  "cleare": [
+    {
+      "df": 1,
+      "token": "cleared"
+    }
+  ],
+  "cleared": [
+    {
+      "df": 1,
+      "token": "cleared"
+    }
+  ],
+  "cli": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 6,
+      "token": "client"
+    },
+    {
+      "df": 3,
+      "token": "clients"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    },
+    {
+      "df": 1,
+      "token": "client-side"
+    },
+    {
+      "df": 1,
+      "token": "clinic"
+    },
+    {
+      "df": 1,
+      "token": "clinic.an"
+    },
+    {
+      "df": 1,
+      "token": "clinic.for"
+    },
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clie": [
+    {
+      "df": 6,
+      "token": "client"
+    },
+    {
+      "df": 3,
+      "token": "clients"
+    },
+    {
+      "df": 1,
+      "token": "client-side"
+    }
+  ],
+  "clien": [
+    {
+      "df": 6,
+      "token": "client"
+    },
+    {
+      "df": 3,
+      "token": "clients"
+    },
+    {
+      "df": 1,
+      "token": "client-side"
+    }
+  ],
+  "client": [
+    {
+      "df": 6,
+      "token": "client"
+    },
+    {
+      "df": 3,
+      "token": "clients"
+    },
+    {
+      "df": 1,
+      "token": "client-side"
+    }
+  ],
+  "client-": [
+    {
+      "df": 1,
+      "token": "client-side"
+    }
+  ],
+  "client-s": [
+    {
+      "df": 1,
+      "token": "client-side"
+    }
+  ],
+  "clients": [
+    {
+      "df": 3,
+      "token": "clients"
+    }
+  ],
+  "clin": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    },
+    {
+      "df": 1,
+      "token": "clinic"
+    },
+    {
+      "df": 1,
+      "token": "clinic.an"
+    },
+    {
+      "df": 1,
+      "token": "clinic.for"
+    },
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clini": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    },
+    {
+      "df": 1,
+      "token": "clinic"
+    },
+    {
+      "df": 1,
+      "token": "clinic.an"
+    },
+    {
+      "df": 1,
+      "token": "clinic.for"
+    },
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clinic": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    },
+    {
+      "df": 1,
+      "token": "clinic"
+    },
+    {
+      "df": 1,
+      "token": "clinic.an"
+    },
+    {
+      "df": 1,
+      "token": "clinic.for"
+    },
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clinic.": [
+    {
+      "df": 1,
+      "token": "clinic.an"
+    },
+    {
+      "df": 1,
+      "token": "clinic.for"
+    }
+  ],
+  "clinic.a": [
+    {
+      "df": 1,
+      "token": "clinic.an"
+    }
+  ],
+  "clinic.f": [
+    {
+      "df": 1,
+      "token": "clinic.for"
+    }
+  ],
+  "clinica": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    }
+  ],
+  "clinical": [
+    {
+      "df": 13,
+      "token": "clinical"
+    },
+    {
+      "df": 3,
+      "token": "clinically"
+    }
+  ],
+  "clinici": [
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clinicia": [
+    {
+      "df": 1,
+      "token": "clinicians"
+    }
+  ],
+  "clo": [
+    {
+      "df": 3,
+      "token": "close"
+    },
+    {
+      "df": 3,
+      "token": "closest"
+    }
+  ],
+  "clos": [
+    {
+      "df": 3,
+      "token": "close"
+    },
+    {
+      "df": 3,
+      "token": "closest"
+    }
+  ],
+  "close": [
+    {
+      "df": 3,
+      "token": "close"
+    },
+    {
+      "df": 3,
+      "token": "closest"
+    }
+  ],
+  "closes": [
+    {
+      "df": 3,
+      "token": "closest"
+    }
+  ],
+  "closest": [
+    {
+      "df": 3,
+      "token": "closest"
+    }
+  ]
+}

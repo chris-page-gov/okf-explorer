@@ -1,0 +1,657 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "de-register"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dealers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deals"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "death"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "debit"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "debt"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "debt-respite-scheme"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "debt-respite-scheme-breathing-space-guidance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "debt-respite-scheme-breathing-space-guidance-for-creditors"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "debt-respite-scheme-breathing-space-guidance-for-money-advisers"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "december"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "decide"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "decision"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "decisions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "decisions.this"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "declarable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "declaration"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "declarations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "decline"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deduct"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deducted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deduction"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "deductions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deems"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "defence"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "defences"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "defer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deferred"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "define"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "defined"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "defines"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "definition"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "definitive"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "defra"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "defra-uk-air-sensor-observation-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "degradesyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "delays"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "delete"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deleted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deleting"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "deliver"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "delivered"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deliveries"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "delivers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "delivery"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "demand"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "demographic"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "demographics"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "demographics-batch-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "denoting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dental"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dentistry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dentists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "departed"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "department"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-check-barriers-to-trading-and-investing-abroad"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-regulations-and-legislation-for-uk-businesses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-uk-global-tariff-commodities"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-uk-global-tariff-measures-as-defined"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-uk-global-tariff-measures-on-declarable-commodities"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-business-and-trade-uk-trade-quotas"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-education"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-education-dfe-eapim-platform-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-education-explore-education-statistics-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-education-get-into-teaching-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-education-teacher-training-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-transport"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-transport-national-public-transport-access-nodes-naptan-and-national-public-transport-gazetteer-nptg-api"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-address-lookup-location-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-care-homes-information-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-citizen-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-citizen-benefit-relationships"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-find-a-job"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-findr-matching-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-get-interest-details"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-govuk-notify"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-maintain-interest-details"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-organisations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "department-for-work-and-pensions-subscription-service-api"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "departments"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "departure"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "departures"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "depending"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "depicting"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "depictions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deployed"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "deployment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deprecated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "depth"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "depths"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deputy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "deregistration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "derivative"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "derived"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "describe"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "described"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "describes"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "description"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "descriptions"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "designated"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "designed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "designers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "desktop"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "despatch"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "destination"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "detail"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "detailed"
+  },
+  {
+    "df": 73,
+    "postings": "data/search/postings-0.json",
+    "token": "details"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "details.update"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "detailsdata"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "detailsthis"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "detailsyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "determined"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "develop"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developed"
+  },
+  {
+    "df": 109,
+    "postings": "data/search/postings-0.json",
+    "token": "developer"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developer-specs.companieshouse.gov.uk"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.admiralty.co.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.apprenticeships.education.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.beta.ons.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.companieshouse.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.if"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "developer.service.hmrc.gov.uk"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "developers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "developers.arcgis.com"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "development"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "devices"
+  }
+]

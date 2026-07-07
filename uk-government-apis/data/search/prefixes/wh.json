@@ -1,0 +1,132 @@
+{
+  "wha": [
+    {
+      "df": 8,
+      "token": "what"
+    }
+  ],
+  "what": [
+    {
+      "df": 8,
+      "token": "what"
+    }
+  ],
+  "whe": [
+    {
+      "df": 34,
+      "token": "when"
+    },
+    {
+      "df": 17,
+      "token": "where"
+    },
+    {
+      "df": 8,
+      "token": "whether"
+    }
+  ],
+  "when": [
+    {
+      "df": 34,
+      "token": "when"
+    }
+  ],
+  "wher": [
+    {
+      "df": 17,
+      "token": "where"
+    }
+  ],
+  "where": [
+    {
+      "df": 17,
+      "token": "where"
+    }
+  ],
+  "whet": [
+    {
+      "df": 8,
+      "token": "whether"
+    }
+  ],
+  "wheth": [
+    {
+      "df": 8,
+      "token": "whether"
+    }
+  ],
+  "whethe": [
+    {
+      "df": 8,
+      "token": "whether"
+    }
+  ],
+  "whether": [
+    {
+      "df": 8,
+      "token": "whether"
+    }
+  ],
+  "whi": [
+    {
+      "df": 49,
+      "token": "which"
+    },
+    {
+      "df": 2,
+      "token": "whilst"
+    }
+  ],
+  "whic": [
+    {
+      "df": 49,
+      "token": "which"
+    }
+  ],
+  "which": [
+    {
+      "df": 49,
+      "token": "which"
+    }
+  ],
+  "whil": [
+    {
+      "df": 2,
+      "token": "whilst"
+    }
+  ],
+  "whils": [
+    {
+      "df": 2,
+      "token": "whilst"
+    }
+  ],
+  "whilst": [
+    {
+      "df": 2,
+      "token": "whilst"
+    }
+  ],
+  "who": [
+    {
+      "df": 14,
+      "token": "who"
+    },
+    {
+      "df": 3,
+      "token": "whole"
+    }
+  ],
+  "whol": [
+    {
+      "df": 3,
+      "token": "whole"
+    }
+  ],
+  "whole": [
+    {
+      "df": 3,
+      "token": "whole"
+    }
+  ]
+}

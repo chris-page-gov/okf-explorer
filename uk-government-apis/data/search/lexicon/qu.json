@@ -1,0 +1,82 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "qualifications"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "qualified"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "quality"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "queried"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "queries"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "query"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "query-accredited-system-information-soap"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "querying"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "question"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "questions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "queues"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "quick"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "quit"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "quota"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "quotas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "quotas-including-current-volumes"
+  }
+]

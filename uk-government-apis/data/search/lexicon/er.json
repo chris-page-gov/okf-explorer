@@ -1,0 +1,52 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referral"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referral-service-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referral-service-fhir-hscn"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referral-service-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referral-service-patient-care-fhir"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "e-referrals"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "e-reporting"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "e-rs"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "error"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "errors"
+  }
+]

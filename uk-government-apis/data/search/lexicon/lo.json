@@ -1,0 +1,177 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "loans"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "loc"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "local"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "local-government-association"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "local-government-association-lginform-plus"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "local_land_charges_search"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "localities"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "locality"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "locallyan"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "locate"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "location"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "location-based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "location.you"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "locations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "locator"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "lodged"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "log"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "login"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "login.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "logs"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "london"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "long"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "long-running"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "longer"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "look"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "look-up"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "looking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "looks"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lookup"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lookups"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "loss"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "losses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "low"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "lower"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lowest"
+  }
+]

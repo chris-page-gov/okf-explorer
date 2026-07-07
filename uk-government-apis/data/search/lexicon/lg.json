@@ -1,0 +1,17 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lg"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lginform"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lginformplus.org"
+  }
+]

@@ -1,0 +1,716 @@
+{
+  "dai": [
+    {
+      "df": 2,
+      "token": "daily"
+    }
+  ],
+  "dail": [
+    {
+      "df": 2,
+      "token": "daily"
+    }
+  ],
+  "daily": [
+    {
+      "df": 2,
+      "token": "daily"
+    }
+  ],
+  "dap": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "dapb": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "dapb3": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "dapb30": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "dapb305": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "dapb3051": [
+    {
+      "df": 1,
+      "token": "dapb3051"
+    },
+    {
+      "df": 1,
+      "token": "dapb3051-identity-verification-and-authentication-standard-for-digital-health-and-care-services"
+    }
+  ],
+  "das": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dash": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dashb": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dashbo": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dashboa": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dashboar": [
+    {
+      "df": 1,
+      "token": "dashboard"
+    },
+    {
+      "df": 1,
+      "token": "dashboard.because"
+    },
+    {
+      "df": 1,
+      "token": "dashboards"
+    }
+  ],
+  "dat": [
+    {
+      "df": 244,
+      "token": "dataset"
+    },
+    {
+      "df": 100,
+      "token": "data"
+    },
+    {
+      "df": 25,
+      "token": "date"
+    },
+    {
+      "df": 12,
+      "token": "datasets"
+    },
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    },
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    },
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    },
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    }
+  ],
+  "data": [
+    {
+      "df": 244,
+      "token": "dataset"
+    },
+    {
+      "df": 100,
+      "token": "data"
+    },
+    {
+      "df": 12,
+      "token": "datasets"
+    },
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    },
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    },
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    },
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    },
+    {
+      "df": 1,
+      "token": "datafor"
+    }
+  ],
+  "data-": [
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    },
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    },
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    }
+  ],
+  "data-a": [
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    },
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    }
+  ],
+  "data-an": [
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    }
+  ],
+  "data-and": [
+    {
+      "df": 1,
+      "token": "data-and-information"
+    },
+    {
+      "df": 1,
+      "token": "data-and-publications"
+    }
+  ],
+  "data-ap": [
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    }
+  ],
+  "data-api": [
+    {
+      "df": 1,
+      "token": "data-api.cefas.co.uk"
+    }
+  ],
+  "data-c": [
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    }
+  ],
+  "data-ca": [
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    }
+  ],
+  "data-cat": [
+    {
+      "df": 1,
+      "token": "data-catalogue"
+    }
+  ],
+  "data-r": [
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    }
+  ],
+  "data-re": [
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    }
+  ],
+  "data-reg": [
+    {
+      "df": 1,
+      "token": "data-registers-service-rest"
+    }
+  ],
+  "data.": [
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    }
+  ],
+  "data.a": [
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    }
+  ],
+  "data.ap": [
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    }
+  ],
+  "data.api": [
+    {
+      "df": 6,
+      "token": "data.api.trade.gov.uk"
+    }
+  ],
+  "data.c": [
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    }
+  ],
+  "data.ce": [
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    }
+  ],
+  "data.cef": [
+    {
+      "df": 1,
+      "token": "data.cefas.co.uk"
+    }
+  ],
+  "data.f": [
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    }
+  ],
+  "data.fo": [
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    }
+  ],
+  "data.foo": [
+    {
+      "df": 1,
+      "token": "data.food.gov.uk"
+    }
+  ],
+  "data.g": [
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    }
+  ],
+  "data.go": [
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    }
+  ],
+  "data.gov": [
+    {
+      "df": 1,
+      "token": "data.gov.uk"
+    }
+  ],
+  "data.p": [
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    }
+  ],
+  "data.po": [
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    }
+  ],
+  "data.pol": [
+    {
+      "df": 1,
+      "token": "data.police.uk"
+    }
+  ],
+  "datab": [
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    }
+  ],
+  "databa": [
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    }
+  ],
+  "databas": [
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    }
+  ],
+  "database": [
+    {
+      "df": 8,
+      "token": "database"
+    },
+    {
+      "df": 1,
+      "token": "databasewe"
+    }
+  ],
+  "dataf": [
+    {
+      "df": 1,
+      "token": "datafor"
+    }
+  ],
+  "datafo": [
+    {
+      "df": 1,
+      "token": "datafor"
+    }
+  ],
+  "datafor": [
+    {
+      "df": 1,
+      "token": "datafor"
+    }
+  ],
+  "datas": [
+    {
+      "df": 244,
+      "token": "dataset"
+    },
+    {
+      "df": 12,
+      "token": "datasets"
+    },
+    {
+      "df": 1,
+      "token": "datastore"
+    }
+  ],
+  "datase": [
+    {
+      "df": 244,
+      "token": "dataset"
+    },
+    {
+      "df": 12,
+      "token": "datasets"
+    }
+  ],
+  "dataset": [
+    {
+      "df": 244,
+      "token": "dataset"
+    },
+    {
+      "df": 12,
+      "token": "datasets"
+    }
+  ],
+  "datasets": [
+    {
+      "df": 12,
+      "token": "datasets"
+    }
+  ],
+  "datast": [
+    {
+      "df": 1,
+      "token": "datastore"
+    }
+  ],
+  "datasto": [
+    {
+      "df": 1,
+      "token": "datastore"
+    }
+  ],
+  "datastor": [
+    {
+      "df": 1,
+      "token": "datastore"
+    }
+  ],
+  "datat": [
+    {
+      "df": 1,
+      "token": "datatypes"
+    }
+  ],
+  "dataty": [
+    {
+      "df": 1,
+      "token": "datatypes"
+    }
+  ],
+  "datatyp": [
+    {
+      "df": 1,
+      "token": "datatypes"
+    }
+  ],
+  "datatype": [
+    {
+      "df": 1,
+      "token": "datatypes"
+    }
+  ],
+  "dataw": [
+    {
+      "df": 1,
+      "token": "datawe"
+    }
+  ],
+  "datawe": [
+    {
+      "df": 1,
+      "token": "datawe"
+    }
+  ],
+  "date": [
+    {
+      "df": 25,
+      "token": "date"
+    }
+  ],
+  "dati": [
+    {
+      "df": 1,
+      "token": "dating"
+    }
+  ],
+  "datin": [
+    {
+      "df": 1,
+      "token": "dating"
+    }
+  ],
+  "dating": [
+    {
+      "df": 1,
+      "token": "dating"
+    }
+  ],
+  "datu": [
+    {
+      "df": 1,
+      "token": "datum"
+    }
+  ],
+  "datum": [
+    {
+      "df": 1,
+      "token": "datum"
+    }
+  ],
+  "day": [
+    {
+      "df": 9,
+      "token": "days"
+    },
+    {
+      "df": 7,
+      "token": "day"
+    }
+  ],
+  "days": [
+    {
+      "df": 9,
+      "token": "days"
+    }
+  ]
+}

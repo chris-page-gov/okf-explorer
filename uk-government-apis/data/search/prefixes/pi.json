@@ -1,0 +1,96 @@
+{
+  "pic": [
+    {
+      "df": 3,
+      "token": "picture"
+    },
+    {
+      "df": 1,
+      "token": "pick"
+    }
+  ],
+  "pick": [
+    {
+      "df": 1,
+      "token": "pick"
+    }
+  ],
+  "pict": [
+    {
+      "df": 3,
+      "token": "picture"
+    }
+  ],
+  "pictu": [
+    {
+      "df": 3,
+      "token": "picture"
+    }
+  ],
+  "pictur": [
+    {
+      "df": 3,
+      "token": "picture"
+    }
+  ],
+  "picture": [
+    {
+      "df": 3,
+      "token": "picture"
+    }
+  ],
+  "pil": [
+    {
+      "df": 1,
+      "token": "pilot"
+    }
+  ],
+  "pilo": [
+    {
+      "df": 1,
+      "token": "pilot"
+    }
+  ],
+  "pilot": [
+    {
+      "df": 1,
+      "token": "pilot"
+    }
+  ],
+  "pip": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ],
+  "pipe": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ],
+  "pipe-": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ],
+  "pipe-d": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ],
+  "pipe-de": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ],
+  "pipe-del": [
+    {
+      "df": 2,
+      "token": "pipe-delimited"
+    }
+  ]
+}

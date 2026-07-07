@@ -1,0 +1,302 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pack"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "packages"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "paf"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "page"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "pages"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "paid"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pain"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pandemic"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "paper"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "paperless"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "papillomavirus"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parameter"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parametergeosearch"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "parameters"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parks"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "parliamentary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parsing"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "part"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "partial"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "particular"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "particularly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parties"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "partner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "partners"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "partnership"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "parts"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "party"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pass"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "password"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "past"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "path"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "pathology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pathology-messaging-edifact"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pathology-messaging-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pathology-messaging-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pathology.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pathway"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "pathways"
+  },
+  {
+    "df": 62,
+    "postings": "data/search/postings-0.json",
+    "token": "patient"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patient-care-aggregator-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patient-care-aggregator-record-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patient-care-aggregator-record-service-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patient-centric"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "patient-facing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patient.for"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "patientfor"
+  },
+  {
+    "df": 27,
+    "postings": "data/search/postings-0.json",
+    "token": "patients"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patientsall"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patientthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "patientuse"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "patientyou"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "pattern"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pay"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "payable"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "paye"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "payload"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "payment"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "payments"
+  }
+]
