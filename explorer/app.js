@@ -101,6 +101,10 @@ function attr(value) {
   return esc(value).replace(/'/g, "&#39;");
 }
 
+function isHttpHref(value) {
+  return /^https?:\/\//i.test(String(value || ""));
+}
+
 function color(section) {
   return SECTION_COLORS[section] || "#5f6f7f";
 }
@@ -196,7 +200,10 @@ async function loadJson(url) {
   for (let attempt = 0; attempt <= JSON_RETRIES; attempt++) {
     const requestUrl = retryUrl(url, attempt);
     try {
-      const response = await fetch(requestUrl, { cache: attempt ? "no-store" : "default" });
+      const response = await fetch(requestUrl, {
+        cache: attempt ? "no-store" : "default",
+        signal: typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined
+      });
       if (response.ok) return response.json();
       lastError = `${url}: ${response.status}`;
       if (!retryableStatus(response.status)) throw new Error(lastError);
@@ -219,7 +226,11 @@ function loadBundleHistory() {
 }
 
 function saveBundleHistory() {
-  localStorage.setItem(BUNDLE_HISTORY_KEY, JSON.stringify(bundleHistory.slice(0, 20)));
+  try {
+    localStorage.setItem(BUNDLE_HISTORY_KEY, JSON.stringify(bundleHistory.slice(0, 20)));
+  } catch (_error) {
+    // Ignore storage failures (quota, private browsing).
+  }
 }
 
 function bundleTitle(raw) {
@@ -319,6 +330,15 @@ async function loadBundleRegistry() {
 function bundleUrlFromLocation() {
   const params = new URLSearchParams(location.search);
   return params.get("bundle") || DEFAULT_BUNDLE;
+}
+
+function validatedBundleUrl(url) {
+  const resolved = new URL(url, location.href);
+  // Untrusted ?bundle= URLs: allow same-origin paths, otherwise require https.
+  if (resolved.origin !== location.origin && resolved.protocol !== "https:") {
+    throw new Error("Only https:// bundle URLs (or same-origin paths) can be loaded.");
+  }
+  return resolved.toString();
 }
 
 function viewFromLocation() {
@@ -613,6 +633,8 @@ function inlineMarkdown(text, baseId) {
   html = esc(html);
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, label, href) => {
     const url = sourceHref(href, baseId);
+    // Bundle content is untrusted: only render http(s) or bundle-relative image sources.
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url) && !isHttpHref(url)) return label;
     return `<img src="${attr(url)}" alt="${attr(label)}">`;
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label, href) => {
@@ -620,6 +642,8 @@ function inlineMarkdown(text, baseId) {
     if (target) return `<a href="${attr(routeHref(target))}" data-page="${attr(target)}">${label}</a>`;
     const url = href;
     const external = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url);
+    // Block javascript:, data:, and other non-http(s)/mailto schemes from untrusted bundles.
+    if (external && !isHttpHref(url) && !/^mailto:/i.test(url)) return label;
     return `<a href="${attr(url)}"${external ? " target=\"_blank\" rel=\"noopener\"" : ""}>${label}</a>`;
   });
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
@@ -1310,7 +1334,11 @@ function isPinned(id) {
 }
 
 function savePins() {
-  localStorage.setItem(PIN_STORAGE_KEY, JSON.stringify([...pins]));
+  try {
+    localStorage.setItem(PIN_STORAGE_KEY, JSON.stringify([...pins]));
+  } catch (_error) {
+    // Ignore storage failures (quota, private browsing).
+  }
 }
 
 function togglePin(id) {
@@ -1501,8 +1529,8 @@ function renderDetail() {
     relationBlock +
     `<dl class="kv">` +
     `<dt>Section</dt><dd>${esc(node.section || "root")}</dd>` +
-    `<dt>Source</dt><dd>${node.source ? `<a href="${attr(node.source)}" target="_blank" rel="noopener">${esc(node.source)}</a>` : "None"}</dd>` +
-    `<dt>Resource</dt><dd>${node.resource ? `<a href="${attr(node.resource)}" target="_blank" rel="noopener">${esc(node.resource)}</a>` : "None"}</dd>` +
+    `<dt>Source</dt><dd>${node.source ? (isHttpHref(node.source) ? `<a href="${attr(node.source)}" target="_blank" rel="noopener">${esc(node.source)}</a>` : esc(node.source)) : "None"}</dd>` +
+    `<dt>Resource</dt><dd>${node.resource ? (isHttpHref(node.resource) ? `<a href="${attr(node.resource)}" target="_blank" rel="noopener">${esc(node.resource)}</a>` : esc(node.resource)) : "None"}</dd>` +
     `<dt>Timestamp</dt><dd>${esc(node.timestamp || "None")}</dd>` +
     `<dt>Aliases</dt><dd>${routeAliases.length ? routeAliases.map(alias => `<span class="chip">${esc(alias)}</span>`).join(" ") : "None"}</dd>` +
     `</dl>` +
@@ -1559,7 +1587,7 @@ async function loadInitialBundle() {
   const url = bundleUrlFromLocation();
   el.bundleUrl.value = url === DEFAULT_BUNDLE ? "" : url;
   try {
-    const raw = await loadJson(url);
+    const raw = await loadJson(validatedBundleUrl(url));
     setBundle(raw, url);
     rememberBundleUrl(url, raw);
     showStatus("");
@@ -1571,7 +1599,7 @@ async function loadInitialBundle() {
 async function loadBundleFromUrl(url, push) {
   try {
     showStatus("");
-    const raw = await loadJson(url);
+    const raw = await loadJson(validatedBundleUrl(url));
     if (push) {
       const next = new URL(location.href);
       if (url === DEFAULT_BUNDLE) next.searchParams.delete("bundle");
