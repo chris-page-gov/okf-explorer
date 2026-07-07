@@ -15,11 +15,11 @@
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.49.5",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "svelte": "^5.43.2",
     "svelte-check": "^4.3.4",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vite": "^8.1.2",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   }
 }
