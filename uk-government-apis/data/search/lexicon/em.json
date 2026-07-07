@@ -1,0 +1,47 @@
+[
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "email"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "emails"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "embed"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "emergency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "employees"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "employer"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "employers"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "employment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "employments"
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "liabilities"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "liability"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "licence"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "licence.public"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "licence.software"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "license"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "licensed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "licenses"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "licensing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "licensingthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "life"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lifetime"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lightning-quick"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "like"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "likely"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "limit"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "limited"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lims"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "line"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lines"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "link"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "linked"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "linkeddata"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "linkedidentifiers"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "linking"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "links"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lisa"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "lisa-api"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "list"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "listed"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "listing"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "lists"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "live"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pc"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pcns"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pcse"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pcseyou"
+  }
+]

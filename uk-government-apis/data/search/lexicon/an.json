@@ -1,0 +1,77 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "analyse"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "analysed"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "analysis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "android"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "annotations"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "annual"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "annually"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "annuities"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "anonymised"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "anonymous"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "another"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "answers"
+  },
+  {
+    "df": 39,
+    "postings": "data/search/postings-0.json",
+    "token": "any"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "anyone"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "anywhere"
+  }
+]

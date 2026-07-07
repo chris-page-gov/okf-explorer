@@ -1,0 +1,518 @@
+{
+  "bac": [
+    {
+      "df": 9,
+      "token": "back"
+    },
+    {
+      "df": 2,
+      "token": "backend"
+    },
+    {
+      "df": 2,
+      "token": "backlog"
+    }
+  ],
+  "back": [
+    {
+      "df": 9,
+      "token": "back"
+    },
+    {
+      "df": 2,
+      "token": "backend"
+    },
+    {
+      "df": 2,
+      "token": "backlog"
+    }
+  ],
+  "backe": [
+    {
+      "df": 2,
+      "token": "backend"
+    }
+  ],
+  "backen": [
+    {
+      "df": 2,
+      "token": "backend"
+    }
+  ],
+  "backend": [
+    {
+      "df": 2,
+      "token": "backend"
+    }
+  ],
+  "backl": [
+    {
+      "df": 2,
+      "token": "backlog"
+    }
+  ],
+  "backlo": [
+    {
+      "df": 2,
+      "token": "backlog"
+    }
+  ],
+  "backlog": [
+    {
+      "df": 2,
+      "token": "backlog"
+    }
+  ],
+  "bai": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "bail": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "baili": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "bailiw": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "bailiwi": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "bailiwic": [
+    {
+      "df": 2,
+      "token": "bailiwicks"
+    }
+  ],
+  "bal": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "bala": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "balan": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "balanc": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "balance": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "balances": [
+    {
+      "df": 1,
+      "token": "balances"
+    }
+  ],
+  "ban": [
+    {
+      "df": 3,
+      "token": "band"
+    },
+    {
+      "df": 1,
+      "token": "bank"
+    },
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "band": [
+    {
+      "df": 3,
+      "token": "band"
+    }
+  ],
+  "bank": [
+    {
+      "df": 1,
+      "token": "bank"
+    },
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "bank-": [
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    }
+  ],
+  "bank-h": [
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    }
+  ],
+  "bank-ho": [
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    }
+  ],
+  "bank-hol": [
+    {
+      "df": 1,
+      "token": "bank-holidays.json"
+    }
+  ],
+  "bankr": [
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "bankru": [
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "bankrup": [
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "bankrupt": [
+    {
+      "df": 1,
+      "token": "bankruptcy"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "bankruptcysearchv2_1webservice"
+    }
+  ],
+  "bar": [
+    {
+      "df": 1,
+      "token": "barrier"
+    },
+    {
+      "df": 1,
+      "token": "barriers"
+    },
+    {
+      "df": 1,
+      "token": "bars"
+    }
+  ],
+  "barr": [
+    {
+      "df": 1,
+      "token": "barrier"
+    },
+    {
+      "df": 1,
+      "token": "barriers"
+    }
+  ],
+  "barri": [
+    {
+      "df": 1,
+      "token": "barrier"
+    },
+    {
+      "df": 1,
+      "token": "barriers"
+    }
+  ],
+  "barrie": [
+    {
+      "df": 1,
+      "token": "barrier"
+    },
+    {
+      "df": 1,
+      "token": "barriers"
+    }
+  ],
+  "barrier": [
+    {
+      "df": 1,
+      "token": "barrier"
+    },
+    {
+      "df": 1,
+      "token": "barriers"
+    }
+  ],
+  "barriers": [
+    {
+      "df": 1,
+      "token": "barriers"
+    }
+  ],
+  "bars": [
+    {
+      "df": 1,
+      "token": "bars"
+    }
+  ],
+  "bas": [
+    {
+      "df": 17,
+      "token": "based"
+    },
+    {
+      "df": 2,
+      "token": "base"
+    },
+    {
+      "df": 1,
+      "token": "basic"
+    },
+    {
+      "df": 1,
+      "token": "basin"
+    },
+    {
+      "df": 1,
+      "token": "basis"
+    }
+  ],
+  "base": [
+    {
+      "df": 17,
+      "token": "based"
+    },
+    {
+      "df": 2,
+      "token": "base"
+    }
+  ],
+  "based": [
+    {
+      "df": 17,
+      "token": "based"
+    }
+  ],
+  "basi": [
+    {
+      "df": 1,
+      "token": "basic"
+    },
+    {
+      "df": 1,
+      "token": "basin"
+    },
+    {
+      "df": 1,
+      "token": "basis"
+    }
+  ],
+  "basic": [
+    {
+      "df": 1,
+      "token": "basic"
+    }
+  ],
+  "basin": [
+    {
+      "df": 1,
+      "token": "basin"
+    }
+  ],
+  "basis": [
+    {
+      "df": 1,
+      "token": "basis"
+    }
+  ],
+  "bat": [
+    {
+      "df": 4,
+      "token": "batch"
+    },
+    {
+      "df": 1,
+      "token": "batchesyou"
+    },
+    {
+      "df": 1,
+      "token": "bathing"
+    },
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ],
+  "batc": [
+    {
+      "df": 4,
+      "token": "batch"
+    },
+    {
+      "df": 1,
+      "token": "batchesyou"
+    }
+  ],
+  "batch": [
+    {
+      "df": 4,
+      "token": "batch"
+    },
+    {
+      "df": 1,
+      "token": "batchesyou"
+    }
+  ],
+  "batche": [
+    {
+      "df": 1,
+      "token": "batchesyou"
+    }
+  ],
+  "batches": [
+    {
+      "df": 1,
+      "token": "batchesyou"
+    }
+  ],
+  "batchesy": [
+    {
+      "df": 1,
+      "token": "batchesyou"
+    }
+  ],
+  "bath": [
+    {
+      "df": 1,
+      "token": "bathing"
+    }
+  ],
+  "bathi": [
+    {
+      "df": 1,
+      "token": "bathing"
+    }
+  ],
+  "bathin": [
+    {
+      "df": 1,
+      "token": "bathing"
+    }
+  ],
+  "bathing": [
+    {
+      "df": 1,
+      "token": "bathing"
+    }
+  ],
+  "batt": [
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ],
+  "battl": [
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ],
+  "battle": [
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ],
+  "battlef": [
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ],
+  "battlefi": [
+    {
+      "df": 1,
+      "token": "battlefields"
+    }
+  ]
+}

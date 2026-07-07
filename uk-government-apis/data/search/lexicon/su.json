@@ -1,0 +1,247 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subcontractor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subcontractors"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "subject"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subjects"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "submission"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "submissions"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "submit"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "submitted"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "submitting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subscribe"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "subscribed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subscribers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subscribing"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "subscription"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "subscriptions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subscriptionthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subsequent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subsequently"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "subset"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "subsets"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "substances"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "successful"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "successfully"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "succession"
+  },
+  {
+    "df": 34,
+    "postings": "data/search/postings-0.json",
+    "token": "such"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "suffering"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "suffix"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "suitable"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "suite"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "summaries"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "summary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "summary-care-record-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "summary-care-record-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "superseded"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "supersedes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "superseding"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "supplied"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "supplier"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "suppliers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "supplies"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "support"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "supported"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "supporting"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "supports"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sure"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "surgery"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "survey"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "surveys"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "suspected"
+  }
+]

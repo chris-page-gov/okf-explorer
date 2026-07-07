@@ -1,0 +1,127 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gemini"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "gender"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "general"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "general-practice-extraction-service-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "generate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "generated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "generations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "genital"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geocoding"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "geographic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geography"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geometries"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geometry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geonetwork"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "georeport"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "georeport_v2"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geosearch"
+  },
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "geospatial"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "geotechnical"
+  },
+  {
+    "df": 44,
+    "postings": "data/search/postings-0.json",
+    "token": "get"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "get-into-teaching-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "get-started-with-the-services-directory.htm"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "get_data"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "getcapabilities"
+  }
+]

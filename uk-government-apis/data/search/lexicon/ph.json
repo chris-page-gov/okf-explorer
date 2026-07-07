@@ -1,0 +1,47 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pharmacies"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "pharmacy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pharmacy.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pharmacythe"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "phone"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "phonetics"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "photo"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "photographs"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "physical"
+  }
+]

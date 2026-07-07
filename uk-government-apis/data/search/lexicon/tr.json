@@ -1,0 +1,252 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tr"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "trace"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tracing"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "track"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tracker"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tracker.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tracker.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tracking"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "trade"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trade-tariff"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trade-tariff.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "traders"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trading"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "training"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tram"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "transaction"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transactions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transactions.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transcription"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer-of-care-emergency-care-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer-of-care-inpatient-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer-of-care-mental-health-discharge-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer-of-care-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transfer-of-care-outpatient-clinic-letter-fhir"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "transferred"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "transfers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transform"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transition"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "transmission"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "transmit"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "transport"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transport-for-london"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "transport-for-london-transport-for-london-unified-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "travel"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "treated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "treating"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "treatment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trends"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "triage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trial"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tribunal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "tribunals"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trigger"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "triggers"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "trud"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "trust"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "trusted"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "trusts"
+  }
+]

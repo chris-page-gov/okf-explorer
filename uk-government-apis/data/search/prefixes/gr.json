@@ -1,0 +1,352 @@
+{
+  "gra": [
+    {
+      "df": 2,
+      "token": "granular"
+    },
+    {
+      "df": 1,
+      "token": "graduate"
+    },
+    {
+      "df": 1,
+      "token": "grant"
+    },
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "grad": [
+    {
+      "df": 1,
+      "token": "graduate"
+    }
+  ],
+  "gradu": [
+    {
+      "df": 1,
+      "token": "graduate"
+    }
+  ],
+  "gradua": [
+    {
+      "df": 1,
+      "token": "graduate"
+    }
+  ],
+  "graduat": [
+    {
+      "df": 1,
+      "token": "graduate"
+    }
+  ],
+  "graduate": [
+    {
+      "df": 1,
+      "token": "graduate"
+    }
+  ],
+  "gran": [
+    {
+      "df": 2,
+      "token": "granular"
+    },
+    {
+      "df": 1,
+      "token": "grant"
+    }
+  ],
+  "grant": [
+    {
+      "df": 1,
+      "token": "grant"
+    }
+  ],
+  "granu": [
+    {
+      "df": 2,
+      "token": "granular"
+    }
+  ],
+  "granul": [
+    {
+      "df": 2,
+      "token": "granular"
+    }
+  ],
+  "granula": [
+    {
+      "df": 2,
+      "token": "granular"
+    }
+  ],
+  "granular": [
+    {
+      "df": 2,
+      "token": "granular"
+    }
+  ],
+  "grap": [
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "graph": [
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "graphi": [
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "graphic": [
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "graphica": [
+    {
+      "df": 1,
+      "token": "graphical"
+    }
+  ],
+  "gre": [
+    {
+      "df": 1,
+      "token": "greater"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    },
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    },
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "grea": [
+    {
+      "df": 1,
+      "token": "greater"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    },
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    }
+  ],
+  "great": [
+    {
+      "df": 1,
+      "token": "greater"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    },
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    }
+  ],
+  "greate": [
+    {
+      "df": 1,
+      "token": "greater"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    },
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    }
+  ],
+  "greater": [
+    {
+      "df": 1,
+      "token": "greater"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    },
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    }
+  ],
+  "greater-": [
+    {
+      "df": 1,
+      "token": "greater-london-archaeological-priority-areas"
+    },
+    {
+      "df": 1,
+      "token": "greater-london-archaeology-advisory-service"
+    }
+  ],
+  "greater_": [
+    {
+      "df": 1,
+      "token": "greater_london___archaeological_priority_areas"
+    }
+  ],
+  "gree": [
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "green": [
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "greens": [
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "greensp": [
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "greenspa": [
+    {
+      "df": 1,
+      "token": "greenspaces"
+    }
+  ],
+  "gri": [
+    {
+      "df": 2,
+      "token": "grid"
+    }
+  ],
+  "grid": [
+    {
+      "df": 2,
+      "token": "grid"
+    }
+  ],
+  "gro": [
+    {
+      "df": 2,
+      "token": "group"
+    },
+    {
+      "df": 2,
+      "token": "groups"
+    },
+    {
+      "df": 1,
+      "token": "gross"
+    },
+    {
+      "df": 1,
+      "token": "growing"
+    }
+  ],
+  "gros": [
+    {
+      "df": 1,
+      "token": "gross"
+    }
+  ],
+  "gross": [
+    {
+      "df": 1,
+      "token": "gross"
+    }
+  ],
+  "grou": [
+    {
+      "df": 2,
+      "token": "group"
+    },
+    {
+      "df": 2,
+      "token": "groups"
+    }
+  ],
+  "group": [
+    {
+      "df": 2,
+      "token": "group"
+    },
+    {
+      "df": 2,
+      "token": "groups"
+    }
+  ],
+  "groups": [
+    {
+      "df": 2,
+      "token": "groups"
+    }
+  ],
+  "grow": [
+    {
+      "df": 1,
+      "token": "growing"
+    }
+  ],
+  "growi": [
+    {
+      "df": 1,
+      "token": "growing"
+    }
+  ],
+  "growin": [
+    {
+      "df": 1,
+      "token": "growing"
+    }
+  ],
+  "growing": [
+    {
+      "df": 1,
+      "token": "growing"
+    }
+  ]
+}

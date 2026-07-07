@@ -1,0 +1,46 @@
+{
+  "chunks": {
+    "datasets": [
+      "data/apis-0.json"
+    ],
+    "publishers": [
+      "data/providers-0.json"
+    ],
+    "relationships": [
+      "data/relationships-0.json"
+    ],
+    "resources": [
+      "data/resources-0.json"
+    ]
+  },
+  "counts": {
+    "api_products": 244,
+    "api_resources": 507,
+    "datasets": 244,
+    "providers": 34,
+    "publishers": 34,
+    "relationships": 1506,
+    "resources": 507
+  },
+  "generated_at": "2026-06-24T00:00:00Z",
+  "indexes": {
+    "analysis": "data/analysis/overview.json",
+    "facets": "data/facets.json",
+    "graph": "data/graph.json",
+    "overview": "data/overview.json",
+    "search": "data/search/manifest.json"
+  },
+  "performance": {
+    "full_record_hydration": "lazy",
+    "relationship_hydration": "lazy",
+    "search": "static worker shards",
+    "startup_mode": "overview-first"
+  },
+  "search": {
+    "documents": 244,
+    "result_limit": 200,
+    "schema": "okf-static-search.v1",
+    "tokens": 3893
+  },
+  "title": "UK Government APIs static corpus"
+}

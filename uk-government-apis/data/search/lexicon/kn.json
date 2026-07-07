@@ -1,0 +1,17 @@
+[
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "know"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "known"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "knows"
+  }
+]

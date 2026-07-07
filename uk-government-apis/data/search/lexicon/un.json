@@ -1,0 +1,107 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "un"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "unable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unattended"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "unavailableas"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "uncategorised"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "under"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "underlying"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "understand"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "understanding"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "undertaking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unified"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "unique"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "unit"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "united"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "universal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unplanned"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unrestricted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unrivalled"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "unscheduled"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "unstructured"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "until"
+  }
+]

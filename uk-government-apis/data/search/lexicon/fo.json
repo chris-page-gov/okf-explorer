@@ -1,0 +1,147 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fobt"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "focus"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "focuses"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "follow"
+  },
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "following"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "follows"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "food"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "food-alerts"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "food-standards-agency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "food-standards-agency-food-alerts"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "food-standards-agency-food-hygiene-ratings-scheme-fhrs"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "force"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "forecasting"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "form"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "formal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "formally"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "format"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "formats"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "formerly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "formgos5"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "forms"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "forms.gos1"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "forward"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "forwards"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "found"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "foundation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "foundations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "foundry"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "four"
+  }
+]

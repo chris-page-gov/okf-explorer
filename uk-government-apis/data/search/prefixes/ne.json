@@ -1,0 +1,476 @@
+{
+  "nea": [
+    {
+      "df": 4,
+      "token": "near"
+    },
+    {
+      "df": 2,
+      "token": "nearest"
+    },
+    {
+      "df": 1,
+      "token": "neach"
+    },
+    {
+      "df": 1,
+      "token": "near-real-time"
+    },
+    {
+      "df": 1,
+      "token": "nearly"
+    }
+  ],
+  "neac": [
+    {
+      "df": 1,
+      "token": "neach"
+    }
+  ],
+  "neach": [
+    {
+      "df": 1,
+      "token": "neach"
+    }
+  ],
+  "near": [
+    {
+      "df": 4,
+      "token": "near"
+    },
+    {
+      "df": 2,
+      "token": "nearest"
+    },
+    {
+      "df": 1,
+      "token": "near-real-time"
+    },
+    {
+      "df": 1,
+      "token": "nearly"
+    }
+  ],
+  "near-": [
+    {
+      "df": 1,
+      "token": "near-real-time"
+    }
+  ],
+  "near-r": [
+    {
+      "df": 1,
+      "token": "near-real-time"
+    }
+  ],
+  "near-re": [
+    {
+      "df": 1,
+      "token": "near-real-time"
+    }
+  ],
+  "near-rea": [
+    {
+      "df": 1,
+      "token": "near-real-time"
+    }
+  ],
+  "neare": [
+    {
+      "df": 2,
+      "token": "nearest"
+    }
+  ],
+  "neares": [
+    {
+      "df": 2,
+      "token": "nearest"
+    }
+  ],
+  "nearest": [
+    {
+      "df": 2,
+      "token": "nearest"
+    }
+  ],
+  "nearl": [
+    {
+      "df": 1,
+      "token": "nearly"
+    }
+  ],
+  "nearly": [
+    {
+      "df": 1,
+      "token": "nearly"
+    }
+  ],
+  "nec": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "nece": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "neces": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "necess": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "necessa": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "necessar": [
+    {
+      "df": 1,
+      "token": "necessarily"
+    },
+    {
+      "df": 1,
+      "token": "necessary"
+    }
+  ],
+  "nee": [
+    {
+      "df": 21,
+      "token": "need"
+    },
+    {
+      "df": 4,
+      "token": "needs"
+    },
+    {
+      "df": 1,
+      "token": "needed"
+    },
+    {
+      "df": 1,
+      "token": "needyou"
+    }
+  ],
+  "need": [
+    {
+      "df": 21,
+      "token": "need"
+    },
+    {
+      "df": 4,
+      "token": "needs"
+    },
+    {
+      "df": 1,
+      "token": "needed"
+    },
+    {
+      "df": 1,
+      "token": "needyou"
+    }
+  ],
+  "neede": [
+    {
+      "df": 1,
+      "token": "needed"
+    }
+  ],
+  "needed": [
+    {
+      "df": 1,
+      "token": "needed"
+    }
+  ],
+  "needs": [
+    {
+      "df": 4,
+      "token": "needs"
+    }
+  ],
+  "needy": [
+    {
+      "df": 1,
+      "token": "needyou"
+    }
+  ],
+  "needyo": [
+    {
+      "df": 1,
+      "token": "needyou"
+    }
+  ],
+  "needyou": [
+    {
+      "df": 1,
+      "token": "needyou"
+    }
+  ],
+  "neg": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "nega": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "negat": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "negati": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "negativ": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "negative": [
+    {
+      "df": 1,
+      "token": "negative"
+    }
+  ],
+  "nei": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "neig": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "neigh": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "neighb": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "neighbo": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "neighbou": [
+    {
+      "df": 1,
+      "token": "neighbourhood"
+    }
+  ],
+  "nem": [
+    {
+      "df": 4,
+      "token": "nems"
+    }
+  ],
+  "nems": [
+    {
+      "df": 4,
+      "token": "nems"
+    }
+  ],
+  "net": [
+    {
+      "df": 2,
+      "token": "network"
+    },
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "netw": [
+    {
+      "df": 2,
+      "token": "network"
+    },
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "netwo": [
+    {
+      "df": 2,
+      "token": "network"
+    },
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "networ": [
+    {
+      "df": 2,
+      "token": "network"
+    },
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "network": [
+    {
+      "df": 2,
+      "token": "network"
+    },
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "networks": [
+    {
+      "df": 1,
+      "token": "networks"
+    }
+  ],
+  "new": [
+    {
+      "df": 26,
+      "token": "new"
+    },
+    {
+      "df": 2,
+      "token": "newborn"
+    },
+    {
+      "df": 1,
+      "token": "newer"
+    },
+    {
+      "df": 1,
+      "token": "newly"
+    },
+    {
+      "df": 1,
+      "token": "newlyn"
+    }
+  ],
+  "newb": [
+    {
+      "df": 2,
+      "token": "newborn"
+    }
+  ],
+  "newbo": [
+    {
+      "df": 2,
+      "token": "newborn"
+    }
+  ],
+  "newbor": [
+    {
+      "df": 2,
+      "token": "newborn"
+    }
+  ],
+  "newborn": [
+    {
+      "df": 2,
+      "token": "newborn"
+    }
+  ],
+  "newe": [
+    {
+      "df": 1,
+      "token": "newer"
+    }
+  ],
+  "newer": [
+    {
+      "df": 1,
+      "token": "newer"
+    }
+  ],
+  "newl": [
+    {
+      "df": 1,
+      "token": "newly"
+    },
+    {
+      "df": 1,
+      "token": "newlyn"
+    }
+  ],
+  "newly": [
+    {
+      "df": 1,
+      "token": "newly"
+    },
+    {
+      "df": 1,
+      "token": "newlyn"
+    }
+  ],
+  "newlyn": [
+    {
+      "df": 1,
+      "token": "newlyn"
+    }
+  ],
+  "nex": [
+    {
+      "df": 2,
+      "token": "next"
+    }
+  ],
+  "next": [
+    {
+      "df": 2,
+      "token": "next"
+    }
+  ]
+}

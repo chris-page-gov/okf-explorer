@@ -1,0 +1,376 @@
+{
+  "hol": [
+    {
+      "df": 3,
+      "token": "holds"
+    },
+    {
+      "df": 1,
+      "token": "hold"
+    },
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "hold": [
+    {
+      "df": 3,
+      "token": "holds"
+    },
+    {
+      "df": 1,
+      "token": "hold"
+    }
+  ],
+  "holds": [
+    {
+      "df": 3,
+      "token": "holds"
+    }
+  ],
+  "holi": [
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "holid": [
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "holida": [
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "holiday": [
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "holidays": [
+    {
+      "df": 1,
+      "token": "holidays"
+    }
+  ],
+  "hom": [
+    {
+      "df": 2,
+      "token": "home"
+    },
+    {
+      "df": 2,
+      "token": "homes"
+    },
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    },
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "home": [
+    {
+      "df": 2,
+      "token": "home"
+    },
+    {
+      "df": 2,
+      "token": "homes"
+    },
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    },
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "home.": [
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    }
+  ],
+  "home.e": [
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    }
+  ],
+  "home.es": [
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    }
+  ],
+  "home.esd": [
+    {
+      "df": 1,
+      "token": "home.esd.org.uk"
+    }
+  ],
+  "homee": [
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "homeea": [
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "homeeac": [
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "homeeach": [
+    {
+      "df": 1,
+      "token": "homeeach"
+    }
+  ],
+  "homes": [
+    {
+      "df": 2,
+      "token": "homes"
+    }
+  ],
+  "hop": [
+    {
+      "df": 1,
+      "token": "hope"
+    }
+  ],
+  "hope": [
+    {
+      "df": 1,
+      "token": "hope"
+    }
+  ],
+  "hos": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    },
+    {
+      "df": 3,
+      "token": "host"
+    },
+    {
+      "df": 1,
+      "token": "hosted"
+    }
+  ],
+  "hosp": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    }
+  ],
+  "hospi": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    }
+  ],
+  "hospit": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    }
+  ],
+  "hospita": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    }
+  ],
+  "hospital": [
+    {
+      "df": 7,
+      "token": "hospital"
+    },
+    {
+      "df": 3,
+      "token": "hospitals"
+    }
+  ],
+  "host": [
+    {
+      "df": 3,
+      "token": "host"
+    },
+    {
+      "df": 1,
+      "token": "hosted"
+    }
+  ],
+  "hoste": [
+    {
+      "df": 1,
+      "token": "hosted"
+    }
+  ],
+  "hosted": [
+    {
+      "df": 1,
+      "token": "hosted"
+    }
+  ],
+  "hou": [
+    {
+      "df": 12,
+      "token": "housing"
+    },
+    {
+      "df": 8,
+      "token": "hours"
+    },
+    {
+      "df": 5,
+      "token": "house"
+    },
+    {
+      "df": 1,
+      "token": "hour"
+    },
+    {
+      "df": 1,
+      "token": "hourly"
+    }
+  ],
+  "hour": [
+    {
+      "df": 8,
+      "token": "hours"
+    },
+    {
+      "df": 1,
+      "token": "hour"
+    },
+    {
+      "df": 1,
+      "token": "hourly"
+    }
+  ],
+  "hourl": [
+    {
+      "df": 1,
+      "token": "hourly"
+    }
+  ],
+  "hourly": [
+    {
+      "df": 1,
+      "token": "hourly"
+    }
+  ],
+  "hours": [
+    {
+      "df": 8,
+      "token": "hours"
+    }
+  ],
+  "hous": [
+    {
+      "df": 12,
+      "token": "housing"
+    },
+    {
+      "df": 5,
+      "token": "house"
+    }
+  ],
+  "house": [
+    {
+      "df": 5,
+      "token": "house"
+    }
+  ],
+  "housi": [
+    {
+      "df": 12,
+      "token": "housing"
+    }
+  ],
+  "housin": [
+    {
+      "df": 12,
+      "token": "housing"
+    }
+  ],
+  "housing": [
+    {
+      "df": 12,
+      "token": "housing"
+    }
+  ],
+  "how": [
+    {
+      "df": 9,
+      "token": "how"
+    },
+    {
+      "df": 2,
+      "token": "however"
+    }
+  ],
+  "howe": [
+    {
+      "df": 2,
+      "token": "however"
+    }
+  ],
+  "howev": [
+    {
+      "df": 2,
+      "token": "however"
+    }
+  ],
+  "howeve": [
+    {
+      "df": 2,
+      "token": "however"
+    }
+  ],
+  "however": [
+    {
+      "df": 2,
+      "token": "however"
+    }
+  ]
+}

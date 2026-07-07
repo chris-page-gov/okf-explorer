@@ -1,0 +1,88 @@
+{
+  "nte": [
+    {
+      "df": 3,
+      "token": "ntest"
+    }
+  ],
+  "ntes": [
+    {
+      "df": 3,
+      "token": "ntest"
+    }
+  ],
+  "ntest": [
+    {
+      "df": 3,
+      "token": "ntest"
+    }
+  ],
+  "nth": [
+    {
+      "df": 48,
+      "token": "nthe"
+    },
+    {
+      "df": 10,
+      "token": "nthis"
+    },
+    {
+      "df": 4,
+      "token": "nthese"
+    },
+    {
+      "df": 1,
+      "token": "nthere"
+    }
+  ],
+  "nthe": [
+    {
+      "df": 48,
+      "token": "nthe"
+    },
+    {
+      "df": 4,
+      "token": "nthese"
+    },
+    {
+      "df": 1,
+      "token": "nthere"
+    }
+  ],
+  "nther": [
+    {
+      "df": 1,
+      "token": "nthere"
+    }
+  ],
+  "nthere": [
+    {
+      "df": 1,
+      "token": "nthere"
+    }
+  ],
+  "nthes": [
+    {
+      "df": 4,
+      "token": "nthese"
+    }
+  ],
+  "nthese": [
+    {
+      "df": 4,
+      "token": "nthese"
+    }
+  ],
+  "nthi": [
+    {
+      "df": 10,
+      "token": "nthis"
+    }
+  ],
+  "nthis": [
+    {
+      "df": 10,
+      "token": "nthis"
+    }
+  ]
+}

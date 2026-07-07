@@ -1,0 +1,114 @@
+{
+  "sna": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "snap": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "snaps": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "snapsh": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "snapsho": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "snapshot": [
+    {
+      "df": 1,
+      "token": "snapshots"
+    }
+  ],
+  "sno": [
+    {
+      "df": 3,
+      "token": "snomed"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ],
+  "snom": [
+    {
+      "df": 3,
+      "token": "snomed"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ],
+  "snome": [
+    {
+      "df": 3,
+      "token": "snomed"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ],
+  "snomed": [
+    {
+      "df": 3,
+      "token": "snomed"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ],
+  "snomed-": [
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ],
+  "snomed-c": [
+    {
+      "df": 1,
+      "token": "snomed-ct"
+    },
+    {
+      "df": 1,
+      "token": "snomed-ct.to"
+    }
+  ]
+}

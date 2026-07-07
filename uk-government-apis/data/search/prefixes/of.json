@@ -1,0 +1,622 @@
+{
+  "off": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 9,
+      "token": "office"
+    },
+    {
+      "df": 3,
+      "token": "off"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "offer"
+    },
+    {
+      "df": 1,
+      "token": "offers"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    },
+    {
+      "df": 1,
+      "token": "officer"
+    },
+    {
+      "df": 1,
+      "token": "officers"
+    },
+    {
+      "df": 1,
+      "token": "offices"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    }
+  ],
+  "offe": [
+    {
+      "df": 1,
+      "token": "offer"
+    },
+    {
+      "df": 1,
+      "token": "offers"
+    }
+  ],
+  "offer": [
+    {
+      "df": 1,
+      "token": "offer"
+    },
+    {
+      "df": 1,
+      "token": "offers"
+    }
+  ],
+  "offers": [
+    {
+      "df": 1,
+      "token": "offers"
+    }
+  ],
+  "offi": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 9,
+      "token": "office"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    },
+    {
+      "df": 1,
+      "token": "officer"
+    },
+    {
+      "df": 1,
+      "token": "officers"
+    },
+    {
+      "df": 1,
+      "token": "offices"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v1"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v2"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_part"
+    }
+  ],
+  "offic": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 9,
+      "token": "office"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    },
+    {
+      "df": 1,
+      "token": "officer"
+    },
+    {
+      "df": 1,
+      "token": "officers"
+    },
+    {
+      "df": 1,
+      "token": "offices"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v1"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v2"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_part"
+    }
+  ],
+  "office": [
+    {
+      "df": 9,
+      "token": "office"
+    },
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    },
+    {
+      "df": 1,
+      "token": "officer"
+    },
+    {
+      "df": 1,
+      "token": "officers"
+    },
+    {
+      "df": 1,
+      "token": "offices"
+    }
+  ],
+  "office-": [
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    }
+  ],
+  "office-o": [
+    {
+      "df": 2,
+      "token": "office-of-national-statistics"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-open-geography-portal"
+    },
+    {
+      "df": 1,
+      "token": "office-of-national-statistics-statistics"
+    }
+  ],
+  "officer": [
+    {
+      "df": 1,
+      "token": "officer"
+    },
+    {
+      "df": 1,
+      "token": "officers"
+    }
+  ],
+  "officers": [
+    {
+      "df": 1,
+      "token": "officers"
+    }
+  ],
+  "offices": [
+    {
+      "df": 1,
+      "token": "offices"
+    }
+  ],
+  "offici": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v1"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v2"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_part"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_whole_rest"
+    },
+    {
+      "df": 1,
+      "token": "officialcopytitleknownv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1webservice"
+    }
+  ],
+  "officia": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v1"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v2"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_part"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_whole_rest"
+    },
+    {
+      "df": 1,
+      "token": "officialcopytitleknownv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1webservice"
+    }
+  ],
+  "official": [
+    {
+      "df": 13,
+      "token": "official"
+    },
+    {
+      "df": 3,
+      "token": "official_copy_title_known"
+    },
+    {
+      "df": 2,
+      "token": "official-copies"
+    },
+    {
+      "df": 2,
+      "token": "official_search_of_whole"
+    },
+    {
+      "df": 1,
+      "token": "official-copy-document-availability-v2"
+    },
+    {
+      "df": 1,
+      "token": "official-searches-of-whole"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v1"
+    },
+    {
+      "df": 1,
+      "token": "official_copy_document_availability_v2"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_part"
+    },
+    {
+      "df": 1,
+      "token": "official_search_of_whole_rest"
+    },
+    {
+      "df": 1,
+      "token": "officialcopytitleknownv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchofpartv2_1webservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "officialsearchv2_1webservice"
+    }
+  ],
+  "offl": [
+    {
+      "df": 1,
+      "token": "offline"
+    }
+  ],
+  "offli": [
+    {
+      "df": 1,
+      "token": "offline"
+    }
+  ],
+  "offlin": [
+    {
+      "df": 1,
+      "token": "offline"
+    }
+  ],
+  "offline": [
+    {
+      "df": 1,
+      "token": "offline"
+    }
+  ],
+  "ofq": [
+    {
+      "df": 1,
+      "token": "ofqual"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ],
+  "ofqu": [
+    {
+      "df": 1,
+      "token": "ofqual"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ],
+  "ofqua": [
+    {
+      "df": 1,
+      "token": "ofqual"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ],
+  "ofqual": [
+    {
+      "df": 1,
+      "token": "ofqual"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ],
+  "ofqual-": [
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    },
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    }
+  ],
+  "ofqual-o": [
+    {
+      "df": 1,
+      "token": "ofqual-ofqual-register-of-regulated-qualifications-api"
+    }
+  ],
+  "ofqual-r": [
+    {
+      "df": 1,
+      "token": "ofqual-register-api"
+    }
+  ],
+  "ofqualg": [
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ],
+  "ofqualgo": [
+    {
+      "df": 1,
+      "token": "ofqualgovuk"
+    }
+  ]
+}

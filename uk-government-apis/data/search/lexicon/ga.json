@@ -1,0 +1,27 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gardens"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gauge"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gauges"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "gazetteer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "gazetteer-service-soap"
+  }
+]

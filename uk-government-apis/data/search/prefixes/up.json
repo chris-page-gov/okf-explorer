@@ -1,0 +1,278 @@
+{
+  "up-": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "up-t": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "up-to": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "up-to-": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "up-to-d": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "up-to-da": [
+    {
+      "df": 1,
+      "token": "up-to-date"
+    }
+  ],
+  "upc": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upco": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upcom": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upcomi": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upcomin": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upcoming": [
+    {
+      "df": 1,
+      "token": "upcoming"
+    }
+  ],
+  "upd": [
+    {
+      "df": 16,
+      "token": "update"
+    },
+    {
+      "df": 10,
+      "token": "updated"
+    },
+    {
+      "df": 3,
+      "token": "updates"
+    },
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "upda": [
+    {
+      "df": 16,
+      "token": "update"
+    },
+    {
+      "df": 10,
+      "token": "updated"
+    },
+    {
+      "df": 3,
+      "token": "updates"
+    },
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "updat": [
+    {
+      "df": 16,
+      "token": "update"
+    },
+    {
+      "df": 10,
+      "token": "updated"
+    },
+    {
+      "df": 3,
+      "token": "updates"
+    },
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "update": [
+    {
+      "df": 16,
+      "token": "update"
+    },
+    {
+      "df": 10,
+      "token": "updated"
+    },
+    {
+      "df": 3,
+      "token": "updates"
+    }
+  ],
+  "updated": [
+    {
+      "df": 10,
+      "token": "updated"
+    }
+  ],
+  "updates": [
+    {
+      "df": 3,
+      "token": "updates"
+    }
+  ],
+  "updati": [
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "updatin": [
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "updating": [
+    {
+      "df": 3,
+      "token": "updating"
+    }
+  ],
+  "upl": [
+    {
+      "df": 4,
+      "token": "upload"
+    },
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "uplo": [
+    {
+      "df": 4,
+      "token": "upload"
+    },
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "uploa": [
+    {
+      "df": 4,
+      "token": "upload"
+    },
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "upload": [
+    {
+      "df": 4,
+      "token": "upload"
+    },
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "uploadi": [
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "uploadin": [
+    {
+      "df": 1,
+      "token": "uploading"
+    }
+  ],
+  "upo": [
+    {
+      "df": 2,
+      "token": "upon"
+    }
+  ],
+  "upon": [
+    {
+      "df": 2,
+      "token": "upon"
+    }
+  ],
+  "upr": [
+    {
+      "df": 2,
+      "token": "uprn"
+    }
+  ],
+  "uprn": [
+    {
+      "df": 2,
+      "token": "uprn"
+    }
+  ],
+  "upw": [
+    {
+      "df": 1,
+      "token": "upwards"
+    }
+  ],
+  "upwa": [
+    {
+      "df": 1,
+      "token": "upwards"
+    }
+  ],
+  "upwar": [
+    {
+      "df": 1,
+      "token": "upwards"
+    }
+  ],
+  "upward": [
+    {
+      "df": 1,
+      "token": "upwards"
+    }
+  ],
+  "upwards": [
+    {
+      "df": 1,
+      "token": "upwards"
+    }
+  ]
+}

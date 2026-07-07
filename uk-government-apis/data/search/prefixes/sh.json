@@ -1,0 +1,234 @@
+{
+  "sha": [
+    {
+      "df": 13,
+      "token": "share"
+    },
+    {
+      "df": 6,
+      "token": "sharing"
+    },
+    {
+      "df": 1,
+      "token": "sha-1"
+    },
+    {
+      "df": 1,
+      "token": "shared"
+    }
+  ],
+  "sha-": [
+    {
+      "df": 1,
+      "token": "sha-1"
+    }
+  ],
+  "sha-1": [
+    {
+      "df": 1,
+      "token": "sha-1"
+    }
+  ],
+  "shar": [
+    {
+      "df": 13,
+      "token": "share"
+    },
+    {
+      "df": 6,
+      "token": "sharing"
+    },
+    {
+      "df": 1,
+      "token": "shared"
+    }
+  ],
+  "share": [
+    {
+      "df": 13,
+      "token": "share"
+    },
+    {
+      "df": 1,
+      "token": "shared"
+    }
+  ],
+  "shared": [
+    {
+      "df": 1,
+      "token": "shared"
+    }
+  ],
+  "shari": [
+    {
+      "df": 6,
+      "token": "sharing"
+    }
+  ],
+  "sharin": [
+    {
+      "df": 6,
+      "token": "sharing"
+    }
+  ],
+  "sharing": [
+    {
+      "df": 6,
+      "token": "sharing"
+    }
+  ],
+  "sho": [
+    {
+      "df": 8,
+      "token": "should"
+    },
+    {
+      "df": 4,
+      "token": "shows"
+    },
+    {
+      "df": 3,
+      "token": "showing"
+    },
+    {
+      "df": 2,
+      "token": "shortlist"
+    },
+    {
+      "df": 1,
+      "token": "shore-based"
+    },
+    {
+      "df": 1,
+      "token": "show"
+    },
+    {
+      "df": 1,
+      "token": "shown"
+    }
+  ],
+  "shor": [
+    {
+      "df": 2,
+      "token": "shortlist"
+    },
+    {
+      "df": 1,
+      "token": "shore-based"
+    }
+  ],
+  "shore": [
+    {
+      "df": 1,
+      "token": "shore-based"
+    }
+  ],
+  "shore-": [
+    {
+      "df": 1,
+      "token": "shore-based"
+    }
+  ],
+  "shore-b": [
+    {
+      "df": 1,
+      "token": "shore-based"
+    }
+  ],
+  "shore-ba": [
+    {
+      "df": 1,
+      "token": "shore-based"
+    }
+  ],
+  "short": [
+    {
+      "df": 2,
+      "token": "shortlist"
+    }
+  ],
+  "shortl": [
+    {
+      "df": 2,
+      "token": "shortlist"
+    }
+  ],
+  "shortli": [
+    {
+      "df": 2,
+      "token": "shortlist"
+    }
+  ],
+  "shortlis": [
+    {
+      "df": 2,
+      "token": "shortlist"
+    }
+  ],
+  "shou": [
+    {
+      "df": 8,
+      "token": "should"
+    }
+  ],
+  "shoul": [
+    {
+      "df": 8,
+      "token": "should"
+    }
+  ],
+  "should": [
+    {
+      "df": 8,
+      "token": "should"
+    }
+  ],
+  "show": [
+    {
+      "df": 4,
+      "token": "shows"
+    },
+    {
+      "df": 3,
+      "token": "showing"
+    },
+    {
+      "df": 1,
+      "token": "show"
+    },
+    {
+      "df": 1,
+      "token": "shown"
+    }
+  ],
+  "showi": [
+    {
+      "df": 3,
+      "token": "showing"
+    }
+  ],
+  "showin": [
+    {
+      "df": 3,
+      "token": "showing"
+    }
+  ],
+  "showing": [
+    {
+      "df": 3,
+      "token": "showing"
+    }
+  ],
+  "shown": [
+    {
+      "df": 1,
+      "token": "shown"
+    }
+  ],
+  "shows": [
+    {
+      "df": 4,
+      "token": "shows"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "due": [
+    {
+      "df": 5,
+      "token": "due"
+    }
+  ],
+  "dur": [
+    {
+      "df": 1,
+      "token": "duration"
+    },
+    {
+      "df": 1,
+      "token": "during"
+    }
+  ],
+  "dura": [
+    {
+      "df": 1,
+      "token": "duration"
+    }
+  ],
+  "durat": [
+    {
+      "df": 1,
+      "token": "duration"
+    }
+  ],
+  "durati": [
+    {
+      "df": 1,
+      "token": "duration"
+    }
+  ],
+  "duratio": [
+    {
+      "df": 1,
+      "token": "duration"
+    }
+  ],
+  "duration": [
+    {
+      "df": 1,
+      "token": "duration"
+    }
+  ],
+  "duri": [
+    {
+      "df": 1,
+      "token": "during"
+    }
+  ],
+  "durin": [
+    {
+      "df": 1,
+      "token": "during"
+    }
+  ],
+  "during": [
+    {
+      "df": 1,
+      "token": "during"
+    }
+  ],
+  "dut": [
+    {
+      "df": 3,
+      "token": "duties"
+    },
+    {
+      "df": 2,
+      "token": "duty"
+    }
+  ],
+  "duti": [
+    {
+      "df": 3,
+      "token": "duties"
+    }
+  ],
+  "dutie": [
+    {
+      "df": 3,
+      "token": "duties"
+    }
+  ],
+  "duties": [
+    {
+      "df": 3,
+      "token": "duties"
+    }
+  ],
+  "duty": [
+    {
+      "df": 2,
+      "token": "duty"
+    }
+  ]
+}

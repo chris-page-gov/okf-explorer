@@ -1,0 +1,116 @@
+{
+  "nco": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    },
+    {
+      "df": 1,
+      "token": "nconservation"
+    },
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "ncom": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    }
+  ],
+  "ncomm": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    }
+  ],
+  "ncommo": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    }
+  ],
+  "ncommod": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    }
+  ],
+  "ncommodi": [
+    {
+      "df": 1,
+      "token": "ncommodities"
+    }
+  ],
+  "ncon": [
+    {
+      "df": 1,
+      "token": "nconservation"
+    },
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "ncons": [
+    {
+      "df": 1,
+      "token": "nconservation"
+    }
+  ],
+  "nconse": [
+    {
+      "df": 1,
+      "token": "nconservation"
+    }
+  ],
+  "nconser": [
+    {
+      "df": 1,
+      "token": "nconservation"
+    }
+  ],
+  "nconserv": [
+    {
+      "df": 1,
+      "token": "nconservation"
+    }
+  ],
+  "ncont": [
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "ncontr": [
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "ncontra": [
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "ncontrac": [
+    {
+      "df": 1,
+      "token": "ncontractors"
+    }
+  ],
+  "nct": [
+    {
+      "df": 1,
+      "token": "ncts"
+    }
+  ],
+  "ncts": [
+    {
+      "df": 1,
+      "token": "ncts"
+    }
+  ]
+}

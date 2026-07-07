@@ -1,0 +1,102 @@
+[
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "so"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "soap"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "soap-wsdl"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "social"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "software"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "software.private"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "solution"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "solutions"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "some"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "someone"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "sometimes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "soon"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "sooner"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sos"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sos-ukair"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sosa"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "source"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "sources"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "south"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "southampton"
+  }
+]

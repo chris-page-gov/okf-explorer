@@ -1,0 +1,17 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "just"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "justice"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "justice-and-policing"
+  }
+]

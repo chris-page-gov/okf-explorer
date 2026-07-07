@@ -1,0 +1,146 @@
+{
+  "fhi": [
+    {
+      "df": 50,
+      "token": "fhir"
+    },
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    },
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    },
+    {
+      "df": 1,
+      "token": "fhir.for"
+    },
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhir": [
+    {
+      "df": 50,
+      "token": "fhir"
+    },
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    },
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    },
+    {
+      "df": 1,
+      "token": "fhir.for"
+    },
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhir-": [
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    },
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    }
+  ],
+  "fhir-c": [
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    },
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    }
+  ],
+  "fhir-co": [
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    },
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    }
+  ],
+  "fhir-com": [
+    {
+      "df": 3,
+      "token": "fhir-compliant"
+    }
+  ],
+  "fhir-con": [
+    {
+      "df": 1,
+      "token": "fhir-converter"
+    }
+  ],
+  "fhir.": [
+    {
+      "df": 1,
+      "token": "fhir.for"
+    },
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhir.f": [
+    {
+      "df": 1,
+      "token": "fhir.for"
+    }
+  ],
+  "fhir.fo": [
+    {
+      "df": 1,
+      "token": "fhir.for"
+    }
+  ],
+  "fhir.for": [
+    {
+      "df": 1,
+      "token": "fhir.for"
+    }
+  ],
+  "fhir.r": [
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhir.re": [
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhir.reg": [
+    {
+      "df": 1,
+      "token": "fhir.regulatory"
+    }
+  ],
+  "fhr": [
+    {
+      "df": 1,
+      "token": "fhrs"
+    }
+  ],
+  "fhrs": [
+    {
+      "df": 1,
+      "token": "fhrs"
+    }
+  ]
+}

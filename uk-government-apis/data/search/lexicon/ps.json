@@ -1,0 +1,17 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "psis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "psl"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "psychiatric"
+  }
+]

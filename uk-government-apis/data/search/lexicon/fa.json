@@ -1,0 +1,62 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "facilities"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "facility"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "facing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "faecal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fafa"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fails"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "falls"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "familiar"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fashion.application-restricted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "favour"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "favoured"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "fax"
+  }
+]

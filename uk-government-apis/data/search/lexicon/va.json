@@ -1,0 +1,142 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vacancies"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vacancy"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccinating"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccination"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccination-adverse-reactions-covid-19"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccination-events-fhir"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccination-related"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccinations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccinations.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccinationsthese"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccine"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vaccines"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "valid"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "validate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "validating"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "validation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "validity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "valuable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "valuation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "value"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "values"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "values.if"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "variety"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "various"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vary"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "vat"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vat-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vat-registered"
+  }
+]

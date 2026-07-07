@@ -1,0 +1,117 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "field"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fifteen"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "file"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "files"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "files.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "files.these"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "filing"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "filter"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "filtering"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "filters"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "final"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "finally"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "financial"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "find"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "findajob.dwp.gov.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "finder"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "findr"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "finds"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fine-grained"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "first"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fish"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fisheries"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "fitted"
+  }
+]

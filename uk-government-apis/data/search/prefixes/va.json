@@ -1,0 +1,694 @@
+{
+  "vac": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vacancy"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 2,
+      "token": "vaccine"
+    },
+    {
+      "df": 1,
+      "token": "vacancies"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    },
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "vaca": [
+    {
+      "df": 2,
+      "token": "vacancy"
+    },
+    {
+      "df": 1,
+      "token": "vacancies"
+    }
+  ],
+  "vacan": [
+    {
+      "df": 2,
+      "token": "vacancy"
+    },
+    {
+      "df": 1,
+      "token": "vacancies"
+    }
+  ],
+  "vacanc": [
+    {
+      "df": 2,
+      "token": "vacancy"
+    },
+    {
+      "df": 1,
+      "token": "vacancies"
+    }
+  ],
+  "vacanci": [
+    {
+      "df": 1,
+      "token": "vacancies"
+    }
+  ],
+  "vacancie": [
+    {
+      "df": 1,
+      "token": "vacancies"
+    }
+  ],
+  "vacancy": [
+    {
+      "df": 2,
+      "token": "vacancy"
+    }
+  ],
+  "vacc": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 2,
+      "token": "vaccine"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    },
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "vacci": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 2,
+      "token": "vaccine"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    },
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "vaccin": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 2,
+      "token": "vaccine"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    },
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "vaccina": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    }
+  ],
+  "vaccinat": [
+    {
+      "df": 3,
+      "token": "vaccination"
+    },
+    {
+      "df": 2,
+      "token": "vaccinating"
+    },
+    {
+      "df": 2,
+      "token": "vaccination-related"
+    },
+    {
+      "df": 2,
+      "token": "vaccinations"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-adverse-reactions-covid-19"
+    },
+    {
+      "df": 1,
+      "token": "vaccination-events-fhir"
+    },
+    {
+      "df": 1,
+      "token": "vaccinations.this"
+    },
+    {
+      "df": 1,
+      "token": "vaccinationsthese"
+    }
+  ],
+  "vaccine": [
+    {
+      "df": 2,
+      "token": "vaccine"
+    },
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "vaccines": [
+    {
+      "df": 1,
+      "token": "vaccines"
+    }
+  ],
+  "val": [
+    {
+      "df": 5,
+      "token": "valid"
+    },
+    {
+      "df": 2,
+      "token": "validate"
+    },
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 2,
+      "token": "value"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    },
+    {
+      "df": 1,
+      "token": "validity"
+    },
+    {
+      "df": 1,
+      "token": "valuable"
+    },
+    {
+      "df": 1,
+      "token": "valuation"
+    },
+    {
+      "df": 1,
+      "token": "values"
+    },
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "vali": [
+    {
+      "df": 5,
+      "token": "valid"
+    },
+    {
+      "df": 2,
+      "token": "validate"
+    },
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    },
+    {
+      "df": 1,
+      "token": "validity"
+    }
+  ],
+  "valid": [
+    {
+      "df": 5,
+      "token": "valid"
+    },
+    {
+      "df": 2,
+      "token": "validate"
+    },
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    },
+    {
+      "df": 1,
+      "token": "validity"
+    }
+  ],
+  "valida": [
+    {
+      "df": 2,
+      "token": "validate"
+    },
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    }
+  ],
+  "validat": [
+    {
+      "df": 2,
+      "token": "validate"
+    },
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    }
+  ],
+  "validate": [
+    {
+      "df": 2,
+      "token": "validate"
+    }
+  ],
+  "validati": [
+    {
+      "df": 2,
+      "token": "validating"
+    },
+    {
+      "df": 1,
+      "token": "validation"
+    }
+  ],
+  "validi": [
+    {
+      "df": 1,
+      "token": "validity"
+    }
+  ],
+  "validit": [
+    {
+      "df": 1,
+      "token": "validity"
+    }
+  ],
+  "validity": [
+    {
+      "df": 1,
+      "token": "validity"
+    }
+  ],
+  "valu": [
+    {
+      "df": 2,
+      "token": "value"
+    },
+    {
+      "df": 1,
+      "token": "valuable"
+    },
+    {
+      "df": 1,
+      "token": "valuation"
+    },
+    {
+      "df": 1,
+      "token": "values"
+    },
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "valua": [
+    {
+      "df": 1,
+      "token": "valuable"
+    },
+    {
+      "df": 1,
+      "token": "valuation"
+    }
+  ],
+  "valuab": [
+    {
+      "df": 1,
+      "token": "valuable"
+    }
+  ],
+  "valuabl": [
+    {
+      "df": 1,
+      "token": "valuable"
+    }
+  ],
+  "valuable": [
+    {
+      "df": 1,
+      "token": "valuable"
+    }
+  ],
+  "valuat": [
+    {
+      "df": 1,
+      "token": "valuation"
+    }
+  ],
+  "valuati": [
+    {
+      "df": 1,
+      "token": "valuation"
+    }
+  ],
+  "valuatio": [
+    {
+      "df": 1,
+      "token": "valuation"
+    }
+  ],
+  "value": [
+    {
+      "df": 2,
+      "token": "value"
+    },
+    {
+      "df": 1,
+      "token": "values"
+    },
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "values": [
+    {
+      "df": 1,
+      "token": "values"
+    },
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "values.": [
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "values.i": [
+    {
+      "df": 1,
+      "token": "values.if"
+    }
+  ],
+  "var": [
+    {
+      "df": 3,
+      "token": "various"
+    },
+    {
+      "df": 2,
+      "token": "variety"
+    },
+    {
+      "df": 1,
+      "token": "vary"
+    }
+  ],
+  "vari": [
+    {
+      "df": 3,
+      "token": "various"
+    },
+    {
+      "df": 2,
+      "token": "variety"
+    }
+  ],
+  "varie": [
+    {
+      "df": 2,
+      "token": "variety"
+    }
+  ],
+  "variet": [
+    {
+      "df": 2,
+      "token": "variety"
+    }
+  ],
+  "variety": [
+    {
+      "df": 2,
+      "token": "variety"
+    }
+  ],
+  "vario": [
+    {
+      "df": 3,
+      "token": "various"
+    }
+  ],
+  "variou": [
+    {
+      "df": 3,
+      "token": "various"
+    }
+  ],
+  "various": [
+    {
+      "df": 3,
+      "token": "various"
+    }
+  ],
+  "vary": [
+    {
+      "df": 1,
+      "token": "vary"
+    }
+  ],
+  "vat": [
+    {
+      "df": 7,
+      "token": "vat"
+    },
+    {
+      "df": 1,
+      "token": "vat-api"
+    },
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ],
+  "vat-": [
+    {
+      "df": 1,
+      "token": "vat-api"
+    },
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ],
+  "vat-a": [
+    {
+      "df": 1,
+      "token": "vat-api"
+    }
+  ],
+  "vat-ap": [
+    {
+      "df": 1,
+      "token": "vat-api"
+    }
+  ],
+  "vat-api": [
+    {
+      "df": 1,
+      "token": "vat-api"
+    }
+  ],
+  "vat-r": [
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ],
+  "vat-re": [
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ],
+  "vat-reg": [
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ],
+  "vat-regi": [
+    {
+      "df": 1,
+      "token": "vat-registered"
+    }
+  ]
+}

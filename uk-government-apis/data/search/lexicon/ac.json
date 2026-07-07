@@ -1,0 +1,177 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "accept"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accepts"
+  },
+  {
+    "df": 86,
+    "postings": "data/search/postings-0.json",
+    "token": "access"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "access-control-service-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "access.you"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "accessed"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "accesses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accessibility"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "accessible"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accessing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accident"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "according"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "account"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "accounting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accounts"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "accredited"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accruals"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "accumulated"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "accurate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "achieve"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "achieving"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "acknowledge"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "acknowledgement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "acknowledges"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "across"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "acs"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "act"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "acting"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "action"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "actions"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "active"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "activities"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "activity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "actually"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "acute"
+  }
+]

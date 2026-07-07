@@ -1,0 +1,37 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "nif"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nimportant"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "nin"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nipe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nis"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "nit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nits"
+  }
+]

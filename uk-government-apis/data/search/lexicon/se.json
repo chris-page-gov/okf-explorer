@@ -1,0 +1,347 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sea"
+  },
+  {
+    "df": 44,
+    "postings": "data/search/postings-0.json",
+    "token": "search"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "search-api.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "search.json"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "search_property_description"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "searchable"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "searched"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "searches"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "searching"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "seasonal"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "second"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "secondary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "section"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sections"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "sector"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "secure"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "secure-data-exchange-bulk-download"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "security"
+  },
+  {
+    "df": 49,
+    "postings": "data/search/postings-0.json",
+    "token": "see"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "seek"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "seen"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "selection"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "selective"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "self"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "self-assessment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "self-assessment-accounts-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "self-assessment-biss-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "self-assessment-bsas-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "self-employed"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "self-employment"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "sellers"
+  },
+  {
+    "df": 39,
+    "postings": "data/search/postings-0.json",
+    "token": "send"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sender"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "sending"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "sends"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sensitivity"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "sensor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sensors-docs.bgs.ac.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sensors.bgs.ac.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sensorthings"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "sent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sent.use"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "separate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "separately.start"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "september"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "series"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "serve"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "server"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "server.as"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "servers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "serves"
+  },
+  {
+    "df": 125,
+    "postings": "data/search/postings-0.json",
+    "token": "service"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "service.you"
+  },
+  {
+    "df": 178,
+    "postings": "data/search/postings-0.json",
+    "token": "services"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "services-eu1.arcgis.com"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "services-reference"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "services-skills"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "services.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "services1.arcgis.com"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "servicethis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "serviceyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sessions"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "set"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "sets"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "setting"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "settings"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "seven"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "several"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sex"
+  }
+]

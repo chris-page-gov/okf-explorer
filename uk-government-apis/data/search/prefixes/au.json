@@ -1,0 +1,578 @@
+{
+  "aud": [
+    {
+      "df": 1,
+      "token": "audit"
+    }
+  ],
+  "audi": [
+    {
+      "df": 1,
+      "token": "audit"
+    }
+  ],
+  "audit": [
+    {
+      "df": 1,
+      "token": "audit"
+    }
+  ],
+  "aut": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    },
+    {
+      "df": 1,
+      "token": "auth"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    }
+  ],
+  "auth": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 1,
+      "token": "auth"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api-description.html"
+    },
+    {
+      "df": 1,
+      "token": "authentication.do"
+    }
+  ],
+  "authe": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api-description.html"
+    },
+    {
+      "df": 1,
+      "token": "authentication.do"
+    }
+  ],
+  "authen": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api-description.html"
+    },
+    {
+      "df": 1,
+      "token": "authentication.do"
+    }
+  ],
+  "authent": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api-description.html"
+    },
+    {
+      "df": 1,
+      "token": "authentication.do"
+    }
+  ],
+  "authenti": [
+    {
+      "df": 15,
+      "token": "authenticated"
+    },
+    {
+      "df": 7,
+      "token": "authentication"
+    },
+    {
+      "df": 2,
+      "token": "authenticating"
+    },
+    {
+      "df": 1,
+      "token": "authenticate"
+    },
+    {
+      "df": 1,
+      "token": "authenticatedfor"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api"
+    },
+    {
+      "df": 1,
+      "token": "authentication-api-description.html"
+    },
+    {
+      "df": 1,
+      "token": "authentication.do"
+    }
+  ],
+  "autho": [
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 1,
+      "token": "authorisations"
+    },
+    {
+      "df": 1,
+      "token": "authorises"
+    },
+    {
+      "df": 1,
+      "token": "authoritiesas"
+    }
+  ],
+  "author": [
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 1,
+      "token": "authorisations"
+    },
+    {
+      "df": 1,
+      "token": "authorises"
+    },
+    {
+      "df": 1,
+      "token": "authoritiesas"
+    }
+  ],
+  "authori": [
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 1,
+      "token": "authorisations"
+    },
+    {
+      "df": 1,
+      "token": "authorises"
+    },
+    {
+      "df": 1,
+      "token": "authoritiesas"
+    }
+  ],
+  "authoris": [
+    {
+      "df": 6,
+      "token": "authorised"
+    },
+    {
+      "df": 4,
+      "token": "authorisation"
+    },
+    {
+      "df": 1,
+      "token": "authorisations"
+    },
+    {
+      "df": 1,
+      "token": "authorises"
+    }
+  ],
+  "authorit": [
+    {
+      "df": 8,
+      "token": "authorities"
+    },
+    {
+      "df": 7,
+      "token": "authority"
+    },
+    {
+      "df": 4,
+      "token": "authoritative"
+    },
+    {
+      "df": 2,
+      "token": "authorities.it"
+    },
+    {
+      "df": 2,
+      "token": "authorities.this"
+    },
+    {
+      "df": 1,
+      "token": "authoritiesas"
+    }
+  ],
+  "auto": [
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    },
+    {
+      "df": 1,
+      "token": "autodiscover"
+    },
+    {
+      "df": 1,
+      "token": "automated"
+    }
+  ],
+  "autod": [
+    {
+      "df": 1,
+      "token": "autodiscover"
+    }
+  ],
+  "autodi": [
+    {
+      "df": 1,
+      "token": "autodiscover"
+    }
+  ],
+  "autodis": [
+    {
+      "df": 1,
+      "token": "autodiscover"
+    }
+  ],
+  "autodisc": [
+    {
+      "df": 1,
+      "token": "autodiscover"
+    }
+  ],
+  "autom": [
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    },
+    {
+      "df": 1,
+      "token": "automated"
+    }
+  ],
+  "automa": [
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    },
+    {
+      "df": 1,
+      "token": "automated"
+    }
+  ],
+  "automat": [
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    },
+    {
+      "df": 1,
+      "token": "automated"
+    }
+  ],
+  "automate": [
+    {
+      "df": 4,
+      "token": "automate"
+    },
+    {
+      "df": 1,
+      "token": "automated"
+    }
+  ],
+  "automati": [
+    {
+      "df": 6,
+      "token": "automatically"
+    },
+    {
+      "df": 2,
+      "token": "automatic"
+    }
+  ]
+}

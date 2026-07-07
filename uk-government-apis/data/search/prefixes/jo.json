@@ -1,0 +1,82 @@
+{
+  "job": [
+    {
+      "df": 1,
+      "token": "job"
+    },
+    {
+      "df": 1,
+      "token": "jobmatch"
+    },
+    {
+      "df": 1,
+      "token": "jobs"
+    }
+  ],
+  "jobm": [
+    {
+      "df": 1,
+      "token": "jobmatch"
+    }
+  ],
+  "jobma": [
+    {
+      "df": 1,
+      "token": "jobmatch"
+    }
+  ],
+  "jobmat": [
+    {
+      "df": 1,
+      "token": "jobmatch"
+    }
+  ],
+  "jobmatc": [
+    {
+      "df": 1,
+      "token": "jobmatch"
+    }
+  ],
+  "jobmatch": [
+    {
+      "df": 1,
+      "token": "jobmatch"
+    }
+  ],
+  "jobs": [
+    {
+      "df": 1,
+      "token": "jobs"
+    }
+  ],
+  "jou": [
+    {
+      "df": 1,
+      "token": "journey"
+    }
+  ],
+  "jour": [
+    {
+      "df": 1,
+      "token": "journey"
+    }
+  ],
+  "journ": [
+    {
+      "df": 1,
+      "token": "journey"
+    }
+  ],
+  "journe": [
+    {
+      "df": 1,
+      "token": "journey"
+    }
+  ],
+  "journey": [
+    {
+      "df": 1,
+      "token": "journey"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "draft"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "drawn"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "driver"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-access-to-driver-data-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-driver-find-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-driver-image-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-dvla-authentication"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-dvla-vehicle-enquiry-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-and-vehicle-licensing-agency-kadoe-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-find"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-image"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-image-description.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-image-service"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-vehicle-licensing.api.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-view"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driver-view-description.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "drivers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "drivers-find"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "drivers-find-description.html"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "driving"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "driving-licences"
+  }
+]

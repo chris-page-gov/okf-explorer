@@ -1,0 +1,132 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "image"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "images"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "immediate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immediately"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "immunisation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunisation-history-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunisations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunisationthe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunisationyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "immunizations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "impairments"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "implement"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "implementation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "implemented"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "implementing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "implements"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "import"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "import-control-entry-declaration-intervention"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "import-control-entry-declaration-outcome"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "import-control-entry-declaration-store"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "important"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "imported"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "imposes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "improvement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "improves"
+  }
+]

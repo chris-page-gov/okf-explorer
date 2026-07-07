@@ -1,0 +1,112 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sight"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "sign"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sign-in.hmpps.service.justice.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sign-on"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sign-up"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "signature"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "signatures"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "signed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "significance"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "significant"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "signing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "signing-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "similar"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "simple"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "simpler"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "since"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "single"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "site"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "sites"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sites.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sitesthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "size"
+  }
+]

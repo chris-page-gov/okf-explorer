@@ -1,0 +1,904 @@
+{
+  "ada": [
+    {
+      "df": 2,
+      "token": "adaptor"
+    }
+  ],
+  "adap": [
+    {
+      "df": 2,
+      "token": "adaptor"
+    }
+  ],
+  "adapt": [
+    {
+      "df": 2,
+      "token": "adaptor"
+    }
+  ],
+  "adapto": [
+    {
+      "df": 2,
+      "token": "adaptor"
+    }
+  ],
+  "adaptor": [
+    {
+      "df": 2,
+      "token": "adaptor"
+    }
+  ],
+  "add": [
+    {
+      "df": 18,
+      "token": "address"
+    },
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 3,
+      "token": "add"
+    },
+    {
+      "df": 3,
+      "token": "addresses"
+    },
+    {
+      "df": 2,
+      "token": "adding"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    },
+    {
+      "df": 1,
+      "token": "added"
+    },
+    {
+      "df": 1,
+      "token": "addressan"
+    },
+    {
+      "df": 1,
+      "token": "addressbase"
+    },
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "adde": [
+    {
+      "df": 1,
+      "token": "added"
+    }
+  ],
+  "added": [
+    {
+      "df": 1,
+      "token": "added"
+    }
+  ],
+  "addi": [
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 2,
+      "token": "adding"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    }
+  ],
+  "addin": [
+    {
+      "df": 2,
+      "token": "adding"
+    }
+  ],
+  "adding": [
+    {
+      "df": 2,
+      "token": "adding"
+    }
+  ],
+  "addit": [
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    }
+  ],
+  "additi": [
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    }
+  ],
+  "additio": [
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    }
+  ],
+  "addition": [
+    {
+      "df": 10,
+      "token": "additional"
+    },
+    {
+      "df": 2,
+      "token": "addition"
+    }
+  ],
+  "addr": [
+    {
+      "df": 18,
+      "token": "address"
+    },
+    {
+      "df": 3,
+      "token": "addresses"
+    },
+    {
+      "df": 1,
+      "token": "addressan"
+    },
+    {
+      "df": 1,
+      "token": "addressbase"
+    },
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "addre": [
+    {
+      "df": 18,
+      "token": "address"
+    },
+    {
+      "df": 3,
+      "token": "addresses"
+    },
+    {
+      "df": 1,
+      "token": "addressan"
+    },
+    {
+      "df": 1,
+      "token": "addressbase"
+    },
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "addres": [
+    {
+      "df": 18,
+      "token": "address"
+    },
+    {
+      "df": 3,
+      "token": "addresses"
+    },
+    {
+      "df": 1,
+      "token": "addressan"
+    },
+    {
+      "df": 1,
+      "token": "addressbase"
+    },
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "address": [
+    {
+      "df": 18,
+      "token": "address"
+    },
+    {
+      "df": 3,
+      "token": "addresses"
+    },
+    {
+      "df": 1,
+      "token": "addressan"
+    },
+    {
+      "df": 1,
+      "token": "addressbase"
+    },
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "addressa": [
+    {
+      "df": 1,
+      "token": "addressan"
+    }
+  ],
+  "addressb": [
+    {
+      "df": 1,
+      "token": "addressbase"
+    }
+  ],
+  "addresse": [
+    {
+      "df": 3,
+      "token": "addresses"
+    }
+  ],
+  "addresst": [
+    {
+      "df": 1,
+      "token": "addressthis"
+    }
+  ],
+  "adh": [
+    {
+      "df": 1,
+      "token": "adhere"
+    }
+  ],
+  "adhe": [
+    {
+      "df": 1,
+      "token": "adhere"
+    }
+  ],
+  "adher": [
+    {
+      "df": 1,
+      "token": "adhere"
+    }
+  ],
+  "adhere": [
+    {
+      "df": 1,
+      "token": "adhere"
+    }
+  ],
+  "adj": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    },
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adju": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    },
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adjus": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    },
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adjust": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    },
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adjusta": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    }
+  ],
+  "adjustab": [
+    {
+      "df": 1,
+      "token": "adjustable"
+    }
+  ],
+  "adjustm": [
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adjustme": [
+    {
+      "df": 1,
+      "token": "adjustment"
+    },
+    {
+      "df": 1,
+      "token": "adjustments"
+    }
+  ],
+  "adm": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "admin"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    },
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    },
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "admi": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "admin"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    },
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    },
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "admin": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "admin"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    }
+  ],
+  "admini": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    }
+  ],
+  "adminis": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    }
+  ],
+  "administ": [
+    {
+      "df": 16,
+      "token": "administration"
+    },
+    {
+      "df": 3,
+      "token": "administrators"
+    },
+    {
+      "df": 1,
+      "token": "administrative"
+    }
+  ],
+  "admir": [
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    }
+  ],
+  "admira": [
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    }
+  ],
+  "admiral": [
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    }
+  ],
+  "admiralt": [
+    {
+      "df": 2,
+      "token": "admiralty"
+    },
+    {
+      "df": 2,
+      "token": "admiraltyapi.developer.azure-api.net"
+    }
+  ],
+  "admis": [
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    }
+  ],
+  "admiss": [
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    }
+  ],
+  "admissi": [
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    }
+  ],
+  "admissio": [
+    {
+      "df": 1,
+      "token": "admission"
+    },
+    {
+      "df": 1,
+      "token": "admissions"
+    }
+  ],
+  "admit": [
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "admitt": [
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "admitte": [
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "admitted": [
+    {
+      "df": 1,
+      "token": "admitted"
+    },
+    {
+      "df": 1,
+      "token": "admitted.this"
+    }
+  ],
+  "ado": [
+    {
+      "df": 1,
+      "token": "adopted"
+    }
+  ],
+  "adop": [
+    {
+      "df": 1,
+      "token": "adopted"
+    }
+  ],
+  "adopt": [
+    {
+      "df": 1,
+      "token": "adopted"
+    }
+  ],
+  "adopte": [
+    {
+      "df": 1,
+      "token": "adopted"
+    }
+  ],
+  "adopted": [
+    {
+      "df": 1,
+      "token": "adopted"
+    }
+  ],
+  "ads": [
+    {
+      "df": 2,
+      "token": "ads"
+    }
+  ],
+  "adu": [
+    {
+      "df": 2,
+      "token": "adult"
+    }
+  ],
+  "adul": [
+    {
+      "df": 2,
+      "token": "adult"
+    }
+  ],
+  "adult": [
+    {
+      "df": 2,
+      "token": "adult"
+    }
+  ],
+  "adv": [
+    {
+      "df": 4,
+      "token": "adverse"
+    },
+    {
+      "df": 3,
+      "token": "advance"
+    },
+    {
+      "df": 2,
+      "token": "advert"
+    },
+    {
+      "df": 2,
+      "token": "advice"
+    },
+    {
+      "df": 2,
+      "token": "advised"
+    },
+    {
+      "df": 1,
+      "token": "advantage"
+    },
+    {
+      "df": 1,
+      "token": "adverts"
+    },
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "adva": [
+    {
+      "df": 3,
+      "token": "advance"
+    },
+    {
+      "df": 1,
+      "token": "advantage"
+    }
+  ],
+  "advan": [
+    {
+      "df": 3,
+      "token": "advance"
+    },
+    {
+      "df": 1,
+      "token": "advantage"
+    }
+  ],
+  "advanc": [
+    {
+      "df": 3,
+      "token": "advance"
+    }
+  ],
+  "advance": [
+    {
+      "df": 3,
+      "token": "advance"
+    }
+  ],
+  "advant": [
+    {
+      "df": 1,
+      "token": "advantage"
+    }
+  ],
+  "advanta": [
+    {
+      "df": 1,
+      "token": "advantage"
+    }
+  ],
+  "advantag": [
+    {
+      "df": 1,
+      "token": "advantage"
+    }
+  ],
+  "adve": [
+    {
+      "df": 4,
+      "token": "adverse"
+    },
+    {
+      "df": 2,
+      "token": "advert"
+    },
+    {
+      "df": 1,
+      "token": "adverts"
+    }
+  ],
+  "adver": [
+    {
+      "df": 4,
+      "token": "adverse"
+    },
+    {
+      "df": 2,
+      "token": "advert"
+    },
+    {
+      "df": 1,
+      "token": "adverts"
+    }
+  ],
+  "advers": [
+    {
+      "df": 4,
+      "token": "adverse"
+    }
+  ],
+  "adverse": [
+    {
+      "df": 4,
+      "token": "adverse"
+    }
+  ],
+  "advert": [
+    {
+      "df": 2,
+      "token": "advert"
+    },
+    {
+      "df": 1,
+      "token": "adverts"
+    }
+  ],
+  "adverts": [
+    {
+      "df": 1,
+      "token": "adverts"
+    }
+  ],
+  "advi": [
+    {
+      "df": 2,
+      "token": "advice"
+    },
+    {
+      "df": 2,
+      "token": "advised"
+    },
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "advic": [
+    {
+      "df": 2,
+      "token": "advice"
+    }
+  ],
+  "advice": [
+    {
+      "df": 2,
+      "token": "advice"
+    }
+  ],
+  "advis": [
+    {
+      "df": 2,
+      "token": "advised"
+    },
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "advise": [
+    {
+      "df": 2,
+      "token": "advised"
+    },
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "advised": [
+    {
+      "df": 2,
+      "token": "advised"
+    }
+  ],
+  "adviser": [
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "advisers": [
+    {
+      "df": 1,
+      "token": "advisers"
+    }
+  ],
+  "adw": [
+    {
+      "df": 1,
+      "token": "adw"
+    }
+  ]
+}

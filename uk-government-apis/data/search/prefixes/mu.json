@@ -1,0 +1,174 @@
+{
+  "muc": [
+    {
+      "df": 2,
+      "token": "much"
+    }
+  ],
+  "much": [
+    {
+      "df": 2,
+      "token": "much"
+    }
+  ],
+  "mul": [
+    {
+      "df": 11,
+      "token": "multiple"
+    },
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "mult": [
+    {
+      "df": 11,
+      "token": "multiple"
+    },
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "multi": [
+    {
+      "df": 11,
+      "token": "multiple"
+    },
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "multi-": [
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "multi-p": [
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "multi-po": [
+    {
+      "df": 1,
+      "token": "multi-polygon"
+    }
+  ],
+  "multip": [
+    {
+      "df": 11,
+      "token": "multiple"
+    }
+  ],
+  "multipl": [
+    {
+      "df": 11,
+      "token": "multiple"
+    }
+  ],
+  "multiple": [
+    {
+      "df": 11,
+      "token": "multiple"
+    }
+  ],
+  "mum": [
+    {
+      "df": 1,
+      "token": "mumps"
+    }
+  ],
+  "mump": [
+    {
+      "df": 1,
+      "token": "mumps"
+    }
+  ],
+  "mumps": [
+    {
+      "df": 1,
+      "token": "mumps"
+    }
+  ],
+  "mus": [
+    {
+      "df": 20,
+      "token": "must"
+    },
+    {
+      "df": 1,
+      "token": "museums"
+    }
+  ],
+  "muse": [
+    {
+      "df": 1,
+      "token": "museums"
+    }
+  ],
+  "museu": [
+    {
+      "df": 1,
+      "token": "museums"
+    }
+  ],
+  "museum": [
+    {
+      "df": 1,
+      "token": "museums"
+    }
+  ],
+  "museums": [
+    {
+      "df": 1,
+      "token": "museums"
+    }
+  ],
+  "must": [
+    {
+      "df": 20,
+      "token": "must"
+    }
+  ],
+  "mut": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ],
+  "muti": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ],
+  "mutil": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ],
+  "mutila": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ],
+  "mutilat": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ],
+  "mutilati": [
+    {
+      "df": 1,
+      "token": "mutilation"
+    }
+  ]
+}

@@ -1,0 +1,864 @@
+{
+  "exa": [
+    {
+      "df": 35,
+      "token": "example"
+    },
+    {
+      "df": 3,
+      "token": "examples"
+    },
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "exam": [
+    {
+      "df": 35,
+      "token": "example"
+    },
+    {
+      "df": 3,
+      "token": "examples"
+    },
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "exami": [
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "examin": [
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "examina": [
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "examinat": [
+    {
+      "df": 1,
+      "token": "examination"
+    }
+  ],
+  "examp": [
+    {
+      "df": 35,
+      "token": "example"
+    },
+    {
+      "df": 3,
+      "token": "examples"
+    }
+  ],
+  "exampl": [
+    {
+      "df": 35,
+      "token": "example"
+    },
+    {
+      "df": 3,
+      "token": "examples"
+    }
+  ],
+  "example": [
+    {
+      "df": 35,
+      "token": "example"
+    },
+    {
+      "df": 3,
+      "token": "examples"
+    }
+  ],
+  "examples": [
+    {
+      "df": 3,
+      "token": "examples"
+    }
+  ],
+  "exc": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 3,
+      "token": "except"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "exce": [
+    {
+      "df": 3,
+      "token": "except"
+    }
+  ],
+  "excep": [
+    {
+      "df": 3,
+      "token": "except"
+    }
+  ],
+  "except": [
+    {
+      "df": 3,
+      "token": "except"
+    }
+  ],
+  "exch": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "excha": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "exchan": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "exchang": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "exchange": [
+    {
+      "df": 5,
+      "token": "exchange"
+    },
+    {
+      "df": 1,
+      "token": "exchangethe"
+    }
+  ],
+  "exe": [
+    {
+      "df": 1,
+      "token": "execute"
+    },
+    {
+      "df": 1,
+      "token": "executive"
+    },
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exec": [
+    {
+      "df": 1,
+      "token": "execute"
+    },
+    {
+      "df": 1,
+      "token": "executive"
+    }
+  ],
+  "execu": [
+    {
+      "df": 1,
+      "token": "execute"
+    },
+    {
+      "df": 1,
+      "token": "executive"
+    }
+  ],
+  "execut": [
+    {
+      "df": 1,
+      "token": "execute"
+    },
+    {
+      "df": 1,
+      "token": "executive"
+    }
+  ],
+  "execute": [
+    {
+      "df": 1,
+      "token": "execute"
+    }
+  ],
+  "executi": [
+    {
+      "df": 1,
+      "token": "executive"
+    }
+  ],
+  "executiv": [
+    {
+      "df": 1,
+      "token": "executive"
+    }
+  ],
+  "exem": [
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exemp": [
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exempt": [
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exempti": [
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exemptio": [
+    {
+      "df": 1,
+      "token": "exemptions"
+    }
+  ],
+  "exi": [
+    {
+      "df": 14,
+      "token": "existing"
+    },
+    {
+      "df": 1,
+      "token": "exist"
+    },
+    {
+      "df": 1,
+      "token": "existance"
+    },
+    {
+      "df": 1,
+      "token": "exists"
+    }
+  ],
+  "exis": [
+    {
+      "df": 14,
+      "token": "existing"
+    },
+    {
+      "df": 1,
+      "token": "exist"
+    },
+    {
+      "df": 1,
+      "token": "existance"
+    },
+    {
+      "df": 1,
+      "token": "exists"
+    }
+  ],
+  "exist": [
+    {
+      "df": 14,
+      "token": "existing"
+    },
+    {
+      "df": 1,
+      "token": "exist"
+    },
+    {
+      "df": 1,
+      "token": "existance"
+    },
+    {
+      "df": 1,
+      "token": "exists"
+    }
+  ],
+  "exista": [
+    {
+      "df": 1,
+      "token": "existance"
+    }
+  ],
+  "existan": [
+    {
+      "df": 1,
+      "token": "existance"
+    }
+  ],
+  "existanc": [
+    {
+      "df": 1,
+      "token": "existance"
+    }
+  ],
+  "existi": [
+    {
+      "df": 14,
+      "token": "existing"
+    }
+  ],
+  "existin": [
+    {
+      "df": 14,
+      "token": "existing"
+    }
+  ],
+  "existing": [
+    {
+      "df": 14,
+      "token": "existing"
+    }
+  ],
+  "exists": [
+    {
+      "df": 1,
+      "token": "exists"
+    }
+  ],
+  "exp": [
+    {
+      "df": 3,
+      "token": "export"
+    },
+    {
+      "df": 2,
+      "token": "experience"
+    },
+    {
+      "df": 2,
+      "token": "explore"
+    },
+    {
+      "df": 1,
+      "token": "expanded"
+    },
+    {
+      "df": 1,
+      "token": "expands"
+    },
+    {
+      "df": 1,
+      "token": "expect"
+    },
+    {
+      "df": 1,
+      "token": "expenditure"
+    },
+    {
+      "df": 1,
+      "token": "explained"
+    },
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "explorer"
+    },
+    {
+      "df": 1,
+      "token": "exploring"
+    },
+    {
+      "df": 1,
+      "token": "exports"
+    }
+  ],
+  "expa": [
+    {
+      "df": 1,
+      "token": "expanded"
+    },
+    {
+      "df": 1,
+      "token": "expands"
+    }
+  ],
+  "expan": [
+    {
+      "df": 1,
+      "token": "expanded"
+    },
+    {
+      "df": 1,
+      "token": "expands"
+    }
+  ],
+  "expand": [
+    {
+      "df": 1,
+      "token": "expanded"
+    },
+    {
+      "df": 1,
+      "token": "expands"
+    }
+  ],
+  "expande": [
+    {
+      "df": 1,
+      "token": "expanded"
+    }
+  ],
+  "expanded": [
+    {
+      "df": 1,
+      "token": "expanded"
+    }
+  ],
+  "expands": [
+    {
+      "df": 1,
+      "token": "expands"
+    }
+  ],
+  "expe": [
+    {
+      "df": 2,
+      "token": "experience"
+    },
+    {
+      "df": 1,
+      "token": "expect"
+    },
+    {
+      "df": 1,
+      "token": "expenditure"
+    }
+  ],
+  "expec": [
+    {
+      "df": 1,
+      "token": "expect"
+    }
+  ],
+  "expect": [
+    {
+      "df": 1,
+      "token": "expect"
+    }
+  ],
+  "expen": [
+    {
+      "df": 1,
+      "token": "expenditure"
+    }
+  ],
+  "expend": [
+    {
+      "df": 1,
+      "token": "expenditure"
+    }
+  ],
+  "expendi": [
+    {
+      "df": 1,
+      "token": "expenditure"
+    }
+  ],
+  "expendit": [
+    {
+      "df": 1,
+      "token": "expenditure"
+    }
+  ],
+  "exper": [
+    {
+      "df": 2,
+      "token": "experience"
+    }
+  ],
+  "experi": [
+    {
+      "df": 2,
+      "token": "experience"
+    }
+  ],
+  "experie": [
+    {
+      "df": 2,
+      "token": "experience"
+    }
+  ],
+  "experien": [
+    {
+      "df": 2,
+      "token": "experience"
+    }
+  ],
+  "expl": [
+    {
+      "df": 2,
+      "token": "explore"
+    },
+    {
+      "df": 1,
+      "token": "explained"
+    },
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "explorer"
+    },
+    {
+      "df": 1,
+      "token": "exploring"
+    }
+  ],
+  "expla": [
+    {
+      "df": 1,
+      "token": "explained"
+    }
+  ],
+  "explai": [
+    {
+      "df": 1,
+      "token": "explained"
+    }
+  ],
+  "explain": [
+    {
+      "df": 1,
+      "token": "explained"
+    }
+  ],
+  "explaine": [
+    {
+      "df": 1,
+      "token": "explained"
+    }
+  ],
+  "explo": [
+    {
+      "df": 2,
+      "token": "explore"
+    },
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "explorer"
+    },
+    {
+      "df": 1,
+      "token": "exploring"
+    }
+  ],
+  "explor": [
+    {
+      "df": 2,
+      "token": "explore"
+    },
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "explorer"
+    },
+    {
+      "df": 1,
+      "token": "exploring"
+    }
+  ],
+  "explore": [
+    {
+      "df": 2,
+      "token": "explore"
+    },
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "explorer"
+    }
+  ],
+  "explore-": [
+    {
+      "df": 1,
+      "token": "explore-education-statistics.service.gov.uk"
+    }
+  ],
+  "explorer": [
+    {
+      "df": 1,
+      "token": "explorer"
+    }
+  ],
+  "explori": [
+    {
+      "df": 1,
+      "token": "exploring"
+    }
+  ],
+  "explorin": [
+    {
+      "df": 1,
+      "token": "exploring"
+    }
+  ],
+  "expo": [
+    {
+      "df": 3,
+      "token": "export"
+    },
+    {
+      "df": 1,
+      "token": "exports"
+    }
+  ],
+  "expor": [
+    {
+      "df": 3,
+      "token": "export"
+    },
+    {
+      "df": 1,
+      "token": "exports"
+    }
+  ],
+  "export": [
+    {
+      "df": 3,
+      "token": "export"
+    },
+    {
+      "df": 1,
+      "token": "exports"
+    }
+  ],
+  "exports": [
+    {
+      "df": 1,
+      "token": "exports"
+    }
+  ],
+  "ext": [
+    {
+      "df": 8,
+      "token": "external"
+    },
+    {
+      "df": 3,
+      "token": "extended"
+    },
+    {
+      "df": 3,
+      "token": "extract"
+    },
+    {
+      "df": 1,
+      "token": "extent"
+    },
+    {
+      "df": 1,
+      "token": "extra"
+    },
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ],
+  "exte": [
+    {
+      "df": 8,
+      "token": "external"
+    },
+    {
+      "df": 3,
+      "token": "extended"
+    },
+    {
+      "df": 1,
+      "token": "extent"
+    }
+  ],
+  "exten": [
+    {
+      "df": 3,
+      "token": "extended"
+    },
+    {
+      "df": 1,
+      "token": "extent"
+    }
+  ],
+  "extend": [
+    {
+      "df": 3,
+      "token": "extended"
+    }
+  ],
+  "extende": [
+    {
+      "df": 3,
+      "token": "extended"
+    }
+  ],
+  "extended": [
+    {
+      "df": 3,
+      "token": "extended"
+    }
+  ],
+  "extent": [
+    {
+      "df": 1,
+      "token": "extent"
+    }
+  ],
+  "exter": [
+    {
+      "df": 8,
+      "token": "external"
+    }
+  ],
+  "extern": [
+    {
+      "df": 8,
+      "token": "external"
+    }
+  ],
+  "externa": [
+    {
+      "df": 8,
+      "token": "external"
+    }
+  ],
+  "external": [
+    {
+      "df": 8,
+      "token": "external"
+    }
+  ],
+  "extr": [
+    {
+      "df": 3,
+      "token": "extract"
+    },
+    {
+      "df": 1,
+      "token": "extra"
+    },
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ],
+  "extra": [
+    {
+      "df": 3,
+      "token": "extract"
+    },
+    {
+      "df": 1,
+      "token": "extra"
+    },
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ],
+  "extrac": [
+    {
+      "df": 3,
+      "token": "extract"
+    },
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ],
+  "extract": [
+    {
+      "df": 3,
+      "token": "extract"
+    },
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ],
+  "extracti": [
+    {
+      "df": 1,
+      "token": "extraction"
+    },
+    {
+      "df": 1,
+      "token": "extractions"
+    }
+  ]
+}

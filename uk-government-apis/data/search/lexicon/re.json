@@ -1,0 +1,897 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "re"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "re-booking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "re-schedule"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "re-sellers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "re-usable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reactions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reactions.you"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "read"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "read-only"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "readable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reader"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "readiness"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "reading"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "readings"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "ready"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "real"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "real-time"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reallocated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "realtime"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reason"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reasonable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reasonable-adjustment-flag-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reasons"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reassessment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "recall"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "receipt"
+  },
+  {
+    "df": 33,
+    "postings": "data/search/postings-0.json",
+    "token": "receive"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "received"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recent"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recently"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "recognise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "recognises"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recognition"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "recommendations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "recommended"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "recommends"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reconfiguration"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "record"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "record-keeping"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "record.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recorded"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recording"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "records"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "recordthis"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "recruitment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "redirects"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "reduce"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "reduced"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reducing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "refer"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "reference"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "references"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "referral"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "referralaccess"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "referrals"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "referralyou"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "referred"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "referrer"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "refers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "refund"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "refunded"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "refunds"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "regardless"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "regional"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "register"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "register-api.ofqual.gov.uk"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "registered"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "registering"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "registers"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "registration"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "registrations"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "registry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "regularly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "regulate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "regulated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "regulation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "regulations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "regulators"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "regulatory"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "reject"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "related"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "relates"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "relating"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "relationships"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "relationships.we"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "relative"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "release"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "released"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "relevant"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reliable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "relief"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "remains"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "remove"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "removed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "removes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "render"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "renowned"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repair"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repairs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repayment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repeat"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "replace"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "replaced"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "replacement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "replaces"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "replacing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "replicated"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "replies"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "report"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "report-writing"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "reported"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "reporting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reportingthis"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "reports"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repos"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "repository"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "represent"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "representation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "representatives"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "represented"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "represents"
+  },
+  {
+    "df": 29,
+    "postings": "data/search/postings-0.json",
+    "token": "request"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "request.for"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "requested"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "requester"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "requesting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "requestor"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "requests"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "requestscommon"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "requeststhis"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "require"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "required"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "requirement"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "requirements"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "requires"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "requisition"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "research"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "researchers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "resident"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "resilient"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "resource"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "resources"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "respect"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "respite"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "respond"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "response"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "responsefor"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "responses"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "responsibility"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "responsible"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "rest"
+  },
+  {
+    "df": 132,
+    "postings": "data/search/postings-0.json",
+    "token": "rest-http"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "restful"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "restriction"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "restrictions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "restrictition"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "result"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "results"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "results.it"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "results.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "results.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "retail"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "retain"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "retired"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "retirement"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "retreiving"
+  },
+  {
+    "df": 36,
+    "postings": "data/search/postings-0.json",
+    "token": "retrieve"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "retrieves"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "retrieving"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "return"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "returned"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "returning"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "returns"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reusable"
+  },
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "revenue"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "revenue-generating"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "review"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "reviews"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "revoke"
+  }
+]

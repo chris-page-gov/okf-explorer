@@ -1,0 +1,66 @@
+{
+  "ill": [
+    {
+      "df": 1,
+      "token": "illness"
+    },
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ],
+  "illn": [
+    {
+      "df": 1,
+      "token": "illness"
+    }
+  ],
+  "illne": [
+    {
+      "df": 1,
+      "token": "illness"
+    }
+  ],
+  "illnes": [
+    {
+      "df": 1,
+      "token": "illness"
+    }
+  ],
+  "illness": [
+    {
+      "df": 1,
+      "token": "illness"
+    }
+  ],
+  "illu": [
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ],
+  "illus": [
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ],
+  "illust": [
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ],
+  "illustr": [
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ],
+  "illustra": [
+    {
+      "df": 1,
+      "token": "illustrates"
+    }
+  ]
+}

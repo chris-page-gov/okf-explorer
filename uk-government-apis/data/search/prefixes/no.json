@@ -1,0 +1,818 @@
+{
+  "nod": [
+    {
+      "df": 1,
+      "token": "nodes"
+    }
+  ],
+  "node": [
+    {
+      "df": 1,
+      "token": "nodes"
+    }
+  ],
+  "nodes": [
+    {
+      "df": 1,
+      "token": "nodes"
+    }
+  ],
+  "nom": [
+    {
+      "df": 1,
+      "token": "nominated"
+    },
+    {
+      "df": 1,
+      "token": "nomination"
+    },
+    {
+      "df": 1,
+      "token": "nomis"
+    }
+  ],
+  "nomi": [
+    {
+      "df": 1,
+      "token": "nominated"
+    },
+    {
+      "df": 1,
+      "token": "nomination"
+    },
+    {
+      "df": 1,
+      "token": "nomis"
+    }
+  ],
+  "nomin": [
+    {
+      "df": 1,
+      "token": "nominated"
+    },
+    {
+      "df": 1,
+      "token": "nomination"
+    }
+  ],
+  "nomina": [
+    {
+      "df": 1,
+      "token": "nominated"
+    },
+    {
+      "df": 1,
+      "token": "nomination"
+    }
+  ],
+  "nominat": [
+    {
+      "df": 1,
+      "token": "nominated"
+    },
+    {
+      "df": 1,
+      "token": "nomination"
+    }
+  ],
+  "nominate": [
+    {
+      "df": 1,
+      "token": "nominated"
+    }
+  ],
+  "nominati": [
+    {
+      "df": 1,
+      "token": "nomination"
+    }
+  ],
+  "nomis": [
+    {
+      "df": 1,
+      "token": "nomis"
+    }
+  ],
+  "non": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 2,
+      "token": "non-clinical"
+    },
+    {
+      "df": 2,
+      "token": "non-primary"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    },
+    {
+      "df": 1,
+      "token": "non-nhs"
+    },
+    {
+      "df": 1,
+      "token": "non-technical"
+    },
+    {
+      "df": 1,
+      "token": "nonly"
+    }
+  ],
+  "non-": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 2,
+      "token": "non-clinical"
+    },
+    {
+      "df": 2,
+      "token": "non-primary"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    },
+    {
+      "df": 1,
+      "token": "non-nhs"
+    },
+    {
+      "df": 1,
+      "token": "non-technical"
+    }
+  ],
+  "non-c": [
+    {
+      "df": 2,
+      "token": "non-clinical"
+    }
+  ],
+  "non-cl": [
+    {
+      "df": 2,
+      "token": "non-clinical"
+    }
+  ],
+  "non-cli": [
+    {
+      "df": 2,
+      "token": "non-clinical"
+    }
+  ],
+  "non-clin": [
+    {
+      "df": 2,
+      "token": "non-clinical"
+    }
+  ],
+  "non-d": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    }
+  ],
+  "non-do": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    }
+  ],
+  "non-dom": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    }
+  ],
+  "non-dome": [
+    {
+      "df": 3,
+      "token": "non-domestic"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "non-domestic-search"
+    }
+  ],
+  "non-n": [
+    {
+      "df": 1,
+      "token": "non-nhs"
+    }
+  ],
+  "non-nh": [
+    {
+      "df": 1,
+      "token": "non-nhs"
+    }
+  ],
+  "non-nhs": [
+    {
+      "df": 1,
+      "token": "non-nhs"
+    }
+  ],
+  "non-p": [
+    {
+      "df": 2,
+      "token": "non-primary"
+    }
+  ],
+  "non-pr": [
+    {
+      "df": 2,
+      "token": "non-primary"
+    }
+  ],
+  "non-pri": [
+    {
+      "df": 2,
+      "token": "non-primary"
+    }
+  ],
+  "non-prim": [
+    {
+      "df": 2,
+      "token": "non-primary"
+    }
+  ],
+  "non-t": [
+    {
+      "df": 1,
+      "token": "non-technical"
+    }
+  ],
+  "non-te": [
+    {
+      "df": 1,
+      "token": "non-technical"
+    }
+  ],
+  "non-tec": [
+    {
+      "df": 1,
+      "token": "non-technical"
+    }
+  ],
+  "non-tech": [
+    {
+      "df": 1,
+      "token": "non-technical"
+    }
+  ],
+  "nonl": [
+    {
+      "df": 1,
+      "token": "nonly"
+    }
+  ],
+  "nonly": [
+    {
+      "df": 1,
+      "token": "nonly"
+    }
+  ],
+  "nor": [
+    {
+      "df": 6,
+      "token": "northern"
+    },
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "norm": [
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "norma": [
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "normal": [
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "normall": [
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "normally": [
+    {
+      "df": 1,
+      "token": "normally"
+    }
+  ],
+  "nort": [
+    {
+      "df": 6,
+      "token": "northern"
+    }
+  ],
+  "north": [
+    {
+      "df": 6,
+      "token": "northern"
+    }
+  ],
+  "northe": [
+    {
+      "df": 6,
+      "token": "northern"
+    }
+  ],
+  "norther": [
+    {
+      "df": 6,
+      "token": "northern"
+    }
+  ],
+  "northern": [
+    {
+      "df": 6,
+      "token": "northern"
+    }
+  ],
+  "not": [
+    {
+      "df": 48,
+      "token": "not"
+    },
+    {
+      "df": 18,
+      "token": "not-specified"
+    },
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 8,
+      "token": "note"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 5,
+      "token": "notify"
+    },
+    {
+      "df": 3,
+      "token": "notices"
+    },
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    },
+    {
+      "df": 1,
+      "token": "notations"
+    },
+    {
+      "df": 1,
+      "token": "notes"
+    },
+    {
+      "df": 1,
+      "token": "nother"
+    },
+    {
+      "df": 1,
+      "token": "notice"
+    },
+    {
+      "df": 1,
+      "token": "noticeyou"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "notifies"
+    },
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "not-": [
+    {
+      "df": 18,
+      "token": "not-specified"
+    },
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    }
+  ],
+  "not-s": [
+    {
+      "df": 18,
+      "token": "not-specified"
+    },
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    }
+  ],
+  "not-si": [
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    }
+  ],
+  "not-sig": [
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    }
+  ],
+  "not-sign": [
+    {
+      "df": 1,
+      "token": "not-sign-delimited"
+    }
+  ],
+  "not-sp": [
+    {
+      "df": 18,
+      "token": "not-specified"
+    }
+  ],
+  "not-spe": [
+    {
+      "df": 18,
+      "token": "not-specified"
+    }
+  ],
+  "not-spec": [
+    {
+      "df": 18,
+      "token": "not-specified"
+    }
+  ],
+  "nota": [
+    {
+      "df": 1,
+      "token": "notations"
+    }
+  ],
+  "notat": [
+    {
+      "df": 1,
+      "token": "notations"
+    }
+  ],
+  "notati": [
+    {
+      "df": 1,
+      "token": "notations"
+    }
+  ],
+  "notatio": [
+    {
+      "df": 1,
+      "token": "notations"
+    }
+  ],
+  "notation": [
+    {
+      "df": 1,
+      "token": "notations"
+    }
+  ],
+  "note": [
+    {
+      "df": 8,
+      "token": "note"
+    },
+    {
+      "df": 1,
+      "token": "notes"
+    }
+  ],
+  "notes": [
+    {
+      "df": 1,
+      "token": "notes"
+    }
+  ],
+  "noth": [
+    {
+      "df": 1,
+      "token": "nother"
+    }
+  ],
+  "nothe": [
+    {
+      "df": 1,
+      "token": "nother"
+    }
+  ],
+  "nother": [
+    {
+      "df": 1,
+      "token": "nother"
+    }
+  ],
+  "noti": [
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 5,
+      "token": "notify"
+    },
+    {
+      "df": 3,
+      "token": "notices"
+    },
+    {
+      "df": 1,
+      "token": "notice"
+    },
+    {
+      "df": 1,
+      "token": "noticeyou"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "notifies"
+    }
+  ],
+  "notic": [
+    {
+      "df": 3,
+      "token": "notices"
+    },
+    {
+      "df": 1,
+      "token": "notice"
+    },
+    {
+      "df": 1,
+      "token": "noticeyou"
+    }
+  ],
+  "notice": [
+    {
+      "df": 3,
+      "token": "notices"
+    },
+    {
+      "df": 1,
+      "token": "notice"
+    },
+    {
+      "df": 1,
+      "token": "noticeyou"
+    }
+  ],
+  "notices": [
+    {
+      "df": 3,
+      "token": "notices"
+    }
+  ],
+  "noticey": [
+    {
+      "df": 1,
+      "token": "noticeyou"
+    }
+  ],
+  "noticeyo": [
+    {
+      "df": 1,
+      "token": "noticeyou"
+    }
+  ],
+  "notif": [
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 5,
+      "token": "notify"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "notifies"
+    }
+  ],
+  "notifi": [
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "notifies"
+    }
+  ],
+  "notific": [
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    }
+  ],
+  "notifica": [
+    {
+      "df": 11,
+      "token": "notifications"
+    },
+    {
+      "df": 6,
+      "token": "notification"
+    },
+    {
+      "df": 1,
+      "token": "notifications.service.gov.uk"
+    }
+  ],
+  "notifie": [
+    {
+      "df": 1,
+      "token": "notifies"
+    }
+  ],
+  "notifies": [
+    {
+      "df": 1,
+      "token": "notifies"
+    }
+  ],
+  "notify": [
+    {
+      "df": 5,
+      "token": "notify"
+    }
+  ],
+  "nott": [
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "notth": [
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "notthe": [
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "notthei": [
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "nottheir": [
+    {
+      "df": 1,
+      "token": "nottheir"
+    }
+  ],
+  "notu": [
+    {
+      "df": 1,
+      "token": "notuse"
+    }
+  ],
+  "notus": [
+    {
+      "df": 1,
+      "token": "notuse"
+    }
+  ],
+  "notuse": [
+    {
+      "df": 1,
+      "token": "notuse"
+    }
+  ],
+  "now": [
+    {
+      "df": 6,
+      "token": "now"
+    }
+  ]
+}

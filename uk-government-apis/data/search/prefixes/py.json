@@ -1,0 +1,74 @@
+{
+  "pya": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyag": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyags": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyagsa": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyagsap": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyagsapi": [
+    {
+      "df": 1,
+      "token": "pyagsapi"
+    }
+  ],
+  "pyg": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ],
+  "pyge": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ],
+  "pygeo": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ],
+  "pygeoa": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ],
+  "pygeoap": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ],
+  "pygeoapi": [
+    {
+      "df": 1,
+      "token": "pygeoapi.io"
+    }
+  ]
+}

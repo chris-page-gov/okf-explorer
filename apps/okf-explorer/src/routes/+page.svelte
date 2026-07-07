@@ -95,6 +95,9 @@
         relationships: LargeRelationship[];
       };
 
+  type AnyLargeRecord = Partial<LargeDataset & SearchResultDoc>;
+  type ContextLink = { label: string; url: string; description?: string };
+
   type LargeGraphNode = {
     id: string;
     label: string;
@@ -156,6 +159,7 @@
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
   let largeSearching = $state(false);
+  let largeFacetHydratingKey = $state('');
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
@@ -321,6 +325,7 @@
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
     largeFacetFilters = {};
+    largeFacetHydratingKey = '';
     largePreserveSelectionUntilSearch = false;
     activeFacetKey = 'publisher';
     largeSearchClient?.destroy();
@@ -437,6 +442,7 @@
 
   async function ensureLargeFullIndex(): Promise<LargeFullIndex | null> {
     if (source?.kind !== 'large') return null;
+    if (largeIndex) return largeIndex;
     largeFullLoading = true;
     try {
       largeIndex = await source.loadFullIndex();
@@ -448,6 +454,15 @@
       return null;
     } finally {
       largeFullLoading = false;
+    }
+  }
+
+  async function openLargeFacet(key: string) {
+    activeFacetKey = key;
+    if (!largeIndex) {
+      largeFacetHydratingKey = key;
+      await ensureLargeFullIndex();
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
     }
   }
 
@@ -644,22 +659,51 @@
     visibleTypes = new Set(typeList);
   }
 
+  function facetValueRoute(key: string, value: string): string {
+    return `facet/${key}/${value}`;
+  }
+
   function toggleLargeFacet(key: string, value: string) {
     const current = new Set(largeFacetFilters[key] || []);
-    if (current.has(value)) current.delete(value);
+    const route = facetValueRoute(key, value);
+    const removing = current.has(value);
+    activeFacetKey = key;
+    if (removing) current.delete(value);
     else current.add(value);
     largeFacetFilters = { ...largeFacetFilters, [key]: [...current] };
     if (!current.size) {
       const { [key]: _removed, ...rest } = largeFacetFilters;
       largeFacetFilters = rest;
     }
+    largeSelectedRoute = '';
+    if (removing) {
+      if (largeInspectedRoute === route) {
+        largeInspectedRoute = '';
+        largeHighlightedRoute = '';
+      }
+    } else {
+      largeInspectedRoute = route;
+      largeHighlightedRoute = route;
+      rightCollapsed = false;
+    }
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
     void ensureLargeFullIndex();
     reconcileLargeSelection();
+    syncExplorerUrl();
   }
 
   function clearLargeFilters() {
     largeFacetFilters = {};
+    if (largeInspectedRoute && routeForAnalysisNode(largeInspectedRoute)) {
+      largeInspectedRoute = '';
+      largeHighlightedRoute = '';
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+    }
     reconcileLargeSelection();
+    syncExplorerUrl();
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -863,12 +907,7 @@
     const queryActive = Boolean(largeAppliedQuery.trim());
     const rows = largeIndex.datasets.filter((dataset) => {
       if (queryActive && !largeResultNames.has(dataset.name)) return false;
-      for (const [key, selected] of Object.entries(largeFacetFilters)) {
-        if (!selected.length) continue;
-        const values = largeDatasetFacetValues(dataset, key);
-        if (!selected.some((value) => values.includes(value))) return false;
-      }
-      return true;
+      return datasetMatchesLargeFilters(dataset);
     });
     if (queryActive) {
       rows.sort((left, right) => (largeResultOrder.get(left.name) ?? 999999) - (largeResultOrder.get(right.name) ?? 999999));
@@ -878,10 +917,20 @@
     return rows;
   }
 
+  function datasetMatchesLargeFilters(dataset: LargeDataset, exceptKey = ''): boolean {
+    for (const [key, selected] of Object.entries(largeFacetFilters)) {
+      if (key === exceptKey || !selected.length) continue;
+      const values = largeDatasetFacetValues(dataset, key);
+      if (!selected.some((value) => values.includes(value))) return false;
+    }
+    return true;
+  }
+
   function largeDatasetFacetValues(dataset: LargeDataset, key: string): string[] {
     if (!largeIndex) return [];
     if (key === 'publisher') return dataset.publisher ? [dataset.publisher] : [];
     if (key === 'format') return dataset.formats || [];
+    if (key === 'interaction_style') return Array.isArray(dataset.interaction_style) ? dataset.interaction_style.map(String) : dataset.formats || [];
     if (key === 'topic') return dataset.topics || [];
     if (key === 'tag') return dataset.tags || [];
     if (key === 'license') return dataset.license_id ? [dataset.license_id] : [];
@@ -914,7 +963,10 @@
       const publisher = dataset.publisher ? largeIndex.publisherByName.get(dataset.publisher) : null;
       return [publisherFamily(publisher || dataset)];
     }
-    return [];
+    const dynamicValue = dataset[key];
+    if (Array.isArray(dynamicValue)) return dynamicValue.map(String).filter(Boolean);
+    if (dynamicValue === undefined || dynamicValue === null || dynamicValue === '') return [];
+    return [String(dynamicValue)];
   }
 
   function indexLargeRelationships(relationships: LargeRelationship[]): Map<string, LargeRelationship[]> {
@@ -944,7 +996,10 @@
       return source?.kind === 'large' ? source.overview.facet_previews?.[key] || [] : [];
     }
     const counts = new Map<string, number>();
-    for (const dataset of largeVisibleDatasets) {
+    const queryActive = Boolean(largeAppliedQuery.trim());
+    for (const dataset of largeIndex.datasets) {
+      if (queryActive && !largeResultNames.has(dataset.name)) continue;
+      if (!datasetMatchesLargeFilters(dataset, key)) continue;
       for (const value of largeDatasetFacetValues(dataset, key)) counts.set(value, (counts.get(value) || 0) + 1);
     }
     return [...counts.entries()]
@@ -958,13 +1013,16 @@
   }
 
   function applyAnalysisFacet(key: string, value: string) {
+    const route = facetValueRoute(key, value);
+    activeFacetKey = key;
     largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
     largeSelectedRoute = '';
-    largeInspectedRoute = '';
-    largeHighlightedRoute = '';
+    largeInspectedRoute = route;
+    largeHighlightedRoute = route;
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
+    rightCollapsed = false;
     void ensureLargeFullIndex();
     syncExplorerUrl();
   }
@@ -1032,6 +1090,128 @@
     return getFacetSummary(largeAnalysis(), key, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
+  function facetSelectedValues(key: string): string[] {
+    return largeFacetFilters[key] || [];
+  }
+
+  function facetAvailableValueCount(key: string): number {
+    const meta = analysisFacetForKey(key);
+    return (
+      largeIndex?.facets[key]?.length ||
+      meta?.cardinality ||
+      (source?.kind === 'large' ? source.overview.facet_previews?.[key]?.length || 0 : 0)
+    );
+  }
+
+  function facetSummaryBadge(key: string): string {
+    const selected = facetSelectedValues(key).length;
+    if (selected) return `${selected} selected`;
+    if (largeFacetHydratingKey === key || (largeFullLoading && activeFacetKey === key && !largeIndex)) return 'Loading';
+    const available = facetAvailableValueCount(key);
+    return available ? `${available} values` : 'Load';
+  }
+
+  function largeVocabulary(key: string, fallback: string): string {
+    if (source?.kind !== 'large') return fallback;
+    return source.descriptor.vocabulary?.[key] || fallback;
+  }
+
+  function recordSingular(): string {
+    return largeVocabulary('record_singular', 'dataset');
+  }
+
+  function recordPlural(): string {
+    return largeVocabulary('record_plural', 'datasets');
+  }
+
+  function resourceSingular(): string {
+    return largeVocabulary('resource_singular', 'resource');
+  }
+
+  function resourcePlural(): string {
+    return largeVocabulary('resource_plural', 'resources');
+  }
+
+  function publisherSingular(): string {
+    return largeVocabulary('publisher_singular', 'publisher');
+  }
+
+  function publisherPlural(): string {
+    return largeVocabulary('publisher_plural', 'publishers');
+  }
+
+  function formatPlural(): string {
+    return largeVocabulary('format_plural', 'formats');
+  }
+
+  function resourceStackLabel(): string {
+    return largeVocabulary('resource_stack_label', 'Resource stack');
+  }
+
+  function searchPlaceholder(): string {
+    return largeVocabulary('search_placeholder', 'Search static index');
+  }
+
+  function primaryUrlLabel(): string {
+    return recordSingular().toLowerCase().includes('api') ? 'Endpoint URL' : 'Landing URL';
+  }
+
+  function capitalise(value: string): string {
+    return value ? `${value.slice(0, 1).toUpperCase()}${value.slice(1)}` : value;
+  }
+
+  function recordString(record: AnyLargeRecord | undefined, key: string): string {
+    const value = (record as Record<string, unknown> | undefined)?.[key];
+    return typeof value === 'string' ? value : '';
+  }
+
+  function apiContextNote(record: AnyLargeRecord | undefined): string {
+    return recordString(record, 'context_note');
+  }
+
+  function apiRecordMeta(record: AnyLargeRecord | undefined): string {
+    const endpointHost = recordString(record, 'endpoint_host');
+    const documentationHost = recordString(record, 'documentation_host');
+    const accessModel = recordString(record, 'access_model');
+    const contractStatus = recordString(record, 'contract_status');
+    const formats = Array.isArray(record?.formats) ? record.formats.map(String).slice(0, 2).join(', ') : '';
+    return [
+      endpointHost && endpointHost !== 'not-specified' ? `endpoint ${endpointHost}` : '',
+      documentationHost && documentationHost !== 'not-specified' ? `docs ${documentationHost}` : '',
+      accessModel ? `access ${accessModel}` : '',
+      contractStatus ? `contract ${contractStatus}` : '',
+      formats
+    ]
+      .filter(Boolean)
+      .join(' · ');
+  }
+
+  function contextLinks(record: AnyLargeRecord | undefined): ContextLink[] {
+    const links = (record as Record<string, unknown> | undefined)?.context_links;
+    if (!Array.isArray(links)) return [];
+    return links
+      .map((item) => (item && typeof item === 'object' ? (item as Record<string, unknown>) : null))
+      .filter((item): item is Record<string, unknown> => Boolean(item && typeof item.url === 'string' && typeof item.label === 'string'))
+      .map((item) => ({
+        label: String(item.label),
+        url: String(item.url),
+        description: typeof item.description === 'string' ? item.description : undefined
+      }));
+  }
+
+  function acronymExpansions(record: AnyLargeRecord | undefined): Array<{ acronym: string; expanded: string; source_url?: string }> {
+    const expansions = (record as Record<string, unknown> | undefined)?.acronym_expansions;
+    if (!Array.isArray(expansions)) return [];
+    return expansions
+      .map((item) => (item && typeof item === 'object' ? (item as Record<string, unknown>) : null))
+      .filter((item): item is Record<string, unknown> => Boolean(item && typeof item.acronym === 'string' && typeof item.expanded === 'string'))
+      .map((item) => ({
+        acronym: String(item.acronym),
+        expanded: String(item.expanded),
+        source_url: typeof item.source_url === 'string' ? item.source_url : undefined
+      }));
+  }
+
   function currentLargeContextLabel(): string {
     if (largeSelectedRoute || largeInspectedRoute) return largeLabelForRoute(largeInspectedRoute || largeSelectedRoute);
     if (largeAppliedQuery.trim()) return `Search: ${largeAppliedQuery.trim()}`;
@@ -1051,17 +1231,17 @@
       const publisherCount = new Set(largeVisibleDatasets.map((dataset) => dataset.publisher).filter(Boolean)).size;
       const resourceCount = largeVisibleDatasets.reduce((total, dataset) => total + (dataset.resource_count || 0), 0);
       return [
-        { label: 'datasets', value: largeVisibleDatasets.length },
-        { label: 'resources', value: resourceCount },
-        { label: 'publishers', value: publisherCount },
+        { label: recordPlural(), value: largeVisibleDatasets.length },
+        { label: resourcePlural(), value: resourceCount },
+        { label: publisherPlural(), value: publisherCount },
         { label: 'active filters', value: activeLargeFilterCount }
       ];
     }
     const summary = largeAnalysis()?.summary;
     const counts = source?.kind === 'large' ? source.manifest.counts : {};
     return [
-      { label: 'datasets', value: summary?.record_count || counts.datasets || 0 },
-      { label: 'resources', value: summary?.resource_count || counts.resources || 0 },
+      { label: recordPlural(), value: summary?.record_count || counts.datasets || 0 },
+      { label: resourcePlural(), value: summary?.resource_count || counts.resources || 0 },
       { label: 'relationships', value: summary?.relationship_count || counts.relationships || 0 },
       { label: 'active filters', value: activeLargeFilterCount }
     ];
@@ -1074,13 +1254,13 @@
   function overviewEntryPoints() {
     const analysis = largeAnalysis();
     const publisherEntries = (source?.kind === 'large' ? source.overview.top_publishers || [] : []).slice(0, 6).map((item) => ({
-      label: String(item.label || item.id || 'Publisher'),
-      meta: `${Number(item.dataset_count || 0).toLocaleString()} datasets`,
+      label: String(item.label || item.id || capitalise(publisherSingular())),
+      meta: `${Number(item.dataset_count || 0).toLocaleString()} ${recordPlural()}`,
       route: `facet/publisher/${String(item.id || '').replace(/^publisher\//, '')}`
     }));
     const recentEntries = (source?.kind === 'large' ? source.overview.recent_datasets || [] : []).slice(0, 6).map((item) => ({
       label: item.title,
-      meta: `${item.publisher_title} · ${item.resource_count} resources`,
+      meta: `${item.publisher_title} · ${item.resource_count} ${resourcePlural()}`,
       route: datasetRoute(item)
     }));
     const analysisEntries =
@@ -1089,7 +1269,7 @@
         .slice(0, 6)
         .map((node) => ({
           label: node.label,
-          meta: `${(node.count || 0).toLocaleString()} records`,
+          meta: `${(node.count || 0).toLocaleString()} ${recordPlural()}`,
           route: node.id
         })) || [];
     return [...analysisEntries, ...publisherEntries, ...recentEntries].slice(0, 12);
@@ -1164,7 +1344,7 @@
     if (kind === 'resource-stack') {
       const datasetName = value.replace(/^dataset\//, '');
       const dataset = largeIndex?.datasetByName.get(datasetName);
-      return `Resources: ${dataset?.title || datasetName}`;
+      return `${resourceStackLabel()}: ${dataset?.title || datasetName}`;
     }
     return value || route;
   }
@@ -1193,8 +1373,8 @@
     if (kind === 'tag') return 'tagged';
     if (kind === 'license') return 'licensed as';
     if (kind === 'host') return 'landing host';
-    if (kind === 'resource_type') return 'has resource type';
-    if (kind === 'resource') return 'has resource';
+    if (kind === 'resource_type') return `has ${resourceSingular()} type`;
+    if (kind === 'resource') return `has ${resourceSingular()}`;
     return 'related';
   }
 
@@ -1249,13 +1429,15 @@
     const analysisFacet = routeForAnalysisNode(route);
     if (analysisFacet) return facetLabel(analysisFacet.key);
     const kind = routeKind(route);
+    if (kind === 'dataset') return capitalise(recordSingular());
+    if (kind === 'publisher') return capitalise(publisherSingular());
     if (kind === 'format') return 'Format';
     if (kind === 'topic') return 'Controlled topic';
     if (kind === 'license') return 'Licence';
     if (kind === 'tag') return 'Tag';
     if (kind === 'host') return 'Host';
-    if (kind === 'resource_type') return 'Resource type';
-    if (kind === 'resource-stack') return 'Resource stack';
+    if (kind === 'resource_type') return `${capitalise(resourceSingular())} type`;
+    if (kind === 'resource-stack') return resourceStackLabel();
     return kind ? `${kind.slice(0, 1).toUpperCase()}${kind.slice(1).replace(/_/g, ' ')}` : 'Route';
   }
 
@@ -1362,8 +1544,8 @@
         for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
         if (result.resource_count > 0) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `Resources (${result.resource_count})`, result.resource_count, center);
-          edges.push({ source: center, target: stackId, label: 'has resources' });
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${result.resource_count})`, result.resource_count, center);
+          edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         }
       }
     } else if (largeIndex && center.startsWith('dataset/')) {
@@ -1378,10 +1560,10 @@
         const resources = largeIndex.resourcesByDataset.get(dataset.name) || [];
         if (resources.length > 8 && largeExpandedStackRoute !== center) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `Resources (${resources.length})`, resources.length, center);
-          edges.push({ source: center, target: stackId, label: 'has resources' });
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${resources.length})`, resources.length, center);
+          edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         } else {
-          for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), 'has resource');
+          for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), `has ${resourceSingular()}`);
         }
       }
     } else if (largeIndex && center) {
@@ -1544,10 +1726,10 @@
 
   function graphLegendItems() {
     return [
-      ['dataset', 'dataset'],
-      ['publisher', 'publisher'],
-      ['resource', 'resource'],
-      ['format', 'format'],
+      ['dataset', recordSingular()],
+      ['publisher', publisherSingular()],
+      ['resource', resourceSingular()],
+      ['format', formatPlural()],
       ['topic', 'topic'],
       ['license', 'licence'],
       ['tag', 'tag'],
@@ -1878,7 +2060,7 @@
       </div>
       <div class="left-content">
         {#if source?.kind === 'large'}
-          <input class="search-input" value={largeQuery} placeholder="Search static CKAN index" oninput={(event) => void runLargeSearch(event.currentTarget.value)} />
+          <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => void runLargeSearch(event.currentTarget.value)} />
           {#if largeSuggestions.length}
             <div class="suggestions">
               {#each largeSuggestions as suggestion}
@@ -1903,13 +2085,20 @@
             </div>
             <div class="facet-sections" aria-label="Facet filters">
               {#each orderedLargeFacetKeys() as key}
-                {@const selectedFacetCount = (largeFacetFilters[key] || []).length}
+                {@const selectedFacetValues = facetSelectedValues(key)}
+                {@const selectedFacetCount = selectedFacetValues.length}
                 {@const facetMeta = analysisFacetForKey(key)}
                 {@const facetHint = facetSummary(key)}
                 {@const facetHierarchies = analysisHierarchiesForFacet(key)}
-                <details class="facet-section" open={activeFacetKey === key || selectedFacetCount > 0}>
-                  <summary onclick={() => { activeFacetKey = key; void ensureLargeFullIndex(); }}>
-                    <span>{facetMeta?.label || key.replaceAll('_', ' ')}</span><small>{selectedFacetCount}</small>
+                <details class="facet-section" open={activeFacetKey === key}>
+                  <summary onclick={(event) => { event.preventDefault(); void openLargeFacet(key); }}>
+                    <span>
+                      {facetMeta?.label || key.replaceAll('_', ' ')}
+                      {#if selectedFacetCount && activeFacetKey !== key}
+                        <em>{selectedFacetValues.slice(0, 2).join(', ')}{selectedFacetCount > 2 ? ` +${selectedFacetCount - 2}` : ''}</em>
+                      {/if}
+                    </span>
+                    <small>{facetSummaryBadge(key)}</small>
                   </summary>
                   {#if facetHint}
                     <p class="facet-hint">{facetHint}</p>
@@ -1932,15 +2121,19 @@
                     </div>
                   {/if}
                   <div class="facet-values">
-                    {#each largeFacetRows(key).slice(0, 18) as value}
-                      <button
-                        class:active={(largeFacetFilters[key] || []).includes(value.value)}
-                        type="button"
-                        onclick={() => toggleLargeFacet(key, value.value)}
-                      >
-                        <span>{value.value}</span><small>{value.count.toLocaleString()}</small>
-                      </button>
-                    {/each}
+                    {#if !largeIndex && largeFacetHydratingKey === key}
+                      <p class="facet-loading">Loading facet values...</p>
+                    {:else}
+                      {#each largeFacetRows(key).slice(0, 18) as value}
+                        <button
+                          class:active={selectedFacetValues.includes(value.value)}
+                          type="button"
+                          onclick={() => toggleLargeFacet(key, value.value)}
+                        >
+                          <span>{value.value}</span><small>{value.count.toLocaleString()}</small>
+                        </button>
+                      {/each}
+                    {/if}
                   </div>
                 </details>
               {/each}
@@ -1952,7 +2145,7 @@
               {#each largeVisibleDatasets.slice(0, 80) as dataset}
                 <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                   <strong>{dataset.title}</strong>
-                  <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                  <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
                 </button>
               {/each}
             </div>
@@ -1961,7 +2154,7 @@
               {#each largeResults.slice(0, 80) as result}
                 <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                   <strong>{result.title}</strong>
-                  <span>{result.publisher_title || result.publisher || 'Unknown publisher'} · {result.resource_count || 0} resources</span>
+                  <span>{result.publisher_title || result.publisher || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
                 </button>
               {/each}
             </div>
@@ -2015,8 +2208,8 @@
         <section class="large-view">
           {#if activeView === 'reader'}
             <div class="metrics">
-              {#each Object.entries(source.manifest.counts).slice(0, 4) as [key, value]}
-                <article><strong>{value.toLocaleString()}</strong><span>{key.replaceAll('_', ' ')}</span></article>
+              {#each largeContextMetrics() as metric}
+                <article><strong>{metric.value.toLocaleString()}</strong><span>{metric.label}</span></article>
               {/each}
             </div>
           {/if}
@@ -2032,8 +2225,10 @@
                   {#each largeVisibleDatasets.slice(0, 160) as dataset}
                     <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
-                      <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                      <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                      {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                       <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
+                      {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
                     </button>
                   {:else}
                     <p class="muted">No static-search matches in the current reduction.</p>
@@ -2042,8 +2237,10 @@
                   {#each largeResults as result}
                     <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                       <strong>{result.title}</strong>
-                      <span>{result.publisher_title} · {result.resource_count} resources · score {result.score}</span>
+                      <span>{result.publisher_title} · {result.resource_count} {resourcePlural()} · score {result.score}</span>
+                      {#if apiContextNote(result)}<p class="context-note">{apiContextNote(result)}</p>{/if}
                       <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
+                      {#if apiRecordMeta(result)}<small class="result-meta">{apiRecordMeta(result)}</small>{/if}
                     </button>
                   {:else}
                     <p class="muted">No static-search matches.</p>
@@ -2072,10 +2269,10 @@
                   {/each}
                 </section>
                 <section>
-                  <h3>Formats</h3>
+                  <h3>{capitalise(formatPlural())}</h3>
                   {#each (source.overview.format_counts || []).slice(0, 14) as format}
                     <button type="button" onclick={() => applyAnalysisFacet('format', format.value)}>
-                      {format.value}<span>{format.count.toLocaleString()} resources</span>
+                      {format.value}<span>{format.count.toLocaleString()} {recordPlural()}</span>
                     </button>
                   {/each}
                 </section>
@@ -2090,30 +2287,32 @@
               </div>
             {:else if largeIndex}
               <div class="view-heading">
-                <h2>Datasets</h2>
+                <h2>{capitalise(recordPlural())}</h2>
                 <span>{largeVisibleDatasets.length.toLocaleString()} in current reduction</span>
               </div>
               <div class="result-list">
                 {#each largeVisibleDatasets.slice(0, 160) as dataset}
                   <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                     <strong>{dataset.title}</strong>
-                    <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                    <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                    {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                     <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
+                    {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
                   </button>
                 {/each}
               </div>
             {:else}
               <h2>{source.overview.title}</h2>
-              <p class="muted">Overview-first mode. Search loads generated static search shards; graph, resource stack, filters, and detail routes hydrate chunked records only when needed.</p>
+              <p class="muted">Overview-first mode. Search loads generated static search shards; graph, {resourceStackLabel().toLowerCase()}, filters, and detail routes hydrate chunked records only when needed.</p>
               <div class="overview-grid">
                 <section>
-                  <h3>Recent datasets</h3>
+                  <h3>Recent {recordPlural()}</h3>
                   {#each (source.overview.recent_datasets || []).slice(0, 10) as dataset}
                     <button type="button" onclick={() => chooseLargeResult(dataset)}>{dataset.title}<span>{dataset.publisher_title}</span></button>
                   {/each}
                 </section>
                 <section>
-                  <h3>Formats</h3>
+                  <h3>{capitalise(formatPlural())}</h3>
                   {#each (source.overview.format_counts || []).slice(0, 14) as format}
                     <span class="chip">{format.value} {format.count.toLocaleString()}</span>
                   {/each}
@@ -2259,7 +2458,7 @@
                 {:else}
                   Showing {model.nodes.length} nodes from the current left-panel reduction.
                 {/if}
-                Drag to pan, use +/- or the mouse wheel to zoom, single-click to inspect, double-click to centre or expand a resource stack.
+                Drag to pan, use +/- or the mouse wheel to zoom, single-click to inspect, double-click to centre or expand a {resourceStackLabel().toLowerCase()}.
               </p>
             </div>
           {:else if activeView === 'links'}
@@ -2319,14 +2518,14 @@
             {#if largeHasAnalysisOverview('timeline')}
               <div class="view-heading">
                 <h2>Timeline Distribution</h2>
-                <span>{source.manifest.counts.datasets.toLocaleString()} datasets in overview</span>
+                <span>{source.manifest.counts.datasets.toLocaleString()} {recordPlural()} in overview</span>
               </div>
               <section class="timeline-view timeline-axis">
                 {#each analysisTimelineBuckets().slice(0, 90) as bucket, index}
                   <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisTimelineBucket(bucket)}>
                     <time>{bucket.label}</time>
                     <div>
-                      <strong>{bucket.count.toLocaleString()} datasets</strong>
+                      <strong>{bucket.count.toLocaleString()} {recordPlural()}</strong>
                       <span>{(bucket.samples || []).slice(0, 2).map((item) => item.title).join(' · ')}</span>
                     </div>
                   </button>
@@ -2337,13 +2536,13 @@
             {:else}
               <div class="view-heading">
                 <h2>Timeline</h2>
-                <span>{largeVisibleDatasets.length.toLocaleString()} datasets in current reduction</span>
+                <span>{largeVisibleDatasets.length.toLocaleString()} {recordPlural()} in current reduction</span>
               </div>
               <section class="timeline-view timeline-axis">
                 {#each largeVisibleDatasets.filter((dataset) => dataset.timestamp || dataset.metadata_modified).slice(0, 180) as dataset, index}
                   <button style={`--row:${index}`} type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
                     <time>{String(dataset.timestamp || dataset.metadata_modified).slice(0, 10)}</time>
-                    <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'}</span></div>
+                    <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`}</span></div>
                   </button>
                 {/each}
               </section>
@@ -2411,15 +2610,15 @@
           {:else if activeView === 'resources'}
             {#if largeHasAnalysisOverview('resources')}
               <div class="view-heading">
-                <h2>Resource Landscape</h2>
-                <span>{(largeAnalysis()?.resource_overview?.total_resources || source.manifest.counts.resources || 0).toLocaleString()} resources in overview</span>
+                <h2>{capitalise(resourceSingular())} Landscape</h2>
+                <span>{(largeAnalysis()?.resource_overview?.total_resources || source.manifest.counts.resources || 0).toLocaleString()} {resourcePlural()} in overview</span>
               </div>
               <div class="overview-grid">
                 <section>
                   <h3>High-volume stacks</h3>
                   {#each analysisResourceStacks().slice(0, 16) as stack}
                     <button type="button" onclick={() => openOverviewEntry(stack.route)}>
-                      {stack.label}<span>{stack.count.toLocaleString()} resources · {stack.publisher || 'unknown publisher'}</span>
+                      {stack.label}<span>{stack.count.toLocaleString()} {resourcePlural()} · {stack.publisher || `unknown ${publisherSingular()}`}</span>
                     </button>
                   {:else}
                     <p class="muted">Resource-stack summaries are not available for this bundle yet.</p>
@@ -2436,8 +2635,8 @@
               </div>
             {:else}
               <div class="view-heading">
-                <h2>Resource Stack</h2>
-                <span>{largeVisibleResources.length.toLocaleString()} resources shown from current reduction</span>
+                <h2>{resourceStackLabel()}</h2>
+                <span>{largeVisibleResources.length.toLocaleString()} {resourcePlural()} shown from current reduction</span>
               </div>
               <section class="resource-stack-view">
                 {#each largeVisibleDatasets.filter((dataset) => (largeIndex?.resourcesByDataset.get(dataset.name) || []).length).slice(0, 80) as dataset}
@@ -2445,7 +2644,7 @@
                   <article>
                     <button class="stack-heading" type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
-                      <span>{resources.length} resources · {dataset.publisher_title || dataset.publisher}</span>
+                      <span>{resources.length} {resourcePlural()} · {dataset.publisher_title || dataset.publisher}</span>
                     </button>
                     <div class="resource-stack">
                       {#each resources.slice(0, 12) as resource}
@@ -2478,7 +2677,7 @@
                   {#if largeIsOverviewContext() && analysis?.narrative?.body}
                     {analysis.narrative.body}
                   {:else if largeIndex}
-                    The active context contains {largeVisibleDatasets.length.toLocaleString()} datasets and {largeVisibleResources.length.toLocaleString()} visible resources after the current search and facet reduction. Use the graph, links, timeline, and resources views to inspect the same reduced context from different angles.
+                    The active context contains {largeVisibleDatasets.length.toLocaleString()} {recordPlural()} and {largeVisibleResources.length.toLocaleString()} visible {resourcePlural()} after the current search and facet reduction. Use the graph, links, timeline, and resources views to inspect the same reduced context from different angles.
                   {:else}
                     {analysis?.summary?.description || source.descriptor.description || 'This OKF Explorer view is using the lightweight overview payload until a search, filter, or deep link requires full-record hydration.'}
                   {/if}
@@ -2502,7 +2701,7 @@
                   <button type="button" onclick={() => void selectView('graph')}>Graph<span>relationships and aggregate structure</span></button>
                   <button type="button" onclick={() => void selectView('timeline')}>Timeline<span>temporal distribution and dated records</span></button>
                   <button type="button" onclick={() => void selectView('links')}>Links<span>relationship types and selectable edges</span></button>
-                  <button type="button" onclick={() => void selectView('resources')}>Resources<span>resource stacks and format/host landscape</span></button>
+                  <button type="button" onclick={() => void selectView('resources')}>{capitalise(resourcePlural())}<span>{resourceStackLabel().toLowerCase()} and {formatPlural()}/host landscape</span></button>
                 </section>
                 <section>
                   <h3>Strong dimensions</h3>
@@ -2515,10 +2714,10 @@
                 <section>
                   <h3>Representative values</h3>
                   {#each topContextFacetValues('publisher', 4) as row}
-                    <button type="button" onclick={() => applyAnalysisFacet('publisher', row.value)}>{row.value}<span>{row.count.toLocaleString()} datasets</span></button>
+                    <button type="button" onclick={() => applyAnalysisFacet('publisher', row.value)}>{row.value}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
                   {/each}
                   {#each topContextFacetValues('format', 4) as row}
-                    <button type="button" onclick={() => applyAnalysisFacet('format', row.value)}>{row.value}<span>{row.count.toLocaleString()} datasets</span></button>
+                    <button type="button" onclick={() => applyAnalysisFacet('format', row.value)}>{row.value}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
                   {/each}
                 </section>
               </div>
@@ -2778,8 +2977,11 @@
             </details>
           {:else if largeDetail}
             {#if largeDetail.kind === 'dataset'}
-              <span class="badge">Dataset</span>
+              <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
+              {#if apiContextNote(largeDetail.dataset)}
+                <p class="context-note">{apiContextNote(largeDetail.dataset)}</p>
+              {/if}
               <p>{stripHtml(largeDetail.dataset.notes || '')}</p>
               <div class="detail-actions">
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
@@ -2794,24 +2996,50 @@
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
               <dl>
-                <dt>Publisher</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
-                <dt>Resources</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
+                <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
+                <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
                 <dt>Licence</dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
                 <dt>Quality</dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
-                <dt>Landing URL</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
-                <dt>API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>
+                <dt>Access model</dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
+                <dt>Visibility</dt><dd>{displayValue(largeDetail.dataset.visibility)}</dd>
+                <dt>Contract status</dt><dd>{displayValue(largeDetail.dataset.contract_status)}</dd>
+                <dt>Lifecycle</dt><dd>{displayValue(largeDetail.dataset.lifecycle_status || largeDetail.dataset.state)}</dd>
+                <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
+                <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
+                <dt>Documentation</dt><dd>{#if isUrl(largeDetail.dataset.documentation)}<a href={largeDetail.dataset.documentation} target="_blank" rel="noopener">{largeDetail.dataset.documentation}</a>{:else}{displayValue(largeDetail.dataset.documentation)}{/if}</dd>
+                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
               </dl>
+              {#if acronymExpansions(largeDetail.dataset).length || contextLinks(largeDetail.dataset).length}
+                <section class="metadata-section">
+                  <h3>Context</h3>
+                  <dl>
+                    {#each acronymExpansions(largeDetail.dataset) as expansion}
+                      <dt>{expansion.acronym}</dt>
+                      <dd>
+                        {#if expansion.source_url}
+                          <a href={expansion.source_url} target="_blank" rel="noopener">{expansion.expanded}</a>
+                        {:else}
+                          {expansion.expanded}
+                        {/if}
+                      </dd>
+                    {/each}
+                    {#each contextLinks(largeDetail.dataset) as link}
+                      <dt>{link.label}</dt><dd><a href={link.url} target="_blank" rel="noopener">{link.description || link.url}</a></dd>
+                    {/each}
+                  </dl>
+                </section>
+              {/if}
               <div class="chips">
                 {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<span class="chip topic-chip">{topic}</span>{/each}
                 {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<span class="chip">{format}</span>{/each}
                 {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<span class="chip">{tag}</span>{/each}
               </div>
               <section class="metadata-section">
-                <h3>Dataset metadata</h3>
+                <h3>{capitalise(recordSingular())} metadata</h3>
                 <dl>
-                  <dt>Package name</dt><dd>{largeDetail.dataset.name}</dd>
-                  <dt>Package ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
+                  <dt>Record name</dt><dd>{largeDetail.dataset.name}</dd>
+                  <dt>Record ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
                   <dt>State</dt><dd>{displayValue(largeDetail.dataset.state)}</dd>
                   <dt>Type</dt><dd>{displayValue(largeDetail.dataset.type)}</dd>
                   <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
@@ -2819,13 +3047,13 @@
                   <dt>Created</dt><dd>{displayValue(largeDetail.dataset.metadata_created)}</dd>
                   <dt>Modified</dt><dd>{displayValue(largeDetail.dataset.metadata_modified)}</dd>
                   <dt>Timeline date</dt><dd>{displayValue(largeDetail.dataset.timestamp)}</dd>
-                  <dt>Formats</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
+                  <dt>{capitalise(formatPlural())}</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
                   <dt>Topics</dt><dd>{displayValue(largeDetail.dataset.topics)}</dd>
                   <dt>Source licence</dt><dd>{displayValue([largeDetail.dataset.license_source_id, largeDetail.dataset.license_source_title].filter(Boolean))}</dd>
                   <dt>Licence confidence</dt><dd>{formatPercent(largeDetail.dataset.license_confidence)}</dd>
-                  <dt>Publisher concept</dt><dd>{displayValue(largeDetail.dataset.publisher_concept_id)}</dd>
+                  <dt>{capitalise(publisherSingular())} concept</dt><dd>{displayValue(largeDetail.dataset.publisher_concept_id)}</dd>
                   <dt>Groups</dt><dd>{displayValue(largeDetail.dataset.groups)}</dd>
-                  <dt>Resource hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
+                  <dt>{capitalise(resourceSingular())} hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
               </section>
               {#if largeDetail.dataset.quality}
@@ -2851,7 +3079,7 @@
               {/if}
               {#if largeDetail.dataset.extras && Object.keys(largeDetail.dataset.extras).length}
                 <section class="metadata-section">
-                  <h3>CKAN extras</h3>
+                  <h3>Additional metadata</h3>
                   <dl>
                     {#each Object.entries(largeDetail.dataset.extras).slice(0, 40) as [key, value]}
                       <dt>{key}</dt><dd>{displayValue(value)}</dd>
@@ -2859,7 +3087,7 @@
                   </dl>
                 </section>
               {/if}
-              <h3>Resources</h3>
+              <h3>{capitalise(resourcePlural())}</h3>
               {#each largeDetail.resources.slice(0, 30) as resource}
                 <button type="button" onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }} ondblclick={() => recenterLargeRoute(resourceRoute(resource))}>
                   <strong>{resource.name || resource.id}</strong>
@@ -2875,7 +3103,7 @@
                 {/each}
               {/if}
               <details class="json-panel">
-                <summary>Local normalized dataset JSON</summary>
+                <summary>Local normalized {recordSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.dataset)}</pre>
               </details>
               {#if largeApiRoute === largeDetail.route}
@@ -2889,17 +3117,17 @@
                 {/if}
               {/if}
             {:else if largeDetail.kind === 'resource'}
-              <span class="badge">Resource</span>
+              <span class="badge">{capitalise(resourceSingular())}</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
               <p>{stripHtml(largeDetail.resource.description || '') || largeDetail.resource.url}</p>
               <div class="detail-actions">
-                <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>Dataset</button>
+                <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>{capitalise(recordSingular())}</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>Clear inspection</button>{/if}
               </div>
               <dl>
-                <dt>Dataset</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
+                <dt>{capitalise(recordSingular())}</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
                 <dt>Format</dt><dd>{largeDetail.resource.format || 'unknown'}</dd>
                 <dt>Source format</dt><dd>{displayValue(largeDetail.resource.source_format)}</dd>
                 <dt>Format confidence</dt><dd>{formatPercent(largeDetail.resource.format_confidence)}</dd>
@@ -2912,7 +3140,7 @@
               <section class="metadata-section">
                 <h3>Resource metadata</h3>
                 <dl>
-                  <dt>Resource ID</dt><dd>{largeDetail.resource.id}</dd>
+                  <dt>{capitalise(resourceSingular())} ID</dt><dd>{largeDetail.resource.id}</dd>
                   <dt>State</dt><dd>{displayValue(largeDetail.resource.state)}</dd>
                   <dt>Position</dt><dd>{displayValue(largeDetail.resource.position)}</dd>
                   <dt>Created</dt><dd>{displayValue(largeDetail.resource.created)}</dd>
@@ -2935,11 +3163,11 @@
                 </section>
               {/if}
               <details class="json-panel">
-                <summary>Local normalized resource JSON</summary>
+                <summary>Local normalized {resourceSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.resource)}</pre>
               </details>
             {:else if largeDetail.kind === 'publisher'}
-              <span class="badge">Publisher</span>
+              <span class="badge">{capitalise(publisherSingular())}</span>
               <h2>{largeDetail.publisher.title}</h2>
               <p>{stripHtml(largeDetail.publisher.description || '')}</p>
               <div class="detail-actions">
@@ -2950,10 +3178,10 @@
               <dl>
                 <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.publisher.concept_id)}</dd>
-                <dt>Datasets</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
-                <dt>Resources</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
+                <dt>{capitalise(recordPlural())}</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
+                <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
                 <dt>State</dt><dd>{largeDetail.publisher.state || 'unknown'}</dd>
-                <dt>Publisher ID</dt><dd>{displayValue(largeDetail.publisher.id)}</dd>
+                <dt>{capitalise(publisherSingular())} ID</dt><dd>{displayValue(largeDetail.publisher.id)}</dd>
                 <dt>Type</dt><dd>{displayValue(largeDetail.publisher.type)}</dd>
                 <dt>Approval status</dt><dd>{displayValue(largeDetail.publisher.approval_status)}</dd>
               </dl>
@@ -2967,7 +3195,7 @@
                   </dl>
                 </section>
               {/if}
-              <h3>Datasets</h3>
+              <h3>{capitalise(recordPlural())}</h3>
               {#each largeDetail.datasets.slice(0, 40) as dataset}
                 <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
               {/each}
@@ -2976,13 +3204,22 @@
                 <pre>{jsonText(largeDetail.publisher)}</pre>
               </details>
             {:else if largeDetail.kind === 'search'}
-              <span class="badge">Dataset</span>
+              <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.result.title}</h2>
+              {#if apiContextNote(largeDetail.result)}
+                <p class="context-note">{apiContextNote(largeDetail.result)}</p>
+              {/if}
               <p>{stripHtml(largeDetail.result.notes || '')}</p>
               <dl>
-                <dt>Publisher</dt><dd>{largeDetail.result.publisher_title}</dd>
-                <dt>Resources</dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
+                <dt>{capitalise(publisherSingular())}</dt><dd>{largeDetail.result.publisher_title}</dd>
+                <dt>{capitalise(resourcePlural())}</dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
                 <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
+                <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
+                <dt>Documentation host</dt><dd>{displayValue(largeDetail.result.documentation_host)}</dd>
+                <dt>Access model</dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
+                <dt>Contract status</dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
+                <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.result.url)}<a href={largeDetail.result.url} target="_blank" rel="noopener">{largeDetail.result.url}</a>{:else}{displayValue(largeDetail.result.url)}{/if}</dd>
+                <dt>Documentation</dt><dd>{#if isUrl(largeDetail.result.documentation)}<a href={largeDetail.result.documentation} target="_blank" rel="noopener">{largeDetail.result.documentation}</a>{:else}{displayValue(largeDetail.result.documentation)}{/if}</dd>
                 <dt>Quality</dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
                 <dt>Route</dt><dd>{largeDetail.result.open}</dd>
                 <dt>Timestamp</dt><dd>{largeDetail.result.timestamp || 'None'}</dd>
@@ -3013,21 +3250,27 @@
                 {#if analysisFacet}<dt>Facet value</dt><dd>{analysisFacet.value}</dd>{/if}
                 {#if facetMeta}<dt>Facet quality</dt><dd>{facetMeta.recommendation} · {facetMeta.recommended_control} · reduction {formatPercent(facetMeta.expected_reduction)}</dd>{/if}
                 {#if hierarchyValue}<dt>Hierarchy</dt><dd>{hierarchyValue.hierarchy.label}{hierarchyValue.parent ? ` / ${hierarchyValue.parent.label}` : ''}</dd>{/if}
-                <dt>Datasets</dt><dd>{routeDatasets.length.toLocaleString()} in current reduction</dd>
-                <dt>Resources</dt><dd>{routeResources.length.toLocaleString()} in current reduction</dd>
+                <dt>{capitalise(recordPlural())}</dt><dd>{routeDatasets.length.toLocaleString()} in current reduction</dd>
+                <dt>{capitalise(resourcePlural())}</dt><dd>{routeResources.length.toLocaleString()} in current reduction</dd>
                 <dt>Full links</dt><dd>{largeRelationships.length ? largeDetail.relationships.length.toLocaleString() : 'Not loaded'}</dd>
               </dl>
+              {#if largeFullLoading && !largeIndex}
+                <p class="facet-loading">Loading {recordPlural()} for this value...</p>
+              {/if}
               {#if routeDatasets.length}
-                <h3>Datasets in current reduction</h3>
+                <h3>{capitalise(recordPlural())} in current reduction</h3>
                 {#each routeDatasets.slice(0, 12) as dataset}
                   <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                     <strong>{dataset.title}</strong>
-                    <span>{dataset.publisher_title || dataset.publisher || 'Unknown publisher'} · {dataset.resource_count || 0} resources</span>
+                    <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                    {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
+                    <p>{stripHtml(dataset.notes || '').slice(0, 180)}</p>
+                    {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
                   </button>
                 {/each}
               {/if}
               {#if routeResources.length}
-                <h3>Resources in current reduction</h3>
+                <h3>{capitalise(resourcePlural())} in current reduction</h3>
                 {#each routeResources.slice(0, 12) as resource}
                   <button type="button" onclick={() => inspectLargeRoute(resourceRoute(resource))}>
                     <strong>{resource.name || resource.id}</strong>

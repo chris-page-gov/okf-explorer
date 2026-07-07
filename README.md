@@ -46,6 +46,8 @@ The repository contains:
 - `okf-bundle.json` - generated bundle consumed by the explorer.
 - `okf-registry.json` - starter registry for discoverable bundles and Bundle
   URL suggestions.
+- `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
+  GOV.UK API Catalogue.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
@@ -112,6 +114,7 @@ until the public cutover is made deliberately.
 ## Validate And Build
 
 ```sh
+python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
@@ -121,12 +124,19 @@ python3 scripts/build_site.py
 The build writes a GitHub Pages-ready static site to `_site/`. The site uses
 the compatibility OKF Explorer as `index.html`, publishes `okf-bundle.json`,
 preserves `viewer.html` and `view.html`, publishes the Svelte Explorer under
-`next/` when built, and copies the public OKF Markdown corpus beside it.
+`next/` when built, publishes the UK Government APIs large-corpus descriptor,
+and copies the public OKF Markdown corpus beside it.
 
 To regenerate the explorer bundle after Markdown changes:
 
 ```sh
 python3 scripts/build_okf_bundle.py
+```
+
+To regenerate the UK Government APIs exemplar from the official catalogue CSV:
+
+```sh
+python3 scripts/build_uk_government_api_okf.py
 ```
 
 ## License

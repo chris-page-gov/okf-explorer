@@ -1,0 +1,102 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "because"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "becoming"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "been"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "before"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "begin"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "beginning"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "behalf"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "behind"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "being"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "below"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "below.bowel"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "benefit"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "benefits"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "berkshire"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "best"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "beta"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "betaapplication-restricted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "better"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "between"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "beyond"
+  }
+]

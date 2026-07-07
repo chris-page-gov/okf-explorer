@@ -1,0 +1,62 @@
+{
+  "lgi": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ],
+  "lgin": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ],
+  "lginf": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ],
+  "lginfo": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ],
+  "lginfor": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ],
+  "lginform": [
+    {
+      "df": 1,
+      "token": "lginform"
+    },
+    {
+      "df": 1,
+      "token": "lginformplus.org"
+    }
+  ]
+}

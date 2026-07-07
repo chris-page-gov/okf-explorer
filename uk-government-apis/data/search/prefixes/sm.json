@@ -1,0 +1,220 @@
+{
+  "sma": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smaller"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 2,
+      "token": "small"
+    },
+    {
+      "df": 1,
+      "token": "smart"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    },
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "smal": [
+    {
+      "df": 3,
+      "token": "smaller"
+    },
+    {
+      "df": 2,
+      "token": "small"
+    }
+  ],
+  "small": [
+    {
+      "df": 3,
+      "token": "smaller"
+    },
+    {
+      "df": 2,
+      "token": "small"
+    }
+  ],
+  "smalle": [
+    {
+      "df": 3,
+      "token": "smaller"
+    }
+  ],
+  "smaller": [
+    {
+      "df": 3,
+      "token": "smaller"
+    }
+  ],
+  "smar": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 1,
+      "token": "smart"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    },
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "smart": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 1,
+      "token": "smart"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    },
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "smartc": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    }
+  ],
+  "smartca": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    }
+  ],
+  "smartcar": [
+    {
+      "df": 14,
+      "token": "smartcard"
+    },
+    {
+      "df": 3,
+      "token": "smartcards"
+    },
+    {
+      "df": 1,
+      "token": "smartcards.this"
+    }
+  ],
+  "smartp": [
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "smartph": [
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "smartpho": [
+    {
+      "df": 1,
+      "token": "smartphone"
+    }
+  ],
+  "sms": [
+    {
+      "df": 4,
+      "token": "smsp"
+    },
+    {
+      "df": 4,
+      "token": "smsps"
+    },
+    {
+      "df": 1,
+      "token": "smsp.it"
+    }
+  ],
+  "smsp": [
+    {
+      "df": 4,
+      "token": "smsp"
+    },
+    {
+      "df": 4,
+      "token": "smsps"
+    },
+    {
+      "df": 1,
+      "token": "smsp.it"
+    }
+  ],
+  "smsp.": [
+    {
+      "df": 1,
+      "token": "smsp.it"
+    }
+  ],
+  "smsp.i": [
+    {
+      "df": 1,
+      "token": "smsp.it"
+    }
+  ],
+  "smsp.it": [
+    {
+      "df": 1,
+      "token": "smsp.it"
+    }
+  ],
+  "smsps": [
+    {
+      "df": 4,
+      "token": "smsps"
+    }
+  ]
+}

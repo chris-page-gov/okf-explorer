@@ -1,0 +1,614 @@
+[
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/bgs.md",
+    "dataset_count": 3,
+    "description": "Provider in the GOV.UK API Catalogue with 3 listed API products.",
+    "id": "bgs",
+    "name": "bgs",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 9,
+    "route": "publisher/bgs",
+    "state": "catalogue-listed",
+    "title": "BGS",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/buckinghamshire-council.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "buckinghamshire-council",
+    "name": "buckinghamshire-council",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/buckinghamshire-council",
+    "state": "catalogue-listed",
+    "title": "Buckinghamshire Council",
+    "type": "local government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/cefas.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "cefas",
+    "name": "cefas",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/cefas",
+    "state": "catalogue-listed",
+    "title": "Cefas",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/companies-house.md",
+    "dataset_count": 2,
+    "description": "Provider in the GOV.UK API Catalogue with 2 listed API products.",
+    "id": "companies-house",
+    "name": "companies-house",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 4,
+    "route": "publisher/companies-house",
+    "state": "catalogue-listed",
+    "title": "Companies House",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/defra.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "defra",
+    "name": "defra",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/defra",
+    "state": "catalogue-listed",
+    "title": "Defra",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/department-for-business-and-trade.md",
+    "dataset_count": 6,
+    "description": "Provider in the GOV.UK API Catalogue with 6 listed API products.",
+    "id": "department-for-business-and-trade",
+    "name": "department-for-business-and-trade",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 17,
+    "route": "publisher/department-for-business-and-trade",
+    "state": "catalogue-listed",
+    "title": "Department for Business And Trade",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/department-for-education.md",
+    "dataset_count": 4,
+    "description": "Provider in the GOV.UK API Catalogue with 4 listed API products.",
+    "id": "department-for-education",
+    "name": "department-for-education",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 7,
+    "route": "publisher/department-for-education",
+    "state": "catalogue-listed",
+    "title": "Department for Education",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/department-for-transport.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "department-for-transport",
+    "name": "department-for-transport",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/department-for-transport",
+    "state": "catalogue-listed",
+    "title": "Department for Transport",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/department-for-work-and-pensions.md",
+    "dataset_count": 11,
+    "description": "Provider in the GOV.UK API Catalogue with 11 listed API products.",
+    "id": "department-for-work-and-pensions",
+    "name": "department-for-work-and-pensions",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 12,
+    "route": "publisher/department-for-work-and-pensions",
+    "state": "catalogue-listed",
+    "title": "Department for Work And Pensions",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/driver-and-vehicle-licensing-agency.md",
+    "dataset_count": 6,
+    "description": "Provider in the GOV.UK API Catalogue with 6 listed API products.",
+    "id": "driver-and-vehicle-licensing-agency",
+    "name": "driver-and-vehicle-licensing-agency",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 12,
+    "route": "publisher/driver-and-vehicle-licensing-agency",
+    "state": "catalogue-listed",
+    "title": "Driver And Vehicle Licensing Agency",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/environment-agency.md",
+    "dataset_count": 10,
+    "description": "Provider in the GOV.UK API Catalogue with 10 listed API products.",
+    "id": "environment-agency",
+    "name": "environment-agency",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 20,
+    "route": "publisher/environment-agency",
+    "state": "catalogue-listed",
+    "title": "Environment Agency",
+    "type": "environment and science"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/food-standards-agency.md",
+    "dataset_count": 2,
+    "description": "Provider in the GOV.UK API Catalogue with 2 listed API products.",
+    "id": "food-standards-agency",
+    "name": "food-standards-agency",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 4,
+    "route": "publisher/food-standards-agency",
+    "state": "catalogue-listed",
+    "title": "Food Standards Agency",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/government-commercial-agency.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "government-commercial-agency",
+    "name": "government-commercial-agency",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/government-commercial-agency",
+    "state": "catalogue-listed",
+    "title": "Government Commercial Agency",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/government-digital-service.md",
+    "dataset_count": 7,
+    "description": "Provider in the GOV.UK API Catalogue with 7 listed API products.",
+    "id": "government-digital-service",
+    "name": "government-digital-service",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 14,
+    "route": "publisher/government-digital-service",
+    "state": "catalogue-listed",
+    "title": "Government Digital Service",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/historic-england.md",
+    "dataset_count": 6,
+    "description": "Provider in the GOV.UK API Catalogue with 6 listed API products.",
+    "id": "historic-england",
+    "name": "historic-england",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 12,
+    "route": "publisher/historic-england",
+    "state": "catalogue-listed",
+    "title": "Historic England",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/hm-land-registry.md",
+    "dataset_count": 15,
+    "description": "Provider in the GOV.UK API Catalogue with 15 listed API products.",
+    "id": "hm-land-registry",
+    "name": "hm-land-registry",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 30,
+    "route": "publisher/hm-land-registry",
+    "state": "catalogue-listed",
+    "title": "HM Land Registry",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/hm-revenue-customs.md",
+    "dataset_count": 31,
+    "description": "Provider in the GOV.UK API Catalogue with 31 listed API products.",
+    "id": "hm-revenue-customs",
+    "name": "hm-revenue-customs",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 63,
+    "route": "publisher/hm-revenue-customs",
+    "state": "catalogue-listed",
+    "title": "HM Revenue Customs",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/insolvency-service.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "insolvency-service",
+    "name": "insolvency-service",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/insolvency-service",
+    "state": "catalogue-listed",
+    "title": "Insolvency Service",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/local-government-association.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "local-government-association",
+    "name": "local-government-association",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 3,
+    "route": "publisher/local-government-association",
+    "state": "catalogue-listed",
+    "title": "Local Government Association",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/ministry-of-housing-communities-local-government.md",
+    "dataset_count": 12,
+    "description": "Provider in the GOV.UK API Catalogue with 12 listed API products.",
+    "id": "ministry-of-housing-communities-local-government",
+    "name": "ministry-of-housing-communities-local-government",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 35,
+    "route": "publisher/ministry-of-housing-communities-local-government",
+    "state": "catalogue-listed",
+    "title": "Ministry of Housing Communities Local Government",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/ministry-of-justice.md",
+    "dataset_count": 4,
+    "description": "Provider in the GOV.UK API Catalogue with 4 listed API products.",
+    "id": "ministry-of-justice",
+    "name": "ministry-of-justice",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 8,
+    "route": "publisher/ministry-of-justice",
+    "state": "catalogue-listed",
+    "title": "Ministry of Justice",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/nhs-digital.md",
+    "dataset_count": 93,
+    "description": "Provider in the GOV.UK API Catalogue with 93 listed API products.",
+    "id": "nhs-digital",
+    "name": "nhs-digital",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 186,
+    "route": "publisher/nhs-digital",
+    "state": "catalogue-listed",
+    "title": "NHS Digital",
+    "type": "health"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/office-of-national-statistics.md",
+    "dataset_count": 2,
+    "description": "Provider in the GOV.UK API Catalogue with 2 listed API products.",
+    "id": "office-of-national-statistics",
+    "name": "office-of-national-statistics",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 4,
+    "route": "publisher/office-of-national-statistics",
+    "state": "catalogue-listed",
+    "title": "Office for National Statistics",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/ofqual.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "ofqual",
+    "name": "ofqual",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/ofqual",
+    "state": "catalogue-listed",
+    "title": "Ofqual",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/ordnance-survey.md",
+    "dataset_count": 8,
+    "description": "Provider in the GOV.UK API Catalogue with 8 listed API products.",
+    "id": "ordnance-survey",
+    "name": "ordnance-survey",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 24,
+    "route": "publisher/ordnance-survey",
+    "state": "catalogue-listed",
+    "title": "Ordnance Survey",
+    "type": "environment and science"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/scc.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "scc",
+    "name": "scc",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 1,
+    "route": "publisher/scc",
+    "state": "catalogue-listed",
+    "title": "Scc",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/scottish-government.md",
+    "dataset_count": 2,
+    "description": "Provider in the GOV.UK API Catalogue with 2 listed API products.",
+    "id": "scottish-government",
+    "name": "scottish-government",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 4,
+    "route": "publisher/scottish-government",
+    "state": "catalogue-listed",
+    "title": "Scottish Government",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/the-apprenticeship-service.md",
+    "dataset_count": 2,
+    "description": "Provider in the GOV.UK API Catalogue with 2 listed API products.",
+    "id": "the-apprenticeship-service",
+    "name": "the-apprenticeship-service",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 4,
+    "route": "publisher/the-apprenticeship-service",
+    "state": "catalogue-listed",
+    "title": "The Apprenticeship Service",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/the-national-archives.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "the-national-archives",
+    "name": "the-national-archives",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/the-national-archives",
+    "state": "catalogue-listed",
+    "title": "The National Archives",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/transport-for-london.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "transport-for-london",
+    "name": "transport-for-london",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/transport-for-london",
+    "state": "catalogue-listed",
+    "title": "Transport For London",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/uk-hydrographic-office.md",
+    "dataset_count": 4,
+    "description": "Provider in the GOV.UK API Catalogue with 4 listed API products.",
+    "id": "uk-hydrographic-office",
+    "name": "uk-hydrographic-office",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 10,
+    "route": "publisher/uk-hydrographic-office",
+    "state": "catalogue-listed",
+    "title": "UK Hydrographic Office",
+    "type": "central government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/uk-police.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "uk-police",
+    "name": "uk-police",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/uk-police",
+    "state": "catalogue-listed",
+    "title": "UK Police",
+    "type": "other public body"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/west-berkshire-council.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "west-berkshire-council",
+    "name": "west-berkshire-council",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/west-berkshire-council",
+    "state": "catalogue-listed",
+    "title": "West Berkshire Council",
+    "type": "local government"
+  },
+  {
+    "approval_status": "not-assessed",
+    "concept_id": "organisations/west-midlands-combined-authority.md",
+    "dataset_count": 1,
+    "description": "Provider in the GOV.UK API Catalogue with 1 listed API products.",
+    "id": "west-midlands-combined-authority",
+    "name": "west-midlands-combined-authority",
+    "provenance": {
+      "source": "GOV.UK API Catalogue CSV",
+      "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+      "source_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv"
+    },
+    "resource_count": 2,
+    "route": "publisher/west-midlands-combined-authority",
+    "state": "catalogue-listed",
+    "title": "West Midlands Combined Authority",
+    "type": "local government"
+  }
+]

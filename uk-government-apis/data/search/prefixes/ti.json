@@ -1,0 +1,354 @@
+{
+  "tid": [
+    {
+      "df": 4,
+      "token": "tidal"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "tide"
+    },
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tida": [
+    {
+      "df": 4,
+      "token": "tidal"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    }
+  ],
+  "tidal": [
+    {
+      "df": 4,
+      "token": "tidal"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    }
+  ],
+  "tidal-": [
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    }
+  ],
+  "tidal-a": [
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    }
+  ],
+  "tidal-ap": [
+    {
+      "df": 1,
+      "token": "tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "tidal-api-premium"
+    }
+  ],
+  "tide": [
+    {
+      "df": 1,
+      "token": "tide"
+    },
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tideg": [
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tidega": [
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tidegau": [
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tidegaug": [
+    {
+      "df": 1,
+      "token": "tidegauge"
+    }
+  ],
+  "tie": [
+    {
+      "df": 1,
+      "token": "tiers"
+    }
+  ],
+  "tier": [
+    {
+      "df": 1,
+      "token": "tiers"
+    }
+  ],
+  "tiers": [
+    {
+      "df": 1,
+      "token": "tiers"
+    }
+  ],
+  "til": [
+    {
+      "df": 1,
+      "token": "tile"
+    }
+  ],
+  "tile": [
+    {
+      "df": 1,
+      "token": "tile"
+    }
+  ],
+  "tim": [
+    {
+      "df": 12,
+      "token": "time"
+    },
+    {
+      "df": 5,
+      "token": "times"
+    },
+    {
+      "df": 2,
+      "token": "timing"
+    },
+    {
+      "df": 1,
+      "token": "timeframes"
+    },
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "time": [
+    {
+      "df": 12,
+      "token": "time"
+    },
+    {
+      "df": 5,
+      "token": "times"
+    },
+    {
+      "df": 1,
+      "token": "timeframes"
+    },
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "timef": [
+    {
+      "df": 1,
+      "token": "timeframes"
+    }
+  ],
+  "timefr": [
+    {
+      "df": 1,
+      "token": "timeframes"
+    }
+  ],
+  "timefra": [
+    {
+      "df": 1,
+      "token": "timeframes"
+    }
+  ],
+  "timefram": [
+    {
+      "df": 1,
+      "token": "timeframes"
+    }
+  ],
+  "times": [
+    {
+      "df": 5,
+      "token": "times"
+    }
+  ],
+  "timet": [
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "timeta": [
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "timetab": [
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "timetabl": [
+    {
+      "df": 1,
+      "token": "timetables"
+    }
+  ],
+  "timi": [
+    {
+      "df": 2,
+      "token": "timing"
+    }
+  ],
+  "timin": [
+    {
+      "df": 2,
+      "token": "timing"
+    }
+  ],
+  "timing": [
+    {
+      "df": 2,
+      "token": "timing"
+    }
+  ],
+  "tip": [
+    {
+      "df": 1,
+      "token": "tipping"
+    }
+  ],
+  "tipp": [
+    {
+      "df": 1,
+      "token": "tipping"
+    }
+  ],
+  "tippi": [
+    {
+      "df": 1,
+      "token": "tipping"
+    }
+  ],
+  "tippin": [
+    {
+      "df": 1,
+      "token": "tipping"
+    }
+  ],
+  "tipping": [
+    {
+      "df": 1,
+      "token": "tipping"
+    }
+  ],
+  "tit": [
+    {
+      "df": 9,
+      "token": "title"
+    },
+    {
+      "df": 3,
+      "token": "titles"
+    },
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "titl": [
+    {
+      "df": 9,
+      "token": "title"
+    },
+    {
+      "df": 3,
+      "token": "titles"
+    },
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "title": [
+    {
+      "df": 9,
+      "token": "title"
+    },
+    {
+      "df": 3,
+      "token": "titles"
+    },
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "title_": [
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "title_n": [
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "title_nu": [
+    {
+      "df": 2,
+      "token": "title_number"
+    }
+  ],
+  "titles": [
+    {
+      "df": 3,
+      "token": "titles"
+    }
+  ]
+}

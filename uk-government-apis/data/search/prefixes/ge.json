@@ -1,0 +1,724 @@
+{
+  "gem": [
+    {
+      "df": 1,
+      "token": "gemini"
+    }
+  ],
+  "gemi": [
+    {
+      "df": 1,
+      "token": "gemini"
+    }
+  ],
+  "gemin": [
+    {
+      "df": 1,
+      "token": "gemini"
+    }
+  ],
+  "gemini": [
+    {
+      "df": 1,
+      "token": "gemini"
+    }
+  ],
+  "gen": [
+    {
+      "df": 5,
+      "token": "general"
+    },
+    {
+      "df": 3,
+      "token": "gender"
+    },
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    },
+    {
+      "df": 1,
+      "token": "generations"
+    },
+    {
+      "df": 1,
+      "token": "genital"
+    }
+  ],
+  "gend": [
+    {
+      "df": 3,
+      "token": "gender"
+    }
+  ],
+  "gende": [
+    {
+      "df": 3,
+      "token": "gender"
+    }
+  ],
+  "gender": [
+    {
+      "df": 3,
+      "token": "gender"
+    }
+  ],
+  "gene": [
+    {
+      "df": 5,
+      "token": "general"
+    },
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    },
+    {
+      "df": 1,
+      "token": "generations"
+    }
+  ],
+  "gener": [
+    {
+      "df": 5,
+      "token": "general"
+    },
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    },
+    {
+      "df": 1,
+      "token": "generations"
+    }
+  ],
+  "genera": [
+    {
+      "df": 5,
+      "token": "general"
+    },
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    },
+    {
+      "df": 1,
+      "token": "generations"
+    }
+  ],
+  "general": [
+    {
+      "df": 5,
+      "token": "general"
+    },
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    }
+  ],
+  "general-": [
+    {
+      "df": 1,
+      "token": "general-practice-extraction-service-mesh"
+    }
+  ],
+  "generat": [
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    },
+    {
+      "df": 1,
+      "token": "generations"
+    }
+  ],
+  "generate": [
+    {
+      "df": 2,
+      "token": "generated"
+    },
+    {
+      "df": 1,
+      "token": "generate"
+    }
+  ],
+  "generati": [
+    {
+      "df": 1,
+      "token": "generations"
+    }
+  ],
+  "geni": [
+    {
+      "df": 1,
+      "token": "genital"
+    }
+  ],
+  "genit": [
+    {
+      "df": 1,
+      "token": "genital"
+    }
+  ],
+  "genita": [
+    {
+      "df": 1,
+      "token": "genital"
+    }
+  ],
+  "genital": [
+    {
+      "df": 1,
+      "token": "genital"
+    }
+  ],
+  "geo": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    },
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geocoding"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    },
+    {
+      "df": 1,
+      "token": "geology"
+    },
+    {
+      "df": 1,
+      "token": "geometries"
+    },
+    {
+      "df": 1,
+      "token": "geometry"
+    },
+    {
+      "df": 1,
+      "token": "geonetwork"
+    },
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    },
+    {
+      "df": 1,
+      "token": "geosearch"
+    },
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "geoc": [
+    {
+      "df": 1,
+      "token": "geocoding"
+    }
+  ],
+  "geoco": [
+    {
+      "df": 1,
+      "token": "geocoding"
+    }
+  ],
+  "geocod": [
+    {
+      "df": 1,
+      "token": "geocoding"
+    }
+  ],
+  "geocodi": [
+    {
+      "df": 1,
+      "token": "geocoding"
+    }
+  ],
+  "geocodin": [
+    {
+      "df": 1,
+      "token": "geocoding"
+    }
+  ],
+  "geog": [
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    }
+  ],
+  "geogr": [
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    }
+  ],
+  "geogra": [
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    }
+  ],
+  "geograp": [
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    }
+  ],
+  "geograph": [
+    {
+      "df": 6,
+      "token": "geographic"
+    },
+    {
+      "df": 1,
+      "token": "geography"
+    }
+  ],
+  "geol": [
+    {
+      "df": 1,
+      "token": "geology"
+    }
+  ],
+  "geolo": [
+    {
+      "df": 1,
+      "token": "geology"
+    }
+  ],
+  "geolog": [
+    {
+      "df": 1,
+      "token": "geology"
+    }
+  ],
+  "geology": [
+    {
+      "df": 1,
+      "token": "geology"
+    }
+  ],
+  "geom": [
+    {
+      "df": 1,
+      "token": "geometries"
+    },
+    {
+      "df": 1,
+      "token": "geometry"
+    }
+  ],
+  "geome": [
+    {
+      "df": 1,
+      "token": "geometries"
+    },
+    {
+      "df": 1,
+      "token": "geometry"
+    }
+  ],
+  "geomet": [
+    {
+      "df": 1,
+      "token": "geometries"
+    },
+    {
+      "df": 1,
+      "token": "geometry"
+    }
+  ],
+  "geometr": [
+    {
+      "df": 1,
+      "token": "geometries"
+    },
+    {
+      "df": 1,
+      "token": "geometry"
+    }
+  ],
+  "geometri": [
+    {
+      "df": 1,
+      "token": "geometries"
+    }
+  ],
+  "geometry": [
+    {
+      "df": 1,
+      "token": "geometry"
+    }
+  ],
+  "geon": [
+    {
+      "df": 1,
+      "token": "geonetwork"
+    }
+  ],
+  "geone": [
+    {
+      "df": 1,
+      "token": "geonetwork"
+    }
+  ],
+  "geonet": [
+    {
+      "df": 1,
+      "token": "geonetwork"
+    }
+  ],
+  "geonetw": [
+    {
+      "df": 1,
+      "token": "geonetwork"
+    }
+  ],
+  "geonetwo": [
+    {
+      "df": 1,
+      "token": "geonetwork"
+    }
+  ],
+  "geor": [
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    }
+  ],
+  "geore": [
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    }
+  ],
+  "georep": [
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    }
+  ],
+  "georepo": [
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    }
+  ],
+  "georepor": [
+    {
+      "df": 1,
+      "token": "georeport"
+    },
+    {
+      "df": 1,
+      "token": "georeport_v2"
+    }
+  ],
+  "geos": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    },
+    {
+      "df": 1,
+      "token": "geosearch"
+    }
+  ],
+  "geose": [
+    {
+      "df": 1,
+      "token": "geosearch"
+    }
+  ],
+  "geosea": [
+    {
+      "df": 1,
+      "token": "geosearch"
+    }
+  ],
+  "geosear": [
+    {
+      "df": 1,
+      "token": "geosearch"
+    }
+  ],
+  "geosearc": [
+    {
+      "df": 1,
+      "token": "geosearch"
+    }
+  ],
+  "geosp": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    }
+  ],
+  "geospa": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    }
+  ],
+  "geospat": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    }
+  ],
+  "geospati": [
+    {
+      "df": 31,
+      "token": "geospatial"
+    }
+  ],
+  "geot": [
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "geote": [
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "geotec": [
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "geotech": [
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "geotechn": [
+    {
+      "df": 1,
+      "token": "geotechnical"
+    }
+  ],
+  "get": [
+    {
+      "df": 44,
+      "token": "get"
+    },
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    },
+    {
+      "df": 1,
+      "token": "get_data"
+    },
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ],
+  "get-": [
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    },
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    }
+  ],
+  "get-i": [
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    }
+  ],
+  "get-in": [
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    }
+  ],
+  "get-int": [
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    }
+  ],
+  "get-into": [
+    {
+      "df": 1,
+      "token": "get-into-teaching-api"
+    }
+  ],
+  "get-s": [
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    }
+  ],
+  "get-st": [
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    }
+  ],
+  "get-sta": [
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    }
+  ],
+  "get-star": [
+    {
+      "df": 1,
+      "token": "get-started-with-the-services-directory.htm"
+    }
+  ],
+  "get_": [
+    {
+      "df": 1,
+      "token": "get_data"
+    }
+  ],
+  "get_d": [
+    {
+      "df": 1,
+      "token": "get_data"
+    }
+  ],
+  "get_da": [
+    {
+      "df": 1,
+      "token": "get_data"
+    }
+  ],
+  "get_dat": [
+    {
+      "df": 1,
+      "token": "get_data"
+    }
+  ],
+  "get_data": [
+    {
+      "df": 1,
+      "token": "get_data"
+    }
+  ],
+  "getc": [
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ],
+  "getca": [
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ],
+  "getcap": [
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ],
+  "getcapa": [
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ],
+  "getcapab": [
+    {
+      "df": 1,
+      "token": "getcapabilities"
+    }
+  ]
+}

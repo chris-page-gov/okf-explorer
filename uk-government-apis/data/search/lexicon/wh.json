@@ -1,0 +1,42 @@
+[
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "what"
+  },
+  {
+    "df": 34,
+    "postings": "data/search/postings-0.json",
+    "token": "when"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "where"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "whether"
+  },
+  {
+    "df": 49,
+    "postings": "data/search/postings-0.json",
+    "token": "which"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "whilst"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "who"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "whole"
+  }
+]

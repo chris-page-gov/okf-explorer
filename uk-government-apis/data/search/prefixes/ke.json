@@ -1,0 +1,134 @@
+{
+  "kee": [
+    {
+      "df": 1,
+      "token": "keeper"
+    }
+  ],
+  "keep": [
+    {
+      "df": 1,
+      "token": "keeper"
+    }
+  ],
+  "keepe": [
+    {
+      "df": 1,
+      "token": "keeper"
+    }
+  ],
+  "keeper": [
+    {
+      "df": 1,
+      "token": "keeper"
+    }
+  ],
+  "key": [
+    {
+      "df": 8,
+      "token": "key"
+    },
+    {
+      "df": 3,
+      "token": "keyed"
+    },
+    {
+      "df": 3,
+      "token": "keys"
+    },
+    {
+      "df": 1,
+      "token": "keyfor"
+    },
+    {
+      "df": 1,
+      "token": "keyword"
+    },
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ],
+  "keye": [
+    {
+      "df": 3,
+      "token": "keyed"
+    }
+  ],
+  "keyed": [
+    {
+      "df": 3,
+      "token": "keyed"
+    }
+  ],
+  "keyf": [
+    {
+      "df": 1,
+      "token": "keyfor"
+    }
+  ],
+  "keyfo": [
+    {
+      "df": 1,
+      "token": "keyfor"
+    }
+  ],
+  "keyfor": [
+    {
+      "df": 1,
+      "token": "keyfor"
+    }
+  ],
+  "keys": [
+    {
+      "df": 3,
+      "token": "keys"
+    }
+  ],
+  "keyw": [
+    {
+      "df": 1,
+      "token": "keyword"
+    },
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ],
+  "keywo": [
+    {
+      "df": 1,
+      "token": "keyword"
+    },
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ],
+  "keywor": [
+    {
+      "df": 1,
+      "token": "keyword"
+    },
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ],
+  "keyword": [
+    {
+      "df": 1,
+      "token": "keyword"
+    },
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ],
+  "keywords": [
+    {
+      "df": 1,
+      "token": "keywords"
+    }
+  ]
+}

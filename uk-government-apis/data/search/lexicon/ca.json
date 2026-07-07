@@ -1,0 +1,282 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cad"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "calculate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "calculated"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "calculation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "calculations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "calculator"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "calendar"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "calendars"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "calendars.md"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "call"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "calling"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "calls"
+  },
+  {
+    "df": 117,
+    "postings": "data/search/postings-0.json",
+    "token": "can"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "cancel"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "cancelled"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "cancelling"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cancer"
+  },
+  {
+    "df": 28,
+    "postings": "data/search/postings-0.json",
+    "token": "cannot"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "capability"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "capable"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "capacity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "capita"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "capture"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "captured"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "captures"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "capturing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "card"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "card.users"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cardiac"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cards"
+  },
+  {
+    "df": 97,
+    "postings": "data/search/postings-0.json",
+    "token": "care"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "care.as"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "care.initially"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "care.summary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "care.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "carefully"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "carers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cargo"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "carried"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "carriers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "carries"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "carry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cars"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "case"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "case.use"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "cases"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cash"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "catalog"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "catalogue"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "catalogue.if"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "catalogues"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "catchment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "catchment-planning"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "categories"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "categories.capture"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "category"
+  }
+]

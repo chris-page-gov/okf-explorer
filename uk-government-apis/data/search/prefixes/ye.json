@@ -1,0 +1,58 @@
+{
+  "yea": [
+    {
+      "df": 12,
+      "token": "year"
+    },
+    {
+      "df": 4,
+      "token": "years"
+    }
+  ],
+  "year": [
+    {
+      "df": 12,
+      "token": "year"
+    },
+    {
+      "df": 4,
+      "token": "years"
+    }
+  ],
+  "years": [
+    {
+      "df": 4,
+      "token": "years"
+    }
+  ],
+  "yel": [
+    {
+      "df": 1,
+      "token": "yellow"
+    }
+  ],
+  "yell": [
+    {
+      "df": 1,
+      "token": "yellow"
+    }
+  ],
+  "yello": [
+    {
+      "df": 1,
+      "token": "yellow"
+    }
+  ],
+  "yellow": [
+    {
+      "df": 1,
+      "token": "yellow"
+    }
+  ],
+  "yet": [
+    {
+      "df": 4,
+      "token": "yet"
+    }
+  ]
+}

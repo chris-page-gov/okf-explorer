@@ -1,0 +1,57 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "bg2"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "bg2test"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "bgs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bgs-ags-file-utilities-tool-and-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bgs-bgs-opengeoscience-ogcapi-server"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bgs-bgs-sensor-data-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bgs-hosted"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "bgsoapengine"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "bgstubservice"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "bgtechdoc"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "bgtest.landregistry.gov.uk"
+  }
+]

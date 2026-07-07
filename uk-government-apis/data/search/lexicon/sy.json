@@ -1,0 +1,52 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "symptoms"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "synchronise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "syndicate"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "syndicated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "syndication"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "syntax"
+  },
+  {
+    "df": 35,
+    "postings": "data/search/postings-0.json",
+    "token": "system"
+  },
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "systems"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "systems.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "systemsfor"
+  }
+]

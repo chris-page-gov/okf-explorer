@@ -1,0 +1,162 @@
+[
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "than"
+  },
+  {
+    "df": 73,
+    "postings": "data/search/postings-0.json",
+    "token": "that"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "the-apprenticeship-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "the-apprenticeship-service-display-vacancy-advert-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "the-apprenticeship-service-recruitment-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "the-list"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "the-national-archives"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "the-national-archives-discovery"
+  },
+  {
+    "df": 48,
+    "postings": "data/search/postings-0.json",
+    "token": "their"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "them"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "themdbs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "themes"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "then"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "there"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "therefore"
+  },
+  {
+    "df": 32,
+    "postings": "data/search/postings-0.json",
+    "token": "these"
+  },
+  {
+    "df": 21,
+    "postings": "data/search/postings-0.json",
+    "token": "they"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "theyre"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thing"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "things"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "third"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thirdparty-access"
+  },
+  {
+    "df": 161,
+    "postings": "data/search/postings-0.json",
+    "token": "this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thorough"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "those"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thousand"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thousands"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "three"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "threshold"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "through"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "throughout"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "thumbnail"
+  }
+]

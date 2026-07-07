@@ -1,0 +1,116 @@
+{
+  "swa": [
+    {
+      "df": 2,
+      "token": "swagger"
+    },
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swag": [
+    {
+      "df": 2,
+      "token": "swagger"
+    },
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swagg": [
+    {
+      "df": 2,
+      "token": "swagger"
+    },
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swagge": [
+    {
+      "df": 2,
+      "token": "swagger"
+    },
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swagger": [
+    {
+      "df": 2,
+      "token": "swagger"
+    },
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swagger-": [
+    {
+      "df": 1,
+      "token": "swagger-ui.html"
+    }
+  ],
+  "swi": [
+    {
+      "df": 1,
+      "token": "swimming"
+    },
+    {
+      "df": 1,
+      "token": "switch"
+    }
+  ],
+  "swim": [
+    {
+      "df": 1,
+      "token": "swimming"
+    }
+  ],
+  "swimm": [
+    {
+      "df": 1,
+      "token": "swimming"
+    }
+  ],
+  "swimmi": [
+    {
+      "df": 1,
+      "token": "swimming"
+    }
+  ],
+  "swimmin": [
+    {
+      "df": 1,
+      "token": "swimming"
+    }
+  ],
+  "swimming": [
+    {
+      "df": 1,
+      "token": "swimming"
+    }
+  ],
+  "swit": [
+    {
+      "df": 1,
+      "token": "switch"
+    }
+  ],
+  "switc": [
+    {
+      "df": 1,
+      "token": "switch"
+    }
+  ],
+  "switch": [
+    {
+      "df": 1,
+      "token": "switch"
+    }
+  ]
+}

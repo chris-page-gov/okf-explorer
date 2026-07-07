@@ -1,0 +1,1004 @@
+{
+  "mac": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    },
+    {
+      "df": 1,
+      "token": "machine"
+    }
+  ],
+  "mach": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    },
+    {
+      "df": 1,
+      "token": "machine"
+    }
+  ],
+  "machi": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    },
+    {
+      "df": 1,
+      "token": "machine"
+    }
+  ],
+  "machin": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    },
+    {
+      "df": 1,
+      "token": "machine"
+    }
+  ],
+  "machine": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    },
+    {
+      "df": 1,
+      "token": "machine"
+    }
+  ],
+  "machine-": [
+    {
+      "df": 3,
+      "token": "machine-readable"
+    }
+  ],
+  "mad": [
+    {
+      "df": 17,
+      "token": "made"
+    }
+  ],
+  "made": [
+    {
+      "df": 17,
+      "token": "made"
+    }
+  ],
+  "mai": [
+    {
+      "df": 3,
+      "token": "mailbox"
+    },
+    {
+      "df": 3,
+      "token": "main"
+    },
+    {
+      "df": 1,
+      "token": "mail"
+    },
+    {
+      "df": 1,
+      "token": "mailboxes"
+    },
+    {
+      "df": 1,
+      "token": "mailto"
+    },
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    },
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "mail": [
+    {
+      "df": 3,
+      "token": "mailbox"
+    },
+    {
+      "df": 1,
+      "token": "mail"
+    },
+    {
+      "df": 1,
+      "token": "mailboxes"
+    },
+    {
+      "df": 1,
+      "token": "mailto"
+    }
+  ],
+  "mailb": [
+    {
+      "df": 3,
+      "token": "mailbox"
+    },
+    {
+      "df": 1,
+      "token": "mailboxes"
+    }
+  ],
+  "mailbo": [
+    {
+      "df": 3,
+      "token": "mailbox"
+    },
+    {
+      "df": 1,
+      "token": "mailboxes"
+    }
+  ],
+  "mailbox": [
+    {
+      "df": 3,
+      "token": "mailbox"
+    },
+    {
+      "df": 1,
+      "token": "mailboxes"
+    }
+  ],
+  "mailboxe": [
+    {
+      "df": 1,
+      "token": "mailboxes"
+    }
+  ],
+  "mailt": [
+    {
+      "df": 1,
+      "token": "mailto"
+    }
+  ],
+  "mailto": [
+    {
+      "df": 1,
+      "token": "mailto"
+    }
+  ],
+  "main": [
+    {
+      "df": 3,
+      "token": "main"
+    },
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    },
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "maint": [
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    },
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "mainta": [
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    }
+  ],
+  "maintai": [
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    }
+  ],
+  "maintain": [
+    {
+      "df": 1,
+      "token": "maintain"
+    },
+    {
+      "df": 1,
+      "token": "maintains"
+    }
+  ],
+  "mainte": [
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "mainten": [
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "maintena": [
+    {
+      "df": 1,
+      "token": "maintenance"
+    }
+  ],
+  "maj": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "majo": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "major": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "majori": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "majorit": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "majority": [
+    {
+      "df": 2,
+      "token": "majority"
+    }
+  ],
+  "mak": [
+    {
+      "df": 23,
+      "token": "make"
+    },
+    {
+      "df": 9,
+      "token": "making"
+    },
+    {
+      "df": 6,
+      "token": "makes"
+    }
+  ],
+  "make": [
+    {
+      "df": 23,
+      "token": "make"
+    },
+    {
+      "df": 6,
+      "token": "makes"
+    }
+  ],
+  "makes": [
+    {
+      "df": 6,
+      "token": "makes"
+    }
+  ],
+  "maki": [
+    {
+      "df": 9,
+      "token": "making"
+    }
+  ],
+  "makin": [
+    {
+      "df": 9,
+      "token": "making"
+    }
+  ],
+  "making": [
+    {
+      "df": 9,
+      "token": "making"
+    }
+  ],
+  "man": [
+    {
+      "df": 14,
+      "token": "management"
+    },
+    {
+      "df": 12,
+      "token": "manage"
+    },
+    {
+      "df": 4,
+      "token": "man"
+    },
+    {
+      "df": 4,
+      "token": "managed"
+    },
+    {
+      "df": 4,
+      "token": "many"
+    },
+    {
+      "df": 3,
+      "token": "manages"
+    },
+    {
+      "df": 2,
+      "token": "managing"
+    },
+    {
+      "df": 2,
+      "token": "mandatory"
+    },
+    {
+      "df": 1,
+      "token": "managevacancies"
+    },
+    {
+      "df": 1,
+      "token": "manual"
+    },
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "mana": [
+    {
+      "df": 14,
+      "token": "management"
+    },
+    {
+      "df": 12,
+      "token": "manage"
+    },
+    {
+      "df": 4,
+      "token": "managed"
+    },
+    {
+      "df": 3,
+      "token": "manages"
+    },
+    {
+      "df": 2,
+      "token": "managing"
+    },
+    {
+      "df": 1,
+      "token": "managevacancies"
+    }
+  ],
+  "manag": [
+    {
+      "df": 14,
+      "token": "management"
+    },
+    {
+      "df": 12,
+      "token": "manage"
+    },
+    {
+      "df": 4,
+      "token": "managed"
+    },
+    {
+      "df": 3,
+      "token": "manages"
+    },
+    {
+      "df": 2,
+      "token": "managing"
+    },
+    {
+      "df": 1,
+      "token": "managevacancies"
+    }
+  ],
+  "manage": [
+    {
+      "df": 14,
+      "token": "management"
+    },
+    {
+      "df": 12,
+      "token": "manage"
+    },
+    {
+      "df": 4,
+      "token": "managed"
+    },
+    {
+      "df": 3,
+      "token": "manages"
+    },
+    {
+      "df": 1,
+      "token": "managevacancies"
+    }
+  ],
+  "managed": [
+    {
+      "df": 4,
+      "token": "managed"
+    }
+  ],
+  "managem": [
+    {
+      "df": 14,
+      "token": "management"
+    }
+  ],
+  "manageme": [
+    {
+      "df": 14,
+      "token": "management"
+    }
+  ],
+  "manages": [
+    {
+      "df": 3,
+      "token": "manages"
+    }
+  ],
+  "managev": [
+    {
+      "df": 1,
+      "token": "managevacancies"
+    }
+  ],
+  "manageva": [
+    {
+      "df": 1,
+      "token": "managevacancies"
+    }
+  ],
+  "managi": [
+    {
+      "df": 2,
+      "token": "managing"
+    }
+  ],
+  "managin": [
+    {
+      "df": 2,
+      "token": "managing"
+    }
+  ],
+  "managing": [
+    {
+      "df": 2,
+      "token": "managing"
+    }
+  ],
+  "mand": [
+    {
+      "df": 2,
+      "token": "mandatory"
+    }
+  ],
+  "manda": [
+    {
+      "df": 2,
+      "token": "mandatory"
+    }
+  ],
+  "mandat": [
+    {
+      "df": 2,
+      "token": "mandatory"
+    }
+  ],
+  "mandato": [
+    {
+      "df": 2,
+      "token": "mandatory"
+    }
+  ],
+  "mandator": [
+    {
+      "df": 2,
+      "token": "mandatory"
+    }
+  ],
+  "manu": [
+    {
+      "df": 1,
+      "token": "manual"
+    },
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "manua": [
+    {
+      "df": 1,
+      "token": "manual"
+    },
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "manual": [
+    {
+      "df": 1,
+      "token": "manual"
+    },
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "manuall": [
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "manually": [
+    {
+      "df": 1,
+      "token": "manually"
+    }
+  ],
+  "many": [
+    {
+      "df": 4,
+      "token": "many"
+    }
+  ],
+  "mao": [
+    {
+      "df": 1,
+      "token": "maod"
+    }
+  ],
+  "maod": [
+    {
+      "df": 1,
+      "token": "maod"
+    }
+  ],
+  "map": [
+    {
+      "df": 4,
+      "token": "maps"
+    },
+    {
+      "df": 3,
+      "token": "map"
+    },
+    {
+      "df": 1,
+      "token": "mapped"
+    },
+    {
+      "df": 1,
+      "token": "mapping"
+    },
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "mapp": [
+    {
+      "df": 1,
+      "token": "mapped"
+    },
+    {
+      "df": 1,
+      "token": "mapping"
+    },
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "mappe": [
+    {
+      "df": 1,
+      "token": "mapped"
+    }
+  ],
+  "mapped": [
+    {
+      "df": 1,
+      "token": "mapped"
+    }
+  ],
+  "mappi": [
+    {
+      "df": 1,
+      "token": "mapping"
+    },
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "mappin": [
+    {
+      "df": 1,
+      "token": "mapping"
+    },
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "mapping": [
+    {
+      "df": 1,
+      "token": "mapping"
+    },
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "mappings": [
+    {
+      "df": 1,
+      "token": "mappings"
+    }
+  ],
+  "maps": [
+    {
+      "df": 4,
+      "token": "maps"
+    }
+  ],
+  "mar": [
+    {
+      "df": 2,
+      "token": "marine"
+    },
+    {
+      "df": 1,
+      "token": "market-barriers"
+    },
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "mari": [
+    {
+      "df": 2,
+      "token": "marine"
+    }
+  ],
+  "marin": [
+    {
+      "df": 2,
+      "token": "marine"
+    }
+  ],
+  "marine": [
+    {
+      "df": 2,
+      "token": "marine"
+    }
+  ],
+  "mark": [
+    {
+      "df": 1,
+      "token": "market-barriers"
+    }
+  ],
+  "marke": [
+    {
+      "df": 1,
+      "token": "market-barriers"
+    }
+  ],
+  "market": [
+    {
+      "df": 1,
+      "token": "market-barriers"
+    }
+  ],
+  "market-": [
+    {
+      "df": 1,
+      "token": "market-barriers"
+    }
+  ],
+  "market-b": [
+    {
+      "df": 1,
+      "token": "market-barriers"
+    }
+  ],
+  "marr": [
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "marri": [
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "marria": [
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "marriag": [
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "marriage": [
+    {
+      "df": 1,
+      "token": "marriage"
+    },
+    {
+      "df": 1,
+      "token": "marriage-allowance"
+    }
+  ],
+  "mas": [
+    {
+      "df": 3,
+      "token": "master"
+    },
+    {
+      "df": 1,
+      "token": "mass"
+    },
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "mass": [
+    {
+      "df": 1,
+      "token": "mass"
+    }
+  ],
+  "mast": [
+    {
+      "df": 3,
+      "token": "master"
+    },
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "maste": [
+    {
+      "df": 3,
+      "token": "master"
+    },
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "master": [
+    {
+      "df": 3,
+      "token": "master"
+    },
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "masterm": [
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "masterma": [
+    {
+      "df": 1,
+      "token": "mastermap"
+    }
+  ],
+  "mat": [
+    {
+      "df": 6,
+      "token": "matching"
+    },
+    {
+      "df": 3,
+      "token": "match"
+    },
+    {
+      "df": 1,
+      "token": "matches"
+    }
+  ],
+  "matc": [
+    {
+      "df": 6,
+      "token": "matching"
+    },
+    {
+      "df": 3,
+      "token": "match"
+    },
+    {
+      "df": 1,
+      "token": "matches"
+    }
+  ],
+  "match": [
+    {
+      "df": 6,
+      "token": "matching"
+    },
+    {
+      "df": 3,
+      "token": "match"
+    },
+    {
+      "df": 1,
+      "token": "matches"
+    }
+  ],
+  "matche": [
+    {
+      "df": 1,
+      "token": "matches"
+    }
+  ],
+  "matches": [
+    {
+      "df": 1,
+      "token": "matches"
+    }
+  ],
+  "matchi": [
+    {
+      "df": 6,
+      "token": "matching"
+    }
+  ],
+  "matchin": [
+    {
+      "df": 6,
+      "token": "matching"
+    }
+  ],
+  "matching": [
+    {
+      "df": 6,
+      "token": "matching"
+    }
+  ],
+  "max": [
+    {
+      "df": 1,
+      "token": "maximise"
+    },
+    {
+      "df": 1,
+      "token": "maximum"
+    }
+  ],
+  "maxi": [
+    {
+      "df": 1,
+      "token": "maximise"
+    },
+    {
+      "df": 1,
+      "token": "maximum"
+    }
+  ],
+  "maxim": [
+    {
+      "df": 1,
+      "token": "maximise"
+    },
+    {
+      "df": 1,
+      "token": "maximum"
+    }
+  ],
+  "maximi": [
+    {
+      "df": 1,
+      "token": "maximise"
+    }
+  ],
+  "maximis": [
+    {
+      "df": 1,
+      "token": "maximise"
+    }
+  ],
+  "maximise": [
+    {
+      "df": 1,
+      "token": "maximise"
+    }
+  ],
+  "maximu": [
+    {
+      "df": 1,
+      "token": "maximum"
+    }
+  ],
+  "maximum": [
+    {
+      "df": 1,
+      "token": "maximum"
+    }
+  ],
+  "may": [
+    {
+      "df": 9,
+      "token": "may"
+    }
+  ]
+}

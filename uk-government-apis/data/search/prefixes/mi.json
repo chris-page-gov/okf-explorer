@@ -1,0 +1,764 @@
+{
+  "mic": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "micr": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "micro": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "micros": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "microso": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "microsof": [
+    {
+      "df": 1,
+      "token": "microsoft"
+    }
+  ],
+  "mid": [
+    {
+      "df": 1,
+      "token": "midlands"
+    },
+    {
+      "df": 1,
+      "token": "midwife"
+    }
+  ],
+  "midl": [
+    {
+      "df": 1,
+      "token": "midlands"
+    }
+  ],
+  "midla": [
+    {
+      "df": 1,
+      "token": "midlands"
+    }
+  ],
+  "midlan": [
+    {
+      "df": 1,
+      "token": "midlands"
+    }
+  ],
+  "midland": [
+    {
+      "df": 1,
+      "token": "midlands"
+    }
+  ],
+  "midlands": [
+    {
+      "df": 1,
+      "token": "midlands"
+    }
+  ],
+  "midw": [
+    {
+      "df": 1,
+      "token": "midwife"
+    }
+  ],
+  "midwi": [
+    {
+      "df": 1,
+      "token": "midwife"
+    }
+  ],
+  "midwif": [
+    {
+      "df": 1,
+      "token": "midwife"
+    }
+  ],
+  "midwife": [
+    {
+      "df": 1,
+      "token": "midwife"
+    }
+  ],
+  "mig": [
+    {
+      "df": 6,
+      "token": "might"
+    },
+    {
+      "df": 2,
+      "token": "migrate"
+    },
+    {
+      "df": 1,
+      "token": "migrant"
+    },
+    {
+      "df": 1,
+      "token": "migrating"
+    },
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "migh": [
+    {
+      "df": 6,
+      "token": "might"
+    }
+  ],
+  "might": [
+    {
+      "df": 6,
+      "token": "might"
+    }
+  ],
+  "migr": [
+    {
+      "df": 2,
+      "token": "migrate"
+    },
+    {
+      "df": 1,
+      "token": "migrant"
+    },
+    {
+      "df": 1,
+      "token": "migrating"
+    },
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "migra": [
+    {
+      "df": 2,
+      "token": "migrate"
+    },
+    {
+      "df": 1,
+      "token": "migrant"
+    },
+    {
+      "df": 1,
+      "token": "migrating"
+    },
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "migran": [
+    {
+      "df": 1,
+      "token": "migrant"
+    }
+  ],
+  "migrant": [
+    {
+      "df": 1,
+      "token": "migrant"
+    }
+  ],
+  "migrat": [
+    {
+      "df": 2,
+      "token": "migrate"
+    },
+    {
+      "df": 1,
+      "token": "migrating"
+    },
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "migrate": [
+    {
+      "df": 2,
+      "token": "migrate"
+    }
+  ],
+  "migrati": [
+    {
+      "df": 1,
+      "token": "migrating"
+    },
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "migratin": [
+    {
+      "df": 1,
+      "token": "migrating"
+    }
+  ],
+  "migratio": [
+    {
+      "df": 1,
+      "token": "migration"
+    }
+  ],
+  "mil": [
+    {
+      "df": 2,
+      "token": "million"
+    },
+    {
+      "df": 1,
+      "token": "miles"
+    }
+  ],
+  "mile": [
+    {
+      "df": 1,
+      "token": "miles"
+    }
+  ],
+  "miles": [
+    {
+      "df": 1,
+      "token": "miles"
+    }
+  ],
+  "mill": [
+    {
+      "df": 2,
+      "token": "million"
+    }
+  ],
+  "milli": [
+    {
+      "df": 2,
+      "token": "million"
+    }
+  ],
+  "millio": [
+    {
+      "df": 2,
+      "token": "million"
+    }
+  ],
+  "million": [
+    {
+      "df": 2,
+      "token": "million"
+    }
+  ],
+  "mim": [
+    {
+      "df": 3,
+      "token": "mime"
+    }
+  ],
+  "mime": [
+    {
+      "df": 3,
+      "token": "mime"
+    }
+  ],
+  "min": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "mini"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 3,
+      "token": "minutes"
+    },
+    {
+      "df": 2,
+      "token": "min"
+    },
+    {
+      "df": 1,
+      "token": "mind"
+    },
+    {
+      "df": 1,
+      "token": "minimum"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    }
+  ],
+  "mind": [
+    {
+      "df": 1,
+      "token": "mind"
+    }
+  ],
+  "mini": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "mini"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 1,
+      "token": "minimum"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+    }
+  ],
+  "minim": [
+    {
+      "df": 1,
+      "token": "minimum"
+    }
+  ],
+  "minimu": [
+    {
+      "df": 1,
+      "token": "minimum"
+    }
+  ],
+  "minimum": [
+    {
+      "df": 1,
+      "token": "minimum"
+    }
+  ],
+  "minis": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-linkeddata-resource-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-sparql-endpoint"
+    }
+  ],
+  "minist": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-linkeddata-resource-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-sparql-endpoint"
+    }
+  ],
+  "ministr": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-linkeddata-resource-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-sparql-endpoint"
+    }
+  ],
+  "ministry": [
+    {
+      "df": 16,
+      "token": "ministry"
+    },
+    {
+      "df": 12,
+      "token": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "df": 4,
+      "token": "ministry-of-justice"
+    },
+    {
+      "df": 4,
+      "token": "ministryofjustice"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-linkeddata-resource-api"
+    },
+    {
+      "df": 1,
+      "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-sparql-endpoint"
+    }
+  ],
+  "mino": [
+    {
+      "df": 1,
+      "token": "minor"
+    }
+  ],
+  "minor": [
+    {
+      "df": 1,
+      "token": "minor"
+    }
+  ],
+  "mins": [
+    {
+      "df": 1,
+      "token": "mins"
+    }
+  ],
+  "minu": [
+    {
+      "df": 3,
+      "token": "minutes"
+    }
+  ],
+  "minut": [
+    {
+      "df": 3,
+      "token": "minutes"
+    }
+  ],
+  "minute": [
+    {
+      "df": 3,
+      "token": "minutes"
+    }
+  ],
+  "minutes": [
+    {
+      "df": 3,
+      "token": "minutes"
+    }
+  ],
+  "mis": [
+    {
+      "df": 3,
+      "token": "miss"
+    }
+  ],
+  "miss": [
+    {
+      "df": 3,
+      "token": "miss"
+    }
+  ],
+  "mix": [
+    {
+      "df": 1,
+      "token": "mix"
+    }
+  ]
+}

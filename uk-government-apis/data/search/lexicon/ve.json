@@ -1,0 +1,102 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ve"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "vector"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicle"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicle-enquiry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicle-enquiry-service"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicle-enquiry-service-description.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicle-keeper"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vehicles"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "venues"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "verification"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "verified"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "verify"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "verifying"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "versa"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "version"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "version.you"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "versions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "versions.before"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "very"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vessel"
+  }
+]

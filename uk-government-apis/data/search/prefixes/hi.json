@@ -1,0 +1,468 @@
+{
+  "hie": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hier": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hiera": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hierar": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hierarc": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hierarch": [
+    {
+      "df": 3,
+      "token": "hierarchy"
+    }
+  ],
+  "hig": [
+    {
+      "df": 3,
+      "token": "high"
+    },
+    {
+      "df": 2,
+      "token": "higher"
+    },
+    {
+      "df": 2,
+      "token": "highlight"
+    },
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "high": [
+    {
+      "df": 3,
+      "token": "high"
+    },
+    {
+      "df": 2,
+      "token": "higher"
+    },
+    {
+      "df": 2,
+      "token": "highlight"
+    },
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "highe": [
+    {
+      "df": 2,
+      "token": "higher"
+    }
+  ],
+  "higher": [
+    {
+      "df": 2,
+      "token": "higher"
+    }
+  ],
+  "highl": [
+    {
+      "df": 2,
+      "token": "highlight"
+    }
+  ],
+  "highli": [
+    {
+      "df": 2,
+      "token": "highlight"
+    }
+  ],
+  "highlig": [
+    {
+      "df": 2,
+      "token": "highlight"
+    }
+  ],
+  "highligh": [
+    {
+      "df": 2,
+      "token": "highlight"
+    }
+  ],
+  "highw": [
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "highwa": [
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "highway": [
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "highways": [
+    {
+      "df": 1,
+      "token": "highways"
+    }
+  ],
+  "hip": [
+    {
+      "df": 1,
+      "token": "hip"
+    }
+  ],
+  "his": [
+    {
+      "df": 10,
+      "token": "history"
+    },
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 2,
+      "token": "histories"
+    },
+    {
+      "df": 1,
+      "token": "his"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "hist": [
+    {
+      "df": 10,
+      "token": "history"
+    },
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 2,
+      "token": "histories"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "histo": [
+    {
+      "df": 10,
+      "token": "history"
+    },
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 2,
+      "token": "histories"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "histor": [
+    {
+      "df": 10,
+      "token": "history"
+    },
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 2,
+      "token": "histories"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "histori": [
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 2,
+      "token": "histories"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "historic": [
+    {
+      "df": 8,
+      "token": "historic"
+    },
+    {
+      "df": 6,
+      "token": "historic-england"
+    },
+    {
+      "df": 5,
+      "token": "historical"
+    },
+    {
+      "df": 3,
+      "token": "historicengland.org.uk"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-conservation-areas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-greater-london-archaeological-priority-areas-apas"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-aerial-investigation-mapping-data"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2021"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-historic-england-heritage-at-risk-register-2022"
+    },
+    {
+      "df": 1,
+      "token": "historic-england-national-heritage-list-for-england-nhle"
+    },
+    {
+      "df": 1,
+      "token": "historic_england_heritage_at_risk_register_2022"
+    }
+  ],
+  "historie": [
+    {
+      "df": 2,
+      "token": "histories"
+    }
+  ],
+  "history": [
+    {
+      "df": 10,
+      "token": "history"
+    }
+  ]
+}

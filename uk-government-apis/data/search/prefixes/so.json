@@ -1,0 +1,434 @@
+{
+  "soa": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    },
+    {
+      "df": 7,
+      "token": "soap"
+    }
+  ],
+  "soap": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    },
+    {
+      "df": 7,
+      "token": "soap"
+    }
+  ],
+  "soap-": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    }
+  ],
+  "soap-w": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    }
+  ],
+  "soap-ws": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    }
+  ],
+  "soap-wsd": [
+    {
+      "df": 18,
+      "token": "soap-wsdl"
+    }
+  ],
+  "soc": [
+    {
+      "df": 10,
+      "token": "social"
+    }
+  ],
+  "soci": [
+    {
+      "df": 10,
+      "token": "social"
+    }
+  ],
+  "socia": [
+    {
+      "df": 10,
+      "token": "social"
+    }
+  ],
+  "social": [
+    {
+      "df": 10,
+      "token": "social"
+    }
+  ],
+  "sof": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "soft": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "softw": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "softwa": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "softwar": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "software": [
+    {
+      "df": 25,
+      "token": "software"
+    },
+    {
+      "df": 1,
+      "token": "software.private"
+    }
+  ],
+  "sol": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "solu": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "solut": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "soluti": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "solutio": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "solution": [
+    {
+      "df": 2,
+      "token": "solution"
+    },
+    {
+      "df": 1,
+      "token": "solutions"
+    }
+  ],
+  "som": [
+    {
+      "df": 12,
+      "token": "some"
+    },
+    {
+      "df": 3,
+      "token": "sometimes"
+    },
+    {
+      "df": 2,
+      "token": "someone"
+    }
+  ],
+  "some": [
+    {
+      "df": 12,
+      "token": "some"
+    },
+    {
+      "df": 3,
+      "token": "sometimes"
+    },
+    {
+      "df": 2,
+      "token": "someone"
+    }
+  ],
+  "someo": [
+    {
+      "df": 2,
+      "token": "someone"
+    }
+  ],
+  "someon": [
+    {
+      "df": 2,
+      "token": "someone"
+    }
+  ],
+  "someone": [
+    {
+      "df": 2,
+      "token": "someone"
+    }
+  ],
+  "somet": [
+    {
+      "df": 3,
+      "token": "sometimes"
+    }
+  ],
+  "someti": [
+    {
+      "df": 3,
+      "token": "sometimes"
+    }
+  ],
+  "sometim": [
+    {
+      "df": 3,
+      "token": "sometimes"
+    }
+  ],
+  "sometime": [
+    {
+      "df": 3,
+      "token": "sometimes"
+    }
+  ],
+  "soo": [
+    {
+      "df": 2,
+      "token": "sooner"
+    },
+    {
+      "df": 1,
+      "token": "soon"
+    }
+  ],
+  "soon": [
+    {
+      "df": 2,
+      "token": "sooner"
+    },
+    {
+      "df": 1,
+      "token": "soon"
+    }
+  ],
+  "soone": [
+    {
+      "df": 2,
+      "token": "sooner"
+    }
+  ],
+  "sooner": [
+    {
+      "df": 2,
+      "token": "sooner"
+    }
+  ],
+  "sos": [
+    {
+      "df": 1,
+      "token": "sos"
+    },
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    },
+    {
+      "df": 1,
+      "token": "sosa"
+    }
+  ],
+  "sos-": [
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    }
+  ],
+  "sos-u": [
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    }
+  ],
+  "sos-uk": [
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    }
+  ],
+  "sos-uka": [
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    }
+  ],
+  "sos-ukai": [
+    {
+      "df": 1,
+      "token": "sos-ukair"
+    }
+  ],
+  "sosa": [
+    {
+      "df": 1,
+      "token": "sosa"
+    }
+  ],
+  "sou": [
+    {
+      "df": 10,
+      "token": "source"
+    },
+    {
+      "df": 4,
+      "token": "sources"
+    },
+    {
+      "df": 1,
+      "token": "south"
+    },
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ],
+  "sour": [
+    {
+      "df": 10,
+      "token": "source"
+    },
+    {
+      "df": 4,
+      "token": "sources"
+    }
+  ],
+  "sourc": [
+    {
+      "df": 10,
+      "token": "source"
+    },
+    {
+      "df": 4,
+      "token": "sources"
+    }
+  ],
+  "source": [
+    {
+      "df": 10,
+      "token": "source"
+    },
+    {
+      "df": 4,
+      "token": "sources"
+    }
+  ],
+  "sources": [
+    {
+      "df": 4,
+      "token": "sources"
+    }
+  ],
+  "sout": [
+    {
+      "df": 1,
+      "token": "south"
+    },
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ],
+  "south": [
+    {
+      "df": 1,
+      "token": "south"
+    },
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ],
+  "southa": [
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ],
+  "southam": [
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ],
+  "southamp": [
+    {
+      "df": 1,
+      "token": "southampton"
+    }
+  ]
+}

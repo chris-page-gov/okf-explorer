@@ -1,0 +1,134 @@
+{
+  "isa": [
+    {
+      "df": 1,
+      "token": "isa"
+    }
+  ],
+  "isc": [
+    {
+      "df": 1,
+      "token": "isces"
+    }
+  ],
+  "isce": [
+    {
+      "df": 1,
+      "token": "isces"
+    }
+  ],
+  "isces": [
+    {
+      "df": 1,
+      "token": "isces"
+    }
+  ],
+  "isl": [
+    {
+      "df": 4,
+      "token": "islands"
+    },
+    {
+      "df": 4,
+      "token": "isle"
+    },
+    {
+      "df": 2,
+      "token": "isles"
+    }
+  ],
+  "isla": [
+    {
+      "df": 4,
+      "token": "islands"
+    }
+  ],
+  "islan": [
+    {
+      "df": 4,
+      "token": "islands"
+    }
+  ],
+  "island": [
+    {
+      "df": 4,
+      "token": "islands"
+    }
+  ],
+  "islands": [
+    {
+      "df": 4,
+      "token": "islands"
+    }
+  ],
+  "isle": [
+    {
+      "df": 4,
+      "token": "isle"
+    },
+    {
+      "df": 2,
+      "token": "isles"
+    }
+  ],
+  "isles": [
+    {
+      "df": 2,
+      "token": "isles"
+    }
+  ],
+  "iss": [
+    {
+      "df": 12,
+      "token": "issues"
+    },
+    {
+      "df": 5,
+      "token": "issued"
+    },
+    {
+      "df": 3,
+      "token": "issue"
+    }
+  ],
+  "issu": [
+    {
+      "df": 12,
+      "token": "issues"
+    },
+    {
+      "df": 5,
+      "token": "issued"
+    },
+    {
+      "df": 3,
+      "token": "issue"
+    }
+  ],
+  "issue": [
+    {
+      "df": 12,
+      "token": "issues"
+    },
+    {
+      "df": 5,
+      "token": "issued"
+    },
+    {
+      "df": 3,
+      "token": "issue"
+    }
+  ],
+  "issued": [
+    {
+      "df": 5,
+      "token": "issued"
+    }
+  ],
+  "issues": [
+    {
+      "df": 12,
+      "token": "issues"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "df": 26,
+    "postings": "data/search/postings-0.json",
+    "token": "public"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "public-administration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "public-facing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "public-register"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "publicapi.payments.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "publication"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "publications"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "publish"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "publish-subscribe"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "published"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "publisher"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "publishes"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "publishing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "pull"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "purely"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "purposes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "purposes.the"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "push"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "push-pull-notifications-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pushes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "put"
+  }
+]

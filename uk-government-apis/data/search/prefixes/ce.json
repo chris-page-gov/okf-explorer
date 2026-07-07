@@ -1,0 +1,380 @@
+{
+  "cef": [
+    {
+      "df": 1,
+      "token": "cefas"
+    },
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cefa": [
+    {
+      "df": 1,
+      "token": "cefas"
+    },
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cefas": [
+    {
+      "df": 1,
+      "token": "cefas"
+    },
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cefas-": [
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    },
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    }
+  ],
+  "cefas-c": [
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    }
+  ],
+  "cefas-ce": [
+    {
+      "df": 1,
+      "token": "cefas-cefas-data-portal-apis"
+    }
+  ],
+  "cefas-d": [
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    }
+  ],
+  "cefas-da": [
+    {
+      "df": 1,
+      "token": "cefas-data-hub-apis"
+    }
+  ],
+  "cefas.": [
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cefas.c": [
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cefas.co": [
+    {
+      "df": 1,
+      "token": "cefas.co.uk"
+    }
+  ],
+  "cel": [
+    {
+      "df": 1,
+      "token": "celery"
+    }
+  ],
+  "cele": [
+    {
+      "df": 1,
+      "token": "celery"
+    }
+  ],
+  "celer": [
+    {
+      "df": 1,
+      "token": "celery"
+    }
+  ],
+  "celery": [
+    {
+      "df": 1,
+      "token": "celery"
+    }
+  ],
+  "cen": [
+    {
+      "df": 3,
+      "token": "centre"
+    },
+    {
+      "df": 2,
+      "token": "centres"
+    },
+    {
+      "df": 1,
+      "token": "central"
+    },
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "cent": [
+    {
+      "df": 3,
+      "token": "centre"
+    },
+    {
+      "df": 2,
+      "token": "centres"
+    },
+    {
+      "df": 1,
+      "token": "central"
+    },
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "centr": [
+    {
+      "df": 3,
+      "token": "centre"
+    },
+    {
+      "df": 2,
+      "token": "centres"
+    },
+    {
+      "df": 1,
+      "token": "central"
+    },
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "centra": [
+    {
+      "df": 1,
+      "token": "central"
+    }
+  ],
+  "central": [
+    {
+      "df": 1,
+      "token": "central"
+    }
+  ],
+  "centre": [
+    {
+      "df": 3,
+      "token": "centre"
+    },
+    {
+      "df": 2,
+      "token": "centres"
+    },
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "centre.": [
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "centre.y": [
+    {
+      "df": 1,
+      "token": "centre.you"
+    }
+  ],
+  "centres": [
+    {
+      "df": 2,
+      "token": "centres"
+    }
+  ],
+  "cer": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    },
+    {
+      "df": 3,
+      "token": "certain"
+    },
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cert": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    },
+    {
+      "df": 3,
+      "token": "certain"
+    }
+  ],
+  "certa": [
+    {
+      "df": 3,
+      "token": "certain"
+    }
+  ],
+  "certai": [
+    {
+      "df": 3,
+      "token": "certain"
+    }
+  ],
+  "certain": [
+    {
+      "df": 3,
+      "token": "certain"
+    }
+  ],
+  "certi": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    }
+  ],
+  "certif": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    }
+  ],
+  "certifi": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    }
+  ],
+  "certific": [
+    {
+      "df": 11,
+      "token": "certificates"
+    },
+    {
+      "df": 6,
+      "token": "certificate"
+    }
+  ],
+  "cerv": [
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cervi": [
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cervic": [
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cervica": [
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cervical": [
+    {
+      "df": 1,
+      "token": "cervical"
+    },
+    {
+      "df": 1,
+      "token": "cervical-screening-edifact"
+    }
+  ],
+  "cet": [
+    {
+      "df": 4,
+      "token": "cet"
+    }
+  ]
+}

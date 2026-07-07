@@ -1,0 +1,38 @@
+{
+  "mhc": [
+    {
+      "df": 3,
+      "token": "mhclg"
+    }
+  ],
+  "mhcl": [
+    {
+      "df": 3,
+      "token": "mhclg"
+    }
+  ],
+  "mhclg": [
+    {
+      "df": 3,
+      "token": "mhclg"
+    }
+  ],
+  "mhr": [
+    {
+      "df": 1,
+      "token": "mhra"
+    }
+  ],
+  "mhra": [
+    {
+      "df": 1,
+      "token": "mhra"
+    }
+  ],
+  "mhs": [
+    {
+      "df": 1,
+      "token": "mhs"
+    }
+  ]
+}

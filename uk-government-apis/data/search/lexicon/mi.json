@@ -1,0 +1,202 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "microsoft"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "midlands"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "midwife"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "might"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "migrant"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "migrate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "migrating"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "migration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "miles"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "million"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "mime"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "min"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mind"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "mini"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "minimum"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-certificates-search-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-display-public-buildings-recommendations-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-buildings-search-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificate-recommendations-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-domestic-certificates-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-general-informational-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-buildings-search-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-certificates-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-energy-performance-certificates-non-domestic-recommendations-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-linkeddata-resource-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-housing-communities-local-government-opendatacommunities-official-statistics-from-mhclg-sparql-endpoint"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-justice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-justice-gov-uk-courts-and-tribunals-publishing-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-justice-hmpps-auth"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-justice-money-to-prisoners-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ministry-of-justice-prison-api"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "ministryofjustice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "minor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mins"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "minutes"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "miss"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mix"
+  }
+]

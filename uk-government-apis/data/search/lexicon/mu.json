@@ -1,0 +1,37 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "much"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "multi-polygon"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "multiple"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mumps"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "museums"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "must"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mutilation"
+  }
+]

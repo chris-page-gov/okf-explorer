@@ -1,0 +1,32 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "rich"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "richer"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "right"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "risk"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "river"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "rivers"
+  }
+]

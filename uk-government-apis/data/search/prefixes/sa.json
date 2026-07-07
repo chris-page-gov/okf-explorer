@@ -1,0 +1,258 @@
+{
+  "saf": [
+    {
+      "df": 6,
+      "token": "safety"
+    },
+    {
+      "df": 3,
+      "token": "safe"
+    },
+    {
+      "df": 3,
+      "token": "safeguarding"
+    },
+    {
+      "df": 1,
+      "token": "safely"
+    }
+  ],
+  "safe": [
+    {
+      "df": 6,
+      "token": "safety"
+    },
+    {
+      "df": 3,
+      "token": "safe"
+    },
+    {
+      "df": 3,
+      "token": "safeguarding"
+    },
+    {
+      "df": 1,
+      "token": "safely"
+    }
+  ],
+  "safeg": [
+    {
+      "df": 3,
+      "token": "safeguarding"
+    }
+  ],
+  "safegu": [
+    {
+      "df": 3,
+      "token": "safeguarding"
+    }
+  ],
+  "safegua": [
+    {
+      "df": 3,
+      "token": "safeguarding"
+    }
+  ],
+  "safeguar": [
+    {
+      "df": 3,
+      "token": "safeguarding"
+    }
+  ],
+  "safel": [
+    {
+      "df": 1,
+      "token": "safely"
+    }
+  ],
+  "safely": [
+    {
+      "df": 1,
+      "token": "safely"
+    }
+  ],
+  "safet": [
+    {
+      "df": 6,
+      "token": "safety"
+    }
+  ],
+  "safety": [
+    {
+      "df": 6,
+      "token": "safety"
+    }
+  ],
+  "sam": [
+    {
+      "df": 6,
+      "token": "same"
+    },
+    {
+      "df": 1,
+      "token": "sameas"
+    },
+    {
+      "df": 1,
+      "token": "samples"
+    },
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "same": [
+    {
+      "df": 6,
+      "token": "same"
+    },
+    {
+      "df": 1,
+      "token": "sameas"
+    }
+  ],
+  "samea": [
+    {
+      "df": 1,
+      "token": "sameas"
+    }
+  ],
+  "sameas": [
+    {
+      "df": 1,
+      "token": "sameas"
+    }
+  ],
+  "samp": [
+    {
+      "df": 1,
+      "token": "samples"
+    },
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "sampl": [
+    {
+      "df": 1,
+      "token": "samples"
+    },
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "sample": [
+    {
+      "df": 1,
+      "token": "samples"
+    }
+  ],
+  "samples": [
+    {
+      "df": 1,
+      "token": "samples"
+    }
+  ],
+  "sampli": [
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "samplin": [
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "sampling": [
+    {
+      "df": 1,
+      "token": "sampling"
+    }
+  ],
+  "san": [
+    {
+      "df": 32,
+      "token": "sandbox"
+    }
+  ],
+  "sand": [
+    {
+      "df": 32,
+      "token": "sandbox"
+    }
+  ],
+  "sandb": [
+    {
+      "df": 32,
+      "token": "sandbox"
+    }
+  ],
+  "sandbo": [
+    {
+      "df": 32,
+      "token": "sandbox"
+    }
+  ],
+  "sandbox": [
+    {
+      "df": 32,
+      "token": "sandbox"
+    }
+  ],
+  "sav": [
+    {
+      "df": 1,
+      "token": "saved"
+    },
+    {
+      "df": 1,
+      "token": "savings"
+    }
+  ],
+  "save": [
+    {
+      "df": 1,
+      "token": "saved"
+    }
+  ],
+  "saved": [
+    {
+      "df": 1,
+      "token": "saved"
+    }
+  ],
+  "savi": [
+    {
+      "df": 1,
+      "token": "savings"
+    }
+  ],
+  "savin": [
+    {
+      "df": 1,
+      "token": "savings"
+    }
+  ],
+  "saving": [
+    {
+      "df": 1,
+      "token": "savings"
+    }
+  ],
+  "savings": [
+    {
+      "df": 1,
+      "token": "savings"
+    }
+  ],
+  "say": [
+    {
+      "df": 1,
+      "token": "say"
+    }
+  ]
+}

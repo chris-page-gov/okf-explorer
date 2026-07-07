@@ -1,0 +1,227 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "machine"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "machine-readable"
+  },
+  {
+    "df": 17,
+    "postings": "data/search/postings-0.json",
+    "token": "made"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mail"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "mailbox"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mailboxes"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mailto"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "main"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maintain"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maintains"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maintenance"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "majority"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "make"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "makes"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "making"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "man"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "manage"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "managed"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "management"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "manages"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "managevacancies"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "managing"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "mandatory"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "manual"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "manually"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "many"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maod"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "map"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mapped"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mapping"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mappings"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "maps"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "marine"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "market-barriers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "marriage"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "marriage-allowance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mass"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "master"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "mastermap"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "match"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "matches"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "matching"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maximise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "maximum"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "may"
+  }
+]

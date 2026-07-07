@@ -1,0 +1,286 @@
+{
+  "fac": [
+    {
+      "df": 4,
+      "token": "facing"
+    },
+    {
+      "df": 3,
+      "token": "facilities"
+    },
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "faci": [
+    {
+      "df": 4,
+      "token": "facing"
+    },
+    {
+      "df": 3,
+      "token": "facilities"
+    },
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "facil": [
+    {
+      "df": 3,
+      "token": "facilities"
+    },
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "facili": [
+    {
+      "df": 3,
+      "token": "facilities"
+    },
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "facilit": [
+    {
+      "df": 3,
+      "token": "facilities"
+    },
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "faciliti": [
+    {
+      "df": 3,
+      "token": "facilities"
+    }
+  ],
+  "facility": [
+    {
+      "df": 3,
+      "token": "facility"
+    }
+  ],
+  "facin": [
+    {
+      "df": 4,
+      "token": "facing"
+    }
+  ],
+  "facing": [
+    {
+      "df": 4,
+      "token": "facing"
+    }
+  ],
+  "fae": [
+    {
+      "df": 1,
+      "token": "faecal"
+    }
+  ],
+  "faec": [
+    {
+      "df": 1,
+      "token": "faecal"
+    }
+  ],
+  "faeca": [
+    {
+      "df": 1,
+      "token": "faecal"
+    }
+  ],
+  "faecal": [
+    {
+      "df": 1,
+      "token": "faecal"
+    }
+  ],
+  "faf": [
+    {
+      "df": 1,
+      "token": "fafa"
+    }
+  ],
+  "fafa": [
+    {
+      "df": 1,
+      "token": "fafa"
+    }
+  ],
+  "fai": [
+    {
+      "df": 1,
+      "token": "fails"
+    }
+  ],
+  "fail": [
+    {
+      "df": 1,
+      "token": "fails"
+    }
+  ],
+  "fails": [
+    {
+      "df": 1,
+      "token": "fails"
+    }
+  ],
+  "fal": [
+    {
+      "df": 1,
+      "token": "falls"
+    }
+  ],
+  "fall": [
+    {
+      "df": 1,
+      "token": "falls"
+    }
+  ],
+  "falls": [
+    {
+      "df": 1,
+      "token": "falls"
+    }
+  ],
+  "fam": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "fami": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "famil": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "famili": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "familia": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "familiar": [
+    {
+      "df": 1,
+      "token": "familiar"
+    }
+  ],
+  "fas": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fash": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fashi": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fashio": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fashion": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fashion.": [
+    {
+      "df": 1,
+      "token": "fashion.application-restricted"
+    }
+  ],
+  "fav": [
+    {
+      "df": 3,
+      "token": "favoured"
+    },
+    {
+      "df": 1,
+      "token": "favour"
+    }
+  ],
+  "favo": [
+    {
+      "df": 3,
+      "token": "favoured"
+    },
+    {
+      "df": 1,
+      "token": "favour"
+    }
+  ],
+  "favou": [
+    {
+      "df": 3,
+      "token": "favoured"
+    },
+    {
+      "df": 1,
+      "token": "favour"
+    }
+  ],
+  "favour": [
+    {
+      "df": 3,
+      "token": "favoured"
+    },
+    {
+      "df": 1,
+      "token": "favour"
+    }
+  ],
+  "favoure": [
+    {
+      "df": 3,
+      "token": "favoured"
+    }
+  ],
+  "favoured": [
+    {
+      "df": 3,
+      "token": "favoured"
+    }
+  ],
+  "fax": [
+    {
+      "df": 2,
+      "token": "fax"
+    }
+  ]
+}

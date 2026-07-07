@@ -1,0 +1,300 @@
+{
+  "bg2": [
+    {
+      "df": 4,
+      "token": "bg2"
+    },
+    {
+      "df": 4,
+      "token": "bg2test"
+    }
+  ],
+  "bg2t": [
+    {
+      "df": 4,
+      "token": "bg2test"
+    }
+  ],
+  "bg2te": [
+    {
+      "df": 4,
+      "token": "bg2test"
+    }
+  ],
+  "bg2tes": [
+    {
+      "df": 4,
+      "token": "bg2test"
+    }
+  ],
+  "bg2test": [
+    {
+      "df": 4,
+      "token": "bg2test"
+    }
+  ],
+  "bgs": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    },
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    },
+    {
+      "df": 3,
+      "token": "bgs"
+    },
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    },
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgs-": [
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    },
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgs-a": [
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    }
+  ],
+  "bgs-ag": [
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    }
+  ],
+  "bgs-ags": [
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    }
+  ],
+  "bgs-ags-": [
+    {
+      "df": 1,
+      "token": "bgs-ags-file-utilities-tool-and-api"
+    }
+  ],
+  "bgs-b": [
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    }
+  ],
+  "bgs-bg": [
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    }
+  ],
+  "bgs-bgs": [
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    }
+  ],
+  "bgs-bgs-": [
+    {
+      "df": 1,
+      "token": "bgs-bgs-opengeoscience-ogcapi-server"
+    },
+    {
+      "df": 1,
+      "token": "bgs-bgs-sensor-data-service"
+    }
+  ],
+  "bgs-h": [
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgs-ho": [
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgs-hos": [
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgs-host": [
+    {
+      "df": 1,
+      "token": "bgs-hosted"
+    }
+  ],
+  "bgso": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    }
+  ],
+  "bgsoa": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    }
+  ],
+  "bgsoap": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    }
+  ],
+  "bgsoape": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    }
+  ],
+  "bgsoapen": [
+    {
+      "df": 8,
+      "token": "bgsoapengine"
+    }
+  ],
+  "bgst": [
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    }
+  ],
+  "bgstu": [
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    }
+  ],
+  "bgstub": [
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    }
+  ],
+  "bgstubs": [
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    }
+  ],
+  "bgstubse": [
+    {
+      "df": 5,
+      "token": "bgstubservice"
+    }
+  ],
+  "bgt": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    },
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ],
+  "bgte": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    },
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ],
+  "bgtec": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    }
+  ],
+  "bgtech": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    }
+  ],
+  "bgtechd": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    }
+  ],
+  "bgtechdo": [
+    {
+      "df": 15,
+      "token": "bgtechdoc"
+    }
+  ],
+  "bgtes": [
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ],
+  "bgtest": [
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ],
+  "bgtest.": [
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ],
+  "bgtest.l": [
+    {
+      "df": 15,
+      "token": "bgtest.landregistry.gov.uk"
+    }
+  ]
+}

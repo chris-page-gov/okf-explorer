@@ -1,0 +1,67 @@
+[
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "free"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "freely"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frequencies"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frequencyat"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frequencythe"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frequently"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "freshwater"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "front"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frontend"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frontier"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frontiers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frost"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "frost-server"
+  }
+]

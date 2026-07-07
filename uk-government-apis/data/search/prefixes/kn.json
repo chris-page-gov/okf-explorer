@@ -1,0 +1,42 @@
+{
+  "kno": [
+    {
+      "df": 23,
+      "token": "known"
+    },
+    {
+      "df": 16,
+      "token": "know"
+    },
+    {
+      "df": 1,
+      "token": "knows"
+    }
+  ],
+  "know": [
+    {
+      "df": 23,
+      "token": "known"
+    },
+    {
+      "df": 16,
+      "token": "know"
+    },
+    {
+      "df": 1,
+      "token": "knows"
+    }
+  ],
+  "known": [
+    {
+      "df": 23,
+      "token": "known"
+    }
+  ],
+  "knows": [
+    {
+      "df": 1,
+      "token": "knows"
+    }
+  ]
+}

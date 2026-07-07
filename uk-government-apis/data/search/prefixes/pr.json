@@ -1,0 +1,2710 @@
+{
+  "pra": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practical"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    },
+    {
+      "df": 1,
+      "token": "practitioner"
+    },
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "prac": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practical"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    },
+    {
+      "df": 1,
+      "token": "practitioner"
+    }
+  ],
+  "pract": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practical"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    },
+    {
+      "df": 1,
+      "token": "practitioner"
+    }
+  ],
+  "practi": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practical"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    },
+    {
+      "df": 1,
+      "token": "practitioner"
+    }
+  ],
+  "practic": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practical"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    }
+  ],
+  "practica": [
+    {
+      "df": 1,
+      "token": "practical"
+    }
+  ],
+  "practice": [
+    {
+      "df": 22,
+      "token": "practice"
+    },
+    {
+      "df": 8,
+      "token": "practices"
+    },
+    {
+      "df": 4,
+      "token": "practice.for"
+    },
+    {
+      "df": 1,
+      "token": "practice.you"
+    },
+    {
+      "df": 1,
+      "token": "practicesnote"
+    },
+    {
+      "df": 1,
+      "token": "practicesyou"
+    }
+  ],
+  "practit": [
+    {
+      "df": 1,
+      "token": "practitioner"
+    }
+  ],
+  "practiti": [
+    {
+      "df": 1,
+      "token": "practitioner"
+    }
+  ],
+  "prag": [
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "pragm": [
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "pragma": [
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "pragmat": [
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "pragmati": [
+    {
+      "df": 1,
+      "token": "pragmatic"
+    }
+  ],
+  "pre": [
+    {
+      "df": 16,
+      "token": "present"
+    },
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "predictions"
+    },
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    },
+    {
+      "df": 2,
+      "token": "preferred"
+    },
+    {
+      "df": 2,
+      "token": "premium"
+    },
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 2,
+      "token": "prevents"
+    },
+    {
+      "df": 1,
+      "token": "pre-defined"
+    },
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    },
+    {
+      "df": 1,
+      "token": "pre-registration"
+    }
+  ],
+  "pre-": [
+    {
+      "df": 1,
+      "token": "pre-defined"
+    },
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    },
+    {
+      "df": 1,
+      "token": "pre-registration"
+    },
+    {
+      "df": 1,
+      "token": "pre-visit"
+    }
+  ],
+  "pre-d": [
+    {
+      "df": 1,
+      "token": "pre-defined"
+    }
+  ],
+  "pre-de": [
+    {
+      "df": 1,
+      "token": "pre-defined"
+    }
+  ],
+  "pre-def": [
+    {
+      "df": 1,
+      "token": "pre-defined"
+    }
+  ],
+  "pre-defi": [
+    {
+      "df": 1,
+      "token": "pre-defined"
+    }
+  ],
+  "pre-l": [
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    }
+  ],
+  "pre-lo": [
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    }
+  ],
+  "pre-lod": [
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    }
+  ],
+  "pre-lodg": [
+    {
+      "df": 1,
+      "token": "pre-lodged"
+    }
+  ],
+  "pre-r": [
+    {
+      "df": 1,
+      "token": "pre-registration"
+    }
+  ],
+  "pre-re": [
+    {
+      "df": 1,
+      "token": "pre-registration"
+    }
+  ],
+  "pre-reg": [
+    {
+      "df": 1,
+      "token": "pre-registration"
+    }
+  ],
+  "pre-regi": [
+    {
+      "df": 1,
+      "token": "pre-registration"
+    }
+  ],
+  "pre-v": [
+    {
+      "df": 1,
+      "token": "pre-visit"
+    }
+  ],
+  "pre-vi": [
+    {
+      "df": 1,
+      "token": "pre-visit"
+    }
+  ],
+  "pre-vis": [
+    {
+      "df": 1,
+      "token": "pre-visit"
+    }
+  ],
+  "pre-visi": [
+    {
+      "df": 1,
+      "token": "pre-visit"
+    }
+  ],
+  "prec": [
+    {
+      "df": 1,
+      "token": "precipitation"
+    }
+  ],
+  "preci": [
+    {
+      "df": 1,
+      "token": "precipitation"
+    }
+  ],
+  "precip": [
+    {
+      "df": 1,
+      "token": "precipitation"
+    }
+  ],
+  "precipi": [
+    {
+      "df": 1,
+      "token": "precipitation"
+    }
+  ],
+  "precipit": [
+    {
+      "df": 1,
+      "token": "precipitation"
+    }
+  ],
+  "pred": [
+    {
+      "df": 3,
+      "token": "predictions"
+    },
+    {
+      "df": 1,
+      "token": "predicted"
+    }
+  ],
+  "predi": [
+    {
+      "df": 3,
+      "token": "predictions"
+    },
+    {
+      "df": 1,
+      "token": "predicted"
+    }
+  ],
+  "predic": [
+    {
+      "df": 3,
+      "token": "predictions"
+    },
+    {
+      "df": 1,
+      "token": "predicted"
+    }
+  ],
+  "predict": [
+    {
+      "df": 3,
+      "token": "predictions"
+    },
+    {
+      "df": 1,
+      "token": "predicted"
+    }
+  ],
+  "predicte": [
+    {
+      "df": 1,
+      "token": "predicted"
+    }
+  ],
+  "predicti": [
+    {
+      "df": 3,
+      "token": "predictions"
+    }
+  ],
+  "pref": [
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    },
+    {
+      "df": 2,
+      "token": "preferred"
+    },
+    {
+      "df": 1,
+      "token": "prefer"
+    }
+  ],
+  "prefe": [
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    },
+    {
+      "df": 2,
+      "token": "preferred"
+    },
+    {
+      "df": 1,
+      "token": "prefer"
+    }
+  ],
+  "prefer": [
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    },
+    {
+      "df": 2,
+      "token": "preferred"
+    },
+    {
+      "df": 1,
+      "token": "prefer"
+    }
+  ],
+  "prefere": [
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    }
+  ],
+  "preferen": [
+    {
+      "df": 3,
+      "token": "preferential"
+    },
+    {
+      "df": 2,
+      "token": "preferences"
+    }
+  ],
+  "preferr": [
+    {
+      "df": 2,
+      "token": "preferred"
+    }
+  ],
+  "preferre": [
+    {
+      "df": 2,
+      "token": "preferred"
+    }
+  ],
+  "preg": [
+    {
+      "df": 1,
+      "token": "pregnancy"
+    }
+  ],
+  "pregn": [
+    {
+      "df": 1,
+      "token": "pregnancy"
+    }
+  ],
+  "pregna": [
+    {
+      "df": 1,
+      "token": "pregnancy"
+    }
+  ],
+  "pregnan": [
+    {
+      "df": 1,
+      "token": "pregnancy"
+    }
+  ],
+  "pregnanc": [
+    {
+      "df": 1,
+      "token": "pregnancy"
+    }
+  ],
+  "prem": [
+    {
+      "df": 2,
+      "token": "premium"
+    }
+  ],
+  "premi": [
+    {
+      "df": 2,
+      "token": "premium"
+    }
+  ],
+  "premiu": [
+    {
+      "df": 2,
+      "token": "premium"
+    }
+  ],
+  "premium": [
+    {
+      "df": 2,
+      "token": "premium"
+    }
+  ],
+  "prep": [
+    {
+      "df": 1,
+      "token": "prepare"
+    }
+  ],
+  "prepa": [
+    {
+      "df": 1,
+      "token": "prepare"
+    }
+  ],
+  "prepar": [
+    {
+      "df": 1,
+      "token": "prepare"
+    }
+  ],
+  "prepare": [
+    {
+      "df": 1,
+      "token": "prepare"
+    }
+  ],
+  "pres": [
+    {
+      "df": 16,
+      "token": "present"
+    },
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 1,
+      "token": "prescribers"
+    },
+    {
+      "df": 1,
+      "token": "prescriptiona"
+    },
+    {
+      "df": 1,
+      "token": "prescriptioncreating"
+    },
+    {
+      "df": 1,
+      "token": "prescriptionsas"
+    },
+    {
+      "df": 1,
+      "token": "presence"
+    },
+    {
+      "df": 1,
+      "token": "preservation"
+    },
+    {
+      "df": 1,
+      "token": "preserved"
+    },
+    {
+      "df": 1,
+      "token": "pressure"
+    }
+  ],
+  "presc": [
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 1,
+      "token": "prescribers"
+    },
+    {
+      "df": 1,
+      "token": "prescriptiona"
+    },
+    {
+      "df": 1,
+      "token": "prescriptioncreating"
+    },
+    {
+      "df": 1,
+      "token": "prescriptionsas"
+    }
+  ],
+  "prescr": [
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 1,
+      "token": "prescribers"
+    },
+    {
+      "df": 1,
+      "token": "prescriptiona"
+    },
+    {
+      "df": 1,
+      "token": "prescriptioncreating"
+    },
+    {
+      "df": 1,
+      "token": "prescriptionsas"
+    }
+  ],
+  "prescri": [
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 1,
+      "token": "prescribers"
+    },
+    {
+      "df": 1,
+      "token": "prescriptiona"
+    },
+    {
+      "df": 1,
+      "token": "prescriptioncreating"
+    },
+    {
+      "df": 1,
+      "token": "prescriptionsas"
+    }
+  ],
+  "prescrib": [
+    {
+      "df": 2,
+      "token": "prescriber"
+    },
+    {
+      "df": 2,
+      "token": "prescribing"
+    },
+    {
+      "df": 1,
+      "token": "prescribers"
+    }
+  ],
+  "prescrip": [
+    {
+      "df": 8,
+      "token": "prescription"
+    },
+    {
+      "df": 8,
+      "token": "prescriptions"
+    },
+    {
+      "df": 1,
+      "token": "prescriptiona"
+    },
+    {
+      "df": 1,
+      "token": "prescriptioncreating"
+    },
+    {
+      "df": 1,
+      "token": "prescriptionsas"
+    }
+  ],
+  "prese": [
+    {
+      "df": 16,
+      "token": "present"
+    },
+    {
+      "df": 1,
+      "token": "presence"
+    },
+    {
+      "df": 1,
+      "token": "preservation"
+    },
+    {
+      "df": 1,
+      "token": "preserved"
+    }
+  ],
+  "presen": [
+    {
+      "df": 16,
+      "token": "present"
+    },
+    {
+      "df": 1,
+      "token": "presence"
+    }
+  ],
+  "presenc": [
+    {
+      "df": 1,
+      "token": "presence"
+    }
+  ],
+  "presence": [
+    {
+      "df": 1,
+      "token": "presence"
+    }
+  ],
+  "present": [
+    {
+      "df": 16,
+      "token": "present"
+    }
+  ],
+  "preser": [
+    {
+      "df": 1,
+      "token": "preservation"
+    },
+    {
+      "df": 1,
+      "token": "preserved"
+    }
+  ],
+  "preserv": [
+    {
+      "df": 1,
+      "token": "preservation"
+    },
+    {
+      "df": 1,
+      "token": "preserved"
+    }
+  ],
+  "preserva": [
+    {
+      "df": 1,
+      "token": "preservation"
+    }
+  ],
+  "preserve": [
+    {
+      "df": 1,
+      "token": "preserved"
+    }
+  ],
+  "press": [
+    {
+      "df": 1,
+      "token": "pressure"
+    }
+  ],
+  "pressu": [
+    {
+      "df": 1,
+      "token": "pressure"
+    }
+  ],
+  "pressur": [
+    {
+      "df": 1,
+      "token": "pressure"
+    }
+  ],
+  "pressure": [
+    {
+      "df": 1,
+      "token": "pressure"
+    }
+  ],
+  "prev": [
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    },
+    {
+      "df": 2,
+      "token": "prevents"
+    },
+    {
+      "df": 1,
+      "token": "prevent"
+    },
+    {
+      "df": 1,
+      "token": "preview"
+    }
+  ],
+  "preve": [
+    {
+      "df": 2,
+      "token": "prevents"
+    },
+    {
+      "df": 1,
+      "token": "prevent"
+    }
+  ],
+  "preven": [
+    {
+      "df": 2,
+      "token": "prevents"
+    },
+    {
+      "df": 1,
+      "token": "prevent"
+    }
+  ],
+  "prevent": [
+    {
+      "df": 2,
+      "token": "prevents"
+    },
+    {
+      "df": 1,
+      "token": "prevent"
+    }
+  ],
+  "prevents": [
+    {
+      "df": 2,
+      "token": "prevents"
+    }
+  ],
+  "previ": [
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    },
+    {
+      "df": 1,
+      "token": "preview"
+    }
+  ],
+  "previe": [
+    {
+      "df": 1,
+      "token": "preview"
+    }
+  ],
+  "preview": [
+    {
+      "df": 1,
+      "token": "preview"
+    }
+  ],
+  "previo": [
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    }
+  ],
+  "previou": [
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    }
+  ],
+  "previous": [
+    {
+      "df": 4,
+      "token": "previously"
+    },
+    {
+      "df": 3,
+      "token": "previous"
+    }
+  ],
+  "pri": [
+    {
+      "df": 13,
+      "token": "primary"
+    },
+    {
+      "df": 5,
+      "token": "priority"
+    },
+    {
+      "df": 3,
+      "token": "principal"
+    },
+    {
+      "df": 2,
+      "token": "prison"
+    },
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 2,
+      "token": "privacy"
+    },
+    {
+      "df": 2,
+      "token": "private"
+    },
+    {
+      "df": 1,
+      "token": "primarily"
+    },
+    {
+      "df": 1,
+      "token": "prin"
+    },
+    {
+      "df": 1,
+      "token": "principles"
+    },
+    {
+      "df": 1,
+      "token": "printing"
+    },
+    {
+      "df": 1,
+      "token": "prisms"
+    },
+    {
+      "df": 1,
+      "token": "prison-api"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    },
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "prim": [
+    {
+      "df": 13,
+      "token": "primary"
+    },
+    {
+      "df": 1,
+      "token": "primarily"
+    }
+  ],
+  "prima": [
+    {
+      "df": 13,
+      "token": "primary"
+    },
+    {
+      "df": 1,
+      "token": "primarily"
+    }
+  ],
+  "primar": [
+    {
+      "df": 13,
+      "token": "primary"
+    },
+    {
+      "df": 1,
+      "token": "primarily"
+    }
+  ],
+  "primari": [
+    {
+      "df": 1,
+      "token": "primarily"
+    }
+  ],
+  "primaril": [
+    {
+      "df": 1,
+      "token": "primarily"
+    }
+  ],
+  "primary": [
+    {
+      "df": 13,
+      "token": "primary"
+    }
+  ],
+  "prin": [
+    {
+      "df": 3,
+      "token": "principal"
+    },
+    {
+      "df": 1,
+      "token": "prin"
+    },
+    {
+      "df": 1,
+      "token": "principles"
+    },
+    {
+      "df": 1,
+      "token": "printing"
+    }
+  ],
+  "princ": [
+    {
+      "df": 3,
+      "token": "principal"
+    },
+    {
+      "df": 1,
+      "token": "principles"
+    }
+  ],
+  "princi": [
+    {
+      "df": 3,
+      "token": "principal"
+    },
+    {
+      "df": 1,
+      "token": "principles"
+    }
+  ],
+  "princip": [
+    {
+      "df": 3,
+      "token": "principal"
+    },
+    {
+      "df": 1,
+      "token": "principles"
+    }
+  ],
+  "principa": [
+    {
+      "df": 3,
+      "token": "principal"
+    }
+  ],
+  "principl": [
+    {
+      "df": 1,
+      "token": "principles"
+    }
+  ],
+  "print": [
+    {
+      "df": 1,
+      "token": "printing"
+    }
+  ],
+  "printi": [
+    {
+      "df": 1,
+      "token": "printing"
+    }
+  ],
+  "printin": [
+    {
+      "df": 1,
+      "token": "printing"
+    }
+  ],
+  "printing": [
+    {
+      "df": 1,
+      "token": "printing"
+    }
+  ],
+  "prio": [
+    {
+      "df": 5,
+      "token": "priority"
+    }
+  ],
+  "prior": [
+    {
+      "df": 5,
+      "token": "priority"
+    }
+  ],
+  "priori": [
+    {
+      "df": 5,
+      "token": "priority"
+    }
+  ],
+  "priorit": [
+    {
+      "df": 5,
+      "token": "priority"
+    }
+  ],
+  "priority": [
+    {
+      "df": 5,
+      "token": "priority"
+    }
+  ],
+  "pris": [
+    {
+      "df": 2,
+      "token": "prison"
+    },
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 1,
+      "token": "prisms"
+    },
+    {
+      "df": 1,
+      "token": "prison-api"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    }
+  ],
+  "prism": [
+    {
+      "df": 1,
+      "token": "prisms"
+    }
+  ],
+  "prisms": [
+    {
+      "df": 1,
+      "token": "prisms"
+    }
+  ],
+  "priso": [
+    {
+      "df": 2,
+      "token": "prison"
+    },
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 1,
+      "token": "prison-api"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    }
+  ],
+  "prison": [
+    {
+      "df": 2,
+      "token": "prison"
+    },
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 1,
+      "token": "prison-api"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    }
+  ],
+  "prison-": [
+    {
+      "df": 1,
+      "token": "prison-api"
+    }
+  ],
+  "prison-a": [
+    {
+      "df": 1,
+      "token": "prison-api"
+    }
+  ],
+  "prisone": [
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    }
+  ],
+  "prisoner": [
+    {
+      "df": 2,
+      "token": "prisoner"
+    },
+    {
+      "df": 1,
+      "token": "prisoners"
+    }
+  ],
+  "priv": [
+    {
+      "df": 2,
+      "token": "privacy"
+    },
+    {
+      "df": 2,
+      "token": "private"
+    },
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "priva": [
+    {
+      "df": 2,
+      "token": "privacy"
+    },
+    {
+      "df": 2,
+      "token": "private"
+    },
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "privac": [
+    {
+      "df": 2,
+      "token": "privacy"
+    }
+  ],
+  "privacy": [
+    {
+      "df": 2,
+      "token": "privacy"
+    }
+  ],
+  "privat": [
+    {
+      "df": 2,
+      "token": "private"
+    },
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "private": [
+    {
+      "df": 2,
+      "token": "private"
+    },
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "privatel": [
+    {
+      "df": 1,
+      "token": "privately"
+    }
+  ],
+  "pro": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 50,
+      "token": "provides"
+    },
+    {
+      "df": 18,
+      "token": "provided"
+    },
+    {
+      "df": 15,
+      "token": "provide"
+    },
+    {
+      "df": 14,
+      "token": "process"
+    },
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 13,
+      "token": "production"
+    },
+    {
+      "df": 8,
+      "token": "product"
+    },
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 7,
+      "token": "providing"
+    },
+    {
+      "df": 6,
+      "token": "protected"
+    },
+    {
+      "df": 4,
+      "token": "protect"
+    },
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    }
+  ],
+  "proa": [
+    {
+      "df": 1,
+      "token": "proactively"
+    }
+  ],
+  "proac": [
+    {
+      "df": 1,
+      "token": "proactively"
+    }
+  ],
+  "proact": [
+    {
+      "df": 1,
+      "token": "proactively"
+    }
+  ],
+  "proacti": [
+    {
+      "df": 1,
+      "token": "proactively"
+    }
+  ],
+  "proactiv": [
+    {
+      "df": 1,
+      "token": "proactively"
+    }
+  ],
+  "prob": [
+    {
+      "df": 2,
+      "token": "problems"
+    },
+    {
+      "df": 1,
+      "token": "probation"
+    },
+    {
+      "df": 1,
+      "token": "problem"
+    }
+  ],
+  "proba": [
+    {
+      "df": 1,
+      "token": "probation"
+    }
+  ],
+  "probat": [
+    {
+      "df": 1,
+      "token": "probation"
+    }
+  ],
+  "probati": [
+    {
+      "df": 1,
+      "token": "probation"
+    }
+  ],
+  "probatio": [
+    {
+      "df": 1,
+      "token": "probation"
+    }
+  ],
+  "probl": [
+    {
+      "df": 2,
+      "token": "problems"
+    },
+    {
+      "df": 1,
+      "token": "problem"
+    }
+  ],
+  "proble": [
+    {
+      "df": 2,
+      "token": "problems"
+    },
+    {
+      "df": 1,
+      "token": "problem"
+    }
+  ],
+  "problem": [
+    {
+      "df": 2,
+      "token": "problems"
+    },
+    {
+      "df": 1,
+      "token": "problem"
+    }
+  ],
+  "problems": [
+    {
+      "df": 2,
+      "token": "problems"
+    }
+  ],
+  "proc": [
+    {
+      "df": 14,
+      "token": "process"
+    },
+    {
+      "df": 2,
+      "token": "processed"
+    },
+    {
+      "df": 2,
+      "token": "processes"
+    },
+    {
+      "df": 2,
+      "token": "processwe"
+    },
+    {
+      "df": 1,
+      "token": "process.it"
+    },
+    {
+      "df": 1,
+      "token": "process.the"
+    },
+    {
+      "df": 1,
+      "token": "process.this"
+    },
+    {
+      "df": 1,
+      "token": "processing"
+    }
+  ],
+  "proce": [
+    {
+      "df": 14,
+      "token": "process"
+    },
+    {
+      "df": 2,
+      "token": "processed"
+    },
+    {
+      "df": 2,
+      "token": "processes"
+    },
+    {
+      "df": 2,
+      "token": "processwe"
+    },
+    {
+      "df": 1,
+      "token": "process.it"
+    },
+    {
+      "df": 1,
+      "token": "process.the"
+    },
+    {
+      "df": 1,
+      "token": "process.this"
+    },
+    {
+      "df": 1,
+      "token": "processing"
+    }
+  ],
+  "proces": [
+    {
+      "df": 14,
+      "token": "process"
+    },
+    {
+      "df": 2,
+      "token": "processed"
+    },
+    {
+      "df": 2,
+      "token": "processes"
+    },
+    {
+      "df": 2,
+      "token": "processwe"
+    },
+    {
+      "df": 1,
+      "token": "process.it"
+    },
+    {
+      "df": 1,
+      "token": "process.the"
+    },
+    {
+      "df": 1,
+      "token": "process.this"
+    },
+    {
+      "df": 1,
+      "token": "processing"
+    }
+  ],
+  "process": [
+    {
+      "df": 14,
+      "token": "process"
+    },
+    {
+      "df": 2,
+      "token": "processed"
+    },
+    {
+      "df": 2,
+      "token": "processes"
+    },
+    {
+      "df": 2,
+      "token": "processwe"
+    },
+    {
+      "df": 1,
+      "token": "process.it"
+    },
+    {
+      "df": 1,
+      "token": "process.the"
+    },
+    {
+      "df": 1,
+      "token": "process.this"
+    },
+    {
+      "df": 1,
+      "token": "processing"
+    }
+  ],
+  "process.": [
+    {
+      "df": 1,
+      "token": "process.it"
+    },
+    {
+      "df": 1,
+      "token": "process.the"
+    },
+    {
+      "df": 1,
+      "token": "process.this"
+    }
+  ],
+  "processe": [
+    {
+      "df": 2,
+      "token": "processed"
+    },
+    {
+      "df": 2,
+      "token": "processes"
+    }
+  ],
+  "processi": [
+    {
+      "df": 1,
+      "token": "processing"
+    }
+  ],
+  "processw": [
+    {
+      "df": 2,
+      "token": "processwe"
+    }
+  ],
+  "prod": [
+    {
+      "df": 13,
+      "token": "production"
+    },
+    {
+      "df": 8,
+      "token": "product"
+    },
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 1,
+      "token": "produce"
+    },
+    {
+      "df": 1,
+      "token": "producer"
+    },
+    {
+      "df": 1,
+      "token": "producers"
+    },
+    {
+      "df": 1,
+      "token": "productsyou"
+    }
+  ],
+  "produ": [
+    {
+      "df": 13,
+      "token": "production"
+    },
+    {
+      "df": 8,
+      "token": "product"
+    },
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 1,
+      "token": "produce"
+    },
+    {
+      "df": 1,
+      "token": "producer"
+    },
+    {
+      "df": 1,
+      "token": "producers"
+    },
+    {
+      "df": 1,
+      "token": "productsyou"
+    }
+  ],
+  "produc": [
+    {
+      "df": 13,
+      "token": "production"
+    },
+    {
+      "df": 8,
+      "token": "product"
+    },
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 1,
+      "token": "produce"
+    },
+    {
+      "df": 1,
+      "token": "producer"
+    },
+    {
+      "df": 1,
+      "token": "producers"
+    },
+    {
+      "df": 1,
+      "token": "productsyou"
+    }
+  ],
+  "produce": [
+    {
+      "df": 1,
+      "token": "produce"
+    },
+    {
+      "df": 1,
+      "token": "producer"
+    },
+    {
+      "df": 1,
+      "token": "producers"
+    }
+  ],
+  "producer": [
+    {
+      "df": 1,
+      "token": "producer"
+    },
+    {
+      "df": 1,
+      "token": "producers"
+    }
+  ],
+  "product": [
+    {
+      "df": 13,
+      "token": "production"
+    },
+    {
+      "df": 8,
+      "token": "product"
+    },
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 1,
+      "token": "productsyou"
+    }
+  ],
+  "producti": [
+    {
+      "df": 13,
+      "token": "production"
+    }
+  ],
+  "products": [
+    {
+      "df": 8,
+      "token": "products"
+    },
+    {
+      "df": 1,
+      "token": "productsyou"
+    }
+  ],
+  "prof": [
+    {
+      "df": 2,
+      "token": "profile"
+    },
+    {
+      "df": 1,
+      "token": "professionals"
+    }
+  ],
+  "profe": [
+    {
+      "df": 1,
+      "token": "professionals"
+    }
+  ],
+  "profes": [
+    {
+      "df": 1,
+      "token": "professionals"
+    }
+  ],
+  "profess": [
+    {
+      "df": 1,
+      "token": "professionals"
+    }
+  ],
+  "professi": [
+    {
+      "df": 1,
+      "token": "professionals"
+    }
+  ],
+  "profi": [
+    {
+      "df": 2,
+      "token": "profile"
+    }
+  ],
+  "profil": [
+    {
+      "df": 2,
+      "token": "profile"
+    }
+  ],
+  "profile": [
+    {
+      "df": 2,
+      "token": "profile"
+    }
+  ],
+  "prog": [
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 2,
+      "token": "programmatic"
+    },
+    {
+      "df": 2,
+      "token": "programmatically"
+    },
+    {
+      "df": 2,
+      "token": "programming"
+    },
+    {
+      "df": 2,
+      "token": "progress"
+    }
+  ],
+  "progr": [
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 2,
+      "token": "programmatic"
+    },
+    {
+      "df": 2,
+      "token": "programmatically"
+    },
+    {
+      "df": 2,
+      "token": "programming"
+    },
+    {
+      "df": 2,
+      "token": "progress"
+    }
+  ],
+  "progra": [
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 2,
+      "token": "programmatic"
+    },
+    {
+      "df": 2,
+      "token": "programmatically"
+    },
+    {
+      "df": 2,
+      "token": "programming"
+    }
+  ],
+  "program": [
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 2,
+      "token": "programmatic"
+    },
+    {
+      "df": 2,
+      "token": "programmatically"
+    },
+    {
+      "df": 2,
+      "token": "programming"
+    }
+  ],
+  "programm": [
+    {
+      "df": 3,
+      "token": "programme"
+    },
+    {
+      "df": 2,
+      "token": "programmatic"
+    },
+    {
+      "df": 2,
+      "token": "programmatically"
+    },
+    {
+      "df": 2,
+      "token": "programming"
+    }
+  ],
+  "progre": [
+    {
+      "df": 2,
+      "token": "progress"
+    }
+  ],
+  "progres": [
+    {
+      "df": 2,
+      "token": "progress"
+    }
+  ],
+  "progress": [
+    {
+      "df": 2,
+      "token": "progress"
+    }
+  ],
+  "proj": [
+    {
+      "df": 1,
+      "token": "project"
+    },
+    {
+      "df": 1,
+      "token": "projections"
+    },
+    {
+      "df": 1,
+      "token": "projects"
+    }
+  ],
+  "proje": [
+    {
+      "df": 1,
+      "token": "project"
+    },
+    {
+      "df": 1,
+      "token": "projections"
+    },
+    {
+      "df": 1,
+      "token": "projects"
+    }
+  ],
+  "projec": [
+    {
+      "df": 1,
+      "token": "project"
+    },
+    {
+      "df": 1,
+      "token": "projections"
+    },
+    {
+      "df": 1,
+      "token": "projects"
+    }
+  ],
+  "project": [
+    {
+      "df": 1,
+      "token": "project"
+    },
+    {
+      "df": 1,
+      "token": "projections"
+    },
+    {
+      "df": 1,
+      "token": "projects"
+    }
+  ],
+  "projecti": [
+    {
+      "df": 1,
+      "token": "projections"
+    }
+  ],
+  "projects": [
+    {
+      "df": 1,
+      "token": "projects"
+    }
+  ],
+  "prop": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    },
+    {
+      "df": 2,
+      "token": "properties"
+    },
+    {
+      "df": 1,
+      "token": "proper"
+    },
+    {
+      "df": 1,
+      "token": "propertys"
+    },
+    {
+      "df": 1,
+      "token": "proposed"
+    }
+  ],
+  "prope": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    },
+    {
+      "df": 2,
+      "token": "properties"
+    },
+    {
+      "df": 1,
+      "token": "proper"
+    },
+    {
+      "df": 1,
+      "token": "propertys"
+    }
+  ],
+  "proper": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    },
+    {
+      "df": 2,
+      "token": "properties"
+    },
+    {
+      "df": 1,
+      "token": "proper"
+    },
+    {
+      "df": 1,
+      "token": "propertys"
+    }
+  ],
+  "propert": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    },
+    {
+      "df": 2,
+      "token": "properties"
+    },
+    {
+      "df": 1,
+      "token": "propertys"
+    }
+  ],
+  "properti": [
+    {
+      "df": 2,
+      "token": "properties"
+    }
+  ],
+  "property": [
+    {
+      "df": 55,
+      "token": "property"
+    },
+    {
+      "df": 3,
+      "token": "property-level"
+    },
+    {
+      "df": 1,
+      "token": "propertys"
+    }
+  ],
+  "propo": [
+    {
+      "df": 1,
+      "token": "proposed"
+    }
+  ],
+  "propos": [
+    {
+      "df": 1,
+      "token": "proposed"
+    }
+  ],
+  "propose": [
+    {
+      "df": 1,
+      "token": "proposed"
+    }
+  ],
+  "proposed": [
+    {
+      "df": 1,
+      "token": "proposed"
+    }
+  ],
+  "prot": [
+    {
+      "df": 6,
+      "token": "protected"
+    },
+    {
+      "df": 4,
+      "token": "protect"
+    },
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 3,
+      "token": "protects"
+    },
+    {
+      "df": 1,
+      "token": "protections"
+    },
+    {
+      "df": 1,
+      "token": "protocol"
+    }
+  ],
+  "prote": [
+    {
+      "df": 6,
+      "token": "protected"
+    },
+    {
+      "df": 4,
+      "token": "protect"
+    },
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 3,
+      "token": "protects"
+    },
+    {
+      "df": 1,
+      "token": "protections"
+    }
+  ],
+  "protec": [
+    {
+      "df": 6,
+      "token": "protected"
+    },
+    {
+      "df": 4,
+      "token": "protect"
+    },
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 3,
+      "token": "protects"
+    },
+    {
+      "df": 1,
+      "token": "protections"
+    }
+  ],
+  "protect": [
+    {
+      "df": 6,
+      "token": "protected"
+    },
+    {
+      "df": 4,
+      "token": "protect"
+    },
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 3,
+      "token": "protects"
+    },
+    {
+      "df": 1,
+      "token": "protections"
+    }
+  ],
+  "protecte": [
+    {
+      "df": 6,
+      "token": "protected"
+    }
+  ],
+  "protecti": [
+    {
+      "df": 4,
+      "token": "protection"
+    },
+    {
+      "df": 1,
+      "token": "protections"
+    }
+  ],
+  "protects": [
+    {
+      "df": 3,
+      "token": "protects"
+    }
+  ],
+  "proto": [
+    {
+      "df": 1,
+      "token": "protocol"
+    }
+  ],
+  "protoc": [
+    {
+      "df": 1,
+      "token": "protocol"
+    }
+  ],
+  "protoco": [
+    {
+      "df": 1,
+      "token": "protocol"
+    }
+  ],
+  "protocol": [
+    {
+      "df": 1,
+      "token": "protocol"
+    }
+  ],
+  "prov": [
+    {
+      "df": 50,
+      "token": "provides"
+    },
+    {
+      "df": 18,
+      "token": "provided"
+    },
+    {
+      "df": 15,
+      "token": "provide"
+    },
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 7,
+      "token": "providing"
+    },
+    {
+      "df": 1,
+      "token": "prove"
+    },
+    {
+      "df": 1,
+      "token": "provenance"
+    },
+    {
+      "df": 1,
+      "token": "providersas"
+    },
+    {
+      "df": 1,
+      "token": "providerscp-is"
+    },
+    {
+      "df": 1,
+      "token": "provision"
+    }
+  ],
+  "prove": [
+    {
+      "df": 1,
+      "token": "prove"
+    },
+    {
+      "df": 1,
+      "token": "provenance"
+    }
+  ],
+  "proven": [
+    {
+      "df": 1,
+      "token": "provenance"
+    }
+  ],
+  "provena": [
+    {
+      "df": 1,
+      "token": "provenance"
+    }
+  ],
+  "provenan": [
+    {
+      "df": 1,
+      "token": "provenance"
+    }
+  ],
+  "provi": [
+    {
+      "df": 50,
+      "token": "provides"
+    },
+    {
+      "df": 18,
+      "token": "provided"
+    },
+    {
+      "df": 15,
+      "token": "provide"
+    },
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 7,
+      "token": "providing"
+    },
+    {
+      "df": 1,
+      "token": "providersas"
+    },
+    {
+      "df": 1,
+      "token": "providerscp-is"
+    },
+    {
+      "df": 1,
+      "token": "provision"
+    }
+  ],
+  "provid": [
+    {
+      "df": 50,
+      "token": "provides"
+    },
+    {
+      "df": 18,
+      "token": "provided"
+    },
+    {
+      "df": 15,
+      "token": "provide"
+    },
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 7,
+      "token": "providing"
+    },
+    {
+      "df": 1,
+      "token": "providersas"
+    },
+    {
+      "df": 1,
+      "token": "providerscp-is"
+    }
+  ],
+  "provide": [
+    {
+      "df": 50,
+      "token": "provides"
+    },
+    {
+      "df": 18,
+      "token": "provided"
+    },
+    {
+      "df": 15,
+      "token": "provide"
+    },
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 1,
+      "token": "providersas"
+    },
+    {
+      "df": 1,
+      "token": "providerscp-is"
+    }
+  ],
+  "provided": [
+    {
+      "df": 18,
+      "token": "provided"
+    }
+  ],
+  "provider": [
+    {
+      "df": 14,
+      "token": "provider"
+    },
+    {
+      "df": 14,
+      "token": "providers"
+    },
+    {
+      "df": 1,
+      "token": "providersas"
+    },
+    {
+      "df": 1,
+      "token": "providerscp-is"
+    }
+  ],
+  "provides": [
+    {
+      "df": 50,
+      "token": "provides"
+    }
+  ],
+  "providi": [
+    {
+      "df": 7,
+      "token": "providing"
+    }
+  ],
+  "providin": [
+    {
+      "df": 7,
+      "token": "providing"
+    }
+  ],
+  "provis": [
+    {
+      "df": 1,
+      "token": "provision"
+    }
+  ],
+  "provisi": [
+    {
+      "df": 1,
+      "token": "provision"
+    }
+  ],
+  "provisio": [
+    {
+      "df": 1,
+      "token": "provision"
+    }
+  ],
+  "prt": [
+    {
+      "df": 1,
+      "token": "prt"
+    }
+  ]
+}

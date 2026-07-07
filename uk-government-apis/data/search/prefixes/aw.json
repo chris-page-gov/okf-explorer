@@ -1,0 +1,52 @@
+{
+  "awa": [
+    {
+      "df": 2,
+      "token": "aware"
+    },
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "awar": [
+    {
+      "df": 2,
+      "token": "aware"
+    },
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "award": [
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "awardi": [
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "awardin": [
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "awarding": [
+    {
+      "df": 1,
+      "token": "awarding"
+    }
+  ],
+  "aware": [
+    {
+      "df": 2,
+      "token": "aware"
+    }
+  ]
+}

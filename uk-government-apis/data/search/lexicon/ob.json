@@ -1,0 +1,47 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "objectfor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "obligation"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "obligations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "obligations-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "observable"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "observation"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "observations"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "obtain"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "obtained"
+  }
+]

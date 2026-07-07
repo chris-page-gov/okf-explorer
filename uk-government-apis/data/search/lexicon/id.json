@@ -1,0 +1,67 @@
+[
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "id"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "id.mhs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ideal"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "identification"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "identified"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "identifier"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "identifiers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "identifierthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "identifies"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "identify"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "identifying"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "identity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "idt"
+  }
+]

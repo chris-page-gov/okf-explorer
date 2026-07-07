@@ -1,0 +1,86 @@
+{
+  "cyb": [
+    {
+      "df": 1,
+      "token": "cyber"
+    },
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cybe": [
+    {
+      "df": 1,
+      "token": "cyber"
+    },
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cyber": [
+    {
+      "df": 1,
+      "token": "cyber"
+    },
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cyber-": [
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cyber-a": [
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cyber-al": [
+    {
+      "df": 1,
+      "token": "cyber-alerts-rest"
+    }
+  ],
+  "cyt": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ],
+  "cyto": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ],
+  "cytol": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ],
+  "cytolo": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ],
+  "cytolog": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ],
+  "cytology": [
+    {
+      "df": 1,
+      "token": "cytology"
+    }
+  ]
+}

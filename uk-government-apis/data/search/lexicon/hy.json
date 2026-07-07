@@ -1,0 +1,27 @@
+[
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "hydrographic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hydrology"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hygiene"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hyperlink"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "hypertropia"
+  }
+]

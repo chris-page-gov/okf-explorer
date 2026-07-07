@@ -1,0 +1,42 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "abbreviated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "abdominal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ability"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "able"
+  },
+  {
+    "df": 52,
+    "postings": "data/search/postings-0.json",
+    "token": "about"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "about_sos"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "above"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "abroad"
+  }
+]

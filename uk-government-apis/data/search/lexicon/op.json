@@ -1,0 +1,157 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "opcs-4"
+  },
+  {
+    "df": 19,
+    "postings": "data/search/postings-0.json",
+    "token": "open"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "open-access"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "open-data-hub"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "open311.asmx"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "openapi"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "openapi.json"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "opendata"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "opendatacommunities"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "opendatacommunities.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "opengeoscience"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "opening"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "openreferraluk.org"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "operated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "operating"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "operation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "operational"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "operations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ophthalmic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ophthalmic-payments"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ophthalmologist"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "opt-out"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "opt-outs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "opted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "optical"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "optimise"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "option"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "optional"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "optionally"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "options"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "optionsthere"
+  }
+]

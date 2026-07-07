@@ -1,0 +1,47 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "bill"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "billion"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biochemistry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biodiversity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biographic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biological"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biosys"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "birth"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "biss"
+  }
+]

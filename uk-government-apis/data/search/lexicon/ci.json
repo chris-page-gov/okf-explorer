@@ -1,0 +1,57 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "circle"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "circumstances"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "cis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cis-deductions-api"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "cis2"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "cis2.a"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "citizen"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "citizens"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "city"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "civil"
+  }
+]

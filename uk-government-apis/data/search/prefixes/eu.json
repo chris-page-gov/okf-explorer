@@ -1,0 +1,38 @@
+{
+  "eur": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ],
+  "euro": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ],
+  "europ": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ],
+  "europe": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ],
+  "europea": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ],
+  "european": [
+    {
+      "df": 1,
+      "token": "european"
+    }
+  ]
+}

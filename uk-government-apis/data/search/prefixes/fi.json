@@ -1,0 +1,512 @@
+{
+  "fie": [
+    {
+      "df": 3,
+      "token": "field"
+    }
+  ],
+  "fiel": [
+    {
+      "df": 3,
+      "token": "field"
+    }
+  ],
+  "field": [
+    {
+      "df": 3,
+      "token": "field"
+    }
+  ],
+  "fif": [
+    {
+      "df": 1,
+      "token": "fifteen"
+    }
+  ],
+  "fift": [
+    {
+      "df": 1,
+      "token": "fifteen"
+    }
+  ],
+  "fifte": [
+    {
+      "df": 1,
+      "token": "fifteen"
+    }
+  ],
+  "fiftee": [
+    {
+      "df": 1,
+      "token": "fifteen"
+    }
+  ],
+  "fifteen": [
+    {
+      "df": 1,
+      "token": "fifteen"
+    }
+  ],
+  "fil": [
+    {
+      "df": 9,
+      "token": "file"
+    },
+    {
+      "df": 8,
+      "token": "filter"
+    },
+    {
+      "df": 4,
+      "token": "files"
+    },
+    {
+      "df": 3,
+      "token": "filtering"
+    },
+    {
+      "df": 3,
+      "token": "filters"
+    },
+    {
+      "df": 1,
+      "token": "files.for"
+    },
+    {
+      "df": 1,
+      "token": "files.these"
+    },
+    {
+      "df": 1,
+      "token": "filing"
+    }
+  ],
+  "file": [
+    {
+      "df": 9,
+      "token": "file"
+    },
+    {
+      "df": 4,
+      "token": "files"
+    },
+    {
+      "df": 1,
+      "token": "files.for"
+    },
+    {
+      "df": 1,
+      "token": "files.these"
+    }
+  ],
+  "files": [
+    {
+      "df": 4,
+      "token": "files"
+    },
+    {
+      "df": 1,
+      "token": "files.for"
+    },
+    {
+      "df": 1,
+      "token": "files.these"
+    }
+  ],
+  "files.": [
+    {
+      "df": 1,
+      "token": "files.for"
+    },
+    {
+      "df": 1,
+      "token": "files.these"
+    }
+  ],
+  "files.f": [
+    {
+      "df": 1,
+      "token": "files.for"
+    }
+  ],
+  "files.fo": [
+    {
+      "df": 1,
+      "token": "files.for"
+    }
+  ],
+  "files.t": [
+    {
+      "df": 1,
+      "token": "files.these"
+    }
+  ],
+  "files.th": [
+    {
+      "df": 1,
+      "token": "files.these"
+    }
+  ],
+  "fili": [
+    {
+      "df": 1,
+      "token": "filing"
+    }
+  ],
+  "filin": [
+    {
+      "df": 1,
+      "token": "filing"
+    }
+  ],
+  "filing": [
+    {
+      "df": 1,
+      "token": "filing"
+    }
+  ],
+  "filt": [
+    {
+      "df": 8,
+      "token": "filter"
+    },
+    {
+      "df": 3,
+      "token": "filtering"
+    },
+    {
+      "df": 3,
+      "token": "filters"
+    }
+  ],
+  "filte": [
+    {
+      "df": 8,
+      "token": "filter"
+    },
+    {
+      "df": 3,
+      "token": "filtering"
+    },
+    {
+      "df": 3,
+      "token": "filters"
+    }
+  ],
+  "filter": [
+    {
+      "df": 8,
+      "token": "filter"
+    },
+    {
+      "df": 3,
+      "token": "filtering"
+    },
+    {
+      "df": 3,
+      "token": "filters"
+    }
+  ],
+  "filteri": [
+    {
+      "df": 3,
+      "token": "filtering"
+    }
+  ],
+  "filterin": [
+    {
+      "df": 3,
+      "token": "filtering"
+    }
+  ],
+  "filters": [
+    {
+      "df": 3,
+      "token": "filters"
+    }
+  ],
+  "fin": [
+    {
+      "df": 20,
+      "token": "find"
+    },
+    {
+      "df": 4,
+      "token": "financial"
+    },
+    {
+      "df": 2,
+      "token": "final"
+    },
+    {
+      "df": 2,
+      "token": "finder"
+    },
+    {
+      "df": 1,
+      "token": "finally"
+    },
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "findr"
+    },
+    {
+      "df": 1,
+      "token": "finds"
+    },
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fina": [
+    {
+      "df": 4,
+      "token": "financial"
+    },
+    {
+      "df": 2,
+      "token": "final"
+    },
+    {
+      "df": 1,
+      "token": "finally"
+    }
+  ],
+  "final": [
+    {
+      "df": 2,
+      "token": "final"
+    },
+    {
+      "df": 1,
+      "token": "finally"
+    }
+  ],
+  "finall": [
+    {
+      "df": 1,
+      "token": "finally"
+    }
+  ],
+  "finally": [
+    {
+      "df": 1,
+      "token": "finally"
+    }
+  ],
+  "finan": [
+    {
+      "df": 4,
+      "token": "financial"
+    }
+  ],
+  "financ": [
+    {
+      "df": 4,
+      "token": "financial"
+    }
+  ],
+  "financi": [
+    {
+      "df": 4,
+      "token": "financial"
+    }
+  ],
+  "financia": [
+    {
+      "df": 4,
+      "token": "financial"
+    }
+  ],
+  "find": [
+    {
+      "df": 20,
+      "token": "find"
+    },
+    {
+      "df": 2,
+      "token": "finder"
+    },
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "findr"
+    },
+    {
+      "df": 1,
+      "token": "finds"
+    }
+  ],
+  "finda": [
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    }
+  ],
+  "findaj": [
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    }
+  ],
+  "findajo": [
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    }
+  ],
+  "findajob": [
+    {
+      "df": 1,
+      "token": "findajob.dwp.gov.uk"
+    }
+  ],
+  "finde": [
+    {
+      "df": 2,
+      "token": "finder"
+    }
+  ],
+  "finder": [
+    {
+      "df": 2,
+      "token": "finder"
+    }
+  ],
+  "findr": [
+    {
+      "df": 1,
+      "token": "findr"
+    }
+  ],
+  "finds": [
+    {
+      "df": 1,
+      "token": "finds"
+    }
+  ],
+  "fine": [
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fine-": [
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fine-g": [
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fine-gr": [
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fine-gra": [
+    {
+      "df": 1,
+      "token": "fine-grained"
+    }
+  ],
+  "fir": [
+    {
+      "df": 7,
+      "token": "first"
+    }
+  ],
+  "firs": [
+    {
+      "df": 7,
+      "token": "first"
+    }
+  ],
+  "first": [
+    {
+      "df": 7,
+      "token": "first"
+    }
+  ],
+  "fis": [
+    {
+      "df": 1,
+      "token": "fish"
+    },
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fish": [
+    {
+      "df": 1,
+      "token": "fish"
+    },
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fishe": [
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fisher": [
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fisheri": [
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fisherie": [
+    {
+      "df": 1,
+      "token": "fisheries"
+    }
+  ],
+  "fit": [
+    {
+      "df": 1,
+      "token": "fitted"
+    }
+  ],
+  "fitt": [
+    {
+      "df": 1,
+      "token": "fitted"
+    }
+  ],
+  "fitte": [
+    {
+      "df": 1,
+      "token": "fitted"
+    }
+  ],
+  "fitted": [
+    {
+      "df": 1,
+      "token": "fitted"
+    }
+  ]
+}

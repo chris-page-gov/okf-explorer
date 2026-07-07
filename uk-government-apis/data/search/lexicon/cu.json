@@ -1,0 +1,52 @@
+[
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "current"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "currently"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "custodian"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "custom"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "customer"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "customers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "customise"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "customizable"
+  },
+  {
+    "df": 38,
+    "postings": "data/search/postings-0.json",
+    "token": "customs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "customs-inventory-linking-exports"
+  }
+]

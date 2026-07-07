@@ -1,0 +1,690 @@
+{
+  "ima": [
+    {
+      "df": 1,
+      "token": "image"
+    },
+    {
+      "df": 1,
+      "token": "images"
+    }
+  ],
+  "imag": [
+    {
+      "df": 1,
+      "token": "image"
+    },
+    {
+      "df": 1,
+      "token": "images"
+    }
+  ],
+  "image": [
+    {
+      "df": 1,
+      "token": "image"
+    },
+    {
+      "df": 1,
+      "token": "images"
+    }
+  ],
+  "images": [
+    {
+      "df": 1,
+      "token": "images"
+    }
+  ],
+  "imm": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    },
+    {
+      "df": 1,
+      "token": "immunity"
+    },
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "imme": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    }
+  ],
+  "immed": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    }
+  ],
+  "immedi": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    }
+  ],
+  "immedia": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    }
+  ],
+  "immediat": [
+    {
+      "df": 3,
+      "token": "immediate"
+    },
+    {
+      "df": 1,
+      "token": "immediately"
+    }
+  ],
+  "immu": [
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    },
+    {
+      "df": 1,
+      "token": "immunity"
+    },
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "immun": [
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    },
+    {
+      "df": 1,
+      "token": "immunity"
+    },
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "immuni": [
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    },
+    {
+      "df": 1,
+      "token": "immunity"
+    },
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "immunis": [
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    }
+  ],
+  "immunisa": [
+    {
+      "df": 3,
+      "token": "immunisation"
+    },
+    {
+      "df": 1,
+      "token": "immunisation-history-fhir"
+    },
+    {
+      "df": 1,
+      "token": "immunisations"
+    },
+    {
+      "df": 1,
+      "token": "immunisationthe"
+    },
+    {
+      "df": 1,
+      "token": "immunisationyou"
+    }
+  ],
+  "immunit": [
+    {
+      "df": 1,
+      "token": "immunity"
+    }
+  ],
+  "immunity": [
+    {
+      "df": 1,
+      "token": "immunity"
+    }
+  ],
+  "immuniz": [
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "immuniza": [
+    {
+      "df": 1,
+      "token": "immunizations"
+    }
+  ],
+  "imp": [
+    {
+      "df": 8,
+      "token": "import"
+    },
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 3,
+      "token": "important"
+    },
+    {
+      "df": 3,
+      "token": "imported"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "impairments"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    },
+    {
+      "df": 1,
+      "token": "imposes"
+    },
+    {
+      "df": 1,
+      "token": "improvement"
+    },
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ],
+  "impa": [
+    {
+      "df": 1,
+      "token": "impairments"
+    }
+  ],
+  "impai": [
+    {
+      "df": 1,
+      "token": "impairments"
+    }
+  ],
+  "impair": [
+    {
+      "df": 1,
+      "token": "impairments"
+    }
+  ],
+  "impairm": [
+    {
+      "df": 1,
+      "token": "impairments"
+    }
+  ],
+  "impairme": [
+    {
+      "df": 1,
+      "token": "impairments"
+    }
+  ],
+  "impl": [
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    }
+  ],
+  "imple": [
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    }
+  ],
+  "implem": [
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    }
+  ],
+  "impleme": [
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    }
+  ],
+  "implemen": [
+    {
+      "df": 6,
+      "token": "implementation"
+    },
+    {
+      "df": 2,
+      "token": "implemented"
+    },
+    {
+      "df": 2,
+      "token": "implementing"
+    },
+    {
+      "df": 1,
+      "token": "implement"
+    },
+    {
+      "df": 1,
+      "token": "implements"
+    }
+  ],
+  "impo": [
+    {
+      "df": 8,
+      "token": "import"
+    },
+    {
+      "df": 3,
+      "token": "important"
+    },
+    {
+      "df": 3,
+      "token": "imported"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    },
+    {
+      "df": 1,
+      "token": "imposes"
+    }
+  ],
+  "impor": [
+    {
+      "df": 8,
+      "token": "import"
+    },
+    {
+      "df": 3,
+      "token": "important"
+    },
+    {
+      "df": 3,
+      "token": "imported"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    }
+  ],
+  "import": [
+    {
+      "df": 8,
+      "token": "import"
+    },
+    {
+      "df": 3,
+      "token": "important"
+    },
+    {
+      "df": 3,
+      "token": "imported"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    }
+  ],
+  "import-": [
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    }
+  ],
+  "import-c": [
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-intervention"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-outcome"
+    },
+    {
+      "df": 1,
+      "token": "import-control-entry-declaration-store"
+    }
+  ],
+  "importa": [
+    {
+      "df": 3,
+      "token": "important"
+    }
+  ],
+  "importan": [
+    {
+      "df": 3,
+      "token": "important"
+    }
+  ],
+  "importe": [
+    {
+      "df": 3,
+      "token": "imported"
+    }
+  ],
+  "imported": [
+    {
+      "df": 3,
+      "token": "imported"
+    }
+  ],
+  "impos": [
+    {
+      "df": 1,
+      "token": "imposes"
+    }
+  ],
+  "impose": [
+    {
+      "df": 1,
+      "token": "imposes"
+    }
+  ],
+  "imposes": [
+    {
+      "df": 1,
+      "token": "imposes"
+    }
+  ],
+  "impr": [
+    {
+      "df": 1,
+      "token": "improvement"
+    },
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ],
+  "impro": [
+    {
+      "df": 1,
+      "token": "improvement"
+    },
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ],
+  "improv": [
+    {
+      "df": 1,
+      "token": "improvement"
+    },
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ],
+  "improve": [
+    {
+      "df": 1,
+      "token": "improvement"
+    },
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ],
+  "improvem": [
+    {
+      "df": 1,
+      "token": "improvement"
+    }
+  ],
+  "improves": [
+    {
+      "df": 1,
+      "token": "improves"
+    }
+  ]
+}

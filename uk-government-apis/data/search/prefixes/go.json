@@ -1,0 +1,514 @@
+{
+  "goo": [
+    {
+      "df": 6,
+      "token": "goods"
+    },
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "good": [
+    {
+      "df": 6,
+      "token": "goods"
+    },
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "goods": [
+    {
+      "df": 6,
+      "token": "goods"
+    },
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "goods-": [
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "goods-m": [
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "goods-mo": [
+    {
+      "df": 1,
+      "token": "goods-movement-system-haulier-api"
+    }
+  ],
+  "gos": [
+    {
+      "df": 1,
+      "token": "gos"
+    },
+    {
+      "df": 1,
+      "token": "gos1"
+    },
+    {
+      "df": 1,
+      "token": "gos2"
+    },
+    {
+      "df": 1,
+      "token": "gos3"
+    },
+    {
+      "df": 1,
+      "token": "gos4"
+    },
+    {
+      "df": 1,
+      "token": "gos5"
+    },
+    {
+      "df": 1,
+      "token": "gos6"
+    }
+  ],
+  "gos1": [
+    {
+      "df": 1,
+      "token": "gos1"
+    }
+  ],
+  "gos2": [
+    {
+      "df": 1,
+      "token": "gos2"
+    }
+  ],
+  "gos3": [
+    {
+      "df": 1,
+      "token": "gos3"
+    }
+  ],
+  "gos4": [
+    {
+      "df": 1,
+      "token": "gos4"
+    }
+  ],
+  "gos5": [
+    {
+      "df": 1,
+      "token": "gos5"
+    }
+  ],
+  "gos6": [
+    {
+      "df": 1,
+      "token": "gos6"
+    }
+  ],
+  "gov": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 10,
+      "token": "gov.uk"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 2,
+      "token": "governance"
+    },
+    {
+      "df": 1,
+      "token": "gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    },
+    {
+      "df": 1,
+      "token": "govuk"
+    }
+  ],
+  "gov.": [
+    {
+      "df": 10,
+      "token": "gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "gov.scot"
+    }
+  ],
+  "gov.s": [
+    {
+      "df": 1,
+      "token": "gov.scot"
+    }
+  ],
+  "gov.sc": [
+    {
+      "df": 1,
+      "token": "gov.scot"
+    }
+  ],
+  "gov.sco": [
+    {
+      "df": 1,
+      "token": "gov.scot"
+    }
+  ],
+  "gov.scot": [
+    {
+      "df": 1,
+      "token": "gov.scot"
+    }
+  ],
+  "gov.u": [
+    {
+      "df": 10,
+      "token": "gov.uk"
+    }
+  ],
+  "gov.uk": [
+    {
+      "df": 10,
+      "token": "gov.uk"
+    }
+  ],
+  "gove": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 2,
+      "token": "governance"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    }
+  ],
+  "gover": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 2,
+      "token": "governance"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    }
+  ],
+  "govern": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 2,
+      "token": "governance"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    }
+  ],
+  "governa": [
+    {
+      "df": 2,
+      "token": "governance"
+    }
+  ],
+  "governan": [
+    {
+      "df": 2,
+      "token": "governance"
+    }
+  ],
+  "governm": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    }
+  ],
+  "governme": [
+    {
+      "df": 173,
+      "token": "government"
+    },
+    {
+      "df": 162,
+      "token": "government-services"
+    },
+    {
+      "df": 7,
+      "token": "government-digital-service"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency"
+    },
+    {
+      "df": 1,
+      "token": "government-commercial-agency-contractmap"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-bank-holidays"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-data-gov-uk"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-content"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-notify"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-organisations"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-pay"
+    },
+    {
+      "df": 1,
+      "token": "government-digital-service-gov-uk-search"
+    }
+  ],
+  "govu": [
+    {
+      "df": 1,
+      "token": "govuk"
+    }
+  ],
+  "govuk": [
+    {
+      "df": 1,
+      "token": "govuk"
+    }
+  ]
+}

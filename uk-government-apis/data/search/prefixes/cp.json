@@ -1,0 +1,50 @@
+{
+  "cp-": [
+    {
+      "df": 1,
+      "token": "cp-is"
+    },
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ],
+  "cp-i": [
+    {
+      "df": 1,
+      "token": "cp-is"
+    },
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ],
+  "cp-is": [
+    {
+      "df": 1,
+      "token": "cp-is"
+    },
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ],
+  "cp-isc": [
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ],
+  "cp-iscp": [
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ],
+  "cp-iscp-": [
+    {
+      "df": 1,
+      "token": "cp-iscp-is"
+    }
+  ]
+}

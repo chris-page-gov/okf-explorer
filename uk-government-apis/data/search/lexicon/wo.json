@@ -1,0 +1,72 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "word"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "words"
+  },
+  {
+    "df": 27,
+    "postings": "data/search/postings-0.json",
+    "token": "work"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "worker"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "workers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "workers.this"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "working"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "worklist"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "worklists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "works"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "workstation"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "world"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "worth"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "would"
+  }
+]

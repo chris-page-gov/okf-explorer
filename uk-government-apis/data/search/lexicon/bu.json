@@ -1,0 +1,102 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bucket"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "buckinghamshire"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "buckinghamshire-council"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "buckinghamshire-council-services"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "build"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "builders"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "building"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "buildings"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "builds"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "built"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "bulk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "bus"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "business"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "business-and-economy"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "business-details-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "business-rates-api"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "businesses"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "businessgateway.landregistry.gov.uk"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "but"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "buyers"
+  }
+]

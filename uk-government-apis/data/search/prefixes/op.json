@@ -1,0 +1,822 @@
+{
+  "opc": [
+    {
+      "df": 1,
+      "token": "opcs-4"
+    }
+  ],
+  "opcs": [
+    {
+      "df": 1,
+      "token": "opcs-4"
+    }
+  ],
+  "opcs-": [
+    {
+      "df": 1,
+      "token": "opcs-4"
+    }
+  ],
+  "opcs-4": [
+    {
+      "df": 1,
+      "token": "opcs-4"
+    }
+  ],
+  "ope": [
+    {
+      "df": 19,
+      "token": "open"
+    },
+    {
+      "df": 3,
+      "token": "openapi"
+    },
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "open-access"
+    },
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    },
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    },
+    {
+      "df": 1,
+      "token": "openapi.json"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    },
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    },
+    {
+      "df": 1,
+      "token": "opening"
+    },
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    },
+    {
+      "df": 1,
+      "token": "operated"
+    },
+    {
+      "df": 1,
+      "token": "operating"
+    }
+  ],
+  "open": [
+    {
+      "df": 19,
+      "token": "open"
+    },
+    {
+      "df": 3,
+      "token": "openapi"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 1,
+      "token": "open-access"
+    },
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    },
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    },
+    {
+      "df": 1,
+      "token": "openapi.json"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    },
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    },
+    {
+      "df": 1,
+      "token": "opening"
+    },
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    }
+  ],
+  "open-": [
+    {
+      "df": 1,
+      "token": "open-access"
+    },
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    }
+  ],
+  "open-a": [
+    {
+      "df": 1,
+      "token": "open-access"
+    }
+  ],
+  "open-ac": [
+    {
+      "df": 1,
+      "token": "open-access"
+    }
+  ],
+  "open-acc": [
+    {
+      "df": 1,
+      "token": "open-access"
+    }
+  ],
+  "open-d": [
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    }
+  ],
+  "open-da": [
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    }
+  ],
+  "open-dat": [
+    {
+      "df": 1,
+      "token": "open-data-hub"
+    }
+  ],
+  "open3": [
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    }
+  ],
+  "open31": [
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    }
+  ],
+  "open311": [
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    }
+  ],
+  "open311.": [
+    {
+      "df": 1,
+      "token": "open311.asmx"
+    }
+  ],
+  "opena": [
+    {
+      "df": 3,
+      "token": "openapi"
+    },
+    {
+      "df": 1,
+      "token": "openapi.json"
+    }
+  ],
+  "openap": [
+    {
+      "df": 3,
+      "token": "openapi"
+    },
+    {
+      "df": 1,
+      "token": "openapi.json"
+    }
+  ],
+  "openapi": [
+    {
+      "df": 3,
+      "token": "openapi"
+    },
+    {
+      "df": 1,
+      "token": "openapi.json"
+    }
+  ],
+  "openapi.": [
+    {
+      "df": 1,
+      "token": "openapi.json"
+    }
+  ],
+  "opend": [
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    }
+  ],
+  "openda": [
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    }
+  ],
+  "opendat": [
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    }
+  ],
+  "opendata": [
+    {
+      "df": 2,
+      "token": "opendatacommunities"
+    },
+    {
+      "df": 2,
+      "token": "opendatacommunities.org"
+    },
+    {
+      "df": 1,
+      "token": "opendata"
+    }
+  ],
+  "openg": [
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    }
+  ],
+  "openge": [
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    }
+  ],
+  "opengeo": [
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    }
+  ],
+  "opengeos": [
+    {
+      "df": 1,
+      "token": "opengeoscience"
+    }
+  ],
+  "openi": [
+    {
+      "df": 1,
+      "token": "opening"
+    }
+  ],
+  "openin": [
+    {
+      "df": 1,
+      "token": "opening"
+    }
+  ],
+  "opening": [
+    {
+      "df": 1,
+      "token": "opening"
+    }
+  ],
+  "openr": [
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    }
+  ],
+  "openre": [
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    }
+  ],
+  "openref": [
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    }
+  ],
+  "openrefe": [
+    {
+      "df": 1,
+      "token": "openreferraluk.org"
+    }
+  ],
+  "oper": [
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "operated"
+    },
+    {
+      "df": 1,
+      "token": "operating"
+    },
+    {
+      "df": 1,
+      "token": "operational"
+    }
+  ],
+  "opera": [
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "operated"
+    },
+    {
+      "df": 1,
+      "token": "operating"
+    },
+    {
+      "df": 1,
+      "token": "operational"
+    }
+  ],
+  "operat": [
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "operated"
+    },
+    {
+      "df": 1,
+      "token": "operating"
+    },
+    {
+      "df": 1,
+      "token": "operational"
+    }
+  ],
+  "operate": [
+    {
+      "df": 1,
+      "token": "operated"
+    }
+  ],
+  "operated": [
+    {
+      "df": 1,
+      "token": "operated"
+    }
+  ],
+  "operati": [
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "operating"
+    },
+    {
+      "df": 1,
+      "token": "operational"
+    }
+  ],
+  "operatin": [
+    {
+      "df": 1,
+      "token": "operating"
+    }
+  ],
+  "operatio": [
+    {
+      "df": 3,
+      "token": "operation"
+    },
+    {
+      "df": 2,
+      "token": "operations"
+    },
+    {
+      "df": 1,
+      "token": "operational"
+    }
+  ],
+  "oph": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "opht": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "ophth": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "ophtha": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "ophthal": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "ophthalm": [
+    {
+      "df": 1,
+      "token": "ophthalmic"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmic-payments"
+    },
+    {
+      "df": 1,
+      "token": "ophthalmologist"
+    }
+  ],
+  "opt": [
+    {
+      "df": 8,
+      "token": "options"
+    },
+    {
+      "df": 4,
+      "token": "option"
+    },
+    {
+      "df": 4,
+      "token": "optionsthere"
+    },
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 2,
+      "token": "opt-out"
+    },
+    {
+      "df": 2,
+      "token": "opt-outs"
+    },
+    {
+      "df": 1,
+      "token": "opted"
+    },
+    {
+      "df": 1,
+      "token": "optical"
+    },
+    {
+      "df": 1,
+      "token": "optimise"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "opt-": [
+    {
+      "df": 2,
+      "token": "opt-out"
+    },
+    {
+      "df": 2,
+      "token": "opt-outs"
+    }
+  ],
+  "opt-o": [
+    {
+      "df": 2,
+      "token": "opt-out"
+    },
+    {
+      "df": 2,
+      "token": "opt-outs"
+    }
+  ],
+  "opt-ou": [
+    {
+      "df": 2,
+      "token": "opt-out"
+    },
+    {
+      "df": 2,
+      "token": "opt-outs"
+    }
+  ],
+  "opt-out": [
+    {
+      "df": 2,
+      "token": "opt-out"
+    },
+    {
+      "df": 2,
+      "token": "opt-outs"
+    }
+  ],
+  "opt-outs": [
+    {
+      "df": 2,
+      "token": "opt-outs"
+    }
+  ],
+  "opte": [
+    {
+      "df": 1,
+      "token": "opted"
+    }
+  ],
+  "opted": [
+    {
+      "df": 1,
+      "token": "opted"
+    }
+  ],
+  "opti": [
+    {
+      "df": 8,
+      "token": "options"
+    },
+    {
+      "df": 4,
+      "token": "option"
+    },
+    {
+      "df": 4,
+      "token": "optionsthere"
+    },
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 1,
+      "token": "optical"
+    },
+    {
+      "df": 1,
+      "token": "optimise"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "optic": [
+    {
+      "df": 1,
+      "token": "optical"
+    }
+  ],
+  "optica": [
+    {
+      "df": 1,
+      "token": "optical"
+    }
+  ],
+  "optical": [
+    {
+      "df": 1,
+      "token": "optical"
+    }
+  ],
+  "optim": [
+    {
+      "df": 1,
+      "token": "optimise"
+    }
+  ],
+  "optimi": [
+    {
+      "df": 1,
+      "token": "optimise"
+    }
+  ],
+  "optimis": [
+    {
+      "df": 1,
+      "token": "optimise"
+    }
+  ],
+  "optimise": [
+    {
+      "df": 1,
+      "token": "optimise"
+    }
+  ],
+  "optio": [
+    {
+      "df": 8,
+      "token": "options"
+    },
+    {
+      "df": 4,
+      "token": "option"
+    },
+    {
+      "df": 4,
+      "token": "optionsthere"
+    },
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "option": [
+    {
+      "df": 8,
+      "token": "options"
+    },
+    {
+      "df": 4,
+      "token": "option"
+    },
+    {
+      "df": 4,
+      "token": "optionsthere"
+    },
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "optiona": [
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "optional": [
+    {
+      "df": 3,
+      "token": "optional"
+    },
+    {
+      "df": 1,
+      "token": "optionally"
+    }
+  ],
+  "options": [
+    {
+      "df": 8,
+      "token": "options"
+    },
+    {
+      "df": 4,
+      "token": "optionsthere"
+    }
+  ],
+  "optionst": [
+    {
+      "df": 4,
+      "token": "optionsthere"
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+  "ana": [
+    {
+      "df": 3,
+      "token": "analysis"
+    },
+    {
+      "df": 2,
+      "token": "analyse"
+    },
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "anal": [
+    {
+      "df": 3,
+      "token": "analysis"
+    },
+    {
+      "df": 2,
+      "token": "analyse"
+    },
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "analy": [
+    {
+      "df": 3,
+      "token": "analysis"
+    },
+    {
+      "df": 2,
+      "token": "analyse"
+    },
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "analys": [
+    {
+      "df": 3,
+      "token": "analysis"
+    },
+    {
+      "df": 2,
+      "token": "analyse"
+    },
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "analyse": [
+    {
+      "df": 2,
+      "token": "analyse"
+    },
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "analysed": [
+    {
+      "df": 1,
+      "token": "analysed"
+    }
+  ],
+  "analysi": [
+    {
+      "df": 3,
+      "token": "analysis"
+    }
+  ],
+  "analysis": [
+    {
+      "df": 3,
+      "token": "analysis"
+    }
+  ],
+  "and": [
+    {
+      "df": 1,
+      "token": "android"
+    }
+  ],
+  "andr": [
+    {
+      "df": 1,
+      "token": "android"
+    }
+  ],
+  "andro": [
+    {
+      "df": 1,
+      "token": "android"
+    }
+  ],
+  "androi": [
+    {
+      "df": 1,
+      "token": "android"
+    }
+  ],
+  "android": [
+    {
+      "df": 1,
+      "token": "android"
+    }
+  ],
+  "ann": [
+    {
+      "df": 4,
+      "token": "annual"
+    },
+    {
+      "df": 2,
+      "token": "annuities"
+    },
+    {
+      "df": 1,
+      "token": "annotations"
+    },
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "anno": [
+    {
+      "df": 1,
+      "token": "annotations"
+    }
+  ],
+  "annot": [
+    {
+      "df": 1,
+      "token": "annotations"
+    }
+  ],
+  "annota": [
+    {
+      "df": 1,
+      "token": "annotations"
+    }
+  ],
+  "annotat": [
+    {
+      "df": 1,
+      "token": "annotations"
+    }
+  ],
+  "annotati": [
+    {
+      "df": 1,
+      "token": "annotations"
+    }
+  ],
+  "annu": [
+    {
+      "df": 4,
+      "token": "annual"
+    },
+    {
+      "df": 2,
+      "token": "annuities"
+    },
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "annua": [
+    {
+      "df": 4,
+      "token": "annual"
+    },
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "annual": [
+    {
+      "df": 4,
+      "token": "annual"
+    },
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "annuall": [
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "annually": [
+    {
+      "df": 1,
+      "token": "annually"
+    }
+  ],
+  "annui": [
+    {
+      "df": 2,
+      "token": "annuities"
+    }
+  ],
+  "annuit": [
+    {
+      "df": 2,
+      "token": "annuities"
+    }
+  ],
+  "annuiti": [
+    {
+      "df": 2,
+      "token": "annuities"
+    }
+  ],
+  "annuitie": [
+    {
+      "df": 2,
+      "token": "annuities"
+    }
+  ],
+  "ano": [
+    {
+      "df": 5,
+      "token": "another"
+    },
+    {
+      "df": 1,
+      "token": "anonymised"
+    },
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anon": [
+    {
+      "df": 1,
+      "token": "anonymised"
+    },
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anony": [
+    {
+      "df": 1,
+      "token": "anonymised"
+    },
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anonym": [
+    {
+      "df": 1,
+      "token": "anonymised"
+    },
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anonymi": [
+    {
+      "df": 1,
+      "token": "anonymised"
+    }
+  ],
+  "anonymis": [
+    {
+      "df": 1,
+      "token": "anonymised"
+    }
+  ],
+  "anonymo": [
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anonymou": [
+    {
+      "df": 1,
+      "token": "anonymous"
+    }
+  ],
+  "anot": [
+    {
+      "df": 5,
+      "token": "another"
+    }
+  ],
+  "anoth": [
+    {
+      "df": 5,
+      "token": "another"
+    }
+  ],
+  "anothe": [
+    {
+      "df": 5,
+      "token": "another"
+    }
+  ],
+  "another": [
+    {
+      "df": 5,
+      "token": "another"
+    }
+  ],
+  "ans": [
+    {
+      "df": 1,
+      "token": "answers"
+    }
+  ],
+  "answ": [
+    {
+      "df": 1,
+      "token": "answers"
+    }
+  ],
+  "answe": [
+    {
+      "df": 1,
+      "token": "answers"
+    }
+  ],
+  "answer": [
+    {
+      "df": 1,
+      "token": "answers"
+    }
+  ],
+  "answers": [
+    {
+      "df": 1,
+      "token": "answers"
+    }
+  ],
+  "any": [
+    {
+      "df": 39,
+      "token": "any"
+    },
+    {
+      "df": 3,
+      "token": "anyone"
+    },
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ],
+  "anyo": [
+    {
+      "df": 3,
+      "token": "anyone"
+    }
+  ],
+  "anyon": [
+    {
+      "df": 3,
+      "token": "anyone"
+    }
+  ],
+  "anyone": [
+    {
+      "df": 3,
+      "token": "anyone"
+    }
+  ],
+  "anyw": [
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ],
+  "anywh": [
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ],
+  "anywhe": [
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ],
+  "anywher": [
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ],
+  "anywhere": [
+    {
+      "df": 1,
+      "token": "anywhere"
+    }
+  ]
+}

@@ -1,0 +1,494 @@
+{
+  "lab": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "lab"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "labo": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "labor": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "labora": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "laborat": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "laborato": [
+    {
+      "df": 3,
+      "token": "laboratories"
+    },
+    {
+      "df": 2,
+      "token": "laboratory"
+    },
+    {
+      "df": 1,
+      "token": "laboratories.this"
+    }
+  ],
+  "lag": [
+    {
+      "df": 1,
+      "token": "lag"
+    }
+  ],
+  "lan": [
+    {
+      "df": 16,
+      "token": "land"
+    },
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    },
+    {
+      "df": 2,
+      "token": "landing"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    },
+    {
+      "df": 1,
+      "token": "landowner"
+    },
+    {
+      "df": 1,
+      "token": "landslide"
+    },
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "land": [
+    {
+      "df": 16,
+      "token": "land"
+    },
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    },
+    {
+      "df": 2,
+      "token": "landing"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    },
+    {
+      "df": 1,
+      "token": "landowner"
+    },
+    {
+      "df": 1,
+      "token": "landslide"
+    }
+  ],
+  "land_": [
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    }
+  ],
+  "land_c": [
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    }
+  ],
+  "land_ch": [
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    }
+  ],
+  "land_cha": [
+    {
+      "df": 1,
+      "token": "land_charges_bankruptcy_search"
+    },
+    {
+      "df": 1,
+      "token": "land_charges_full_search"
+    }
+  ],
+  "landi": [
+    {
+      "df": 2,
+      "token": "landing"
+    }
+  ],
+  "landin": [
+    {
+      "df": 2,
+      "token": "landing"
+    }
+  ],
+  "landing": [
+    {
+      "df": 2,
+      "token": "landing"
+    }
+  ],
+  "lando": [
+    {
+      "df": 1,
+      "token": "landowner"
+    }
+  ],
+  "landow": [
+    {
+      "df": 1,
+      "token": "landowner"
+    }
+  ],
+  "landown": [
+    {
+      "df": 1,
+      "token": "landowner"
+    }
+  ],
+  "landowne": [
+    {
+      "df": 1,
+      "token": "landowner"
+    }
+  ],
+  "landr": [
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    }
+  ],
+  "landre": [
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    }
+  ],
+  "landreg": [
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    }
+  ],
+  "landregi": [
+    {
+      "df": 15,
+      "token": "landregistry.github.io"
+    }
+  ],
+  "lands": [
+    {
+      "df": 1,
+      "token": "landslide"
+    }
+  ],
+  "landsl": [
+    {
+      "df": 1,
+      "token": "landslide"
+    }
+  ],
+  "landsli": [
+    {
+      "df": 1,
+      "token": "landslide"
+    }
+  ],
+  "landslid": [
+    {
+      "df": 1,
+      "token": "landslide"
+    }
+  ],
+  "lang": [
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "langu": [
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "langua": [
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "languag": [
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "language": [
+    {
+      "df": 1,
+      "token": "language"
+    }
+  ],
+  "lar": [
+    {
+      "df": 4,
+      "token": "large"
+    },
+    {
+      "df": 2,
+      "token": "larger"
+    }
+  ],
+  "larg": [
+    {
+      "df": 4,
+      "token": "large"
+    },
+    {
+      "df": 2,
+      "token": "larger"
+    }
+  ],
+  "large": [
+    {
+      "df": 4,
+      "token": "large"
+    },
+    {
+      "df": 2,
+      "token": "larger"
+    }
+  ],
+  "larger": [
+    {
+      "df": 2,
+      "token": "larger"
+    }
+  ],
+  "las": [
+    {
+      "df": 3,
+      "token": "last"
+    },
+    {
+      "df": 1,
+      "token": "lasting"
+    }
+  ],
+  "last": [
+    {
+      "df": 3,
+      "token": "last"
+    },
+    {
+      "df": 1,
+      "token": "lasting"
+    }
+  ],
+  "lasti": [
+    {
+      "df": 1,
+      "token": "lasting"
+    }
+  ],
+  "lastin": [
+    {
+      "df": 1,
+      "token": "lasting"
+    }
+  ],
+  "lasting": [
+    {
+      "df": 1,
+      "token": "lasting"
+    }
+  ],
+  "lat": [
+    {
+      "df": 6,
+      "token": "latest"
+    },
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "late": [
+    {
+      "df": 6,
+      "token": "latest"
+    },
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "lates": [
+    {
+      "df": 6,
+      "token": "latest"
+    },
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "latest": [
+    {
+      "df": 6,
+      "token": "latest"
+    },
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "latest-": [
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "latest-a": [
+    {
+      "df": 1,
+      "token": "latest-activity"
+    }
+  ],
+  "law": [
+    {
+      "df": 1,
+      "token": "laws"
+    }
+  ],
+  "laws": [
+    {
+      "df": 1,
+      "token": "laws"
+    }
+  ],
+  "lay": [
+    {
+      "df": 1,
+      "token": "layer"
+    },
+    {
+      "df": 1,
+      "token": "layers"
+    }
+  ],
+  "laye": [
+    {
+      "df": 1,
+      "token": "layer"
+    },
+    {
+      "df": 1,
+      "token": "layers"
+    }
+  ],
+  "layer": [
+    {
+      "df": 1,
+      "token": "layer"
+    },
+    {
+      "df": 1,
+      "token": "layers"
+    }
+  ],
+  "layers": [
+    {
+      "df": 1,
+      "token": "layers"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "df": 19,
+    "postings": "data/search/postings-0.json",
+    "token": "up"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "up-to-date"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "upcoming"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "update"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "updated"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "updates"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "updating"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "upload"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "uploading"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "upon"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "uprn"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "upwards"
+  }
+]

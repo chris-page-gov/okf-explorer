@@ -1,0 +1,344 @@
+{
+  "eac": [
+    {
+      "df": 18,
+      "token": "each"
+    }
+  ],
+  "each": [
+    {
+      "df": 18,
+      "token": "each"
+    }
+  ],
+  "eap": [
+    {
+      "df": 1,
+      "token": "eapim"
+    },
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "eapi": [
+    {
+      "df": 1,
+      "token": "eapim"
+    },
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "eapim": [
+    {
+      "df": 1,
+      "token": "eapim"
+    },
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "eapim-": [
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "eapim-p": [
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "eapim-pl": [
+    {
+      "df": 1,
+      "token": "eapim-platform-api"
+    }
+  ],
+  "ear": [
+    {
+      "df": 2,
+      "token": "early"
+    },
+    {
+      "df": 1,
+      "token": "earlier"
+    },
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    },
+    {
+      "df": 1,
+      "token": "earner"
+    },
+    {
+      "df": 1,
+      "token": "earnings"
+    },
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "earl": [
+    {
+      "df": 2,
+      "token": "early"
+    },
+    {
+      "df": 1,
+      "token": "earlier"
+    },
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    }
+  ],
+  "earli": [
+    {
+      "df": 1,
+      "token": "earlier"
+    }
+  ],
+  "earlie": [
+    {
+      "df": 1,
+      "token": "earlier"
+    }
+  ],
+  "earlier": [
+    {
+      "df": 1,
+      "token": "earlier"
+    }
+  ],
+  "early": [
+    {
+      "df": 2,
+      "token": "early"
+    },
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    }
+  ],
+  "earlyc": [
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    }
+  ],
+  "earlyco": [
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    }
+  ],
+  "earlycom": [
+    {
+      "df": 1,
+      "token": "earlycompletionv2_1pollrequestwebservice"
+    }
+  ],
+  "earn": [
+    {
+      "df": 1,
+      "token": "earner"
+    },
+    {
+      "df": 1,
+      "token": "earnings"
+    }
+  ],
+  "earne": [
+    {
+      "df": 1,
+      "token": "earner"
+    }
+  ],
+  "earner": [
+    {
+      "df": 1,
+      "token": "earner"
+    }
+  ],
+  "earni": [
+    {
+      "df": 1,
+      "token": "earnings"
+    }
+  ],
+  "earnin": [
+    {
+      "df": 1,
+      "token": "earnings"
+    }
+  ],
+  "earning": [
+    {
+      "df": 1,
+      "token": "earnings"
+    }
+  ],
+  "earnings": [
+    {
+      "df": 1,
+      "token": "earnings"
+    }
+  ],
+  "eart": [
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "earth": [
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "earthq": [
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "earthqu": [
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "earthqua": [
+    {
+      "df": 1,
+      "token": "earthquake"
+    }
+  ],
+  "eas": [
+    {
+      "df": 4,
+      "token": "easier"
+    },
+    {
+      "df": 2,
+      "token": "easy"
+    },
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "ease"
+    },
+    {
+      "df": 1,
+      "token": "easily"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ],
+  "ease": [
+    {
+      "df": 1,
+      "token": "ease"
+    }
+  ],
+  "easi": [
+    {
+      "df": 4,
+      "token": "easier"
+    },
+    {
+      "df": 1,
+      "token": "easily"
+    }
+  ],
+  "easie": [
+    {
+      "df": 4,
+      "token": "easier"
+    }
+  ],
+  "easier": [
+    {
+      "df": 4,
+      "token": "easier"
+    }
+  ],
+  "easil": [
+    {
+      "df": 1,
+      "token": "easily"
+    }
+  ],
+  "easily": [
+    {
+      "df": 1,
+      "token": "easily"
+    }
+  ],
+  "easy": [
+    {
+      "df": 2,
+      "token": "easy"
+    },
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ],
+  "easy-": [
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ],
+  "easy-t": [
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ],
+  "easy-to": [
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ],
+  "easy-to-": [
+    {
+      "df": 2,
+      "token": "easy-to-use"
+    },
+    {
+      "df": 1,
+      "token": "easy-to-understand"
+    }
+  ]
+}

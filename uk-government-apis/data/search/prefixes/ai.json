@@ -1,0 +1,114 @@
+{
+  "ai-": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "ai-e": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "ai-en": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "ai-ena": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "ai-enab": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "ai-enabl": [
+    {
+      "df": 1,
+      "token": "ai-enabled"
+    }
+  ],
+  "aid": [
+    {
+      "df": 1,
+      "token": "aided"
+    }
+  ],
+  "aide": [
+    {
+      "df": 1,
+      "token": "aided"
+    }
+  ],
+  "aided": [
+    {
+      "df": 1,
+      "token": "aided"
+    }
+  ],
+  "aim": [
+    {
+      "df": 2,
+      "token": "aimed"
+    }
+  ],
+  "aime": [
+    {
+      "df": 2,
+      "token": "aimed"
+    }
+  ],
+  "aimed": [
+    {
+      "df": 2,
+      "token": "aimed"
+    }
+  ],
+  "air": [
+    {
+      "df": 1,
+      "token": "air"
+    },
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ],
+  "airb": [
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ],
+  "airbo": [
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ],
+  "airbor": [
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ],
+  "airborn": [
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ],
+  "airborne": [
+    {
+      "df": 1,
+      "token": "airborne-remote-sensing"
+    }
+  ]
+}

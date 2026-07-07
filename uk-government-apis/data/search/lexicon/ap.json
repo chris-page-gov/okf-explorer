@@ -1,0 +1,362 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apas"
+  },
+  {
+    "df": 186,
+    "postings": "data/search/postings-0.json",
+    "token": "api"
+  },
+  {
+    "df": 93,
+    "postings": "data/search/postings-0.json",
+    "token": "api-catalogue"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "api-details"
+  },
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "api-documentation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api-portal.tfwm.org.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "api-reference"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api-reference-v0.6.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api-sandbox.apprenticeships.education.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api-specification.md"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.a"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "api.apprenticeships.education.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.as"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.before"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.beta.ons.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.companieshouse.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.education.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.esd.org.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.familyinfo.buckinghamshire.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.notifications.service.gov.uk"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "api.os.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.prison.service.justice.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.publish-teacher-training-courses.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.ratings.food.gov.uk"
+  },
+  {
+    "df": 30,
+    "postings": "data/search/postings-0.json",
+    "token": "api.service.hmrc.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.tfl.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.tfwm.org.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "api.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api.trade-tariff.service.gov.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "api.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api_documentation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "api_reference"
+  },
+  {
+    "df": 25,
+    "postings": "data/search/postings-0.json",
+    "token": "apis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apis.if"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apis.you"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apiyou"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "app"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "app_id"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "app_key"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apparent"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "appear"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "append"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "appfor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apple"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "appliance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "applicability"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "applicable"
+  },
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "application"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "application-restricted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "application.in"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "application_enquiry"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "application_reference"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "applicationenquiryv1_0pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "applicationenquiryv1_0webservice"
+  },
+  {
+    "df": 20,
+    "postings": "data/search/postings-0.json",
+    "token": "applications"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "applied"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "applies"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "apply"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "appoint"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "appointed"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "appointment"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "appointmentfor"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "appointments"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "appointmentyou"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "apprenticeship"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "appropriate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "appropriate.this"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "approval"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "approved"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "approximately"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "apps"
+  }
+]

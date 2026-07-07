@@ -1,0 +1,230 @@
+{
+  "bil": [
+    {
+      "df": 2,
+      "token": "bill"
+    },
+    {
+      "df": 1,
+      "token": "billion"
+    }
+  ],
+  "bill": [
+    {
+      "df": 2,
+      "token": "bill"
+    },
+    {
+      "df": 1,
+      "token": "billion"
+    }
+  ],
+  "billi": [
+    {
+      "df": 1,
+      "token": "billion"
+    }
+  ],
+  "billio": [
+    {
+      "df": 1,
+      "token": "billion"
+    }
+  ],
+  "billion": [
+    {
+      "df": 1,
+      "token": "billion"
+    }
+  ],
+  "bio": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    },
+    {
+      "df": 1,
+      "token": "biodiversity"
+    },
+    {
+      "df": 1,
+      "token": "biographic"
+    },
+    {
+      "df": 1,
+      "token": "biological"
+    },
+    {
+      "df": 1,
+      "token": "biosys"
+    }
+  ],
+  "bioc": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    }
+  ],
+  "bioch": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    }
+  ],
+  "bioche": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    }
+  ],
+  "biochem": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    }
+  ],
+  "biochemi": [
+    {
+      "df": 1,
+      "token": "biochemistry"
+    }
+  ],
+  "biod": [
+    {
+      "df": 1,
+      "token": "biodiversity"
+    }
+  ],
+  "biodi": [
+    {
+      "df": 1,
+      "token": "biodiversity"
+    }
+  ],
+  "biodiv": [
+    {
+      "df": 1,
+      "token": "biodiversity"
+    }
+  ],
+  "biodive": [
+    {
+      "df": 1,
+      "token": "biodiversity"
+    }
+  ],
+  "biodiver": [
+    {
+      "df": 1,
+      "token": "biodiversity"
+    }
+  ],
+  "biog": [
+    {
+      "df": 1,
+      "token": "biographic"
+    }
+  ],
+  "biogr": [
+    {
+      "df": 1,
+      "token": "biographic"
+    }
+  ],
+  "biogra": [
+    {
+      "df": 1,
+      "token": "biographic"
+    }
+  ],
+  "biograp": [
+    {
+      "df": 1,
+      "token": "biographic"
+    }
+  ],
+  "biograph": [
+    {
+      "df": 1,
+      "token": "biographic"
+    }
+  ],
+  "biol": [
+    {
+      "df": 1,
+      "token": "biological"
+    }
+  ],
+  "biolo": [
+    {
+      "df": 1,
+      "token": "biological"
+    }
+  ],
+  "biolog": [
+    {
+      "df": 1,
+      "token": "biological"
+    }
+  ],
+  "biologi": [
+    {
+      "df": 1,
+      "token": "biological"
+    }
+  ],
+  "biologic": [
+    {
+      "df": 1,
+      "token": "biological"
+    }
+  ],
+  "bios": [
+    {
+      "df": 1,
+      "token": "biosys"
+    }
+  ],
+  "biosy": [
+    {
+      "df": 1,
+      "token": "biosys"
+    }
+  ],
+  "biosys": [
+    {
+      "df": 1,
+      "token": "biosys"
+    }
+  ],
+  "bir": [
+    {
+      "df": 4,
+      "token": "birth"
+    }
+  ],
+  "birt": [
+    {
+      "df": 4,
+      "token": "birth"
+    }
+  ],
+  "birth": [
+    {
+      "df": 4,
+      "token": "birth"
+    }
+  ],
+  "bis": [
+    {
+      "df": 1,
+      "token": "biss"
+    }
+  ],
+  "biss": [
+    {
+      "df": 1,
+      "token": "biss"
+    }
+  ]
+}

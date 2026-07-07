@@ -1,0 +1,287 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "diagnoses"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "diagnosis"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "diagram"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "diarists"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "diary"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "dictionary"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "differ"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "differences"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "different"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "differs"
+  },
+  {
+    "df": 104,
+    "postings": "data/search/postings-0.json",
+    "token": "digital"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "digital-child-health-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "digital-medicine-fhir"
+  },
+  {
+    "df": 93,
+    "postings": "data/search/postings-0.json",
+    "token": "digital.nhs.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "digital.you"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "digitally"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "direct"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "directly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "directors"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "directory"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "directory-of-healthcare-services"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "directory-of-services-soap"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "directory-of-services-urgent-and-emergency-care-rest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "directory.southampton.gov.uk"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "discharge"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "discharge.an"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discharge_activity"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dischargeactivityv1_0pollrequestwebservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dischargeactivityv1_0webservice"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "discharged"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discharges"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discover"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "discoveries"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "discovery"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discovery-api-instructions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discovery-for-developers-about-the-application-programming-interface-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "discovery.nationalarchives.gov.uk"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "discuss"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dispense"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "dispensed"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "dispenser"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "dispensers"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "dispensing"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "display"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "display-cert"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "display-recommendations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "display-search"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "displayed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "displaying"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dissent"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "distinct"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "distribution"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "district"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "divergences"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "diverse"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "divide"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "division"
+  }
+]

@@ -1,0 +1,726 @@
+{
+  "tea": [
+    {
+      "df": 4,
+      "token": "teams"
+    },
+    {
+      "df": 2,
+      "token": "teacher"
+    },
+    {
+      "df": 2,
+      "token": "team"
+    },
+    {
+      "df": 1,
+      "token": "teach"
+    },
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    },
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "teac": [
+    {
+      "df": 2,
+      "token": "teacher"
+    },
+    {
+      "df": 1,
+      "token": "teach"
+    },
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    },
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "teach": [
+    {
+      "df": 2,
+      "token": "teacher"
+    },
+    {
+      "df": 1,
+      "token": "teach"
+    },
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    },
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "teache": [
+    {
+      "df": 2,
+      "token": "teacher"
+    },
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    }
+  ],
+  "teacher": [
+    {
+      "df": 2,
+      "token": "teacher"
+    },
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    }
+  ],
+  "teacher-": [
+    {
+      "df": 1,
+      "token": "teacher-training-api"
+    }
+  ],
+  "teachi": [
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "teachin": [
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "teaching": [
+    {
+      "df": 1,
+      "token": "teaching"
+    }
+  ],
+  "team": [
+    {
+      "df": 4,
+      "token": "teams"
+    },
+    {
+      "df": 2,
+      "token": "team"
+    }
+  ],
+  "teams": [
+    {
+      "df": 4,
+      "token": "teams"
+    }
+  ],
+  "tec": [
+    {
+      "df": 3,
+      "token": "technical"
+    },
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "tech": [
+    {
+      "df": 3,
+      "token": "technical"
+    },
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "techn": [
+    {
+      "df": 3,
+      "token": "technical"
+    },
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "techni": [
+    {
+      "df": 3,
+      "token": "technical"
+    }
+  ],
+  "technic": [
+    {
+      "df": 3,
+      "token": "technical"
+    }
+  ],
+  "technica": [
+    {
+      "df": 3,
+      "token": "technical"
+    }
+  ],
+  "techno": [
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "technol": [
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "technolo": [
+    {
+      "df": 2,
+      "token": "technology"
+    },
+    {
+      "df": 1,
+      "token": "technology-reference-update-distribution-api"
+    }
+  ],
+  "tel": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 3,
+      "token": "tell"
+    },
+    {
+      "df": 1,
+      "token": "telemetry"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "tele": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 1,
+      "token": "telemetry"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "telem": [
+    {
+      "df": 1,
+      "token": "telemetry"
+    }
+  ],
+  "teleme": [
+    {
+      "df": 1,
+      "token": "telemetry"
+    }
+  ],
+  "telemet": [
+    {
+      "df": 1,
+      "token": "telemetry"
+    }
+  ],
+  "telemetr": [
+    {
+      "df": 1,
+      "token": "telemetry"
+    }
+  ],
+  "telep": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "teleph": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "telepho": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "telephon": [
+    {
+      "df": 3,
+      "token": "telephone"
+    },
+    {
+      "df": 1,
+      "token": "telephony"
+    }
+  ],
+  "tell": [
+    {
+      "df": 3,
+      "token": "tell"
+    }
+  ],
+  "tem": [
+    {
+      "df": 3,
+      "token": "temporary"
+    },
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "temp": [
+    {
+      "df": 3,
+      "token": "temporary"
+    },
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "templ": [
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "templa": [
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "templat": [
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "template": [
+    {
+      "df": 2,
+      "token": "templates"
+    }
+  ],
+  "tempo": [
+    {
+      "df": 3,
+      "token": "temporary"
+    }
+  ],
+  "tempor": [
+    {
+      "df": 3,
+      "token": "temporary"
+    }
+  ],
+  "tempora": [
+    {
+      "df": 3,
+      "token": "temporary"
+    }
+  ],
+  "temporar": [
+    {
+      "df": 3,
+      "token": "temporary"
+    }
+  ],
+  "ten": [
+    {
+      "df": 1,
+      "token": "tenure"
+    }
+  ],
+  "tenu": [
+    {
+      "df": 1,
+      "token": "tenure"
+    }
+  ],
+  "tenur": [
+    {
+      "df": 1,
+      "token": "tenure"
+    }
+  ],
+  "tenure": [
+    {
+      "df": 1,
+      "token": "tenure"
+    }
+  ],
+  "ter": [
+    {
+      "df": 3,
+      "token": "term"
+    },
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 3,
+      "token": "terms"
+    },
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "term": [
+    {
+      "df": 3,
+      "token": "term"
+    },
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 3,
+      "token": "terms"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "termi": [
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "termin": [
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "termino": [
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "terminol": [
+    {
+      "df": 3,
+      "token": "terminology"
+    },
+    {
+      "df": 1,
+      "token": "terminologies"
+    },
+    {
+      "df": 1,
+      "token": "terminology-server-fhir"
+    }
+  ],
+  "terms": [
+    {
+      "df": 3,
+      "token": "terms"
+    }
+  ],
+  "terr": [
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    }
+  ],
+  "terri": [
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    }
+  ],
+  "territ": [
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    }
+  ],
+  "territo": [
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    }
+  ],
+  "territor": [
+    {
+      "df": 3,
+      "token": "territories"
+    },
+    {
+      "df": 3,
+      "token": "territory"
+    }
+  ],
+  "tes": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    },
+    {
+      "df": 22,
+      "token": "test"
+    },
+    {
+      "df": 3,
+      "token": "tests"
+    },
+    {
+      "df": 2,
+      "token": "testing"
+    },
+    {
+      "df": 2,
+      "token": "testyou"
+    },
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "test": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    },
+    {
+      "df": 22,
+      "token": "test"
+    },
+    {
+      "df": 3,
+      "token": "tests"
+    },
+    {
+      "df": 2,
+      "token": "testing"
+    },
+    {
+      "df": 2,
+      "token": "testyou"
+    },
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "test-": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    }
+  ],
+  "test-a": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    }
+  ],
+  "test-ap": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    }
+  ],
+  "test-api": [
+    {
+      "df": 30,
+      "token": "test-api.service.hmrc.gov.uk"
+    }
+  ],
+  "testg": [
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "testgo": [
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "testgos": [
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "testgos3": [
+    {
+      "df": 1,
+      "token": "testgos3"
+    }
+  ],
+  "testi": [
+    {
+      "df": 2,
+      "token": "testing"
+    }
+  ],
+  "testin": [
+    {
+      "df": 2,
+      "token": "testing"
+    }
+  ],
+  "testing": [
+    {
+      "df": 2,
+      "token": "testing"
+    }
+  ],
+  "tests": [
+    {
+      "df": 3,
+      "token": "tests"
+    }
+  ],
+  "testy": [
+    {
+      "df": 2,
+      "token": "testyou"
+    }
+  ],
+  "testyo": [
+    {
+      "df": 2,
+      "token": "testyou"
+    }
+  ],
+  "testyou": [
+    {
+      "df": 2,
+      "token": "testyou"
+    }
+  ],
+  "tex": [
+    {
+      "df": 4,
+      "token": "text"
+    }
+  ],
+  "text": [
+    {
+      "df": 4,
+      "token": "text"
+    }
+  ]
+}

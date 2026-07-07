@@ -1,0 +1,137 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "chances"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "change"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "changefor"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "changes"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "channel"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "character"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "characteristics"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "charge"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "charges"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "chart"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "charts"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "check"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "check-eori-number-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "checked"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "checking"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "chemical"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "child"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "child-protection-information-sharing-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "childcare"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "childhood"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "children"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "childrens"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "choice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "choices"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "choose"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "choosing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "chunks"
+  }
+]

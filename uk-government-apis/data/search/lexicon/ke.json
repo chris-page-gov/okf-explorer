@@ -1,0 +1,37 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "keeper"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "key"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "keyed"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "keyfor"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "keys"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "keyword"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "keywords"
+  }
+]

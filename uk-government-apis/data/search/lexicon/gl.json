@@ -1,0 +1,17 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "glasses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "glher"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "global"
+  }
+]

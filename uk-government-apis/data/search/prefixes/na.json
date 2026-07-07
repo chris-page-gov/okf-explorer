@@ -1,0 +1,592 @@
+{
+  "nac": [
+    {
+      "df": 1,
+      "token": "nacs"
+    }
+  ],
+  "nacs": [
+    {
+      "df": 1,
+      "token": "nacs"
+    }
+  ],
+  "naf": [
+    {
+      "df": 1,
+      "token": "nafter"
+    }
+  ],
+  "naft": [
+    {
+      "df": 1,
+      "token": "nafter"
+    }
+  ],
+  "nafte": [
+    {
+      "df": 1,
+      "token": "nafter"
+    }
+  ],
+  "nafter": [
+    {
+      "df": 1,
+      "token": "nafter"
+    }
+  ],
+  "nam": [
+    {
+      "df": 16,
+      "token": "name"
+    },
+    {
+      "df": 2,
+      "token": "names"
+    },
+    {
+      "df": 1,
+      "token": "named"
+    },
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "name": [
+    {
+      "df": 16,
+      "token": "name"
+    },
+    {
+      "df": 2,
+      "token": "names"
+    },
+    {
+      "df": 1,
+      "token": "named"
+    },
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "named": [
+    {
+      "df": 1,
+      "token": "named"
+    },
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "namedt": [
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "namedth": [
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "namedthe": [
+    {
+      "df": 1,
+      "token": "namedthe"
+    }
+  ],
+  "names": [
+    {
+      "df": 2,
+      "token": "names"
+    }
+  ],
+  "nan": [
+    {
+      "df": 2,
+      "token": "nan"
+    }
+  ],
+  "nap": [
+    {
+      "df": 1,
+      "token": "naptan"
+    },
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "napt": [
+    {
+      "df": 1,
+      "token": "naptan"
+    },
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "napta": [
+    {
+      "df": 1,
+      "token": "naptan"
+    },
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "naptan": [
+    {
+      "df": 1,
+      "token": "naptan"
+    },
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "naptan.": [
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "naptan.a": [
+    {
+      "df": 1,
+      "token": "naptan.api.dft.gov.uk"
+    }
+  ],
+  "nas": [
+    {
+      "df": 2,
+      "token": "nassets"
+    },
+    {
+      "df": 1,
+      "token": "nas"
+    }
+  ],
+  "nass": [
+    {
+      "df": 2,
+      "token": "nassets"
+    }
+  ],
+  "nasse": [
+    {
+      "df": 2,
+      "token": "nassets"
+    }
+  ],
+  "nasset": [
+    {
+      "df": 2,
+      "token": "nassets"
+    }
+  ],
+  "nassets": [
+    {
+      "df": 2,
+      "token": "nassets"
+    }
+  ],
+  "nat": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 3,
+      "token": "nation"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    },
+    {
+      "df": 1,
+      "token": "native"
+    },
+    {
+      "df": 1,
+      "token": "natural"
+    }
+  ],
+  "nati": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 3,
+      "token": "nation"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    },
+    {
+      "df": 1,
+      "token": "native"
+    }
+  ],
+  "natio": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 3,
+      "token": "nation"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    }
+  ],
+  "nation": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 3,
+      "token": "nation"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    }
+  ],
+  "nationa": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    }
+  ],
+  "national": [
+    {
+      "df": 32,
+      "token": "national"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-data-opt-out-service-mesh"
+    },
+    {
+      "df": 1,
+      "token": "national-events-management-service-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national-insurance"
+    },
+    {
+      "df": 1,
+      "token": "national-record-locator-fhir"
+    },
+    {
+      "df": 1,
+      "token": "national_heritage_list_for_england_nhle_v02_view"
+    },
+    {
+      "df": 1,
+      "token": "nationalarchives.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "nationality"
+    },
+    {
+      "df": 1,
+      "token": "nationally"
+    }
+  ],
+  "nativ": [
+    {
+      "df": 1,
+      "token": "native"
+    }
+  ],
+  "native": [
+    {
+      "df": 1,
+      "token": "native"
+    }
+  ],
+  "natu": [
+    {
+      "df": 1,
+      "token": "natural"
+    }
+  ],
+  "natur": [
+    {
+      "df": 1,
+      "token": "natural"
+    }
+  ],
+  "natura": [
+    {
+      "df": 1,
+      "token": "natural"
+    }
+  ],
+  "natural": [
+    {
+      "df": 1,
+      "token": "natural"
+    }
+  ],
+  "nav": [
+    {
+      "df": 1,
+      "token": "navcs"
+    },
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ],
+  "navc": [
+    {
+      "df": 1,
+      "token": "navcs"
+    }
+  ],
+  "navcs": [
+    {
+      "df": 1,
+      "token": "navcs"
+    }
+  ],
+  "navi": [
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ],
+  "navig": [
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ],
+  "naviga": [
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ],
+  "navigat": [
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ],
+  "navigati": [
+    {
+      "df": 1,
+      "token": "navigation"
+    },
+    {
+      "df": 1,
+      "token": "navigational"
+    }
+  ]
+}

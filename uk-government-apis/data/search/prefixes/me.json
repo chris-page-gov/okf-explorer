@@ -1,0 +1,1366 @@
+{
+  "mea": [
+    {
+      "df": 6,
+      "token": "measurements"
+    },
+    {
+      "df": 3,
+      "token": "measure"
+    },
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 2,
+      "token": "means"
+    },
+    {
+      "df": 1,
+      "token": "mean"
+    },
+    {
+      "df": 1,
+      "token": "meaning"
+    },
+    {
+      "df": 1,
+      "token": "measles"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "mean": [
+    {
+      "df": 2,
+      "token": "means"
+    },
+    {
+      "df": 1,
+      "token": "mean"
+    },
+    {
+      "df": 1,
+      "token": "meaning"
+    }
+  ],
+  "meani": [
+    {
+      "df": 1,
+      "token": "meaning"
+    }
+  ],
+  "meanin": [
+    {
+      "df": 1,
+      "token": "meaning"
+    }
+  ],
+  "meaning": [
+    {
+      "df": 1,
+      "token": "meaning"
+    }
+  ],
+  "means": [
+    {
+      "df": 2,
+      "token": "means"
+    }
+  ],
+  "meas": [
+    {
+      "df": 6,
+      "token": "measurements"
+    },
+    {
+      "df": 3,
+      "token": "measure"
+    },
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 1,
+      "token": "measles"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "measl": [
+    {
+      "df": 1,
+      "token": "measles"
+    }
+  ],
+  "measle": [
+    {
+      "df": 1,
+      "token": "measles"
+    }
+  ],
+  "measles": [
+    {
+      "df": 1,
+      "token": "measles"
+    }
+  ],
+  "measu": [
+    {
+      "df": 6,
+      "token": "measurements"
+    },
+    {
+      "df": 3,
+      "token": "measure"
+    },
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "measur": [
+    {
+      "df": 6,
+      "token": "measurements"
+    },
+    {
+      "df": 3,
+      "token": "measure"
+    },
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "measure": [
+    {
+      "df": 6,
+      "token": "measurements"
+    },
+    {
+      "df": 3,
+      "token": "measure"
+    },
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    },
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "measurem": [
+    {
+      "df": 6,
+      "token": "measurements"
+    }
+  ],
+  "measures": [
+    {
+      "df": 3,
+      "token": "measures"
+    },
+    {
+      "df": 1,
+      "token": "measures-as-defined"
+    },
+    {
+      "df": 1,
+      "token": "measures-on-declarable-commodities"
+    }
+  ],
+  "measurew": [
+    {
+      "df": 1,
+      "token": "measurewe"
+    }
+  ],
+  "mec": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "mech": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "mecha": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "mechan": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "mechani": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "mechanis": [
+    {
+      "df": 2,
+      "token": "mechanism"
+    }
+  ],
+  "med": [
+    {
+      "df": 7,
+      "token": "medical"
+    },
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    },
+    {
+      "df": 1,
+      "token": "mediates"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    },
+    {
+      "df": 1,
+      "token": "medin"
+    },
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    },
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "medi": [
+    {
+      "df": 7,
+      "token": "medical"
+    },
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    },
+    {
+      "df": 1,
+      "token": "mediates"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    },
+    {
+      "df": 1,
+      "token": "medin"
+    },
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    },
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "media": [
+    {
+      "df": 1,
+      "token": "mediates"
+    }
+  ],
+  "mediat": [
+    {
+      "df": 1,
+      "token": "mediates"
+    }
+  ],
+  "mediate": [
+    {
+      "df": 1,
+      "token": "mediates"
+    }
+  ],
+  "mediates": [
+    {
+      "df": 1,
+      "token": "mediates"
+    }
+  ],
+  "medic": [
+    {
+      "df": 7,
+      "token": "medical"
+    },
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    }
+  ],
+  "medica": [
+    {
+      "df": 7,
+      "token": "medical"
+    },
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    }
+  ],
+  "medical": [
+    {
+      "df": 7,
+      "token": "medical"
+    }
+  ],
+  "medicat": [
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    }
+  ],
+  "medicati": [
+    {
+      "df": 3,
+      "token": "medication"
+    },
+    {
+      "df": 3,
+      "token": "medications"
+    },
+    {
+      "df": 1,
+      "token": "medicationrequest"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatements"
+    },
+    {
+      "df": 1,
+      "token": "medicationstatementyou"
+    }
+  ],
+  "medici": [
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    }
+  ],
+  "medicin": [
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    }
+  ],
+  "medicine": [
+    {
+      "df": 3,
+      "token": "medicine"
+    },
+    {
+      "df": 2,
+      "token": "medicines"
+    }
+  ],
+  "medin": [
+    {
+      "df": 1,
+      "token": "medin"
+    },
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    },
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "medin-": [
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    }
+  ],
+  "medin-d": [
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    }
+  ],
+  "medin-di": [
+    {
+      "df": 1,
+      "token": "medin-discovery-metadata-standard"
+    }
+  ],
+  "medin.": [
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "medin.o": [
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "medin.or": [
+    {
+      "df": 1,
+      "token": "medin.org.uk"
+    }
+  ],
+  "mee": [
+    {
+      "df": 4,
+      "token": "meeting"
+    },
+    {
+      "df": 2,
+      "token": "meet"
+    },
+    {
+      "df": 2,
+      "token": "meetingfor"
+    },
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "meet": [
+    {
+      "df": 4,
+      "token": "meeting"
+    },
+    {
+      "df": 2,
+      "token": "meet"
+    },
+    {
+      "df": 2,
+      "token": "meetingfor"
+    },
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "meeti": [
+    {
+      "df": 4,
+      "token": "meeting"
+    },
+    {
+      "df": 2,
+      "token": "meetingfor"
+    },
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "meetin": [
+    {
+      "df": 4,
+      "token": "meeting"
+    },
+    {
+      "df": 2,
+      "token": "meetingfor"
+    },
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "meeting": [
+    {
+      "df": 4,
+      "token": "meeting"
+    },
+    {
+      "df": 2,
+      "token": "meetingfor"
+    },
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "meetingf": [
+    {
+      "df": 2,
+      "token": "meetingfor"
+    }
+  ],
+  "meetings": [
+    {
+      "df": 2,
+      "token": "meetings"
+    }
+  ],
+  "mem": [
+    {
+      "df": 2,
+      "token": "members"
+    },
+    {
+      "df": 1,
+      "token": "member"
+    }
+  ],
+  "memb": [
+    {
+      "df": 2,
+      "token": "members"
+    },
+    {
+      "df": 1,
+      "token": "member"
+    }
+  ],
+  "membe": [
+    {
+      "df": 2,
+      "token": "members"
+    },
+    {
+      "df": 1,
+      "token": "member"
+    }
+  ],
+  "member": [
+    {
+      "df": 2,
+      "token": "members"
+    },
+    {
+      "df": 1,
+      "token": "member"
+    }
+  ],
+  "members": [
+    {
+      "df": 2,
+      "token": "members"
+    }
+  ],
+  "men": [
+    {
+      "df": 3,
+      "token": "mental"
+    }
+  ],
+  "ment": [
+    {
+      "df": 3,
+      "token": "mental"
+    }
+  ],
+  "menta": [
+    {
+      "df": 3,
+      "token": "mental"
+    }
+  ],
+  "mental": [
+    {
+      "df": 3,
+      "token": "mental"
+    }
+  ],
+  "mer": [
+    {
+      "df": 1,
+      "token": "mergers"
+    }
+  ],
+  "merg": [
+    {
+      "df": 1,
+      "token": "mergers"
+    }
+  ],
+  "merge": [
+    {
+      "df": 1,
+      "token": "mergers"
+    }
+  ],
+  "merger": [
+    {
+      "df": 1,
+      "token": "mergers"
+    }
+  ],
+  "mergers": [
+    {
+      "df": 1,
+      "token": "mergers"
+    }
+  ],
+  "mes": [
+    {
+      "df": 30,
+      "token": "mesh"
+    },
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 23,
+      "token": "message"
+    },
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "mesh.also"
+    },
+    {
+      "df": 1,
+      "token": "mesh.for"
+    },
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    },
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    },
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    },
+    {
+      "df": 1,
+      "token": "message.each"
+    },
+    {
+      "df": 1,
+      "token": "messageas"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "mesh": [
+    {
+      "df": 30,
+      "token": "mesh"
+    },
+    {
+      "df": 1,
+      "token": "mesh.also"
+    },
+    {
+      "df": 1,
+      "token": "mesh.for"
+    },
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    },
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    }
+  ],
+  "mesh.": [
+    {
+      "df": 1,
+      "token": "mesh.also"
+    },
+    {
+      "df": 1,
+      "token": "mesh.for"
+    },
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    },
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    }
+  ],
+  "mesh.a": [
+    {
+      "df": 1,
+      "token": "mesh.also"
+    }
+  ],
+  "mesh.al": [
+    {
+      "df": 1,
+      "token": "mesh.also"
+    }
+  ],
+  "mesh.als": [
+    {
+      "df": 1,
+      "token": "mesh.also"
+    }
+  ],
+  "mesh.f": [
+    {
+      "df": 1,
+      "token": "mesh.for"
+    }
+  ],
+  "mesh.fo": [
+    {
+      "df": 1,
+      "token": "mesh.for"
+    }
+  ],
+  "mesh.for": [
+    {
+      "df": 1,
+      "token": "mesh.for"
+    }
+  ],
+  "mesh.n": [
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    }
+  ],
+  "mesh.ne": [
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    }
+  ],
+  "mesh.nem": [
+    {
+      "df": 1,
+      "token": "mesh.nems"
+    }
+  ],
+  "mesh.s": [
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    }
+  ],
+  "mesh.su": [
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    }
+  ],
+  "mesh.sub": [
+    {
+      "df": 1,
+      "token": "mesh.subscribed"
+    }
+  ],
+  "mess": [
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 23,
+      "token": "message"
+    },
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    },
+    {
+      "df": 1,
+      "token": "message.each"
+    },
+    {
+      "df": 1,
+      "token": "messageas"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "messa": [
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 23,
+      "token": "message"
+    },
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    },
+    {
+      "df": 1,
+      "token": "message.each"
+    },
+    {
+      "df": 1,
+      "token": "messageas"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "messag": [
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 23,
+      "token": "message"
+    },
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    },
+    {
+      "df": 1,
+      "token": "message.each"
+    },
+    {
+      "df": 1,
+      "token": "messageas"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "message": [
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 23,
+      "token": "message"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    },
+    {
+      "df": 1,
+      "token": "message.each"
+    },
+    {
+      "df": 1,
+      "token": "messageas"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    }
+  ],
+  "message-": [
+    {
+      "df": 1,
+      "token": "message-exchange-for-social-care-and-health-api"
+    }
+  ],
+  "message.": [
+    {
+      "df": 1,
+      "token": "message.each"
+    }
+  ],
+  "messagea": [
+    {
+      "df": 1,
+      "token": "messageas"
+    }
+  ],
+  "messages": [
+    {
+      "df": 24,
+      "token": "messages"
+    },
+    {
+      "df": 2,
+      "token": "messages.the"
+    },
+    {
+      "df": 1,
+      "token": "messages.for"
+    },
+    {
+      "df": 1,
+      "token": "messages.information"
+    }
+  ],
+  "messagi": [
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "messagin": [
+    {
+      "df": 11,
+      "token": "messaging"
+    },
+    {
+      "df": 1,
+      "token": "messaging.for"
+    }
+  ],
+  "met": [
+    {
+      "df": 12,
+      "token": "metadata"
+    },
+    {
+      "df": 3,
+      "token": "methods"
+    },
+    {
+      "df": 2,
+      "token": "met"
+    },
+    {
+      "df": 2,
+      "token": "meta-data"
+    },
+    {
+      "df": 2,
+      "token": "methodologies"
+    },
+    {
+      "df": 2,
+      "token": "metrics"
+    },
+    {
+      "df": 1,
+      "token": "metal"
+    },
+    {
+      "df": 1,
+      "token": "method"
+    },
+    {
+      "df": 1,
+      "token": "metric"
+    }
+  ],
+  "meta": [
+    {
+      "df": 12,
+      "token": "metadata"
+    },
+    {
+      "df": 2,
+      "token": "meta-data"
+    },
+    {
+      "df": 1,
+      "token": "metal"
+    }
+  ],
+  "meta-": [
+    {
+      "df": 2,
+      "token": "meta-data"
+    }
+  ],
+  "meta-d": [
+    {
+      "df": 2,
+      "token": "meta-data"
+    }
+  ],
+  "meta-da": [
+    {
+      "df": 2,
+      "token": "meta-data"
+    }
+  ],
+  "meta-dat": [
+    {
+      "df": 2,
+      "token": "meta-data"
+    }
+  ],
+  "metad": [
+    {
+      "df": 12,
+      "token": "metadata"
+    }
+  ],
+  "metada": [
+    {
+      "df": 12,
+      "token": "metadata"
+    }
+  ],
+  "metadat": [
+    {
+      "df": 12,
+      "token": "metadata"
+    }
+  ],
+  "metadata": [
+    {
+      "df": 12,
+      "token": "metadata"
+    }
+  ],
+  "metal": [
+    {
+      "df": 1,
+      "token": "metal"
+    }
+  ],
+  "meth": [
+    {
+      "df": 3,
+      "token": "methods"
+    },
+    {
+      "df": 2,
+      "token": "methodologies"
+    },
+    {
+      "df": 1,
+      "token": "method"
+    }
+  ],
+  "metho": [
+    {
+      "df": 3,
+      "token": "methods"
+    },
+    {
+      "df": 2,
+      "token": "methodologies"
+    },
+    {
+      "df": 1,
+      "token": "method"
+    }
+  ],
+  "method": [
+    {
+      "df": 3,
+      "token": "methods"
+    },
+    {
+      "df": 2,
+      "token": "methodologies"
+    },
+    {
+      "df": 1,
+      "token": "method"
+    }
+  ],
+  "methodo": [
+    {
+      "df": 2,
+      "token": "methodologies"
+    }
+  ],
+  "methodol": [
+    {
+      "df": 2,
+      "token": "methodologies"
+    }
+  ],
+  "methods": [
+    {
+      "df": 3,
+      "token": "methods"
+    }
+  ],
+  "metr": [
+    {
+      "df": 2,
+      "token": "metrics"
+    },
+    {
+      "df": 1,
+      "token": "metric"
+    }
+  ],
+  "metri": [
+    {
+      "df": 2,
+      "token": "metrics"
+    },
+    {
+      "df": 1,
+      "token": "metric"
+    }
+  ],
+  "metric": [
+    {
+      "df": 2,
+      "token": "metrics"
+    },
+    {
+      "df": 1,
+      "token": "metric"
+    }
+  ],
+  "metrics": [
+    {
+      "df": 2,
+      "token": "metrics"
+    }
+  ]
+}

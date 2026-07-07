@@ -1,0 +1,36 @@
+{
+  "lmk": [
+    {
+      "df": 6,
+      "token": "lmk-key"
+    },
+    {
+      "df": 3,
+      "token": "lmk"
+    }
+  ],
+  "lmk-": [
+    {
+      "df": 6,
+      "token": "lmk-key"
+    }
+  ],
+  "lmk-k": [
+    {
+      "df": 6,
+      "token": "lmk-key"
+    }
+  ],
+  "lmk-ke": [
+    {
+      "df": 6,
+      "token": "lmk-key"
+    }
+  ],
+  "lmk-key": [
+    {
+      "df": 6,
+      "token": "lmk-key"
+    }
+  ]
+}

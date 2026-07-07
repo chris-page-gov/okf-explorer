@@ -1,0 +1,62 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "safe"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "safeguarding"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "safely"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "safety"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "same"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sameas"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "samples"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sampling"
+  },
+  {
+    "df": 32,
+    "postings": "data/search/postings-0.json",
+    "token": "sandbox"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "saved"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "savings"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "say"
+  }
+]

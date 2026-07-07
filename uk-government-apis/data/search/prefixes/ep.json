@@ -1,0 +1,122 @@
+{
+  "epc": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    },
+    {
+      "df": 3,
+      "token": "epc"
+    }
+  ],
+  "epc.": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    }
+  ],
+  "epc.o": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    }
+  ],
+  "epc.op": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    }
+  ],
+  "epc.ope": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    }
+  ],
+  "epc.open": [
+    {
+      "df": 10,
+      "token": "epc.opendatacommunities.org"
+    }
+  ],
+  "epi": [
+    {
+      "df": 1,
+      "token": "episode"
+    }
+  ],
+  "epis": [
+    {
+      "df": 1,
+      "token": "episode"
+    }
+  ],
+  "episo": [
+    {
+      "df": 1,
+      "token": "episode"
+    }
+  ],
+  "episod": [
+    {
+      "df": 1,
+      "token": "episode"
+    }
+  ],
+  "episode": [
+    {
+      "df": 1,
+      "token": "episode"
+    }
+  ],
+  "eps": [
+    {
+      "df": 4,
+      "token": "eps"
+    },
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    },
+    {
+      "df": 1,
+      "token": "epsg"
+    }
+  ],
+  "eps-": [
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    }
+  ],
+  "eps-e": [
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    }
+  ],
+  "eps-en": [
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    }
+  ],
+  "eps-ena": [
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    }
+  ],
+  "eps-enab": [
+    {
+      "df": 1,
+      "token": "eps-enabled"
+    }
+  ],
+  "epsg": [
+    {
+      "df": 1,
+      "token": "epsg"
+    }
+  ]
+}

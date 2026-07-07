@@ -1,0 +1,576 @@
+{
+  "doc": [
+    {
+      "df": 56,
+      "token": "docs"
+    },
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 9,
+      "token": "doc"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "doctor"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "docs": [
+    {
+      "df": 56,
+      "token": "docs"
+    },
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    }
+  ],
+  "docs.": [
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    }
+  ],
+  "docs.p": [
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    }
+  ],
+  "docs.pa": [
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    }
+  ],
+  "docs.pay": [
+    {
+      "df": 1,
+      "token": "docs.payments.service.gov.uk"
+    }
+  ],
+  "docs.pu": [
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    }
+  ],
+  "docs.pub": [
+    {
+      "df": 2,
+      "token": "docs.publishing.service.gov.uk"
+    }
+  ],
+  "doct": [
+    {
+      "df": 1,
+      "token": "doctor"
+    }
+  ],
+  "docto": [
+    {
+      "df": 1,
+      "token": "doctor"
+    }
+  ],
+  "doctor": [
+    {
+      "df": 1,
+      "token": "doctor"
+    }
+  ],
+  "docu": [
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "docum": [
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "docume": [
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "documen": [
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "document": [
+    {
+      "df": 18,
+      "token": "document"
+    },
+    {
+      "df": 10,
+      "token": "documents"
+    },
+    {
+      "df": 5,
+      "token": "documentation"
+    },
+    {
+      "df": 1,
+      "token": "documentfor"
+    },
+    {
+      "df": 1,
+      "token": "documentsto"
+    }
+  ],
+  "doe": [
+    {
+      "df": 11,
+      "token": "does"
+    }
+  ],
+  "does": [
+    {
+      "df": 11,
+      "token": "does"
+    }
+  ],
+  "doi": [
+    {
+      "df": 2,
+      "token": "doing"
+    }
+  ],
+  "doin": [
+    {
+      "df": 2,
+      "token": "doing"
+    }
+  ],
+  "doing": [
+    {
+      "df": 2,
+      "token": "doing"
+    }
+  ],
+  "dom": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domains"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "doma": [
+    {
+      "df": 1,
+      "token": "domains"
+    }
+  ],
+  "domai": [
+    {
+      "df": 1,
+      "token": "domains"
+    }
+  ],
+  "domain": [
+    {
+      "df": 1,
+      "token": "domains"
+    }
+  ],
+  "domains": [
+    {
+      "df": 1,
+      "token": "domains"
+    }
+  ],
+  "dome": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "domes": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "domest": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "domesti": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "domestic": [
+    {
+      "df": 3,
+      "token": "domestic"
+    },
+    {
+      "df": 1,
+      "token": "domestic-cert"
+    },
+    {
+      "df": 1,
+      "token": "domestic-recommendations"
+    },
+    {
+      "df": 1,
+      "token": "domestic-search"
+    }
+  ],
+  "don": [
+    {
+      "df": 2,
+      "token": "done"
+    },
+    {
+      "df": 1,
+      "token": "dont"
+    }
+  ],
+  "done": [
+    {
+      "df": 2,
+      "token": "done"
+    }
+  ],
+  "dont": [
+    {
+      "df": 1,
+      "token": "dont"
+    }
+  ],
+  "doo": [
+    {
+      "df": 1,
+      "token": "door"
+    }
+  ],
+  "door": [
+    {
+      "df": 1,
+      "token": "door"
+    }
+  ],
+  "dos": [
+    {
+      "df": 3,
+      "token": "dos"
+    }
+  ],
+  "dou": [
+    {
+      "df": 1,
+      "token": "double"
+    }
+  ],
+  "doub": [
+    {
+      "df": 1,
+      "token": "double"
+    }
+  ],
+  "doubl": [
+    {
+      "df": 1,
+      "token": "double"
+    }
+  ],
+  "double": [
+    {
+      "df": 1,
+      "token": "double"
+    }
+  ],
+  "dow": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 3,
+      "token": "down"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ],
+  "down": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 3,
+      "token": "down"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ],
+  "downl": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ],
+  "downlo": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ],
+  "downloa": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ],
+  "download": [
+    {
+      "df": 23,
+      "token": "download"
+    },
+    {
+      "df": 2,
+      "token": "downloads"
+    },
+    {
+      "df": 1,
+      "token": "download-sos"
+    },
+    {
+      "df": 1,
+      "token": "downloads.this"
+    }
+  ]
+}

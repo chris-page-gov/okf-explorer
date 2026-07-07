@@ -1,0 +1,490 @@
+{
+  "uk-": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    },
+    {
+      "df": 2,
+      "token": "uk-based"
+    },
+    {
+      "df": 1,
+      "token": "uk-air"
+    },
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    },
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-a": [
+    {
+      "df": 1,
+      "token": "uk-air"
+    },
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    }
+  ],
+  "uk-ai": [
+    {
+      "df": 1,
+      "token": "uk-air"
+    },
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    }
+  ],
+  "uk-air": [
+    {
+      "df": 1,
+      "token": "uk-air"
+    },
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    }
+  ],
+  "uk-air.": [
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    }
+  ],
+  "uk-air.d": [
+    {
+      "df": 1,
+      "token": "uk-air.defra.gov.uk"
+    }
+  ],
+  "uk-b": [
+    {
+      "df": 2,
+      "token": "uk-based"
+    },
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    }
+  ],
+  "uk-ba": [
+    {
+      "df": 2,
+      "token": "uk-based"
+    }
+  ],
+  "uk-bas": [
+    {
+      "df": 2,
+      "token": "uk-based"
+    }
+  ],
+  "uk-base": [
+    {
+      "df": 2,
+      "token": "uk-based"
+    }
+  ],
+  "uk-based": [
+    {
+      "df": 2,
+      "token": "uk-based"
+    }
+  ],
+  "uk-bu": [
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    }
+  ],
+  "uk-bus": [
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    }
+  ],
+  "uk-busi": [
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    }
+  ],
+  "uk-busin": [
+    {
+      "df": 1,
+      "token": "uk-business-regulations"
+    }
+  ],
+  "uk-h": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    }
+  ],
+  "uk-hy": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    }
+  ],
+  "uk-hyd": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    }
+  ],
+  "uk-hydr": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    }
+  ],
+  "uk-hydro": [
+    {
+      "df": 4,
+      "token": "uk-hydrographic-office"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-avcs-online-discovery-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-hydrographic-office-uk-tidal-api-discovery"
+    }
+  ],
+  "uk-p": [
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    }
+  ],
+  "uk-po": [
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    }
+  ],
+  "uk-pol": [
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    }
+  ],
+  "uk-poli": [
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    }
+  ],
+  "uk-polic": [
+    {
+      "df": 1,
+      "token": "uk-police"
+    },
+    {
+      "df": 1,
+      "token": "uk-police-police-api"
+    }
+  ],
+  "uk-t": [
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    },
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-ta": [
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    }
+  ],
+  "uk-tar": [
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    }
+  ],
+  "uk-tari": [
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    }
+  ],
+  "uk-tarif": [
+    {
+      "df": 3,
+      "token": "uk-tariff-2021-01-01"
+    }
+  ],
+  "uk-ti": [
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    }
+  ],
+  "uk-tid": [
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    }
+  ],
+  "uk-tida": [
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    }
+  ],
+  "uk-tidal": [
+    {
+      "df": 1,
+      "token": "uk-tidal-api"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-foundation"
+    },
+    {
+      "df": 1,
+      "token": "uk-tidal-api-premium"
+    }
+  ],
+  "uk-tr": [
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-tra": [
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-trad": [
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-trade": [
+    {
+      "df": 1,
+      "token": "uk-trade-quotas"
+    }
+  ],
+  "uk-w": [
+    {
+      "df": 1,
+      "token": "uk-wide"
+    }
+  ],
+  "uk-wi": [
+    {
+      "df": 1,
+      "token": "uk-wide"
+    }
+  ],
+  "uk-wid": [
+    {
+      "df": 1,
+      "token": "uk-wide"
+    }
+  ],
+  "uk-wide": [
+    {
+      "df": 1,
+      "token": "uk-wide"
+    }
+  ],
+  "ukg": [
+    {
+      "df": 3,
+      "token": "ukgt"
+    }
+  ],
+  "ukgt": [
+    {
+      "df": 3,
+      "token": "ukgt"
+    }
+  ]
+}

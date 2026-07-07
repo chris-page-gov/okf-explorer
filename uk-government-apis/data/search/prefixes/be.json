@@ -1,0 +1,484 @@
+{
+  "bec": [
+    {
+      "df": 5,
+      "token": "becoming"
+    },
+    {
+      "df": 3,
+      "token": "because"
+    }
+  ],
+  "beca": [
+    {
+      "df": 3,
+      "token": "because"
+    }
+  ],
+  "becau": [
+    {
+      "df": 3,
+      "token": "because"
+    }
+  ],
+  "becaus": [
+    {
+      "df": 3,
+      "token": "because"
+    }
+  ],
+  "because": [
+    {
+      "df": 3,
+      "token": "because"
+    }
+  ],
+  "beco": [
+    {
+      "df": 5,
+      "token": "becoming"
+    }
+  ],
+  "becom": [
+    {
+      "df": 5,
+      "token": "becoming"
+    }
+  ],
+  "becomi": [
+    {
+      "df": 5,
+      "token": "becoming"
+    }
+  ],
+  "becomin": [
+    {
+      "df": 5,
+      "token": "becoming"
+    }
+  ],
+  "becoming": [
+    {
+      "df": 5,
+      "token": "becoming"
+    }
+  ],
+  "bee": [
+    {
+      "df": 16,
+      "token": "been"
+    }
+  ],
+  "been": [
+    {
+      "df": 16,
+      "token": "been"
+    }
+  ],
+  "bef": [
+    {
+      "df": 15,
+      "token": "before"
+    }
+  ],
+  "befo": [
+    {
+      "df": 15,
+      "token": "before"
+    }
+  ],
+  "befor": [
+    {
+      "df": 15,
+      "token": "before"
+    }
+  ],
+  "before": [
+    {
+      "df": 15,
+      "token": "before"
+    }
+  ],
+  "beg": [
+    {
+      "df": 9,
+      "token": "begin"
+    },
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "begi": [
+    {
+      "df": 9,
+      "token": "begin"
+    },
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "begin": [
+    {
+      "df": 9,
+      "token": "begin"
+    },
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "beginn": [
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "beginni": [
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "beginnin": [
+    {
+      "df": 1,
+      "token": "beginning"
+    }
+  ],
+  "beh": [
+    {
+      "df": 5,
+      "token": "behalf"
+    },
+    {
+      "df": 1,
+      "token": "behind"
+    }
+  ],
+  "beha": [
+    {
+      "df": 5,
+      "token": "behalf"
+    }
+  ],
+  "behal": [
+    {
+      "df": 5,
+      "token": "behalf"
+    }
+  ],
+  "behalf": [
+    {
+      "df": 5,
+      "token": "behalf"
+    }
+  ],
+  "behi": [
+    {
+      "df": 1,
+      "token": "behind"
+    }
+  ],
+  "behin": [
+    {
+      "df": 1,
+      "token": "behind"
+    }
+  ],
+  "behind": [
+    {
+      "df": 1,
+      "token": "behind"
+    }
+  ],
+  "bei": [
+    {
+      "df": 11,
+      "token": "being"
+    }
+  ],
+  "bein": [
+    {
+      "df": 11,
+      "token": "being"
+    }
+  ],
+  "being": [
+    {
+      "df": 11,
+      "token": "being"
+    }
+  ],
+  "bel": [
+    {
+      "df": 8,
+      "token": "below"
+    },
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "belo": [
+    {
+      "df": 8,
+      "token": "below"
+    },
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "below": [
+    {
+      "df": 8,
+      "token": "below"
+    },
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "below.": [
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "below.b": [
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "below.bo": [
+    {
+      "df": 1,
+      "token": "below.bowel"
+    }
+  ],
+  "ben": [
+    {
+      "df": 5,
+      "token": "benefit"
+    },
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "bene": [
+    {
+      "df": 5,
+      "token": "benefit"
+    },
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "benef": [
+    {
+      "df": 5,
+      "token": "benefit"
+    },
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "benefi": [
+    {
+      "df": 5,
+      "token": "benefit"
+    },
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "benefit": [
+    {
+      "df": 5,
+      "token": "benefit"
+    },
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "benefits": [
+    {
+      "df": 3,
+      "token": "benefits"
+    }
+  ],
+  "ber": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "berk": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "berks": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "berksh": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "berkshi": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "berkshir": [
+    {
+      "df": 1,
+      "token": "berkshire"
+    }
+  ],
+  "bes": [
+    {
+      "df": 9,
+      "token": "best"
+    }
+  ],
+  "best": [
+    {
+      "df": 9,
+      "token": "best"
+    }
+  ],
+  "bet": [
+    {
+      "df": 17,
+      "token": "between"
+    },
+    {
+      "df": 8,
+      "token": "beta"
+    },
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    },
+    {
+      "df": 1,
+      "token": "better"
+    }
+  ],
+  "beta": [
+    {
+      "df": 8,
+      "token": "beta"
+    },
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    }
+  ],
+  "betaa": [
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    }
+  ],
+  "betaap": [
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    }
+  ],
+  "betaapp": [
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    }
+  ],
+  "betaappl": [
+    {
+      "df": 1,
+      "token": "betaapplication-restricted"
+    }
+  ],
+  "bett": [
+    {
+      "df": 1,
+      "token": "better"
+    }
+  ],
+  "bette": [
+    {
+      "df": 1,
+      "token": "better"
+    }
+  ],
+  "better": [
+    {
+      "df": 1,
+      "token": "better"
+    }
+  ],
+  "betw": [
+    {
+      "df": 17,
+      "token": "between"
+    }
+  ],
+  "betwe": [
+    {
+      "df": 17,
+      "token": "between"
+    }
+  ],
+  "betwee": [
+    {
+      "df": 17,
+      "token": "between"
+    }
+  ],
+  "between": [
+    {
+      "df": 17,
+      "token": "between"
+    }
+  ],
+  "bey": [
+    {
+      "df": 1,
+      "token": "beyond"
+    }
+  ],
+  "beyo": [
+    {
+      "df": 1,
+      "token": "beyond"
+    }
+  ],
+  "beyon": [
+    {
+      "df": 1,
+      "token": "beyond"
+    }
+  ],
+  "beyond": [
+    {
+      "df": 1,
+      "token": "beyond"
+    }
+  ]
+}

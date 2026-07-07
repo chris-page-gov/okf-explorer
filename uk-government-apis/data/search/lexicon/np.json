@@ -1,0 +1,37 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "nparameters"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "npfit-pc-bld-0173.01"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "nplease"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "npoll"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "npremium"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nprotected"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "nptg"
+  }
+]

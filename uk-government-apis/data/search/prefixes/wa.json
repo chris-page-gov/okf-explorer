@@ -1,0 +1,292 @@
+{
+  "wal": [
+    {
+      "df": 9,
+      "token": "wales"
+    },
+    {
+      "df": 1,
+      "token": "walk-in"
+    },
+    {
+      "df": 1,
+      "token": "wallets"
+    }
+  ],
+  "wale": [
+    {
+      "df": 9,
+      "token": "wales"
+    }
+  ],
+  "wales": [
+    {
+      "df": 9,
+      "token": "wales"
+    }
+  ],
+  "walk": [
+    {
+      "df": 1,
+      "token": "walk-in"
+    }
+  ],
+  "walk-": [
+    {
+      "df": 1,
+      "token": "walk-in"
+    }
+  ],
+  "walk-i": [
+    {
+      "df": 1,
+      "token": "walk-in"
+    }
+  ],
+  "walk-in": [
+    {
+      "df": 1,
+      "token": "walk-in"
+    }
+  ],
+  "wall": [
+    {
+      "df": 1,
+      "token": "wallets"
+    }
+  ],
+  "walle": [
+    {
+      "df": 1,
+      "token": "wallets"
+    }
+  ],
+  "wallet": [
+    {
+      "df": 1,
+      "token": "wallets"
+    }
+  ],
+  "wallets": [
+    {
+      "df": 1,
+      "token": "wallets"
+    }
+  ],
+  "wan": [
+    {
+      "df": 3,
+      "token": "want"
+    },
+    {
+      "df": 1,
+      "token": "wants"
+    }
+  ],
+  "want": [
+    {
+      "df": 3,
+      "token": "want"
+    },
+    {
+      "df": 1,
+      "token": "wants"
+    }
+  ],
+  "wants": [
+    {
+      "df": 1,
+      "token": "wants"
+    }
+  ],
+  "war": [
+    {
+      "df": 1,
+      "token": "ward"
+    },
+    {
+      "df": 1,
+      "token": "wards"
+    },
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "ward": [
+    {
+      "df": 1,
+      "token": "ward"
+    },
+    {
+      "df": 1,
+      "token": "wards"
+    }
+  ],
+  "wards": [
+    {
+      "df": 1,
+      "token": "wards"
+    }
+  ],
+  "warn": [
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "warni": [
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "warnin": [
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "warning": [
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "warnings": [
+    {
+      "df": 1,
+      "token": "warnings"
+    }
+  ],
+  "was": [
+    {
+      "df": 11,
+      "token": "was"
+    },
+    {
+      "df": 1,
+      "token": "waste"
+    }
+  ],
+  "wast": [
+    {
+      "df": 1,
+      "token": "waste"
+    }
+  ],
+  "waste": [
+    {
+      "df": 1,
+      "token": "waste"
+    }
+  ],
+  "wat": [
+    {
+      "df": 8,
+      "token": "water"
+    },
+    {
+      "df": 1,
+      "token": "watch"
+    },
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "watc": [
+    {
+      "df": 1,
+      "token": "watch"
+    }
+  ],
+  "watch": [
+    {
+      "df": 1,
+      "token": "watch"
+    }
+  ],
+  "wate": [
+    {
+      "df": 8,
+      "token": "water"
+    },
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "water": [
+    {
+      "df": 8,
+      "token": "water"
+    },
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "water-": [
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "water-q": [
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "water-qu": [
+    {
+      "df": 1,
+      "token": "water-quality"
+    }
+  ],
+  "way": [
+    {
+      "df": 3,
+      "token": "way"
+    },
+    {
+      "df": 2,
+      "token": "ways"
+    },
+    {
+      "df": 1,
+      "token": "way.the"
+    }
+  ],
+  "way.": [
+    {
+      "df": 1,
+      "token": "way.the"
+    }
+  ],
+  "way.t": [
+    {
+      "df": 1,
+      "token": "way.the"
+    }
+  ],
+  "way.th": [
+    {
+      "df": 1,
+      "token": "way.the"
+    }
+  ],
+  "way.the": [
+    {
+      "df": 1,
+      "token": "way.the"
+    }
+  ],
+  "ways": [
+    {
+      "df": 2,
+      "token": "ways"
+    }
+  ]
+}

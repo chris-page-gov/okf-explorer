@@ -1,0 +1,706 @@
+{
+  "poi": [
+    {
+      "df": 8,
+      "token": "point"
+    },
+    {
+      "df": 4,
+      "token": "points"
+    },
+    {
+      "df": 1,
+      "token": "point-in-time"
+    },
+    {
+      "df": 1,
+      "token": "point-of-care"
+    },
+    {
+      "df": 1,
+      "token": "pointer"
+    },
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "poin": [
+    {
+      "df": 8,
+      "token": "point"
+    },
+    {
+      "df": 4,
+      "token": "points"
+    },
+    {
+      "df": 1,
+      "token": "point-in-time"
+    },
+    {
+      "df": 1,
+      "token": "point-of-care"
+    },
+    {
+      "df": 1,
+      "token": "pointer"
+    },
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "point": [
+    {
+      "df": 8,
+      "token": "point"
+    },
+    {
+      "df": 4,
+      "token": "points"
+    },
+    {
+      "df": 1,
+      "token": "point-in-time"
+    },
+    {
+      "df": 1,
+      "token": "point-of-care"
+    },
+    {
+      "df": 1,
+      "token": "pointer"
+    },
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "point-": [
+    {
+      "df": 1,
+      "token": "point-in-time"
+    },
+    {
+      "df": 1,
+      "token": "point-of-care"
+    }
+  ],
+  "point-i": [
+    {
+      "df": 1,
+      "token": "point-in-time"
+    }
+  ],
+  "point-in": [
+    {
+      "df": 1,
+      "token": "point-in-time"
+    }
+  ],
+  "point-o": [
+    {
+      "df": 1,
+      "token": "point-of-care"
+    }
+  ],
+  "point-of": [
+    {
+      "df": 1,
+      "token": "point-of-care"
+    }
+  ],
+  "pointe": [
+    {
+      "df": 1,
+      "token": "pointer"
+    }
+  ],
+  "pointer": [
+    {
+      "df": 1,
+      "token": "pointer"
+    }
+  ],
+  "points": [
+    {
+      "df": 4,
+      "token": "points"
+    }
+  ],
+  "pointy": [
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "pointyo": [
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "pointyou": [
+    {
+      "df": 1,
+      "token": "pointyou"
+    }
+  ],
+  "pol": [
+    {
+      "df": 7,
+      "token": "policy"
+    },
+    {
+      "df": 6,
+      "token": "policing"
+    },
+    {
+      "df": 4,
+      "token": "poll"
+    },
+    {
+      "df": 1,
+      "token": "police"
+    },
+    {
+      "df": 1,
+      "token": "policies"
+    },
+    {
+      "df": 1,
+      "token": "pollute"
+    },
+    {
+      "df": 1,
+      "token": "pollution"
+    },
+    {
+      "df": 1,
+      "token": "polygon"
+    },
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "poli": [
+    {
+      "df": 7,
+      "token": "policy"
+    },
+    {
+      "df": 6,
+      "token": "policing"
+    },
+    {
+      "df": 1,
+      "token": "police"
+    },
+    {
+      "df": 1,
+      "token": "policies"
+    }
+  ],
+  "polic": [
+    {
+      "df": 7,
+      "token": "policy"
+    },
+    {
+      "df": 6,
+      "token": "policing"
+    },
+    {
+      "df": 1,
+      "token": "police"
+    },
+    {
+      "df": 1,
+      "token": "policies"
+    }
+  ],
+  "police": [
+    {
+      "df": 1,
+      "token": "police"
+    }
+  ],
+  "polici": [
+    {
+      "df": 6,
+      "token": "policing"
+    },
+    {
+      "df": 1,
+      "token": "policies"
+    }
+  ],
+  "policie": [
+    {
+      "df": 1,
+      "token": "policies"
+    }
+  ],
+  "policies": [
+    {
+      "df": 1,
+      "token": "policies"
+    }
+  ],
+  "policin": [
+    {
+      "df": 6,
+      "token": "policing"
+    }
+  ],
+  "policing": [
+    {
+      "df": 6,
+      "token": "policing"
+    }
+  ],
+  "policy": [
+    {
+      "df": 7,
+      "token": "policy"
+    }
+  ],
+  "poll": [
+    {
+      "df": 4,
+      "token": "poll"
+    },
+    {
+      "df": 1,
+      "token": "pollute"
+    },
+    {
+      "df": 1,
+      "token": "pollution"
+    }
+  ],
+  "pollu": [
+    {
+      "df": 1,
+      "token": "pollute"
+    },
+    {
+      "df": 1,
+      "token": "pollution"
+    }
+  ],
+  "pollut": [
+    {
+      "df": 1,
+      "token": "pollute"
+    },
+    {
+      "df": 1,
+      "token": "pollution"
+    }
+  ],
+  "pollute": [
+    {
+      "df": 1,
+      "token": "pollute"
+    }
+  ],
+  "polluti": [
+    {
+      "df": 1,
+      "token": "pollution"
+    }
+  ],
+  "pollutio": [
+    {
+      "df": 1,
+      "token": "pollution"
+    }
+  ],
+  "poly": [
+    {
+      "df": 1,
+      "token": "polygon"
+    },
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "polyg": [
+    {
+      "df": 1,
+      "token": "polygon"
+    },
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "polygo": [
+    {
+      "df": 1,
+      "token": "polygon"
+    },
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "polygon": [
+    {
+      "df": 1,
+      "token": "polygon"
+    },
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "polygons": [
+    {
+      "df": 1,
+      "token": "polygons"
+    }
+  ],
+  "pop": [
+    {
+      "df": 2,
+      "token": "populated"
+    },
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "popu": [
+    {
+      "df": 2,
+      "token": "populated"
+    },
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "popul": [
+    {
+      "df": 2,
+      "token": "populated"
+    },
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "popula": [
+    {
+      "df": 2,
+      "token": "populated"
+    },
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "populat": [
+    {
+      "df": 2,
+      "token": "populated"
+    },
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "populate": [
+    {
+      "df": 2,
+      "token": "populated"
+    }
+  ],
+  "populati": [
+    {
+      "df": 1,
+      "token": "population"
+    },
+    {
+      "df": 1,
+      "token": "populations"
+    }
+  ],
+  "por": [
+    {
+      "df": 6,
+      "token": "portal"
+    }
+  ],
+  "port": [
+    {
+      "df": 6,
+      "token": "portal"
+    }
+  ],
+  "porta": [
+    {
+      "df": 6,
+      "token": "portal"
+    }
+  ],
+  "portal": [
+    {
+      "df": 6,
+      "token": "portal"
+    }
+  ],
+  "pos": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 4,
+      "token": "post"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    },
+    {
+      "df": 2,
+      "token": "possible"
+    },
+    {
+      "df": 1,
+      "token": "pos"
+    },
+    {
+      "df": 1,
+      "token": "postal"
+    }
+  ],
+  "poss": [
+    {
+      "df": 2,
+      "token": "possible"
+    }
+  ],
+  "possi": [
+    {
+      "df": 2,
+      "token": "possible"
+    }
+  ],
+  "possib": [
+    {
+      "df": 2,
+      "token": "possible"
+    }
+  ],
+  "possibl": [
+    {
+      "df": 2,
+      "token": "possible"
+    }
+  ],
+  "possible": [
+    {
+      "df": 2,
+      "token": "possible"
+    }
+  ],
+  "post": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 4,
+      "token": "post"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    },
+    {
+      "df": 1,
+      "token": "postal"
+    }
+  ],
+  "posta": [
+    {
+      "df": 1,
+      "token": "postal"
+    }
+  ],
+  "postal": [
+    {
+      "df": 1,
+      "token": "postal"
+    }
+  ],
+  "postc": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    }
+  ],
+  "postco": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    }
+  ],
+  "postcod": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    }
+  ],
+  "postcode": [
+    {
+      "df": 9,
+      "token": "postcode"
+    },
+    {
+      "df": 3,
+      "token": "postcodes"
+    }
+  ],
+  "pot": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "pote": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "poten": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "potent": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "potenti": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "potentia": [
+    {
+      "df": 3,
+      "token": "potential"
+    },
+    {
+      "df": 1,
+      "token": "potentially"
+    }
+  ],
+  "pow": [
+    {
+      "df": 2,
+      "token": "powered"
+    },
+    {
+      "df": 1,
+      "token": "power"
+    }
+  ],
+  "powe": [
+    {
+      "df": 2,
+      "token": "powered"
+    },
+    {
+      "df": 1,
+      "token": "power"
+    }
+  ],
+  "power": [
+    {
+      "df": 2,
+      "token": "powered"
+    },
+    {
+      "df": 1,
+      "token": "power"
+    }
+  ],
+  "powere": [
+    {
+      "df": 2,
+      "token": "powered"
+    }
+  ],
+  "powered": [
+    {
+      "df": 2,
+      "token": "powered"
+    }
+  ]
+}

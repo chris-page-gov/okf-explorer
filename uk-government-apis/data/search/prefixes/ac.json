@@ -1,0 +1,892 @@
+{
+  "acc": [
+    {
+      "df": 86,
+      "token": "access"
+    },
+    {
+      "df": 6,
+      "token": "account"
+    },
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 3,
+      "token": "accessed"
+    },
+    {
+      "df": 3,
+      "token": "accesses"
+    },
+    {
+      "df": 2,
+      "token": "accept"
+    },
+    {
+      "df": 2,
+      "token": "according"
+    },
+    {
+      "df": 2,
+      "token": "accounting"
+    },
+    {
+      "df": 2,
+      "token": "accredited"
+    },
+    {
+      "df": 2,
+      "token": "accurate"
+    },
+    {
+      "df": 1,
+      "token": "accepts"
+    },
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "access.you"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    },
+    {
+      "df": 1,
+      "token": "accessing"
+    },
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "acce": [
+    {
+      "df": 86,
+      "token": "access"
+    },
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 3,
+      "token": "accessed"
+    },
+    {
+      "df": 3,
+      "token": "accesses"
+    },
+    {
+      "df": 2,
+      "token": "accept"
+    },
+    {
+      "df": 1,
+      "token": "accepts"
+    },
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "access.you"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    },
+    {
+      "df": 1,
+      "token": "accessing"
+    }
+  ],
+  "accep": [
+    {
+      "df": 2,
+      "token": "accept"
+    },
+    {
+      "df": 1,
+      "token": "accepts"
+    }
+  ],
+  "accept": [
+    {
+      "df": 2,
+      "token": "accept"
+    },
+    {
+      "df": 1,
+      "token": "accepts"
+    }
+  ],
+  "accepts": [
+    {
+      "df": 1,
+      "token": "accepts"
+    }
+  ],
+  "acces": [
+    {
+      "df": 86,
+      "token": "access"
+    },
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 3,
+      "token": "accessed"
+    },
+    {
+      "df": 3,
+      "token": "accesses"
+    },
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "access.you"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    },
+    {
+      "df": 1,
+      "token": "accessing"
+    }
+  ],
+  "access": [
+    {
+      "df": 86,
+      "token": "access"
+    },
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 3,
+      "token": "accessed"
+    },
+    {
+      "df": 3,
+      "token": "accesses"
+    },
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    },
+    {
+      "df": 1,
+      "token": "access.you"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    },
+    {
+      "df": 1,
+      "token": "accessing"
+    }
+  ],
+  "access-": [
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    }
+  ],
+  "access-c": [
+    {
+      "df": 1,
+      "token": "access-control-service-hl7-v3"
+    }
+  ],
+  "access.": [
+    {
+      "df": 1,
+      "token": "access.you"
+    }
+  ],
+  "access.y": [
+    {
+      "df": 1,
+      "token": "access.you"
+    }
+  ],
+  "accesse": [
+    {
+      "df": 3,
+      "token": "accessed"
+    },
+    {
+      "df": 3,
+      "token": "accesses"
+    }
+  ],
+  "accessed": [
+    {
+      "df": 3,
+      "token": "accessed"
+    }
+  ],
+  "accesses": [
+    {
+      "df": 3,
+      "token": "accesses"
+    }
+  ],
+  "accessi": [
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    },
+    {
+      "df": 1,
+      "token": "accessing"
+    }
+  ],
+  "accessib": [
+    {
+      "df": 4,
+      "token": "accessible"
+    },
+    {
+      "df": 1,
+      "token": "accessibility"
+    }
+  ],
+  "accessin": [
+    {
+      "df": 1,
+      "token": "accessing"
+    }
+  ],
+  "acci": [
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "accid": [
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "accide": [
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "acciden": [
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "accident": [
+    {
+      "df": 1,
+      "token": "accident"
+    }
+  ],
+  "acco": [
+    {
+      "df": 6,
+      "token": "account"
+    },
+    {
+      "df": 2,
+      "token": "according"
+    },
+    {
+      "df": 2,
+      "token": "accounting"
+    },
+    {
+      "df": 1,
+      "token": "accounts"
+    }
+  ],
+  "accor": [
+    {
+      "df": 2,
+      "token": "according"
+    }
+  ],
+  "accord": [
+    {
+      "df": 2,
+      "token": "according"
+    }
+  ],
+  "accordi": [
+    {
+      "df": 2,
+      "token": "according"
+    }
+  ],
+  "accordin": [
+    {
+      "df": 2,
+      "token": "according"
+    }
+  ],
+  "accou": [
+    {
+      "df": 6,
+      "token": "account"
+    },
+    {
+      "df": 2,
+      "token": "accounting"
+    },
+    {
+      "df": 1,
+      "token": "accounts"
+    }
+  ],
+  "accoun": [
+    {
+      "df": 6,
+      "token": "account"
+    },
+    {
+      "df": 2,
+      "token": "accounting"
+    },
+    {
+      "df": 1,
+      "token": "accounts"
+    }
+  ],
+  "account": [
+    {
+      "df": 6,
+      "token": "account"
+    },
+    {
+      "df": 2,
+      "token": "accounting"
+    },
+    {
+      "df": 1,
+      "token": "accounts"
+    }
+  ],
+  "accounti": [
+    {
+      "df": 2,
+      "token": "accounting"
+    }
+  ],
+  "accounts": [
+    {
+      "df": 1,
+      "token": "accounts"
+    }
+  ],
+  "accr": [
+    {
+      "df": 2,
+      "token": "accredited"
+    },
+    {
+      "df": 1,
+      "token": "accruals"
+    }
+  ],
+  "accre": [
+    {
+      "df": 2,
+      "token": "accredited"
+    }
+  ],
+  "accred": [
+    {
+      "df": 2,
+      "token": "accredited"
+    }
+  ],
+  "accredi": [
+    {
+      "df": 2,
+      "token": "accredited"
+    }
+  ],
+  "accredit": [
+    {
+      "df": 2,
+      "token": "accredited"
+    }
+  ],
+  "accru": [
+    {
+      "df": 1,
+      "token": "accruals"
+    }
+  ],
+  "accrua": [
+    {
+      "df": 1,
+      "token": "accruals"
+    }
+  ],
+  "accrual": [
+    {
+      "df": 1,
+      "token": "accruals"
+    }
+  ],
+  "accruals": [
+    {
+      "df": 1,
+      "token": "accruals"
+    }
+  ],
+  "accu": [
+    {
+      "df": 2,
+      "token": "accurate"
+    },
+    {
+      "df": 1,
+      "token": "accumulated"
+    }
+  ],
+  "accum": [
+    {
+      "df": 1,
+      "token": "accumulated"
+    }
+  ],
+  "accumu": [
+    {
+      "df": 1,
+      "token": "accumulated"
+    }
+  ],
+  "accumul": [
+    {
+      "df": 1,
+      "token": "accumulated"
+    }
+  ],
+  "accumula": [
+    {
+      "df": 1,
+      "token": "accumulated"
+    }
+  ],
+  "accur": [
+    {
+      "df": 2,
+      "token": "accurate"
+    }
+  ],
+  "accura": [
+    {
+      "df": 2,
+      "token": "accurate"
+    }
+  ],
+  "accurat": [
+    {
+      "df": 2,
+      "token": "accurate"
+    }
+  ],
+  "accurate": [
+    {
+      "df": 2,
+      "token": "accurate"
+    }
+  ],
+  "ach": [
+    {
+      "df": 2,
+      "token": "achieve"
+    },
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "achi": [
+    {
+      "df": 2,
+      "token": "achieve"
+    },
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "achie": [
+    {
+      "df": 2,
+      "token": "achieve"
+    },
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "achiev": [
+    {
+      "df": 2,
+      "token": "achieve"
+    },
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "achieve": [
+    {
+      "df": 2,
+      "token": "achieve"
+    }
+  ],
+  "achievi": [
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "achievin": [
+    {
+      "df": 1,
+      "token": "achieving"
+    }
+  ],
+  "ack": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "ackn": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "ackno": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "acknow": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "acknowl": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "acknowle": [
+    {
+      "df": 6,
+      "token": "acknowledge"
+    },
+    {
+      "df": 1,
+      "token": "acknowledgement"
+    },
+    {
+      "df": 1,
+      "token": "acknowledges"
+    }
+  ],
+  "acr": [
+    {
+      "df": 11,
+      "token": "across"
+    }
+  ],
+  "acro": [
+    {
+      "df": 11,
+      "token": "across"
+    }
+  ],
+  "acros": [
+    {
+      "df": 11,
+      "token": "across"
+    }
+  ],
+  "across": [
+    {
+      "df": 11,
+      "token": "across"
+    }
+  ],
+  "acs": [
+    {
+      "df": 2,
+      "token": "acs"
+    }
+  ],
+  "act": [
+    {
+      "df": 7,
+      "token": "active"
+    },
+    {
+      "df": 5,
+      "token": "activities"
+    },
+    {
+      "df": 4,
+      "token": "activity"
+    },
+    {
+      "df": 3,
+      "token": "act"
+    },
+    {
+      "df": 3,
+      "token": "action"
+    },
+    {
+      "df": 2,
+      "token": "actions"
+    },
+    {
+      "df": 1,
+      "token": "acting"
+    },
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "acti": [
+    {
+      "df": 7,
+      "token": "active"
+    },
+    {
+      "df": 5,
+      "token": "activities"
+    },
+    {
+      "df": 4,
+      "token": "activity"
+    },
+    {
+      "df": 3,
+      "token": "action"
+    },
+    {
+      "df": 2,
+      "token": "actions"
+    },
+    {
+      "df": 1,
+      "token": "acting"
+    }
+  ],
+  "actin": [
+    {
+      "df": 1,
+      "token": "acting"
+    }
+  ],
+  "acting": [
+    {
+      "df": 1,
+      "token": "acting"
+    }
+  ],
+  "actio": [
+    {
+      "df": 3,
+      "token": "action"
+    },
+    {
+      "df": 2,
+      "token": "actions"
+    }
+  ],
+  "action": [
+    {
+      "df": 3,
+      "token": "action"
+    },
+    {
+      "df": 2,
+      "token": "actions"
+    }
+  ],
+  "actions": [
+    {
+      "df": 2,
+      "token": "actions"
+    }
+  ],
+  "activ": [
+    {
+      "df": 7,
+      "token": "active"
+    },
+    {
+      "df": 5,
+      "token": "activities"
+    },
+    {
+      "df": 4,
+      "token": "activity"
+    }
+  ],
+  "active": [
+    {
+      "df": 7,
+      "token": "active"
+    }
+  ],
+  "activi": [
+    {
+      "df": 5,
+      "token": "activities"
+    },
+    {
+      "df": 4,
+      "token": "activity"
+    }
+  ],
+  "activit": [
+    {
+      "df": 5,
+      "token": "activities"
+    },
+    {
+      "df": 4,
+      "token": "activity"
+    }
+  ],
+  "activiti": [
+    {
+      "df": 5,
+      "token": "activities"
+    }
+  ],
+  "activity": [
+    {
+      "df": 4,
+      "token": "activity"
+    }
+  ],
+  "actu": [
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "actua": [
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "actual": [
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "actuall": [
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "actually": [
+    {
+      "df": 1,
+      "token": "actually"
+    }
+  ],
+  "acu": [
+    {
+      "df": 2,
+      "token": "acute"
+    }
+  ],
+  "acut": [
+    {
+      "df": 2,
+      "token": "acute"
+    }
+  ],
+  "acute": [
+    {
+      "df": 2,
+      "token": "acute"
+    }
+  ]
+}

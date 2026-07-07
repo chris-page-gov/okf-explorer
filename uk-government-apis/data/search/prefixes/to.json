@@ -1,0 +1,242 @@
+{
+  "tog": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "toge": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "toget": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "togeth": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "togethe": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "together": [
+    {
+      "df": 4,
+      "token": "together"
+    }
+  ],
+  "tok": [
+    {
+      "df": 2,
+      "token": "tokens"
+    },
+    {
+      "df": 1,
+      "token": "token"
+    }
+  ],
+  "toke": [
+    {
+      "df": 2,
+      "token": "tokens"
+    },
+    {
+      "df": 1,
+      "token": "token"
+    }
+  ],
+  "token": [
+    {
+      "df": 2,
+      "token": "tokens"
+    },
+    {
+      "df": 1,
+      "token": "token"
+    }
+  ],
+  "tokens": [
+    {
+      "df": 2,
+      "token": "tokens"
+    }
+  ],
+  "too": [
+    {
+      "df": 4,
+      "token": "tool"
+    },
+    {
+      "df": 3,
+      "token": "tools"
+    },
+    {
+      "df": 1,
+      "token": "too"
+    },
+    {
+      "df": 1,
+      "token": "tool.if"
+    }
+  ],
+  "tool": [
+    {
+      "df": 4,
+      "token": "tool"
+    },
+    {
+      "df": 3,
+      "token": "tools"
+    },
+    {
+      "df": 1,
+      "token": "tool.if"
+    }
+  ],
+  "tool.": [
+    {
+      "df": 1,
+      "token": "tool.if"
+    }
+  ],
+  "tool.i": [
+    {
+      "df": 1,
+      "token": "tool.if"
+    }
+  ],
+  "tool.if": [
+    {
+      "df": 1,
+      "token": "tool.if"
+    }
+  ],
+  "tools": [
+    {
+      "df": 3,
+      "token": "tools"
+    }
+  ],
+  "top": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "topo": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "topol": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "topolo": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "topolog": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "topologi": [
+    {
+      "df": 1,
+      "token": "topologies"
+    }
+  ],
+  "tot": [
+    {
+      "df": 4,
+      "token": "total"
+    },
+    {
+      "df": 1,
+      "token": "totals"
+    }
+  ],
+  "tota": [
+    {
+      "df": 4,
+      "token": "total"
+    },
+    {
+      "df": 1,
+      "token": "totals"
+    }
+  ],
+  "total": [
+    {
+      "df": 4,
+      "token": "total"
+    },
+    {
+      "df": 1,
+      "token": "totals"
+    }
+  ],
+  "totals": [
+    {
+      "df": 1,
+      "token": "totals"
+    }
+  ],
+  "tow": [
+    {
+      "df": 2,
+      "token": "towards"
+    },
+    {
+      "df": 2,
+      "token": "town"
+    }
+  ],
+  "towa": [
+    {
+      "df": 2,
+      "token": "towards"
+    }
+  ],
+  "towar": [
+    {
+      "df": 2,
+      "token": "towards"
+    }
+  ],
+  "toward": [
+    {
+      "df": 2,
+      "token": "towards"
+    }
+  ],
+  "towards": [
+    {
+      "df": 2,
+      "token": "towards"
+    }
+  ],
+  "town": [
+    {
+      "df": 2,
+      "token": "town"
+    }
+  ]
+}

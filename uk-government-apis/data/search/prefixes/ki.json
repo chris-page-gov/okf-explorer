@@ -1,0 +1,36 @@
+{
+  "kin": [
+    {
+      "df": 2,
+      "token": "kin"
+    },
+    {
+      "df": 2,
+      "token": "kingdom"
+    }
+  ],
+  "king": [
+    {
+      "df": 2,
+      "token": "kingdom"
+    }
+  ],
+  "kingd": [
+    {
+      "df": 2,
+      "token": "kingdom"
+    }
+  ],
+  "kingdo": [
+    {
+      "df": 2,
+      "token": "kingdom"
+    }
+  ],
+  "kingdom": [
+    {
+      "df": 2,
+      "token": "kingdom"
+    }
+  ]
+}

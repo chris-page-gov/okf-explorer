@@ -1,0 +1,246 @@
+{
+  "fea": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    },
+    {
+      "df": 2,
+      "token": "feature"
+    }
+  ],
+  "feat": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    },
+    {
+      "df": 2,
+      "token": "feature"
+    }
+  ],
+  "featu": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    },
+    {
+      "df": 2,
+      "token": "feature"
+    }
+  ],
+  "featur": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    },
+    {
+      "df": 2,
+      "token": "feature"
+    }
+  ],
+  "feature": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    },
+    {
+      "df": 2,
+      "token": "feature"
+    }
+  ],
+  "features": [
+    {
+      "df": 6,
+      "token": "featureserver"
+    },
+    {
+      "df": 3,
+      "token": "features"
+    }
+  ],
+  "fed": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "fede": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "feder": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "federa": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "federat": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "federate": [
+    {
+      "df": 2,
+      "token": "federated"
+    }
+  ],
+  "fee": [
+    {
+      "df": 2,
+      "token": "feed"
+    },
+    {
+      "df": 1,
+      "token": "feedback"
+    },
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "feed": [
+    {
+      "df": 2,
+      "token": "feed"
+    },
+    {
+      "df": 1,
+      "token": "feedback"
+    },
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "feedb": [
+    {
+      "df": 1,
+      "token": "feedback"
+    }
+  ],
+  "feedba": [
+    {
+      "df": 1,
+      "token": "feedback"
+    }
+  ],
+  "feedbac": [
+    {
+      "df": 1,
+      "token": "feedback"
+    }
+  ],
+  "feedback": [
+    {
+      "df": 1,
+      "token": "feedback"
+    }
+  ],
+  "feeds": [
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "feedsy": [
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "feedsyo": [
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "feedsyou": [
+    {
+      "df": 1,
+      "token": "feedsyou"
+    }
+  ],
+  "fem": [
+    {
+      "df": 1,
+      "token": "female"
+    },
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ],
+  "fema": [
+    {
+      "df": 1,
+      "token": "female"
+    },
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ],
+  "femal": [
+    {
+      "df": 1,
+      "token": "female"
+    },
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ],
+  "female": [
+    {
+      "df": 1,
+      "token": "female"
+    },
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ],
+  "female-": [
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ],
+  "female-g": [
+    {
+      "df": 1,
+      "token": "female-genital-mutilation-information-sharing-fhir"
+    }
+  ]
+}

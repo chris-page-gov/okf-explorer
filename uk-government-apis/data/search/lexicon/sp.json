@@ -1,0 +1,137 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "space"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spaces"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "sparql"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "spatial"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spatialdata.gov.scot"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spec"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "special"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "specialist"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "specific"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "specifically"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "specification"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "specification.you"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "specifications"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "specifications.before"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "specified"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "specifies"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "specify"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "spine"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spine-directory-service-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spine-directory-service-ldap"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spine-electronic-prescription-service-tracker-rest"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "spine.as"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "split"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "splitting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "sponsored"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "sports"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "spot"
+  }
+]

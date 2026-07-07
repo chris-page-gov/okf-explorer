@@ -1,0 +1,117 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pending"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "pension"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "pensions"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "people"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "peopleaccredited"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "per"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "perfect"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "performance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "performancefor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "performing"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "period"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "period.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "periods"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "permissions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "permit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "permitting"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "person"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "personal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "personal-demographic-service-mesh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "personal-demographics-service-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "personal-demographics-service-hl7-v3"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "personal-demographics-service-notifications-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "personal-demographics-service-smsp"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "utc"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "utilisation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "utilities"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "utilitythe"
+  }
+]

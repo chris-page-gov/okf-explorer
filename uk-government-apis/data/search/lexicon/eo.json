@@ -1,0 +1,22 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eoc"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eoov_soapengine"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eoov_stubservice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "eori"
+  }
+]

@@ -1,0 +1,282 @@
+{
+  "wor": [
+    {
+      "df": 27,
+      "token": "work"
+    },
+    {
+      "df": 13,
+      "token": "worker"
+    },
+    {
+      "df": 6,
+      "token": "workers"
+    },
+    {
+      "df": 3,
+      "token": "world"
+    },
+    {
+      "df": 3,
+      "token": "worth"
+    },
+    {
+      "df": 2,
+      "token": "words"
+    },
+    {
+      "df": 2,
+      "token": "working"
+    },
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    },
+    {
+      "df": 1,
+      "token": "word"
+    },
+    {
+      "df": 1,
+      "token": "workers.this"
+    },
+    {
+      "df": 1,
+      "token": "works"
+    },
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "word": [
+    {
+      "df": 2,
+      "token": "words"
+    },
+    {
+      "df": 1,
+      "token": "word"
+    }
+  ],
+  "words": [
+    {
+      "df": 2,
+      "token": "words"
+    }
+  ],
+  "work": [
+    {
+      "df": 27,
+      "token": "work"
+    },
+    {
+      "df": 13,
+      "token": "worker"
+    },
+    {
+      "df": 6,
+      "token": "workers"
+    },
+    {
+      "df": 2,
+      "token": "working"
+    },
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    },
+    {
+      "df": 1,
+      "token": "workers.this"
+    },
+    {
+      "df": 1,
+      "token": "works"
+    },
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "worke": [
+    {
+      "df": 13,
+      "token": "worker"
+    },
+    {
+      "df": 6,
+      "token": "workers"
+    },
+    {
+      "df": 1,
+      "token": "workers.this"
+    }
+  ],
+  "worker": [
+    {
+      "df": 13,
+      "token": "worker"
+    },
+    {
+      "df": 6,
+      "token": "workers"
+    },
+    {
+      "df": 1,
+      "token": "workers.this"
+    }
+  ],
+  "workers": [
+    {
+      "df": 6,
+      "token": "workers"
+    },
+    {
+      "df": 1,
+      "token": "workers.this"
+    }
+  ],
+  "workers.": [
+    {
+      "df": 1,
+      "token": "workers.this"
+    }
+  ],
+  "worki": [
+    {
+      "df": 2,
+      "token": "working"
+    }
+  ],
+  "workin": [
+    {
+      "df": 2,
+      "token": "working"
+    }
+  ],
+  "working": [
+    {
+      "df": 2,
+      "token": "working"
+    }
+  ],
+  "workl": [
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    }
+  ],
+  "workli": [
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    }
+  ],
+  "worklis": [
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    }
+  ],
+  "worklist": [
+    {
+      "df": 2,
+      "token": "worklist"
+    },
+    {
+      "df": 2,
+      "token": "worklists"
+    }
+  ],
+  "works": [
+    {
+      "df": 1,
+      "token": "works"
+    },
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "workst": [
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "worksta": [
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "workstat": [
+    {
+      "df": 1,
+      "token": "workstation"
+    }
+  ],
+  "worl": [
+    {
+      "df": 3,
+      "token": "world"
+    }
+  ],
+  "world": [
+    {
+      "df": 3,
+      "token": "world"
+    }
+  ],
+  "wort": [
+    {
+      "df": 3,
+      "token": "worth"
+    }
+  ],
+  "worth": [
+    {
+      "df": 3,
+      "token": "worth"
+    }
+  ],
+  "wou": [
+    {
+      "df": 3,
+      "token": "would"
+    }
+  ],
+  "woul": [
+    {
+      "df": 3,
+      "token": "would"
+    }
+  ],
+  "would": [
+    {
+      "df": 3,
+      "token": "would"
+    }
+  ]
+}

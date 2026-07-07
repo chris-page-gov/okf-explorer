@@ -1,0 +1,1074 @@
+{
+  "access_model": [
+    {
+      "count": 182,
+      "value": "unknown"
+    },
+    {
+      "count": 52,
+      "value": "approval-required"
+    },
+    {
+      "count": 6,
+      "value": "anonymous"
+    },
+    {
+      "count": 3,
+      "value": "api-key"
+    },
+    {
+      "count": 1,
+      "value": "oauth2"
+    }
+  ],
+  "area_served": [
+    {
+      "count": 192,
+      "value": "not-specified"
+    },
+    {
+      "count": 12,
+      "value": "England and Wales"
+    },
+    {
+      "count": 10,
+      "value": "Digital"
+    },
+    {
+      "count": 7,
+      "value": "England, Scotland, Wales"
+    },
+    {
+      "count": 5,
+      "value": "England"
+    },
+    {
+      "count": 3,
+      "value": "England, Scotland and Wales"
+    },
+    {
+      "count": 2,
+      "value": "Scotland"
+    },
+    {
+      "count": 2,
+      "value": "Global"
+    },
+    {
+      "count": 2,
+      "value": "The United Kingdom and Ireland"
+    },
+    {
+      "count": 1,
+      "value": "West Berkshire"
+    },
+    {
+      "count": 1,
+      "value": "UK"
+    },
+    {
+      "count": 1,
+      "value": "South Coast of England"
+    },
+    {
+      "count": 1,
+      "value": "UK EEZ"
+    },
+    {
+      "count": 1,
+      "value": "Buckinghamshire"
+    },
+    {
+      "count": 1,
+      "value": "Southampton"
+    },
+    {
+      "count": 1,
+      "value": "Greater London"
+    },
+    {
+      "count": 1,
+      "value": "England, Wales, Scotland, Northern Ireland"
+    },
+    {
+      "count": 1,
+      "value": "United Kingdom"
+    }
+  ],
+  "contract_status": [
+    {
+      "count": 210,
+      "value": "documentation-only"
+    },
+    {
+      "count": 17,
+      "value": "undocumented-in-catalogue"
+    },
+    {
+      "count": 11,
+      "value": "wsdl-indicated"
+    },
+    {
+      "count": 6,
+      "value": "openapi-indicated"
+    }
+  ],
+  "documentation_host": [
+    {
+      "count": 93,
+      "value": "digital.nhs.uk"
+    },
+    {
+      "count": 30,
+      "value": "developer.service.hmrc.gov.uk"
+    },
+    {
+      "count": 17,
+      "value": "not-specified"
+    },
+    {
+      "count": 15,
+      "value": "landregistry.github.io"
+    },
+    {
+      "count": 11,
+      "value": "github.com"
+    },
+    {
+      "count": 10,
+      "value": "environment.data.gov.uk"
+    },
+    {
+      "count": 10,
+      "value": "epc.opendatacommunities.org"
+    },
+    {
+      "count": 8,
+      "value": "osdatahub.os.uk"
+    },
+    {
+      "count": 6,
+      "value": "developer-portal.driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "count": 6,
+      "value": "data.api.trade.gov.uk"
+    },
+    {
+      "count": 3,
+      "value": "developer.admiralty.co.uk"
+    },
+    {
+      "count": 2,
+      "value": "docs.publishing.service.gov.uk"
+    },
+    {
+      "count": 2,
+      "value": "opendatacommunities.org"
+    },
+    {
+      "count": 2,
+      "value": "developer.apprenticeships.education.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "notifications.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "docs.payments.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "content-api.publishing.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "guidance.data.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "developer.beta.ons.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "developers.arcgis.com"
+    },
+    {
+      "count": 1,
+      "value": "developer.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "developer-specs.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "guides.statistics.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "api.esd.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "wiki.open311.org"
+    },
+    {
+      "count": 1,
+      "value": "api.trade-tariff.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "admiraltyapi.developer.azure-api.net"
+    },
+    {
+      "count": 1,
+      "value": "api-portal.tfwm.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "nationalarchives.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.police.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.tfl.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "spatialdata.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "uk-air.defra.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "gitlab.com"
+    },
+    {
+      "count": 1,
+      "value": "naptan.api.dft.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "cefas.co.uk"
+    },
+    {
+      "count": 1,
+      "value": "sensors-docs.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "ogcapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "agsapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.education.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.ratings.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "wiki.office.uc.dwpcloud.uk"
+    }
+  ],
+  "endpoint_host": [
+    {
+      "count": 93,
+      "value": "digital.nhs.uk"
+    },
+    {
+      "count": 30,
+      "value": "api.service.hmrc.gov.uk"
+    },
+    {
+      "count": 15,
+      "value": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "count": 11,
+      "value": "not-specified"
+    },
+    {
+      "count": 10,
+      "value": "environment.data.gov.uk"
+    },
+    {
+      "count": 10,
+      "value": "epc.opendatacommunities.org"
+    },
+    {
+      "count": 8,
+      "value": "api.os.uk"
+    },
+    {
+      "count": 6,
+      "value": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "count": 6,
+      "value": "data.api.trade.gov.uk"
+    },
+    {
+      "count": 6,
+      "value": "services-eu1.arcgis.com"
+    },
+    {
+      "count": 5,
+      "value": "gov.uk"
+    },
+    {
+      "count": 4,
+      "value": "github.com"
+    },
+    {
+      "count": 3,
+      "value": "developer.admiralty.co.uk"
+    },
+    {
+      "count": 2,
+      "value": "opendatacommunities.org"
+    },
+    {
+      "count": 2,
+      "value": "api.apprenticeships.education.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.notifications.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "publicapi.payments.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.beta.ons.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "services1.arcgis.com"
+    },
+    {
+      "count": 1,
+      "value": "api.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "stream.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "statistics.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "api.publish-teacher-training-courses.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "webservices.esd.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "westberks.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "trade-tariff.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.tfwm.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "discovery.nationalarchives.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "sign-in.hmpps.service.justice.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.prison.service.justice.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.police.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.tfl.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "spatialdata.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "uk-air.defra.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.familyinfo.buckinghamshire.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "naptan.api.dft.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data-api.cefas.co.uk"
+    },
+    {
+      "count": 1,
+      "value": "sensors.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "ogcapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "agsapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "admiraltyapi.developer.azure-api.net"
+    },
+    {
+      "count": 1,
+      "value": "directory.southampton.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "register-api.ofqual.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.ratings.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "findajob.dwp.gov.uk"
+    }
+  ],
+  "format": [
+    {
+      "count": 132,
+      "value": "REST/HTTP"
+    },
+    {
+      "count": 50,
+      "value": "FHIR"
+    },
+    {
+      "count": 30,
+      "value": "MESH"
+    },
+    {
+      "count": 18,
+      "value": "Streaming"
+    },
+    {
+      "count": 18,
+      "value": "SOAP/WSDL"
+    },
+    {
+      "count": 14,
+      "value": "OGC API"
+    },
+    {
+      "count": 13,
+      "value": "HL7 v3"
+    },
+    {
+      "count": 5,
+      "value": "EDIFACT"
+    },
+    {
+      "count": 4,
+      "value": "SPARQL"
+    }
+  ],
+  "host": [
+    {
+      "count": 93,
+      "value": "digital.nhs.uk"
+    },
+    {
+      "count": 30,
+      "value": "api.service.hmrc.gov.uk"
+    },
+    {
+      "count": 15,
+      "value": "businessgateway.landregistry.gov.uk"
+    },
+    {
+      "count": 11,
+      "value": "not-specified"
+    },
+    {
+      "count": 10,
+      "value": "environment.data.gov.uk"
+    },
+    {
+      "count": 10,
+      "value": "epc.opendatacommunities.org"
+    },
+    {
+      "count": 8,
+      "value": "api.os.uk"
+    },
+    {
+      "count": 6,
+      "value": "driver-vehicle-licensing.api.gov.uk"
+    },
+    {
+      "count": 6,
+      "value": "data.api.trade.gov.uk"
+    },
+    {
+      "count": 6,
+      "value": "services-eu1.arcgis.com"
+    },
+    {
+      "count": 5,
+      "value": "gov.uk"
+    },
+    {
+      "count": 4,
+      "value": "github.com"
+    },
+    {
+      "count": 3,
+      "value": "developer.admiralty.co.uk"
+    },
+    {
+      "count": 2,
+      "value": "opendatacommunities.org"
+    },
+    {
+      "count": 2,
+      "value": "api.apprenticeships.education.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.notifications.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "publicapi.payments.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.beta.ons.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "services1.arcgis.com"
+    },
+    {
+      "count": 1,
+      "value": "api.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "stream.companieshouse.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "statistics.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "api.publish-teacher-training-courses.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "webservices.esd.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "westberks.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "trade-tariff.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.tfwm.org.uk"
+    },
+    {
+      "count": 1,
+      "value": "discovery.nationalarchives.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "sign-in.hmpps.service.justice.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.prison.service.justice.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.police.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.tfl.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "spatialdata.gov.scot"
+    },
+    {
+      "count": 1,
+      "value": "uk-air.defra.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.familyinfo.buckinghamshire.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "naptan.api.dft.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data-api.cefas.co.uk"
+    },
+    {
+      "count": 1,
+      "value": "sensors.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "ogcapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "agsapi.bgs.ac.uk"
+    },
+    {
+      "count": 1,
+      "value": "admiraltyapi.developer.azure-api.net"
+    },
+    {
+      "count": 1,
+      "value": "directory.southampton.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "register-api.ofqual.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "explore-education-statistics.service.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "data.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "api.ratings.food.gov.uk"
+    },
+    {
+      "count": 1,
+      "value": "findajob.dwp.gov.uk"
+    }
+  ],
+  "interaction_style": [
+    {
+      "count": 132,
+      "value": "REST/HTTP"
+    },
+    {
+      "count": 50,
+      "value": "FHIR"
+    },
+    {
+      "count": 30,
+      "value": "MESH"
+    },
+    {
+      "count": 18,
+      "value": "Streaming"
+    },
+    {
+      "count": 18,
+      "value": "SOAP/WSDL"
+    },
+    {
+      "count": 14,
+      "value": "OGC API"
+    },
+    {
+      "count": 13,
+      "value": "HL7 v3"
+    },
+    {
+      "count": 5,
+      "value": "EDIFACT"
+    },
+    {
+      "count": 4,
+      "value": "SPARQL"
+    }
+  ],
+  "license": [
+    {
+      "count": 197,
+      "value": "not-specified"
+    },
+    {
+      "count": 14,
+      "value": "open-government-licence-v3"
+    },
+    {
+      "count": 10,
+      "value": "isc"
+    },
+    {
+      "count": 9,
+      "value": "epc-opendatacommunities-org"
+    },
+    {
+      "count": 8,
+      "value": "osdatahub-os-uk"
+    },
+    {
+      "count": 2,
+      "value": "subscription-required"
+    },
+    {
+      "count": 1,
+      "value": "subscription-required-see-https"
+    },
+    {
+      "count": 1,
+      "value": "open-government-license"
+    },
+    {
+      "count": 1,
+      "value": "data-under-open-government-license"
+    },
+    {
+      "count": 1,
+      "value": "codebase-is-under-lgpl-v3-0"
+    }
+  ],
+  "lifecycle_status": [
+    {
+      "count": 213,
+      "value": "catalogue-listed"
+    },
+    {
+      "count": 20,
+      "value": "active"
+    },
+    {
+      "count": 11,
+      "value": "retired-or-ended"
+    }
+  ],
+  "organisation_family": [
+    {
+      "count": 93,
+      "value": "health"
+    },
+    {
+      "count": 85,
+      "value": "other public body"
+    },
+    {
+      "count": 45,
+      "value": "central government"
+    },
+    {
+      "count": 18,
+      "value": "environment and science"
+    },
+    {
+      "count": 3,
+      "value": "local government"
+    }
+  ],
+  "publisher": [
+    {
+      "count": 93,
+      "value": "nhs-digital"
+    },
+    {
+      "count": 31,
+      "value": "hm-revenue-customs"
+    },
+    {
+      "count": 15,
+      "value": "hm-land-registry"
+    },
+    {
+      "count": 12,
+      "value": "ministry-of-housing-communities-local-government"
+    },
+    {
+      "count": 11,
+      "value": "department-for-work-and-pensions"
+    },
+    {
+      "count": 10,
+      "value": "environment-agency"
+    },
+    {
+      "count": 8,
+      "value": "ordnance-survey"
+    },
+    {
+      "count": 7,
+      "value": "government-digital-service"
+    },
+    {
+      "count": 6,
+      "value": "driver-and-vehicle-licensing-agency"
+    },
+    {
+      "count": 6,
+      "value": "department-for-business-and-trade"
+    },
+    {
+      "count": 6,
+      "value": "historic-england"
+    },
+    {
+      "count": 4,
+      "value": "department-for-education"
+    },
+    {
+      "count": 4,
+      "value": "uk-hydrographic-office"
+    },
+    {
+      "count": 4,
+      "value": "ministry-of-justice"
+    },
+    {
+      "count": 3,
+      "value": "bgs"
+    },
+    {
+      "count": 2,
+      "value": "office-of-national-statistics"
+    },
+    {
+      "count": 2,
+      "value": "companies-house"
+    },
+    {
+      "count": 2,
+      "value": "scottish-government"
+    },
+    {
+      "count": 2,
+      "value": "the-apprenticeship-service"
+    },
+    {
+      "count": 2,
+      "value": "food-standards-agency"
+    },
+    {
+      "count": 1,
+      "value": "local-government-association"
+    },
+    {
+      "count": 1,
+      "value": "west-berkshire-council"
+    },
+    {
+      "count": 1,
+      "value": "west-midlands-combined-authority"
+    },
+    {
+      "count": 1,
+      "value": "the-national-archives"
+    },
+    {
+      "count": 1,
+      "value": "uk-police"
+    },
+    {
+      "count": 1,
+      "value": "transport-for-london"
+    },
+    {
+      "count": 1,
+      "value": "defra"
+    },
+    {
+      "count": 1,
+      "value": "buckinghamshire-council"
+    },
+    {
+      "count": 1,
+      "value": "insolvency-service"
+    },
+    {
+      "count": 1,
+      "value": "department-for-transport"
+    },
+    {
+      "count": 1,
+      "value": "cefas"
+    },
+    {
+      "count": 1,
+      "value": "scc"
+    },
+    {
+      "count": 1,
+      "value": "ofqual"
+    },
+    {
+      "count": 1,
+      "value": "government-commercial-agency"
+    }
+  ],
+  "resource_type": [
+    {
+      "count": 233,
+      "value": "endpoint"
+    },
+    {
+      "count": 227,
+      "value": "documentation"
+    },
+    {
+      "count": 47,
+      "value": "licence"
+    }
+  ],
+  "topic": [
+    {
+      "count": 162,
+      "value": "Government services"
+    },
+    {
+      "count": 97,
+      "value": "Health and care"
+    },
+    {
+      "count": 55,
+      "value": "Planning and property"
+    },
+    {
+      "count": 38,
+      "value": "Tax and customs"
+    },
+    {
+      "count": 30,
+      "value": "Geospatial"
+    },
+    {
+      "count": 25,
+      "value": "Business and economy"
+    },
+    {
+      "count": 24,
+      "value": "Environment"
+    },
+    {
+      "count": 13,
+      "value": "Public administration"
+    },
+    {
+      "count": 12,
+      "value": "Transport"
+    },
+    {
+      "count": 8,
+      "value": "Education and skills"
+    },
+    {
+      "count": 6,
+      "value": "Justice and policing"
+    }
+  ],
+  "update_year": [
+    {
+      "count": 101,
+      "value": "2024"
+    },
+    {
+      "count": 81,
+      "value": "2020"
+    },
+    {
+      "count": 24,
+      "value": "2022"
+    },
+    {
+      "count": 22,
+      "value": "2023"
+    },
+    {
+      "count": 7,
+      "value": "2025"
+    },
+    {
+      "count": 5,
+      "value": "2026"
+    },
+    {
+      "count": 4,
+      "value": "2021"
+    }
+  ],
+  "visibility": [
+    {
+      "count": 234,
+      "value": "catalogue-listed-access-not-assumed"
+    },
+    {
+      "count": 9,
+      "value": "catalogue-listed-restricted"
+    },
+    {
+      "count": 1,
+      "value": "catalogue-listed-internal-component"
+    }
+  ]
+}

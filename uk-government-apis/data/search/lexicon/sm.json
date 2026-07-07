@@ -1,0 +1,52 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "small"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "smaller"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "smart"
+  },
+  {
+    "df": 14,
+    "postings": "data/search/postings-0.json",
+    "token": "smartcard"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "smartcards"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "smartcards.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "smartphone"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "smsp"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "smsp.it"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "smsps"
+  }
+]

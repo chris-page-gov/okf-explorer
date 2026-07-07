@@ -1,0 +1,142 @@
+[
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "do"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "doc"
+  },
+  {
+    "df": 56,
+    "postings": "data/search/postings-0.json",
+    "token": "docs"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "docs.payments.service.gov.uk"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "docs.publishing.service.gov.uk"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "doctor"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "document"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "documentation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "documentfor"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "documents"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "documentsto"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "does"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "doing"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "domains"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "domestic"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "domestic-cert"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "domestic-recommendations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "domestic-search"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "done"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "dont"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "door"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "dos"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "double"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "down"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "download"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "download-sos"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "downloads"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "downloads.this"
+  }
+]

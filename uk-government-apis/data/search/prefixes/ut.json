@@ -1,0 +1,102 @@
+{
+  "utc": [
+    {
+      "df": 2,
+      "token": "utc"
+    }
+  ],
+  "uti": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    },
+    {
+      "df": 1,
+      "token": "utilities"
+    },
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ],
+  "util": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    },
+    {
+      "df": 1,
+      "token": "utilities"
+    },
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ],
+  "utili": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    },
+    {
+      "df": 1,
+      "token": "utilities"
+    },
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ],
+  "utilis": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    }
+  ],
+  "utilisa": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    }
+  ],
+  "utilisat": [
+    {
+      "df": 1,
+      "token": "utilisation"
+    }
+  ],
+  "utilit": [
+    {
+      "df": 1,
+      "token": "utilities"
+    },
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ],
+  "utiliti": [
+    {
+      "df": 1,
+      "token": "utilities"
+    }
+  ],
+  "utilitie": [
+    {
+      "df": 1,
+      "token": "utilities"
+    }
+  ],
+  "utility": [
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ],
+  "utilityt": [
+    {
+      "df": 1,
+      "token": "utilitythe"
+    }
+  ]
+}

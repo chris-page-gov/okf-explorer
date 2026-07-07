@@ -1,0 +1,47 @@
+[
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "evaluation"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "even"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "event"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "events"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "events.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ever"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "every"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "evidence"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "evolving"
+  }
+]

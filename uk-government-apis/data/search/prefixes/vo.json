@@ -1,0 +1,226 @@
+{
+  "voa": [
+    {
+      "df": 1,
+      "token": "voa"
+    }
+  ],
+  "voc": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "voca": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "vocab": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "vocab-": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "vocab-s": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "vocab-ss": [
+    {
+      "df": 1,
+      "token": "vocab-ssn"
+    }
+  ],
+  "vol": [
+    {
+      "df": 5,
+      "token": "volumes"
+    },
+    {
+      "df": 1,
+      "token": "voluntarily"
+    },
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "volu": [
+    {
+      "df": 5,
+      "token": "volumes"
+    },
+    {
+      "df": 1,
+      "token": "voluntarily"
+    },
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "volum": [
+    {
+      "df": 5,
+      "token": "volumes"
+    }
+  ],
+  "volume": [
+    {
+      "df": 5,
+      "token": "volumes"
+    }
+  ],
+  "volumes": [
+    {
+      "df": 5,
+      "token": "volumes"
+    }
+  ],
+  "volun": [
+    {
+      "df": 1,
+      "token": "voluntarily"
+    },
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "volunt": [
+    {
+      "df": 1,
+      "token": "voluntarily"
+    },
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "volunta": [
+    {
+      "df": 1,
+      "token": "voluntarily"
+    }
+  ],
+  "voluntar": [
+    {
+      "df": 1,
+      "token": "voluntarily"
+    }
+  ],
+  "volunte": [
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "voluntee": [
+    {
+      "df": 1,
+      "token": "volunteer-run"
+    }
+  ],
+  "vot": [
+    {
+      "df": 2,
+      "token": "vote"
+    }
+  ],
+  "vote": [
+    {
+      "df": 2,
+      "token": "vote"
+    }
+  ],
+  "vou": [
+    {
+      "df": 1,
+      "token": "voucher"
+    },
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "vouc": [
+    {
+      "df": 1,
+      "token": "voucher"
+    },
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "vouch": [
+    {
+      "df": 1,
+      "token": "voucher"
+    },
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "vouche": [
+    {
+      "df": 1,
+      "token": "voucher"
+    },
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "voucher": [
+    {
+      "df": 1,
+      "token": "voucher"
+    },
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "vouchers": [
+    {
+      "df": 1,
+      "token": "vouchers"
+    }
+  ],
+  "voy": [
+    {
+      "df": 1,
+      "token": "voyage"
+    }
+  ],
+  "voya": [
+    {
+      "df": 1,
+      "token": "voyage"
+    }
+  ],
+  "voyag": [
+    {
+      "df": 1,
+      "token": "voyage"
+    }
+  ],
+  "voyage": [
+    {
+      "df": 1,
+      "token": "voyage"
+    }
+  ]
+}

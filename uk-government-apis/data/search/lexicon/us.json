@@ -1,0 +1,92 @@
+[
+  {
+    "df": 28,
+    "postings": "data/search/postings-0.json",
+    "token": "us"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "us.for"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "us.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "usable"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "usage"
+  },
+  {
+    "df": 129,
+    "postings": "data/search/postings-0.json",
+    "token": "use"
+  },
+  {
+    "df": 27,
+    "postings": "data/search/postings-0.json",
+    "token": "used"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "usedyou"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "useful"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "user"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "user-defined"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "user-restricted"
+  },
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "users"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "users.you"
+  },
+  {
+    "df": 35,
+    "postings": "data/search/postings-0.json",
+    "token": "uses"
+  },
+  {
+    "df": 54,
+    "postings": "data/search/postings-0.json",
+    "token": "using"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "usrn"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "usually"
+  }
+]

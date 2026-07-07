@@ -1,0 +1,830 @@
+{
+  "nha": [
+    {
+      "df": 5,
+      "token": "nhais"
+    },
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhai": [
+    {
+      "df": 5,
+      "token": "nhais"
+    },
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhais": [
+    {
+      "df": 5,
+      "token": "nhais"
+    },
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhais-": [
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhais-g": [
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhais-gp": [
+    {
+      "df": 1,
+      "token": "nhais-gp-links"
+    }
+  ],
+  "nhe": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    },
+    {
+      "df": 1,
+      "token": "nhere"
+    }
+  ],
+  "nher": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    },
+    {
+      "df": 1,
+      "token": "nhere"
+    }
+  ],
+  "nhere": [
+    {
+      "df": 1,
+      "token": "nhere"
+    }
+  ],
+  "nheri": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    }
+  ],
+  "nherit": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    }
+  ],
+  "nherita": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    }
+  ],
+  "nheritag": [
+    {
+      "df": 2,
+      "token": "nheritage"
+    }
+  ],
+  "nhi": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhis": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhist": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhisto": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhistor": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhistori": [
+    {
+      "df": 1,
+      "token": "nhistoric"
+    }
+  ],
+  "nhl": [
+    {
+      "df": 1,
+      "token": "nhle"
+    }
+  ],
+  "nhle": [
+    {
+      "df": 1,
+      "token": "nhle"
+    }
+  ],
+  "nhs": [
+    {
+      "df": 94,
+      "token": "nhs"
+    },
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-app"
+    },
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    }
+  ],
+  "nhs-": [
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-app"
+    },
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-data-registers-service-rest-api"
+    }
+  ],
+  "nhs-a": [
+    {
+      "df": 1,
+      "token": "nhs-app"
+    }
+  ],
+  "nhs-ap": [
+    {
+      "df": 1,
+      "token": "nhs-app"
+    }
+  ],
+  "nhs-app": [
+    {
+      "df": 1,
+      "token": "nhs-app"
+    }
+  ],
+  "nhs-b": [
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    }
+  ],
+  "nhs-bo": [
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    }
+  ],
+  "nhs-boo": [
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    }
+  ],
+  "nhs-book": [
+    {
+      "df": 1,
+      "token": "nhs-booking-fhir"
+    }
+  ],
+  "nhs-c": [
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    }
+  ],
+  "nhs-ci": [
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    }
+  ],
+  "nhs-cis": [
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    },
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    }
+  ],
+  "nhs-cis-": [
+    {
+      "df": 1,
+      "token": "nhs-cis-authentication-spine-security-broker"
+    }
+  ],
+  "nhs-cis2": [
+    {
+      "df": 1,
+      "token": "nhs-cis2-care-identity-authentication"
+    }
+  ],
+  "nhs-d": [
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-data-registers-service-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-demographics-batch-service"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-child-health-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-medicine-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-directory-of-healthcare-services-service-search-api"
+    }
+  ],
+  "nhs-di": [
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-data-registers-service-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-demographics-batch-service"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-child-health-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-medicine-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-directory-of-healthcare-services-service-search-api"
+    }
+  ],
+  "nhs-dig": [
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-data-registers-service-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-demographics-batch-service"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-child-health-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-medicine-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-directory-of-healthcare-services-service-search-api"
+    }
+  ],
+  "nhs-digi": [
+    {
+      "df": 93,
+      "token": "nhs-digital"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-access-control-service-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-alerts-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-ambulance-data-submission-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-assessment-discharge-and-withdrawal-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-booking-and-referral-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-bowel-cancer-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cervical-screening-edifact"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-child-protection-information-sharing-hl7-v3-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-covid-19-test-results-fhir-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-cyber-alerts-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-data-registers-service-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-demographics-batch-service"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-child-health-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-digital-medicine-fhir"
+    },
+    {
+      "df": 1,
+      "token": "nhs-digital-directory-of-healthcare-services-service-search-api"
+    }
+  ],
+  "nhs-l": [
+    {
+      "df": 1,
+      "token": "nhs-login"
+    },
+    {
+      "df": 1,
+      "token": "nhs-login-for-partners-and-developers"
+    }
+  ],
+  "nhs-lo": [
+    {
+      "df": 1,
+      "token": "nhs-login"
+    },
+    {
+      "df": 1,
+      "token": "nhs-login-for-partners-and-developers"
+    }
+  ],
+  "nhs-log": [
+    {
+      "df": 1,
+      "token": "nhs-login"
+    },
+    {
+      "df": 1,
+      "token": "nhs-login-for-partners-and-developers"
+    }
+  ],
+  "nhs-logi": [
+    {
+      "df": 1,
+      "token": "nhs-login"
+    },
+    {
+      "df": 1,
+      "token": "nhs-login-for-partners-and-developers"
+    }
+  ],
+  "nhs-s": [
+    {
+      "df": 1,
+      "token": "nhs-syndicated-content"
+    }
+  ],
+  "nhs-sy": [
+    {
+      "df": 1,
+      "token": "nhs-syndicated-content"
+    }
+  ],
+  "nhs-syn": [
+    {
+      "df": 1,
+      "token": "nhs-syndicated-content"
+    }
+  ],
+  "nhs-synd": [
+    {
+      "df": 1,
+      "token": "nhs-syndicated-content"
+    }
+  ],
+  "nhs.": [
+    {
+      "df": 1,
+      "token": "nhs.uk"
+    }
+  ],
+  "nhs.u": [
+    {
+      "df": 1,
+      "token": "nhs.uk"
+    }
+  ],
+  "nhs.uk": [
+    {
+      "df": 1,
+      "token": "nhs.uk"
+    }
+  ],
+  "nhs0": [
+    {
+      "df": 1,
+      "token": "nhs003"
+    },
+    {
+      "df": 1,
+      "token": "nhs004"
+    }
+  ],
+  "nhs00": [
+    {
+      "df": 1,
+      "token": "nhs003"
+    },
+    {
+      "df": 1,
+      "token": "nhs004"
+    }
+  ],
+  "nhs003": [
+    {
+      "df": 1,
+      "token": "nhs003"
+    }
+  ],
+  "nhs004": [
+    {
+      "df": 1,
+      "token": "nhs004"
+    }
+  ],
+  "nhs1": [
+    {
+      "df": 1,
+      "token": "nhs111"
+    }
+  ],
+  "nhs11": [
+    {
+      "df": 1,
+      "token": "nhs111"
+    }
+  ],
+  "nhs111": [
+    {
+      "df": 1,
+      "token": "nhs111"
+    }
+  ],
+  "nhsm": [
+    {
+      "df": 1,
+      "token": "nhsmail"
+    },
+    {
+      "df": 1,
+      "token": "nhsmail.you"
+    }
+  ],
+  "nhsma": [
+    {
+      "df": 1,
+      "token": "nhsmail"
+    },
+    {
+      "df": 1,
+      "token": "nhsmail.you"
+    }
+  ],
+  "nhsmai": [
+    {
+      "df": 1,
+      "token": "nhsmail"
+    },
+    {
+      "df": 1,
+      "token": "nhsmail.you"
+    }
+  ],
+  "nhsmail": [
+    {
+      "df": 1,
+      "token": "nhsmail"
+    },
+    {
+      "df": 1,
+      "token": "nhsmail.you"
+    }
+  ],
+  "nhsmail.": [
+    {
+      "df": 1,
+      "token": "nhsmail.you"
+    }
+  ],
+  "nht": [
+    {
+      "df": 6,
+      "token": "nhttps"
+    }
+  ],
+  "nhtt": [
+    {
+      "df": 6,
+      "token": "nhttps"
+    }
+  ],
+  "nhttp": [
+    {
+      "df": 6,
+      "token": "nhttps"
+    }
+  ],
+  "nhttps": [
+    {
+      "df": 6,
+      "token": "nhttps"
+    }
+  ]
+}

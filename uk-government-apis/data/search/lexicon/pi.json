@@ -1,0 +1,22 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pick"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "picture"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pilot"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "pipe-delimited"
+  }
+]

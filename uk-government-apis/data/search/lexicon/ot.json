@@ -1,0 +1,22 @@
+[
+  {
+    "df": 40,
+    "postings": "data/search/postings-0.json",
+    "token": "other"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "others"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "otherssome"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "otherwise"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "os"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "osdatahub.os.uk"
+  }
+]

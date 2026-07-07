@@ -1,0 +1,147 @@
+[
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "point"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "point-in-time"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "point-of-care"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pointer"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "points"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pointyou"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "police"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "policies"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "policing"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "policy"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "poll"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pollute"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pollution"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "polygon"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "polygons"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "populated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "population"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "populations"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "portal"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "pos"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "possible"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "post"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "postal"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "postcode"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "postcodes"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "potential"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "potentially"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "power"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "powered"
+  }
+]

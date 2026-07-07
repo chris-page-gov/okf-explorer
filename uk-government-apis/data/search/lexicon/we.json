@@ -1,0 +1,107 @@
+[
+  {
+    "df": 23,
+    "postings": "data/search/postings-0.json",
+    "token": "we"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "wearefuturegov"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "web"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "web-based"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "webservices"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "webservices.esd.org.uk"
+  },
+  {
+    "df": 9,
+    "postings": "data/search/postings-0.json",
+    "token": "website"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "website.examples"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "websites"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "weekly"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "weeks"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "welfare"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "well"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "welsh"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "were"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "west"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "west-berkshire-council"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "west-berkshire-council-georeport"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "west-midlands-combined-authority"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "west-midlands-combined-authority-transport-for-west-midlands-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "westberks.gov.uk"
+  }
+]

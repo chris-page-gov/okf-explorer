@@ -1,0 +1,60 @@
+{
+  "counts": {
+    "api_products": 244,
+    "api_resources": 507,
+    "datasets": 244,
+    "providers": 34,
+    "publishers": 34,
+    "relationships": 1506,
+    "resources": 507
+  },
+  "description": "Large-corpus OKF exemplar generated from the GOV.UK API Catalogue, with API-domain facets, typed relationships, search shards, and operational metadata.",
+  "entrypoints": {
+    "analysis_overview": "data/analysis/overview.json",
+    "data_manifest": "data/manifest.json",
+    "notes": "../sources/UK-Government-API-OKF.md",
+    "overview_index": "data/overview.json",
+    "search_manifest": "data/search/manifest.json",
+    "viewer": "../next/"
+  },
+  "extensions": {
+    "okf-api-catalogue.v1": {
+      "live_calls_enabled": false,
+      "mode": "derived",
+      "secret_values_stored": false,
+      "source": "GOV.UK API Catalogue CSV"
+    },
+    "okf-explorer-analysis.v1": {
+      "entrypoint": "analysis_overview",
+      "mode": "external"
+    }
+  },
+  "generated_at": "2026-06-24T00:00:00Z",
+  "kind": "okf-large-corpus",
+  "performance": {
+    "full_record_hydration": "lazy",
+    "relationship_hydration": "lazy",
+    "search": "static worker shards",
+    "startup_mode": "overview-first"
+  },
+  "schema": "okf-explorer-large-corpus.v1",
+  "source": {
+    "data_url": "https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv",
+    "license": "Open Government Licence v3.0 unless otherwise stated",
+    "source_sha256": "fdd2e4f3ae655964225bd646c3ccecf0378c32a2e33ef579db35b030b13eada0",
+    "title": "GOV.UK API Catalogue",
+    "url": "https://www.api.gov.uk/"
+  },
+  "title": "UK Government APIs OKF",
+  "vocabulary": {
+    "format_plural": "interaction styles",
+    "publisher_plural": "providers",
+    "publisher_singular": "provider",
+    "record_plural": "API products",
+    "record_singular": "API product",
+    "resource_plural": "API evidence",
+    "resource_singular": "API evidence",
+    "resource_stack_label": "Evidence stack",
+    "search_placeholder": "Search API products, providers, documentation, domains"
+  }
+}

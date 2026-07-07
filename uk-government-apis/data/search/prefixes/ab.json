@@ -1,0 +1,204 @@
+{
+  "abb": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abbr": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abbre": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abbrev": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abbrevi": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abbrevia": [
+    {
+      "df": 1,
+      "token": "abbreviated"
+    }
+  ],
+  "abd": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abdo": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abdom": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abdomi": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abdomin": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abdomina": [
+    {
+      "df": 1,
+      "token": "abdominal"
+    }
+  ],
+  "abi": [
+    {
+      "df": 1,
+      "token": "ability"
+    }
+  ],
+  "abil": [
+    {
+      "df": 1,
+      "token": "ability"
+    }
+  ],
+  "abili": [
+    {
+      "df": 1,
+      "token": "ability"
+    }
+  ],
+  "abilit": [
+    {
+      "df": 1,
+      "token": "ability"
+    }
+  ],
+  "ability": [
+    {
+      "df": 1,
+      "token": "ability"
+    }
+  ],
+  "abl": [
+    {
+      "df": 2,
+      "token": "able"
+    }
+  ],
+  "able": [
+    {
+      "df": 2,
+      "token": "able"
+    }
+  ],
+  "abo": [
+    {
+      "df": 52,
+      "token": "about"
+    },
+    {
+      "df": 4,
+      "token": "above"
+    },
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "abou": [
+    {
+      "df": 52,
+      "token": "about"
+    },
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "about": [
+    {
+      "df": 52,
+      "token": "about"
+    },
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "about_": [
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "about_s": [
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "about_so": [
+    {
+      "df": 1,
+      "token": "about_sos"
+    }
+  ],
+  "abov": [
+    {
+      "df": 4,
+      "token": "above"
+    }
+  ],
+  "above": [
+    {
+      "df": 4,
+      "token": "above"
+    }
+  ],
+  "abr": [
+    {
+      "df": 1,
+      "token": "abroad"
+    }
+  ],
+  "abro": [
+    {
+      "df": 1,
+      "token": "abroad"
+    }
+  ],
+  "abroa": [
+    {
+      "df": 1,
+      "token": "abroad"
+    }
+  ],
+  "abroad": [
+    {
+      "df": 1,
+      "token": "abroad"
+    }
+  ]
+}

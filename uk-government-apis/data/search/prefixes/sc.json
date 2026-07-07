@@ -1,0 +1,688 @@
+{
+  "sca": [
+    {
+      "df": 1,
+      "token": "scalable"
+    },
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scal": [
+    {
+      "df": 1,
+      "token": "scalable"
+    }
+  ],
+  "scala": [
+    {
+      "df": 1,
+      "token": "scalable"
+    }
+  ],
+  "scalab": [
+    {
+      "df": 1,
+      "token": "scalable"
+    }
+  ],
+  "scalabl": [
+    {
+      "df": 1,
+      "token": "scalable"
+    }
+  ],
+  "scalable": [
+    {
+      "df": 1,
+      "token": "scalable"
+    }
+  ],
+  "scan": [
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scann": [
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scanni": [
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scannin": [
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scanning": [
+    {
+      "df": 1,
+      "token": "scanning"
+    }
+  ],
+  "scc": [
+    {
+      "df": 1,
+      "token": "scc"
+    },
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    },
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "scc-": [
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    }
+  ],
+  "scc-d": [
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    }
+  ],
+  "scc-di": [
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    }
+  ],
+  "scc-dir": [
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    }
+  ],
+  "scc-dire": [
+    {
+      "df": 1,
+      "token": "scc-directory-of-support-services"
+    }
+  ],
+  "scci": [
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "scci2": [
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "scci20": [
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "scci207": [
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "scci2075": [
+    {
+      "df": 1,
+      "token": "scci2075"
+    }
+  ],
+  "sce": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "scen": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "scena": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "scenar": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "scenari": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "scenario": [
+    {
+      "df": 1,
+      "token": "scenarios"
+    }
+  ],
+  "sch": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 5,
+      "token": "scheme"
+    },
+    {
+      "df": 3,
+      "token": "schema"
+    },
+    {
+      "df": 2,
+      "token": "schemas"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    },
+    {
+      "df": 1,
+      "token": "school"
+    }
+  ],
+  "sche": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 5,
+      "token": "scheme"
+    },
+    {
+      "df": 3,
+      "token": "schema"
+    },
+    {
+      "df": 2,
+      "token": "schemas"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    }
+  ],
+  "sched": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    }
+  ],
+  "schedu": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    }
+  ],
+  "schedul": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    }
+  ],
+  "schedule": [
+    {
+      "df": 5,
+      "token": "scheduled"
+    },
+    {
+      "df": 1,
+      "token": "schedule"
+    }
+  ],
+  "schem": [
+    {
+      "df": 5,
+      "token": "scheme"
+    },
+    {
+      "df": 3,
+      "token": "schema"
+    },
+    {
+      "df": 2,
+      "token": "schemas"
+    }
+  ],
+  "schema": [
+    {
+      "df": 3,
+      "token": "schema"
+    },
+    {
+      "df": 2,
+      "token": "schemas"
+    }
+  ],
+  "schemas": [
+    {
+      "df": 2,
+      "token": "schemas"
+    }
+  ],
+  "scheme": [
+    {
+      "df": 5,
+      "token": "scheme"
+    }
+  ],
+  "scho": [
+    {
+      "df": 1,
+      "token": "school"
+    }
+  ],
+  "schoo": [
+    {
+      "df": 1,
+      "token": "school"
+    }
+  ],
+  "school": [
+    {
+      "df": 1,
+      "token": "school"
+    }
+  ],
+  "sci": [
+    {
+      "df": 1,
+      "token": "science"
+    },
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "scie": [
+    {
+      "df": 1,
+      "token": "science"
+    },
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "scien": [
+    {
+      "df": 1,
+      "token": "science"
+    },
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "scienc": [
+    {
+      "df": 1,
+      "token": "science"
+    }
+  ],
+  "science": [
+    {
+      "df": 1,
+      "token": "science"
+    }
+  ],
+  "scient": [
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "scienti": [
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "scientis": [
+    {
+      "df": 1,
+      "token": "scientists"
+    }
+  ],
+  "sco": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scope"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scop": [
+    {
+      "df": 1,
+      "token": "scope"
+    }
+  ],
+  "scope": [
+    {
+      "df": 1,
+      "token": "scope"
+    }
+  ],
+  "scot": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scotl": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    }
+  ],
+  "scotla": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    }
+  ],
+  "scotlan": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    }
+  ],
+  "scotland": [
+    {
+      "df": 7,
+      "token": "scotland"
+    },
+    {
+      "df": 1,
+      "token": "scotlandor"
+    }
+  ],
+  "scott": [
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scotti": [
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scottis": [
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scottish": [
+    {
+      "df": 4,
+      "token": "scottish"
+    },
+    {
+      "df": 2,
+      "token": "scottish-government"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-geonetwork-rest-api"
+    },
+    {
+      "df": 1,
+      "token": "scottish-government-statistics-gov-scot"
+    }
+  ],
+  "scr": [
+    {
+      "df": 4,
+      "token": "scra"
+    },
+    {
+      "df": 3,
+      "token": "scr"
+    },
+    {
+      "df": 3,
+      "token": "screening"
+    },
+    {
+      "df": 2,
+      "token": "scrs"
+    },
+    {
+      "df": 1,
+      "token": "scr.gp"
+    },
+    {
+      "df": 1,
+      "token": "scrap"
+    },
+    {
+      "df": 1,
+      "token": "scrnote"
+    }
+  ],
+  "scr.": [
+    {
+      "df": 1,
+      "token": "scr.gp"
+    }
+  ],
+  "scr.g": [
+    {
+      "df": 1,
+      "token": "scr.gp"
+    }
+  ],
+  "scr.gp": [
+    {
+      "df": 1,
+      "token": "scr.gp"
+    }
+  ],
+  "scra": [
+    {
+      "df": 4,
+      "token": "scra"
+    },
+    {
+      "df": 1,
+      "token": "scrap"
+    }
+  ],
+  "scrap": [
+    {
+      "df": 1,
+      "token": "scrap"
+    }
+  ],
+  "scre": [
+    {
+      "df": 3,
+      "token": "screening"
+    }
+  ],
+  "scree": [
+    {
+      "df": 3,
+      "token": "screening"
+    }
+  ],
+  "screen": [
+    {
+      "df": 3,
+      "token": "screening"
+    }
+  ],
+  "screeni": [
+    {
+      "df": 3,
+      "token": "screening"
+    }
+  ],
+  "screenin": [
+    {
+      "df": 3,
+      "token": "screening"
+    }
+  ],
+  "scrn": [
+    {
+      "df": 1,
+      "token": "scrnote"
+    }
+  ],
+  "scrno": [
+    {
+      "df": 1,
+      "token": "scrnote"
+    }
+  ],
+  "scrnot": [
+    {
+      "df": 1,
+      "token": "scrnote"
+    }
+  ],
+  "scrnote": [
+    {
+      "df": 1,
+      "token": "scrnote"
+    }
+  ],
+  "scrs": [
+    {
+      "df": 2,
+      "token": "scrs"
+    }
+  ]
+}

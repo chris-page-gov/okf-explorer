@@ -1,0 +1,26 @@
+{
+  "ui.": [
+    {
+      "df": 1,
+      "token": "ui.the"
+    }
+  ],
+  "ui.t": [
+    {
+      "df": 1,
+      "token": "ui.the"
+    }
+  ],
+  "ui.th": [
+    {
+      "df": 1,
+      "token": "ui.the"
+    }
+  ],
+  "ui.the": [
+    {
+      "df": 1,
+      "token": "ui.the"
+    }
+  ]
+}

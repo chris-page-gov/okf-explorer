@@ -1,0 +1,187 @@
+[
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "adaptor"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "add"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "added"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "adding"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "addition"
+  },
+  {
+    "df": 10,
+    "postings": "data/search/postings-0.json",
+    "token": "additional"
+  },
+  {
+    "df": 18,
+    "postings": "data/search/postings-0.json",
+    "token": "address"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "addressan"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "addressbase"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "addresses"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "addressthis"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adhere"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adjustable"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adjustment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adjustments"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "admin"
+  },
+  {
+    "df": 16,
+    "postings": "data/search/postings-0.json",
+    "token": "administration"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "administrative"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "administrators"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "admiralty"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "admiraltyapi.developer.azure-api.net"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "admission"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "admissions"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "admitted"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "admitted.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adopted"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "ads"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "adult"
+  },
+  {
+    "df": 3,
+    "postings": "data/search/postings-0.json",
+    "token": "advance"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "advantage"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "adverse"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "advert"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adverts"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "advice"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "advised"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "advisers"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "adw"
+  }
+]

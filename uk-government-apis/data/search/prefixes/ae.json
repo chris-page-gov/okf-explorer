@@ -1,0 +1,54 @@
+{
+  "aer": [
+    {
+      "df": 1,
+      "token": "aerial"
+    },
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ],
+  "aeri": [
+    {
+      "df": 1,
+      "token": "aerial"
+    },
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ],
+  "aeria": [
+    {
+      "df": 1,
+      "token": "aerial"
+    },
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ],
+  "aerial": [
+    {
+      "df": 1,
+      "token": "aerial"
+    },
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ],
+  "aerial-": [
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ],
+  "aerial-i": [
+    {
+      "df": 1,
+      "token": "aerial-investigation"
+    }
+  ]
+}

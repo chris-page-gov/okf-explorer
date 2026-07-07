@@ -1,0 +1,97 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "ashore"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "asid"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "asids"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "ask"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "aspects"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "assessed"
+  },
+  {
+    "df": 13,
+    "postings": "data/search/postings-0.json",
+    "token": "assessment"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "assessment-discharge-and-withdrawal-fhir"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "assessment.as"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "assessments"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "asset"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "asset-management"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "assets"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "assigned"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "assigns"
+  },
+  {
+    "df": 5,
+    "postings": "data/search/postings-0.json",
+    "token": "associated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "association"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "assurance"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "asynchronous"
+  }
+]

@@ -1,0 +1,127 @@
+[
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "audit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "auth"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authenticate"
+  },
+  {
+    "df": 15,
+    "postings": "data/search/postings-0.json",
+    "token": "authenticated"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authenticatedfor"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "authenticating"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "authentication"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authentication-api"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authentication-api-description.html"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authentication.do"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "authorisation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authorisations"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "authorised"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authorises"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "authoritative"
+  },
+  {
+    "df": 8,
+    "postings": "data/search/postings-0.json",
+    "token": "authorities"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "authorities.it"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "authorities.this"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "authoritiesas"
+  },
+  {
+    "df": 7,
+    "postings": "data/search/postings-0.json",
+    "token": "authority"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "autodiscover"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "automate"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "automated"
+  },
+  {
+    "df": 2,
+    "postings": "data/search/postings-0.json",
+    "token": "automatic"
+  },
+  {
+    "df": 6,
+    "postings": "data/search/postings-0.json",
+    "token": "automatically"
+  }
+]

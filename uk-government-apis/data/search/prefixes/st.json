@@ -1,0 +1,1198 @@
+{
+  "sta": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 16,
+      "token": "status"
+    },
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 7,
+      "token": "staff"
+    },
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 5,
+      "token": "start"
+    },
+    {
+      "df": 5,
+      "token": "state"
+    },
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 2,
+      "token": "standing"
+    },
+    {
+      "df": 2,
+      "token": "station"
+    },
+    {
+      "df": 1,
+      "token": "stable"
+    },
+    {
+      "df": 1,
+      "token": "staff.you"
+    },
+    {
+      "df": 1,
+      "token": "stage"
+    },
+    {
+      "df": 1,
+      "token": "stages"
+    }
+  ],
+  "stab": [
+    {
+      "df": 1,
+      "token": "stable"
+    }
+  ],
+  "stabl": [
+    {
+      "df": 1,
+      "token": "stable"
+    }
+  ],
+  "stable": [
+    {
+      "df": 1,
+      "token": "stable"
+    }
+  ],
+  "staf": [
+    {
+      "df": 7,
+      "token": "staff"
+    },
+    {
+      "df": 1,
+      "token": "staff.you"
+    }
+  ],
+  "staff": [
+    {
+      "df": 7,
+      "token": "staff"
+    },
+    {
+      "df": 1,
+      "token": "staff.you"
+    }
+  ],
+  "staff.": [
+    {
+      "df": 1,
+      "token": "staff.you"
+    }
+  ],
+  "staff.y": [
+    {
+      "df": 1,
+      "token": "staff.you"
+    }
+  ],
+  "staff.yo": [
+    {
+      "df": 1,
+      "token": "staff.you"
+    }
+  ],
+  "stag": [
+    {
+      "df": 1,
+      "token": "stage"
+    },
+    {
+      "df": 1,
+      "token": "stages"
+    }
+  ],
+  "stage": [
+    {
+      "df": 1,
+      "token": "stage"
+    },
+    {
+      "df": 1,
+      "token": "stages"
+    }
+  ],
+  "stages": [
+    {
+      "df": 1,
+      "token": "stages"
+    }
+  ],
+  "stan": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 2,
+      "token": "standing"
+    },
+    {
+      "df": 1,
+      "token": "standalone"
+    },
+    {
+      "df": 1,
+      "token": "standard.if"
+    },
+    {
+      "df": 1,
+      "token": "standardise"
+    },
+    {
+      "df": 1,
+      "token": "standards-and-collections"
+    },
+    {
+      "df": 1,
+      "token": "standards.esd.org.uk"
+    }
+  ],
+  "stand": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 2,
+      "token": "standing"
+    },
+    {
+      "df": 1,
+      "token": "standalone"
+    },
+    {
+      "df": 1,
+      "token": "standard.if"
+    },
+    {
+      "df": 1,
+      "token": "standardise"
+    },
+    {
+      "df": 1,
+      "token": "standards-and-collections"
+    },
+    {
+      "df": 1,
+      "token": "standards.esd.org.uk"
+    }
+  ],
+  "standa": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 1,
+      "token": "standalone"
+    },
+    {
+      "df": 1,
+      "token": "standard.if"
+    },
+    {
+      "df": 1,
+      "token": "standardise"
+    },
+    {
+      "df": 1,
+      "token": "standards-and-collections"
+    },
+    {
+      "df": 1,
+      "token": "standards.esd.org.uk"
+    }
+  ],
+  "standal": [
+    {
+      "df": 1,
+      "token": "standalone"
+    }
+  ],
+  "standalo": [
+    {
+      "df": 1,
+      "token": "standalone"
+    }
+  ],
+  "standar": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 1,
+      "token": "standard.if"
+    },
+    {
+      "df": 1,
+      "token": "standardise"
+    },
+    {
+      "df": 1,
+      "token": "standards-and-collections"
+    },
+    {
+      "df": 1,
+      "token": "standards.esd.org.uk"
+    }
+  ],
+  "standard": [
+    {
+      "df": 20,
+      "token": "standard"
+    },
+    {
+      "df": 16,
+      "token": "standards"
+    },
+    {
+      "df": 2,
+      "token": "standards.a"
+    },
+    {
+      "df": 1,
+      "token": "standard.if"
+    },
+    {
+      "df": 1,
+      "token": "standardise"
+    },
+    {
+      "df": 1,
+      "token": "standards-and-collections"
+    },
+    {
+      "df": 1,
+      "token": "standards.esd.org.uk"
+    }
+  ],
+  "standi": [
+    {
+      "df": 2,
+      "token": "standing"
+    }
+  ],
+  "standin": [
+    {
+      "df": 2,
+      "token": "standing"
+    }
+  ],
+  "standing": [
+    {
+      "df": 2,
+      "token": "standing"
+    }
+  ],
+  "star": [
+    {
+      "df": 5,
+      "token": "start"
+    }
+  ],
+  "start": [
+    {
+      "df": 5,
+      "token": "start"
+    }
+  ],
+  "stat": [
+    {
+      "df": 16,
+      "token": "status"
+    },
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 5,
+      "token": "state"
+    },
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 2,
+      "token": "station"
+    },
+    {
+      "df": 1,
+      "token": "stated"
+    },
+    {
+      "df": 1,
+      "token": "statementgos4"
+    },
+    {
+      "df": 1,
+      "token": "stationreference"
+    },
+    {
+      "df": 1,
+      "token": "stations_getstation"
+    },
+    {
+      "df": 1,
+      "token": "statistics.gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "statistics.opendata"
+    },
+    {
+      "df": 1,
+      "token": "statusyou"
+    }
+  ],
+  "state": [
+    {
+      "df": 5,
+      "token": "state"
+    },
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 1,
+      "token": "stated"
+    },
+    {
+      "df": 1,
+      "token": "statementgos4"
+    }
+  ],
+  "stated": [
+    {
+      "df": 1,
+      "token": "stated"
+    }
+  ],
+  "statem": [
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 1,
+      "token": "statementgos4"
+    }
+  ],
+  "stateme": [
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 1,
+      "token": "statementgos4"
+    }
+  ],
+  "statemen": [
+    {
+      "df": 5,
+      "token": "statement"
+    },
+    {
+      "df": 1,
+      "token": "statementgos4"
+    }
+  ],
+  "stati": [
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 2,
+      "token": "station"
+    },
+    {
+      "df": 1,
+      "token": "stationreference"
+    },
+    {
+      "df": 1,
+      "token": "stations_getstation"
+    },
+    {
+      "df": 1,
+      "token": "statistics.gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "statistics.opendata"
+    }
+  ],
+  "statio": [
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 2,
+      "token": "station"
+    },
+    {
+      "df": 1,
+      "token": "stationreference"
+    },
+    {
+      "df": 1,
+      "token": "stations_getstation"
+    }
+  ],
+  "station": [
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 2,
+      "token": "station"
+    },
+    {
+      "df": 1,
+      "token": "stationreference"
+    },
+    {
+      "df": 1,
+      "token": "stations_getstation"
+    }
+  ],
+  "stationr": [
+    {
+      "df": 1,
+      "token": "stationreference"
+    }
+  ],
+  "stations": [
+    {
+      "df": 8,
+      "token": "stations"
+    },
+    {
+      "df": 1,
+      "token": "stations_getstation"
+    }
+  ],
+  "statis": [
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 1,
+      "token": "statistics.gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "statistics.opendata"
+    }
+  ],
+  "statist": [
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 1,
+      "token": "statistics.gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "statistics.opendata"
+    }
+  ],
+  "statisti": [
+    {
+      "df": 7,
+      "token": "statistics"
+    },
+    {
+      "df": 1,
+      "token": "statistics.gov.scot"
+    },
+    {
+      "df": 1,
+      "token": "statistics.opendata"
+    }
+  ],
+  "statu": [
+    {
+      "df": 16,
+      "token": "status"
+    },
+    {
+      "df": 1,
+      "token": "statusyou"
+    }
+  ],
+  "status": [
+    {
+      "df": 16,
+      "token": "status"
+    },
+    {
+      "df": 1,
+      "token": "statusyou"
+    }
+  ],
+  "statusy": [
+    {
+      "df": 1,
+      "token": "statusyou"
+    }
+  ],
+  "statusyo": [
+    {
+      "df": 1,
+      "token": "statusyou"
+    }
+  ],
+  "sti": [
+    {
+      "df": 4,
+      "token": "still"
+    }
+  ],
+  "stil": [
+    {
+      "df": 4,
+      "token": "still"
+    }
+  ],
+  "still": [
+    {
+      "df": 4,
+      "token": "still"
+    }
+  ],
+  "sto": [
+    {
+      "df": 3,
+      "token": "stored"
+    },
+    {
+      "df": 1,
+      "token": "stop"
+    },
+    {
+      "df": 1,
+      "token": "storage"
+    },
+    {
+      "df": 1,
+      "token": "store"
+    },
+    {
+      "df": 1,
+      "token": "story"
+    }
+  ],
+  "stop": [
+    {
+      "df": 1,
+      "token": "stop"
+    }
+  ],
+  "stor": [
+    {
+      "df": 3,
+      "token": "stored"
+    },
+    {
+      "df": 1,
+      "token": "storage"
+    },
+    {
+      "df": 1,
+      "token": "store"
+    },
+    {
+      "df": 1,
+      "token": "story"
+    }
+  ],
+  "stora": [
+    {
+      "df": 1,
+      "token": "storage"
+    }
+  ],
+  "storag": [
+    {
+      "df": 1,
+      "token": "storage"
+    }
+  ],
+  "storage": [
+    {
+      "df": 1,
+      "token": "storage"
+    }
+  ],
+  "store": [
+    {
+      "df": 3,
+      "token": "stored"
+    },
+    {
+      "df": 1,
+      "token": "store"
+    }
+  ],
+  "stored": [
+    {
+      "df": 3,
+      "token": "stored"
+    }
+  ],
+  "story": [
+    {
+      "df": 1,
+      "token": "story"
+    }
+  ],
+  "str": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 2,
+      "token": "stream"
+    },
+    {
+      "df": 1,
+      "token": "strategic"
+    },
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    },
+    {
+      "df": 1,
+      "token": "streams"
+    },
+    {
+      "df": 1,
+      "token": "street"
+    },
+    {
+      "df": 1,
+      "token": "street-level"
+    },
+    {
+      "df": 1,
+      "token": "streets"
+    },
+    {
+      "df": 1,
+      "token": "striving"
+    },
+    {
+      "df": 1,
+      "token": "strong"
+    },
+    {
+      "df": 1,
+      "token": "strongly"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "stra": [
+    {
+      "df": 1,
+      "token": "strategic"
+    }
+  ],
+  "strat": [
+    {
+      "df": 1,
+      "token": "strategic"
+    }
+  ],
+  "strate": [
+    {
+      "df": 1,
+      "token": "strategic"
+    }
+  ],
+  "strateg": [
+    {
+      "df": 1,
+      "token": "strategic"
+    }
+  ],
+  "strategi": [
+    {
+      "df": 1,
+      "token": "strategic"
+    }
+  ],
+  "stre": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 2,
+      "token": "stream"
+    },
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    },
+    {
+      "df": 1,
+      "token": "streams"
+    },
+    {
+      "df": 1,
+      "token": "street"
+    },
+    {
+      "df": 1,
+      "token": "street-level"
+    },
+    {
+      "df": 1,
+      "token": "streets"
+    }
+  ],
+  "strea": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 2,
+      "token": "stream"
+    },
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    },
+    {
+      "df": 1,
+      "token": "streams"
+    }
+  ],
+  "stream": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 2,
+      "token": "stream"
+    },
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    },
+    {
+      "df": 1,
+      "token": "streams"
+    }
+  ],
+  "stream.": [
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    }
+  ],
+  "stream.c": [
+    {
+      "df": 1,
+      "token": "stream.companieshouse.gov.uk"
+    }
+  ],
+  "streami": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    }
+  ],
+  "streamin": [
+    {
+      "df": 18,
+      "token": "streaming"
+    },
+    {
+      "df": 1,
+      "token": "streaming-api"
+    }
+  ],
+  "streams": [
+    {
+      "df": 1,
+      "token": "streams"
+    }
+  ],
+  "stree": [
+    {
+      "df": 1,
+      "token": "street"
+    },
+    {
+      "df": 1,
+      "token": "street-level"
+    },
+    {
+      "df": 1,
+      "token": "streets"
+    }
+  ],
+  "street": [
+    {
+      "df": 1,
+      "token": "street"
+    },
+    {
+      "df": 1,
+      "token": "street-level"
+    },
+    {
+      "df": 1,
+      "token": "streets"
+    }
+  ],
+  "street-": [
+    {
+      "df": 1,
+      "token": "street-level"
+    }
+  ],
+  "street-l": [
+    {
+      "df": 1,
+      "token": "street-level"
+    }
+  ],
+  "streets": [
+    {
+      "df": 1,
+      "token": "streets"
+    }
+  ],
+  "stri": [
+    {
+      "df": 1,
+      "token": "striving"
+    }
+  ],
+  "striv": [
+    {
+      "df": 1,
+      "token": "striving"
+    }
+  ],
+  "strivi": [
+    {
+      "df": 1,
+      "token": "striving"
+    }
+  ],
+  "strivin": [
+    {
+      "df": 1,
+      "token": "striving"
+    }
+  ],
+  "striving": [
+    {
+      "df": 1,
+      "token": "striving"
+    }
+  ],
+  "stro": [
+    {
+      "df": 1,
+      "token": "strong"
+    },
+    {
+      "df": 1,
+      "token": "strongly"
+    }
+  ],
+  "stron": [
+    {
+      "df": 1,
+      "token": "strong"
+    },
+    {
+      "df": 1,
+      "token": "strongly"
+    }
+  ],
+  "strong": [
+    {
+      "df": 1,
+      "token": "strong"
+    },
+    {
+      "df": 1,
+      "token": "strongly"
+    }
+  ],
+  "strongl": [
+    {
+      "df": 1,
+      "token": "strongly"
+    }
+  ],
+  "strongly": [
+    {
+      "df": 1,
+      "token": "strongly"
+    }
+  ],
+  "stru": [
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "struc": [
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "struct": [
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "structu": [
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "structur": [
+    {
+      "df": 5,
+      "token": "structure"
+    },
+    {
+      "df": 4,
+      "token": "structured"
+    },
+    {
+      "df": 4,
+      "token": "structures"
+    },
+    {
+      "df": 1,
+      "token": "structure.for"
+    }
+  ],
+  "stu": [
+    {
+      "df": 1,
+      "token": "stu3"
+    }
+  ],
+  "stu3": [
+    {
+      "df": 1,
+      "token": "stu3"
+    }
+  ],
+  "sty": [
+    {
+      "df": 1,
+      "token": "style"
+    },
+    {
+      "df": 1,
+      "token": "styles"
+    }
+  ],
+  "styl": [
+    {
+      "df": 1,
+      "token": "style"
+    },
+    {
+      "df": 1,
+      "token": "styles"
+    }
+  ],
+  "style": [
+    {
+      "df": 1,
+      "token": "style"
+    },
+    {
+      "df": 1,
+      "token": "styles"
+    }
+  ],
+  "styles": [
+    {
+      "df": 1,
+      "token": "styles"
+    }
+  ]
+}

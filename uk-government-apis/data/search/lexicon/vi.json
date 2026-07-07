@@ -1,0 +1,87 @@
+[
+  {
+    "df": 31,
+    "postings": "data/search/postings-0.json",
+    "token": "via"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vice"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "video"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "videos"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "videosyou"
+  },
+  {
+    "df": 11,
+    "postings": "data/search/postings-0.json",
+    "token": "view"
+  },
+  {
+    "df": 4,
+    "postings": "data/search/postings-0.json",
+    "token": "views"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "virtual"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visible"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vision"
+  },
+  {
+    "df": 12,
+    "postings": "data/search/postings-0.json",
+    "token": "visit"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visiting"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visitor"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visitsexamples"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visualisation"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "visualisations"
+  },
+  {
+    "df": 1,
+    "postings": "data/search/postings-0.json",
+    "token": "vital"
+  }
+]
