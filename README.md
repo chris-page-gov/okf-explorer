@@ -9,7 +9,6 @@ other public HTTPS URL.
 
 - [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
 - [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
-- [Open the UK Government APIs PR branch snapshot in the Svelte Explorer][uk-government-apis-pr-preview]
 - [Read the illustrated "make and publish your own OKF bundle" manual][manual]
 
 The CKAN example demonstrates the main no-install workflow: the Explorer is
@@ -22,19 +21,6 @@ The UK Government APIs exemplar is published as a large-corpus OKF descriptor:
 
 ```text
 https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
-```
-
-During pull-request review, the same descriptor can be loaded from the branch
-snapshot before GitHub Pages has been updated:
-
-```text
-https://raw.githubusercontent.com/chris-page-gov/ai-infrastructure-wiki/codex/UK-Government-API-OKF/uk-government-apis/okf-explorer.json
-```
-
-The branch snapshot is also available directly through the hosted Explorer:
-
-```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fai-infrastructure-wiki%2Fcodex%2FUK-Government-API-OKF%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 ```
 
 To open your own public bundle, use this URL pattern:
@@ -176,5 +162,4 @@ Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
 [uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
-[uk-government-apis-pr-preview]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fai-infrastructure-wiki%2Fcodex%2FUK-Government-API-OKF%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 [manual]: docs/use-okf-explorer.md
