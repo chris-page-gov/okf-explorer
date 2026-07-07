@@ -12,14 +12,19 @@ import json
 import math
 import re
 import sys
+import time
 import unicodedata
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
+
+# datetime.UTC is Python 3.11+; keep the script runnable on Python 3.10.
+UTC = timezone.utc
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "uk-government-apis"
@@ -246,10 +251,23 @@ def infer_observed_at(
     return f"{max(dates, default='1970-01-01')}T00:00:00Z"
 
 
-def request_bytes(url: str) -> bytes:
-    request = Request(url, headers=REQUEST_HEADERS)
-    with urlopen(request, timeout=45) as response:
-        return response.read()
+def request_bytes(url: str, attempts: int = 3, backoff_seconds: float = 2.0) -> bytes:
+    """Fetch a URL, retrying transient network failures with backoff."""
+    last_error: Exception | None = None
+    for attempt in range(attempts):
+        request = Request(url, headers=REQUEST_HEADERS)
+        try:
+            with urlopen(request, timeout=45) as response:
+                return response.read()
+        except HTTPError as exc:
+            if exc.code not in (429, 500, 502, 503, 504):
+                raise
+            last_error = exc
+        except Exception as exc:  # noqa: BLE001 - URLError/TimeoutError/socket errors are transient here.
+            last_error = exc
+        if attempt + 1 < attempts:
+            time.sleep(backoff_seconds * (2**attempt))
+    raise last_error  # type: ignore[misc]
 
 
 def request_json(url: str) -> Any:
@@ -269,7 +287,8 @@ def rows_from_csv(source_url: str, raw: bytes) -> tuple[str, list[SourceRow]]:
     rows: list[SourceRow] = []
     seen: Counter[str] = Counter()
     for ordinal, raw_row in enumerate(csv.DictReader(text.splitlines())):
-        row = {key: (value or "").strip() for key, value in raw_row.items()}
+        # Ragged rows put overflow cells in a list under the None key; skip non-string cells.
+        row = {key: (value or "").strip() for key, value in raw_row.items() if isinstance(key, str) and (value is None or isinstance(value, str))}
         name = row.get("name", "") or f"API {ordinal + 1}"
         provider = slugify(row.get("provider", "") or "unknown-provider", "unknown-provider")
         base = f"{provider}-{slugify(name, 'api')}"
@@ -300,7 +319,8 @@ def load_ckan_packages(api_url: str = DEFAULT_CKAN_API_URL, rows_per_page: int =
             limit = max_packages - len(packages)
         if limit <= 0:
             break
-        url = f"{api_url}?{urlencode({'fq': query, 'rows': str(limit), 'start': str(start)})}"
+        # Pin the sort order so paginated harvests are deterministic across runs.
+        url = f"{api_url}?{urlencode({'fq': query, 'rows': str(limit), 'start': str(start), 'sort': 'name asc'})}"
         payload = request_json(url)
         result = payload.get("result", {})
         batch = result.get("results", [])
@@ -586,9 +606,14 @@ def truncate_text(value: Any, limit: int) -> str:
 
 def plain_text(value: Any, limit: int = MAX_RECORD_NOTES_CHARS) -> str:
     text = str(value or "")
+    # Unescape entities BEFORE stripping tags so entity-encoded markup
+    # (e.g. &lt;img onerror=…&gt;) cannot resurface as live HTML downstream.
+    text = html.unescape(text)
     text = re.sub(r"(?is)<(script|style).*?</\1>", " ", text)
     text = re.sub(r"(?s)<[^>]+>", " ", text)
-    text = html.unescape(text)
+    # Upstream text sometimes contains literal backslash-n escape sequences.
+    text = text.replace("\\r\\n", " ").replace("\\n", " ")
+    text = re.sub(r"\s+", " ", text).strip()
     return truncate_text(text, limit)
 
 
@@ -763,7 +788,7 @@ class CorpusBuilder:
         record = {
             "id": url or slug,
             "name": slug,
-            "title": title or slug,
+            "title": plain_text(title, 300) or slug,
             "notes": notes,
             "context_note": context_note,
             "acronym_expansions": acronym_expansions or [],
