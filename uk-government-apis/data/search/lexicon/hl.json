@@ -1,12 +1,1 @@
-[
-  {
-    "df": 13,
-    "postings": "data/search/postings-0.json",
-    "token": "hl7"
-  },
-  {
-    "df": 13,
-    "postings": "data/search/postings-0.json",
-    "token": "hl7-v3"
-  }
-]
+[{"df":13,"postings":"data/search/postings/hl.json","token":"hl7"},{"df":13,"postings":"data/search/postings/hl.json","token":"hl7-v3"},{"df":3,"postings":"data/search/postings/hl.json","token":"hlc"}]

@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "rdf"
-  }
-]
+[{"df":2,"postings":"data/search/postings/rd.json","token":"rd14"},{"df":6,"postings":"data/search/postings/rd.json","token":"rd29"}]

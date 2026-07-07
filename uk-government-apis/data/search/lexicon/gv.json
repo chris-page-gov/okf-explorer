@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "gvms"
-  }
-]
+[{"df":5,"postings":"data/search/postings/gv.json","token":"gva"},{"df":1,"postings":"data/search/postings/gv.json","token":"gva-by-industry-by-local-authority"},{"df":1,"postings":"data/search/postings/gv.json","token":"gvms"}]

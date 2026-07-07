@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nmay"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nms"
-  }
-]
+[{"df":7,"postings":"data/search/postings/nm.json","token":"nm"},{"df":26,"postings":"data/search/postings/nm.json","token":"nm1"},{"df":2,"postings":"data/search/postings/nm.json","token":"nm_103_1.data.csv"},{"df":1,"postings":"data/search/postings/nm.json","token":"nm_105_1.data.csv"},{"df":1,"postings":"data/search/postings/nm.json","token":"nm_162_1.data.csv"},{"df":1,"postings":"data/search/postings/nm.json","token":"nm_17_5.data.csv"},{"df":1,"postings":"data/search/postings/nm.json","token":"nm_30_1.data.csv"},{"df":2,"postings":"data/search/postings/nm.json","token":"nmp"},{"df":3,"postings":"data/search/postings/nm.json","token":"nmpi"},{"df":5,"postings":"data/search/postings/nm.json","token":"nmpwfs"},{"df":1,"postings":"data/search/postings/nm.json","token":"nmpwms"}]

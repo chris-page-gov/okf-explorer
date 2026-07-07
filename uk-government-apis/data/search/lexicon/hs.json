@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "hscn"
-  }
-]
+[{"df":7,"postings":"data/search/postings/hs.json","token":"hs"},{"df":2,"postings":"data/search/postings/hs.json","token":"hs2"},{"df":1,"postings":"data/search/postings/hs.json","token":"hscn"},{"df":1,"postings":"data/search/postings/hs.json","token":"hse"},{"df":1,"postings":"data/search/postings/hs.json","token":"hse-consultation-zone"}]

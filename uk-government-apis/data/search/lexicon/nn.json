@@ -1,7 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "nnote"
-  }
-]
+[{"df":1,"postings":"data/search/postings/nn.json","token":"nnote"},{"df":2,"postings":"data/search/postings/nn.json","token":"nnpa"},{"df":3,"postings":"data/search/postings/nn.json","token":"nnpa-phase-1-habitat-survey1"},{"df":3,"postings":"data/search/postings/nn.json","token":"nnr"},{"df":7,"postings":"data/search/postings/nn.json","token":"nns"},{"df":1,"postings":"data/search/postings/nn.json","token":"nns.pdf"},{"df":1,"postings":"data/search/postings/nn.json","token":"nns_esp.zip"},{"df":1,"postings":"data/search/postings/nn.json","token":"nns_esp_changeonly.zip"},{"df":1,"postings":"data/search/postings/nn.json","token":"nns_esp_os.zip"}]

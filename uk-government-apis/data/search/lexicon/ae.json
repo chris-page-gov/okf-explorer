@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "aerial"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "aerial-investigation"
-  }
-]
+[{"df":9,"postings":"data/search/postings/ae.json","token":"ae0b0c44c6214112a0612ee66cf493dc"},{"df":9,"postings":"data/search/postings/ae.json","token":"ae51a3baf3734dbcb9df8d81e08bae2a"},{"df":4,"postings":"data/search/postings/ae.json","token":"ae52dadb9bfe4173bba99ab4323b4409"},{"df":8,"postings":"data/search/postings/ae.json","token":"ae71b79359634fbaaad18a6826710ed5_0"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae71b79359634fbaaad18a6826710ed5_0.csv"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae71b79359634fbaaad18a6826710ed5_0.geojson"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae71b79359634fbaaad18a6826710ed5_0.kml"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae71b79359634fbaaad18a6826710ed5_0.zip"},{"df":3,"postings":"data/search/postings/ae.json","token":"ae71fe02411a4769806805ad213181b5"},{"df":7,"postings":"data/search/postings/ae.json","token":"ae7c482b5a5c417c8e414f60b3f14530_0"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae7c482b5a5c417c8e414f60b3f14530_0.csv"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae7c482b5a5c417c8e414f60b3f14530_0.geojson"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae7c482b5a5c417c8e414f60b3f14530_0.kml"},{"df":1,"postings":"data/search/postings/ae.json","token":"ae7c482b5a5c417c8e414f60b3f14530_0.zip"},{"df":4,"postings":"data/search/postings/ae.json","token":"aeb50ab52bb54be19fc891aa6eabdf61"},{"df":3,"postings":"data/search/postings/ae.json","token":"aed123d8787842a4946ef0c20ea6978f_0"},{"df":4,"postings":"data/search/postings/ae.json","token":"aee4fc2f1d3b42ff910cc925bc2416c8"},{"df":4,"postings":"data/search/postings/ae.json","token":"aefc2d7118ff44b38591bd765e4a6596"},{"df":5,"postings":"data/search/postings/ae.json","token":"aerial"},{"df":14,"postings":"data/search/postings/ae.json","token":"aerodrome"},{"df":2,"postings":"data/search/postings/ae.json","token":"aerodrome-safeguard-developments"},{"df":2,"postings":"data/search/postings/ae.json","token":"aerodrome-safeguard-developments-above-45m"},{"df":2,"postings":"data/search/postings/ae.json","token":"aerodrome-safeguard-developments-above-90m"}]

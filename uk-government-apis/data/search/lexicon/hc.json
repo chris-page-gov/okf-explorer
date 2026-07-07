@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "hc5"
-  }
-]
+[{"df":1,"postings":"data/search/postings/hc.json","token":"hc14"},{"df":3,"postings":"data/search/postings/hc.json","token":"hc14-open-space-and-recreation"},{"df":2,"postings":"data/search/postings/hc.json","token":"hc14_open_space_and_outdoor_recreation"},{"df":2,"postings":"data/search/postings/hc.json","token":"hc16_schools"},{"df":1,"postings":"data/search/postings/hc.json","token":"hc2"},{"df":2,"postings":"data/search/postings/hc.json","token":"hc2_housing_site_allocations"},{"df":1,"postings":"data/search/postings/hc.json","token":"hc6"},{"df":2,"postings":"data/search/postings/hc.json","token":"hc6_gypsy_and_traveller_provision"},{"df":7,"postings":"data/search/postings/hc.json","token":"hca"}]

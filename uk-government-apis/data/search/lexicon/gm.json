@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "gmt"
-  }
-]
+[{"df":188,"postings":"data/search/postings/gm.json","token":"gml"},{"df":7,"postings":"data/search/postings/gm.json","token":"gml2"},{"df":5,"postings":"data/search/postings/gm.json","token":"gml2.0"},{"df":124,"postings":"data/search/postings/gm.json","token":"gml32"}]

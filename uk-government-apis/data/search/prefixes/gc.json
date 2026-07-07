@@ -1,8 +1,1 @@
-{
-  "gca": [
-    {
-      "df": 1,
-      "token": "gca"
-    }
-  ]
-}
+{"gca":[{"df":1,"token":"gca"}],"gcb":[{"df":1,"token":"gcb_in_united_kingdom"}],"gcb_":[{"df":1,"token":"gcb_in_united_kingdom"}],"gcb_i":[{"df":1,"token":"gcb_in_united_kingdom"}],"gcb_in":[{"df":1,"token":"gcb_in_united_kingdom"}],"gcb_in_":[{"df":1,"token":"gcb_in_united_kingdom"}],"gcb_in_u":[{"df":1,"token":"gcb_in_united_kingdom"}]}

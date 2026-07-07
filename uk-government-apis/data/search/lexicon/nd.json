@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ndeveloper"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ndop"
-  }
-]
+[{"df":3,"postings":"data/search/postings/nd.json","token":"nd"},{"df":2,"postings":"data/search/postings/nd.json","token":"nddc"},{"df":2,"postings":"data/search/postings/nd.json","token":"nddc-owned-land"},{"df":1,"postings":"data/search/postings/nd.json","token":"nddc_owned_land"},{"df":1,"postings":"data/search/postings/nd.json","token":"ndeveloper"},{"df":1,"postings":"data/search/postings/nd.json","token":"ndop"},{"df":1,"postings":"data/search/postings/nd.json","token":"ndr"},{"df":12,"postings":"data/search/postings/nd.json","token":"ndr_2dseis_eab"},{"df":12,"postings":"data/search/postings/nd.json","token":"ndr_3dseis"}]

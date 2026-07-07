@@ -1,17 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ssb"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ssn"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "sso"
-  }
-]
+[{"df":3,"postings":"data/search/postings/ss.json","token":"ss"},{"df":1,"postings":"data/search/postings/ss.json","token":"ss1"},{"df":1,"postings":"data/search/postings/ss.json","token":"ssb"},{"df":1,"postings":"data/search/postings/ss.json","token":"sskib"},{"df":2,"postings":"data/search/postings/ss.json","token":"ssp"},{"df":16,"postings":"data/search/postings/ss.json","token":"sssi"},{"df":2,"postings":"data/search/postings/ss.json","token":"sssi-feature-condition-map-wms"},{"df":1,"postings":"data/search/postings/ss.json","token":"sssi_new"},{"df":3,"postings":"data/search/postings/ss.json","token":"sssis"}]

@@ -1,8 +1,1 @@
-{
-  "ews": [
-    {
-      "df": 1,
-      "token": "ews"
-    }
-  ]
-}
+{"ew_":[{"df":15,"token":"ew_bfe"},{"df":14,"token":"ew_bfc"},{"df":13,"token":"ew_bgc"},{"df":10,"token":"ew_buc"},{"df":3,"token":"ew_bsc"},{"df":1,"token":"ew_bfe_v2"}],"ew_b":[{"df":15,"token":"ew_bfe"},{"df":14,"token":"ew_bfc"},{"df":13,"token":"ew_bgc"},{"df":10,"token":"ew_buc"},{"df":3,"token":"ew_bsc"},{"df":1,"token":"ew_bfe_v2"}],"ew_bf":[{"df":15,"token":"ew_bfe"},{"df":14,"token":"ew_bfc"},{"df":1,"token":"ew_bfe_v2"}],"ew_bfc":[{"df":14,"token":"ew_bfc"}],"ew_bfe":[{"df":15,"token":"ew_bfe"},{"df":1,"token":"ew_bfe_v2"}],"ew_bfe_":[{"df":1,"token":"ew_bfe_v2"}],"ew_bfe_v":[{"df":1,"token":"ew_bfe_v2"}],"ew_bg":[{"df":13,"token":"ew_bgc"}],"ew_bgc":[{"df":13,"token":"ew_bgc"}],"ew_bs":[{"df":3,"token":"ew_bsc"}],"ew_bsc":[{"df":3,"token":"ew_bsc"}],"ew_bu":[{"df":10,"token":"ew_buc"}],"ew_buc":[{"df":10,"token":"ew_buc"}],"ews":[{"df":1,"token":"ews"}]}

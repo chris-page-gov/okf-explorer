@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ews"
-  }
-]
+[{"df":757,"postings":"data/search/postings/ew.json","token":"ew"},{"df":14,"postings":"data/search/postings/ew.json","token":"ew_bfc"},{"df":15,"postings":"data/search/postings/ew.json","token":"ew_bfe"},{"df":1,"postings":"data/search/postings/ew.json","token":"ew_bfe_v2"},{"df":13,"postings":"data/search/postings/ew.json","token":"ew_bgc"},{"df":3,"postings":"data/search/postings/ew.json","token":"ew_bsc"},{"df":10,"postings":"data/search/postings/ew.json","token":"ew_buc"},{"df":1,"postings":"data/search/postings/ew.json","token":"ews"}]

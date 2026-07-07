@@ -1170,12 +1170,22 @@
   }
 
   function apiRecordMeta(record: AnyLargeRecord | undefined): string {
+    const recordType = recordString(record, 'record_type') || recordString(record, 'type');
+    const sourceAdapter = recordString(record, 'source_adapter');
+    const confidence = recordString(record, 'confidence');
     const endpointHost = recordString(record, 'endpoint_host');
     const documentationHost = recordString(record, 'documentation_host');
     const accessModel = recordString(record, 'access_model');
     const contractStatus = recordString(record, 'contract_status');
-    const formats = Array.isArray(record?.formats) ? record.formats.map(String).slice(0, 2).join(', ') : '';
+    const formats = Array.isArray(record?.protocol)
+      ? record.protocol.map(String).slice(0, 2).join(', ')
+      : Array.isArray(record?.formats)
+        ? record.formats.map(String).slice(0, 2).join(', ')
+        : '';
     return [
+      recordType,
+      sourceAdapter ? `source ${sourceAdapter}` : '',
+      confidence ? `confidence ${confidence}` : '',
       endpointHost && endpointHost !== 'not-specified' ? `endpoint ${endpointHost}` : '',
       documentationHost && documentationHost !== 'not-specified' ? `docs ${documentationHost}` : '',
       accessModel ? `access ${accessModel}` : '',
@@ -1227,9 +1237,20 @@
   }
 
   function largeContextMetrics() {
+    const counts = source?.kind === 'large' ? source.manifest.counts : {};
+    const hasApiCounts =
+      counts.declared_api_products !== undefined || counts.provider_native_api_products !== undefined || counts.data_access_endpoints !== undefined || counts.data_products !== undefined;
     if (largeIndex) {
       const publisherCount = new Set(largeVisibleDatasets.map((dataset) => dataset.publisher).filter(Boolean)).size;
       const resourceCount = largeVisibleDatasets.reduce((total, dataset) => total + (dataset.resource_count || 0), 0);
+      if (hasApiCounts) {
+        return [
+          { label: 'API products', value: largeVisibleDatasets.filter((dataset) => dataset.record_type === 'API Product').length },
+          { label: 'data endpoints', value: largeVisibleDatasets.filter((dataset) => dataset.record_type === 'Data Access API Endpoint').length },
+          { label: 'data products', value: largeVisibleDatasets.filter((dataset) => dataset.record_type === 'Data Product').length },
+          { label: 'active filters', value: activeLargeFilterCount }
+        ];
+      }
       return [
         { label: recordPlural(), value: largeVisibleDatasets.length },
         { label: resourcePlural(), value: resourceCount },
@@ -1238,7 +1259,14 @@
       ];
     }
     const summary = largeAnalysis()?.summary;
-    const counts = source?.kind === 'large' ? source.manifest.counts : {};
+    if (hasApiCounts) {
+      return [
+        { label: 'API products', value: (counts.api_products || 0) as number },
+        { label: 'data endpoints', value: (counts.data_access_endpoints || 0) as number },
+        { label: 'data products', value: (counts.data_products || 0) as number },
+        { label: 'active filters', value: activeLargeFilterCount }
+      ];
+    }
     return [
       { label: recordPlural(), value: summary?.record_count || counts.datasets || 0 },
       { label: resourcePlural(), value: summary?.resource_count || counts.resources || 0 },
@@ -2998,6 +3026,10 @@
               <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
                 <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
+                <dt>Record type</dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
+                <dt>Source</dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
+                <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
+                <dt>Confidence</dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
                 <dt>Licence</dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
                 <dt>Quality</dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
@@ -3042,6 +3074,7 @@
                   <dt>Record ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
                   <dt>State</dt><dd>{displayValue(largeDetail.dataset.state)}</dd>
                   <dt>Type</dt><dd>{displayValue(largeDetail.dataset.type)}</dd>
+                  <dt>Protocol</dt><dd>{displayValue(largeDetail.dataset.protocol)}</dd>
                   <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
                   <dt>Private</dt><dd>{displayValue(largeDetail.dataset.private)}</dd>
                   <dt>Created</dt><dd>{displayValue(largeDetail.dataset.metadata_created)}</dd>
@@ -3213,6 +3246,10 @@
               <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd>{largeDetail.result.publisher_title}</dd>
                 <dt>{capitalise(resourcePlural())}</dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
+                <dt>Record type</dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
+                <dt>Source</dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
+                <dt>Confidence</dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
+                <dt>Protocol</dt><dd>{displayValue(largeDetail.result.protocol)}</dd>
                 <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
                 <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
                 <dt>Documentation host</dt><dd>{displayValue(largeDetail.result.documentation_host)}</dd>

@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "rbac"
-  }
-]
+[{"df":2,"postings":"data/search/postings/rb.json","token":"rbbc"},{"df":3,"postings":"data/search/postings/rb.json","token":"rbbc-inspire-service"},{"df":4,"postings":"data/search/postings/rb.json","token":"rbc"},{"df":2,"postings":"data/search/postings/rb.json","token":"rbc-air-quality-management-areas"},{"df":2,"postings":"data/search/postings/rb.json","token":"rbc-brownfield-register1"},{"df":2,"postings":"data/search/postings/rb.json","token":"rbc-green-belt2"},{"df":2,"postings":"data/search/postings/rb.json","token":"rbc-tree-preservation-orders1"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwd"},{"df":17,"postings":"data/search/postings/rb.json","token":"rbwm"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-allotments"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-conservation-areas"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-employment-sites"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-new-housing-sites"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-owned-open-spaces"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-potential-development-sites"},{"df":2,"postings":"data/search/postings/rb.json","token":"rbwm-settlements"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-smoke-control-zones"},{"df":1,"postings":"data/search/postings/rb.json","token":"rbwm-village-greens"}]

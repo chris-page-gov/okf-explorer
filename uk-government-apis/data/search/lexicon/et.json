@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "etc"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "etp"
-  }
-]
+[{"df":2,"postings":"data/search/postings/et.json","token":"et"},{"df":49,"postings":"data/search/postings/et.json","token":"etc"},{"df":1,"postings":"data/search/postings/et.json","token":"etc1"},{"df":28,"postings":"data/search/postings/et.json","token":"ethnic"},{"df":4,"postings":"data/search/postings/et.json","token":"ethnicity"},{"df":84,"postings":"data/search/postings/et.json","token":"etrs89"}]

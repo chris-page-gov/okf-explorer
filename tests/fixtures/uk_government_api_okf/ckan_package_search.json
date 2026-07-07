@@ -1,0 +1,45 @@
+{
+  "result": {
+    "count": 1,
+    "results": [
+      {
+        "id": "pkg-1",
+        "name": "planning-applications",
+        "title": "Planning Applications",
+        "notes": "Planning application data exposed through map and feature services.",
+        "metadata_created": "2026-01-01T00:00:00",
+        "metadata_modified": "2026-02-01T00:00:00",
+        "license_id": "ogl",
+        "license_title": "Open Government Licence",
+        "organization": {
+          "name": "example-council",
+          "title": "Example Council"
+        },
+        "resources": [
+          {
+            "id": "res-arcgis",
+            "name": "ArcGIS GeoService",
+            "format": "ArcGIS GeoServices REST API",
+            "url": "https://maps.example.gov.uk/arcgis/rest/services/planning/MapServer/0",
+            "created": "2026-01-01T00:00:00",
+            "metadata_modified": "2026-02-01T00:00:00"
+          },
+          {
+            "id": "res-duplicate",
+            "name": "ArcGIS duplicate",
+            "format": "ArcGIS GeoServices REST API",
+            "url": "https://maps.example.gov.uk/arcgis/rest/services/planning/MapServer/0/",
+            "created": "2026-01-01T00:00:00",
+            "metadata_modified": "2026-02-01T00:00:00"
+          },
+          {
+            "id": "res-csv",
+            "name": "CSV download",
+            "format": "CSV",
+            "url": "https://example.gov.uk/planning.csv"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,17 +1,1 @@
-[
-  {
-    "df": 9,
-    "postings": "data/search/postings-0.json",
-    "token": "nfor"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nfoundation"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nfpd"
-  }
-]
+[{"df":21,"postings":"data/search/postings/nf.json","token":"nfm"},{"df":2,"postings":"data/search/postings/nf.json","token":"nfor"},{"df":1,"postings":"data/search/postings/nf.json","token":"nfoundation"},{"df":1,"postings":"data/search/postings/nf.json","token":"nfpd"}]

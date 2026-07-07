@@ -1,7 +1,1 @@
-[
-  {
-    "df": 6,
-    "postings": "data/search/postings-0.json",
-    "token": "zodpfbs3aqqdypuq"
-  }
-]
+[{"df":8,"postings":"data/search/postings/zo.json","token":"zodpfbs3aqqdypuq"},{"df":227,"postings":"data/search/postings/zo.json","token":"zone"},{"df":384,"postings":"data/search/postings/zo.json","token":"zones"},{"df":2,"postings":"data/search/postings/zo.json","token":"zonesv1"},{"df":2,"postings":"data/search/postings/zo.json","token":"zoning_article4areas"},{"df":2,"postings":"data/search/postings/zo.json","token":"zoning_conservationareas"},{"df":2,"postings":"data/search/postings/zo.json","token":"zoning_mgb"},{"df":5,"postings":"data/search/postings/zo.json","token":"zostera"},{"df":2,"postings":"data/search/postings/zo.json","token":"zostera-descriptions-north-norfolk-coast-cley-james-mccallum-1997"}]

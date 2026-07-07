@@ -1,8 +1,1 @@
-{
-  "dwp": [
-    {
-      "df": 3,
-      "token": "dwp"
-    }
-  ]
-}
+{"dwa":[{"df":1,"token":"dwarf"},{"df":1,"token":"dwarf-shrubs"}],"dwar":[{"df":1,"token":"dwarf"},{"df":1,"token":"dwarf-shrubs"}],"dwarf":[{"df":1,"token":"dwarf"},{"df":1,"token":"dwarf-shrubs"}],"dwarf-":[{"df":1,"token":"dwarf-shrubs"}],"dwarf-s":[{"df":1,"token":"dwarf-shrubs"}],"dwarf-sh":[{"df":1,"token":"dwarf-shrubs"}],"dwe":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwel":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwell":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwelli":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwellin":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwelling":[{"df":35,"token":"dwellings"},{"df":11,"token":"dwelling"},{"df":1,"token":"dwelling-stock"}],"dwp":[{"df":3,"token":"dwp"}]}

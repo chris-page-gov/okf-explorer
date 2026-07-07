@@ -1,8 +1,1 @@
-{
-  "mfn": [
-    {
-      "df": 3,
-      "token": "mfn"
-    }
-  ]
-}
+{"mfa":[{"df":14,"token":"mfa"},{"df":1,"token":"mfap"},{"df":1,"token":"mfap1"}],"mfap":[{"df":1,"token":"mfap"},{"df":1,"token":"mfap1"}],"mfap1":[{"df":1,"token":"mfap1"}],"mfb":[{"df":3,"token":"mfb"}]}

@@ -1,14 +1,1 @@
-{
-  "etc": [
-    {
-      "df": 1,
-      "token": "etc"
-    }
-  ],
-  "etp": [
-    {
-      "df": 1,
-      "token": "etp"
-    }
-  ]
-}
+{"etc":[{"df":49,"token":"etc"},{"df":1,"token":"etc1"}],"etc1":[{"df":1,"token":"etc1"}],"eth":[{"df":28,"token":"ethnic"},{"df":4,"token":"ethnicity"}],"ethn":[{"df":28,"token":"ethnic"},{"df":4,"token":"ethnicity"}],"ethni":[{"df":28,"token":"ethnic"},{"df":4,"token":"ethnicity"}],"ethnic":[{"df":28,"token":"ethnic"},{"df":4,"token":"ethnicity"}],"ethnici":[{"df":4,"token":"ethnicity"}],"ethnicit":[{"df":4,"token":"ethnicity"}],"etr":[{"df":84,"token":"etrs89"}],"etrs":[{"df":84,"token":"etrs89"}],"etrs8":[{"df":84,"token":"etrs89"}],"etrs89":[{"df":84,"token":"etrs89"}]}

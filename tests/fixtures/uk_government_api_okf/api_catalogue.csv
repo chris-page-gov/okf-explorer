@@ -1,0 +1,2 @@
+dateAdded,dateUpdated,url,name,description,documentation,license,maintainer,areaServed,startDate,endDate,provider
+2024-01-01,2024-06-01,https://api.example.gov.uk/payments,Example Payments API,Read payment reference data for public services.,https://developer.example.gov.uk/payments/openapi.yaml,https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/,,UK,2024-01-01,,Example Department

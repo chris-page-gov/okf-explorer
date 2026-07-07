@@ -1,12 +1,1 @@
-[
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "ui"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "ui.the"
-  }
-]
+[{"df":2,"postings":"data/search/postings/ui.json","token":"ui"},{"df":1,"postings":"data/search/postings/ui.json","token":"ui.the"}]

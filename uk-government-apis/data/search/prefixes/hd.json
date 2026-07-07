@@ -1,8 +1,1 @@
-{
-  "hdr": [
-    {
-      "df": 1,
-      "token": "hdr"
-    }
-  ]
-}
+{"hda":[{"df":1,"token":"hda"},{"df":1,"token":"hdas"}],"hdas":[{"df":1,"token":"hdas"}],"hdc":[{"df":2,"token":"hdc"},{"df":1,"token":"hdc_3825_lb_ogl_wgs84"},{"df":1,"token":"hdc_open_government_licence_map"}],"hdc_":[{"df":1,"token":"hdc_3825_lb_ogl_wgs84"},{"df":1,"token":"hdc_open_government_licence_map"}],"hdc_3":[{"df":1,"token":"hdc_3825_lb_ogl_wgs84"}],"hdc_38":[{"df":1,"token":"hdc_3825_lb_ogl_wgs84"}],"hdc_382":[{"df":1,"token":"hdc_3825_lb_ogl_wgs84"}],"hdc_3825":[{"df":1,"token":"hdc_3825_lb_ogl_wgs84"}],"hdc_o":[{"df":1,"token":"hdc_open_government_licence_map"}],"hdc_op":[{"df":1,"token":"hdc_open_government_licence_map"}],"hdc_ope":[{"df":1,"token":"hdc_open_government_licence_map"}],"hdc_open":[{"df":1,"token":"hdc_open_government_licence_map"}]}

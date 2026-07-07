@@ -1,17 +1,1 @@
-[
-  {
-    "df": 2,
-    "postings": "data/search/postings-0.json",
-    "token": "just"
-  },
-  {
-    "df": 6,
-    "postings": "data/search/postings-0.json",
-    "token": "justice"
-  },
-  {
-    "df": 6,
-    "postings": "data/search/postings-0.json",
-    "token": "justice-and-policing"
-  }
-]
+[{"df":5,"postings":"data/search/postings/ju.json","token":"judged"},{"df":1,"postings":"data/search/postings/ju.json","token":"jul-sep"},{"df":869,"postings":"data/search/postings/ju.json","token":"july"},{"df":12,"postings":"data/search/postings/ju.json","token":"july_2016"},{"df":8,"postings":"data/search/postings/ju.json","token":"july_2022"},{"df":1,"postings":"data/search/postings/ju.json","token":"july_2024"},{"df":262,"postings":"data/search/postings/ju.json","token":"june"},{"df":1,"postings":"data/search/postings/ju.json","token":"junior"},{"df":2,"postings":"data/search/postings/ju.json","token":"junior-schools"},{"df":1,"postings":"data/search/postings/ju.json","token":"juniorschoolspoints"},{"df":16,"postings":"data/search/postings/ju.json","token":"jurassic"},{"df":1,"postings":"data/search/postings/ju.json","token":"jurassic_report.zip"},{"df":1,"postings":"data/search/postings/ju.json","token":"jurassic_report_opensource.zip"},{"df":2,"postings":"data/search/postings/ju.json","token":"jurisdiction"},{"df":5,"postings":"data/search/postings/ju.json","token":"just"},{"df":618,"postings":"data/search/postings/ju.json","token":"justice"},{"df":618,"postings":"data/search/postings/ju.json","token":"justice-and-policing"},{"df":24,"postings":"data/search/postings/ju.json","token":"justin"},{"df":4,"postings":"data/search/postings/ju.json","token":"juvenile"}]

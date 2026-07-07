@@ -1,14 +1,1 @@
-{
-  "zer": [
-    {
-      "df": 1,
-      "token": "zero"
-    }
-  ],
-  "zero": [
-    {
-      "df": 1,
-      "token": "zero"
-    }
-  ]
-}
+{"zer":[{"df":9,"token":"zero"}],"zero":[{"df":9,"token":"zero"}]}

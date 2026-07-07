@@ -1,7 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "86442"
-  }
-]
+[{"df":4,"postings":"data/search/postings/86.json","token":"86"},{"df":9,"postings":"data/search/postings/86.json","token":"86082d33ad4e4c9ea5c39506e65a1c3c"},{"df":9,"postings":"data/search/postings/86.json","token":"86197b6a444f429896518c365ad60b1c"},{"df":9,"postings":"data/search/postings/86.json","token":"8621326b32b947bfa6c7530fbba20d45"},{"df":9,"postings":"data/search/postings/86.json","token":"86264120b7314cd3a615e97625f2ac0a"},{"df":9,"postings":"data/search/postings/86.json","token":"8665b846ac644527a15d8a1321000668"},{"df":9,"postings":"data/search/postings/86.json","token":"8673a5436dc14a4688f8d7df0894f724"},{"df":9,"postings":"data/search/postings/86.json","token":"8673c113802a44fa9704c41ac745e840"},{"df":5,"postings":"data/search/postings/86.json","token":"869329d788a04fc2bdb59065bbe8bf59_0"},{"df":1,"postings":"data/search/postings/86.json","token":"869329d788a04fc2bdb59065bbe8bf59_0.csv"},{"df":1,"postings":"data/search/postings/86.json","token":"869329d788a04fc2bdb59065bbe8bf59_0.geojson"},{"df":5,"postings":"data/search/postings/86.json","token":"8694b5622420475488ccd289ad707aa6_0"},{"df":1,"postings":"data/search/postings/86.json","token":"8694b5622420475488ccd289ad707aa6_0.csv"},{"df":1,"postings":"data/search/postings/86.json","token":"8694b5622420475488ccd289ad707aa6_0.geojson"},{"df":4,"postings":"data/search/postings/86.json","token":"86b7c99d0fe042a2975880ff9ec51c1c"},{"df":4,"postings":"data/search/postings/86.json","token":"86cb5414ef6f4ad1a07104e091566772"},{"df":9,"postings":"data/search/postings/86.json","token":"86ed7f404ada4532a99d1c30aa5032ad"}]

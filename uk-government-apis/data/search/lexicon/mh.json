@@ -1,17 +1,1 @@
-[
-  {
-    "df": 3,
-    "postings": "data/search/postings-0.json",
-    "token": "mhclg"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "mhra"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "mhs"
-  }
-]
+[{"df":3,"postings":"data/search/postings/mh.json","token":"mhclg"}]

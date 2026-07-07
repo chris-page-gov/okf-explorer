@@ -42,6 +42,9 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm build
 
+      - name: Run OKF generator tests
+        run: python3 -m unittest discover -s tests
+
       - name: Validate OKF bundle
         run: python3 scripts/build_okf_bundle.py --check
 

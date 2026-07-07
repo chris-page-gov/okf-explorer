@@ -1,12 +1,1 @@
-[
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nregistered"
-  },
-  {
-    "df": 1,
-    "postings": "data/search/postings-0.json",
-    "token": "nrl"
-  }
-]
+[{"df":1,"postings":"data/search/postings/nr.json","token":"nr052k7f"},{"df":1,"postings":"data/search/postings/nr.json","token":"nrl"},{"df":12,"postings":"data/search/postings/nr.json","token":"nrs"}]
