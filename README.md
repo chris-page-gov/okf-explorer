@@ -60,6 +60,10 @@ The repository contains:
   extensions.
 - `docs/use-okf-explorer.md` - novice-friendly manual for generating,
   publishing, and browsing OKF bundles with the hosted Svelte Explorer.
+- `docs/okf-conformance.md` - OKF v0.1 conformance scope and intentional
+  deviations.
+- `docs/code-review-2026-07-07.md` - Fable 5 code review: findings, fixes,
+  and completion plan.
 - `viewer.html` - legacy self-contained interactive graph and reader.
 - `view.html` - compatibility alias for the legacy viewer.
 - `index.md`, `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`,
