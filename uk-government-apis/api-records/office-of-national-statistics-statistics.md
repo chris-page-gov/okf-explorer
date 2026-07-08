@@ -24,6 +24,10 @@ The Office for National Statistics API makes datasets and other data available p
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: documentation-only
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
+- Licence confidence: 0.75
 - Quality band: high
 
 - Endpoint: https://api.beta.ons.gov.uk/v1

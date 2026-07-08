@@ -24,6 +24,10 @@ Check barriers to trading and investing abroad is the service to which DBT publi
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://data.api.trade.gov.uk/v1/datasets/market-barriers/versions/latest/data?format=json

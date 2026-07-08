@@ -134,6 +134,15 @@ Explorer tries to render a graph:
 - Canonical `license_id`: collapse source variants such as `not specified`,
   `not-specified`, and `notspecified`; map OGL variants such as `uk-ogl`,
   `OGL-UK-3.0`, and `ogl` to one controlled value.
+- Licence provenance: preserve source-declared licences as highest confidence.
+  If an official provider publishes clear site-wide terms for data/API content,
+  builders may infer a licence for records with missing source metadata, but
+  must record `license_basis`, `license_source_id`, `license_confidence`, and a
+  warning counter for inferred records. For the UK Government APIs exemplar,
+  missing ONS CKAN licences infer OGL v3.0 from ONS terms and remain lower
+  confidence than source-declared licences. Ordnance Survey provider-native API
+  records infer `ordnance-survey-licence-required` from OS licensing guidance,
+  because the public OS API portal does not make every API product OGL.
 - Canonical `format`: collapse source variants such as `CSV`, `.csv`, and
   `text/csv`; preserve source values separately so no evidence is lost.
 - `topics`: generated controlled topics in addition to raw source tags.

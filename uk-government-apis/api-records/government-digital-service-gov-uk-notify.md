@@ -24,6 +24,10 @@ GOV.UK Notify allows government departments to send emails, text messages and le
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.notifications.service.gov.uk/

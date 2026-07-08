@@ -24,6 +24,10 @@ Use this API to access NHS Care Identity Service 2 (NHS CIS2) - the national ser
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/nhs-cis2-care-identity-authentication

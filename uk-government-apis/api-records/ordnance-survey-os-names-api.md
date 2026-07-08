@@ -24,6 +24,10 @@ A free, searchable, reliable database to help you find and verify populated plac
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: osdatahub.os.uk (osdatahub-os-uk)
+- Licence basis: source-declared
+- Licence source: https://osdatahub.os.uk/legal/termsConditions
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/search/names/v1

@@ -59,7 +59,17 @@ large-corpus OKF model designed for AI agents and human exploration:
   `resources/<package>/<position>-<resource>.md`.
 - Canonical licences: variants such as `not specified`, `not-specified`, and
   `notspecified` collapse to `not-specified`; OGL variants such as `uk-ogl`,
-  `OGL-UK-3.0`, and `ogl` collapse to `uk-ogl`.
+  `OGL-UK-3.0`, and `ogl` collapse to `open-government-licence-v3`.
+- Licence inference: source-declared licences are preferred. Where an official
+  provider has clear site-wide terms, missing source metadata can be filled with
+  an inferred licence only when the generated record exposes the inference
+  basis, source URL, and lower confidence. The UK Government APIs exemplar uses
+  this for ONS records without CKAN licence fields, citing
+  [ONS terms and conditions](https://www.ons.gov.uk/help/terms-conditions#using-ons-content).
+  It also derives an Ordnance Survey licence-required status for OS
+  provider-native API records from
+  [OS licensing guidance](https://www.ordnancesurvey.co.uk/licensing), rather
+  than treating OS APIs as OGL by default.
 - Canonical formats: variants such as `CSV`, `.csv`, and `text/csv` collapse to
   `CSV`; `PDF`, `.pdf`, and `application/pdf` collapse to `PDF`.
 - Publisher authority records: one canonical publisher record is generated per

@@ -24,6 +24,10 @@ This is an [OGC](https://www.ogc.org/) standards based Sensor Observation Servic
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://uk-air.defra.gov.uk/sos-ukair/service?service=SOS&request=GetCapabilities

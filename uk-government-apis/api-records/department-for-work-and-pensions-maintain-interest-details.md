@@ -24,6 +24,10 @@ Allows users to update a citizen's interest record.
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: isc (isc)
+- Licence basis: source-declared
+- Licence source: ISC
+- Licence confidence: 0.9
 - Quality band: low
 
 

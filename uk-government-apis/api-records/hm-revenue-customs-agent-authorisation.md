@@ -24,6 +24,10 @@ This API allows tax agents to request authorisation to act on a client's behalf 
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.service.hmrc.gov.uk

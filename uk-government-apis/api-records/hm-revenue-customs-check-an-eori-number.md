@@ -24,6 +24,10 @@ This API enables your application to: - check if an EORI number beginning with G
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://api.service.hmrc.gov.uk

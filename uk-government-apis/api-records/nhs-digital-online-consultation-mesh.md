@@ -24,6 +24,10 @@ Use this message integration to send an online consultation form from a patient 
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/online-consultation

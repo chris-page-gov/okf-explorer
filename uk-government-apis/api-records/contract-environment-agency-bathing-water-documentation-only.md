@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Bathing Water from
 - Assurance status: observed
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://environment.data.gov.uk/bwq/doc/api-reference-v0.6.html

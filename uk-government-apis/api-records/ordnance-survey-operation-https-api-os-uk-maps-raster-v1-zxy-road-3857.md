@@ -24,6 +24,10 @@ Road raster tile set in projection 3857.
 - Assurance status: assured
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.7
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/maps/raster/v1/zxy/Road_3857

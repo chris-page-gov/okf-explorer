@@ -24,6 +24,10 @@ Use this API to share female genital mutilation (FGM) information for children u
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/female-genital-mutilation-information-sharing-fhir

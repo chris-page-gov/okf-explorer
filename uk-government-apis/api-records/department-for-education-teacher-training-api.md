@@ -24,6 +24,10 @@ API to serve post graduate teacher training courses, subjects and training provi
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.publish-teacher-training-courses.service.gov.uk/

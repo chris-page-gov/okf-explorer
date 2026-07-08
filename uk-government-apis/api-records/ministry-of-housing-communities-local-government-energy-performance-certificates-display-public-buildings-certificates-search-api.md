@@ -24,6 +24,10 @@ Allows searching and filtering of our property-level open data on Energy Perform
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: epc.opendatacommunities.org (epc-opendatacommunities-org)
+- Licence basis: source-declared
+- Licence source: https://epc.opendatacommunities.org/docs/copyright
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://epc.opendatacommunities.org/api/v1/display/search

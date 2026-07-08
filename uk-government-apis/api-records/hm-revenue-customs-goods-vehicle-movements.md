@@ -24,6 +24,10 @@ This API provides resources related to the Goods Vehicle Movement Service. The G
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.service.hmrc.gov.uk

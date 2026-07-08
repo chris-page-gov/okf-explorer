@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Future aggregates 
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: uk-ogl
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/future-aggregates-resource-areas-defining-boundary-of-policy-agg3-in-the-east-inshore-and-east-1

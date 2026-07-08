@@ -1,0 +1,19 @@
+{
+  "schema": "okf-explorer-visual-regressions.v1",
+  "title": "OKF Explorer visual regression evidence",
+  "items": [
+    {
+      "id": "VR001",
+      "view": "graph",
+      "image": "evidence/graph-layering-overlap-2026-07-08.png",
+      "comment": "See how messy this display is due to layering and overlapping white boxes and the arrow location (should be up to the start of the icon)",
+      "checks": [
+        "Graph labels and label backgrounds must not obscure the primary selected node.",
+        "Repeated relationship stacks must collapse into readable count-bearing nodes or rows.",
+        "Arrowheads must terminate at the visual boundary of the target icon rather than running through the icon centre.",
+        "Relationship labels must remain readable without overlapping unrelated node labels.",
+        "The relationship drawer must support inspection without covering the main graph target."
+      ]
+    }
+  ]
+}

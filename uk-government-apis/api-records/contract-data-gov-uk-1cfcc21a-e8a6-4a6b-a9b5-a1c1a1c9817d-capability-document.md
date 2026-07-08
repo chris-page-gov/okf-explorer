@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Opportunity Areas 
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Other (Open) (other-open)
+- Licence basis: source-declared
+- Licence source: other-open
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/opportunity-areas

@@ -1,6 +1,6 @@
 {
   "result": {
-    "count": 1,
+    "count": 2,
     "results": [
       {
         "id": "pkg-1",
@@ -37,6 +37,28 @@
             "name": "CSV download",
             "format": "CSV",
             "url": "https://example.gov.uk/planning.csv"
+          }
+        ]
+      },
+      {
+        "id": "pkg-ons-1",
+        "name": "ons-boundaries",
+        "title": "ONS Administrative Boundaries",
+        "notes": "Boundary data published by the Office for National Statistics without CKAN licence fields.",
+        "metadata_created": "2026-03-01T00:00:00",
+        "metadata_modified": "2026-04-01T00:00:00",
+        "organization": {
+          "name": "office-for-national-statistics",
+          "title": "Office for National Statistics"
+        },
+        "resources": [
+          {
+            "id": "ons-arcgis",
+            "name": "ONS ArcGIS GeoService",
+            "format": "ArcGIS GeoServices REST API",
+            "url": "https://open-geography-portalx-ons.hub.arcgis.com/arcgis/rest/services/boundaries/MapServer/0",
+            "created": "2026-03-01T00:00:00",
+            "metadata_modified": "2026-04-01T00:00:00"
           }
         ]
       }

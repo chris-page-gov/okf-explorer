@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Fishing Activity f
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: uk-ogl
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/fishing-activity-for-uk-vessels-15m-and-over-2009-web-mapping-service-wms

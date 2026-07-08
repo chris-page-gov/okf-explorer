@@ -24,6 +24,10 @@ Data from the annual Heritage at Risk Register for 2022 Heritage at Risk provide
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: undocumented-in-catalogue
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: Open Government Licence
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/Historic_England_Heritage_at_Risk_Register_2022/FeatureServer

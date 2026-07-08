@@ -24,6 +24,10 @@ The Companies House streaming API gives you access to realtime data changes of t
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://stream.companieshouse.gov.uk/

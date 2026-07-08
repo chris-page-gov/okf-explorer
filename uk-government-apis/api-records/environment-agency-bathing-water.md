@@ -24,6 +24,10 @@ The Environment Agency collects water quality data each year from May to Septemb
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://environment.data.gov.uk/bwq/index.html

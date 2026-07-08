@@ -24,6 +24,10 @@ Use this API to book and manage patient appointments at their GP practice. You c
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/gp-connect-patient-facing-appointment-management-fhir

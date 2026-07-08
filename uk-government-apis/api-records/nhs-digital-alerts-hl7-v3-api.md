@@ -24,6 +24,10 @@ Use this API to send an alert for the attention of a Privacy Officer - also know
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/alerts-hl7-v3

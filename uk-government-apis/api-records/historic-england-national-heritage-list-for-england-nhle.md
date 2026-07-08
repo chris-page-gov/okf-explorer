@@ -24,6 +24,10 @@ The National Heritage List for England (NHLE) is the only official, up to date, 
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: undocumented-in-catalogue
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: Open Government Licence
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer

@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Tree Preservation 
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Other (Attribution) (other-at)
+- Licence basis: source-declared
+- Licence source: other-at
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/tree-preservation-areas-polygons

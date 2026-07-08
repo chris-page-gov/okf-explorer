@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for AGS File Utilities
 - Assurance status: observed
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: codebase is under lgpl v3.0 (codebase-is-under-lgpl-v3-0)
+- Licence basis: source-declared
+- Licence source: Codebase is under LGPL v3.0
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://agsapi.bgs.ac.uk/docs

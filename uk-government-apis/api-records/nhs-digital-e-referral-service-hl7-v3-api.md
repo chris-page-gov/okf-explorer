@@ -24,6 +24,10 @@ Use this API to manage appointment slots for new or existing Patient Administrat
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/e-referral-service-hl7-v3

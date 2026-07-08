@@ -24,6 +24,10 @@ Spatial data depicting archaeology that has been identified, mapped and recorded
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: Open Government Licence
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/HE_AIM_data/FeatureServer

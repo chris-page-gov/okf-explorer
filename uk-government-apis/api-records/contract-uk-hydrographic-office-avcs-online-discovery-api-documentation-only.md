@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for AVCS Online Discov
 - Assurance status: observed
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: subscription required (subscription-required)
+- Licence basis: source-declared
+- Licence source: subscription required
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://admiraltyapi.developer.azure-api.net/discovery-api-instructions

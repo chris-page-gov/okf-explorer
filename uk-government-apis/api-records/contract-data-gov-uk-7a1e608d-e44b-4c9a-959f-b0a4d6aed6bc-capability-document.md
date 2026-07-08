@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Warwickshire Count
 - Assurance status: observed
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/premises-database-land-and-property-assets1

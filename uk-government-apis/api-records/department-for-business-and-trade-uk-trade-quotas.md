@@ -24,6 +24,10 @@ This dataset shows the quotas available in the UK Tariff along with their curren
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.22/reports/quotas-including-current-volumes/data?format=csv&download

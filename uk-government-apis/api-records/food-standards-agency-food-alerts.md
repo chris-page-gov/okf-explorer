@@ -24,6 +24,10 @@ The FSA Food Alerts API provides access to current and recent Food Alerts: Aller
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://data.food.gov.uk/food-alerts

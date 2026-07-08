@@ -24,6 +24,10 @@ This API allows you to access the data.gov.uk dataset metadata in a machine-read
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://data.gov.uk/api/action/

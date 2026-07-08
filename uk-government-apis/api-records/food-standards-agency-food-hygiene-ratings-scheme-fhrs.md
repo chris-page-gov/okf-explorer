@@ -24,6 +24,10 @@ The FHRS API provides free programmatic access to the Food Standards Agency Rati
 - Assurance status: declared
 - Access model: api-key
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://api.ratings.food.gov.uk/

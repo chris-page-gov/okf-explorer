@@ -24,6 +24,10 @@ Use this API to track a patient’s prescriptions within the Electronic Prescrip
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/spine-electronic-prescription-service-tracker-rest

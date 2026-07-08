@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
@@ -32,11 +32,13 @@
     displayValue,
     facetLabel,
     facetSummary as getFacetSummary,
+    facetValueLabel,
     formatPercent,
     isHttpUrl as isUrl,
     orderedFacetKeys,
     relationshipTitle as formatRelationshipTitle,
     routeForAnalysisNode,
+    selectedFacetValueSummary,
     smallRelationshipKind as getSmallRelationshipKind,
     smallRelationshipTitle as getSmallRelationshipTitle,
     timelineBucketFacetFilter
@@ -59,6 +61,27 @@
   const LARGE_FACET_KEYS = ['publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
+  const HELP_TEXT: Record<string, string> = {
+    'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
+    'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
+    'record-type': 'The OKF concept type: API Product, Data Access API Endpoint, Data Product, API Operation, Contract, Schema, or Provider API Portal.',
+    source: 'The adapter that harvested this record, such as GOV.UK API Catalogue, data.gov.uk CKAN, Ordnance Survey, or ONS.',
+    confidence: 'How strongly the public source supports the record: observed, declared, or assured.',
+    licence: 'The licence attached to the record. When inferred, the basis and source URL are shown below.',
+    'licence-confidence': 'Confidence in the licence metadata. Source-declared values are higher; provider-terms inference is useful but lower confidence.',
+    'licence-basis': 'How the licence was assigned: source-declared, inherited from dataset/package metadata, inferred from provider terms, or still not specified.',
+    'access-model': 'Observed access requirement from public metadata, such as anonymous access, API key, or approval required.',
+    'contract-status': 'Whether the harvest found a machine-readable contract, capability document, service description, or only documentation.',
+    'source-date': 'Date supplied by the source metadata. Missing dates are source gaps and do not mean the API or dataset is new or stale.',
+    'quality-overall': 'Average of the individual metadata-quality signals. Use it for triage, not as a service rating.',
+    'quality-access_clarity': 'Whether the source makes access requirements clear.',
+    'quality-contract_signal': 'Strength of observed API contract evidence, such as OpenAPI, OGC capabilities, WSDL, or service descriptions.',
+    'quality-discoverability': 'Completeness of basic discovery metadata: title, description, URL, and provider.',
+    'quality-documentation': 'Whether a documentation URL or equivalent description is present.',
+    'quality-interoperability_signal': 'Whether protocols, formats, or contract-like signals support machine use.',
+    'quality-lifecycle_metadata': 'Completeness of created and modified date metadata.',
+    'facet-quality': 'Facet recommendation and expected reduction from the generated analysis. It explains navigation usefulness, not data quality.'
+  };
 
   type LargeDetail =
     | {
@@ -159,8 +182,12 @@
   let largeFacetFilters = $state<Record<string, string[]>>({});
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
+  let largeSearchIndexLoading = $state(false);
   let largeSearching = $state(false);
+  let largeSearchPendingQuery = $state('');
   let largeFacetHydratingKey = $state('');
+  let largeFacetApplyingKey = $state('');
+  let largeFacetApplyingValue = $state('');
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
@@ -171,7 +198,7 @@
   let largeApiLoading = $state(false);
   let largeApiError = $state('');
   let largeApiRequest = 0;
-  let activeFacetKey = $state('publisher');
+  let activeFacetKey = $state('');
   let pins = $state<string[]>([]);
   let graphZoom = $state(1);
   let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
@@ -179,6 +206,8 @@
   let graphSuppressClick = $state(false);
   let graphLabelPhase = $state(0);
   let spreadPins = $state(false);
+  let activeHelpKey = $state('');
+  let largeSearchDebounce = $state<number | null>(null);
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -235,6 +264,7 @@
     return () => {
       window.removeEventListener('popstate', applyBrowserRoute);
       window.clearInterval(labelTimer);
+      if (largeSearchDebounce !== null) window.clearTimeout(largeSearchDebounce);
     };
   });
 
@@ -286,9 +316,11 @@
     return next.toString();
   }
 
-  function syncExplorerUrl() {
-    const route = source?.kind === 'large' ? largeSelectedRoute : selectedId;
-    replaceState(buildExplorerUrl(route), {});
+  function syncExplorerUrl(push = false) {
+    const route = source?.kind === 'large' ? largeInspectedRoute || largeSelectedRoute : selectedId;
+    const url = buildExplorerUrl(route);
+    if (push && url !== location.href) window.history.pushState({}, '', url);
+    else replaceState(url, {});
   }
 
   function syncBundleUrlParam(url: string) {
@@ -305,15 +337,40 @@
     if (nextView) void selectView(nextView);
     const hash = safeDecodeHash();
     if (source?.kind === 'large') {
-      largeSelectedRoute = hash && hash !== 'overview' ? hash : '';
-      largeInspectedRoute = '';
-      if (largeSelectedRoute && FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+      applyLargeBrowserRoute(hash);
+      if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
+        void ensureLargeFullIndex();
+      }
       reconcileLargeSelection();
     } else if (smallCorpus && hash && smallCorpus.nodes[hash]) {
       selectedId = hash;
       inspectedId = '';
       smallInspectedRelationship = null;
     }
+  }
+
+  function applyLargeBrowserRoute(hash: string) {
+    const route = hash && hash !== 'overview' ? hash : '';
+    largeSelectedRoute = '';
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
+    if (!route) {
+      largeFacetFilters = {};
+      return;
+    }
+    const facetRoute = routeForAnalysisNode(route);
+    if (facetRoute) {
+      activeFacetKey = '';
+      largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
+      largeInspectedRoute = route;
+      largeHighlightedRoute = route;
+      return;
+    }
+    largeSelectedRoute = route;
+    largeHighlightedRoute = route;
   }
 
   async function loadSource(url: string) {
@@ -339,9 +396,14 @@
     largeRelationshipsByRoute = new Map();
     largeRelationshipsTruncated = false;
     largeFacetFilters = {};
+    largeSearchIndexLoading = false;
+    largeSearching = false;
+    largeSearchPendingQuery = '';
     largeFacetHydratingKey = '';
+    largeFacetApplyingKey = '';
+    largeFacetApplyingValue = '';
     largePreserveSelectionUntilSearch = false;
-    activeFacetKey = 'publisher';
+    activeFacetKey = '';
     largeSearchClient?.destroy();
     largeSearchClient = null;
     try {
@@ -356,35 +418,21 @@
         if (requestId !== loadRequest) return;
         source = large;
         const searchManifest = large.descriptor.entrypoints.search_manifest || large.manifest.indexes.search;
-        if (searchManifest) {
-          const client = new LargeSearchClient();
-          try {
-            await client.init(large.baseUrl, resolveUrl(searchManifest, large.baseUrl));
-            if (requestId !== loadRequest) {
-              client.destroy();
-              return;
-            }
-            largeSearchClient = client;
-          } catch (searchError) {
-            // A missing or broken search index must not discard a loaded corpus.
-            client.destroy();
-            if (requestId !== loadRequest) return;
-            console.warn(`Search index unavailable for ${absoluteUrl}:`, searchError);
-          }
-        }
         history = rememberHistory({ url: absoluteUrl, title: large.descriptor.title, description: large.descriptor.description, kind: 'large-corpus' });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
         const query = params.get('q') || '';
+        largeQuery = query;
+        largeSearchPendingQuery = query;
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
-          largeSelectedRoute = hash;
-          largeInspectedRoute = hash;
-          largeHighlightedRoute = hash;
-          if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+          applyLargeBrowserRoute(hash);
+          if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
+            void ensureLargeFullIndex();
+          }
         }
-        if (query) void runLargeSearch(query, { preserveSelection: true });
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
+        if (searchManifest) void initialiseLargeSearch(large, resolveUrl(searchManifest, large.baseUrl), query, requestId);
       } else {
         const corpus = normalizeSmallBundle(raw);
         source = { kind: 'small', url: absoluteUrl, title: smallBundleTitle(corpus), corpus };
@@ -402,6 +450,28 @@
       error = err instanceof Error ? err.message : String(err);
     } finally {
       if (requestId === loadRequest) loading = false;
+    }
+  }
+
+  async function initialiseLargeSearch(large: Extract<LoadedSource, { kind: 'large' }>, searchManifestUrl: string, initialQuery: string, requestId: number) {
+    const client = new LargeSearchClient();
+    largeSearchIndexLoading = true;
+    try {
+      await client.init(large.baseUrl, searchManifestUrl);
+      if (requestId !== loadRequest || source?.kind !== 'large' || source.url !== large.url) {
+        client.destroy();
+        return;
+      }
+      largeSearchClient = client;
+      const pendingQuery = largeSearchPendingQuery || initialQuery || largeQuery;
+      largeSearchPendingQuery = '';
+      if (pendingQuery.trim()) void runLargeSearch(pendingQuery, { preserveSelection: true });
+    } catch (searchError) {
+      client.destroy();
+      if (requestId !== loadRequest) return;
+      console.warn(`Search index unavailable for ${large.url}:`, searchError);
+    } finally {
+      if (requestId === loadRequest) largeSearchIndexLoading = false;
     }
   }
 
@@ -479,7 +549,6 @@
     largeFullLoading = true;
     try {
       largeIndex = await source.loadFullIndex();
-      if (!activeFacetKey) activeFacetKey = Object.keys(largeIndex.facets)[0] || 'publisher';
       reconcileLargeSelection();
       return largeIndex;
     } catch (err) {
@@ -491,6 +560,10 @@
   }
 
   async function openLargeFacet(key: string) {
+    if (activeFacetKey === key) {
+      activeFacetKey = '';
+      return;
+    }
     activeFacetKey = key;
     if (!largeIndex) {
       largeFacetHydratingKey = key;
@@ -543,7 +616,7 @@
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
-    syncExplorerUrl();
+    syncExplorerUrl(true);
   }
 
   function inspectLargeRoute(route: string) {
@@ -578,7 +651,7 @@
     clearLargeApiPanel();
     activeView = 'graph';
     void hydrateForView('graph');
-    syncExplorerUrl();
+    syncExplorerUrl(true);
   }
 
   function copyRoute(routeOverride?: string | Event) {
@@ -698,35 +771,45 @@
     return `facet/${key}/${value}`;
   }
 
-  function toggleLargeFacet(key: string, value: string) {
+  async function toggleLargeFacet(key: string, value: string) {
+    if (largeFacetApplyingKey) return;
+    largeFacetApplyingKey = key;
+    largeFacetApplyingValue = value;
+    await tick();
     const current = new Set(largeFacetFilters[key] || []);
     const route = facetValueRoute(key, value);
     const removing = current.has(value);
-    activeFacetKey = key;
-    if (removing) current.delete(value);
-    else current.add(value);
-    largeFacetFilters = { ...largeFacetFilters, [key]: [...current] };
-    if (!current.size) {
-      const { [key]: _removed, ...rest } = largeFacetFilters;
-      largeFacetFilters = rest;
-    }
-    largeSelectedRoute = '';
-    if (removing) {
-      if (largeInspectedRoute === route) {
-        largeInspectedRoute = '';
-        largeHighlightedRoute = '';
+    try {
+      activeFacetKey = key;
+      if (removing) current.delete(value);
+      else current.add(value);
+      largeFacetFilters = { ...largeFacetFilters, [key]: [...current] };
+      if (!current.size) {
+        const { [key]: _removed, ...rest } = largeFacetFilters;
+        largeFacetFilters = rest;
       }
-    } else {
-      largeInspectedRoute = route;
-      largeHighlightedRoute = route;
-      rightCollapsed = false;
+      largeSelectedRoute = '';
+      if (removing) {
+        if (largeInspectedRoute === route) {
+          largeInspectedRoute = '';
+          largeHighlightedRoute = '';
+        }
+      } else {
+        largeInspectedRoute = route;
+        largeHighlightedRoute = route;
+        rightCollapsed = false;
+      }
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      clearLargeApiPanel();
+      void ensureLargeFullIndex();
+      reconcileLargeSelection();
+      syncExplorerUrl(true);
+    } finally {
+      await tick();
+      largeFacetApplyingKey = '';
+      largeFacetApplyingValue = '';
     }
-    largeHighlightedEdge = '';
-    largeInspectedEdge = null;
-    clearLargeApiPanel();
-    void ensureLargeFullIndex();
-    reconcileLargeSelection();
-    syncExplorerUrl();
   }
 
   function clearLargeFilters() {
@@ -738,7 +821,7 @@
       largeInspectedEdge = null;
     }
     reconcileLargeSelection();
-    syncExplorerUrl();
+    syncExplorerUrl(true);
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -830,7 +913,11 @@
       syncExplorerUrl();
       return;
     }
-    if (!largeSearchClient) return;
+    if (!largeSearchClient) {
+      largeSearchPendingQuery = trimmed;
+      largeSearching = largeSearchIndexLoading;
+      return;
+    }
     largeAppliedQuery = trimmed;
     largeResults = [];
     largeSuggestions = [];
@@ -864,6 +951,43 @@
     }
   }
 
+  function clearLargeRouteContext() {
+    largeSelectedRoute = '';
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    clearLargeApiPanel();
+  }
+
+  function clearLargeSearch() {
+    if (largeSearchDebounce !== null) {
+      window.clearTimeout(largeSearchDebounce);
+      largeSearchDebounce = null;
+    }
+    void runLargeSearch('');
+  }
+
+  function scheduleLargeSearch(query: string) {
+    const previousQuery = largeQuery.trim();
+    largeQuery = query;
+    largeSearchRequest += 1;
+    if (largeSearchDebounce !== null) {
+      window.clearTimeout(largeSearchDebounce);
+      largeSearchDebounce = null;
+    }
+    if (!query.trim()) {
+      void runLargeSearch(query);
+      return;
+    }
+    if (query.trim() !== previousQuery) clearLargeRouteContext();
+    largeSearching = true;
+    largeSearchDebounce = window.setTimeout(() => {
+      largeSearchDebounce = null;
+      void runLargeSearch(query);
+    }, 220);
+  }
+
   function chooseLargeResult(result: SearchResultDoc) {
     largeSelectedRoute = result.open || `dataset/${result.name}`;
     largeInspectedRoute = largeSelectedRoute;
@@ -873,7 +997,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
-    syncExplorerUrl();
+    syncExplorerUrl(true);
   }
 
   function largeRouteInReduction(route: string): boolean {
@@ -1047,9 +1171,9 @@
     return source?.kind === 'large' ? source.analysis : undefined;
   }
 
-  function applyAnalysisFacet(key: string, value: string) {
+  function applyAnalysisFacet(key: string, value: string, push = true) {
     const route = facetValueRoute(key, value);
-    activeFacetKey = key;
+    activeFacetKey = '';
     largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
     largeSelectedRoute = '';
     largeInspectedRoute = route;
@@ -1059,7 +1183,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     void ensureLargeFullIndex();
-    syncExplorerUrl();
+    syncExplorerUrl(push);
   }
 
   function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
@@ -1125,6 +1249,86 @@
     return getFacetSummary(largeAnalysis(), key, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
   }
 
+  function facetDefinition(key: string): string {
+    const definitions: Record<string, string> = {
+      publisher: 'Owning or publishing organisation in the harvested source metadata.',
+      canonical_publisher: 'Normalised provider identity used to connect variant organisation names.',
+      organisation_family: 'Broad public-sector grouping used to organise providers.',
+      publisher_family: 'Broad public-sector grouping inferred from publisher metadata.',
+      format: 'Protocol or file/API format advertised by the source.',
+      protocol: 'API or data-access protocol detected from the endpoint or contract metadata.',
+      contract_status: 'Whether a machine-readable contract, capability document or service description was observed.',
+      record_type: 'The kind of catalogue item: API product, data endpoint, data product, operation, contract or schema.',
+      quality_band: 'Bucketed metadata quality score for quick triage.',
+      assurance_status: 'Observed, declared or assured confidence level for the public metadata.',
+      source_adapter: 'Harvester or adapter that contributed the record.',
+      source_tier: 'Source tier used by the UK Government API OKF specification.',
+      confidence: 'How strongly the source supports the record.',
+      access_model: 'Observed public access requirement, such as anonymous, API key or approval required.',
+      license: 'Licence metadata from the source. Not specified means a metadata gap, not a licence.',
+      data_classification: 'Public metadata classification inferred from visibility and access model.',
+      environment: 'Observed environment such as production/public, sandbox/test or retired.',
+      relationship_density: 'Bucket showing how connected records are in the generated graph.'
+    };
+    return definitions[key] || '';
+  }
+
+  function helpText(key: string): string {
+    return HELP_TEXT[key] || HELP_TEXT[key.split(':')[0]] || '';
+  }
+
+  function toggleHelp(key: string) {
+    activeHelpKey = key;
+  }
+
+  function showHelp(key: string) {
+    activeHelpKey = key;
+  }
+
+  function hideHelp(key: string) {
+    if (activeHelpKey === key) activeHelpKey = '';
+  }
+
+  function metadataDisplayValue(value: unknown): string {
+    if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) return 'Not recorded in source metadata';
+    if (typeof value === 'string' && ['none', 'null', 'not-specified'].includes(value.trim().toLowerCase())) return 'Not recorded in source metadata';
+    return displayValue(value);
+  }
+
+  function groupDisplayValue(value: unknown): string {
+    if (!Array.isArray(value) || !value.length) return 'Not recorded in source metadata';
+    const labels = value
+      .map((item) => {
+        if (item && typeof item === 'object') {
+          const group = item as Record<string, unknown>;
+          return String(group.title || group.name || group.id || '').trim();
+        }
+        return String(item || '').trim();
+      })
+      .filter(Boolean);
+    return labels.length ? labels.join(', ') : metadataDisplayValue(value);
+  }
+
+  function licenceBasisLabel(record: AnyLargeRecord | undefined): string {
+    const basis = recordString(record, 'license_basis') || recordString(record, 'licence_basis');
+    if (basis === 'source-declared') return 'source-declared';
+    if (basis === 'provider-terms-inferred') return 'inferred from provider terms';
+    if (basis === 'not-specified') return 'not specified';
+    return basis || 'not recorded';
+  }
+
+  function facetSelectedSummary(key: string, values: string[]): string {
+    return selectedFacetValueSummary(largeAnalysis(), key, values);
+  }
+
+  function facetValueDisplay(key: string, value: string): string {
+    return facetValueLabel(largeAnalysis(), key, value);
+  }
+
+  function facetVisibleRowCount(key: string): number {
+    return largeFacetRows(key).length;
+  }
+
   function facetSelectedValues(key: string): string[] {
     return largeFacetFilters[key] || [];
   }
@@ -1142,6 +1346,12 @@
     const selected = facetSelectedValues(key).length;
     if (selected) return `${selected} selected`;
     if (largeFacetHydratingKey === key || (largeFullLoading && activeFacetKey === key && !largeIndex)) return 'Loading';
+    if (activeFacetKey === key && largeIndex) {
+      const shown = facetVisibleRowCount(key);
+      const available = facetAvailableValueCount(key);
+      if (available && shown < available) return `${shown} shown / ${available}`;
+      if (shown) return `${shown} shown`;
+    }
     const available = facetAvailableValueCount(key);
     return available ? `${available} values` : 'Load';
   }
@@ -1260,14 +1470,14 @@
   function currentLargeContextLabel(): string {
     if (largeSelectedRoute || largeInspectedRoute) return largeLabelForRoute(largeInspectedRoute || largeSelectedRoute);
     if (largeAppliedQuery.trim()) return `Search: ${largeAppliedQuery.trim()}`;
-    const filters = Object.entries(largeFacetFilters).flatMap(([key, values]) => values.map((value) => `${facetLabel(key)}: ${value}`));
+    const filters = Object.entries(largeFacetFilters).flatMap(([key, values]) => values.map((value) => `${facetLabel(key)}: ${facetValueDisplay(key, value)}`));
     if (filters.length) return filters.join(', ');
     return largeAnalysis()?.narrative?.title || largeAnalysis()?.summary?.title || (source?.kind === 'large' ? source.descriptor.title : 'Overview');
   }
 
   function selectedLargeFilterLabels() {
     return Object.entries(largeFacetFilters).flatMap(([key, values]) =>
-      values.map((value) => ({ key, value, label: `${facetLabel(key)}: ${value}` }))
+      values.map((value) => ({ key, value, label: `${facetLabel(key)}: ${facetValueDisplay(key, value)}` }))
     );
   }
 
@@ -1349,10 +1559,20 @@
     else selectLargeRoute(route);
   }
 
-  function openHierarchyValue(key: string, route: string | undefined, label: string) {
+  async function openHierarchyValue(key: string, route: string | undefined, label: string) {
+    if (largeFacetApplyingKey) return;
     const facetRoute = route ? routeForAnalysisNode(route) : null;
-    if (facetRoute) applyAnalysisFacet(facetRoute.key, facetRoute.value);
-    else applyAnalysisFacet(key, label);
+    largeFacetApplyingKey = facetRoute?.key || key;
+    largeFacetApplyingValue = facetRoute?.value || label;
+    await tick();
+    try {
+      if (facetRoute) applyAnalysisFacet(facetRoute.key, facetRoute.value);
+      else applyAnalysisFacet(key, label);
+    } finally {
+      await tick();
+      largeFacetApplyingKey = '';
+      largeFacetApplyingValue = '';
+    }
   }
 
   function stripHtml(value = '') {
@@ -1391,6 +1611,13 @@
 
   function routeValue(route: string): string {
     return route.split('/').slice(1).join('/');
+  }
+
+  function routeSlug(value: string): string {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'item';
   }
 
   function largeLabelForRoute(route: string): string {
@@ -1501,6 +1728,7 @@
     if (kind === 'host') return 'Host';
     if (kind === 'resource_type') return `${capitalise(resourceSingular())} type`;
     if (kind === 'resource-stack') return resourceStackLabel();
+    if (kind === 'relationship-stack') return 'Relationship stack';
     return kind ? `${kind.slice(0, 1).toUpperCase()}${kind.slice(1).replace(/_/g, ' ')}` : 'Route';
   }
 
@@ -1590,12 +1818,40 @@
       addNode(targetId);
       edges.push({ source: sourceId, target: targetId, label });
     };
+    const addLoadedRelationshipsForCenter = () => {
+      const rows = routeRelationships(center, 120);
+      if (rows.length <= 36) {
+        for (const relationship of rows) addEdge(relationship.source, relationship.target, relationship.kind);
+        return;
+      }
+      const groups = new Map<string, { kind: string; otherKind: string; direction: 'out' | 'in'; rows: LargeRelationship[] }>();
+      for (const relationship of rows) {
+        const otherRoute = relationship.source === center ? relationship.target : relationship.source;
+        const direction = relationship.source === center ? 'out' : 'in';
+        const otherKind = routeKind(otherRoute);
+        const key = `${relationship.kind}\u0000${otherKind}\u0000${direction}`;
+        const group = groups.get(key) || { kind: relationship.kind, otherKind, direction, rows: [] };
+        group.rows.push(relationship);
+        groups.set(key, group);
+      }
+      let individualCount = 0;
+      for (const group of [...groups.values()].sort((left, right) => right.rows.length - left.rows.length || left.kind.localeCompare(right.kind))) {
+        if (group.rows.length > 4 || individualCount + group.rows.length > 28) {
+          const stackId = `relationship-stack/${routeSlug(center)}/${routeSlug(group.kind)}/${routeSlug(group.otherKind)}-${group.direction}`;
+          const pluralKind = group.otherKind.replaceAll('_', ' ');
+          addNode(stackId, 'relationship-stack', `${group.kind} (${group.rows.length} ${pluralKind}${group.rows.length === 1 ? '' : 's'})`, group.rows.length, center);
+          if (group.direction === 'out') edges.push({ source: center, target: stackId, label: `${group.kind} x${group.rows.length}` });
+          else edges.push({ source: stackId, target: center, label: `${group.kind} x${group.rows.length}` });
+        } else {
+          for (const relationship of group.rows) addEdge(relationship.source, relationship.target, relationship.kind);
+          individualCount += group.rows.length;
+        }
+      }
+    };
 
     if (center) addNode(center);
     if (center && largeRelationships.length) {
-      for (const relationship of routeRelationships(center, 120)) {
-        addEdge(relationship.source, relationship.target, relationship.kind);
-      }
+      addLoadedRelationshipsForCenter();
     }
 
     if (!largeIndex && center.startsWith('dataset/')) {
@@ -1657,7 +1913,7 @@
       }
     }
 
-    return { center, nodes: [...nodeMap.values()].slice(0, 140), relationships: edges.slice(0, 160) };
+    return { center, nodes: [...nodeMap.values()].slice(0, 110), relationships: edges.slice(0, 120) };
   }
 
   function placeArc(positions: Map<string, GraphPoint>, nodes: LargeGraphNode[], cx: number, cy: number, radius: number, start: number, end: number) {
@@ -1733,6 +1989,7 @@
         dataset: [],
         resource: [],
         'resource-stack': [],
+        'relationship-stack': [],
         format: [],
         topic: [],
         license: [],
@@ -1747,11 +2004,12 @@
       }
       Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
       if (centerType === 'publisher') {
-        placeGrid(positions, [...groups.dataset, ...groups.resource], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
+        placeGrid(positions, [...groups.dataset, ...groups.resource, ...groups['relationship-stack']], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
         placeArc(positions, [...groups.format, ...groups.license, ...groups.topic, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
       } else {
         placeArc(positions, groups.publisher, cx, cy, GRAPH_HEIGHT * 0.31, -0.22, 0.25);
-        placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.13, GRAPH_HEIGHT * 0.18, 5, 82, 64);
+        placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.16, 4, 86, 66);
+        placeGrid(positions, groups['relationship-stack'], GRAPH_WIDTH * 0.69, GRAPH_HEIGHT * 0.15, 2, 98, 68);
         placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
         placeArc(positions, groups.topic, cx, cy, GRAPH_HEIGHT * 0.34, 2.05, 2.75);
         placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.37, 2.85, 3.82);
@@ -1778,6 +2036,7 @@
     if (type === 'dataset') return '#0b6bcb';
     if (type === 'resource') return '#5694ca';
     if (type === 'resource-stack') return '#1d70b8';
+    if (type === 'relationship-stack') return '#1d70b8';
     if (type === 'publisher') return '#00703c';
     if (type === 'format') return '#4c2c92';
     if (type === 'topic') return '#007a7a';
@@ -1792,6 +2051,7 @@
       ['dataset', recordSingular()],
       ['publisher', publisherSingular()],
       ['resource', resourceSingular()],
+      ['relationship-stack', 'link stack'],
       ['format', formatPlural()],
       ['topic', 'topic'],
       ['license', 'licence'],
@@ -1807,7 +2067,7 @@
 
   function graphNodeBox(node: LargeGraphNode, point?: GraphPoint): GraphBox | null {
     if (!point) return null;
-    if (node.type === 'resource-stack') return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
+    if (node.type === 'resource-stack' || node.type === 'relationship-stack') return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
     if (node.type === 'resource') return { x: point.x - 30, y: point.y - 24, w: 60, h: 48 };
     if (node.type === 'dataset') return { x: point.x - 31, y: point.y - 25, w: 62, h: 50 };
     return { x: point.x - 28, y: point.y - 28, w: 56, h: 56 };
@@ -1836,7 +2096,7 @@
 
   function graphLabelCandidates(node: LargeGraphNode, point: GraphPoint): GraphLabel[] {
     const text = shortLabel(node.label, node.type === 'publisher' ? 44 : 40);
-    const gap = node.type === 'resource' || node.type === 'dataset' || node.type === 'resource-stack' ? 36 : 30;
+    const gap = node.type === 'resource' || node.type === 'dataset' || node.type === 'resource-stack' || node.type === 'relationship-stack' ? 36 : 30;
     const right = { x: point.x + gap, y: point.y + 5, anchor: 'start' as const };
     const left = { x: point.x - gap, y: point.y + 5, anchor: 'end' as const };
     const lateral = point.x > GRAPH_WIDTH * 0.66 ? [left, right] : [right, left];
@@ -1860,7 +2120,8 @@
   function graphLabelPriority(node: LargeGraphNode, alwaysId: string): number {
     if (node.id === alwaysId) return 0;
     if (node.type === 'publisher') return 1;
-    if (node.type === 'dataset') return 2;
+    if (node.type === 'relationship-stack' || node.type === 'resource-stack') return 2;
+    if (node.type === 'dataset') return 3;
     if (['format', 'topic', 'license', 'tag', 'host', 'resource_type'].includes(node.type)) return 3;
     return 4;
   }
@@ -2110,9 +2371,9 @@
   {/if}
   {#if loading || largeFullLoading || largeRelationshipsLoading}
     <div class="status">
-      {#if loading}Loading bundle...{/if}
-      {#if largeFullLoading} Loading records...{/if}
-      {#if largeRelationshipsLoading} Loading relationships...{/if}
+      {#if loading}Loading descriptor and overview...{/if}
+      {#if largeFullLoading} Loading record index...{/if}
+      {#if largeRelationshipsLoading} Loading relationship index...{/if}
     </div>
   {/if}
 
@@ -2123,7 +2384,17 @@
       </div>
       <div class="left-content">
         {#if source?.kind === 'large'}
-          <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => void runLargeSearch(event.currentTarget.value)} />
+          <div class="search-control">
+            <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => scheduleLargeSearch(event.currentTarget.value)} />
+            {#if largeQuery}
+              <button class="search-clear" type="button" aria-label="Clear search" title="Clear search" onclick={clearLargeSearch}>x</button>
+            {/if}
+          </div>
+          {#if largeSearchIndexLoading}
+            <p class="search-status" aria-live="polite">Preparing static search index...</p>
+          {:else if largeSearching}
+            <p class="search-status" aria-live="polite">Searching static index...</p>
+          {/if}
           {#if largeSuggestions.length}
             <div class="suggestions">
               {#each largeSuggestions as suggestion}
@@ -2146,23 +2417,32 @@
               <span>Filters {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
               <button type="button" onclick={clearLargeFilters}>Clear</button>
             </div>
+            {#if largeFacetApplyingKey}
+              <p class="facet-status" aria-live="polite">
+                Applying {facetLabel(largeFacetApplyingKey)}: {facetValueDisplay(largeFacetApplyingKey, largeFacetApplyingValue)}...
+              </p>
+            {/if}
             <div class="facet-sections" aria-label="Facet filters">
               {#each orderedLargeFacetKeys() as key}
                 {@const selectedFacetValues = facetSelectedValues(key)}
                 {@const selectedFacetCount = selectedFacetValues.length}
                 {@const facetMeta = analysisFacetForKey(key)}
                 {@const facetHint = facetSummary(key)}
+                {@const facetTerm = facetDefinition(key)}
                 {@const facetHierarchies = analysisHierarchiesForFacet(key)}
                 <details class="facet-section" open={activeFacetKey === key}>
                   <summary onclick={(event) => { event.preventDefault(); void openLargeFacet(key); }}>
                     <span>
                       {facetMeta?.label || key.replaceAll('_', ' ')}
                       {#if selectedFacetCount && activeFacetKey !== key}
-                        <em>{selectedFacetValues.slice(0, 2).join(', ')}{selectedFacetCount > 2 ? ` +${selectedFacetCount - 2}` : ''}</em>
+                        <em>{facetSelectedSummary(key, selectedFacetValues)}</em>
                       {/if}
                     </span>
                     <small>{facetSummaryBadge(key)}</small>
                   </summary>
+                  {#if facetTerm}
+                    <p class="facet-definition">{facetTerm}</p>
+                  {/if}
                   {#if facetHint}
                     <p class="facet-hint">{facetHint}</p>
                   {/if}
@@ -2171,11 +2451,16 @@
                       {#each facetHierarchies.slice(0, 2) as hierarchy}
                         <strong>{hierarchy.label}</strong>
                         {#each hierarchy.values.slice(0, 5) as group}
-                          <button type="button" onclick={() => openHierarchyValue(key, group.route || group.id, group.label)}>
+                          <div class="facet-hierarchy-group">
                             <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
-                          </button>
+                          </div>
                           {#each (group.children || []).slice(0, 4) as child}
-                            <button class="child" type="button" onclick={() => openHierarchyValue(key, child.route || child.id, child.label)}>
+                            <button
+                              class="child"
+                              type="button"
+                              disabled={Boolean(largeFacetApplyingKey)}
+                              onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}
+                            >
                               <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
                             </button>
                           {/each}
@@ -2191,9 +2476,10 @@
                         <button
                           class:active={selectedFacetValues.includes(value.value)}
                           type="button"
-                          onclick={() => toggleLargeFacet(key, value.value)}
+                          disabled={Boolean(largeFacetApplyingKey)}
+                          onclick={() => void toggleLargeFacet(key, value.value)}
                         >
-                          <span>{value.value}</span><small>{value.count.toLocaleString()}</small>
+                          <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
                         </button>
                       {/each}
                     {/if}
@@ -2204,23 +2490,31 @@
           </section>
 
           {#if largeIndex}
-            <div class="node-list">
-              {#each largeVisibleDatasets.slice(0, 80) as dataset}
-                <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                  <strong>{dataset.title}</strong>
-                  <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
-                </button>
-              {/each}
-            </div>
+            <section class="left-results">
+              <h2>{recordPlural()} in current reduction</h2>
+              <p>{largeVisibleDatasets.length.toLocaleString()} records match the active search and filters.</p>
+              <div class="node-list">
+                {#each largeVisibleDatasets.slice(0, 80) as dataset}
+                  <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
+                    <strong>{dataset.title}</strong>
+                    <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                  </button>
+                {/each}
+              </div>
+            </section>
           {:else if largeResults.length}
-            <div class="node-list">
-              {#each largeResults.slice(0, 80) as result}
-                <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
-                  <strong>{result.title}</strong>
-                  <span>{result.publisher_title || result.publisher || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
-                </button>
-              {/each}
-            </div>
+            <section class="left-results">
+              <h2>Search matches</h2>
+              <p>{largeResults.length.toLocaleString()} records from the static search index.</p>
+              <div class="node-list">
+                {#each largeResults.slice(0, 80) as result}
+                  <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
+                    <strong>{result.title}</strong>
+                    <span>{result.publisher_title || result.publisher || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
+                  </button>
+                {/each}
+              </div>
+            </section>
           {/if}
         {:else if smallCorpus}
           <input class="search-input" bind:value={smallQuery} placeholder="Search nodes" />
@@ -2431,10 +2725,10 @@
                     {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos)}
                     <line
                       class:highlight={edgeHighlighted}
-                      x1={sourcePos.x}
-                      y1={sourcePos.y}
-                      x2={targetPos.x}
-                      y2={targetPos.y}
+                      x1={edgeHit.x1}
+                      y1={edgeHit.y1}
+                      x2={edgeHit.x2}
+                      y2={edgeHit.y2}
                       marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
                     ></line>
                     <line
@@ -2460,7 +2754,7 @@
                 {#each model.nodes as node}
                   {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(node.id)}
-                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
+                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
@@ -2476,7 +2770,7 @@
                     {#if combinedHit}
                       <rect class="node-hit cluster-hit" x={combinedHit.x} y={combinedHit.y} width={combinedHit.w} height={combinedHit.h} rx="6"></rect>
                     {/if}
-                    {#if node.type === 'resource-stack'}
+                    {#if node.type === 'resource-stack' || node.type === 'relationship-stack'}
                       <rect class="node-hit" x={pos.x - 32} y={pos.y - 25} width="64" height="50" rx="6"></rect>
                       <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
                       <rect class="stack-card stack-card-mid" x={pos.x - 20} y={pos.y - 14} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
@@ -2501,8 +2795,12 @@
                   </g>
                 {/each}
               </svg>
-              <div class="edge-panel">
-                <strong>Relationships ({model.relationships.length})</strong>
+              <details class="edge-panel edge-drawer" open>
+                <summary>
+                  <span class="drawer-grip" aria-hidden="true"></span>
+                  <strong>Relationships ({model.relationships.length})</strong>
+                  <span>open for rows</span>
+                </summary>
                 <div>
                   {#each model.relationships.slice(0, 42) as relationship}
                     <button
@@ -2514,7 +2812,7 @@
                     </button>
                   {/each}
                 </div>
-              </div>
+              </details>
               <p class="graph-caption">
                 {#if model.center}
                   Showing {model.nodes.length} nodes directly related to {largeLabelForRoute(model.center)}.
@@ -2638,11 +2936,11 @@
                     <h2>{hierarchy.label}</h2>
                     <p class="muted">{hierarchy.levels.join(' → ')}</p>
                     {#each hierarchy.values.slice(0, 10) as group}
-                      <button type="button" onclick={() => openHierarchyValue(hierarchy.facet, group.route || group.id, group.label)}>
+                      <button type="button" onclick={() => void openHierarchyValue(hierarchy.facet, group.route || group.id, group.label)}>
                         {group.label}<span>{group.count.toLocaleString()}</span>
                       </button>
                       {#each (group.children || []).slice(0, 5) as child}
-                        <button class="child" type="button" onclick={() => openHierarchyValue(hierarchy.facet, child.route || child.id, child.label)}>
+                        <button class="child" type="button" onclick={() => void openHierarchyValue(hierarchy.facet, child.route || child.id, child.label)}>
                           {child.label}<span>{child.count.toLocaleString()}</span>
                         </button>
                       {/each}
@@ -2860,10 +3158,10 @@
                   {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos)}
                   <line
                     class:highlight={edgeHighlighted}
-                    x1={sourcePos.x}
-                    y1={sourcePos.y}
-                    x2={targetPos.x}
-                    y2={targetPos.y}
+                    x1={edgeHit.x1}
+                    y1={edgeHit.y1}
+                    x2={edgeHit.x2}
+                    y2={edgeHit.y2}
                     marker-end={edgeHighlighted ? 'url(#small-graph-arrow-highlight)' : 'url(#small-graph-arrow)'}
                   />
                   <line
@@ -3063,17 +3361,17 @@
               </div>
               <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
-                <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
-                <dt>Record type</dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
-                <dt>Source</dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
+                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
+                <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
+                <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
                 <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
-                <dt>Confidence</dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
-                <dt>Licence</dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}</dd>
+                <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
-                <dt>Quality</dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
-                <dt>Access model</dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
+                <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
+                <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
                 <dt>Visibility</dt><dd>{displayValue(largeDetail.dataset.visibility)}</dd>
-                <dt>Contract status</dt><dd>{displayValue(largeDetail.dataset.contract_status)}</dd>
+                <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.contract_status)}</dd>
                 <dt>Lifecycle</dt><dd>{displayValue(largeDetail.dataset.lifecycle_status || largeDetail.dataset.state)}</dd>
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
@@ -3101,12 +3399,12 @@
                 </section>
               {/if}
               <div class="chips">
-                {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<span class="chip topic-chip">{topic}</span>{/each}
-                {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<span class="chip">{format}</span>{/each}
-                {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<span class="chip">{tag}</span>{/each}
+                {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
+                {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
+                {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
               </div>
               <section class="metadata-section">
-                <h3>{capitalise(recordSingular())} metadata</h3>
+                <h3>Normalized record fields</h3>
                 <dl>
                   <dt>Record name</dt><dd>{largeDetail.dataset.name}</dd>
                   <dt>Record ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
@@ -3115,25 +3413,27 @@
                   <dt>Protocol</dt><dd>{displayValue(largeDetail.dataset.protocol)}</dd>
                   <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
                   <dt>Private</dt><dd>{displayValue(largeDetail.dataset.private)}</dd>
-                  <dt>Created</dt><dd>{displayValue(largeDetail.dataset.metadata_created)}</dd>
-                  <dt>Modified</dt><dd>{displayValue(largeDetail.dataset.metadata_modified)}</dd>
-                  <dt>Timeline date</dt><dd>{displayValue(largeDetail.dataset.timestamp)}</dd>
+                  <dt><span class="label-help">Created<button class="info-icon" type="button" aria-label="Explain created date" onclick={() => toggleHelp('source-date:created')} onmouseenter={() => showHelp('source-date:created')} onmouseleave={() => hideHelp('source-date:created')} onfocus={() => showHelp('source-date:created')} onblur={() => hideHelp('source-date:created')}>i</button>{#if activeHelpKey === 'source-date:created'}<span class="info-bubble" role="tooltip">{helpText('source-date:created')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_created)}</dd>
+                  <dt><span class="label-help">Modified<button class="info-icon" type="button" aria-label="Explain modified date" onclick={() => toggleHelp('source-date:modified')} onmouseenter={() => showHelp('source-date:modified')} onmouseleave={() => hideHelp('source-date:modified')} onfocus={() => showHelp('source-date:modified')} onblur={() => hideHelp('source-date:modified')}>i</button>{#if activeHelpKey === 'source-date:modified'}<span class="info-bubble" role="tooltip">{helpText('source-date:modified')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_modified)}</dd>
+                  <dt><span class="label-help">Timeline date<button class="info-icon" type="button" aria-label="Explain timeline date" onclick={() => toggleHelp('source-date:timeline')} onmouseenter={() => showHelp('source-date:timeline')} onmouseleave={() => hideHelp('source-date:timeline')} onfocus={() => showHelp('source-date:timeline')} onblur={() => hideHelp('source-date:timeline')}>i</button>{#if activeHelpKey === 'source-date:timeline'}<span class="info-bubble" role="tooltip">{helpText('source-date:timeline')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.timestamp)}</dd>
                   <dt>{capitalise(formatPlural())}</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
                   <dt>Topics</dt><dd>{displayValue(largeDetail.dataset.topics)}</dd>
                   <dt>Source licence</dt><dd>{displayValue([largeDetail.dataset.license_source_id, largeDetail.dataset.license_source_title].filter(Boolean))}</dd>
-                  <dt>Licence confidence</dt><dd>{formatPercent(largeDetail.dataset.license_confidence)}</dd>
+                  <dt><span class="label-help">Licence basis<button class="info-icon" type="button" aria-label="Explain licence basis" onclick={() => toggleHelp('licence-basis')} onmouseenter={() => showHelp('licence-basis')} onmouseleave={() => hideHelp('licence-basis')} onfocus={() => showHelp('licence-basis')} onblur={() => hideHelp('licence-basis')}>i</button>{#if activeHelpKey === 'licence-basis'}<span class="info-bubble" role="tooltip">{helpText('licence-basis')}</span>{/if}</span></dt><dd>{licenceBasisLabel(largeDetail.dataset)}</dd>
+                  <dt><span class="label-help">Licence confidence<button class="info-icon" type="button" aria-label="Explain licence confidence" onclick={() => toggleHelp('licence-confidence')} onmouseenter={() => showHelp('licence-confidence')} onmouseleave={() => hideHelp('licence-confidence')} onfocus={() => showHelp('licence-confidence')} onblur={() => hideHelp('licence-confidence')}>i</button>{#if activeHelpKey === 'licence-confidence'}<span class="info-bubble" role="tooltip">{helpText('licence-confidence')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.license_confidence)}</dd>
                   <dt>{capitalise(publisherSingular())} concept</dt><dd>{displayValue(largeDetail.dataset.publisher_concept_id)}</dd>
-                  <dt>Groups</dt><dd>{displayValue(largeDetail.dataset.groups)}</dd>
+                  <dt>Groups</dt><dd>{groupDisplayValue(largeDetail.dataset.groups)}</dd>
                   <dt>{capitalise(resourceSingular())} hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
               </section>
               {#if largeDetail.dataset.quality}
                 <section class="metadata-section">
-                  <h3>Quality signals</h3>
+                  <h3><span class="label-help">Metadata quality signals<button class="info-icon" type="button" aria-label="Explain quality signals" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></h3>
                   <dl>
-                    <dt>Overall</dt><dd>{formatPercent(largeDetail.dataset.quality.overall)}</dd>
+                    <dt><span class="label-help">Overall<button class="info-icon" type="button" aria-label="Explain overall quality" onclick={() => toggleHelp('quality-overall')} onmouseenter={() => showHelp('quality-overall')} onmouseleave={() => hideHelp('quality-overall')} onfocus={() => showHelp('quality-overall')} onblur={() => hideHelp('quality-overall')}>i</button>{#if activeHelpKey === 'quality-overall'}<span class="info-bubble" role="tooltip">{helpText('quality-overall')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality.overall)}</dd>
                     {#each Object.entries(largeDetail.dataset.quality.metrics || {}) as [key, value]}
-                      <dt>{key.replaceAll('_', ' ')}</dt><dd>{typeof value === 'number' ? formatPercent(value) : displayValue(value)}</dd>
+                      {@const qualityHelpKey = `quality-${key}`}
+                      <dt><span class="label-help">{key.replaceAll('_', ' ')}{#if helpText(qualityHelpKey)}<button class="info-icon" type="button" aria-label={`Explain ${key.replaceAll('_', ' ')}`} onclick={() => toggleHelp(qualityHelpKey)} onmouseenter={() => showHelp(qualityHelpKey)} onmouseleave={() => hideHelp(qualityHelpKey)} onfocus={() => showHelp(qualityHelpKey)} onblur={() => hideHelp(qualityHelpKey)}>i</button>{#if activeHelpKey === qualityHelpKey}<span class="info-bubble" role="tooltip">{helpText(qualityHelpKey)}</span>{/if}{/if}</span></dt><dd>{typeof value === 'number' ? formatPercent(value) : displayValue(value)}</dd>
                     {/each}
                   </dl>
                 </section>
@@ -3283,22 +3583,28 @@
               <p>{stripHtml(largeDetail.result.notes || '')}</p>
               <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd>{largeDetail.result.publisher_title}</dd>
-                <dt>{capitalise(resourcePlural())}</dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
-                <dt>Record type</dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
-                <dt>Source</dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
-                <dt>Confidence</dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
+                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
+                <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
+                <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
+                <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.result.license_title || largeDetail.result.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
                 <dt>Protocol</dt><dd>{displayValue(largeDetail.result.protocol)}</dd>
                 <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
                 <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
                 <dt>Documentation host</dt><dd>{displayValue(largeDetail.result.documentation_host)}</dd>
-                <dt>Access model</dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
-                <dt>Contract status</dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
+                <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
+                <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.result.url)}<a href={largeDetail.result.url} target="_blank" rel="noopener">{largeDetail.result.url}</a>{:else}{displayValue(largeDetail.result.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.result.documentation)}<a href={largeDetail.result.documentation} target="_blank" rel="noopener">{largeDetail.result.documentation}</a>{:else}{displayValue(largeDetail.result.documentation)}{/if}</dd>
-                <dt>Quality</dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
+                <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
                 <dt>Route</dt><dd>{largeDetail.result.open}</dd>
-                <dt>Timestamp</dt><dd>{largeDetail.result.timestamp || 'None'}</dd>
+                <dt><span class="label-help">Timestamp<button class="info-icon" type="button" aria-label="Explain timestamp" onclick={() => toggleHelp('source-date:search-result')} onmouseenter={() => showHelp('source-date:search-result')} onmouseleave={() => hideHelp('source-date:search-result')} onfocus={() => showHelp('source-date:search-result')} onblur={() => hideHelp('source-date:search-result')}>i</button>{#if activeHelpKey === 'source-date:search-result'}<span class="info-bubble" role="tooltip">{helpText('source-date:search-result')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.timestamp)}</dd>
               </dl>
+              <div class="chips">
+                {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
+                {#each (largeDetail.result.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
+                {#each (largeDetail.result.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
+              </div>
               <button type="button" onclick={() => void ensureLargeFullIndex()}>Load full record</button>
             {:else}
               {@const routeDatasets = datasetsForMetadataRoute(largeDetail.route, 40)}
@@ -3323,7 +3629,7 @@
                 {#if analysisNode}<dt>Analysis count</dt><dd>{(analysisNode.count || 0).toLocaleString()}</dd>{/if}
                 {#if analysisFacet}<dt>Facet</dt><dd>{facetMeta?.label || facetLabel(analysisFacet.key)}</dd>{/if}
                 {#if analysisFacet}<dt>Facet value</dt><dd>{analysisFacet.value}</dd>{/if}
-                {#if facetMeta}<dt>Facet quality</dt><dd>{facetMeta.recommendation} · {facetMeta.recommended_control} · reduction {formatPercent(facetMeta.expected_reduction)}</dd>{/if}
+                {#if facetMeta}<dt><span class="label-help">Facet navigation signal<button class="info-icon" type="button" aria-label="Explain facet navigation signal" onclick={() => toggleHelp('facet-quality')} onmouseenter={() => showHelp('facet-quality')} onmouseleave={() => hideHelp('facet-quality')} onfocus={() => showHelp('facet-quality')} onblur={() => hideHelp('facet-quality')}>i</button>{#if activeHelpKey === 'facet-quality'}<span class="info-bubble" role="tooltip">{helpText('facet-quality')}</span>{/if}</span></dt><dd>{facetMeta.recommendation} · {facetMeta.recommended_control} · reduction {formatPercent(facetMeta.expected_reduction)}</dd>{/if}
                 {#if hierarchyValue}<dt>Hierarchy</dt><dd>{hierarchyValue.hierarchy.label}{hierarchyValue.parent ? ` / ${hierarchyValue.parent.label}` : ''}</dd>{/if}
                 <dt>{capitalise(recordPlural())}</dt><dd>{routeDatasets.length.toLocaleString()} in current reduction</dd>
                 <dt>{capitalise(resourcePlural())}</dt><dd>{routeResources.length.toLocaleString()} in current reduction</dd>

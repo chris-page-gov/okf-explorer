@@ -215,6 +215,12 @@ export type SearchResultDoc = {
   documentation_host?: string;
   access_model?: string;
   contract_status?: string;
+  license_id?: string;
+  license_title?: string;
+  license_source_id?: string;
+  license_source_title?: string;
+  license_confidence?: number;
+  license_basis?: string;
   record_type?: string;
   source_tier?: string;
   source_adapter?: string;
@@ -256,6 +262,7 @@ export type LargeDataset = {
   license_source_id?: string;
   license_source_title?: string;
   license_confidence?: number;
+  license_basis?: string;
   host?: string;
   resource_hosts?: string[];
   govuk_content_paths?: string[];

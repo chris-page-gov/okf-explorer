@@ -32,6 +32,13 @@ DEFAULT_SOURCE_URL = "https://raw.githubusercontent.com/co-cddo/api-catalogue/ma
 DEFAULT_CKAN_API_URL = "https://ckan.publishing.service.gov.uk/api/3/action/package_search"
 DEFAULT_OS_API_ROOT = "https://api.os.uk/"
 DEFAULT_ONS_API_ROOT = "https://api.beta.ons.gov.uk/v1"
+OGL_V3_ID = "open-government-licence-v3"
+OGL_V3_TITLE = "Open Government Licence v3.0"
+OGL_V3_URL = "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+ONS_TERMS_URL = "https://www.ons.gov.uk/help/terms-conditions#using-ons-content"
+OS_LICENCE_ID = "ordnance-survey-licence-required"
+OS_LICENCE_TITLE = "Ordnance Survey licence required"
+OS_LICENCE_URL = "https://www.ordnancesurvey.co.uk/licensing"
 REQUEST_HEADERS = {"User-Agent": "OKF Explorer UK Government API bundle generator"}
 MAX_CHECK_DIFF_LINES = 400
 MAX_CHECK_DIFF_BYTES = 200_000
@@ -560,15 +567,56 @@ def context_for_row(row: dict[str, str]) -> tuple[str, list[dict[str, str]], lis
 
 def normalize_license(value: str) -> tuple[str, str]:
     text = value.strip()
-    if not text:
-        return "not-specified", "Not specified"
     low = text.lower()
-    if "nationalarchives.gov.uk/doc/open-government-licence" in low or "open government licence" in low or "ogl" in low:
-        return "open-government-licence-v3", "Open Government Licence v3.0"
+    simplified = re.sub(r"[-_]+", " ", low).strip()
+    if not text or simplified in {"not specified", "notspecified", "licence not specified", "license not specified", "n/a", "na", "unknown", "none"}:
+        return "not-specified", "Not specified"
+    if (
+        "nationalarchives.gov.uk/doc/open-government-licence" in low
+        or "open government licence" in low
+        or low in {"ogl", "uk-ogl", "ogl-uk-3.0", "ogl3", "ogl-v3", "open-government-licence-v3"}
+    ):
+        return OGL_V3_ID, OGL_V3_TITLE
     parsed_host = host(text)
     if parsed_host:
         return slugify(parsed_host), parsed_host
     return slugify(text), text
+
+
+def normalize_license_fields(source_id: str, source_title: str = "") -> tuple[str, str, str]:
+    id_value = source_id.strip()
+    title_value = source_title.strip()
+    id_license, id_title = normalize_license(id_value)
+    title_license, title_title = normalize_license(title_value)
+    if OGL_V3_ID in {id_license, title_license}:
+        return OGL_V3_ID, OGL_V3_TITLE, id_value or title_value
+    if id_license != "not-specified":
+        return id_license, title_value or id_title, id_value or title_value
+    if title_license != "not-specified":
+        return title_license, title_title, id_value or title_value
+    if id_value or title_value:
+        source_text = id_value or title_value
+        if normalize_license(source_text)[0] == "not-specified":
+            return "not-specified", "Not specified", ""
+        return "not-specified", "Not specified", ""
+    return "not-specified", "Not specified", ""
+
+
+def provider_terms_license(
+    publisher: str,
+    publisher_title: str,
+    license_id: str,
+    license_title: str,
+    license_source_id: str = "",
+) -> tuple[str, str, str, float, str]:
+    if license_id != "not-specified":
+        return license_id, license_title, license_source_id, 0.9, "source-declared"
+    canonical = canonical_provider_slug(publisher, publisher_title)
+    if canonical == "office-for-national-statistics":
+        return OGL_V3_ID, OGL_V3_TITLE, ONS_TERMS_URL, 0.75, "provider-terms-inferred"
+    if canonical == "ordnance-survey":
+        return OS_LICENCE_ID, OS_LICENCE_TITLE, OS_LICENCE_URL, 0.7, "provider-terms-inferred"
+    return license_id, license_title, license_source_id, 0.2, "not-specified"
 
 
 def classify_topics_from_text(*values: str) -> list[str]:
@@ -954,6 +1002,8 @@ class CorpusBuilder:
         license_id: str = "not-specified",
         license_title: str = "Not specified",
         license_source_id: str = "",
+        license_confidence: float | None = None,
+        license_basis: str = "",
         access_model: str = "unknown",
         visibility: str = "catalogue-listed-access-not-assumed",
         contract_status: str = "undocumented-in-catalogue",
@@ -989,6 +1039,18 @@ class CorpusBuilder:
         documentation_host = host(documentation)
         canonical_publisher = canonical_provider_slug(publisher, publisher_title_value)
         canonical_publisher_title = provider_title(canonical_publisher)
+        resolved_license_id, resolved_license_title, resolved_license_source_id, inferred_license_confidence, inferred_license_basis = provider_terms_license(
+            publisher,
+            publisher_title_value,
+            license_id,
+            license_title,
+            license_source_id,
+        )
+        license_id = resolved_license_id
+        license_title = resolved_license_title
+        license_source_id = resolved_license_source_id
+        license_confidence = inferred_license_confidence if license_confidence is None else license_confidence
+        license_basis = license_basis or inferred_license_basis
         quality = quality_metrics(
             title=title,
             description=description,
@@ -1029,7 +1091,8 @@ class CorpusBuilder:
             "license_title": license_title,
             "license_source_id": license_source_id,
             "license_source_title": license_title,
-            "license_confidence": 0.9 if license_id != "not-specified" else 0.2,
+            "license_confidence": license_confidence,
+            "license_basis": license_basis,
             "license": license_id,
             "host": endpoint_host,
             "endpoint_host": endpoint_host or "not-specified",
@@ -1052,8 +1115,8 @@ class CorpusBuilder:
             "source_adapter": source_adapter,
             "confidence": confidence,
             "assurance_status": assurance_status_for(source_tier, confidence, access_model, contract_status, license_id),
-            "isopen": license_id == "open-government-licence-v3",
-            "private": visibility != "catalogue-listed-access-not-assumed",
+            "isopen": license_id == OGL_V3_ID,
+            "private": visibility in {"private", "internal", "restricted-internal", "closed"},
             "extras": {
                 "visibility": visibility,
                 "access_model": access_model,
@@ -1067,6 +1130,7 @@ class CorpusBuilder:
                 "data_classification": data_classification_for(visibility, access_model),
                 "environment": environment_for(title, description, url, visibility),
                 "credential_requirements": credential_requirements_for(access_model),
+                "license_basis": license_basis,
                 **(extras or {}),
             },
             "visibility": visibility,
@@ -1219,8 +1283,7 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
         publisher, publisher_name = org_from_package(package)
         package_slug = slugify(f"data-gov-uk-{package.get('name') or package.get('id')}", "data-gov-uk-dataset")
         modified = package.get("metadata_modified") or package.get("metadata_created") or ""
-        licence_id = package.get("license_id") or "not-specified"
-        licence_title = package.get("license_title") or "Not specified"
+        licence_id, licence_title, licence_source_id = normalize_license_fields(str(package.get("license_id") or ""), str(package.get("license_title") or ""))
         data_product_provenance = source_provenance(
             source="data.gov.uk CKAN package_search",
             source_url=source_url,
@@ -1247,7 +1310,7 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
             modified=modified,
             license_id=licence_id,
             license_title=licence_title,
-            license_source_id=licence_id,
+            license_source_id=licence_source_id,
             access_model="anonymous",
             visibility="public-data-catalogue",
             contract_status="dataset-metadata",
@@ -1303,7 +1366,7 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
                 modified=resource.get("last_modified") or resource.get("metadata_modified") or modified,
                 license_id=licence_id,
                 license_title=licence_title,
-                license_source_id=licence_id,
+                license_source_id=licence_source_id,
                 access_model="anonymous",
                 visibility="public-data-catalogue",
                 contract_status="capability-document" if protocol in {"WMS", "WFS", "WMTS", "WCS", "OGC API", "SPARQL"} else "service-description",
@@ -1579,8 +1642,9 @@ def add_ons_records(
             protocols=["REST/HTTP"],
             timestamp=dataset.get("last_updated", ""),
             modified=dataset.get("last_updated", ""),
-            license_id="open-government-licence-v3",
-            license_title="Open Government Licence v3.0",
+            license_id=OGL_V3_ID,
+            license_title=OGL_V3_TITLE,
+            license_source_id=OGL_V3_URL,
             access_model="anonymous",
             visibility="public-open-api",
             contract_status="dataset-api",
@@ -1861,6 +1925,10 @@ def render_record_markdown(record: dict[str, Any]) -> str:
             f"- Assurance status: {record.get('assurance_status')}",
             f"- Access model: {record.get('access_model')}",
             f"- Contract status: {record.get('contract_status')}",
+            f"- Licence: {record.get('license_title')} ({record.get('license_id')})",
+            f"- Licence basis: {record.get('license_basis')}",
+            f"- Licence source: {record.get('license_source_id') or 'not-specified'}",
+            f"- Licence confidence: {record.get('license_confidence')}",
             f"- Quality band: {record.get('quality_band')}",
             "",
         ]
@@ -1932,6 +2000,10 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
             f"- Operations: {counts.get('operations')}",
             f"- Schemas: {counts.get('schemas')}",
             "",
+            "## Licence Inference",
+            "",
+            "Source-declared licences are preserved and canonicalised first. ONS records with no explicit source licence are assigned Open Government Licence v3.0 from the ONS website terms; Ordnance Survey provider-native API records are assigned an OS licence-required status from OS licensing guidance. Both are marked `provider-terms-inferred` with lower confidence than source-declared licences.",
+            "",
             "## Entry Points",
             "",
             "- [Explorer descriptor](okf-explorer.json)",
@@ -1949,6 +2021,7 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
             f"## {corpus['descriptor']['generated_at'][:10]}",
             "",
             "- Generated multi-source OKF Explorer descriptor, JSON shards, selected Markdown concepts, provenance-bearing relationships and data-hygiene warnings.",
+            "- Canonicalised OGL licence variants, inferred OGL v3.0 for ONS records where source metadata omitted a licence, and inferred OS licence-required status for Ordnance Survey provider-native records; inferred records are counted in `licence_inferred_from_provider_terms`.",
             "",
         ]
     )
@@ -1977,6 +2050,12 @@ def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "documentation_host": record.get("documentation_host", ""),
                 "access_model": record.get("access_model", ""),
                 "contract_status": record.get("contract_status", ""),
+                "license_id": record.get("license_id", ""),
+                "license_title": record.get("license_title", ""),
+                "license_source_id": record.get("license_source_id", ""),
+                "license_source_title": record.get("license_source_title", ""),
+                "license_confidence": record.get("license_confidence"),
+                "license_basis": record.get("license_basis", ""),
                 "record_type": record.get("record_type", ""),
                 "source_tier": record.get("source_tier", ""),
                 "source_adapter": record.get("source_adapter", ""),
@@ -2250,6 +2329,7 @@ def build_corpus(
         "unknown_access": sum(1 for record in records if record.get("access_model") == "unknown"),
         "api_key_only": sum(1 for record in records if record.get("access_model") == "api-key"),
         "missing_licence": sum(1 for record in records if record.get("license_id") == "not-specified"),
+        "licence_inferred_from_provider_terms": sum(1 for record in records if record.get("license_basis") == "provider-terms-inferred"),
     }
     latest_date = max((str(record.get("timestamp") or record.get("metadata_modified") or "")[:10] for record in records if record.get("timestamp") or record.get("metadata_modified")), default="1970-01-01")
     generated_at = f"{latest_date}T00:00:00Z"
@@ -2269,6 +2349,7 @@ def build_corpus(
                 "API inclusion does not imply public accessibility; access conditions stay explicit.",
                 "No API keys, client secrets, tokens, certificates, or live calls are stored in the OKF bundle.",
                 "Selected concept records are also emitted as browser-compatible Markdown files.",
+                "ONS records without explicit source licence metadata inherit an inferred Open Government Licence v3.0 from ONS website terms; Ordnance Survey provider-native records inherit an inferred OS licence-required status from OS licensing guidance. Both have lower confidence than source-declared licences.",
             ],
         },
         "canonical_counts": count_values,

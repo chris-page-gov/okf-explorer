@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Directory of Servi
 - Assurance status: observed
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/directory-of-services-urgent-and-emergency-care-rest

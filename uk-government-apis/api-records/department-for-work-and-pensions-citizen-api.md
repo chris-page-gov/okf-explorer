@@ -24,6 +24,10 @@ Provides access to DWP citizen information to Other Government Departments and a
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: undocumented-in-catalogue
+- Licence: isc (isc)
+- Licence basis: source-declared
+- Licence source: ISC
+- Licence confidence: 0.9
 - Quality band: medium
 
 

@@ -24,6 +24,10 @@ Use this service to view applications that are not yet completed by HM Land Regi
 - Assurance status: declared
 - Access model: unknown
 - Contract status: wsdl-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/b2b/BGSoapEngine/ApplicationEnquiryV1_0WebService?wsdl

@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for LDNPA Inspire WFS 
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: uk-ogl
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/ldnpa-public-rights-of-way

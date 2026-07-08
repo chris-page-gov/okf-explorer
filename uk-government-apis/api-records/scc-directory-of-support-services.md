@@ -24,6 +24,10 @@ The Southampton directory API is an Open Referral UK standard API of support ser
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://directory.southampton.gov.uk/api/services

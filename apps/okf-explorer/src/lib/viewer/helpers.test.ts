@@ -11,11 +11,13 @@ import {
   displayValue,
   facetLabel,
   facetSummary,
+  facetValueLabel,
   formatPercent,
   isHttpUrl,
   orderedFacetKeys,
   relationshipTitle,
   routeForAnalysisNode,
+  selectedFacetValueSummary,
   smallRelationshipKind,
   smallRelationshipTitle,
   timelineBucketFacetFilter
@@ -187,6 +189,16 @@ describe('viewer helpers', () => {
     };
     expect(analysisHierarchyValueForRoute(routeBasedHierarchy, 'facet/tag/parent')?.value.label).toBe('Parent');
     expect(analysisHierarchyValueForRoute(routeBasedHierarchy, 'facet/tag/child')?.parent?.label).toBe('Parent');
+  });
+
+  it('labels selected facet values for humans and calls out metadata gaps', () => {
+    expect(facetValueLabel(analysis, 'publisher', 'nhs-digital')).toBe('NHS Digital');
+    expect(facetValueLabel(analysis, 'license', 'not-specified')).toBe('Not specified (metadata gap)');
+    expect(facetValueLabel(analysis, 'tag', 'IAPT')).toBe('IAPT');
+    expect(selectedFacetValueSummary(analysis, 'publisher', ['nhs-digital'])).toBe('NHS Digital');
+    expect(selectedFacetValueSummary(analysis, 'license', ['not-specified', 'ogl', 'cc-by'])).toBe(
+      'Not specified (metadata gap), ogl +1'
+    );
   });
 
   it('resolves timeline bucket filters without forcing non-year buckets into update_year', () => {

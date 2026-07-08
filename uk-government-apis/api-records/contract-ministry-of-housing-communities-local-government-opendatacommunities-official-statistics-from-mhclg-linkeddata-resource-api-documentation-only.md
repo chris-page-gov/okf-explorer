@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for OpenDataCommunitie
 - Assurance status: observed
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: licenced per dataset, but mostly ogl (licenced-per-dataset-but-mostly-ogl)
+- Licence basis: source-declared
+- Licence source: Licenced per dataset, but mostly OGL
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://opendatacommunities.org/help

@@ -24,6 +24,10 @@ Use this API to engage with users of the NHS App - a simple and secure way for p
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/nhs-app

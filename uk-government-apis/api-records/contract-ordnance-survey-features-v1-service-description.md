@@ -21,9 +21,13 @@ Machine-readable or service-description contract inferred for OS Features API fr
 - Source adapter: contract_discovery
 - Source tier: contract_discovery
 - Confidence: observed
-- Assurance status: observed
+- Assurance status: declared
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: source-declared
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://osdatahub.os.uk/docs/wfs/overview

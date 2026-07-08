@@ -21,9 +21,13 @@ Machine-readable or service-description contract inferred for ONS code list: ave
 - Source adapter: contract_discovery
 - Source tier: contract_discovery
 - Confidence: observed
-- Assurance status: observed
+- Assurance status: declared
 - Access model: anonymous
 - Contract status: code-list
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/code-lists/averages-and-percentiles

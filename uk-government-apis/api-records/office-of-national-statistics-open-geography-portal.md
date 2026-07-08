@@ -24,6 +24,10 @@ The Open Geography portal from the Office for National Statistics (ONS) provides
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
+- Licence confidence: 0.75
 - Quality band: medium
 
 - Endpoint: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/

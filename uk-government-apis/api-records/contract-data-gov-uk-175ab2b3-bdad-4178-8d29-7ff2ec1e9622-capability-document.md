@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for INSPIRE View Servi
 - Assurance status: observed
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/strategic-site-allocations-core-strategy-2014-policies-b3a-ke3a-ke4a-ra5

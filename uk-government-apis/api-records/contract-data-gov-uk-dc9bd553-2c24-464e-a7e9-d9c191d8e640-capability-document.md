@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for WFS 1.0.0 Download
 - Assurance status: observed
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/liverpool-no-permitted-developments

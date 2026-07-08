@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Prison API from pu
 - Assurance status: observed
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://github.com/ministryofjustice/prison-api

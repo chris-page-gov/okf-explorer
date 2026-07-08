@@ -24,6 +24,10 @@ A subscription service with access to 2 billion+ metric values for English areas
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: subscription required see https: (subscription-required-see-https)
+- Licence basis: source-declared
+- Licence source: Subscription required see https://lginformplus.org/
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://webservices.esd.org.uk/

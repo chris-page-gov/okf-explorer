@@ -24,6 +24,10 @@ Retrieves full details of recommendations made for a particular Energy Performan
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: epc.opendatacommunities.org (epc-opendatacommunities-org)
+- Licence basis: source-declared
+- Licence source: https://epc.opendatacommunities.org/docs/copyright
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://epc.opendatacommunities.org/api/v1/non-domestic/recommendations/:lmk-key

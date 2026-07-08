@@ -24,6 +24,10 @@ As of December 2023, OpenAPI v3 schemas are provided for all MHCLG APIs. These s
 - Assurance status: declared
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://epc.opendatacommunities.org/api/v1/info

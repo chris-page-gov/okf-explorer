@@ -24,6 +24,10 @@ The Environment Agency has approximately 1000 real-time rain gauges which are co
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: http://environment.data.gov.uk/flood-monitoring/id/stations?parameter=rainfall

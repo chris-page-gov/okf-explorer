@@ -37,6 +37,26 @@ export function facetLabel(key: string): string {
   return key.replaceAll('_', ' ');
 }
 
+export function metadataGapLabel(value: string): string {
+  return value === 'not-specified' ? 'Not specified (metadata gap)' : value;
+}
+
+export function facetValueLabel(analysis: LargeAnalysisOverview | undefined, key: string, value: string): string {
+  if (value === 'not-specified') return metadataGapLabel(value);
+  const analysisLabel = analysisLabelForRoute(analysis, `facet/${key}/${value}`);
+  return analysisLabel || metadataGapLabel(value);
+}
+
+export function selectedFacetValueSummary(
+  analysis: LargeAnalysisOverview | undefined,
+  key: string,
+  values: string[],
+  maxValues = 2
+): string {
+  const labels = values.slice(0, maxValues).map((value) => facetValueLabel(analysis, key, value));
+  return `${labels.join(', ')}${values.length > maxValues ? ` +${values.length - maxValues}` : ''}`;
+}
+
 export function formatPercent(value: number | undefined): string {
   if (value === undefined || Number.isNaN(value)) return 'n/a';
   return `${Math.round(value * 100)}%`;

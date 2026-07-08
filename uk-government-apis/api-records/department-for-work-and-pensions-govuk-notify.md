@@ -24,6 +24,10 @@ Automatically send emails (including attachments), letters and text messages.
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: isc (isc)
+- Licence basis: source-declared
+- Licence source: ISC
+- Licence confidence: 0.9
 - Quality band: low
 
 

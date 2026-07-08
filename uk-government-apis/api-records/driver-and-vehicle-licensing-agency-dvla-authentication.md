@@ -24,6 +24,10 @@ The DVLA Authentication API provides authentication, change password, new passwo
 - Assurance status: declared
 - Access model: api-key
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://driver-vehicle-licensing.api.gov.uk/thirdparty-access

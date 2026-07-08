@@ -24,6 +24,10 @@ Use this API to enable administrative and clinical end users to book and manage 
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/gp-connect-appointment-management-fhir

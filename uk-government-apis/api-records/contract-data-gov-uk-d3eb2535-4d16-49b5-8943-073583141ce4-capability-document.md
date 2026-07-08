@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for OGC WMS from publi
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: uk-ogl
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: http://osni-spatialni.opendata.arcgis.com/datasets/bc95e6199aa04e3390eb243a3cbee1ca

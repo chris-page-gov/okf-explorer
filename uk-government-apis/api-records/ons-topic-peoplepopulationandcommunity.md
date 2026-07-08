@@ -24,6 +24,10 @@ People living in the UK, changes in the population, how we spend our money, and 
 - Assurance status: assured
 - Access model: anonymous
 - Contract status: taxonomy
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
+- Licence confidence: 0.75
 - Quality band: medium
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/topics/9581

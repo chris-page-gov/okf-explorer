@@ -24,6 +24,10 @@ This service is available as a GET resource method allowing you to discover the 
 - Assurance status: assured
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.7
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/search/links/v1/productVersionInfo/{correlationMethod}

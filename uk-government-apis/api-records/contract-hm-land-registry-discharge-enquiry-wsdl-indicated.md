@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Discharge Enquiry 
 - Assurance status: observed
 - Access model: unknown
 - Contract status: wsdl-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://landregistry.github.io/bgtechdoc/services/discharge_activity/

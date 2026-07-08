@@ -24,6 +24,10 @@ Use this API to access the Electronic Prescription Service (EPS). EPS is the nat
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/electronic-prescription-service-fhir

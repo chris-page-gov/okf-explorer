@@ -24,6 +24,10 @@ The NaPTAN & NPTG API can be used to automatically download transport, gazetteer
 - Assurance status: declared
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://naptan.api.dft.gov.uk/swagger/index.html

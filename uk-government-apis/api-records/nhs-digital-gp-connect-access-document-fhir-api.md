@@ -24,6 +24,10 @@ Use this API to retrieve unstructured documents from a patient’s GP practice r
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/gp-connect-access-document-fhir

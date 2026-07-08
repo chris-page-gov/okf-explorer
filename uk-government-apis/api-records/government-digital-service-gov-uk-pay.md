@@ -24,6 +24,10 @@ Anyone in the public sector can use GOV.UK Pay to take online payments. It only 
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://publicapi.payments.service.gov.uk/

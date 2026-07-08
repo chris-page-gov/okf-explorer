@@ -24,6 +24,10 @@ Use this service to check if any charges have been removed in the previous 30 da
 - Assurance status: declared
 - Access model: unknown
 - Contract status: wsdl-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/b2b/BGSoapEngine/DischargeActivityV1_0WebService?wsdl

@@ -24,6 +24,10 @@ Use the Push Pull Notifications API to get notifications (pull) and to send noti
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.service.hmrc.gov.uk

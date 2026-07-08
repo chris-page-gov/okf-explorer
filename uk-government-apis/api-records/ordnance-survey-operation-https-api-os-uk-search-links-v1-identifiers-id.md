@@ -24,6 +24,10 @@ Replace {id} with an identifier to Look up that identifier and find its associat
 - Assurance status: assured
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.7
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/search/links/v1/identifiers/{id}

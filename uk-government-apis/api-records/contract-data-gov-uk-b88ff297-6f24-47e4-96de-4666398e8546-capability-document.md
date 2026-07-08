@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for cbc_housing_develo
 - Assurance status: observed
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/christchurch-borough-council-housing-development-2018

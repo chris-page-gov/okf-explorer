@@ -47,8 +47,8 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         # second row used to exercise javascript: documentation redaction below.
         self.assertEqual(counts["declared_api_products"], 2)
         self.assertGreaterEqual(counts["provider_native_api_products"], 2)
-        self.assertEqual(counts["data_access_endpoints"], 1)
-        self.assertEqual(counts["data_products"], 2)
+        self.assertEqual(counts["data_access_endpoints"], 2)
+        self.assertEqual(counts["data_products"], 3)
         self.assertEqual(counts["contracts"], 6)
         self.assertGreaterEqual(counts["operations"], 2)
         self.assertGreaterEqual(counts["schemas"], 2)
@@ -59,10 +59,10 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         records = corpus["records"]
         endpoint_records = [record for record in records if record["record_type"] == "Data Access API Endpoint"]
 
-        self.assertEqual(len(endpoint_records), 1)
-        self.assertEqual(endpoint_records[0]["source_adapter"], "data_gov_uk_ckan")
-        self.assertEqual(endpoint_records[0]["protocol"], ["ArcGIS REST"])
-        self.assertNotEqual(endpoint_records[0]["record_type"], "API Product")
+        self.assertEqual(len(endpoint_records), 2)
+        self.assertTrue(all(record["source_adapter"] == "data_gov_uk_ckan" for record in endpoint_records))
+        self.assertTrue(all(record["protocol"] == ["ArcGIS REST"] for record in endpoint_records))
+        self.assertTrue(all(record["record_type"] != "API Product" for record in endpoint_records))
 
     def test_every_record_has_route_provenance_confidence_and_source_adapter(self):
         corpus = self.build_fixture_corpus()
@@ -182,6 +182,75 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertEqual(warnings["duplicate_slugs_dropped"], 0)
         self.assertEqual(warnings["duplicate_endpoints_skipped"], 1)
         self.assertEqual(corpus["analysis"]["warnings"], warnings)
+
+    def test_ons_ckan_records_infer_ogl_from_provider_terms_when_source_licence_missing(self):
+        corpus = self.build_fixture_corpus()
+        records = corpus["records"]
+        ons_ckan_records = [
+            record
+            for record in records
+            if record["source_adapter"] == "data_gov_uk_ckan" and record["publisher"] == "office-for-national-statistics"
+        ]
+
+        self.assertEqual({record["record_type"] for record in ons_ckan_records}, {"Data Product", "Data Access API Endpoint"})
+        for record in ons_ckan_records:
+            self.assertEqual(record["license_id"], builder_module.OGL_V3_ID)
+            self.assertEqual(record["license_title"], builder_module.OGL_V3_TITLE)
+            self.assertEqual(record["license_source_id"], builder_module.ONS_TERMS_URL)
+            self.assertEqual(record["license_basis"], "provider-terms-inferred")
+            self.assertEqual(record["license_confidence"], 0.75)
+
+        self.assertGreaterEqual(corpus["overview"]["warnings"]["licence_inferred_from_provider_terms"], len(ons_ckan_records))
+
+    def test_ordnance_survey_records_infer_provider_licence_requirement(self):
+        corpus = self.build_fixture_corpus()
+        os_records = [
+            record
+            for record in corpus["records"]
+            if record["source_adapter"] == "ordnance_survey_api_os_uk"
+        ]
+
+        self.assertTrue(os_records)
+        for record in os_records:
+            self.assertEqual(record["license_id"], builder_module.OS_LICENCE_ID)
+            self.assertEqual(record["license_title"], builder_module.OS_LICENCE_TITLE)
+            self.assertEqual(record["license_source_id"], builder_module.OS_LICENCE_URL)
+            self.assertEqual(record["license_basis"], "provider-terms-inferred")
+            self.assertEqual(record["license_confidence"], 0.7)
+            self.assertFalse(record["private"])
+
+    def test_search_docs_preserve_licence_metadata_for_first_click_cards(self):
+        corpus = self.build_fixture_corpus()
+        result_docs = [
+            doc
+            for _path, chunk in corpus["search"]["result_doc_chunks"]
+            for doc in chunk
+        ]
+        os_doc = next(doc for doc in result_docs if doc["name"] == "ordnance-survey-api-portal")
+
+        self.assertEqual(os_doc["license_id"], builder_module.OS_LICENCE_ID)
+        self.assertEqual(os_doc["license_title"], builder_module.OS_LICENCE_TITLE)
+        self.assertEqual(os_doc["license_source_id"], builder_module.OS_LICENCE_URL)
+        self.assertEqual(os_doc["license_basis"], "provider-terms-inferred")
+        self.assertEqual(os_doc["license_confidence"], 0.7)
+
+    def test_ckan_ogl_variants_are_canonicalised_before_provider_inference(self):
+        corpus = self.build_fixture_corpus()
+        council_product = next(record for record in corpus["records"] if record["name"] == "data-gov-uk-planning-applications")
+
+        self.assertEqual(council_product["license_id"], builder_module.OGL_V3_ID)
+        self.assertEqual(council_product["license_title"], builder_module.OGL_V3_TITLE)
+        self.assertEqual(council_product["license_basis"], "source-declared")
+
+    def test_license_field_normalisation_preserves_non_ogl_source_ids(self):
+        self.assertEqual(
+            builder_module.normalize_license_fields("cc-by", "Creative Commons Attribution"),
+            ("cc-by", "Creative Commons Attribution", "cc-by"),
+        )
+        self.assertEqual(
+            builder_module.normalize_license_fields("notspecified", "Licence not specified"),
+            ("not-specified", "Not specified", ""),
+        )
 
     def test_every_relationship_edge_carries_provenance(self):
         corpus = self.build_fixture_corpus()

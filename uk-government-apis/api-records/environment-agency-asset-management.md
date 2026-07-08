@@ -24,6 +24,10 @@ The Environment Agency maintains records on assets of many types related to envi
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: http://environment.data.gov.uk/asset-management

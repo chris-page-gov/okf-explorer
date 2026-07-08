@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for 400m_no_water_disc
 - Assurance status: observed
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/400m-no-water-discharge-area

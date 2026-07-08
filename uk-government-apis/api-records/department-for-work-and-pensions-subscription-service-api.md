@@ -24,6 +24,10 @@ ECNS subscription API allows other government departments and organisations to r
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: undocumented-in-catalogue
+- Licence: isc (isc)
+- Licence basis: source-declared
+- Licence source: ISC
+- Licence confidence: 0.9
 - Quality band: medium
 
 

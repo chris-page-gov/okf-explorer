@@ -22,3 +22,5 @@ apps/*/build/
 apps/*/coverage/
 .playwright-mcp/
 .pnpm-store/
+
+evaluation/okf-explorer/results/

@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for INSPIRE View Servi
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Other (Not Open) (other-closed)
+- Licence basis: source-declared
+- Licence source: other-closed
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/article-4_

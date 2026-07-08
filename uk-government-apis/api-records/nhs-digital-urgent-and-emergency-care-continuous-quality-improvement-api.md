@@ -24,6 +24,10 @@ Use this API to submit 111 or 999 call triage data to us for quality monitoring 
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/urgent-and-emergency-care-continuous-quality-improvement-api

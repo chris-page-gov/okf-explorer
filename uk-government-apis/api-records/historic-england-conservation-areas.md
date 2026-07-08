@@ -24,6 +24,10 @@ Conservation Areas in England as designated by Local Planning Authorities and co
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: Open Government Licence
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/Conservation_Areas/FeatureServer

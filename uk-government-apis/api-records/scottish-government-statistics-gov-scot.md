@@ -24,6 +24,10 @@ statistics.gov.scot provides public access to the data behind Scotland's officia
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://statistics.gov.scot/sparql

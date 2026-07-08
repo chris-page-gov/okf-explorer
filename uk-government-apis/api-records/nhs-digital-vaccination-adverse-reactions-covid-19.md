@@ -24,6 +24,10 @@ Use this integration to provide information to us at NHS Digital on adverse reac
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/vaccination-adverse-reactions-covid-19

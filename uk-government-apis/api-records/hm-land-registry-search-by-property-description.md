@@ -24,6 +24,10 @@ Use this service to find out the title number and tenure of a property based on 
 - Assurance status: declared
 - Access model: unknown
 - Contract status: wsdl-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/b2b/BGSoapEngine/EnquiryByPropertyDescriptionV2_0WebService?wsdl

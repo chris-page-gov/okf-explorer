@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Areas of Identifie
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: capability-document
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: uk-ogl
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://www.data.gov.uk/dataset/areas-of-identified-tidal-stream-resource-defining-boundary-of-policy-tide1-in-the-east-inshore1

@@ -24,6 +24,10 @@ GOV.UK Search API allows you to find content on GOV.UK.
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://www.gov.uk/api/search.json

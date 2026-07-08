@@ -24,6 +24,10 @@ The GOV.UK Trade Tariff API makes it easy to access UK Trade Tariff data from [t
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://www.trade-tariff.service.gov.uk/uk/api

@@ -24,6 +24,10 @@ The display vacancy advert API allows you to retrieve recruitment adverts from F
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://api.apprenticeships.education.gov.uk/vacancies

@@ -24,6 +24,10 @@ The tool (https://agsapi.bgs.ac.uk/) and associated API allow schema validation,
 - Assurance status: declared
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: codebase is under lgpl v3.0 (codebase-is-under-lgpl-v3-0)
+- Licence basis: source-declared
+- Licence source: Codebase is under LGPL v3.0
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://agsapi.bgs.ac.uk/openapi.json

@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for National Public Tr
 - Assurance status: observed
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://naptan.api.dft.gov.uk/swagger/index.html

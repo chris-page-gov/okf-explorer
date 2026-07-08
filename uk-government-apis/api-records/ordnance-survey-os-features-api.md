@@ -24,6 +24,10 @@ Buildings, roads, greenspaces and much more. Get direct access to the most detai
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: osdatahub.os.uk (osdatahub-os-uk)
+- Licence basis: source-declared
+- Licence source: https://osdatahub.os.uk/legal/termsConditions
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/features/v1

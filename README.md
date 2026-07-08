@@ -60,10 +60,14 @@ The repository contains:
   extensions.
 - `docs/use-okf-explorer.md` - novice-friendly manual for generating,
   publishing, and browsing OKF bundles with the hosted Svelte Explorer.
+- `docs/okf-explorer-evaluation.md` - 100-question browser evaluation harness
+  and additive rubric for retrieval, display clarity, accessibility, GOV.UK
+  publication quality, and visual-regression evidence.
 - `docs/okf-conformance.md` - OKF v0.1 conformance scope and intentional
   deviations.
 - `docs/code-review-2026-07-07.md` - Fable 5 code review: findings, fixes,
   and completion plan.
+- `CHANGELOG.md` - publication-quality change history with validation notes.
 - `viewer.html` - legacy self-contained interactive graph and reader.
 - `view.html` - compatibility alias for the legacy viewer.
 - `index.md`, `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`,
@@ -126,10 +130,12 @@ until the public cutover is made deliberately.
 
 ```sh
 python3 scripts/build_uk_government_api_okf.py --check
+python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
 python3 scripts/build_site.py
+node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100
 ```
 
 The build writes a GitHub Pages-ready static site to `_site/`. The site uses
@@ -149,6 +155,11 @@ To regenerate the UK Government APIs exemplar from the official catalogue CSV:
 ```sh
 python3 scripts/build_uk_government_api_okf.py
 ```
+
+Publication-affecting changes to `scripts/`, `sources/`, `uk-government-apis/`,
+Explorer source, tests, or workflows must keep documentation and
+`CHANGELOG.md` in lockstep. CI enforces this for human pull requests with
+`scripts/check_documentation_lockstep.py`.
 
 ## License
 

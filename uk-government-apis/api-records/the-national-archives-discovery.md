@@ -24,6 +24,10 @@ Our Discovery application programming interface (API) is designed to maximise ac
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://discovery.nationalarchives.gov.uk/API

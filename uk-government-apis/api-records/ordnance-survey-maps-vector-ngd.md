@@ -24,6 +24,10 @@ OS NGD API – Tiles is a vector tile service powered by the OS National Geograp
 - Assurance status: assured
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.7
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/maps/vector/ngd

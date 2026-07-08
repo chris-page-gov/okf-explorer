@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Distance travelled
 - Assurance status: declared
 - Access model: anonymous
 - Contract status: dataset-api
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/datasets/RM015

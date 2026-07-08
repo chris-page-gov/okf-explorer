@@ -1,0 +1,90 @@
+import { describe, expect, it } from 'vitest';
+import pageSource from '../../routes/+page.svelte?raw';
+
+describe('large-corpus left panel UX harness', () => {
+  it('starts with all facets folded instead of opening the first provider list', () => {
+    expect(pageSource).toContain("let activeFacetKey = $state('');");
+    expect(pageSource).not.toContain("let activeFacetKey = $state('publisher')");
+    expect(pageSource).not.toContain('activeFacetKey = Object.keys(largeIndex.facets)[0]');
+  });
+
+  it('toggles open facets closed and hydrates unopened facets with a loading state', () => {
+    expect(pageSource).toContain('async function openLargeFacet(key: string)');
+    expect(pageSource).toContain('if (activeFacetKey === key)');
+    expect(pageSource).toContain("largeFacetHydratingKey = key;");
+    expect(pageSource).toContain('Loading facet values...');
+  });
+
+  it('shows an immediate applying cue and disables competing facet clicks', () => {
+    expect(pageSource).toContain('let largeFacetApplyingKey = $state');
+    expect(pageSource).toContain('await tick();');
+    expect(pageSource).toContain('aria-live="polite"');
+    expect(pageSource).toContain('Applying {facetLabel(largeFacetApplyingKey)}');
+    expect(pageSource).toContain('disabled={Boolean(largeFacetApplyingKey)}');
+  });
+
+  it('keeps hierarchy parent rows informational and sends child rows to the right facet route', () => {
+    expect(pageSource).toContain('<div class="facet-hierarchy-group">');
+    expect(pageSource).toContain('onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}');
+  });
+
+  it('uses real browser history for facet selections and deep links selected facet routes', () => {
+    expect(pageSource).toContain('function syncExplorerUrl(push = false)');
+    expect(pageSource).toContain('largeInspectedRoute || largeSelectedRoute');
+    expect(pageSource).toContain("window.history.pushState({}, '', url)");
+    expect(pageSource).toContain('applyLargeBrowserRoute(hash)');
+  });
+
+  it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {
+    expect(pageSource).toContain('class="left-results"');
+    expect(pageSource).toContain('records match the active search and filters');
+    expect(pageSource).toContain('Search matches');
+  });
+
+  it('debounces large-corpus search and exposes explicit search preparation state', () => {
+    expect(pageSource).toContain('let largeSearchIndexLoading = $state(false);');
+    expect(pageSource).toContain('function scheduleLargeSearch(query: string)');
+    expect(pageSource).toContain('window.setTimeout');
+    expect(pageSource).toContain('Preparing static search index...');
+    expect(pageSource).toContain('Searching static index...');
+  });
+
+  it('offers an explicit search clear control and resets stale route context while typing', () => {
+    expect(pageSource).toContain('function clearLargeSearch()');
+    expect(pageSource).toContain('aria-label="Clear search"');
+    expect(pageSource).toContain('class="search-clear"');
+    expect(pageSource).toContain('function clearLargeRouteContext()');
+    expect(pageSource).toContain('if (query.trim() !== previousQuery) clearLargeRouteContext();');
+  });
+
+  it('turns metadata chips into facet navigation controls', () => {
+    expect(pageSource).toContain("onclick={() => applyAnalysisFacet('topic', topic)}");
+    expect(pageSource).toContain("onclick={() => applyAnalysisFacet('format', format)}");
+    expect(pageSource).toContain("onclick={() => applyAnalysisFacet('tag', tag)}");
+  });
+
+  it('explains quality, licence and evidence terms inside the detail panel', () => {
+    expect(pageSource).toContain('Metadata quality');
+    expect(pageSource).toContain('Licence basis');
+    expect(pageSource).toContain('licenceBasisLabel');
+    expect(pageSource).toContain('class="info-icon"');
+    expect(pageSource).toContain('quality-contract_signal');
+    expect(pageSource).toContain('largeDetail.result.license_title');
+    expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.timestamp)');
+    expect(pageSource).toContain("['none', 'null', 'not-specified']");
+    expect(pageSource).toContain("source-date:created");
+    expect(pageSource).toContain("source-date:modified");
+    expect(pageSource).toContain("source-date:timeline");
+  });
+
+  it('stacks dense graph relationships and renders the relationship list as a drawer', () => {
+    expect(pageSource).toContain("addNode(stackId, 'relationship-stack'");
+    expect(pageSource).toContain('edge-panel edge-drawer');
+    expect(pageSource).toContain('drawer-grip');
+  });
+
+  it('draws graph relationship arrows to trimmed icon boundaries', () => {
+    expect(pageSource).toContain('function trimmedEdgePoints(source: GraphPoint, target: GraphPoint');
+    expect(pageSource).toMatch(/<line\s+class:highlight=\{edgeHighlighted\}\s+x1=\{edgeHit\.x1\}\s+y1=\{edgeHit\.y1\}\s+x2=\{edgeHit\.x2\}\s+y2=\{edgeHit\.y2\}/);
+  });
+});

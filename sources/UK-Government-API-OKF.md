@@ -402,6 +402,18 @@ For the “all UK Government APIs” ambition, I would distinguish three statuse
 
 That avoids pretending the corpus is definitive before governance catches up.
 
+Licence metadata should follow the same evidence hierarchy. Source-declared
+licences are authoritative for the harvested record. Dataset/resource endpoint
+records may inherit a package-level licence from the source dataset metadata. If
+the source omits a licence but an official provider publishes clear site-wide
+terms for its data/API content, the builder may infer a provider-level licence
+only when it records the basis, source URL, confidence and warning counter. In
+the UK Government APIs exemplar, missing ONS CKAN licence fields infer Open
+Government Licence v3.0 from ONS terms. Ordnance Survey provider-native records
+infer that an OS licence is required from OS licensing guidance rather than
+being treated as OGL. These records are marked `provider-terms-inferred`, not
+`source-declared`.
+
 ---
 
 ## Security and API keys
@@ -565,6 +577,7 @@ Equivalent to CKAN’s overview, but with API dimensions:
     "missing_contract": 0,
     "deprecated_without_replacement": 0,
     "api_key_only": 0,
+    "licence_inferred_from_provider_terms": 0,
     "stale_metadata": 0
   }
 }
@@ -750,7 +763,7 @@ A practical first phase would be:
 6. **Find contracts**: OpenAPI, AsyncAPI, WSDL, OGC capabilities, SPARQL service
    descriptions, ArcGIS service metadata and docs pages.
 7. **Generate right-card metadata**: owner, source, access conditions, docs, known endpoints, contract availability.
-8. **Build analysis overview**: split counts, facets, warnings, top publishers, missing contracts.
+8. **Build analysis overview**: split counts, facets, warnings, top publishers, missing contracts and inferred licences.
 9. **Add typed relationships**: publisher, docs, contract, service, standards,
    data-product, endpoint and provider-portal relationships.
 10. **Add scorecard v0**: documentation, contract, lifecycle, access clarity.

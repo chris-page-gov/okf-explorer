@@ -24,6 +24,10 @@ A dataset of laws and guidance that regulate business activities in England. The
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: source-declared
+- Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://data.api.trade.gov.uk/v1/datasets/uk-business-regulations/versions/latest/data?format=json

@@ -24,6 +24,10 @@ Use this API to access a patient's Summary Care Record (SCR) - a national electr
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/summary-care-record-hl7-v3

@@ -24,6 +24,10 @@ The Bank Holidays API provides access to data about when bank holidays are in En
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://www.gov.uk/bank-holidays.json

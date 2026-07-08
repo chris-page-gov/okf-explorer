@@ -24,6 +24,10 @@ A land charge is an interest in land that imposes an obligation on the landowner
 - Assurance status: declared
 - Access model: approval-required
 - Contract status: wsdl-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/b2b/BGSoapEngine/FullSearchV2_1WebService?wsdl

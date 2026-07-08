@@ -24,6 +24,10 @@ Add Ordnance Survey's detailed maps to your GIS, web or mobile applications with
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: osdatahub.os.uk (osdatahub-os-uk)
+- Licence basis: source-declared
+- Licence source: https://osdatahub.os.uk/legal/termsConditions
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/maps/raster/v1

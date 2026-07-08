@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for BGS OpenGeoscience
 - Assurance status: observed
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: data under open government license (data-under-open-government-license)
+- Licence basis: source-declared
+- Licence source: Data under Open Government License
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://ogcapi.bgs.ac.uk/openapi?f=html

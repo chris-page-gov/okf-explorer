@@ -24,6 +24,10 @@ Provides a list of benefits (and where relevant, which components) a person is e
 - Assurance status: declared
 - Access model: unknown
 - Contract status: undocumented-in-catalogue
+- Licence: isc (isc)
+- Licence basis: source-declared
+- Licence source: ISC
+- Licence confidence: 0.9
 - Quality band: low
 
 

@@ -24,6 +24,10 @@ The service provides REST access to the Nomis Oracle DB prisoner information.
 - Assurance status: declared
 - Access model: unknown
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://api.prison.service.justice.gov.uk/swagger-ui.html

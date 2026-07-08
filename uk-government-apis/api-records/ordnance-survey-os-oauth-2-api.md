@@ -24,6 +24,10 @@ OAuth 2 is an authentication mechanism for APIs that allows applications to use 
 - Assurance status: declared
 - Access model: oauth2
 - Contract status: documentation-only
+- Licence: osdatahub.os.uk (osdatahub-os-uk)
+- Licence basis: source-declared
+- Licence source: https://osdatahub.os.uk/legal/termsConditions
+- Licence confidence: 0.9
 - Quality band: high
 
 - Endpoint: https://api.os.uk/oauth2/token/v1

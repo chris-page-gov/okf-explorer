@@ -24,6 +24,10 @@ The Tidal API provides an authoritative source of tidal height predictions for S
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://developer.admiralty.co.uk/product#product=tidal-api-premium

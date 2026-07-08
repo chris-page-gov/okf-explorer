@@ -24,6 +24,10 @@ This service provides an application programming interface (API) for data scient
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: open government license (open-government-license)
+- Licence basis: source-declared
+- Licence source: Open Government License
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://sensors.bgs.ac.uk/FROST-Server/v1.1

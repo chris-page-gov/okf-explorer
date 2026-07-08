@@ -24,6 +24,10 @@ Template operation for the ONS Beta API: List code lists.
 - Assurance status: assured
 - Access model: anonymous
 - Contract status: service-description
+- Licence: Open Government Licence v3.0 (open-government-licence-v3)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
+- Licence confidence: 0.75
 - Quality band: medium
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/code-lists

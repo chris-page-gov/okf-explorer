@@ -24,6 +24,10 @@ To raise new requests for service to West Berkshire Council for highways and cou
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: medium
 
 - Endpoint: https://www.westberks.gov.uk/webservices/open311.asmx

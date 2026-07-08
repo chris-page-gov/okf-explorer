@@ -24,6 +24,10 @@ Machine-readable or service-description contract inferred for Transport for Lond
 - Assurance status: observed
 - Access model: approval-required
 - Contract status: openapi-indicated
+- Licence: Not specified (not-specified)
+- Licence basis: not-specified
+- Licence source: not-specified
+- Licence confidence: 0.2
 - Quality band: high
 
 - Endpoint: https://api.tfl.gov.uk/

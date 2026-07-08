@@ -24,6 +24,10 @@ The ADMIRALTY UK Tidal API provides authoritative source of tidal height predict
 - Assurance status: declared
 - Access model: unknown
 - Contract status: documentation-only
+- Licence: subscription required (subscription-required)
+- Licence basis: source-declared
+- Licence source: subscription required
+- Licence confidence: 0.9
 - Quality band: medium
 
 - Endpoint: https://developer.admiralty.co.uk/product#product=uk-tidal-api

@@ -24,6 +24,10 @@ The endpoint for the Ordnance Survey National Geographic Database API – Tiles.
 - Assurance status: assured
 - Access model: api-key
 - Contract status: service-description
+- Licence: Ordnance Survey licence required (ordnance-survey-licence-required)
+- Licence basis: provider-terms-inferred
+- Licence source: https://www.ordnancesurvey.co.uk/licensing
+- Licence confidence: 0.7
 - Quality band: medium
 
 - Endpoint: https://api.os.uk/maps/vector/ngd/ota/v1
