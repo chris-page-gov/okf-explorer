@@ -14,6 +14,45 @@
         "Relationship labels must remain readable without overlapping unrelated node labels.",
         "The relationship drawer must support inspection without covering the main graph target."
       ]
+    },
+    {
+      "id": "VR002",
+      "view": "graph",
+      "image": "evidence/graph-osdatahub-search-context-2026-07-08.png",
+      "comment": "Search for osdatahub.os.uk returns records, but the graph context collapses into an Ordnance Survey fan-in with poor labels instead of a readable graph for the searched target.",
+      "checks": [
+        "Switching from search results to Graph must preserve the selected or highlighted search-result route.",
+        "Dense search-result graphs must explain any grouping dimension in visible text.",
+        "Record nodes in a dense search context should be grouped by a meaningful dimension before labels overlap.",
+        "Relationship rows must remain available without covering the graph target.",
+        "Graph legends and captions must distinguish real corpus records from generated grouping stacks."
+      ]
+    },
+    {
+      "id": "VR003",
+      "view": "graph",
+      "image": "evidence/graph-osdatahub-cluster-overlap-2026-07-08.png",
+      "comment": "OS Data Hub cluster remains unreadable after zoom because close record stacks, labels and arrows converge on the selected host node.",
+      "checks": [
+        "Zoom must not be the only remedy for dense graph clusters.",
+        "Dense record clusters should collapse into count-bearing stacks by record type or another visible grouping dimension.",
+        "Clicking one grouped stack should expand that group while re-stacking any previously expanded group.",
+        "Labels for the selected host or provider must remain readable at the default zoom.",
+        "Arrowheads must terminate at the target icon boundary and avoid the selected-node label."
+      ]
+    },
+    {
+      "id": "VR004",
+      "view": "type",
+      "image": "evidence/facet-record-type-graph-context-2026-07-08.png",
+      "comment": "After searching OS, selecting OS Maps API, switching to Graph and double-clicking OS Data Hub, the Record type facet can look like a false breakdown unless graph grouping and reduction context are explicit.",
+      "checks": [
+        "Double-clicking metadata graph nodes such as host, provider, format, topic or licence must reduce the active context where that is a facet value.",
+        "Facet counts must describe the active search/filter reduction rather than an unexplained graph-only selection.",
+        "When graph nodes are grouped, the UI must show the grouping dimension and expanded group.",
+        "Record type labels must use OKF concept terms consistently with the bundle specification.",
+        "The left panel must keep selected facet values visible after the graph changes context."
+      ]
     }
   ]
 }

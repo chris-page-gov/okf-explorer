@@ -18,6 +18,12 @@ source-of-truth changes.
 - Added graph-overlap screenshot evidence so relationship-label layering,
   overlapping white boxes, and arrow-to-icon placement remain testable review
   concerns.
+- Added a separate 100-question GOV.UK CKAN evaluation suite with the same
+  additive rubric and pack-aware `target_bundle` support in the harness.
+- Added `docs/okf-pack-parity.md` to define parity expectations between the UK
+  Government APIs OKF exemplar and the GOV.UK CKAN large-corpus pack.
+- Added OS Data Hub visual-regression evidence for search-context loss,
+  unreadable dense graph clusters and misleading record-type breakdowns.
 
 ### Changed
 
@@ -39,10 +45,30 @@ source-of-truth changes.
 - Dense graph relationship rows are stacked into count-bearing graph nodes and
   the relationship list is shown as a drawer-style panel with its own scroll
   area.
+- Dense large-corpus graphs now group API/data records by record type, expose a
+  visible "Grouped by record type" caption, and expand one record-type stack at
+  a time.
+- Dense graph stacks now count the full matching reduction while expanded
+  stacks show a bounded sample with the sample size stated in the caption.
+- Large-corpus facets now hide duplicate `canonical_publisher` navigation when
+  `publisher` is available, expose an in-facet search box, and reveal values in
+  pages instead of capping the list at 18.
+- Facet value clicks now behave as single-select by default; Ctrl-click,
+  Cmd-click or Shift-click adds/removes values for multi-select filtering.
+- Graph node glyphs now distinguish providers, formats, topics, licences, tags
+  and hosts/resource types with different compact SVG icons while preserving
+  selected and stacked states.
+- Double-clicking graph metadata nodes such as provider, host, format, topic,
+  tag or licence now applies the corresponding facet reduction when available,
+  so left-panel counts and graph context stay aligned.
+- The graph view now centres on the selected, inspected or highlighted route
+  when moving from search results into Graph.
 - Large-corpus search now exposes an explicit clear button and clears stale
   selected-record context as soon as a materially different query is typed.
 - Info bubbles for created, modified and timeline dates now use distinct scoped
   help keys so only the requested explanation opens.
+- Large graph arrows now use source and target node shape padding so arrowheads
+  terminate at the visual edge of stack/card/circle nodes.
 
 ### Fixed
 
@@ -68,4 +94,5 @@ source-of-truth changes.
 - `python3 scripts/build_uk_government_api_okf.py --check`
 - `python3 scripts/build_site.py`
 - `node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100`
+- `node scripts/evaluate_okf_explorer.mjs --no-browser --suite evaluation/gov-ckan/questions.json`
 - `git diff --check`

@@ -63,6 +63,8 @@ The repository contains:
 - `docs/okf-explorer-evaluation.md` - 100-question browser evaluation harness
   and additive rubric for retrieval, display clarity, accessibility, GOV.UK
   publication quality, and visual-regression evidence.
+- `docs/okf-pack-parity.md` - parity contract for evaluating the UK Government
+  APIs and GOV.UK CKAN OKF packs with the same Explorer behaviours and rubric.
 - `docs/okf-conformance.md` - OKF v0.1 conformance scope and intentional
   deviations.
 - `docs/code-review-2026-07-07.md` - Fable 5 code review: findings, fixes,
@@ -106,6 +108,12 @@ external bundle without copying its generated corpus here.
 Direct CKAN example:
 [GOV.UK CKAN in the hosted Svelte Explorer][ckan-example]
 
+Pack parity expectations are documented in
+[docs/okf-pack-parity.md](docs/okf-pack-parity.md). The shared browser harness
+now carries a separate 100-question CKAN suite so changes to the Explorer can be
+scored against both the multi-source UK Government APIs exemplar and the broad
+CKAN data-catalogue exemplar.
+
 ## Svelte Explorer
 
 The Svelte implementation is built as a static app and is the canonical OKF
@@ -136,6 +144,7 @@ python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
 python3 scripts/build_site.py
 node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100
+node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --suite evaluation/gov-ckan/questions.json --limit 100
 ```
 
 The build writes a GitHub Pages-ready static site to `_site/`. The site uses

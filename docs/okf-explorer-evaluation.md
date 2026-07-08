@@ -1,7 +1,8 @@
 # OKF Explorer Evaluation Harness
 
-This repository now carries a repeatable browser evaluation suite for the UK
-Government APIs OKF pack and future large OKF bundles.
+This repository now carries repeatable browser evaluation suites for the UK
+Government APIs OKF pack, the hosted GOV.UK CKAN OKF pack, and future large OKF
+bundles.
 
 The suite evaluates three publication goals:
 
@@ -13,10 +14,14 @@ The suite evaluates three publication goals:
 
 ## Assets
 
-- `evaluation/okf-explorer/questions.json` contains 100 retrieval and
-  inspection tasks.
+- `evaluation/okf-explorer/questions.json` contains 100 UK Government API
+  retrieval and inspection tasks.
+- `evaluation/gov-ckan/questions.json` contains 100 GOV.UK CKAN retrieval and
+  inspection tasks using the same rubric.
 - `evaluation/okf-explorer/visual-regressions.json` records known visual
   clarity issues that must not be lost during redesign.
+- `evaluation/gov-ckan/visual-regressions.json` is ready for CKAN-specific
+  visual evidence.
 - `evaluation/okf-explorer/evidence/graph-layering-overlap-2026-07-08.png`
   captures the current graph readability problem:
 
@@ -25,6 +30,15 @@ The suite evaluates three publication goals:
 The review note for that image is retained verbatim in the manifest:
 "See how messy this display is due to layering and overlapping white boxes and
 the arrow location (should be up to the start of the icon)".
+
+Additional evidence now captures the OS Data Hub graph failures:
+
+- `graph-osdatahub-search-context-2026-07-08.png`: search context was not
+  preserved clearly when moving from search results to Graph.
+- `graph-osdatahub-cluster-overlap-2026-07-08.png`: zoom did not make a dense
+  OS Data Hub cluster readable.
+- `facet-record-type-graph-context-2026-07-08.png`: record-type counts looked
+  like a false graph breakdown when the active reduction was not explicit.
 
 ## Rubric
 
@@ -83,6 +97,25 @@ Generated reports are written to `evaluation/okf-explorer/results/`, which is
 ignored by Git. The committed suite, rubric, screenshot evidence and harness
 are the source of truth.
 
+For CI or a quick lockstep check, use `--no-browser`. That mode validates the
+100-question suite and writes one validation-only record per question, but it
+does not assign retrieval/display/accessibility/GOV.UK scores because no browser
+observations have been collected.
+
+Run the GOV.UK CKAN parity suite against the hosted CKAN descriptor:
+
+```sh
+node scripts/evaluate_okf_explorer.mjs \
+  --base-url http://127.0.0.1:8002/_site/next/ \
+  --suite evaluation/gov-ckan/questions.json \
+  --limit 100
+```
+
+The CKAN suite declares its `target_bundle`; the harness also picks up the
+sibling `visual-regressions.json`, so `--bundle` and `--visual` are optional for
+that run. Reports are written to `evaluation/gov-ckan/results/` unless `--out`
+is specified.
+
 ## Corpus Boundary Note
 
 Question `Q071` checks the user's Rugby search concern. In the current UK
@@ -90,3 +123,7 @@ Government APIs OKF bundle, Rugby has one indexed match:
 `Scarborough Borough Council New Local Plan Former Rugby Club Site`. If future
 harvests add more Rugby records, the expected minimum can be raised without
 changing the harness.
+
+The CKAN suite includes its own Rugby and planning questions so the broader
+CKAN fixture can be evaluated without assuming the same corpus boundary as the
+UK Government APIs pack.
