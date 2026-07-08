@@ -9,7 +9,10 @@ other public HTTPS URL.
 
 - [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
 - [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
-- [Read the illustrated "make and publish your own OKF bundle" manual][manual]
+- [Start with the OKF Explorer documentation guide][docs-index]
+- [Read the illustrated OKF Explorer persona manual][persona-manual]
+- [Use an AI with an OKF pack][ai-okf-usage]
+- [Create an OKF bundle that uses the Explorer well][bundle-authoring]
 
 The CKAN example demonstrates the main no-install workflow: the Explorer is
 hosted by this repository, while the bundle descriptor and generated data live
@@ -58,6 +61,15 @@ The repository contains:
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
+- `docs/index.md` - documentation landing page for browsing, AI usage,
+  authoring, evaluation and review records.
+- `docs/okf-explorer-persona-manual.md` - screenshot-led UI manual using
+  personas and user stories.
+- `docs/ai-okf-usage.md` - prompts and pack access rules for using an AI to
+  answer questions from OKF bundles.
+- `docs/okf-bundle-authoring.md` - bundle-authoring guide for Explorer-ready
+  facets, search, graph, timeline, resources and provenance.
+- `docs/demo-script-2026-07-09.md` - 20 minute demonstration script.
 - `docs/use-okf-explorer.md` - novice-friendly manual for generating,
   publishing, and browsing OKF bundles with the hosted Svelte Explorer.
 - `docs/okf-explorer-evaluation.md` - 100-question browser evaluation harness
@@ -186,4 +198,7 @@ Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
 [uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
-[manual]: docs/use-okf-explorer.md
+[docs-index]: docs/index.md
+[persona-manual]: docs/okf-explorer-persona-manual.md
+[ai-okf-usage]: docs/ai-okf-usage.md
+[bundle-authoring]: docs/okf-bundle-authoring.md

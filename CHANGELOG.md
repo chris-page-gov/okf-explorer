@@ -8,6 +8,24 @@ source-of-truth changes.
 
 ### Added
 
+- Added `docs/index.md` as the documentation landing page for repository
+  navigation, Explorer use, AI usage, bundle authoring, evaluation and dated
+  review records.
+- Added `docs/repository-guide.md` so contributors can find the publication
+  pipeline, stable public URLs, validation commands and source-of-truth
+  boundaries.
+- Added `docs/ai-okf-usage.md` with prompts and access rules for pointing an AI
+  at small OKF bundles or large-corpus descriptors without losing provenance.
+- Added `docs/okf-bundle-authoring.md` with the minimum record contract,
+  Explorer feature contract, facet/relationship guidance, metadata-repair
+  rules and acceptance checklist for new OKF bundles.
+- Added `docs/okf-explorer-persona-manual.md`, a screenshot-led manual that
+  documents Explorer UI behaviour through personas and user stories.
+- Added `docs/demo-script-2026-07-09.md`, a 20 minute demonstration script for
+  the UK Government APIs OKF exemplar and Explorer workflow.
+- Added current Explorer screenshots under `docs/assets/okf-explorer-manual/`
+  covering overview, Provider facet, search, record card, graph, timeline,
+  type, resources and Rugby search states.
 - Added `scripts/check_documentation_lockstep.py` and wired it into
   `okf-explorer-ci` so human PRs that change publication-critical source,
   generated corpus, tests, workflows, or Explorer source must also update
@@ -27,6 +45,10 @@ source-of-truth changes.
 
 ### Changed
 
+- Marked the 2026-07-07 code review as a historical record superseded by the
+  2026-07-08 follow-up and later `main` merges.
+- Updated the 2026-07-08 code-review follow-up with a current-state checkpoint
+  and final status table after remediation and later Explorer fixes were merged.
 - The UK Government APIs OKF builder now canonicalises OGL licence variants to
   `open-government-licence-v3` and records explicit licence basis/confidence on
   each API/data record.

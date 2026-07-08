@@ -2,6 +2,13 @@
 
 **Date:** 2026-07-07 · **Scope:** full repository, with deep dives on the OKF Explorer implementations, the Python build/validation tooling, and the UK Government APIs OKF exemplar assessed against its aims (`sources/UK-Government-API-OKF.md`) and the [OKF v0.1 spec](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md).
 
+> **Current status:** this report is preserved as the original review record.
+> Its findings and completion plan have been superseded by
+> [code-review-2026-07-08.md](code-review-2026-07-08.md) and later merged
+> work on `main`. Do not use the quantified gaps in this file as the current
+> state of the UK Government APIs OKF pack without rechecking the generated
+> descriptor and `docs/code-review-2026-07-08.md`.
+
 **Method:** three parallel review agents — a Sonnet agent on `scripts/` + `tests/` + CI, a Sonnet agent on `apps/okf-explorer/` + `explorer/` + `viewer.html`, and a Fable agent measuring `uk-government-apis/` against the aims document (computing coverage statistics from the actual data rather than sampling). Findings were then verified by the orchestrator and safe fixes applied directly. All quantitative claims below were re-verified against the repository.
 
 ## Summary

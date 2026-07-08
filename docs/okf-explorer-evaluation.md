@@ -12,6 +12,12 @@ The suite evaluates three publication goals:
 - Are terms such as confidence, licence basis, API evidence and metadata quality
   defined in the UI instead of being unexplained percentages?
 
+The rubric is aligned with GOV.UK service-quality guidance: user needs, simple
+task completion, accessibility, open standards, security/privacy, measurable
+performance and reliable operation. Accessibility expectations use WCAG 2.2 AA
+as the public-service baseline and combine automated checks with manual visual
+review.
+
 ## Assets
 
 - `evaluation/okf-explorer/questions.json` contains 100 UK Government API

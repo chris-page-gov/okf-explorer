@@ -9,12 +9,21 @@
 
 The important correction is that the fix session was not complete from a publication perspective. The code had been fixed locally, but the generated `uk-government-apis/` corpus had not been regenerated with the fixed generator. Therefore the repository still contained the credential-bearing URLs in the committed generated data, and the public Pages deployment from `origin/main` was still stale. Completion had to be treated as a gated publication task, not a documentation cleanup.
 
+> **Current status after merge:** this follow-up is now a historical completion
+> report plus current-state checkpoint. The completion branch was merged, and
+> later Explorer work on `main` added facet/search/graph/timeline improvements
+> and throttled large-corpus shard hydration to reduce transient GitHub Pages
+> 503s. Current local `main` is synced to `origin/main` at `ae7879bd`
+> (`Throttle large-corpus shard hydration`).
+
 Review-time local state:
 
-- Local `main` is **12 commits ahead of `origin/main`**.
-- The 12 commits include the fixes and the 2026-07-07 report.
-- Working tree is otherwise clean except pre-existing untracked files: `CLAUDE.md` and two `okf-ckan-*.png` screenshots.
-- Ignored `.DS_Store` files are present and currently block `python3 scripts/build_site.py` locally.
+- At the start of this follow-up, local `main` was **12 commits ahead of
+  `origin/main`** and the generated corpus had not yet been republished.
+- That review-time state is no longer current. The remediation and subsequent
+  Explorer fixes are now merged to `main`.
+- The current repository should be checked with `git status --short --branch`
+  before acting on any dated branch-status statement below.
 
 Implementation update:
 
@@ -213,7 +222,32 @@ Current branch status after this implementation pass:
 | Zero persisted credential-bearing URL query parameters | Done |
 | Live warnings counters record redactions/drops | Done |
 | Full local gate in Phase 3 passes | Done |
-| PR CI gate passes | Pending PR |
-| PR is merged | Pending PR |
-| GitHub Pages deploys merged commit | Pending merge |
-| Published descriptor is reachable at stable URL | Pending Pages deployment |
+| PR CI gate passes | Done |
+| PR is merged | Done |
+| GitHub Pages deploys merged commit | Done for the remediation merge; later Pages state should be rechecked after each merge |
+| Published descriptor is reachable at stable URL | Done at review close; recheck with the stable descriptor URL before demos |
+
+## Current Pack Checkpoint
+
+Current generated descriptor state on `main` after the follow-up and later UI
+work:
+
+- 257 API products, including 244 GOV.UK-declared products and 13
+  provider-native API products.
+- 34,327 data access endpoints and 7,827 data products.
+- 2,994 contracts/capability documents, 38 operations and 93 schemas.
+- 274 providers/publishers and 302,683 relationships.
+- 3,383 selected `api-records/*.md` files, 274 `organisations/*.md` files,
+  plus `uk-government-apis/index.md` and `uk-government-apis/log.md`.
+- All scanned relationships carry `confidence`, `evidence_type` and
+  `observed_at` provenance fields.
+- Generated warnings record 102 credential-parameter redactions, 5,892
+  duplicate endpoints skipped, 5 duplicate slugs dropped, 25,397 licences
+  inferred from provider terms, 12,289 missing licences, 202 unknown access
+  models and 17 missing contracts.
+- A repository scan for persisted URL query parameters named `password`,
+  `login`, `token`, `access_token`, `api_key`, `apikey`, `client_secret`,
+  `secret`, `sig` or `signature` returns zero matches.
+
+The 2026-07-07 report should therefore be read as the original problem record,
+not as the current state of the exemplar.

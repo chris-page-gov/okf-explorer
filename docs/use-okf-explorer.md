@@ -3,6 +3,12 @@
 This manual shows the fastest path from a folder of Markdown notes to a public
 OKF bundle that can be opened in the hosted Svelte OKF Explorer.
 
+For the current role-based documentation set, start with
+[docs/index.md](index.md). For UI behaviour with screenshots, use the
+[illustrated persona manual](okf-explorer-persona-manual.md). For AI prompting,
+use [ai-okf-usage.md](ai-okf-usage.md). For bundle authoring, use
+[okf-bundle-authoring.md](okf-bundle-authoring.md).
+
 ## Try The Large CKAN Example
 
 Open this URL first:
