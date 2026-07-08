@@ -30,26 +30,26 @@ Severity: 🔴 Critical · 🟠 High · 🟡 Medium · ⚪ Low. Status **Fixed**
 | E4 | 🟠 | `+page.svelte` (Context panel) | `acronym_expansions[].source_url` and `context_links[].url` were the only 2 of ~9 anchor sites not gated by `isUrl()` — clickable `javascript:` links from bundle data. | **Fixed** — both wrapped with `isUrl()`, falling back to text. |
 | E5 | 🟠 | `+page.svelte` (`loadSource`) | No request-id guard (unlike search): rapidly loading bundle A then B raced two async pipelines; the loser could overwrite the winner's state. Load buttons not disabled while loading. | **Fixed** — monotonic `loadRequest` counter with stale-checks after every await and a guarded `finally`. |
 | E6 | 🟡 | `+page.svelte` | `largeSearchClient.init()` sat inside the corpus try/catch — a 404 on the search shard discarded an otherwise fully-loaded corpus. | **Fixed** — search init isolated; failure degrades to "search unavailable" (console warning), corpus kept. |
-| E7 | 🟡 | `fetch.ts`, worker, `explorer/app.js` | `?bundle=` accepted any scheme/host (browser-mediated SSRF/intranet probing); no fetch timeouts or size caps — a hanging or multi-GB attacker response stalled the UI or crashed the tab. | **Fixed** (partially) — bundle URLs now require https or same-origin in both apps; 20–30s `AbortSignal.timeout` on all three JSON fetch helpers. Response-size caps remain **Open**. |
-| E8 | 🟡 | `+page.svelte`, `explorer/app.js` | Unguarded `decodeURIComponent(location.hash…)` — a shared link ending `#%` threw `URIError` and aborted routing handlers. | **Fixed** — `safeDecodeHash()` in Svelte app (3 sites). Static app's `idFromHash` remains **Open** (low risk). |
+| E7 | 🟡 | `fetch.ts`, worker, `explorer/app.js` | `?bundle=` accepted any scheme/host (browser-mediated SSRF/intranet probing); no fetch timeouts or size caps — a hanging or multi-GB attacker response stalled the UI or crashed the tab. | **Fixed** — https/same-origin enforcement + 20–30s timeouts (review), Content-Length caps at 64 MiB in all three fetch paths (fix session, `27ae4a7`). Streamed byte-count caps remain future hardening (R9). |
+| E8 | 🟡 | `+page.svelte`, `explorer/app.js` | Unguarded `decodeURIComponent(location.hash…)` — a shared link ending `#%` threw `URIError` and aborted routing handlers. | **Fixed** — `safeDecodeHash()` in Svelte app (review); static app's `idFromHash` guarded in the fix session (`27ae4a7`). |
 | E9 | 🟡 | `registry.ts`, `explorer/app.js` | Three unguarded `localStorage.setItem` writes — quota/private-mode errors surfaced as "bundle failed to load". | **Fixed** — try/catch on all three (reads were already defensive). |
 | E10 | ⚪ | worker | A failed shard fetch left a rejected promise cached forever — search stayed broken until reload. | **Fixed** — failed fetches evicted from cache. |
-| E11 | ⚪ | `largeCorpus.ts` | "Load full relationship index" hydrates every relationship row (~2M for CKAN-scale corpora) into two full-size Maps with no cap/streaming. UI warns, but no hard limit. | **Open** |
+| E11 | ⚪ | `largeCorpus.ts` | "Load full relationship index" hydrates every relationship row (~2M for CKAN-scale corpora) into two full-size Maps with no cap/streaming. UI warns, but no hard limit. | **Fixed** (fix session, `27ae4a7`) — capped at 300,000 rows; `loadRelationships` returns `{ relationships, truncated }` and the Links view shows a truncation notice. |
 
 ### 1.2 Python tooling (`scripts/`, `tests/`, CI)
 
 | # | Sev | File | Issue | Status |
 |---|-----|------|-------|--------|
-| P1 | 🟠 | `build_uk_government_api_okf.py:18` | `from datetime import UTC` requires Python ≥3.11; crashed on 3.10 (reproduced — also broke the test suite at import time). No Python version pinned anywhere. | **Fixed** — `timezone.utc` alias; script and tests now run on 3.10 (verified: 4/4 tests pass). CI version pinning **Open**. |
-| P2 | 🟠 | CI workflows | `build_uk_government_api_okf.py` is never invoked by CI — not even `--check` with fixtures. The ~236 committed data files can drift indefinitely with no signal. | **Open** (plan §4, P1) |
+| P1 | 🟠 | `build_uk_government_api_okf.py:18` | `from datetime import UTC` requires Python ≥3.11; crashed on 3.10 (reproduced — also broke the test suite at import time). No Python version pinned anywhere. | **Fixed** — `timezone.utc` alias (review); `actions/setup-python` pinned to 3.12 in both workflows (fix session, `f3faf49`). |
+| P2 | 🟠 | CI workflows | `build_uk_government_api_okf.py` is never invoked by CI — not even `--check` with fixtures. The ~236 committed data files can drift indefinitely with no signal. | **Fixed** (fix session, `f3faf49`) — CI runs the generator end to end against the committed fixtures (catalogue CSV, CKAN, OS, ONS) into a temp directory. |
 | P3 | 🟡 | `plain_text()` | Tag-stripping ran **before** `html.unescape()`, so entity-encoded markup (`&lt;img onerror=…&gt;`) was resurrected into literal HTML in generated JSON; `title` had no sanitization at all; literal `\n` text sequences from the upstream CSV survived into shipped notes. | **Fixed** — unescape-then-strip, titles routed through `plain_text(…, 300)`, literal `\n`/`\r\n` normalised, whitespace collapsed. Takes effect on next regeneration. |
 | P4 | 🟡 | network layer | Zero retry/error handling on 3 of 4 remote sources — one transient timeout aborted the whole multi-source build. | **Fixed** — `request_bytes()` now retries transient failures (429/5xx/URLError/timeout) ×3 with exponential backoff; non-transient HTTP errors still raise immediately. |
 | P5 | 🟡 | `rows_from_csv()` | Ragged CSV rows (extra cells → list under `None` key) crashed the harvest with `AttributeError`. | **Fixed** — non-string keys/cells filtered. |
 | P6 | 🟡 | `load_ckan_packages()` | No `sort` parameter — CKAN relevance ordering isn't byte-stable across runs, undermining `--check` determinism. | **Fixed** — pinned `sort=name asc`. |
-| P7 | 🟡 | harvest layer | No URL-scheme validation on harvested `url`/`documentation`/`href` values before writing them into bundle JSON (a malicious data.gov.uk publisher could plant `javascript:` URLs; front-ends now guard, but the bundle itself should too). | **Open** |
-| P8 | 🟡 | `check_okf.py` / corpus | Validation never covers `uk-government-apis/`; `REQUIRED_FIELDS` promotes 3 spec-*recommended* fields to mandatory (repo policy conflated with OKF §9 conformance); root/subdirectory `index.md` files carry frontmatter the spec disallows; `log.md` lacks the mandated `## YYYY-MM-DD` headings. | **Open** — document or align. |
-| P9 | ⚪ | `add_record()` | Silent record drop on slug collision across all four sources; endpoint-URL dedup scoped to CKAN adapter only; `generated_at` is content-derived (deliberate, but misleadingly named). | **Open** |
-| P10 | ⚪ | tests | ~350 lines effectively untested: the whole I/O/CLI layer, the hand-rolled search-index builder (where P3 lived), no negative-path or injection-shaped fixtures, single-row CSV fixture. | **Open** |
+| P7 | 🟡 | harvest layer | No URL-scheme validation on harvested `url`/`documentation`/`href` values before writing them into bundle JSON (a malicious data.gov.uk publisher could plant `javascript:` URLs; front-ends now guard, but the bundle itself should too). | **Fixed** (fix session, `fe8fe2f`) — `safe_url()` applied at every adapter ingestion boundary; drops counted in the new `warnings` block. |
+| P8 | 🟡 | `check_okf.py` / corpus | Validation never covers `uk-government-apis/`; `REQUIRED_FIELDS` promotes 3 spec-*recommended* fields to mandatory (repo policy conflated with OKF §9 conformance); root/subdirectory `index.md` files carry frontmatter the spec disallows; `log.md` lacks the mandated `## YYYY-MM-DD` headings. | **Fixed** (fix session, `a5162c8`) — `log.md` conformed to §7; remaining deviations documented as intentional in `docs/okf-conformance.md`; scope comments added to both scripts. |
+| P9 | ⚪ | `add_record()` | Silent record drop on slug collision across all four sources; endpoint-URL dedup scoped to CKAN adapter only; `generated_at` is content-derived (deliberate, but misleadingly named). | **Fixed** (fix session, `fe8fe2f`) — collisions warn to stderr and are counted; dedup centralised per `(record_type, canonical_url)`. `generated_at` rename deliberately declined (breaking for consumers) and documented instead. |
+| P10 | ⚪ | tests | ~350 lines effectively untested: the whole I/O/CLI layer, the hand-rolled search-index builder (where P3 lived), no negative-path or injection-shaped fixtures, single-row CSV fixture. | **Partially fixed** (fix session) — Python suite 4→18 tests incl. injection-shaped fixtures; CI exercises `main()`/`write_files()`. Component tests for `+page.svelte`/`explorer/` still open (R8). |
 
 ### 1.3 What looks good
 
@@ -133,6 +133,8 @@ Diff footprint: 7 files, +126/−36 lines, all uncommitted for review.
 
 ## 5. Completion plan
 
+> **Superseded by §7.3 (2026-07-08).** P0, P1 and most of P2/P3 below were completed in the fix session; this section is preserved as the original review-time plan. For the current state and the exact remaining work, read §7.3.
+
 **P0 — before next publish (hours):**
 Implement a secrets-redaction pass in the generator (strip/flag `password=`, `token=`, `login=`, `key=` query params; record each redaction as evidence and count them in a new `warnings` block), then regenerate `uk-government-apis/` once to pick up redaction + the P3/P6 generator fixes together. Add harvest-time URL-scheme validation (P7) in the same regeneration.
 
@@ -149,19 +151,67 @@ Implement the `contract_discovery` adapter (fetch OGC GetCapabilities / ArcGIS J
 
 Untracked in the working tree (pre-existing, left alone): `CLAUDE.md`, two `okf-ckan-*.png` screenshots, `.DS_Store`. The descriptor's `entrypoints.viewer: "../next/"` only resolves on the published site when the Svelte build has been copied to `_site/next/` — worth a README note. `generated_at` is content-derived (deliberate for determinism) and would be clearer named `content_observed_through`.
 
-## 7. Post-review fix session (2026-07-08)
+## 7. Post-review fix session (completed 2026-07-08)
 
-All findings were fixed in feature/fix commits (`25cde4b`…`67bfa61`), each crediting this review. Solutions were designed by Claude Fable 5; the two larger implementation sets were built by Claude Sonnet agents under its direction and independently re-verified before committing.
+Every finding in §1 is now fixed (P10 partially — see R8) in eleven feature/fix commits, each crediting this review. Solutions were designed by Claude Fable 5; the two larger implementation sets (`fe8fe2f`, `27ae4a7`) were built by Claude Sonnet agents under its direction and independently re-verified before committing. Commits are local and unpushed.
 
-**Fixed since the review was written:** E7 remainder (Content-Length caps, 64 MiB, in all three fetch paths; size errors never retried), E8 remainder (static-app hash decode guard), E11 (relationship hydration capped at 300,000 rows with a truncation notice), P2 (CI now runs the generator end to end against fixtures; Python pinned to 3.12 in both workflows), P7 (`safe_url()` scheme validation at every adapter ingestion boundary), P8 (`log.md` restructured to OKF §7 date headings; deviations documented in `docs/okf-conformance.md`; bundle and viewer resynced), P9 (slug-collision stderr warnings + counter; endpoint dedup centralised per record type; `generated_at` rename deliberately declined and documented instead), and the two aims items that were tractable offline: credential redaction (`redact_url()` strips password/token/login/key-class query parameters before record identity is assigned, with `warnings` counters in the overview/analysis payloads) and edge-level provenance (every relationship now carries `evidence_type`/`confidence`/`observed_at`). P10 is partially closed: the Python suite grew from 4 to 18 tests including injection-shaped fixtures, and CI covers the generator's CLI/IO path.
+### 7.1 Commit record
 
-**Verification at close:** pytest 18/18 (Python 3.10), vitest 32/32, svelte-check 0 errors/0 warnings, production build passing, `check_okf`/bundle/viewer `--check` all green, workflow YAML validated, and a fixture-based end-to-end generation confirmed zero `password=` occurrences in output with correct warning counters.
+| Commit | Type | Change | Findings closed |
+|--------|------|--------|-----------------|
+| `25cde4b` | fix | Legacy viewer: quote-escaping `esc()`, scheme-gated resource links | E1 |
+| `1765fc4` | fix | Static explorer: scheme guards, bundle-URL validation, fetch timeout, storage guards | E2, E3, E7 (part), E9 |
+| `2ac62b4` | fix | Svelte explorer: href guards, load race, search-init isolation, https-only, timeouts, hash decoding | E4, E5, E6, E7 (part), E8 (part), E9, E10 |
+| `63f7f94` | fix | Generator: Py3.10 compat, network retries, ragged CSV, deterministic sort, text sanitisation | P1 (part), P3, P4, P5, P6 |
+| `f26fa6d` | docs | This review report | — |
+| `fe8fe2f` | feat | `redact_url()`/`safe_url()` at all adapter boundaries, warnings block, collision logging, per-type dedup; 13 new tests | P7, P9, no-secrets aim (generator side) |
+| `27ae4a7` | fix | Content-Length caps (64 MiB) ×3, relationship cap (300k, truncation UI), static-app hash guard; tests → 32 | E7, E8, E11 |
+| `f3faf49` | ci | Fixture-based end-to-end generator run; Python 3.12 pinned in both workflows | P1, P2 |
+| `a5162c8` | docs | `log.md` → OKF §7 date headings; `docs/okf-conformance.md`; bundle+viewer resynced | P8 |
+| `67bfa61` | feat | Edge provenance: `evidence_type`/`confidence`/`observed_at` on every relationship | edge-provenance aim (generator side) |
+| `ab36211` | docs | Fix-session record in this report | — |
 
-**Still outstanding (revised plan):**
+### 7.2 Verification at close
 
-1. **Regenerate `uk-government-apis/`** on a network-connected machine (`python3 scripts/build_uk_government_api_okf.py`) — this alone applies the credential redaction, URL validation, sanitised titles/notes, deterministic CKAN ordering, warnings block, and edge provenance to the published corpus. The committed data still carries the ~106 inherited credential parameters until this runs. Highest priority.
-2. Emit the Markdown OKF bundle the `concept_id`s promise (P2 in §5) — makes the exemplar spec-conformant.
-3. Crosslink the 244 declared API products to CKAN/OS/ONS records by endpoint host + publisher.
-4. Contract-discovery adapter and `provider_portal_allowlist` tier (network-dependent).
-5. Organisation reconciliation against the GOV.UK register; quality-band/data-classification facets; representable `assured` status.
-6. Component-test harness for `+page.svelte` and the static `explorer/` app (the remaining P10 gap); streamed/byte-counted response caps beyond the Content-Length check.
+pytest **18/18** (Python 3.10; was 4 crashing at import), vitest **32/32**, svelte-check **0 errors / 0 warnings**, production `vite build` passing, `node --check` clean on both static apps, `check_okf` + bundle + viewer `--check` all green, workflow YAML validated, worktree clean. A fixture-based end-to-end generation produced zero `password=` occurrences with correct warning counters (`credential_parameters_redacted: 3`, `unsafe_urls_dropped: 1`, `duplicate_endpoints_skipped: 1` on the test fixtures).
+
+Housekeeping from the sandboxed session: empty `*.stale*`/`tmp_obj_*`/`probe*` files were left under `.git/` (the sandbox cannot delete files). Clean with:
+`find .git \( -name "*.stale*" -o -name "tmp_obj_*" -o -name "probe*" \) -delete`
+
+### 7.3 Exactly what remains
+
+Generator-side fixes (redaction, URL validation, sanitised text, edge provenance, warnings) only reach the *published* corpus when it is regenerated — R1 is therefore the gate for everything data-facing.
+
+**R1 — Regenerate and republish `uk-government-apis/`.** Run `python3 scripts/build_uk_government_api_okf.py` on a network-connected machine (live harvest: GOV.UK catalogue, ~35 paginated CKAN calls, OS crawl, ONS; expect minutes), review the diff, commit, push. Until this runs, the committed corpus still contains the ~106 inherited credential parameters, unsanitised titles/notes, and provenance-less edges. Effort: minutes of runtime + diff review. No code changes needed.
+
+**R2 — Emit the Markdown OKF bundle** (§2.3's definitional gap). Generator feature writing the files every record's `concept_id` already references: `api-records/<slug>.md` with frontmatter (`type`, `title`, `description`, `resource`, `tags`, `timestamp` from record JSON), `organisations/<slug>.md`, plus `index.md`/`log.md`. Design decision required first: emit for all 42,543 records (repo-size cost) or for API Products/Providers/Operations/Schemas only (~700 files) with endpoint `concept_id`s adjusted accordingly — recommended. Offline-testable with fixtures. Effort: ~1–2 days. Makes the exemplar OKF v0.1 §9-conformant.
+
+**R3 — Crosslink the 244 declared API products** (currently graph-isolated). Match catalogue products to CKAN data products/endpoints and OS/ONS records by endpoint host + publisher slug; emit `exposes_data_product`/`supports_service` edges with the now-standard edge provenance. Offline-testable. Effort: ~0.5–1 day. Depends on R1 to reach published data.
+
+**R4 — Contract discovery** (`contracts: 0` today). New `contract_discovery` adapter fetching OGC GetCapabilities, ArcGIS service JSON, SPARQL service descriptions and the 6 indicated OpenAPI URLs; emit Contract records + `described_by` edges; then parse contracts into API Version/Operation records (`has_version`/`has_operation`). Network-dependent. Effort: days. The `provider_portal_allowlist` tier (developer-portal auth harvesting, raising access-model coverage above 29%) belongs to the same phase.
+
+**R5 — Organisation reconciliation.** Normalise the 274 provider slugs against the GOV.UK organisations register (canonical IDs), merging duplicates (e.g. the two hydrographic-office slugs; defunct DCLG → MHCLG). Offline-testable with a cached register snapshot. Effort: ~0.5 day.
+
+**R6 — Missing facets and statuses.** Add a quality-band facet (bucket the existing `quality.overall`), plus data-classification, environment and relationship-density facets; make the `assured` status representable in the confidence vocabulary so all three of observed/declared/assured can be filtered. Offline, mostly additive to the analysis builder. Effort: ~0.5 day.
+
+**R7 — Samples and credential requirements** (MVP 11–12). Emit static `sample_policy` placeholders per operation and a `credential_requirements` structure (references only — never secret values), completing the two unfinished MVP steps. Offline. Effort: ~0.5–1 day; grows once R4 produces real operations.
+
+**R8 — Front-end component tests** (remaining P10 gap). Add `@testing-library/svelte` coverage for `+page.svelte` href rendering and the bundle-switch race, and a test harness for the vanilla `explorer/` app (no runner today). Wire both into `okf-explorer-ci.yml`. Offline. Effort: ~1 day.
+
+**R9 — Streamed response-size caps** (E7 hardening beyond Content-Length). The 64 MiB cap trusts the `Content-Length` header; a chunked response without one is unbounded. Add a byte-counting reader that aborts mid-stream past the cap. Offline. Effort: ~0.5 day. Low priority.
+
+#### Suggested order
+
+R1 first (unblocks all data-facing work and clears the committed secrets), then R2 and R3 for the biggest knowledge-value gains, then R4 (the largest, network-dependent effort), with R5–R9 fitting alongside as independent, mostly-offline improvements.
+
+| Item | Effort | Network needed | Blocks / depends on |
+|------|--------|----------------|---------------------|
+| R1 Regenerate corpus | Minutes + review | Yes | Gates R3; publishes all generator fixes |
+| R2 Markdown OKF bundle | 1–2 days | No | Makes exemplar spec-conformant |
+| R3 Crosslink declared products | 0.5–1 day | No (test), R1 (publish) | — |
+| R4 Contract discovery + operations | Days | Yes | Feeds R7 |
+| R5 Org reconciliation | 0.5 day | Cached snapshot | — |
+| R6 Facets + `assured` status | 0.5 day | No | — |
+| R7 Samples + credential reqs | 0.5–1 day | No | Richer after R4 |
+| R8 Front-end component tests | 1 day | No | — |
+| R9 Streamed size caps | 0.5 day | No | — |
