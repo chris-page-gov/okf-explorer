@@ -18,6 +18,12 @@ source-of-truth changes.
 - Added graph-overlap screenshot evidence so relationship-label layering,
   overlapping white boxes, and arrow-to-icon placement remain testable review
   concerns.
+- Added a separate 100-question GOV.UK CKAN evaluation suite with the same
+  additive rubric and pack-aware `target_bundle` support in the harness.
+- Added `docs/okf-pack-parity.md` to define parity expectations between the UK
+  Government APIs OKF exemplar and the GOV.UK CKAN large-corpus pack.
+- Added OS Data Hub visual-regression evidence for search-context loss,
+  unreadable dense graph clusters and misleading record-type breakdowns.
 
 ### Changed
 
@@ -39,13 +45,55 @@ source-of-truth changes.
 - Dense graph relationship rows are stacked into count-bearing graph nodes and
   the relationship list is shown as a drawer-style panel with its own scroll
   area.
+- Dense large-corpus graphs now group API/data records by record type, expose a
+  visible "Grouped by record type" caption, and expand one record-type stack at
+  a time.
+- Dense graph stacks now count the full matching reduction while expanded
+  stacks show a bounded sample with the sample size stated in the caption.
+- Opened graph stacks with many records now sub-group by an available semantic
+  facet such as format, topic, licence, access model, contract status, source
+  adapter or update year, so dense OS/Data Hub clusters no longer expand into a
+  single unreadable fan-in.
+- Large-corpus facets now hide duplicate `canonical_publisher` navigation when
+  `publisher` is available, expose an in-facet search box, and reveal values in
+  pages instead of capping the list at 18.
+- Large-corpus facets now render only the active facet body, keep the facet open
+  after a value is selected, and normalise hyphen/underscore text consistently
+  between the facet search query and the searched values.
+- Facet value clicks now behave as single-select by default; Ctrl-click,
+  Cmd-click or Shift-click adds/removes values for multi-select filtering.
+- Graph node glyphs now distinguish providers, formats, topics, licences, tags
+  and hosts/resource types with different compact SVG icons while preserving
+  selected and stacked states.
+- Graph legends now show the same shape vocabulary used in the graph, including
+  opened stack groups.
+- Double-clicking graph metadata nodes such as provider, host, format, topic,
+  tag or licence now applies the corresponding facet reduction when available,
+  so left-panel counts and graph context stay aligned.
+- The graph view now separates inspection from graph navigation: single-clicking
+  a graph node updates the data card, while double-clicking a navigable node
+  recentres/reduces the graph context.
 - Large-corpus search now exposes an explicit clear button and clears stale
   selected-record context as soon as a materially different query is typed.
+- Bundle URL suggestions now close when focus or pointer interaction moves
+  outside the URL control.
 - Info bubbles for created, modified and timeline dates now use distinct scoped
   help keys so only the requested explanation opens.
+- Large graph arrows now use source and target node shape padding so arrowheads
+  terminate at the visual edge of stack/card/circle nodes.
+- The graph relationship list now has a centre drag handle for resizing its
+  drawer height.
+- The large-corpus timeline now defaults to newest dated records first and can
+  be viewed as latest records, years, quarters or months; clicking grouped time
+  buckets applies the matching date facet.
+- Large-corpus in-app Back/Forward now preserves the inspected data card state
+  when returning from graph metadata inspection.
 
 ### Fixed
 
+- Fixed the two open PR review issues: closed facet bodies no longer trigger
+  repeated full-corpus facet scans, and facet search tokens are normalised with
+  the same hyphen/underscore handling as facet values.
 - Reduced the misleading `not-specified` licence gap for ONS CKAN-derived data
   products, data access endpoints, generated contract records, and OS
   provider-native API records.
@@ -68,4 +116,9 @@ source-of-truth changes.
 - `python3 scripts/build_uk_government_api_okf.py --check`
 - `python3 scripts/build_site.py`
 - `node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100`
+- `node scripts/evaluate_okf_explorer.mjs --no-browser --suite evaluation/gov-ckan/questions.json`
+- `node scripts/evaluate_okf_explorer.mjs --no-browser --suite evaluation/okf-explorer/questions.json`
+- Targeted Playwright smoke against `http://127.0.0.1:8002/_site/next/`
+  covering facet search/open state, graph legend/drawer, bundle suggestion
+  dismissal, and timeline latest/quarter ordering.
 - `git diff --check`

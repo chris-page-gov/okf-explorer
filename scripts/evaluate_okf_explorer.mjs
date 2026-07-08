@@ -25,15 +25,27 @@ function parseArgs(argv) {
     bundle: DEFAULT_BUNDLE,
     limit: 100,
     noBrowser: false,
-    headed: false
+    headed: false,
+    bundleExplicit: false,
+    outExplicit: false,
+    visualExplicit: false
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--suite') options.suite = argv[++index];
-    else if (arg === '--visual') options.visual = argv[++index];
-    else if (arg === '--out') options.out = argv[++index];
+    else if (arg === '--visual') {
+      options.visual = argv[++index];
+      options.visualExplicit = true;
+    }
+    else if (arg === '--out') {
+      options.out = argv[++index];
+      options.outExplicit = true;
+    }
     else if (arg === '--base-url') options.baseUrl = argv[++index];
-    else if (arg === '--bundle') options.bundle = argv[++index];
+    else if (arg === '--bundle') {
+      options.bundle = argv[++index];
+      options.bundleExplicit = true;
+    }
     else if (arg === '--limit') options.limit = Number(argv[++index]);
     else if (arg === '--no-browser') options.noBrowser = true;
     else if (arg === '--headed') options.headed = true;
@@ -307,9 +319,37 @@ async function runBrowserEvaluation(options, suite) {
   return records;
 }
 
+function buildValidationOnlyRecords(options, suite) {
+  return suite.questions.slice(0, options.limit).map((question) => ({
+    id: question.id,
+    query: question.query,
+    intent: question.intent,
+    tags: question.tags || [],
+    score: {
+      retrieval: null,
+      display: null,
+      accessibility: null,
+      govuk: null,
+      total: null,
+      scored: false,
+      checks: {
+        validation_only: true,
+        expected_terms: question.expected_terms,
+        expected_min_results: question.expected_min_results ?? 1
+      }
+    },
+    elapsed_ms: 0,
+    evidence: {
+      validation_only: true,
+      expected_terms: question.expected_terms
+    }
+  }));
+}
+
 function summarise(records) {
   const summary = {
     questions_run: records.length,
+    questions_scored: 0,
     average_total: 0,
     average_retrieval: 0,
     average_display: 0,
@@ -320,6 +360,8 @@ function summarise(records) {
   };
   if (!records.length) return summary;
   for (const record of records) {
+    if (!Number.isFinite(record.score.total)) continue;
+    summary.questions_scored += 1;
     summary.average_total += record.score.total;
     summary.average_retrieval += record.score.retrieval;
     summary.average_display += record.score.display;
@@ -328,8 +370,16 @@ function summarise(records) {
     if (record.score.total >= 80) summary.pass_count_80 += 1;
     if (record.score.total < 60) summary.fail_count_below_60 += 1;
   }
+  if (!summary.questions_scored) {
+    summary.average_total = null;
+    summary.average_retrieval = null;
+    summary.average_display = null;
+    summary.average_accessibility = null;
+    summary.average_govuk = null;
+    return summary;
+  }
   for (const key of ['average_total', 'average_retrieval', 'average_display', 'average_accessibility', 'average_govuk']) {
-    summary[key] = Number((summary[key] / records.length).toFixed(1));
+    summary[key] = Number((summary[key] / summary.questions_scored).toFixed(1));
   }
   return summary;
 }
@@ -364,11 +414,12 @@ function renderMarkdown(payload, suite) {
   lines.push('## Summary');
   lines.push('');
   lines.push(`- Questions run: ${payload.summary.questions_run}`);
-  lines.push(`- Average total: ${payload.summary.average_total}/100`);
-  lines.push(`- Retrieval: ${payload.summary.average_retrieval}/35`);
-  lines.push(`- Display: ${payload.summary.average_display}/25`);
-  lines.push(`- Accessibility: ${payload.summary.average_accessibility}/20`);
-  lines.push(`- GOV.UK-aligned publication quality: ${payload.summary.average_govuk}/20`);
+  lines.push(`- Questions scored: ${payload.summary.questions_scored}`);
+  lines.push(`- Average total: ${formatScore(payload.summary.average_total, 100)}`);
+  lines.push(`- Retrieval: ${formatScore(payload.summary.average_retrieval, 35)}`);
+  lines.push(`- Display: ${formatScore(payload.summary.average_display, 25)}`);
+  lines.push(`- Accessibility: ${formatScore(payload.summary.average_accessibility, 20)}`);
+  lines.push(`- GOV.UK-aligned publication quality: ${formatScore(payload.summary.average_govuk, 20)}`);
   lines.push(`- Questions at or above 80: ${payload.summary.pass_count_80}`);
   lines.push(`- Questions below 60: ${payload.summary.fail_count_below_60}`);
   lines.push('');
@@ -396,11 +447,17 @@ function renderMarkdown(payload, suite) {
   lines.push('| ID | Score | Retrieval | Display | Accessibility | GOV.UK | Query | Evidence |');
   lines.push('| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |');
   for (const record of payload.records) {
-    const evidence = record.evidence.error || `${record.evidence.result_count} results; ${record.evidence.detail_title || 'no detail title'}`;
-    lines.push(`| ${record.id} | ${record.score.total} | ${record.score.retrieval} | ${record.score.display} | ${record.score.accessibility} | ${record.score.govuk} | ${escapePipe(record.query)} | ${escapePipe(evidence)} |`);
+    const evidence = record.evidence.validation_only
+      ? `validation-only; expected terms: ${(record.evidence.expected_terms || []).join(', ')}`
+      : record.evidence.error || `${record.evidence.result_count} results; ${record.evidence.detail_title || 'no detail title'}`;
+    lines.push(`| ${record.id} | ${formatScore(record.score.total, 100)} | ${formatScore(record.score.retrieval, 35)} | ${formatScore(record.score.display, 25)} | ${formatScore(record.score.accessibility, 20)} | ${formatScore(record.score.govuk, 20)} | ${escapePipe(record.query)} | ${escapePipe(evidence)} |`);
   }
   lines.push('');
   return `${lines.join('\n')}\n`;
+}
+
+function formatScore(value, max) {
+  return Number.isFinite(value) ? `${value}/${max}` : 'not scored';
 }
 
 function escapePipe(value) {
@@ -410,15 +467,25 @@ function escapePipe(value) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const suite = readJson(options.suite);
+  if (!options.bundleExplicit && typeof suite.target_bundle === 'string' && suite.target_bundle.trim()) {
+    options.bundle = suite.target_bundle.trim();
+  }
+  if (!options.outExplicit && options.suite !== resolveRepoPath(DEFAULT_SUITE)) {
+    options.out = path.join(path.dirname(options.suite), 'results', 'latest');
+  }
+  if (!options.visualExplicit && options.suite !== resolveRepoPath(DEFAULT_SUITE)) {
+    options.visual = path.join(path.dirname(options.suite), 'visual-regressions.json');
+  }
   const visuals = readJson(options.visual);
   validateSuite(suite);
   validateVisuals(visuals, options.visual);
   const metadata = {
     browser: options.noBrowser ? 'not-run' : 'playwright',
+    mode: options.noBrowser ? 'validation-only' : 'browser-scored',
     limit: options.limit
   };
   const records = options.noBrowser
-    ? []
+    ? buildValidationOnlyRecords(options, suite)
     : await runBrowserEvaluation(options, suite);
   const { summary, files } = writeReports(options, suite, visuals, records, metadata);
   console.log(JSON.stringify(summary, null, 2));

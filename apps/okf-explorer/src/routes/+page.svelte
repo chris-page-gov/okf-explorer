@@ -61,6 +61,8 @@
   const LARGE_FACET_KEYS = ['publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
+  const FACET_PAGE_SIZE = 30;
+  const GRAPH_EXPANDED_GROUP_LIMIT = 72;
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
@@ -136,6 +138,19 @@
     count?: number;
   };
 
+  type LargeGraphGrouping = {
+    dimension: string;
+    label: string;
+    expandedLabel?: string;
+  };
+
+  type LargeGraphModel = {
+    center: string;
+    nodes: LargeGraphNode[];
+    relationships: LargeGraphEdge[];
+    grouping?: LargeGraphGrouping;
+  };
+
   type GraphPoint = { x: number; y: number };
   type GraphBox = { x: number; y: number; w: number; h: number };
   type GraphLabel = {
@@ -147,6 +162,15 @@
     stable: boolean;
   };
   type GraphViewport = { x: number; y: number; w: number; h: number; baseW: number; baseH: number };
+  type TimelineResolution = 'latest' | 'year' | 'quarter' | 'month';
+  type TimelineBucket = {
+    key: string;
+    label: string;
+    count: number;
+    facetKey?: string;
+    facetValue?: string;
+    samples: Array<{ title: string; route: string; date: string }>;
+  };
 
   let bundleUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
@@ -172,9 +196,12 @@
   let largeSelectedRoute = $state('');
   let largeInspectedRoute = $state('');
   let largeHighlightedRoute = $state('');
+  let largeGraphCenterRoute = $state('');
+  let largeForwardRoute = $state('');
   let largeHighlightedEdge = $state('');
   let largeInspectedEdge = $state<LargeGraphEdge | null>(null);
   let largeExpandedStackRoute = $state('');
+  let largeExpandedGraphGroup = $state('');
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
@@ -188,6 +215,8 @@
   let largeFacetHydratingKey = $state('');
   let largeFacetApplyingKey = $state('');
   let largeFacetApplyingValue = $state('');
+  let largeFacetSearch = $state<Record<string, string>>({});
+  let largeFacetVisibleLimits = $state<Record<string, number>>({});
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
@@ -208,6 +237,8 @@
   let spreadPins = $state(false);
   let activeHelpKey = $state('');
   let largeSearchDebounce = $state<number | null>(null);
+  let edgePanelHeight = $state(180);
+  let timelineResolution = $state<TimelineResolution>('latest');
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -258,11 +289,13 @@
   onMount(() => {
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
+    window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
     const labelTimer = window.setInterval(() => {
       if (activeView === 'graph') graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2200);
     return () => {
       window.removeEventListener('popstate', applyBrowserRoute);
+      window.removeEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
       window.clearInterval(labelTimer);
       if (largeSearchDebounce !== null) window.clearTimeout(largeSearchDebounce);
     };
@@ -301,6 +334,11 @@
 
   function toAbsoluteUrl(url: string): string {
     return new URL(url, location.href).toString();
+  }
+
+  function closeBundleSuggestionsOnPointerDown(event: PointerEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.bundle-box')) suggestionsOpen = false;
   }
 
   function buildExplorerUrl(route: string): string {
@@ -354,8 +392,11 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
+    largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     if (!route) {
       largeFacetFilters = {};
@@ -363,14 +404,16 @@
     }
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
-      activeFacetKey = '';
+      activeFacetKey = facetRoute.key;
       largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
       largeInspectedRoute = route;
       largeHighlightedRoute = route;
+      largeGraphCenterRoute = route;
       return;
     }
     largeSelectedRoute = route;
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
   }
 
   async function loadSource(url: string) {
@@ -384,9 +427,12 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedStackRoute = '';
+    largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     largeAppliedQuery = '';
     largeResults = [];
@@ -402,6 +448,10 @@
     largeFacetHydratingKey = '';
     largeFacetApplyingKey = '';
     largeFacetApplyingValue = '';
+    largeFacetSearch = {};
+    largeFacetVisibleLimits = {};
+    edgePanelHeight = 180;
+    timelineResolution = 'latest';
     largePreserveSelectionUntilSearch = false;
     activeFacetKey = '';
     largeSearchClient?.destroy();
@@ -610,8 +660,11 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
+    largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
@@ -623,6 +676,7 @@
     if (!largeRouteCanInteract(route)) return;
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -632,7 +686,16 @@
   }
 
   function recenterLargeRoute(route: string) {
-    const facetRoute = routeForAnalysisNode(route);
+    if (route.startsWith('record-type-stack/')) {
+      largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
+      largeHighlightedRoute = route;
+      largeForwardRoute = '';
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      activeView = 'graph';
+      return;
+    }
+    const facetRoute = metadataFacetForRoute(route);
     if (facetRoute) {
       applyAnalysisFacet(facetRoute.key, facetRoute.value);
       activeView = 'graph';
@@ -646,8 +709,11 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
+    largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     activeView = 'graph';
     void hydrateForView('graph');
@@ -673,10 +739,12 @@
 
   function clearInspection() {
     if (source?.kind === 'large') {
+      if (largeInspectedRoute && largeInspectedRoute !== largeSelectedRoute) largeForwardRoute = largeInspectedRoute;
       largeInspectedRoute = '';
       largeHighlightedRoute = largeSelectedRoute;
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
+      largeExpandedGraphGroup = '';
       clearLargeApiPanel();
     } else {
       inspectedId = '';
@@ -716,6 +784,7 @@
 
   function navigateBack() {
     if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
+      largeForwardRoute = largeInspectedRoute;
       clearInspection();
       return;
     }
@@ -727,6 +796,12 @@
   }
 
   function navigateForward() {
+    if (source?.kind === 'large' && largeForwardRoute) {
+      const route = largeForwardRoute;
+      largeForwardRoute = '';
+      inspectLargeRoute(route);
+      return;
+    }
     window.history.forward();
   }
 
@@ -771,7 +846,17 @@
     return `facet/${key}/${value}`;
   }
 
-  async function toggleLargeFacet(key: string, value: string) {
+  function metadataFacetForRoute(route: string): { key: string; value: string } | null {
+    const facetRoute = routeForAnalysisNode(route);
+    if (facetRoute) return facetRoute;
+    const kind = routeKind(route);
+    const value = routeValue(route);
+    if (!value) return null;
+    if (['publisher', 'format', 'topic', 'tag', 'license', 'host', 'resource_type'].includes(kind)) return { key: kind, value };
+    return null;
+  }
+
+  async function toggleLargeFacet(key: string, value: string, event?: MouseEvent) {
     if (largeFacetApplyingKey) return;
     largeFacetApplyingKey = key;
     largeFacetApplyingValue = value;
@@ -779,10 +864,16 @@
     const current = new Set(largeFacetFilters[key] || []);
     const route = facetValueRoute(key, value);
     const removing = current.has(value);
+    const additive = Boolean(event?.ctrlKey || event?.metaKey || event?.shiftKey);
     try {
       activeFacetKey = key;
-      if (removing) current.delete(value);
-      else current.add(value);
+      if (additive) {
+        if (removing) current.delete(value);
+        else current.add(value);
+      } else {
+        current.clear();
+        if (!removing) current.add(value);
+      }
       largeFacetFilters = { ...largeFacetFilters, [key]: [...current] };
       if (!current.size) {
         const { [key]: _removed, ...rest } = largeFacetFilters;
@@ -793,12 +884,15 @@
         if (largeInspectedRoute === route) {
           largeInspectedRoute = '';
           largeHighlightedRoute = '';
+          largeGraphCenterRoute = '';
         }
       } else {
         largeInspectedRoute = route;
         largeHighlightedRoute = route;
+        largeGraphCenterRoute = route;
         rightCollapsed = false;
       }
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
@@ -817,9 +911,12 @@
     if (largeInspectedRoute && routeForAnalysisNode(largeInspectedRoute)) {
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
     }
+    largeExpandedGraphGroup = '';
     reconcileLargeSelection();
     syncExplorerUrl(true);
   }
@@ -845,18 +942,19 @@
     return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
   }
 
-  function trimmedEdgePoints(source: GraphPoint, target: GraphPoint, pad = 28) {
+  function trimmedEdgePoints(source: GraphPoint, target: GraphPoint, sourcePad = 28, targetPad = sourcePad) {
     const dx = target.x - source.x;
     const dy = target.y - source.y;
     const length = Math.hypot(dx, dy) || 1;
-    const trim = Math.min(pad, length / 3);
+    const sourceTrim = Math.min(sourcePad, length / 3);
+    const targetTrim = Math.min(targetPad, length / 3);
     const ux = dx / length;
     const uy = dy / length;
     return {
-      x1: source.x + ux * trim,
-      y1: source.y + uy * trim,
-      x2: target.x - ux * trim,
-      y2: target.y - uy * trim
+      x1: source.x + ux * sourceTrim,
+      y1: source.y + uy * sourceTrim,
+      x2: target.x - ux * targetTrim,
+      y2: target.y - uy * targetTrim
     };
   }
 
@@ -905,8 +1003,11 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
+      largeExpandedGraphGroup = '';
       clearLargeApiPanel();
       largeSearching = false;
       largePreserveSelectionUntilSearch = false;
@@ -926,8 +1027,11 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
+      largeExpandedGraphGroup = '';
       clearLargeApiPanel();
     }
     largeSearching = true;
@@ -955,6 +1059,8 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -992,6 +1098,8 @@
     largeSelectedRoute = result.open || `dataset/${result.name}`;
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
+    largeGraphCenterRoute = largeSelectedRoute;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -1002,6 +1110,7 @@
 
   function largeRouteInReduction(route: string): boolean {
     if (!route) return true;
+    if (isGraphStackRoute(route)) return true;
     const kind = routeKind(route);
     const value = routeValue(route);
     if (!largeIndex) {
@@ -1025,6 +1134,7 @@
 
   function largeRouteKnown(route: string): boolean {
     if (!route || !largeIndex) return Boolean(route);
+    if (isGraphStackRoute(route)) return true;
     const kind = routeKind(route);
     const value = routeValue(route);
     if (kind === 'dataset') {
@@ -1038,6 +1148,7 @@
 
   function largeRouteCanInteract(route: string): boolean {
     if (!route) return false;
+    if (isGraphStackRoute(route)) return true;
     if (largeRouteInReduction(route)) return true;
     if (activeView !== 'graph') return false;
     return largeRouteKnown(route);
@@ -1050,6 +1161,8 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
@@ -1058,6 +1171,8 @@
     if (largeSelectedRoute && !largeRouteInReduction(largeSelectedRoute)) largeSelectedRoute = '';
     if (largeInspectedRoute && !largeRouteInReduction(largeInspectedRoute)) largeInspectedRoute = '';
     if (largeHighlightedRoute && !largeRouteInReduction(largeHighlightedRoute)) largeHighlightedRoute = '';
+    if (largeGraphCenterRoute && !largeRouteInReduction(largeGraphCenterRoute)) largeGraphCenterRoute = '';
+    if (largeForwardRoute && !largeRouteInReduction(largeForwardRoute)) largeForwardRoute = '';
     if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';
   }
 
@@ -1102,6 +1217,13 @@
     if (key === 'update_month') {
       const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
       return /^\d{4}-\d{2}/.test(stamp) ? [stamp.slice(0, 7)] : [];
+    }
+    if (key === 'update_quarter') {
+      const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
+      if (!/^\d{4}-\d{2}/.test(stamp)) return [];
+      const month = Number(stamp.slice(5, 7));
+      if (!Number.isFinite(month) || month < 1 || month > 12) return [];
+      return [`${stamp.slice(0, 4)}-Q${Math.floor((month - 1) / 3) + 1}`];
     }
     if (key === 'update_date') {
       const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
@@ -1163,8 +1285,49 @@
     }
     return [...counts.entries()]
       .map(([value, count]) => ({ value, count }))
-      .sort((left, right) => right.count - left.count || left.value.localeCompare(right.value))
-      .slice(0, 18);
+      .sort((left, right) => right.count - left.count || left.value.localeCompare(right.value));
+  }
+
+  function largeFacetQuery(key: string): string {
+    return largeFacetSearch[key] || '';
+  }
+
+  function normaliseFacetSearchText(value: string): string {
+    return value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  function setLargeFacetQuery(key: string, value: string) {
+    largeFacetSearch = { ...largeFacetSearch, [key]: value };
+    largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: FACET_PAGE_SIZE };
+  }
+
+  function largeFacetDisplayLimit(key: string): number {
+    return largeFacetVisibleLimits[key] || FACET_PAGE_SIZE;
+  }
+
+  function filteredLargeFacetRows(key: string) {
+    const query = normaliseFacetSearchText(largeFacetQuery(key));
+    const rows = largeFacetRows(key);
+    if (!query) return rows;
+    const tokens = query.split(/\s+/).filter(Boolean);
+    return rows.filter((row) => {
+      const haystack = normaliseFacetSearchText(`${facetValueDisplay(key, row.value)} ${row.value}`);
+      return tokens.every((token) => haystack.includes(token));
+    });
+  }
+
+  function visibleLargeFacetRows(key: string, rows = filteredLargeFacetRows(key)) {
+    return rows.slice(0, largeFacetDisplayLimit(key));
+  }
+
+  function showMoreLargeFacetRows(key: string) {
+    largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: largeFacetDisplayLimit(key) + FACET_PAGE_SIZE };
+  }
+
+  function facetSelectionModeHint(key: string): string {
+    const rows = largeFacetRows(key);
+    if (rows.length <= FACET_PAGE_SIZE) return 'Click a value to select it. Ctrl-click or Cmd-click adds another value.';
+    return 'Search within this facet, click a value to replace the selection, or Ctrl-click/Cmd-click to add another value.';
   }
 
   function largeAnalysis() {
@@ -1173,11 +1336,13 @@
 
   function applyAnalysisFacet(key: string, value: string, push = true) {
     const route = facetValueRoute(key, value);
-    activeFacetKey = '';
+    activeFacetKey = key;
     largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
     largeSelectedRoute = '';
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -1190,6 +1355,95 @@
     const filter = timelineBucketFacetFilter(bucket);
     if (!filter) return;
     applyAnalysisFacet(filter.key, filter.value);
+  }
+
+  function datasetTimelineStamp(dataset: LargeDataset | SearchResultDoc): string {
+    return String((dataset as LargeDataset).metadata_modified || dataset.timestamp || '').slice(0, 10);
+  }
+
+  function quarterForStamp(stamp: string): string {
+    if (!/^\d{4}-\d{2}/.test(stamp)) return '';
+    const month = Number(stamp.slice(5, 7));
+    if (!Number.isFinite(month) || month < 1 || month > 12) return '';
+    return `${stamp.slice(0, 4)}-Q${Math.floor((month - 1) / 3) + 1}`;
+  }
+
+  function timelineRowsForCurrentContext(): LargeDataset[] {
+    return largeVisibleDatasets
+      .filter((dataset) => /^\d{4}/.test(datasetTimelineStamp(dataset)))
+      .sort((left, right) => datasetTimelineStamp(right).localeCompare(datasetTimelineStamp(left)));
+  }
+
+  function latestTimelineBuckets(rows: LargeDataset[]): TimelineBucket[] {
+    return rows.slice(0, 80).map((dataset) => ({
+      key: datasetRoute(dataset),
+      label: datasetTimelineStamp(dataset),
+      count: 1,
+      samples: [{ title: dataset.title, route: datasetRoute(dataset), date: datasetTimelineStamp(dataset) }]
+    }));
+  }
+
+  function groupedTimelineBuckets(rows: LargeDataset[], resolution: Exclude<TimelineResolution, 'latest'>): TimelineBucket[] {
+    const groups = new Map<string, TimelineBucket>();
+    for (const dataset of rows) {
+      const stamp = datasetTimelineStamp(dataset);
+      const key =
+        resolution === 'year'
+          ? stamp.slice(0, 4)
+          : resolution === 'quarter'
+            ? quarterForStamp(stamp)
+            : stamp.slice(0, 7);
+      if (!key) continue;
+      const bucket = groups.get(key) || {
+        key,
+        label: key,
+        count: 0,
+        facetKey: resolution === 'year' ? 'update_year' : resolution === 'quarter' ? 'update_quarter' : 'update_month',
+        facetValue: key,
+        samples: []
+      };
+      bucket.count += 1;
+      if (bucket.samples.length < 3) bucket.samples.push({ title: dataset.title, route: datasetRoute(dataset), date: stamp });
+      groups.set(key, bucket);
+    }
+    return [...groups.values()].sort((left, right) => right.key.localeCompare(left.key));
+  }
+
+  function analysisTimelineBucketsSorted(): TimelineBucket[] {
+    return analysisTimelineBuckets()
+      .map((bucket) => ({
+        key: bucket.label,
+        label: bucket.label,
+        count: bucket.count,
+        facetKey: 'update_year',
+        facetValue: bucket.label,
+        samples: (bucket.samples || []).map((sample) => ({
+          title: sample.title,
+          route: datasetRoute(sample),
+          date: bucket.label
+        }))
+      }))
+      .sort((left, right) => right.key.localeCompare(left.key));
+  }
+
+  function currentTimelineBuckets(): TimelineBucket[] {
+    if (!largeIndex) return analysisTimelineBucketsSorted();
+    const rows = timelineRowsForCurrentContext();
+    if (timelineResolution === 'latest') return latestTimelineBuckets(rows);
+    return groupedTimelineBuckets(rows, timelineResolution);
+  }
+
+  function applyTimelineBucket(bucket: TimelineBucket) {
+    if (bucket.facetKey && bucket.facetValue) {
+      applyAnalysisFacet(bucket.facetKey, bucket.facetValue);
+      return;
+    }
+    const firstRoute = bucket.samples[0]?.route;
+    if (firstRoute) inspectLargeRoute(firstRoute);
+  }
+
+  function setTimelineResolution(value: string) {
+    if (value === 'latest' || value === 'year' || value === 'quarter' || value === 'month') timelineResolution = value;
   }
 
   function analysisFacetRows() {
@@ -1242,7 +1496,9 @@
   }
 
   function orderedLargeFacetKeys() {
-    return orderedFacetKeys(largeAnalysis(), largeFacetKeys, LARGE_FACET_KEYS, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
+    const keys = orderedFacetKeys(largeAnalysis(), largeFacetKeys, LARGE_FACET_KEYS, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
+    if (keys.includes('publisher')) return keys.filter((key) => key !== 'canonical_publisher');
+    return keys;
   }
 
   function facetSummary(key: string): string {
@@ -1322,11 +1578,18 @@
   }
 
   function facetValueDisplay(key: string, value: string): string {
+    if ((key === 'publisher' || key === 'canonical_publisher') && largeIndex?.publisherByName.get(value)?.title) {
+      return largeIndex.publisherByName.get(value)?.title || value;
+    }
     return facetValueLabel(largeAnalysis(), key, value);
   }
 
   function facetVisibleRowCount(key: string): number {
-    return largeFacetRows(key).length;
+    return visibleLargeFacetRows(key).length;
+  }
+
+  function facetFilteredRowCount(key: string): number {
+    return filteredLargeFacetRows(key).length;
   }
 
   function facetSelectedValues(key: string): string[] {
@@ -1348,7 +1611,9 @@
     if (largeFacetHydratingKey === key || (largeFullLoading && activeFacetKey === key && !largeIndex)) return 'Loading';
     if (activeFacetKey === key && largeIndex) {
       const shown = facetVisibleRowCount(key);
+      const matches = facetFilteredRowCount(key);
       const available = facetAvailableValueCount(key);
+      if (largeFacetQuery(key).trim()) return `${shown} shown / ${matches} matches`;
       if (available && shown < available) return `${shown} shown / ${available}`;
       if (shown) return `${shown} shown`;
     }
@@ -1620,6 +1885,14 @@
       .replace(/^-+|-+$/g, '') || 'item';
   }
 
+  function isGraphStackRoute(route: string): boolean {
+    return route.startsWith('record-type-stack/');
+  }
+
+  function isGraphStackNodeType(type: string): boolean {
+    return type === 'resource-stack' || type === 'relationship-stack' || type === 'record-type-stack' || type === 'facet-stack';
+  }
+
   function largeLabelForRoute(route: string): string {
     if (!route) return 'Overview';
     const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
@@ -1635,6 +1908,9 @@
       const datasetName = value.replace(/^dataset\//, '');
       const dataset = largeIndex?.datasetByName.get(datasetName);
       return `${resourceStackLabel()}: ${dataset?.title || datasetName}`;
+    }
+    if (kind === 'record-type-stack') {
+      return value.split('/').slice(1).join('/') || 'Record type group';
     }
     return value || route;
   }
@@ -1729,6 +2005,7 @@
     if (kind === 'resource_type') return `${capitalise(resourceSingular())} type`;
     if (kind === 'resource-stack') return resourceStackLabel();
     if (kind === 'relationship-stack') return 'Relationship stack';
+    if (kind === 'record-type-stack') return 'Grouped record type';
     return kind ? `${kind.slice(0, 1).toUpperCase()}${kind.slice(1).replace(/_/g, ' ')}` : 'Route';
   }
 
@@ -1780,7 +2057,24 @@
     return resolveLargeDetail(route);
   }
 
-  function largeGraphModel(): { center: string; nodes: LargeGraphNode[]; relationships: LargeGraphEdge[] } {
+  function graphRecordType(dataset: LargeDataset): string {
+    return String(dataset.record_type || dataset.type || recordSingular()).trim() || recordSingular();
+  }
+
+  function graphContextKey(center: string): string {
+    if (center) return center;
+    if (largeAppliedQuery.trim()) return `search/${largeAppliedQuery.trim()}`;
+    const filters = Object.entries(largeFacetFilters)
+      .flatMap(([key, values]) => values.map((value) => `${key}:${value}`))
+      .sort();
+    return filters.length ? `filters/${filters.join('|')}` : 'current-reduction';
+  }
+
+  function recordTypeStackRoute(context: string, recordType: string): string {
+    return `record-type-stack/${routeSlug(context)}/${routeSlug(recordType)}`;
+  }
+
+  function largeGraphModel(): LargeGraphModel {
     const analysis = largeAnalysis();
     if (largeHasAnalysisOverview('graph') && analysis?.graph_overview?.nodes?.length) {
       return {
@@ -1800,11 +2094,14 @@
       };
     }
 
-    const selectedCenter = largeSelectedRoute && largeRouteCanInteract(largeSelectedRoute) ? largeSelectedRoute : '';
+    const selectedCenter =
+      [largeGraphCenterRoute, largeSelectedRoute].find((route) => route && !isGraphStackRoute(route) && largeRouteCanInteract(route)) || '';
     const center = selectedCenter;
+    const contextKey = graphContextKey(center);
     const nodeMap = new Map<string, LargeGraphNode>();
     const edges: LargeGraphEdge[] = [];
     const edgeKeys = new Set<string>();
+    let grouping: LargeGraphGrouping | undefined;
 
     const addNode = (id: string, type = routeKind(id), label = largeLabelForRoute(id), count?: number, stackFor?: string) => {
       if (!id) return;
@@ -1817,6 +2114,149 @@
       addNode(sourceId);
       addNode(targetId);
       edges.push({ source: sourceId, target: targetId, label });
+    };
+    const addCountedEdge = (sourceId: string, targetId: string, label: string, count?: number) => {
+      const key = `${sourceId}\u0000${targetId}\u0000${label}`;
+      if (edgeKeys.has(key)) return;
+      edgeKeys.add(key);
+      addNode(sourceId);
+      addNode(targetId);
+      edges.push({ source: sourceId, target: targetId, label, count });
+    };
+    const addDatasetNode = (dataset: LargeDataset) => {
+      addNode(datasetRoute(dataset), 'dataset', dataset.title);
+    };
+    const noteRecordTypeGrouping = (expandedLabel?: string) => {
+      if (grouping && grouping.dimension !== 'record_type' && !expandedLabel) return;
+      grouping = {
+        dimension: 'record_type',
+        label: 'Grouped by record type',
+        expandedLabel: expandedLabel || grouping?.expandedLabel
+      };
+    };
+    const groupedRows = (datasets: LargeDataset[]) => {
+      const groups = new Map<string, LargeDataset[]>();
+      for (const dataset of datasets) {
+        const key = graphRecordType(dataset);
+        const rows = groups.get(key) || [];
+        rows.push(dataset);
+        groups.set(key, rows);
+      }
+      return [...groups.entries()]
+        .map(([recordType, rows]) => ({ recordType, rows }))
+        .sort((left, right) => right.rows.length - left.rows.length || left.recordType.localeCompare(right.recordType));
+    };
+    const stackSubgroupCandidates = ['format', 'topic', 'license', 'access_model', 'contract_status', 'source_adapter', 'update_year'];
+    const bestStackSubgroups = (rows: LargeDataset[]) => {
+      if (!largeIndex) return null;
+      for (const dimension of stackSubgroupCandidates) {
+        const groups = new Map<string, LargeDataset[]>();
+        for (const dataset of rows) {
+          const values = largeDatasetFacetValues(dataset, dimension);
+          const value = values[0] || 'not recorded';
+          const group = groups.get(value) || [];
+          group.push(dataset);
+          groups.set(value, group);
+        }
+        if (groups.size >= 2 && groups.size <= 10) {
+          return {
+            dimension,
+            rows: [...groups.entries()]
+              .map(([value, groupRows]) => ({ value, rows: groupRows }))
+              .sort((left, right) => right.rows.length - left.rows.length || left.value.localeCompare(right.value))
+          };
+        }
+      }
+      return null;
+    };
+    const addOpenedStackSubgroups = (rows: LargeDataset[], stackId: string, target: string, label: string, direction: 'to-target' | 'from-target') => {
+      const subgroup = bestStackSubgroups(rows);
+      if (!subgroup || rows.length <= 18) return false;
+      grouping = {
+        dimension: subgroup.dimension,
+        label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
+        expandedLabel: `${largeLabelForRoute(stackId)} opened`
+      };
+      for (const group of subgroup.rows) {
+        const subgroupId = `facet-stack/${routeSlug(stackId)}/${routeSlug(subgroup.dimension)}/${routeSlug(group.value)}`;
+        addNode(subgroupId, 'facet-stack', `${facetValueDisplay(subgroup.dimension, group.value)} (${group.rows.length})`, group.rows.length, stackId);
+        if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length);
+        else addCountedEdge(target, subgroupId, label, group.rows.length);
+      }
+      return true;
+    };
+    const addGroupedDatasetEdges = (datasets: LargeDataset[], target: string, label: string, direction: 'to-target' | 'from-target' = 'to-target') => {
+      const rows = datasets;
+      if (rows.length <= 18) {
+        for (const dataset of rows) {
+          addDatasetNode(dataset);
+          if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
+          else addEdge(target, datasetRoute(dataset), label);
+        }
+        return;
+      }
+      for (const group of groupedRows(rows)) {
+        const stackId = recordTypeStackRoute(contextKey, group.recordType);
+        const expanded = largeExpandedGraphGroup === stackId;
+        noteRecordTypeGrouping(
+          expanded && group.rows.length > GRAPH_EXPANDED_GROUP_LIMIT
+            ? `${group.recordType} (first ${GRAPH_EXPANDED_GROUP_LIMIT.toLocaleString()} of ${group.rows.length.toLocaleString()})`
+            : expanded
+              ? group.recordType
+              : undefined
+        );
+        if (expanded) {
+          if (!addOpenedStackSubgroups(group.rows, stackId, target, label, direction)) {
+            for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
+              addDatasetNode(dataset);
+              if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
+              else addEdge(target, datasetRoute(dataset), label);
+            }
+          }
+        } else {
+          addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, center || contextKey);
+          if (direction === 'to-target') addCountedEdge(stackId, target, label, group.rows.length);
+          else addCountedEdge(target, stackId, label, group.rows.length);
+        }
+      }
+    };
+    const addGroupedPublisherEdges = (datasets: LargeDataset[]) => {
+      const rows = datasets;
+      if (rows.length <= 18) {
+        for (const dataset of rows) {
+          const datasetId = datasetRoute(dataset);
+          addDatasetNode(dataset);
+          if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
+        }
+        return;
+      }
+      for (const group of groupedRows(rows)) {
+        const stackId = recordTypeStackRoute(contextKey, group.recordType);
+        const expanded = largeExpandedGraphGroup === stackId;
+        noteRecordTypeGrouping(
+          expanded && group.rows.length > GRAPH_EXPANDED_GROUP_LIMIT
+            ? `${group.recordType} (first ${GRAPH_EXPANDED_GROUP_LIMIT.toLocaleString()} of ${group.rows.length.toLocaleString()})`
+            : expanded
+              ? group.recordType
+              : undefined
+        );
+        if (expanded) {
+          for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
+            const datasetId = datasetRoute(dataset);
+            addDatasetNode(dataset);
+            if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
+          }
+        } else {
+          addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, contextKey);
+          const publishers = new Map<string, number>();
+          for (const dataset of group.rows) {
+            if (dataset.publisher) publishers.set(dataset.publisher, (publishers.get(dataset.publisher) || 0) + 1);
+          }
+          for (const [publisher, count] of [...publishers.entries()].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0])).slice(0, 8)) {
+            addCountedEdge(stackId, publisherRoute(publisher), 'published by', count);
+          }
+        }
+      }
     };
     const addLoadedRelationshipsForCenter = () => {
       const rows = routeRelationships(center, 120);
@@ -1887,16 +2327,9 @@
       }
     } else if (largeIndex && center) {
       const relationshipLabel = metadataRelationshipLabel(center);
-      for (const dataset of datasetsForMetadataRoute(center, 84)) {
-        const datasetId = datasetRoute(dataset);
-        addEdge(datasetId, center, relationshipLabel);
-      }
+      addGroupedDatasetEdges(datasetsForMetadataRoute(center, Number.MAX_SAFE_INTEGER), center, relationshipLabel);
     } else if (!center && largeIndex) {
-      for (const dataset of largeVisibleDatasets.slice(0, 64)) {
-        const datasetId = datasetRoute(dataset);
-        addNode(datasetId, 'dataset', dataset.title);
-        if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
-      }
+      addGroupedPublisherEdges(largeVisibleDatasets);
     } else if (!center && !largeIndex) {
       for (const result of largeResults.slice(0, 42)) {
         const datasetId = datasetRoute(result);
@@ -1906,14 +2339,10 @@
     }
 
     if (!edges.length && largeIndex) {
-      for (const dataset of largeVisibleDatasets.slice(0, 42)) {
-        const datasetId = datasetRoute(dataset);
-        addNode(datasetId, 'dataset', dataset.title);
-        if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
-      }
+      addGroupedPublisherEdges(largeVisibleDatasets);
     }
 
-    return { center, nodes: [...nodeMap.values()].slice(0, 110), relationships: edges.slice(0, 120) };
+    return { center, nodes: [...nodeMap.values()].slice(0, 110), relationships: edges.slice(0, 120), grouping };
   }
 
   function placeArc(positions: Map<string, GraphPoint>, nodes: LargeGraphNode[], cx: number, cy: number, radius: number, start: number, end: number) {
@@ -1990,6 +2419,8 @@
         resource: [],
         'resource-stack': [],
         'relationship-stack': [],
+        'record-type-stack': [],
+        'facet-stack': [],
         format: [],
         topic: [],
         license: [],
@@ -2004,12 +2435,15 @@
       }
       Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
       if (centerType === 'publisher') {
-        placeGrid(positions, [...groups.dataset, ...groups.resource, ...groups['relationship-stack']], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
+        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.11, GRAPH_HEIGHT * 0.16, 2, 116, 70);
+        placeGrid(positions, [...groups['record-type-stack'], ...groups.dataset, ...groups.resource, ...groups['relationship-stack']], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
         placeArc(positions, [...groups.format, ...groups.license, ...groups.topic, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
       } else {
         placeArc(positions, groups.publisher, cx, cy, GRAPH_HEIGHT * 0.31, -0.22, 0.25);
         placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.16, 4, 86, 66);
         placeGrid(positions, groups['relationship-stack'], GRAPH_WIDTH * 0.69, GRAPH_HEIGHT * 0.15, 2, 98, 68);
+        placeGrid(positions, groups['record-type-stack'], GRAPH_WIDTH * 0.61, GRAPH_HEIGHT * 0.13, 2, 112, 72);
+        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.18, 2, 116, 70);
         placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
         placeArc(positions, groups.topic, cx, cy, GRAPH_HEIGHT * 0.34, 2.05, 2.75);
         placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.37, 2.85, 3.82);
@@ -2020,13 +2454,14 @@
     if (center) positions.set(center, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 });
     const others = model.nodes.filter((node) => node.id !== center);
     const publishers = model.nodes.filter((node) => node.type === 'publisher').sort((left, right) => left.label.localeCompare(right.label));
+    const recordTypeStacks = model.nodes.filter((node) => node.type === 'record-type-stack').sort((left, right) => (right.count || 0) - (left.count || 0) || left.label.localeCompare(right.label));
     const datasets = model.nodes.filter((node) => node.type === 'dataset').sort((left, right) => left.label.localeCompare(right.label));
-    const other = others.filter((node) => node.type !== 'publisher' && node.type !== 'dataset');
-    const columns = Math.max(1, Math.ceil(Math.sqrt(datasets.length)));
+    const other = others.filter((node) => node.type !== 'publisher' && node.type !== 'dataset' && node.type !== 'record-type-stack');
+    const columns = Math.max(1, Math.ceil(Math.sqrt(datasets.length + recordTypeStacks.length)));
     const cellW = Math.min(92, (GRAPH_WIDTH * 0.58) / columns);
     const cellH = 58;
-    const rows = Math.ceil(datasets.length / columns);
-    placeGrid(positions, datasets, GRAPH_WIDTH * 0.18, GRAPH_HEIGHT * 0.5 - ((rows - 1) * cellH) / 2, columns, cellW, cellH);
+    const rows = Math.ceil((datasets.length + recordTypeStacks.length) / columns);
+    placeGrid(positions, [...recordTypeStacks, ...datasets], GRAPH_WIDTH * 0.18, GRAPH_HEIGHT * 0.5 - ((rows - 1) * cellH) / 2, columns, cellW, cellH);
     placeArc(positions, publishers, GRAPH_WIDTH * 0.78, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.28, -1.0, 1.0);
     placeArc(positions, other, GRAPH_WIDTH * 0.5, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.36, 1.35, 4.92);
     return positions;
@@ -2037,6 +2472,8 @@
     if (type === 'resource') return '#5694ca';
     if (type === 'resource-stack') return '#1d70b8';
     if (type === 'relationship-stack') return '#1d70b8';
+    if (type === 'record-type-stack') return '#12436d';
+    if (type === 'facet-stack') return '#2b8cbe';
     if (type === 'publisher') return '#00703c';
     if (type === 'format') return '#4c2c92';
     if (type === 'topic') return '#007a7a';
@@ -2052,6 +2489,8 @@
       ['publisher', publisherSingular()],
       ['resource', resourceSingular()],
       ['relationship-stack', 'link stack'],
+      ['record-type-stack', 'record type stack'],
+      ['facet-stack', 'opened stack group'],
       ['format', formatPlural()],
       ['topic', 'topic'],
       ['license', 'licence'],
@@ -2067,10 +2506,18 @@
 
   function graphNodeBox(node: LargeGraphNode, point?: GraphPoint): GraphBox | null {
     if (!point) return null;
-    if (node.type === 'resource-stack' || node.type === 'relationship-stack') return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
+    if (isGraphStackNodeType(node.type)) return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
     if (node.type === 'resource') return { x: point.x - 30, y: point.y - 24, w: 60, h: 48 };
     if (node.type === 'dataset') return { x: point.x - 31, y: point.y - 25, w: 62, h: 50 };
     return { x: point.x - 28, y: point.y - 28, w: 56, h: 56 };
+  }
+
+  function graphNodeEdgePad(node: LargeGraphNode | undefined): number {
+    if (!node) return 28;
+    if (isGraphStackNodeType(node.type)) return 38;
+    if (node.type === 'dataset') return 34;
+    if (node.type === 'resource') return 32;
+    return 24;
   }
 
   function graphCombinedHitBox(node: LargeGraphNode, point: GraphPoint, label: GraphLabel): GraphBox | null {
@@ -2096,7 +2543,7 @@
 
   function graphLabelCandidates(node: LargeGraphNode, point: GraphPoint): GraphLabel[] {
     const text = shortLabel(node.label, node.type === 'publisher' ? 44 : 40);
-    const gap = node.type === 'resource' || node.type === 'dataset' || node.type === 'resource-stack' || node.type === 'relationship-stack' ? 36 : 30;
+    const gap = node.type === 'resource' || node.type === 'dataset' || isGraphStackNodeType(node.type) ? 36 : 30;
     const right = { x: point.x + gap, y: point.y + 5, anchor: 'start' as const };
     const left = { x: point.x - gap, y: point.y + 5, anchor: 'end' as const };
     const lateral = point.x > GRAPH_WIDTH * 0.66 ? [left, right] : [right, left];
@@ -2120,7 +2567,7 @@
   function graphLabelPriority(node: LargeGraphNode, alwaysId: string): number {
     if (node.id === alwaysId) return 0;
     if (node.type === 'publisher') return 1;
-    if (node.type === 'relationship-stack' || node.type === 'resource-stack') return 2;
+    if (isGraphStackNodeType(node.type)) return 2;
     if (node.type === 'dataset') return 3;
     if (['format', 'topic', 'license', 'tag', 'host', 'resource_type'].includes(node.type)) return 3;
     return 4;
@@ -2174,19 +2621,20 @@
   }
 
   function edgeKindLabels(model: ReturnType<typeof largeGraphModel>, positions: Map<string, GraphPoint>) {
-    const groups = new Map<string, { label: string; edgeCount: number; x: number; y: number }>();
+    const groups = new Map<string, { label: string; edgeCount: number; weightedCount: number; x: number; y: number }>();
     for (const relationship of model.relationships) {
       const source = positions.get(relationship.source);
       const target = positions.get(relationship.target);
       if (!source || !target) continue;
-      const group = groups.get(relationship.label) || { label: relationship.label, edgeCount: 0, x: 0, y: 0 };
+      const group = groups.get(relationship.label) || { label: relationship.label, edgeCount: 0, weightedCount: 0, x: 0, y: 0 };
       group.edgeCount += 1;
+      group.weightedCount += relationship.count || 1;
       group.x += (source.x + target.x) / 2;
       group.y += (source.y + target.y) / 2;
       groups.set(relationship.label, group);
     }
     return [...groups.values()].map((group, index, all) => ({
-      text: `${group.label}${group.edgeCount > 1 ? ` x${group.edgeCount}` : ''}`,
+      text: `${group.label}${group.weightedCount > 1 ? ` x${group.weightedCount}` : ''}`,
       x: group.x / group.edgeCount + 8,
       y: group.y / group.edgeCount + (index - (all.length - 1) / 2) * 16 - 6
     }));
@@ -2301,6 +2749,13 @@
       graphSuppressClick = false;
       return;
     }
+    if (isGraphStackRoute(route)) {
+      largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
+      largeHighlightedRoute = route;
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      return;
+    }
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     inspectLargeRoute(route);
@@ -2313,6 +2768,22 @@
     const move = (next: PointerEvent) => {
       if (side === 'left') leftWidth = Math.max(220, Math.min(560, startLeft + next.clientX - startX));
       else rightWidth = Math.max(300, Math.min(680, startRight - (next.clientX - startX)));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
+
+  function beginEdgePanelResize(event: PointerEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const startY = event.clientY;
+    const startHeight = edgePanelHeight;
+    const move = (next: PointerEvent) => {
+      edgePanelHeight = Math.max(80, Math.min(420, startHeight - (next.clientY - startY)));
     };
     const up = () => {
       window.removeEventListener('pointermove', move);
@@ -2440,50 +2911,71 @@
                     </span>
                     <small>{facetSummaryBadge(key)}</small>
                   </summary>
-                  {#if facetTerm}
-                    <p class="facet-definition">{facetTerm}</p>
-                  {/if}
-                  {#if facetHint}
-                    <p class="facet-hint">{facetHint}</p>
-                  {/if}
-                  {#if facetHierarchies.length}
-                    <div class="facet-hierarchy">
-                      {#each facetHierarchies.slice(0, 2) as hierarchy}
-                        <strong>{hierarchy.label}</strong>
-                        {#each hierarchy.values.slice(0, 5) as group}
-                          <div class="facet-hierarchy-group">
-                            <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
-                          </div>
-                          {#each (group.children || []).slice(0, 4) as child}
-                            <button
-                              class="child"
-                              type="button"
-                              disabled={Boolean(largeFacetApplyingKey)}
-                              onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}
-                            >
-                              <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
-                            </button>
+                  {#if activeFacetKey === key}
+                    {#if facetTerm}
+                      <p class="facet-definition">{facetTerm}</p>
+                    {/if}
+                    {#if facetHint}
+                      <p class="facet-hint">{facetHint}</p>
+                    {/if}
+                    {#if facetHierarchies.length}
+                      <div class="facet-hierarchy">
+                        {#each facetHierarchies.slice(0, 2) as hierarchy}
+                          <strong>{hierarchy.label}</strong>
+                          {#each hierarchy.values.slice(0, 5) as group}
+                            <div class="facet-hierarchy-group">
+                              <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
+                            </div>
+                            {#each (group.children || []).slice(0, 4) as child}
+                              <button
+                                class="child"
+                                type="button"
+                                disabled={Boolean(largeFacetApplyingKey)}
+                                onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}
+                              >
+                                <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
+                              </button>
+                            {/each}
                           {/each}
                         {/each}
-                      {/each}
+                      </div>
+                    {/if}
+                    <div class="facet-values">
+                      {#if !largeIndex && largeFacetHydratingKey === key}
+                        <p class="facet-loading">Loading facet values...</p>
+                      {:else}
+                        {@const filteredFacetRows = filteredLargeFacetRows(key)}
+                        {@const visibleFacetRows = visibleLargeFacetRows(key, filteredFacetRows)}
+                        <label class="facet-search">
+                          <span>Search {facetMeta?.label || key.replaceAll('_', ' ')}</span>
+                          <input
+                            value={largeFacetQuery(key)}
+                            placeholder="Type to filter values"
+                            oninput={(event) => setLargeFacetQuery(key, event.currentTarget.value)}
+                          />
+                        </label>
+                        <p class="facet-mode-hint">{facetSelectionModeHint(key)}</p>
+                        {#each visibleFacetRows as value}
+                          <button
+                            class:active={selectedFacetValues.includes(value.value)}
+                            type="button"
+                            disabled={Boolean(largeFacetApplyingKey)}
+                            onclick={(event) => void toggleLargeFacet(key, value.value, event)}
+                          >
+                            <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
+                          </button>
+                        {/each}
+                        {#if visibleFacetRows.length < filteredFacetRows.length}
+                          <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
+                            <span>Show more</span><small>{(filteredFacetRows.length - visibleFacetRows.length).toLocaleString()} more</small>
+                          </button>
+                        {/if}
+                        {#if !filteredFacetRows.length}
+                          <p class="facet-loading">No values match this facet search.</p>
+                        {/if}
+                      {/if}
                     </div>
                   {/if}
-                  <div class="facet-values">
-                    {#if !largeIndex && largeFacetHydratingKey === key}
-                      <p class="facet-loading">Loading facet values...</p>
-                    {:else}
-                      {#each largeFacetRows(key).slice(0, 18) as value}
-                        <button
-                          class:active={selectedFacetValues.includes(value.value)}
-                          type="button"
-                          disabled={Boolean(largeFacetApplyingKey)}
-                          onclick={() => void toggleLargeFacet(key, value.value)}
-                        >
-                          <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
-                        </button>
-                      {/each}
-                    {/if}
-                  </div>
                 </details>
               {/each}
             </div>
@@ -2547,7 +3039,7 @@
       <div class="stage-bar">
         <div class="nav-controls" aria-label="History navigation">
           <button type="button" title="Back" aria-label="Back" onclick={navigateBack}>←</button>
-          <button type="button" title="Forward" aria-label="Forward" onclick={navigateForward}>→</button>
+          <button type="button" title="Forward" aria-label="Forward" disabled={source?.kind === 'large' && !largeForwardRoute} onclick={navigateForward}>→</button>
         </div>
         <div class="crumbs">
           {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {activeView}
@@ -2693,7 +3185,7 @@
                 </div>
                 <div class="legend" aria-label="Node type key">
                   {#each graphLegendItems() as [type, label]}
-                    <span><i style={`background:${largeTypeColor(type)}`}></i>{label}</span>
+                    <span><i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>{label}</span>
                   {/each}
                 </div>
               </div>
@@ -2722,7 +3214,9 @@
                   {@const targetPos = positions.get(relationship.target)}
                   {#if sourcePos && targetPos}
                     {@const edgeHighlighted = shouldHighlightGraphEdge(relationship, model)}
-                    {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos)}
+                    {@const sourceNode = model.nodes.find((node) => node.id === relationship.source)}
+                    {@const targetNode = model.nodes.find((node) => node.id === relationship.target)}
+                    {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos, graphNodeEdgePad(sourceNode), graphNodeEdgePad(targetNode))}
                     <line
                       class:highlight={edgeHighlighted}
                       x1={edgeHit.x1}
@@ -2754,7 +3248,7 @@
                 {#each model.nodes as node}
                   {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(node.id)}
-                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
+                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
@@ -2770,7 +3264,7 @@
                     {#if combinedHit}
                       <rect class="node-hit cluster-hit" x={combinedHit.x} y={combinedHit.y} width={combinedHit.w} height={combinedHit.h} rx="6"></rect>
                     {/if}
-                    {#if node.type === 'resource-stack' || node.type === 'relationship-stack'}
+                    {#if isGraphStackNodeType(node.type)}
                       <rect class="node-hit" x={pos.x - 32} y={pos.y - 25} width="64" height="50" rx="6"></rect>
                       <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
                       <rect class="stack-card stack-card-mid" x={pos.x - 20} y={pos.y - 14} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
@@ -2784,9 +3278,36 @@
                     {:else if node.type === 'dataset'}
                       <rect class="node-hit" x={pos.x - 26} y={pos.y - 20} width="52" height="40" rx="6"></rect>
                       <rect class="dataset-card" x={pos.x - 18} y={pos.y - 12} width="36" height="24" rx="5" fill={largeTypeColor(node.type)}></rect>
+                    {:else if node.type === 'publisher'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <rect class="node-symbol" x={pos.x - 15} y={pos.y - 11} width="30" height="23" rx="2" fill={largeTypeColor(node.type)}></rect>
+                      <rect class="icon-cutout" x={pos.x - 10} y={pos.y - 5} width="4" height="11" rx="1"></rect>
+                      <rect class="icon-cutout" x={pos.x - 2} y={pos.y - 5} width="4" height="11" rx="1"></rect>
+                      <rect class="icon-cutout" x={pos.x + 6} y={pos.y - 5} width="4" height="11" rx="1"></rect>
+                      <line class="icon-line" x1={pos.x - 17} y1={pos.y + 14} x2={pos.x + 17} y2={pos.y + 14}></line>
+                    {:else if node.type === 'format'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <polygon class="node-symbol" points={`${pos.x - 15},${pos.y - 12} ${pos.x + 15},${pos.y - 12} ${pos.x + 21},${pos.y} ${pos.x + 15},${pos.y + 12} ${pos.x - 15},${pos.y + 12} ${pos.x - 21},${pos.y}`} fill={largeTypeColor(node.type)}></polygon>
+                    {:else if node.type === 'topic'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <polygon class="node-symbol" points={`${pos.x},${pos.y - 18} ${pos.x + 18},${pos.y} ${pos.x},${pos.y + 18} ${pos.x - 18},${pos.y}`} fill={largeTypeColor(node.type)}></polygon>
+                    {:else if node.type === 'license'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <path class="node-symbol" d={`M ${pos.x - 14} ${pos.y - 16} H ${pos.x + 14} V ${pos.y + 5} L ${pos.x} ${pos.y + 18} L ${pos.x - 14} ${pos.y + 5} Z`} fill={largeTypeColor(node.type)}></path>
+                      <circle class="icon-cutout" cx={pos.x} cy={pos.y - 4} r="5"></circle>
+                    {:else if node.type === 'tag'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <path class="node-symbol" d={`M ${pos.x - 17} ${pos.y - 7} L ${pos.x - 5} ${pos.y - 17} H ${pos.x + 16} V ${pos.y + 5} L ${pos.x + 5} ${pos.y + 16} Z`} fill={largeTypeColor(node.type)}></path>
+                      <circle class="icon-cutout" cx={pos.x - 3} cy={pos.y - 8} r="3"></circle>
+                    {:else if node.type === 'host' || node.type === 'resource_type'}
+                      <circle class="node-hit" cx={pos.x} cy={pos.y} r="22"></circle>
+                      <rect class="node-symbol" x={pos.x - 17} y={pos.y - 13} width="34" height="10" rx="3" fill={largeTypeColor(node.type)}></rect>
+                      <rect class="node-symbol" x={pos.x - 17} y={pos.y + 2} width="34" height="10" rx="3" fill={largeTypeColor(node.type)}></rect>
+                      <circle class="icon-cutout" cx={pos.x + 10} cy={pos.y - 8} r="2"></circle>
+                      <circle class="icon-cutout" cx={pos.x + 10} cy={pos.y + 7} r="2"></circle>
                     {:else}
                       <circle class="node-hit" cx={pos.x} cy={pos.y} r="20"></circle>
-                      <circle cx={pos.x} cy={pos.y} r={node.id === largeSelectedRoute ? 12 : 9} fill={largeTypeColor(node.type)}></circle>
+                      <circle class="node-symbol" cx={pos.x} cy={pos.y} r={node.id === largeSelectedRoute ? 12 : 9} fill={largeTypeColor(node.type)}></circle>
                     {/if}
                     {#if label}
                       <rect class="label-hit" x={label.box.x} y={label.box.y} width={label.box.w} height={label.box.h} rx="4"></rect>
@@ -2795,9 +3316,16 @@
                   </g>
                 {/each}
               </svg>
-              <details class="edge-panel edge-drawer" open>
+              <details class="edge-panel edge-drawer" style={`--edge-panel-height:${edgePanelHeight}px`} open>
                 <summary>
-                  <span class="drawer-grip" aria-hidden="true"></span>
+                  <button
+                    class="drawer-grip"
+                    type="button"
+                    aria-label="Resize relationships panel"
+                    title="Drag to resize relationships"
+                    onpointerdown={beginEdgePanelResize}
+                    onclick={(event) => { event.preventDefault(); event.stopPropagation(); }}
+                  ></button>
                   <strong>Relationships ({model.relationships.length})</strong>
                   <span>open for rows</span>
                 </summary>
@@ -2819,7 +3347,10 @@
                 {:else}
                   Showing {model.nodes.length} nodes from the current left-panel reduction.
                 {/if}
-                Drag to pan, use +/- or the mouse wheel to zoom, single-click to inspect, double-click to centre or expand a {resourceStackLabel().toLowerCase()}.
+                {#if model.grouping}
+                  {model.grouping.label}{model.grouping.expandedLabel ? `; expanded ${model.grouping.expandedLabel}.` : '; click a record type stack to expand one group at a time.'}
+                {/if}
+                Drag to pan, use +/- or the mouse wheel to zoom, click a stack to expand it, single-click real nodes to inspect, and double-click metadata nodes to reduce context.
               </p>
             </div>
           {:else if activeView === 'links'}
@@ -2879,37 +3410,35 @@
               </section>
             {/if}
           {:else if activeView === 'timeline'}
-            {#if largeHasAnalysisOverview('timeline')}
-              <div class="view-heading">
-                <h2>Timeline Distribution</h2>
-                <span>{source.manifest.counts.datasets.toLocaleString()} {recordPlural()} in overview</span>
+            <div class="view-heading">
+              <h2>Timeline</h2>
+              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${source.manifest.counts.datasets.toLocaleString()} ${recordPlural()} in overview`}</span>
+            </div>
+            <div class="timeline-toolbar" aria-label="Timeline resolution">
+              {#each ['latest', 'year', 'quarter', 'month'] as resolution}
+                <button class:active={timelineResolution === resolution} type="button" onclick={() => setTimelineResolution(resolution)}>
+                  {capitalise(resolution)}
+                </button>
+              {/each}
+              <span>{timelineResolution === 'latest' ? 'Latest dated records first' : `Grouped by ${timelineResolution}, newest first`}</span>
+            </div>
+            <section class="timeline-view timeline-axis">
+              {#each currentTimelineBuckets().slice(0, 120) as bucket, index}
+                <button style={`--row:${index}`} type="button" onclick={() => applyTimelineBucket(bucket)}>
+                  <time>{bucket.label}</time>
+                  <div>
+                    <strong>{bucket.count.toLocaleString()} {bucket.count === 1 ? recordSingular() : recordPlural()}</strong>
+                    <span>{bucket.samples.slice(0, 3).map((item) => item.title).join(' · ')}</span>
+                  </div>
+                </button>
+              {:else}
+                <p class="muted">Timeline distribution is not available for this bundle yet.</p>
+              {/each}
+            </section>
+            {#if timelineResolution !== 'latest'}
+              <div class="timeline-note">
+                Click a {timelineResolution} bucket to filter the current reduction. Use Latest to inspect the newest dated records directly.
               </div>
-              <section class="timeline-view timeline-axis">
-                {#each analysisTimelineBuckets().slice(0, 90) as bucket, index}
-                  <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisTimelineBucket(bucket)}>
-                    <time>{bucket.label}</time>
-                    <div>
-                      <strong>{bucket.count.toLocaleString()} {recordPlural()}</strong>
-                      <span>{(bucket.samples || []).slice(0, 2).map((item) => item.title).join(' · ')}</span>
-                    </div>
-                  </button>
-                {:else}
-                  <p class="muted">Timeline distribution is not available for this bundle yet.</p>
-                {/each}
-              </section>
-            {:else}
-              <div class="view-heading">
-                <h2>Timeline</h2>
-                <span>{largeVisibleDatasets.length.toLocaleString()} {recordPlural()} in current reduction</span>
-              </div>
-              <section class="timeline-view timeline-axis">
-                {#each largeVisibleDatasets.filter((dataset) => dataset.timestamp || dataset.metadata_modified).slice(0, 180) as dataset, index}
-                  <button style={`--row:${index}`} type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
-                    <time>{String(dataset.timestamp || dataset.metadata_modified).slice(0, 10)}</time>
-                    <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`}</span></div>
-                  </button>
-                {/each}
-              </section>
             {/if}
           {:else if activeView === 'type'}
             <div class="view-heading">
@@ -3126,7 +3655,7 @@
               </div>
               <div class="legend" aria-label="Node type key">
                 {#each typeList.slice(0, 8) as type}
-                  <span><i style={`background:${colorForType(type)}`}></i>{type}</span>
+                  <span><i class={`legend-shape legend-${type}`} style={`background:${colorForType(type)}`}></i>{type}</span>
                 {/each}
               </div>
             </div>

@@ -1,0 +1,1483 @@
+{
+  "schema": "okf-explorer-evaluation-suite.v1",
+  "title": "GOV.UK CKAN OKF Evaluation Suite",
+  "description": "A 100-question evaluation suite for the hosted GOV.UK CKAN large-corpus OKF bundle, using the same additive rubric as the UK Government APIs exemplar.",
+  "target_bundle": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json",
+  "rubric": {
+    "retrieval": {
+      "points": 35,
+      "checks": [
+        "Search or facet path returns the expected record family.",
+        "Expected publisher, dataset, topic, format or resource terms are visible.",
+        "The visible result count is plausible and not a stale previous query.",
+        "A route or detail target is available for sharing and re-opening.",
+        "Core metadata such as publisher, resource count, format or source is discoverable."
+      ]
+    },
+    "display": {
+      "points": 25,
+      "checks": [
+        "The detail card has a clear title, summary and route.",
+        "Licence, access, source, resource and update metadata are visible or clearly marked as missing.",
+        "Metadata gaps use reader-facing wording rather than raw null, None or undefined values.",
+        "Follow-on actions such as Graph, Pin, Copy route and resource inspection are visible.",
+        "Loading and search states are explicit and do not leave the user guessing."
+      ]
+    },
+    "accessibility": {
+      "points": 20,
+      "checks": [
+        "Buttons, links, inputs and graph targets have accessible names.",
+        "Loading/search status is exposed through live regions where relevant.",
+        "Keyboard focus targets are present for search, facets, results and detail actions.",
+        "The page retains landmarks for header, navigation, main content and complementary panels.",
+        "The tested viewport avoids obvious text, graph-label or card overlap."
+      ]
+    },
+    "govuk": {
+      "points": 20,
+      "checks": [
+        "Terminology follows clear public-service language.",
+        "Publisher/source provenance is explicit enough for public-sector reuse.",
+        "Licence and access status are shown without implying unsupported assurance.",
+        "Controls are predictable service-style actions rather than decorative UI.",
+        "No displayed URL or metadata leaks secrets, tokens, passwords or API keys."
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": "Q001",
+      "query": "Ordnance Survey",
+      "intent": "Find Ordnance Survey datasets and inspect publisher/source context.",
+      "expected_terms": [
+        "Ordnance Survey",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "publisher",
+        "geospatial"
+      ]
+    },
+    {
+      "id": "Q002",
+      "query": "Office for National Statistics",
+      "intent": "Find ONS data records and check dataset/source provenance.",
+      "expected_terms": [
+        "Office for National Statistics",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "publisher",
+        "ons"
+      ]
+    },
+    {
+      "id": "Q003",
+      "query": "Environment Agency flood",
+      "intent": "Find flood datasets and evaluate publisher and resource metadata.",
+      "expected_terms": [
+        "Environment Agency",
+        "flood",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "flood",
+        "environment"
+      ]
+    },
+    {
+      "id": "Q004",
+      "query": "NHS Digital",
+      "intent": "Find NHS Digital records and inspect health-data metadata.",
+      "expected_terms": [
+        "NHS Digital",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "publisher",
+        "health"
+      ]
+    },
+    {
+      "id": "Q005",
+      "query": "Natural England",
+      "intent": "Find Natural England records and inspect environmental metadata.",
+      "expected_terms": [
+        "Natural England",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "publisher",
+        "environment"
+      ]
+    },
+    {
+      "id": "Q006",
+      "query": "HM Land Registry",
+      "intent": "Find Land Registry data and inspect publisher/source metadata.",
+      "expected_terms": [
+        "Land Registry",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "publisher",
+        "land"
+      ]
+    },
+    {
+      "id": "Q007",
+      "query": "Companies House",
+      "intent": "Find company-register data and check publication metadata.",
+      "expected_terms": [
+        "Companies House",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "company",
+        "publisher"
+      ]
+    },
+    {
+      "id": "Q008",
+      "query": "Met Office",
+      "intent": "Find weather or climate records and inspect access/resource metadata.",
+      "expected_terms": [
+        "Met Office",
+        "publisher",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "weather",
+        "publisher"
+      ]
+    },
+    {
+      "id": "Q009",
+      "query": "Department for Transport traffic",
+      "intent": "Find transport/traffic datasets and inspect resources.",
+      "expected_terms": [
+        "transport",
+        "traffic",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q010",
+      "query": "Department for Education schools",
+      "intent": "Find school or education records and inspect metadata.",
+      "expected_terms": [
+        "school",
+        "education",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education"
+      ]
+    },
+    {
+      "id": "Q011",
+      "query": "postcode directory",
+      "intent": "Find postcode directory datasets and check publisher/source metadata.",
+      "expected_terms": [
+        "postcode",
+        "directory",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography",
+        "postcode"
+      ]
+    },
+    {
+      "id": "Q012",
+      "query": "census boundaries",
+      "intent": "Find census boundary records and inspect format/resource metadata.",
+      "expected_terms": [
+        "census",
+        "boundary",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography",
+        "census"
+      ]
+    },
+    {
+      "id": "Q013",
+      "query": "administrative boundaries",
+      "intent": "Find boundary datasets and inspect available resource formats.",
+      "expected_terms": [
+        "boundary",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q014",
+      "query": "local authority district",
+      "intent": "Find local-authority district data and inspect source metadata.",
+      "expected_terms": [
+        "local authority",
+        "district",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q015",
+      "query": "parish boundaries",
+      "intent": "Find parish boundary records and inspect publisher/resource data.",
+      "expected_terms": [
+        "parish",
+        "boundary",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q016",
+      "query": "ward boundaries",
+      "intent": "Find ward boundary records and inspect publisher/resource data.",
+      "expected_terms": [
+        "ward",
+        "boundary",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q017",
+      "query": "LSOA boundaries",
+      "intent": "Find LSOA geography records and inspect metadata.",
+      "expected_terms": [
+        "LSOA",
+        "boundary",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q018",
+      "query": "MSOA boundaries",
+      "intent": "Find MSOA geography records and inspect metadata.",
+      "expected_terms": [
+        "MSOA",
+        "boundary",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q019",
+      "query": "output areas",
+      "intent": "Find output-area datasets and inspect resource details.",
+      "expected_terms": [
+        "output",
+        "area",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q020",
+      "query": "built up areas",
+      "intent": "Find built-up-area datasets and inspect resource details.",
+      "expected_terms": [
+        "built",
+        "area",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geography"
+      ]
+    },
+    {
+      "id": "Q021",
+      "query": "WMS",
+      "intent": "Evaluate WMS-format discovery and metadata display.",
+      "expected_terms": [
+        "WMS",
+        "format",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format",
+        "geospatial"
+      ]
+    },
+    {
+      "id": "Q022",
+      "query": "WFS",
+      "intent": "Evaluate WFS-format discovery and metadata display.",
+      "expected_terms": [
+        "WFS",
+        "format",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format",
+        "geospatial"
+      ]
+    },
+    {
+      "id": "Q023",
+      "query": "ArcGIS REST",
+      "intent": "Evaluate ArcGIS REST discovery and endpoint/source display.",
+      "expected_terms": [
+        "ArcGIS",
+        "REST",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format",
+        "api"
+      ]
+    },
+    {
+      "id": "Q024",
+      "query": "GeoJSON",
+      "intent": "Evaluate GeoJSON resource discovery and display.",
+      "expected_terms": [
+        "GeoJSON",
+        "resource",
+        "format"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format"
+      ]
+    },
+    {
+      "id": "Q025",
+      "query": "CSV",
+      "intent": "Evaluate CSV resource discovery and display.",
+      "expected_terms": [
+        "CSV",
+        "resource",
+        "format"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format"
+      ]
+    },
+    {
+      "id": "Q026",
+      "query": "JSON API",
+      "intent": "Find JSON/API-like resources and inspect access/source metadata.",
+      "expected_terms": [
+        "JSON",
+        "API",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "api",
+        "format"
+      ]
+    },
+    {
+      "id": "Q027",
+      "query": "XML",
+      "intent": "Evaluate XML-format resource discovery.",
+      "expected_terms": [
+        "XML",
+        "resource",
+        "format"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "format"
+      ]
+    },
+    {
+      "id": "Q028",
+      "query": "SPARQL",
+      "intent": "Find SPARQL endpoints or linked-data records.",
+      "expected_terms": [
+        "SPARQL",
+        "resource",
+        "endpoint"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "linked-data",
+        "api"
+      ]
+    },
+    {
+      "id": "Q029",
+      "query": "API",
+      "intent": "Find API-like resources and inspect classification clarity.",
+      "expected_terms": [
+        "API",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "api"
+      ]
+    },
+    {
+      "id": "Q030",
+      "query": "OpenAPI",
+      "intent": "Find OpenAPI or API contract records when present.",
+      "expected_terms": [
+        "OpenAPI",
+        "API",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "contract",
+        "api"
+      ]
+    },
+    {
+      "id": "Q031",
+      "query": "open government licence",
+      "intent": "Check OGL licence wording and source clarity.",
+      "expected_terms": [
+        "Open Government Licence",
+        "licence",
+        "source"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "licence"
+      ]
+    },
+    {
+      "id": "Q032",
+      "query": "not specified licence",
+      "intent": "Check how missing licence metadata is presented.",
+      "expected_terms": [
+        "licence",
+        "metadata",
+        "source"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "licence",
+        "gap"
+      ]
+    },
+    {
+      "id": "Q033",
+      "query": "ONS licence",
+      "intent": "Check ONS licence inheritance or provider terms display.",
+      "expected_terms": [
+        "Office for National Statistics",
+        "licence",
+        "source"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "licence",
+        "ons"
+      ]
+    },
+    {
+      "id": "Q034",
+      "query": "Ordnance Survey licence",
+      "intent": "Check OS licensing metadata and access caveats.",
+      "expected_terms": [
+        "Ordnance Survey",
+        "licence",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "licence",
+        "os"
+      ]
+    },
+    {
+      "id": "Q035",
+      "query": "anonymous access",
+      "intent": "Find records with anonymous access or public download metadata.",
+      "expected_terms": [
+        "access",
+        "anonymous",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "access"
+      ]
+    },
+    {
+      "id": "Q036",
+      "query": "API key",
+      "intent": "Find records that may require API keys and inspect access wording.",
+      "expected_terms": [
+        "API key",
+        "access",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "access"
+      ]
+    },
+    {
+      "id": "Q037",
+      "query": "contract metadata",
+      "intent": "Find records with contract or service-description signals.",
+      "expected_terms": [
+        "contract",
+        "metadata",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "contract"
+      ]
+    },
+    {
+      "id": "Q038",
+      "query": "capability document",
+      "intent": "Find OGC capability documents and inspect display clarity.",
+      "expected_terms": [
+        "capability",
+        "document",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "contract",
+        "geospatial"
+      ]
+    },
+    {
+      "id": "Q039",
+      "query": "service description",
+      "intent": "Find service-description records and check provenance.",
+      "expected_terms": [
+        "service",
+        "description",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "contract"
+      ]
+    },
+    {
+      "id": "Q040",
+      "query": "metadata quality",
+      "intent": "Check quality-signal wording on a visible record.",
+      "expected_terms": [
+        "metadata",
+        "quality",
+        "source"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "quality"
+      ]
+    },
+    {
+      "id": "Q041",
+      "query": "planning applications",
+      "intent": "Find local planning application data.",
+      "expected_terms": [
+        "planning",
+        "applications",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "local-government",
+        "planning"
+      ]
+    },
+    {
+      "id": "Q042",
+      "query": "Rugby",
+      "intent": "Find Rugby-related records and avoid stale Ordnance Survey context.",
+      "expected_terms": [
+        "Rugby",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "search-regression"
+      ]
+    },
+    {
+      "id": "Q043",
+      "query": "Scarborough Rugby Club",
+      "intent": "Inspect a specific Rugby-related planning record.",
+      "expected_terms": [
+        "Scarborough",
+        "Rugby",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "planning",
+        "search-regression"
+      ]
+    },
+    {
+      "id": "Q044",
+      "query": "Wigan planning applications",
+      "intent": "Find Wigan planning records and inspect source metadata.",
+      "expected_terms": [
+        "Wigan",
+        "planning",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q045",
+      "query": "Birmingham planning",
+      "intent": "Find Birmingham planning records if present and check no stale context.",
+      "expected_terms": [
+        "Birmingham",
+        "planning",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q046",
+      "query": "Leeds planning",
+      "intent": "Find Leeds planning records if present and check no stale context.",
+      "expected_terms": [
+        "Leeds",
+        "planning",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q047",
+      "query": "Manchester planning",
+      "intent": "Find Manchester planning records if present and check no stale context.",
+      "expected_terms": [
+        "Manchester",
+        "planning",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q048",
+      "query": "Bristol planning",
+      "intent": "Find Bristol planning records if present and check no stale context.",
+      "expected_terms": [
+        "Bristol",
+        "planning",
+        "resource"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q049",
+      "query": "open data portal",
+      "intent": "Find open-data-portal records and inspect host/resource metadata.",
+      "expected_terms": [
+        "open data",
+        "portal",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "portal"
+      ]
+    },
+    {
+      "id": "Q050",
+      "query": "geospatial portal",
+      "intent": "Find geospatial portal records and inspect host metadata.",
+      "expected_terms": [
+        "geospatial",
+        "portal",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "geospatial"
+      ]
+    },
+    {
+      "id": "Q051",
+      "query": "flood risk zones",
+      "intent": "Find flood-risk zone datasets.",
+      "expected_terms": [
+        "flood",
+        "risk",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment",
+        "flood"
+      ]
+    },
+    {
+      "id": "Q052",
+      "query": "river levels",
+      "intent": "Find river-level records and inspect publisher/resource metadata.",
+      "expected_terms": [
+        "river",
+        "level",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment"
+      ]
+    },
+    {
+      "id": "Q053",
+      "query": "air quality",
+      "intent": "Find air-quality datasets and inspect formats.",
+      "expected_terms": [
+        "air quality",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment"
+      ]
+    },
+    {
+      "id": "Q054",
+      "query": "noise mapping",
+      "intent": "Find noise-map datasets and inspect metadata.",
+      "expected_terms": [
+        "noise",
+        "mapping",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment"
+      ]
+    },
+    {
+      "id": "Q055",
+      "query": "waste sites",
+      "intent": "Find waste-site datasets and inspect resources.",
+      "expected_terms": [
+        "waste",
+        "site",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment"
+      ]
+    },
+    {
+      "id": "Q056",
+      "query": "protected sites",
+      "intent": "Find protected-site environmental datasets.",
+      "expected_terms": [
+        "protected",
+        "site",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "environment"
+      ]
+    },
+    {
+      "id": "Q057",
+      "query": "green belt",
+      "intent": "Find green-belt datasets and inspect publisher/source metadata.",
+      "expected_terms": [
+        "green belt",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "planning",
+        "environment"
+      ]
+    },
+    {
+      "id": "Q058",
+      "query": "listed buildings",
+      "intent": "Find listed-building datasets.",
+      "expected_terms": [
+        "listed",
+        "building",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "heritage"
+      ]
+    },
+    {
+      "id": "Q059",
+      "query": "conservation areas",
+      "intent": "Find conservation-area datasets.",
+      "expected_terms": [
+        "conservation",
+        "area",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "heritage"
+      ]
+    },
+    {
+      "id": "Q060",
+      "query": "tree preservation orders",
+      "intent": "Find TPO datasets and inspect metadata.",
+      "expected_terms": [
+        "tree",
+        "preservation",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "planning"
+      ]
+    },
+    {
+      "id": "Q061",
+      "query": "road network",
+      "intent": "Find road-network datasets.",
+      "expected_terms": [
+        "road",
+        "network",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q062",
+      "query": "traffic counts",
+      "intent": "Find traffic-count datasets and inspect publisher/source metadata.",
+      "expected_terms": [
+        "traffic",
+        "count",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q063",
+      "query": "bus stops",
+      "intent": "Find bus-stop datasets.",
+      "expected_terms": [
+        "bus",
+        "stop",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q064",
+      "query": "rail stations",
+      "intent": "Find rail-station datasets.",
+      "expected_terms": [
+        "rail",
+        "station",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q065",
+      "query": "cycle routes",
+      "intent": "Find cycle-route datasets.",
+      "expected_terms": [
+        "cycle",
+        "route",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q066",
+      "query": "parking",
+      "intent": "Find parking datasets and inspect source metadata.",
+      "expected_terms": [
+        "parking",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport",
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q067",
+      "query": "electric vehicle charging",
+      "intent": "Find EV charging datasets.",
+      "expected_terms": [
+        "electric",
+        "charging",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport",
+        "energy"
+      ]
+    },
+    {
+      "id": "Q068",
+      "query": "road accidents",
+      "intent": "Find road-accident datasets and inspect metadata.",
+      "expected_terms": [
+        "accident",
+        "road",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q069",
+      "query": "speed limits",
+      "intent": "Find speed-limit datasets.",
+      "expected_terms": [
+        "speed",
+        "limit",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport"
+      ]
+    },
+    {
+      "id": "Q070",
+      "query": "public rights of way",
+      "intent": "Find public-rights-of-way datasets.",
+      "expected_terms": [
+        "rights of way",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "transport",
+        "geography"
+      ]
+    },
+    {
+      "id": "Q071",
+      "query": "crime",
+      "intent": "Find crime datasets and inspect publisher/source metadata.",
+      "expected_terms": [
+        "crime",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "justice"
+      ]
+    },
+    {
+      "id": "Q072",
+      "query": "courts",
+      "intent": "Find court datasets and inspect metadata.",
+      "expected_terms": [
+        "court",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "justice"
+      ]
+    },
+    {
+      "id": "Q073",
+      "query": "prisons",
+      "intent": "Find prison datasets and inspect metadata.",
+      "expected_terms": [
+        "prison",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 0,
+      "tags": [
+        "justice"
+      ]
+    },
+    {
+      "id": "Q074",
+      "query": "police force areas",
+      "intent": "Find police-force-area datasets.",
+      "expected_terms": [
+        "police",
+        "area",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "justice",
+        "geography"
+      ]
+    },
+    {
+      "id": "Q075",
+      "query": "fire stations",
+      "intent": "Find fire-station datasets.",
+      "expected_terms": [
+        "fire",
+        "station",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "emergency"
+      ]
+    },
+    {
+      "id": "Q076",
+      "query": "schools performance",
+      "intent": "Find schools-performance records.",
+      "expected_terms": [
+        "school",
+        "performance",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education"
+      ]
+    },
+    {
+      "id": "Q077",
+      "query": "school locations",
+      "intent": "Find school-location datasets.",
+      "expected_terms": [
+        "school",
+        "location",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education",
+        "geography"
+      ]
+    },
+    {
+      "id": "Q078",
+      "query": "early years",
+      "intent": "Find early-years datasets.",
+      "expected_terms": [
+        "early years",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education"
+      ]
+    },
+    {
+      "id": "Q079",
+      "query": "apprenticeships",
+      "intent": "Find apprenticeship datasets.",
+      "expected_terms": [
+        "apprenticeship",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education"
+      ]
+    },
+    {
+      "id": "Q080",
+      "query": "student loans",
+      "intent": "Find student-loan datasets.",
+      "expected_terms": [
+        "student",
+        "loan",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "education"
+      ]
+    },
+    {
+      "id": "Q081",
+      "query": "hospital",
+      "intent": "Find hospital datasets and inspect metadata.",
+      "expected_terms": [
+        "hospital",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "health"
+      ]
+    },
+    {
+      "id": "Q082",
+      "query": "GP practices",
+      "intent": "Find GP practice datasets.",
+      "expected_terms": [
+        "GP",
+        "practice",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "health"
+      ]
+    },
+    {
+      "id": "Q083",
+      "query": "dentists",
+      "intent": "Find dentist datasets.",
+      "expected_terms": [
+        "dentist",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "health"
+      ]
+    },
+    {
+      "id": "Q084",
+      "query": "pharmacies",
+      "intent": "Find pharmacy datasets.",
+      "expected_terms": [
+        "pharmacy",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "health"
+      ]
+    },
+    {
+      "id": "Q085",
+      "query": "care homes",
+      "intent": "Find care-home datasets.",
+      "expected_terms": [
+        "care",
+        "home",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "health"
+      ]
+    },
+    {
+      "id": "Q086",
+      "query": "births",
+      "intent": "Find births statistics datasets.",
+      "expected_terms": [
+        "birth",
+        "statistics",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "statistics"
+      ]
+    },
+    {
+      "id": "Q087",
+      "query": "deaths",
+      "intent": "Find deaths statistics datasets.",
+      "expected_terms": [
+        "death",
+        "statistics",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "statistics"
+      ]
+    },
+    {
+      "id": "Q088",
+      "query": "population estimates",
+      "intent": "Find population-estimate datasets.",
+      "expected_terms": [
+        "population",
+        "estimate",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "statistics"
+      ]
+    },
+    {
+      "id": "Q089",
+      "query": "house prices",
+      "intent": "Find house-price datasets.",
+      "expected_terms": [
+        "house",
+        "price",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "housing"
+      ]
+    },
+    {
+      "id": "Q090",
+      "query": "energy performance certificates",
+      "intent": "Find EPC datasets.",
+      "expected_terms": [
+        "energy",
+        "performance",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "housing",
+        "energy"
+      ]
+    },
+    {
+      "id": "Q091",
+      "query": "companies register",
+      "intent": "Find company-register datasets.",
+      "expected_terms": [
+        "company",
+        "register",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "business"
+      ]
+    },
+    {
+      "id": "Q092",
+      "query": "charity register",
+      "intent": "Find charity-register datasets.",
+      "expected_terms": [
+        "charity",
+        "register",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "business"
+      ]
+    },
+    {
+      "id": "Q093",
+      "query": "public spending",
+      "intent": "Find public-spending datasets.",
+      "expected_terms": [
+        "spending",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance"
+      ]
+    },
+    {
+      "id": "Q094",
+      "query": "procurement contracts",
+      "intent": "Find procurement/contract datasets.",
+      "expected_terms": [
+        "contract",
+        "procurement",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance"
+      ]
+    },
+    {
+      "id": "Q095",
+      "query": "tax receipts",
+      "intent": "Find tax-receipt datasets.",
+      "expected_terms": [
+        "tax",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance"
+      ]
+    },
+    {
+      "id": "Q096",
+      "query": "business rates",
+      "intent": "Find business-rates datasets.",
+      "expected_terms": [
+        "business",
+        "rates",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance",
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q097",
+      "query": "council tax",
+      "intent": "Find council-tax datasets.",
+      "expected_terms": [
+        "council tax",
+        "resource",
+        "publisher"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance",
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q098",
+      "query": "local government spending",
+      "intent": "Find local-government spending records.",
+      "expected_terms": [
+        "local government",
+        "spending",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "finance",
+        "local-government"
+      ]
+    },
+    {
+      "id": "Q099",
+      "query": "data.gov.uk",
+      "intent": "Check data.gov.uk source/provenance display.",
+      "expected_terms": [
+        "data.gov.uk",
+        "source",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "provenance"
+      ]
+    },
+    {
+      "id": "Q100",
+      "query": "publisher facet",
+      "intent": "Check publisher facet clarity and selected-value display.",
+      "expected_terms": [
+        "publisher",
+        "facet",
+        "resource"
+      ],
+      "expected_min_results": 1,
+      "tags": [
+        "facet"
+      ]
+    }
+  ]
+}
