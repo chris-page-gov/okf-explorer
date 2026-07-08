@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError
-from urllib.parse import urlencode, urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
 # datetime.UTC is Python 3.11+; keep the script runnable on Python 3.10.
@@ -152,6 +152,28 @@ ACRONYMS = {
     "wmts": "WMTS",
 }
 
+# Query-string keys that commonly carry credentials in harvested metadata;
+# redact_url() drops any pair whose key (case-insensitively) matches one of these.
+CREDENTIAL_QUERY_PARAMS = frozenset(
+    {
+        "password",
+        "passwd",
+        "pwd",
+        "token",
+        "access_token",
+        "apikey",
+        "api_key",
+        "key",
+        "secret",
+        "client_secret",
+        "login",
+        "auth",
+        "authorization",
+        "sig",
+        "signature",
+    }
+)
+
 
 @dataclass(frozen=True)
 class SourceRow:
@@ -205,6 +227,31 @@ def host(value: str) -> str:
         return ""
     parsed = urlparse(value if re.match(r"^[a-z]+://", value, re.I) else f"https://{value}")
     return parsed.netloc.lower().removeprefix("www.")
+
+
+def safe_url(value: Any) -> str:
+    """Return value stripped if it looks like an http(s) URL, else "" (drops javascript:, data:, mailto:, ...)."""
+    text = str(value or "").strip()
+    return text if re.match(r"^https?://", text, re.I) else ""
+
+
+def redact_url(url: str) -> tuple[str, int]:
+    """Strip credential-shaped query parameters from a harvested URL.
+
+    Returns (url, 0) unchanged (byte-identical) when there is no query string or
+    nothing to redact; otherwise returns a rebuilt URL and the number of query
+    parameters that were dropped.
+    """
+    split = urlsplit(url)
+    if not split.query:
+        return url, 0
+    pairs = parse_qsl(split.query, keep_blank_values=True)
+    kept = [(key, value) for key, value in pairs if key.lower() not in CREDENTIAL_QUERY_PARAMS]
+    dropped = len(pairs) - len(kept)
+    if dropped == 0:
+        return url, 0
+    rebuilt = urlunsplit((split.scheme, split.netloc, split.path, urlencode(kept), split.fragment))
+    return rebuilt, dropped
 
 
 def now_utc() -> str:
@@ -665,7 +712,36 @@ class CorpusBuilder:
         self.resources: list[dict[str, Any]] = []
         self.relationships: list[dict[str, Any]] = []
         self.seen_records: set[str] = set()
-        self.seen_endpoint_urls: set[str] = set()
+        # Keyed by (record_type, canonical_url) so dedup is cross-adapter but never
+        # collapses different record types that happen to share a canonical URL.
+        self.seen_endpoint_urls: set[tuple[str, str]] = set()
+        self.credential_params_redacted = 0
+        self.unsafe_urls_dropped = 0
+        self.duplicate_slugs_dropped = 0
+        self.duplicate_endpoints_skipped = 0
+
+    def clean_url(self, value: Any) -> str:
+        """Sanitize a harvested URL for storage: reject unsafe schemes, then redact credential-shaped query params."""
+        url = safe_url(value)
+        if not url:
+            if str(value or "").strip():
+                self.unsafe_urls_dropped += 1
+            return ""
+        cleaned, dropped = redact_url(url)
+        if dropped:
+            self.credential_params_redacted += dropped
+        return cleaned
+
+    def register_endpoint(self, record_type: str, canonical: str) -> bool:
+        """Track a canonical endpoint URL within a record type; return False if it was already seen."""
+        if not canonical:
+            return True
+        key = (record_type, canonical)
+        if key in self.seen_endpoint_urls:
+            self.duplicate_endpoints_skipped += 1
+            return False
+        self.seen_endpoint_urls.add(key)
+        return True
 
     def add_relationship(self, source: str, target: str, kind: str, **extra: Any) -> None:
         row = {"source": source, "target": target, "kind": kind}
@@ -756,6 +832,8 @@ class CorpusBuilder:
         area_served: str = "not-specified",
     ) -> dict[str, Any] | None:
         if slug in self.seen_records:
+            self.duplicate_slugs_dropped += 1
+            print(f"warning: duplicate slug {slug!r} dropped (source_adapter={source_adapter!r})", file=sys.stderr)
             return None
         self.seen_records.add(slug)
         protocols = protocols or classify_styles_from_text(title, description, url, documentation)
@@ -874,7 +952,9 @@ class CorpusBuilder:
 
 def add_api_catalogue_records(builder: CorpusBuilder, rows: list[SourceRow], source_url: str, source_hash: str) -> None:
     for source_row in rows:
-        row = source_row.raw
+        row = dict(source_row.raw)
+        row["url"] = builder.clean_url(row.get("url", ""))
+        row["documentation"] = builder.clean_url(row.get("documentation", ""))
         styles = classify_styles(row)
         topics = classify_topics(row)
         access_model = classify_access(row)
@@ -995,7 +1075,7 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
             observed_at=builder.observed_at,
             extra={"ckan_package_id": package.get("id"), "ckan_package_name": package.get("name")},
         )
-        package_url = package.get("url") or f"https://www.data.gov.uk/dataset/{package.get('name', '')}"
+        package_url = builder.clean_url(package.get("url")) or f"https://www.data.gov.uk/dataset/{package.get('name', '')}"
         data_product = builder.add_record(
             slug=package_slug,
             title=package.get("title") or package.get("name") or package_slug,
@@ -1036,12 +1116,10 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
         for resource in package.get("resources", []):
             if not api_like_resource(resource):
                 continue
-            endpoint_url = str(resource.get("url") or "")
+            endpoint_url = builder.clean_url(resource.get("url"))
             canonical = canonical_url(endpoint_url)
-            if canonical and canonical in builder.seen_endpoint_urls:
+            if not builder.register_endpoint("Data Access API Endpoint", canonical):
                 continue
-            if canonical:
-                builder.seen_endpoint_urls.add(canonical)
             fmt = str(resource.get("format") or "")
             protocol = protocol_for_resource(fmt, endpoint_url)
             endpoint_slug = slugify(f"data-gov-uk-{resource.get('id') or endpoint_url}", "data-access-endpoint")
@@ -1140,6 +1218,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
     for document_url, document in sorted(documents.items()):
         if document_url == canonical_url(root_url):
             continue
+        document_url = builder.clean_url(document_url)
         title = document.get("title") or document_url
         links = document.get("links", [])
         service_links = [link for link in links if link.get("rel") == "service-endpoint"]
@@ -1147,7 +1226,8 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
         if not service_links and not doc_links:
             continue
         slug = os_product_slug(document_url, title)
-        docs_url = next((str(link.get("href")) for link in doc_links if link.get("href")), "https://docs.os.uk/welcome")
+        raw_docs_url = next((str(link.get("href")) for link in doc_links if link.get("href")), "")
+        docs_url = builder.clean_url(raw_docs_url) or "https://docs.os.uk/welcome"
         protocols = sorted({protocol_for_resource(str(link.get("type") or ""), str(link.get("href") or "")) for link in service_links}) or ["REST/HTTP"]
         provenance = source_provenance(
             source="Ordnance Survey API link document",
@@ -1181,7 +1261,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
             continue
         builder.add_relationship(record_route(slug), "dataset/ordnance-survey-api-portal", "listed in provider portal")
         for link in service_links:
-            href = str(link.get("href") or "")
+            href = builder.clean_url(link.get("href"))
             link_type = link.get("type")
             link_title = str(link.get("title") or href)
             protocol = protocol_for_resource(" ".join(link_type) if isinstance(link_type, list) else str(link_type or ""), href)
@@ -1226,7 +1306,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
                 dataset_slug=slug,
                 kind="documentation",
                 title=str(link.get("title") or "Documentation"),
-                url=str(link.get("href") or ""),
+                url=builder.clean_url(link.get("href")),
                 fmt="Documentation",
                 provenance=provenance,
                 description=str(link.get("description") or ""),
@@ -1328,8 +1408,8 @@ def add_ons_records(
         if not dataset_id:
             continue
         slug = slugify(f"ons-dataset-{dataset_id}", "ons-dataset")
-        self_link = dataset.get("links", {}).get("self", {}).get("href") or f"{root_url}/datasets/{dataset_id}"
-        latest_version = dataset.get("links", {}).get("latest_version", {}).get("href", "")
+        self_link = builder.clean_url(dataset.get("links", {}).get("self", {}).get("href")) or f"{root_url}/datasets/{dataset_id}"
+        latest_version = builder.clean_url(dataset.get("links", {}).get("latest_version", {}).get("href", ""))
         topics_for_dataset = classify_topics_from_text(dataset.get("title", ""), dataset.get("description", ""), "ONS statistics")
         data_product = builder.add_record(
             slug=slug,
@@ -1392,7 +1472,7 @@ def add_ons_records(
         if not slug_value:
             continue
         slug = slugify(f"ons-topic-{slug_value}", "ons-topic")
-        topic_url = topic.get("links", {}).get("self", {}).get("href") or f"{root_url}/topics/{topic.get('id', '')}"
+        topic_url = builder.clean_url(topic.get("links", {}).get("self", {}).get("href")) or f"{root_url}/topics/{topic.get('id', '')}"
         schema = builder.add_record(
             slug=slug,
             title=topic.get("title") or str(slug_value),
@@ -1424,7 +1504,8 @@ def add_ons_records(
         if not code_id:
             continue
         slug = slugify(f"ons-code-list-{code_id}", "ons-code-list")
-        code_url = str(self_link.get("href") or f"{root_url}/code-lists/{code_id}").replace("http://api.beta.ons.gov.uk", "https://api.beta.ons.gov.uk")
+        code_url = builder.clean_url(self_link.get("href")) or f"{root_url}/code-lists/{code_id}"
+        code_url = code_url.replace("http://api.beta.ons.gov.uk", "https://api.beta.ons.gov.uk")
         schema = builder.add_record(
             slug=slug,
             title=f"ONS code list: {code_id}",
@@ -1725,6 +1806,12 @@ def build_corpus(
         "providers": len(publishers),
         **canonical_counts(records),
     }
+    warnings = {
+        "credential_parameters_redacted": builder.credential_params_redacted,
+        "unsafe_urls_dropped": builder.unsafe_urls_dropped,
+        "duplicate_slugs_dropped": builder.duplicate_slugs_dropped,
+        "duplicate_endpoints_skipped": builder.duplicate_endpoints_skipped,
+    }
     latest_date = max((str(record.get("timestamp") or record.get("metadata_modified") or "")[:10] for record in records if record.get("timestamp") or record.get("metadata_modified")), default="1970-01-01")
     generated_at = f"{latest_date}T00:00:00Z"
     analysis = {
@@ -1745,6 +1832,7 @@ def build_corpus(
             ],
         },
         "canonical_counts": count_values,
+        "warnings": warnings,
         "graph_overview": {"nodes": graph_nodes, "edges": graph_edges},
         "timeline_overview": {
             "buckets": [
@@ -1811,6 +1899,7 @@ def build_corpus(
         "title": "UK Government APIs",
         "generated_at": generated_at,
         "counts": count_values,
+        "warnings": warnings,
         "top_publishers": top_publishers,
         "recent_datasets": search_docs(recent),
         "format_counts": facets["protocol"],

@@ -43,7 +43,9 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         corpus = self.build_fixture_corpus()
         counts = corpus["descriptor"]["counts"]
 
-        self.assertEqual(counts["declared_api_products"], 1)
+        # api_catalogue.csv carries two rows: the original payments API and a
+        # second row used to exercise javascript: documentation redaction below.
+        self.assertEqual(counts["declared_api_products"], 2)
         self.assertGreaterEqual(counts["provider_native_api_products"], 2)
         self.assertEqual(counts["data_access_endpoints"], 1)
         self.assertEqual(counts["data_products"], 2)
@@ -80,6 +82,101 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn("confidence", facets)
         self.assertIn("data_gov_uk_ckan", {row["value"] for row in facets["source_adapter"]})
         self.assertIn("Data Access API Endpoint", {row["value"] for row in facets["record_type"]})
+
+    def test_redact_url_strips_password_param_and_reports_count(self):
+        cleaned, dropped = builder_module.redact_url("https://example.gov.uk/api?password=hunter2&format=json")
+
+        self.assertEqual(dropped, 1)
+        self.assertNotIn("password=", cleaned)
+        self.assertIn("format=json", cleaned)
+
+    def test_redact_url_strips_multiple_credential_params(self):
+        cleaned, dropped = builder_module.redact_url("https://example.gov.uk/api?token=abc&login=xyz&password=hunter2")
+
+        self.assertEqual(dropped, 3)
+        self.assertEqual(cleaned, "https://example.gov.uk/api")
+
+    def test_redact_url_leaves_url_without_query_unchanged(self):
+        url = "https://example.gov.uk/api"
+        cleaned, dropped = builder_module.redact_url(url)
+
+        self.assertEqual(dropped, 0)
+        self.assertEqual(cleaned, url)
+
+    def test_redact_url_preserves_non_credential_params(self):
+        url = "https://example.gov.uk/api?format=json&limit=10"
+        cleaned, dropped = builder_module.redact_url(url)
+
+        self.assertEqual(dropped, 0)
+        self.assertEqual(cleaned, url)
+
+    def test_safe_url_rejects_javascript_scheme(self):
+        self.assertEqual(builder_module.safe_url("javascript:alert(1)"), "")
+
+    def test_safe_url_rejects_non_http_schemes(self):
+        self.assertEqual(builder_module.safe_url("ftp://example.gov.uk/file.csv"), "")
+
+    def test_safe_url_accepts_https(self):
+        url = "https://example.gov.uk/api"
+        self.assertEqual(builder_module.safe_url(url), url)
+
+    def test_safe_url_strips_whitespace(self):
+        self.assertEqual(builder_module.safe_url("  https://example.gov.uk/api  "), "https://example.gov.uk/api")
+
+    def test_plain_text_strips_entity_encoded_script_tags(self):
+        result = builder_module.plain_text("&lt;script&gt;x&lt;/script&gt;")
+
+        self.assertNotIn("<", result)
+
+    def test_plain_text_removes_literal_backslash_n_sequences(self):
+        result = builder_module.plain_text("line one\\nline two\\r\\nline three")
+
+        self.assertNotIn("\\n", result)
+        self.assertNotIn("\\r\\n", result)
+
+    def test_plain_text_collapses_whitespace(self):
+        result = builder_module.plain_text("too   many\n\nspaces\there")
+
+        self.assertEqual(result, "too many spaces here")
+
+    def test_rows_from_csv_tolerates_ragged_rows_with_extra_cells(self):
+        csv_text = (
+            "dateAdded,dateUpdated,url,name,description,documentation,license,maintainer,areaServed,startDate,endDate,provider\n"
+            "2024-01-01,2024-06-01,https://api.example.gov.uk/ragged,Ragged Row API,desc,doc,lic,maint,UK,2024-01-01,,Ragged Dept,extra-cell-1,extra-cell-2\n"
+        )
+
+        source_hash, rows = builder_module.rows_from_csv("file://ragged.csv", csv_text.encode("utf-8"))
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].raw.get("name"), "Ragged Row API")
+        self.assertEqual(rows[0].raw.get("provider"), "Ragged Dept")
+
+    def test_harvested_url_redaction_and_safety_warnings_surface_in_overview(self):
+        corpus = self.build_fixture_corpus()
+
+        all_urls = []
+        for record in corpus["records"]:
+            all_urls.append(str(record.get("url", "")))
+            all_urls.append(str(record.get("documentation", "")))
+        for resource in corpus["resources"]:
+            all_urls.append(str(resource.get("url", "")))
+        joined = " ".join(all_urls)
+
+        self.assertNotIn("password=", joined)
+        self.assertNotIn("login=", joined)
+        self.assertNotIn("token=", joined)
+
+        javascript_row_records = [record for record in corpus["records"] if record["name"] == "example-department-example-records-api"]
+        self.assertEqual(len(javascript_row_records), 1)
+        self.assertEqual(javascript_row_records[0]["documentation"], "")
+        self.assertEqual(javascript_row_records[0]["url"], "https://api.example.gov.uk/records")
+
+        warnings = corpus["overview"]["warnings"]
+        self.assertEqual(warnings["credential_parameters_redacted"], 3)
+        self.assertEqual(warnings["unsafe_urls_dropped"], 1)
+        self.assertEqual(warnings["duplicate_slugs_dropped"], 0)
+        self.assertEqual(warnings["duplicate_endpoints_skipped"], 1)
+        self.assertEqual(corpus["analysis"]["warnings"], warnings)
 
 
 if __name__ == "__main__":
