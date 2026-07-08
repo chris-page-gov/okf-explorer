@@ -1,0 +1,39 @@
+---
+type: "Capability Document"
+title: "Historic Parks and Gardens - Local Plan Policy EE6 (download as XLS) contract"
+description: "Machine-readable or service-description contract inferred for Historic Parks and Gardens - Local Plan Policy EE6 (download as XLS) from public metadata."
+resource: "https://www.data.gov.uk/dataset/historic-parks-and-gardens-local-plan-policy-be8"
+timestamp: "2018-08-07T15:01:57.540357"
+tags: "geospatial, government-services, planning-and-property, runnymede-borough-council, wfs"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Historic Parks and Gardens - Local Plan Policy EE6 (download as XLS) contract
+
+Machine-readable or service-description contract inferred for Historic Parks and Gardens - Local Plan Policy EE6 (download as XLS) from public metadata.
+
+## Metadata
+
+- Type: Capability Document
+- Provider: [Runnymede Borough Council](../organisations/runnymede-borough-council.md)
+- Canonical provider: Runnymede Borough Council
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: capability-document
+- Quality band: high
+
+- Endpoint: https://www.data.gov.uk/dataset/historic-parks-and-gardens-local-plan-policy-be8
+- Documentation: https://www.data.gov.uk/dataset/historic-parks-and-gardens-local-plan-policy-be8
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://ckan.publishing.service.gov.uk/api/3/action/package_search?fq=res_format:("WMS" OR "WFS" OR "WMTS" OR "WCS" OR "OGC API - Features" OR "OGC WFS" OR "OGC WMS" OR "ogc wfs" OR "ogc wms" OR "ArcGIS GeoServices REST API" OR "arcgis geoservices rest api" OR "Esri REST" OR "ESRI REST API" OR "ESRI Rest API" OR "esri rest api" OR "SPARQL" OR "API" OR "api")

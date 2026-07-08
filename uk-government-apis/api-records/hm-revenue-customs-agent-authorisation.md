@@ -1,0 +1,44 @@
+---
+type: "API Product"
+title: "Agent Authorisation"
+description: "This API allows tax agents to request authorisation to act on a client's behalf for a specific Making Tax Digital (MTD) tax service and have the option to cancel the authorisation request. The API also allows the agent to check the status of authorisations already requested and query active or inactive relationships. The sandbox endpoint is `https://test-api.service.hmrc.gov.uk`."
+resource: "https://api.service.hmrc.gov.uk"
+timestamp: "2020-09-02"
+tags: "government-services, hm-revenue-customs, rest-http, tax-and-customs"
+confidence: "declared"
+source_adapter: "api_gov_uk_catalogue"
+---
+
+# Agent Authorisation
+
+This API allows tax agents to request authorisation to act on a client's behalf for a specific Making Tax Digital (MTD) tax service and have the option to cancel the authorisation request. The API also allows the agent to check the status of authorisations already requested and query active or inactive relationships. The sandbox endpoint is `https://test-api.service.hmrc.gov.uk`.
+
+## Metadata
+
+- Type: API Product
+- Provider: [HM Revenue Customs](../organisations/hm-revenue-customs.md)
+- Canonical provider: HM Revenue Customs
+- Source adapter: api_gov_uk_catalogue
+- Source tier: declared_api_catalogue
+- Confidence: declared
+- Assurance status: declared
+- Access model: unknown
+- Contract status: documentation-only
+- Quality band: medium
+
+- Endpoint: https://api.service.hmrc.gov.uk
+- Documentation: https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/agent-authorisation-api
+
+## Credential Requirements
+
+- unknown: secret value stored in OKF = False
+
+## Sample Policy
+
+- Mode: static-placeholder
+- Live calls enabled: False
+
+## Provenance
+
+- Source: GOV.UK API Catalogue CSV
+- Source URL: https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv

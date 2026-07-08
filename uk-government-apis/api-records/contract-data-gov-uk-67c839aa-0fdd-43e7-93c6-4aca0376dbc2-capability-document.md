@@ -1,0 +1,39 @@
+---
+type: "Capability Document"
+title: "Geoserver shapefile download service contract"
+description: "Machine-readable or service-description contract inferred for Geoserver shapefile download service from public metadata."
+resource: "https://www.data.gov.uk/dataset/ceremonial-county-boundaries-of-england"
+timestamp: "2014-10-29T15:00:07.073381"
+tags: "department-for-communities-and-local-government, geospatial, government-services, wfs"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Geoserver shapefile download service contract
+
+Machine-readable or service-description contract inferred for Geoserver shapefile download service from public metadata.
+
+## Metadata
+
+- Type: Capability Document
+- Provider: [Ministry of Housing, Communities and Local Government](../organisations/department-for-communities-and-local-government.md)
+- Canonical provider: Ministry of Housing Communities And Local Government
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: observed
+- Access model: anonymous
+- Contract status: capability-document
+- Quality band: high
+
+- Endpoint: https://www.data.gov.uk/dataset/ceremonial-county-boundaries-of-england
+- Documentation: https://www.data.gov.uk/dataset/ceremonial-county-boundaries-of-england
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://ckan.publishing.service.gov.uk/api/3/action/package_search?fq=res_format:("WMS" OR "WFS" OR "WMTS" OR "WCS" OR "OGC API - Features" OR "OGC WFS" OR "OGC WMS" OR "ogc wfs" OR "ogc wms" OR "ArcGIS GeoServices REST API" OR "arcgis geoservices rest api" OR "Esri REST" OR "ESRI REST API" OR "ESRI Rest API" OR "esri rest api" OR "SPARQL" OR "API" OR "api")

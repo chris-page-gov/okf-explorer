@@ -1,0 +1,44 @@
+---
+type: "API Operation"
+title: "ONS Beta API: List dataset editions"
+description: "Template operation for the ONS Beta API: List dataset editions."
+resource: "https://api.beta.ons.gov.uk/v1/datasets/{dataset_id}/editions"
+timestamp: ""
+tags: "office-for-national-statistics, population-and-statistics, rest-http"
+confidence: "declared"
+source_adapter: "ons_beta_api"
+---
+
+# ONS Beta API: List dataset editions
+
+Template operation for the ONS Beta API: List dataset editions.
+
+## Metadata
+
+- Type: API Operation
+- Provider: [Office for National Statistics](../organisations/office-for-national-statistics.md)
+- Canonical provider: Office For National Statistics
+- Source adapter: ons_beta_api
+- Source tier: provider_native_api
+- Confidence: declared
+- Assurance status: assured
+- Access model: anonymous
+- Contract status: service-description
+- Quality band: medium
+
+- Endpoint: https://api.beta.ons.gov.uk/v1/datasets/{dataset_id}/editions
+- Documentation: https://developer.ons.gov.uk/
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Sample Policy
+
+- Mode: static-placeholder
+- Live calls enabled: False
+
+## Provenance
+
+- Source: ONS Beta API
+- Source URL: https://api.beta.ons.gov.uk/v1

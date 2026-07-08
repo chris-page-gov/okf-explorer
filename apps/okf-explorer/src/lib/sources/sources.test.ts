@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { baseUrlFor, fetchJson, MAX_JSON_BYTES, resolveUrl } from './fetch';
+import { baseUrlFor, fetchJson, MAX_JSON_BYTES, readResponseText, resolveUrl } from './fetch';
 import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
@@ -63,10 +63,37 @@ describe('fetch helpers', () => {
       status: 200,
       statusText: 'OK',
       headers: { get: (name: string) => (name.toLowerCase() === 'content-length' ? String(MAX_JSON_BYTES) : null) },
-      json: async () => ({ ok: true })
+      text: async () => '{"ok":true}'
     } as unknown as Response;
     vi.stubGlobal('fetch', vi.fn(async () => atCap));
     await expect(fetchJson<{ ok: boolean }>('https://example.test/atcap.json')).resolves.toEqual({ ok: true });
+  });
+
+  it('rejects streamed responses that exceed the byte cap without content-length', async () => {
+    const response = new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{"ok":'));
+          controller.enqueue(new TextEncoder().encode('"too large"}'));
+          controller.close();
+        }
+      })
+    );
+
+    await expect(readResponseText(response, 'https://example.test/chunked.json', 8)).rejects.toThrow('response too large');
+  });
+
+  it('reads streamed responses within the byte cap', async () => {
+    const response = new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{"ok":true}'));
+          controller.close();
+        }
+      })
+    );
+
+    await expect(readResponseText(response, 'https://example.test/chunked.json', 64)).resolves.toBe('{"ok":true}');
   });
 });
 

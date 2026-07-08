@@ -1,0 +1,39 @@
+---
+type: "Contract"
+title: "Effects of Taxes and Benefits on Household Income contract"
+description: "Machine-readable or service-description contract inferred for Effects of Taxes and Benefits on Household Income from public metadata."
+resource: "https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics"
+timestamp: "2022-09-16T06:15:01.401Z"
+tags: "office-for-national-statistics, population-and-statistics, rest-http, tax-and-customs"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Effects of Taxes and Benefits on Household Income contract
+
+Machine-readable or service-description contract inferred for Effects of Taxes and Benefits on Household Income from public metadata.
+
+## Metadata
+
+- Type: Contract
+- Provider: [Office for National Statistics](../organisations/office-for-national-statistics.md)
+- Canonical provider: Office For National Statistics
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: dataset-api
+- Quality band: medium
+
+- Endpoint: https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics
+- Documentation: https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://api.beta.ons.gov.uk/v1/datasets

@@ -1,0 +1,39 @@
+---
+type: "Contract"
+title: "National Public Transport Access Nodes (NaPTAN) and National Public Transport Gazetteer (NPTG) API contract"
+description: "Machine-readable or service-description contract inferred for National Public Transport Access Nodes (NaPTAN) and National Public Transport Gazetteer (NPTG) API from public metadata."
+resource: "https://naptan.api.dft.gov.uk/swagger/index.html"
+timestamp: "2022-01-07"
+tags: "department-for-transport, geospatial, population-and-statistics, rest-http, transport"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# National Public Transport Access Nodes (NaPTAN) and National Public Transport Gazetteer (NPTG) API contract
+
+Machine-readable or service-description contract inferred for National Public Transport Access Nodes (NaPTAN) and National Public Transport Gazetteer (NPTG) API from public metadata.
+
+## Metadata
+
+- Type: Contract
+- Provider: [Department for Transport](../organisations/department-for-transport.md)
+- Canonical provider: Department for Transport
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: observed
+- Access model: unknown
+- Contract status: openapi-indicated
+- Quality band: high
+
+- Endpoint: https://naptan.api.dft.gov.uk/swagger/index.html
+- Documentation: https://naptan.api.dft.gov.uk/swagger/index.html
+
+## Credential Requirements
+
+- unknown: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv

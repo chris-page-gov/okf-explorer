@@ -41,19 +41,45 @@ function resolvePath(path: string): string {
 async function fetchJson<T>(url: string): Promise<T> {
   if (!jsonCache.has(url)) {
     const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal ? AbortSignal.timeout(30000) : undefined;
-    const request = fetch(url, { signal }).then((response) => {
+    const request = fetch(url, { signal }).then(async (response) => {
       if (!response.ok) throw new Error(`${url}: ${response.status} ${response.statusText}`);
       const contentLength = response.headers.get('content-length');
       if (contentLength && Number(contentLength) > MAX_JSON_BYTES) {
         throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
       }
-      return response.json() as Promise<T>;
+      return JSON.parse(await readResponseText(response, url)) as T;
     });
     // Drop failed fetches from the cache so transient errors can be retried.
     request.catch(() => jsonCache.delete(url));
     jsonCache.set(url, request);
   }
   return (await jsonCache.get(url)) as T;
+}
+
+async function readResponseText(response: Response, url: string): Promise<string> {
+  if (!response.body) {
+    const text = await response.text();
+    if (new TextEncoder().encode(text).byteLength > MAX_JSON_BYTES) {
+      throw new Error(`${url}: response too large (stream exceeded ${MAX_JSON_BYTES} bytes)`);
+    }
+    return text;
+  }
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let received = 0;
+  let text = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    received += value.byteLength;
+    if (received > MAX_JSON_BYTES) {
+      reader.cancel().catch(() => {});
+      throw new Error(`${url}: response too large (stream exceeded ${MAX_JSON_BYTES} bytes)`);
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  text += decoder.decode();
+  return text;
 }
 
 function tokenize(value: string): string[] {

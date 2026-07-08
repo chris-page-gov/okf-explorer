@@ -1,0 +1,39 @@
+---
+type: "Capability Document"
+title: "LDP contract"
+description: "Machine-readable or service-description contract inferred for LDP from public metadata."
+resource: "https://www.data.gov.uk/dataset/vale_ldp"
+timestamp: "2022-10-04T14:57:15.005748"
+tags: "geospatial, government-services, vale-of-glamorgan-council, wfs"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# LDP contract
+
+Machine-readable or service-description contract inferred for LDP from public metadata.
+
+## Metadata
+
+- Type: Capability Document
+- Provider: [Vale of Glamorgan Council](../organisations/vale-of-glamorgan-council.md)
+- Canonical provider: Vale Of Glamorgan Council
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: capability-document
+- Quality band: high
+
+- Endpoint: https://www.data.gov.uk/dataset/vale_ldp
+- Documentation: https://www.data.gov.uk/dataset/vale_ldp
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://ckan.publishing.service.gov.uk/api/3/action/package_search?fq=res_format:("WMS" OR "WFS" OR "WMTS" OR "WCS" OR "OGC API - Features" OR "OGC WFS" OR "OGC WMS" OR "ogc wfs" OR "ogc wms" OR "ArcGIS GeoServices REST API" OR "arcgis geoservices rest api" OR "Esri REST" OR "ESRI REST API" OR "ESRI Rest API" OR "esri rest api" OR "SPARQL" OR "API" OR "api")

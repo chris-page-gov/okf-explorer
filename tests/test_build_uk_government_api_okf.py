@@ -49,6 +49,7 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertGreaterEqual(counts["provider_native_api_products"], 2)
         self.assertEqual(counts["data_access_endpoints"], 1)
         self.assertEqual(counts["data_products"], 2)
+        self.assertEqual(counts["contracts"], 6)
         self.assertGreaterEqual(counts["operations"], 2)
         self.assertGreaterEqual(counts["schemas"], 2)
         self.assertEqual(counts["api_products"], counts["declared_api_products"] + counts["provider_native_api_products"])
@@ -80,6 +81,10 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn("source_adapter", facets)
         self.assertIn("protocol", facets)
         self.assertIn("confidence", facets)
+        self.assertIn("quality_band", facets)
+        self.assertIn("assurance_status", facets)
+        self.assertIn("relationship_density", facets)
+        self.assertIn("canonical_publisher", facets)
         self.assertIn("data_gov_uk_ckan", {row["value"] for row in facets["source_adapter"]})
         self.assertIn("Data Access API Endpoint", {row["value"] for row in facets["record_type"]})
 
@@ -185,10 +190,37 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertTrue(relationships)
         observed = {row["observed_at"] for row in relationships}
         for row in relationships:
-            self.assertEqual(row["evidence_type"], "harvested_structure")
-            self.assertEqual(row["confidence"], "high")
+            self.assertIn(row["evidence_type"], {"harvested_structure", "contract_signal", "inferred_metadata_match"})
+            self.assertIn(row["confidence"], {"high", "medium"})
             self.assertTrue(row["observed_at"])
         self.assertEqual(len(observed), 1)
+
+    def test_contract_records_markdown_and_crosslinks_are_emitted(self):
+        corpus = self.build_fixture_corpus()
+        records = corpus["records"]
+        relationships = corpus["relationships"]
+        files = builder_module.output_files(corpus)
+
+        self.assertEqual(sum(1 for record in records if record["record_type"] in {"Contract", "Capability Document"}), 6)
+        self.assertTrue(any(row["kind"] == "described by" for row in relationships))
+        self.assertTrue(any(row["kind"] in {"shares endpoint host", "same provider catalogue evidence"} for row in relationships))
+        self.assertIn(Path("index.md"), files)
+        self.assertIn(Path("log.md"), files)
+        self.assertIn(Path("api-records/example-department-example-payments-api.md"), files)
+        self.assertIn(Path("organisations/example-department.md"), files)
+        self.assertNotIn(Path("api-records/data-gov-uk-test-api-dataset.md"), files)
+
+    def test_records_include_credentials_samples_and_derived_facets(self):
+        corpus = self.build_fixture_corpus()
+        operation = next(record for record in corpus["records"] if record["record_type"] == "API Operation")
+        product = next(record for record in corpus["records"] if record["name"] == "example-department-example-payments-api")
+
+        self.assertTrue(product["credential_requirements"])
+        self.assertIn(product["assurance_status"], {"declared", "assured", "observed"})
+        self.assertIn(product["quality_band"], {"high", "medium", "low", "not-assessed"})
+        self.assertIn(product["relationship_density"], {"none", "low", "medium", "high"})
+        self.assertTrue(operation["sample_policy"])
+        self.assertFalse(operation["sample_policy"]["live_calls_enabled"])
 
 
 if __name__ == "__main__":

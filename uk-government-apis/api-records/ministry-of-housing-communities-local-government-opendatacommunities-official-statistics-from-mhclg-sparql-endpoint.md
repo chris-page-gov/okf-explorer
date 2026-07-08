@@ -1,0 +1,44 @@
+---
+type: "API Product"
+title: "OpenDataCommunities (Official statistics from MHCLG) SPARQL endpoint"
+description: "A facility to write and run queries to link and extract data from multiple data sources. Uses the SPARQL 1.1 standard and syntax."
+resource: "https://opendatacommunities.org/sparql"
+timestamp: "2020-11-05"
+tags: "ministry-of-housing-communities-local-government, population-and-statistics, sparql"
+confidence: "declared"
+source_adapter: "api_gov_uk_catalogue"
+---
+
+# OpenDataCommunities (Official statistics from MHCLG) SPARQL endpoint
+
+A facility to write and run queries to link and extract data from multiple data sources. Uses the SPARQL 1.1 standard and syntax.
+
+## Metadata
+
+- Type: API Product
+- Provider: [Ministry of Housing Communities Local Government](../organisations/ministry-of-housing-communities-local-government.md)
+- Canonical provider: Ministry of Housing Communities Local Government
+- Source adapter: api_gov_uk_catalogue
+- Source tier: declared_api_catalogue
+- Confidence: declared
+- Assurance status: declared
+- Access model: unknown
+- Contract status: documentation-only
+- Quality band: medium
+
+- Endpoint: https://opendatacommunities.org/sparql
+- Documentation: https://opendatacommunities.org/help
+
+## Credential Requirements
+
+- unknown: secret value stored in OKF = False
+
+## Sample Policy
+
+- Mode: static-placeholder
+- Live calls enabled: False
+
+## Provenance
+
+- Source: GOV.UK API Catalogue CSV
+- Source URL: https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv

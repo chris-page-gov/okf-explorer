@@ -198,6 +198,32 @@ function retryableStatus(status) {
 
 class ResponseTooLargeError extends Error {}
 
+async function responseTextWithLimit(response, url, maxBytes = MAX_JSON_BYTES) {
+  if (!response.body) {
+    const text = await response.text();
+    if (new TextEncoder().encode(text).byteLength > maxBytes) {
+      throw new ResponseTooLargeError(`${url}: response too large (stream exceeded ${maxBytes} bytes)`);
+    }
+    return text;
+  }
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let received = 0;
+  let text = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    received += value.byteLength;
+    if (received > maxBytes) {
+      reader.cancel().catch(() => {});
+      throw new ResponseTooLargeError(`${url}: response too large (stream exceeded ${maxBytes} bytes)`);
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  text += decoder.decode();
+  return text;
+}
+
 async function loadJson(url) {
   let lastError = "";
   for (let attempt = 0; attempt <= JSON_RETRIES; attempt++) {
@@ -214,7 +240,7 @@ async function loadJson(url) {
           // error and rethrow it immediately from the catch block below.
           throw new ResponseTooLargeError(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
         }
-        return response.json();
+        return JSON.parse(await responseTextWithLimit(response, url));
       }
       lastError = `${url}: ${response.status}`;
       if (!retryableStatus(response.status)) throw new Error(lastError);
