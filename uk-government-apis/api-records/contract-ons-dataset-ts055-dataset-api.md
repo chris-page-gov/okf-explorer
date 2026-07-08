@@ -1,0 +1,39 @@
+---
+type: "Contract"
+title: "Purpose of second address contract"
+description: "Machine-readable or service-description contract inferred for Purpose of second address from public metadata."
+resource: "https://api.beta.ons.gov.uk/v1/datasets/TS055"
+timestamp: "2023-05-24T13:20:21.422Z"
+tags: "geospatial, office-for-national-statistics, planning-and-property, population-and-statistics, rest-http"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Purpose of second address contract
+
+Machine-readable or service-description contract inferred for Purpose of second address from public metadata.
+
+## Metadata
+
+- Type: Contract
+- Provider: [Office for National Statistics](../organisations/office-for-national-statistics.md)
+- Canonical provider: Office For National Statistics
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: dataset-api
+- Quality band: medium
+
+- Endpoint: https://api.beta.ons.gov.uk/v1/datasets/TS055
+- Documentation: https://api.beta.ons.gov.uk/v1/datasets/TS055
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://api.beta.ons.gov.uk/v1/datasets

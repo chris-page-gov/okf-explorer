@@ -12,14 +12,19 @@ import json
 import math
 import re
 import sys
+import time
 import unicodedata
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlencode, urlparse
+from urllib.error import HTTPError
+from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
+
+# datetime.UTC is Python 3.11+; keep the script runnable on Python 3.10.
+UTC = timezone.utc
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "uk-government-apis"
@@ -36,6 +41,9 @@ MAX_SEARCH_NOTES_CHARS = 360
 MAX_SEARCH_CONTEXT_CHARS = 180
 MAX_SEARCH_URL_CHARS = 500
 MAX_RECORD_NOTES_CHARS = 1200
+MARKDOWN_RECORD_TYPES = {"API Product", "Provider API Portal", "API Operation", "Schema", "Contract", "Capability Document"}
+CONTRACT_SOURCE_STATUSES = {"capability-document", "openapi-indicated", "wsdl-indicated", "dataset-api", "code-list", "taxonomy"}
+CONTRACT_PROTOCOLS = {"WMS", "WFS", "WMTS", "WCS", "OGC API", "SPARQL", "OpenAPI", "SOAP/WSDL"}
 
 API_LIKE_CKAN_FORMATS = [
     "WMS",
@@ -147,6 +155,41 @@ ACRONYMS = {
     "wmts": "WMTS",
 }
 
+# Query-string keys that commonly carry credentials in harvested metadata;
+# redact_url() drops any pair whose key (case-insensitively) matches one of these.
+CREDENTIAL_QUERY_PARAMS = frozenset(
+    {
+        "password",
+        "passwd",
+        "pwd",
+        "token",
+        "access_token",
+        "apikey",
+        "api_key",
+        "key",
+        "secret",
+        "client_secret",
+        "login",
+        "auth",
+        "authorization",
+        "sig",
+        "signature",
+    }
+)
+
+PROVIDER_CANONICAL_ALIASES = {
+    "department-for-communities-and-local-government": "ministry-of-housing-communities-and-local-government",
+    "department-for-levelling-up-housing-and-communities": "ministry-of-housing-communities-and-local-government",
+    "dluhc": "ministry-of-housing-communities-and-local-government",
+    "mhclg": "ministry-of-housing-communities-and-local-government",
+    "hydrographic-office": "uk-hydrographic-office",
+    "the-hydrographic-office": "uk-hydrographic-office",
+    "uk-hydrographic-office": "uk-hydrographic-office",
+    "office-of-national-statistics": "office-for-national-statistics",
+    "ons": "office-for-national-statistics",
+    "ordnance-survey": "ordnance-survey",
+}
+
 
 @dataclass(frozen=True)
 class SourceRow:
@@ -195,6 +238,11 @@ def canonical_url(value: str) -> str:
     return f"{scheme}://{netloc}{path}{f'?{query}' if query else ''}"
 
 
+def credential_query_param(name: str) -> bool:
+    key = name.lower()
+    return key in CREDENTIAL_QUERY_PARAMS or "token" in key or "secret" in key or "password" in key or key.endswith("key")
+
+
 def host(value: str) -> str:
     if not value:
         return ""
@@ -202,8 +250,139 @@ def host(value: str) -> str:
     return parsed.netloc.lower().removeprefix("www.")
 
 
+def safe_url(value: Any) -> str:
+    """Return value stripped if it looks like an http(s) URL, else "" (drops javascript:, data:, mailto:, ...)."""
+    text = str(value or "").strip()
+    return text if re.match(r"^https?://", text, re.I) else ""
+
+
+def redact_url(url: str) -> tuple[str, int]:
+    """Strip credential-shaped query parameters from a harvested URL.
+
+    Returns (url, 0) unchanged (byte-identical) when there is no query string or
+    nothing to redact; otherwise returns a rebuilt URL and the number of query
+    parameters that were dropped.
+    """
+    split = urlsplit(url)
+    if not split.query:
+        return url, 0
+    pairs = parse_qsl(split.query, keep_blank_values=True)
+    kept = [(key, value) for key, value in pairs if not credential_query_param(key)]
+    dropped = len(pairs) - len(kept)
+    if dropped == 0:
+        return url, 0
+    rebuilt = urlunsplit((split.scheme, split.netloc, split.path, urlencode(kept), split.fragment))
+    return rebuilt, dropped
+
+
 def now_utc() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def canonical_provider_slug(slug: str, title: str = "") -> str:
+    direct = PROVIDER_CANONICAL_ALIASES.get(slug)
+    if direct:
+        return direct
+    title_slug = slugify(title)
+    return PROVIDER_CANONICAL_ALIASES.get(title_slug, slug)
+
+
+def quality_band(score: float) -> str:
+    if score >= 0.8:
+        return "high"
+    if score >= 0.55:
+        return "medium"
+    if score > 0:
+        return "low"
+    return "not-assessed"
+
+
+def data_classification_for(visibility: str, access_model: str) -> str:
+    text = f"{visibility} {access_model}".lower()
+    if "internal" in text or "private" in text:
+        return "restricted-metadata"
+    if "approval" in text or "api-key" in text or "oauth" in text:
+        return "public-metadata-controlled-access"
+    if "public" in text or "anonymous" in text:
+        return "public-open-metadata"
+    return "catalogue-metadata"
+
+
+def environment_for(title: str, description: str, url: str, visibility: str) -> str:
+    text = f"{title} {description} {url} {visibility}".lower()
+    if "sandbox" in text or "test " in text or "staging" in text:
+        return "sandbox-or-test"
+    if "deprecated" in text or "retired" in text:
+        return "retired"
+    return "production-or-public"
+
+
+def assurance_status_for(source_tier: str, confidence: str, access_model: str, contract_status: str, license_id: str) -> str:
+    if confidence == "assured":
+        return "assured"
+    if source_tier == "provider_native_api" and access_model != "unknown" and contract_status != "undocumented-in-catalogue":
+        return "assured"
+    if confidence == "declared":
+        return "declared"
+    if license_id != "not-specified" and access_model != "unknown" and contract_status != "undocumented-in-catalogue":
+        return "declared"
+    return "observed"
+
+
+def credential_requirements_for(access_model: str) -> list[dict[str, Any]]:
+    if access_model in {"anonymous", "open"}:
+        return [{"type": "none", "secret_value_stored_in_okf": False, "notes": "No credential requirement observed in public metadata."}]
+    if access_model == "oauth2":
+        return [
+            {
+                "type": "oauth2",
+                "secret_ref_allowed": True,
+                "secret_value_stored_in_okf": False,
+                "broker_required": True,
+                "notes": "OAuth credentials must be held by an external broker or secret manager.",
+            }
+        ]
+    if access_model == "api-key":
+        return [
+            {
+                "type": "api_key",
+                "secret_ref_allowed": True,
+                "secret_value_stored_in_okf": False,
+                "broker_required": True,
+                "notes": "API key requirement inferred from public documentation; no key value is stored.",
+            }
+        ]
+    if access_model == "approval-required":
+        return [
+            {
+                "type": "approval_required",
+                "secret_value_stored_in_okf": False,
+                "broker_required": True,
+                "notes": "Access requires an approval or onboarding process before credentials are issued.",
+            }
+        ]
+    return [{"type": "unknown", "secret_value_stored_in_okf": False, "notes": "No machine-readable credential model found in public metadata."}]
+
+
+def sample_policy_for(record_type: str, access_model: str, url: str, protocols: list[str]) -> dict[str, Any] | None:
+    if record_type not in {"API Operation", "API Product"}:
+        return None
+    return {
+        "mode": "static-placeholder",
+        "live_calls_enabled": False,
+        "secret_values_stored_in_okf": False,
+        "credential_handling": "external-broker-required" if access_model not in {"anonymous", "open"} else "no-credential-observed",
+        "request_templates": [
+            {
+                "method": "GET",
+                "url_template": url,
+                "protocols": protocols,
+                "notes": "Template only; execute through an approved client or credential broker.",
+            }
+        ]
+        if url
+        else [],
+    }
 
 
 def date_prefix(value: Any) -> str:
@@ -246,10 +425,23 @@ def infer_observed_at(
     return f"{max(dates, default='1970-01-01')}T00:00:00Z"
 
 
-def request_bytes(url: str) -> bytes:
-    request = Request(url, headers=REQUEST_HEADERS)
-    with urlopen(request, timeout=45) as response:
-        return response.read()
+def request_bytes(url: str, attempts: int = 3, backoff_seconds: float = 2.0) -> bytes:
+    """Fetch a URL, retrying transient network failures with backoff."""
+    last_error: Exception | None = None
+    for attempt in range(attempts):
+        request = Request(url, headers=REQUEST_HEADERS)
+        try:
+            with urlopen(request, timeout=45) as response:
+                return response.read()
+        except HTTPError as exc:
+            if exc.code not in (429, 500, 502, 503, 504):
+                raise
+            last_error = exc
+        except Exception as exc:  # noqa: BLE001 - URLError/TimeoutError/socket errors are transient here.
+            last_error = exc
+        if attempt + 1 < attempts:
+            time.sleep(backoff_seconds * (2**attempt))
+    raise last_error  # type: ignore[misc]
 
 
 def request_json(url: str) -> Any:
@@ -269,7 +461,8 @@ def rows_from_csv(source_url: str, raw: bytes) -> tuple[str, list[SourceRow]]:
     rows: list[SourceRow] = []
     seen: Counter[str] = Counter()
     for ordinal, raw_row in enumerate(csv.DictReader(text.splitlines())):
-        row = {key: (value or "").strip() for key, value in raw_row.items()}
+        # Ragged rows put overflow cells in a list under the None key; skip non-string cells.
+        row = {key: (value or "").strip() for key, value in raw_row.items() if isinstance(key, str) and (value is None or isinstance(value, str))}
         name = row.get("name", "") or f"API {ordinal + 1}"
         provider = slugify(row.get("provider", "") or "unknown-provider", "unknown-provider")
         base = f"{provider}-{slugify(name, 'api')}"
@@ -300,7 +493,8 @@ def load_ckan_packages(api_url: str = DEFAULT_CKAN_API_URL, rows_per_page: int =
             limit = max_packages - len(packages)
         if limit <= 0:
             break
-        url = f"{api_url}?{urlencode({'fq': query, 'rows': str(limit), 'start': str(start)})}"
+        # Pin the sort order so paginated harvests are deterministic across runs.
+        url = f"{api_url}?{urlencode({'fq': query, 'rows': str(limit), 'start': str(start), 'sort': 'name asc'})}"
         payload = request_json(url)
         result = payload.get("result", {})
         batch = result.get("results", [])
@@ -586,9 +780,14 @@ def truncate_text(value: Any, limit: int) -> str:
 
 def plain_text(value: Any, limit: int = MAX_RECORD_NOTES_CHARS) -> str:
     text = str(value or "")
+    # Unescape entities BEFORE stripping tags so entity-encoded markup
+    # (e.g. &lt;img onerror=…&gt;) cannot resurface as live HTML downstream.
+    text = html.unescape(text)
     text = re.sub(r"(?is)<(script|style).*?</\1>", " ", text)
     text = re.sub(r"(?s)<[^>]+>", " ", text)
-    text = html.unescape(text)
+    # Upstream text sometimes contains literal backslash-n escape sequences.
+    text = text.replace("\\r\\n", " ").replace("\\n", " ")
+    text = re.sub(r"\s+", " ", text).strip()
     return truncate_text(text, limit)
 
 
@@ -640,10 +839,49 @@ class CorpusBuilder:
         self.resources: list[dict[str, Any]] = []
         self.relationships: list[dict[str, Any]] = []
         self.seen_records: set[str] = set()
-        self.seen_endpoint_urls: set[str] = set()
+        # Keyed by (record_type, canonical_url) so dedup is cross-adapter but never
+        # collapses different record types that happen to share a canonical URL.
+        self.seen_endpoint_urls: set[tuple[str, str]] = set()
+        self.credential_params_redacted = 0
+        self.unsafe_urls_dropped = 0
+        self.duplicate_slugs_dropped = 0
+        self.duplicate_endpoints_skipped = 0
+
+    def clean_url(self, value: Any) -> str:
+        """Sanitize a harvested URL for storage: reject unsafe schemes, then redact credential-shaped query params."""
+        url = safe_url(value)
+        if not url:
+            if str(value or "").strip():
+                self.unsafe_urls_dropped += 1
+            return ""
+        cleaned, dropped = redact_url(url)
+        if dropped:
+            self.credential_params_redacted += dropped
+        return cleaned
+
+    def register_endpoint(self, record_type: str, canonical: str) -> bool:
+        """Track a canonical endpoint URL within a record type; return False if it was already seen."""
+        if not canonical:
+            return True
+        key = (record_type, canonical)
+        if key in self.seen_endpoint_urls:
+            self.duplicate_endpoints_skipped += 1
+            return False
+        self.seen_endpoint_urls.add(key)
+        return True
 
     def add_relationship(self, source: str, target: str, kind: str, **extra: Any) -> None:
-        row = {"source": source, "target": target, "kind": kind}
+        # Every edge carries provenance per the aims doc (UK-Government-API-OKF.md):
+        # all current edges are derived from harvested source structure at build
+        # time; adapters may override these fields via **extra for richer evidence.
+        row = {
+            "source": source,
+            "target": target,
+            "kind": kind,
+            "evidence_type": "harvested_structure",
+            "confidence": "high",
+            "observed_at": self.observed_at,
+        }
         row.update(extra)
         self.relationships.append(row)
 
@@ -731,6 +969,8 @@ class CorpusBuilder:
         area_served: str = "not-specified",
     ) -> dict[str, Any] | None:
         if slug in self.seen_records:
+            self.duplicate_slugs_dropped += 1
+            print(f"warning: duplicate slug {slug!r} dropped (source_adapter={source_adapter!r})", file=sys.stderr)
             return None
         self.seen_records.add(slug)
         protocols = protocols or classify_styles_from_text(title, description, url, documentation)
@@ -747,6 +987,8 @@ class CorpusBuilder:
         family = classify_family(publisher, publisher_title_value)
         endpoint_host = host(url)
         documentation_host = host(documentation)
+        canonical_publisher = canonical_provider_slug(publisher, publisher_title_value)
+        canonical_publisher_title = provider_title(canonical_publisher)
         quality = quality_metrics(
             title=title,
             description=description,
@@ -763,13 +1005,15 @@ class CorpusBuilder:
         record = {
             "id": url or slug,
             "name": slug,
-            "title": title or slug,
+            "title": plain_text(title, 300) or slug,
             "notes": notes,
             "context_note": context_note,
             "acronym_expansions": acronym_expansions or [],
             "context_links": context_links or [],
             "publisher": publisher,
             "publisher_title": publisher_title_value,
+            "canonical_publisher": canonical_publisher,
+            "canonical_publisher_title": canonical_publisher_title,
             "resource_count": 0,
             "resource_ids": [],
             "formats": protocols,
@@ -795,6 +1039,7 @@ class CorpusBuilder:
             "route": record_route(slug),
             "publisher_concept_id": f"organisations/{publisher}.md",
             "quality": quality,
+            "quality_band": quality_band(float(quality.get("overall", 0))),
             "provenance": provenance,
             "url": url,
             "documentation": documentation,
@@ -806,6 +1051,7 @@ class CorpusBuilder:
             "source_tier": source_tier,
             "source_adapter": source_adapter,
             "confidence": confidence,
+            "assurance_status": assurance_status_for(source_tier, confidence, access_model, contract_status, license_id),
             "isopen": license_id == "open-government-licence-v3",
             "private": visibility != "catalogue-listed-access-not-assumed",
             "extras": {
@@ -816,15 +1062,27 @@ class CorpusBuilder:
                 "source_tier": source_tier,
                 "source_adapter": source_adapter,
                 "confidence": confidence,
+                "assurance_status": assurance_status_for(source_tier, confidence, access_model, contract_status, license_id),
+                "canonical_publisher": canonical_publisher,
+                "data_classification": data_classification_for(visibility, access_model),
+                "environment": environment_for(title, description, url, visibility),
+                "credential_requirements": credential_requirements_for(access_model),
                 **(extras or {}),
             },
             "visibility": visibility,
             "access_model": access_model,
+            "credential_requirements": credential_requirements_for(access_model),
             "contract_status": contract_status,
             "lifecycle_status": lifecycle,
+            "data_classification": data_classification_for(visibility, access_model),
+            "environment": environment_for(title, description, url, visibility),
             "organisation_family": family,
             "groups": [{"title": topic} for topic in topics],
         }
+        sample_policy = sample_policy_for(record_type, access_model, url, protocols)
+        if sample_policy:
+            record["sample_policy"] = sample_policy
+            record["extras"]["sample_policy"] = sample_policy
         self.records.append(record)
         self.add_relationship(record_route(slug), f"publisher/{publisher}", "published by")
         self.add_relationship(record_route(slug), f"source-adapter/{source_adapter}", "harvested by")
@@ -849,7 +1107,9 @@ class CorpusBuilder:
 
 def add_api_catalogue_records(builder: CorpusBuilder, rows: list[SourceRow], source_url: str, source_hash: str) -> None:
     for source_row in rows:
-        row = source_row.raw
+        row = dict(source_row.raw)
+        row["url"] = builder.clean_url(row.get("url", ""))
+        row["documentation"] = builder.clean_url(row.get("documentation", ""))
         styles = classify_styles(row)
         topics = classify_topics(row)
         access_model = classify_access(row)
@@ -970,7 +1230,7 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
             observed_at=builder.observed_at,
             extra={"ckan_package_id": package.get("id"), "ckan_package_name": package.get("name")},
         )
-        package_url = package.get("url") or f"https://www.data.gov.uk/dataset/{package.get('name', '')}"
+        package_url = builder.clean_url(package.get("url")) or f"https://www.data.gov.uk/dataset/{package.get('name', '')}"
         data_product = builder.add_record(
             slug=package_slug,
             title=package.get("title") or package.get("name") or package_slug,
@@ -1011,12 +1271,10 @@ def add_ckan_records(builder: CorpusBuilder, packages: list[dict[str, Any]], sou
         for resource in package.get("resources", []):
             if not api_like_resource(resource):
                 continue
-            endpoint_url = str(resource.get("url") or "")
+            endpoint_url = builder.clean_url(resource.get("url"))
             canonical = canonical_url(endpoint_url)
-            if canonical and canonical in builder.seen_endpoint_urls:
+            if not builder.register_endpoint("Data Access API Endpoint", canonical):
                 continue
-            if canonical:
-                builder.seen_endpoint_urls.add(canonical)
             fmt = str(resource.get("format") or "")
             protocol = protocol_for_resource(fmt, endpoint_url)
             endpoint_slug = slugify(f"data-gov-uk-{resource.get('id') or endpoint_url}", "data-access-endpoint")
@@ -1115,6 +1373,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
     for document_url, document in sorted(documents.items()):
         if document_url == canonical_url(root_url):
             continue
+        document_url = builder.clean_url(document_url)
         title = document.get("title") or document_url
         links = document.get("links", [])
         service_links = [link for link in links if link.get("rel") == "service-endpoint"]
@@ -1122,7 +1381,8 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
         if not service_links and not doc_links:
             continue
         slug = os_product_slug(document_url, title)
-        docs_url = next((str(link.get("href")) for link in doc_links if link.get("href")), "https://docs.os.uk/welcome")
+        raw_docs_url = next((str(link.get("href")) for link in doc_links if link.get("href")), "")
+        docs_url = builder.clean_url(raw_docs_url) or "https://docs.os.uk/welcome"
         protocols = sorted({protocol_for_resource(str(link.get("type") or ""), str(link.get("href") or "")) for link in service_links}) or ["REST/HTTP"]
         provenance = source_provenance(
             source="Ordnance Survey API link document",
@@ -1156,7 +1416,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
             continue
         builder.add_relationship(record_route(slug), "dataset/ordnance-survey-api-portal", "listed in provider portal")
         for link in service_links:
-            href = str(link.get("href") or "")
+            href = builder.clean_url(link.get("href"))
             link_type = link.get("type")
             link_title = str(link.get("title") or href)
             protocol = protocol_for_resource(" ".join(link_type) if isinstance(link_type, list) else str(link_type or ""), href)
@@ -1201,7 +1461,7 @@ def add_os_records(builder: CorpusBuilder, documents: dict[str, dict[str, Any]],
                 dataset_slug=slug,
                 kind="documentation",
                 title=str(link.get("title") or "Documentation"),
-                url=str(link.get("href") or ""),
+                url=builder.clean_url(link.get("href")),
                 fmt="Documentation",
                 provenance=provenance,
                 description=str(link.get("description") or ""),
@@ -1303,8 +1563,8 @@ def add_ons_records(
         if not dataset_id:
             continue
         slug = slugify(f"ons-dataset-{dataset_id}", "ons-dataset")
-        self_link = dataset.get("links", {}).get("self", {}).get("href") or f"{root_url}/datasets/{dataset_id}"
-        latest_version = dataset.get("links", {}).get("latest_version", {}).get("href", "")
+        self_link = builder.clean_url(dataset.get("links", {}).get("self", {}).get("href")) or f"{root_url}/datasets/{dataset_id}"
+        latest_version = builder.clean_url(dataset.get("links", {}).get("latest_version", {}).get("href", ""))
         topics_for_dataset = classify_topics_from_text(dataset.get("title", ""), dataset.get("description", ""), "ONS statistics")
         data_product = builder.add_record(
             slug=slug,
@@ -1367,7 +1627,7 @@ def add_ons_records(
         if not slug_value:
             continue
         slug = slugify(f"ons-topic-{slug_value}", "ons-topic")
-        topic_url = topic.get("links", {}).get("self", {}).get("href") or f"{root_url}/topics/{topic.get('id', '')}"
+        topic_url = builder.clean_url(topic.get("links", {}).get("self", {}).get("href")) or f"{root_url}/topics/{topic.get('id', '')}"
         schema = builder.add_record(
             slug=slug,
             title=topic.get("title") or str(slug_value),
@@ -1399,7 +1659,8 @@ def add_ons_records(
         if not code_id:
             continue
         slug = slugify(f"ons-code-list-{code_id}", "ons-code-list")
-        code_url = str(self_link.get("href") or f"{root_url}/code-lists/{code_id}").replace("http://api.beta.ons.gov.uk", "https://api.beta.ons.gov.uk")
+        code_url = builder.clean_url(self_link.get("href")) or f"{root_url}/code-lists/{code_id}"
+        code_url = code_url.replace("http://api.beta.ons.gov.uk", "https://api.beta.ons.gov.uk")
         schema = builder.add_record(
             slug=slug,
             title=f"ONS code list: {code_id}",
@@ -1423,6 +1684,275 @@ def add_ons_records(
         )
         if schema:
             builder.add_relationship("dataset/office-for-national-statistics-ons-beta-api", record_route(slug), "uses schema")
+
+
+def contract_kind_for(record: dict[str, Any]) -> str:
+    if record.get("record_type") == "Schema":
+        return "Contract"
+    if record.get("contract_status") == "capability-document" or set(record.get("protocol", [])) & {"WMS", "WFS", "WMTS", "WCS", "OGC API", "SPARQL"}:
+        return "Capability Document"
+    return "Contract"
+
+
+def add_contract_records(builder: CorpusBuilder) -> None:
+    source_records = list(builder.records)
+    for record in source_records:
+        if record.get("record_type") in {"Contract", "Capability Document"}:
+            continue
+        status = str(record.get("contract_status") or "")
+        protocols = list(record.get("protocol") or record.get("formats") or [])
+        if status not in CONTRACT_SOURCE_STATUSES and not (set(protocols) & CONTRACT_PROTOCOLS):
+            continue
+        contract_url = record.get("documentation") or record.get("url") or ""
+        if not contract_url:
+            continue
+        contract_type = contract_kind_for(record)
+        slug = slugify(f"contract-{record['name']}-{status or '-'.join(protocols)}", "contract")
+        provenance = source_provenance(
+            source="Contract discovery from harvested API metadata",
+            source_url=record.get("provenance", {}).get("source_url") or contract_url,
+            source_tier="contract_discovery",
+            adapter="contract_discovery",
+            confidence="observed",
+            observed_at=builder.observed_at,
+            extra={"describes_record": record["name"], "contract_signal": status or ",".join(protocols)},
+        )
+        contract = builder.add_record(
+            slug=slug,
+            title=f"{record['title']} contract",
+            record_type=contract_type,
+            publisher=record["publisher"],
+            publisher_title_value=record["publisher_title"],
+            description=f"Machine-readable or service-description contract inferred for {record['title']} from public metadata.",
+            url=contract_url,
+            documentation=record.get("documentation") or contract_url,
+            topics=record.get("topics", []),
+            protocols=protocols or ["REST/HTTP"],
+            timestamp=record.get("timestamp", ""),
+            created=record.get("metadata_created", ""),
+            modified=record.get("metadata_modified", ""),
+            license_id=record.get("license_id", "not-specified"),
+            license_title=record.get("license_title", "Not specified"),
+            license_source_id=record.get("license_source_id", ""),
+            access_model=record.get("access_model", "unknown"),
+            visibility=record.get("visibility", "catalogue-listed-access-not-assumed"),
+            contract_status=status or "service-description",
+            lifecycle=record.get("lifecycle_status", "catalogue-listed"),
+            source_tier="contract_discovery",
+            source_adapter="contract_discovery",
+            confidence="observed",
+            provenance=provenance,
+            extras={"describes_record": record["name"], "parent_record_type": record.get("record_type", "")},
+            area_served=record.get("area_served", "not-specified"),
+        )
+        if not contract:
+            continue
+        builder.add_relationship(record["route"], contract["route"], "described by", evidence_type="contract_signal", confidence="medium")
+        builder.add_relationship(contract["route"], record["route"], "describes", evidence_type="contract_signal", confidence="medium")
+
+
+def add_declared_product_crosslinks(builder: CorpusBuilder) -> None:
+    records = list(builder.records)
+    candidates = [
+        record
+        for record in records
+        if not (record.get("record_type") == "API Product" and record.get("source_tier") == "declared_api_catalogue")
+        and record.get("record_type") in {"API Product", "Data Product", "Data Access API Endpoint", "Contract", "Capability Document"}
+    ]
+    by_host: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    by_provider: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for candidate in candidates:
+        for value in {candidate.get("endpoint_host", ""), candidate.get("documentation_host", "")}:
+            if value and value != "not-specified":
+                by_host[value].append(candidate)
+        by_provider[candidate.get("canonical_publisher") or candidate.get("publisher", "")].append(candidate)
+
+    seen: set[tuple[str, str, str]] = set()
+    for record in records:
+        if record.get("record_type") != "API Product" or record.get("source_tier") != "declared_api_catalogue":
+            continue
+        targets: list[tuple[dict[str, Any], str, str]] = []
+        for value in [record.get("endpoint_host", ""), record.get("documentation_host", "")]:
+            if not value or value == "not-specified":
+                continue
+            for target in by_host.get(value, [])[:12]:
+                targets.append((target, "shares endpoint host", value))
+        provider_key = record.get("canonical_publisher") or record.get("publisher", "")
+        record_topics = set(record.get("topics") or [])
+        provider_matches = []
+        for target in by_provider.get(provider_key, []):
+            overlap = record_topics & set(target.get("topics") or [])
+            score = (2 if overlap else 0) + int(target.get("resource_count") or 0)
+            provider_matches.append((score, target))
+        for _score, target in sorted(provider_matches, key=lambda item: (-item[0], item[1]["title"]))[:5]:
+            targets.append((target, "same provider catalogue evidence", provider_key))
+        for target, kind, match_key in targets:
+            if target["route"] == record["route"]:
+                continue
+            key = (record["route"], target["route"], kind)
+            if key in seen:
+                continue
+            seen.add(key)
+            builder.add_relationship(
+                record["route"],
+                target["route"],
+                kind,
+                evidence_type="inferred_metadata_match",
+                confidence="medium",
+                match_key=match_key,
+            )
+
+
+def annotate_relationship_density(records: list[dict[str, Any]], relationships: list[dict[str, Any]]) -> None:
+    counts: Counter[str] = Counter()
+    for relationship in relationships:
+        counts[str(relationship.get("source", ""))] += 1
+        counts[str(relationship.get("target", ""))] += 1
+    for record in records:
+        count = counts.get(record["route"], 0)
+        record["relationship_count"] = count
+        if count >= 25:
+            density = "high"
+        elif count >= 8:
+            density = "medium"
+        elif count:
+            density = "low"
+        else:
+            density = "none"
+        record["relationship_density"] = density
+        record["extras"]["relationship_density"] = density
+
+
+def yaml_scalar(value: Any) -> str:
+    text = str(value or "").replace("\n", " ").replace('"', '\\"')
+    return f'"{text}"'
+
+
+def markdown_link(label: str, target: str) -> str:
+    return f"[{label}]({target})" if target else label
+
+
+def render_record_markdown(record: dict[str, Any]) -> str:
+    tags = ", ".join(record.get("tags", [])[:12])
+    frontmatter = [
+        "---",
+        f"type: {yaml_scalar(record.get('record_type'))}",
+        f"title: {yaml_scalar(record.get('title'))}",
+        f"description: {yaml_scalar(record.get('notes'))}",
+        f"resource: {yaml_scalar(record.get('url'))}",
+        f"timestamp: {yaml_scalar(record.get('timestamp'))}",
+        f"tags: {yaml_scalar(tags)}",
+        f"confidence: {yaml_scalar(record.get('confidence'))}",
+        f"source_adapter: {yaml_scalar(record.get('source_adapter'))}",
+        "---",
+        "",
+    ]
+    lines = [*frontmatter, f"# {record.get('title')}", "", record.get("notes") or "No description available.", ""]
+    lines.extend(
+        [
+            "## Metadata",
+            "",
+            f"- Type: {record.get('record_type')}",
+            f"- Provider: {markdown_link(record.get('publisher_title', ''), '../' + record.get('publisher_concept_id', ''))}",
+            f"- Canonical provider: {record.get('canonical_publisher_title')}",
+            f"- Source adapter: {record.get('source_adapter')}",
+            f"- Source tier: {record.get('source_tier')}",
+            f"- Confidence: {record.get('confidence')}",
+            f"- Assurance status: {record.get('assurance_status')}",
+            f"- Access model: {record.get('access_model')}",
+            f"- Contract status: {record.get('contract_status')}",
+            f"- Quality band: {record.get('quality_band')}",
+            "",
+        ]
+    )
+    if record.get("url"):
+        lines.append(f"- Endpoint: {record['url']}")
+    if record.get("documentation"):
+        lines.append(f"- Documentation: {record['documentation']}")
+    lines.extend(["", "## Credential Requirements", ""])
+    for requirement in record.get("credential_requirements", []):
+        lines.append(f"- {requirement.get('type')}: secret value stored in OKF = {requirement.get('secret_value_stored_in_okf')}")
+    if record.get("sample_policy"):
+        lines.extend(["", "## Sample Policy", "", f"- Mode: {record['sample_policy'].get('mode')}", f"- Live calls enabled: {record['sample_policy'].get('live_calls_enabled')}"])
+    lines.extend(["", "## Provenance", "", f"- Source: {record.get('provenance', {}).get('source', '')}", f"- Source URL: {record.get('provenance', {}).get('source_url', '')}", ""])
+    return "\n".join(lines)
+
+
+def render_publisher_markdown(publisher: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            "---",
+            'type: "Organisation"',
+            f"title: {yaml_scalar(publisher.get('title'))}",
+            f"description: {yaml_scalar(publisher.get('description'))}",
+            f"timestamp: {yaml_scalar(publisher.get('provenance', {}).get('observed_at', ''))}",
+            "---",
+            "",
+            f"# {publisher.get('title')}",
+            "",
+            publisher.get("description", ""),
+            "",
+            "## Catalogue Metrics",
+            "",
+            f"- Records: {publisher.get('dataset_count')}",
+            f"- Resources: {publisher.get('resource_count')}",
+            f"- Canonical organisation: {publisher.get('canonical_id', publisher.get('name'))}",
+            "",
+        ]
+    )
+
+
+def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
+    files: dict[Path, str] = {}
+    records = corpus["records"]
+    selected_records = [record for record in records if record.get("record_type") in MARKDOWN_RECORD_TYPES]
+    for record in selected_records:
+        files[Path(record["concept_id"])] = render_record_markdown(record)
+    for publisher in corpus["publishers"]:
+        files[Path(publisher["concept_id"])] = render_publisher_markdown(publisher)
+    counts = corpus["descriptor"]["counts"]
+    files[Path("index.md")] = "\n".join(
+        [
+            "---",
+            'type: "Index"',
+            'title: "UK Government APIs OKF"',
+            'description: "Generated Markdown entry point for the UK Government APIs OKF exemplar."',
+            "---",
+            "",
+            "# UK Government APIs OKF",
+            "",
+            "This Markdown layer is generated from the same source records as the large-corpus Explorer descriptor.",
+            "",
+            "## Counts",
+            "",
+            f"- API products: {counts.get('api_products')}",
+            f"- Data access endpoints: {counts.get('data_access_endpoints')}",
+            f"- Data products: {counts.get('data_products')}",
+            f"- Contracts and capability documents: {counts.get('contracts')}",
+            f"- Operations: {counts.get('operations')}",
+            f"- Schemas: {counts.get('schemas')}",
+            "",
+            "## Entry Points",
+            "",
+            "- [Explorer descriptor](okf-explorer.json)",
+            "- [Specification notes](../sources/UK-Government-API-OKF.md)",
+            "",
+        ]
+    )
+    files[Path("log.md")] = "\n".join(
+        [
+            "---",
+            'type: "Log"',
+            'title: "UK Government APIs OKF generation log"',
+            "---",
+            "",
+            f"## {corpus['descriptor']['generated_at'][:10]}",
+            "",
+            "- Generated multi-source OKF Explorer descriptor, JSON shards, selected Markdown concepts, provenance-bearing relationships and data-hygiene warnings.",
+            "",
+        ]
+    )
+    return files
 
 
 def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -1597,11 +2127,14 @@ def build_corpus(
         add_os_records(builder, os_documents, os_root_url)
     if ons_root is not None:
         add_ons_records(builder, ons_root, ons_datasets or [], ons_topics or [], ons_code_lists or [], ons_root_url)
+    add_contract_records(builder)
+    add_declared_product_crosslinks(builder)
     builder.attach_resource_ids()
 
     records = builder.records
     resources = builder.resources
     relationships = builder.relationships
+    annotate_relationship_density(records, relationships)
     publisher_counts: Counter[str] = Counter(record["publisher"] for record in records)
     publisher_resources: Counter[str] = Counter()
     for record in records:
@@ -1615,6 +2148,8 @@ def build_corpus(
             "description": f"Provider with {publisher_counts[provider]} records in the UK Government API OKF.",
             "dataset_count": publisher_counts[provider],
             "resource_count": publisher_resources[provider],
+            "canonical_id": canonical_provider_slug(provider, provider_title(provider)),
+            "canonical_title": provider_title(canonical_provider_slug(provider, provider_title(provider))),
             "concept_id": f"organisations/{provider}.md",
             "route": f"publisher/{provider}",
             "provenance": {"source": "Generated provider aggregation", "source_url": source_url, "source_sha256": source_hash},
@@ -1633,8 +2168,10 @@ def build_corpus(
         ("source_adapter", "Source", "chips", "primary"),
         ("source_tier", "Source tier", "chips", "primary"),
         ("confidence", "Confidence", "chips", "primary"),
+        ("assurance_status", "Assurance status", "chips", "primary"),
         ("protocol", "Protocol", "chips", "primary"),
         ("publisher", "Provider", "searchable-select", "primary"),
+        ("canonical_publisher", "Canonical provider", "searchable-select", "primary"),
         ("organisation_family", "Organisation family", "chips", "primary"),
         ("topic", "Domain", "chips", "primary"),
         ("interaction_style", "Interaction style", "chips", "secondary"),
@@ -1647,6 +2184,10 @@ def build_corpus(
         ("license", "Licence", "chips", "secondary"),
         ("update_year", "Update year", "histogram", "secondary"),
         ("area_served", "Area served", "chips", "secondary"),
+        ("quality_band", "Quality band", "chips", "primary"),
+        ("data_classification", "Data classification", "chips", "secondary"),
+        ("environment", "Environment", "chips", "secondary"),
+        ("relationship_density", "Relationship density", "chips", "secondary"),
     ]
     facets = {key: facet_counts(records, key) for key, *_ in facet_keys}
     facets["resource_type"] = [{"value": value, "count": count} for value, count in Counter(resource["resource_type"] for resource in resources).most_common()]
@@ -1700,6 +2241,16 @@ def build_corpus(
         "providers": len(publishers),
         **canonical_counts(records),
     }
+    warnings = {
+        "credential_parameters_redacted": builder.credential_params_redacted,
+        "unsafe_urls_dropped": builder.unsafe_urls_dropped,
+        "duplicate_slugs_dropped": builder.duplicate_slugs_dropped,
+        "duplicate_endpoints_skipped": builder.duplicate_endpoints_skipped,
+        "missing_contract": sum(1 for record in records if record.get("record_type") in {"API Product", "Data Access API Endpoint"} and record.get("contract_status") == "undocumented-in-catalogue"),
+        "unknown_access": sum(1 for record in records if record.get("access_model") == "unknown"),
+        "api_key_only": sum(1 for record in records if record.get("access_model") == "api-key"),
+        "missing_licence": sum(1 for record in records if record.get("license_id") == "not-specified"),
+    }
     latest_date = max((str(record.get("timestamp") or record.get("metadata_modified") or "")[:10] for record in records if record.get("timestamp") or record.get("metadata_modified")), default="1970-01-01")
     generated_at = f"{latest_date}T00:00:00Z"
     analysis = {
@@ -1717,9 +2268,11 @@ def build_corpus(
                 "Formal API products, data access endpoints, data products and operations are counted separately.",
                 "API inclusion does not imply public accessibility; access conditions stay explicit.",
                 "No API keys, client secrets, tokens, certificates, or live calls are stored in the OKF bundle.",
+                "Selected concept records are also emitted as browser-compatible Markdown files.",
             ],
         },
         "canonical_counts": count_values,
+        "warnings": warnings,
         "graph_overview": {"nodes": graph_nodes, "edges": graph_edges},
         "timeline_overview": {
             "buckets": [
@@ -1758,6 +2311,8 @@ def build_corpus(
                 "record_type": facets["record_type"],
                 "source_adapter": facets["source_adapter"],
                 "protocol": facets["protocol"],
+                "quality_band": facets["quality_band"],
+                "assurance_status": facets["assurance_status"],
                 "documentation_host": facets["documentation_host"][:16],
                 "endpoint_host": facets["endpoint_host"][:16],
             },
@@ -1786,6 +2341,7 @@ def build_corpus(
         "title": "UK Government APIs",
         "generated_at": generated_at,
         "counts": count_values,
+        "warnings": warnings,
         "top_publishers": top_publishers,
         "recent_datasets": search_docs(recent),
         "format_counts": facets["protocol"],
@@ -1840,6 +2396,7 @@ def build_corpus(
             "overview_index": "data/overview.json",
             "analysis_overview": "data/analysis/overview.json",
             "search_manifest": "data/search/manifest.json",
+            "markdown_index": "index.md",
             "notes": "../sources/UK-Government-API-OKF.md",
         },
         "counts": overview["counts"],
@@ -1851,7 +2408,7 @@ def build_corpus(
             "source_sha256": source_hash,
             "license": "Open Government Licence v3.0 unless otherwise stated",
             "source_tiers": ["declared_api_catalogue", "provider_native_api", "data_access_endpoint", "contract_discovery"],
-            "adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api"],
+            "adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api", "contract_discovery"],
         },
         "vocabulary": {
             "record_singular": "API/data record",
@@ -1868,9 +2425,10 @@ def build_corpus(
             "okf-explorer-analysis.v1": {"mode": "external", "entrypoint": "analysis_overview"},
             "okf-api-catalogue.v2": {
                 "mode": "multi-source-derived",
-                "source_adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api"],
+                "source_adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api", "contract_discovery"],
                 "secret_values_stored": False,
                 "live_calls_enabled": False,
+                "markdown_record_types": sorted(MARKDOWN_RECORD_TYPES),
             },
         },
     }
@@ -1939,6 +2497,7 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         files[Path(path)] = render_json(payload)
     for path, rows in corpus["search"]["result_doc_chunks"]:
         files[path] = render_json(rows)
+    files.update(markdown_output_files(corpus))
     return files
 
 

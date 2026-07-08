@@ -1,0 +1,39 @@
+---
+type: "Contract"
+title: "Earnings and Hours Worked, UK Region by Industry by Two-Digit SIC: ASHE Table 5 contract"
+description: "Machine-readable or service-description contract inferred for Earnings and Hours Worked, UK Region by Industry by Two-Digit SIC: ASHE Table 5 from public metadata."
+resource: "https://api.beta.ons.gov.uk/v1/datasets/ashe-table-5"
+timestamp: "2024-01-23T09:47:42.039Z"
+tags: "government-services, office-for-national-statistics, population-and-statistics, rest-http, tax-and-customs"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Earnings and Hours Worked, UK Region by Industry by Two-Digit SIC: ASHE Table 5 contract
+
+Machine-readable or service-description contract inferred for Earnings and Hours Worked, UK Region by Industry by Two-Digit SIC: ASHE Table 5 from public metadata.
+
+## Metadata
+
+- Type: Contract
+- Provider: [Office for National Statistics](../organisations/office-for-national-statistics.md)
+- Canonical provider: Office For National Statistics
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: dataset-api
+- Quality band: medium
+
+- Endpoint: https://api.beta.ons.gov.uk/v1/datasets/ashe-table-5
+- Documentation: https://api.beta.ons.gov.uk/v1/datasets/ashe-table-5
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://api.beta.ons.gov.uk/v1/datasets

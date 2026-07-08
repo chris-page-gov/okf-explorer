@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Validate the OKF bundle before publication."""
+"""Validate the hand-authored Markdown OKF bundle before publication.
+
+Scope: the Markdown corpus only. The generated uk-government-apis/
+large-corpus artefact is exercised separately in CI via the
+fixture-based generator run; see docs/okf-conformance.md.
+"""
 
 from __future__ import annotations
 

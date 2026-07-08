@@ -25,6 +25,8 @@ OKF_DIRS = {
     "standards",
     "uk-government",
 }
+# Repo policy superset of OKF v0.1 §9 (only "type" is spec-required);
+# see docs/okf-conformance.md.
 REQUIRED_FIELDS = ("type", "title", "description", "timestamp")
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 

@@ -45,6 +45,11 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm build
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
       - name: Validate OKF bundle
         run: python3 scripts/check_okf.py
 

@@ -6,6 +6,7 @@ const VIEW_IDS = new Set(["reader", "graph", "links", "timeline"]);
 const PIN_STORAGE_KEY = "okfExplorerPins:v1";
 const BUNDLE_HISTORY_KEY = "okfExplorerBundleHistory:v1";
 const JSON_RETRIES = 3;
+const MAX_JSON_BYTES = 64 * 1024 * 1024;
 const PANEL_LIMITS = {
   left: { min: 220, max: 560 },
   right: { min: 280, max: 640 }
@@ -101,6 +102,10 @@ function attr(value) {
   return esc(value).replace(/'/g, "&#39;");
 }
 
+function isHttpHref(value) {
+  return /^https?:\/\//i.test(String(value || ""));
+}
+
 function color(section) {
   return SECTION_COLORS[section] || "#5f6f7f";
 }
@@ -191,16 +196,56 @@ function retryableStatus(status) {
   return [408, 425, 429, 500, 502, 503, 504].includes(status);
 }
 
+class ResponseTooLargeError extends Error {}
+
+async function responseTextWithLimit(response, url, maxBytes = MAX_JSON_BYTES) {
+  if (!response.body) {
+    const text = await response.text();
+    if (new TextEncoder().encode(text).byteLength > maxBytes) {
+      throw new ResponseTooLargeError(`${url}: response too large (stream exceeded ${maxBytes} bytes)`);
+    }
+    return text;
+  }
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let received = 0;
+  let text = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    received += value.byteLength;
+    if (received > maxBytes) {
+      reader.cancel().catch(() => {});
+      throw new ResponseTooLargeError(`${url}: response too large (stream exceeded ${maxBytes} bytes)`);
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  text += decoder.decode();
+  return text;
+}
+
 async function loadJson(url) {
   let lastError = "";
   for (let attempt = 0; attempt <= JSON_RETRIES; attempt++) {
     const requestUrl = retryUrl(url, attempt);
     try {
-      const response = await fetch(requestUrl, { cache: attempt ? "no-store" : "default" });
-      if (response.ok) return response.json();
+      const response = await fetch(requestUrl, {
+        cache: attempt ? "no-store" : "default",
+        signal: typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined
+      });
+      if (response.ok) {
+        const contentLength = response.headers.get("content-length");
+        if (contentLength && Number(contentLength) > MAX_JSON_BYTES) {
+          // Too-large responses must never be retried: throw a distinguishable
+          // error and rethrow it immediately from the catch block below.
+          throw new ResponseTooLargeError(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
+        }
+        return JSON.parse(await responseTextWithLimit(response, url));
+      }
       lastError = `${url}: ${response.status}`;
       if (!retryableStatus(response.status)) throw new Error(lastError);
     } catch (error) {
+      if (error instanceof ResponseTooLargeError) throw error;
       lastError = error.message || String(error);
       if (attempt === JSON_RETRIES) throw new Error(lastError);
     }
@@ -219,7 +264,11 @@ function loadBundleHistory() {
 }
 
 function saveBundleHistory() {
-  localStorage.setItem(BUNDLE_HISTORY_KEY, JSON.stringify(bundleHistory.slice(0, 20)));
+  try {
+    localStorage.setItem(BUNDLE_HISTORY_KEY, JSON.stringify(bundleHistory.slice(0, 20)));
+  } catch (_error) {
+    // Ignore storage failures (quota, private browsing).
+  }
 }
 
 function bundleTitle(raw) {
@@ -321,6 +370,15 @@ function bundleUrlFromLocation() {
   return params.get("bundle") || DEFAULT_BUNDLE;
 }
 
+function validatedBundleUrl(url) {
+  const resolved = new URL(url, location.href);
+  // Untrusted ?bundle= URLs: allow same-origin paths, otherwise require https.
+  if (resolved.origin !== location.origin && resolved.protocol !== "https:") {
+    throw new Error("Only https:// bundle URLs (or same-origin paths) can be loaded.");
+  }
+  return resolved.toString();
+}
+
 function viewFromLocation() {
   const view = new URLSearchParams(location.search).get("view");
   return VIEW_IDS.has(view) ? view : "reader";
@@ -372,7 +430,14 @@ function routeUrlFor(id = selected, view = currentView) {
 }
 
 function idFromHash() {
-  const hash = decodeURIComponent(location.hash.slice(1)).trim().toLowerCase();
+  const raw = location.hash.slice(1);
+  let decoded;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch (_error) {
+    decoded = raw;
+  }
+  const hash = decoded.trim().toLowerCase();
   return hash ? routeMap.get(hash) || "" : "";
 }
 
@@ -613,6 +678,8 @@ function inlineMarkdown(text, baseId) {
   html = esc(html);
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, label, href) => {
     const url = sourceHref(href, baseId);
+    // Bundle content is untrusted: only render http(s) or bundle-relative image sources.
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url) && !isHttpHref(url)) return label;
     return `<img src="${attr(url)}" alt="${attr(label)}">`;
   });
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label, href) => {
@@ -620,6 +687,8 @@ function inlineMarkdown(text, baseId) {
     if (target) return `<a href="${attr(routeHref(target))}" data-page="${attr(target)}">${label}</a>`;
     const url = href;
     const external = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url);
+    // Block javascript:, data:, and other non-http(s)/mailto schemes from untrusted bundles.
+    if (external && !isHttpHref(url) && !/^mailto:/i.test(url)) return label;
     return `<a href="${attr(url)}"${external ? " target=\"_blank\" rel=\"noopener\"" : ""}>${label}</a>`;
   });
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
@@ -1310,7 +1379,11 @@ function isPinned(id) {
 }
 
 function savePins() {
-  localStorage.setItem(PIN_STORAGE_KEY, JSON.stringify([...pins]));
+  try {
+    localStorage.setItem(PIN_STORAGE_KEY, JSON.stringify([...pins]));
+  } catch (_error) {
+    // Ignore storage failures (quota, private browsing).
+  }
 }
 
 function togglePin(id) {
@@ -1501,8 +1574,8 @@ function renderDetail() {
     relationBlock +
     `<dl class="kv">` +
     `<dt>Section</dt><dd>${esc(node.section || "root")}</dd>` +
-    `<dt>Source</dt><dd>${node.source ? `<a href="${attr(node.source)}" target="_blank" rel="noopener">${esc(node.source)}</a>` : "None"}</dd>` +
-    `<dt>Resource</dt><dd>${node.resource ? `<a href="${attr(node.resource)}" target="_blank" rel="noopener">${esc(node.resource)}</a>` : "None"}</dd>` +
+    `<dt>Source</dt><dd>${node.source ? (isHttpHref(node.source) ? `<a href="${attr(node.source)}" target="_blank" rel="noopener">${esc(node.source)}</a>` : esc(node.source)) : "None"}</dd>` +
+    `<dt>Resource</dt><dd>${node.resource ? (isHttpHref(node.resource) ? `<a href="${attr(node.resource)}" target="_blank" rel="noopener">${esc(node.resource)}</a>` : esc(node.resource)) : "None"}</dd>` +
     `<dt>Timestamp</dt><dd>${esc(node.timestamp || "None")}</dd>` +
     `<dt>Aliases</dt><dd>${routeAliases.length ? routeAliases.map(alias => `<span class="chip">${esc(alias)}</span>`).join(" ") : "None"}</dd>` +
     `</dl>` +
@@ -1559,7 +1632,7 @@ async function loadInitialBundle() {
   const url = bundleUrlFromLocation();
   el.bundleUrl.value = url === DEFAULT_BUNDLE ? "" : url;
   try {
-    const raw = await loadJson(url);
+    const raw = await loadJson(validatedBundleUrl(url));
     setBundle(raw, url);
     rememberBundleUrl(url, raw);
     showStatus("");
@@ -1571,7 +1644,7 @@ async function loadInitialBundle() {
 async function loadBundleFromUrl(url, push) {
   try {
     showStatus("");
-    const raw = await loadJson(url);
+    const raw = await loadJson(validatedBundleUrl(url));
     if (push) {
       const next = new URL(location.href);
       if (url === DEFAULT_BUNDLE) next.searchParams.delete("bundle");

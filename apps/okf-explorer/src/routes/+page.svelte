@@ -18,7 +18,7 @@
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
   import { fetchJson, resolveUrl } from '$lib/sources/fetch';
-  import { loadLargeCorpus } from '$lib/sources/largeCorpus';
+  import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
   import {
@@ -155,6 +155,7 @@
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
+  let largeRelationshipsTruncated = $state(false);
   let largeFacetFilters = $state<Record<string, string[]>>({});
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
@@ -163,6 +164,7 @@
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
+  let loadRequest = 0;
   let largeApiRoute = $state('');
   let largeApiUrl = $state('');
   let largeApiJson = $state<unknown>(null);
@@ -257,6 +259,16 @@
     return view && VIEW_MODES.some((item) => item.id === view) ? view : null;
   }
 
+  function safeDecodeHash(): string {
+    const raw = location.hash.replace(/^#/, '');
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      // Malformed percent-encoding in a shared link should not break routing.
+      return raw;
+    }
+  }
+
   function toAbsoluteUrl(url: string): string {
     return new URL(url, location.href).toString();
   }
@@ -291,7 +303,7 @@
   function applyBrowserRoute() {
     const nextView = initialViewMode();
     if (nextView) void selectView(nextView);
-    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+    const hash = safeDecodeHash();
     if (source?.kind === 'large') {
       largeSelectedRoute = hash && hash !== 'overview' ? hash : '';
       largeInspectedRoute = '';
@@ -305,6 +317,7 @@
   }
 
   async function loadSource(url: string) {
+    const requestId = ++loadRequest;
     const absoluteUrl = toAbsoluteUrl(url);
     loading = true;
     error = '';
@@ -324,6 +337,7 @@
     largeIndex = null;
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
+    largeRelationshipsTruncated = false;
     largeFacetFilters = {};
     largeFacetHydratingKey = '';
     largePreserveSelectionUntilSearch = false;
@@ -331,20 +345,38 @@
     largeSearchClient?.destroy();
     largeSearchClient = null;
     try {
+      const parsed = new URL(absoluteUrl);
+      if (parsed.origin !== location.origin && parsed.protocol !== 'https:') {
+        throw new Error('Only https:// bundle URLs (or same-origin paths) can be loaded.');
+      }
       const raw = await fetchJson<Record<string, unknown>>(absoluteUrl);
+      if (requestId !== loadRequest) return;
       if (raw.kind === 'okf-large-corpus') {
         const large = await loadLargeCorpus(absoluteUrl);
+        if (requestId !== loadRequest) return;
         source = large;
         const searchManifest = large.descriptor.entrypoints.search_manifest || large.manifest.indexes.search;
         if (searchManifest) {
-          largeSearchClient = new LargeSearchClient();
-          await largeSearchClient.init(large.baseUrl, resolveUrl(searchManifest, large.baseUrl));
+          const client = new LargeSearchClient();
+          try {
+            await client.init(large.baseUrl, resolveUrl(searchManifest, large.baseUrl));
+            if (requestId !== loadRequest) {
+              client.destroy();
+              return;
+            }
+            largeSearchClient = client;
+          } catch (searchError) {
+            // A missing or broken search index must not discard a loaded corpus.
+            client.destroy();
+            if (requestId !== loadRequest) return;
+            console.warn(`Search index unavailable for ${absoluteUrl}:`, searchError);
+          }
         }
         history = rememberHistory({ url: absoluteUrl, title: large.descriptor.title, description: large.descriptor.description, kind: 'large-corpus' });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
         const query = params.get('q') || '';
-        const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+        const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
           largeSelectedRoute = hash;
           largeInspectedRoute = hash;
@@ -359,16 +391,17 @@
         visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
         history = rememberHistory({ url: absoluteUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
         bundleUrl = absoluteUrl;
-        const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+        const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
       }
       syncBundleUrlParam(absoluteUrl);
       suggestionsOpen = false;
     } catch (err) {
+      if (requestId !== loadRequest) return;
       source = null;
       error = err instanceof Error ? err.message : String(err);
     } finally {
-      loading = false;
+      if (requestId === loadRequest) loading = false;
     }
   }
 
@@ -471,7 +504,9 @@
     largeRelationshipsLoading = true;
     try {
       if (!largeRelationships.length) {
-        largeRelationships = await source.loadRelationships();
+        const result = await source.loadRelationships();
+        largeRelationships = result.relationships;
+        largeRelationshipsTruncated = result.truncated;
         largeRelationshipsByRoute = indexLargeRelationships(largeRelationships);
       }
       return largeRelationships;
@@ -2540,6 +2575,9 @@
                     <strong>Use only when exact corpus-wide relationship rows are needed.</strong>
                   </button>
                 {/if}
+                {#if largeRelationshipsTruncated}
+                  <p class="muted">Relationship index truncated to the first {MAX_RELATIONSHIP_ROWS.toLocaleString()} rows.</p>
+                {/if}
               </section>
             {/if}
           {:else if activeView === 'timeline'}
@@ -3049,7 +3087,7 @@
                     {#each acronymExpansions(largeDetail.dataset) as expansion}
                       <dt>{expansion.acronym}</dt>
                       <dd>
-                        {#if expansion.source_url}
+                        {#if isUrl(expansion.source_url)}
                           <a href={expansion.source_url} target="_blank" rel="noopener">{expansion.expanded}</a>
                         {:else}
                           {expansion.expanded}
@@ -3057,7 +3095,7 @@
                       </dd>
                     {/each}
                     {#each contextLinks(largeDetail.dataset) as link}
-                      <dt>{link.label}</dt><dd><a href={link.url} target="_blank" rel="noopener">{link.description || link.url}</a></dd>
+                      <dt>{link.label}</dt><dd>{#if isUrl(link.url)}<a href={link.url} target="_blank" rel="noopener">{link.description || link.url}</a>{:else}{displayValue(link.description || link.url)}{/if}</dd>
                     {/each}
                   </dl>
                 </section>

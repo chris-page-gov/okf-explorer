@@ -42,8 +42,22 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm build
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
       - name: Run OKF generator tests
         run: python3 -m unittest discover -s tests
+
+      - name: Generate UK Government API corpus from fixtures
+        run: |
+          python3 scripts/build_uk_government_api_okf.py \
+            --source tests/fixtures/uk_government_api_okf/api_catalogue.csv \
+            --ckan-fixture tests/fixtures/uk_government_api_okf/ckan_package_search.json \
+            --os-fixture tests/fixtures/uk_government_api_okf/os_api_tree.json \
+            --ons-fixture tests/fixtures/uk_government_api_okf/ons_payload.json \
+            --output "$RUNNER_TEMP/uk-government-apis-ci"
 
       - name: Validate OKF bundle
         run: python3 scripts/build_okf_bundle.py --check

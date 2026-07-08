@@ -1,0 +1,39 @@
+---
+type: "Capability Document"
+title: "Statistics.gov.scot contract"
+description: "Machine-readable or service-description contract inferred for Statistics.gov.scot from public metadata."
+resource: "https://guides.statistics.gov.scot/category/37-api"
+timestamp: "2020-08-26"
+tags: "health-and-care, population-and-statistics, scottish-government, sparql"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# Statistics.gov.scot contract
+
+Machine-readable or service-description contract inferred for Statistics.gov.scot from public metadata.
+
+## Metadata
+
+- Type: Capability Document
+- Provider: [Scottish Government](../organisations/scottish-government.md)
+- Canonical provider: Scottish Government
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: observed
+- Access model: anonymous
+- Contract status: documentation-only
+- Quality band: high
+
+- Endpoint: https://guides.statistics.gov.scot/category/37-api
+- Documentation: https://guides.statistics.gov.scot/category/37-api
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv

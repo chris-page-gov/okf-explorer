@@ -1,0 +1,44 @@
+---
+type: "API Product"
+title: "Prison API"
+description: "The service provides REST access to the Nomis Oracle DB prisoner information."
+resource: "https://api.prison.service.justice.gov.uk/swagger-ui.html"
+timestamp: "2023-02-20"
+tags: "government-services, justice-and-policing, ministry-of-justice, rest-http"
+confidence: "declared"
+source_adapter: "api_gov_uk_catalogue"
+---
+
+# Prison API
+
+The service provides REST access to the Nomis Oracle DB prisoner information.
+
+## Metadata
+
+- Type: API Product
+- Provider: [Ministry of Justice](../organisations/ministry-of-justice.md)
+- Canonical provider: Ministry of Justice
+- Source adapter: api_gov_uk_catalogue
+- Source tier: declared_api_catalogue
+- Confidence: declared
+- Assurance status: declared
+- Access model: unknown
+- Contract status: openapi-indicated
+- Quality band: high
+
+- Endpoint: https://api.prison.service.justice.gov.uk/swagger-ui.html
+- Documentation: https://github.com/ministryofjustice/prison-api
+
+## Credential Requirements
+
+- unknown: secret value stored in OKF = False
+
+## Sample Policy
+
+- Mode: static-placeholder
+- Live calls enabled: False
+
+## Provenance
+
+- Source: GOV.UK API Catalogue CSV
+- Source URL: https://raw.githubusercontent.com/co-cddo/api-catalogue/main/data/catalogue.csv

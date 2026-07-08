@@ -1,0 +1,39 @@
+---
+type: "Capability Document"
+title: "OGC WMS contract"
+description: "Machine-readable or service-description contract inferred for OGC WMS from public metadata."
+resource: "http://osni-spatialni.opendata.arcgis.com/datasets/30df351ab633474cb73aa4fa61b32b87"
+timestamp: "2020-06-24T14:14:10.966024"
+tags: "geospatial, government-services, open-data-ni, wms"
+confidence: "observed"
+source_adapter: "contract_discovery"
+---
+
+# OGC WMS contract
+
+Machine-readable or service-description contract inferred for OGC WMS from public metadata.
+
+## Metadata
+
+- Type: Capability Document
+- Provider: [OpenDataNI](../organisations/open-data-ni.md)
+- Canonical provider: Open Data Ni
+- Source adapter: contract_discovery
+- Source tier: contract_discovery
+- Confidence: observed
+- Assurance status: declared
+- Access model: anonymous
+- Contract status: capability-document
+- Quality band: high
+
+- Endpoint: http://osni-spatialni.opendata.arcgis.com/datasets/30df351ab633474cb73aa4fa61b32b87
+- Documentation: http://osni-spatialni.opendata.arcgis.com/datasets/30df351ab633474cb73aa4fa61b32b87
+
+## Credential Requirements
+
+- none: secret value stored in OKF = False
+
+## Provenance
+
+- Source: Contract discovery from harvested API metadata
+- Source URL: https://ckan.publishing.service.gov.uk/api/3/action/package_search?fq=res_format:("WMS" OR "WFS" OR "WMTS" OR "WCS" OR "OGC API - Features" OR "OGC WFS" OR "OGC WMS" OR "ogc wfs" OR "ogc wms" OR "ArcGIS GeoServices REST API" OR "arcgis geoservices rest api" OR "Esri REST" OR "ESRI REST API" OR "ESRI Rest API" OR "esri rest api" OR "SPARQL" OR "API" OR "api")

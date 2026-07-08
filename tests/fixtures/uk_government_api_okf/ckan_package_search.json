@@ -20,7 +20,7 @@
             "id": "res-arcgis",
             "name": "ArcGIS GeoService",
             "format": "ArcGIS GeoServices REST API",
-            "url": "https://maps.example.gov.uk/arcgis/rest/services/planning/MapServer/0",
+            "url": "https://maps.example.gov.uk/arcgis/rest/services/planning/MapServer/0?token=xyz123&password=hunter2&login=abc",
             "created": "2026-01-01T00:00:00",
             "metadata_modified": "2026-02-01T00:00:00"
           },
