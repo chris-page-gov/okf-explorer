@@ -88,9 +88,15 @@ source-of-truth changes.
   buckets applies the matching date facet.
 - Large-corpus in-app Back/Forward now preserves the inspected data card state
   when returning from graph metadata inspection.
+- Large-corpus full-index hydration now fetches static JSON chunks in smaller
+  batches and retries transient CDN/server failures, reducing the risk of a
+  GitHub Pages `503` when opening high-cardinality facets such as Provider.
 
 ### Fixed
 
+- Fixed transient GitHub Pages shard failures during Provider facet hydration by
+  reducing chunk-fetch concurrency and retrying HTTP 503/5xx responses before
+  surfacing an Explorer error.
 - Fixed the two open PR review issues: closed facet bodies no longer trigger
   repeated full-corpus facet scans, and facet search tokens are normalised with
   the same hyphen/underscore handling as facet values.
@@ -118,6 +124,8 @@ source-of-truth changes.
 - `node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100`
 - `node scripts/evaluate_okf_explorer.mjs --no-browser --suite evaluation/gov-ckan/questions.json`
 - `node scripts/evaluate_okf_explorer.mjs --no-browser --suite evaluation/okf-explorer/questions.json`
+- Live GitHub Pages header checks for
+  `uk-government-apis/okf-explorer.json` and `uk-government-apis/data/apis-9.json`.
 - Targeted Playwright smoke against `http://127.0.0.1:8002/_site/next/`
   covering facet search/open state, graph legend/drawer, bundle suggestion
   dismissal, and timeline latest/quarter ordering.

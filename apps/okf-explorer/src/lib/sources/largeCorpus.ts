@@ -19,10 +19,11 @@ import { baseUrlFor, fetchJson, resolveUrl } from './fetch';
 // Large corpora can carry millions of relationship rows; without a cap, loading the
 // full relationship index can hydrate on the order of 2M rows unbounded.
 export const MAX_RELATIONSHIP_ROWS = 300_000;
+export const CHUNK_FETCH_BATCH_SIZE = 4;
 
 async function loadChunks<T>(baseUrl: string, paths: string[] = []): Promise<T[]> {
   const rows: T[] = [];
-  const batchSize = 16;
+  const batchSize = CHUNK_FETCH_BATCH_SIZE;
   for (let offset = 0; offset < paths.length; offset += batchSize) {
     const batch = await Promise.all(paths.slice(offset, offset + batchSize).map((path) => fetchJson<T[]>(resolveUrl(path, baseUrl))));
     for (const chunk of batch) rows.push(...chunk);
@@ -32,7 +33,7 @@ async function loadChunks<T>(baseUrl: string, paths: string[] = []): Promise<T[]
 
 async function loadRelationshipChunks(baseUrl: string, paths: string[] = [], maxRows: number): Promise<LargeRelationshipsResult> {
   const relationships: LargeRelationship[] = [];
-  const batchSize = 16;
+  const batchSize = CHUNK_FETCH_BATCH_SIZE;
   let truncated = false;
 
   for (let offset = 0; offset < paths.length; offset += batchSize) {
