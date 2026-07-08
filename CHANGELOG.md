@@ -6,6 +6,10 @@ source-of-truth changes.
 
 ## Unreleased
 
+- No unreleased changes.
+
+## v0.2.0 - 2026-07-08
+
 ### Added
 
 - Added `docs/index.md` as the documentation landing page for repository

@@ -1,7 +1,7 @@
 # Publication Plan
 
-Status: ready for GitHub remote, GitHub Pages, and first public explorer
-release.
+Status: public GitHub Pages deployment is active. Release snapshots are cut
+from `main` with semantic tags such as `v0.2.0`.
 
 ## Public Surfaces
 
@@ -18,11 +18,15 @@ release.
 - Optional DOI: connect the public repository to Zenodo after the first release
   if a persistent scholarly citation is required.
 
-## Remaining Release Steps
+## Release Steps
 
-- Push to a GitHub remote.
-- Enable Pages with **GitHub Actions** as the source.
-- Create a `v1.0.0` GitHub release after the first successful Pages deployment.
+1. Run the publication checks below.
+2. Commit and push the release state to `main`.
+3. Create an annotated semantic tag, for example `v0.2.0`.
+4. Push the tag.
+5. Publish a GitHub Release using the matching changelog section as release
+   notes.
+6. Verify the Pages workflow and the hosted Explorer URL.
 
 ## Publication Checks
 
