@@ -31,6 +31,11 @@ connect to the same provider, host, licence or topic, the graph should group
 them by a visible dimension such as record type. Clicking one group expands that
 group while re-stacking the previous group.
 
+Opened stacks should not blindly expand every record. When a stack contains too
+many records for a readable graph, the Explorer should choose a bounded grouping
+dimension such as format, topic, licence, access model, contract status, source
+adapter or update year, then show that grouping explicitly in the graph caption.
+
 Search-result context must survive view changes. If a reader searches for a
 host or provider and selects a result, Graph should centre on that selected or
 highlighted route instead of falling back to an adjacent provider fan-in.
@@ -39,6 +44,11 @@ Metadata graph nodes should reduce context when they correspond to a real facet.
 Double-clicking a host, provider, format, topic, tag or licence should make that
 facet value the active reduction so the left-panel counts describe the same
 context the graph is showing.
+
+Graph interaction has two separate intents. Single-click should inspect a node
+and populate the data card; double-click should navigate, re-centre or reduce
+the graph. This keeps exploratory inspection reversible and avoids surprising
+graph jumps.
 
 Facet counts and graph grouping must be explained in the UI. A record-type facet
 can look like a false breakdown when it describes the wider search reduction
@@ -51,9 +61,25 @@ reader knows the provider name, typing within the open facet should reduce the
 value list immediately. Single-click should replace the current value, while
 Ctrl-click, Cmd-click or Shift-click should opt into multi-select.
 
+Closed facets should be cheap. The Explorer should compute and render the full
+value list only for the active facet body, otherwise high-cardinality facets can
+make every sidebar update feel broken.
+
+Facet search should apply the same token normalisation to the query and facet
+values. Hyphens, underscores and spaces should not make known organisations,
+hosts or protocols undiscoverable.
+
 Graph labels and arrows are publication-quality requirements. Labels must not
 hide selected nodes, and arrowheads should terminate at icon/card boundaries
 rather than passing through the visual centre of a node.
+
+Timeline views must be chronological and task-oriented. A Latest view helps
+readers recover from historic records, while year, quarter and month buckets
+provide progressively finer date filtering for packs that carry dated metadata.
+
+The bundle URL control should behave like a normal combobox: suggestions should
+close when the reader clicks elsewhere, so accidental focus does not leave a
+floating panel over graph or card content.
 
 ## Bundle-Building Learnings
 

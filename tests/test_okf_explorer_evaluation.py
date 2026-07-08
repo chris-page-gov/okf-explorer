@@ -90,8 +90,11 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
 
         self.assertIn("record-type-stack", source)
+        self.assertIn("facet-stack", source)
         self.assertIn("Grouped by record type", source)
+        self.assertIn("bestStackSubgroups", source)
         self.assertIn("largeExpandedGraphGroup", source)
+        self.assertIn("largeGraphCenterRoute", source)
         self.assertIn("metadataFacetForRoute", source)
         self.assertIn("click a stack to expand it", source)
         self.assertIn("GRAPH_EXPANDED_GROUP_LIMIT", source)
@@ -104,6 +107,8 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("visibleLargeFacetRows", source)
         self.assertIn("Show more", source)
         self.assertIn("canonical_publisher", source)
+        self.assertIn("normaliseFacetSearchText", source)
+        self.assertIn("activeFacetKey === key", source)
         self.assertIn("event?.ctrlKey || event?.metaKey || event?.shiftKey", source)
 
     def test_svelte_graph_has_distinct_node_icon_vocabulary(self):
@@ -115,6 +120,19 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("node.type === 'license'", source)
         self.assertIn("node.type === 'tag'", source)
         self.assertIn("node.type === 'host' || node.type === 'resource_type'", source)
+
+    def test_svelte_timeline_and_relationship_drawer_are_interactive(self):
+        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
+        styles = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn("TimelineResolution", source)
+        self.assertIn("update_quarter", source)
+        self.assertIn("currentTimelineBuckets", source)
+        self.assertIn("Latest dated records first", source)
+        self.assertIn("beginEdgePanelResize", source)
+        self.assertIn("disabled={source?.kind === 'large' && !largeForwardRoute}", source)
+        self.assertIn("--edge-panel-height", styles)
+        self.assertIn("legend-shape", styles)
 
 
 if __name__ == "__main__":

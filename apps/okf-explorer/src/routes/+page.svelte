@@ -162,6 +162,15 @@
     stable: boolean;
   };
   type GraphViewport = { x: number; y: number; w: number; h: number; baseW: number; baseH: number };
+  type TimelineResolution = 'latest' | 'year' | 'quarter' | 'month';
+  type TimelineBucket = {
+    key: string;
+    label: string;
+    count: number;
+    facetKey?: string;
+    facetValue?: string;
+    samples: Array<{ title: string; route: string; date: string }>;
+  };
 
   let bundleUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
@@ -187,6 +196,8 @@
   let largeSelectedRoute = $state('');
   let largeInspectedRoute = $state('');
   let largeHighlightedRoute = $state('');
+  let largeGraphCenterRoute = $state('');
+  let largeForwardRoute = $state('');
   let largeHighlightedEdge = $state('');
   let largeInspectedEdge = $state<LargeGraphEdge | null>(null);
   let largeExpandedStackRoute = $state('');
@@ -226,6 +237,8 @@
   let spreadPins = $state(false);
   let activeHelpKey = $state('');
   let largeSearchDebounce = $state<number | null>(null);
+  let edgePanelHeight = $state(180);
+  let timelineResolution = $state<TimelineResolution>('latest');
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -276,11 +289,13 @@
   onMount(() => {
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
+    window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
     const labelTimer = window.setInterval(() => {
       if (activeView === 'graph') graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2200);
     return () => {
       window.removeEventListener('popstate', applyBrowserRoute);
+      window.removeEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
       window.clearInterval(labelTimer);
       if (largeSearchDebounce !== null) window.clearTimeout(largeSearchDebounce);
     };
@@ -319,6 +334,11 @@
 
   function toAbsoluteUrl(url: string): string {
     return new URL(url, location.href).toString();
+  }
+
+  function closeBundleSuggestionsOnPointerDown(event: PointerEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.bundle-box')) suggestionsOpen = false;
   }
 
   function buildExplorerUrl(route: string): string {
@@ -372,6 +392,8 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedGraphGroup = '';
@@ -382,14 +404,16 @@
     }
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
-      activeFacetKey = '';
+      activeFacetKey = facetRoute.key;
       largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
       largeInspectedRoute = route;
       largeHighlightedRoute = route;
+      largeGraphCenterRoute = route;
       return;
     }
     largeSelectedRoute = route;
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
   }
 
   async function loadSource(url: string) {
@@ -403,6 +427,8 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedStackRoute = '';
@@ -424,6 +450,8 @@
     largeFacetApplyingValue = '';
     largeFacetSearch = {};
     largeFacetVisibleLimits = {};
+    edgePanelHeight = 180;
+    timelineResolution = 'latest';
     largePreserveSelectionUntilSearch = false;
     activeFacetKey = '';
     largeSearchClient?.destroy();
@@ -632,6 +660,8 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedGraphGroup = '';
@@ -646,9 +676,9 @@
     if (!largeRouteCanInteract(route)) return;
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
-    largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
@@ -659,6 +689,7 @@
     if (route.startsWith('record-type-stack/')) {
       largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
       largeHighlightedRoute = route;
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       activeView = 'graph';
@@ -678,6 +709,8 @@
     largeSelectedRoute = route;
     largeInspectedRoute = '';
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedGraphGroup = '';
@@ -706,6 +739,7 @@
 
   function clearInspection() {
     if (source?.kind === 'large') {
+      if (largeInspectedRoute && largeInspectedRoute !== largeSelectedRoute) largeForwardRoute = largeInspectedRoute;
       largeInspectedRoute = '';
       largeHighlightedRoute = largeSelectedRoute;
       largeHighlightedEdge = '';
@@ -750,6 +784,7 @@
 
   function navigateBack() {
     if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
+      largeForwardRoute = largeInspectedRoute;
       clearInspection();
       return;
     }
@@ -761,6 +796,12 @@
   }
 
   function navigateForward() {
+    if (source?.kind === 'large' && largeForwardRoute) {
+      const route = largeForwardRoute;
+      largeForwardRoute = '';
+      inspectLargeRoute(route);
+      return;
+    }
     window.history.forward();
   }
 
@@ -843,12 +884,15 @@
         if (largeInspectedRoute === route) {
           largeInspectedRoute = '';
           largeHighlightedRoute = '';
+          largeGraphCenterRoute = '';
         }
       } else {
         largeInspectedRoute = route;
         largeHighlightedRoute = route;
+        largeGraphCenterRoute = route;
         rightCollapsed = false;
       }
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
@@ -867,6 +911,8 @@
     if (largeInspectedRoute && routeForAnalysisNode(largeInspectedRoute)) {
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
     }
@@ -957,6 +1003,8 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       largeExpandedGraphGroup = '';
@@ -979,6 +1027,8 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       largeExpandedGraphGroup = '';
@@ -1009,6 +1059,8 @@
     largeSelectedRoute = '';
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
+    largeGraphCenterRoute = '';
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -1046,6 +1098,8 @@
     largeSelectedRoute = result.open || `dataset/${result.name}`;
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
+    largeGraphCenterRoute = largeSelectedRoute;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -1107,6 +1161,8 @@
       largeSelectedRoute = '';
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
+      largeGraphCenterRoute = '';
+      largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
@@ -1115,6 +1171,8 @@
     if (largeSelectedRoute && !largeRouteInReduction(largeSelectedRoute)) largeSelectedRoute = '';
     if (largeInspectedRoute && !largeRouteInReduction(largeInspectedRoute)) largeInspectedRoute = '';
     if (largeHighlightedRoute && !largeRouteInReduction(largeHighlightedRoute)) largeHighlightedRoute = '';
+    if (largeGraphCenterRoute && !largeRouteInReduction(largeGraphCenterRoute)) largeGraphCenterRoute = '';
+    if (largeForwardRoute && !largeRouteInReduction(largeForwardRoute)) largeForwardRoute = '';
     if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';
   }
 
@@ -1159,6 +1217,13 @@
     if (key === 'update_month') {
       const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
       return /^\d{4}-\d{2}/.test(stamp) ? [stamp.slice(0, 7)] : [];
+    }
+    if (key === 'update_quarter') {
+      const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
+      if (!/^\d{4}-\d{2}/.test(stamp)) return [];
+      const month = Number(stamp.slice(5, 7));
+      if (!Number.isFinite(month) || month < 1 || month > 12) return [];
+      return [`${stamp.slice(0, 4)}-Q${Math.floor((month - 1) / 3) + 1}`];
     }
     if (key === 'update_date') {
       const stamp = String(dataset.metadata_modified || dataset.timestamp || '');
@@ -1227,6 +1292,10 @@
     return largeFacetSearch[key] || '';
   }
 
+  function normaliseFacetSearchText(value: string): string {
+    return value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
   function setLargeFacetQuery(key: string, value: string) {
     largeFacetSearch = { ...largeFacetSearch, [key]: value };
     largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: FACET_PAGE_SIZE };
@@ -1237,18 +1306,18 @@
   }
 
   function filteredLargeFacetRows(key: string) {
-    const query = largeFacetQuery(key).trim().toLowerCase();
+    const query = normaliseFacetSearchText(largeFacetQuery(key));
     const rows = largeFacetRows(key);
     if (!query) return rows;
     const tokens = query.split(/\s+/).filter(Boolean);
     return rows.filter((row) => {
-      const haystack = `${facetValueDisplay(key, row.value)} ${row.value}`.toLowerCase().replace(/[-_]+/g, ' ');
+      const haystack = normaliseFacetSearchText(`${facetValueDisplay(key, row.value)} ${row.value}`);
       return tokens.every((token) => haystack.includes(token));
     });
   }
 
-  function visibleLargeFacetRows(key: string) {
-    return filteredLargeFacetRows(key).slice(0, largeFacetDisplayLimit(key));
+  function visibleLargeFacetRows(key: string, rows = filteredLargeFacetRows(key)) {
+    return rows.slice(0, largeFacetDisplayLimit(key));
   }
 
   function showMoreLargeFacetRows(key: string) {
@@ -1267,11 +1336,13 @@
 
   function applyAnalysisFacet(key: string, value: string, push = true) {
     const route = facetValueRoute(key, value);
-    activeFacetKey = '';
+    activeFacetKey = key;
     largeFacetFilters = { ...largeFacetFilters, [key]: [value] };
     largeSelectedRoute = '';
     largeInspectedRoute = route;
     largeHighlightedRoute = route;
+    largeGraphCenterRoute = route;
+    largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     clearLargeApiPanel();
@@ -1284,6 +1355,95 @@
     const filter = timelineBucketFacetFilter(bucket);
     if (!filter) return;
     applyAnalysisFacet(filter.key, filter.value);
+  }
+
+  function datasetTimelineStamp(dataset: LargeDataset | SearchResultDoc): string {
+    return String((dataset as LargeDataset).metadata_modified || dataset.timestamp || '').slice(0, 10);
+  }
+
+  function quarterForStamp(stamp: string): string {
+    if (!/^\d{4}-\d{2}/.test(stamp)) return '';
+    const month = Number(stamp.slice(5, 7));
+    if (!Number.isFinite(month) || month < 1 || month > 12) return '';
+    return `${stamp.slice(0, 4)}-Q${Math.floor((month - 1) / 3) + 1}`;
+  }
+
+  function timelineRowsForCurrentContext(): LargeDataset[] {
+    return largeVisibleDatasets
+      .filter((dataset) => /^\d{4}/.test(datasetTimelineStamp(dataset)))
+      .sort((left, right) => datasetTimelineStamp(right).localeCompare(datasetTimelineStamp(left)));
+  }
+
+  function latestTimelineBuckets(rows: LargeDataset[]): TimelineBucket[] {
+    return rows.slice(0, 80).map((dataset) => ({
+      key: datasetRoute(dataset),
+      label: datasetTimelineStamp(dataset),
+      count: 1,
+      samples: [{ title: dataset.title, route: datasetRoute(dataset), date: datasetTimelineStamp(dataset) }]
+    }));
+  }
+
+  function groupedTimelineBuckets(rows: LargeDataset[], resolution: Exclude<TimelineResolution, 'latest'>): TimelineBucket[] {
+    const groups = new Map<string, TimelineBucket>();
+    for (const dataset of rows) {
+      const stamp = datasetTimelineStamp(dataset);
+      const key =
+        resolution === 'year'
+          ? stamp.slice(0, 4)
+          : resolution === 'quarter'
+            ? quarterForStamp(stamp)
+            : stamp.slice(0, 7);
+      if (!key) continue;
+      const bucket = groups.get(key) || {
+        key,
+        label: key,
+        count: 0,
+        facetKey: resolution === 'year' ? 'update_year' : resolution === 'quarter' ? 'update_quarter' : 'update_month',
+        facetValue: key,
+        samples: []
+      };
+      bucket.count += 1;
+      if (bucket.samples.length < 3) bucket.samples.push({ title: dataset.title, route: datasetRoute(dataset), date: stamp });
+      groups.set(key, bucket);
+    }
+    return [...groups.values()].sort((left, right) => right.key.localeCompare(left.key));
+  }
+
+  function analysisTimelineBucketsSorted(): TimelineBucket[] {
+    return analysisTimelineBuckets()
+      .map((bucket) => ({
+        key: bucket.label,
+        label: bucket.label,
+        count: bucket.count,
+        facetKey: 'update_year',
+        facetValue: bucket.label,
+        samples: (bucket.samples || []).map((sample) => ({
+          title: sample.title,
+          route: datasetRoute(sample),
+          date: bucket.label
+        }))
+      }))
+      .sort((left, right) => right.key.localeCompare(left.key));
+  }
+
+  function currentTimelineBuckets(): TimelineBucket[] {
+    if (!largeIndex) return analysisTimelineBucketsSorted();
+    const rows = timelineRowsForCurrentContext();
+    if (timelineResolution === 'latest') return latestTimelineBuckets(rows);
+    return groupedTimelineBuckets(rows, timelineResolution);
+  }
+
+  function applyTimelineBucket(bucket: TimelineBucket) {
+    if (bucket.facetKey && bucket.facetValue) {
+      applyAnalysisFacet(bucket.facetKey, bucket.facetValue);
+      return;
+    }
+    const firstRoute = bucket.samples[0]?.route;
+    if (firstRoute) inspectLargeRoute(firstRoute);
+  }
+
+  function setTimelineResolution(value: string) {
+    if (value === 'latest' || value === 'year' || value === 'quarter' || value === 'month') timelineResolution = value;
   }
 
   function analysisFacetRows() {
@@ -1730,7 +1890,7 @@
   }
 
   function isGraphStackNodeType(type: string): boolean {
-    return type === 'resource-stack' || type === 'relationship-stack' || type === 'record-type-stack';
+    return type === 'resource-stack' || type === 'relationship-stack' || type === 'record-type-stack' || type === 'facet-stack';
   }
 
   function largeLabelForRoute(route: string): string {
@@ -1935,7 +2095,7 @@
     }
 
     const selectedCenter =
-      [largeInspectedRoute, largeSelectedRoute, largeHighlightedRoute].find((route) => route && !isGraphStackRoute(route) && largeRouteCanInteract(route)) || '';
+      [largeGraphCenterRoute, largeSelectedRoute].find((route) => route && !isGraphStackRoute(route) && largeRouteCanInteract(route)) || '';
     const center = selectedCenter;
     const contextKey = graphContextKey(center);
     const nodeMap = new Map<string, LargeGraphNode>();
@@ -1967,6 +2127,7 @@
       addNode(datasetRoute(dataset), 'dataset', dataset.title);
     };
     const noteRecordTypeGrouping = (expandedLabel?: string) => {
+      if (grouping && grouping.dimension !== 'record_type' && !expandedLabel) return;
       grouping = {
         dimension: 'record_type',
         label: 'Grouped by record type',
@@ -1984,6 +2145,45 @@
       return [...groups.entries()]
         .map(([recordType, rows]) => ({ recordType, rows }))
         .sort((left, right) => right.rows.length - left.rows.length || left.recordType.localeCompare(right.recordType));
+    };
+    const stackSubgroupCandidates = ['format', 'topic', 'license', 'access_model', 'contract_status', 'source_adapter', 'update_year'];
+    const bestStackSubgroups = (rows: LargeDataset[]) => {
+      if (!largeIndex) return null;
+      for (const dimension of stackSubgroupCandidates) {
+        const groups = new Map<string, LargeDataset[]>();
+        for (const dataset of rows) {
+          const values = largeDatasetFacetValues(dataset, dimension);
+          const value = values[0] || 'not recorded';
+          const group = groups.get(value) || [];
+          group.push(dataset);
+          groups.set(value, group);
+        }
+        if (groups.size >= 2 && groups.size <= 10) {
+          return {
+            dimension,
+            rows: [...groups.entries()]
+              .map(([value, groupRows]) => ({ value, rows: groupRows }))
+              .sort((left, right) => right.rows.length - left.rows.length || left.value.localeCompare(right.value))
+          };
+        }
+      }
+      return null;
+    };
+    const addOpenedStackSubgroups = (rows: LargeDataset[], stackId: string, target: string, label: string, direction: 'to-target' | 'from-target') => {
+      const subgroup = bestStackSubgroups(rows);
+      if (!subgroup || rows.length <= 18) return false;
+      grouping = {
+        dimension: subgroup.dimension,
+        label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
+        expandedLabel: `${largeLabelForRoute(stackId)} opened`
+      };
+      for (const group of subgroup.rows) {
+        const subgroupId = `facet-stack/${routeSlug(stackId)}/${routeSlug(subgroup.dimension)}/${routeSlug(group.value)}`;
+        addNode(subgroupId, 'facet-stack', `${facetValueDisplay(subgroup.dimension, group.value)} (${group.rows.length})`, group.rows.length, stackId);
+        if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length);
+        else addCountedEdge(target, subgroupId, label, group.rows.length);
+      }
+      return true;
     };
     const addGroupedDatasetEdges = (datasets: LargeDataset[], target: string, label: string, direction: 'to-target' | 'from-target' = 'to-target') => {
       const rows = datasets;
@@ -2006,10 +2206,12 @@
               : undefined
         );
         if (expanded) {
-          for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
-            addDatasetNode(dataset);
-            if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
-            else addEdge(target, datasetRoute(dataset), label);
+          if (!addOpenedStackSubgroups(group.rows, stackId, target, label, direction)) {
+            for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
+              addDatasetNode(dataset);
+              if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
+              else addEdge(target, datasetRoute(dataset), label);
+            }
           }
         } else {
           addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, center || contextKey);
@@ -2218,6 +2420,7 @@
         'resource-stack': [],
         'relationship-stack': [],
         'record-type-stack': [],
+        'facet-stack': [],
         format: [],
         topic: [],
         license: [],
@@ -2232,6 +2435,7 @@
       }
       Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
       if (centerType === 'publisher') {
+        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.11, GRAPH_HEIGHT * 0.16, 2, 116, 70);
         placeGrid(positions, [...groups['record-type-stack'], ...groups.dataset, ...groups.resource, ...groups['relationship-stack']], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
         placeArc(positions, [...groups.format, ...groups.license, ...groups.topic, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
       } else {
@@ -2239,6 +2443,7 @@
         placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.16, 4, 86, 66);
         placeGrid(positions, groups['relationship-stack'], GRAPH_WIDTH * 0.69, GRAPH_HEIGHT * 0.15, 2, 98, 68);
         placeGrid(positions, groups['record-type-stack'], GRAPH_WIDTH * 0.61, GRAPH_HEIGHT * 0.13, 2, 112, 72);
+        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.18, 2, 116, 70);
         placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
         placeArc(positions, groups.topic, cx, cy, GRAPH_HEIGHT * 0.34, 2.05, 2.75);
         placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.37, 2.85, 3.82);
@@ -2268,6 +2473,7 @@
     if (type === 'resource-stack') return '#1d70b8';
     if (type === 'relationship-stack') return '#1d70b8';
     if (type === 'record-type-stack') return '#12436d';
+    if (type === 'facet-stack') return '#2b8cbe';
     if (type === 'publisher') return '#00703c';
     if (type === 'format') return '#4c2c92';
     if (type === 'topic') return '#007a7a';
@@ -2284,6 +2490,7 @@
       ['resource', resourceSingular()],
       ['relationship-stack', 'link stack'],
       ['record-type-stack', 'record type stack'],
+      ['facet-stack', 'opened stack group'],
       ['format', formatPlural()],
       ['topic', 'topic'],
       ['license', 'licence'],
@@ -2569,6 +2776,22 @@
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
   }
+
+  function beginEdgePanelResize(event: PointerEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const startY = event.clientY;
+    const startHeight = edgePanelHeight;
+    const move = (next: PointerEvent) => {
+      edgePanelHeight = Math.max(80, Math.min(420, startHeight - (next.clientY - startY)));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
 </script>
 
 <svelte:head>
@@ -2688,67 +2911,71 @@
                     </span>
                     <small>{facetSummaryBadge(key)}</small>
                   </summary>
-                  {#if facetTerm}
-                    <p class="facet-definition">{facetTerm}</p>
-                  {/if}
-                  {#if facetHint}
-                    <p class="facet-hint">{facetHint}</p>
-                  {/if}
-                  {#if facetHierarchies.length}
-                    <div class="facet-hierarchy">
-                      {#each facetHierarchies.slice(0, 2) as hierarchy}
-                        <strong>{hierarchy.label}</strong>
-                        {#each hierarchy.values.slice(0, 5) as group}
-                          <div class="facet-hierarchy-group">
-                            <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
-                          </div>
-                          {#each (group.children || []).slice(0, 4) as child}
-                            <button
-                              class="child"
-                              type="button"
-                              disabled={Boolean(largeFacetApplyingKey)}
-                              onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}
-                            >
-                              <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
-                            </button>
+                  {#if activeFacetKey === key}
+                    {#if facetTerm}
+                      <p class="facet-definition">{facetTerm}</p>
+                    {/if}
+                    {#if facetHint}
+                      <p class="facet-hint">{facetHint}</p>
+                    {/if}
+                    {#if facetHierarchies.length}
+                      <div class="facet-hierarchy">
+                        {#each facetHierarchies.slice(0, 2) as hierarchy}
+                          <strong>{hierarchy.label}</strong>
+                          {#each hierarchy.values.slice(0, 5) as group}
+                            <div class="facet-hierarchy-group">
+                              <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
+                            </div>
+                            {#each (group.children || []).slice(0, 4) as child}
+                              <button
+                                class="child"
+                                type="button"
+                                disabled={Boolean(largeFacetApplyingKey)}
+                                onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}
+                              >
+                                <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
+                              </button>
+                            {/each}
                           {/each}
                         {/each}
-                      {/each}
+                      </div>
+                    {/if}
+                    <div class="facet-values">
+                      {#if !largeIndex && largeFacetHydratingKey === key}
+                        <p class="facet-loading">Loading facet values...</p>
+                      {:else}
+                        {@const filteredFacetRows = filteredLargeFacetRows(key)}
+                        {@const visibleFacetRows = visibleLargeFacetRows(key, filteredFacetRows)}
+                        <label class="facet-search">
+                          <span>Search {facetMeta?.label || key.replaceAll('_', ' ')}</span>
+                          <input
+                            value={largeFacetQuery(key)}
+                            placeholder="Type to filter values"
+                            oninput={(event) => setLargeFacetQuery(key, event.currentTarget.value)}
+                          />
+                        </label>
+                        <p class="facet-mode-hint">{facetSelectionModeHint(key)}</p>
+                        {#each visibleFacetRows as value}
+                          <button
+                            class:active={selectedFacetValues.includes(value.value)}
+                            type="button"
+                            disabled={Boolean(largeFacetApplyingKey)}
+                            onclick={(event) => void toggleLargeFacet(key, value.value, event)}
+                          >
+                            <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
+                          </button>
+                        {/each}
+                        {#if visibleFacetRows.length < filteredFacetRows.length}
+                          <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
+                            <span>Show more</span><small>{(filteredFacetRows.length - visibleFacetRows.length).toLocaleString()} more</small>
+                          </button>
+                        {/if}
+                        {#if !filteredFacetRows.length}
+                          <p class="facet-loading">No values match this facet search.</p>
+                        {/if}
+                      {/if}
                     </div>
                   {/if}
-                  <div class="facet-values">
-                    {#if !largeIndex && largeFacetHydratingKey === key}
-                      <p class="facet-loading">Loading facet values...</p>
-                    {:else}
-                      <label class="facet-search">
-                        <span>Search {facetMeta?.label || key.replaceAll('_', ' ')}</span>
-                        <input
-                          value={largeFacetQuery(key)}
-                          placeholder="Type to filter values"
-                          oninput={(event) => setLargeFacetQuery(key, event.currentTarget.value)}
-                        />
-                      </label>
-                      <p class="facet-mode-hint">{facetSelectionModeHint(key)}</p>
-                      {#each visibleLargeFacetRows(key) as value}
-                        <button
-                          class:active={selectedFacetValues.includes(value.value)}
-                          type="button"
-                          disabled={Boolean(largeFacetApplyingKey)}
-                          onclick={(event) => void toggleLargeFacet(key, value.value, event)}
-                        >
-                          <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
-                        </button>
-                      {/each}
-                      {#if facetVisibleRowCount(key) < facetFilteredRowCount(key)}
-                        <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
-                          <span>Show more</span><small>{(facetFilteredRowCount(key) - facetVisibleRowCount(key)).toLocaleString()} more</small>
-                        </button>
-                      {/if}
-                      {#if !facetFilteredRowCount(key)}
-                        <p class="facet-loading">No values match this facet search.</p>
-                      {/if}
-                    {/if}
-                  </div>
                 </details>
               {/each}
             </div>
@@ -2812,7 +3039,7 @@
       <div class="stage-bar">
         <div class="nav-controls" aria-label="History navigation">
           <button type="button" title="Back" aria-label="Back" onclick={navigateBack}>←</button>
-          <button type="button" title="Forward" aria-label="Forward" onclick={navigateForward}>→</button>
+          <button type="button" title="Forward" aria-label="Forward" disabled={source?.kind === 'large' && !largeForwardRoute} onclick={navigateForward}>→</button>
         </div>
         <div class="crumbs">
           {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {activeView}
@@ -2958,7 +3185,7 @@
                 </div>
                 <div class="legend" aria-label="Node type key">
                   {#each graphLegendItems() as [type, label]}
-                    <span><i style={`background:${largeTypeColor(type)}`}></i>{label}</span>
+                    <span><i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>{label}</span>
                   {/each}
                 </div>
               </div>
@@ -3089,9 +3316,16 @@
                   </g>
                 {/each}
               </svg>
-              <details class="edge-panel edge-drawer" open>
+              <details class="edge-panel edge-drawer" style={`--edge-panel-height:${edgePanelHeight}px`} open>
                 <summary>
-                  <span class="drawer-grip" aria-hidden="true"></span>
+                  <button
+                    class="drawer-grip"
+                    type="button"
+                    aria-label="Resize relationships panel"
+                    title="Drag to resize relationships"
+                    onpointerdown={beginEdgePanelResize}
+                    onclick={(event) => { event.preventDefault(); event.stopPropagation(); }}
+                  ></button>
                   <strong>Relationships ({model.relationships.length})</strong>
                   <span>open for rows</span>
                 </summary>
@@ -3176,37 +3410,35 @@
               </section>
             {/if}
           {:else if activeView === 'timeline'}
-            {#if largeHasAnalysisOverview('timeline')}
-              <div class="view-heading">
-                <h2>Timeline Distribution</h2>
-                <span>{source.manifest.counts.datasets.toLocaleString()} {recordPlural()} in overview</span>
+            <div class="view-heading">
+              <h2>Timeline</h2>
+              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${source.manifest.counts.datasets.toLocaleString()} ${recordPlural()} in overview`}</span>
+            </div>
+            <div class="timeline-toolbar" aria-label="Timeline resolution">
+              {#each ['latest', 'year', 'quarter', 'month'] as resolution}
+                <button class:active={timelineResolution === resolution} type="button" onclick={() => setTimelineResolution(resolution)}>
+                  {capitalise(resolution)}
+                </button>
+              {/each}
+              <span>{timelineResolution === 'latest' ? 'Latest dated records first' : `Grouped by ${timelineResolution}, newest first`}</span>
+            </div>
+            <section class="timeline-view timeline-axis">
+              {#each currentTimelineBuckets().slice(0, 120) as bucket, index}
+                <button style={`--row:${index}`} type="button" onclick={() => applyTimelineBucket(bucket)}>
+                  <time>{bucket.label}</time>
+                  <div>
+                    <strong>{bucket.count.toLocaleString()} {bucket.count === 1 ? recordSingular() : recordPlural()}</strong>
+                    <span>{bucket.samples.slice(0, 3).map((item) => item.title).join(' · ')}</span>
+                  </div>
+                </button>
+              {:else}
+                <p class="muted">Timeline distribution is not available for this bundle yet.</p>
+              {/each}
+            </section>
+            {#if timelineResolution !== 'latest'}
+              <div class="timeline-note">
+                Click a {timelineResolution} bucket to filter the current reduction. Use Latest to inspect the newest dated records directly.
               </div>
-              <section class="timeline-view timeline-axis">
-                {#each analysisTimelineBuckets().slice(0, 90) as bucket, index}
-                  <button style={`--row:${index}`} type="button" onclick={() => applyAnalysisTimelineBucket(bucket)}>
-                    <time>{bucket.label}</time>
-                    <div>
-                      <strong>{bucket.count.toLocaleString()} {recordPlural()}</strong>
-                      <span>{(bucket.samples || []).slice(0, 2).map((item) => item.title).join(' · ')}</span>
-                    </div>
-                  </button>
-                {:else}
-                  <p class="muted">Timeline distribution is not available for this bundle yet.</p>
-                {/each}
-              </section>
-            {:else}
-              <div class="view-heading">
-                <h2>Timeline</h2>
-                <span>{largeVisibleDatasets.length.toLocaleString()} {recordPlural()} in current reduction</span>
-              </div>
-              <section class="timeline-view timeline-axis">
-                {#each largeVisibleDatasets.filter((dataset) => dataset.timestamp || dataset.metadata_modified).slice(0, 180) as dataset, index}
-                  <button style={`--row:${index}`} type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
-                    <time>{String(dataset.timestamp || dataset.metadata_modified).slice(0, 10)}</time>
-                    <div><strong>{dataset.title}</strong><span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`}</span></div>
-                  </button>
-                {/each}
-              </section>
             {/if}
           {:else if activeView === 'type'}
             <div class="view-heading">
@@ -3423,7 +3655,7 @@
               </div>
               <div class="legend" aria-label="Node type key">
                 {#each typeList.slice(0, 8) as type}
-                  <span><i style={`background:${colorForType(type)}`}></i>{type}</span>
+                  <span><i class={`legend-shape legend-${type}`} style={`background:${colorForType(type)}`}></i>{type}</span>
                 {/each}
               </div>
             </div>
