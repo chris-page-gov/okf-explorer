@@ -107,6 +107,12 @@ Large corpora use a descriptor that points at chunked static data:
 https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_OKF_EXPLORER_DESCRIPTOR_URL
 ```
 
+For large public bundles hosted on GitHub Pages or another static CDN, keep
+chunk files comfortably below the Explorer's 64 MiB response cap and expect the
+browser to hydrate records lazily. The Explorer loads full record chunks in
+small batches and retries transient CDN/server responses such as HTTP 503, so a
+facet click should not create a large parallel request burst against the host.
+
 Example for a small bundle:
 
 ```text

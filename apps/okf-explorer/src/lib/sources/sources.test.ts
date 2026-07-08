@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { baseUrlFor, fetchJson, MAX_JSON_BYTES, readResponseText, resolveUrl } from './fetch';
-import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from './largeCorpus';
+import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
 import type { OkfBundle } from '$lib/types';
@@ -43,6 +43,17 @@ describe('fetch helpers', () => {
 
     vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ error: true }, { status: 404, statusText: 'Not Found' })));
     await expect(fetchJson('https://example.test/missing.json')).rejects.toThrow('404 Not Found');
+  });
+
+  it('retries transient HTTP failures before surfacing an error', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ error: true }, { status: 503, statusText: 'Service Unavailable' }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchJson<{ ok: boolean }>('https://example.test/flaky.json', 30000, 2, 0)).resolves.toEqual({ ok: true });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   it('rejects responses that report a content-length above the cap', async () => {
@@ -591,5 +602,9 @@ describe('large corpus source', () => {
 
   it('defaults to the exported relationship row cap', () => {
     expect(MAX_RELATIONSHIP_ROWS).toBe(300_000);
+  });
+
+  it('keeps large chunk fetch batches small enough for static hosting', () => {
+    expect(CHUNK_FETCH_BATCH_SIZE).toBeLessThanOrEqual(4);
   });
 });
