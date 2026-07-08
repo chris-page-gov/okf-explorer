@@ -10,6 +10,8 @@ The codebase is in better shape than most projects of this age: the Svelte Explo
 
 **19 issues were fixed in this review** (all Critical/High items and most Mediums). The remaining work — chiefly regenerating the exemplar with secret redaction, adding CI coverage, and closing the gap between the exemplar and its aims — is laid out in the completion plan at the end.
 
+> **Post-review update (2026-07-08):** every Open finding below except the component-test gap has since been fixed and committed — see §7 for the fix-session record and the reduced outstanding list.
+
 Verdict on the UK Government APIs OKF exemplar: **a strong large-corpus Explorer artefact that realises roughly a third of its stated ambition.** It is honest, well-provenanced and internally consistent, but it is not yet an OKF bundle in the spec's sense (no Markdown layer), its knowledge graph leaves the 244 flagship declared APIs isolated, contracts stand at zero, and edges carry none of the provenance/confidence the aims document mandates.
 
 ---
@@ -146,3 +148,20 @@ Implement the `contract_discovery` adapter (fetch OGC GetCapabilities / ArcGIS J
 ## 6. Housekeeping notes
 
 Untracked in the working tree (pre-existing, left alone): `CLAUDE.md`, two `okf-ckan-*.png` screenshots, `.DS_Store`. The descriptor's `entrypoints.viewer: "../next/"` only resolves on the published site when the Svelte build has been copied to `_site/next/` — worth a README note. `generated_at` is content-derived (deliberate for determinism) and would be clearer named `content_observed_through`.
+
+## 7. Post-review fix session (2026-07-08)
+
+All findings were fixed in feature/fix commits (`25cde4b`…`67bfa61`), each crediting this review. Solutions were designed by Claude Fable 5; the two larger implementation sets were built by Claude Sonnet agents under its direction and independently re-verified before committing.
+
+**Fixed since the review was written:** E7 remainder (Content-Length caps, 64 MiB, in all three fetch paths; size errors never retried), E8 remainder (static-app hash decode guard), E11 (relationship hydration capped at 300,000 rows with a truncation notice), P2 (CI now runs the generator end to end against fixtures; Python pinned to 3.12 in both workflows), P7 (`safe_url()` scheme validation at every adapter ingestion boundary), P8 (`log.md` restructured to OKF §7 date headings; deviations documented in `docs/okf-conformance.md`; bundle and viewer resynced), P9 (slug-collision stderr warnings + counter; endpoint dedup centralised per record type; `generated_at` rename deliberately declined and documented instead), and the two aims items that were tractable offline: credential redaction (`redact_url()` strips password/token/login/key-class query parameters before record identity is assigned, with `warnings` counters in the overview/analysis payloads) and edge-level provenance (every relationship now carries `evidence_type`/`confidence`/`observed_at`). P10 is partially closed: the Python suite grew from 4 to 18 tests including injection-shaped fixtures, and CI covers the generator's CLI/IO path.
+
+**Verification at close:** pytest 18/18 (Python 3.10), vitest 32/32, svelte-check 0 errors/0 warnings, production build passing, `check_okf`/bundle/viewer `--check` all green, workflow YAML validated, and a fixture-based end-to-end generation confirmed zero `password=` occurrences in output with correct warning counters.
+
+**Still outstanding (revised plan):**
+
+1. **Regenerate `uk-government-apis/`** on a network-connected machine (`python3 scripts/build_uk_government_api_okf.py`) — this alone applies the credential redaction, URL validation, sanitised titles/notes, deterministic CKAN ordering, warnings block, and edge provenance to the published corpus. The committed data still carries the ~106 inherited credential parameters until this runs. Highest priority.
+2. Emit the Markdown OKF bundle the `concept_id`s promise (P2 in §5) — makes the exemplar spec-conformant.
+3. Crosslink the 244 declared API products to CKAN/OS/ONS records by endpoint host + publisher.
+4. Contract-discovery adapter and `provider_portal_allowlist` tier (network-dependent).
+5. Organisation reconciliation against the GOV.UK register; quality-band/data-classification facets; representable `assured` status.
+6. Component-test harness for `+page.svelte` and the static `explorer/` app (the remaining P10 gap); streamed/byte-counted response caps beyond the Content-Length check.
