@@ -334,6 +334,11 @@ export type LargeRelationship = {
   [key: string]: unknown;
 };
 
+export type LargeRelationshipsResult = {
+  relationships: LargeRelationship[];
+  truncated: boolean;
+};
+
 export type LargeGraphIndex = {
   edge_counts?: Array<{ kind: string; count: number }>;
   node_counts?: Record<string, number>;
@@ -379,7 +384,7 @@ export type LargeCorpusSource = {
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
   loadFullIndex: () => Promise<LargeFullIndex>;
-  loadRelationships: () => Promise<LargeRelationship[]>;
+  loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
 };
 
 export type BundleRegistryEntry = {

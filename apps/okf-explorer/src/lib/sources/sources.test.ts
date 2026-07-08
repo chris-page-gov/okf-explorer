@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { baseUrlFor, fetchJson, resolveUrl } from './fetch';
-import { loadLargeCorpus } from './largeCorpus';
+import { baseUrlFor, fetchJson, MAX_JSON_BYTES, resolveUrl } from './fetch';
+import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
 import type { OkfBundle } from '$lib/types';
@@ -43,6 +43,30 @@ describe('fetch helpers', () => {
 
     vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ error: true }, { status: 404, statusText: 'Not Found' })));
     await expect(fetchJson('https://example.test/missing.json')).rejects.toThrow('404 Not Found');
+  });
+
+  it('rejects responses that report a content-length above the cap', async () => {
+    const oversized = {
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: { get: (name: string) => (name.toLowerCase() === 'content-length' ? String(MAX_JSON_BYTES + 1) : null) },
+      json: async () => ({ ok: true })
+    } as unknown as Response;
+    vi.stubGlobal('fetch', vi.fn(async () => oversized));
+    await expect(fetchJson('https://example.test/huge.json')).rejects.toThrow('response too large');
+  });
+
+  it('allows responses at or under the content-length cap', async () => {
+    const atCap = {
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: { get: (name: string) => (name.toLowerCase() === 'content-length' ? String(MAX_JSON_BYTES) : null) },
+      json: async () => ({ ok: true })
+    } as unknown as Response;
+    vi.stubGlobal('fetch', vi.fn(async () => atCap));
+    await expect(fetchJson<{ ok: boolean }>('https://example.test/atcap.json')).resolves.toEqual({ ok: true });
   });
 });
 
@@ -319,14 +343,133 @@ describe('large corpus source', () => {
     expect(fullIndex.resourcesByDataset.get('dataset-one')?.map((resource) => resource.id)).toEqual(['r0', 'r00', 'r1', 'r3', 'r2']);
     expect(await source.loadFullIndex()).toBe(fullIndex);
 
-    const relationships = await source.loadRelationships();
-    expect(relationships).toEqual([{ source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }]);
-    expect(await source.loadRelationships()).toBe(relationships);
+    const relationshipsResult = await source.loadRelationships();
+    expect(relationshipsResult).toEqual({
+      relationships: [{ source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }],
+      truncated: false
+    });
+    expect(await source.loadRelationships()).toBe(relationshipsResult);
   });
 
   it('rejects non-large-corpus descriptors', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ kind: 'okf-bundle' })));
     await expect(loadLargeCorpus('https://example.test/bundle.json')).rejects.toThrow('not an OKF large-corpus descriptor');
+  });
+
+  it('caps relationship rows at an explicit maxRows and reports truncation', async () => {
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/ckan/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'CKAN fixture',
+          entrypoints: {
+            data_manifest: 'data/manifest.json'
+          },
+          counts: { datasets: 0, resources: 0, relationships: 5 }
+        }
+      ],
+      [
+        'https://example.test/ckan/data/manifest.json',
+        {
+          title: 'Manifest',
+          generated_at: '2026-07-06T00:00:00Z',
+          counts: { datasets: 0, resources: 0, relationships: 5 },
+          indexes: { overview: 'data/overview.json' },
+          chunks: {
+            relationships: ['data/relationships-0.json', 'data/relationships-1.json']
+          }
+        }
+      ],
+      ['https://example.test/ckan/data/overview.json', { title: 'Overview', counts: {} }],
+      [
+        'https://example.test/ckan/data/relationships-0.json',
+        [
+          { source: 'a', target: 'b', kind: 'one' },
+          { source: 'b', target: 'c', kind: 'two' }
+        ]
+      ],
+      [
+        'https://example.test/ckan/data/relationships-1.json',
+        [
+          { source: 'c', target: 'd', kind: 'three' },
+          { source: 'd', target: 'e', kind: 'four' },
+          { source: 'e', target: 'f', kind: 'five' }
+        ]
+      ]
+    ]);
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string | URL | Request) => {
+        const key = String(url);
+        if (!payloads.has(key)) return jsonResponse({ missing: key }, { status: 404, statusText: 'Not Found' });
+        return jsonResponse(payloads.get(key));
+      })
+    );
+
+    const source = await loadLargeCorpus('https://example.test/ckan/okf-explorer.json');
+    const result = await source.loadRelationships(3);
+    expect(result.truncated).toBe(true);
+    expect(result.relationships).toEqual([
+      { source: 'a', target: 'b', kind: 'one' },
+      { source: 'b', target: 'c', kind: 'two' },
+      { source: 'c', target: 'd', kind: 'three' }
+    ]);
+    // Cached after the first call, regardless of a differing maxRows on a later call.
+    expect(await source.loadRelationships(1)).toBe(result);
+  });
+
+  it('does not report truncation when every relationship row fits under maxRows', async () => {
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/ckan/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'CKAN fixture',
+          entrypoints: {
+            data_manifest: 'data/manifest.json'
+          },
+          counts: { datasets: 0, resources: 0, relationships: 2 }
+        }
+      ],
+      [
+        'https://example.test/ckan/data/manifest.json',
+        {
+          title: 'Manifest',
+          generated_at: '2026-07-06T00:00:00Z',
+          counts: { datasets: 0, resources: 0, relationships: 2 },
+          indexes: { overview: 'data/overview.json' },
+          chunks: {
+            relationships: ['data/relationships-0.json']
+          }
+        }
+      ],
+      ['https://example.test/ckan/data/overview.json', { title: 'Overview', counts: {} }],
+      [
+        'https://example.test/ckan/data/relationships-0.json',
+        [
+          { source: 'a', target: 'b', kind: 'one' },
+          { source: 'b', target: 'c', kind: 'two' }
+        ]
+      ]
+    ]);
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string | URL | Request) => {
+        const key = String(url);
+        if (!payloads.has(key)) return jsonResponse({ missing: key }, { status: 404, statusText: 'Not Found' });
+        return jsonResponse(payloads.get(key));
+      })
+    );
+
+    const source = await loadLargeCorpus('https://example.test/ckan/okf-explorer.json');
+    const result = await source.loadRelationships(2);
+    expect(result.truncated).toBe(false);
+    expect(result.relationships).toHaveLength(2);
   });
 
   it('continues when the optional analysis overview is missing', async () => {
@@ -376,7 +519,7 @@ describe('large corpus source', () => {
     expect(fullIndex.facets).toEqual({});
     expect(fullIndex.graph).toEqual({});
     expect(fullIndex.govukContent).toEqual({});
-    await expect(source.loadRelationships()).resolves.toEqual([]);
+    await expect(source.loadRelationships()).resolves.toEqual({ relationships: [], truncated: false });
   });
 
   it('loads without analysis when no analysis entrypoint is advertised', async () => {
@@ -417,5 +560,9 @@ describe('large corpus source', () => {
 
     const source = await loadLargeCorpus('https://example.test/ckan/okf-explorer.json');
     expect(source.analysis).toBeUndefined();
+  });
+
+  it('defaults to the exported relationship row cap', () => {
+    expect(MAX_RELATIONSHIP_ROWS).toBe(300_000);
   });
 });

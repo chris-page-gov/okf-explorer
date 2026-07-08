@@ -32,6 +32,8 @@ const postingsCache = new Map<string, Promise<Record<string, Array<[number, numb
 const docCache = new Map<string, Promise<SearchResultDoc[]>>();
 const prefixCache = new Map<string, Promise<Record<string, SearchSuggestion[]>>>();
 
+const MAX_JSON_BYTES = 64 * 1024 * 1024;
+
 function resolvePath(path: string): string {
   return new URL(path, baseUrl).toString();
 }
@@ -41,6 +43,10 @@ async function fetchJson<T>(url: string): Promise<T> {
     const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal ? AbortSignal.timeout(30000) : undefined;
     const request = fetch(url, { signal }).then((response) => {
       if (!response.ok) throw new Error(`${url}: ${response.status} ${response.statusText}`);
+      const contentLength = response.headers.get('content-length');
+      if (contentLength && Number(contentLength) > MAX_JSON_BYTES) {
+        throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
+      }
       return response.json() as Promise<T>;
     });
     // Drop failed fetches from the cache so transient errors can be retried.

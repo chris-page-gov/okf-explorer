@@ -10,9 +10,15 @@ import type {
   LargeOverview,
   LargePublisher,
   LargeRelationship,
+  LargeRelationshipsResult,
   LargeResource
 } from '$lib/types';
 import { baseUrlFor, fetchJson, resolveUrl } from './fetch';
+
+// Hard cap on the number of relationship rows the explorer will hydrate into memory.
+// Large corpora can carry millions of relationship rows; without a cap, loading the
+// full relationship index can hydrate on the order of 2M rows unbounded.
+export const MAX_RELATIONSHIP_ROWS = 300_000;
 
 async function loadChunks<T>(baseUrl: string, paths: string[] = []): Promise<T[]> {
   const rows: T[] = [];
@@ -22,6 +28,37 @@ async function loadChunks<T>(baseUrl: string, paths: string[] = []): Promise<T[]
     for (const chunk of batch) rows.push(...chunk);
   }
   return rows;
+}
+
+async function loadRelationshipChunks(baseUrl: string, paths: string[] = [], maxRows: number): Promise<LargeRelationshipsResult> {
+  const relationships: LargeRelationship[] = [];
+  const batchSize = 16;
+  let truncated = false;
+
+  for (let offset = 0; offset < paths.length; offset += batchSize) {
+    if (relationships.length >= maxRows) {
+      truncated = true;
+      break;
+    }
+    const batchPaths = paths.slice(offset, offset + batchSize);
+    const batch = await Promise.all(batchPaths.map((path) => fetchJson<LargeRelationship[]>(resolveUrl(path, baseUrl))));
+    for (const chunk of batch) {
+      if (relationships.length >= maxRows) {
+        truncated = true;
+        break;
+      }
+      const remaining = maxRows - relationships.length;
+      if (chunk.length > remaining) {
+        relationships.push(...chunk.slice(0, remaining));
+        truncated = true;
+      } else {
+        relationships.push(...chunk);
+      }
+    }
+    if (truncated) break;
+  }
+
+  return { relationships, truncated };
 }
 
 function indexResourcesByDataset(resources: LargeResource[]): Map<string, LargeResource[]> {
@@ -51,7 +88,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     ? await fetchJson<LargeAnalysisOverview>(resolveUrl(analysisPath, baseUrl)).catch(() => undefined)
     : undefined;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
-  let relationshipsPromise: Promise<LargeRelationship[]> | null = null;
+  let relationshipsPromise: Promise<LargeRelationshipsResult> | null = null;
 
   const source: LargeCorpusSource = {
     kind: 'large',
@@ -88,9 +125,9 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
       }
       return fullIndexPromise;
     },
-    loadRelationships() {
+    loadRelationships(maxRows: number = MAX_RELATIONSHIP_ROWS) {
       if (!relationshipsPromise) {
-        relationshipsPromise = loadChunks<LargeRelationship>(baseUrl, manifest.chunks.relationships || []);
+        relationshipsPromise = loadRelationshipChunks(baseUrl, manifest.chunks.relationships || [], maxRows);
       }
       return relationshipsPromise;
     }

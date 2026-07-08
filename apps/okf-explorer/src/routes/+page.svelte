@@ -18,7 +18,7 @@
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
   import { fetchJson, resolveUrl } from '$lib/sources/fetch';
-  import { loadLargeCorpus } from '$lib/sources/largeCorpus';
+  import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
   import {
@@ -155,6 +155,7 @@
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
+  let largeRelationshipsTruncated = $state(false);
   let largeFacetFilters = $state<Record<string, string[]>>({});
   let largeFullLoading = $state(false);
   let largeRelationshipsLoading = $state(false);
@@ -336,6 +337,7 @@
     largeIndex = null;
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
+    largeRelationshipsTruncated = false;
     largeFacetFilters = {};
     largeFacetHydratingKey = '';
     largePreserveSelectionUntilSearch = false;
@@ -502,7 +504,9 @@
     largeRelationshipsLoading = true;
     try {
       if (!largeRelationships.length) {
-        largeRelationships = await source.loadRelationships();
+        const result = await source.loadRelationships();
+        largeRelationships = result.relationships;
+        largeRelationshipsTruncated = result.truncated;
         largeRelationshipsByRoute = indexLargeRelationships(largeRelationships);
       }
       return largeRelationships;
@@ -2570,6 +2574,9 @@
                     <span>{source.manifest.counts.relationships?.toLocaleString() || 'all'} relationships</span>
                     <strong>Use only when exact corpus-wide relationship rows are needed.</strong>
                   </button>
+                {/if}
+                {#if largeRelationshipsTruncated}
+                  <p class="muted">Relationship index truncated to the first {MAX_RELATIONSHIP_ROWS.toLocaleString()} rows.</p>
                 {/if}
               </section>
             {/if}

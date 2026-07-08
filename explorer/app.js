@@ -6,6 +6,7 @@ const VIEW_IDS = new Set(["reader", "graph", "links", "timeline"]);
 const PIN_STORAGE_KEY = "okfExplorerPins:v1";
 const BUNDLE_HISTORY_KEY = "okfExplorerBundleHistory:v1";
 const JSON_RETRIES = 3;
+const MAX_JSON_BYTES = 64 * 1024 * 1024;
 const PANEL_LIMITS = {
   left: { min: 220, max: 560 },
   right: { min: 280, max: 640 }
@@ -195,6 +196,8 @@ function retryableStatus(status) {
   return [408, 425, 429, 500, 502, 503, 504].includes(status);
 }
 
+class ResponseTooLargeError extends Error {}
+
 async function loadJson(url) {
   let lastError = "";
   for (let attempt = 0; attempt <= JSON_RETRIES; attempt++) {
@@ -204,10 +207,19 @@ async function loadJson(url) {
         cache: attempt ? "no-store" : "default",
         signal: typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined
       });
-      if (response.ok) return response.json();
+      if (response.ok) {
+        const contentLength = response.headers.get("content-length");
+        if (contentLength && Number(contentLength) > MAX_JSON_BYTES) {
+          // Too-large responses must never be retried: throw a distinguishable
+          // error and rethrow it immediately from the catch block below.
+          throw new ResponseTooLargeError(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
+        }
+        return response.json();
+      }
       lastError = `${url}: ${response.status}`;
       if (!retryableStatus(response.status)) throw new Error(lastError);
     } catch (error) {
+      if (error instanceof ResponseTooLargeError) throw error;
       lastError = error.message || String(error);
       if (attempt === JSON_RETRIES) throw new Error(lastError);
     }
@@ -392,7 +404,14 @@ function routeUrlFor(id = selected, view = currentView) {
 }
 
 function idFromHash() {
-  const hash = decodeURIComponent(location.hash.slice(1)).trim().toLowerCase();
+  const raw = location.hash.slice(1);
+  let decoded;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch (_error) {
+    decoded = raw;
+  }
+  const hash = decoded.trim().toLowerCase();
   return hash ? routeMap.get(hash) || "" : "";
 }
 
