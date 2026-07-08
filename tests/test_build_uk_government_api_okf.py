@@ -178,6 +178,18 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertEqual(warnings["duplicate_endpoints_skipped"], 1)
         self.assertEqual(corpus["analysis"]["warnings"], warnings)
 
+    def test_every_relationship_edge_carries_provenance(self):
+        corpus = self.build_fixture_corpus()
+
+        relationships = corpus["relationships"]
+        self.assertTrue(relationships)
+        observed = {row["observed_at"] for row in relationships}
+        for row in relationships:
+            self.assertEqual(row["evidence_type"], "harvested_structure")
+            self.assertEqual(row["confidence"], "high")
+            self.assertTrue(row["observed_at"])
+        self.assertEqual(len(observed), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

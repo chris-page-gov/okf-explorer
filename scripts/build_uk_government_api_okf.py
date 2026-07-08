@@ -744,7 +744,17 @@ class CorpusBuilder:
         return True
 
     def add_relationship(self, source: str, target: str, kind: str, **extra: Any) -> None:
-        row = {"source": source, "target": target, "kind": kind}
+        # Every edge carries provenance per the aims doc (UK-Government-API-OKF.md):
+        # all current edges are derived from harvested source structure at build
+        # time; adapters may override these fields via **extra for richer evidence.
+        row = {
+            "source": source,
+            "target": target,
+            "kind": kind,
+            "evidence_type": "harvested_structure",
+            "confidence": "high",
+            "observed_at": self.observed_at,
+        }
         row.update(extra)
         self.relationships.append(row)
 
