@@ -29,9 +29,22 @@ Provides a list of current OS Net stations.
 - Licence source: https://www.ordnancesurvey.co.uk/licensing
 - Licence confidence: 0.7
 - Quality band: medium
+- DCAT term: `dcat:DataService endpoint`
+- OpenAPI term: `Operation Object`
 
 - Endpoint: https://api.os.uk/positioning/osnet/v1/stations
 - Documentation: https://docs.os.uk/welcome
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService endpoint`; export status `roll-up-to-parent-service`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `Operation Object`; export status `operation-fragment`.
+- OpenAPI security scheme: `apiKey`.
+- OpenAPI missing requirements: `HTTP method`, `parameters`, `responses`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

@@ -83,6 +83,17 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('drawer-grip');
   });
 
+  it('keeps synthetic graph stacks from becoming navigable graph centres', () => {
+    expect(pageSource).toContain('const GRAPH_STACK_THRESHOLD = 18;');
+    expect(pageSource).toContain('because this view has more than {GRAPH_STACK_THRESHOLD} related records');
+    expect(pageSource).toContain('function isRecordTypeStackRoute(route: string)');
+    expect(pageSource).toContain("route.startsWith('relationship-stack/')");
+    expect(pageSource).toContain("route.startsWith('facet-stack/')");
+    expect(pageSource).toContain('if (isRecordTypeStackRoute(route))');
+    expect(pageSource).toContain('if (isGraphStackRoute(route))');
+    expect(pageSource).toContain('onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}');
+  });
+
   it('draws graph relationship arrows to trimmed icon boundaries', () => {
     expect(pageSource).toContain('function trimmedEdgePoints(source: GraphPoint, target: GraphPoint');
     expect(pageSource).toMatch(/<line\s+class:highlight=\{edgeHighlighted\}\s+x1=\{edgeHit\.x1\}\s+y1=\{edgeHit\.y1\}\s+x2=\{edgeHit\.x2\}\s+y2=\{edgeHit\.y2\}/);

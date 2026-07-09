@@ -29,9 +29,22 @@ The ADMIRALTY UK Tidal API provides authoritative source of tidal height predict
 - Licence source: subscription required
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://developer.admiralty.co.uk/product#product=uk-tidal-api
 - Documentation: https://developer.admiralty.co.uk/api-details#api=uk-tidal-api&operation=Stations_GetStation
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

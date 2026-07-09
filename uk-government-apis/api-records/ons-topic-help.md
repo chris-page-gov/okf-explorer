@@ -29,9 +29,22 @@ No description available.
 - Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
 - Licence confidence: 0.75
 - Quality band: medium
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `Schema Object`
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/topics/9211
 - Documentation: https://api.beta.ons.gov.uk/v1/topics/9211
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `schema-reference`.
+- DCAT missing requirements: `dcterms:description`
+- OpenAPI: `Schema Object`; export status `schema-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: `info.description or operation.description`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

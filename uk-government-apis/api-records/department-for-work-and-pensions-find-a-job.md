@@ -29,9 +29,22 @@ This API is implementing a simple method to automatically retrieve information a
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://findajob.dwp.gov.uk
 - Documentation: https://wiki.office.uc.dwpcloud.uk/spaces/Too/pages/336364645/Find+a+Job+API?preview=/336364645/336365676/FJ%20-%20Search%20API.pdf
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`, `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

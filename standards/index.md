@@ -26,6 +26,9 @@ Specs, protocols, identity, policy and observability — verified against primar
 - [OAuth 2.0 Security BCP — RFC 9700](oauth-2-0-security-bcp.md) — Current best practice; deprecates insecure OAuth modes.
 - [Agent2Agent (A2A)](a2a.md) — Agent-to-agent protocol: capability discovery, delegation, long-running tasks, streaming.
 - [OpenAPI](openapi.md) — HTTP API contracts: ops, schemas, security metadata; machine- and human-readable.
+- [DCAT](dcat.md) — Catalogue vocabulary for datasets, data services, endpoint URLs, publishers and licences.
+- [DCAT-AP](dcat-ap.md) — Application profile for federated public data catalogue metadata.
+- [DQV](dqv.md) — Quality annotation vocabulary used alongside DCAT for metadata-quality signals.
 - [AsyncAPI](asyncapi.md) — Protocol-agnostic description of channels, operations and messages.
 - [Arazzo](arazzo.md) — Machine-readable workflow narratives over API descriptions.
 - [SPIFFE / SPIRE](spiffe-spire.md) — Workload identity and attestation for software systems.

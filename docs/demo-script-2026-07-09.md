@@ -12,7 +12,7 @@ https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F
 Backup local URL:
 
 ```text
-http://127.0.0.1:8002/_site/next/?bundle=../uk-government-apis/okf-explorer.json&view=reader#overview
+http://127.0.0.1:8002/next/?bundle=/uk-government-apis/okf-explorer.json&view=reader#overview
 ```
 
 ## 0:00-2:00 — Opening

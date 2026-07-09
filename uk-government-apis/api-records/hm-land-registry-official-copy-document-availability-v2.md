@@ -29,9 +29,22 @@ Check which register referred documents are available for immediate download. Us
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: high
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/bg2/api/v2/titles/{title_number}/official-copies/availability
 - Documentation: https://landregistry.github.io/bgtechdoc/services/official_copy_document_availability_v2/#official-copy-document-availability-v2
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `metadata-only`.
+- OpenAPI missing requirements: `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

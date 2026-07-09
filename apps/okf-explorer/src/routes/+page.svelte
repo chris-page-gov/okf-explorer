@@ -62,6 +62,7 @@
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
   const FACET_PAGE_SIZE = 30;
+  const GRAPH_STACK_THRESHOLD = 18;
   const GRAPH_EXPANDED_GROUP_LIMIT = 72;
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
@@ -74,6 +75,10 @@
     'licence-basis': 'How the licence was assigned: source-declared, inherited from dataset/package metadata, inferred from provider terms, or still not specified.',
     'access-model': 'Observed access requirement from public metadata, such as anonymous access, API key, or approval required.',
     'contract-status': 'Whether the harvest found a machine-readable contract, capability document, service description, or only documentation.',
+    'dcat-type': 'The closest DCAT/DCAT-AP class or property role for this OKF record. DCAT terms are shown in monospace, for example dcat:DataService.',
+    'openapi-type': 'The closest OpenAPI object or fragment for this OKF record. This is an export hint, not proof that a complete OpenAPI document exists.',
+    'standards-export-readiness': 'Whether the generated metadata is ready for a DCAT/OpenAPI export, or which required standard fields are still missing.',
+    'openapi-security-scheme': 'The OpenAPI securitySchemes.type implied by the observed access model. Unknown means the source did not expose a machine-readable auth model.',
     'source-date': 'Date supplied by the source metadata. Missing dates are source gaps and do not mean the API or dataset is new or stale.',
     'quality-overall': 'Average of the individual metadata-quality signals. Use it for triage, not as a service rating.',
     'quality-access_clarity': 'Whether the source makes access requirements clear.',
@@ -686,8 +691,16 @@
   }
 
   function recenterLargeRoute(route: string) {
-    if (route.startsWith('record-type-stack/')) {
+    if (isRecordTypeStackRoute(route)) {
       largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
+      largeHighlightedRoute = route;
+      largeForwardRoute = '';
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      activeView = 'graph';
+      return;
+    }
+    if (isGraphStackRoute(route)) {
       largeHighlightedRoute = route;
       largeForwardRoute = '';
       largeHighlightedEdge = '';
@@ -1521,6 +1534,11 @@
       source_tier: 'Source tier used by the UK Government API OKF specification.',
       confidence: 'How strongly the source supports the record.',
       access_model: 'Observed public access requirement, such as anonymous, API key or approval required.',
+      dcat_type: 'Closest DCAT/DCAT-AP term. Rendered as a standards term, not as a repo-only label.',
+      openapi_type: 'Closest OpenAPI object or fragment that could be emitted by an exporter.',
+      dcat_export_status: 'DCAT export-readiness state for this generated metadata record.',
+      openapi_export_status: 'OpenAPI export-readiness state for this generated metadata record.',
+      openapi_security_scheme: 'OpenAPI securitySchemes.type implied by the observed access model.',
       license: 'Licence metadata from the source. Not specified means a metadata gap, not a licence.',
       data_classification: 'Public metadata classification inferred from visibility and access model.',
       environment: 'Observed environment such as production/public, sandbox/test or retired.',
@@ -1571,6 +1589,15 @@
     if (basis === 'provider-terms-inferred') return 'inferred from provider terms';
     if (basis === 'not-specified') return 'not specified';
     return basis || 'not recorded';
+  }
+
+  function standardsAlignment(record: LargeDataset | undefined): LargeDataset['standards_alignment'] | undefined {
+    const value = record?.standards_alignment;
+    return value && typeof value === 'object' ? value : undefined;
+  }
+
+  function standardsList(value: unknown): string[] {
+    return Array.isArray(value) ? value.map((item) => String(item || '').trim()).filter(Boolean) : [];
   }
 
   function facetSelectedSummary(key: string, values: string[]): string {
@@ -1886,6 +1913,10 @@
   }
 
   function isGraphStackRoute(route: string): boolean {
+    return isRecordTypeStackRoute(route) || route.startsWith('relationship-stack/') || route.startsWith('facet-stack/');
+  }
+
+  function isRecordTypeStackRoute(route: string): boolean {
     return route.startsWith('record-type-stack/');
   }
 
@@ -1965,6 +1996,12 @@
   function datasetsForMetadataRoute(route: string, limit = 80): LargeDataset[] {
     if (!largeIndex) return [];
     return largeVisibleDatasets.filter((dataset) => datasetMatchesMetadataRoute(dataset, route)).slice(0, limit);
+  }
+
+  function datasetCountForMetadataRoute(route: string): number {
+    if (largeIndex) return largeVisibleDatasets.filter((dataset) => datasetMatchesMetadataRoute(dataset, route)).length;
+    const analysisNode = analysisNodeForRoute(route);
+    return Number(analysisNode?.count || 0);
   }
 
   function resourcesForMetadataRoute(route: string, limit = 80): LargeResource[] {
@@ -2171,7 +2208,7 @@
     };
     const addOpenedStackSubgroups = (rows: LargeDataset[], stackId: string, target: string, label: string, direction: 'to-target' | 'from-target') => {
       const subgroup = bestStackSubgroups(rows);
-      if (!subgroup || rows.length <= 18) return false;
+      if (!subgroup || rows.length <= GRAPH_STACK_THRESHOLD) return false;
       grouping = {
         dimension: subgroup.dimension,
         label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
@@ -2187,7 +2224,7 @@
     };
     const addGroupedDatasetEdges = (datasets: LargeDataset[], target: string, label: string, direction: 'to-target' | 'from-target' = 'to-target') => {
       const rows = datasets;
-      if (rows.length <= 18) {
+      if (rows.length <= GRAPH_STACK_THRESHOLD) {
         for (const dataset of rows) {
           addDatasetNode(dataset);
           if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
@@ -2222,7 +2259,7 @@
     };
     const addGroupedPublisherEdges = (datasets: LargeDataset[]) => {
       const rows = datasets;
-      if (rows.length <= 18) {
+      if (rows.length <= GRAPH_STACK_THRESHOLD) {
         for (const dataset of rows) {
           const datasetId = datasetRoute(dataset);
           addDatasetNode(dataset);
@@ -2749,8 +2786,14 @@
       graphSuppressClick = false;
       return;
     }
-    if (isGraphStackRoute(route)) {
+    if (isRecordTypeStackRoute(route)) {
       largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
+      largeHighlightedRoute = route;
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
+      return;
+    }
+    if (isGraphStackRoute(route)) {
       largeHighlightedRoute = route;
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
@@ -3248,7 +3291,7 @@
                 {#each model.nodes as node}
                   {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(node.id)}
-                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
+                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack', 'facet-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
@@ -3258,7 +3301,7 @@
                     tabindex="0"
                     onclick={() => graphNodeClick(node.id)}
                     ondblclick={() => recenterLargeRoute(node.id)}
-                    onkeydown={(event) => keyboardActivate(event, () => inspectLargeRoute(node.id))}
+                    onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}
                   >
                     <title>{node.label}</title>
                     {#if combinedHit}
@@ -3348,7 +3391,7 @@
                   Showing {model.nodes.length} nodes from the current left-panel reduction.
                 {/if}
                 {#if model.grouping}
-                  {model.grouping.label}{model.grouping.expandedLabel ? `; expanded ${model.grouping.expandedLabel}.` : '; click a record type stack to expand one group at a time.'}
+                  {model.grouping.label} because this view has more than {GRAPH_STACK_THRESHOLD} related records{model.grouping.expandedLabel ? `; expanded ${model.grouping.expandedLabel}.` : '; click a record type stack to expand one group at a time.'}
                 {/if}
                 Drag to pan, use +/- or the mouse wheel to zoom, click a stack to expand it, single-click real nodes to inspect, and double-click metadata nodes to reduce context.
               </p>
@@ -3901,6 +3944,8 @@
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
                 <dt>Visibility</dt><dd>{displayValue(largeDetail.dataset.visibility)}</dd>
                 <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.contract_status)}</dd>
+                <dt><span class="label-help">DCAT term<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.dataset.dcat_type)}</code></dd>
+                <dt><span class="label-help">OpenAPI term<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.dataset.openapi_type)}</code></dd>
                 <dt>Lifecycle</dt><dd>{displayValue(largeDetail.dataset.lifecycle_status || largeDetail.dataset.state)}</dd>
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
@@ -3955,6 +4000,21 @@
                   <dt>{capitalise(resourceSingular())} hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
               </section>
+              {#if largeDetail.dataset.dcat_type || largeDetail.dataset.openapi_type || standardsAlignment(largeDetail.dataset)}
+                {@const alignment = standardsAlignment(largeDetail.dataset)}
+                <section class="metadata-section">
+                  <h3><span class="label-help">Standards alignment<button class="info-icon" type="button" aria-label="Explain standards alignment" onclick={() => toggleHelp('standards-export-readiness')} onmouseenter={() => showHelp('standards-export-readiness')} onmouseleave={() => hideHelp('standards-export-readiness')} onfocus={() => showHelp('standards-export-readiness')} onblur={() => hideHelp('standards-export-readiness')}>i</button>{#if activeHelpKey === 'standards-export-readiness'}<span class="info-bubble" role="tooltip">{helpText('standards-export-readiness')}</span>{/if}</span></h3>
+                  <dl>
+                    <dt><span class="label-help">DCAT / DCAT-AP<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.dcat?.term || largeDetail.dataset.dcat_type)}</code></dd>
+                    <dt>DCAT export status</dt><dd>{metadataDisplayValue(alignment?.dcat?.export_status || largeDetail.dataset.dcat_export_status)}</dd>
+                    <dt>DCAT missing</dt><dd>{#each standardsList(alignment?.dcat?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
+                    <dt><span class="label-help">OpenAPI<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.openapi?.term || largeDetail.dataset.openapi_type)}</code></dd>
+                    <dt>OpenAPI export status</dt><dd>{metadataDisplayValue(alignment?.openapi?.export_status || largeDetail.dataset.openapi_export_status)}</dd>
+                    <dt><span class="label-help">Security scheme<button class="info-icon" type="button" aria-label="Explain OpenAPI security scheme" onclick={() => toggleHelp('openapi-security-scheme')} onmouseenter={() => showHelp('openapi-security-scheme')} onmouseleave={() => hideHelp('openapi-security-scheme')} onfocus={() => showHelp('openapi-security-scheme')} onblur={() => hideHelp('openapi-security-scheme')}>i</button>{#if activeHelpKey === 'openapi-security-scheme'}<span class="info-bubble" role="tooltip">{helpText('openapi-security-scheme')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.openapi?.security_scheme_type || largeDetail.dataset.openapi_security_scheme)}</code></dd>
+                    <dt>OpenAPI missing</dt><dd>{#each standardsList(alignment?.openapi?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
+                  </dl>
+                </section>
+              {/if}
               {#if largeDetail.dataset.quality}
                 <section class="metadata-section">
                   <h3><span class="label-help">Metadata quality signals<button class="info-icon" type="button" aria-label="Explain quality signals" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></h3>
@@ -4123,6 +4183,8 @@
                 <dt>Documentation host</dt><dd>{displayValue(largeDetail.result.documentation_host)}</dd>
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
                 <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
+                <dt><span class="label-help">DCAT term<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.dcat_type)}</code></dd>
+                <dt><span class="label-help">OpenAPI term<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.openapi_type)}</code></dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.result.url)}<a href={largeDetail.result.url} target="_blank" rel="noopener">{largeDetail.result.url}</a>{:else}{displayValue(largeDetail.result.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.result.documentation)}<a href={largeDetail.result.documentation} target="_blank" rel="noopener">{largeDetail.result.documentation}</a>{:else}{displayValue(largeDetail.result.documentation)}{/if}</dd>
                 <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
@@ -4138,6 +4200,7 @@
             {:else}
               {@const routeDatasets = datasetsForMetadataRoute(largeDetail.route, 40)}
               {@const routeResources = resourcesForMetadataRoute(largeDetail.route, 40)}
+              {@const routeDatasetTotal = datasetCountForMetadataRoute(largeDetail.route)}
               {@const analysisNode = analysisNodeForRoute(largeDetail.route)}
               {@const analysisFacet = routeForAnalysisNode(largeDetail.route)}
               {@const facetMeta = analysisFacet ? analysisFacetForKey(analysisFacet.key) : null}
@@ -4160,15 +4223,19 @@
                 {#if analysisFacet}<dt>Facet value</dt><dd>{analysisFacet.value}</dd>{/if}
                 {#if facetMeta}<dt><span class="label-help">Facet navigation signal<button class="info-icon" type="button" aria-label="Explain facet navigation signal" onclick={() => toggleHelp('facet-quality')} onmouseenter={() => showHelp('facet-quality')} onmouseleave={() => hideHelp('facet-quality')} onfocus={() => showHelp('facet-quality')} onblur={() => hideHelp('facet-quality')}>i</button>{#if activeHelpKey === 'facet-quality'}<span class="info-bubble" role="tooltip">{helpText('facet-quality')}</span>{/if}</span></dt><dd>{facetMeta.recommendation} · {facetMeta.recommended_control} · reduction {formatPercent(facetMeta.expected_reduction)}</dd>{/if}
                 {#if hierarchyValue}<dt>Hierarchy</dt><dd>{hierarchyValue.hierarchy.label}{hierarchyValue.parent ? ` / ${hierarchyValue.parent.label}` : ''}</dd>{/if}
-                <dt>{capitalise(recordPlural())}</dt><dd>{routeDatasets.length.toLocaleString()} in current reduction</dd>
-                <dt>{capitalise(resourcePlural())}</dt><dd>{routeResources.length.toLocaleString()} in current reduction</dd>
+                <dt>Matched {recordPlural()}</dt><dd>{routeDatasetTotal.toLocaleString()} in current reduction</dd>
+                <dt>{capitalise(recordPlural())} preview</dt><dd>{routeDatasets.length.toLocaleString()} shown</dd>
+                <dt>{capitalise(resourcePlural())} preview</dt><dd>{routeResources.length.toLocaleString()} shown</dd>
                 <dt>Full links</dt><dd>{largeRelationships.length ? largeDetail.relationships.length.toLocaleString() : 'Not loaded'}</dd>
               </dl>
               {#if largeFullLoading && !largeIndex}
                 <p class="facet-loading">Loading {recordPlural()} for this value...</p>
               {/if}
               {#if routeDatasets.length}
-                <h3>{capitalise(recordPlural())} in current reduction</h3>
+                <h3>{capitalise(recordPlural())} preview</h3>
+                {#if routeDatasetTotal > routeDatasets.length}
+                  <p class="muted">Showing {routeDatasets.length.toLocaleString()} of {routeDatasetTotal.toLocaleString()} matched {recordPlural()}.</p>
+                {/if}
                 {#each routeDatasets.slice(0, 12) as dataset}
                   <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                     <strong>{dataset.title}</strong>
@@ -4180,7 +4247,7 @@
                 {/each}
               {/if}
               {#if routeResources.length}
-                <h3>{capitalise(resourcePlural())} in current reduction</h3>
+                <h3>{capitalise(resourcePlural())} preview</h3>
                 {#each routeResources.slice(0, 12) as resource}
                   <button type="button" onclick={() => inspectLargeRoute(resourceRoute(resource))}>
                     <strong>{resource.name || resource.id}</strong>

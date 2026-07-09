@@ -51,6 +51,76 @@ MAX_RECORD_NOTES_CHARS = 1200
 MARKDOWN_RECORD_TYPES = {"API Product", "Provider API Portal", "API Operation", "Schema", "Contract", "Capability Document"}
 CONTRACT_SOURCE_STATUSES = {"capability-document", "openapi-indicated", "wsdl-indicated", "dataset-api", "code-list", "taxonomy"}
 CONTRACT_PROTOCOLS = {"WMS", "WFS", "WMTS", "WCS", "OGC API", "SPARQL", "OpenAPI", "SOAP/WSDL"}
+STANDARDS_REFERENCES = [
+    {
+        "id": "dcat-3",
+        "title": "Data Catalog Vocabulary (DCAT) Version 3",
+        "short_title": "DCAT 3",
+        "url": "https://www.w3.org/TR/vocab-dcat-3/",
+        "local_concept": "../standards/dcat.md",
+        "role": "Catalogue vocabulary for DataService, Dataset, endpoint, licence, publisher and provenance metadata.",
+    },
+    {
+        "id": "dcat-ap-3",
+        "title": "DCAT Application Profile for data portals in Europe 3.0.0",
+        "short_title": "DCAT-AP 3.0.0",
+        "url": "https://semiceu.github.io/DCAT-AP/releases/3.0.0/",
+        "local_concept": "../standards/dcat-ap.md",
+        "role": "Application profile used to make DCAT catalogue records federatable across data portals.",
+    },
+    {
+        "id": "openapi-3",
+        "title": "OpenAPI Specification",
+        "short_title": "OpenAPI 3",
+        "url": "https://spec.openapis.org/oas/v3.2.0.html",
+        "local_concept": "../standards/openapi.md",
+        "role": "Executable HTTP API contract vocabulary for servers, paths, operations, schemas and security schemes.",
+    },
+    {
+        "id": "dqv",
+        "title": "Data Quality Vocabulary",
+        "short_title": "DQV",
+        "url": "https://www.w3.org/TR/vocab-dqv/",
+        "local_concept": "../standards/dqv.md",
+        "role": "Companion vocabulary for quality annotations where OKF metadata-quality signals need standards context.",
+    },
+    {
+        "id": "prov-o",
+        "title": "PROV-O",
+        "short_title": "PROV",
+        "url": "https://www.w3.org/TR/prov-o/",
+        "local_concept": "../standards/w3c-prov.md",
+        "role": "Provenance model for harvest activity, source adapter and observation metadata.",
+    },
+]
+DCAT_TYPE_BY_RECORD_TYPE = {
+    "API Product": "dcat:DataService",
+    "Data Access API Endpoint": "dcat:DataService",
+    "Data Product": "dcat:Dataset",
+    "API Operation": "dcat:DataService endpoint",
+    "Provider API Portal": "dcat:Catalog landing page",
+    "Capability Document": "dcterms:Standard",
+    "Contract": "dcterms:Standard",
+    "Schema": "dcterms:Standard",
+}
+OPENAPI_TYPE_BY_RECORD_TYPE = {
+    "API Product": "OpenAPI Object",
+    "Data Access API Endpoint": "Server Object or Path Item",
+    "Data Product": "external data asset",
+    "API Operation": "Operation Object",
+    "Provider API Portal": "externalDocs",
+    "Capability Document": "OpenAPI Description or external contract",
+    "Contract": "OpenAPI Description or external contract",
+    "Schema": "Schema Object",
+}
+OPENAPI_SECURITY_SCHEME_BY_ACCESS_MODEL = {
+    "anonymous": "none",
+    "open": "none",
+    "api-key": "apiKey",
+    "oauth2": "oauth2",
+    "approval-required": "metadata-only",
+    "unknown": "unknown",
+}
 
 API_LIKE_CKAN_FORMATS = [
     "WMS",
@@ -389,6 +459,125 @@ def sample_policy_for(record_type: str, access_model: str, url: str, protocols: 
         ]
         if url
         else [],
+    }
+
+
+def openapi_security_scheme(access_model: str) -> str:
+    return OPENAPI_SECURITY_SCHEME_BY_ACCESS_MODEL.get(access_model, "unknown")
+
+
+def standards_required_missing(
+    *,
+    record_type: str,
+    title: str,
+    description: str,
+    url: str,
+    documentation: str,
+    publisher: str,
+    license_id: str,
+    access_model: str,
+) -> tuple[list[str], list[str]]:
+    dcat_missing: list[str] = []
+    openapi_missing: list[str] = []
+    if record_type in {"API Product", "Data Access API Endpoint"}:
+        if not url:
+            dcat_missing.append("dcat:endpointURL")
+            openapi_missing.append("servers[].url")
+        if not documentation:
+            dcat_missing.append("dcat:endpointDescription")
+            openapi_missing.append("externalDocs.url")
+    if record_type == "Data Product" and not url:
+        dcat_missing.append("dcat:landingPage or dcat:distribution")
+    if record_type == "API Operation":
+        if not url:
+            openapi_missing.append("paths.<path>")
+        openapi_missing.extend(["HTTP method", "parameters", "responses"])
+    if not title:
+        dcat_missing.append("dcterms:title")
+        openapi_missing.append("info.title or operation.summary")
+    if not description:
+        dcat_missing.append("dcterms:description")
+        openapi_missing.append("info.description or operation.description")
+    if not publisher:
+        dcat_missing.append("dcterms:publisher")
+    if license_id in {"", "not-specified"}:
+        dcat_missing.append("dcterms:license")
+        openapi_missing.append("info.license")
+    if record_type in {"API Product", "Data Access API Endpoint", "API Operation"} and access_model == "unknown":
+        openapi_missing.append("components.securitySchemes")
+    return sorted(set(dcat_missing)), sorted(set(openapi_missing))
+
+
+def standards_export_status(record_type: str, dcat_missing: list[str], openapi_missing: list[str]) -> tuple[str, str]:
+    if record_type == "API Operation":
+        return "roll-up-to-parent-service", "operation-fragment"
+    if record_type in {"Contract", "Capability Document"}:
+        return "contract-reference", "contract-reference"
+    if record_type == "Schema":
+        return "schema-reference", "schema-reference"
+    if record_type == "Provider API Portal":
+        return "catalogue-landing-page", "documentation-reference"
+    if record_type == "Data Product":
+        return ("metadata-ready" if not dcat_missing else "metadata-gaps"), "not-openapi-native"
+    dcat_status = "data-service-ready" if not dcat_missing else "data-service-with-gaps"
+    openapi_status = "service-stub-ready" if not openapi_missing else "service-stub-with-gaps"
+    return dcat_status, openapi_status
+
+
+def standards_alignment_for_record(
+    *,
+    record_type: str,
+    title: str,
+    description: str,
+    url: str,
+    documentation: str,
+    publisher: str,
+    license_id: str,
+    access_model: str,
+    protocols: list[str],
+) -> dict[str, Any]:
+    dcat_type = DCAT_TYPE_BY_RECORD_TYPE.get(record_type, "okf:Concept")
+    openapi_type = OPENAPI_TYPE_BY_RECORD_TYPE.get(record_type, "no direct OpenAPI equivalent")
+    dcat_missing, openapi_missing = standards_required_missing(
+        record_type=record_type,
+        title=title,
+        description=description,
+        url=url,
+        documentation=documentation,
+        publisher=publisher,
+        license_id=license_id,
+        access_model=access_model,
+    )
+    dcat_status, openapi_status = standards_export_status(record_type, dcat_missing, openapi_missing)
+    protocol_terms = sorted(set(protocols or []))
+    return {
+        "claim": "standards-alignable-not-conformant",
+        "profiles": ["DCAT 3", "DCAT-AP 3.0.0", "OpenAPI 3"],
+        "dcat": {
+            "term": dcat_type,
+            "export_status": dcat_status,
+            "required_missing": dcat_missing,
+            "properties": [
+                "dcterms:title",
+                "dcterms:description",
+                "dcterms:publisher",
+                "dcterms:license",
+                "dcat:keyword",
+                "dcat:theme",
+            ]
+            + (["dcat:endpointURL", "dcat:endpointDescription"] if record_type in {"API Product", "Data Access API Endpoint", "API Operation"} else []),
+        },
+        "openapi": {
+            "term": openapi_type,
+            "export_status": openapi_status,
+            "required_missing": openapi_missing,
+            "security_scheme_type": openapi_security_scheme(access_model),
+            "protocol_terms": protocol_terms,
+        },
+        "notes": [
+            "OKF records are source metadata and standards-alignable; generated records are not DCAT-AP RDF or complete OpenAPI descriptions unless an exporter emits those artefacts.",
+            "OpenAPI operation, parameter and response schemas are only exportable where source contracts provide them.",
+        ],
     }
 
 
@@ -1063,6 +1252,17 @@ class CorpusBuilder:
             created=created,
             modified=modified,
         )
+        standards_alignment = standards_alignment_for_record(
+            record_type=record_type,
+            title=title,
+            description=description,
+            url=url,
+            documentation=documentation,
+            publisher=publisher_title_value,
+            license_id=license_id,
+            access_model=access_model,
+            protocols=protocols,
+        )
         notes = plain_text(description)
         record = {
             "id": url or slug,
@@ -1103,6 +1303,13 @@ class CorpusBuilder:
             "publisher_concept_id": f"organisations/{publisher}.md",
             "quality": quality,
             "quality_band": quality_band(float(quality.get("overall", 0))),
+            "standards_alignment": standards_alignment,
+            "standards_profiles": standards_alignment["profiles"],
+            "dcat_type": standards_alignment["dcat"]["term"],
+            "dcat_export_status": standards_alignment["dcat"]["export_status"],
+            "openapi_type": standards_alignment["openapi"]["term"],
+            "openapi_export_status": standards_alignment["openapi"]["export_status"],
+            "openapi_security_scheme": standards_alignment["openapi"]["security_scheme_type"],
             "provenance": provenance,
             "url": url,
             "documentation": documentation,
@@ -1131,6 +1338,10 @@ class CorpusBuilder:
                 "environment": environment_for(title, description, url, visibility),
                 "credential_requirements": credential_requirements_for(access_model),
                 "license_basis": license_basis,
+                "dcat_type": standards_alignment["dcat"]["term"],
+                "openapi_type": standards_alignment["openapi"]["term"],
+                "dcat_export_status": standards_alignment["dcat"]["export_status"],
+                "openapi_export_status": standards_alignment["openapi"]["export_status"],
                 **(extras or {}),
             },
             "visibility": visibility,
@@ -1930,6 +2141,8 @@ def render_record_markdown(record: dict[str, Any]) -> str:
             f"- Licence source: {record.get('license_source_id') or 'not-specified'}",
             f"- Licence confidence: {record.get('license_confidence')}",
             f"- Quality band: {record.get('quality_band')}",
+            f"- DCAT term: `{record.get('dcat_type')}`",
+            f"- OpenAPI term: `{record.get('openapi_type')}`",
             "",
         ]
     )
@@ -1937,6 +2150,25 @@ def render_record_markdown(record: dict[str, Any]) -> str:
         lines.append(f"- Endpoint: {record['url']}")
     if record.get("documentation"):
         lines.append(f"- Documentation: {record['documentation']}")
+    alignment = record.get("standards_alignment") or {}
+    if alignment:
+        dcat = alignment.get("dcat", {})
+        openapi = alignment.get("openapi", {})
+        lines.extend(
+            [
+                "",
+                "## Standards Alignment",
+                "",
+                "This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.",
+                "",
+                f"- DCAT / DCAT-AP: `{dcat.get('term', record.get('dcat_type'))}`; export status `{dcat.get('export_status', 'not-specified')}`.",
+                f"- DCAT missing requirements: {', '.join(f'`{item}`' for item in dcat.get('required_missing', [])) or 'none recorded'}",
+                f"- OpenAPI: `{openapi.get('term', record.get('openapi_type'))}`; export status `{openapi.get('export_status', 'not-specified')}`.",
+                f"- OpenAPI security scheme: `{openapi.get('security_scheme_type', record.get('openapi_security_scheme', 'unknown'))}`.",
+                f"- OpenAPI missing requirements: {', '.join(f'`{item}`' for item in openapi.get('required_missing', [])) or 'none recorded'}",
+                f"- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)",
+            ]
+        )
     lines.extend(["", "## Credential Requirements", ""])
     for requirement in record.get("credential_requirements", []):
         lines.append(f"- {requirement.get('type')}: secret value stored in OKF = {requirement.get('secret_value_stored_in_okf')}")
@@ -2004,10 +2236,15 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
             "",
             "Source-declared licences are preserved and canonicalised first. ONS records with no explicit source licence are assigned Open Government Licence v3.0 from the ONS website terms; Ordnance Survey provider-native API records are assigned an OS licence-required status from OS licensing guidance. Both are marked `provider-terms-inferred` with lower confidence than source-declared licences.",
             "",
+            "## Standards Alignment",
+            "",
+            "Each generated API/data record carries compact DCAT/OpenAPI alignment fields: `dcat_type`, `openapi_type`, export-readiness status, OpenAPI security-scheme type and missing standard requirements. The pack remains standards-alignable rather than DCAT-AP/OpenAPI conformant until RDF or `openapi` artefacts are emitted by an exporter.",
+            "",
             "## Entry Points",
             "",
             "- [Explorer descriptor](okf-explorer.json)",
             "- [Specification notes](../sources/UK-Government-API-OKF.md)",
+            "- [Standards crosswalk](../docs/okf-standards-crosswalk.md)",
             "",
         ]
     )
@@ -2022,6 +2259,7 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
             "",
             "- Generated multi-source OKF Explorer descriptor, JSON shards, selected Markdown concepts, provenance-bearing relationships and data-hygiene warnings.",
             "- Canonicalised OGL licence variants, inferred OGL v3.0 for ONS records where source metadata omitted a licence, and inferred OS licence-required status for Ordnance Survey provider-native records; inferred records are counted in `licence_inferred_from_provider_terms`.",
+            "- Added DCAT/OpenAPI alignment metadata, standards references and export-readiness gap summaries to records, descriptors and selected Markdown concept pages.",
             "",
         ]
     )
@@ -2060,6 +2298,11 @@ def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "source_tier": record.get("source_tier", ""),
                 "source_adapter": record.get("source_adapter", ""),
                 "confidence": record.get("confidence", ""),
+                "dcat_type": record.get("dcat_type", ""),
+                "dcat_export_status": record.get("dcat_export_status", ""),
+                "openapi_type": record.get("openapi_type", ""),
+                "openapi_export_status": record.get("openapi_export_status", ""),
+                "openapi_security_scheme": record.get("openapi_security_scheme", ""),
                 "protocol": record.get("protocol", []),
                 "documentation": truncate_text(record.get("documentation", ""), MAX_SEARCH_URL_CHARS),
                 "url": truncate_text(record.get("url", ""), MAX_SEARCH_URL_CHARS),
@@ -2080,11 +2323,12 @@ def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
         "topics": 4,
         "record_type": 4,
         "protocol": 4,
+        "standards": 4,
         "source": 3,
         "tags": 3,
         "url": 2,
     }
-    masks = {"title": 1, "publisher": 2, "context": 4, "description": 8, "topics": 16, "tags": 32, "url": 64, "record_type": 128, "protocol": 256, "source": 512}
+    masks = {"title": 1, "publisher": 2, "context": 4, "description": 8, "topics": 16, "tags": 32, "url": 64, "record_type": 128, "protocol": 256, "source": 512, "standards": 1024}
     for doc in result_docs:
         fields = {
             "title": doc["title"],
@@ -2094,6 +2338,7 @@ def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
             "topics": " ".join(doc.get("topics", [])),
             "record_type": doc.get("record_type", ""),
             "protocol": " ".join(doc.get("protocol", [])),
+            "standards": " ".join(str(doc.get(key, "")) for key in ["dcat_type", "dcat_export_status", "openapi_type", "openapi_export_status", "openapi_security_scheme"]),
             "source": " ".join(str(doc.get(key, "")) for key in ["source_tier", "source_adapter", "confidence"]),
             "tags": " ".join(doc.get("tags", [])),
             "url": " ".join(str(doc.get(key, "")) for key in ["open", "url", "documentation", "endpoint_host", "documentation_host"]),
@@ -2255,6 +2500,11 @@ def build_corpus(
         ("topic", "Domain", "chips", "primary"),
         ("interaction_style", "Interaction style", "chips", "secondary"),
         ("access_model", "Access model", "chips", "primary"),
+        ("dcat_type", "DCAT term", "chips", "secondary"),
+        ("openapi_type", "OpenAPI term", "chips", "secondary"),
+        ("dcat_export_status", "DCAT export status", "chips", "secondary"),
+        ("openapi_export_status", "OpenAPI export status", "chips", "secondary"),
+        ("openapi_security_scheme", "OpenAPI security scheme", "chips", "secondary"),
         ("visibility", "Visibility", "chips", "secondary"),
         ("contract_status", "Contract status", "chips", "primary"),
         ("lifecycle_status", "Lifecycle status", "chips", "secondary"),
@@ -2333,6 +2583,28 @@ def build_corpus(
     }
     latest_date = max((str(record.get("timestamp") or record.get("metadata_modified") or "")[:10] for record in records if record.get("timestamp") or record.get("metadata_modified")), default="1970-01-01")
     generated_at = f"{latest_date}T00:00:00Z"
+    dcat_gap_counts: Counter[str] = Counter()
+    openapi_gap_counts: Counter[str] = Counter()
+    for record in records:
+        alignment = record.get("standards_alignment", {})
+        dcat_gap_counts.update(alignment.get("dcat", {}).get("required_missing", []))
+        openapi_gap_counts.update(alignment.get("openapi", {}).get("required_missing", []))
+    standards_alignment_overview = {
+        "claim": "standards-alignable-not-conformant",
+        "crosswalk": "../docs/okf-standards-crosswalk.md",
+        "standards": STANDARDS_REFERENCES,
+        "dcat_type_counts": [{"term": term, "count": count} for term, count in Counter(record.get("dcat_type", "not-specified") for record in records).most_common()],
+        "openapi_type_counts": [{"term": term, "count": count} for term, count in Counter(record.get("openapi_type", "not-specified") for record in records).most_common()],
+        "dcat_export_status_counts": [{"status": status, "count": count} for status, count in Counter(record.get("dcat_export_status", "not-specified") for record in records).most_common()],
+        "openapi_export_status_counts": [{"status": status, "count": count} for status, count in Counter(record.get("openapi_export_status", "not-specified") for record in records).most_common()],
+        "openapi_security_scheme_counts": [{"scheme": scheme, "count": count} for scheme, count in Counter(record.get("openapi_security_scheme", "not-specified") for record in records).most_common()],
+        "dcat_common_missing": [{"property": prop, "count": count} for prop, count in dcat_gap_counts.most_common()],
+        "openapi_common_missing": [{"field": field, "count": count} for field, count in openapi_gap_counts.most_common()],
+        "export_policy": {
+            "dcat": "Generated records are DCAT/DCAT-AP alignable metadata. A conformant export still requires RDF serialisation and profile validation.",
+            "openapi": "Generated records can produce OpenAPI service stubs or operation fragments where endpoint metadata exists. Complete OpenAPI requires source paths, methods, parameters, responses and schemas.",
+        },
+    }
     analysis = {
         "schema": "okf-explorer-analysis.v1",
         "generated_at": generated_at,
@@ -2350,10 +2622,12 @@ def build_corpus(
                 "No API keys, client secrets, tokens, certificates, or live calls are stored in the OKF bundle.",
                 "Selected concept records are also emitted as browser-compatible Markdown files.",
                 "ONS records without explicit source licence metadata inherit an inferred Open Government Licence v3.0 from ONS website terms; Ordnance Survey provider-native records inherit an inferred OS licence-required status from OS licensing guidance. Both have lower confidence than source-declared licences.",
+                "API/data records now carry compact DCAT/OpenAPI alignment metadata for export readiness, but the bundle is standards-alignable rather than DCAT-AP or OpenAPI conformant until exporters emit those artefacts.",
             ],
         },
         "canonical_counts": count_values,
         "warnings": warnings,
+        "standards_alignment": standards_alignment_overview,
         "graph_overview": {"nodes": graph_nodes, "edges": graph_edges},
         "timeline_overview": {
             "buckets": [
@@ -2428,6 +2702,7 @@ def build_corpus(
         "format_counts": facets["protocol"],
         "facet_previews": {key: rows[:18] for key, rows in facets.items()},
         "notices": analysis["summary"]["notices"],
+        "standards_alignment": standards_alignment_overview,
     }
 
     search = build_search(records)
@@ -2479,6 +2754,7 @@ def build_corpus(
             "search_manifest": "data/search/manifest.json",
             "markdown_index": "index.md",
             "notes": "../sources/UK-Government-API-OKF.md",
+            "standards_crosswalk": "../docs/okf-standards-crosswalk.md",
         },
         "counts": overview["counts"],
         "performance": manifest["performance"],
@@ -2490,6 +2766,7 @@ def build_corpus(
             "license": "Open Government Licence v3.0 unless otherwise stated",
             "source_tiers": ["declared_api_catalogue", "provider_native_api", "data_access_endpoint", "contract_discovery"],
             "adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api", "contract_discovery"],
+            "standards": STANDARDS_REFERENCES,
         },
         "vocabulary": {
             "record_singular": "API/data record",
@@ -2501,9 +2778,17 @@ def build_corpus(
             "format_plural": "protocols",
             "resource_stack_label": "Evidence stack",
             "search_placeholder": "Search API products, data endpoints, datasets, providers, protocols",
+            "standard_term_style": "monospace",
         },
         "extensions": {
             "okf-explorer-analysis.v1": {"mode": "external", "entrypoint": "analysis_overview"},
+            "okf-standards-crosswalk.v1": {
+                "mode": "standards-alignable",
+                "crosswalk": "../docs/okf-standards-crosswalk.md",
+                "claim": "Records carry DCAT/OpenAPI mappings and export-readiness gaps; the pack is not DCAT-AP RDF or complete OpenAPI without an exporter.",
+                "standards": STANDARDS_REFERENCES,
+                "dcat_names_rendering": "monospace",
+            },
             "okf-api-catalogue.v2": {
                 "mode": "multi-source-derived",
                 "source_adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api", "contract_discovery"],

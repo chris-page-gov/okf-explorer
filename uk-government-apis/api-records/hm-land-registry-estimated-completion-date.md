@@ -29,9 +29,22 @@ Overview The Estimated Completion Date (ECD) is a date by which the application 
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/bg2/api/v1/applications/{application_reference}/estimate-completion-date
 - Documentation: https://landregistry.github.io/bgtechdoc/services/estimated_completion_date/
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`, `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

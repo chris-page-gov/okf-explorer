@@ -29,9 +29,22 @@ The ADMIRALTY Vector Chart Service (AVCS) Online Discovery API provides free acc
 - Licence source: subscription required
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://developer.admiralty.co.uk/product#product=avcs-online-discovery-api
 - Documentation: https://admiraltyapi.developer.azure-api.net/discovery-api-instructions
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

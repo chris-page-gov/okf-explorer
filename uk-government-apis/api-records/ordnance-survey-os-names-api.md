@@ -29,9 +29,22 @@ A free, searchable, reliable database to help you find and verify populated plac
 - Licence source: https://osdatahub.os.uk/legal/termsConditions
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://api.os.uk/search/names/v1
 - Documentation: https://osdatahub.os.uk/docs/names/overview
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

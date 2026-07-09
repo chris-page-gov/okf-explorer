@@ -29,9 +29,22 @@ OS Vector Tile API is a vector tile service providing detailed Ordnance Survey d
 - Licence source: https://www.ordnancesurvey.co.uk/licensing
 - Licence confidence: 0.7
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://api.os.uk/maps/vector/v1
 - Documentation: https://osdatahub.os.uk/docs/vts/overview
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-ready`.
+- OpenAPI security scheme: `apiKey`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

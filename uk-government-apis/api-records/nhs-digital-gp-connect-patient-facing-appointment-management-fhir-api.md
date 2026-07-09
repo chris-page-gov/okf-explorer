@@ -29,9 +29,22 @@ Use this API to book and manage patient appointments at their GP practice. You c
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: high
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://digital.nhs.uk/developer/api-catalogue/gp-connect-patient-facing-appointment-management-fhir
 - Documentation: https://digital.nhs.uk/developer/api-catalogue/gp-connect-patient-facing-appointment-management-fhir
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `metadata-only`.
+- OpenAPI missing requirements: `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

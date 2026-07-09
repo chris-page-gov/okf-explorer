@@ -29,9 +29,22 @@ A land charge is an interest in land that imposes an obligation on the landowner
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: high
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://businessgateway.landregistry.gov.uk/b2b/BGSoapEngine/FullSearchV2_1WebService?wsdl
 - Documentation: https://landregistry.github.io/bgtechdoc/services/land_charges_full_search/
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `metadata-only`.
+- OpenAPI missing requirements: `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

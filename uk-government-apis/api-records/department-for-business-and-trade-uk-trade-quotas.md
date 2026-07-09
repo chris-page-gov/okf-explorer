@@ -29,9 +29,22 @@ This dataset shows the quotas available in the UK Tariff along with their curren
 - Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.22/reports/quotas-including-current-volumes/data?format=csv&download
 - Documentation: https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/v1.0.22/metadata?format=html
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

@@ -225,6 +225,11 @@ export type SearchResultDoc = {
   source_tier?: string;
   source_adapter?: string;
   confidence?: string;
+  dcat_type?: string;
+  dcat_export_status?: string;
+  openapi_type?: string;
+  openapi_export_status?: string;
+  openapi_security_scheme?: string;
   protocol?: string[];
   documentation?: string;
   url?: string;
@@ -283,6 +288,30 @@ export type LargeDataset = {
   source_tier?: string;
   source_adapter?: string;
   confidence?: string;
+  dcat_type?: string;
+  dcat_export_status?: string;
+  openapi_type?: string;
+  openapi_export_status?: string;
+  openapi_security_scheme?: string;
+  standards_alignment?: {
+    claim?: string;
+    profiles?: string[];
+    dcat?: {
+      term?: string;
+      export_status?: string;
+      required_missing?: string[];
+      properties?: string[];
+    };
+    openapi?: {
+      term?: string;
+      export_status?: string;
+      required_missing?: string[];
+      security_scheme_type?: string;
+      protocol_terms?: string[];
+    };
+    notes?: string[];
+    [key: string]: unknown;
+  };
   protocol?: string[];
   isopen?: boolean;
   private?: boolean;

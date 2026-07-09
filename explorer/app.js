@@ -1,7 +1,8 @@
 "use strict";
 
-const DEFAULT_BUNDLE = location.pathname.includes("/explorer/") ? "../okf-bundle.json" : "okf-bundle.json";
-const DEFAULT_REGISTRY = location.pathname.includes("/explorer/") ? "../okf-registry.json" : "okf-registry.json";
+const NESTED_APP_PATH = location.pathname.includes("/explorer/") || location.pathname.includes("/legacy/");
+const DEFAULT_BUNDLE = NESTED_APP_PATH ? "../okf-bundle.json" : "okf-bundle.json";
+const DEFAULT_REGISTRY = NESTED_APP_PATH ? "../okf-registry.json" : "okf-registry.json";
 const VIEW_IDS = new Set(["reader", "graph", "links", "timeline"]);
 const PIN_STORAGE_KEY = "okfExplorerPins:v1";
 const BUNDLE_HISTORY_KEY = "okfExplorerBundleHistory:v1";
@@ -480,6 +481,25 @@ function normaliseBundle(raw) {
     };
   }
   throw new Error("Bundle does not contain OKF corpora or graph data.");
+}
+
+function svelteExplorerUrl(bundleUrl) {
+  const target = new URL(
+    NESTED_APP_PATH ? "../next/" : "next/",
+    location.href
+  );
+  target.searchParams.set("bundle", bundleUrl);
+  if (currentView !== "reader") target.searchParams.set("view", currentView);
+  target.hash = "overview";
+  return target.toString();
+}
+
+function handOffLargeCorpus(raw, url) {
+  if (raw?.kind !== "okf-large-corpus") return false;
+  const target = svelteExplorerUrl(url);
+  showStatus(`Large-corpus bundles open in the current Explorer. Redirecting to ${target}`);
+  location.assign(target);
+  return true;
 }
 
 function setBundle(raw, sourceLabel) {
@@ -1633,6 +1653,7 @@ async function loadInitialBundle() {
   el.bundleUrl.value = url === DEFAULT_BUNDLE ? "" : url;
   try {
     const raw = await loadJson(validatedBundleUrl(url));
+    if (handOffLargeCorpus(raw, url)) return;
     setBundle(raw, url);
     rememberBundleUrl(url, raw);
     showStatus("");
@@ -1645,6 +1666,7 @@ async function loadBundleFromUrl(url, push) {
   try {
     showStatus("");
     const raw = await loadJson(validatedBundleUrl(url));
+    if (handOffLargeCorpus(raw, url)) return;
     if (push) {
       const next = new URL(location.href);
       if (url === DEFAULT_BUNDLE) next.searchParams.delete("bundle");

@@ -29,9 +29,22 @@ Machine-readable or service-description contract inferred for OGC WMS from publi
 - Licence source: uk-ogl
 - Licence confidence: 0.9
 - Quality band: high
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `OpenAPI Description or external contract`
 
 - Endpoint: http://osni-spatialni.opendata.arcgis.com/datasets/bc95e6199aa04e3390eb243a3cbee1ca
 - Documentation: http://osni-spatialni.opendata.arcgis.com/datasets/bc95e6199aa04e3390eb243a3cbee1ca
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `contract-reference`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Description or external contract`; export status `contract-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

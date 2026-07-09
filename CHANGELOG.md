@@ -6,7 +6,42 @@ source-of-truth changes.
 
 ## Unreleased
 
-- No unreleased changes.
+No unreleased changes.
+
+## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
+
+- Added `docs/okf-standards-crosswalk.md`, a field-by-field crosswalk between
+  the OKF record contract and DCAT/DCAT-AP (`dcat:DataService`) and OpenAPI,
+  including a record-type crosswalk, an access-model to
+  `securitySchemes.type` mapping, and a worked example built from the
+  Ordnance Survey `search/places/v1/postcode` record. Cross-linked from
+  `docs/index.md`, `docs/repository-guide.md`, `docs/okf-bundle-authoring.md`
+  and `docs/ai-okf-usage.md`.
+- Added local standards concept pages for [DCAT](standards/dcat.md),
+  [DCAT-AP](standards/dcat-ap.md) and [DQV](standards/dqv.md), and refreshed
+  [OpenAPI](standards/openapi.md) so API-related OKF bundles can link to local
+  standard metadata as well as official sources.
+- Extended the UK Government APIs builder so every generated API/data record
+  carries compact standards-alignment metadata: `dcat_type`, `openapi_type`,
+  DCAT/OpenAPI export status, OpenAPI security-scheme mapping and missing
+  standards requirements for future DCAT/OpenAPI exporters.
+- Updated the Explorer detail card to render DCAT/OpenAPI terms in monospace
+  with explanatory info bubbles and a Standards Alignment section.
+- Expanded the crosswalk, API source specification, bundle-authoring guide, AI
+  usage guide and pack-parity notes with a standards gap analysis and cautious
+  export-readiness policy.
+- Changed the Pages build so the root URL redirects to the canonical Svelte
+  Explorer under `next/`, while the old dependency-free Explorer is published
+  explicitly under `legacy/` and the single-file legacy viewer remains available
+  through `viewer.html` / `view.html`.
+- Added a legacy Explorer handoff for large-corpus descriptors and clarified
+  facet-detail totals so matched record counts are not confused with capped
+  preview rows.
+- Softened selected facet and record highlighting in the Explorer so active
+  records remain readable without the heavy saturated-blue card treatment.
+- Fixed graph stack double-click handling so synthetic stack nodes are
+  highlighted or expanded in place instead of becoming unreadable graph-centre
+  routes.
 
 ## v0.2.0 - 2026-07-08
 

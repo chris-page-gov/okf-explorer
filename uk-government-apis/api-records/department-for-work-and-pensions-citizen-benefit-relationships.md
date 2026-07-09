@@ -29,7 +29,20 @@ Provides a list of benefits (and where relevant, which components) a person is e
 - Licence source: ISC
 - Licence confidence: 0.9
 - Quality band: low
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-with-gaps`.
+- DCAT missing requirements: `dcat:endpointDescription`, `dcat:endpointURL`
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`, `externalDocs.url`, `servers[].url`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

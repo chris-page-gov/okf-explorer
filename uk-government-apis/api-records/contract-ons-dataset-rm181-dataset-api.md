@@ -29,9 +29,22 @@ Machine-readable or service-description contract inferred for Sexual orientation
 - Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `OpenAPI Description or external contract`
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/datasets/RM181
 - Documentation: https://api.beta.ons.gov.uk/v1/datasets/RM181
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `contract-reference`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Description or external contract`; export status `contract-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

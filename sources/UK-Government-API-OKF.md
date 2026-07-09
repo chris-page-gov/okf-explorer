@@ -414,6 +414,39 @@ infer that an OS licence is required from OS licensing guidance rather than
 being treated as OGL. These records are marked `provider-terms-inferred`, not
 `source-declared`.
 
+### Standards alignment
+
+API-related records must be aligned to the repository standards crosswalk in
+[OKF Standards Crosswalk](../docs/okf-standards-crosswalk.md). The generator
+should prefer standards names where they are exact, and keep OKF-native names
+where DCAT/OpenAPI do not have an exact concept.
+
+Minimum generated standards fields for each API/data record:
+
+- `dcat_type`;
+- `openapi_type`;
+- `dcat_export_status`;
+- `openapi_export_status`;
+- `openapi_security_scheme`;
+- `standards_alignment.dcat.required_missing`;
+- `standards_alignment.openapi.required_missing`.
+
+The descriptor must include links to local standards concept pages and official
+standard sources for DCAT 3, DCAT-AP 3.0.0, OpenAPI and DQV. DCAT names such as
+`dcat:DataService`, `dcat:Dataset`, `dcat:endpointURL` and `dcterms:license`
+should be rendered as standards terms in the Explorer, not as ordinary prose
+labels.
+
+Export rules:
+
+- DCAT-AP export is only conformant after RDF is emitted and validated; OKF JSON
+  records are standards-alignable metadata.
+- OpenAPI export is only conformant after an `openapi` document is emitted with
+  servers, paths, methods, parameters, responses, schemas and security metadata.
+- Where harvested sources only provide endpoint/documentation metadata, the
+  exporter may emit a labelled service stub or operation fragment, but must not
+  invent HTTP methods, schemas, examples, licences or authentication details.
+
 ---
 
 ## Security and API keys

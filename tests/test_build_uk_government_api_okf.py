@@ -85,6 +85,9 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn("assurance_status", facets)
         self.assertIn("relationship_density", facets)
         self.assertIn("canonical_publisher", facets)
+        self.assertIn("dcat_type", facets)
+        self.assertIn("openapi_type", facets)
+        self.assertIn("openapi_security_scheme", facets)
         self.assertIn("data_gov_uk_ckan", {row["value"] for row in facets["source_adapter"]})
         self.assertIn("Data Access API Endpoint", {row["value"] for row in facets["record_type"]})
 
@@ -290,6 +293,32 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn(product["relationship_density"], {"none", "low", "medium", "high"})
         self.assertTrue(operation["sample_policy"])
         self.assertFalse(operation["sample_policy"]["live_calls_enabled"])
+
+    def test_records_include_standards_alignment_metadata(self):
+        corpus = self.build_fixture_corpus()
+        product = next(record for record in corpus["records"] if record["record_type"] == "API Product")
+        operation = next(record for record in corpus["records"] if record["record_type"] == "API Operation")
+
+        self.assertEqual(product["dcat_type"], "dcat:DataService")
+        self.assertEqual(product["openapi_type"], "OpenAPI Object")
+        self.assertIn(product["dcat_export_status"], {"data-service-ready", "data-service-with-gaps"})
+        self.assertIn(product["openapi_export_status"], {"service-stub-ready", "service-stub-with-gaps"})
+        self.assertIn(product["openapi_security_scheme"], {"none", "apiKey", "oauth2", "metadata-only", "unknown"})
+        self.assertEqual(operation["openapi_type"], "Operation Object")
+        self.assertEqual(operation["standards_alignment"]["dcat"]["export_status"], "roll-up-to-parent-service")
+        self.assertIn("parameters", operation["standards_alignment"]["openapi"]["required_missing"])
+
+    def test_descriptor_and_markdown_expose_standards_crosswalk(self):
+        corpus = self.build_fixture_corpus()
+        descriptor = corpus["descriptor"]
+        files = builder_module.output_files(corpus)
+
+        self.assertIn("standards_crosswalk", descriptor["entrypoints"])
+        self.assertIn("okf-standards-crosswalk.v1", descriptor["extensions"])
+        self.assertTrue(corpus["analysis"]["standards_alignment"]["standards"])
+        record_markdown = files[Path("api-records/example-department-example-payments-api.md")]
+        self.assertIn("## Standards Alignment", record_markdown)
+        self.assertIn("`dcat:DataService`", record_markdown)
 
 
 if __name__ == "__main__":

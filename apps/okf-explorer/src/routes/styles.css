@@ -8,6 +8,9 @@
   --line-strong: #aeb9c5;
   --accent: #0b6bcb;
   --accent-2: #007a5a;
+  --selected-bg: #eaf4ff;
+  --selected-line: #8eb8df;
+  --selected-edge: #1d70b8;
   --warn: #b36b00;
   --focus: #ffdd00;
 }
@@ -96,20 +99,47 @@ input:focus {
   font-weight: 700;
 }
 
-.tabs button.active,
-.type-filters button.active,
-.node-list button.active,
-.result-list button.active,
-.facet-values button.active,
-.type-view button.active {
+.tabs button.active {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
 }
 
+.type-filters button.active,
+.node-list button.active,
+.result-list button.active,
+.facet-values button.active,
+.type-view button.active {
+  background: var(--selected-bg);
+  border-color: var(--selected-line);
+  color: var(--ink);
+  box-shadow: inset 4px 0 0 var(--selected-edge);
+}
+
+.type-filters button.active:hover,
+.node-list button.active:hover,
+.result-list button.active:hover,
+.facet-values button.active:hover,
+.type-view button.active:hover {
+  background: #deefff;
+  border-color: var(--selected-edge);
+}
+
+.node-list button.active span,
+.result-list button.active span,
+.result-list button.active p,
 .facet-values button.active small,
-.facet-values button.active span {
-  color: #fff;
+.facet-values button.active span,
+.type-view button.active span,
+.type-view button.active p {
+  color: var(--muted);
+}
+
+.result-list button.active h2,
+.result-list button.active h3,
+.result-list button.active strong,
+.facet-values button.active strong {
+  color: var(--ink);
 }
 
 .bundle-form {
@@ -701,7 +731,9 @@ input:focus {
 }
 
 .reader-view .node-card.active {
-  outline: 3px solid var(--focus);
+  border-color: var(--selected-line);
+  background: var(--selected-bg);
+  box-shadow: inset 4px 0 0 var(--selected-edge);
 }
 
 .reader-view .node-card span,
@@ -1266,6 +1298,23 @@ button.chip:focus {
 .detail a {
   color: #0645d8;
   overflow-wrap: anywhere;
+}
+
+.standard-term {
+  padding: 1px 4px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: .92em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.inline-term {
+  display: inline-block;
+  margin: 0 4px 4px 0;
 }
 
 .metadata-section {

@@ -29,9 +29,22 @@ A dataset of laws and guidance that regulate business activities in England. The
 - Licence source: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 - Licence confidence: 0.9
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://data.api.trade.gov.uk/v1/datasets/uk-business-regulations/versions/latest/data?format=json
 - Documentation: https://data.api.trade.gov.uk/v1/datasets/uk-business-regulations/versions/latest/metadata?format=html
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

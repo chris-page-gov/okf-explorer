@@ -29,9 +29,22 @@ People in and out of work covering employment, unemployment, types of work, earn
 - Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
 - Licence confidence: 0.75
 - Quality band: medium
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `Schema Object`
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/topics/5687
 - Documentation: https://api.beta.ons.gov.uk/v1/topics/5687
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `schema-reference`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `Schema Object`; export status `schema-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

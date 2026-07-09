@@ -11,8 +11,8 @@ const require = createRequire(import.meta.url);
 const DEFAULT_SUITE = 'evaluation/okf-explorer/questions.json';
 const DEFAULT_VISUALS = 'evaluation/okf-explorer/visual-regressions.json';
 const DEFAULT_OUT = 'evaluation/okf-explorer/results/latest';
-const DEFAULT_BASE_URL = 'http://127.0.0.1:8002/_site/next/';
-const DEFAULT_BUNDLE = '../uk-government-apis/okf-explorer.json';
+const DEFAULT_BASE_URL = 'http://127.0.0.1:8002/next/';
+const DEFAULT_BUNDLE = '/uk-government-apis/okf-explorer.json';
 const SECRET_PATTERN = /\b(api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|password|passwd|bearer)\s*[=:]\s*[^&\s]+/i;
 const RAW_GAP_PATTERN = /\b(None|null|undefined)\b/;
 

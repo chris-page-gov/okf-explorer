@@ -29,9 +29,22 @@ The Office for National Statistics API makes datasets and other data available p
 - Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
 - Licence confidence: 0.75
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://api.beta.ons.gov.uk/v1
 - Documentation: https://developer.ons.gov.uk/
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-ready`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

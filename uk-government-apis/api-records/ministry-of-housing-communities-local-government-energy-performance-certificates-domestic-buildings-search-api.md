@@ -29,9 +29,22 @@ Allows searching and filtering of our property-level open data on Energy Perform
 - Licence source: https://epc.opendatacommunities.org/docs/copyright
 - Licence confidence: 0.9
 - Quality band: high
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://epc.opendatacommunities.org/api/v1/domestic/search
 - Documentation: https://epc.opendatacommunities.org/docs/api/domestic#domestic-search
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-ready`.
+- OpenAPI security scheme: `metadata-only`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 
