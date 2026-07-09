@@ -43,13 +43,13 @@ This repository now plays two roles:
 
 - `apps/okf-explorer/` is the canonical SvelteKit OKF Explorer source.
 - `explorer/` is the dependency-free static OKF Explorer PWA and compatibility
-  surface while the Svelte app is rolled out.
+  surface, published explicitly under `legacy/`.
 - The existing AI infrastructure Markdown corpus is the bundled sample/default
   OKF dataset used to exercise the explorer.
 
 The repository contains:
 
-- `explorer/` - the hosted compatibility explorer app.
+- `explorer/` - source for the hosted legacy compatibility Explorer app.
 - `apps/okf-explorer/` - Svelte 5 / SvelteKit 2 / Vite 8 source for the
   definitive OKF Explorer implementation.
 - `okf.config.json` - local corpus configuration.
@@ -57,7 +57,8 @@ The repository contains:
 - `okf-registry.json` - starter registry for discoverable bundles and Bundle
   URL suggestions.
 - `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
-  GOV.UK API Catalogue.
+  GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API
+  metadata.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
@@ -91,9 +92,11 @@ The repository contains:
 
 ## Read Locally
 
-Open `explorer/index.html` in a browser to use the OKF Explorer against the
-generated local bundle. The legacy single-file viewer remains available at
-`viewer.html`.
+Run `python3 scripts/build_site.py`, serve `_site/` as the local web root, and
+open `http://127.0.0.1:8002/next/` to review the canonical Svelte Explorer.
+The root Pages URL redirects to `next/`, while the dependency-free
+compatibility Explorer remains available at `legacy/`. The legacy single-file
+viewer remains available at `viewer.html`.
 
 The Explorer reads `okf-registry.json` for example bundle destinations and keeps
 recently loaded Bundle URLs in browser local storage, then offers matching
@@ -143,8 +146,9 @@ pnpm build
 ```
 
 When `apps/okf-explorer/build/` exists, `python3 scripts/build_site.py` copies
-it to `_site/next/`. The root `index.html` remains the compatibility Explorer
-until the public cutover is made deliberately.
+it to `_site/next/`. The root `index.html` redirects to `next/` and preserves
+query-string and hash routes, so published root links use the canonical Svelte
+Explorer. The old dependency-free Explorer is copied to `_site/legacy/`.
 
 ## Validate And Build
 
@@ -155,15 +159,15 @@ python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
 python3 scripts/build_site.py
-node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --bundle ../uk-government-apis/okf-explorer.json --limit 100
-node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/_site/next/ --suite evaluation/gov-ckan/questions.json --limit 100
+node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/next/ --bundle /uk-government-apis/okf-explorer.json --limit 100
+node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/next/ --suite evaluation/gov-ckan/questions.json --limit 100
 ```
 
-The build writes a GitHub Pages-ready static site to `_site/`. The site uses
-the compatibility OKF Explorer as `index.html`, publishes `okf-bundle.json`,
-preserves `viewer.html` and `view.html`, publishes the Svelte Explorer under
-`next/` when built, publishes the UK Government APIs large-corpus descriptor,
-and copies the public OKF Markdown corpus beside it.
+The build writes a GitHub Pages-ready static site to `_site/`. The site uses a
+root redirect into the Svelte Explorer, publishes the Svelte Explorer under
+`next/`, publishes the compatibility Explorer under `legacy/`, preserves
+`viewer.html` and `view.html`, publishes the UK Government APIs large-corpus
+descriptor, and copies the public OKF Markdown corpus beside it.
 
 To regenerate the explorer bundle after Markdown changes:
 

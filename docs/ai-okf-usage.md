@@ -21,7 +21,8 @@ For a large corpus, give the AI:
   `data/analysis/overview.json`, search shards and only the record chunks
   needed for the question;
 - a requirement to cite record `route`, `source_adapter`, `source_tier`,
-  `confidence`, `license_basis` and source URLs where available.
+  `confidence`, `license_basis`, standards-alignment fields and source URLs
+  where available.
 
 ## Prompt Template
 
@@ -41,6 +42,10 @@ Rules:
 - Cite record routes and source URLs.
 - If the pack records a licence/access/contract gap, say it is a metadata gap,
   not proof that the API is unusable.
+- If the question asks about DCAT/OpenAPI export, use `dcat_type`,
+  `openapi_type`, `dcat_export_status`, `openapi_export_status` and
+  `standards_alignment.*.required_missing`. Do not call a record conformant
+  unless the pack includes a generated and validated standards artefact.
 - Do not expose or invent credentials. Do not call live APIs unless I ask and
   credentials are provided outside the OKF pack.
 
@@ -54,7 +59,7 @@ PASTE_QUESTION
 2. Read `data/overview.json` for overview cards, generated warnings, top
    concepts and the analysis entry point.
 3. Read `data/analysis/overview.json` for facet vocabulary, quality hints,
-   source tiers and pack warnings.
+   source tiers, standards-alignment summaries and pack warnings.
 4. Use `data/search/manifest.json` and relevant search shards for term lookup.
 5. Load only the `apis-*.json`, `resources-*.json` or `relationships-*.json`
    chunks containing selected records or relationships.
@@ -102,3 +107,28 @@ A weak answer:
 - loads or summarizes the whole corpus when a search shard would answer the
   question;
 - invents credentials, live availability, security posture or legal status.
+
+## If The Question Is About Standards, Not Records
+
+If the AI is asked how a record's fields relate to external standards (for
+example "is this DCAT-AP compliant?" or "what OpenAPI security scheme does
+this access model map to?"), point it at
+[okf-standards-crosswalk.md](okf-standards-crosswalk.md) instead of letting it
+improvise a mapping. That page is the canonical field-by-field crosswalk to
+DCAT/DCAT-AP and OpenAPI, and it states plainly where this repository is
+standards-alignable rather than conformant.
+
+For the UK Government APIs large-corpus pack, prefer the generated fields in the
+record JSON first:
+
+- `dcat_type`;
+- `openapi_type`;
+- `dcat_export_status`;
+- `openapi_export_status`;
+- `openapi_security_scheme`;
+- `standards_alignment.dcat.required_missing`;
+- `standards_alignment.openapi.required_missing`.
+
+Then use the crosswalk for interpretation. That prevents a model from replacing
+the repo's deliberately cautious "export-ready stub" language with a false
+DCAT-AP/OpenAPI conformance claim.

@@ -29,9 +29,22 @@ Machine-readable or service-description contract inferred for WFS from public me
 - Licence source: uk-ogl
 - Licence confidence: 0.9
 - Quality band: high
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `OpenAPI Description or external contract`
 
 - Endpoint: https://www.data.gov.uk/dataset/cambridgeshire-cycle-routes
 - Documentation: https://www.data.gov.uk/dataset/cambridgeshire-cycle-routes
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `contract-reference`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Description or external contract`; export status `contract-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

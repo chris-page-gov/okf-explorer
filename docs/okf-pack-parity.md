@@ -15,6 +15,9 @@ Each large OKF pack should expose:
   contracts, operations and schemas where those concepts exist;
 - source, source tier, provenance, confidence, licence, access model, contract
   status and record type metadata on every record where the source supports it;
+- standards-alignment metadata where the pack refers to APIs or API-like data
+  services, including DCAT/DCAT-AP terms, OpenAPI terms, export-readiness
+  status and missing requirements;
 - generated facet definitions and quality hints that match the UI vocabulary;
 - a 100-question evaluation suite using the shared additive rubric.
 
@@ -108,13 +111,13 @@ The shared harness supports both packs:
 node scripts/evaluate_okf_explorer.mjs \
   --suite evaluation/okf-explorer/questions.json \
   --visual evaluation/okf-explorer/visual-regressions.json \
-  --base-url http://127.0.0.1:8002/_site/next/
+  --base-url http://127.0.0.1:8002/next/
 ```
 
 ```sh
 node scripts/evaluate_okf_explorer.mjs \
   --suite evaluation/gov-ckan/questions.json \
-  --base-url http://127.0.0.1:8002/_site/next/
+  --base-url http://127.0.0.1:8002/next/
 ```
 
 The CKAN suite declares its hosted descriptor as `target_bundle`, so the second
@@ -126,3 +129,26 @@ The CKAN hosting repository should keep its existing documentation-lockstep
 policy. The practical parity rule is: changes to either pack's descriptor,
 generated analysis, search/facet model, evaluation suite or docs should update
 the matching parity documentation and changelog in the same PR.
+
+## Standards Parity
+
+The UK Government APIs pack should be the richer API standards exemplar because
+it has declared API products, provider-native API roots, operations, contracts
+and schemas. The GOV.UK CKAN pack should still align any API-like resources to
+the same vocabulary when it exposes WMS, WFS, OGC API, ArcGIS REST, SPARQL or
+other data service endpoints.
+
+Parity expectation:
+
+- API-like services map to `dcat:DataService`.
+- Dataset records map to `dcat:Dataset`.
+- Licences map to `dcterms:license`.
+- Provider/publisher metadata maps to `dcterms:publisher`.
+- Endpoint URLs map to `dcat:endpointURL`.
+- Documentation or capability documents map to `dcat:endpointDescription` or
+  `dcterms:conformsTo`.
+- OpenAPI terms are only used where the pack has enough HTTP API metadata to
+  emit a useful service stub or operation fragment.
+
+Both packs should describe themselves as standards-alignable until they emit and
+validate the actual DCAT-AP RDF or OpenAPI artefacts.

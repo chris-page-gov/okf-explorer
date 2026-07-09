@@ -3144,7 +3144,25 @@
           "kind": "lists",
           "label": "lists",
           "source": "standards/index.md",
+          "target": "standards/dcat-ap.md"
+        },
+        {
+          "kind": "lists",
+          "label": "lists",
+          "source": "standards/index.md",
+          "target": "standards/dcat.md"
+        },
+        {
+          "kind": "lists",
+          "label": "lists",
+          "source": "standards/index.md",
           "target": "standards/dpop.md"
+        },
+        {
+          "kind": "lists",
+          "label": "lists",
+          "source": "standards/index.md",
+          "target": "standards/dqv.md"
         },
         {
           "kind": "lists",
@@ -5584,6 +5602,40 @@
           "title": "AsyncAPI",
           "type": "Specification"
         },
+        "standards/dcat-ap.md": {
+          "aliases": "",
+          "body": "DCAT-AP is an application profile over DCAT for interoperable data portals. It matters for OKF API/data bundles because data.gov.uk and related public data catalogues already use DCAT-style concepts, and API catalogue records need to federate with datasets rather than create a parallel vocabulary.\n\nIn this repo, DCAT-AP is treated as a conformance target for future RDF exports. The generated OKF large-corpus descriptor records the likely DCAT/DCAT-AP class and missing export requirements for each API/data record, but it does not claim DCAT-AP conformance unless an RDF artefact is generated and validated.",
+          "description": "European DCAT application profile for interoperable data portals and federated catalogue metadata.",
+          "id": "standards/dcat-ap.md",
+          "resource": "https://semiceu.github.io/DCAT-AP/releases/3.0.0/",
+          "route_aliases": [
+            "standards-dcat-ap",
+            "standards/dcat-ap",
+            "standards/dcat-ap.md"
+          ],
+          "section": "standards",
+          "source": "standards/dcat-ap.md",
+          "timestamp": "2026-07-09T00:00:00Z",
+          "title": "DCAT Application Profile 3.0.0",
+          "type": "Specification"
+        },
+        "standards/dcat.md": {
+          "aliases": "",
+          "body": "DCAT is the W3C vocabulary used to describe data catalogues. For API-related OKF bundles, the core alignment is `dcat:DataService` for API products and data-access services, `dcat:Dataset` for data products, `dcat:endpointURL` for service entry points, `dcat:endpointDescription` for human or machine-readable endpoint descriptions, and `dcterms:license` / `dcterms:publisher` for legal and organisational metadata.\n\nThe UK Government APIs OKF uses DCAT terms as export targets, not as the native authoring format. The pack is DCAT-alignable until a generator emits RDF and validates it against DCAT/DCAT-AP profile rules.",
+          "description": "W3C vocabulary for catalogues, datasets, data services, endpoint URLs, endpoint descriptions, publishers, licences and distributions.",
+          "id": "standards/dcat.md",
+          "resource": "https://www.w3.org/TR/vocab-dcat-3/",
+          "route_aliases": [
+            "standards-dcat",
+            "standards/dcat",
+            "standards/dcat.md"
+          ],
+          "section": "standards",
+          "source": "standards/dcat.md",
+          "timestamp": "2026-07-09T00:00:00Z",
+          "title": "Data Catalog Vocabulary (DCAT) Version 3",
+          "type": "Specification"
+        },
         "standards/dpop.md": {
           "aliases": "",
           "body": "Demonstrating Proof-of-Possession sender-constrains tokens at the application layer, mitigating replay of stolen tokens. Strong for browser/mobile or heterogeneous clients; still maturing in many stacks.\n\n# Terms\nGlossary terms used here: [Sender-constrained token](../glossary/sender-constrained-token.md).",
@@ -5599,6 +5651,23 @@
           "source": "standards/dpop.md",
           "timestamp": "2023-09-01T00:00:00Z",
           "title": "DPoP — RFC 9449",
+          "type": "Specification"
+        },
+        "standards/dqv.md": {
+          "aliases": "",
+          "body": "DQV provides a vocabulary for describing data quality metadata and quality annotations. OKF Explorer metadata-quality percentages are deterministic catalogue-completeness signals, not assurance scores. DQV is therefore the closest standards-family anchor for future exports of those quality annotations, while the UI should keep the OKF labels and explanations explicit.\n\nUse DQV where an OKF bundle needs to export quality dimensions alongside DCAT, especially completeness, provenance of a score and source-observed metadata gaps.",
+          "description": "W3C companion vocabulary for expressing data quality metadata and quality annotations alongside DCAT.",
+          "id": "standards/dqv.md",
+          "resource": "https://www.w3.org/TR/vocab-dqv/",
+          "route_aliases": [
+            "standards-dqv",
+            "standards/dqv",
+            "standards/dqv.md"
+          ],
+          "section": "standards",
+          "source": "standards/dqv.md",
+          "timestamp": "2026-07-09T00:00:00Z",
+          "title": "Data Quality Vocabulary (DQV)",
           "type": "Specification"
         },
         "standards/graphql.md": {
@@ -5654,7 +5723,7 @@
         },
         "standards/index.md": {
           "aliases": "",
-          "body": "# Standards & specifications\n\nSpecs, protocols, identity, policy and observability — verified against primary sources.\n\n- [OAuth 2.0](oauth-2-0.md) — Delegated, scoped access to an HTTP service without sharing credentials.\n- [W3C PROV](w3c-prov.md) — Interoperable model of provenance: entities, activities, agents.\n- [PKCE — RFC 7636](pkce.md) — Proof Key for Code Exchange; protects auth-code flows from interception.\n- [gRPC / Protocol Buffers](grpc-protobuf.md) — Typed RPC and efficient binary serialisation with generated stubs.\n- [OAuth Token Exchange — RFC 8693](token-exchange.md) — Narrowing or translating authority for downstream services.\n- [mTLS-bound tokens — RFC 8705](mtls-bound-tokens.md) — Sender-constrains tokens to a client via mutual TLS.\n- [Zero trust architecture (NIST SP 800-207)](zero-trust.md) — No implicit trust based on network location.\n- [JSON Schema](json-schema.md) — Validation vocabulary; underpins strict tool arguments and structured output.\n- [GraphQL](graphql.md) — Typed query language with introspection and client-specified responses.\n- [DPoP — RFC 9449](dpop.md) — Application-layer sender-constraining without mutual TLS.\n- [HTTP Message Signatures — RFC 9421](http-message-signatures.md) — End-to-end integrity and authenticity across intermediaries.\n- [Structured Outputs](structured-outputs.md) — Constraining model output to conform to a supplied schema.\n- [Model Context Protocol (MCP)](mcp.md) — Agent-to-tool protocol: hosts, clients, servers, tools, resources, prompts over JSON-RPC.\n- [OAuth 2.0 Security BCP — RFC 9700](oauth-2-0-security-bcp.md) — Current best practice; deprecates insecure OAuth modes.\n- [Agent2Agent (A2A)](a2a.md) — Agent-to-agent protocol: capability discovery, delegation, long-running tasks, streaming.\n- [OpenAPI](openapi.md) — HTTP API contracts: ops, schemas, security metadata; machine- and human-readable.\n- [AsyncAPI](asyncapi.md) — Protocol-agnostic description of channels, operations and messages.\n- [Arazzo](arazzo.md) — Machine-readable workflow narratives over API descriptions.\n- [SPIFFE / SPIRE](spiffe-spire.md) — Workload identity and attestation for software systems.\n- [Open Policy Agent (OPA)](opa.md) — Policy-as-code: decoupled decisions across the stack.\n- [OpenTelemetry](opentelemetry.md) — Traces, metrics and logs for end-to-end observability.",
+          "body": "# Standards & specifications\n\nSpecs, protocols, identity, policy and observability — verified against primary sources.\n\n- [OAuth 2.0](oauth-2-0.md) — Delegated, scoped access to an HTTP service without sharing credentials.\n- [W3C PROV](w3c-prov.md) — Interoperable model of provenance: entities, activities, agents.\n- [PKCE — RFC 7636](pkce.md) — Proof Key for Code Exchange; protects auth-code flows from interception.\n- [gRPC / Protocol Buffers](grpc-protobuf.md) — Typed RPC and efficient binary serialisation with generated stubs.\n- [OAuth Token Exchange — RFC 8693](token-exchange.md) — Narrowing or translating authority for downstream services.\n- [mTLS-bound tokens — RFC 8705](mtls-bound-tokens.md) — Sender-constrains tokens to a client via mutual TLS.\n- [Zero trust architecture (NIST SP 800-207)](zero-trust.md) — No implicit trust based on network location.\n- [JSON Schema](json-schema.md) — Validation vocabulary; underpins strict tool arguments and structured output.\n- [GraphQL](graphql.md) — Typed query language with introspection and client-specified responses.\n- [DPoP — RFC 9449](dpop.md) — Application-layer sender-constraining without mutual TLS.\n- [HTTP Message Signatures — RFC 9421](http-message-signatures.md) — End-to-end integrity and authenticity across intermediaries.\n- [Structured Outputs](structured-outputs.md) — Constraining model output to conform to a supplied schema.\n- [Model Context Protocol (MCP)](mcp.md) — Agent-to-tool protocol: hosts, clients, servers, tools, resources, prompts over JSON-RPC.\n- [OAuth 2.0 Security BCP — RFC 9700](oauth-2-0-security-bcp.md) — Current best practice; deprecates insecure OAuth modes.\n- [Agent2Agent (A2A)](a2a.md) — Agent-to-agent protocol: capability discovery, delegation, long-running tasks, streaming.\n- [OpenAPI](openapi.md) — HTTP API contracts: ops, schemas, security metadata; machine- and human-readable.\n- [DCAT](dcat.md) — Catalogue vocabulary for datasets, data services, endpoint URLs, publishers and licences.\n- [DCAT-AP](dcat-ap.md) — Application profile for federated public data catalogue metadata.\n- [DQV](dqv.md) — Quality annotation vocabulary used alongside DCAT for metadata-quality signals.\n- [AsyncAPI](asyncapi.md) — Protocol-agnostic description of channels, operations and messages.\n- [Arazzo](arazzo.md) — Machine-readable workflow narratives over API descriptions.\n- [SPIFFE / SPIRE](spiffe-spire.md) — Workload identity and attestation for software systems.\n- [Open Policy Agent (OPA)](opa.md) — Policy-as-code: decoupled decisions across the stack.\n- [OpenTelemetry](opentelemetry.md) — Traces, metrics and logs for end-to-end observability.",
           "description": "Specs, protocols, identity, policy and observability — verified against primary sources.",
           "id": "standards/index.md",
           "resource": "",
@@ -5773,10 +5842,10 @@
         },
         "standards/openapi.md": {
           "aliases": "",
-          "body": "Standard, language-agnostic description of HTTP APIs — request/response schemas and security metadata. Strong for discovery, codegen, validation, linting and tool-calling over REST; [GDS](../uk-government/gds-api-standards.md) recommends producing an OpenAPI document *first*. Weak for event choreography and end-to-end workflow without add-ons such as [Arazzo](arazzo.md).",
+          "body": "Standard, language-agnostic description of HTTP APIs — request/response schemas and security metadata. Strong for discovery, codegen, validation, linting and tool-calling over REST; [GDS](../uk-government/gds-api-standards.md) recommends producing an OpenAPI document *first*. Weak for event choreography and end-to-end workflow without add-ons such as [Arazzo](arazzo.md).\n\nFor API-related OKF bundles, OpenAPI is the executable contract target. OKF records can carry enough metadata to generate service stubs or operation fragments, but a record is not OpenAPI-conformant unless an `openapi` document with servers, paths, methods, parameters, responses, schemas and security metadata is emitted and validated.",
           "description": "HTTP API contracts: ops, schemas, security metadata; machine- and human-readable.",
           "id": "standards/openapi.md",
-          "resource": "https://spec.openapis.org/oas/latest.html",
+          "resource": "https://spec.openapis.org/oas/v3.2.0.html",
           "route_aliases": [
             "standards-openapi",
             "standards/openapi",
@@ -5784,7 +5853,7 @@
           ],
           "section": "standards",
           "source": "standards/openapi.md",
-          "timestamp": "2025-09-19T00:00:00Z",
+          "timestamp": "2026-07-09T00:00:00Z",
           "title": "OpenAPI",
           "type": "Specification"
         },
@@ -6113,7 +6182,7 @@
       "title": "AI Infrastructure OKF Wiki"
     }
   },
-  "generated_at": "2026-07-07T00:00:00Z",
+  "generated_at": "2026-07-09T00:00:00Z",
   "generated_by": "scripts/build_okf_bundle.py",
   "kind": "okf-bundle",
   "meta": {

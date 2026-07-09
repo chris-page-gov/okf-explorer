@@ -29,9 +29,22 @@ OAuth 2 is an authentication mechanism for APIs that allows applications to use 
 - Licence source: https://osdatahub.os.uk/legal/termsConditions
 - Licence confidence: 0.9
 - Quality band: high
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://api.os.uk/oauth2/token/v1
 - Documentation: https://osdatahub.os.uk/docs/oauth2/overview
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-ready`.
+- OpenAPI security scheme: `oauth2`.
+- OpenAPI missing requirements: none recorded
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

@@ -108,8 +108,8 @@ Run the full 100-question browser suite:
 
 ```sh
 node scripts/evaluate_okf_explorer.mjs \
-  --base-url http://127.0.0.1:8002/_site/next/ \
-  --bundle ../uk-government-apis/okf-explorer.json \
+  --base-url http://127.0.0.1:8002/next/ \
+  --bundle /uk-government-apis/okf-explorer.json \
   --limit 100 \
   --out evaluation/okf-explorer/results/latest
 ```
@@ -119,7 +119,7 @@ If Playwright is installed outside the repo, point the script at that module:
 ```sh
 PLAYWRIGHT_PACKAGE=/Users/crpage/tmp/okf-playwright/node_modules/playwright \
   node scripts/evaluate_okf_explorer.mjs \
-  --base-url http://127.0.0.1:8002/_site/next/ \
+  --base-url http://127.0.0.1:8002/next/ \
   --bundle ../uk-government-apis/okf-explorer.json \
   --limit 100
 ```
@@ -137,7 +137,7 @@ Run the GOV.UK CKAN parity suite against the hosted CKAN descriptor:
 
 ```sh
 node scripts/evaluate_okf_explorer.mjs \
-  --base-url http://127.0.0.1:8002/_site/next/ \
+  --base-url http://127.0.0.1:8002/next/ \
   --suite evaluation/gov-ckan/questions.json \
   --limit 100
 ```

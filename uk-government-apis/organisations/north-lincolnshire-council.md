@@ -1,16 +1,16 @@
 ---
 type: "Organisation"
 title: "North Lincolnshire Council"
-description: "Provider with 62 records in the UK Government API OKF."
+description: "Provider with 57 records in the UK Government API OKF."
 timestamp: ""
 ---
 
 # North Lincolnshire Council
 
-Provider with 62 records in the UK Government API OKF.
+Provider with 57 records in the UK Government API OKF.
 
 ## Catalogue Metrics
 
-- Records: 62
-- Resources: 57
+- Records: 57
+- Resources: 54
 - Canonical organisation: north-lincolnshire-council

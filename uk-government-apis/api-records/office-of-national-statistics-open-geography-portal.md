@@ -29,9 +29,22 @@ The Open Geography portal from the Office for National Statistics (ONS) provides
 - Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
 - Licence confidence: 0.75
 - Quality band: medium
+- DCAT term: `dcat:DataService`
+- OpenAPI term: `OpenAPI Object`
 
 - Endpoint: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/
 - Documentation: https://developers.arcgis.com/rest/services-reference/get-started-with-the-services-directory.htm
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService`; export status `data-service-ready`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `OpenAPI Object`; export status `service-stub-with-gaps`.
+- OpenAPI security scheme: `unknown`.
+- OpenAPI missing requirements: `components.securitySchemes`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

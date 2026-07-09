@@ -12,14 +12,14 @@ This repository has two jobs:
 | Path | Purpose |
 |------|---------|
 | `apps/okf-explorer/` | Canonical SvelteKit OKF Explorer. This is the main UI source. |
-| `explorer/` | Dependency-free compatibility Explorer PWA served at the Pages root. |
+| `explorer/` | Dependency-free compatibility Explorer PWA source, published under `legacy/`. |
 | `viewer.html` and `view.html` | Legacy single-file viewer surfaces. |
 | `scripts/build_okf_bundle.py` | Builds the small Markdown-derived `okf-bundle.json`. |
 | `scripts/build_uk_government_api_okf.py` | Builds the UK Government APIs large-corpus pack. |
 | `scripts/build_site.py` | Builds the static Pages site in `_site/`. |
 | `scripts/evaluate_okf_explorer.mjs` | Runs the 100-question browser evaluation harness. |
 | `uk-government-apis/` | Generated UK Government APIs OKF large-corpus descriptor, shards, selected Markdown records and organisation records. |
-| `docs/` | Manuals, evaluation docs, conformance notes and review history. |
+| `docs/` | Manuals, evaluation docs, conformance notes, the DCAT-AP/OpenAPI standards crosswalk and review history. |
 | `evaluation/okf-explorer/` | UK Government APIs question suite and visual-regression evidence. |
 | `evaluation/gov-ckan/` | GOV.UK CKAN paired exemplar question suite. |
 | `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`, `research/`, `uk-government/`, `organisations/`, `glossary/` | The local Markdown OKF corpus used by the small bundle. |
@@ -53,10 +53,12 @@ without a live server.
 
 ## Stable Public Entry Points
 
-- Root compatibility Explorer:
+- Root Explorer redirect:
   `https://chris-page-gov.github.io/ai-infrastructure-wiki/`
 - Svelte Explorer:
   `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/`
+- Legacy compatibility Explorer:
+  `https://chris-page-gov.github.io/ai-infrastructure-wiki/legacy/`
 - UK Government APIs descriptor:
   `https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json`
 - UK Government APIs in Explorer:
@@ -97,7 +99,9 @@ If you are asking an AI to answer questions from a pack, start with
 If you are building a new pack, start with
 [okf-bundle-authoring.md](okf-bundle-authoring.md) and keep
 [explorer-overview-context.md](explorer-overview-context.md) open for the
-large-corpus descriptor contract.
+large-corpus descriptor contract. If you need to check a field against an
+external standard, see [okf-standards-crosswalk.md](okf-standards-crosswalk.md)
+for the DCAT-AP/OpenAPI mapping.
 
 If you are changing the Explorer UI, run the harness described in
 [okf-explorer-evaluation.md](okf-explorer-evaluation.md) and update

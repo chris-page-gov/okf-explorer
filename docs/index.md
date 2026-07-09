@@ -16,6 +16,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles
   that take full advantage of Explorer facets, search, graph, timeline,
   resources and right-card metadata.
+- [OKF standards crosswalk](okf-standards-crosswalk.md) maps every OKF record
+  field to its DCAT-AP and OpenAPI equivalent, so bundles stay federatable
+  with external API/data catalogues.
 - [20 minute demo script](demo-script-2026-07-09.md) is the prepared run of
   show-and-tell for the 2026-07-09 demonstration.
 

@@ -18,6 +18,11 @@ plus lazy shards.
 
 ## Minimum Record Contract
 
+See [okf-standards-crosswalk.md](okf-standards-crosswalk.md) for how each of
+these fields lines up with DCAT-AP (`dcat:DataService`) and OpenAPI, so new
+field names stay federatable with external API/data catalogues instead of
+drifting into a repo-only vocabulary.
+
 Every record should have:
 
 - stable `id` and route-safe `route`;
@@ -28,6 +33,8 @@ Every record should have:
 - provider/publisher where known;
 - licence and access fields, with explicit `not-specified` when missing;
 - protocol/format/host fields when applicable;
+- standards alignment fields for API/data bundles: `dcat_type`,
+  `openapi_type`, export status and missing standard requirements;
 - tags/topics for user discovery;
 - timestamps or a clear "not recorded in source metadata" state.
 
@@ -97,6 +104,28 @@ It is acceptable to infer or normalize metadata, but never hide the basis:
   gaps, not as proof of absence.
 - Redact credential-like query parameters before persisting URLs and count the
   redactions in warnings.
+
+## Standards Alignment For API Bundles
+
+API-related bundles should use [okf-standards-crosswalk.md](okf-standards-crosswalk.md)
+as the naming authority for DCAT/DCAT-AP and OpenAPI terms. Prefer standards
+names where they are exact, such as `dcat:DataService`, `dcat:Dataset`,
+`dcat:endpointURL`, `dcterms:license`, `OpenAPI Object`, `Operation Object` and
+`components.securitySchemes`. Keep OKF-native fields where the standards do not
+fit cleanly, such as `confidence`, `licence_basis`, `source_adapter` and
+`relationship_density`, and explain the standards gap.
+
+Each API/data record should expose enough metadata for a future exporter to
+decide whether it can emit:
+
+- a DCAT/DCAT-AP RDF `dcat:DataService` or `dcat:Dataset`;
+- an OpenAPI service stub;
+- an OpenAPI operation fragment;
+- no artefact because required fields are missing.
+
+Never claim DCAT-AP or OpenAPI conformance from an OKF record alone. Conformance
+requires an emitted standards artefact and a validation step against that
+standard.
 
 ## Quality Signals
 

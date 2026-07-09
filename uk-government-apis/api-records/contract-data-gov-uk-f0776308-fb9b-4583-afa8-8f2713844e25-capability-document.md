@@ -29,9 +29,22 @@ Machine-readable or service-description contract inferred for INSPIRE Download S
 - Licence source: not-specified
 - Licence confidence: 0.2
 - Quality band: high
+- DCAT term: `dcterms:Standard`
+- OpenAPI term: `OpenAPI Description or external contract`
 
 - Endpoint: https://www.data.gov.uk/dataset/ds-strategic-site-allocations
 - Documentation: https://www.data.gov.uk/dataset/ds-strategic-site-allocations
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcterms:Standard`; export status `contract-reference`.
+- DCAT missing requirements: `dcterms:license`
+- OpenAPI: `OpenAPI Description or external contract`; export status `contract-reference`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: `info.license`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

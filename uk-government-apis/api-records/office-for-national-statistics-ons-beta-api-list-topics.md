@@ -29,9 +29,22 @@ Template operation for the ONS Beta API: List topics.
 - Licence source: https://www.ons.gov.uk/help/terms-conditions#using-ons-content
 - Licence confidence: 0.75
 - Quality band: medium
+- DCAT term: `dcat:DataService endpoint`
+- OpenAPI term: `Operation Object`
 
 - Endpoint: https://api.beta.ons.gov.uk/v1/topics
 - Documentation: https://developer.ons.gov.uk/
+
+## Standards Alignment
+
+This generated record is standards-alignable, not standards-conformant by itself. DCAT-AP conformance needs an RDF export; OpenAPI conformance needs a complete `openapi` document.
+
+- DCAT / DCAT-AP: `dcat:DataService endpoint`; export status `roll-up-to-parent-service`.
+- DCAT missing requirements: none recorded
+- OpenAPI: `Operation Object`; export status `operation-fragment`.
+- OpenAPI security scheme: `none`.
+- OpenAPI missing requirements: `HTTP method`, `parameters`, `responses`
+- Crosswalk: [OKF Standards Crosswalk](../../docs/okf-standards-crosswalk.md)
 
 ## Credential Requirements
 

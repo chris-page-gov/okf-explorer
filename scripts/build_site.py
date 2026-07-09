@@ -44,6 +44,59 @@ FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
 
 
+def render_root_redirect() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OKF Explorer</title>
+<script>
+const target = new URL("next/", window.location.href);
+target.search = window.location.search;
+target.hash = window.location.hash;
+window.location.replace(target);
+</script>
+<meta http-equiv="refresh" content="0; url=next/">
+</head>
+<body>
+<p>Opening the <a href="next/">OKF Explorer</a>.</p>
+<p>The legacy Explorer is available at <a href="legacy/">legacy/</a>.</p>
+</body>
+</html>
+"""
+
+
+def render_root_app_redirect() -> str:
+    return """(() => {
+  const target = new URL("next/", window.location.href);
+  target.search = window.location.search;
+  target.hash = window.location.hash;
+  window.location.replace(target);
+})();
+"""
+
+
+def render_retiring_service_worker() -> str:
+    return """self.addEventListener("install", event => {
+  event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key.startsWith("okf-explorer-")).map(key => caches.delete(key)));
+    await self.registration.unregister();
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", event => {
+  if (event.request.method === "GET") event.respondWith(fetch(event.request));
+});
+"""
+
+
 def copy_file(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
@@ -91,14 +144,16 @@ def main() -> int:
         if source.exists():
             copy_file(source, OUT / name)
 
-    copy_file(ROOT / "explorer" / "index.html", OUT / "index.html")
-    for name in ["app.js", "styles.css", "manifest.webmanifest", "service-worker.js"]:
-        copy_file(ROOT / "explorer" / name, OUT / name)
+    (OUT / "index.html").write_text(render_root_redirect(), encoding="utf-8")
+    (OUT / "app.js").write_text(render_root_app_redirect(), encoding="utf-8")
+    (OUT / "service-worker.js").write_text(render_retiring_service_worker(), encoding="utf-8")
 
     copy_file(ROOT / "viewer.html", OUT / "view.html")
 
     for dirname in PUBLIC_DIRS:
         copy_public_tree(ROOT / dirname, OUT / dirname)
+
+    copy_public_tree(ROOT / "explorer", OUT / "legacy")
 
     if SVELTE_EXPLORER_BUILD.exists():
         copy_public_tree(SVELTE_EXPLORER_BUILD, OUT / "next")
