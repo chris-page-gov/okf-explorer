@@ -1,0 +1,2771 @@
+{
+  "schema": "okf-legislation-answer-evaluation.v1",
+  "title": "UK Legislation Barrister-Question Evaluation Suite",
+  "description": "100 questions across primary, secondary, retained-EU, devolved and historical legislation. Scores legal-answer quality and complete proposition-level provenance.",
+  "target_bundle": "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json",
+  "rubric": {
+    "substantive_correctness": {
+      "points": 30,
+      "mode": "15 automated term coverage + 15 expert review",
+      "checks": [
+        "states the operative rule accurately",
+        "distinguishes conditions, exceptions and discretions",
+        "does not overstate the supplied authority"
+      ]
+    },
+    "authoritative_sources": {
+      "points": 10,
+      "mode": "automated",
+      "checks": [
+        "uses legislation.gov.uk or another declared primary authority",
+        "identifies each source by title"
+      ]
+    },
+    "proposition_provenance": {
+      "points": 20,
+      "mode": "automated structural validation",
+      "checks": [
+        "every material proposition maps to one or more citations",
+        "each citation carries source title, passage text and retrieval date"
+      ]
+    },
+    "pinpoint_passages": {
+      "points": 15,
+      "mode": "automated",
+      "checks": [
+        "links point to a section, article, regulation, rule, schedule or other selected passage",
+        "quoted or paraphrased passage is supplied"
+      ]
+    },
+    "temporal_and_jurisdictional_context": {
+      "points": 10,
+      "mode": "automated evidence + expert review",
+      "checks": [
+        "states version or point in time",
+        "checks commencement and extent",
+        "checks amendments and unapplied effects"
+      ]
+    },
+    "completeness_and_uncertainty": {
+      "points": 10,
+      "mode": "expert review",
+      "checks": [
+        "addresses each part of the question",
+        "flags missing facts and adverse or unresolved material",
+        "separates law from inference"
+      ]
+    },
+    "clarity_and_utility": {
+      "points": 5,
+      "mode": "expert review",
+      "checks": [
+        "answer-first structure",
+        "usable by counsel",
+        "no unsupported legal advice claim"
+      ]
+    }
+  },
+  "answer_schema": "answer-schema.json",
+  "questions": [
+    {
+      "id": "LQ001",
+      "category": "public-law",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Human Rights Act 1998 section 6, identifying each element, qualification and exception in the text.",
+      "authority": "Human Rights Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/42/section/6"
+      ],
+      "expected_terms": [
+        "unlawful",
+        "public authority",
+        "Convention right"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "public-law",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ002",
+      "category": "public-law",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Human Rights Act 1998 section 6? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Human Rights Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/42/section/6"
+      ],
+      "expected_terms": [
+        "unlawful",
+        "public authority",
+        "Convention right"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "public-law",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ003",
+      "category": "public-law",
+      "question_type": "currency",
+      "prompt": "Is Human Rights Act 1998 section 6 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Human Rights Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/42/section/6"
+      ],
+      "expected_terms": [
+        "unlawful",
+        "public authority",
+        "Convention right"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "public-law",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ004",
+      "category": "public-law",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Human Rights Act 1998 section 6. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Human Rights Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/42/section/6"
+      ],
+      "expected_terms": [
+        "unlawful",
+        "public authority",
+        "Convention right"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "public-law",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ005",
+      "category": "equality",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Equality Act 2010 section 19, identifying each element, qualification and exception in the text.",
+      "authority": "Equality Act 2010 section 19",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2010/15/section/19"
+      ],
+      "expected_terms": [
+        "indirect discrimination",
+        "provision, criterion or practice",
+        "proportionate means"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "equality",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ006",
+      "category": "equality",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Equality Act 2010 section 19? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Equality Act 2010 section 19",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2010/15/section/19"
+      ],
+      "expected_terms": [
+        "indirect discrimination",
+        "provision, criterion or practice",
+        "proportionate means"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "equality",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ007",
+      "category": "equality",
+      "question_type": "currency",
+      "prompt": "Is Equality Act 2010 section 19 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Equality Act 2010 section 19",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2010/15/section/19"
+      ],
+      "expected_terms": [
+        "indirect discrimination",
+        "provision, criterion or practice",
+        "proportionate means"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "equality",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ008",
+      "category": "equality",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Equality Act 2010 section 19. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Equality Act 2010 section 19",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2010/15/section/19"
+      ],
+      "expected_terms": [
+        "indirect discrimination",
+        "provision, criterion or practice",
+        "proportionate means"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "equality",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ009",
+      "category": "company",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Companies Act 2006 section 172, identifying each element, qualification and exception in the text.",
+      "authority": "Companies Act 2006 section 172",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/46/section/172"
+      ],
+      "expected_terms": [
+        "good faith",
+        "success of the company",
+        "members as a whole"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "company",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ010",
+      "category": "company",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Companies Act 2006 section 172? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Companies Act 2006 section 172",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/46/section/172"
+      ],
+      "expected_terms": [
+        "good faith",
+        "success of the company",
+        "members as a whole"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "company",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ011",
+      "category": "company",
+      "question_type": "currency",
+      "prompt": "Is Companies Act 2006 section 172 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Companies Act 2006 section 172",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/46/section/172"
+      ],
+      "expected_terms": [
+        "good faith",
+        "success of the company",
+        "members as a whole"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "company",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ012",
+      "category": "company",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Companies Act 2006 section 172. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Companies Act 2006 section 172",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/46/section/172"
+      ],
+      "expected_terms": [
+        "good faith",
+        "success of the company",
+        "members as a whole"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "company",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ013",
+      "category": "consumer",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Consumer Rights Act 2015 section 9, identifying each element, qualification and exception in the text.",
+      "authority": "Consumer Rights Act 2015 section 9",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2015/15/section/9"
+      ],
+      "expected_terms": [
+        "satisfactory quality",
+        "goods",
+        "reasonable person"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "consumer",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ014",
+      "category": "consumer",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Consumer Rights Act 2015 section 9? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Consumer Rights Act 2015 section 9",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2015/15/section/9"
+      ],
+      "expected_terms": [
+        "satisfactory quality",
+        "goods",
+        "reasonable person"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "consumer",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ015",
+      "category": "consumer",
+      "question_type": "currency",
+      "prompt": "Is Consumer Rights Act 2015 section 9 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Consumer Rights Act 2015 section 9",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2015/15/section/9"
+      ],
+      "expected_terms": [
+        "satisfactory quality",
+        "goods",
+        "reasonable person"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "consumer",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ016",
+      "category": "consumer",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Consumer Rights Act 2015 section 9. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Consumer Rights Act 2015 section 9",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2015/15/section/9"
+      ],
+      "expected_terms": [
+        "satisfactory quality",
+        "goods",
+        "reasonable person"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "consumer",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ017",
+      "category": "employment",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Employment Rights Act 1996 section 94, identifying each element, qualification and exception in the text.",
+      "authority": "Employment Rights Act 1996 section 94",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/18/section/94"
+      ],
+      "expected_terms": [
+        "employee",
+        "right",
+        "unfairly dismissed"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "employment",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ018",
+      "category": "employment",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Employment Rights Act 1996 section 94? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Employment Rights Act 1996 section 94",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/18/section/94"
+      ],
+      "expected_terms": [
+        "employee",
+        "right",
+        "unfairly dismissed"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "employment",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ019",
+      "category": "employment",
+      "question_type": "currency",
+      "prompt": "Is Employment Rights Act 1996 section 94 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Employment Rights Act 1996 section 94",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/18/section/94"
+      ],
+      "expected_terms": [
+        "employee",
+        "right",
+        "unfairly dismissed"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "employment",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ020",
+      "category": "employment",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Employment Rights Act 1996 section 94. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Employment Rights Act 1996 section 94",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/18/section/94"
+      ],
+      "expected_terms": [
+        "employee",
+        "right",
+        "unfairly dismissed"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "employment",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ021",
+      "category": "data-protection",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Data Protection Act 2018 section 3, identifying each element, qualification and exception in the text.",
+      "authority": "Data Protection Act 2018 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/12/section/3"
+      ],
+      "expected_terms": [
+        "personal data",
+        "processing",
+        "information"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "data-protection",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ022",
+      "category": "data-protection",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Data Protection Act 2018 section 3? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Data Protection Act 2018 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/12/section/3"
+      ],
+      "expected_terms": [
+        "personal data",
+        "processing",
+        "information"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "data-protection",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ023",
+      "category": "data-protection",
+      "question_type": "currency",
+      "prompt": "Is Data Protection Act 2018 section 3 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Data Protection Act 2018 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/12/section/3"
+      ],
+      "expected_terms": [
+        "personal data",
+        "processing",
+        "information"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "data-protection",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ024",
+      "category": "data-protection",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Data Protection Act 2018 section 3. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Data Protection Act 2018 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/12/section/3"
+      ],
+      "expected_terms": [
+        "personal data",
+        "processing",
+        "information"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "data-protection",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ025",
+      "category": "retained-eu",
+      "question_type": "rule",
+      "prompt": "State the legal rule in UK GDPR Article 6, identifying each element, qualification and exception in the text.",
+      "authority": "UK GDPR Article 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/eur/2016/679/article/6"
+      ],
+      "expected_terms": [
+        "lawful",
+        "processing",
+        "legal basis"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "retained-eu",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ026",
+      "category": "retained-eu",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under UK GDPR Article 6? Give the statutory sequence of questions without inventing facts.",
+      "authority": "UK GDPR Article 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/eur/2016/679/article/6"
+      ],
+      "expected_terms": [
+        "lawful",
+        "processing",
+        "legal basis"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "retained-eu",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ027",
+      "category": "retained-eu",
+      "question_type": "currency",
+      "prompt": "Is UK GDPR Article 6 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "UK GDPR Article 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/eur/2016/679/article/6"
+      ],
+      "expected_terms": [
+        "lawful",
+        "processing",
+        "legal basis"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "retained-eu",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ028",
+      "category": "retained-eu",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on UK GDPR Article 6. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "UK GDPR Article 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/eur/2016/679/article/6"
+      ],
+      "expected_terms": [
+        "lawful",
+        "processing",
+        "legal basis"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "retained-eu",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ029",
+      "category": "criminal",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Theft Act 1968 section 1, identifying each element, qualification and exception in the text.",
+      "authority": "Theft Act 1968 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1968/60/section/1"
+      ],
+      "expected_terms": [
+        "dishonestly",
+        "appropriates",
+        "property belonging to another"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ030",
+      "category": "criminal",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Theft Act 1968 section 1? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Theft Act 1968 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1968/60/section/1"
+      ],
+      "expected_terms": [
+        "dishonestly",
+        "appropriates",
+        "property belonging to another"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ031",
+      "category": "criminal",
+      "question_type": "currency",
+      "prompt": "Is Theft Act 1968 section 1 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Theft Act 1968 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1968/60/section/1"
+      ],
+      "expected_terms": [
+        "dishonestly",
+        "appropriates",
+        "property belonging to another"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ032",
+      "category": "criminal",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Theft Act 1968 section 1. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Theft Act 1968 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1968/60/section/1"
+      ],
+      "expected_terms": [
+        "dishonestly",
+        "appropriates",
+        "property belonging to another"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ033",
+      "category": "criminal",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Fraud Act 2006 section 2, identifying each element, qualification and exception in the text.",
+      "authority": "Fraud Act 2006 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/35/section/2"
+      ],
+      "expected_terms": [
+        "false representation",
+        "dishonestly",
+        "gain"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ034",
+      "category": "criminal",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Fraud Act 2006 section 2? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Fraud Act 2006 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/35/section/2"
+      ],
+      "expected_terms": [
+        "false representation",
+        "dishonestly",
+        "gain"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ035",
+      "category": "criminal",
+      "question_type": "currency",
+      "prompt": "Is Fraud Act 2006 section 2 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Fraud Act 2006 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/35/section/2"
+      ],
+      "expected_terms": [
+        "false representation",
+        "dishonestly",
+        "gain"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ036",
+      "category": "criminal",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Fraud Act 2006 section 2. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Fraud Act 2006 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/35/section/2"
+      ],
+      "expected_terms": [
+        "false representation",
+        "dishonestly",
+        "gain"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "criminal",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ037",
+      "category": "evidence",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Police and Criminal Evidence Act 1984 section 78, identifying each element, qualification and exception in the text.",
+      "authority": "Police and Criminal Evidence Act 1984 section 78",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1984/60/section/78"
+      ],
+      "expected_terms": [
+        "exclude",
+        "evidence",
+        "adverse effect"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "evidence",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ038",
+      "category": "evidence",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Police and Criminal Evidence Act 1984 section 78? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Police and Criminal Evidence Act 1984 section 78",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1984/60/section/78"
+      ],
+      "expected_terms": [
+        "exclude",
+        "evidence",
+        "adverse effect"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "evidence",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ039",
+      "category": "evidence",
+      "question_type": "currency",
+      "prompt": "Is Police and Criminal Evidence Act 1984 section 78 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Police and Criminal Evidence Act 1984 section 78",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1984/60/section/78"
+      ],
+      "expected_terms": [
+        "exclude",
+        "evidence",
+        "adverse effect"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "evidence",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ040",
+      "category": "evidence",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Police and Criminal Evidence Act 1984 section 78. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Police and Criminal Evidence Act 1984 section 78",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1984/60/section/78"
+      ],
+      "expected_terms": [
+        "exclude",
+        "evidence",
+        "adverse effect"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "evidence",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ041",
+      "category": "limitation",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Limitation Act 1980 section 2, identifying each element, qualification and exception in the text.",
+      "authority": "Limitation Act 1980 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1980/58/section/2"
+      ],
+      "expected_terms": [
+        "six years",
+        "cause of action",
+        "tort"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "limitation",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ042",
+      "category": "limitation",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Limitation Act 1980 section 2? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Limitation Act 1980 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1980/58/section/2"
+      ],
+      "expected_terms": [
+        "six years",
+        "cause of action",
+        "tort"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "limitation",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ043",
+      "category": "limitation",
+      "question_type": "currency",
+      "prompt": "Is Limitation Act 1980 section 2 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Limitation Act 1980 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1980/58/section/2"
+      ],
+      "expected_terms": [
+        "six years",
+        "cause of action",
+        "tort"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "limitation",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ044",
+      "category": "limitation",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Limitation Act 1980 section 2. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Limitation Act 1980 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1980/58/section/2"
+      ],
+      "expected_terms": [
+        "six years",
+        "cause of action",
+        "tort"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "limitation",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ045",
+      "category": "tort",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Occupiers' Liability Act 1957 section 2, identifying each element, qualification and exception in the text.",
+      "authority": "Occupiers' Liability Act 1957 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/Eliz2/5-6/31/section/2"
+      ],
+      "expected_terms": [
+        "common duty of care",
+        "visitor",
+        "reasonable"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "tort",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ046",
+      "category": "tort",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Occupiers' Liability Act 1957 section 2? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Occupiers' Liability Act 1957 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/Eliz2/5-6/31/section/2"
+      ],
+      "expected_terms": [
+        "common duty of care",
+        "visitor",
+        "reasonable"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "tort",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ047",
+      "category": "tort",
+      "question_type": "currency",
+      "prompt": "Is Occupiers' Liability Act 1957 section 2 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Occupiers' Liability Act 1957 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/Eliz2/5-6/31/section/2"
+      ],
+      "expected_terms": [
+        "common duty of care",
+        "visitor",
+        "reasonable"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "tort",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ048",
+      "category": "tort",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Occupiers' Liability Act 1957 section 2. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Occupiers' Liability Act 1957 section 2",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/Eliz2/5-6/31/section/2"
+      ],
+      "expected_terms": [
+        "common duty of care",
+        "visitor",
+        "reasonable"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "tort",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ049",
+      "category": "children",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Children Act 1989 section 1, identifying each element, qualification and exception in the text.",
+      "authority": "Children Act 1989 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1989/41/section/1"
+      ],
+      "expected_terms": [
+        "welfare",
+        "paramount",
+        "child"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "children",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ050",
+      "category": "children",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Children Act 1989 section 1? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Children Act 1989 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1989/41/section/1"
+      ],
+      "expected_terms": [
+        "welfare",
+        "paramount",
+        "child"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "children",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ051",
+      "category": "children",
+      "question_type": "currency",
+      "prompt": "Is Children Act 1989 section 1 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Children Act 1989 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1989/41/section/1"
+      ],
+      "expected_terms": [
+        "welfare",
+        "paramount",
+        "child"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "children",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ052",
+      "category": "children",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Children Act 1989 section 1. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Children Act 1989 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1989/41/section/1"
+      ],
+      "expected_terms": [
+        "welfare",
+        "paramount",
+        "child"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "children",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ053",
+      "category": "family",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Matrimonial Causes Act 1973 section 25, identifying each element, qualification and exception in the text.",
+      "authority": "Matrimonial Causes Act 1973 section 25",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1973/18/section/25"
+      ],
+      "expected_terms": [
+        "circumstances",
+        "welfare",
+        "financial resources"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "family",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ054",
+      "category": "family",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Matrimonial Causes Act 1973 section 25? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Matrimonial Causes Act 1973 section 25",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1973/18/section/25"
+      ],
+      "expected_terms": [
+        "circumstances",
+        "welfare",
+        "financial resources"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "family",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ055",
+      "category": "family",
+      "question_type": "currency",
+      "prompt": "Is Matrimonial Causes Act 1973 section 25 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Matrimonial Causes Act 1973 section 25",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1973/18/section/25"
+      ],
+      "expected_terms": [
+        "circumstances",
+        "welfare",
+        "financial resources"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "family",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ056",
+      "category": "family",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Matrimonial Causes Act 1973 section 25. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Matrimonial Causes Act 1973 section 25",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1973/18/section/25"
+      ],
+      "expected_terms": [
+        "circumstances",
+        "welfare",
+        "financial resources"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "family",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ057",
+      "category": "housing",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Housing Act 1988 section 21, identifying each element, qualification and exception in the text.",
+      "authority": "Housing Act 1988 section 21",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1988/50/section/21"
+      ],
+      "expected_terms": [
+        "assured shorthold tenancy",
+        "notice",
+        "possession"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "housing",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ058",
+      "category": "housing",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Housing Act 1988 section 21? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Housing Act 1988 section 21",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1988/50/section/21"
+      ],
+      "expected_terms": [
+        "assured shorthold tenancy",
+        "notice",
+        "possession"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "housing",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ059",
+      "category": "housing",
+      "question_type": "currency",
+      "prompt": "Is Housing Act 1988 section 21 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Housing Act 1988 section 21",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1988/50/section/21"
+      ],
+      "expected_terms": [
+        "assured shorthold tenancy",
+        "notice",
+        "possession"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "housing",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ060",
+      "category": "housing",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Housing Act 1988 section 21. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Housing Act 1988 section 21",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1988/50/section/21"
+      ],
+      "expected_terms": [
+        "assured shorthold tenancy",
+        "notice",
+        "possession"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "housing",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ061",
+      "category": "planning",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Town and Country Planning Act 1990 section 55, identifying each element, qualification and exception in the text.",
+      "authority": "Town and Country Planning Act 1990 section 55",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1990/8/section/55"
+      ],
+      "expected_terms": [
+        "development",
+        "building",
+        "material change"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "planning",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ062",
+      "category": "planning",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Town and Country Planning Act 1990 section 55? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Town and Country Planning Act 1990 section 55",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1990/8/section/55"
+      ],
+      "expected_terms": [
+        "development",
+        "building",
+        "material change"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "planning",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ063",
+      "category": "planning",
+      "question_type": "currency",
+      "prompt": "Is Town and Country Planning Act 1990 section 55 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Town and Country Planning Act 1990 section 55",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1990/8/section/55"
+      ],
+      "expected_terms": [
+        "development",
+        "building",
+        "material change"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "planning",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ064",
+      "category": "planning",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Town and Country Planning Act 1990 section 55. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Town and Country Planning Act 1990 section 55",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1990/8/section/55"
+      ],
+      "expected_terms": [
+        "development",
+        "building",
+        "material change"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "planning",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ065",
+      "category": "environment",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Environment Act 2021 section 1, identifying each element, qualification and exception in the text.",
+      "authority": "Environment Act 2021 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2021/30/section/1"
+      ],
+      "expected_terms": [
+        "environmental targets",
+        "Secretary of State",
+        "regulations"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "environment",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ066",
+      "category": "environment",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Environment Act 2021 section 1? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Environment Act 2021 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2021/30/section/1"
+      ],
+      "expected_terms": [
+        "environmental targets",
+        "Secretary of State",
+        "regulations"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "environment",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ067",
+      "category": "environment",
+      "question_type": "currency",
+      "prompt": "Is Environment Act 2021 section 1 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Environment Act 2021 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2021/30/section/1"
+      ],
+      "expected_terms": [
+        "environmental targets",
+        "Secretary of State",
+        "regulations"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "environment",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ068",
+      "category": "environment",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Environment Act 2021 section 1. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Environment Act 2021 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2021/30/section/1"
+      ],
+      "expected_terms": [
+        "environmental targets",
+        "Secretary of State",
+        "regulations"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "environment",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ069",
+      "category": "immigration",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Immigration Act 1971 section 3, identifying each element, qualification and exception in the text.",
+      "authority": "Immigration Act 1971 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1971/77/section/3"
+      ],
+      "expected_terms": [
+        "leave",
+        "enter",
+        "remain"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "immigration",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ070",
+      "category": "immigration",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Immigration Act 1971 section 3? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Immigration Act 1971 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1971/77/section/3"
+      ],
+      "expected_terms": [
+        "leave",
+        "enter",
+        "remain"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "immigration",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ071",
+      "category": "immigration",
+      "question_type": "currency",
+      "prompt": "Is Immigration Act 1971 section 3 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Immigration Act 1971 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1971/77/section/3"
+      ],
+      "expected_terms": [
+        "leave",
+        "enter",
+        "remain"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "immigration",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ072",
+      "category": "immigration",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Immigration Act 1971 section 3. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Immigration Act 1971 section 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1971/77/section/3"
+      ],
+      "expected_terms": [
+        "leave",
+        "enter",
+        "remain"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "immigration",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ073",
+      "category": "arbitration",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Arbitration Act 1996 section 1, identifying each element, qualification and exception in the text.",
+      "authority": "Arbitration Act 1996 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/23/section/1"
+      ],
+      "expected_terms": [
+        "fair resolution",
+        "delay",
+        "party autonomy"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "arbitration",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ074",
+      "category": "arbitration",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Arbitration Act 1996 section 1? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Arbitration Act 1996 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/23/section/1"
+      ],
+      "expected_terms": [
+        "fair resolution",
+        "delay",
+        "party autonomy"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "arbitration",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ075",
+      "category": "arbitration",
+      "question_type": "currency",
+      "prompt": "Is Arbitration Act 1996 section 1 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Arbitration Act 1996 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/23/section/1"
+      ],
+      "expected_terms": [
+        "fair resolution",
+        "delay",
+        "party autonomy"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "arbitration",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ076",
+      "category": "arbitration",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Arbitration Act 1996 section 1. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Arbitration Act 1996 section 1",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1996/23/section/1"
+      ],
+      "expected_terms": [
+        "fair resolution",
+        "delay",
+        "party autonomy"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "arbitration",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ077",
+      "category": "devolution",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Scotland Act 1998 section 29, identifying each element, qualification and exception in the text.",
+      "authority": "Scotland Act 1998 section 29",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/46/section/29"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Scottish Parliament",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ078",
+      "category": "devolution",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Scotland Act 1998 section 29? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Scotland Act 1998 section 29",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/46/section/29"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Scottish Parliament",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ079",
+      "category": "devolution",
+      "question_type": "currency",
+      "prompt": "Is Scotland Act 1998 section 29 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Scotland Act 1998 section 29",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/46/section/29"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Scottish Parliament",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ080",
+      "category": "devolution",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Scotland Act 1998 section 29. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Scotland Act 1998 section 29",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/46/section/29"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Scottish Parliament",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ081",
+      "category": "devolution",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Government of Wales Act 2006 section 107, identifying each element, qualification and exception in the text.",
+      "authority": "Government of Wales Act 2006 section 107",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/32/section/107"
+      ],
+      "expected_terms": [
+        "Senedd",
+        "legislative competence",
+        "Act"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ082",
+      "category": "devolution",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Government of Wales Act 2006 section 107? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Government of Wales Act 2006 section 107",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/32/section/107"
+      ],
+      "expected_terms": [
+        "Senedd",
+        "legislative competence",
+        "Act"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ083",
+      "category": "devolution",
+      "question_type": "currency",
+      "prompt": "Is Government of Wales Act 2006 section 107 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Government of Wales Act 2006 section 107",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/32/section/107"
+      ],
+      "expected_terms": [
+        "Senedd",
+        "legislative competence",
+        "Act"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ084",
+      "category": "devolution",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Government of Wales Act 2006 section 107. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Government of Wales Act 2006 section 107",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2006/32/section/107"
+      ],
+      "expected_terms": [
+        "Senedd",
+        "legislative competence",
+        "Act"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ085",
+      "category": "devolution",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Northern Ireland Act 1998 section 6, identifying each element, qualification and exception in the text.",
+      "authority": "Northern Ireland Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/47/section/6"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Assembly",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ086",
+      "category": "devolution",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Northern Ireland Act 1998 section 6? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Northern Ireland Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/47/section/6"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Assembly",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ087",
+      "category": "devolution",
+      "question_type": "currency",
+      "prompt": "Is Northern Ireland Act 1998 section 6 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Northern Ireland Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/47/section/6"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Assembly",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ088",
+      "category": "devolution",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Northern Ireland Act 1998 section 6. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Northern Ireland Act 1998 section 6",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/1998/47/section/6"
+      ],
+      "expected_terms": [
+        "legislative competence",
+        "Assembly",
+        "outside competence"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "devolution",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ089",
+      "category": "constitutional",
+      "question_type": "rule",
+      "prompt": "State the legal rule in European Union (Withdrawal) Act 2018 section 4, identifying each element, qualification and exception in the text.",
+      "authority": "European Union (Withdrawal) Act 2018 section 4",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/16/section/4"
+      ],
+      "expected_terms": [
+        "rights",
+        "EU law",
+        "domestic law"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "constitutional",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ090",
+      "category": "constitutional",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under European Union (Withdrawal) Act 2018 section 4? Give the statutory sequence of questions without inventing facts.",
+      "authority": "European Union (Withdrawal) Act 2018 section 4",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/16/section/4"
+      ],
+      "expected_terms": [
+        "rights",
+        "EU law",
+        "domestic law"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "constitutional",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ091",
+      "category": "constitutional",
+      "question_type": "currency",
+      "prompt": "Is European Union (Withdrawal) Act 2018 section 4 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "European Union (Withdrawal) Act 2018 section 4",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/16/section/4"
+      ],
+      "expected_terms": [
+        "rights",
+        "EU law",
+        "domestic law"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "constitutional",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ092",
+      "category": "constitutional",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on European Union (Withdrawal) Act 2018 section 4. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "European Union (Withdrawal) Act 2018 section 4",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/ukpga/2018/16/section/4"
+      ],
+      "expected_terms": [
+        "rights",
+        "EU law",
+        "domestic law"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "constitutional",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ093",
+      "category": "secondary-health-safety",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Management of Health and Safety at Work Regulations 1999 regulation 3, identifying each element, qualification and exception in the text.",
+      "authority": "Management of Health and Safety at Work Regulations 1999 regulation 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1999/3242/regulation/3"
+      ],
+      "expected_terms": [
+        "risk assessment",
+        "employer",
+        "suitable and sufficient"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-health-safety",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ094",
+      "category": "secondary-health-safety",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Management of Health and Safety at Work Regulations 1999 regulation 3? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Management of Health and Safety at Work Regulations 1999 regulation 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1999/3242/regulation/3"
+      ],
+      "expected_terms": [
+        "risk assessment",
+        "employer",
+        "suitable and sufficient"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-health-safety",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ095",
+      "category": "secondary-health-safety",
+      "question_type": "currency",
+      "prompt": "Is Management of Health and Safety at Work Regulations 1999 regulation 3 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Management of Health and Safety at Work Regulations 1999 regulation 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1999/3242/regulation/3"
+      ],
+      "expected_terms": [
+        "risk assessment",
+        "employer",
+        "suitable and sufficient"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-health-safety",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ096",
+      "category": "secondary-health-safety",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Management of Health and Safety at Work Regulations 1999 regulation 3. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Management of Health and Safety at Work Regulations 1999 regulation 3",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1999/3242/regulation/3"
+      ],
+      "expected_terms": [
+        "risk assessment",
+        "employer",
+        "suitable and sufficient"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-health-safety",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ097",
+      "category": "secondary-employment",
+      "question_type": "rule",
+      "prompt": "State the legal rule in Working Time Regulations 1998 regulation 13, identifying each element, qualification and exception in the text.",
+      "authority": "Working Time Regulations 1998 regulation 13",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1998/1833/regulation/13"
+      ],
+      "expected_terms": [
+        "annual leave",
+        "worker",
+        "leave year"
+      ],
+      "answer_requirements": [
+        "rule extraction and elements",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-employment",
+        "rule",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ098",
+      "category": "secondary-employment",
+      "question_type": "application",
+      "prompt": "How should counsel analyse a disputed fact pattern under Working Time Regulations 1998 regulation 13? Give the statutory sequence of questions without inventing facts.",
+      "authority": "Working Time Regulations 1998 regulation 13",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1998/1833/regulation/13"
+      ],
+      "expected_terms": [
+        "annual leave",
+        "worker",
+        "leave year"
+      ],
+      "answer_requirements": [
+        "application, conditions and exceptions",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-employment",
+        "application",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ099",
+      "category": "secondary-employment",
+      "question_type": "currency",
+      "prompt": "Is Working Time Regulations 1998 regulation 13 currently safe to rely on? Identify version, commencement, extent and amendment issues that must be checked.",
+      "authority": "Working Time Regulations 1998 regulation 13",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1998/1833/regulation/13"
+      ],
+      "expected_terms": [
+        "annual leave",
+        "worker",
+        "leave year"
+      ],
+      "answer_requirements": [
+        "temporal status, commencement, extent and effects",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-employment",
+        "currency",
+        "official-legislation",
+        "provenance"
+      ]
+    },
+    {
+      "id": "LQ100",
+      "category": "secondary-employment",
+      "question_type": "provenance",
+      "prompt": "Prepare a concise submission on Working Time Regulations 1998 regulation 13. Attach proposition-level provenance and direct links to every selected passage.",
+      "authority": "Working Time Regulations 1998 regulation 13",
+      "expected_sources": [
+        "https://www.legislation.gov.uk/uksi/1998/1833/regulation/13"
+      ],
+      "expected_terms": [
+        "annual leave",
+        "worker",
+        "leave year"
+      ],
+      "answer_requirements": [
+        "barrister-style synthesis with complete provenance",
+        "proposition-to-citation provenance ledger",
+        "official selected-passage links",
+        "version, commencement, extent and amendments where material"
+      ],
+      "tags": [
+        "secondary-employment",
+        "provenance",
+        "official-legislation",
+        "provenance"
+      ]
+    }
+  ]
+}

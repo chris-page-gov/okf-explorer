@@ -61,6 +61,21 @@ jobs:
             --ons-fixture tests/fixtures/uk_government_api_okf/ons_payload.json \
             --output "$RUNNER_TEMP/uk-government-apis-ci"
 
+      - name: Generate legislation corpus from fixtures
+        run: |
+          python3 scripts/build_legislation_okf.py \
+            --fixture tests/fixtures/legislation_okf/sample.feed.xml \
+            --output "$RUNNER_TEMP/legislation-ci" \
+            --generated-at "2026-07-10T00:00:00Z"
+
+      - name: Regenerate legislation answer evaluation
+        run: |
+          python3 scripts/build_legislation_evaluation.py
+          git diff --exit-code -- evaluation/legislation/questions.json
+
+      - name: Validate published legislation corpus
+        run: python3 scripts/check_legislation_okf.py
+
       - name: Check documentation lockstep
         if: github.event_name == 'pull_request'
         run: python3 scripts/check_documentation_lockstep.py --base "origin/${{ github.base_ref }}...HEAD"

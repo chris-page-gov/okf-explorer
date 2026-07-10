@@ -20,6 +20,8 @@ CONTROLLED_PREFIXES = (
     "sources/",
     "tests/",
     "uk-government-apis/",
+    "legislation/",
+    "evaluation/legislation/",
 )
 CONTROLLED_FILES = (
     "apps/okf-explorer/package.json",

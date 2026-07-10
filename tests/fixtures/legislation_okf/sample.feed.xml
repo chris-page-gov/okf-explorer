@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ukm="http://www.legislation.gov.uk/namespaces/metadata">
+  <id>http://www.legislation.gov.uk/all/data.feed</id>
+  <title>Search Results</title>
+  <entry>
+    <id>http://www.legislation.gov.uk/id/ukpga/2025/18</id>
+    <title>Data (Use and Access) Act 2025</title>
+    <link rel="self" href="http://www.legislation.gov.uk/id/ukpga/2025/18" />
+    <link href="http://www.legislation.gov.uk/ukpga/2025/18" />
+    <link rel="alternate" type="application/xml" href="http://www.legislation.gov.uk/ukpga/2025/18/data.xml" title="XML" />
+    <link rel="alternate" type="application/akn+xml" href="http://www.legislation.gov.uk/ukpga/2025/18/data.akn" title="AKN" />
+    <link rel="alternate" type="text/html" href="http://www.legislation.gov.uk/ukpga/2025/18/data.htm" title="Website" />
+    <link rel="http://purl.org/dc/terms/tableOfContents" type="application/xml" href="http://www.legislation.gov.uk/ukpga/2025/18/contents" title="Table of Contents" />
+    <updated>2026-01-01T00:00:00Z</updated>
+    <published>2025-06-20T00:00:00Z</published>
+    <ukm:DocumentMainType Value="UnitedKingdomPublicGeneralAct" />
+    <ukm:Year Value="2025" />
+    <ukm:Number Value="18" />
+    <ukm:CreationDate Date="2025-06-19" />
+    <summary>Data (Use and Access) Act 2025</summary>
+  </entry>
+  <entry>
+    <id>http://www.legislation.gov.uk/id/uksi/2024/100</id>
+    <title>The Data Protection Regulations 2024</title>
+    <link rel="self" href="http://www.legislation.gov.uk/id/uksi/2024/100" />
+    <link href="http://www.legislation.gov.uk/uksi/2024/100/made" />
+    <link rel="alternate" type="application/xml" href="http://www.legislation.gov.uk/uksi/2024/100/made/data.xml" title="XML" />
+    <updated>2024-03-01T00:00:00Z</updated>
+    <published>2024-02-01T00:00:00Z</published>
+    <ukm:DocumentMainType Value="UnitedKingdomStatutoryInstrument" />
+    <ukm:Year Value="2024" />
+    <ukm:Number Value="100" />
+    <ukm:CreationDate Date="2024-01-31" />
+    <summary>The Data Protection Regulations 2024</summary>
+  </entry>
+</feed>

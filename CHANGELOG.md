@@ -6,7 +6,15 @@ source-of-truth changes.
 
 ## Unreleased
 
-No unreleased changes.
+### Added
+
+- Added a complete work-level UK legislation OKF pack generated from every year facet in the official legislation.gov.uk Atom catalogue, including primary, secondary, draft, devolved, retained-EU and historical document types.
+- Added ELI 1.5 / ELI-I, Schema.org `Legislation`, legislation.gov.uk FRBR/CLML and Akoma Ntoso crosswalks, normalized legal categories and title-derived topic navigation with explicit non-authoritative classification warnings.
+- Added progressive official CLML discovery in the Svelte Explorer. A selected work can resolve every Part, Chapter, section, article, regulation, rule, schedule, paragraph and nested P1-P7 structure with official passage links and copyable provenance citations.
+- Added combined static-title and official remote full-text search, legislation-specific facets, complete access-method documentation and disclosure of the currently authenticated research bulk/SPARQL surfaces.
+- Added a 100-question barrister-oriented AI-answer evaluation suite, 100-point legal/provenance rubric, answer JSON Schema and deterministic evaluator with a hard cap for missing official or proposition-level provenance.
+- Added corpus completeness validation, fixture generation in CI, Pages publication wiring and a registry entry for the shareable hosted legislation viewer.
+- Added deterministic gzip support for large dataset/search chunks in the Explorer and generator, preserving the complete corpus within practical repository and Pages sizes.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 

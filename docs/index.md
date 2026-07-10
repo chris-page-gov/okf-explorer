@@ -27,6 +27,7 @@ APIs exemplar, and related large-corpus OKF packs.
 - [OKF Explorer evaluation harness](okf-explorer-evaluation.md) defines the
   100-question scoring suite, accessibility checks, GOV.UK-aligned publication
   rubric and visual-regression evidence.
+- [UK Legislation OKF](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
 - [OKF pack parity](okf-pack-parity.md) keeps the UK Government APIs and GOV.UK
   CKAN packs aligned as paired exemplars.
 - [OKF conformance](okf-conformance.md) records the v0.1 conformance boundary

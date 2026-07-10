@@ -7,6 +7,7 @@ import argparse
 import csv
 import difflib
 import hashlib
+import heapq
 import html
 import json
 import math
@@ -2307,14 +2308,37 @@ def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "documentation": truncate_text(record.get("documentation", ""), MAX_SEARCH_URL_CHARS),
                 "url": truncate_text(record.get("url", ""), MAX_SEARCH_URL_CHARS),
                 "open": record["route"],
+                # Optional legal-corpus fields. They remain absent/empty for
+                # ordinary API records and let the generic large-corpus
+                # Explorer progressively resolve official legislation text.
+                "legislation_id_uri": record.get("legislation_id_uri", ""),
+                "document_uri": record.get("document_uri", ""),
+                "structure_url": record.get("structure_url", ""),
+                "table_of_contents_url": record.get("table_of_contents_url", ""),
+                "document_type": record.get("document_type", ""),
+                "type_code": record.get("type_code", ""),
+                "category": record.get("category", ""),
+                "year": record.get("year", ""),
+                "number": record.get("number", ""),
+                "creation_date": record.get("creation_date", ""),
+                "published_at": record.get("published_at", ""),
+                "updated_at": record.get("updated_at", ""),
+                "jurisdiction": record.get("jurisdiction", []),
+                "legal_status": record.get("legal_status", ""),
+                "schema_org_type": record.get("schema_org_type", ""),
+                "eli_class": record.get("eli_class", ""),
+                "manifestations": record.get("manifestations", {}),
+                "effects_made_url": record.get("effects_made_url", ""),
+                "effects_received_url": record.get("effects_received_url", ""),
             }
         )
     return docs
 
 
-def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
+def build_search(records: list[dict[str, Any]], max_postings_per_token: int = MAX_SEARCH_POSTINGS_PER_TOKEN) -> dict[str, Any]:
     result_docs = search_docs(records)
-    postings: dict[str, dict[int, list[int]]] = defaultdict(dict)
+    posting_heaps: dict[str, list[tuple[int, int, int, int]]] = defaultdict(list)
+    document_frequency: Counter[str] = Counter()
     weights = {
         "title": 16,
         "publisher": 8,
@@ -2330,6 +2354,7 @@ def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
     masks = {"title": 1, "publisher": 2, "context": 4, "description": 8, "topics": 16, "tags": 32, "url": 64, "record_type": 128, "protocol": 256, "source": 512, "standards": 1024}
     for doc in result_docs:
+        token_scores: dict[str, list[int]] = {}
         fields = {
             "title": doc["title"],
             "publisher": doc["publisher_title"],
@@ -2345,18 +2370,24 @@ def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
         }
         for field, value in fields.items():
             for token in tokenize(str(value)):
-                score, mask = postings[token].get(doc["ordinal"], [0, 0])
-                postings[token][doc["ordinal"]] = [score + weights[field], mask | masks[field]]
+                score, mask = token_scores.get(token, [0, 0])
+                token_scores[token] = [score + weights[field], mask | masks[field]]
+        for token, (score, mask) in token_scores.items():
+            document_frequency[token] += 1
+            heap = posting_heaps[token]
+            item = (score, -doc["ordinal"], doc["ordinal"], mask)
+            if len(heap) < max_postings_per_token:
+                heapq.heappush(heap, item)
+            elif item[:2] > heap[0][:2]:
+                heapq.heapreplace(heap, item)
 
     postings_by_path: dict[str, dict[str, list[list[int]]]] = defaultdict(dict)
     lexicon_rows: list[dict[str, Any]] = []
-    for token, rows in sorted(postings.items(), key=lambda item: item[0]):
+    for token, heap in sorted(posting_heaps.items(), key=lambda item: item[0]):
         postings_path = f"data/search/postings/{search_shard(token)}.json"
-        ranked = sorted(rows.items(), key=lambda item: (-item[1][0], item[0]))
-        if len(ranked) > MAX_SEARCH_POSTINGS_PER_TOKEN:
-            ranked = ranked[:MAX_SEARCH_POSTINGS_PER_TOKEN]
-        postings_by_path[postings_path][token] = [[ordinal, score_mask[0], score_mask[1]] for ordinal, score_mask in ranked]
-        lexicon_rows.append({"token": token, "df": len(rows), "postings": postings_path})
+        ranked = sorted(heap, key=lambda item: (-item[0], item[2]))
+        postings_by_path[postings_path][token] = [[ordinal, score, mask] for score, _negative_ordinal, ordinal, mask in ranked]
+        lexicon_rows.append({"token": token, "df": document_frequency[token], "postings": postings_path})
     lexicon_by_shard: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in lexicon_rows:
         lexicon_by_shard[search_shard(row["token"])].append(row)
@@ -2386,8 +2417,8 @@ def build_search(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "documents": len(result_docs),
                 "tokens": len(lexicon_rows),
                 "postings": sum(len(token_rows) for token_map in postings_by_path.values() for token_rows in token_map.values()),
-                "uncapped_postings": sum(len(rows) for rows in postings.values()),
-                "max_postings_per_token": MAX_SEARCH_POSTINGS_PER_TOKEN,
+                "uncapped_postings": sum(document_frequency.values()),
+                "max_postings_per_token": max_postings_per_token,
             },
             "entrypoints": {
                 "lexicon": {shard: f"data/search/lexicon/{shard}.json" for shard in sorted(lexicon_by_shard)},
@@ -2881,22 +2912,29 @@ def clear_output_files(output: Path) -> None:
                 pass
 
 
-def write_files(output: Path, files: dict[Path, str]) -> None:
+def write_files(output: Path, files: dict[Path, str | bytes]) -> None:
     clear_output_files(output)
     output.mkdir(parents=True, exist_ok=True)
     for rel_path, content in files.items():
         target = output / rel_path
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(content, encoding="utf-8")
+        if isinstance(content, bytes):
+            target.write_bytes(content)
+        else:
+            target.write_text(content, encoding="utf-8")
 
 
-def check_files(output: Path, files: dict[Path, str]) -> list[str]:
+def check_files(output: Path, files: dict[Path, str | bytes]) -> list[str]:
     errors: list[str] = []
     expected_paths = set(files)
     for rel_path, expected in sorted(files.items()):
         target = output / rel_path
         if not target.exists():
             errors.append(f"{display_path(target)} is missing")
+            continue
+        if isinstance(expected, bytes):
+            if target.read_bytes() != expected:
+                errors.append(f"{display_path(target)} is out of date")
             continue
         current = target.read_text(encoding="utf-8")
         if current != expected:

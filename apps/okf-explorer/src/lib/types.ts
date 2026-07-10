@@ -66,6 +66,7 @@ export type LargeCorpusDescriptor = {
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
   source?: Record<string, unknown>;
+  extensions?: Record<string, Record<string, unknown>>;
   vocabulary?: {
     record_singular?: string;
     record_plural?: string;
@@ -235,6 +236,26 @@ export type SearchResultDoc = {
   url?: string;
   open: string;
   score?: number;
+  legislation_id_uri?: string;
+  document_uri?: string;
+  structure_url?: string;
+  table_of_contents_url?: string;
+  document_type?: string;
+  type_code?: string;
+  category?: string;
+  year?: string;
+  number?: string;
+  creation_date?: string;
+  published_at?: string;
+  updated_at?: string;
+  jurisdiction?: string[];
+  legal_status?: string;
+  schema_org_type?: string;
+  eli_class?: string;
+  manifestations?: Record<string, string>;
+  effects_made_url?: string;
+  effects_received_url?: string;
+  official_full_text_match?: boolean;
 };
 
 export type SearchSuggestion = {
@@ -317,6 +338,25 @@ export type LargeDataset = {
   private?: boolean;
   extras?: Record<string, unknown>;
   groups?: unknown[];
+  legislation_id_uri?: string;
+  document_uri?: string;
+  structure_url?: string;
+  table_of_contents_url?: string;
+  document_type?: string;
+  type_code?: string;
+  category?: string;
+  year?: string;
+  number?: string;
+  creation_date?: string;
+  published_at?: string;
+  updated_at?: string;
+  jurisdiction?: string[];
+  legal_status?: string;
+  schema_org_type?: string;
+  eli_class?: string;
+  manifestations?: Record<string, string>;
+  effects_made_url?: string;
+  effects_received_url?: string;
   [key: string]: unknown;
 };
 

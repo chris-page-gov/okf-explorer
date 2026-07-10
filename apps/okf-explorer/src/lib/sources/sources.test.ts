@@ -106,6 +106,12 @@ describe('fetch helpers', () => {
 
     await expect(readResponseText(response, 'https://example.test/chunked.json', 64)).resolves.toBe('{"ok":true}');
   });
+
+  it('decompresses explicit gzip corpus chunks before parsing', async () => {
+    const source = new Response('{"ok":true}').body!;
+    const compressed = await new Response(source.pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
+    await expect(readResponseText(new Response(compressed), 'https://example.test/works-0.json.gz', 64)).resolves.toBe('{"ok":true}');
+  });
 });
 
 describe('small bundle normalization', () => {

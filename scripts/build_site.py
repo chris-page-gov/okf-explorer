@@ -37,6 +37,8 @@ PUBLIC_DIRS = [
     "sources",
     "uk-government",
     "uk-government-apis",
+    "legislation",
+    "evaluation",
     "explorer",
     "docs",
 ]

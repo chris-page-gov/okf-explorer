@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/ai-infrastructure-wiki/evaluation/legislation/answer-schema.json",
+  "title": "Provenance-complete legal answer",
+  "type": "object",
+  "required": ["question_id", "answer", "propositions", "temporal_context"],
+  "properties": {
+    "question_id": { "type": "string", "pattern": "^LQ[0-9]{3}$" },
+    "answer": { "type": "string", "minLength": 1 },
+    "propositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["claim", "citations"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "citations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["source_title", "url", "passage", "retrieved_at"],
+              "properties": {
+                "source_title": { "type": "string", "minLength": 1 },
+                "url": { "type": "string", "format": "uri" },
+                "passage": { "type": "string", "minLength": 1 },
+                "version": { "type": "string" },
+                "retrieved_at": { "type": "string", "format": "date" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "temporal_context": {
+      "type": "object",
+      "required": ["version", "commencement", "extent", "amendments"],
+      "properties": {
+        "version": { "type": "string" },
+        "commencement": { "type": "string" },
+        "extent": { "type": "string" },
+        "amendments": { "type": "string" }
+      }
+    },
+    "manual_scores": {
+      "type": "object",
+      "properties": {
+        "substantive_correctness": { "type": "number", "minimum": 0, "maximum": 15 },
+        "temporal_and_jurisdictional_context": { "type": "number", "minimum": 0, "maximum": 5 },
+        "completeness_and_uncertainty": { "type": "number", "minimum": 0, "maximum": 10 },
+        "clarity_and_utility": { "type": "number", "minimum": 0, "maximum": 5 }
+      }
+    }
+  }
+}
