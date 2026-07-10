@@ -9,6 +9,7 @@ other public HTTPS URL.
 
 - [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
 - [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
+- [Open the complete UK Legislation OKF in the Svelte Explorer][legislation-example]
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
@@ -24,6 +25,12 @@ The UK Government APIs exemplar is published as a large-corpus OKF descriptor:
 
 ```text
 https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+```
+
+The UK Legislation pack publishes the complete legislation.gov.uk work catalogue and resolves every official CLML subdivision only when selected:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
 ```
 
 To open your own public bundle, use this URL pattern:
@@ -59,6 +66,8 @@ The repository contains:
 - `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
   GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API
   metadata.
+- `legislation/` - generated complete work-level catalogue for legislation.gov.uk, normalized with ELI, Schema.org Legislation and CLML and equipped with live provision-level progressive discovery.
+- `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
@@ -154,6 +163,8 @@ Explorer. The old dependency-free Explorer is copied to `_site/legacy/`.
 
 ```sh
 python3 scripts/build_uk_government_api_okf.py --check
+python3 scripts/check_legislation_okf.py
+python3 scripts/build_legislation_evaluation.py
 python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
@@ -168,6 +179,7 @@ root redirect into the Svelte Explorer, publishes the Svelte Explorer under
 `next/`, publishes the compatibility Explorer under `legacy/`, preserves
 `viewer.html` and `view.html`, publishes the UK Government APIs large-corpus
 descriptor, and copies the public OKF Markdown corpus beside it.
+The legislation work catalogue, ontology documentation and legal-answer evaluation suite are also published.
 
 To regenerate the explorer bundle after Markdown changes:
 
@@ -179,6 +191,13 @@ To regenerate the UK Government APIs exemplar from the official catalogue CSV:
 
 ```sh
 python3 scripts/build_uk_government_api_okf.py
+```
+
+To refresh the complete legislation work catalogue from the official Atom API:
+
+```sh
+python3 scripts/build_legislation_okf.py --refresh
+python3 scripts/check_legislation_okf.py
 ```
 
 Publication-affecting changes to `scripts/`, `sources/`, `uk-government-apis/`,
@@ -202,6 +221,7 @@ Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
 [uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
+[legislation-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [ai-okf-usage]: docs/ai-okf-usage.md

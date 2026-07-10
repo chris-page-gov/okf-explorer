@@ -16,6 +16,9 @@ from `main` with semantic tags such as `v0.3.0`.
   single-file legacy viewer surfaces.
 - GitHub Releases: versioned snapshots of the explorer, OKF bundle, legacy
   viewer, and sample corpus.
+- UK Legislation: the complete static work catalogue is published at
+  `legislation/okf-explorer.json`; selected works progressively load their
+  authoritative CLML subdivision tree from legislation.gov.uk.
 - Optional DOI: connect the public repository to Zenodo after the first release
   if a persistent scholarly citation is required.
 
@@ -36,6 +39,8 @@ Run these before publishing or cutting a release:
 ```sh
 cd apps/okf-explorer && pnpm install && pnpm check && pnpm build && cd ../..
 python3 scripts/build_uk_government_api_okf.py --check
+python3 scripts/check_legislation_okf.py
+python3 scripts/build_legislation_evaluation.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
 python3 scripts/check_okf.py
@@ -43,7 +48,8 @@ python3 scripts/build_site.py
 ```
 
 The Pages build includes the canonical Svelte Explorer, generated OKF bundle,
-UK Government APIs large-corpus exemplar, public OKF Markdown corpus, explicit
+UK Government APIs and UK Legislation large-corpus exemplars, the legal-answer
+evaluation suite, public OKF Markdown corpus, explicit
 legacy Explorer route, and legacy viewer, and excludes Word lock files,
 `.DS_Store`, Git internals, temporary files, and generated caches.
 

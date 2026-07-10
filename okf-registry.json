@@ -22,6 +22,13 @@
       "url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json",
       "kind": "large-corpus",
       "description": "Generated API-domain OKF exemplar sourced from the GOV.UK API Catalogue."
+    },
+    {
+      "id": "uk-legislation",
+      "label": "UK Legislation — complete work catalogue",
+      "url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json",
+      "kind": "large-corpus",
+      "description": "Every work in the legislation.gov.uk Atom catalogue, with ELI/Schema.org normalization and live progressive CLML subdivision discovery."
     }
   ]
 }

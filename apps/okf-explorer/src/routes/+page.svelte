@@ -17,6 +17,8 @@
     ViewMode
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
+  import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
+  import { searchOfficialLegislation } from '$lib/legislation/search';
   import { fetchJson, resolveUrl } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
@@ -58,7 +60,7 @@
   ];
   const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources', 'narrative']);
   const RELATIONSHIP_VIEWS = new Set<ViewMode>();
-  const LARGE_FACET_KEYS = ['publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
+  const LARGE_FACET_KEYS = ['category', 'type_code', 'document_type', 'creation_year', 'jurisdiction', 'legal_status', 'publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
   const FACET_PAGE_SIZE = 30;
@@ -67,7 +69,7 @@
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
-    'record-type': 'The OKF concept type: API Product, Data Access API Endpoint, Data Product, API Operation, Contract, Schema, or Provider API Portal.',
+    'record-type': 'The normalized OKF concept type, including API records and legislation works. A legal work progressively resolves its official CLML subdivisions on demand.',
     source: 'The adapter that harvested this record, such as GOV.UK API Catalogue, data.gov.uk CKAN, Ordnance Survey, or ONS.',
     confidence: 'How strongly the public source supports the record: observed, declared, or assured.',
     licence: 'The licence attached to the record. When inferred, the basis and source URL are shown below.',
@@ -865,7 +867,7 @@
     const kind = routeKind(route);
     const value = routeValue(route);
     if (!value) return null;
-    if (['publisher', 'format', 'topic', 'tag', 'license', 'host', 'resource_type'].includes(kind)) return { key: kind, value };
+    if (['category', 'type_code', 'document_type', 'creation_year', 'jurisdiction', 'legal_status', 'publisher', 'format', 'topic', 'tag', 'license', 'host', 'resource_type'].includes(kind)) return { key: kind, value };
     return null;
   }
 
@@ -1052,8 +1054,26 @@
     await new Promise((resolve) => setTimeout(resolve, 160));
     if (requestId !== largeSearchRequest) return;
     try {
-      const [results, suggestions] = await Promise.all([largeSearchClient.query(query), largeSearchClient.suggest(query)]);
+      const legislationExtension = source?.kind === 'large'
+        ? source.descriptor.extensions?.['okf-legislation-corpus.v1']
+        : undefined;
+      const remoteTemplate = typeof legislationExtension?.remote_full_text_search === 'string'
+        ? legislationExtension.remote_full_text_search
+        : '';
+      const [localResults, suggestions, officialResults] = await Promise.all([
+        largeSearchClient.query(query),
+        largeSearchClient.suggest(query),
+        remoteTemplate ? searchOfficialLegislation(remoteTemplate, query).catch(() => []) : Promise.resolve([])
+      ]);
       if (requestId !== largeSearchRequest) return;
+      const merged = new Map<string, SearchResultDoc>();
+      for (const result of localResults) merged.set(result.legislation_id_uri || result.url || result.name, result);
+      for (const result of officialResults) {
+        const key = result.legislation_id_uri || result.url || result.name;
+        const local = merged.get(key);
+        merged.set(key, local ? { ...result, ...local, official_full_text_match: true } : result);
+      }
+      const results = [...merged.values()].slice(0, 100);
       largeResults = results;
       largeSuggestions = suggestions;
       if (!largeSelectedRoute && results[0]) largeHighlightedRoute = `dataset/${results[0].name}`;
@@ -1220,6 +1240,12 @@
     if (key === 'interaction_style') return Array.isArray(dataset.interaction_style) ? dataset.interaction_style.map(String) : dataset.formats || [];
     if (key === 'topic') return dataset.topics || [];
     if (key === 'tag') return dataset.tags || [];
+    if (key === 'category') return dataset.category ? [dataset.category] : [];
+    if (key === 'type_code') return dataset.type_code ? [dataset.type_code] : [];
+    if (key === 'document_type') return dataset.document_type ? [dataset.document_type] : [];
+    if (key === 'creation_year') return dataset.year ? [dataset.year] : [];
+    if (key === 'jurisdiction') return dataset.jurisdiction || [];
+    if (key === 'legal_status') return dataset.legal_status ? [dataset.legal_status] : [];
     if (key === 'license') return dataset.license_id ? [dataset.license_id] : [];
     if (key === 'host') return [dataset.host, ...(dataset.resource_hosts || [])].filter((value): value is string => Boolean(value));
     if (key === 'govuk_linked') return (dataset.govuk_content_paths || []).length ? ['yes'] : ['no'];
@@ -3952,6 +3978,7 @@
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.dataset.documentation)}<a href={largeDetail.dataset.documentation} target="_blank" rel="noopener">{largeDetail.dataset.documentation}</a>{:else}{displayValue(largeDetail.dataset.documentation)}{/if}</dd>
                 {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
               </dl>
+              <LegislationDetail record={largeDetail.dataset} />
               {#if acronymExpansions(largeDetail.dataset).length || contextLinks(largeDetail.dataset).length}
                 <section class="metadata-section">
                   <h3>Context</h3>
@@ -4191,6 +4218,7 @@
                 <dt>Route</dt><dd>{largeDetail.result.open}</dd>
                 <dt><span class="label-help">Timestamp<button class="info-icon" type="button" aria-label="Explain timestamp" onclick={() => toggleHelp('source-date:search-result')} onmouseenter={() => showHelp('source-date:search-result')} onmouseleave={() => hideHelp('source-date:search-result')} onfocus={() => showHelp('source-date:search-result')} onblur={() => hideHelp('source-date:search-result')}>i</button>{#if activeHelpKey === 'source-date:search-result'}<span class="info-bubble" role="tooltip">{helpText('source-date:search-result')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.timestamp)}</dd>
               </dl>
+              <LegislationDetail record={largeDetail.result} />
               <div class="chips">
                 {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
                 {#each (largeDetail.result.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}

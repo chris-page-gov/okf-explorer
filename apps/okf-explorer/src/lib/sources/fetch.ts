@@ -52,6 +52,12 @@ export function baseUrlFor(url: string): string {
 }
 
 export async function readResponseText(response: Response, url: string, maxBytes: number = MAX_JSON_BYTES): Promise<string> {
+  if (url.toLowerCase().endsWith('.gz') && !response.headers.get('content-encoding')?.toLowerCase().includes('gzip')) {
+    if (!response.body || typeof DecompressionStream === 'undefined') {
+      throw new Error(`${url}: this browser cannot decompress the gzip corpus chunk`);
+    }
+    response = new Response(response.body.pipeThrough(new DecompressionStream('gzip')));
+  }
   if (!response.body) {
     const text = await response.text();
     if (new TextEncoder().encode(text).byteLength > maxBytes) {

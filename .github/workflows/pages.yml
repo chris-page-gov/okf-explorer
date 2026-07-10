@@ -56,6 +56,9 @@ jobs:
       - name: Validate OKF Explorer bundle
         run: python3 scripts/build_okf_bundle.py --check
 
+      - name: Validate legislation corpus
+        run: python3 scripts/check_legislation_okf.py
+
       - name: Build static site
         run: python3 scripts/build_site.py
 

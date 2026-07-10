@@ -57,6 +57,12 @@ async function fetchJson<T>(url: string): Promise<T> {
 }
 
 async function readResponseText(response: Response, url: string): Promise<string> {
+  if (url.toLowerCase().endsWith('.gz') && !response.headers.get('content-encoding')?.toLowerCase().includes('gzip')) {
+    if (!response.body || typeof DecompressionStream === 'undefined') {
+      throw new Error(`${url}: this browser cannot decompress the gzip search chunk`);
+    }
+    response = new Response(response.body.pipeThrough(new DecompressionStream('gzip')));
+  }
   if (!response.body) {
     const text = await response.text();
     if (new TextEncoder().encode(text).byteLength > MAX_JSON_BYTES) {
@@ -180,6 +186,7 @@ async function queryIndex(query: string): Promise<SearchResultDoc[]> {
 
   const scores = new Map<number, number>();
   const sets: Set<number>[] = [];
+  const completeSets: Set<number>[] = [];
   for (const entries of entryGroups) {
     const set = new Set<number>();
     for (const entry of entries) {
@@ -191,13 +198,20 @@ async function queryIndex(query: string): Promise<SearchResultDoc[]> {
       }
     }
     sets.push(set);
+    if (entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
+      completeSets.push(set);
+    }
   }
 
-  let matches = sets[0] || new Set<number>();
-  for (const set of sets.slice(1)) matches = intersect(matches, set);
-  if (!matches.size && sets.length > 1) {
+  // A capped high-frequency token is useful for scoring but cannot safely be
+  // required for intersection: the matching document may have been omitted
+  // from that token's bounded posting list. Intersect complete lists only.
+  const intersectionSets = completeSets.length ? completeSets : sets.slice(0, 1);
+  let matches = intersectionSets[0] || new Set<number>();
+  for (const set of intersectionSets.slice(1)) matches = intersect(matches, set);
+  if (!matches.size && intersectionSets.length > 1) {
     matches = new Set<number>();
-    for (const set of sets) {
+    for (const set of intersectionSets) {
       for (const value of set) matches.add(value);
     }
   }
