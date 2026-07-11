@@ -42,6 +42,9 @@
 - Checked in and applied the standard protected-`main` policy: strict required
   CI, one approval, stale-review dismissal, conversation resolution,
   administrator enforcement, linear history, and no force pushes or deletions.
+- Overrode the SvelteKit transitive `cookie` dependency to the patched 0.7
+  series, closing the low-severity `GHSA-pxg6-pf52-xh8x` alert reported after
+  the repository rename.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
