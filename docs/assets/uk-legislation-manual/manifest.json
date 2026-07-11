@@ -6,12 +6,12 @@
     "width": 1280,
     "height": 720
   },
-  "bundle": "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json",
+  "bundle": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
   "items": [
     {
       "id": "overview",
       "image": "01-corpus-overview.jpg",
-      "route": "https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview",
+      "route": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview",
       "interactions": [],
       "expected_text": ["UK Legislation OKF", "365,786", "1,691,403", "overview only"],
       "purpose": "Corpus orientation and progressive-loading boundary"
@@ -19,7 +19,7 @@
     {
       "id": "search-human-rights-act",
       "image": "02-search-human-rights-act.jpg",
-      "route": "https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#overview",
+      "route": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#overview",
       "interactions": [],
       "expected_text": ["Human Rights Act 1998", "Search Results", "68 shown"],
       "purpose": "Distinguish the principal Act from related instruments"
@@ -27,7 +27,7 @@
     {
       "id": "legal-work-provenance",
       "image": "03-legal-work-provenance.jpg",
-      "route": "https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#dataset/ukpga-1998-42",
+      "route": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#dataset/ukpga-1998-42",
       "interactions": [],
       "expected_text": ["Human Rights Act 1998", "Legislation Work", "authoritative-source", "HTTP GET, Atom, CLML, Akoma Ntoso"],
       "crop": {"x": 850, "y": 70, "width": 430, "height": 650},
@@ -36,7 +36,7 @@
     {
       "id": "live-provision-tree",
       "image": "04-live-provision-tree.jpg",
-      "route": "https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#dataset/ukpga-1998-42",
+      "route": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&q=Human+Rights+Act+1998#dataset/ukpga-1998-42",
       "interactions": [
         "Select Load every Part, Chapter, section, article and nested provision",
         "Search within this instrument for public authority"

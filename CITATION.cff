@@ -6,7 +6,7 @@ authors:
     given-names: "Chris"
 date-released: "2026-06-27"
 license: "CC-BY-NC-4.0"
-repository-code: "https://github.com/chris-page-gov/ai-infrastructure-wiki"
+repository-code: "https://github.com/chris-page-gov/okf-explorer"
 preferred-citation:
   type: report
   title: "AI Infrastructure OKF Bundle"

@@ -28,26 +28,26 @@ repository.
 The UK Government APIs exemplar is published as a large-corpus OKF descriptor:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json
 ```
 
 The UK Legislation pack publishes the complete legislation.gov.uk work catalogue and resolves every official CLML subdivision only when selected:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
+https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json
 ```
 
 To open your own public bundle, use this URL pattern:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_BUNDLE_OR_DESCRIPTOR_URL
+https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_BUNDLE_OR_DESCRIPTOR_URL
 ```
 
 For example, a small bundle published at
 `https://example.github.io/my-okf/okf-bundle.json` opens as:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
 ```
 
 This repository now plays two roles:
@@ -224,9 +224,9 @@ The included workflow publishes the static site from `_site/` when pushed to
 `main`, after validation passes. In the GitHub repository settings, configure
 Pages to use **GitHub Actions** as the source.
 
-[ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
-[uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
-[legislation-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
+[ckan-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
+[legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
 [legislation-docs]: docs/uk-legislation/index.md
 [legislation-manual]: docs/uk-legislation/illustrated-manual.md
 [docs-index]: docs/index.md

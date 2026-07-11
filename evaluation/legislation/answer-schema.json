@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://chris-page-gov.github.io/ai-infrastructure-wiki/evaluation/legislation/answer-schema.json",
+  "$id": "https://chris-page-gov.github.io/okf-uk-legislation/evaluation/answer-schema.json",
   "title": "Provenance-complete legal answer",
   "type": "object",
   "required": ["question_id", "answer", "propositions", "temporal_context"],

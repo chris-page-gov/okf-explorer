@@ -33,6 +33,9 @@
 - Published the 155-concept/579-relationship AI Infrastructure Markdown wiki
   independently at `chris-page-gov/okf-ai-infrastructure` with YAML-LD,
   JSON-LD, protected `main`, CI, Pages and release `v0.4.0`.
+- Renamed the product repository to `chris-page-gov/okf-explorer`, moved the
+  Svelte Explorer to the Pages root, retained `/next/` as a query/hash-preserving
+  compatibility redirect, and made the independent AI bundle the default.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any

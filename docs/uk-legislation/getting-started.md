@@ -4,7 +4,7 @@
 
 ## Open the pack
 
-Use the [hosted Explorer link](https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview). It opens the corpus overview without hydrating every work or provision.
+Use the [hosted Explorer link](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview). It opens the corpus overview without hydrating every work or provision.
 
 The overview establishes the corpus boundary: legal-work count, official manifestation count, represented years, document types, categories and current source notices.
 

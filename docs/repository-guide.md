@@ -73,19 +73,19 @@ when selected. Documentation state and screenshot routes are maintained under
 ## Stable Public Entry Points
 
 - Root Explorer redirect:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/`
+  `https://chris-page-gov.github.io/okf-explorer/`
 - Svelte Explorer:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/`
+  `https://chris-page-gov.github.io/okf-explorer/`
 - Legacy compatibility Explorer:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/legacy/`
+  `https://chris-page-gov.github.io/okf-explorer/legacy/`
 - UK Government APIs descriptor:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json`
+  `https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json`
 - UK Government APIs in Explorer:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview`
+  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview`
 - UK Legislation descriptor:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json`
+  `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`
 - UK Legislation in Explorer:
-  `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview`
+  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview`
 
 ## Local Validation
 

@@ -50,7 +50,7 @@ FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
 
 
-def render_root_redirect() -> str:
+def render_next_redirect() -> str:
     return """<!doctype html>
 <html lang="en">
 <head>
@@ -58,28 +58,17 @@ def render_root_redirect() -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OKF Explorer</title>
 <script>
-const target = new URL("next/", window.location.href);
+const target = new URL("../", window.location.href);
 target.search = window.location.search;
 target.hash = window.location.hash;
 window.location.replace(target);
 </script>
-<meta http-equiv="refresh" content="0; url=next/">
+<meta http-equiv="refresh" content="0; url=../">
 </head>
 <body>
-<p>Opening the <a href="next/">OKF Explorer</a>.</p>
-<p>The legacy Explorer is available at <a href="legacy/">legacy/</a>.</p>
+<p>Opening <a href="../">OKF Explorer</a>.</p>
 </body>
 </html>
-"""
-
-
-def render_root_app_redirect() -> str:
-    return """(() => {
-  const target = new URL("next/", window.location.href);
-  target.search = window.location.search;
-  target.hash = window.location.hash;
-  window.location.replace(target);
-})();
 """
 
 
@@ -136,7 +125,12 @@ def assert_no_forbidden_files() -> None:
 
 def main() -> int:
     if OUT.exists():
-        shutil.rmtree(OUT)
+        for _attempt in range(3):
+            shutil.rmtree(OUT, ignore_errors=True)
+            if not OUT.exists():
+                break
+        if OUT.exists():
+            raise RuntimeError(f"could not clear {OUT}; close Finder windows using the generated site and retry")
     OUT.mkdir(parents=True)
 
     bundle, bundle_errors = build_okf_bundle.build_bundle()
@@ -150,8 +144,6 @@ def main() -> int:
         if source.exists():
             copy_file(source, OUT / name)
 
-    (OUT / "index.html").write_text(render_root_redirect(), encoding="utf-8")
-    (OUT / "app.js").write_text(render_root_app_redirect(), encoding="utf-8")
     (OUT / "service-worker.js").write_text(render_retiring_service_worker(), encoding="utf-8")
 
     copy_file(ROOT / "viewer.html", OUT / "view.html")
@@ -162,7 +154,10 @@ def main() -> int:
     copy_public_tree(ROOT / "explorer", OUT / "legacy")
 
     if SVELTE_EXPLORER_BUILD.exists():
-        copy_public_tree(SVELTE_EXPLORER_BUILD, OUT / "next")
+        copy_public_tree(SVELTE_EXPLORER_BUILD, OUT)
+
+    (OUT / "next").mkdir(parents=True, exist_ok=True)
+    (OUT / "next" / "index.html").write_text(render_next_redirect(), encoding="utf-8")
 
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
     (OUT / "404.html").write_text(

@@ -47,8 +47,8 @@
   } from '$lib/viewer/helpers';
   import './styles.css';
 
-  const DEFAULT_BUNDLE = '../okf-bundle.json';
-  const DEFAULT_REGISTRY = '../okf-registry.json';
+  const DEFAULT_BUNDLE = 'https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json';
+  const DEFAULT_REGISTRY = './okf-registry.json';
   const VIEW_MODES: Array<{ id: ViewMode; label: string }> = [
     { id: 'reader', label: 'Reader' },
     { id: 'graph', label: 'Graph' },

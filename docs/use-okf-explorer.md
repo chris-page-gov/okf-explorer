@@ -13,14 +13,14 @@ use [ai-okf-usage.md](ai-okf-usage.md). For bundle authoring, use
 
 Open this URL first:
 
-[GOV.UK CKAN OKF bundle in the hosted Svelte Explorer](https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview)
+[GOV.UK CKAN OKF bundle in the hosted Svelte Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview)
 
 It loads the Svelte Explorer from this repository and the GOV.UK CKAN
 large-corpus descriptor from another repository:
 
 ```text
 Explorer:
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/
+https://chris-page-gov.github.io/okf-explorer/
 
 Bundle descriptor:
 https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json
@@ -104,13 +104,13 @@ agent use.
 Small or medium bundles use one generated file:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_OKF_BUNDLE_URL
+https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_OKF_BUNDLE_URL
 ```
 
 Large corpora use a descriptor that points at chunked static data:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_OKF_EXPLORER_DESCRIPTOR_URL
+https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_OKF_EXPLORER_DESCRIPTOR_URL
 ```
 
 For large public bundles hosted on GitHub Pages or another static CDN, keep
@@ -126,14 +126,14 @@ Bundle:
 https://example.github.io/my-okf/okf-bundle.json
 
 Explorer URL:
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
 ```
 
 If URL encoding is confusing, open the Explorer without a `bundle=` parameter
 and paste the bundle URL into the Bundle URL field:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/
+https://chris-page-gov.github.io/okf-explorer/
 ```
 
 ## Create A Small OKF Bundle From Markdown
@@ -294,13 +294,13 @@ https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-explorer.json
 Paste the public bundle URL into:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/
+https://chris-page-gov.github.io/okf-explorer/
 ```
 
 Or build a direct link:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=ENCODED_PUBLIC_BUNDLE_URL
+https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_PUBLIC_BUNDLE_URL
 ```
 
 You can encode a URL in a browser console:
