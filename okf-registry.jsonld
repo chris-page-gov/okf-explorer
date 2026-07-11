@@ -15,10 +15,10 @@
             "Default reference bundle generated from the AI infrastructure Markdown corpus during migration."
           ],
           "descriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json"
+            "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json"
           ],
           "home": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/"
+            "https://chris-page-gov.github.io/okf-ai-infrastructure/"
           ],
           "license": [
             "https://creativecommons.org/publicdomain/zero/1.0/"
@@ -30,7 +30,7 @@
             "local-sample"
           ],
           "semanticDescriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json"
+            "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.yamlld"
           ],
           "status": [
             "preview"
@@ -39,7 +39,7 @@
             "AI Infrastructure"
           ],
           "version": [
-            "0.3.0"
+            "0.4.0"
           ]
         },
         {

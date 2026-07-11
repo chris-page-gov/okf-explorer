@@ -2,18 +2,18 @@
   "bundles": [
     {
       "description": "Default reference bundle generated from the AI infrastructure Markdown corpus during migration.",
-      "home_url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/",
+      "home_url": "https://chris-page-gov.github.io/okf-ai-infrastructure/",
       "id": "https://chris-page-gov.github.io/okf-explorer/bundles/ai-infrastructure",
       "kind": "local-sample",
       "label": "AI Infrastructure",
       "license": "https://creativecommons.org/publicdomain/zero/1.0/",
       "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
       "publisher": "https://github.com/chris-page-gov",
-      "semantic_url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json",
+      "semantic_url": "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.yamlld",
       "status": "preview",
       "title": "AI Infrastructure",
-      "url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json",
-      "version": "0.3.0"
+      "url": "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json",
+      "version": "0.4.0"
     },
     {
       "description": "External large-corpus exemplar using chunked CKAN metadata and static search shards.",

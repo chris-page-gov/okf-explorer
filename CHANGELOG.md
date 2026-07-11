@@ -30,6 +30,9 @@
 - Published the 41,520-record UK Government APIs bundle independently at
   `chris-page-gov/okf-uk-government-apis`, with protected `main`, CI, Pages,
   276,996 relationships, route adjacency and release `v0.4.0`.
+- Published the 155-concept/579-relationship AI Infrastructure Markdown wiki
+  independently at `chris-page-gov/okf-ai-infrastructure` with YAML-LD,
+  JSON-LD, protected `main`, CI, Pages and release `v0.4.0`.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
