@@ -1,11 +1,12 @@
 # Repository Guide
 
-This repository has two jobs:
+This repository is migrating toward one product job and one temporary
+compatibility job:
 
 1. Publish a static OKF Explorer that can load OKF bundles from any public HTTPS
    URL.
-2. Publish exemplar OKF bundles, including the local AI infrastructure wiki,
-   the UK Government APIs pack and the UK Legislation pack.
+2. Preserve current exemplar URLs while production bundles move to independent
+   versioned publication units referenced by the registry.
 
 ## Map Of The Repository
 
@@ -19,6 +20,11 @@ This repository has two jobs:
 | `scripts/build_legislation_okf.py` | Builds the complete work-level legislation.gov.uk pack. |
 | `scripts/check_legislation_okf.py` | Enforces legislation corpus completeness and publication invariants. |
 | `scripts/build_site.py` | Builds the static Pages site in `_site/`. |
+| `scripts/okf_semantic.py` | YAML 1.2/YAML-LD parser, pinned context loader, profile validation and JSON-LD projection. |
+| `scripts/build_okf_registry.py` | Generates Explorer JSON and JSON-LD registries from one YAML-LD source. |
+| `profiles/bundle-wiki/v1/` | Experimental OKF Bundle Wiki profile, context, JSON Schemas and SHACL shapes. |
+| `registry/okf-registry.yamlld` | Single semantic source for the public registry projections. |
+| `constraints/source-constraints.yamlld` | Machine-readable fair-use, access and licensing escalation ledger. |
 | `scripts/evaluate_okf_explorer.mjs` | Runs the 100-question browser evaluation harness. |
 | `uk-government-apis/` | Generated UK Government APIs OKF large-corpus descriptor, shards, selected Markdown records and organisation records. |
 | `legislation/` | Generated UK Legislation descriptor, compressed work/search chunks, ontology, access, type and topic concepts. |
@@ -29,7 +35,7 @@ This repository has two jobs:
 | `evaluation/gov-ckan/` | GOV.UK CKAN paired exemplar question suite. |
 | `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`, `research/`, `uk-government/`, `organisations/`, `glossary/` | The local Markdown OKF corpus used by the small bundle. |
 | `okf.config.json` | Small-bundle corpus configuration. |
-| `okf-registry.json` | Suggested public bundle URLs for the Explorer. |
+| `okf-registry.json` and `okf-registry.jsonld` | Generated registry projections for the Explorer and Linked Data clients. |
 | `CHANGELOG.md` | User-visible change history and validation record. |
 
 ## Publication Pipeline
@@ -88,6 +94,8 @@ Run these before publication work:
 ```sh
 python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/check_legislation_okf.py
+python3 scripts/build_okf_registry.py --check
+python3 scripts/check_source_constraints.py
 python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check

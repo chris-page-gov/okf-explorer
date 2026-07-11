@@ -1,0 +1,124 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "okf": "https://chris-page-gov.github.io/okf-explorer/ns#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "title": "dcterms:title",
+    "description": "dcterms:description",
+    "modified": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:dateTime"
+    },
+    "timestamp": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:dateTime"
+    },
+    "created": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "source": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "resource": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "license": {
+      "@id": "dcterms:license",
+      "@type": "@id"
+    },
+    "publisher": {
+      "@id": "dcterms:publisher",
+      "@type": "@id"
+    },
+    "subject": {
+      "@id": "dcterms:subject",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "conformsTo": {
+      "@id": "dcterms:conformsTo",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "provenance": {
+      "@id": "prov:wasGeneratedBy",
+      "@type": "@id"
+    },
+    "derivedFrom": {
+      "@id": "prov:wasDerivedFrom",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "tags": {
+      "@id": "dcat:keyword",
+      "@container": "@set"
+    },
+    "version": "schema:version",
+    "status": "okf:status",
+    "recordTypeLabel": "okf:recordTypeLabel",
+    "type": "okf:recordTypeLabel",
+    "route": "okf:route",
+    "profile": {
+      "@id": "dcterms:conformsTo",
+      "@type": "@id"
+    },
+    "descriptor": {
+      "@id": "okf:explorerDescriptor",
+      "@type": "@id"
+    },
+    "semanticDescriptor": {
+      "@id": "okf:semanticDescriptor",
+      "@type": "@id"
+    },
+    "home": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "bundles": {
+      "@id": "okf:bundle",
+      "@container": "@set"
+    },
+    "constraints": {
+      "@id": "okf:constraint",
+      "@container": "@set"
+    },
+    "constraintType": "okf:constraintType",
+    "trigger": "okf:trigger",
+    "impact": "okf:impact",
+    "response": "okf:response",
+    "escalation": "okf:escalation",
+    "authority": "okf:authority",
+    "observedAt": {
+      "@id": "prov:generatedAtTime",
+      "@type": "xsd:dateTime"
+    },
+    "evidence": {
+      "@id": "prov:hadPrimarySource",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "confidence": "okf:confidence",
+    "sourceAdapter": "okf:sourceAdapter",
+    "sourceTier": "okf:sourceTier",
+    "relationship": {
+      "@id": "okf:relationship",
+      "@container": "@set"
+    },
+    "predicate": {
+      "@id": "okf:predicate",
+      "@type": "@id"
+    },
+    "target": {
+      "@id": "okf:target",
+      "@type": "@id"
+    }
+  }
+}

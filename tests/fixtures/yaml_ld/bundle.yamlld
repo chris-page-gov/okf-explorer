@@ -1,0 +1,19 @@
+"@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
+"@id": https://example.gov.uk/okf/bundles/example
+"@type": okf:Bundle
+title: Example OKF bundle
+description: Minimal independent bundle descriptor fixture.
+version: 1.0.0
+status: experimental
+descriptor:
+  "@id": https://example.gov.uk/okf/okf-explorer.json
+semanticDescriptor:
+  "@id": https://example.gov.uk/okf/okf-bundle.yamlld
+home:
+  "@id": https://example.gov.uk/okf/
+profile:
+  "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+publisher:
+  "@id": https://example.gov.uk/
+license:
+  "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/

@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+import okf_semantic
+
 ROOT = Path(__file__).resolve().parents[1]
 VIEWER = ROOT / "viewer.html"
 OKF_ROOT_FILES = {"index.md", "sources-index.md", "log.md"}
@@ -47,26 +49,11 @@ def iter_okf_markdown() -> list[Path]:
 
 
 def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---\n"):
-        raise ValueError(f"{rel(path)} is missing YAML frontmatter")
-    end = text.find("\n---", 4)
-    if end == -1:
-        raise ValueError(f"{rel(path)} has unterminated YAML frontmatter")
-    raw = text[4:end]
-    body = text[end + 4 :].lstrip("\n").strip("\n")
-    meta: dict[str, str] = {}
-    for line in raw.splitlines():
-        if not line.strip() or line.lstrip().startswith("#"):
-            continue
-        if ":" not in line:
-            continue
-        key, value = line.split(":", 1)
-        value = value.strip()
-        if value.startswith(("'", '"')) and value.endswith(("'", '"')):
-            value = value[1:-1]
-        meta[key.strip()] = value
-    return meta, body
+    try:
+        document = okf_semantic.parse_markdown(path)
+    except okf_semantic.SemanticError as exc:
+        raise ValueError(str(exc).replace(str(ROOT) + "/", "")) from exc
+    return okf_semantic.legacy_frontmatter(document.metadata), document.body
 
 
 def section_for(path_id: str) -> str:

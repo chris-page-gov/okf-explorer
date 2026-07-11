@@ -18,6 +18,12 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles
   that take full advantage of Explorer facets, search, graph, timeline,
   resources and right-card metadata.
+- [Federated bundle wiki architecture](okf-bundle-wiki-architecture-2026-07-11.md)
+  defines independently published bundle wikis, YAML-LD/JSON-LD semantics,
+  registry discovery, compatibility projections and the extraction plan.
+- [Source constraint ledger](source-constraint-ledger.md) records fair-use,
+  access-control, licensing and context-loading concerns for internal
+  escalation without silently reducing prototype functionality.
 - [OKF standards crosswalk](okf-standards-crosswalk.md) maps every OKF record
   field to its DCAT-AP and OpenAPI equivalent, so bundles stay federatable
   with external API/data catalogues.

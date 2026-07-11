@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-11 — Federated bundle publication and YAML-LD foundation
+
+- Adopted independently published OKF bundle wikis as the production
+  architecture, with the Explorer acting as a generic consumer and curated
+  registry rather than the canonical corpus host.
+- Added the experimental OKF Bundle Wiki Profile v1, versioned JSON-LD context,
+  JSON Schemas, SHACL shapes and a YAML 1.2/YAML-LD parser with pinned context
+  loading.
+- Replaced the line-based Markdown frontmatter parser with structured parsing
+  while retaining the legacy Explorer projection.
+- Added a single YAML-LD registry source that generates Explorer JSON and
+  JSON-LD projections.
+- Added a machine-readable source constraint ledger and human escalation guide
+  so fair-use, access-control and licensing concerns remain visible without
+  silently removing prototype features.
+
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
 source-of-truth changes.

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/concept.schema.json",
+  "title": "OKF Bundle Wiki concept",
+  "type": "object",
+  "required": ["@context", "@id", "@type", "title", "description"],
+  "properties": {
+    "@context": {
+      "oneOf": [
+        {"type": "string", "format": "uri"},
+        {"type": "array", "minItems": 1}
+      ]
+    },
+    "@id": {"type": "string", "format": "uri"},
+    "@type": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+      ]
+    },
+    "title": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "modified": {"type": "string", "format": "date-time"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "source": {
+      "oneOf": [
+        {"type": "string", "format": "uri"},
+        {"$ref": "#/$defs/idObject"}
+      ]
+    },
+    "resource": {
+      "oneOf": [
+        {"type": "string", "format": "uri"},
+        {"$ref": "#/$defs/idObject"}
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "idObject": {
+      "type": "object",
+      "required": ["@id"],
+      "properties": {"@id": {"type": "string", "format": "uri"}},
+      "additionalProperties": true
+    }
+  }
+}

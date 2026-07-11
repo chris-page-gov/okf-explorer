@@ -1,0 +1,85 @@
+"@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
+"@id": https://chris-page-gov.github.io/okf-explorer/registry
+"@type": okf:Registry
+title: OKF Explorer Registry
+description: Curated registry of independently publishable OKF bundle examples.
+modified: "2026-07-11T00:00:00Z"
+profile:
+  "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+bundles:
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/ai-infrastructure
+    "@type": okf:Bundle
+    title: AI Infrastructure
+    description: Default reference bundle generated from the AI infrastructure Markdown corpus during migration.
+    version: 0.3.0
+    status: preview
+    descriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/okf-bundle.json
+    home:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov
+    license:
+      "@id": https://creativecommons.org/publicdomain/zero/1.0/
+    recordTypeLabel: local-sample
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/gov-ckan
+    "@type": okf:Bundle
+    title: GOV.UK CKAN large corpus
+    description: External large-corpus exemplar using chunked CKAN metadata and static search shards.
+    version: 1.0.0
+    status: stable
+    descriptor:
+      "@id": https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json
+    home:
+      "@id": https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov
+    license:
+      "@id": https://creativecommons.org/publicdomain/zero/1.0/
+    recordTypeLabel: large-corpus
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/uk-government-apis
+    "@type": okf:Bundle
+    title: UK Government APIs OKF
+    description: Multi-source API and data-access large-corpus exemplar.
+    version: 0.3.0
+    status: preview
+    descriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+    home:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov
+    license:
+      "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+    recordTypeLabel: large-corpus
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/uk-legislation
+    "@type": okf:Bundle
+    title: UK Legislation complete work catalogue
+    description: Complete legislation.gov.uk work catalogue with live progressive CLML discovery.
+    version: 0.1.0
+    status: preview
+    descriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
+    home:
+      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov
+    license:
+      "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+    recordTypeLabel: large-corpus

@@ -19,6 +19,7 @@ PUBLIC_ROOT_FILES = [
     "log.md",
     "okf.config.json",
     "okf-registry.json",
+    "okf-registry.jsonld",
     "README.md",
     "PUBLICATION.md",
     "LICENSE.md",
@@ -41,6 +42,9 @@ PUBLIC_DIRS = [
     "evaluation",
     "explorer",
     "docs",
+    "profiles",
+    "registry",
+    "constraints",
 ]
 FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
