@@ -32,18 +32,18 @@
     },
     {
       "description": "Multi-source API and data-access large-corpus exemplar.",
-      "home_url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/",
+      "home_url": "https://chris-page-gov.github.io/okf-uk-government-apis/",
       "id": "https://chris-page-gov.github.io/okf-explorer/bundles/uk-government-apis",
       "kind": "large-corpus",
       "label": "UK Government APIs OKF",
       "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
       "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
       "publisher": "https://github.com/chris-page-gov",
-      "semantic_url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json",
+      "semantic_url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-bundle.yamlld",
       "status": "preview",
       "title": "UK Government APIs OKF",
-      "url": "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json",
-      "version": "0.3.0"
+      "url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+      "version": "0.4.0"
     },
     {
       "description": "Complete legislation.gov.uk work catalogue with live progressive CLML discovery.",

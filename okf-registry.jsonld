@@ -89,10 +89,10 @@
             "Multi-source API and data-access large-corpus exemplar."
           ],
           "descriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json"
+            "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json"
           ],
           "home": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/"
+            "https://chris-page-gov.github.io/okf-uk-government-apis/"
           ],
           "license": [
             "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
@@ -104,7 +104,7 @@
             "large-corpus"
           ],
           "semanticDescriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json"
+            "https://chris-page-gov.github.io/okf-uk-government-apis/okf-bundle.yamlld"
           ],
           "status": [
             "preview"
@@ -113,7 +113,7 @@
             "UK Government APIs OKF"
           ],
           "version": [
-            "0.3.0"
+            "0.4.0"
           ]
         },
         {

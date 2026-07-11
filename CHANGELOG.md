@@ -27,6 +27,9 @@
   `chris-page-gov/okf-uk-legislation` with protected `main`, green CI, GitHub
   Pages and release `v0.2.0`; the Explorer registry now treats that publication
   as canonical.
+- Published the 41,520-record UK Government APIs bundle independently at
+  `chris-page-gov/okf-uk-government-apis`, with protected `main`, CI, Pages,
+  276,996 relationships, route adjacency and release `v0.4.0`.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
