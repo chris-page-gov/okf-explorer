@@ -49,10 +49,18 @@ export type OkfBundle = {
 };
 
 export type LargeCorpusDescriptor = {
+  '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
+  '@id'?: string;
   schema: 'okf-explorer-large-corpus.v1' | string;
   kind: 'okf-large-corpus' | string;
   title: string;
   description?: string;
+  version?: string;
+  status?: string;
+  profile?: string;
+  publisher?: string;
+  license?: string;
+  semantic_descriptor?: string;
   generated_at?: string;
   entrypoints: {
     viewer?: string;
@@ -62,6 +70,7 @@ export type LargeCorpusDescriptor = {
     search_manifest?: string;
     notes?: string;
     performance?: string;
+    relationship_adjacency?: string;
   };
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
@@ -92,6 +101,7 @@ export type LargeDataManifest = {
     facets?: string;
     graph?: string;
     govuk_content?: string;
+    relationship_adjacency?: string;
   };
   chunks: Record<string, string[]>;
   performance?: Record<string, unknown>;
@@ -415,6 +425,14 @@ export type LargeRelationshipsResult = {
   truncated: boolean;
 };
 
+export type LargeRelationshipAdjacencyManifest = {
+  schema: 'okf-relationship-adjacency.v1' | string;
+  algorithm: 'fnv1a32-prefix-2' | string;
+  routes: number;
+  relationships: number;
+  buckets: Record<string, string>;
+};
+
 export type LargeGraphIndex = {
   edge_counts?: Array<{ kind: string; count: number }>;
   node_counts?: Record<string, number>;
@@ -461,6 +479,7 @@ export type LargeCorpusSource = {
   analysis?: LargeAnalysisOverview;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
+  loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;
 };
 
 export type BundleRegistryEntry = {
@@ -470,6 +489,13 @@ export type BundleRegistryEntry = {
   url: string;
   description?: string;
   kind?: 'bundle' | 'large-corpus' | 'history' | string;
+  semantic_url?: string;
+  home_url?: string;
+  profile?: string;
+  version?: string;
+  status?: string;
+  publisher?: string;
+  license?: string;
 };
 
 export type LoadedSource =

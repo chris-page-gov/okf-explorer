@@ -475,7 +475,18 @@
         if (requestId !== loadRequest) return;
         source = large;
         const searchManifest = large.descriptor.entrypoints.search_manifest || large.manifest.indexes.search;
-        history = rememberHistory({ url: absoluteUrl, title: large.descriptor.title, description: large.descriptor.description, kind: 'large-corpus' });
+        history = rememberHistory({
+          url: absoluteUrl,
+          title: large.descriptor.title,
+          description: large.descriptor.description,
+          kind: 'large-corpus',
+          semantic_url: large.descriptor.semantic_descriptor,
+          profile: large.descriptor.profile,
+          version: large.descriptor.version,
+          status: large.descriptor.status,
+          publisher: large.descriptor.publisher,
+          license: large.descriptor.license
+        });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
         const query = params.get('q') || '';
@@ -648,6 +659,23 @@
     }
   }
 
+  async function ensureLargeRouteRelationships(route: string): Promise<LargeRelationship[]> {
+    if (source?.kind !== 'large' || !route) return [];
+    const loaded = largeRelationshipsByRoute.get(route);
+    if (loaded) return loaded;
+    largeRelationshipsLoading = true;
+    try {
+      const rows = await source.loadRelationshipsForRoute(route);
+      largeRelationshipsByRoute = new Map(largeRelationshipsByRoute).set(route, rows);
+      return rows;
+    } catch (err) {
+      error = err instanceof Error ? err.message : String(err);
+      return [];
+    } finally {
+      largeRelationshipsLoading = false;
+    }
+  }
+
   function selectNode(id: string) {
     selectedId = id;
     inspectedId = '';
@@ -675,7 +703,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
-    if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
+    void ensureLargeRouteRelationships(route);
     syncExplorerUrl(true);
   }
 
@@ -689,7 +717,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
-    if (RELATIONSHIP_VIEWS.has(activeView)) void ensureLargeRelationships();
+    void ensureLargeRouteRelationships(route);
   }
 
   function recenterLargeRoute(route: string) {
@@ -1973,7 +2001,7 @@
   }
 
   function routeRelationships(route: string, limit = 120): LargeRelationship[] {
-    if (!route || !largeRelationships.length) return [];
+    if (!route) return [];
     const indexedRows = largeRelationshipsByRoute.get(route);
     if (indexedRows) return indexedRows.slice(0, limit);
     const rows: LargeRelationship[] = [];
@@ -2741,7 +2769,7 @@
   }
 
   function currentLinkEdges(limit = 180): LargeGraphEdge[] {
-    if (largeRelationships.length) {
+    if (largeRelationships.length || (largeSelectedRoute && largeRelationshipsByRoute.has(largeSelectedRoute))) {
       const relationships =
         largeSelectedRoute && largeRouteInReduction(largeSelectedRoute)
           ? routeRelationships(largeSelectedRoute, limit)
@@ -2892,6 +2920,7 @@
               <button type="button" onclick={() => void loadSource(suggestion.url)}>
                 <strong>{suggestion.title || suggestion.label || suggestion.url}</strong>
                 <span>{suggestion.url}</span>
+                {#if suggestion.version || suggestion.status}<small>{suggestion.version ? `v${suggestion.version}` : ''}{suggestion.version && suggestion.status ? ' · ' : ''}{suggestion.status || ''}</small>{/if}
                 {#if suggestion.description}<small>{suggestion.description}</small>{/if}
               </button>
             {/each}
@@ -4297,6 +4326,12 @@
             <p>{source.descriptor.description}</p>
             <dl>
               <dt>Schema</dt><dd>{source.descriptor.schema}</dd>
+              {#if source.descriptor.version}<dt>Version</dt><dd>{source.descriptor.version}</dd>{/if}
+              {#if source.descriptor.status}<dt>Status</dt><dd>{source.descriptor.status}</dd>{/if}
+              {#if source.descriptor.profile}<dt>Profile</dt><dd><a href={source.descriptor.profile} target="_blank" rel="noreferrer">{source.descriptor.profile}</a></dd>{/if}
+              {#if source.descriptor.semantic_descriptor}<dt>YAML-LD</dt><dd><a href={source.descriptor.semantic_descriptor} target="_blank" rel="noreferrer">semantic descriptor</a></dd>{/if}
+              {#if source.descriptor.publisher}<dt>Publisher</dt><dd><a href={source.descriptor.publisher} target="_blank" rel="noreferrer">{source.descriptor.publisher}</a></dd>{/if}
+              {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">source licence</a></dd>{/if}
               <dt>Generated</dt><dd>{source.descriptor.generated_at || source.manifest.generated_at}</dd>
               <dt>Search</dt><dd>{source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} tokens</dd>
               <dt>Hydration</dt><dd>{largeIndex ? 'records loaded' : 'overview only'}</dd>

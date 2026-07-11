@@ -103,6 +103,11 @@ python3 scripts/check_okf.py
 python3 scripts/build_site.py
 ```
 
+Large-corpus generators must publish both chunked whole-corpus relationships
+and `data/adjacency/manifest.json`. The latter uses `fnv1a32-prefix-2` buckets
+for route-scoped hydration; the Explorer and generators share test vectors so
+non-ASCII route identifiers remain portable.
+
 If the Explorer app changed:
 
 ```sh

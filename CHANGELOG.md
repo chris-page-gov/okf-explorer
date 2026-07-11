@@ -15,6 +15,9 @@
 - Added a machine-readable source constraint ledger and human escalation guide
   so fair-use, access-control and licensing concerns remain visible without
   silently removing prototype features.
+- Added semantic identity metadata to large-corpus descriptors and deterministic
+  route-scoped relationship adjacency shards, allowing the Explorer to show a
+  selected concept's links without hydrating the full relationship table.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any

@@ -17,6 +17,13 @@ Markdown YAML-LD frontmatter and `okf-bundle.yamlld` are the semantic authoring
 layer. Builds publish an equivalent `okf-bundle.jsonld` and compile the current
 Explorer JSON descriptor, manifests, search shards and adjacency indexes.
 
+Large-corpus descriptors carry stable identity, version, publication status,
+publisher, licence, profile and semantic-descriptor links. Relationship indexes
+use deterministic UTF-8 FNV-1a hash buckets so selection hydrates one route's
+adjacency without loading the corpus-wide edge table. Full relationship chunks
+remain available for explicit corpus-wide analysis, subject to the Explorer's
+documented memory cap.
+
 The Explorer continues to consume JSON during the migration. Arbitrary remote
 context retrieval is not enabled in the browser. Contexts are allowlisted,
 pinned locally and expanded during deterministic builds.
