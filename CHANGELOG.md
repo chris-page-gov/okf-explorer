@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4.2 - 2026-07-11 - Explorer identity alignment
+
+- Aligned the private Explorer package and citation metadata with the current
+  independently published Explorer product and patch release.
+- Replaced the inherited AI Infrastructure bundle citation identity with the
+  generic OKF Explorer software identity, canonical repository and Pages URL.
+- Updated the live GitHub repository description and homepage to describe the
+  federated Explorer, registry, profile and conformance-tooling role.
+
 ## 2026-07-11 — Federated bundle publication and YAML-LD foundation
 
 - Adopted independently published OKF bundle wikis as the production

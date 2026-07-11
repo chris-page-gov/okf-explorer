@@ -1,17 +1,20 @@
 cff-version: 1.2.0
-message: "If you use this material, please cite it as below."
-title: "ai-infrastructure-wiki: AI Infrastructure OKF Bundle"
+message: "If you use this software, please cite it as below."
+title: "OKF Explorer"
+version: "0.4.2"
 authors:
   - family-names: "Page"
     given-names: "Chris"
-date-released: "2026-06-27"
-license: "CC-BY-NC-4.0"
+date-released: "2026-07-11"
+license: "MIT"
 repository-code: "https://github.com/chris-page-gov/okf-explorer"
+url: "https://chris-page-gov.github.io/okf-explorer/"
 preferred-citation:
-  type: report
-  title: "AI Infrastructure OKF Bundle"
+  type: software
+  title: "OKF Explorer"
+  version: "0.4.2"
   authors:
     - family-names: "Page"
       given-names: "Chris"
-  date-released: "2026-06-27"
-  license: "CC-BY-NC-4.0"
+  date-released: "2026-07-11"
+  license: "MIT"
