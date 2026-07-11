@@ -6,7 +6,7 @@ have not seen OKF Explorer.
 Demo URL:
 
 ```text
-https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 ```
 
 Backup local URL:
@@ -157,7 +157,7 @@ Use this sample prompt:
 
 ```text
 Answer from this OKF descriptor:
-https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
+https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json
 
 Find Ordnance Survey API/data records. Return title, record type, source tier,
 access model, licence basis, endpoint host, documentation host and route. Cite

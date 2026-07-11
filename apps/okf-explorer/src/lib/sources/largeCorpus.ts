@@ -10,6 +10,7 @@ import type {
   LargeOverview,
   LargePublisher,
   LargeRelationship,
+  LargeRelationshipAdjacencyManifest,
   LargeRelationshipsResult,
   LargeResource
 } from '$lib/types';
@@ -20,6 +21,16 @@ import { baseUrlFor, fetchJson, resolveUrl } from './fetch';
 // full relationship index can hydrate on the order of 2M rows unbounded.
 export const MAX_RELATIONSHIP_ROWS = 300_000;
 export const CHUNK_FETCH_BATCH_SIZE = 4;
+
+export function relationshipBucket(route: string): string {
+  let hash = 0x811c9dc5;
+  const bytes = new TextEncoder().encode(route);
+  for (const byte of bytes) {
+    hash ^= byte;
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return ((hash >>> 24) & 0xff).toString(16).padStart(2, '0');
+}
 
 async function loadChunks<T>(baseUrl: string, paths: string[] = []): Promise<T[]> {
   const rows: T[] = [];
@@ -90,6 +101,8 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     : undefined;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
   let relationshipsPromise: Promise<LargeRelationshipsResult> | null = null;
+  let adjacencyManifestPromise: Promise<LargeRelationshipAdjacencyManifest> | null = null;
+  const adjacencyBucketPromises = new Map<string, Promise<Record<string, LargeRelationship[]>>>();
 
   const source: LargeCorpusSource = {
     kind: 'large',
@@ -131,6 +144,30 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
         relationshipsPromise = loadRelationshipChunks(baseUrl, manifest.chunks.relationships || [], maxRows);
       }
       return relationshipsPromise;
+    },
+    async loadRelationshipsForRoute(route: string) {
+      const adjacencyPath = descriptor.entrypoints.relationship_adjacency || manifest.indexes.relationship_adjacency;
+      if (!adjacencyPath) {
+        const result = await source.loadRelationships();
+        return result.relationships.filter((relationship) => relationship.source === route || relationship.target === route);
+      }
+      if (!adjacencyManifestPromise) {
+        adjacencyManifestPromise = fetchJson<LargeRelationshipAdjacencyManifest>(resolveUrl(adjacencyPath, baseUrl));
+      }
+      const adjacency = await adjacencyManifestPromise;
+      if (adjacency.algorithm !== 'fnv1a32-prefix-2') {
+        throw new Error(`Unsupported relationship adjacency algorithm: ${adjacency.algorithm}`);
+      }
+      const bucket = relationshipBucket(route);
+      const bucketPath = adjacency.buckets[bucket];
+      if (!bucketPath) return [];
+      let bucketPromise = adjacencyBucketPromises.get(bucket);
+      if (!bucketPromise) {
+        bucketPromise = fetchJson<Record<string, LargeRelationship[]>>(resolveUrl(bucketPath, baseUrl));
+        adjacencyBucketPromises.set(bucket, bucketPromise);
+      }
+      const rows = await bucketPromise;
+      return rows[route] || [];
     }
   };
   return source;

@@ -51,7 +51,7 @@ class LegislationDocumentationTest(unittest.TestCase):
             self.assertTrue(image.is_file(), item["image"])
             self.assertGreater(image.stat().st_size, 20_000, item["image"])
             self.assertTrue(image.read_bytes().startswith(b"\xff\xd8\xff"), item["image"])
-            self.assertTrue(item["route"].startswith("https://chris-page-gov.github.io/ai-infrastructure-wiki/next/"))
+            self.assertTrue(item["route"].startswith("https://chris-page-gov.github.io/okf-explorer/"))
             self.assertTrue(item["expected_text"])
             self.assertIn(f"../assets/uk-legislation-manual/{item['image']}", manual)
 

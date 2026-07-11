@@ -4,9 +4,9 @@ This is the architecture and data-model volume of the [UK Legislation documentat
 
 ## Public viewer
 
-[Open the UK Legislation OKF Explorer](https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview).
+[Open the UK Legislation OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview).
 
-The bundle descriptor is `https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json`. It is an overview-first, chunked catalogue designed for browser navigation and agent progressive discovery. The checked-in work index is complete against the official Atom year facets at generation time; document subdivisions are complete on demand because the Explorer reads the selected work's authoritative CLML rather than freezing hundreds of millions of provision nodes into Git.
+The canonical bundle descriptor is `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`; the independently versioned source repository is `https://github.com/chris-page-gov/okf-uk-legislation`. It is an overview-first, chunked catalogue designed for browser navigation and agent progressive discovery. The checked-in work index is complete against the official Atom year facets at generation time; document subdivisions are complete on demand because the Explorer reads the selected work's authoritative CLML rather than freezing hundreds of millions of provision nodes into Git.
 
 Work and search-result chunks use deterministic gzip files. The Explorer streams and decompresses only the requested chunks in the browser; manifests, facets, ontology pages and search shards remain directly inspectable. This keeps the complete publication within practical GitHub/Pages limits without dropping records.
 
@@ -42,6 +42,17 @@ ELI is the primary semantic spine. Schema.org is a compatibility layer, not a re
 Official type codes are retained. They are also grouped into `primary`, `secondary`, `draft`, `eu-origin` and `other`, with separate jurisdiction and document-type facets. This preserves Church Measures, local/private Acts, old Parliament material, ministerial directions and other uncommon families rather than forcing them into a misleading primary/secondary binary.
 
 Topics are a deterministic title-only discovery aid across constitutional, civil, criminal, employment, tax, company, land, environment, health, education, family, immigration, welfare, transport, data, consumer, local-government, election, defence, equality, intellectual-property, professional-regulation and EU themes. They are explicitly labelled non-authoritative. An agent must never treat a topic assignment as a legal proposition.
+
+The complete work catalogue now emits provenance-bearing `classified as`, `has
+document type` and conservative `mentions entity` relationships. A governed
+model-assisted rule file proposes only high-precision literal title matches;
+accepted rules are applied deterministically to every work and remain labelled
+derived and non-official. Route-scoped FNV-1a adjacency shards let the Explorer
+load the selected work's relationships without hydrating the corpus-wide edge
+table. The model runner records prompt version, model, review state, token usage
+and cost. Its first direct API attempt was rejected for project quota before
+output, so the current accepted rules were supplied by the Codex session and
+the recorded API cost is $0.00.
 
 ## Official access methods
 

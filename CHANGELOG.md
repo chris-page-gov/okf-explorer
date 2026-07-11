@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-07-11 — Federated bundle publication and YAML-LD foundation
+
+- Adopted independently published OKF bundle wikis as the production
+  architecture, with the Explorer acting as a generic consumer and curated
+  registry rather than the canonical corpus host.
+- Added the experimental OKF Bundle Wiki Profile v1, versioned JSON-LD context,
+  JSON Schemas, SHACL shapes and a YAML 1.2/YAML-LD parser with pinned context
+  loading.
+- Replaced the line-based Markdown frontmatter parser with structured parsing
+  while retaining the legacy Explorer projection.
+- Added a single YAML-LD registry source that generates Explorer JSON and
+  JSON-LD projections.
+- Added a machine-readable source constraint ledger and human escalation guide
+  so fair-use, access-control and licensing concerns remain visible without
+  silently removing prototype features.
+- Added semantic identity metadata to large-corpus descriptors and deterministic
+  route-scoped relationship adjacency shards, allowing the Explorer to show a
+  selected concept's links without hydrating the full relationship table.
+- Added governed model-assisted legislation enrichment with a reproducible
+  Responses API runner, checked-in reviewed rules, explicit cost/usage logging,
+  universal provenance-bearing subject/type/entity edges and compressed
+  route-scoped adjacency. The initial API project quota failure is retained in
+  the constraint ledger rather than reducing the prototype's feature scope.
+- Published the complete legislation bundle independently at
+  `chris-page-gov/okf-uk-legislation` with protected `main`, green CI, GitHub
+  Pages and release `v0.2.0`; the Explorer registry now treats that publication
+  as canonical.
+- Published the 41,520-record UK Government APIs bundle independently at
+  `chris-page-gov/okf-uk-government-apis`, with protected `main`, CI, Pages,
+  276,996 relationships, route adjacency and release `v0.4.0`.
+- Published the 155-concept/579-relationship AI Infrastructure Markdown wiki
+  independently at `chris-page-gov/okf-ai-infrastructure` with YAML-LD,
+  JSON-LD, protected `main`, CI, Pages and release `v0.4.0`.
+- Renamed the product repository to `chris-page-gov/okf-explorer`, moved the
+  Svelte Explorer to the Pages root, retained `/next/` as a query/hash-preserving
+  compatibility redirect, and made the independent AI bundle the default.
+
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
 source-of-truth changes.

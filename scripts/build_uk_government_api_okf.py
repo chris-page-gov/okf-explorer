@@ -2443,6 +2443,42 @@ def chunk_paths(prefix: str, rows: list[dict[str, Any]], chunk_size: int = 1000)
     return [(Path(f"data/{prefix}-{index // chunk_size}.json"), rows[index : index + chunk_size]) for index in range(0, len(rows), chunk_size)]
 
 
+def relationship_bucket(route: str) -> str:
+    value = 0x811C9DC5
+    for byte in route.encode("utf-8"):
+        value ^= byte
+        value = (value * 0x01000193) & 0xFFFFFFFF
+    return f"{(value >> 24) & 0xFF:02x}"
+
+
+def build_relationship_adjacency(
+    relationships: list[dict[str, Any]],
+) -> tuple[dict[str, Any], list[tuple[Path, dict[str, list[dict[str, Any]]]]]]:
+    by_route: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for relationship in relationships:
+        source = str(relationship.get("source", ""))
+        target = str(relationship.get("target", ""))
+        if source:
+            by_route[source].append(relationship)
+        if target and target != source:
+            by_route[target].append(relationship)
+    buckets: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(dict)
+    for route, rows in sorted(by_route.items()):
+        buckets[relationship_bucket(route)][route] = rows
+    bucket_files = [
+        (Path(f"data/adjacency/{bucket}.json"), routes)
+        for bucket, routes in sorted(buckets.items())
+    ]
+    manifest = {
+        "schema": "okf-relationship-adjacency.v1",
+        "algorithm": "fnv1a32-prefix-2",
+        "routes": len(by_route),
+        "relationships": len(relationships),
+        "buckets": {bucket: f"data/adjacency/{bucket}.json" for bucket in sorted(buckets)},
+    }
+    return manifest, bucket_files
+
+
 def canonical_counts(records: list[dict[str, Any]]) -> dict[str, int]:
     declared_api_products = sum(1 for record in records if record.get("record_type") == "API Product" and record.get("source_tier") == "declared_api_catalogue")
     provider_native_api_products = sum(1 for record in records if record.get("record_type") == "API Product" and record.get("source_tier") == "provider_native_api")
@@ -2741,6 +2777,7 @@ def build_corpus(
     resource_chunks = chunk_paths("resources", resources)
     publisher_chunks = chunk_paths("providers", publishers)
     relationship_chunks = chunk_paths("relationships", relationships, chunk_size=2000)
+    relationship_adjacency, relationship_adjacency_buckets = build_relationship_adjacency(relationships)
     manifest = {
         "title": "UK Government APIs static corpus",
         "generated_at": generated_at,
@@ -2751,6 +2788,7 @@ def build_corpus(
             "search": "data/search/manifest.json",
             "facets": "data/facets.json",
             "graph": "data/graph.json",
+            "relationship_adjacency": "data/adjacency/manifest.json",
         },
         "chunks": {
             "datasets": [str(path) for path, _ in record_chunks],
@@ -2762,6 +2800,7 @@ def build_corpus(
             "startup_mode": "overview-first",
             "full_record_hydration": "lazy",
             "relationship_hydration": "lazy",
+            "route_relationship_hydration": "hash-sharded adjacency",
             "search": "static worker shards",
         },
         "search": {
@@ -2772,10 +2811,18 @@ def build_corpus(
         },
     }
     descriptor = {
+        "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
+        "@id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
         "schema": "okf-explorer-large-corpus.v1",
         "kind": "okf-large-corpus",
         "title": "UK Government APIs OKF",
         "description": "Large-corpus OKF exemplar generated from GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API sources, with API-domain facets, typed relationships, search shards, and operational metadata.",
+        "version": "0.4.0",
+        "status": "preview",
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+        "publisher": "https://github.com/chris-page-gov",
+        "license": OGL_V3_URL,
+        "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-government-apis/bundle.yamlld",
         "generated_at": generated_at,
         "entrypoints": {
             "viewer": "../next/",
@@ -2783,6 +2830,7 @@ def build_corpus(
             "overview_index": "data/overview.json",
             "analysis_overview": "data/analysis/overview.json",
             "search_manifest": "data/search/manifest.json",
+            "relationship_adjacency": "data/adjacency/manifest.json",
             "markdown_index": "index.md",
             "notes": "../sources/UK-Government-API-OKF.md",
             "standards_crosswalk": "../docs/okf-standards-crosswalk.md",
@@ -2857,6 +2905,8 @@ def build_corpus(
         "resource_chunks": resource_chunks,
         "publisher_chunks": publisher_chunks,
         "relationship_chunks": relationship_chunks,
+        "relationship_adjacency": relationship_adjacency,
+        "relationship_adjacency_buckets": relationship_adjacency_buckets,
         "facets": facets,
         "graph": graph,
         "search": search,
@@ -2875,6 +2925,7 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         Path("data/analysis/overview.json"): render_json(corpus["analysis"]),
         Path("data/facets.json"): render_json(corpus["facets"]),
         Path("data/graph.json"): render_json(corpus["graph"]),
+        Path("data/adjacency/manifest.json"): render_json(corpus["relationship_adjacency"]),
         Path("data/search/manifest.json"): render_json(corpus["search"]["manifest"]),
         Path("data/search/doc-map.json"): render_json(corpus["search"]["doc_map"]),
     }
@@ -2886,6 +2937,8 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         files[path] = render_json(rows)
     for path, rows in corpus["relationship_chunks"]:
         files[path] = render_json(rows)
+    for path, routes in corpus["relationship_adjacency_buckets"]:
+        files[path] = render_json(routes)
     for shard, rows in corpus["search"]["lexicon"].items():
         files[Path(f"data/search/lexicon/{shard}.json")] = render_json(rows)
     for shard, payload in corpus["search"]["prefixes"].items():

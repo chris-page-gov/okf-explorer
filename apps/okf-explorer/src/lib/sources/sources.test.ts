@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { baseUrlFor, fetchJson, MAX_JSON_BYTES, readResponseText, resolveUrl } from './fetch';
-import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from './largeCorpus';
+import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS, relationshipBucket } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
 import type { OkfBundle } from '$lib/types';
@@ -317,7 +317,8 @@ describe('large corpus source', () => {
             overview: 'data/overview.json',
             facets: 'data/facets.json',
             graph: 'data/graph.json',
-            govuk_content: 'data/govuk.json'
+            govuk_content: 'data/govuk.json',
+            relationship_adjacency: 'data/adjacency/manifest.json'
           },
           chunks: {
             datasets: ['data/datasets-0.json'],
@@ -368,6 +369,20 @@ describe('large corpus source', () => {
       ['https://example.test/ckan/data/facets.json', { publisher: [{ value: 'publisher-one', count: 1 }] }],
       ['https://example.test/ckan/data/graph.json', { nodes: [], edges: [] }],
       ['https://example.test/ckan/data/govuk.json', { paths: [] }],
+      [
+        'https://example.test/ckan/data/adjacency/manifest.json',
+        {
+          schema: 'okf-relationship-adjacency.v1',
+          algorithm: 'fnv1a32-prefix-2',
+          routes: 2,
+          relationships: 1,
+          buckets: { '83': 'data/adjacency/83.json' }
+        }
+      ],
+      [
+        'https://example.test/ckan/data/adjacency/83.json',
+        { 'dataset/dataset-one': [{ source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }] }
+      ],
       ['https://example.test/ckan/data/relationships-0.json', [{ source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }]]
     ]);
 
@@ -393,6 +408,17 @@ describe('large corpus source', () => {
       truncated: false
     });
     expect(await source.loadRelationships()).toBe(relationshipsResult);
+
+    await expect(source.loadRelationshipsForRoute('dataset/dataset-one')).resolves.toEqual([
+      { source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }
+    ]);
+    await expect(source.loadRelationshipsForRoute('missing/route')).resolves.toEqual([]);
+  });
+
+  it('uses the portable UTF-8 FNV-1a adjacency bucket algorithm', () => {
+    expect(relationshipBucket('dataset/dataset-one')).toBe('83');
+    expect(relationshipBucket('publisher/publisher-one')).toBe('7f');
+    expect(relationshipBucket('é')).toBe('1e');
   });
 
   it('rejects non-large-corpus descriptors', async () => {

@@ -180,8 +180,8 @@ Required GitHub checks:
 After merge, verify the Pages deployment and the stable URLs:
 
 ```sh
-curl -fsSL https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json
-curl -sI "https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview"
+curl -fsSL https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json
+curl -sI "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview"
 ```
 
 Then re-run the credential scan against the published descriptor/shards if practical, or at minimum against the merged repository state.

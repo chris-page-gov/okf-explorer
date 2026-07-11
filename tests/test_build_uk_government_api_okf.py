@@ -267,6 +267,22 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
             self.assertTrue(row["observed_at"])
         self.assertEqual(len(observed), 1)
 
+    def test_relationship_adjacency_is_route_scoped_and_portable(self):
+        corpus = self.build_fixture_corpus()
+        manifest = corpus["relationship_adjacency"]
+        files = builder_module.output_files(corpus)
+
+        self.assertEqual(builder_module.relationship_bucket("dataset/dataset-one"), "83")
+        self.assertEqual(builder_module.relationship_bucket("é"), "1e")
+        self.assertEqual(manifest["algorithm"], "fnv1a32-prefix-2")
+        self.assertEqual(manifest["relationships"], len(corpus["relationships"]))
+        self.assertIn(Path("data/adjacency/manifest.json"), files)
+        for relationship in corpus["relationships"]:
+            for route in {relationship["source"], relationship["target"]}:
+                bucket = builder_module.relationship_bucket(route)
+                payload = json.loads(files[Path(f"data/adjacency/{bucket}.json")])
+                self.assertIn(relationship, payload[route])
+
     def test_contract_records_markdown_and_crosslinks_are_emitted(self):
         corpus = self.build_fixture_corpus()
         records = corpus["records"]

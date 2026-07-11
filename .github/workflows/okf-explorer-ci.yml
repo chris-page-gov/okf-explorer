@@ -49,8 +49,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install semantic OKF dependencies
+        run: python3 -m pip install -r requirements-okf.txt
+
       - name: Run OKF generator tests
         run: python3 -m unittest discover -s tests
+
+      - name: Validate YAML-LD registry and constraint ledger
+        run: |
+          python3 scripts/build_okf_registry.py --check
+          python3 scripts/check_source_constraints.py
 
       - name: Generate UK Government API corpus from fixtures
         run: |

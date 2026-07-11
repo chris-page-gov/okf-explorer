@@ -1,0 +1,75 @@
+"@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
+"@id": https://chris-page-gov.github.io/okf-explorer/constraints
+"@type": okf:ConstraintLedger
+title: OKF source and publication constraint ledger
+description: Constraints observed during prototype harvesting and publication, retained for internal escalation without silently reducing product scope.
+modified: "2026-07-11T00:00:00Z"
+constraints:
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/legislation-fair-use
+    "@type": okf:SourceConstraint
+    title: legislation.gov.uk published fair-use request rate
+    constraintType: fair-use
+    status: observed-not-feature-limiting
+    authority: The National Archives
+    trigger: Automated retrieval of official Atom, CLML, effects and publication-log resources.
+    impact: Request scheduling and cache strategy; no source class or product feature is omitted.
+    response: Retain full functionality, cache source responses, identify the client, expose request scheduling as deployment configuration and report actual request volume.
+    escalation: Confirm an internal government-to-government acquisition route or bulk transfer for sustained production refreshes.
+    evidence:
+      - "@id": https://legislation.github.io/data-documentation/fair-use.html
+    observedAt: "2026-07-11T00:00:00Z"
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/model-api-quota
+    "@type": okf:SourceConstraint
+    title: Model API project quota unavailable
+    constraintType: service-quota
+    status: fallback-used
+    authority: OpenAI API project
+    trigger: Governed model-assisted semantic enrichment request.
+    impact: Direct Responses API calls returned insufficient_quota before producing output or usage.
+    response: Preserve the API-backed enrichment runner and use the active Codex model session to produce an auditable governed rule set; no enrichment capability is omitted.
+    escalation: Add API billing or quota for future reproducible batch refreshes and rerun the checked-in enrichment command.
+    evidence:
+      - "@id": https://platform.openai.com/docs/guides/error-codes/api-errors
+    observedAt: "2026-07-11T17:50:00Z"
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/legislation-bulk-authentication
+    "@type": okf:SourceConstraint
+    title: Research bulk and SPARQL access returned HTTP 401
+    constraintType: access-control
+    status: escalation-required
+    authority: The National Archives
+    trigger: Anonymous requests to documented bulk/SPARQL surfaces during the legislation build.
+    impact: Atom and document APIs are the current reproducible source; the product retains bulk/SPARQL adapters but does not bypass access controls.
+    response: Preserve the access failure in provenance and continue full Atom/CLML/effects implementation.
+    escalation: Request internal credentials or an approved government bulk-data route.
+    evidence:
+      - "@id": https://research.legislation.gov.uk/data
+      - "@id": https://legislation.github.io/data-documentation/api/linked-data.html
+    observedAt: "2026-07-10T22:56:50Z"
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/source-licensing
+    "@type": okf:SourceConstraint
+    title: Source-specific licensing and attribution
+    constraintType: licensing
+    status: escalation-required
+    authority: Source publishers
+    trigger: Redistribution of OGL, EU-derived, Westlaw-derived or independently licensed source material.
+    impact: Licence and provenance must remain item-level; absence of licence metadata is not treated as permission or prohibition.
+    response: Preserve licence source, basis and confidence; publish derived catalogue metadata separately from source legal text.
+    escalation: Obtain internal legal confirmation for production redistribution and mixed-source exports.
+    evidence:
+      - "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+      - "@id": https://legislation.github.io/data-documentation/reuse-licence.html
+    observedAt: "2026-07-11T00:00:00Z"
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/remote-contexts
+    "@type": okf:SourceConstraint
+    title: Remote JSON-LD context availability and privacy
+    constraintType: security-and-operability
+    status: mitigated
+    authority: W3C JSON-LD specifications
+    trigger: YAML-LD or JSON-LD expansion referencing remote contexts.
+    impact: Uncontrolled retrieval can make builds non-deterministic and expose processor activity.
+    response: Use allowlisted, pinned local context copies with hashes; publish expanded JSON-LD; do not retrieve arbitrary contexts in the Explorer browser.
+    escalation: Approve permanent government profile and context hosting, together with the production document-loader allowlist.
+    evidence:
+      - "@id": https://www.w3.org/TR/json-ld11/#loading-documents
+      - "@id": https://www.w3.org/TR/json-ld11/#privacy-considerations
+    observedAt: "2026-07-11T00:00:00Z"

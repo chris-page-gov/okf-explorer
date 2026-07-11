@@ -76,7 +76,7 @@ def build() -> dict:
         "schema": "okf-legislation-answer-evaluation.v1",
         "title": "UK Legislation Barrister-Question Evaluation Suite",
         "description": "100 questions across primary, secondary, retained-EU, devolved and historical legislation. Scores legal-answer quality and complete proposition-level provenance.",
-        "target_bundle": "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json",
+        "target_bundle": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
         "rubric": RUBRIC,
         "answer_schema": "answer-schema.json",
         "questions": questions,
