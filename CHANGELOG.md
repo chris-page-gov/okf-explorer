@@ -39,6 +39,9 @@
 - Released Explorer v0.4.0 support for machine-readable `okf-moved.v1`
   descriptors so legacy bundle URLs can forward to canonical independent
   publications without copying their corpora.
+- Checked in and applied the standard protected-`main` policy: strict required
+  CI, one approval, stale-review dismissal, conversation resolution,
+  administrator enforcement, linear history, and no force pushes or deletions.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
