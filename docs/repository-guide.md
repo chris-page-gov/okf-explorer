@@ -81,11 +81,15 @@ when selected. Documentation state and screenshot routes are maintained under
 - UK Government APIs descriptor:
   `https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json`
 - UK Government APIs in Explorer:
-  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview`
+  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&view=reader#overview`
 - UK Legislation descriptor:
   `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`
 - UK Legislation in Explorer:
-  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview`
+  `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview`
+
+Former `ai-infrastructure-wiki` routes remain available for a deprecation cycle.
+Human routes redirect while former bundle descriptor routes return the
+machine-readable `okf-moved.v1` contract consumed by Explorer v0.4.0 and later.
 
 ## Local Validation
 

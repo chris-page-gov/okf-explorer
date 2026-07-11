@@ -19,7 +19,7 @@
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
-  import { fetchJson, resolveUrl } from '$lib/sources/fetch';
+  import { fetchJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
@@ -470,6 +470,11 @@
       }
       const raw = await fetchJson<Record<string, unknown>>(absoluteUrl);
       if (requestId !== loadRequest) return;
+      const movedTo = movedBundleTarget(raw, absoluteUrl);
+      if (movedTo) {
+        await loadSource(movedTo);
+        return;
+      }
       if (raw.kind === 'okf-large-corpus') {
         const large = await loadLargeCorpus(absoluteUrl);
         if (requestId !== loadRequest) return;

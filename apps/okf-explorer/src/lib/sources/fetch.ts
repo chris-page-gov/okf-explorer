@@ -5,6 +5,18 @@ export function resolveUrl(path: string, base: string): string {
   return new URL(path, base).toString();
 }
 
+export function movedBundleTarget(raw: Record<string, unknown>, sourceUrl: string): string | null {
+  if (raw.kind !== 'okf-moved') return null;
+  if (typeof raw.moved_to !== 'string' || !raw.moved_to.trim()) {
+    throw new Error(`${sourceUrl}: moved bundle descriptor is missing moved_to`);
+  }
+  const target = resolveUrl(raw.moved_to, sourceUrl);
+  if (target === sourceUrl) {
+    throw new Error(`${sourceUrl}: moved bundle descriptor points to itself`);
+  }
+  return target;
+}
+
 export async function fetchJson<T>(url: string, timeoutMs = 30000, attempts = 3, retryDelayMs = 250): Promise<T> {
   let lastError: unknown;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
