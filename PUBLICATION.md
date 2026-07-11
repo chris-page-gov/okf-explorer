@@ -19,6 +19,9 @@ from `main` with semantic tags such as `v0.3.0`.
 - UK Legislation: the complete static work catalogue is published at
   `legislation/okf-explorer.json`; selected works progressively load their
   authoritative CLML subdivision tree from legislation.gov.uk.
+- UK Legislation documentation: the maintained spine is published under
+  `docs/uk-legislation/`, with screenshot assets and their refresh manifest
+  under `docs/assets/uk-legislation-manual/`.
 - Optional DOI: connect the public repository to Zenodo after the first release
   if a persistent scholarly citation is required.
 

@@ -1,5 +1,7 @@
 # UK Legislation OKF
 
+This is the architecture and data-model volume of the [UK Legislation documentation spine](uk-legislation/index.md). For task guidance use [Getting started](uk-legislation/getting-started.md); for worked interfaces use the [illustrated manual](uk-legislation/illustrated-manual.md).
+
 ## Public viewer
 
 [Open the UK Legislation OKF Explorer](https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview).

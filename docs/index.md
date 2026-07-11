@@ -9,6 +9,8 @@ APIs exemplar, and related large-corpus OKF packs.
   live and how the publication pipeline fits together.
 - [Use the OKF Explorer](use-okf-explorer.md) remains the short path from a
   bundle URL to the hosted Explorer.
+- [UK Legislation documentation spine](uk-legislation/index.md) routes legal researchers, counsel, data engineers, curators and AI evaluators to task-specific guidance.
+- [Illustrated UK Legislation manual](uk-legislation/illustrated-manual.md) follows legislation-specific personas and user journeys from overview to selected-passage provenance.
 - [Illustrated Explorer manual](okf-explorer-persona-manual.md) describes the
   UI through user stories and screenshots.
 - [Use an AI with an OKF pack](ai-okf-usage.md) gives prompts and data-access
@@ -27,7 +29,7 @@ APIs exemplar, and related large-corpus OKF packs.
 - [OKF Explorer evaluation harness](okf-explorer-evaluation.md) defines the
   100-question scoring suite, accessibility checks, GOV.UK-aligned publication
   rubric and visual-regression evidence.
-- [UK Legislation OKF](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
+- [UK Legislation architecture](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
 - [OKF pack parity](okf-pack-parity.md) keeps the UK Government APIs and GOV.UK
   CKAN packs aligned as paired exemplars.
 - [OKF conformance](okf-conformance.md) records the v0.1 conformance boundary
@@ -80,4 +82,10 @@ GOV.UK CKAN paired exemplar:
 
 ```text
 https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+```
+
+UK Legislation Explorer:
+
+```text
+https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
 ```
