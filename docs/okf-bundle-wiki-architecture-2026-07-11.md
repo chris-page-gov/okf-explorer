@@ -1,6 +1,6 @@
 # Federated OKF Bundle Wiki Architecture
 
-Decision date: 11 July 2026. Status: implementation in progress.
+Decision date: 11 July 2026. Status: implemented in v0.4.0.
 
 Production OKF bundles are independently versioned and independently published
 units. The Explorer owns the generic application, profile/context, conformance
@@ -42,16 +42,31 @@ Large bundles may keep curated Markdown documentation while source records live
 in generated chunks and virtual routes. A standard bundle wiki does not require
 one committed Markdown file per source record.
 
-## Current Migration
+## Implemented Migration
 
-1. Land the profile, semantic parser, registry generator and constraints ledger.
-2. Extend the Explorer identity and relationship contracts.
-3. Extract UK Legislation, UK Government APIs and AI Infrastructure into
+1. Landed the profile, semantic parser, registry generator and constraints ledger.
+2. Extended the Explorer identity and relationship contracts.
+3. Extracted UK Legislation, UK Government APIs and AI Infrastructure into
    independent repositories and Pages publications.
-4. Rename this product repository to `okf-explorer` while preserving current
-   URLs for a deprecation cycle.
-5. Add full-corpus structural relationships, official legal-effects expansion,
+4. Renamed this product repository to `okf-explorer`; the lightweight
+   `ai-infrastructure-wiki` compatibility publication preserves former human
+   routes and serves `okf-moved` descriptors for former machine entry points.
+   Explorer v0.4.0 follows their `moved_to` targets transparently.
+5. Added full-corpus structural relationships, official legal-effects expansion,
    governed subject/citation/entity enrichment and optional trusted registries.
+
+An `okf-moved` document has this minimal contract:
+
+```json
+{
+  "schema": "okf-moved.v1",
+  "kind": "okf-moved",
+  "moved_to": "https://canonical.example/okf-explorer.json"
+}
+```
+
+The target may be relative to the compatibility document. Self-references and
+missing targets are rejected.
 
 The detailed implementation decision and the legislation review that motivated
 it are retained in the local Legislation OKF workspace review artifacts.

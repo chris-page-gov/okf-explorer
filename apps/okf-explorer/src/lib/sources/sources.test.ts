@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { baseUrlFor, fetchJson, MAX_JSON_BYTES, readResponseText, resolveUrl } from './fetch';
+import { baseUrlFor, fetchJson, MAX_JSON_BYTES, movedBundleTarget, readResponseText, resolveUrl } from './fetch';
 import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS, relationshipBucket } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
@@ -43,6 +43,23 @@ describe('fetch helpers', () => {
 
     vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ error: true }, { status: 404, statusText: 'Not Found' })));
     await expect(fetchJson('https://example.test/missing.json')).rejects.toThrow('404 Not Found');
+  });
+
+  it('resolves machine-readable moved bundle descriptors', () => {
+    expect(
+      movedBundleTarget(
+        { kind: 'okf-moved', moved_to: 'https://canonical.example/okf-explorer.json' },
+        'https://legacy.example/okf-explorer.json'
+      )
+    ).toBe('https://canonical.example/okf-explorer.json');
+    expect(movedBundleTarget({ kind: 'okf-large-corpus' }, 'https://legacy.example/okf-explorer.json')).toBeNull();
+    expect(() => movedBundleTarget({ kind: 'okf-moved' }, 'https://legacy.example/okf-explorer.json')).toThrow('missing moved_to');
+    expect(() =>
+      movedBundleTarget(
+        { kind: 'okf-moved', moved_to: 'https://legacy.example/okf-explorer.json' },
+        'https://legacy.example/okf-explorer.json'
+      )
+    ).toThrow('points to itself');
   });
 
   it('retries transient HTTP failures before surfacing an error', async () => {
