@@ -1,0 +1,44 @@
+{
+  "schema": "okf-model-assisted-enrichment.v1",
+  "prompt_version": "legislation-title-rules.v1",
+  "model": "codex-session-model (exact deployment not exposed)",
+  "assistant_surface": "Codex",
+  "review_status": "governed-accepted",
+  "input_basis": {
+    "source": "published legislation work titles",
+    "scope": "high-precision literal title enrichment",
+    "limitations": "Title-only discovery metadata; not an official legal classification or legal advice."
+  },
+  "rules": {
+    "topic_keywords": [
+      {"topic": "Constitutional and administrative law", "keyword": "judicial review", "rationale": "Named public-law remedy."},
+      {"topic": "Communications, data and technology", "keyword": "data protection", "rationale": "Named information-rights field."},
+      {"topic": "Communications, data and technology", "keyword": "freedom of information", "rationale": "Named information-access regime."},
+      {"topic": "Companies, insolvency and financial services", "keyword": "insolvency", "rationale": "Named insolvency field."},
+      {"topic": "Companies, insolvency and financial services", "keyword": "building society", "rationale": "Named regulated financial institution."},
+      {"topic": "Transport and infrastructure", "keyword": "road traffic", "rationale": "Named transport-law field."},
+      {"topic": "Transport and infrastructure", "keyword": "civil aviation", "rationale": "Named transport-law field."},
+      {"topic": "Health and social care", "keyword": "public health", "rationale": "Named health-law field."},
+      {"topic": "Environment, energy and agriculture", "keyword": "marine licensing", "rationale": "Named environmental consent regime."},
+      {"topic": "Elections and political parties", "keyword": "electoral registration", "rationale": "Named electoral administration function."},
+      {"topic": "Immigration, nationality and asylum", "keyword": "right of abode", "rationale": "Named immigration-law status."},
+      {"topic": "Human rights and equality", "keyword": "equal pay", "rationale": "Named equality-law right."}
+    ],
+    "entity_suffixes": ["Council", "Authority", "Commission", "Board", "Agency", "Office", "Service", "Tribunal"],
+    "caveats": [
+      "Rules are deliberately conservative and may omit relevant works.",
+      "Every emitted assertion retains model-assistance provenance and requires official-text verification for legal use."
+    ]
+  },
+  "api_attempts": [
+    {
+      "provider": "OpenAI",
+      "model": "gpt-5-mini-2025-08-07",
+      "result": "rejected-before-output",
+      "error": "insufficient_quota",
+      "usage": {"input_tokens": 0, "output_tokens": 0},
+      "estimated_cost_usd": 0.0
+    }
+  ],
+  "estimated_cost_usd": 0.0
+}

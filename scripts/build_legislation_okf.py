@@ -57,6 +57,7 @@ SCHEMA_ORG = "https://schema.org/Legislation"
 ELI = "https://op.europa.eu/en/web/eu-vocabularies/eli"
 ELI_I = "https://interoperable-europe.ec.europa.eu/collection/eli-european-legislation-identifier/solution/eli-i"
 AKN = "https://docs.oasis-open.org/legaldocml/akn-core/v1.0/"
+MODEL_ENRICHMENT_PATH = ROOT / "enrichment" / "model-assisted-v1.json"
 
 PRIMARY_CODES = {
     "ukpga", "ukla", "ukppa", "gbla", "apgb", "gbppa", "aep", "aosp",
@@ -132,6 +133,15 @@ TOPIC_RULES: list[tuple[str, str]] = [
 ]
 
 
+def load_model_enrichment() -> dict[str, Any]:
+    if not MODEL_ENRICHMENT_PATH.is_file():
+        return {"rules": {"topic_keywords": [], "entity_suffixes": []}, "review_status": "absent"}
+    return json.loads(MODEL_ENRICHMENT_PATH.read_text(encoding="utf-8"))
+
+
+MODEL_ENRICHMENT = load_model_enrichment()
+
+
 def now_utc() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -179,12 +189,31 @@ def jurisdiction_for(code: str) -> list[str]:
     return ["United Kingdom"]
 
 
-def topics_for(title: str, code: str) -> list[str]:
+def topics_with_provenance(title: str, code: str) -> tuple[list[str], list[str]]:
     lowered = title.lower()
     topics = [label for label, pattern in TOPIC_RULES if re.search(pattern, lowered)]
+    assisted: list[str] = []
+    for rule in MODEL_ENRICHMENT.get("rules", {}).get("topic_keywords", []):
+        topic = str(rule.get("topic", ""))
+        keyword = str(rule.get("keyword", "")).lower().strip()
+        if topic and keyword and keyword in lowered and topic not in topics:
+            topics.append(topic)
+            assisted.append(topic)
     if code in EU_CODES and "European Union and retained EU law" not in topics:
         topics.append("European Union and retained EU law")
-    return topics or ["Unclassified — title-only heuristic"]
+    return topics or ["Unclassified — title-only heuristic"], assisted
+
+
+def topics_for(title: str, code: str) -> list[str]:
+    return topics_with_provenance(title, code)[0]
+
+
+def entities_for(title: str) -> list[str]:
+    suffixes = [re.escape(str(value)) for value in MODEL_ENRICHMENT.get("rules", {}).get("entity_suffixes", []) if value]
+    if not suffixes:
+        return []
+    pattern = rf"\b((?:[A-Z][\w’'&.-]*\s+){{1,6}}(?:{'|'.join(suffixes)}))\b"
+    return sorted({match.group(1).strip() for match in re.finditer(pattern, title)})
 
 
 class FeedClient:
@@ -299,7 +328,8 @@ def parse_entry(entry: ET.Element) -> dict[str, Any]:
     updated_year = int(updated[:4]) if updated[:4].isdigit() else 0
     timestamp_anomaly = updated_year > datetime.now(timezone.utc).year + 1
     category = category_for(code)
-    topics = topics_for(title, code)
+    topics, model_assisted_topics = topics_with_provenance(title, code)
+    semantic_entities = entities_for(title)
     formats = sorted(key for key in representations if key != "document")
     name = slugify(id_uri.replace("https://www.legislation.gov.uk/id/", ""))
     summary = text(entry, "atom:summary")
@@ -327,6 +357,14 @@ def parse_entry(entry: ET.Element) -> dict[str, Any]:
         "formats": formats,
         "tags": [code, category, f"year-{year}"],
         "topics": topics,
+        "semantic_entities": semantic_entities,
+        "semantic_enrichment": {
+            "method": "deterministic-rules-with-governed-model-assistance",
+            "model_assisted_topics": model_assisted_topics,
+            "model_rule_set": "enrichment/model-assisted-v1.json",
+            "review_status": MODEL_ENRICHMENT.get("review_status", "absent"),
+            "authority": "derived-non-official",
+        },
         "timestamp": updated if not timestamp_anomaly else creation_date,
         "metadata_created": published or creation_date,
         "metadata_modified": updated,
@@ -505,6 +543,44 @@ def build_publishers(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+def semantic_relationships(records: list[dict[str, Any]], generated_at: str) -> list[dict[str, Any]]:
+    relationships: list[dict[str, Any]] = []
+    for record in records:
+        route = str(record["route"])
+        assisted = set(record.get("semantic_enrichment", {}).get("model_assisted_topics", []))
+        for topic in record.get("topics", []):
+            relationships.append({
+                "source": route,
+                "target": f"topic/{slugify(str(topic))}",
+                "kind": "classified as",
+                "evidence_type": "model-assisted-title-rule" if topic in assisted else "deterministic-title-rule",
+                "confidence": "medium" if topic in assisted else "low",
+                "authority": "derived-non-official",
+                "observed_at": generated_at,
+            })
+        relationships.append({
+            "source": route,
+            "target": f"legislation-type/{record['type_code']}",
+            "kind": "has document type",
+            "evidence_type": "official-atom-metadata",
+            "confidence": "high",
+            "authority": "official-source",
+            "observed_at": generated_at,
+        })
+        for entity in record.get("semantic_entities", []):
+            relationships.append({
+                "source": route,
+                "target": f"entity/{slugify(str(entity))}",
+                "kind": "mentions entity",
+                "label": str(entity),
+                "evidence_type": "model-assisted-entity-pattern",
+                "confidence": "medium",
+                "authority": "derived-non-official",
+                "observed_at": generated_at,
+            })
+    return relationships
+
+
 def analysis_for(records: list[dict[str, Any]], facets: dict[str, list[dict[str, Any]]], generated_at: str) -> dict[str, Any]:
     counts = Counter(record["category"] for record in records)
     type_counts = Counter(record["document_type"] for record in records)
@@ -655,7 +731,11 @@ def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], gen
     search["manifest"]["entrypoints"]["doc_map"] = "data/search/doc-map.json.gz"
     resource_chunks = large_corpus.chunk_paths("manifestations", [], chunk_size=1000)
     publisher_chunks = large_corpus.chunk_paths("categories", publishers, chunk_size=1000)
-    relationship_chunks = large_corpus.chunk_paths("relationships", [], chunk_size=2000)
+    relationships = semantic_relationships(records, generated_at)
+    relationship_chunks = [(path.with_suffix(".json.gz"), rows) for path, rows in large_corpus.chunk_paths("relationships", relationships, chunk_size=5000)]
+    relationship_adjacency, relationship_adjacency_buckets = large_corpus.build_relationship_adjacency(relationships)
+    relationship_adjacency["buckets"] = {bucket: path.replace(".json", ".json.gz") for bucket, path in relationship_adjacency["buckets"].items()}
+    relationship_adjacency_buckets = [(path.with_suffix(".json.gz"), routes) for path, routes in relationship_adjacency_buckets]
     analysis = analysis_for(records, facets, generated_at)
     counts = {
         "works": len(records),
@@ -671,7 +751,7 @@ def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], gen
         "document_types": len(facets["document_type"]),
         "represented_years": len(facets["creation_year"]),
         "topics": len(facets["topic"]),
-        "relationships": 0,
+        "relationships": len(relationships),
     }
     overview = {
         "schema": "okf-large-overview.v1",
@@ -688,29 +768,38 @@ def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], gen
         "title": "legislation.gov.uk static work index with live provision resolver",
         "generated_at": generated_at,
         "counts": counts,
-        "indexes": {"overview": "data/overview.json", "analysis": "data/analysis/overview.json", "search": "data/search/manifest.json", "facets": "data/facets.json", "graph": "data/graph.json"},
+        "indexes": {"overview": "data/overview.json", "analysis": "data/analysis/overview.json", "search": "data/search/manifest.json", "facets": "data/facets.json", "graph": "data/graph.json", "relationship_adjacency": "data/adjacency/manifest.json"},
         "chunks": {"datasets": [str(path) for path, _ in record_chunks], "resources": [str(path) for path, _ in resource_chunks], "publishers": [str(path) for path, _ in publisher_chunks], "relationships": [str(path) for path, _ in relationship_chunks]},
-        "performance": {"startup_mode": "overview-first", "full_record_hydration": "lazy", "relationship_hydration": "lazy", "search": "static worker shards plus official remote full-text Atom search", "provision_hydration": "live CLML per selected work"},
+        "performance": {"startup_mode": "overview-first", "full_record_hydration": "lazy", "relationship_hydration": "lazy", "route_relationship_hydration": "hash-sharded adjacency", "search": "static worker shards plus official remote full-text Atom search", "provision_hydration": "live CLML per selected work"},
         "search": {"schema": search["manifest"]["schema"], "documents": len(records), "tokens": search["manifest"]["counts"]["tokens"], "result_limit": search["manifest"]["result_limit"]},
     }
     descriptor = {
+        "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
+        "@id": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
         "schema": "okf-explorer-large-corpus.v1",
         "kind": "okf-large-corpus",
         "title": "UK Legislation OKF",
         "description": "Complete work-level index of legislation.gov.uk with ELI/Schema.org normalization, corpus facets, official full-text search, and live CLML provision-level progressive discovery.",
+        "version": "0.2.0",
+        "status": "preview",
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+        "publisher": "https://github.com/chris-page-gov",
+        "license": OGL,
+        "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld",
         "generated_at": generated_at,
-        "entrypoints": {"viewer": "../next/", "data_manifest": "data/manifest.json", "overview_index": "data/overview.json", "analysis_overview": "data/analysis/overview.json", "search_manifest": "data/search/manifest.json", "markdown_index": "index.md", "notes": "methodology/index.md", "ontology": "ontology/index.md", "evaluation": "../evaluation/legislation/README.md"},
+        "entrypoints": {"viewer": "https://chris-page-gov.github.io/okf-explorer/", "data_manifest": "data/manifest.json", "overview_index": "data/overview.json", "analysis_overview": "data/analysis/overview.json", "search_manifest": "data/search/manifest.json", "relationship_adjacency": "data/adjacency/manifest.json", "markdown_index": "index.md", "notes": "methodology/index.md", "ontology": "ontology/index.md", "evaluation": "evaluation/README.md", "model_enrichment": "enrichment/model-assisted-v1.json"},
         "counts": counts,
         "performance": manifest["performance"],
         "source": {"title": "legislation.gov.uk public API", "url": BASE, "data_url": f"{BASE}/all/data.feed", "license": "Open Government Licence v3.0 unless additional terms apply", "source_adapter": "legislation_gov_uk_atom", "request_count": len(source_meta.get("requests", [])), "fair_use": FAIR_USE_DOCS},
         "vocabulary": {"record_singular": "legal work", "record_plural": "legal works", "resource_singular": "manifestation", "resource_plural": "manifestations", "publisher_singular": "category", "publisher_plural": "categories", "format_plural": "formats", "resource_stack_label": "Manifestation stack", "search_placeholder": "Search titles locally; official full-text results are added automatically"},
         "extensions": {
-            "okf-legislation-corpus.v1": {"mode": "complete-work-index-live-subdivision-resolver", "ontology": ["ELI 1.5", "ELI-I", "Schema.org Legislation", "CLML 2.6", "Akoma Ntoso"], "remote_full_text_search": f"{BASE}/all/data.feed?text={{query}}&results-count=20", "structure_source": "record.structure_url", "provenance_required": True, "topic_classification": "title-only-derived-non-authoritative"},
+            "okf-legislation-corpus.v1": {"mode": "complete-work-index-live-subdivision-resolver", "ontology": ["ELI 1.5", "ELI-I", "Schema.org Legislation", "CLML 2.6", "Akoma Ntoso"], "remote_full_text_search": f"{BASE}/all/data.feed?text={{query}}&results-count=20", "structure_source": "record.structure_url", "provenance_required": True, "topic_classification": "deterministic-and-governed-model-assisted-title-rules-non-authoritative"},
             "okf-explorer-analysis.v1": {"mode": "external", "entrypoint": "analysis_overview"},
         },
     }
-    graph = {"node_counts": {"work": len(records), "manifestation": counts["manifestations"], "category": len(publishers)}, "edge_counts": [{"kind": "work-expression-manifestation", "count": counts["manifestations"]}], "relationship_index": "data/relationships-0.json", "top_publishers": overview["top_publishers"]}
-    return {"descriptor": descriptor, "manifest": manifest, "overview": overview, "analysis": analysis, "records": records, "resources": [], "publishers": publishers, "relationships": [], "record_chunks": record_chunks, "resource_chunks": resource_chunks, "publisher_chunks": publisher_chunks, "relationship_chunks": relationship_chunks, "facets": facets, "graph": graph, "search": search}
+    relationship_counts = Counter(row["kind"] for row in relationships)
+    graph = {"node_counts": {"work": len(records), "manifestation": counts["manifestations"], "category": len(publishers)}, "edge_counts": [{"kind": kind, "count": count} for kind, count in relationship_counts.most_common()], "relationship_index": "data/relationships-0.json.gz", "relationship_adjacency": "data/adjacency/manifest.json", "top_publishers": overview["top_publishers"]}
+    return {"descriptor": descriptor, "manifest": manifest, "overview": overview, "analysis": analysis, "records": records, "resources": [], "publishers": publishers, "relationships": relationships, "record_chunks": record_chunks, "resource_chunks": resource_chunks, "publisher_chunks": publisher_chunks, "relationship_chunks": relationship_chunks, "relationship_adjacency": relationship_adjacency, "relationship_adjacency_buckets": relationship_adjacency_buckets, "facets": facets, "graph": graph, "search": search}
 
 
 def gzip_json(value: Any) -> bytes:
@@ -718,20 +807,40 @@ def gzip_json(value: Any) -> bytes:
 
 
 def output_files(corpus: dict[str, Any], source_meta: dict[str, Any]) -> dict[Path, str | bytes]:
+    semantic_descriptor = {
+        "@context": corpus["descriptor"]["@context"],
+        "@id": "https://chris-page-gov.github.io/okf-uk-legislation/",
+        "@type": "okf:Bundle",
+        "title": corpus["descriptor"]["title"],
+        "description": corpus["descriptor"]["description"],
+        "version": corpus["descriptor"]["version"],
+        "status": corpus["descriptor"]["status"],
+        "profile": {"@id": corpus["descriptor"]["profile"]},
+        "descriptor": {"@id": corpus["descriptor"]["@id"]},
+        "publisher": {"@id": corpus["descriptor"]["publisher"]},
+        "license": {"@id": corpus["descriptor"]["license"]},
+        "generatedAt": corpus["descriptor"]["generated_at"],
+    }
     files: dict[Path, str | bytes] = {
+        Path("okf-bundle.yamlld"): json.dumps(semantic_descriptor, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        Path("okf-bundle.jsonld"): large_corpus.render_json(semantic_descriptor),
         Path("okf-explorer.json"): large_corpus.render_json(corpus["descriptor"]),
         Path("data/manifest.json"): large_corpus.render_json(corpus["manifest"]),
         Path("data/overview.json"): large_corpus.render_json(corpus["overview"]),
         Path("data/analysis/overview.json"): large_corpus.render_json(corpus["analysis"]),
         Path("data/facets.json"): large_corpus.render_json(corpus["facets"]),
         Path("data/graph.json"): large_corpus.render_json(corpus["graph"]),
+        Path("data/adjacency/manifest.json"): large_corpus.render_json(corpus["relationship_adjacency"]),
         Path("data/source-provenance.json"): large_corpus.render_json(source_meta),
         Path("data/search/manifest.json"): large_corpus.render_json(corpus["search"]["manifest"]),
         Path("data/search/doc-map.json.gz"): gzip_json(corpus["search"]["doc_map"]),
+        Path("enrichment/model-assisted-v1.json"): MODEL_ENRICHMENT_PATH.read_text(encoding="utf-8"),
     }
     for key in ("record_chunks", "resource_chunks", "publisher_chunks", "relationship_chunks"):
         for path, rows in corpus[key]:
             files[path] = gzip_json(rows) if path.suffix == ".gz" else large_corpus.render_json(rows)
+    for path, routes in corpus["relationship_adjacency_buckets"]:
+        files[path] = gzip_json(routes)
     for shard, rows in corpus["search"]["lexicon"].items():
         files[Path(f"data/search/lexicon/{shard}.json")] = large_corpus.render_json(rows)
     for shard, payload in corpus["search"]["prefixes"].items():
@@ -740,6 +849,10 @@ def output_files(corpus: dict[str, Any], source_meta: dict[str, Any]) -> dict[Pa
         files[Path(path)] = large_corpus.render_json(payload)
     for path, rows in corpus["search"]["result_doc_chunks"]:
         files[path] = gzip_json(rows)
+    evaluation_root = ROOT / "evaluation" / "legislation"
+    for path in evaluation_root.rglob("*"):
+        if path.is_file():
+            files[Path("evaluation") / path.relative_to(evaluation_root)] = path.read_text(encoding="utf-8")
     files.update(markdown_files(corpus, source_meta))
     return files
 

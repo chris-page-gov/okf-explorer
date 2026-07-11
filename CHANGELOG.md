@@ -18,6 +18,11 @@
 - Added semantic identity metadata to large-corpus descriptors and deterministic
   route-scoped relationship adjacency shards, allowing the Explorer to show a
   selected concept's links without hydrating the full relationship table.
+- Added governed model-assisted legislation enrichment with a reproducible
+  Responses API runner, checked-in reviewed rules, explicit cost/usage logging,
+  universal provenance-bearing subject/type/entity edges and compressed
+  route-scoped adjacency. The initial API project quota failure is retained in
+  the constraint ledger rather than reducing the prototype's feature scope.
 
 All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any

@@ -43,6 +43,17 @@ Official type codes are retained. They are also grouped into `primary`, `seconda
 
 Topics are a deterministic title-only discovery aid across constitutional, civil, criminal, employment, tax, company, land, environment, health, education, family, immigration, welfare, transport, data, consumer, local-government, election, defence, equality, intellectual-property, professional-regulation and EU themes. They are explicitly labelled non-authoritative. An agent must never treat a topic assignment as a legal proposition.
 
+The complete work catalogue now emits provenance-bearing `classified as`, `has
+document type` and conservative `mentions entity` relationships. A governed
+model-assisted rule file proposes only high-precision literal title matches;
+accepted rules are applied deterministically to every work and remain labelled
+derived and non-official. Route-scoped FNV-1a adjacency shards let the Explorer
+load the selected work's relationships without hydrating the corpus-wide edge
+table. The model runner records prompt version, model, review state, token usage
+and cost. Its first direct API attempt was rejected for project quota before
+output, so the current accepted rules were supplied by the Codex session and
+the recorded API cost is $0.00.
+
 ## Official access methods
 
 Every record carries the URLs available from its Atom entry and documents the wider interfaces:

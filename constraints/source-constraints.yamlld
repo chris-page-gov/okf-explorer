@@ -18,6 +18,19 @@ constraints:
     evidence:
       - "@id": https://legislation.github.io/data-documentation/fair-use.html
     observedAt: "2026-07-11T00:00:00Z"
+  - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/model-api-quota
+    "@type": okf:SourceConstraint
+    title: Model API project quota unavailable
+    constraintType: service-quota
+    status: fallback-used
+    authority: OpenAI API project
+    trigger: Governed model-assisted semantic enrichment request.
+    impact: Direct Responses API calls returned insufficient_quota before producing output or usage.
+    response: Preserve the API-backed enrichment runner and use the active Codex model session to produce an auditable governed rule set; no enrichment capability is omitted.
+    escalation: Add API billing or quota for future reproducible batch refreshes and rerun the checked-in enrichment command.
+    evidence:
+      - "@id": https://platform.openai.com/docs/guides/error-codes/api-errors
+    observedAt: "2026-07-11T17:50:00Z"
   - "@id": https://chris-page-gov.github.io/okf-explorer/constraints/legislation-bulk-authentication
     "@type": okf:SourceConstraint
     title: Research bulk and SPARQL access returned HTTP 401
