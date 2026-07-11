@@ -4,9 +4,9 @@ This is the architecture and data-model volume of the [UK Legislation documentat
 
 ## Public viewer
 
-[Open the UK Legislation OKF Explorer](https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview).
+[Open the UK Legislation OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview).
 
-The bundle descriptor is `https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json`. It is an overview-first, chunked catalogue designed for browser navigation and agent progressive discovery. The checked-in work index is complete against the official Atom year facets at generation time; document subdivisions are complete on demand because the Explorer reads the selected work's authoritative CLML rather than freezing hundreds of millions of provision nodes into Git.
+The canonical bundle descriptor is `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`; the independently versioned source repository is `https://github.com/chris-page-gov/okf-uk-legislation`. It is an overview-first, chunked catalogue designed for browser navigation and agent progressive discovery. The checked-in work index is complete against the official Atom year facets at generation time; document subdivisions are complete on demand because the Explorer reads the selected work's authoritative CLML rather than freezing hundreds of millions of provision nodes into Git.
 
 Work and search-result chunks use deterministic gzip files. The Explorer streams and decompresses only the requested chunks in the browser; manifests, facets, ontology pages and search shards remain directly inspectable. This keeps the complete publication within practical GitHub/Pages limits without dropping records.
 

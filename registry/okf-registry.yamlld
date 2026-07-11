@@ -68,14 +68,14 @@ bundles:
     "@type": okf:Bundle
     title: UK Legislation complete work catalogue
     description: Complete legislation.gov.uk work catalogue with live progressive CLML discovery.
-    version: 0.1.0
+    version: 0.2.0
     status: preview
     descriptor:
-      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json
     semanticDescriptor:
-      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld
     home:
-      "@id": https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/
     profile:
       "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
     publisher:

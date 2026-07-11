@@ -126,10 +126,10 @@
             "Complete legislation.gov.uk work catalogue with live progressive CLML discovery."
           ],
           "descriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json"
+            "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json"
           ],
           "home": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/"
+            "https://chris-page-gov.github.io/okf-uk-legislation/"
           ],
           "license": [
             "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
@@ -141,7 +141,7 @@
             "large-corpus"
           ],
           "semanticDescriptor": [
-            "https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json"
+            "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld"
           ],
           "status": [
             "preview"
@@ -150,7 +150,7 @@
             "UK Legislation complete work catalogue"
           ],
           "version": [
-            "0.1.0"
+            "0.2.0"
           ]
         }
       ],
