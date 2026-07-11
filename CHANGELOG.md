@@ -15,6 +15,9 @@ source-of-truth changes.
 - Added a 100-question barrister-oriented AI-answer evaluation suite, 100-point legal/provenance rubric, answer JSON Schema and deterministic evaluator with a hard cap for missing official or proposition-level provenance.
 - Added corpus completeness validation, fixture generation in CI, Pages publication wiring and a registry entry for the shareable hosted legislation viewer.
 - Added deterministic gzip support for large dataset/search chunks in the Explorer and generator, preserving the complete corpus within practical repository and Pages sizes.
+- Added a maintained UK Legislation documentation spine covering getting started, personas and user journeys, an illustrated legislation-specific manual, agent research, evaluation and publication maintenance.
+- Added four hosted-Explorer illustrations with a machine-readable capture manifest so corpus overview, exact-title search, work provenance and live CLML passage discovery can be refreshed reproducibly.
+- Promoted UK Legislation to a first-class hosted example in the README opening and cross-linked the documentation spine from repository, publication and architecture guides.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 

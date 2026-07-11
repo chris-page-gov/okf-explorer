@@ -4,8 +4,8 @@ This repository has two jobs:
 
 1. Publish a static OKF Explorer that can load OKF bundles from any public HTTPS
    URL.
-2. Publish exemplar OKF bundles, including the local AI infrastructure wiki and
-   the UK Government APIs large-corpus pack.
+2. Publish exemplar OKF bundles, including the local AI infrastructure wiki,
+   the UK Government APIs pack and the UK Legislation pack.
 
 ## Map Of The Repository
 
@@ -16,9 +16,14 @@ This repository has two jobs:
 | `viewer.html` and `view.html` | Legacy single-file viewer surfaces. |
 | `scripts/build_okf_bundle.py` | Builds the small Markdown-derived `okf-bundle.json`. |
 | `scripts/build_uk_government_api_okf.py` | Builds the UK Government APIs large-corpus pack. |
+| `scripts/build_legislation_okf.py` | Builds the complete work-level legislation.gov.uk pack. |
+| `scripts/check_legislation_okf.py` | Enforces legislation corpus completeness and publication invariants. |
 | `scripts/build_site.py` | Builds the static Pages site in `_site/`. |
 | `scripts/evaluate_okf_explorer.mjs` | Runs the 100-question browser evaluation harness. |
 | `uk-government-apis/` | Generated UK Government APIs OKF large-corpus descriptor, shards, selected Markdown records and organisation records. |
+| `legislation/` | Generated UK Legislation descriptor, compressed work/search chunks, ontology, access, type and topic concepts. |
+| `docs/uk-legislation/` | Maintained legislation documentation spine and illustrated manual. |
+| `evaluation/legislation/` | Barrister-oriented AI answer suite, rubric and provenance schema. |
 | `docs/` | Manuals, evaluation docs, conformance notes, the DCAT-AP/OpenAPI standards crosswalk and review history. |
 | `evaluation/okf-explorer/` | UK Government APIs question suite and visual-regression evidence. |
 | `evaluation/gov-ckan/` | GOV.UK CKAN paired exemplar question suite. |
@@ -34,6 +39,7 @@ flowchart LR
   Markdown["Markdown OKF corpus"]
   SmallBuilder["scripts/build_okf_bundle.py"]
   UKBuilder["scripts/build_uk_government_api_okf.py"]
+  LegislationBuilder["scripts/build_legislation_okf.py"]
   Svelte["apps/okf-explorer build"]
   Site["scripts/build_site.py"]
   Pages["GitHub Pages"]
@@ -41,6 +47,7 @@ flowchart LR
 
   Markdown --> SmallBuilder --> Site
   UKBuilder --> Site
+  LegislationBuilder --> Site
   Svelte --> Site
   Site --> Pages --> Browser
 ```
@@ -50,6 +57,12 @@ for the UK Government APIs exemplar is the generator plus official harvested
 sources and fixtures. The generated JSON and selected Markdown files under
 `uk-government-apis/` are committed so the exemplar can be browsed and tested
 without a live server.
+
+The UK Legislation source boundary is the generator plus official Atom/CLML
+interfaces and cached source responses. Generated compressed work/search
+chunks are committed; provision trees are resolved from official CLML only
+when selected. Documentation state and screenshot routes are maintained under
+`docs/uk-legislation/` and `docs/assets/uk-legislation-manual/`.
 
 ## Stable Public Entry Points
 
@@ -63,6 +76,10 @@ without a live server.
   `https://chris-page-gov.github.io/ai-infrastructure-wiki/uk-government-apis/okf-explorer.json`
 - UK Government APIs in Explorer:
   `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview`
+- UK Legislation descriptor:
+  `https://chris-page-gov.github.io/ai-infrastructure-wiki/legislation/okf-explorer.json`
+- UK Legislation in Explorer:
+  `https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview`
 
 ## Local Validation
 
@@ -70,6 +87,7 @@ Run these before publication work:
 
 ```sh
 python3 scripts/build_uk_government_api_okf.py --check
+python3 scripts/check_legislation_okf.py
 python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
@@ -92,6 +110,10 @@ python3 scripts/build_site.py
 
 If you are browsing an existing pack, start with
 [okf-explorer-persona-manual.md](okf-explorer-persona-manual.md).
+
+If you are researching legislation, start with the
+[UK Legislation documentation spine](uk-legislation/index.md) and its
+[illustrated manual](uk-legislation/illustrated-manual.md).
 
 If you are asking an AI to answer questions from a pack, start with
 [ai-okf-usage.md](ai-okf-usage.md).

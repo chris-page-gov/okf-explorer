@@ -5,13 +5,17 @@ Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 ## Open The Hosted Explorer
 
 The Svelte OKF Explorer can load OKF bundles from this repository or from any
-other public HTTPS URL.
+other public HTTPS URL. These hosted examples open without installation:
 
-- [Open the GOV.UK CKAN large-corpus example in the Svelte Explorer][ckan-example]
-- [Open the UK Government APIs OKF exemplar in the Svelte Explorer][uk-government-apis-example]
-- [Open the complete UK Legislation OKF in the Svelte Explorer][legislation-example]
+| Example | What it demonstrates | Open |
+|---|---|---|
+| UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalization and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
+| UK Government APIs OKF | Multi-source API/data catalogue with standards and provenance metadata | [Open Explorer][uk-government-apis-example] |
+| GOV.UK CKAN | Large external CKAN corpus loaded by the same hosted Explorer | [Open Explorer][ckan-example] |
+
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
+- [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
 
@@ -68,6 +72,7 @@ The repository contains:
   metadata.
 - `legislation/` - generated complete work-level catalogue for legislation.gov.uk, normalized with ELI, Schema.org Legislation and CLML and equipped with live provision-level progressive discovery.
 - `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
+- `docs/uk-legislation/` - maintained UK Legislation documentation spine with getting-started guidance, personas, user journeys, an illustrated manual, agent research rules, evaluation and refresh instructions.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
@@ -222,6 +227,8 @@ Pages to use **GitHub Actions** as the source.
 [ckan-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
 [uk-government-apis-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 [legislation-example]: https://chris-page-gov.github.io/ai-infrastructure-wiki/next/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
+[legislation-docs]: docs/uk-legislation/index.md
+[legislation-manual]: docs/uk-legislation/illustrated-manual.md
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [ai-okf-usage]: docs/ai-okf-usage.md
