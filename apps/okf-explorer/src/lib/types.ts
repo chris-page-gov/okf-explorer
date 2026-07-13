@@ -114,7 +114,7 @@ export type LargeDataManifest = {
 };
 
 export type LargeSearchManifest = {
-  schema: 'gov-ckan-static-search.v1' | string;
+  schema: 'okf-static-search.v1' | 'okf-static-search.v2' | 'gov-ckan-static-search.v1' | string;
   token_min_length: number;
   prefix_min_length: number;
   lexicon_shard_length: number;
@@ -130,8 +130,49 @@ export type LargeSearchManifest = {
     result_docs: string[];
     facets: string;
     doc_map: string;
+    filter_postings?: Record<string, string>;
+    sort_values?: string;
   };
 };
+
+export type SearchRankingStrategy = 'weighted' | 'idf' | 'idf-exact';
+
+export type LargeSearchRequest = {
+  query: string;
+  filters: Record<string, string[]>;
+  sort: 'relevance' | 'newest' | 'title' | 'metadata-quality';
+  ranking?: SearchRankingStrategy;
+  facet_keys?: string[];
+};
+
+export type SearchMatchExplanation = {
+  query_tokens: string[];
+  matched_fields: string[];
+  score_components: {
+    weighted: number;
+    idf: number;
+    exact: number;
+    total: number;
+  };
+};
+
+export type LargeSearchResponse = {
+  results: SearchResultDoc[];
+  total: number;
+  truncated: boolean;
+  filters_applied: boolean;
+  facets: Record<string, LargeFacetRow[]>;
+  ranking: SearchRankingStrategy;
+  elapsed_ms: number;
+};
+
+export type LargeFilterPostings = {
+  schema: 'okf-static-filter-postings.v1' | string;
+  key: string;
+  values: Record<string, number[]>;
+};
+
+export type LargeSortValue = [timestamp: string, title: string, qualityScore: number | null];
 
 export type LargeOverview = {
   schema: string;
@@ -246,6 +287,7 @@ export type SearchResultDoc = {
   url?: string;
   open: string;
   score?: number;
+  match?: SearchMatchExplanation;
   legislation_id_uri?: string;
   document_uri?: string;
   structure_url?: string;

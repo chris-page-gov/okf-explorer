@@ -1,5 +1,6 @@
 export const RETRIEVAL_STATE_SCHEMA = 'okf-explorer-retrieval.v1' as const;
 export const FILTER_PARAM_PREFIX = 'filter.';
+export const MISSING_FILTER_VALUE = '__missing__';
 export const RETRIEVAL_SORTS = ['relevance', 'newest', 'title', 'metadata-quality'] as const;
 
 export type RetrievalSort = (typeof RETRIEVAL_SORTS)[number];
@@ -91,4 +92,3 @@ export function writeRetrievalState(params: URLSearchParams, state: RetrievalSta
 export function hasSerializedFilters(params: URLSearchParams): boolean {
   return [...params.keys()].some((key) => key.startsWith(FILTER_PARAM_PREFIX));
 }
-

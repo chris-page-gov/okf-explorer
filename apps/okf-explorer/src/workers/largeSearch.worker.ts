@@ -1,4 +1,21 @@
-import type { LargeSearchManifest, SearchResultDoc, SearchSuggestion } from '$lib/types';
+import type {
+  LargeFilterPostings,
+  LargeSearchManifest,
+  LargeSearchRequest,
+  LargeSearchResponse,
+  LargeSortValue,
+  SearchResultDoc,
+  SearchSuggestion
+} from '$lib/types';
+import {
+  compareSortValues,
+  dynamicFacetRows,
+  filterOrdinals,
+  intersectOrdinals,
+  inverseDocumentFrequency,
+  rankingScore,
+  type OrdinalScores
+} from '$lib/search/staticSearch';
 
 type InitMessage = {
   type: 'init';
@@ -10,7 +27,7 @@ type InitMessage = {
 type QueryMessage = {
   type: 'query';
   id: number;
-  query: string;
+  request: LargeSearchRequest;
 };
 
 type SuggestMessage = {
@@ -31,6 +48,8 @@ const lexiconCache = new Map<string, Promise<Map<string, SearchEntry>>>();
 const postingsCache = new Map<string, Promise<Record<string, Array<[number, number, number]>>>>();
 const docCache = new Map<string, Promise<SearchResultDoc[]>>();
 const prefixCache = new Map<string, Promise<Record<string, SearchSuggestion[]>>>();
+const filterPostingsCache = new Map<string, Promise<LargeFilterPostings>>();
+let sortValuesPromise: Promise<LargeSortValue[]> | null = null;
 
 const MAX_JSON_BYTES = 64 * 1024 * 1024;
 
@@ -168,38 +187,92 @@ async function docsFor(path: string) {
   return docCache.get(path)!;
 }
 
-function intersect(left: Set<number>, right: Set<number>): Set<number> {
-  const out = new Set<number>();
-  for (const value of left) {
-    if (right.has(value)) out.add(value);
+async function filterPostingsFor(key: string): Promise<LargeFilterPostings | null> {
+  const path = manifest?.entrypoints.filter_postings?.[key];
+  if (!path) return null;
+  if (!filterPostingsCache.has(key)) {
+    filterPostingsCache.set(key, fetchJson<LargeFilterPostings>(resolvePath(path)));
   }
-  return out;
+  return filterPostingsCache.get(key)!;
 }
 
-async function queryIndex(query: string): Promise<SearchResultDoc[]> {
+async function sortValues(): Promise<LargeSortValue[]> {
+  const path = manifest?.entrypoints.sort_values;
+  if (!path) return [];
+  if (!sortValuesPromise) sortValuesPromise = fetchJson<LargeSortValue[]>(resolvePath(path));
+  return sortValuesPromise;
+}
+
+function allOrdinals(): Set<number> {
+  const count = manifest?.counts.documents || 0;
+  return new Set(Array.from({ length: count }, (_value, ordinal) => ordinal));
+}
+
+function matchedFields(mask: number): string[] {
+  if (!manifest) return [];
+  return Object.entries(manifest.field_masks)
+    .filter(([, fieldMask]) => (mask & fieldMask) !== 0)
+    .map(([field]) => field);
+}
+
+function exactBoost(doc: SearchResultDoc | undefined, query: string): number {
+  if (!doc) return 0;
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return 0;
+  const title = doc.title.trim().toLowerCase();
+  const name = doc.name.trim().toLowerCase();
+  if (title === normalized) return 32;
+  if (name === normalized || doc.open.toLowerCase() === normalized) return 24;
+  if (title.includes(normalized)) return 12;
+  if (name.includes(normalized) || doc.open.toLowerCase().includes(normalized)) return 8;
+  return 0;
+}
+
+async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchResponse> {
+  const started = performance.now();
   if (!manifest) throw new Error('Search worker is not initialised');
+  const query = request.query.trim();
   const tokens = tokenize(query);
-  if (!tokens.length) return [];
   const entryGroups = (await Promise.all(tokens.map(entriesForToken))).filter((group) => group.length);
   entryGroups.sort((a, b) => Math.min(...a.map((entry) => entry.df)) - Math.min(...b.map((entry) => entry.df)));
-  if (!entryGroups.length) return [];
+  if (tokens.length && !entryGroups.length) {
+    return {
+      results: [],
+      total: 0,
+      truncated: false,
+      filters_applied: !Object.keys(request.filters).length,
+      facets: {},
+      ranking: request.ranking || 'weighted',
+      elapsed_ms: Math.round(performance.now() - started)
+    };
+  }
 
-  const scores = new Map<number, number>();
+  const scores: OrdinalScores = new Map();
   const sets: Set<number>[] = [];
   const completeSets: Set<number>[] = [];
+  let cappedCandidates = false;
   for (const entries of entryGroups) {
     const set = new Set<number>();
     for (const entry of entries) {
       const chunk = await postingsFor(entry.postings);
       const postings = chunk[entry.token] || [];
+      const idf = inverseDocumentFrequency(manifest.counts.documents || 0, entry.df);
       for (const [ordinal, baseScore, mask] of postings) {
         set.add(ordinal);
-        scores.set(ordinal, (scores.get(ordinal) || 0) + baseScore + (mask & 1 ? 4 : 0));
+        const current = scores.get(ordinal) || { weighted: 0, idf: 0, mask: 0 };
+        const weighted = baseScore + (mask & 1 ? 4 : 0);
+        scores.set(ordinal, {
+          weighted: current.weighted + weighted,
+          idf: current.idf + weighted * idf,
+          mask: current.mask | mask
+        });
       }
     }
     sets.push(set);
     if (entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
       completeSets.push(set);
+    } else {
+      cappedCandidates = true;
     }
   }
 
@@ -207,8 +280,8 @@ async function queryIndex(query: string): Promise<SearchResultDoc[]> {
   // required for intersection: the matching document may have been omitted
   // from that token's bounded posting list. Intersect complete lists only.
   const intersectionSets = completeSets.length ? completeSets : sets.slice(0, 1);
-  let matches = intersectionSets[0] || new Set<number>();
-  for (const set of intersectionSets.slice(1)) matches = intersect(matches, set);
+  let matches = tokens.length ? intersectionSets[0] || new Set<number>() : allOrdinals();
+  for (const set of intersectionSets.slice(1)) matches = intersectOrdinals(matches, set);
   if (!matches.size && intersectionSets.length > 1) {
     matches = new Set<number>();
     for (const set of intersectionSets) {
@@ -216,9 +289,42 @@ async function queryIndex(query: string): Promise<SearchResultDoc[]> {
     }
   }
 
-  const ordinals = [...matches]
-    .sort((a, b) => (scores.get(b) || 0) - (scores.get(a) || 0) || a - b)
-    .slice(0, manifest.result_limit || 200);
+  const requestedPostingKeys = [...new Set([...Object.keys(request.filters), ...(request.facet_keys || [])])];
+  const filterIndexes = new Map<string, LargeFilterPostings>();
+  await Promise.all(requestedPostingKeys.map(async (key) => {
+    const postings = await filterPostingsFor(key);
+    if (postings) filterIndexes.set(key, postings);
+  }));
+  const filtered = filterOrdinals(matches, request.filters, filterIndexes);
+  const facets: LargeSearchResponse['facets'] = {};
+  for (const key of request.facet_keys || []) {
+    const postings = filterIndexes.get(key);
+    if (!postings) continue;
+    const facetUniverse = filterOrdinals(matches, request.filters, filterIndexes, key).ordinals;
+    facets[key] = dynamicFacetRows(facetUniverse, postings);
+  }
+
+  const strategy = request.ranking || 'weighted';
+  const limit = manifest.result_limit || 200;
+  let ordinals = [...filtered.ordinals];
+  if (request.sort === 'relevance' && tokens.length) {
+    ordinals.sort((left, right) => {
+      const leftScore = scores.get(left) || { weighted: 0, idf: 0 };
+      const rightScore = scores.get(right) || { weighted: 0, idf: 0 };
+      return rankingScore(rightScore, strategy) - rankingScore(leftScore, strategy) || left - right;
+    });
+  } else {
+    const values = await sortValues();
+    if (values.length) {
+      const sort = request.sort === 'relevance' ? 'newest' : request.sort;
+      ordinals.sort((left, right) => compareSortValues(left, right, sort, values));
+    } else {
+      ordinals.sort((left, right) => left - right);
+    }
+  }
+
+  const prelimit = strategy === 'idf-exact' && request.sort === 'relevance' ? limit * 3 : limit;
+  ordinals = ordinals.slice(0, prelimit);
   const docsByOrdinal = new Map<number, SearchResultDoc>();
   const chunkPaths = new Set<string>();
   for (const ordinal of ordinals) {
@@ -230,12 +336,49 @@ async function queryIndex(query: string): Promise<SearchResultDoc[]> {
       for (const doc of await docsFor(path)) docsByOrdinal.set(doc.ordinal, doc);
     })
   );
-  const results: SearchResultDoc[] = [];
-  for (const ordinal of ordinals) {
-    const doc = docsByOrdinal.get(ordinal);
-    if (doc) results.push({ ...doc, score: scores.get(ordinal) || 0 });
+  if (strategy === 'idf-exact' && request.sort === 'relevance') {
+    ordinals.sort((left, right) => {
+      const leftScore = scores.get(left) || { weighted: 0, idf: 0 };
+      const rightScore = scores.get(right) || { weighted: 0, idf: 0 };
+      return (
+        rankingScore(rightScore, strategy, exactBoost(docsByOrdinal.get(right), query)) -
+          rankingScore(leftScore, strategy, exactBoost(docsByOrdinal.get(left), query)) ||
+        left - right
+      );
+    });
   }
-  return results;
+
+  const results: SearchResultDoc[] = [];
+  for (const ordinal of ordinals.slice(0, limit)) {
+    const doc = docsByOrdinal.get(ordinal);
+    if (!doc) continue;
+    const score = scores.get(ordinal) || { weighted: 0, idf: 0, mask: 0 };
+    const exact = strategy === 'idf-exact' ? exactBoost(doc, query) : 0;
+    const total = request.sort === 'relevance' ? rankingScore(score, strategy, exact) : 0;
+    results.push({
+      ...doc,
+      score: Math.round(total * 1000) / 1000,
+      match: {
+        query_tokens: tokens,
+        matched_fields: matchedFields(score.mask),
+        score_components: {
+          weighted: Math.round(score.weighted * 1000) / 1000,
+          idf: Math.round(score.idf * 1000) / 1000,
+          exact,
+          total: Math.round(total * 1000) / 1000
+        }
+      }
+    });
+  }
+  return {
+    results,
+    total: filtered.ordinals.size,
+    truncated: cappedCandidates || filtered.ordinals.size > limit,
+    filters_applied: filtered.applied,
+    facets,
+    ranking: strategy,
+    elapsed_ms: Math.round(performance.now() - started)
+  };
 }
 
 self.onmessage = async (event: MessageEvent<WorkerMessage>) => {
@@ -248,7 +391,7 @@ self.onmessage = async (event: MessageEvent<WorkerMessage>) => {
       return;
     }
     if (message.type === 'query') {
-      self.postMessage({ type: 'results', id: message.id, results: await queryIndex(message.query) });
+      self.postMessage({ type: 'results', id: message.id, response: await queryIndex(message.request) });
       return;
     }
     if (message.type === 'suggest') {

@@ -8,6 +8,7 @@
     LargePublisher,
     LargeRelationship,
     LargeResource,
+    LargeSearchResponse,
     LoadedSource,
     NormalizedCorpus,
     OkfNode,
@@ -208,6 +209,7 @@
   let largeQuery = $state('');
   let largeAppliedQuery = $state('');
   let largeResults = $state<SearchResultDoc[]>([]);
+  let largeSearchResponse = $state<LargeSearchResponse | null>(null);
   let largeSuggestions = $state<SearchSuggestion[]>([]);
   let largeSelectedRoute = $state('');
   let largeInspectedRoute = $state('');
@@ -495,6 +497,7 @@
     clearLargeApiPanel();
     largeAppliedQuery = '';
     largeResults = [];
+    largeSearchResponse = null;
     largeSuggestions = [];
     largeIndex = null;
     largeRelationships = [];
@@ -603,7 +606,9 @@
       largeSearchClient = client;
       const pendingQuery = largeSearchPendingQuery || initialQuery || largeQuery;
       largeSearchPendingQuery = '';
-      if (pendingQuery.trim()) void runLargeSearch(pendingQuery, { preserveSelection: true });
+      if (pendingQuery.trim() || Object.keys(largeFacetFilters).length) {
+        void runLargeSearch(pendingQuery, { preserveSelection: true });
+      }
     } catch (searchError) {
       client.destroy();
       if (requestId !== loadRequest) return;
@@ -703,11 +708,25 @@
       return;
     }
     activeFacetKey = key;
+    if (supportsWorkerFilter(key)) {
+      largeFacetHydratingKey = key;
+      await runLargeSearch(largeQuery, { preserveSelection: true });
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (!largeIndex) {
       largeFacetHydratingKey = key;
       await ensureLargeFullIndex();
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
     }
+  }
+
+  function supportsWorkerFilter(key: string): boolean {
+    return Boolean(largeSearchClient?.manifest?.entrypoints.filter_postings?.[key]);
+  }
+
+  function supportsCurrentWorkerFilters(): boolean {
+    return Object.keys(largeFacetFilters).every((key) => supportsWorkerFilter(key));
   }
 
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
@@ -1018,9 +1037,10 @@
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
-      void ensureLargeFullIndex();
       reconcileLargeSelection();
       syncExplorerUrl(true);
+      if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+      else void ensureLargeFullIndex();
     } finally {
       await tick();
       largeFacetApplyingKey = '';
@@ -1041,6 +1061,7 @@
     largeExpandedGraphGroup = '';
     reconcileLargeSelection();
     syncExplorerUrl(true);
+    void runLargeSearch(largeQuery, { preserveSelection: true });
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -1117,10 +1138,13 @@
   async function runLargeSearch(query: string, options: { preserveSelection?: boolean } = {}) {
     largeQuery = query;
     const trimmed = query.trim();
+    const hasFilters = Object.keys(largeFacetFilters).length > 0;
+    const hasFacetRequest = Boolean(activeFacetKey && supportsWorkerFilter(activeFacetKey));
     const requestId = ++largeSearchRequest;
-    if (!trimmed) {
+    if (!trimmed && !hasFilters && !hasFacetRequest) {
       largeAppliedQuery = '';
       largeResults = [];
+      largeSearchResponse = null;
       largeSuggestions = [];
       if (!options.preserveSelection) {
         largeSelectedRoute = '';
@@ -1139,7 +1163,7 @@
       return;
     }
     if (!largeSearchClient) {
-      largeSearchPendingQuery = trimmed;
+      largeSearchPendingQuery = query;
       largeSearching = largeSearchIndexLoading;
       return;
     }
@@ -1169,22 +1193,32 @@
       const remoteTemplate = typeof legislationExtension?.remote_full_text_search === 'string'
         ? legislationExtension.remote_full_text_search
         : '';
-      const [localResults, suggestions, officialResults] = await Promise.all([
-        largeSearchClient.query(query),
-        largeSearchClient.suggest(query),
-        remoteTemplate ? searchOfficialLegislation(remoteTemplate, query).catch(() => []) : Promise.resolve([])
+      const [localResponse, suggestions, officialResults] = await Promise.all([
+        largeSearchClient.query({
+          query,
+          filters: largeFacetFilters,
+          sort: retrievalSort,
+          ranking: 'weighted',
+          facet_keys: activeFacetKey ? [activeFacetKey] : []
+        }),
+        trimmed ? largeSearchClient.suggest(query) : Promise.resolve([]),
+        trimmed && (!hasFilters || !supportsCurrentWorkerFilters()) && remoteTemplate
+          ? searchOfficialLegislation(remoteTemplate, query).catch(() => [])
+          : Promise.resolve([])
       ]);
       if (requestId !== largeSearchRequest) return;
       const merged = new Map<string, SearchResultDoc>();
-      for (const result of localResults) merged.set(result.legislation_id_uri || result.url || result.name, result);
+      for (const result of localResponse.results) merged.set(result.legislation_id_uri || result.url || result.name, result);
       for (const result of officialResults) {
         const key = result.legislation_id_uri || result.url || result.name;
         const local = merged.get(key);
         merged.set(key, local ? { ...result, ...local, official_full_text_match: true } : result);
       }
-      const results = [...merged.values()].slice(0, 100);
+      const results = [...merged.values()].slice(0, largeSearchClient.manifest?.result_limit || 200);
       largeResults = results;
+      largeSearchResponse = { ...localResponse, results };
       largeSuggestions = suggestions;
+      if (hasFilters && !localResponse.filters_applied) void ensureLargeFullIndex();
       if (!largeSelectedRoute && results[0]) largeHighlightedRoute = `dataset/${results[0].name}`;
       largePreserveSelectionUntilSearch = false;
       reconcileLargeSelection(Boolean(options.preserveSelection));
@@ -1423,6 +1457,7 @@
   }
 
   function largeFacetRows(key: string) {
+    if (largeSearchResponse?.facets[key]) return largeSearchResponse.facets[key];
     if (!largeIndex) {
       return source?.kind === 'large' ? source.overview.facet_previews?.[key] || [] : [];
     }
@@ -1497,8 +1532,9 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
-    void ensureLargeFullIndex();
     syncExplorerUrl(push);
+    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+    else void ensureLargeFullIndex();
   }
 
   function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
