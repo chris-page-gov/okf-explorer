@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { LargeAnalysisOverview, OkfNode, OkfRelationship } from '$lib/types';
+import type { LargeAnalysisOverview, LargeDataset, OkfNode, OkfRelationship } from '$lib/types';
 import {
   analysisFacetForKey,
   analysisFacetRows,
@@ -8,6 +8,7 @@ import {
   analysisLabelForRoute,
   analysisNodeForRoute,
   colorForType,
+  datasetDateContext,
   displayValue,
   facetLabel,
   facetSummary,
@@ -15,11 +16,13 @@ import {
   formatPercent,
   isHttpUrl,
   orderedFacetKeys,
+  relatedSeriesDatasets,
   relationshipTitle,
   routeForAnalysisNode,
   selectedFacetValueSummary,
   smallRelationshipKind,
   smallRelationshipTitle,
+  sourceDateLabel,
   timelineBucketFacetFilter
 } from './helpers';
 
@@ -228,6 +231,38 @@ describe('viewer helpers', () => {
     expect(relationshipTitle({ source: 'dataset/a', target: 'tag/t', label: 'tagged' }, labelForRoute)).toBe('Dataset A → tagged → Tag T');
     expect(relationshipTitle({ source: '', target: '', label: 'tagged', count: 1200 }, labelForRoute)).toBe('tagged (1,200 relationships)');
     expect(relationshipTitle({ source: '', target: '', label: 'tagged' }, labelForRoute)).toBe('tagged');
+  });
+
+  it('distinguishes source update dates, resource years and explicit series membership', () => {
+    const current: LargeDataset = {
+      name: 'home-workers',
+      title: 'Characteristics of Home Workers',
+      publisher: 'ons',
+      metadata_modified: '2014-06-04T11:00:07Z',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+    const earlier: LargeDataset = {
+      name: 'home-workers-2011',
+      title: 'Characteristics of Home Workers 2011',
+      publisher: 'ons',
+      metadata_modified: '2011-03-01',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+    const otherPublisher: LargeDataset = {
+      name: 'home-workers-copy',
+      title: 'Characteristics of Home Workers copy',
+      publisher: 'other',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+
+    expect(datasetDateContext(current, [{ id: 'resource-1', dataset: current.name, name: '2014' }])).toEqual({
+      updated: '2014-06-04T11:00:07Z',
+      years: ['2014'],
+      series: 'Characteristics of Home Workers',
+      seriesKey: 'label:characteristics of home workers'
+    });
+    expect(sourceDateLabel('2014-06-04T11:00:07Z')).toBe('4 Jun 2014');
+    expect(relatedSeriesDatasets(current, [otherPublisher, earlier, current])).toEqual([earlier]);
   });
 
   it('formats small-bundle relationship labels against node titles', () => {

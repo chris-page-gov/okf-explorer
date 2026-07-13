@@ -114,6 +114,18 @@ Expected behaviour:
 - The active result is visibly selected.
 - The right card starts with the record title and summary, then groups metadata
   under clear headings.
+- A lightweight search card puts **Load full record** with the primary actions
+  near the title rather than below all available metadata.
+- The first **Overview** disclosure starts open. Context, normalized fields,
+  standards alignment, quality, provenance, additional metadata, resources and
+  relationships start folded and can be opened independently.
+- The card surfaces the best source-supplied update date near the title and
+  labels it as a record/catalogue date rather than silently presenting it as
+  the period covered by the data.
+- When resources or explicit temporal metadata name years, a **Dates and
+  related records** block shows those years, the declared series and any other
+  records with the same stable series identity. It states when no other series
+  member is present in the loaded bundle.
 - Route, record type, source, source tier, confidence, provider, endpoint URL,
   documentation URL, access model, licence, contract status, protocol, topics
   and timestamp are visible where known.
@@ -129,6 +141,28 @@ Expected behaviour:
 The card must distinguish "observed public metadata" from operational
 assurance. A declared provider API portal is not automatically a live, open,
 free or assured API.
+
+### Contextual discovery versus global facets
+
+There are three plausible places to answer “is this series available for other
+years?”:
+
+1. **The selected record card (current recommendation).** It is closest to the
+   question, can distinguish source update dates from coverage/resource years,
+   and can say whether another record shares an explicit series identity.
+2. **A `Search and filters` / `This record` tab pair in the left panel.** This
+   becomes useful when bundles provide several contextual dimensions—series,
+   versions, superseded records, geographic editions and related publications—
+   but introduces hidden state and makes global filters less continuously
+   visible.
+3. **Timeline only.** This remains useful for exploring the whole active
+   reduction, but update-year buckets cannot safely stand in for the selected
+   record's temporal coverage.
+
+Explorer therefore starts with the contextual block in the card and keeps
+global facets in the left panel. A tabbed left panel should be reconsidered
+when at least three well-supported record-context groupings compete for space,
+not merely to relocate one date/series question.
 
 ## Story 5: Use Graph Without Getting Lost
 
@@ -146,6 +180,8 @@ Expected behaviour:
   licences, tags and host/other nodes.
 - Plus/minus controls zoom; the graph can be panned.
 - Single-click inspects a real node in the right card.
+- Clicking a relationship row inspects that relationship and keeps the exact
+  edge visibly selected on the graph.
 - Double-click navigates or reduces context.
 - Double-clicking metadata nodes such as provider, host, format, topic, tag or
   licence applies the corresponding facet reduction where available.
@@ -157,6 +193,8 @@ Expected behaviour:
 - Arrowheads should terminate at node/card/icon boundaries, not pass through
   visual centres.
 - Labels should not hide selected nodes or each other at normal zoom levels.
+- The relationship drawer has a visible drag target that changes its row area;
+  Up/Down arrows resize it when the handle has keyboard focus.
 - Spread pins helps recover a dense layout; Export pins records the current
   graph positions.
 
@@ -184,6 +222,12 @@ Expected behaviour:
 The timeline is a navigation aid and a metadata-quality signal. It is not a
 guarantee that the underlying API was created or modified on that date unless
 the source metadata says so.
+
+Global date facets and Timeline answer “which records in this reduction were
+updated when?” A selected record's **Dates and related records** block answers
+the different question “which periods and other members of this declared
+series are present?” Keeping those questions separate avoids making a broad
+update-year facet look like a claim about the selected dataset's coverage.
 
 ## Story 7: Compare Record Types
 

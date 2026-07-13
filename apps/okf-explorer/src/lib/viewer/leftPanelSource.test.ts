@@ -101,6 +101,33 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("addNode(stackId, 'relationship-stack'");
     expect(pageSource).toContain('edge-panel edge-drawer');
     expect(pageSource).toContain('drawer-grip');
+    expect(pageSource).toContain('class="relationship-rows"');
+    expect(pageSource).toContain('class:resizing={edgePanelResizing}');
+    expect(pageSource).toContain('setPointerCapture');
+  });
+
+  it('keeps an inspected relationship selected independently of route highlighting', () => {
+    expect(pageSource).toContain('class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}');
+    expect(pageSource).toContain('aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}');
+    expect(pageSource).not.toContain("if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';");
+  });
+
+  it('surfaces record dates and explicit series alternatives without guessing from similar titles', () => {
+    expect(pageSource).toContain('class="record-date-summary"');
+    expect(pageSource).toContain('Dates and related records');
+    expect(pageSource).toContain('datasetDateContext(largeDetail.dataset, largeDetail.resources)');
+    expect(pageSource).toContain('relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])');
+    expect(pageSource).toContain('Explorer will not guess that similar titles are the same series');
+  });
+
+  it('puts full-record hydration first and folds secondary data-card sections', () => {
+    const loadAction = pageSource.indexOf("largeFullLoading ? 'Loading full record...' : 'Load full record'");
+    const searchOverview = pageSource.indexOf('<summary>Overview</summary>', loadAction);
+    expect(loadAction).toBeGreaterThan(0);
+    expect(searchOverview).toBeGreaterThan(loadAction);
+    expect(pageSource.match(/<details class="metadata-section disclosure-section" open>/g)?.length).toBeGreaterThanOrEqual(3);
+    expect(pageSource).toContain('<details class="metadata-section disclosure-section">\n                <summary>Normalized record fields</summary>');
+    expect(pageSource).not.toContain('>Load full record</button>');
   });
 
   it('keeps synthetic graph stacks from becoming navigable graph centres', () => {

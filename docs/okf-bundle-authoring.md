@@ -39,6 +39,20 @@ Every record should have:
 - tags/topics for user discovery;
 - timestamps or a clear "not recorded in source metadata" state.
 
+For data published as a recurring series, also provide:
+
+- a stable `series_id` when the source supplies one;
+- `series` or `series_title` for the source-declared human label;
+- `temporal_coverage` or `coverage_years` for the period represented by the
+  data, kept separate from catalogue `metadata_created` and
+  `metadata_modified` timestamps; and
+- year-bearing resource names only when those names come from the source.
+
+Explorer treats an explicit identifier as the strongest series link. A
+source-declared series label is accepted within the same publisher. Similar
+titles alone are not enough to claim that two records belong to one series.
+Legacy CKAN records can retain source series metadata under `extras.series`.
+
 ## Explorer Features To Feed
 
 | Explorer feature | Bundle fields that make it useful |
@@ -52,7 +66,7 @@ Every record should have:
 | Type view | record-type counts and representative records |
 | Resources view | resources, endpoints, formats, hosts and documentation links |
 | Narrative view | pack summary, methodology, warnings and source limitations |
-| Detail card | provenance, licence basis, access model, contract status, quality signals |
+| Detail card | provenance, licence basis, access model, contract status, quality signals, source update date, temporal coverage and stable series identity |
 
 ## Facets To Prefer
 

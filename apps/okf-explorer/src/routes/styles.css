@@ -771,6 +771,100 @@ input:focus {
   color: var(--ink);
 }
 
+.record-date-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-left: 4px solid var(--selected-edge);
+  border-radius: 4px;
+  background: var(--selected-bg);
+}
+
+.record-date-summary span {
+  white-space: nowrap;
+}
+
+.record-context {
+  margin: 12px 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface-2);
+}
+
+.record-context > :not(summary) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.record-context-heading {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.record-context-heading h3,
+.record-context h4,
+.record-context p {
+  margin: 0 0 8px;
+}
+
+.primary-detail-actions {
+  margin-top: 4px;
+}
+
+.primary-action {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+}
+
+.primary-action:hover,
+.primary-action:focus {
+  border-color: var(--ink);
+  background: var(--selected-edge);
+}
+
+.record-context-heading button {
+  min-height: 28px;
+}
+
+.year-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.year-chips span {
+  padding: 2px 8px;
+  border: 1px solid var(--selected-line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 700;
+}
+
+.series-records {
+  display: grid;
+  gap: 5px;
+}
+
+.series-records button {
+  display: grid;
+  height: auto;
+  min-height: 44px;
+  padding: 7px 9px;
+  text-align: left;
+}
+
+.series-records span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .facet-hierarchy {
   display: grid;
   gap: 5px;
@@ -995,6 +1089,12 @@ input:focus {
   stroke-width: 3;
 }
 
+.graph line.selected {
+  stroke: var(--selected-edge);
+  stroke-width: 5;
+  filter: drop-shadow(0 0 2px var(--focus));
+}
+
 .graph .edge-hit {
   stroke: transparent;
   stroke-width: 10;
@@ -1125,16 +1225,34 @@ input:focus {
 
 .drawer-grip {
   position: absolute;
-  top: 0;
+  top: -5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 38px;
-  height: 5px;
+  width: 64px;
+  height: 18px;
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: var(--line-strong);
+  background: transparent;
   cursor: ns-resize;
+  touch-action: none;
+}
+
+.drawer-grip::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 13px;
+  width: 38px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+
+.drawer-grip:hover::after,
+.drawer-grip:focus::after,
+.edge-panel.resizing .drawer-grip::after {
+  background: var(--accent);
 }
 
 .edge-drawer:not([open]) {
@@ -1152,6 +1270,18 @@ input:focus {
   max-height: var(--edge-panel-height);
   overflow: auto;
   margin-top: 6px;
+}
+
+.edge-panel .relationship-rows {
+  height: var(--edge-panel-height);
+  min-height: 80px;
+  max-height: 420px;
+}
+
+.edge-panel.resizing,
+.edge-panel.resizing * {
+  cursor: ns-resize;
+  user-select: none;
 }
 
 .edge-panel button {
@@ -1444,6 +1574,67 @@ button.chip:focus {
 
 .metadata-section {
   margin-top: 14px;
+}
+
+.disclosure-section {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+}
+
+.disclosure-section > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 800;
+}
+
+.disclosure-section > summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosure-section > summary::after {
+  content: "+";
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.disclosure-section[open] > summary {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.disclosure-section[open] > summary::after {
+  content: "−";
+}
+
+.disclosure-section > dl,
+.disclosure-section > .disclosure-list {
+  margin: 0;
+  padding: 10px;
+}
+
+.detail .disclosure-section > dl {
+  border-top: 0;
+}
+
+.disclosure-list {
+  display: grid;
+  gap: 5px;
+}
+
+.disclosure-list button {
+  display: grid;
+  height: auto;
+  min-height: 36px;
+  padding: 7px 9px;
+  text-align: left;
 }
 
 .metadata-section h3,

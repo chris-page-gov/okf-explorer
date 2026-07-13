@@ -324,6 +324,11 @@ export type SearchResultDoc = {
   creation_date?: string;
   published_at?: string;
   updated_at?: string;
+  series_id?: string;
+  series?: string;
+  series_title?: string;
+  temporal_coverage?: string | string[] | { start?: string; end?: string; years?: string[]; [key: string]: unknown };
+  coverage_years?: string[];
   jurisdiction?: string[];
   legal_status?: string;
   schema_org_type?: string;

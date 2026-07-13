@@ -1,10 +1,81 @@
-import type { LargeAnalysisOverview, OkfNode, OkfRelationship } from '$lib/types';
+import type { LargeAnalysisOverview, LargeDataset, LargeResource, OkfNode, OkfRelationship } from '$lib/types';
 
 export type AnalysisFacet = NonNullable<LargeAnalysisOverview['facet_analysis']>[number];
 export type AnalysisHierarchy = NonNullable<LargeAnalysisOverview['hierarchies']>[number];
 export type AnalysisHierarchyValue = AnalysisHierarchy['values'][number];
 export type AnalysisHierarchyChild = NonNullable<AnalysisHierarchyValue['children']>[number];
 export type AnalysisTimelineBucket = NonNullable<LargeAnalysisOverview['timeline_overview']>['buckets'][number];
+
+export type DatasetDateContext = {
+  updated: string;
+  years: string[];
+  series: string;
+  seriesKey: string;
+};
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function recordString(record: Record<string, unknown> | undefined, key: string): string {
+  const value = record?.[key];
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizedSeriesValue(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function yearsFromValue(value: unknown): string[] {
+  if (Array.isArray(value)) return value.flatMap(yearsFromValue);
+  if (value && typeof value === 'object') return Object.values(value as Record<string, unknown>).flatMap(yearsFromValue);
+  if (typeof value !== 'string' && typeof value !== 'number') return [];
+  return String(value).match(/\b(?:18|19|20|21)\d{2}\b/g) || [];
+}
+
+export function sourceDateLabel(value: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
+  if (!match) return value;
+  const month = MONTH_NAMES[Number(match[2]) - 1];
+  return month ? `${Number(match[3])} ${month} ${match[1]}` : value.slice(0, 10);
+}
+
+export function datasetDateContext(dataset: LargeDataset, resources: LargeResource[] = []): DatasetDateContext {
+  const direct = dataset as Record<string, unknown>;
+  const extras = dataset.extras;
+  const series =
+    recordString(direct, 'series_title') ||
+    recordString(direct, 'series') ||
+    recordString(extras, 'series_title') ||
+    recordString(extras, 'series');
+  const seriesId = recordString(direct, 'series_id') || recordString(extras, 'series_id');
+  const declaredCoverage = [direct.temporal_coverage, direct.coverage_years, extras?.temporal_coverage, extras?.coverage_years, dataset.year];
+  const resourceCoverage = resources.flatMap((resource) => yearsFromValue([resource.name, resource.description]));
+  const years = [...new Set([...declaredCoverage.flatMap(yearsFromValue), ...resourceCoverage])].sort();
+  const updated = String(dataset.metadata_modified || dataset.timestamp || dataset.updated_at || dataset.published_at || dataset.metadata_created || dataset.creation_date || '');
+  return {
+    updated,
+    years,
+    series,
+    seriesKey: seriesId ? `id:${seriesId}` : series ? `label:${normalizedSeriesValue(series)}` : ''
+  };
+}
+
+export function relatedSeriesDatasets(dataset: LargeDataset, datasets: LargeDataset[]): LargeDataset[] {
+  const context = datasetDateContext(dataset);
+  if (!context.seriesKey) return [];
+  return datasets
+    .filter((candidate) => {
+      if (candidate.name === dataset.name) return false;
+      const candidateContext = datasetDateContext(candidate);
+      if (candidateContext.seriesKey !== context.seriesKey) return false;
+      if (context.seriesKey.startsWith('id:')) return true;
+      return Boolean(dataset.publisher && candidate.publisher === dataset.publisher);
+    })
+    .sort((left, right) => {
+      const leftDate = datasetDateContext(left).updated;
+      const rightDate = datasetDateContext(right).updated;
+      return rightDate.localeCompare(leftDate) || left.title.localeCompare(right.title);
+    });
+}
 
 export function colorForType(type = 'Node'): string {
   const known: Record<string, string> = {

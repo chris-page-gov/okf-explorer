@@ -108,6 +108,17 @@ source-of-truth changes.
   delta-encoded publisher postings, while new v2 bundles can publish explicit
   entity aliases through `data/search/entities.json`; recognition remains
   visible in suggestions and match explanations.
+- Fixed the graph relationship drawer so its larger drag target changes a real
+  row height, retains pointer capture and also supports keyboard resizing.
+- Kept an inspected relationship visibly selected in both the drawer and graph
+  instead of clearing edge-only highlight state during selection reconciliation.
+- Added an early record-date summary plus a contextual Dates and related records
+  block. It distinguishes source update dates from resource/coverage years,
+  follows explicit series metadata, and says when the bundle contains no other
+  record in that series rather than guessing from title similarity.
+- Moved the lightweight search card's Load full record action beside the title
+  and changed secondary detail-card sections to folded disclosures, leaving the
+  first Overview section open by default.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 
