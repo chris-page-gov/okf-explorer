@@ -32,7 +32,15 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('function syncExplorerUrl(push = false)');
     expect(pageSource).toContain('largeInspectedRoute || largeSelectedRoute');
     expect(pageSource).toContain("window.history.pushState({}, '', url)");
-    expect(pageSource).toContain('applyLargeBrowserRoute(hash)');
+    expect(pageSource).toContain('applyLargeBrowserRoute(hash, hasSerializedFilters(params))');
+  });
+
+  it('round-trips search, filters and sort state for large and small bundles', () => {
+    expect(pageSource).toContain('writeRetrievalState(next.searchParams, currentRetrievalState())');
+    expect(pageSource).toContain('parseRetrievalState(params, largeSourceFacetKeys(source))');
+    expect(pageSource).toContain("parseRetrievalState(new URLSearchParams(location.search), ['type'])");
+    expect(pageSource).toContain('largeFacetFilters = state.filters');
+    expect(pageSource).toContain('retrievalSort = state.sort');
   });
 
   it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {

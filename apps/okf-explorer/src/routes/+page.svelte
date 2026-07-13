@@ -17,6 +17,15 @@
     ViewMode
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
+  import {
+    RETRIEVAL_STATE_SCHEMA,
+    defaultRetrievalSort,
+    hasSerializedFilters,
+    parseRetrievalState,
+    writeRetrievalState,
+    type RetrievalSort,
+    type RetrievalStateV1
+  } from '$lib/search/retrievalState';
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
   import { fetchJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
@@ -246,6 +255,7 @@
   let largeSearchDebounce = $state<number | null>(null);
   let edgePanelHeight = $state(180);
   let timelineResolution = $state<TimelineResolution>('latest');
+  let retrievalSort = $state<RetrievalSort>('newest');
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -355,10 +365,34 @@
     else next.searchParams.set('bundle', bundleUrl);
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
-    if (source?.kind === 'large' && largeQuery.trim()) next.searchParams.set('q', largeQuery.trim());
-    else next.searchParams.delete('q');
+    writeRetrievalState(next.searchParams, currentRetrievalState());
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
     return next.toString();
+  }
+
+  function currentRetrievalState(): RetrievalStateV1 {
+    if (source?.kind === 'large') {
+      return {
+        schema: RETRIEVAL_STATE_SCHEMA,
+        query: largeQuery,
+        filters: largeFacetFilters,
+        sort: retrievalSort
+      };
+    }
+    const allTypesSelected = visibleTypes.size === typeList.length && typeList.every((type) => visibleTypes.has(type));
+    return {
+      schema: RETRIEVAL_STATE_SCHEMA,
+      query: smallQuery,
+      filters: allTypesSelected ? {} : { type: [...visibleTypes] },
+      sort: retrievalSort
+    };
+  }
+
+  function largeSourceFacetKeys(large: Extract<LoadedSource, { kind: 'large' }>): string[] {
+    return [...new Set([
+      ...Object.keys(large.overview.facet_previews || {}),
+      ...(large.analysis?.facet_analysis || []).map((facet) => facet.key)
+    ])];
   }
 
   function syncExplorerUrl(push = false) {
@@ -382,19 +416,35 @@
     if (nextView) void selectView(nextView);
     const hash = safeDecodeHash();
     if (source?.kind === 'large') {
-      applyLargeBrowserRoute(hash);
+      const params = new URLSearchParams(location.search);
+      const state = parseRetrievalState(params, largeSourceFacetKeys(source));
+      largeQuery = state.query;
+      retrievalSort = state.sort;
+      largeFacetFilters = state.filters;
+      applyLargeBrowserRoute(hash, hasSerializedFilters(params));
       if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
         void ensureLargeFullIndex();
       }
+      if (state.query !== largeAppliedQuery) void runLargeSearch(state.query, { preserveSelection: true });
       reconcileLargeSelection();
-    } else if (smallCorpus && hash && smallCorpus.nodes[hash]) {
-      selectedId = hash;
-      inspectedId = '';
-      smallInspectedRelationship = null;
+    } else if (smallCorpus) {
+      const state = parseRetrievalState(new URLSearchParams(location.search), ['type']);
+      smallQuery = state.query;
+      retrievalSort = state.sort;
+      const selectedTypes = state.filters.type || [];
+      visibleTypes = selectedTypes.length
+        ? new Set(selectedTypes.filter((type) => typeList.includes(type)))
+        : new Set(typeList);
+      if (!visibleTypes.size) visibleTypes = new Set(typeList);
+      if (hash && smallCorpus.nodes[hash]) {
+        selectedId = hash;
+        inspectedId = '';
+        smallInspectedRelationship = null;
+      }
     }
   }
 
-  function applyLargeBrowserRoute(hash: string) {
+  function applyLargeBrowserRoute(hash: string, preserveSerializedFilters = false) {
     const route = hash && hash !== 'overview' ? hash : '';
     largeSelectedRoute = '';
     largeInspectedRoute = '';
@@ -406,13 +456,13 @@
     largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     if (!route) {
-      largeFacetFilters = {};
+      if (!preserveSerializedFilters) largeFacetFilters = {};
       return;
     }
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
       activeFacetKey = facetRoute.key;
-      largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
+      if (!preserveSerializedFilters) largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
       largeInspectedRoute = route;
       largeHighlightedRoute = route;
       largeGraphCenterRoute = route;
@@ -430,6 +480,8 @@
     error = '';
     selectedId = '';
     inspectedId = '';
+    smallQuery = '';
+    retrievalSort = 'newest';
     smallInspectedRelationship = null;
     largeSelectedRoute = '';
     largeInspectedRoute = '';
@@ -494,22 +546,35 @@
         });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
-        const query = params.get('q') || '';
-        largeQuery = query;
-        largeSearchPendingQuery = query;
+        const retrieval = parseRetrievalState(params, largeSourceFacetKeys(large));
+        const query = retrieval.query;
+        largeQuery = retrieval.query;
+        retrievalSort = retrieval.sort;
+        largeFacetFilters = retrieval.filters;
+        largeSearchPendingQuery = retrieval.query;
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
-          applyLargeBrowserRoute(hash);
+          applyLargeBrowserRoute(hash, hasSerializedFilters(params));
           if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
             void ensureLargeFullIndex();
           }
+        } else if (Object.keys(largeFacetFilters).length) {
+          void ensureLargeFullIndex();
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
         if (searchManifest) void initialiseLargeSearch(large, resolveUrl(searchManifest, large.baseUrl), query, requestId);
       } else {
         const corpus = normalizeSmallBundle(raw);
         source = { kind: 'small', url: absoluteUrl, title: smallBundleTitle(corpus), corpus };
-        visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
+        const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
+        const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
+        const requestedTypes = retrieval.filters.type || [];
+        visibleTypes = requestedTypes.length
+          ? new Set(requestedTypes.filter((type) => availableTypes.includes(type)))
+          : new Set(availableTypes);
+        if (!visibleTypes.size) visibleTypes = new Set(availableTypes);
+        smallQuery = retrieval.query;
+        retrievalSort = retrieval.sort;
         history = rememberHistory({ url: absoluteUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
         bundleUrl = absoluteUrl;
         const hash = safeDecodeHash();
@@ -884,10 +949,19 @@
     if (next.has(type) && next.size > 1) next.delete(type);
     else next.add(type);
     visibleTypes = next;
+    syncExplorerUrl(true);
   }
 
   function resetTypes() {
     visibleTypes = new Set(typeList);
+    syncExplorerUrl(true);
+  }
+
+  function setSmallQuery(query: string) {
+    const previousDefault = defaultRetrievalSort(smallQuery);
+    smallQuery = query;
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort(query);
+    syncExplorerUrl();
   }
 
   function facetValueRoute(key: string, value: string): string {
@@ -1048,15 +1122,17 @@
       largeAppliedQuery = '';
       largeResults = [];
       largeSuggestions = [];
-      largeSelectedRoute = '';
-      largeInspectedRoute = '';
-      largeHighlightedRoute = '';
-      largeGraphCenterRoute = '';
-      largeForwardRoute = '';
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
-      largeExpandedGraphGroup = '';
-      clearLargeApiPanel();
+      if (!options.preserveSelection) {
+        largeSelectedRoute = '';
+        largeInspectedRoute = '';
+        largeHighlightedRoute = '';
+        largeGraphCenterRoute = '';
+        largeForwardRoute = '';
+        largeHighlightedEdge = '';
+        largeInspectedEdge = null;
+        largeExpandedGraphGroup = '';
+        clearLargeApiPanel();
+      }
       largeSearching = false;
       largePreserveSelectionUntilSearch = false;
       syncExplorerUrl();
@@ -1142,7 +1218,9 @@
 
   function scheduleLargeSearch(query: string) {
     const previousQuery = largeQuery.trim();
+    const previousDefault = defaultRetrievalSort(previousQuery);
     largeQuery = query;
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort(query);
     largeSearchRequest += 1;
     if (largeSearchDebounce !== null) {
       window.clearTimeout(largeSearchDebounce);
@@ -3112,7 +3190,7 @@
             </section>
           {/if}
         {:else if smallCorpus}
-          <input class="search-input" bind:value={smallQuery} placeholder="Search nodes" />
+          <input class="search-input" value={smallQuery} oninput={(event) => setSmallQuery(event.currentTarget.value)} placeholder="Search nodes" />
           <div class="type-filters">
             <div class="filter-heading">
               <span>Node Types</span>
