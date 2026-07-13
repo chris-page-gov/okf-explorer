@@ -68,6 +68,26 @@ Legacy CKAN records can retain source series metadata under `extras.series`.
 | Narrative view | pack summary, methodology, warnings and source limitations |
 | Detail card | provenance, licence basis, access model, contract status, quality signals, source update date, temporal coverage and stable series identity |
 
+## Source API Links
+
+Use `source_api_url` for a machine-readable endpoint that returns the source
+record behind the normalized OKF record. Explorer treats **View source data**
+as the primary action and keeps **Open raw JSON ↗** as a new-tab fallback.
+
+For the in-app Source Inspector to work well, the endpoint should:
+
+- use `https` and return JSON with an appropriate media type;
+- permit browser `GET` requests with CORS from a static Pages origin;
+- require no secret embedded in the bundle URL;
+- return a single record comfortably below the 10 MB display cap; and
+- expose stable identifiers, publisher/provenance and update dates where the
+  source has them.
+
+Do not copy the source response wholesale into normalized OKF fields. Preserve
+the source link, map governed fields into the bundle with explicit provenance,
+and let the inspector show the unaltered remote response on demand. Explorer
+renders response values as text and does not execute source HTML.
+
 ## Facets To Prefer
 
 For API/data packs, include these dimensions whenever possible:

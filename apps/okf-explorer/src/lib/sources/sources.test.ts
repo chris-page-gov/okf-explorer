@@ -1,5 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { baseUrlFor, fetchJson, MAX_JSON_BYTES, movedBundleTarget, readResponseText, resolveUrl } from './fetch';
+import {
+  baseUrlFor,
+  fetchJson,
+  fetchSourceJson,
+  MAX_JSON_BYTES,
+  MAX_SOURCE_JSON_BYTES,
+  movedBundleTarget,
+  readResponseText,
+  resolveUrl,
+  sourceJsonCandidates
+} from './fetch';
 import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS, relationshipBucket } from './largeCorpus';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
@@ -122,6 +132,51 @@ describe('fetch helpers', () => {
     );
 
     await expect(readResponseText(response, 'https://example.test/chunked.json', 64)).resolves.toBe('{"ok":true}');
+  });
+
+  it('loads bounded external source JSON with response provenance', async () => {
+    const fetchMock = vi.fn(async () =>
+      new Response('{"success":true}', {
+        headers: { 'content-type': 'application/json; charset=utf-8' }
+      })
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = await fetchSourceJson('https://example.test/api/record');
+    expect(response.json).toEqual({ success: true });
+    expect(response.bytes).toBe(16);
+    expect(response.contentType).toBe('application/json; charset=utf-8');
+    expect(response.retrievedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(response.responseUrl).toBe('https://example.test/api/record');
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://example.test/api/record',
+      expect.objectContaining({ headers: { Accept: 'application/json, application/*+json;q=0.9' } })
+    );
+  });
+
+  it('uses a smaller display cap for external source responses', async () => {
+    const oversized = {
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: { get: (name: string) => (name.toLowerCase() === 'content-length' ? String(MAX_SOURCE_JSON_BYTES + 1) : null) }
+    } as unknown as Response;
+    vi.stubGlobal('fetch', vi.fn(async () => oversized));
+
+    await expect(fetchSourceJson('https://example.test/api/huge', 15000, 1, 0)).rejects.toThrow('response too large');
+  });
+
+  it('resolves legacy data.gov.uk action URLs through the browser-readable CKAN host', async () => {
+    const legacy = 'https://data.gov.uk/api/action/package_show?id=example';
+    const canonical = 'https://ckan.publishing.service.gov.uk/api/3/action/package_show?id=example';
+    expect(sourceJsonCandidates(legacy)).toEqual([canonical, legacy]);
+    const fetchMock = vi.fn().mockResolvedValueOnce(jsonResponse({ success: true }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = await fetchSourceJson(legacy, 15000, 1, 0);
+    expect(response.json).toEqual({ success: true });
+    expect(response.responseUrl).toBe(canonical);
+    expect(fetchMock).toHaveBeenCalledWith(canonical, expect.any(Object));
   });
 
   it('decompresses explicit gzip corpus chunks before parsing', async () => {

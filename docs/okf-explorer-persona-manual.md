@@ -137,6 +137,18 @@ Expected behaviour:
 - Copy route copies a stable route that can be shared or cited.
 - Graph switches to graph context for the inspected record.
 - Pin preserves useful records for comparison/export.
+- When a record declares a browser-readable source API, **View source data**
+  opens an in-Explorer Source Inspector. Its Summary, searchable JSON tree and
+  Raw JSON views keep the selected record and retrieval context available.
+- **Open raw JSON ↗** is an explicitly secondary escape hatch. It always opens
+  a new browser tab and never replaces the Explorer window.
+
+The Source Inspector reports the response host, media type, size and retrieval
+time. It renders remote values only as text, caps responses at 10 MB and gives a
+direct new-tab fallback when cross-origin policy, availability or response size
+prevents in-app display. Known legacy `data.gov.uk/api/action/` links resolve
+through the canonical browser-readable GOV.UK CKAN action endpoint. Returning to
+the record does not re-run the search or discard its filters.
 
 The card must distinguish "observed public metadata" from operational
 assurance. A declared provider API portal is not automatically a live, open,

@@ -31,7 +31,8 @@
   } from '$lib/search/retrievalState';
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
-  import { fetchJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
+  import SourceInspector from '$lib/viewer/SourceInspector.svelte';
+  import { fetchJson, fetchSourceJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
@@ -249,6 +250,11 @@
   let largeApiJson = $state<unknown>(null);
   let largeApiLoading = $state(false);
   let largeApiError = $state('');
+  let largeApiBytes = $state(0);
+  let largeApiContentType = $state('');
+  let largeApiRetrievedAt = $state('');
+  let largeApiResponseUrl = $state('');
+  let largeSourceInspectorOpen = $state(false);
   let largeApiRequest = 0;
   let activeFacetKey = $state('');
   let pins = $state<string[]>([]);
@@ -922,7 +928,16 @@
     largeApiUrl = '';
     largeApiJson = null;
     largeApiError = '';
+    largeApiBytes = 0;
+    largeApiContentType = '';
+    largeApiRetrievedAt = '';
+    largeApiResponseUrl = '';
     largeApiLoading = false;
+    largeSourceInspectorOpen = false;
+  }
+
+  function closeSourceInspector() {
+    largeSourceInspectorOpen = false;
   }
 
   async function loadLargeApiJson(route: string, url: unknown) {
@@ -933,11 +948,20 @@
     largeApiUrl = url;
     largeApiJson = null;
     largeApiError = '';
+    largeApiBytes = 0;
+    largeApiContentType = '';
+    largeApiRetrievedAt = '';
+    largeApiResponseUrl = '';
     largeApiLoading = true;
+    largeSourceInspectorOpen = true;
     try {
-      const nextJson = await fetchJson<unknown>(url);
+      const response = await fetchSourceJson(url);
       if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
-      largeApiJson = nextJson;
+      largeApiJson = response.json;
+      largeApiBytes = response.bytes;
+      largeApiContentType = response.contentType;
+      largeApiRetrievedAt = response.retrievedAt;
+      largeApiResponseUrl = response.responseUrl;
     } catch (err) {
       if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
       largeApiError = err instanceof Error ? err.message : String(err);
@@ -947,6 +971,10 @@
   }
 
   function navigateBack() {
+    if (largeSourceInspectorOpen) {
+      closeSourceInspector();
+      return;
+    }
     if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
       largeForwardRoute = largeInspectedRoute;
       clearInspection();
@@ -3447,18 +3475,34 @@
           <button type="button" title="Forward" aria-label="Forward" disabled={source?.kind === 'large' && !largeForwardRoute} onclick={navigateForward}>→</button>
         </div>
         <div class="crumbs">
-          {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {activeView}
+          {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {largeSourceInspectorOpen ? 'source data' : activeView}
           {#if source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)} / {largeLabelForRoute(largeInspectedRoute || largeSelectedRoute)}{/if}
           {#if detailNode} / {detailNode.title}{/if}
         </div>
         <div class="stage-actions">
-          <button type="button" onclick={copyRoute}>Copy route</button>
-          <button type="button" onclick={() => pinRoute()}>Pin</button>
-          <button type="button" onclick={() => (rightCollapsed = false)}>Inspect</button>
+          {#if largeSourceInspectorOpen}
+            <button type="button" onclick={closeSourceInspector}>Back to record</button>
+          {:else}
+            <button type="button" onclick={copyRoute}>Copy route</button>
+            <button type="button" onclick={() => pinRoute()}>Pin</button>
+            <button type="button" onclick={() => (rightCollapsed = false)}>Inspect</button>
+          {/if}
         </div>
       </div>
 
-      {#if source?.kind === 'large'}
+      {#if source?.kind === 'large' && largeSourceInspectorOpen}
+        <SourceInspector
+          data={largeApiJson}
+          url={largeApiResponseUrl || largeApiUrl}
+          loading={largeApiLoading}
+          error={largeApiError}
+          bytes={largeApiBytes}
+          contentType={largeApiContentType}
+          retrievedAt={largeApiRetrievedAt}
+          recordLabel={largeLabelForRoute(largeApiRoute || largeSelectedRoute || largeInspectedRoute)}
+          onclose={closeSourceInspector}
+        />
+      {:else if source?.kind === 'large'}
         <section class="large-view">
           {#if activeView === 'reader'}
             <div class="metrics">
@@ -4306,10 +4350,10 @@
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if isUrl(largeDetail.dataset.source_api_url)}
-                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">Open API</a>
-                  <button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
-                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading API JSON' : 'Show API JSON'}
+                  <button class="primary-action" type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
+                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading source data…' : 'View source data'}
                   </button>
+                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>
                 {/if}
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
@@ -4370,7 +4414,7 @@
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.dataset.documentation)}<a href={largeDetail.dataset.documentation} target="_blank" rel="noopener">{largeDetail.dataset.documentation}</a>{:else}{displayValue(largeDetail.dataset.documentation)}{/if}</dd>
-                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
+                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>View source data</button> <a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
                 </dl>
               </details>
               <LegislationDetail record={largeDetail.dataset} />
@@ -4496,16 +4540,6 @@
                 <summary>Local normalized {recordSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.dataset)}</pre>
               </details>
-              {#if largeApiRoute === largeDetail.route}
-                {#if largeApiError}
-                  <p class="error">API JSON could not be loaded: {largeApiError}</p>
-                {:else if largeApiJson}
-                  <details class="json-panel" open>
-                    <summary>Source API JSON</summary>
-                    <pre>{jsonText(largeApiJson)}</pre>
-                  </details>
-                {/if}
-              {/if}
             {:else if largeDetail.kind === 'resource'}
               <span class="badge">{capitalise(resourceSingular())}</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>

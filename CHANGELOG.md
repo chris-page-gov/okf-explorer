@@ -63,6 +63,11 @@ source-of-truth changes.
 
 ### Added
 
+- Added an in-Explorer Source Inspector for machine-readable record links, with
+  a human summary, searchable collapsible JSON tree, raw view, copy controls,
+  response provenance and a bounded 10 MB client-side fetch. Known legacy
+  data.gov.uk action URLs resolve through the canonical browser-readable GOV.UK
+  CKAN action endpoint.
 - Added a complete work-level UK legislation OKF pack generated from every year facet in the official legislation.gov.uk Atom catalogue, including primary, secondary, draft, devolved, retained-EU and historical document types.
 - Added ELI 1.5 / ELI-I, Schema.org `Legislation`, legislation.gov.uk FRBR/CLML and Akoma Ntoso crosswalks, normalized legal categories and title-derived topic navigation with explicit non-authoritative classification warnings.
 - Added progressive official CLML discovery in the Svelte Explorer. A selected work can resolve every Part, Chapter, section, article, regulation, rule, schedule, paragraph and nested P1-P7 structure with official passage links and copyable provenance citations.
@@ -76,6 +81,9 @@ source-of-truth changes.
 
 ### Changed
 
+- Made **View source data** the primary source-record action and relabelled the
+  direct endpoint as **Open raw JSON ↗**. Raw external responses always open in
+  a separate tab, so they cannot replace the current Explorer state.
 - Kept Explorer search fully static and deterministic while adding durable
   query, repeated facet-filter and sort state to public URLs, including
   Back/Forward restoration and compatible small-bundle type filtering.

@@ -130,6 +130,17 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain('>Load full record</button>');
   });
 
+  it('opens source API responses inside Explorer without replacing the current window', () => {
+    expect(pageSource).toContain("import SourceInspector from '$lib/viewer/SourceInspector.svelte'");
+    expect(pageSource).toContain('let largeSourceInspectorOpen = $state(false)');
+    expect(pageSource).toContain("'View source data'");
+    expect(pageSource).toContain('Open raw JSON ↗');
+    expect(pageSource).toContain('target="_blank" rel="noopener noreferrer"');
+    expect(pageSource).toContain('fetchSourceJson(url)');
+    expect(pageSource).not.toContain('<summary>Source API JSON</summary>');
+    expect(pageSource).not.toContain('>Open API</a>');
+  });
+
   it('keeps synthetic graph stacks from becoming navigable graph centres', () => {
     expect(pageSource).toContain('const GRAPH_STACK_THRESHOLD = 18;');
     expect(pageSource).toContain('because this view has more than {GRAPH_STACK_THRESHOLD} related records');
