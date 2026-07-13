@@ -20,8 +20,10 @@
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
   import {
     RETRIEVAL_STATE_SCHEMA,
+    MISSING_FILTER_VALUE,
     defaultRetrievalSort,
     hasSerializedFilters,
+    isRetrievalSort,
     parseRetrievalState,
     writeRetrievalState,
     type RetrievalSort,
@@ -271,7 +273,7 @@
       return `${node.title} ${node.id} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
         .toLowerCase()
         .includes(query);
-    })
+    }).sort(compareSmallNodes)
   );
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
@@ -296,7 +298,6 @@
   let largeResultOrder: Map<string, number> = $derived(new Map(largeResults.map((result, index) => [result.name, index])));
   let largeVisibleDatasets: LargeDataset[] = $derived(largeIndex ? visibleLargeDatasets() : []);
   let largeVisibleDatasetNames: Set<string> = $derived(new Set(largeVisibleDatasets.map((dataset) => dataset.name)));
-  let visibleLargeSearchCount: number = $derived(largeIndex && largeAppliedQuery.trim() ? largeVisibleDatasets.length : largeResults.length);
   let largeVisibleResources: LargeResource[] = $derived(
     largeIndex ? largeVisibleDatasets.flatMap((dataset) => largeIndex?.resourcesByDataset.get(dataset.name) || []).slice(0, 600) : []
   );
@@ -304,6 +305,30 @@
   let largeFacetKeys: string[] = $derived(largeIndex ? Object.keys(largeIndex.facets) : Object.keys(source?.kind === 'large' ? source.overview.facet_previews || {} : {}));
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, 0));
   let pinnedLabels: Array<{ route: string; label: string }> = $derived(pins.map((route) => ({ route, label: largeLabelForRoute(route) })));
+
+  function compareSmallNodes(left: OkfNode, right: OkfNode): number {
+    if (retrievalSort === 'title') return left.title.localeCompare(right.title);
+    if (retrievalSort === 'newest') {
+      return String(right.timestamp || '').localeCompare(String(left.timestamp || '')) || left.title.localeCompare(right.title);
+    }
+    if (retrievalSort === 'metadata-quality') {
+      const leftQuality = typeof left.quality_score === 'number' ? left.quality_score : -1;
+      const rightQuality = typeof right.quality_score === 'number' ? right.quality_score : -1;
+      return rightQuality - leftQuality || left.title.localeCompare(right.title);
+    }
+    const query = smallQuery.trim().toLowerCase();
+    if (!query) return left.title.localeCompare(right.title);
+    return smallMatchScore(right, query) - smallMatchScore(left, query) || left.title.localeCompare(right.title);
+  }
+
+  function smallMatchScore(node: OkfNode, query: string): number {
+    const title = node.title.toLowerCase();
+    const id = node.id.toLowerCase();
+    if (title === query || id === query) return 100;
+    if (title.startsWith(query) || id.startsWith(query)) return 60;
+    if (title.includes(query) || id.includes(query)) return 30;
+    return 10;
+  }
 
   onMount(() => {
     void initialize();
@@ -983,6 +1008,70 @@
     syncExplorerUrl();
   }
 
+  function setRetrievalSort(value: string) {
+    if (!isRetrievalSort(value)) return;
+    retrievalSort = value;
+    syncExplorerUrl(true);
+    if (source?.kind === 'large' && (largeQuery.trim() || Object.keys(largeFacetFilters).length)) {
+      void runLargeSearch(largeQuery, { preserveSelection: true });
+    }
+  }
+
+  function removeLargeFilter(key: string, value: string) {
+    const remaining = (largeFacetFilters[key] || []).filter((item) => item !== value);
+    if (remaining.length) largeFacetFilters = { ...largeFacetFilters, [key]: remaining };
+    else {
+      const { [key]: _removed, ...rest } = largeFacetFilters;
+      largeFacetFilters = rest;
+    }
+    const route = facetValueRoute(key, value);
+    if (largeInspectedRoute === route) {
+      largeInspectedRoute = '';
+      largeHighlightedRoute = largeSelectedRoute;
+      largeGraphCenterRoute = largeSelectedRoute;
+    }
+    syncExplorerUrl(true);
+    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+    else void ensureLargeFullIndex();
+  }
+
+  function searchResultSummary(): string {
+    if (largeIndex) return `${largeVisibleDatasets.length.toLocaleString()} records match the active query and filters`;
+    if (!largeSearchResponse) return `${largeResults.length.toLocaleString()} shown`;
+    const limitNote = largeSearchResponse.truncated ? ' (result limit reached)' : '';
+    return `${largeResults.length.toLocaleString()} shown of ${largeSearchResponse.total.toLocaleString()} matching records${limitNote}`;
+  }
+
+  function searchMatchReason(result: SearchResultDoc): string {
+    const fields = result.match?.matched_fields || [];
+    const labels: Record<string, string> = {
+      title: 'title',
+      publisher: 'provider',
+      context: 'context note',
+      description: 'description',
+      topics: 'domain',
+      tags: 'tag',
+      url: 'identifier or URL',
+      record_type: 'record type',
+      protocol: 'protocol',
+      source: 'source metadata',
+      standards: 'standards metadata'
+    };
+    const reasons = fields.slice(0, 3).map((field) => labels[field] || field.replaceAll('_', ' '));
+    if ((result.match?.score_components.exact || 0) > 0) reasons.unshift('exact phrase or identifier');
+    if (result.official_full_text_match) reasons.push('official full text');
+    return reasons.length ? `Matched ${[...new Set(reasons)].join(', ')}` : 'Matched the static lexical index';
+  }
+
+  function searchResultForDataset(dataset: LargeDataset): SearchResultDoc | undefined {
+    return largeResults.find((result) => result.name === dataset.name);
+  }
+
+  function datasetMatchReason(dataset: LargeDataset): string {
+    const result = searchResultForDataset(dataset);
+    return result ? searchMatchReason(result) : '';
+  }
+
   function facetValueRoute(key: string, value: string): string {
     return `facet/${key}/${value}`;
   }
@@ -1247,6 +1336,8 @@
       window.clearTimeout(largeSearchDebounce);
       largeSearchDebounce = null;
     }
+    const previousDefault = defaultRetrievalSort(largeQuery);
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort('');
     void runLargeSearch('');
   }
 
@@ -1361,8 +1452,12 @@
       if (queryActive && !largeResultNames.has(dataset.name)) return false;
       return datasetMatchesLargeFilters(dataset);
     });
-    if (queryActive) {
+    if (retrievalSort === 'relevance' && queryActive) {
       rows.sort((left, right) => (largeResultOrder.get(left.name) ?? 999999) - (largeResultOrder.get(right.name) ?? 999999));
+    } else if (retrievalSort === 'title') {
+      rows.sort((left, right) => left.title.localeCompare(right.title));
+    } else if (retrievalSort === 'metadata-quality') {
+      rows.sort((left, right) => (right.quality?.overall ?? -1) - (left.quality?.overall ?? -1) || left.title.localeCompare(right.title));
     } else {
       rows.sort((left, right) => String(right.timestamp || right.metadata_modified || '').localeCompare(String(left.timestamp || left.metadata_modified || '')));
     }
@@ -1778,6 +1873,7 @@
   }
 
   function facetValueDisplay(key: string, value: string): string {
+    if (value === MISSING_FILTER_VALUE) return 'Not specified (metadata gap)';
     if ((key === 'publisher' || key === 'canonical_publisher') && largeIndex?.publisherByName.get(value)?.title) {
       return largeIndex.publisherByName.get(value)?.title || value;
     }
@@ -3072,24 +3168,27 @@
       </div>
       <div class="left-content">
         {#if source?.kind === 'large'}
-          <div class="search-control">
-            <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => scheduleLargeSearch(event.currentTarget.value)} />
-            {#if largeQuery}
-              <button class="search-clear" type="button" aria-label="Clear search" title="Clear search" onclick={clearLargeSearch}>x</button>
-            {/if}
-          </div>
-          {#if largeSearchIndexLoading}
-            <p class="search-status" aria-live="polite">Preparing static search index...</p>
-          {:else if largeSearching}
-            <p class="search-status" aria-live="polite">Searching static index...</p>
-          {/if}
-          {#if largeSuggestions.length}
-            <div class="suggestions">
-              {#each largeSuggestions as suggestion}
-                <button type="button" onclick={() => void runLargeSearch(suggestion.token)}>{suggestion.token} <small>{suggestion.df}</small></button>
-              {/each}
+          <section class="retrieval-control">
+            <h2>Search</h2>
+            <div class="search-control">
+              <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => scheduleLargeSearch(event.currentTarget.value)} />
+              {#if largeQuery}
+                <button class="search-clear" type="button" aria-label="Clear search" title="Clear search" onclick={clearLargeSearch}>x</button>
+              {/if}
             </div>
-          {/if}
+            {#if largeSearchIndexLoading}
+              <p class="search-status" aria-live="polite">Preparing static search index...</p>
+            {:else if largeSearching}
+              <p class="search-status" aria-live="polite">Searching static index...</p>
+            {/if}
+            {#if largeSuggestions.length}
+              <div class="suggestions">
+                {#each largeSuggestions as suggestion}
+                  <button type="button" onclick={() => void runLargeSearch(suggestion.token)}>{suggestion.token} <small>{suggestion.df}</small></button>
+                {/each}
+              </div>
+            {/if}
+          </section>
 
           {#if pins.length}
             <section class="pinned-list">
@@ -3102,9 +3201,18 @@
 
           <section class="facet-preview">
             <div class="filter-heading">
-              <span>Filters {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
+              <span>Filter results {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
               <button type="button" onclick={clearLargeFilters}>Clear</button>
             </div>
+            {#if activeLargeFilterCount}
+              <div class="active-filter-chips" aria-label="Active filters">
+                {#each selectedLargeFilterLabels() as filter}
+                  <button type="button" title={`Remove ${filter.label}`} onclick={() => removeLargeFilter(filter.key, filter.value)}>
+                    <span>{filter.label}</span><span aria-hidden="true">×</span>
+                  </button>
+                {/each}
+              </div>
+            {/if}
             {#if largeFacetApplyingKey}
               <p class="facet-status" aria-live="polite">
                 Applying {facetLabel(largeFacetApplyingKey)}: {facetValueDisplay(largeFacetApplyingKey, largeFacetApplyingValue)}...
@@ -3198,6 +3306,18 @@
             </div>
           </section>
 
+          <section class="sort-control">
+            <label>
+              <span>Sort</span>
+              <select value={retrievalSort} onchange={(event) => setRetrievalSort(event.currentTarget.value)}>
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+                <option value="title">Title</option>
+                <option value="metadata-quality">Metadata quality</option>
+              </select>
+            </label>
+          </section>
+
           {#if largeIndex}
             <section class="left-results">
               <h2>{recordPlural()} in current reduction</h2>
@@ -3226,10 +3346,13 @@
             </section>
           {/if}
         {:else if smallCorpus}
-          <input class="search-input" value={smallQuery} oninput={(event) => setSmallQuery(event.currentTarget.value)} placeholder="Search nodes" />
+          <section class="retrieval-control">
+            <h2>Search</h2>
+            <input class="search-input" value={smallQuery} oninput={(event) => setSmallQuery(event.currentTarget.value)} placeholder="Search nodes" />
+          </section>
           <div class="type-filters">
             <div class="filter-heading">
-              <span>Node Types</span>
+              <span>Filter results</span>
               <button type="button" onclick={resetTypes}>All</button>
             </div>
             {#each typeList as type}
@@ -3238,6 +3361,17 @@
               </button>
             {/each}
           </div>
+          <section class="sort-control">
+            <label>
+              <span>Sort</span>
+              <select value={retrievalSort} onchange={(event) => setRetrievalSort(event.currentTarget.value)}>
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+                <option value="title">Title</option>
+                <option value="metadata-quality">Metadata quality</option>
+              </select>
+            </label>
+          </section>
           <div class="node-list">
             {#each visibleNodes as node}
               <button class:active={node.id === selectedId} type="button" onclick={() => selectNode(node.id)}>
@@ -3281,10 +3415,10 @@
           {/if}
 
           {#if activeView === 'reader'}
-            {#if largeQuery}
+            {#if largeQuery || activeLargeFilterCount}
               <div class="view-heading">
-                <h2>Search Results</h2>
-                <span>{largeSearching ? 'Searching static index...' : `${visibleLargeSearchCount.toLocaleString()} shown`}</span>
+                <h2>{largeQuery ? 'Search Results' : 'Filtered Results'}</h2>
+                <span>{largeSearching ? 'Searching static index...' : searchResultSummary()}</span>
               </div>
               <div class="result-list">
                 {#if largeIndex}
@@ -3292,6 +3426,7 @@
                     <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
                       <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                      {#if datasetMatchReason(dataset)}<small class="result-match">Why this matched: {datasetMatchReason(dataset)}</small>{/if}
                       {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                       <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
                       {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
@@ -3303,7 +3438,8 @@
                   {#each largeResults as result}
                     <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                       <strong>{result.title}</strong>
-                      <span>{result.publisher_title} · {result.resource_count} {resourcePlural()} · score {result.score}</span>
+                      <span>{result.publisher_title || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
+                      <small class="result-match">Why this matched: {searchMatchReason(result)}</small>
                       {#if apiContextNote(result)}<p class="context-note">{apiContextNote(result)}</p>{/if}
                       <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
                       {#if apiRecordMeta(result)}<small class="result-meta">{apiRecordMeta(result)}</small>{/if}
@@ -4089,6 +4225,9 @@
             {#if largeDetail.kind === 'dataset'}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
+              {#if datasetMatchReason(largeDetail.dataset)}
+                <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
+              {/if}
               {#if apiContextNote(largeDetail.dataset)}
                 <p class="context-note">{apiContextNote(largeDetail.dataset)}</p>
               {/if}
@@ -4341,6 +4480,7 @@
             {:else if largeDetail.kind === 'search'}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.result.title}</h2>
+              <p class="match-explanation"><strong>Why this matched</strong> {searchMatchReason(largeDetail.result)}</p>
               {#if apiContextNote(largeDetail.result)}
                 <p class="context-note">{apiContextNote(largeDetail.result)}</p>
               {/if}

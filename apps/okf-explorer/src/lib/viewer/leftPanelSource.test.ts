@@ -43,6 +43,17 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('retrievalSort = state.sort');
   });
 
+  it('separates retrieval controls and explains matches without exposing raw scores', () => {
+    expect(pageSource).toContain('<h2>Search</h2>');
+    expect(pageSource).toContain('<span>Filter results');
+    expect(pageSource).toContain('<span>Sort</span>');
+    expect(pageSource).toContain('class="active-filter-chips"');
+    expect(pageSource).toContain('function removeLargeFilter');
+    expect(pageSource).toContain('Why this matched: {searchMatchReason(result)}');
+    expect(pageSource).toContain('Not specified (metadata gap)');
+    expect(pageSource).not.toContain('score {result.score}');
+  });
+
   it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {
     expect(pageSource).toContain('class="left-results"');
     expect(pageSource).toContain('records match the active search and filters');
