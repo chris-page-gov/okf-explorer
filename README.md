@@ -15,6 +15,7 @@ other public HTTPS URL. These hosted examples open without installation:
 
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
+- [Use the static search and filtering manual][search-filtering-manual]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
@@ -231,5 +232,6 @@ Pages to use **GitHub Actions** as the source.
 [legislation-manual]: docs/uk-legislation/illustrated-manual.md
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
+[search-filtering-manual]: docs/static-search-filtering-manual.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

@@ -1009,6 +1009,45 @@ def tokenize(value: str) -> list[str]:
     return tokens
 
 
+SEARCH_ENTITY_CONNECTORS = {"a", "an", "and", "for", "from", "in", "of", "on", "the", "to", "with"}
+
+
+def search_entity_aliases(label: str, declared: list[str] | None = None) -> list[str]:
+    words = re.findall(r"[a-z0-9]+", unicodedata.normalize("NFKD", label).encode("ascii", "ignore").decode("ascii").lower())
+    inferred = [
+        "".join(word[0] for word in words if word not in SEARCH_ENTITY_CONNECTORS),
+        "".join(word[0] for word in words),
+    ]
+    aliases = [str(value).strip() for value in (declared or []) if str(value).strip()]
+    aliases.extend(value.upper() for value in inferred if 3 <= len(value) <= 8)
+    return sorted(set(aliases), key=lambda value: (value.casefold(), value))
+
+
+def search_entities_from_publishers(publishers: list[dict[str, Any]], kind: str = "publisher") -> list[dict[str, Any]]:
+    entities: list[dict[str, Any]] = []
+    for publisher in publishers:
+        value = str(publisher.get("name") or publisher.get("id") or "").strip()
+        label = str(publisher.get("title") or value).strip()
+        if not value or not label:
+            continue
+        aliases = publisher.get("aliases")
+        if isinstance(aliases, str):
+            aliases = [part.strip() for part in aliases.split(";") if part.strip()]
+        entities.append(
+            {
+                "id": str(publisher.get("route") or f"publisher/{value}"),
+                "label": label,
+                "kind": str(publisher.get("entity_kind") or kind),
+                "aliases": search_entity_aliases(label, aliases if isinstance(aliases, list) else []),
+                "filter_key": "publisher",
+                "filter_value": value,
+                "count": int(publisher.get("dataset_count") or 0),
+                "route": str(publisher.get("route") or f"publisher/{value}"),
+            }
+        )
+    return sorted(entities, key=lambda entity: (entity["label"].casefold(), entity["filter_value"]))
+
+
 def truncate_text(value: Any, limit: int) -> str:
     text = re.sub(r"\s+", " ", str(value or "")).strip()
     if len(text) <= limit:
@@ -2335,7 +2374,81 @@ def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return docs
 
 
-def build_search(records: list[dict[str, Any]], max_postings_per_token: int = MAX_SEARCH_POSTINGS_PER_TOKEN) -> dict[str, Any]:
+MISSING_FILTER_VALUE = "__missing__"
+
+
+def search_filter_values(record: dict[str, Any], key: str) -> list[str]:
+    aliases = {
+        "topic": "topics",
+        "tag": "tags",
+        "format": "formats",
+        "license": "license_id",
+        "creation_year": "year",
+        "publisher_family": "organisation_family",
+    }
+    if key == "host":
+        values = [record.get("host"), record.get("endpoint_host"), *(record.get("resource_hosts") or [])]
+    elif key == "interaction_style":
+        values = facet_values(record, key) or facet_values(record, "formats")
+    elif key == "govuk_linked":
+        values = ["yes" if record.get("govuk_content_paths") else "no"]
+    elif key in {"update_year", "update_month", "update_quarter", "update_date", "update_decade"}:
+        stamp = str(record.get("metadata_modified") or record.get("timestamp") or record.get("updated_at") or "")
+        if key == "update_year":
+            values = [stamp[:4]] if len(stamp) >= 4 else []
+        elif key == "update_month":
+            values = [stamp[:7]] if len(stamp) >= 7 else []
+        elif key == "update_date":
+            values = [stamp[:10]] if len(stamp) >= 10 else []
+        elif key == "update_quarter" and len(stamp) >= 7 and stamp[5:7].isdigit():
+            values = [f"{stamp[:4]}-Q{(int(stamp[5:7]) - 1) // 3 + 1}"]
+        elif key == "update_decade" and len(stamp) >= 4 and stamp[:4].isdigit():
+            values = [str((int(stamp[:4]) // 10) * 10)]
+        else:
+            values = []
+    else:
+        values = facet_values(record, aliases.get(key, key))
+    return sorted({str(value) for value in values if value not in {None, ""}})
+
+
+def build_filter_postings(
+    records: list[dict[str, Any]], filter_facets: dict[str, list[dict[str, Any]]]
+) -> tuple[dict[str, str], dict[str, dict[str, Any]]]:
+    entrypoints: dict[str, str] = {}
+    payloads: dict[str, dict[str, Any]] = {}
+    for key, rows in sorted(filter_facets.items()):
+        values: dict[str, list[int]] = defaultdict(list)
+        actual_values: set[str] = set()
+        for ordinal, record in enumerate(records):
+            record_values = search_filter_values(record, key)
+            if not record_values:
+                record_values = [MISSING_FILTER_VALUE]
+            for value in record_values:
+                values[value].append(ordinal)
+                if value != MISSING_FILTER_VALUE:
+                    actual_values.add(value)
+        expected_values = {str(row.get("value")) for row in rows if row.get("value") not in {None, ""}}
+        # Resource-derived or publisher-derived facets cannot be executed from
+        # record ordinals alone. Omit them so v1 full-index filtering remains
+        # the explicit, correct fallback instead of publishing partial matches.
+        if expected_values and len(expected_values & actual_values) / len(expected_values) < 0.95:
+            continue
+        path = f"data/search/filters/{key}.json"
+        entrypoints[key] = path
+        payloads[path] = {
+            "schema": "okf-static-filter-postings.v1",
+            "key": key,
+            "values": dict(sorted(values.items())),
+        }
+    return entrypoints, payloads
+
+
+def build_search(
+    records: list[dict[str, Any]],
+    max_postings_per_token: int = MAX_SEARCH_POSTINGS_PER_TOKEN,
+    filter_facets: dict[str, list[dict[str, Any]]] | None = None,
+    search_entities: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     result_docs = search_docs(records)
     posting_heaps: dict[str, list[tuple[int, int, int, int]]] = defaultdict(list)
     document_frequency: Counter[str] = Counter()
@@ -2403,9 +2516,18 @@ def build_search(records: list[dict[str, Any]], max_postings_per_token: int = MA
             payload[prefix] = sorted(rows, key=lambda item: (-item["df"], item["token"]))[:16]
 
     result_doc_chunks = chunk_paths("search/results", result_docs, SEARCH_RESULT_DOC_CHUNK_SIZE)
+    filter_entrypoints, filter_postings = build_filter_postings(records, filter_facets or {})
+    sort_values = [
+        [
+            str(record.get("metadata_modified") or record.get("timestamp") or record.get("updated_at") or ""),
+            str(record.get("title") or ""),
+            record.get("quality", {}).get("overall") if isinstance(record.get("quality"), dict) else record.get("quality_score"),
+        ]
+        for record in records
+    ]
     return {
         "manifest": {
-            "schema": "okf-static-search.v1",
+            "schema": "okf-static-search.v2",
             "token_min_length": 2,
             "prefix_min_length": 3,
             "lexicon_shard_length": 2,
@@ -2427,6 +2549,9 @@ def build_search(records: list[dict[str, Any]], max_postings_per_token: int = MA
                 "result_docs": [path.as_posix() for path, _rows in result_doc_chunks],
                 "facets": "data/facets.json",
                 "doc_map": "data/search/doc-map.json",
+                "filter_postings": filter_entrypoints,
+                "sort_values": "data/search/sort-values.json",
+                **({"entities": "data/search/entities.json"} if search_entities else {}),
             },
         },
         "lexicon": dict(sorted(lexicon_by_shard.items())),
@@ -2434,6 +2559,12 @@ def build_search(records: list[dict[str, Any]], max_postings_per_token: int = MA
         "postings": {path: {"tokens": dict(sorted(tokens.items()))} for path, tokens in sorted(postings_by_path.items())},
         "result_doc_chunks": result_doc_chunks,
         "doc_map": {str(doc["ordinal"]): doc["open"] for doc in result_docs},
+        "filter_postings": filter_postings,
+        "sort_values": sort_values,
+        "entities": {
+            "schema": "okf-static-search-entities.v1",
+            "entities": search_entities or [],
+        },
     }
 
 
@@ -2772,7 +2903,11 @@ def build_corpus(
         "standards_alignment": standards_alignment_overview,
     }
 
-    search = build_search(records)
+    search = build_search(
+        records,
+        filter_facets=facets,
+        search_entities=search_entities_from_publishers(publishers, kind="organisation"),
+    )
     record_chunks = chunk_paths("apis", records)
     resource_chunks = chunk_paths("resources", resources)
     publisher_chunks = chunk_paths("providers", publishers)
@@ -2928,7 +3063,10 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         Path("data/adjacency/manifest.json"): render_json(corpus["relationship_adjacency"]),
         Path("data/search/manifest.json"): render_json(corpus["search"]["manifest"]),
         Path("data/search/doc-map.json"): render_json(corpus["search"]["doc_map"]),
+        Path("data/search/sort-values.json"): render_json(corpus["search"]["sort_values"]),
     }
+    if corpus["search"]["entities"]["entities"]:
+        files[Path("data/search/entities.json")] = render_json(corpus["search"]["entities"])
     for path, rows in corpus["record_chunks"]:
         files[path] = render_json(rows)
     for path, rows in corpus["resource_chunks"]:
@@ -2944,6 +3082,8 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
     for shard, payload in corpus["search"]["prefixes"].items():
         files[Path(f"data/search/prefixes/{shard}.json")] = render_json(payload)
     for path, payload in corpus["search"]["postings"].items():
+        files[Path(path)] = render_json(payload)
+    for path, payload in corpus["search"]["filter_postings"].items():
         files[Path(path)] = render_json(payload)
     for path, rows in corpus["search"]["result_doc_chunks"]:
         files[path] = render_json(rows)

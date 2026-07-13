@@ -7,6 +7,11 @@ Explorer, or build a better OKF bundle.
 Screenshots were captured from the local GitHub Pages build on 2026-07-08 using
 the UK Government APIs OKF descriptor.
 
+For the newer deterministic Search, Filter results and Sort interface, see the
+[Static Search and Filtering Manual](static-search-filtering-manual.md). Its
+screenshots use the GOV.UK CKAN large corpus and supersede Stories 2 and 3 for
+retrieval-state behaviour.
+
 The behaviour expectations are grounded in GOV.UK-style service quality:
 understand real user tasks, make the service simple, make it accessible, expose
 source/provenance clearly, use open standards, protect privacy/security, and
@@ -36,8 +41,9 @@ Expected behaviour:
 - Count cards distinguish API products, data endpoints, data products and
   active filters.
 - The left panel starts with search and closed facets.
-- The right panel explains schema, generated timestamp, search-token count and
-  hydration state.
+- The right panel explains schema, generated timestamp, distinct indexed-term
+  count and hydration state. This is local search vocabulary, not AI-token
+  usage.
 - If the app is still loading a background index, a visible status line says so
   without blocking overview reading.
 
@@ -108,6 +114,26 @@ Expected behaviour:
 - The active result is visibly selected.
 - The right card starts with the record title and summary, then groups metadata
   under clear headings.
+- A lightweight search card puts **Load full record** with the primary actions
+  near the title rather than below all available metadata.
+- The first **Overview** disclosure starts open. Context, normalized fields,
+  standards alignment, quality, provenance, additional metadata, resources and
+  relationships start folded and can be opened independently.
+- The card surfaces the best source-supplied update date near the title and
+  labels CKAN `metadata_modified` explicitly as **Catalogue metadata updated**,
+  with a warning that it is not necessarily the dataset’s latest release or
+  update frequency.
+- CKAN-derived cards include a folded **Current source and maintenance**
+  section. It shows evidence-backed canonical source, publisher, frequency,
+  release, distributions, API, specification and licence fields when supplied
+  by the bundle. Otherwise it declares an operational metadata gap and exposes
+  CKAN-declared dataset reference dates/update frequency plus
+  publisher/distribution links as qualified leads, not as automatically
+  current or authoritative sources.
+- When resources or explicit temporal metadata name years, a **Dates and
+  related records** block shows those years, the declared series and any other
+  records with the same stable series identity. It states when no other series
+  member is present in the loaded bundle.
 - Route, record type, source, source tier, confidence, provider, endpoint URL,
   documentation URL, access model, licence, contract status, protocol, topics
   and timestamp are visible where known.
@@ -119,10 +145,48 @@ Expected behaviour:
 - Copy route copies a stable route that can be shared or cited.
 - Graph switches to graph context for the inspected record.
 - Pin preserves useful records for comparison/export.
+- When a record declares a browser-readable source API, **View source data**
+  opens an in-Explorer Source Inspector. Its Summary, searchable JSON tree and
+  Raw JSON views keep the selected record and retrieval context available.
+- **Open raw JSON ↗** is an explicitly secondary escape hatch. It always opens
+  a new browser tab and never replaces the Explorer window.
+
+The Source Inspector reports the response host, media type, size and retrieval
+time. It renders remote values only as text, caps responses at 10 MB and gives a
+direct new-tab fallback when cross-origin policy, availability or response size
+prevents in-app display. Known legacy `data.gov.uk/api/action/` links resolve
+through the canonical browser-readable GOV.UK CKAN action endpoint. Returning to
+the record does not re-run the search or discard its filters.
+
+Source Inspector dates describe the remote metadata record. They do not
+override a bundle’s separately evidenced operational metadata or prove that a
+dataset stopped changing when its catalogue entry stopped changing.
 
 The card must distinguish "observed public metadata" from operational
 assurance. A declared provider API portal is not automatically a live, open,
 free or assured API.
+
+### Contextual discovery versus global facets
+
+There are three plausible places to answer “is this series available for other
+years?”:
+
+1. **The selected record card (current recommendation).** It is closest to the
+   question, can distinguish source update dates from coverage/resource years,
+   and can say whether another record shares an explicit series identity.
+2. **A `Search and filters` / `This record` tab pair in the left panel.** This
+   becomes useful when bundles provide several contextual dimensions—series,
+   versions, superseded records, geographic editions and related publications—
+   but introduces hidden state and makes global filters less continuously
+   visible.
+3. **Timeline only.** This remains useful for exploring the whole active
+   reduction, but update-year buckets cannot safely stand in for the selected
+   record's temporal coverage.
+
+Explorer therefore starts with the contextual block in the card and keeps
+global facets in the left panel. A tabbed left panel should be reconsidered
+when at least three well-supported record-context groupings compete for space,
+not merely to relocate one date/series question.
 
 ## Story 5: Use Graph Without Getting Lost
 
@@ -140,6 +204,8 @@ Expected behaviour:
   licences, tags and host/other nodes.
 - Plus/minus controls zoom; the graph can be panned.
 - Single-click inspects a real node in the right card.
+- Clicking a relationship row inspects that relationship and keeps the exact
+  edge visibly selected on the graph.
 - Double-click navigates or reduces context.
 - Double-clicking metadata nodes such as provider, host, format, topic, tag or
   licence applies the corresponding facet reduction where available.
@@ -151,6 +217,8 @@ Expected behaviour:
 - Arrowheads should terminate at node/card/icon boundaries, not pass through
   visual centres.
 - Labels should not hide selected nodes or each other at normal zoom levels.
+- The relationship drawer has a visible drag target that changes its row area;
+  Up/Down arrows resize it when the handle has keyboard focus.
 - Spread pins helps recover a dense layout; Export pins records the current
   graph positions.
 
@@ -178,6 +246,12 @@ Expected behaviour:
 The timeline is a navigation aid and a metadata-quality signal. It is not a
 guarantee that the underlying API was created or modified on that date unless
 the source metadata says so.
+
+Global date facets and Timeline answer “which records in this reduction were
+updated when?” A selected record's **Dates and related records** block answers
+the different question “which periods and other members of this declared
+series are present?” Keeping those questions separate avoids making a broad
+update-year facet look like a claim about the selected dataset's coverage.
 
 ## Story 7: Compare Record Types
 

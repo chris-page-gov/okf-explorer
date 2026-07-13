@@ -173,7 +173,11 @@ and retain OKF names where the standards do not have an exact concept:
 | Licence basis / Licence confidence | No DCAT property — this is OKF's own provenance-of-metadata concept | N/A | Keep as an OKF-native field; note it in `dcterms:provenance` free text if exporting. |
 | Access model | Not modelled in DCAT directly; DCAT-AP uses `dcatap:availability` for a different concept (distribution lifecycle, not auth) | `components.securitySchemes.<name>.type` | See the access-model table below — this is the one field where OpenAPI, not DCAT, is the authoritative vocabulary. |
 | Tags / topics | `dcat:keyword` / `dcat:theme` | `tags` | Direct mapping. |
-| Timestamps (`timestamp`, generated/observed dates) | `dcterms:issued` / `dcterms:modified` | `info.version` (for the API's own version history, not wall-clock time) | — |
+| Catalogue timestamps (`metadata_created`, `metadata_modified`) | `dcterms:issued` / `dcterms:modified` on `dcat:CatalogRecord` | N/A | These date the catalogue metadata record, not necessarily the dataset’s publication or latest release. |
+| `operational_metadata.update_frequency` | `dcterms:accrualPeriodicity` on `dcat:Dataset` | N/A | Populate from a canonical publisher source with provenance; do not infer it from a resource hostname. |
+| `operational_metadata.distributions` | `dcat:distribution` / `dcat:Distribution` | API-backed access may map to `servers` and `paths` | Keep complete extracts, change-only extracts and API access distinct. |
+| `operational_metadata.latest_release` | `dcterms:issued` / `dcterms:modified` on the relevant `dcat:Distribution` | `info.version` only when the publisher identifies it as an API version | A dynamic marker tells Explorer to consult the canonical source; it is not itself a release date. |
+| Generated/observed timestamps | `prov:generatedAtTime` / `prov:endedAtTime` on the harvest activity | N/A | Keep harvest time separate from catalogue and dataset dates. |
 
 ## Access model → OpenAPI `securityScheme.type`
 

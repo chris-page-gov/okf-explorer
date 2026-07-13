@@ -1,4 +1,4 @@
-import type { LargeSearchManifest, SearchResultDoc, SearchSuggestion } from '$lib/types';
+import type { LargeSearchManifest, LargeSearchRequest, LargeSearchResponse, SearchSuggestion } from '$lib/types';
 
 type Pending = {
   resolve: (value: unknown) => void;
@@ -13,7 +13,7 @@ export class LargeSearchClient {
 
   constructor() {
     this.#worker = new Worker(new URL('../../workers/largeSearch.worker.ts', import.meta.url), { type: 'module' });
-    this.#worker.onmessage = (event: MessageEvent<{ type: string; id: number; error?: string; manifest?: LargeSearchManifest; results?: SearchResultDoc[]; suggestions?: SearchSuggestion[] }>) => {
+    this.#worker.onmessage = (event: MessageEvent<{ type: string; id: number; error?: string; manifest?: LargeSearchManifest; response?: LargeSearchResponse; suggestions?: SearchSuggestion[] }>) => {
       const pending = this.#pending.get(event.data.id);
       if (!pending) return;
       this.#pending.delete(event.data.id);
@@ -21,7 +21,7 @@ export class LargeSearchClient {
       else if (event.data.type === 'ready') {
         this.manifest = event.data.manifest || null;
         pending.resolve(event.data.manifest);
-      } else if (event.data.type === 'results') pending.resolve(event.data.results || []);
+      } else if (event.data.type === 'results') pending.resolve(event.data.response);
       else if (event.data.type === 'suggestions') pending.resolve(event.data.suggestions || []);
       else pending.reject(new Error(`Unknown search worker response: ${event.data.type}`));
     };
@@ -39,8 +39,17 @@ export class LargeSearchClient {
     return this.#request<LargeSearchManifest>({ type: 'init', baseUrl, manifestUrl });
   }
 
-  query(query: string): Promise<SearchResultDoc[]> {
-    return this.#request<SearchResultDoc[]>({ type: 'query', query });
+  query(request: LargeSearchRequest): Promise<LargeSearchResponse> {
+    const serializableRequest: LargeSearchRequest = {
+      query: String(request.query || ''),
+      filters: Object.fromEntries(
+        Object.entries(request.filters || {}).map(([key, values]) => [key, [...values].map(String)])
+      ),
+      sort: request.sort,
+      ranking: request.ranking,
+      facet_keys: request.facet_keys ? [...request.facet_keys] : undefined
+    };
+    return this.#request<LargeSearchResponse>({ type: 'query', request: serializableRequest });
   }
 
   suggest(prefix: string): Promise<SearchSuggestion[]> {

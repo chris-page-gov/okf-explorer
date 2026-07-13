@@ -1,0 +1,43 @@
+{
+  "schema": "okf-search-filtering-manual-captures.v1",
+  "captured_at": "2026-07-13",
+  "branch": "codex/static-search-filtering",
+  "application": "local GitHub Pages build at http://127.0.0.1:8002/",
+  "bundle": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json",
+  "viewport": {
+    "width": 1600,
+    "height": 1000,
+    "device_scale_factor": 1
+  },
+  "screenshots": [
+    {
+      "file": "01-search-filter-sort-controls.png",
+      "query": "",
+      "filters": {},
+      "sort": "newest",
+      "route": "overview",
+      "sha256": "e8b7de461bf2881f293f880a54ba54a4fc3a8189b3154c0f633860231be84c25"
+    },
+    {
+      "file": "02-explainable-search-results.png",
+      "query": "planning applications",
+      "filters": {},
+      "sort": "relevance",
+      "selected_title": "Valid Planning Applications",
+      "sha256": "3f876653840fef03acb676212afd5b00578ce6bc6513c55927af2f3f854b1064"
+    },
+    {
+      "file": "03-active-filters-and-sort.png",
+      "query": "environment",
+      "filters": {
+        "publisher_family": [
+          "environment and science",
+          "local government"
+        ]
+      },
+      "sort": "metadata-quality",
+      "route": "overview",
+      "sha256": "f337777a735a477a2b2ea4400364a52587ed66572e07e64af8854dfeab040b59"
+    }
+  ]
+}

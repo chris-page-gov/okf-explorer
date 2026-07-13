@@ -61,8 +61,20 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added optional `okf-operational-metadata.v1` sidecar loading for large
+  corpora, allowing source-backed operational enrichment to be refreshed
+  without rewriting dataset or search chunks.
+
 ### Added
 
+- Added an in-Explorer Source Inspector for machine-readable record links, with
+  a human summary, searchable collapsible JSON tree, raw view, copy controls,
+  response provenance and a bounded 10 MB client-side fetch. Known legacy
+  data.gov.uk action URLs resolve through the canonical browser-readable GOV.UK
+  CKAN action endpoint.
+- Added an optional, provenance-bearing `operational_metadata` contract for
+  canonical source, authoritative publisher, update frequency, current release,
+  full/delta distributions, API access, technical specification and licence.
 - Added a complete work-level UK legislation OKF pack generated from every year facet in the official legislation.gov.uk Atom catalogue, including primary, secondary, draft, devolved, retained-EU and historical document types.
 - Added ELI 1.5 / ELI-I, Schema.org `Legislation`, legislation.gov.uk FRBR/CLML and Akoma Ntoso crosswalks, normalized legal categories and title-derived topic navigation with explicit non-authoritative classification warnings.
 - Added progressive official CLML discovery in the Svelte Explorer. A selected work can resolve every Part, Chapter, section, article, regulation, rule, schedule, paragraph and nested P1-P7 structure with official passage links and copyable provenance citations.
@@ -73,6 +85,58 @@ source-of-truth changes.
 - Added a maintained UK Legislation documentation spine covering getting started, personas and user journeys, an illustrated legislation-specific manual, agent research, evaluation and publication maintenance.
 - Added four hosted-Explorer illustrations with a machine-readable capture manifest so corpus overview, exact-title search, work provenance and live CLML passage discovery can be refreshed reproducibly.
 - Promoted UK Legislation to a first-class hosted example in the README opening and cross-linked the documentation spine from repository, publication and architecture guides.
+
+### Changed
+
+- Made **View source data** the primary source-record action and relabelled the
+  direct endpoint as **Open raw JSON ↗**. Raw external responses always open in
+  a separate tab, so they cannot replace the current Explorer state.
+- Relabelled harvested CKAN dates as catalogue metadata and added a current
+  source/maintenance disclosure. Resource hosts remain discovery leads until a
+  bundle supplies canonical-source evidence and provenance.
+- Kept Explorer search fully static and deterministic while adding durable
+  query, repeated facet-filter and sort state to public URLs, including
+  Back/Forward restoration and compatible small-bundle type filtering.
+- Added backward-compatible `okf-static-search.v2` filter postings, missing
+  metadata buckets, filter-before-limit execution, dynamic facet counts,
+  structured match explanations and deterministic relevance/newest/title/
+  metadata-quality sorting, with the existing v1 full-index path retained as a
+  correctness fallback.
+- Split the retrieval panel into Search, Filter results and Sort controls, added
+  removable active-filter chips and meaningful candidate totals, and replaced
+  raw scores with plain-language "Why this matched" evidence.
+- Added a reproducible 30-query ranking benchmark for weighted, field-weighted
+  IDF and IDF-plus-exact-boost strategies. The benchmark gate retains the
+  current weighted default because neither candidate reaches the required 3%
+  macro nDCG@10 improvement.
+- Added an illustrated static search and filtering manual captured against the
+  58,461-record GOV.UK CKAN corpus, covering deterministic match explanations,
+  repeated facet filters, sorting, result totals, v1 fallback and v2 indexed
+  execution.
+- Fixed large-corpus browser searches by copying reactive retrieval state into
+  structured-clone-safe data before posting requests to the search worker.
+- Standardized absent and legacy `None`/`null` metadata as `Not specified
+  (metadata gap)` in record details and illustrated the wording in the new
+  manual.
+- Replaced the ambiguous large-corpus `tokens` label with `distinct indexed
+  terms` and an explicit explanation that the count is local search-index
+  vocabulary, not AI or billable model usage.
+- Added deterministic organisation-aware retrieval for exact publisher names
+  and unambiguous abbreviations. Existing CKAN v1 bundles reuse their compact
+  delta-encoded publisher postings, while new v2 bundles can publish explicit
+  entity aliases through `data/search/entities.json`; recognition remains
+  visible in suggestions and match explanations.
+- Fixed the graph relationship drawer so its larger drag target changes a real
+  row height, retains pointer capture and also supports keyboard resizing.
+- Kept an inspected relationship visibly selected in both the drawer and graph
+  instead of clearing edge-only highlight state during selection reconciliation.
+- Added an early record-date summary plus a contextual Dates and related records
+  block. It distinguishes source update dates from resource/coverage years,
+  follows explicit series metadata, and says when the bundle contains no other
+  record in that series rather than guessing from title similarity.
+- Moved the lightweight search card's Load full record action beside the title
+  and changed secondary detail-card sections to folded disclosures, leaving the
+  first Overview section open by default.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 

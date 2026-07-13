@@ -237,6 +237,61 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertEqual(os_doc["license_basis"], "provider-terms-inferred")
         self.assertEqual(os_doc["license_confidence"], 0.7)
 
+    def test_search_v2_publishes_lazy_filter_postings_and_sort_values(self):
+        corpus = self.build_fixture_corpus()
+        search = corpus["search"]
+        manifest = search["manifest"]
+
+        self.assertEqual(manifest["schema"], "okf-static-search.v2")
+        self.assertIn("record_type", manifest["entrypoints"]["filter_postings"])
+        self.assertIn("license", manifest["entrypoints"]["filter_postings"])
+        record_type_path = manifest["entrypoints"]["filter_postings"]["record_type"]
+        record_type_values = search["filter_postings"][record_type_path]["values"]
+        self.assertIn("API Product", record_type_values)
+        self.assertEqual(len(search["sort_values"]), len(corpus["records"]))
+        self.assertEqual(manifest["entrypoints"]["sort_values"], "data/search/sort-values.json")
+        self.assertEqual(manifest["entrypoints"]["entities"], "data/search/entities.json")
+        self.assertTrue(search["entities"]["entities"])
+
+        files = builder_module.output_files(corpus)
+        self.assertIn(Path(record_type_path), files)
+        self.assertIn(Path("data/search/sort-values.json"), files)
+        self.assertIn(Path("data/search/entities.json"), files)
+
+    def test_search_entities_publish_declared_and_deterministic_organisation_aliases(self):
+        entities = builder_module.search_entities_from_publishers(
+            [
+                {
+                    "name": "department-for-science-innovation-and-technology",
+                    "title": "Department for Science, Innovation and Technology",
+                    "aliases": ["Science Department"],
+                    "dataset_count": 9,
+                    "route": "publisher/department-for-science-innovation-and-technology",
+                }
+            ],
+            kind="organisation",
+        )
+
+        self.assertEqual(len(entities), 1)
+        self.assertIn("DSIT", entities[0]["aliases"])
+        self.assertIn("Science Department", entities[0]["aliases"])
+        self.assertEqual(entities[0]["filter_value"], "department-for-science-innovation-and-technology")
+        self.assertEqual(entities[0]["kind"], "organisation")
+
+    def test_filter_postings_use_an_explicit_missing_value_bucket(self):
+        search = builder_module.build_search(
+            [
+                {"name": "one", "title": "One", "publisher": "p", "publisher_title": "P", "resource_count": 0, "formats": [], "tags": [], "topics": [], "quality": {"overall": 0.5}, "route": "dataset/one"},
+                {"name": "two", "title": "Two", "publisher": "p", "publisher_title": "P", "resource_count": 0, "formats": [], "tags": [], "topics": [], "quality": {"overall": 0.5}, "route": "dataset/two", "status": "active"},
+            ],
+            filter_facets={"status": [{"value": "active", "count": 1}]},
+        )
+        path = search["manifest"]["entrypoints"]["filter_postings"]["status"]
+        values = search["filter_postings"][path]["values"]
+
+        self.assertEqual(values[builder_module.MISSING_FILTER_VALUE], [0])
+        self.assertEqual(values["active"], [1])
+
     def test_ckan_ogl_variants_are_canonicalised_before_provider_inference(self):
         corpus = self.build_fixture_corpus()
         council_product = next(record for record in corpus["records"] if record["name"] == "data-gov-uk-planning-applications")

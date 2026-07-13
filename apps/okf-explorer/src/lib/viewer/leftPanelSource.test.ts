@@ -32,7 +32,26 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('function syncExplorerUrl(push = false)');
     expect(pageSource).toContain('largeInspectedRoute || largeSelectedRoute');
     expect(pageSource).toContain("window.history.pushState({}, '', url)");
-    expect(pageSource).toContain('applyLargeBrowserRoute(hash)');
+    expect(pageSource).toContain('applyLargeBrowserRoute(hash, hasSerializedFilters(params))');
+  });
+
+  it('round-trips search, filters and sort state for large and small bundles', () => {
+    expect(pageSource).toContain('writeRetrievalState(next.searchParams, currentRetrievalState())');
+    expect(pageSource).toContain('parseRetrievalState(params, largeSourceFacetKeys(source))');
+    expect(pageSource).toContain("parseRetrievalState(new URLSearchParams(location.search), ['type'])");
+    expect(pageSource).toContain('largeFacetFilters = state.filters');
+    expect(pageSource).toContain('retrievalSort = state.sort');
+  });
+
+  it('separates retrieval controls and explains matches without exposing raw scores', () => {
+    expect(pageSource).toContain('<h2>Search</h2>');
+    expect(pageSource).toContain('<span>Filter results');
+    expect(pageSource).toContain('<span>Sort</span>');
+    expect(pageSource).toContain('class="active-filter-chips"');
+    expect(pageSource).toContain('function removeLargeFilter');
+    expect(pageSource).toContain('Why this matched: {searchMatchReason(result)}');
+    expect(pageSource).toContain('Not specified (metadata gap)');
+    expect(pageSource).not.toContain('score {result.score}');
   });
 
   it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {
@@ -71,7 +90,8 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('quality-contract_signal');
     expect(pageSource).toContain('largeDetail.result.license_title');
     expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.timestamp)');
-    expect(pageSource).toContain("['none', 'null', 'not-specified']");
+    expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)');
+    expect(pageSource).not.toContain("|| 'None'");
     expect(pageSource).toContain("source-date:created");
     expect(pageSource).toContain("source-date:modified");
     expect(pageSource).toContain("source-date:timeline");
@@ -81,6 +101,56 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("addNode(stackId, 'relationship-stack'");
     expect(pageSource).toContain('edge-panel edge-drawer');
     expect(pageSource).toContain('drawer-grip');
+    expect(pageSource).toContain('class="relationship-rows"');
+    expect(pageSource).toContain('class:resizing={edgePanelResizing}');
+    expect(pageSource).toContain('setPointerCapture');
+  });
+
+  it('keeps an inspected relationship selected independently of route highlighting', () => {
+    expect(pageSource).toContain('class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}');
+    expect(pageSource).toContain('aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}');
+    expect(pageSource).not.toContain("if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';");
+  });
+
+  it('surfaces record dates and explicit series alternatives without guessing from similar titles', () => {
+    expect(pageSource).toContain('class="record-date-summary"');
+    expect(pageSource).toContain('{dateContext.updatedLabel}');
+    expect(pageSource).toContain('Catalogue date — not necessarily the dataset’s latest release or update frequency.');
+    expect(pageSource).toContain('Dates and related records');
+    expect(pageSource).toContain('datasetDateContext(largeDetail.dataset, largeDetail.resources)');
+    expect(pageSource).toContain('relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])');
+    expect(pageSource).toContain('Explorer will not guess that similar titles are the same series');
+  });
+
+  it('separates CKAN discovery metadata from evidence-backed current operations', () => {
+    expect(pageSource).toContain('datasetOperationalContext(largeDetail.dataset, largeDetail.resources)');
+    expect(pageSource).toContain('Current source and maintenance');
+    expect(pageSource).toContain('Operational metadata gap.');
+    expect(pageSource).toContain('Catalogue declarations');
+    expect(pageSource).toContain('These claims come from the catalogue metadata and are preserved as provenance.');
+    expect(pageSource).toContain('Explorer does not call it authoritative until the bundle supplies canonical-source evidence and provenance.');
+    expect(pageSource).toContain('Catalogue metadata modified');
+  });
+
+  it('puts full-record hydration first and folds secondary data-card sections', () => {
+    const loadAction = pageSource.indexOf("largeFullLoading ? 'Loading full record...' : 'Load full record'");
+    const searchOverview = pageSource.indexOf('<summary>Overview</summary>', loadAction);
+    expect(loadAction).toBeGreaterThan(0);
+    expect(searchOverview).toBeGreaterThan(loadAction);
+    expect(pageSource.match(/<details class="metadata-section disclosure-section" open>/g)?.length).toBeGreaterThanOrEqual(3);
+    expect(pageSource).toContain('<details class="metadata-section disclosure-section">\n                <summary>Normalized record fields</summary>');
+    expect(pageSource).not.toContain('>Load full record</button>');
+  });
+
+  it('opens source API responses inside Explorer without replacing the current window', () => {
+    expect(pageSource).toContain("import SourceInspector from '$lib/viewer/SourceInspector.svelte'");
+    expect(pageSource).toContain('let largeSourceInspectorOpen = $state(false)');
+    expect(pageSource).toContain("'View source data'");
+    expect(pageSource).toContain('Open raw JSON ↗');
+    expect(pageSource).toContain('target="_blank" rel="noopener noreferrer"');
+    expect(pageSource).toContain('fetchSourceJson(url)');
+    expect(pageSource).not.toContain('<summary>Source API JSON</summary>');
+    expect(pageSource).not.toContain('>Open API</a>');
   });
 
   it('keeps synthetic graph stacks from becoming navigable graph centres', () => {

@@ -718,7 +718,12 @@ ELI 1.5 is the primary interoperability ontology because it models legal works, 
 def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], generated_at: str) -> dict[str, Any]:
     facets = build_facets(records)
     publishers = build_publishers(records)
-    search = large_corpus.build_search(records, max_postings_per_token=10_000)
+    search = large_corpus.build_search(
+        records,
+        max_postings_per_token=10_000,
+        filter_facets=facets,
+        search_entities=large_corpus.search_entities_from_publishers(publishers, kind="category"),
+    )
     record_chunks = [(path.with_suffix(".json.gz"), rows) for path, rows in large_corpus.chunk_paths("works", records, chunk_size=1000)]
     compressed_result_chunks = []
     result_path_map: dict[str, str] = {}
@@ -729,6 +734,18 @@ def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], gen
     search["result_doc_chunks"] = compressed_result_chunks
     search["manifest"]["entrypoints"]["result_docs"] = [result_path_map[path] for path in search["manifest"]["entrypoints"]["result_docs"]]
     search["manifest"]["entrypoints"]["doc_map"] = "data/search/doc-map.json.gz"
+    compressed_filter_postings = {}
+    filter_path_map = {}
+    for path, payload in search["filter_postings"].items():
+        compressed = Path(path).with_suffix(".json.gz")
+        compressed_filter_postings[compressed.as_posix()] = payload
+        filter_path_map[path] = compressed.as_posix()
+    search["filter_postings"] = compressed_filter_postings
+    search["manifest"]["entrypoints"]["filter_postings"] = {
+        key: filter_path_map[path]
+        for key, path in search["manifest"]["entrypoints"]["filter_postings"].items()
+    }
+    search["manifest"]["entrypoints"]["sort_values"] = "data/search/sort-values.json.gz"
     resource_chunks = large_corpus.chunk_paths("manifestations", [], chunk_size=1000)
     publisher_chunks = large_corpus.chunk_paths("categories", publishers, chunk_size=1000)
     relationships = semantic_relationships(records, generated_at)
@@ -834,8 +851,11 @@ def output_files(corpus: dict[str, Any], source_meta: dict[str, Any]) -> dict[Pa
         Path("data/source-provenance.json"): large_corpus.render_json(source_meta),
         Path("data/search/manifest.json"): large_corpus.render_json(corpus["search"]["manifest"]),
         Path("data/search/doc-map.json.gz"): gzip_json(corpus["search"]["doc_map"]),
+        Path("data/search/sort-values.json.gz"): gzip_json(corpus["search"]["sort_values"]),
         Path("enrichment/model-assisted-v1.json"): MODEL_ENRICHMENT_PATH.read_text(encoding="utf-8"),
     }
+    if corpus["search"]["entities"]["entities"]:
+        files[Path("data/search/entities.json")] = large_corpus.render_json(corpus["search"]["entities"])
     for key in ("record_chunks", "resource_chunks", "publisher_chunks", "relationship_chunks"):
         for path, rows in corpus[key]:
             files[path] = gzip_json(rows) if path.suffix == ".gz" else large_corpus.render_json(rows)
@@ -847,6 +867,8 @@ def output_files(corpus: dict[str, Any], source_meta: dict[str, Any]) -> dict[Pa
         files[Path(f"data/search/prefixes/{shard}.json")] = large_corpus.render_json(payload)
     for path, payload in corpus["search"]["postings"].items():
         files[Path(path)] = large_corpus.render_json(payload)
+    for path, payload in corpus["search"]["filter_postings"].items():
+        files[Path(path)] = gzip_json(payload)
     for path, rows in corpus["search"]["result_doc_chunks"]:
         files[path] = gzip_json(rows)
     evaluation_root = ROOT / "evaluation" / "legislation"

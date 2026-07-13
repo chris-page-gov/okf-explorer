@@ -8,6 +8,7 @@ import type {
   LargeGovukContent,
   LargeGraphIndex,
   LargeOverview,
+  LargeOperationalMetadataIndex,
   LargePublisher,
   LargeRelationship,
   LargeRelationshipAdjacencyManifest,
@@ -86,6 +87,17 @@ function indexResourcesByDataset(resources: LargeResource[]): Map<string, LargeR
   return out;
 }
 
+function mergeOperationalMetadata(
+  datasets: LargeDataset[],
+  index: LargeOperationalMetadataIndex
+): LargeDataset[] {
+  return datasets.map((dataset) => {
+    const route = dataset.route || `dataset/${dataset.name}`;
+    const metadata = index.records[route] || index.records[dataset.name];
+    return metadata ? { ...dataset, operational_metadata: metadata } : dataset;
+  });
+}
+
 export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const descriptor = await fetchJson<LargeCorpusDescriptor>(url);
   if (descriptor.kind !== 'okf-large-corpus') {
@@ -115,14 +127,19 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     loadFullIndex() {
       if (!fullIndexPromise) {
         fullIndexPromise = (async () => {
-          const [datasets, resources, publishers, facets, graph, govukContent] = await Promise.all([
+          const operationalPath = descriptor.entrypoints.operational_metadata || manifest.indexes.operational_metadata;
+          const [rawDatasets, resources, publishers, facets, graph, govukContent, operationalMetadata] = await Promise.all([
             loadChunks<LargeDataset>(baseUrl, manifest.chunks.datasets || []),
             loadChunks<LargeResource>(baseUrl, manifest.chunks.resources || []),
             loadChunks<LargePublisher>(baseUrl, manifest.chunks.publishers || []),
             manifest.indexes.facets ? fetchJson<Record<string, Array<{ value: string; count: number }>>>(resolveUrl(manifest.indexes.facets, baseUrl)) : {},
             manifest.indexes.graph ? fetchJson<LargeGraphIndex>(resolveUrl(manifest.indexes.graph, baseUrl)) : {},
-            manifest.indexes.govuk_content ? fetchJson<LargeGovukContent>(resolveUrl(manifest.indexes.govuk_content, baseUrl)) : {}
+            manifest.indexes.govuk_content ? fetchJson<LargeGovukContent>(resolveUrl(manifest.indexes.govuk_content, baseUrl)) : {},
+            operationalPath
+              ? fetchJson<LargeOperationalMetadataIndex>(resolveUrl(operationalPath, baseUrl))
+              : { schema: 'okf-operational-metadata.v1', records: {} }
           ]);
+          const datasets = mergeOperationalMetadata(rawDatasets, operationalMetadata);
           return {
             datasets,
             resources,
@@ -130,6 +147,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
             facets,
             graph,
             govukContent,
+            operationalMetadata,
             datasetByName: new Map(datasets.map((dataset) => [dataset.name, dataset])),
             resourceById: new Map(resources.map((resource) => [resource.id, resource])),
             publisherByName: new Map(publishers.map((publisher) => [publisher.name, publisher])),

@@ -31,6 +31,7 @@ Every record should have:
 - source URL and source adapter/tier;
 - `confidence` such as `observed`, `declared` or `assured`;
 - provider/publisher where known;
+- declared organisation aliases and standard abbreviations where known;
 - licence and access fields, with explicit `not-specified` when missing;
 - protocol/format/host fields when applicable;
 - standards alignment fields for API/data bundles: `dcat_type`,
@@ -38,12 +39,31 @@ Every record should have:
 - tags/topics for user discovery;
 - timestamps or a clear "not recorded in source metadata" state.
 
+For data published as a recurring series, also provide:
+
+- a stable `series_id` when the source supplies one;
+- `series` or `series_title` for the source-declared human label;
+- `temporal_coverage` or `coverage_years` for the period represented by the
+  data, kept separate from catalogue `metadata_created` and
+  `metadata_modified` timestamps; and
+- year-bearing resource names only when those names come from the source.
+
+Explorer treats an explicit identifier as the strongest series link. A
+source-declared series label is accepted within the same publisher. Similar
+titles alone are not enough to claim that two records belong to one series.
+Legacy CKAN records can retain source series metadata under `extras.series`.
+
+Catalogue dates must remain distinct from dataset currency. Map CKAN
+`metadata_created` and `metadata_modified` as catalogue-record dates; do not
+present them as the first publication or latest data release unless the source
+explicitly says so.
+
 ## Explorer Features To Feed
 
 | Explorer feature | Bundle fields that make it useful |
 |------------------|-----------------------------------|
 | Reader overview | counts, overview cards, notes, warnings, top entry points |
-| Search | search shards with title, provider, notes, tags, host, protocol and route |
+| Search | search shards with title, provider, notes, tags, host, protocol and route; optional entity identities and aliases |
 | Facets | facet definitions, value counts, selected-value routes and facet help text |
 | Graph | typed relationships, relationship counts, node types, groupable fields |
 | Links | relationship kind, source, target, evidence type, confidence and counts |
@@ -51,7 +71,95 @@ Every record should have:
 | Type view | record-type counts and representative records |
 | Resources view | resources, endpoints, formats, hosts and documentation links |
 | Narrative view | pack summary, methodology, warnings and source limitations |
-| Detail card | provenance, licence basis, access model, contract status, quality signals |
+| Detail card | provenance, licence basis, access model, contract status, quality signals, source update date, temporal coverage and stable series identity |
+
+## Source API Links
+
+Use `source_api_url` for a machine-readable endpoint that returns the source
+record behind the normalized OKF record. Explorer treats **View source data**
+as the primary action and keeps **Open raw JSON ↗** as a new-tab fallback.
+
+For the in-app Source Inspector to work well, the endpoint should:
+
+- use `https` and return JSON with an appropriate media type;
+- permit browser `GET` requests with CORS from a static Pages origin;
+- require no secret embedded in the bundle URL;
+- return a single record comfortably below the 10 MB display cap; and
+- expose stable identifiers, publisher/provenance and update dates where the
+  source has them.
+
+Do not copy the source response wholesale into normalized OKF fields. Preserve
+the source link, map governed fields into the bundle with explicit provenance,
+and let the inspector show the unaltered remote response on demand. Explorer
+renders response values as text and does not execute source HTML.
+
+## Operational Metadata From Canonical Sources
+
+Discovery catalogues such as CKAN can be older than the publisher service they
+link to. Enrich this at bundle-build time with `operational_metadata`; do not
+make the static Explorer crawl arbitrary resource hosts in the browser.
+
+Large corpora may keep this information in a small optional sidecar rather than
+rewriting dataset chunks. Set `entrypoints.operational_metadata` on the
+descriptor, or `indexes.operational_metadata` on the data manifest, to an
+`okf-operational-metadata.v1` document keyed by stable dataset route:
+
+```yaml
+schema: okf-operational-metadata.v1
+generated_at: 2026-07-13T00:00:00Z
+records:
+  dataset/overseas-companies-that-own-property-in-england-and-wales:
+    update_frequency: Monthly
+```
+
+Explorer loads and merges the sidecar with the normalized dataset index. This
+keeps enrichment independently refreshable without changing lexical search or
+facet postings, while undeclared sidecars remain fully backward compatible.
+
+```yaml
+operational_metadata:
+  authoritative_source:
+    name: HM Land Registry
+    url: https://www.gov.uk/government/organisations/land-registry
+  canonical_source:
+    label: Use land and property data
+    url: https://use-land-property-data.service.gov.uk/datasets/ocod
+    host: use-land-property-data.service.gov.uk
+  update_frequency: Monthly
+  latest_release:
+    dynamic: true
+    label: Check the canonical source for the current monthly release
+  maintenance_status: Active
+  distributions:
+    - label: Complete monthly extract
+      kind: full
+    - label: Change-only monthly extract
+      kind: delta
+  api:
+    available: true
+    access: Account, licence agreement and API key required
+    url: https://use-land-property-data.service.gov.uk/api-documentation
+  technical_specification_url: https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec
+  verified_at: 2026-07-13
+  provenance:
+    source_url: https://use-land-property-data.service.gov.uk/datasets/ocod
+    observed_at: 2026-07-13
+    method: deterministic publisher-page adapter
+```
+
+The generator may use the resource host as a discovery lead, but host identity
+alone is not evidence that a page is canonical, current or authoritative.
+Promote values only when a source-specific adapter records its evidence URL,
+observation date and method. Keep update frequency aligned with DCAT
+`dct:accrualPeriodicity` during export, and model full/delta/API access as
+distributions rather than flattening them into the catalogue modified date.
+
+For example, HM Land Registry’s current
+[Overseas companies dataset](https://use-land-property-data.service.gov.uk/datasets/ocod)
+and [technical specification](https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec)
+state the monthly release schedule, full/change-only delivery and API access;
+the older CKAN record remains useful discovery provenance but is not the source
+for current operational status.
 
 ## Facets To Prefer
 
@@ -154,6 +262,7 @@ data/apis-0.json
 data/resources-0.json
 data/relationships-0.json
 data/search/manifest.json
+data/search/entities.json
 data/search/results-0.json
 ```
 
@@ -164,7 +273,9 @@ polite to static hosts.
 ## Acceptance Checklist
 
 - The hosted Explorer opens the pack in overview-only mode quickly.
-- Search finds known providers, hosts, products and place names.
+- Search finds known providers, their declared abbreviations, hosts, products
+  and place names. Publish authoritative organisation aliases in the optional
+  search-entity index instead of hard-coding corpus-specific names in Explorer.
 - Facets are searchable, paged and explain their terms.
 - A record detail card exposes provenance, licence/access/contract metadata and
   quality-signal explanations.

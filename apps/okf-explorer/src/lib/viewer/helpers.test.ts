@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { LargeAnalysisOverview, OkfNode, OkfRelationship } from '$lib/types';
+import type { LargeAnalysisOverview, LargeDataset, OkfNode, OkfRelationship } from '$lib/types';
 import {
   analysisFacetForKey,
   analysisFacetRows,
@@ -8,6 +8,8 @@ import {
   analysisLabelForRoute,
   analysisNodeForRoute,
   colorForType,
+  datasetDateContext,
+  datasetOperationalContext,
   displayValue,
   facetLabel,
   facetSummary,
@@ -15,11 +17,13 @@ import {
   formatPercent,
   isHttpUrl,
   orderedFacetKeys,
+  relatedSeriesDatasets,
   relationshipTitle,
   routeForAnalysisNode,
   selectedFacetValueSummary,
   smallRelationshipKind,
   smallRelationshipTitle,
+  sourceDateLabel,
   timelineBucketFacetFilter
 } from './helpers';
 
@@ -74,10 +78,12 @@ const analysis: LargeAnalysisOverview = {
 
 describe('viewer helpers', () => {
   it('formats stable display, percentage and URL values', () => {
-    expect(displayValue(undefined)).toBe('None');
-    expect(displayValue(null)).toBe('None');
-    expect(displayValue('')).toBe('None');
-    expect(displayValue([])).toBe('None');
+    expect(displayValue(undefined)).toBe('Not specified (metadata gap)');
+    expect(displayValue(null)).toBe('Not specified (metadata gap)');
+    expect(displayValue('')).toBe('Not specified (metadata gap)');
+    expect(displayValue([])).toBe('Not specified (metadata gap)');
+    expect(displayValue('None')).toBe('Not specified (metadata gap)');
+    expect(displayValue('__missing__')).toBe('Not specified (metadata gap)');
     expect(displayValue(['CSV', 'XLS'])).toBe('CSV, XLS');
     expect(displayValue({ a: 1 })).toBe('{"a":1}');
     expect(formatPercent(0.955)).toBe('96%');
@@ -226,6 +232,102 @@ describe('viewer helpers', () => {
     expect(relationshipTitle({ source: 'dataset/a', target: 'tag/t', label: 'tagged' }, labelForRoute)).toBe('Dataset A → tagged → Tag T');
     expect(relationshipTitle({ source: '', target: '', label: 'tagged', count: 1200 }, labelForRoute)).toBe('tagged (1,200 relationships)');
     expect(relationshipTitle({ source: '', target: '', label: 'tagged' }, labelForRoute)).toBe('tagged');
+  });
+
+  it('distinguishes source update dates, resource years and explicit series membership', () => {
+    const current: LargeDataset = {
+      name: 'home-workers',
+      title: 'Characteristics of Home Workers',
+      publisher: 'ons',
+      metadata_modified: '2014-06-04T11:00:07Z',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+    const earlier: LargeDataset = {
+      name: 'home-workers-2011',
+      title: 'Characteristics of Home Workers 2011',
+      publisher: 'ons',
+      metadata_modified: '2011-03-01',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+    const otherPublisher: LargeDataset = {
+      name: 'home-workers-copy',
+      title: 'Characteristics of Home Workers copy',
+      publisher: 'other',
+      extras: { series: 'Characteristics of Home Workers' }
+    };
+
+    expect(datasetDateContext(current, [{ id: 'resource-1', dataset: current.name, name: '2014' }])).toEqual({
+      updated: '2014-06-04T11:00:07Z',
+      updatedLabel: 'Catalogue metadata updated',
+      catalogueMetadata: true,
+      years: ['2014'],
+      series: 'Characteristics of Home Workers',
+      seriesKey: 'label:characteristics of home workers'
+    });
+    expect(sourceDateLabel('2014-06-04T11:00:07Z')).toBe('4 Jun 2014');
+    expect(relatedSeriesDatasets(current, [otherPublisher, earlier, current])).toEqual([earlier]);
+  });
+
+  it('separates CKAN catalogue dates from evidence-backed operational metadata', () => {
+    const dataset: LargeDataset = {
+      name: 'overseas-companies',
+      title: 'Overseas companies that own property in England and Wales',
+      source_adapter: 'data.gov.uk CKAN',
+      source_api_url: 'https://data.gov.uk/api/action/package_show?id=overseas-companies',
+      extras: {
+        'dataset-reference-date': '[{"type":"publication","value":"2016-04-04"}]',
+        'frequency-of-update': 'monthly'
+      },
+      operational_metadata: {
+        canonical_source: {
+          url: 'https://use-land-property-data.service.gov.uk/datasets/ocod',
+          label: 'Use land and property data'
+        },
+        authoritative_source: { name: 'HM Land Registry', url: 'https://www.gov.uk/government/organisations/land-registry' },
+        update_frequency: 'Monthly',
+        latest_release: { dynamic: true },
+        maintenance_status: 'Active',
+        distributions: [
+          { label: 'Complete monthly extract', kind: 'full' },
+          { label: 'Change-only monthly extract', kind: 'delta' }
+        ],
+        api: { available: true, access: 'Account and API key required', url: 'https://use-land-property-data.service.gov.uk/api-documentation' },
+        technical_specification_url: 'https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec',
+        verified_at: '2026-07-13'
+      }
+    };
+    const context = datasetOperationalContext(dataset, [
+      {
+        id: 'resource-1',
+        dataset: dataset.name,
+        name: 'Information service',
+        url: 'https://use-land-property-data.service.gov.uk/datasets/ocod',
+        host: 'use-land-property-data.service.gov.uk'
+      }
+    ]);
+
+    expect(context.explicit).toBe(true);
+    expect(context.catalogueDerived).toBe(true);
+    expect(context.canonicalSource).toEqual({
+      label: 'Use land and property data',
+      url: 'https://use-land-property-data.service.gov.uk/datasets/ocod',
+      host: 'use-land-property-data.service.gov.uk'
+    });
+    expect(context.updateFrequency).toBe('Monthly');
+    expect(context.latestRelease).toBe('Dynamic — check the canonical source');
+    expect(context.api).toEqual({
+      label: 'Available · Account and API key required',
+      url: 'https://use-land-property-data.service.gov.uk/api-documentation'
+    });
+    expect(context.catalogueFrequency).toBe('monthly');
+    expect(context.catalogueReferenceDates).toEqual([{ date: '2016-04-04', kind: 'publication' }]);
+    expect(context.linkedSources).toEqual([
+      {
+        label: 'Information service',
+        host: 'use-land-property-data.service.gov.uk',
+        url: 'https://use-land-property-data.service.gov.uk/datasets/ocod'
+      }
+    ]);
   });
 
   it('formats small-bundle relationship labels against node titles', () => {

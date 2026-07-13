@@ -8,6 +8,7 @@
     LargePublisher,
     LargeRelationship,
     LargeResource,
+    LargeSearchResponse,
     LoadedSource,
     NormalizedCorpus,
     OkfNode,
@@ -17,9 +18,21 @@
     ViewMode
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
+  import {
+    RETRIEVAL_STATE_SCHEMA,
+    MISSING_FILTER_VALUE,
+    defaultRetrievalSort,
+    hasSerializedFilters,
+    isRetrievalSort,
+    parseRetrievalState,
+    writeRetrievalState,
+    type RetrievalSort,
+    type RetrievalStateV1
+  } from '$lib/search/retrievalState';
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
-  import { fetchJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
+  import SourceInspector from '$lib/viewer/SourceInspector.svelte';
+  import { fetchJson, fetchSourceJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
@@ -31,6 +44,8 @@
     analysisLabelForRoute,
     analysisNodeForRoute as findAnalysisNodeForRoute,
     colorForType,
+    datasetDateContext,
+    datasetOperationalContext,
     displayValue,
     facetLabel,
     facetSummary as getFacetSummary,
@@ -38,11 +53,13 @@
     formatPercent,
     isHttpUrl as isUrl,
     orderedFacetKeys,
+    relatedSeriesDatasets,
     relationshipTitle as formatRelationshipTitle,
     routeForAnalysisNode,
     selectedFacetValueSummary,
     smallRelationshipKind as getSmallRelationshipKind,
     smallRelationshipTitle as getSmallRelationshipTitle,
+    sourceDateLabel,
     timelineBucketFacetFilter
   } from '$lib/viewer/helpers';
   import './styles.css';
@@ -199,6 +216,7 @@
   let largeQuery = $state('');
   let largeAppliedQuery = $state('');
   let largeResults = $state<SearchResultDoc[]>([]);
+  let largeSearchResponse = $state<LargeSearchResponse | null>(null);
   let largeSuggestions = $state<SearchSuggestion[]>([]);
   let largeSelectedRoute = $state('');
   let largeInspectedRoute = $state('');
@@ -233,6 +251,11 @@
   let largeApiJson = $state<unknown>(null);
   let largeApiLoading = $state(false);
   let largeApiError = $state('');
+  let largeApiBytes = $state(0);
+  let largeApiContentType = $state('');
+  let largeApiRetrievedAt = $state('');
+  let largeApiResponseUrl = $state('');
+  let largeSourceInspectorOpen = $state(false);
   let largeApiRequest = 0;
   let activeFacetKey = $state('');
   let pins = $state<string[]>([]);
@@ -245,7 +268,10 @@
   let activeHelpKey = $state('');
   let largeSearchDebounce = $state<number | null>(null);
   let edgePanelHeight = $state(180);
+  let edgePanelResizing = $state(false);
   let timelineResolution = $state<TimelineResolution>('latest');
+  let retrievalSort = $state<RetrievalSort>('newest');
+  let edgePanelResizeCleanup: (() => void) | null = null;
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -256,10 +282,10 @@
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
       if (!query) return true;
-      return `${node.title} ${node.id} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
+      return `${node.title} ${node.id} ${(node.aliases || []).join(' ')} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
         .toLowerCase()
         .includes(query);
-    })
+    }).sort(compareSmallNodes)
   );
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
@@ -284,7 +310,6 @@
   let largeResultOrder: Map<string, number> = $derived(new Map(largeResults.map((result, index) => [result.name, index])));
   let largeVisibleDatasets: LargeDataset[] = $derived(largeIndex ? visibleLargeDatasets() : []);
   let largeVisibleDatasetNames: Set<string> = $derived(new Set(largeVisibleDatasets.map((dataset) => dataset.name)));
-  let visibleLargeSearchCount: number = $derived(largeIndex && largeAppliedQuery.trim() ? largeVisibleDatasets.length : largeResults.length);
   let largeVisibleResources: LargeResource[] = $derived(
     largeIndex ? largeVisibleDatasets.flatMap((dataset) => largeIndex?.resourcesByDataset.get(dataset.name) || []).slice(0, 600) : []
   );
@@ -292,6 +317,31 @@
   let largeFacetKeys: string[] = $derived(largeIndex ? Object.keys(largeIndex.facets) : Object.keys(source?.kind === 'large' ? source.overview.facet_previews || {} : {}));
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, 0));
   let pinnedLabels: Array<{ route: string; label: string }> = $derived(pins.map((route) => ({ route, label: largeLabelForRoute(route) })));
+
+  function compareSmallNodes(left: OkfNode, right: OkfNode): number {
+    if (retrievalSort === 'title') return left.title.localeCompare(right.title);
+    if (retrievalSort === 'newest') {
+      return String(right.timestamp || '').localeCompare(String(left.timestamp || '')) || left.title.localeCompare(right.title);
+    }
+    if (retrievalSort === 'metadata-quality') {
+      const leftQuality = typeof left.quality_score === 'number' ? left.quality_score : -1;
+      const rightQuality = typeof right.quality_score === 'number' ? right.quality_score : -1;
+      return rightQuality - leftQuality || left.title.localeCompare(right.title);
+    }
+    const query = smallQuery.trim().toLowerCase();
+    if (!query) return left.title.localeCompare(right.title);
+    return smallMatchScore(right, query) - smallMatchScore(left, query) || left.title.localeCompare(right.title);
+  }
+
+  function smallMatchScore(node: OkfNode, query: string): number {
+    const title = node.title.toLowerCase();
+    const id = node.id.toLowerCase();
+    const aliases = (node.aliases || []).map((alias) => alias.toLowerCase());
+    if (title === query || id === query || aliases.includes(query)) return 100;
+    if (title.startsWith(query) || id.startsWith(query) || aliases.some((alias) => alias.startsWith(query))) return 60;
+    if (title.includes(query) || id.includes(query) || aliases.some((alias) => alias.includes(query))) return 30;
+    return 10;
+  }
 
   onMount(() => {
     void initialize();
@@ -305,6 +355,7 @@
       window.removeEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
       window.clearInterval(labelTimer);
       if (largeSearchDebounce !== null) window.clearTimeout(largeSearchDebounce);
+      edgePanelResizeCleanup?.();
     };
   });
 
@@ -355,10 +406,34 @@
     else next.searchParams.set('bundle', bundleUrl);
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
-    if (source?.kind === 'large' && largeQuery.trim()) next.searchParams.set('q', largeQuery.trim());
-    else next.searchParams.delete('q');
+    writeRetrievalState(next.searchParams, currentRetrievalState());
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
     return next.toString();
+  }
+
+  function currentRetrievalState(): RetrievalStateV1 {
+    if (source?.kind === 'large') {
+      return {
+        schema: RETRIEVAL_STATE_SCHEMA,
+        query: largeQuery,
+        filters: largeFacetFilters,
+        sort: retrievalSort
+      };
+    }
+    const allTypesSelected = visibleTypes.size === typeList.length && typeList.every((type) => visibleTypes.has(type));
+    return {
+      schema: RETRIEVAL_STATE_SCHEMA,
+      query: smallQuery,
+      filters: allTypesSelected ? {} : { type: [...visibleTypes] },
+      sort: retrievalSort
+    };
+  }
+
+  function largeSourceFacetKeys(large: Extract<LoadedSource, { kind: 'large' }>): string[] {
+    return [...new Set([
+      ...Object.keys(large.overview.facet_previews || {}),
+      ...(large.analysis?.facet_analysis || []).map((facet) => facet.key)
+    ])];
   }
 
   function syncExplorerUrl(push = false) {
@@ -382,19 +457,35 @@
     if (nextView) void selectView(nextView);
     const hash = safeDecodeHash();
     if (source?.kind === 'large') {
-      applyLargeBrowserRoute(hash);
+      const params = new URLSearchParams(location.search);
+      const state = parseRetrievalState(params, largeSourceFacetKeys(source));
+      largeQuery = state.query;
+      retrievalSort = state.sort;
+      largeFacetFilters = state.filters;
+      applyLargeBrowserRoute(hash, hasSerializedFilters(params));
       if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
         void ensureLargeFullIndex();
       }
+      if (state.query !== largeAppliedQuery) void runLargeSearch(state.query, { preserveSelection: true });
       reconcileLargeSelection();
-    } else if (smallCorpus && hash && smallCorpus.nodes[hash]) {
-      selectedId = hash;
-      inspectedId = '';
-      smallInspectedRelationship = null;
+    } else if (smallCorpus) {
+      const state = parseRetrievalState(new URLSearchParams(location.search), ['type']);
+      smallQuery = state.query;
+      retrievalSort = state.sort;
+      const selectedTypes = state.filters.type || [];
+      visibleTypes = selectedTypes.length
+        ? new Set(selectedTypes.filter((type) => typeList.includes(type)))
+        : new Set(typeList);
+      if (!visibleTypes.size) visibleTypes = new Set(typeList);
+      if (hash && smallCorpus.nodes[hash]) {
+        selectedId = hash;
+        inspectedId = '';
+        smallInspectedRelationship = null;
+      }
     }
   }
 
-  function applyLargeBrowserRoute(hash: string) {
+  function applyLargeBrowserRoute(hash: string, preserveSerializedFilters = false) {
     const route = hash && hash !== 'overview' ? hash : '';
     largeSelectedRoute = '';
     largeInspectedRoute = '';
@@ -406,13 +497,13 @@
     largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     if (!route) {
-      largeFacetFilters = {};
+      if (!preserveSerializedFilters) largeFacetFilters = {};
       return;
     }
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
       activeFacetKey = facetRoute.key;
-      largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
+      if (!preserveSerializedFilters) largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
       largeInspectedRoute = route;
       largeHighlightedRoute = route;
       largeGraphCenterRoute = route;
@@ -430,6 +521,8 @@
     error = '';
     selectedId = '';
     inspectedId = '';
+    smallQuery = '';
+    retrievalSort = 'newest';
     smallInspectedRelationship = null;
     largeSelectedRoute = '';
     largeInspectedRoute = '';
@@ -443,6 +536,7 @@
     clearLargeApiPanel();
     largeAppliedQuery = '';
     largeResults = [];
+    largeSearchResponse = null;
     largeSuggestions = [];
     largeIndex = null;
     largeRelationships = [];
@@ -494,22 +588,35 @@
         });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
-        const query = params.get('q') || '';
-        largeQuery = query;
-        largeSearchPendingQuery = query;
+        const retrieval = parseRetrievalState(params, largeSourceFacetKeys(large));
+        const query = retrieval.query;
+        largeQuery = retrieval.query;
+        retrievalSort = retrieval.sort;
+        largeFacetFilters = retrieval.filters;
+        largeSearchPendingQuery = retrieval.query;
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
-          applyLargeBrowserRoute(hash);
+          applyLargeBrowserRoute(hash, hasSerializedFilters(params));
           if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
             void ensureLargeFullIndex();
           }
+        } else if (Object.keys(largeFacetFilters).length) {
+          void ensureLargeFullIndex();
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
         if (searchManifest) void initialiseLargeSearch(large, resolveUrl(searchManifest, large.baseUrl), query, requestId);
       } else {
         const corpus = normalizeSmallBundle(raw);
         source = { kind: 'small', url: absoluteUrl, title: smallBundleTitle(corpus), corpus };
-        visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
+        const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
+        const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
+        const requestedTypes = retrieval.filters.type || [];
+        visibleTypes = requestedTypes.length
+          ? new Set(requestedTypes.filter((type) => availableTypes.includes(type)))
+          : new Set(availableTypes);
+        if (!visibleTypes.size) visibleTypes = new Set(availableTypes);
+        smallQuery = retrieval.query;
+        retrievalSort = retrieval.sort;
         history = rememberHistory({ url: absoluteUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
         bundleUrl = absoluteUrl;
         const hash = safeDecodeHash();
@@ -538,7 +645,9 @@
       largeSearchClient = client;
       const pendingQuery = largeSearchPendingQuery || initialQuery || largeQuery;
       largeSearchPendingQuery = '';
-      if (pendingQuery.trim()) void runLargeSearch(pendingQuery, { preserveSelection: true });
+      if (pendingQuery.trim() || Object.keys(largeFacetFilters).length) {
+        void runLargeSearch(pendingQuery, { preserveSelection: true });
+      }
     } catch (searchError) {
       client.destroy();
       if (requestId !== loadRequest) return;
@@ -638,11 +747,25 @@
       return;
     }
     activeFacetKey = key;
+    if (supportsWorkerFilter(key)) {
+      largeFacetHydratingKey = key;
+      await runLargeSearch(largeQuery, { preserveSelection: true });
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (!largeIndex) {
       largeFacetHydratingKey = key;
       await ensureLargeFullIndex();
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
     }
+  }
+
+  function supportsWorkerFilter(key: string): boolean {
+    return Boolean(largeSearchClient?.manifest?.entrypoints.filter_postings?.[key]);
+  }
+
+  function supportsCurrentWorkerFilters(): boolean {
+    return Object.keys(largeFacetFilters).every((key) => supportsWorkerFilter(key));
   }
 
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
@@ -806,7 +929,16 @@
     largeApiUrl = '';
     largeApiJson = null;
     largeApiError = '';
+    largeApiBytes = 0;
+    largeApiContentType = '';
+    largeApiRetrievedAt = '';
+    largeApiResponseUrl = '';
     largeApiLoading = false;
+    largeSourceInspectorOpen = false;
+  }
+
+  function closeSourceInspector() {
+    largeSourceInspectorOpen = false;
   }
 
   async function loadLargeApiJson(route: string, url: unknown) {
@@ -817,11 +949,20 @@
     largeApiUrl = url;
     largeApiJson = null;
     largeApiError = '';
+    largeApiBytes = 0;
+    largeApiContentType = '';
+    largeApiRetrievedAt = '';
+    largeApiResponseUrl = '';
     largeApiLoading = true;
+    largeSourceInspectorOpen = true;
     try {
-      const nextJson = await fetchJson<unknown>(url);
+      const response = await fetchSourceJson(url);
       if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
-      largeApiJson = nextJson;
+      largeApiJson = response.json;
+      largeApiBytes = response.bytes;
+      largeApiContentType = response.contentType;
+      largeApiRetrievedAt = response.retrievedAt;
+      largeApiResponseUrl = response.responseUrl;
     } catch (err) {
       if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
       largeApiError = err instanceof Error ? err.message : String(err);
@@ -831,6 +972,10 @@
   }
 
   function navigateBack() {
+    if (largeSourceInspectorOpen) {
+      closeSourceInspector();
+      return;
+    }
     if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
       largeForwardRoute = largeInspectedRoute;
       clearInspection();
@@ -884,10 +1029,89 @@
     if (next.has(type) && next.size > 1) next.delete(type);
     else next.add(type);
     visibleTypes = next;
+    syncExplorerUrl(true);
   }
 
   function resetTypes() {
     visibleTypes = new Set(typeList);
+    syncExplorerUrl(true);
+  }
+
+  function setSmallQuery(query: string) {
+    const previousDefault = defaultRetrievalSort(smallQuery);
+    smallQuery = query;
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort(query);
+    syncExplorerUrl();
+  }
+
+  function setRetrievalSort(value: string) {
+    if (!isRetrievalSort(value)) return;
+    retrievalSort = value;
+    syncExplorerUrl(true);
+    if (source?.kind === 'large' && (largeQuery.trim() || Object.keys(largeFacetFilters).length)) {
+      void runLargeSearch(largeQuery, { preserveSelection: true });
+    }
+  }
+
+  function removeLargeFilter(key: string, value: string) {
+    const remaining = (largeFacetFilters[key] || []).filter((item) => item !== value);
+    if (remaining.length) largeFacetFilters = { ...largeFacetFilters, [key]: remaining };
+    else {
+      const { [key]: _removed, ...rest } = largeFacetFilters;
+      largeFacetFilters = rest;
+    }
+    const route = facetValueRoute(key, value);
+    if (largeInspectedRoute === route) {
+      largeInspectedRoute = '';
+      largeHighlightedRoute = largeSelectedRoute;
+      largeGraphCenterRoute = largeSelectedRoute;
+    }
+    syncExplorerUrl(true);
+    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+    else void ensureLargeFullIndex();
+  }
+
+  function searchResultSummary(): string {
+    if (largeIndex) return `${largeVisibleDatasets.length.toLocaleString()} records match the active query and filters`;
+    if (!largeSearchResponse) return `${largeResults.length.toLocaleString()} shown`;
+    const limitNote = largeSearchResponse.truncated ? ' (result limit reached)' : '';
+    return `${largeResults.length.toLocaleString()} shown of ${largeSearchResponse.total.toLocaleString()} matching records${limitNote}`;
+  }
+
+  function searchMatchReason(result: SearchResultDoc): string {
+    const fields = result.match?.matched_fields || [];
+    const labels: Record<string, string> = {
+      title: 'title',
+      publisher: 'provider',
+      context: 'context note',
+      description: 'description',
+      topics: 'domain',
+      tags: 'tag',
+      url: 'identifier or URL',
+      record_type: 'record type',
+      protocol: 'protocol',
+      source: 'source metadata',
+      standards: 'standards metadata'
+    };
+    const reasons = fields.slice(0, 3).map((field) => labels[field] || field.replaceAll('_', ' '));
+    const entity = result.match?.recognized_entity;
+    if (entity) {
+      const otherReasons = reasons.filter((reason) => reason !== labels[entity.filter_key]);
+      const suffix = otherReasons.length ? `; also matched ${[...new Set(otherReasons)].join(', ')}` : '';
+      return `Recognised ${entity.kind} “${entity.label}”${entity.matched_alias ? ` from alias “${entity.matched_alias}”` : ''}${suffix}`;
+    }
+    if ((result.match?.score_components.exact || 0) > 0) reasons.unshift('exact phrase or identifier');
+    if (result.official_full_text_match) reasons.push('official full text');
+    return reasons.length ? `Matched ${[...new Set(reasons)].join(', ')}` : 'Matched the static lexical index';
+  }
+
+  function searchResultForDataset(dataset: LargeDataset): SearchResultDoc | undefined {
+    return largeResults.find((result) => result.name === dataset.name);
+  }
+
+  function datasetMatchReason(dataset: LargeDataset): string {
+    const result = searchResultForDataset(dataset);
+    return result ? searchMatchReason(result) : '';
   }
 
   function facetValueRoute(key: string, value: string): string {
@@ -944,9 +1168,10 @@
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       clearLargeApiPanel();
-      void ensureLargeFullIndex();
       reconcileLargeSelection();
       syncExplorerUrl(true);
+      if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+      else void ensureLargeFullIndex();
     } finally {
       await tick();
       largeFacetApplyingKey = '';
@@ -967,6 +1192,7 @@
     largeExpandedGraphGroup = '';
     reconcileLargeSelection();
     syncExplorerUrl(true);
+    void runLargeSearch(largeQuery, { preserveSelection: true });
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -1043,27 +1269,32 @@
   async function runLargeSearch(query: string, options: { preserveSelection?: boolean } = {}) {
     largeQuery = query;
     const trimmed = query.trim();
+    const hasFilters = Object.keys(largeFacetFilters).length > 0;
+    const hasFacetRequest = Boolean(activeFacetKey && supportsWorkerFilter(activeFacetKey));
     const requestId = ++largeSearchRequest;
-    if (!trimmed) {
+    if (!trimmed && !hasFilters && !hasFacetRequest) {
       largeAppliedQuery = '';
       largeResults = [];
+      largeSearchResponse = null;
       largeSuggestions = [];
-      largeSelectedRoute = '';
-      largeInspectedRoute = '';
-      largeHighlightedRoute = '';
-      largeGraphCenterRoute = '';
-      largeForwardRoute = '';
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
-      largeExpandedGraphGroup = '';
-      clearLargeApiPanel();
+      if (!options.preserveSelection) {
+        largeSelectedRoute = '';
+        largeInspectedRoute = '';
+        largeHighlightedRoute = '';
+        largeGraphCenterRoute = '';
+        largeForwardRoute = '';
+        largeHighlightedEdge = '';
+        largeInspectedEdge = null;
+        largeExpandedGraphGroup = '';
+        clearLargeApiPanel();
+      }
       largeSearching = false;
       largePreserveSelectionUntilSearch = false;
       syncExplorerUrl();
       return;
     }
     if (!largeSearchClient) {
-      largeSearchPendingQuery = trimmed;
+      largeSearchPendingQuery = query;
       largeSearching = largeSearchIndexLoading;
       return;
     }
@@ -1093,22 +1324,32 @@
       const remoteTemplate = typeof legislationExtension?.remote_full_text_search === 'string'
         ? legislationExtension.remote_full_text_search
         : '';
-      const [localResults, suggestions, officialResults] = await Promise.all([
-        largeSearchClient.query(query),
-        largeSearchClient.suggest(query),
-        remoteTemplate ? searchOfficialLegislation(remoteTemplate, query).catch(() => []) : Promise.resolve([])
+      const [localResponse, suggestions, officialResults] = await Promise.all([
+        largeSearchClient.query({
+          query,
+          filters: largeFacetFilters,
+          sort: retrievalSort,
+          ranking: 'weighted',
+          facet_keys: activeFacetKey ? [activeFacetKey] : []
+        }),
+        trimmed ? largeSearchClient.suggest(query) : Promise.resolve([]),
+        trimmed && (!hasFilters || !supportsCurrentWorkerFilters()) && remoteTemplate
+          ? searchOfficialLegislation(remoteTemplate, query).catch(() => [])
+          : Promise.resolve([])
       ]);
       if (requestId !== largeSearchRequest) return;
       const merged = new Map<string, SearchResultDoc>();
-      for (const result of localResults) merged.set(result.legislation_id_uri || result.url || result.name, result);
+      for (const result of localResponse.results) merged.set(result.legislation_id_uri || result.url || result.name, result);
       for (const result of officialResults) {
         const key = result.legislation_id_uri || result.url || result.name;
         const local = merged.get(key);
         merged.set(key, local ? { ...result, ...local, official_full_text_match: true } : result);
       }
-      const results = [...merged.values()].slice(0, 100);
+      const results = [...merged.values()].slice(0, largeSearchClient.manifest?.result_limit || 200);
       largeResults = results;
+      largeSearchResponse = { ...localResponse, results };
       largeSuggestions = suggestions;
+      if (hasFilters && !localResponse.filters_applied) void ensureLargeFullIndex();
       if (!largeSelectedRoute && results[0]) largeHighlightedRoute = `dataset/${results[0].name}`;
       largePreserveSelectionUntilSearch = false;
       reconcileLargeSelection(Boolean(options.preserveSelection));
@@ -1137,12 +1378,16 @@
       window.clearTimeout(largeSearchDebounce);
       largeSearchDebounce = null;
     }
+    const previousDefault = defaultRetrievalSort(largeQuery);
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort('');
     void runLargeSearch('');
   }
 
   function scheduleLargeSearch(query: string) {
     const previousQuery = largeQuery.trim();
+    const previousDefault = defaultRetrievalSort(previousQuery);
     largeQuery = query;
+    if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort(query);
     largeSearchRequest += 1;
     if (largeSearchDebounce !== null) {
       window.clearTimeout(largeSearchDebounce);
@@ -1239,7 +1484,6 @@
     if (largeHighlightedRoute && !largeRouteInReduction(largeHighlightedRoute)) largeHighlightedRoute = '';
     if (largeGraphCenterRoute && !largeRouteInReduction(largeGraphCenterRoute)) largeGraphCenterRoute = '';
     if (largeForwardRoute && !largeRouteInReduction(largeForwardRoute)) largeForwardRoute = '';
-    if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';
   }
 
   function visibleLargeDatasets(): LargeDataset[] {
@@ -1249,8 +1493,12 @@
       if (queryActive && !largeResultNames.has(dataset.name)) return false;
       return datasetMatchesLargeFilters(dataset);
     });
-    if (queryActive) {
+    if (retrievalSort === 'relevance' && queryActive) {
       rows.sort((left, right) => (largeResultOrder.get(left.name) ?? 999999) - (largeResultOrder.get(right.name) ?? 999999));
+    } else if (retrievalSort === 'title') {
+      rows.sort((left, right) => left.title.localeCompare(right.title));
+    } else if (retrievalSort === 'metadata-quality') {
+      rows.sort((left, right) => (right.quality?.overall ?? -1) - (left.quality?.overall ?? -1) || left.title.localeCompare(right.title));
     } else {
       rows.sort((left, right) => String(right.timestamp || right.metadata_modified || '').localeCompare(String(left.timestamp || left.metadata_modified || '')));
     }
@@ -1345,6 +1593,7 @@
   }
 
   function largeFacetRows(key: string) {
+    if (largeSearchResponse?.facets[key]) return largeSearchResponse.facets[key];
     if (!largeIndex) {
       return source?.kind === 'large' ? source.overview.facet_previews?.[key] || [] : [];
     }
@@ -1419,8 +1668,9 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
-    void ensureLargeFullIndex();
     syncExplorerUrl(push);
+    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
+    else void ensureLargeFullIndex();
   }
 
   function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
@@ -1623,13 +1873,11 @@
   }
 
   function metadataDisplayValue(value: unknown): string {
-    if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) return 'Not recorded in source metadata';
-    if (typeof value === 'string' && ['none', 'null', 'not-specified'].includes(value.trim().toLowerCase())) return 'Not recorded in source metadata';
     return displayValue(value);
   }
 
   function groupDisplayValue(value: unknown): string {
-    if (!Array.isArray(value) || !value.length) return 'Not recorded in source metadata';
+    if (!Array.isArray(value) || !value.length) return 'Not specified (metadata gap)';
     const labels = value
       .map((item) => {
         if (item && typeof item === 'object') {
@@ -1664,6 +1912,7 @@
   }
 
   function facetValueDisplay(key: string, value: string): string {
+    if (value === MISSING_FILTER_VALUE) return 'Not specified (metadata gap)';
     if ((key === 'publisher' || key === 'canonical_publisher') && largeIndex?.publisherByName.get(value)?.title) {
       return largeIndex.publisherByName.get(value)?.title || value;
     }
@@ -2880,19 +3129,48 @@
   }
 
   function beginEdgePanelResize(event: PointerEvent) {
+    if (event.button !== undefined && event.button !== 0) return;
     event.preventDefault();
     event.stopPropagation();
+    edgePanelResizeCleanup?.();
     const startY = event.clientY;
     const startHeight = edgePanelHeight;
+    const grip = event.currentTarget as HTMLElement;
+    edgePanelResizing = true;
+    grip.setPointerCapture?.(event.pointerId);
     const move = (next: PointerEvent) => {
+      next.preventDefault();
       edgePanelHeight = Math.max(80, Math.min(420, startHeight - (next.clientY - startY)));
     };
-    const up = () => {
+    const finish = (next?: PointerEvent) => {
       window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointerup', finish);
+      window.removeEventListener('pointercancel', finish);
+      if (next && grip.hasPointerCapture?.(next.pointerId)) grip.releasePointerCapture?.(next.pointerId);
+      edgePanelResizing = false;
+      edgePanelResizeCleanup = null;
     };
     window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
+    window.addEventListener('pointerup', finish);
+    window.addEventListener('pointercancel', finish);
+    edgePanelResizeCleanup = () => finish();
+  }
+
+  function resizeEdgePanelWithKeyboard(event: KeyboardEvent) {
+    const nextHeight =
+      event.key === 'ArrowUp'
+        ? edgePanelHeight + 20
+        : event.key === 'ArrowDown'
+          ? edgePanelHeight - 20
+          : event.key === 'Home'
+            ? 80
+            : event.key === 'End'
+              ? 420
+              : null;
+    if (nextHeight === null) return;
+    event.preventDefault();
+    event.stopPropagation();
+    edgePanelHeight = Math.max(80, Math.min(420, nextHeight));
   }
 </script>
 
@@ -2958,24 +3236,42 @@
       </div>
       <div class="left-content">
         {#if source?.kind === 'large'}
-          <div class="search-control">
-            <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => scheduleLargeSearch(event.currentTarget.value)} />
-            {#if largeQuery}
-              <button class="search-clear" type="button" aria-label="Clear search" title="Clear search" onclick={clearLargeSearch}>x</button>
-            {/if}
-          </div>
-          {#if largeSearchIndexLoading}
-            <p class="search-status" aria-live="polite">Preparing static search index...</p>
-          {:else if largeSearching}
-            <p class="search-status" aria-live="polite">Searching static index...</p>
-          {/if}
-          {#if largeSuggestions.length}
-            <div class="suggestions">
-              {#each largeSuggestions as suggestion}
-                <button type="button" onclick={() => void runLargeSearch(suggestion.token)}>{suggestion.token} <small>{suggestion.df}</small></button>
-              {/each}
+          <section class="retrieval-control">
+            <h2>Search</h2>
+            <div class="search-control">
+              <input class="search-input" value={largeQuery} placeholder={searchPlaceholder()} oninput={(event) => scheduleLargeSearch(event.currentTarget.value)} />
+              {#if largeQuery}
+                <button class="search-clear" type="button" aria-label="Clear search" title="Clear search" onclick={clearLargeSearch}>x</button>
+              {/if}
             </div>
-          {/if}
+            {#if largeSearchIndexLoading}
+              <p class="search-status" aria-live="polite">Preparing static search index...</p>
+            {:else if largeSearching}
+              <p class="search-status" aria-live="polite">Searching static index...</p>
+            {/if}
+            {#if largeSuggestions.length}
+              <div class="suggestions">
+                {#each largeSuggestions as suggestion}
+                  <button type="button" onclick={() => void runLargeSearch(suggestion.query || suggestion.token)}>
+                    <strong>{suggestion.label || suggestion.token}</strong>
+                    <small>
+                      {suggestion.kind === 'entity' ? `${capitalise(suggestion.entity_kind || 'entity')} · ` : 'Indexed term · '}
+                      {suggestion.df.toLocaleString()} {suggestion.df === 1 ? 'record' : 'records'}
+                    </small>
+                  </button>
+                {/each}
+              </div>
+            {/if}
+            {#if largeSearchResponse?.interpreted_entity}
+              <p class="search-interpretation" aria-live="polite">
+                <strong>Recognised {largeSearchResponse.interpreted_entity.kind}</strong>
+                <span>{largeSearchResponse.interpreted_entity.label}</span>
+                {#if largeSearchResponse.interpreted_entity.matched_alias}
+                  <small>Matched alias “{largeSearchResponse.interpreted_entity.matched_alias}”</small>
+                {/if}
+              </p>
+            {/if}
+          </section>
 
           {#if pins.length}
             <section class="pinned-list">
@@ -2988,9 +3284,18 @@
 
           <section class="facet-preview">
             <div class="filter-heading">
-              <span>Filters {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
+              <span>Filter results {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
               <button type="button" onclick={clearLargeFilters}>Clear</button>
             </div>
+            {#if activeLargeFilterCount}
+              <div class="active-filter-chips" aria-label="Active filters">
+                {#each selectedLargeFilterLabels() as filter}
+                  <button type="button" title={`Remove ${filter.label}`} onclick={() => removeLargeFilter(filter.key, filter.value)}>
+                    <span>{filter.label}</span><span aria-hidden="true">×</span>
+                  </button>
+                {/each}
+              </div>
+            {/if}
             {#if largeFacetApplyingKey}
               <p class="facet-status" aria-live="polite">
                 Applying {facetLabel(largeFacetApplyingKey)}: {facetValueDisplay(largeFacetApplyingKey, largeFacetApplyingValue)}...
@@ -3084,6 +3389,18 @@
             </div>
           </section>
 
+          <section class="sort-control">
+            <label>
+              <span>Sort</span>
+              <select value={retrievalSort} onchange={(event) => setRetrievalSort(event.currentTarget.value)}>
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+                <option value="title">Title</option>
+                <option value="metadata-quality">Metadata quality</option>
+              </select>
+            </label>
+          </section>
+
           {#if largeIndex}
             <section class="left-results">
               <h2>{recordPlural()} in current reduction</h2>
@@ -3112,10 +3429,13 @@
             </section>
           {/if}
         {:else if smallCorpus}
-          <input class="search-input" bind:value={smallQuery} placeholder="Search nodes" />
+          <section class="retrieval-control">
+            <h2>Search</h2>
+            <input class="search-input" value={smallQuery} oninput={(event) => setSmallQuery(event.currentTarget.value)} placeholder="Search nodes" />
+          </section>
           <div class="type-filters">
             <div class="filter-heading">
-              <span>Node Types</span>
+              <span>Filter results</span>
               <button type="button" onclick={resetTypes}>All</button>
             </div>
             {#each typeList as type}
@@ -3124,6 +3444,17 @@
               </button>
             {/each}
           </div>
+          <section class="sort-control">
+            <label>
+              <span>Sort</span>
+              <select value={retrievalSort} onchange={(event) => setRetrievalSort(event.currentTarget.value)}>
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+                <option value="title">Title</option>
+                <option value="metadata-quality">Metadata quality</option>
+              </select>
+            </label>
+          </section>
           <div class="node-list">
             {#each visibleNodes as node}
               <button class:active={node.id === selectedId} type="button" onclick={() => selectNode(node.id)}>
@@ -3145,18 +3476,34 @@
           <button type="button" title="Forward" aria-label="Forward" disabled={source?.kind === 'large' && !largeForwardRoute} onclick={navigateForward}>→</button>
         </div>
         <div class="crumbs">
-          {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {activeView}
+          {source?.kind === 'large' ? 'Large corpus' : smallCorpus?.title || 'OKF'} / {largeSourceInspectorOpen ? 'source data' : activeView}
           {#if source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)} / {largeLabelForRoute(largeInspectedRoute || largeSelectedRoute)}{/if}
           {#if detailNode} / {detailNode.title}{/if}
         </div>
         <div class="stage-actions">
-          <button type="button" onclick={copyRoute}>Copy route</button>
-          <button type="button" onclick={() => pinRoute()}>Pin</button>
-          <button type="button" onclick={() => (rightCollapsed = false)}>Inspect</button>
+          {#if largeSourceInspectorOpen}
+            <button type="button" onclick={closeSourceInspector}>Back to record</button>
+          {:else}
+            <button type="button" onclick={copyRoute}>Copy route</button>
+            <button type="button" onclick={() => pinRoute()}>Pin</button>
+            <button type="button" onclick={() => (rightCollapsed = false)}>Inspect</button>
+          {/if}
         </div>
       </div>
 
-      {#if source?.kind === 'large'}
+      {#if source?.kind === 'large' && largeSourceInspectorOpen}
+        <SourceInspector
+          data={largeApiJson}
+          url={largeApiResponseUrl || largeApiUrl}
+          loading={largeApiLoading}
+          error={largeApiError}
+          bytes={largeApiBytes}
+          contentType={largeApiContentType}
+          retrievedAt={largeApiRetrievedAt}
+          recordLabel={largeLabelForRoute(largeApiRoute || largeSelectedRoute || largeInspectedRoute)}
+          onclose={closeSourceInspector}
+        />
+      {:else if source?.kind === 'large'}
         <section class="large-view">
           {#if activeView === 'reader'}
             <div class="metrics">
@@ -3167,10 +3514,10 @@
           {/if}
 
           {#if activeView === 'reader'}
-            {#if largeQuery}
+            {#if largeQuery || activeLargeFilterCount}
               <div class="view-heading">
-                <h2>Search Results</h2>
-                <span>{largeSearching ? 'Searching static index...' : `${visibleLargeSearchCount.toLocaleString()} shown`}</span>
+                <h2>{largeQuery ? 'Search Results' : 'Filtered Results'}</h2>
+                <span>{largeSearching ? 'Searching static index...' : searchResultSummary()}</span>
               </div>
               <div class="result-list">
                 {#if largeIndex}
@@ -3178,6 +3525,7 @@
                     <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
                       <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                      {#if datasetMatchReason(dataset)}<small class="result-match">Why this matched: {datasetMatchReason(dataset)}</small>{/if}
                       {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                       <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
                       {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
@@ -3189,7 +3537,8 @@
                   {#each largeResults as result}
                     <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                       <strong>{result.title}</strong>
-                      <span>{result.publisher_title} · {result.resource_count} {resourcePlural()} · score {result.score}</span>
+                      <span>{result.publisher_title || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
+                      <small class="result-match">Why this matched: {searchMatchReason(result)}</small>
                       {#if apiContextNote(result)}<p class="context-note">{apiContextNote(result)}</p>{/if}
                       <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
                       {#if apiRecordMeta(result)}<small class="result-meta">{apiRecordMeta(result)}</small>{/if}
@@ -3322,6 +3671,7 @@
                     {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos, graphNodeEdgePad(sourceNode), graphNodeEdgePad(targetNode))}
                     <line
                       class:highlight={edgeHighlighted}
+                      class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}
                       x1={edgeHit.x1}
                       y1={edgeHit.y1}
                       x2={edgeHit.x2}
@@ -3419,24 +3769,26 @@
                   </g>
                 {/each}
               </svg>
-              <details class="edge-panel edge-drawer" style={`--edge-panel-height:${edgePanelHeight}px`} open>
+              <details class="edge-panel edge-drawer" class:resizing={edgePanelResizing} style={`--edge-panel-height:${edgePanelHeight}px`} open>
                 <summary>
                   <button
                     class="drawer-grip"
                     type="button"
-                    aria-label="Resize relationships panel"
+                    aria-label={`Resize relationships panel, currently ${edgePanelHeight} pixels high`}
                     title="Drag to resize relationships"
                     onpointerdown={beginEdgePanelResize}
+                    onkeydown={resizeEdgePanelWithKeyboard}
                     onclick={(event) => { event.preventDefault(); event.stopPropagation(); }}
                   ></button>
                   <strong>Relationships ({model.relationships.length})</strong>
                   <span>open for rows</span>
                 </summary>
-                <div>
+                <div class="relationship-rows">
                   {#each model.relationships.slice(0, 42) as relationship}
                     <button
                       class:active={largeHighlightedEdge === graphEdgeKey(relationship)}
                       type="button"
+                      aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}
                       onclick={() => inspectLargeEdge(relationship)}
                     >
                       {largeLabelForRoute(relationship.source)} → {relationship.label} → {largeLabelForRoute(relationship.target)}
@@ -3973,10 +4325,29 @@
             </details>
           {:else if largeDetail}
             {#if largeDetail.kind === 'dataset'}
+              {@const dateContext = datasetDateContext(largeDetail.dataset, largeDetail.resources)}
+              {@const operationalContext = datasetOperationalContext(largeDetail.dataset, largeDetail.resources)}
+              {@const seriesPeers = relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
+              {#if datasetMatchReason(largeDetail.dataset)}
+                <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
+              {/if}
               {#if apiContextNote(largeDetail.dataset)}
                 <p class="context-note">{apiContextNote(largeDetail.dataset)}</p>
+              {/if}
+              {#if dateContext.updated || dateContext.years.length}
+                <p class="record-date-summary">
+                  {#if dateContext.updated}
+                    <span><strong>{dateContext.updatedLabel}</strong> <time datetime={dateContext.updated}>{sourceDateLabel(dateContext.updated)}</time></span>
+                  {/if}
+                  {#if dateContext.years.length}
+                    <span><strong>{dateContext.years.length === 1 ? 'Resource year' : 'Resource years'}</strong> {dateContext.years.join(', ')}</span>
+                  {/if}
+                  {#if dateContext.catalogueMetadata}
+                    <small>Catalogue date — not necessarily the dataset’s latest release or update frequency.</small>
+                  {/if}
+                </p>
               {/if}
               <p>{stripHtml(largeDetail.dataset.notes || '')}</p>
               <div class="detail-actions">
@@ -3984,21 +4355,106 @@
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if isUrl(largeDetail.dataset.source_api_url)}
-                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">Open API</a>
-                  <button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
-                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading API JSON' : 'Show API JSON'}
+                  <button class="primary-action" type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
+                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading source data…' : 'View source data'}
                   </button>
+                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>
                 {/if}
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
-              <dl>
+              {#if operationalContext.explicit || operationalContext.catalogueDerived}
+                <details class="record-context operational-context disclosure-section">
+                  <summary>Current source and maintenance</summary>
+                  {#if operationalContext.explicit}
+                    <p><strong>Evidence-backed operational metadata supplied by this bundle.</strong>{#if operationalContext.verifiedAt} Verified {sourceDateLabel(operationalContext.verifiedAt)}.{/if}</p>
+                    <dl>
+                      {#if operationalContext.authoritativeSource}<dt>Authoritative source</dt><dd>{#if isUrl(operationalContext.authoritativeSource.url)}<a href={operationalContext.authoritativeSource.url} target="_blank" rel="noopener noreferrer">{operationalContext.authoritativeSource.name} ↗</a>{:else}{operationalContext.authoritativeSource.name}{/if}</dd>{/if}
+                      {#if operationalContext.canonicalSource}<dt>Canonical dataset page</dt><dd>{#if isUrl(operationalContext.canonicalSource.url)}<a href={operationalContext.canonicalSource.url} target="_blank" rel="noopener noreferrer">{operationalContext.canonicalSource.label} ↗</a>{:else}{operationalContext.canonicalSource.label}{/if}</dd>{/if}
+                      {#if operationalContext.updateFrequency}<dt>Update frequency</dt><dd>{operationalContext.updateFrequency}</dd>{/if}
+                      {#if operationalContext.latestRelease}<dt>Latest release</dt><dd>{operationalContext.latestRelease}</dd>{/if}
+                      {#if operationalContext.maintenanceStatus}<dt>Maintenance status</dt><dd>{operationalContext.maintenanceStatus}</dd>{/if}
+                      {#if operationalContext.api}<dt>API</dt><dd>{#if isUrl(operationalContext.api.url)}<a href={operationalContext.api.url} target="_blank" rel="noopener noreferrer">{operationalContext.api.label} ↗</a>{:else}{operationalContext.api.label}{/if}</dd>{/if}
+                      {#if operationalContext.technicalSpecificationUrl}<dt>Technical specification</dt><dd>{#if isUrl(operationalContext.technicalSpecificationUrl)}<a href={operationalContext.technicalSpecificationUrl} target="_blank" rel="noopener noreferrer">Open specification ↗</a>{:else}{operationalContext.technicalSpecificationUrl}{/if}</dd>{/if}
+                      {#if operationalContext.licenceUrl}<dt>Licence</dt><dd>{#if isUrl(operationalContext.licenceUrl)}<a href={operationalContext.licenceUrl} target="_blank" rel="noopener noreferrer">Open licence ↗</a>{:else}{operationalContext.licenceUrl}{/if}</dd>{/if}
+                    </dl>
+                    {#if operationalContext.distributions.length}
+                      <h4>Declared distributions</h4>
+                      <ul>
+                        {#each operationalContext.distributions as distribution}
+                          <li>{#if isUrl(distribution.url)}<a href={distribution.url} target="_blank" rel="noopener noreferrer">{distribution.label} ↗</a>{:else}{distribution.label}{/if}{#if distribution.kind} <span class="muted">({distribution.kind})</span>{/if}</li>
+                        {/each}
+                      </ul>
+                    {/if}
+                  {:else}
+                    <p><strong>Operational metadata gap.</strong> This bundle contains a CKAN catalogue snapshot, but no separately verified current release, update frequency, maintenance state or API-access statement.</p>
+                  {/if}
+                  {#if operationalContext.catalogueFrequency || operationalContext.catalogueReferenceDates.length}
+                    <h4>Catalogue declarations</h4>
+                    <dl>
+                      {#if operationalContext.catalogueReferenceDates.length}
+                        <dt>Dataset reference date</dt><dd>{operationalContext.catalogueReferenceDates.map((row) => `${sourceDateLabel(row.date)}${row.kind ? ` · ${row.kind}` : ''}`).join(', ')}</dd>
+                      {/if}
+                      {#if operationalContext.catalogueFrequency}<dt>Update frequency</dt><dd>{operationalContext.catalogueFrequency}</dd>{/if}
+                    </dl>
+                    <p class="muted">These claims come from the catalogue metadata and are preserved as provenance. They are not treated as a current release date or reverified operating status.</p>
+                  {/if}
+                  {#if operationalContext.linkedSources.length}
+                    <h4>Publisher or distribution links supplied by the catalogue</h4>
+                    <ul>
+                      {#each operationalContext.linkedSources.slice(0, 8) as linkedSource}
+                        <li><a href={linkedSource.url} target="_blank" rel="noopener noreferrer">{linkedSource.label} ↗</a> <span class="muted">{linkedSource.host}</span></li>
+                      {/each}
+                    </ul>
+                    <p class="muted">A linked host may contain newer operational information. Explorer does not call it authoritative until the bundle supplies canonical-source evidence and provenance.</p>
+                  {/if}
+                </details>
+              {/if}
+              {#if dateContext.years.length || dateContext.series}
+                <details class="record-context disclosure-section" open>
+                  <summary>Dates and related records</summary>
+                  <div class="record-context-heading">
+                    <span>Series and coverage context</span>
+                    <button type="button" onclick={() => void selectView('timeline')}>Timeline</button>
+                  </div>
+                  {#if dateContext.years.length}
+                    <p><strong>Years named by this record’s resources</strong></p>
+                    <div class="year-chips" aria-label="Resource years">
+                      {#each dateContext.years as year}<span>{year}</span>{/each}
+                    </div>
+                  {:else}
+                    <p class="muted">No content or resource year is declared for this record.</p>
+                  {/if}
+                  {#if dateContext.series}
+                    <p><strong>Series</strong> {dateContext.series}</p>
+                    {#if seriesPeers.length}
+                      <h4>Other records in this series</h4>
+                      <div class="series-records">
+                        {#each seriesPeers.slice(0, 12) as peer}
+                          {@const peerDate = datasetDateContext(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
+                          <button type="button" onclick={() => selectLargeRoute(datasetRoute(peer))}>
+                            <strong>{peer.title}</strong>
+                            <span>{peerDate.years.length ? `Resource years ${peerDate.years.join(', ')}` : peerDate.updated ? `${peerDate.updatedLabel} ${sourceDateLabel(peerDate.updated)}` : 'No date supplied'}</span>
+                          </button>
+                        {/each}
+                      </div>
+                    {:else}
+                      <p class="muted">No other record with this series identifier is present in this bundle.</p>
+                    {/if}
+                  {:else}
+                    <p class="muted">This bundle does not declare a stable series identifier, so Explorer will not guess that similar titles are the same series.</p>
+                  {/if}
+                </details>
+              {/if}
+              <details class="metadata-section disclosure-section" open={!dateContext.years.length && !dateContext.series}>
+                <summary>Overview</summary>
+                <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
                 <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
                 <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.license_title || largeDetail.dataset.license_id)}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
                 <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
@@ -4010,12 +4466,13 @@
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.dataset.documentation)}<a href={largeDetail.dataset.documentation} target="_blank" rel="noopener">{largeDetail.dataset.documentation}</a>{:else}{displayValue(largeDetail.dataset.documentation)}{/if}</dd>
-                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener">{largeDetail.dataset.source_api_url}</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
-              </dl>
+                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>View source data</button> <a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
+                </dl>
+              </details>
               <LegislationDetail record={largeDetail.dataset} />
               {#if acronymExpansions(largeDetail.dataset).length || contextLinks(largeDetail.dataset).length}
-                <section class="metadata-section">
-                  <h3>Context</h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Context</summary>
                   <dl>
                     {#each acronymExpansions(largeDetail.dataset) as expansion}
                       <dt>{expansion.acronym}</dt>
@@ -4031,15 +4488,15 @@
                       <dt>{link.label}</dt><dd>{#if isUrl(link.url)}<a href={link.url} target="_blank" rel="noopener">{link.description || link.url}</a>{:else}{displayValue(link.description || link.url)}{/if}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
               <div class="chips">
                 {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
                 {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
                 {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
               </div>
-              <section class="metadata-section">
-                <h3>Normalized record fields</h3>
+              <details class="metadata-section disclosure-section">
+                <summary>Normalized record fields</summary>
                 <dl>
                   <dt>Record name</dt><dd>{largeDetail.dataset.name}</dd>
                   <dt>Record ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
@@ -4048,8 +4505,8 @@
                   <dt>Protocol</dt><dd>{displayValue(largeDetail.dataset.protocol)}</dd>
                   <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
                   <dt>Private</dt><dd>{displayValue(largeDetail.dataset.private)}</dd>
-                  <dt><span class="label-help">Created<button class="info-icon" type="button" aria-label="Explain created date" onclick={() => toggleHelp('source-date:created')} onmouseenter={() => showHelp('source-date:created')} onmouseleave={() => hideHelp('source-date:created')} onfocus={() => showHelp('source-date:created')} onblur={() => hideHelp('source-date:created')}>i</button>{#if activeHelpKey === 'source-date:created'}<span class="info-bubble" role="tooltip">{helpText('source-date:created')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_created)}</dd>
-                  <dt><span class="label-help">Modified<button class="info-icon" type="button" aria-label="Explain modified date" onclick={() => toggleHelp('source-date:modified')} onmouseenter={() => showHelp('source-date:modified')} onmouseleave={() => hideHelp('source-date:modified')} onfocus={() => showHelp('source-date:modified')} onblur={() => hideHelp('source-date:modified')}>i</button>{#if activeHelpKey === 'source-date:modified'}<span class="info-bubble" role="tooltip">{helpText('source-date:modified')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_modified)}</dd>
+                  <dt><span class="label-help">Catalogue metadata created<button class="info-icon" type="button" aria-label="Explain created date" onclick={() => toggleHelp('source-date:created')} onmouseenter={() => showHelp('source-date:created')} onmouseleave={() => hideHelp('source-date:created')} onfocus={() => showHelp('source-date:created')} onblur={() => hideHelp('source-date:created')}>i</button>{#if activeHelpKey === 'source-date:created'}<span class="info-bubble" role="tooltip">{helpText('source-date:created')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_created)}</dd>
+                  <dt><span class="label-help">Catalogue metadata modified<button class="info-icon" type="button" aria-label="Explain modified date" onclick={() => toggleHelp('source-date:modified')} onmouseenter={() => showHelp('source-date:modified')} onmouseleave={() => hideHelp('source-date:modified')} onfocus={() => showHelp('source-date:modified')} onblur={() => hideHelp('source-date:modified')}>i</button>{#if activeHelpKey === 'source-date:modified'}<span class="info-bubble" role="tooltip">{helpText('source-date:modified')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_modified)}</dd>
                   <dt><span class="label-help">Timeline date<button class="info-icon" type="button" aria-label="Explain timeline date" onclick={() => toggleHelp('source-date:timeline')} onmouseenter={() => showHelp('source-date:timeline')} onmouseleave={() => hideHelp('source-date:timeline')} onfocus={() => showHelp('source-date:timeline')} onblur={() => hideHelp('source-date:timeline')}>i</button>{#if activeHelpKey === 'source-date:timeline'}<span class="info-bubble" role="tooltip">{helpText('source-date:timeline')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.timestamp)}</dd>
                   <dt>{capitalise(formatPlural())}</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
                   <dt>Topics</dt><dd>{displayValue(largeDetail.dataset.topics)}</dd>
@@ -4060,11 +4517,11 @@
                   <dt>Groups</dt><dd>{groupDisplayValue(largeDetail.dataset.groups)}</dd>
                   <dt>{capitalise(resourceSingular())} hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
-              </section>
+              </details>
               {#if largeDetail.dataset.dcat_type || largeDetail.dataset.openapi_type || standardsAlignment(largeDetail.dataset)}
                 {@const alignment = standardsAlignment(largeDetail.dataset)}
-                <section class="metadata-section">
-                  <h3><span class="label-help">Standards alignment<button class="info-icon" type="button" aria-label="Explain standards alignment" onclick={() => toggleHelp('standards-export-readiness')} onmouseenter={() => showHelp('standards-export-readiness')} onmouseleave={() => hideHelp('standards-export-readiness')} onfocus={() => showHelp('standards-export-readiness')} onblur={() => hideHelp('standards-export-readiness')}>i</button>{#if activeHelpKey === 'standards-export-readiness'}<span class="info-bubble" role="tooltip">{helpText('standards-export-readiness')}</span>{/if}</span></h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Standards alignment</summary>
                   <dl>
                     <dt><span class="label-help">DCAT / DCAT-AP<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.dcat?.term || largeDetail.dataset.dcat_type)}</code></dd>
                     <dt>DCAT export status</dt><dd>{metadataDisplayValue(alignment?.dcat?.export_status || largeDetail.dataset.dcat_export_status)}</dd>
@@ -4074,11 +4531,11 @@
                     <dt><span class="label-help">Security scheme<button class="info-icon" type="button" aria-label="Explain OpenAPI security scheme" onclick={() => toggleHelp('openapi-security-scheme')} onmouseenter={() => showHelp('openapi-security-scheme')} onmouseleave={() => hideHelp('openapi-security-scheme')} onfocus={() => showHelp('openapi-security-scheme')} onblur={() => hideHelp('openapi-security-scheme')}>i</button>{#if activeHelpKey === 'openapi-security-scheme'}<span class="info-bubble" role="tooltip">{helpText('openapi-security-scheme')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.openapi?.security_scheme_type || largeDetail.dataset.openapi_security_scheme)}</code></dd>
                     <dt>OpenAPI missing</dt><dd>{#each standardsList(alignment?.openapi?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
                   </dl>
-                </section>
+                </details>
               {/if}
               {#if largeDetail.dataset.quality}
-                <section class="metadata-section">
-                  <h3><span class="label-help">Metadata quality signals<button class="info-icon" type="button" aria-label="Explain quality signals" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Metadata quality signals</summary>
                   <dl>
                     <dt><span class="label-help">Overall<button class="info-icon" type="button" aria-label="Explain overall quality" onclick={() => toggleHelp('quality-overall')} onmouseenter={() => showHelp('quality-overall')} onmouseleave={() => hideHelp('quality-overall')} onfocus={() => showHelp('quality-overall')} onblur={() => hideHelp('quality-overall')}>i</button>{#if activeHelpKey === 'quality-overall'}<span class="info-bubble" role="tooltip">{helpText('quality-overall')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality.overall)}</dd>
                     {#each Object.entries(largeDetail.dataset.quality.metrics || {}) as [key, value]}
@@ -4086,57 +4543,55 @@
                       <dt><span class="label-help">{key.replaceAll('_', ' ')}{#if helpText(qualityHelpKey)}<button class="info-icon" type="button" aria-label={`Explain ${key.replaceAll('_', ' ')}`} onclick={() => toggleHelp(qualityHelpKey)} onmouseenter={() => showHelp(qualityHelpKey)} onmouseleave={() => hideHelp(qualityHelpKey)} onfocus={() => showHelp(qualityHelpKey)} onblur={() => hideHelp(qualityHelpKey)}>i</button>{#if activeHelpKey === qualityHelpKey}<span class="info-bubble" role="tooltip">{helpText(qualityHelpKey)}</span>{/if}{/if}</span></dt><dd>{typeof value === 'number' ? formatPercent(value) : displayValue(value)}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
               {#if largeDetail.dataset.provenance}
-                <section class="metadata-section">
-                  <h3>Provenance</h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Provenance</summary>
                   <dl>
                     {#each Object.entries(largeDetail.dataset.provenance).slice(0, 14) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
               {#if largeDetail.dataset.extras && Object.keys(largeDetail.dataset.extras).length}
-                <section class="metadata-section">
-                  <h3>Additional metadata</h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Additional metadata</summary>
                   <dl>
                     {#each Object.entries(largeDetail.dataset.extras).slice(0, 40) as [key, value]}
                       <dt>{key}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
-              <h3>{capitalise(resourcePlural())}</h3>
-              {#each largeDetail.resources.slice(0, 30) as resource}
-                <button type="button" onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }} ondblclick={() => recenterLargeRoute(resourceRoute(resource))}>
-                  <strong>{resource.name || resource.id}</strong>
-                  <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
-                </button>
-              {/each}
+              <details class="metadata-section disclosure-section">
+                <summary>{capitalise(resourcePlural())} ({largeDetail.resources.length.toLocaleString()})</summary>
+                <div class="disclosure-list">
+                  {#each largeDetail.resources.slice(0, 30) as resource}
+                    <button type="button" onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }} ondblclick={() => recenterLargeRoute(resourceRoute(resource))}>
+                      <strong>{resource.name || resource.id}</strong>
+                      <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                    </button>
+                  {/each}
+                </div>
+              </details>
               {#if largeDetail.relationships.length}
-                <h3>Relationships</h3>
-                {#each largeDetail.relationships.slice(0, 24) as relationship}
-                  <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
-                    {largeLabelForRoute(relationship.source)} → {relationship.kind} → {largeLabelForRoute(relationship.target)}
-                  </button>
-                {/each}
+                <details class="metadata-section disclosure-section">
+                  <summary>Relationships ({largeDetail.relationships.length.toLocaleString()})</summary>
+                  <div class="disclosure-list">
+                    {#each largeDetail.relationships.slice(0, 24) as relationship}
+                      <button type="button" onclick={() => inspectLargeRelationship(relationship)}>
+                        {largeLabelForRoute(relationship.source)} → {relationship.kind} → {largeLabelForRoute(relationship.target)}
+                      </button>
+                    {/each}
+                  </div>
+                </details>
               {/if}
               <details class="json-panel">
                 <summary>Local normalized {recordSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.dataset)}</pre>
               </details>
-              {#if largeApiRoute === largeDetail.route}
-                {#if largeApiError}
-                  <p class="error">API JSON could not be loaded: {largeApiError}</p>
-                {:else if largeApiJson}
-                  <details class="json-panel" open>
-                    <summary>Source API JSON</summary>
-                    <pre>{jsonText(largeApiJson)}</pre>
-                  </details>
-                {/if}
-              {/if}
             {:else if largeDetail.kind === 'resource'}
               <span class="badge">{capitalise(resourceSingular())}</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
@@ -4147,7 +4602,9 @@
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>Clear inspection</button>{/if}
               </div>
-              <dl>
+              <details class="metadata-section disclosure-section" open>
+                <summary>Overview</summary>
+                <dl>
                 <dt>{capitalise(recordSingular())}</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
                 <dt>Format</dt><dd>{largeDetail.resource.format || 'unknown'}</dd>
                 <dt>Source format</dt><dd>{displayValue(largeDetail.resource.source_format)}</dd>
@@ -4157,9 +4614,10 @@
                 <dt>Type</dt><dd>{largeDetail.resource.resource_type || 'unknown'}</dd>
                 <dt>URL</dt><dd>{#if isUrl(largeDetail.resource.url)}<a href={largeDetail.resource.url} target="_blank" rel="noopener">{largeDetail.resource.url}</a>{:else}{displayValue(largeDetail.resource.url)}{/if}</dd>
                 <dt>GOV.UK path</dt><dd>{displayValue(largeDetail.resource.govuk_content_path)}</dd>
-              </dl>
-              <section class="metadata-section">
-                <h3>Resource metadata</h3>
+                </dl>
+              </details>
+              <details class="metadata-section disclosure-section">
+                <summary>Resource metadata</summary>
                 <dl>
                   <dt>{capitalise(resourceSingular())} ID</dt><dd>{largeDetail.resource.id}</dd>
                   <dt>State</dt><dd>{displayValue(largeDetail.resource.state)}</dd>
@@ -4172,16 +4630,16 @@
                   <dt>Schema URL</dt><dd>{#if isUrl(largeDetail.resource.schema_url)}<a href={largeDetail.resource.schema_url} target="_blank" rel="noopener">{largeDetail.resource.schema_url}</a>{:else}{displayValue(largeDetail.resource.schema_url)}{/if}</dd>
                   <dt>Schema type</dt><dd>{displayValue(largeDetail.resource.schema_type)}</dd>
                 </dl>
-              </section>
+              </details>
               {#if largeDetail.resource.provenance}
-                <section class="metadata-section">
-                  <h3>Provenance</h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Provenance</summary>
                   <dl>
                     {#each Object.entries(largeDetail.resource.provenance).slice(0, 14) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
               <details class="json-panel">
                 <summary>Local normalized {resourceSingular()} JSON</summary>
@@ -4196,7 +4654,9 @@
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
               </div>
-              <dl>
+              <details class="metadata-section disclosure-section" open>
+                <summary>Overview</summary>
+                <dl>
                 <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.publisher.concept_id)}</dd>
                 <dt>{capitalise(recordPlural())}</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
@@ -4205,21 +4665,26 @@
                 <dt>{capitalise(publisherSingular())} ID</dt><dd>{displayValue(largeDetail.publisher.id)}</dd>
                 <dt>Type</dt><dd>{displayValue(largeDetail.publisher.type)}</dd>
                 <dt>Approval status</dt><dd>{displayValue(largeDetail.publisher.approval_status)}</dd>
-              </dl>
+                </dl>
+              </details>
               {#if largeDetail.publisher.provenance}
-                <section class="metadata-section">
-                  <h3>Provenance</h3>
+                <details class="metadata-section disclosure-section">
+                  <summary>Provenance</summary>
                   <dl>
                     {#each Object.entries(largeDetail.publisher.provenance).slice(0, 12) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
-                </section>
+                </details>
               {/if}
-              <h3>{capitalise(recordPlural())}</h3>
-              {#each largeDetail.datasets.slice(0, 40) as dataset}
-                <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
-              {/each}
+              <details class="metadata-section disclosure-section">
+                <summary>{capitalise(recordPlural())} ({largeDetail.datasets.length.toLocaleString()})</summary>
+                <div class="disclosure-list">
+                  {#each largeDetail.datasets.slice(0, 40) as dataset}
+                    <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
+                  {/each}
+                </div>
+              </details>
               <details class="json-panel">
                 <summary>Local normalized publisher JSON</summary>
                 <pre>{jsonText(largeDetail.publisher)}</pre>
@@ -4227,17 +4692,31 @@
             {:else if largeDetail.kind === 'search'}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.result.title}</h2>
+              <div class="detail-actions primary-detail-actions">
+                <button class="primary-action" type="button" onclick={() => void ensureLargeFullIndex()}>
+                  {largeFullLoading ? 'Loading full record...' : 'Load full record'}
+                </button>
+              </div>
+              <p class="match-explanation"><strong>Why this matched</strong> {searchMatchReason(largeDetail.result)}</p>
               {#if apiContextNote(largeDetail.result)}
                 <p class="context-note">{apiContextNote(largeDetail.result)}</p>
               {/if}
+              {#if largeDetail.result.timestamp}
+                <p class="record-date-summary">
+                  <span><strong>Catalogue/index date</strong> <time datetime={largeDetail.result.timestamp}>{sourceDateLabel(largeDetail.result.timestamp)}</time></span>
+                  <small>Catalogue date — not necessarily the dataset’s latest release or update frequency.</small>
+                </p>
+              {/if}
               <p>{stripHtml(largeDetail.result.notes || '')}</p>
-              <dl>
+              <details class="metadata-section disclosure-section" open>
+                <summary>Overview</summary>
+                <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd>{largeDetail.result.publisher_title}</dd>
                 <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.result.license_title || largeDetail.result.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
                 <dt>Protocol</dt><dd>{displayValue(largeDetail.result.protocol)}</dd>
                 <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
                 <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
@@ -4251,14 +4730,14 @@
                 <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.result.quality_score)}</dd>
                 <dt>Route</dt><dd>{largeDetail.result.open}</dd>
                 <dt><span class="label-help">Timestamp<button class="info-icon" type="button" aria-label="Explain timestamp" onclick={() => toggleHelp('source-date:search-result')} onmouseenter={() => showHelp('source-date:search-result')} onmouseleave={() => hideHelp('source-date:search-result')} onfocus={() => showHelp('source-date:search-result')} onblur={() => hideHelp('source-date:search-result')}>i</button>{#if activeHelpKey === 'source-date:search-result'}<span class="info-bubble" role="tooltip">{helpText('source-date:search-result')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.timestamp)}</dd>
-              </dl>
+                </dl>
+              </details>
               <LegislationDetail record={largeDetail.result} />
               <div class="chips">
                 {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
                 {#each (largeDetail.result.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
                 {#each (largeDetail.result.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
               </div>
-              <button type="button" onclick={() => void ensureLargeFullIndex()}>Load full record</button>
             {:else}
               {@const routeDatasets = datasetsForMetadataRoute(largeDetail.route, 40)}
               {@const routeResources = resourcesForMetadataRoute(largeDetail.route, 40)}
@@ -4338,7 +4817,10 @@
               {#if source.descriptor.publisher}<dt>Publisher</dt><dd><a href={source.descriptor.publisher} target="_blank" rel="noreferrer">{source.descriptor.publisher}</a></dd>{/if}
               {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">source licence</a></dd>{/if}
               <dt>Generated</dt><dd>{source.descriptor.generated_at || source.manifest.generated_at}</dd>
-              <dt>Search</dt><dd>{source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} tokens</dd>
+              <dt>Search index</dt>
+              <dd title="Unique normalized terms available to local browser search; no AI or paid token usage">
+                {source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} distinct indexed terms
+              </dd>
               <dt>Hydration</dt><dd>{largeIndex ? 'records loaded' : 'overview only'}</dd>
             </dl>
           {/if}
@@ -4370,7 +4852,7 @@
           <dl>
             <dt>Route</dt><dd>{detailNode.id}</dd>
             <dt>Section</dt><dd>{detailNode.section || 'root'}</dd>
-            <dt>Source</dt><dd>{detailNode.source || 'None'}</dd>
+            <dt>Source</dt><dd>{metadataDisplayValue(detailNode.source)}</dd>
             <dt>Links</dt><dd>{detailRelationships.length}</dd>
           </dl>
           <h3>Relationships</h3>

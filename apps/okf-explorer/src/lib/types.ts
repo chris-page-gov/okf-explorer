@@ -71,6 +71,7 @@ export type LargeCorpusDescriptor = {
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    operational_metadata?: string;
   };
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
@@ -102,6 +103,7 @@ export type LargeDataManifest = {
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    operational_metadata?: string;
   };
   chunks: Record<string, string[]>;
   performance?: Record<string, unknown>;
@@ -114,7 +116,7 @@ export type LargeDataManifest = {
 };
 
 export type LargeSearchManifest = {
-  schema: 'gov-ckan-static-search.v1' | string;
+  schema: 'okf-static-search.v1' | 'okf-static-search.v2' | 'gov-ckan-static-search.v1' | string;
   token_min_length: number;
   prefix_min_length: number;
   lexicon_shard_length: number;
@@ -130,8 +132,73 @@ export type LargeSearchManifest = {
     result_docs: string[];
     facets: string;
     doc_map: string;
+    filter_postings?: Record<string, string>;
+    sort_values?: string;
+    entities?: string;
   };
 };
+
+export type SearchRankingStrategy = 'weighted' | 'idf' | 'idf-exact';
+
+export type LargeSearchRequest = {
+  query: string;
+  filters: Record<string, string[]>;
+  sort: 'relevance' | 'newest' | 'title' | 'metadata-quality';
+  ranking?: SearchRankingStrategy;
+  facet_keys?: string[];
+};
+
+export type SearchMatchExplanation = {
+  query_tokens: string[];
+  matched_fields: string[];
+  recognized_entity?: SearchEntityMatch;
+  score_components: {
+    weighted: number;
+    idf: number;
+    exact: number;
+    entity?: number;
+    total: number;
+  };
+};
+
+export type SearchEntity = {
+  id: string;
+  label: string;
+  kind: string;
+  aliases?: string[];
+  filter_key: string;
+  filter_value: string;
+  count?: number;
+  route?: string;
+};
+
+export type SearchEntityMatch = {
+  id: string;
+  label: string;
+  kind: string;
+  filter_key: string;
+  filter_value: string;
+  matched_alias?: string;
+};
+
+export type LargeSearchResponse = {
+  results: SearchResultDoc[];
+  total: number;
+  truncated: boolean;
+  filters_applied: boolean;
+  facets: Record<string, LargeFacetRow[]>;
+  ranking: SearchRankingStrategy;
+  elapsed_ms: number;
+  interpreted_entity?: SearchEntityMatch;
+};
+
+export type LargeFilterPostings = {
+  schema: 'okf-static-filter-postings.v1' | string;
+  key: string;
+  values: Record<string, number[]>;
+};
+
+export type LargeSortValue = [timestamp: string, title: string, qualityScore: number | null];
 
 export type LargeOverview = {
   schema: string;
@@ -246,6 +313,7 @@ export type SearchResultDoc = {
   url?: string;
   open: string;
   score?: number;
+  match?: SearchMatchExplanation;
   legislation_id_uri?: string;
   document_uri?: string;
   structure_url?: string;
@@ -258,6 +326,11 @@ export type SearchResultDoc = {
   creation_date?: string;
   published_at?: string;
   updated_at?: string;
+  series_id?: string;
+  series?: string;
+  series_title?: string;
+  temporal_coverage?: string | string[] | { start?: string; end?: string; years?: string[]; [key: string]: unknown };
+  coverage_years?: string[];
   jurisdiction?: string[];
   legal_status?: string;
   schema_org_type?: string;
@@ -271,11 +344,59 @@ export type SearchResultDoc = {
 export type SearchSuggestion = {
   token: string;
   df: number;
+  kind?: 'entity' | 'term';
+  label?: string;
+  query?: string;
+  entity_kind?: string;
 };
 
 export type LargeFacetRow = {
   value: string;
   count: number;
+};
+
+export type LargeDatasetOperationalMetadata = {
+  canonical_source?: {
+    url: string;
+    label?: string;
+    host?: string;
+  };
+  authoritative_source?: {
+    name: string;
+    url?: string;
+  };
+  update_frequency?: string;
+  latest_release?: {
+    date?: string;
+    label?: string;
+    dynamic?: boolean;
+  };
+  maintenance_status?: string;
+  distributions?: Array<{
+    label: string;
+    kind?: string;
+    url?: string;
+  }>;
+  api?: {
+    available?: boolean;
+    access?: string;
+    url?: string;
+  };
+  technical_specification_url?: string;
+  licence_url?: string;
+  verified_at?: string;
+  provenance?: {
+    source_url?: string;
+    observed_at?: string;
+    method?: string;
+    [key: string]: unknown;
+  };
+};
+
+export type LargeOperationalMetadataIndex = {
+  schema: 'okf-operational-metadata.v1' | string;
+  generated_at?: string;
+  records: Record<string, LargeDatasetOperationalMetadata>;
 };
 
 export type LargeDataset = {
@@ -318,6 +439,7 @@ export type LargeDataset = {
   record_type?: string;
   source_tier?: string;
   source_adapter?: string;
+  operational_metadata?: LargeDatasetOperationalMetadata;
   confidence?: string;
   dcat_type?: string;
   dcat_export_status?: string;
@@ -463,6 +585,7 @@ export type LargeFullIndex = {
   facets: Record<string, LargeFacetRow[]>;
   graph: LargeGraphIndex;
   govukContent: LargeGovukContent;
+  operationalMetadata: LargeOperationalMetadataIndex;
   datasetByName: Map<string, LargeDataset>;
   resourceById: Map<string, LargeResource>;
   publisherByName: Map<string, LargePublisher>;
