@@ -1,4 +1,4 @@
-import type { LargeAnalysisOverview, LargeDataset, LargeResource, OkfNode, OkfRelationship } from '$lib/types';
+import type { LargeAnalysisOverview, LargeDataset, LargeDatasetOperationalMetadata, LargeResource, OkfNode, OkfRelationship } from '$lib/types';
 
 export type AnalysisFacet = NonNullable<LargeAnalysisOverview['facet_analysis']>[number];
 export type AnalysisHierarchy = NonNullable<LargeAnalysisOverview['hierarchies']>[number];
@@ -8,9 +8,29 @@ export type AnalysisTimelineBucket = NonNullable<LargeAnalysisOverview['timeline
 
 export type DatasetDateContext = {
   updated: string;
+  updatedLabel: string;
+  catalogueMetadata: boolean;
   years: string[];
   series: string;
   seriesKey: string;
+};
+
+export type DatasetOperationalContext = {
+  explicit: boolean;
+  catalogueDerived: boolean;
+  canonicalSource: { label: string; url: string; host: string } | null;
+  authoritativeSource: { name: string; url: string } | null;
+  updateFrequency: string;
+  latestRelease: string;
+  maintenanceStatus: string;
+  distributions: Array<{ label: string; kind: string; url: string }>;
+  api: { label: string; url: string } | null;
+  technicalSpecificationUrl: string;
+  licenceUrl: string;
+  verifiedAt: string;
+  catalogueFrequency: string;
+  catalogueReferenceDates: Array<{ date: string; kind: string }>;
+  linkedSources: Array<{ label: string; host: string; url: string }>;
 };
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -18,6 +38,54 @@ const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Se
 function recordString(record: Record<string, unknown> | undefined, key: string): string {
   const value = record?.[key];
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function operationalMetadata(value: unknown): LargeDatasetOperationalMetadata | null {
+  return value && typeof value === 'object' && !Array.isArray(value) ? (value as LargeDatasetOperationalMetadata) : null;
+}
+
+function stringValue(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function urlHost(value: string): string {
+  try {
+    return new URL(value).hostname;
+  } catch {
+    return '';
+  }
+}
+
+function uniqueLinkedSources(resources: LargeResource[]): Array<{ label: string; host: string; url: string }> {
+  const rows = new Map<string, { label: string; host: string; url: string }>();
+  for (const resource of resources) {
+    const url = stringValue(resource.url);
+    if (!/^https?:\/\//i.test(url)) continue;
+    const host = stringValue(resource.host) || urlHost(url);
+    if (!host || rows.has(url)) continue;
+    rows.set(url, { label: stringValue(resource.name) || host, host, url });
+  }
+  return [...rows.values()];
+}
+
+function catalogueReferenceDates(value: unknown): Array<{ date: string; kind: string }> {
+  let parsed = value;
+  if (typeof value === 'string') {
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      const date = value.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0] || '';
+      return date ? [{ date, kind: '' }] : [];
+    }
+  }
+  if (!Array.isArray(parsed)) return [];
+  return parsed
+    .map((item) => {
+      if (!item || typeof item !== 'object' || Array.isArray(item)) return { date: '', kind: '' };
+      const row = item as Record<string, unknown>;
+      return { date: stringValue(row.value || row.date), kind: stringValue(row.type || row.kind) };
+    })
+    .filter((row) => Boolean(row.date));
 }
 
 function normalizedSeriesValue(value: string): string {
@@ -50,12 +118,79 @@ export function datasetDateContext(dataset: LargeDataset, resources: LargeResour
   const declaredCoverage = [direct.temporal_coverage, direct.coverage_years, extras?.temporal_coverage, extras?.coverage_years, dataset.year];
   const resourceCoverage = resources.flatMap((resource) => yearsFromValue([resource.name, resource.description]));
   const years = [...new Set([...declaredCoverage.flatMap(yearsFromValue), ...resourceCoverage])].sort();
-  const updated = String(dataset.metadata_modified || dataset.timestamp || dataset.updated_at || dataset.published_at || dataset.metadata_created || dataset.creation_date || '');
+  const dateCandidates: Array<[unknown, string, boolean]> = [
+    [dataset.metadata_modified, 'Catalogue metadata updated', true],
+    [dataset.timestamp, 'Catalogue/index date', true],
+    [dataset.updated_at, 'Record updated', false],
+    [dataset.published_at, 'Record published', false],
+    [dataset.metadata_created, 'Catalogue metadata created', true],
+    [dataset.creation_date, 'Record created', false]
+  ];
+  const dateCandidate = dateCandidates.find(([value]) => Boolean(value));
+  const updated = String(dateCandidate?.[0] || '');
   return {
     updated,
+    updatedLabel: dateCandidate?.[1] || 'Record date',
+    catalogueMetadata: dateCandidate?.[2] || false,
     years,
     series,
     seriesKey: seriesId ? `id:${seriesId}` : series ? `label:${normalizedSeriesValue(series)}` : ''
+  };
+}
+
+export function datasetOperationalContext(dataset: LargeDataset, resources: LargeResource[] = []): DatasetOperationalContext {
+  const operational = operationalMetadata(dataset.operational_metadata);
+  const canonical = operational?.canonical_source;
+  const authoritative = operational?.authoritative_source;
+  const canonicalUrl = stringValue(canonical?.url);
+  const authoritativeUrl = stringValue(authoritative?.url);
+  const latest = operational?.latest_release;
+  const latestRelease = latest
+    ? stringValue(latest.label) || stringValue(latest.date) || (latest.dynamic ? 'Dynamic — check the canonical source' : '')
+    : '';
+  const api = operational?.api;
+  const apiLabel = api
+    ? api.available === true
+      ? `Available${api.access ? ` · ${api.access}` : ''}`
+      : api.available === false
+        ? 'Not available'
+        : stringValue(api.access)
+    : '';
+  const sourceSignal = `${stringValue(dataset.source_adapter)} ${stringValue(dataset.source_api_url)}`.toLocaleLowerCase();
+  const extras = dataset.extras;
+  const catalogueFrequency = recordString(extras, 'frequency-of-update') || recordString(extras, 'frequency_of_update');
+  const referenceDates = catalogueReferenceDates(extras?.['dataset-reference-date'] || extras?.dataset_reference_date);
+
+  return {
+    explicit: Boolean(operational && Object.keys(operational).length),
+    catalogueDerived: sourceSignal.includes('ckan') || sourceSignal.includes('data.gov.uk'),
+    canonicalSource: canonicalUrl
+      ? {
+          label: stringValue(canonical?.label) || urlHost(canonicalUrl) || 'Canonical source',
+          url: canonicalUrl,
+          host: stringValue(canonical?.host) || urlHost(canonicalUrl)
+        }
+      : null,
+    authoritativeSource: authoritative?.name
+      ? { name: authoritative.name, url: authoritativeUrl }
+      : null,
+    updateFrequency: stringValue(operational?.update_frequency),
+    latestRelease,
+    maintenanceStatus: stringValue(operational?.maintenance_status),
+    distributions: (operational?.distributions || [])
+      .map((distribution) => ({
+        label: stringValue(distribution.label),
+        kind: stringValue(distribution.kind),
+        url: stringValue(distribution.url)
+      }))
+      .filter((distribution) => Boolean(distribution.label)),
+    api: apiLabel ? { label: apiLabel, url: stringValue(api?.url) } : null,
+    technicalSpecificationUrl: stringValue(operational?.technical_specification_url),
+    licenceUrl: stringValue(operational?.licence_url),
+    verifiedAt: stringValue(operational?.verified_at || operational?.provenance?.observed_at),
+    catalogueFrequency,
+    catalogueReferenceDates: referenceDates,
+    linkedSources: uniqueLinkedSources(resources)
   };
 }
 

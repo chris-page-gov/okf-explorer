@@ -120,8 +120,16 @@ Expected behaviour:
   standards alignment, quality, provenance, additional metadata, resources and
   relationships start folded and can be opened independently.
 - The card surfaces the best source-supplied update date near the title and
-  labels it as a record/catalogue date rather than silently presenting it as
-  the period covered by the data.
+  labels CKAN `metadata_modified` explicitly as **Catalogue metadata updated**,
+  with a warning that it is not necessarily the dataset’s latest release or
+  update frequency.
+- CKAN-derived cards include a folded **Current source and maintenance**
+  section. It shows evidence-backed canonical source, publisher, frequency,
+  release, distributions, API, specification and licence fields when supplied
+  by the bundle. Otherwise it declares an operational metadata gap and exposes
+  CKAN-declared dataset reference dates/update frequency plus
+  publisher/distribution links as qualified leads, not as automatically
+  current or authoritative sources.
 - When resources or explicit temporal metadata name years, a **Dates and
   related records** block shows those years, the declared series and any other
   records with the same stable series identity. It states when no other series
@@ -149,6 +157,10 @@ direct new-tab fallback when cross-origin policy, availability or response size
 prevents in-app display. Known legacy `data.gov.uk/api/action/` links resolve
 through the canonical browser-readable GOV.UK CKAN action endpoint. Returning to
 the record does not re-run the search or discard its filters.
+
+Source Inspector dates describe the remote metadata record. They do not
+override a bundle’s separately evidenced operational metadata or prove that a
+dataset stopped changing when its catalogue entry stopped changing.
 
 The card must distinguish "observed public metadata" from operational
 assurance. A declared provider API portal is not automatically a live, open,

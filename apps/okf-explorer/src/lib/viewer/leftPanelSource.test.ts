@@ -114,10 +114,22 @@ describe('large-corpus left panel UX harness', () => {
 
   it('surfaces record dates and explicit series alternatives without guessing from similar titles', () => {
     expect(pageSource).toContain('class="record-date-summary"');
+    expect(pageSource).toContain('{dateContext.updatedLabel}');
+    expect(pageSource).toContain('Catalogue date — not necessarily the dataset’s latest release or update frequency.');
     expect(pageSource).toContain('Dates and related records');
     expect(pageSource).toContain('datasetDateContext(largeDetail.dataset, largeDetail.resources)');
     expect(pageSource).toContain('relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])');
     expect(pageSource).toContain('Explorer will not guess that similar titles are the same series');
+  });
+
+  it('separates CKAN discovery metadata from evidence-backed current operations', () => {
+    expect(pageSource).toContain('datasetOperationalContext(largeDetail.dataset, largeDetail.resources)');
+    expect(pageSource).toContain('Current source and maintenance');
+    expect(pageSource).toContain('Operational metadata gap.');
+    expect(pageSource).toContain('Catalogue declarations');
+    expect(pageSource).toContain('These claims come from the catalogue metadata and are preserved as provenance.');
+    expect(pageSource).toContain('Explorer does not call it authoritative until the bundle supplies canonical-source evidence and provenance.');
+    expect(pageSource).toContain('Catalogue metadata modified');
   });
 
   it('puts full-record hydration first and folds secondary data-card sections', () => {

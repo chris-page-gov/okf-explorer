@@ -786,6 +786,12 @@ input:focus {
   white-space: nowrap;
 }
 
+.record-date-summary small {
+  flex-basis: 100%;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
 .record-context {
   margin: 12px 0;
   border: 1px solid var(--line);
@@ -803,6 +809,29 @@ input:focus {
   gap: 8px;
   align-items: center;
   justify-content: space-between;
+}
+
+.operational-context dl {
+  display: grid;
+  grid-template-columns: minmax(120px, 170px) 1fr;
+  gap: 7px 12px;
+}
+
+.operational-context dt {
+  font-weight: 800;
+}
+
+.operational-context dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.operational-context ul {
+  padding-left: 22px;
+}
+
+.operational-context li {
+  margin: 5px 0;
 }
 
 .record-context-heading h3,

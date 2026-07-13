@@ -53,6 +53,11 @@ source-declared series label is accepted within the same publisher. Similar
 titles alone are not enough to claim that two records belong to one series.
 Legacy CKAN records can retain source series metadata under `extras.series`.
 
+Catalogue dates must remain distinct from dataset currency. Map CKAN
+`metadata_created` and `metadata_modified` as catalogue-record dates; do not
+present them as the first publication or latest data release unless the source
+explicitly says so.
+
 ## Explorer Features To Feed
 
 | Explorer feature | Bundle fields that make it useful |
@@ -87,6 +92,57 @@ Do not copy the source response wholesale into normalized OKF fields. Preserve
 the source link, map governed fields into the bundle with explicit provenance,
 and let the inspector show the unaltered remote response on demand. Explorer
 renders response values as text and does not execute source HTML.
+
+## Operational Metadata From Canonical Sources
+
+Discovery catalogues such as CKAN can be older than the publisher service they
+link to. Enrich this at bundle-build time with `operational_metadata`; do not
+make the static Explorer crawl arbitrary resource hosts in the browser.
+
+```yaml
+operational_metadata:
+  authoritative_source:
+    name: HM Land Registry
+    url: https://www.gov.uk/government/organisations/land-registry
+  canonical_source:
+    label: Use land and property data
+    url: https://use-land-property-data.service.gov.uk/datasets/ocod
+    host: use-land-property-data.service.gov.uk
+  update_frequency: Monthly
+  latest_release:
+    dynamic: true
+    label: Check the canonical source for the current monthly release
+  maintenance_status: Active
+  distributions:
+    - label: Complete monthly extract
+      kind: full
+    - label: Change-only monthly extract
+      kind: delta
+  api:
+    available: true
+    access: Account, licence agreement and API key required
+    url: https://use-land-property-data.service.gov.uk/api-documentation
+  technical_specification_url: https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec
+  verified_at: 2026-07-13
+  provenance:
+    source_url: https://use-land-property-data.service.gov.uk/datasets/ocod
+    observed_at: 2026-07-13
+    method: deterministic publisher-page adapter
+```
+
+The generator may use the resource host as a discovery lead, but host identity
+alone is not evidence that a page is canonical, current or authoritative.
+Promote values only when a source-specific adapter records its evidence URL,
+observation date and method. Keep update frequency aligned with DCAT
+`dct:accrualPeriodicity` during export, and model full/delta/API access as
+distributions rather than flattening them into the catalogue modified date.
+
+For example, HM Land Registry’s current
+[Overseas companies dataset](https://use-land-property-data.service.gov.uk/datasets/ocod)
+and [technical specification](https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec)
+state the monthly release schedule, full/change-only delivery and API access;
+the older CKAN record remains useful discovery provenance but is not the source
+for current operational status.
 
 ## Facets To Prefer
 

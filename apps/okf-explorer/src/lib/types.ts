@@ -353,6 +353,44 @@ export type LargeFacetRow = {
   count: number;
 };
 
+export type LargeDatasetOperationalMetadata = {
+  canonical_source?: {
+    url: string;
+    label?: string;
+    host?: string;
+  };
+  authoritative_source?: {
+    name: string;
+    url?: string;
+  };
+  update_frequency?: string;
+  latest_release?: {
+    date?: string;
+    label?: string;
+    dynamic?: boolean;
+  };
+  maintenance_status?: string;
+  distributions?: Array<{
+    label: string;
+    kind?: string;
+    url?: string;
+  }>;
+  api?: {
+    available?: boolean;
+    access?: string;
+    url?: string;
+  };
+  technical_specification_url?: string;
+  licence_url?: string;
+  verified_at?: string;
+  provenance?: {
+    source_url?: string;
+    observed_at?: string;
+    method?: string;
+    [key: string]: unknown;
+  };
+};
+
 export type LargeDataset = {
   id?: string;
   name: string;
@@ -393,6 +431,7 @@ export type LargeDataset = {
   record_type?: string;
   source_tier?: string;
   source_adapter?: string;
+  operational_metadata?: LargeDatasetOperationalMetadata;
   confidence?: string;
   dcat_type?: string;
   dcat_export_status?: string;

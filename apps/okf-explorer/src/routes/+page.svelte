@@ -45,6 +45,7 @@
     analysisNodeForRoute as findAnalysisNodeForRoute,
     colorForType,
     datasetDateContext,
+    datasetOperationalContext,
     displayValue,
     facetLabel,
     facetSummary as getFacetSummary,
@@ -4325,6 +4326,7 @@
           {:else if largeDetail}
             {#if largeDetail.kind === 'dataset'}
               {@const dateContext = datasetDateContext(largeDetail.dataset, largeDetail.resources)}
+              {@const operationalContext = datasetOperationalContext(largeDetail.dataset, largeDetail.resources)}
               {@const seriesPeers = relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
@@ -4337,10 +4339,13 @@
               {#if dateContext.updated || dateContext.years.length}
                 <p class="record-date-summary">
                   {#if dateContext.updated}
-                    <span><strong>Record updated</strong> <time datetime={dateContext.updated}>{sourceDateLabel(dateContext.updated)}</time></span>
+                    <span><strong>{dateContext.updatedLabel}</strong> <time datetime={dateContext.updated}>{sourceDateLabel(dateContext.updated)}</time></span>
                   {/if}
                   {#if dateContext.years.length}
                     <span><strong>{dateContext.years.length === 1 ? 'Resource year' : 'Resource years'}</strong> {dateContext.years.join(', ')}</span>
+                  {/if}
+                  {#if dateContext.catalogueMetadata}
+                    <small>Catalogue date — not necessarily the dataset’s latest release or update frequency.</small>
                   {/if}
                 </p>
               {/if}
@@ -4357,6 +4362,53 @@
                 {/if}
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
+              {#if operationalContext.explicit || operationalContext.catalogueDerived}
+                <details class="record-context operational-context disclosure-section">
+                  <summary>Current source and maintenance</summary>
+                  {#if operationalContext.explicit}
+                    <p><strong>Evidence-backed operational metadata supplied by this bundle.</strong>{#if operationalContext.verifiedAt} Verified {sourceDateLabel(operationalContext.verifiedAt)}.{/if}</p>
+                    <dl>
+                      {#if operationalContext.authoritativeSource}<dt>Authoritative source</dt><dd>{#if isUrl(operationalContext.authoritativeSource.url)}<a href={operationalContext.authoritativeSource.url} target="_blank" rel="noopener noreferrer">{operationalContext.authoritativeSource.name} ↗</a>{:else}{operationalContext.authoritativeSource.name}{/if}</dd>{/if}
+                      {#if operationalContext.canonicalSource}<dt>Canonical dataset page</dt><dd>{#if isUrl(operationalContext.canonicalSource.url)}<a href={operationalContext.canonicalSource.url} target="_blank" rel="noopener noreferrer">{operationalContext.canonicalSource.label} ↗</a>{:else}{operationalContext.canonicalSource.label}{/if}</dd>{/if}
+                      {#if operationalContext.updateFrequency}<dt>Update frequency</dt><dd>{operationalContext.updateFrequency}</dd>{/if}
+                      {#if operationalContext.latestRelease}<dt>Latest release</dt><dd>{operationalContext.latestRelease}</dd>{/if}
+                      {#if operationalContext.maintenanceStatus}<dt>Maintenance status</dt><dd>{operationalContext.maintenanceStatus}</dd>{/if}
+                      {#if operationalContext.api}<dt>API</dt><dd>{#if isUrl(operationalContext.api.url)}<a href={operationalContext.api.url} target="_blank" rel="noopener noreferrer">{operationalContext.api.label} ↗</a>{:else}{operationalContext.api.label}{/if}</dd>{/if}
+                      {#if operationalContext.technicalSpecificationUrl}<dt>Technical specification</dt><dd>{#if isUrl(operationalContext.technicalSpecificationUrl)}<a href={operationalContext.technicalSpecificationUrl} target="_blank" rel="noopener noreferrer">Open specification ↗</a>{:else}{operationalContext.technicalSpecificationUrl}{/if}</dd>{/if}
+                      {#if operationalContext.licenceUrl}<dt>Licence</dt><dd>{#if isUrl(operationalContext.licenceUrl)}<a href={operationalContext.licenceUrl} target="_blank" rel="noopener noreferrer">Open licence ↗</a>{:else}{operationalContext.licenceUrl}{/if}</dd>{/if}
+                    </dl>
+                    {#if operationalContext.distributions.length}
+                      <h4>Declared distributions</h4>
+                      <ul>
+                        {#each operationalContext.distributions as distribution}
+                          <li>{#if isUrl(distribution.url)}<a href={distribution.url} target="_blank" rel="noopener noreferrer">{distribution.label} ↗</a>{:else}{distribution.label}{/if}{#if distribution.kind} <span class="muted">({distribution.kind})</span>{/if}</li>
+                        {/each}
+                      </ul>
+                    {/if}
+                  {:else}
+                    <p><strong>Operational metadata gap.</strong> This bundle contains a CKAN catalogue snapshot, but no separately verified current release, update frequency, maintenance state or API-access statement.</p>
+                  {/if}
+                  {#if operationalContext.catalogueFrequency || operationalContext.catalogueReferenceDates.length}
+                    <h4>Catalogue declarations</h4>
+                    <dl>
+                      {#if operationalContext.catalogueReferenceDates.length}
+                        <dt>Dataset reference date</dt><dd>{operationalContext.catalogueReferenceDates.map((row) => `${sourceDateLabel(row.date)}${row.kind ? ` · ${row.kind}` : ''}`).join(', ')}</dd>
+                      {/if}
+                      {#if operationalContext.catalogueFrequency}<dt>Update frequency</dt><dd>{operationalContext.catalogueFrequency}</dd>{/if}
+                    </dl>
+                    <p class="muted">These claims come from the catalogue metadata and are preserved as provenance. They are not treated as a current release date or reverified operating status.</p>
+                  {/if}
+                  {#if operationalContext.linkedSources.length}
+                    <h4>Publisher or distribution links supplied by the catalogue</h4>
+                    <ul>
+                      {#each operationalContext.linkedSources.slice(0, 8) as linkedSource}
+                        <li><a href={linkedSource.url} target="_blank" rel="noopener noreferrer">{linkedSource.label} ↗</a> <span class="muted">{linkedSource.host}</span></li>
+                      {/each}
+                    </ul>
+                    <p class="muted">A linked host may contain newer operational information. Explorer does not call it authoritative until the bundle supplies canonical-source evidence and provenance.</p>
+                  {/if}
+                </details>
+              {/if}
               {#if dateContext.years.length || dateContext.series}
                 <details class="record-context disclosure-section" open>
                   <summary>Dates and related records</summary>
@@ -4381,7 +4433,7 @@
                           {@const peerDate = datasetDateContext(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
                           <button type="button" onclick={() => selectLargeRoute(datasetRoute(peer))}>
                             <strong>{peer.title}</strong>
-                            <span>{peerDate.years.length ? `Resource years ${peerDate.years.join(', ')}` : peerDate.updated ? `Updated ${sourceDateLabel(peerDate.updated)}` : 'No date supplied'}</span>
+                            <span>{peerDate.years.length ? `Resource years ${peerDate.years.join(', ')}` : peerDate.updated ? `${peerDate.updatedLabel} ${sourceDateLabel(peerDate.updated)}` : 'No date supplied'}</span>
                           </button>
                         {/each}
                       </div>
@@ -4453,8 +4505,8 @@
                   <dt>Protocol</dt><dd>{displayValue(largeDetail.dataset.protocol)}</dd>
                   <dt>Open data</dt><dd>{displayValue(largeDetail.dataset.isopen)}</dd>
                   <dt>Private</dt><dd>{displayValue(largeDetail.dataset.private)}</dd>
-                  <dt><span class="label-help">Created<button class="info-icon" type="button" aria-label="Explain created date" onclick={() => toggleHelp('source-date:created')} onmouseenter={() => showHelp('source-date:created')} onmouseleave={() => hideHelp('source-date:created')} onfocus={() => showHelp('source-date:created')} onblur={() => hideHelp('source-date:created')}>i</button>{#if activeHelpKey === 'source-date:created'}<span class="info-bubble" role="tooltip">{helpText('source-date:created')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_created)}</dd>
-                  <dt><span class="label-help">Modified<button class="info-icon" type="button" aria-label="Explain modified date" onclick={() => toggleHelp('source-date:modified')} onmouseenter={() => showHelp('source-date:modified')} onmouseleave={() => hideHelp('source-date:modified')} onfocus={() => showHelp('source-date:modified')} onblur={() => hideHelp('source-date:modified')}>i</button>{#if activeHelpKey === 'source-date:modified'}<span class="info-bubble" role="tooltip">{helpText('source-date:modified')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_modified)}</dd>
+                  <dt><span class="label-help">Catalogue metadata created<button class="info-icon" type="button" aria-label="Explain created date" onclick={() => toggleHelp('source-date:created')} onmouseenter={() => showHelp('source-date:created')} onmouseleave={() => hideHelp('source-date:created')} onfocus={() => showHelp('source-date:created')} onblur={() => hideHelp('source-date:created')}>i</button>{#if activeHelpKey === 'source-date:created'}<span class="info-bubble" role="tooltip">{helpText('source-date:created')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_created)}</dd>
+                  <dt><span class="label-help">Catalogue metadata modified<button class="info-icon" type="button" aria-label="Explain modified date" onclick={() => toggleHelp('source-date:modified')} onmouseenter={() => showHelp('source-date:modified')} onmouseleave={() => hideHelp('source-date:modified')} onfocus={() => showHelp('source-date:modified')} onblur={() => hideHelp('source-date:modified')}>i</button>{#if activeHelpKey === 'source-date:modified'}<span class="info-bubble" role="tooltip">{helpText('source-date:modified')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.metadata_modified)}</dd>
                   <dt><span class="label-help">Timeline date<button class="info-icon" type="button" aria-label="Explain timeline date" onclick={() => toggleHelp('source-date:timeline')} onmouseenter={() => showHelp('source-date:timeline')} onmouseleave={() => hideHelp('source-date:timeline')} onfocus={() => showHelp('source-date:timeline')} onblur={() => hideHelp('source-date:timeline')}>i</button>{#if activeHelpKey === 'source-date:timeline'}<span class="info-bubble" role="tooltip">{helpText('source-date:timeline')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.timestamp)}</dd>
                   <dt>{capitalise(formatPlural())}</dt><dd>{displayValue(largeDetail.dataset.formats)}</dd>
                   <dt>Topics</dt><dd>{displayValue(largeDetail.dataset.topics)}</dd>
@@ -4651,7 +4703,8 @@
               {/if}
               {#if largeDetail.result.timestamp}
                 <p class="record-date-summary">
-                  <span><strong>Record updated</strong> <time datetime={largeDetail.result.timestamp}>{sourceDateLabel(largeDetail.result.timestamp)}</time></span>
+                  <span><strong>Catalogue/index date</strong> <time datetime={largeDetail.result.timestamp}>{sourceDateLabel(largeDetail.result.timestamp)}</time></span>
+                  <small>Catalogue date — not necessarily the dataset’s latest release or update frequency.</small>
                 </p>
               {/if}
               <p>{stripHtml(largeDetail.result.notes || '')}</p>

@@ -32,8 +32,8 @@ export function sourceSummary(value: unknown, fallbackTitle: string): SourceSumm
   addSummaryRow(rows, 'Identifier', stringValue(payload.id || payload.name));
   addSummaryRow(rows, 'Publisher', stringValue(organization?.title || organization?.name || payload.publisher_title || payload.publisher));
   addSummaryRow(rows, 'Licence', stringValue(payload.license_title || payload.license_id));
-  addSummaryRow(rows, 'Created', stringValue(payload.metadata_created || payload.created));
-  addSummaryRow(rows, 'Last modified', stringValue(payload.metadata_modified || payload.modified));
+  addSummaryRow(rows, 'Metadata record created', stringValue(payload.metadata_created || payload.created));
+  addSummaryRow(rows, 'Metadata record modified', stringValue(payload.metadata_modified || payload.modified));
   if (Array.isArray(payload.resources)) addSummaryRow(rows, 'Resources', resources.length.toLocaleString());
 
   return {

@@ -28,7 +28,7 @@ describe('source inspector helpers', () => {
         { label: 'Identifier', value: 'c8f5787c-3332-4cf1-b72d-b434acfaf911' },
         { label: 'Publisher', value: 'HM Land Registry' },
         { label: 'Licence', value: 'UK Open Government Licence (OGL)' },
-        { label: 'Last modified', value: '2020-11-25T09:06:58.705403' },
+        { label: 'Metadata record modified', value: '2020-11-25T09:06:58.705403' },
         { label: 'Resources', value: '0' }
       ],
       tags: ['Geospatial', 'Cadastral parcels']
