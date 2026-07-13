@@ -61,6 +61,10 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added optional `okf-operational-metadata.v1` sidecar loading for large
+  corpora, allowing source-backed operational enrichment to be refreshed
+  without rewriting dataset or search chunks.
+
 ### Added
 
 - Added an in-Explorer Source Inspector for machine-readable record links, with

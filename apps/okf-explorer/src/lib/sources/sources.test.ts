@@ -374,7 +374,8 @@ describe('large corpus source', () => {
           entrypoints: {
             data_manifest: 'data/manifest.json',
             overview_index: 'data/overview.json',
-            analysis_overview: 'data/analysis/overview.json'
+            analysis_overview: 'data/analysis/overview.json',
+            operational_metadata: 'data/operational-metadata.json'
           },
           counts: { datasets: 1, resources: 2, relationships: 1 }
         }
@@ -442,6 +443,19 @@ describe('large corpus source', () => {
       ['https://example.test/ckan/data/graph.json', { nodes: [], edges: [] }],
       ['https://example.test/ckan/data/govuk.json', { paths: [] }],
       [
+        'https://example.test/ckan/data/operational-metadata.json',
+        {
+          schema: 'okf-operational-metadata.v1',
+          generated_at: '2026-07-13T00:00:00Z',
+          records: {
+            'dataset/dataset-one': {
+              authoritative_source: { name: 'Publisher One' },
+              update_frequency: 'Monthly'
+            }
+          }
+        }
+      ],
+      [
         'https://example.test/ckan/data/adjacency/manifest.json',
         {
           schema: 'okf-relationship-adjacency.v1',
@@ -471,6 +485,8 @@ describe('large corpus source', () => {
 
     const fullIndex = await source.loadFullIndex();
     expect(fullIndex.datasetByName.get('dataset-one')?.title).toBe('Dataset One');
+    expect(fullIndex.datasetByName.get('dataset-one')?.operational_metadata?.update_frequency).toBe('Monthly');
+    expect(fullIndex.operationalMetadata.schema).toBe('okf-operational-metadata.v1');
     expect(fullIndex.resourcesByDataset.get('dataset-one')?.map((resource) => resource.id)).toEqual(['r0', 'r00', 'r1', 'r3', 'r2']);
     expect(await source.loadFullIndex()).toBe(fullIndex);
 

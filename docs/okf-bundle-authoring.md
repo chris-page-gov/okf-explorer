@@ -99,6 +99,23 @@ Discovery catalogues such as CKAN can be older than the publisher service they
 link to. Enrich this at bundle-build time with `operational_metadata`; do not
 make the static Explorer crawl arbitrary resource hosts in the browser.
 
+Large corpora may keep this information in a small optional sidecar rather than
+rewriting dataset chunks. Set `entrypoints.operational_metadata` on the
+descriptor, or `indexes.operational_metadata` on the data manifest, to an
+`okf-operational-metadata.v1` document keyed by stable dataset route:
+
+```yaml
+schema: okf-operational-metadata.v1
+generated_at: 2026-07-13T00:00:00Z
+records:
+  dataset/overseas-companies-that-own-property-in-england-and-wales:
+    update_frequency: Monthly
+```
+
+Explorer loads and merges the sidecar with the normalized dataset index. This
+keeps enrichment independently refreshable without changing lexical search or
+facet postings, while undeclared sidecars remain fully backward compatible.
+
 ```yaml
 operational_metadata:
   authoritative_source:

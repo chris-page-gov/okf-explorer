@@ -71,6 +71,7 @@ export type LargeCorpusDescriptor = {
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    operational_metadata?: string;
   };
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
@@ -102,6 +103,7 @@ export type LargeDataManifest = {
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    operational_metadata?: string;
   };
   chunks: Record<string, string[]>;
   performance?: Record<string, unknown>;
@@ -391,6 +393,12 @@ export type LargeDatasetOperationalMetadata = {
   };
 };
 
+export type LargeOperationalMetadataIndex = {
+  schema: 'okf-operational-metadata.v1' | string;
+  generated_at?: string;
+  records: Record<string, LargeDatasetOperationalMetadata>;
+};
+
 export type LargeDataset = {
   id?: string;
   name: string;
@@ -577,6 +585,7 @@ export type LargeFullIndex = {
   facets: Record<string, LargeFacetRow[]>;
   graph: LargeGraphIndex;
   govukContent: LargeGovukContent;
+  operationalMetadata: LargeOperationalMetadataIndex;
   datasetByName: Map<string, LargeDataset>;
   resourceById: Map<string, LargeResource>;
   publisherByName: Map<string, LargePublisher>;
