@@ -43,6 +43,12 @@ async function harness(manifest = baseManifest()) {
     ]],
     ['https://example.test/type.json', { schema: 'okf-static-filter-postings.v1', key: 'type', values: { API: [0, 1], Dataset: [2], Guide: [3] } }],
     ['https://example.test/country.json', { schema: 'okf-static-filter-postings.v1', key: 'country', values: { England: [0, 2, 3], Wales: [1] } }],
+    ['https://example.test/facets.json', {
+      publisher: {
+        'home-office': [0, 2],
+        'department-for-science-innovation-and-technology': [1, 2]
+      }
+    }],
     ['https://example.test/sort-values.json', [
       ['2025-01-01', 'Flood API', 0.9],
       ['2026-01-01', 'Welsh Flood API', 0.8],
@@ -110,5 +116,55 @@ describe('large static search worker', () => {
     expect(response.filters_applied).toBe(false);
     expect(response.total).toBe(4);
     expect(response.results[0].name).toBe('flood-api');
+  });
+
+  it('recognises a multi-word organisation from legacy delta-encoded publisher facets', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'Home Office', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Home Office',
+      kind: 'organisation',
+      filter_value: 'home-office'
+    });
+    expect(response.total).toBe(2);
+    expect(response.results[0].match.matched_fields).toContain('publisher');
+    expect(response.results[0].match.score_components.entity).toBeGreaterThan(0);
+  });
+
+  it('resolves an unambiguous organisation initialism without a lexical token', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'DSIT', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Department for Science Innovation and Technology',
+      matched_alias: 'DSIT'
+    });
+    expect(response.total).toBe(2);
+
+    worker.postMessage.mockClear();
+    await worker.onmessage?.({ data: { type: 'suggest', id: 3, prefix: 'DSIT' } } as MessageEvent);
+    expect(worker.postMessage.mock.calls[0][0].suggestions[0]).toMatchObject({
+      kind: 'entity',
+      label: 'Department for Science Innovation and Technology'
+    });
   });
 });

@@ -100,6 +100,14 @@ source-of-truth changes.
 - Standardized absent and legacy `None`/`null` metadata as `Not specified
   (metadata gap)` in record details and illustrated the wording in the new
   manual.
+- Replaced the ambiguous large-corpus `tokens` label with `distinct indexed
+  terms` and an explicit explanation that the count is local search-index
+  vocabulary, not AI or billable model usage.
+- Added deterministic organisation-aware retrieval for exact publisher names
+  and unambiguous abbreviations. Existing CKAN v1 bundles reuse their compact
+  delta-encoded publisher postings, while new v2 bundles can publish explicit
+  entity aliases through `data/search/entities.json`; recognition remains
+  visible in suggestions and match explanations.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 

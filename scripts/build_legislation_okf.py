@@ -718,7 +718,12 @@ ELI 1.5 is the primary interoperability ontology because it models legal works, 
 def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], generated_at: str) -> dict[str, Any]:
     facets = build_facets(records)
     publishers = build_publishers(records)
-    search = large_corpus.build_search(records, max_postings_per_token=10_000, filter_facets=facets)
+    search = large_corpus.build_search(
+        records,
+        max_postings_per_token=10_000,
+        filter_facets=facets,
+        search_entities=large_corpus.search_entities_from_publishers(publishers, kind="category"),
+    )
     record_chunks = [(path.with_suffix(".json.gz"), rows) for path, rows in large_corpus.chunk_paths("works", records, chunk_size=1000)]
     compressed_result_chunks = []
     result_path_map: dict[str, str] = {}
@@ -849,6 +854,8 @@ def output_files(corpus: dict[str, Any], source_meta: dict[str, Any]) -> dict[Pa
         Path("data/search/sort-values.json.gz"): gzip_json(corpus["search"]["sort_values"]),
         Path("enrichment/model-assisted-v1.json"): MODEL_ENRICHMENT_PATH.read_text(encoding="utf-8"),
     }
+    if corpus["search"]["entities"]["entities"]:
+        files[Path("data/search/entities.json")] = large_corpus.render_json(corpus["search"]["entities"])
     for key in ("record_chunks", "resource_chunks", "publisher_chunks", "relationship_chunks"):
         for path, rows in corpus[key]:
             files[path] = gzip_json(rows) if path.suffix == ".gz" else large_corpus.render_json(rows)

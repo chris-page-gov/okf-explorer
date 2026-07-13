@@ -250,10 +250,33 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn("API Product", record_type_values)
         self.assertEqual(len(search["sort_values"]), len(corpus["records"]))
         self.assertEqual(manifest["entrypoints"]["sort_values"], "data/search/sort-values.json")
+        self.assertEqual(manifest["entrypoints"]["entities"], "data/search/entities.json")
+        self.assertTrue(search["entities"]["entities"])
 
         files = builder_module.output_files(corpus)
         self.assertIn(Path(record_type_path), files)
         self.assertIn(Path("data/search/sort-values.json"), files)
+        self.assertIn(Path("data/search/entities.json"), files)
+
+    def test_search_entities_publish_declared_and_deterministic_organisation_aliases(self):
+        entities = builder_module.search_entities_from_publishers(
+            [
+                {
+                    "name": "department-for-science-innovation-and-technology",
+                    "title": "Department for Science, Innovation and Technology",
+                    "aliases": ["Science Department"],
+                    "dataset_count": 9,
+                    "route": "publisher/department-for-science-innovation-and-technology",
+                }
+            ],
+            kind="organisation",
+        )
+
+        self.assertEqual(len(entities), 1)
+        self.assertIn("DSIT", entities[0]["aliases"])
+        self.assertIn("Science Department", entities[0]["aliases"])
+        self.assertEqual(entities[0]["filter_value"], "department-for-science-innovation-and-technology")
+        self.assertEqual(entities[0]["kind"], "organisation")
 
     def test_filter_postings_use_an_explicit_missing_value_bucket(self):
         search = builder_module.build_search(

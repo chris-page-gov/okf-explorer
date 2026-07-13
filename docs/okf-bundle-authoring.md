@@ -31,6 +31,7 @@ Every record should have:
 - source URL and source adapter/tier;
 - `confidence` such as `observed`, `declared` or `assured`;
 - provider/publisher where known;
+- declared organisation aliases and standard abbreviations where known;
 - licence and access fields, with explicit `not-specified` when missing;
 - protocol/format/host fields when applicable;
 - standards alignment fields for API/data bundles: `dcat_type`,
@@ -43,7 +44,7 @@ Every record should have:
 | Explorer feature | Bundle fields that make it useful |
 |------------------|-----------------------------------|
 | Reader overview | counts, overview cards, notes, warnings, top entry points |
-| Search | search shards with title, provider, notes, tags, host, protocol and route |
+| Search | search shards with title, provider, notes, tags, host, protocol and route; optional entity identities and aliases |
 | Facets | facet definitions, value counts, selected-value routes and facet help text |
 | Graph | typed relationships, relationship counts, node types, groupable fields |
 | Links | relationship kind, source, target, evidence type, confidence and counts |
@@ -154,6 +155,7 @@ data/apis-0.json
 data/resources-0.json
 data/relationships-0.json
 data/search/manifest.json
+data/search/entities.json
 data/search/results-0.json
 ```
 
@@ -164,7 +166,9 @@ polite to static hosts.
 ## Acceptance Checklist
 
 - The hosted Explorer opens the pack in overview-only mode quickly.
-- Search finds known providers, hosts, products and place names.
+- Search finds known providers, their declared abbreviations, hosts, products
+  and place names. Publish authoritative organisation aliases in the optional
+  search-entity index instead of hard-coding corpus-specific names in Explorer.
 - Facets are searchable, paged and explain their terms.
 - A record detail card exposes provenance, licence/access/contract metadata and
   quality-signal explanations.

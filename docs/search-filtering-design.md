@@ -850,6 +850,15 @@ Extend the static search manifest with optional, lazy filter postings. Apply
 filters before the result limit when those postings exist; retain the current
 v1 loading and filtering path when they do not.
 
+Treat named organisations and other bundle concepts as deterministic search
+entities rather than bags of everyday words. A bundle may publish a compact
+entity index containing its canonical label, declared aliases or standard
+abbreviations, route and associated facet value. Exact, unambiguous entity
+matches may reduce candidates through the existing facet postings, but the
+interpretation must be shown to the user and included in match evidence.
+Explorer may infer conservative initialisms as a compatibility aid for older
+corpora; bundle-declared aliases remain authoritative.
+
 ### Retrieval benchmark
 
 Create representative questions with graded expected records, prohibited or

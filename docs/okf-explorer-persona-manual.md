@@ -41,8 +41,9 @@ Expected behaviour:
 - Count cards distinguish API products, data endpoints, data products and
   active filters.
 - The left panel starts with search and closed facets.
-- The right panel explains schema, generated timestamp, search-token count and
-  hydration state.
+- The right panel explains schema, generated timestamp, distinct indexed-term
+  count and hydration state. This is local search vocabulary, not AI-token
+  usage.
 - If the app is still loading a background index, a visible status line says so
   without blocking overview reading.
 

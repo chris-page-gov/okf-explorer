@@ -132,6 +132,7 @@ export type LargeSearchManifest = {
     doc_map: string;
     filter_postings?: Record<string, string>;
     sort_values?: string;
+    entities?: string;
   };
 };
 
@@ -148,12 +149,34 @@ export type LargeSearchRequest = {
 export type SearchMatchExplanation = {
   query_tokens: string[];
   matched_fields: string[];
+  recognized_entity?: SearchEntityMatch;
   score_components: {
     weighted: number;
     idf: number;
     exact: number;
+    entity?: number;
     total: number;
   };
+};
+
+export type SearchEntity = {
+  id: string;
+  label: string;
+  kind: string;
+  aliases?: string[];
+  filter_key: string;
+  filter_value: string;
+  count?: number;
+  route?: string;
+};
+
+export type SearchEntityMatch = {
+  id: string;
+  label: string;
+  kind: string;
+  filter_key: string;
+  filter_value: string;
+  matched_alias?: string;
 };
 
 export type LargeSearchResponse = {
@@ -164,6 +187,7 @@ export type LargeSearchResponse = {
   facets: Record<string, LargeFacetRow[]>;
   ranking: SearchRankingStrategy;
   elapsed_ms: number;
+  interpreted_entity?: SearchEntityMatch;
 };
 
 export type LargeFilterPostings = {
@@ -313,6 +337,10 @@ export type SearchResultDoc = {
 export type SearchSuggestion = {
   token: string;
   df: number;
+  kind?: 'entity' | 'term';
+  label?: string;
+  query?: string;
+  entity_kind?: string;
 };
 
 export type LargeFacetRow = {

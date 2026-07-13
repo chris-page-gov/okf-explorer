@@ -1009,6 +1009,45 @@ def tokenize(value: str) -> list[str]:
     return tokens
 
 
+SEARCH_ENTITY_CONNECTORS = {"a", "an", "and", "for", "from", "in", "of", "on", "the", "to", "with"}
+
+
+def search_entity_aliases(label: str, declared: list[str] | None = None) -> list[str]:
+    words = re.findall(r"[a-z0-9]+", unicodedata.normalize("NFKD", label).encode("ascii", "ignore").decode("ascii").lower())
+    inferred = [
+        "".join(word[0] for word in words if word not in SEARCH_ENTITY_CONNECTORS),
+        "".join(word[0] for word in words),
+    ]
+    aliases = [str(value).strip() for value in (declared or []) if str(value).strip()]
+    aliases.extend(value.upper() for value in inferred if 3 <= len(value) <= 8)
+    return sorted(set(aliases), key=lambda value: (value.casefold(), value))
+
+
+def search_entities_from_publishers(publishers: list[dict[str, Any]], kind: str = "publisher") -> list[dict[str, Any]]:
+    entities: list[dict[str, Any]] = []
+    for publisher in publishers:
+        value = str(publisher.get("name") or publisher.get("id") or "").strip()
+        label = str(publisher.get("title") or value).strip()
+        if not value or not label:
+            continue
+        aliases = publisher.get("aliases")
+        if isinstance(aliases, str):
+            aliases = [part.strip() for part in aliases.split(";") if part.strip()]
+        entities.append(
+            {
+                "id": str(publisher.get("route") or f"publisher/{value}"),
+                "label": label,
+                "kind": str(publisher.get("entity_kind") or kind),
+                "aliases": search_entity_aliases(label, aliases if isinstance(aliases, list) else []),
+                "filter_key": "publisher",
+                "filter_value": value,
+                "count": int(publisher.get("dataset_count") or 0),
+                "route": str(publisher.get("route") or f"publisher/{value}"),
+            }
+        )
+    return sorted(entities, key=lambda entity: (entity["label"].casefold(), entity["filter_value"]))
+
+
 def truncate_text(value: Any, limit: int) -> str:
     text = re.sub(r"\s+", " ", str(value or "")).strip()
     if len(text) <= limit:
@@ -2408,6 +2447,7 @@ def build_search(
     records: list[dict[str, Any]],
     max_postings_per_token: int = MAX_SEARCH_POSTINGS_PER_TOKEN,
     filter_facets: dict[str, list[dict[str, Any]]] | None = None,
+    search_entities: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     result_docs = search_docs(records)
     posting_heaps: dict[str, list[tuple[int, int, int, int]]] = defaultdict(list)
@@ -2511,6 +2551,7 @@ def build_search(
                 "doc_map": "data/search/doc-map.json",
                 "filter_postings": filter_entrypoints,
                 "sort_values": "data/search/sort-values.json",
+                **({"entities": "data/search/entities.json"} if search_entities else {}),
             },
         },
         "lexicon": dict(sorted(lexicon_by_shard.items())),
@@ -2520,6 +2561,10 @@ def build_search(
         "doc_map": {str(doc["ordinal"]): doc["open"] for doc in result_docs},
         "filter_postings": filter_postings,
         "sort_values": sort_values,
+        "entities": {
+            "schema": "okf-static-search-entities.v1",
+            "entities": search_entities or [],
+        },
     }
 
 
@@ -2858,7 +2903,11 @@ def build_corpus(
         "standards_alignment": standards_alignment_overview,
     }
 
-    search = build_search(records, filter_facets=facets)
+    search = build_search(
+        records,
+        filter_facets=facets,
+        search_entities=search_entities_from_publishers(publishers, kind="organisation"),
+    )
     record_chunks = chunk_paths("apis", records)
     resource_chunks = chunk_paths("resources", resources)
     publisher_chunks = chunk_paths("providers", publishers)
@@ -3016,6 +3065,8 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         Path("data/search/doc-map.json"): render_json(corpus["search"]["doc_map"]),
         Path("data/search/sort-values.json"): render_json(corpus["search"]["sort_values"]),
     }
+    if corpus["search"]["entities"]["entities"]:
+        files[Path("data/search/entities.json")] = render_json(corpus["search"]["entities"])
     for path, rows in corpus["record_chunks"]:
         files[path] = render_json(rows)
     for path, rows in corpus["resource_chunks"]:

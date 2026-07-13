@@ -60,6 +60,32 @@ The `planning applications` example demonstrates several new behaviours:
 resources, tags, provider or identifier fields. It is not a generated answer
 and does not claim that the record is authoritative, complete or operational.
 
+### Search for an organisation or abbreviation
+
+Organisation names should not behave like unrelated everyday words. When an
+exact query uniquely identifies a publisher, Explorer shows the interpretation
+and uses that publisher's existing static postings as the candidate set. For
+example, `Home Office` is interpreted as the Home Office organisation rather
+than separate matches for “home” and “office”. An unambiguous initialism such as
+`DSIT` resolves to Department for Science, Innovation and Technology even when
+the letters are not a lexical term in the record text.
+
+The behaviour stays inspectable:
+
+- autocomplete labels a recognised **Organisation** and its record count
+  instead of exposing a wall of raw token completions;
+- the search panel states which organisation was recognised;
+- every result's “Why this matched” text repeats the interpretation; and
+- ambiguous abbreviations remain ordinary queries until the user chooses a
+  specific entity.
+
+New `okf-static-search.v2` bundles can publish authoritative labels and aliases
+in `data/search/entities.json`. Older CKAN v1 bundles derive exact organisation
+names and conservative initialisms from the compact publisher facet and reuse
+its delta-encoded postings, so this recognition does not require full-corpus
+hydration. Explicit aliases supplied by a bundle take precedence over inferred
+initialisms.
+
 ## 3. Add And Remove Filters
 
 Open a facet and select a value. A normal click replaces the current value in
@@ -145,7 +171,7 @@ Small OKF bundles use the same `q` and `sort` parameters plus repeated
 | Corpus | Search and filter behaviour |
 | --- | --- |
 | `okf-static-search.v2` | Lazily loads ordinal filter postings, applies filters before limiting results, calculates dynamic facet counts and returns structured match evidence. |
-| Existing v1 manifest | Continues lexical worker search and uses the existing full-index filtering path when postings are unavailable. URLs and visible semantics remain the same. |
+| Existing v1 manifest | Continues lexical worker search, reuses legacy publisher postings for recognised organisations and uses the existing full-index filtering path when other filter postings are unavailable. URLs and visible semantics remain the same. |
 | Small bundle | Uses in-memory lexical matching, type filters and the shared URL/sort contract. |
 
 The screenshots use the published CKAN v1 corpus to prove compatibility with a

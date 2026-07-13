@@ -391,12 +391,30 @@ input:focus {
 }
 
 .stage-actions,
-.suggestions,
 .chips,
 .detail-actions {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+}
+
+.suggestions {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.suggestions button {
+  display: grid;
+  gap: 2px;
+  height: auto;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.suggestions button small {
+  color: var(--muted);
+  font-weight: 600;
 }
 
 .type-filters,
@@ -678,6 +696,27 @@ input:focus {
 .search-status {
   margin: 6px 0 0;
   font-weight: 700;
+}
+
+.search-interpretation {
+  display: grid;
+  gap: 2px;
+  margin: 8px 0 0;
+  padding: 8px 9px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent-soft);
+  font-size: 12px;
+}
+
+.search-interpretation strong,
+.search-interpretation span,
+.search-interpretation small {
+  display: block;
+}
+
+.search-interpretation small {
+  color: var(--muted);
 }
 
 .facet-status {

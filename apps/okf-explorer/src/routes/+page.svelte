@@ -270,7 +270,7 @@
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
       if (!query) return true;
-      return `${node.title} ${node.id} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
+      return `${node.title} ${node.id} ${(node.aliases || []).join(' ')} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
         .toLowerCase()
         .includes(query);
     }).sort(compareSmallNodes)
@@ -324,9 +324,10 @@
   function smallMatchScore(node: OkfNode, query: string): number {
     const title = node.title.toLowerCase();
     const id = node.id.toLowerCase();
-    if (title === query || id === query) return 100;
-    if (title.startsWith(query) || id.startsWith(query)) return 60;
-    if (title.includes(query) || id.includes(query)) return 30;
+    const aliases = (node.aliases || []).map((alias) => alias.toLowerCase());
+    if (title === query || id === query || aliases.includes(query)) return 100;
+    if (title.startsWith(query) || id.startsWith(query) || aliases.some((alias) => alias.startsWith(query))) return 60;
+    if (title.includes(query) || id.includes(query) || aliases.some((alias) => alias.includes(query))) return 30;
     return 10;
   }
 
@@ -1058,6 +1059,12 @@
       standards: 'standards metadata'
     };
     const reasons = fields.slice(0, 3).map((field) => labels[field] || field.replaceAll('_', ' '));
+    const entity = result.match?.recognized_entity;
+    if (entity) {
+      const otherReasons = reasons.filter((reason) => reason !== labels[entity.filter_key]);
+      const suffix = otherReasons.length ? `; also matched ${[...new Set(otherReasons)].join(', ')}` : '';
+      return `Recognised ${entity.kind} “${entity.label}”${entity.matched_alias ? ` from alias “${entity.matched_alias}”` : ''}${suffix}`;
+    }
     if ((result.match?.score_components.exact || 0) > 0) reasons.unshift('exact phrase or identifier');
     if (result.official_full_text_match) reasons.push('official full text');
     return reasons.length ? `Matched ${[...new Set(reasons)].join(', ')}` : 'Matched the static lexical index';
@@ -3182,9 +3189,24 @@
             {#if largeSuggestions.length}
               <div class="suggestions">
                 {#each largeSuggestions as suggestion}
-                  <button type="button" onclick={() => void runLargeSearch(suggestion.token)}>{suggestion.token} <small>{suggestion.df}</small></button>
+                  <button type="button" onclick={() => void runLargeSearch(suggestion.query || suggestion.token)}>
+                    <strong>{suggestion.label || suggestion.token}</strong>
+                    <small>
+                      {suggestion.kind === 'entity' ? `${capitalise(suggestion.entity_kind || 'entity')} · ` : 'Indexed term · '}
+                      {suggestion.df.toLocaleString()} {suggestion.df === 1 ? 'record' : 'records'}
+                    </small>
+                  </button>
                 {/each}
               </div>
+            {/if}
+            {#if largeSearchResponse?.interpreted_entity}
+              <p class="search-interpretation" aria-live="polite">
+                <strong>Recognised {largeSearchResponse.interpreted_entity.kind}</strong>
+                <span>{largeSearchResponse.interpreted_entity.label}</span>
+                {#if largeSearchResponse.interpreted_entity.matched_alias}
+                  <small>Matched alias “{largeSearchResponse.interpreted_entity.matched_alias}”</small>
+                {/if}
+              </p>
             {/if}
           </section>
 
@@ -4590,7 +4612,10 @@
               {#if source.descriptor.publisher}<dt>Publisher</dt><dd><a href={source.descriptor.publisher} target="_blank" rel="noreferrer">{source.descriptor.publisher}</a></dd>{/if}
               {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">source licence</a></dd>{/if}
               <dt>Generated</dt><dd>{source.descriptor.generated_at || source.manifest.generated_at}</dd>
-              <dt>Search</dt><dd>{source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} tokens</dd>
+              <dt>Search index</dt>
+              <dd title="Unique normalized terms available to local browser search; no AI or paid token usage">
+                {source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} distinct indexed terms
+              </dd>
               <dt>Hydration</dt><dd>{largeIndex ? 'records loaded' : 'overview only'}</dd>
             </dl>
           {/if}
