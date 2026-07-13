@@ -1832,13 +1832,11 @@
   }
 
   function metadataDisplayValue(value: unknown): string {
-    if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) return 'Not recorded in source metadata';
-    if (typeof value === 'string' && ['none', 'null', 'not-specified'].includes(value.trim().toLowerCase())) return 'Not recorded in source metadata';
     return displayValue(value);
   }
 
   function groupDisplayValue(value: unknown): string {
-    if (!Array.isArray(value) || !value.length) return 'Not recorded in source metadata';
+    if (!Array.isArray(value) || !value.length) return 'Not specified (metadata gap)';
     const labels = value
       .map((item) => {
         if (item && typeof item === 'object') {
@@ -4251,7 +4249,7 @@
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
                 <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.dataset.license_title || largeDetail.dataset.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.license_title || largeDetail.dataset.license_id)}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
                 <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
@@ -4491,7 +4489,7 @@
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{largeDetail.result.license_title || largeDetail.result.license_id || 'Unknown'}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
                 <dt>Protocol</dt><dd>{displayValue(largeDetail.result.protocol)}</dd>
                 <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
                 <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
@@ -4624,7 +4622,7 @@
           <dl>
             <dt>Route</dt><dd>{detailNode.id}</dd>
             <dt>Section</dt><dd>{detailNode.section || 'root'}</dd>
-            <dt>Source</dt><dd>{detailNode.source || 'None'}</dd>
+            <dt>Source</dt><dd>{metadataDisplayValue(detailNode.source)}</dd>
             <dt>Links</dt><dd>{detailRelationships.length}</dd>
           </dl>
           <h3>Relationships</h3>

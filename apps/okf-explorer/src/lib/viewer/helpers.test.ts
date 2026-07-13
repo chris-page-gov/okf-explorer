@@ -74,10 +74,12 @@ const analysis: LargeAnalysisOverview = {
 
 describe('viewer helpers', () => {
   it('formats stable display, percentage and URL values', () => {
-    expect(displayValue(undefined)).toBe('None');
-    expect(displayValue(null)).toBe('None');
-    expect(displayValue('')).toBe('None');
-    expect(displayValue([])).toBe('None');
+    expect(displayValue(undefined)).toBe('Not specified (metadata gap)');
+    expect(displayValue(null)).toBe('Not specified (metadata gap)');
+    expect(displayValue('')).toBe('Not specified (metadata gap)');
+    expect(displayValue([])).toBe('Not specified (metadata gap)');
+    expect(displayValue('None')).toBe('Not specified (metadata gap)');
+    expect(displayValue('__missing__')).toBe('Not specified (metadata gap)');
     expect(displayValue(['CSV', 'XLS'])).toBe('CSV, XLS');
     expect(displayValue({ a: 1 })).toBe('{"a":1}');
     expect(formatPercent(0.955)).toBe('96%');

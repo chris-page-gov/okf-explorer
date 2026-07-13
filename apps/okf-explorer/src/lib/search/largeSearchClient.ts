@@ -40,7 +40,16 @@ export class LargeSearchClient {
   }
 
   query(request: LargeSearchRequest): Promise<LargeSearchResponse> {
-    return this.#request<LargeSearchResponse>({ type: 'query', request });
+    const serializableRequest: LargeSearchRequest = {
+      query: String(request.query || ''),
+      filters: Object.fromEntries(
+        Object.entries(request.filters || {}).map(([key, values]) => [key, [...values].map(String)])
+      ),
+      sort: request.sort,
+      ranking: request.ranking,
+      facet_keys: request.facet_keys ? [...request.facet_keys] : undefined
+    };
+    return this.#request<LargeSearchResponse>({ type: 'query', request: serializableRequest });
   }
 
   suggest(prefix: string): Promise<SearchSuggestion[]> {

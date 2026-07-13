@@ -90,7 +90,8 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('quality-contract_signal');
     expect(pageSource).toContain('largeDetail.result.license_title');
     expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.timestamp)');
-    expect(pageSource).toContain("['none', 'null', 'not-specified']");
+    expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)');
+    expect(pageSource).not.toContain("|| 'None'");
     expect(pageSource).toContain("source-date:created");
     expect(pageSource).toContain("source-date:modified");
     expect(pageSource).toContain("source-date:timeline");

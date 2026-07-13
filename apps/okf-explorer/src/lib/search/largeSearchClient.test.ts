@@ -75,6 +75,33 @@ describe('LargeSearchClient', () => {
     await expect(queryPromise).rejects.toThrow('search shard missing');
   });
 
+  it('copies reactive request state into structured-clone-safe worker data', () => {
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const worker = MockWorker.instances[0];
+    const sourceValues = ['local government'];
+    const reactiveFilters = new Proxy({ publisher_family: sourceValues }, {});
+
+    void client.query({
+      query: 'planning',
+      filters: reactiveFilters,
+      sort: 'metadata-quality',
+      ranking: 'idf',
+      facet_keys: ['publisher_family']
+    });
+
+    const postedRequest = worker.posted[0].request as Record<string, unknown>;
+    expect(postedRequest).toEqual({
+      query: 'planning',
+      filters: { publisher_family: ['local government'] },
+      sort: 'metadata-quality',
+      ranking: 'idf',
+      facet_keys: ['publisher_family']
+    });
+    expect(postedRequest.filters).not.toBe(reactiveFilters);
+    expect((postedRequest.filters as Record<string, string[]>).publisher_family).not.toBe(sourceValues);
+  });
+
   it('uses safe defaults for incomplete worker responses', async () => {
     vi.stubGlobal('Worker', MockWorker);
     const client = new LargeSearchClient();

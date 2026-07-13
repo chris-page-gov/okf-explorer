@@ -27,8 +27,11 @@ export function colorForType(type = 'Node'): string {
 }
 
 export function displayValue(value: unknown): string {
-  if (value === undefined || value === null || value === '') return 'None';
-  if (Array.isArray(value)) return value.length ? value.map((item) => displayValue(item)).join(', ') : 'None';
+  if (value === undefined || value === null || value === '') return 'Not specified (metadata gap)';
+  if (Array.isArray(value)) return value.length ? value.map((item) => displayValue(item)).join(', ') : 'Not specified (metadata gap)';
+  if (typeof value === 'string' && ['none', 'null', 'not-specified', '__missing__'].includes(value.trim().toLowerCase())) {
+    return 'Not specified (metadata gap)';
+  }
   if (typeof value === 'object') return JSON.stringify(value);
   return String(value);
 }
@@ -38,7 +41,7 @@ export function facetLabel(key: string): string {
 }
 
 export function metadataGapLabel(value: string): string {
-  return value === 'not-specified' ? 'Not specified (metadata gap)' : value;
+  return ['none', 'null', 'not-specified', '__missing__'].includes(value.trim().toLowerCase()) ? 'Not specified (metadata gap)' : value;
 }
 
 export function facetValueLabel(analysis: LargeAnalysisOverview | undefined, key: string, value: string): string {
