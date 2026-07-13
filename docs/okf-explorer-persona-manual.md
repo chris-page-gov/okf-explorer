@@ -7,6 +7,11 @@ Explorer, or build a better OKF bundle.
 Screenshots were captured from the local GitHub Pages build on 2026-07-08 using
 the UK Government APIs OKF descriptor.
 
+For the newer deterministic Search, Filter results and Sort interface, see the
+[Static Search and Filtering Manual](static-search-filtering-manual.md). Its
+screenshots use the GOV.UK CKAN large corpus and supersede Stories 2 and 3 for
+retrieval-state behaviour.
+
 The behaviour expectations are grounded in GOV.UK-style service quality:
 understand real user tasks, make the service simple, make it accessible, expose
 source/provenance clearly, use open standards, protect privacy/security, and

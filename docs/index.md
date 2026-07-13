@@ -13,6 +13,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Illustrated UK Legislation manual](uk-legislation/illustrated-manual.md) follows legislation-specific personas and user journeys from overview to selected-passage provenance.
 - [Illustrated Explorer manual](okf-explorer-persona-manual.md) describes the
   UI through user stories and screenshots.
+- [Static search and filtering manual](static-search-filtering-manual.md)
+  illustrates deterministic search, multi-value filters, sorting, match
+  explanations and durable retrieval URLs against the GOV.UK CKAN corpus.
 - [Use an AI with an OKF pack](ai-okf-usage.md) gives prompts and data-access
   rules for asking questions over a pack without losing provenance.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles

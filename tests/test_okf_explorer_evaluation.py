@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import unittest
@@ -9,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 EVALUATION_ROOT = ROOT / "evaluation"
 EVALUATION = EVALUATION_ROOT / "okf-explorer"
 CKAN_EVALUATION = EVALUATION_ROOT / "gov-ckan"
+SEARCH_FILTERING_MANUAL = ROOT / "docs" / "static-search-filtering-manual.md"
+SEARCH_FILTERING_ASSETS = ROOT / "docs" / "assets" / "okf-search-filtering-manual"
 
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
@@ -86,6 +89,20 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("results.json", script)
         self.assertIn("results.md", script)
         self.assertIn("visual_regressions", script)
+
+    def test_static_search_manual_has_verified_ckan_screenshots(self):
+        manual = SEARCH_FILTERING_MANUAL.read_text(encoding="utf-8")
+        manifest = json.loads((SEARCH_FILTERING_ASSETS / "manifest.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(manifest["schema"], "okf-search-filtering-manual-captures.v1")
+        self.assertIn("gov-ckan/okf-explorer.json", manifest["bundle"])
+        self.assertEqual(len(manifest["screenshots"]), 3)
+        for capture in manifest["screenshots"]:
+            with self.subTest(file=capture["file"]):
+                image = SEARCH_FILTERING_ASSETS / capture["file"]
+                self.assertTrue(image.is_file())
+                self.assertEqual(hashlib.sha256(image.read_bytes()).hexdigest(), capture["sha256"])
+                self.assertIn(f"assets/okf-search-filtering-manual/{capture['file']}", manual)
 
     def test_svelte_graph_supports_record_type_grouping_and_metadata_reduction(self):
         source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")

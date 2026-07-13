@@ -91,6 +91,15 @@ source-of-truth changes.
   IDF and IDF-plus-exact-boost strategies. The benchmark gate retains the
   current weighted default because neither candidate reaches the required 3%
   macro nDCG@10 improvement.
+- Added an illustrated static search and filtering manual captured against the
+  58,461-record GOV.UK CKAN corpus, covering deterministic match explanations,
+  repeated facet filters, sorting, result totals, v1 fallback and v2 indexed
+  execution.
+- Fixed large-corpus browser searches by copying reactive retrieval state into
+  structured-clone-safe data before posting requests to the search worker.
+- Standardized absent and legacy `None`/`null` metadata as `Not specified
+  (metadata gap)` in record details and illustrated the wording in the new
+  manual.
 
 ## v0.3.0 - 2026-07-09 - Standards-Aligned API Demonstrator
 
