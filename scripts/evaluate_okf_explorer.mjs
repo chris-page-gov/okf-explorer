@@ -278,7 +278,9 @@ async function waitForSettledSearch(page) {
 
 async function runBrowserEvaluation(options, suite) {
   const { chromium } = loadPlaywright();
-  const browser = await chromium.launch({ headless: !options.headed });
+  const launchOptions = { headless: !options.headed };
+  if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
+  const browser = await chromium.launch(launchOptions);
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const questions = suite.questions.slice(0, options.limit);
   const records = [];

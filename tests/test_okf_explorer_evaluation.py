@@ -82,6 +82,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("questions_scored", script)
         self.assertIn("validation-only", script)
         self.assertIn("buildValidationOnlyRecords", script)
+        self.assertIn("PLAYWRIGHT_EXECUTABLE_PATH", script)
         self.assertIn("results.json", script)
         self.assertIn("results.md", script)
         self.assertIn("visual_regressions", script)
