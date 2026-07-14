@@ -61,6 +61,11 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added backward-compatible large-corpus delivery through integrity-bound,
+  same-origin byte-range packs. Descriptor, search-worker, record-chunk and
+  route-adjacency fetches preserve their logical paths while enforcing the v1
+  pack index, 64 MiB bounds, exact HTTP 206 ranges, dual SHA-256 checks and
+  gzip decoding limits; existing direct static bundles continue unchanged.
 - Added optional `okf-operational-metadata.v1` sidecar loading for large
   corpora, allowing source-backed operational enrichment to be refreshed
   without rewriting dataset or search chunks.

@@ -11,8 +11,10 @@ import {
   sourceJsonCandidates
 } from './fetch';
 import { CHUNK_FETCH_BATCH_SIZE, loadLargeCorpus, MAX_RELATIONSHIP_ROWS, relationshipBucket } from './largeCorpus';
+import { sha256Hex } from './releaseDataPlane';
 import { loadHistory, loadRegistry, rememberHistory } from './registry';
 import { normalizeSmallBundle } from './smallBundle';
+import { makeRangePackFixture, rangeResponse } from '../../test/rangePackFixture';
 import type { OkfBundle } from '$lib/types';
 
 function mockLocalStorage() {
@@ -726,5 +728,252 @@ describe('large corpus source', () => {
 
   it('keeps large chunk fetch batches small enough for static hosting', () => {
     expect(CHUNK_FETCH_BATCH_SIZE).toBeLessThanOrEqual(4);
+  });
+
+  it.each([
+    ['a string entrypoint without entrypoint_integrity', 'release-data-plane.json'],
+    ['a path-only object entrypoint', { path: 'release-data-plane.json' }]
+  ])('rejects an unbound release index advertised through %s', async (_label, releaseDataPlane) => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        jsonResponse({
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Unbound release fixture',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            release_data_plane: releaseDataPlane
+          },
+          counts: {}
+        })
+      )
+    );
+
+    await expect(loadLargeCorpus('https://example.test/bundle/okf-explorer.json')).rejects.toThrow(
+      'no descriptor SHA-256 binding'
+    );
+  });
+
+  it('loads ranged records, relationship chunks and route adjacency without fetching virtual shard URLs', async () => {
+    const packed = await makeRangePackFixture([
+      {
+        path: 'data/records-0.json',
+        value: [{ id: 'd1', name: 'record-one', title: 'Record one', publisher: 'publisher-one', resource_count: 0 }]
+      },
+      {
+        path: 'data/relationships-0.json',
+        value: [{ source: 'dataset/record-one', target: 'publisher/publisher-one', kind: 'published by' }]
+      },
+      {
+        path: 'data/adjacency/83.json.gz',
+        value: {
+          'dataset/dataset-one': [
+            { source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }
+          ]
+        },
+        compression: 'gzip'
+      }
+    ]);
+    const [recordEntry, relationshipEntry, adjacencyEntry] = packed.document.entries;
+    const manifest = {
+      title: 'Ranged manifest',
+      generated_at: '2026-07-14T00:00:00Z',
+      snapshot: 'snapshot-1',
+      counts: { datasets: 1, resources: 0, relationships: 1 },
+      integrity: { manifest_root_sha256: 'a'.repeat(64) },
+      indexes: {
+        overview: 'data/overview.json',
+        relationship_adjacency: 'data/adjacency/manifest.json'
+      },
+      chunks: {
+        datasets: [recordEntry.path],
+        relationships: [relationshipEntry.path]
+      },
+      shards: {
+        datasets: [{ path: recordEntry.path, sha256: recordEntry.sha256 }],
+        relationships: [{ path: relationshipEntry.path, sha256: relationshipEntry.sha256 }]
+      }
+    };
+    const overview = { schema: 'okf-overview.v1', title: 'Ranged overview', counts: manifest.counts };
+    const adjacency = {
+      schema: 'okf-relationship-adjacency.v1',
+      snapshot: 'snapshot-1',
+      algorithm: 'fnv1a32-prefix-2',
+      routes: 1,
+      relationships: 1,
+      buckets: { '83': adjacencyEntry.path },
+      shards: [{ path: adjacencyEntry.path, sha256: adjacencyEntry.sha256 }]
+    };
+    const manifestText = JSON.stringify(manifest);
+    const adjacencyText = JSON.stringify(adjacency);
+    const descriptor = {
+      schema: 'okf-explorer-large-corpus.v1',
+      kind: 'okf-large-corpus',
+      title: 'Ranged fixture',
+      snapshot: 'snapshot-1',
+      data_plane_manifest_root_sha256: 'a'.repeat(64),
+      entrypoints: {
+        data_manifest: 'data/manifest.json',
+        overview_index: 'data/overview.json',
+        relationship_adjacency: 'data/adjacency/manifest.json',
+        release_data_plane: 'release-data-plane.json'
+      },
+      entrypoint_integrity: {
+        data_manifest: { path: 'data/manifest.json', sha256: await sha256Hex(manifestText) },
+        relationship_adjacency: { path: 'data/adjacency/manifest.json', sha256: await sha256Hex(adjacencyText) },
+        release_data_plane: { path: 'release-data-plane.json', sha256: packed.indexHash }
+      },
+      counts: manifest.counts,
+      distribution: { data_plane: 'github-pages-same-origin-range-packs' }
+    };
+    const controls = new Map<string, string>([
+      ['https://example.test/bundle/okf-explorer.json', JSON.stringify(descriptor)],
+      ['https://example.test/bundle/release-data-plane.json', packed.indexText],
+      ['https://example.test/bundle/data/manifest.json', manifestText],
+      ['https://example.test/bundle/data/overview.json', JSON.stringify(overview)],
+      ['https://example.test/bundle/data/adjacency/manifest.json', adjacencyText]
+    ]);
+    const fetchedUrls: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = String(input);
+      fetchedUrls.push(url);
+      if (url === packed.packUrl) {
+        return rangeResponse(packed, new Headers(init?.headers).get('Range') || '');
+      }
+      const text = controls.get(url);
+      return text === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : new Response(text, { headers: { 'content-type': 'application/json' } });
+    }));
+
+    const source = await loadLargeCorpus('https://example.test/bundle/okf-explorer.json');
+    expect(source.snapshot).toBe('snapshot-1');
+    expect(source.releaseDataPlane?.schema).toBe('govuk-okf-github-release-pack-index.v1');
+    expect((await source.loadFullIndex()).datasets[0].title).toBe('Record one');
+    await expect(source.loadRelationships()).resolves.toEqual({
+      relationships: [{ source: 'dataset/record-one', target: 'publisher/publisher-one', kind: 'published by' }],
+      truncated: false
+    });
+    await expect(source.loadRelationshipsForRoute('dataset/dataset-one')).resolves.toEqual([
+      { source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }
+    ]);
+    expect(fetchedUrls).not.toContain('https://example.test/bundle/data/records-0.json');
+    expect(fetchedUrls).not.toContain('https://example.test/bundle/data/relationships-0.json');
+    expect(fetchedUrls).not.toContain('https://example.test/bundle/data/adjacency/83.json.gz');
+    expect(fetchedUrls.filter((url) => url === packed.packUrl)).toHaveLength(3);
+  });
+
+  it('rejects conflicting explicit snapshot identifiers before lazy shard loading', async () => {
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/bundle/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Mixed snapshot fixture',
+          snapshot: 'snapshot-descriptor',
+          entrypoints: { data_manifest: 'data/manifest.json' },
+          counts: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/manifest.json',
+        {
+          title: 'Manifest',
+          generated_at: '2026-07-14T00:00:00Z',
+          snapshot: 'snapshot-manifest',
+          counts: {},
+          indexes: { overview: 'data/overview.json' },
+          chunks: {}
+        }
+      ],
+      ['https://example.test/bundle/data/overview.json', { title: 'Overview', counts: {} }]
+    ]);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string | URL | Request) => {
+        const value = payloads.get(String(input));
+        return value === undefined
+          ? new Response('', { status: 404, statusText: 'Not Found' })
+          : jsonResponse(value);
+      })
+    );
+
+    await expect(loadLargeCorpus('https://example.test/bundle/okf-explorer.json')).rejects.toThrow(
+      'different snapshot identifiers'
+    );
+  });
+
+  it('accepts a legacy snapshotless adjacency manifest but rejects an advertised mismatch', async () => {
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/bundle/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Adjacency snapshot fixture',
+          snapshot: 'snapshot-1',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json'
+          },
+          counts: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/manifest.json',
+        {
+          title: 'Manifest',
+          generated_at: '2026-07-14T00:00:00Z',
+          snapshot: 'snapshot-1',
+          counts: {},
+          indexes: {
+            overview: 'data/overview.json',
+            relationship_adjacency: 'data/adjacency/manifest.json'
+          },
+          chunks: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/overview.json',
+        { title: 'Overview', snapshot: 'snapshot-1', counts: {} }
+      ],
+      [
+        'https://example.test/bundle/data/adjacency/manifest.json',
+        {
+          schema: 'okf-relationship-adjacency.v1',
+          algorithm: 'fnv1a32-prefix-2',
+          routes: 0,
+          relationships: 0,
+          buckets: {}
+        }
+      ]
+    ]);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string | URL | Request) => {
+        const value = payloads.get(String(input));
+        return value === undefined
+          ? new Response('', { status: 404, statusText: 'Not Found' })
+          : jsonResponse(value);
+      })
+    );
+
+    const source = await loadLargeCorpus('https://example.test/bundle/okf-explorer.json');
+    await expect(source.loadRelationshipsForRoute('dataset/example')).resolves.toEqual([]);
+
+    payloads.set('https://example.test/bundle/data/adjacency/manifest.json', {
+      schema: 'okf-relationship-adjacency.v1',
+      snapshot: 'snapshot-2',
+      algorithm: 'fnv1a32-prefix-2',
+      routes: 0,
+      relationships: 0,
+      buckets: {}
+    });
+    const mixedSource = await loadLargeCorpus('https://example.test/bundle/okf-explorer.json');
+    await expect(mixedSource.loadRelationshipsForRoute('dataset/example')).rejects.toThrow(
+      'adjacency manifest snapshot differs'
+    );
   });
 });

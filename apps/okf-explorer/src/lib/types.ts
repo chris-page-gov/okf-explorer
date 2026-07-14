@@ -48,6 +48,62 @@ export type OkfBundle = {
   relationships?: OkfRelationship[];
 };
 
+export type LargeResourceReference =
+  | string
+  | {
+      path: string;
+      sha256?: string;
+      compression?: 'identity' | 'gzip' | string;
+    };
+
+export type LargeShardMetadata = {
+  path: string;
+  sha256: string;
+  compressed_bytes?: number;
+  compression?: 'identity' | 'gzip' | string;
+  [key: string]: unknown;
+};
+
+export type LargeReleasePack = {
+  id: string;
+  asset_name: string;
+  bytes: number;
+  sha256: string;
+  path: string;
+  release_url: string;
+};
+
+export type LargeReleaseDataPlaneEntry = {
+  path: string;
+  bytes: number;
+  sha256: string;
+  compression: 'identity' | 'gzip' | string;
+  pack: string;
+  offset: number;
+  packed_bytes: number;
+  packed_sha256: string;
+  transport_compression: 'identity' | 'gzip' | string;
+};
+
+export type LargeReleaseDataPlaneIndex = {
+  schema: 'govuk-okf-github-release-pack-index.v1' | string;
+  schema_version: string;
+  algorithm: 'concatenated-byte-ranges-v1' | string;
+  repository: string;
+  tag: string;
+  snapshot: string;
+  max_pack_bytes: number;
+  packs: LargeReleasePack[];
+  entries: LargeReleaseDataPlaneEntry[];
+  counts: {
+    packs: number;
+    virtual_shards: number;
+    packed_bytes: number;
+    source_bytes: number;
+  };
+  index_root_sha256: string;
+};
+
 export type LargeCorpusDescriptor = {
   '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
   '@id'?: string;
@@ -62,6 +118,9 @@ export type LargeCorpusDescriptor = {
   license?: string;
   semantic_descriptor?: string;
   generated_at?: string;
+  snapshot?: string;
+  snapshot_id?: string;
+  data_plane_manifest_root_sha256?: string;
   entrypoints: {
     viewer?: string;
     data_manifest: string;
@@ -72,6 +131,16 @@ export type LargeCorpusDescriptor = {
     performance?: string;
     relationship_adjacency?: string;
     operational_metadata?: string;
+    release_data_plane?: LargeResourceReference;
+  };
+  entrypoint_integrity?: Record<string, Exclude<LargeResourceReference, string>>;
+  distribution?: {
+    control_plane?: string;
+    data_plane?: string;
+    release_mirror?: string;
+    browser_release_asset_fetch?: boolean;
+    immutable_release_required?: boolean;
+    [key: string]: unknown;
   };
   counts: Record<string, number>;
   performance?: Record<string, unknown>;
@@ -94,6 +163,7 @@ export type LargeCorpusDescriptor = {
 export type LargeDataManifest = {
   title: string;
   generated_at: string;
+  snapshot?: string;
   counts: Record<string, number>;
   indexes: {
     overview: string;
@@ -105,7 +175,12 @@ export type LargeDataManifest = {
     relationship_adjacency?: string;
     operational_metadata?: string;
   };
-  chunks: Record<string, string[]>;
+  chunks: Record<string, LargeResourceReference[]>;
+  shards?: Record<string, LargeShardMetadata[]>;
+  integrity?: {
+    manifest_root_sha256?: string;
+    [key: string]: unknown;
+  };
   performance?: Record<string, unknown>;
   search?: {
     schema: string;
@@ -125,13 +200,19 @@ export type LargeSearchManifest = {
   weights: Record<string, number>;
   field_masks: Record<string, number>;
   counts: Record<string, number>;
+  snapshot?: string;
+  snapshot_id?: string;
+  shard_metadata?: string;
+  shard_manifest_sha256?: string;
+  postings_partitioning?: Record<string, unknown>;
+  doc_map_partitioning?: Record<string, unknown>;
   entrypoints: {
     lexicon: Record<string, string>;
     prefixes: Record<string, string>;
     postings: string[];
     result_docs: string[];
     facets: string;
-    doc_map: string;
+    doc_map: string | string[];
     filter_postings?: Record<string, string>;
     sort_values?: string;
     entities?: string;
@@ -552,7 +633,9 @@ export type LargeRelationshipAdjacencyManifest = {
   algorithm: 'fnv1a32-prefix-2' | string;
   routes: number;
   relationships: number;
-  buckets: Record<string, string>;
+  snapshot?: string;
+  buckets: Record<string, LargeResourceReference>;
+  shards?: LargeShardMetadata[];
 };
 
 export type LargeGraphIndex = {
@@ -596,10 +679,13 @@ export type LargeCorpusSource = {
   kind: 'large';
   url: string;
   baseUrl: string;
+  snapshot: string;
   descriptor: LargeCorpusDescriptor;
   manifest: LargeDataManifest;
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
+  releaseDataPlane?: LargeReleaseDataPlaneIndex;
+  searchManifest?: LargeResourceReference;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
   loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;

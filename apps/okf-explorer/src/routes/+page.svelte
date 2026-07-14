@@ -7,6 +7,7 @@
     LargeFullIndex,
     LargePublisher,
     LargeRelationship,
+    LargeResourceReference,
     LargeResource,
     LargeSearchResponse,
     LoadedSource,
@@ -32,7 +33,7 @@
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
-  import { fetchJson, fetchSourceJson, movedBundleTarget, resolveUrl } from '$lib/sources/fetch';
+  import { fetchJson, fetchSourceJson, movedBundleTarget } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
@@ -573,7 +574,7 @@
         const large = await loadLargeCorpus(absoluteUrl);
         if (requestId !== loadRequest) return;
         source = large;
-        const searchManifest = large.descriptor.entrypoints.search_manifest || large.manifest.indexes.search;
+        const searchManifest = large.searchManifest;
         history = rememberHistory({
           url: absoluteUrl,
           title: large.descriptor.title,
@@ -604,7 +605,7 @@
           void ensureLargeFullIndex();
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
-        if (searchManifest) void initialiseLargeSearch(large, resolveUrl(searchManifest, large.baseUrl), query, requestId);
+        if (searchManifest) void initialiseLargeSearch(large, searchManifest, query, requestId);
       } else {
         const corpus = normalizeSmallBundle(raw);
         source = { kind: 'small', url: absoluteUrl, title: smallBundleTitle(corpus), corpus };
@@ -633,11 +634,21 @@
     }
   }
 
-  async function initialiseLargeSearch(large: Extract<LoadedSource, { kind: 'large' }>, searchManifestUrl: string, initialQuery: string, requestId: number) {
+  async function initialiseLargeSearch(
+    large: Extract<LoadedSource, { kind: 'large' }>,
+    searchManifestReference: LargeResourceReference,
+    initialQuery: string,
+    requestId: number
+  ) {
     const client = new LargeSearchClient();
     largeSearchIndexLoading = true;
     try {
-      await client.init(large.baseUrl, searchManifestUrl);
+      await client.init(
+        large.baseUrl,
+        searchManifestReference,
+        large.releaseDataPlane,
+        large.snapshot
+      );
       if (requestId !== loadRequest || source?.kind !== 'large' || source.url !== large.url) {
         client.destroy();
         return;

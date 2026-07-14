@@ -1,4 +1,11 @@
-import type { LargeSearchManifest, LargeSearchRequest, LargeSearchResponse, SearchSuggestion } from '$lib/types';
+import type {
+  LargeReleaseDataPlaneIndex,
+  LargeResourceReference,
+  LargeSearchManifest,
+  LargeSearchRequest,
+  LargeSearchResponse,
+  SearchSuggestion
+} from '$lib/types';
 
 type Pending = {
   resolve: (value: unknown) => void;
@@ -35,8 +42,19 @@ export class LargeSearchClient {
     });
   }
 
-  init(baseUrl: string, manifestUrl: string): Promise<LargeSearchManifest> {
-    return this.#request<LargeSearchManifest>({ type: 'init', baseUrl, manifestUrl });
+  init(
+    baseUrl: string,
+    manifestReference: LargeResourceReference,
+    releaseDataPlane?: LargeReleaseDataPlaneIndex,
+    snapshot = ''
+  ): Promise<LargeSearchManifest> {
+    return this.#request<LargeSearchManifest>({
+      type: 'init',
+      baseUrl,
+      manifestReference,
+      releaseDataPlane,
+      snapshot
+    });
   }
 
   query(request: LargeSearchRequest): Promise<LargeSearchResponse> {

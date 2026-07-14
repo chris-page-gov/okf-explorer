@@ -1,5 +1,8 @@
 import type {
   LargeFilterPostings,
+  LargeReleaseDataPlaneIndex,
+  LargeResourceReference,
+  LargeShardMetadata,
   LargeSearchManifest,
   LargeSearchRequest,
   LargeSearchResponse,
@@ -18,12 +21,25 @@ import {
   rankingScore,
   type OrdinalScores
 } from '$lib/search/staticSearch';
+import { SEARCH_MANIFEST_LIMITS, validateLargeSearchManifest } from '$lib/search/largeSearchContract';
+import { fetchJsonResource } from '$lib/sources/fetch';
+import {
+  type PreparedReleaseDataPlane,
+  canonicalJson,
+  prepareReleaseDataPlane,
+  releaseDataRequest,
+  resourceHash,
+  sha256Hex,
+  resourcePath
+} from '$lib/sources/releaseDataPlane';
 
 type InitMessage = {
   type: 'init';
   id: number;
   baseUrl: string;
-  manifestUrl: string;
+  manifestReference: LargeResourceReference;
+  releaseDataPlane?: LargeReleaseDataPlaneIndex;
+  snapshot?: string;
 };
 
 type QueryMessage = {
@@ -47,6 +63,8 @@ const ENTITY_SCORE = 64;
 
 let baseUrl = '';
 let manifest: LargeSearchManifest | null = null;
+let releaseDataPlane: PreparedReleaseDataPlane | undefined;
+let shardIntegrity = new Map<string, string>();
 const jsonCache = new Map<string, Promise<unknown>>();
 const lexiconCache = new Map<string, Promise<Map<string, SearchEntry>>>();
 const postingsCache = new Map<string, Promise<Record<string, Array<[number, number, number]>>>>();
@@ -57,60 +75,79 @@ let sortValuesPromise: Promise<LargeSortValue[]> | null = null;
 let entitiesPromise: Promise<SearchEntity[]> | null = null;
 let legacyFacetsPromise: Promise<Record<string, Record<string, number[]>>> | null = null;
 
-const MAX_JSON_BYTES = 64 * 1024 * 1024;
-
-function resolvePath(path: string): string {
-  return new URL(path, baseUrl).toString();
-}
-
-async function fetchJson<T>(url: string): Promise<T> {
-  if (!jsonCache.has(url)) {
-    const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal ? AbortSignal.timeout(30000) : undefined;
-    const request = fetch(url, { signal }).then(async (response) => {
-      if (!response.ok) throw new Error(`${url}: ${response.status} ${response.statusText}`);
-      const contentLength = response.headers.get('content-length');
-      if (contentLength && Number(contentLength) > MAX_JSON_BYTES) {
-        throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_JSON_BYTES})`);
-      }
-      return JSON.parse(await readResponseText(response, url)) as T;
-    });
+async function fetchJson<T>(reference: LargeResourceReference, requireReleaseEntry = false): Promise<T> {
+  const path = resourcePath(reference);
+  if (!path) throw new Error('Search resource path is missing');
+  const hash = resourceHash(reference);
+  const key = releaseDataPlane
+    ? `${path}#${hash}#${requireReleaseEntry ? 'packed' : 'auto'}`
+    : `${new URL(path, baseUrl).toString()}#${hash}`;
+  if (!jsonCache.has(key)) {
+    const request = fetchJsonResource<T>(reference, baseUrl, { releaseDataPlane, requireReleaseEntry });
     // Drop failed fetches from the cache so transient errors can be retried.
-    request.catch(() => jsonCache.delete(url));
-    jsonCache.set(url, request);
+    request.catch(() => jsonCache.delete(key));
+    jsonCache.set(key, request);
   }
-  return (await jsonCache.get(url)) as T;
+  return (await jsonCache.get(key)) as T;
 }
 
-async function readResponseText(response: Response, url: string): Promise<string> {
-  if (url.toLowerCase().endsWith('.gz') && !response.headers.get('content-encoding')?.toLowerCase().includes('gzip')) {
-    if (!response.body || typeof DecompressionStream === 'undefined') {
-      throw new Error(`${url}: this browser cannot decompress the gzip search chunk`);
-    }
-    response = new Response(response.body.pipeThrough(new DecompressionStream('gzip')));
+function bindShardIntegrity(reference: LargeResourceReference, label: string): LargeResourceReference {
+  const path = resourcePath(reference);
+  if (!path) throw new Error(`${label} path is missing`);
+  const advertisedHash = resourceHash(reference);
+  const expectedHash = shardIntegrity.get(path) || '';
+  if (advertisedHash && expectedHash && advertisedHash !== expectedHash) {
+    throw new Error(`${label} integrity differs from the search shard manifest`);
   }
-  if (!response.body) {
-    const text = await response.text();
-    if (new TextEncoder().encode(text).byteLength > MAX_JSON_BYTES) {
-      throw new Error(`${url}: response too large (stream exceeded ${MAX_JSON_BYTES} bytes)`);
-    }
-    return text;
+  if (expectedHash) return { path, sha256: expectedHash };
+  if (manifest?.shard_metadata) throw new Error(`${label} has no integrity metadata`);
+  return reference;
+}
+
+type SearchShardIntegrityDocument = {
+  snapshot?: string;
+  snapshot_id?: string;
+  shards?: Record<string, LargeShardMetadata[]>;
+};
+
+async function loadShardIntegrity(expectedSnapshot: string): Promise<Map<string, string>> {
+  if (!manifest?.shard_metadata) {
+    if (releaseDataPlane) throw new Error('Release-packed search manifest has no shard-integrity document');
+    return new Map();
   }
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let received = 0;
-  let text = '';
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    received += value.byteLength;
-    if (received > MAX_JSON_BYTES) {
-      reader.cancel().catch(() => {});
-      throw new Error(`${url}: response too large (stream exceeded ${MAX_JSON_BYTES} bytes)`);
-    }
-    text += decoder.decode(value, { stream: true });
+  const document = await fetchJson<SearchShardIntegrityDocument>(manifest.shard_metadata);
+  if (!document || typeof document !== 'object' || !document.shards || typeof document.shards !== 'object') {
+    throw new Error('Search shard metadata is malformed');
   }
-  text += decoder.decode();
-  return text;
+  const snapshot = String(document.snapshot_id || document.snapshot || '');
+  if (expectedSnapshot && snapshot !== expectedSnapshot) {
+    throw new Error('Search shard metadata snapshot differs from the loaded bundle snapshot');
+  }
+  const expectedRoot = String(manifest.shard_manifest_sha256 || '').toLowerCase();
+  if (!/^[0-9a-f]{64}$/.test(expectedRoot)) {
+    throw new Error('Search manifest has no valid shard-manifest SHA-256');
+  }
+  const observedRoot = await sha256Hex(`${canonicalJson(document.shards)}\n`);
+  if (observedRoot !== expectedRoot) throw new Error('Search shard metadata integrity check failed');
+
+  const entries = new Map<string, string>();
+  for (const rows of Object.values(document.shards)) {
+    if (!Array.isArray(rows)) throw new Error('Search shard metadata group is malformed');
+    for (const row of rows) {
+      const path = resourcePath(row);
+      const hash = resourceHash(row);
+      if (!path || !hash) throw new Error('Search shard metadata row is incomplete');
+      if (expectedSnapshot && String(row.snapshot || '') !== expectedSnapshot) {
+        throw new Error('Search shard snapshot differs from the loaded bundle snapshot');
+      }
+      if (entries.has(path)) throw new Error('Duplicate search shard integrity path');
+      if (releaseDataPlane && !releaseDataRequest(row, releaseDataPlane)) {
+        throw new Error(`Release data-plane index has no entry for search shard ${path}`);
+      }
+      entries.set(path, hash);
+    }
+  }
+  return entries;
 }
 
 function tokenize(value: string): string[] {
@@ -139,7 +176,9 @@ async function lexiconEntry(token: string) {
   if (!lexiconCache.has(shard)) {
     lexiconCache.set(
       shard,
-      fetchJson<SearchEntry[]>(resolvePath(path)).then((rows) => new Map(rows.map((row) => [row.token, row])))
+      fetchJson<SearchEntry[]>(bindShardIntegrity(path, 'Search lexicon shard'), Boolean(releaseDataPlane)).then(
+        (rows) => new Map(rows.map((row) => [row.token, row]))
+      )
     );
   }
   return (await lexiconCache.get(shard))?.get(token) || null;
@@ -178,7 +217,7 @@ type FacetPayload = Record<string, Record<string, number[]> | Array<{ value: str
 async function legacyFacets(): Promise<Record<string, Record<string, number[]>>> {
   if (!manifest?.entrypoints.facets) return {};
   if (!legacyFacetsPromise) {
-    legacyFacetsPromise = fetchJson<FacetPayload>(resolvePath(manifest.entrypoints.facets))
+    legacyFacetsPromise = fetchJson<FacetPayload>(manifest.entrypoints.facets)
       .then((payload) => {
         const out: Record<string, Record<string, number[]>> = {};
         for (const [key, values] of Object.entries(payload || {})) {
@@ -194,13 +233,17 @@ async function legacyFacets(): Promise<Record<string, Record<string, number[]>>>
 async function searchEntities(): Promise<SearchEntity[]> {
   if (!manifest) return [];
   if (!entitiesPromise) {
-    entitiesPromise = (async () => {
+    const explicitEntities = Boolean(manifest.entrypoints.entities);
+    const load = (async () => {
       let entities: SearchEntity[] = [];
       if (manifest?.entrypoints.entities) {
-        const payload = await fetchJson<SearchEntityPayload>(resolvePath(manifest.entrypoints.entities));
+        const payload = await fetchJson<SearchEntityPayload>(
+          bindShardIntegrity(manifest.entrypoints.entities, 'Search entity shard'),
+          Boolean(releaseDataPlane)
+        );
         entities = Array.isArray(payload) ? payload : payload.entities || [];
       } else if (manifest?.entrypoints.facets) {
-        const facets = await fetchJson<FacetPayload>(resolvePath(manifest.entrypoints.facets));
+        const facets = await fetchJson<FacetPayload>(manifest.entrypoints.facets);
         const publishers = facets.publisher;
         if (Array.isArray(publishers)) {
           entities = publishers.map((row) => ({
@@ -230,7 +273,8 @@ async function searchEntities(): Promise<SearchEntity[]> {
           ...entity,
           aliases: [...new Set([...(entity.aliases || []), ...inferredEntityAliases(entity.label)])]
         }));
-    })().catch(() => []);
+    })();
+    entitiesPromise = explicitEntities ? load : load.catch(() => []);
   }
   return entitiesPromise;
 }
@@ -294,7 +338,13 @@ async function lexicalSuggestionsFor(prefix: string): Promise<SearchSuggestion[]
   const path = manifest.entrypoints.prefixes[shard] || manifest.entrypoints.prefixes._;
   if (!path) return [];
   if (!prefixCache.has(shard)) {
-    prefixCache.set(shard, fetchJson<Record<string, SearchSuggestion[]>>(resolvePath(path)));
+    prefixCache.set(
+      shard,
+      fetchJson<Record<string, SearchSuggestion[]>>(
+        bindShardIntegrity(path, 'Search prefix shard'),
+        Boolean(releaseDataPlane)
+      )
+    );
   }
   const payload = await prefixCache.get(shard)!;
   for (let length = Math.min(normalised.length, maxStoredPrefixLength); length >= minLength; length -= 1) {
@@ -315,7 +365,7 @@ async function suggestionsFor(prefix: string): Promise<SearchSuggestion[]> {
 async function entriesForToken(token: string): Promise<SearchEntry[]> {
   const exact = await lexiconEntry(token);
   if (exact) return [exact];
-  const suggestions = await lexicalSuggestionsFor(token);
+  const suggestions = (await lexicalSuggestionsFor(token)).slice(0, 3);
   const entries = await Promise.all(suggestions.map((suggestion) => lexiconEntry(suggestion.token)));
   return entries.filter((entry): entry is SearchEntry => Boolean(entry));
 }
@@ -324,7 +374,10 @@ async function postingsFor(path: string) {
   if (!postingsCache.has(path)) {
     postingsCache.set(
       path,
-      fetchJson<{ tokens: Record<string, Array<[number, number, number]>> }>(resolvePath(path)).then((payload) => payload.tokens || {})
+      fetchJson<{ tokens: Record<string, Array<[number, number, number]>> }>(
+        bindShardIntegrity(path, 'Search postings shard'),
+        Boolean(releaseDataPlane)
+      ).then((payload) => payload.tokens || {})
     );
   }
   return postingsCache.get(path)!;
@@ -332,7 +385,10 @@ async function postingsFor(path: string) {
 
 async function docsFor(path: string) {
   if (!docCache.has(path)) {
-    docCache.set(path, fetchJson<SearchResultDoc[]>(resolvePath(path)));
+    docCache.set(
+      path,
+      fetchJson<SearchResultDoc[]>(bindShardIntegrity(path, 'Search result shard'), Boolean(releaseDataPlane))
+    );
   }
   return docCache.get(path)!;
 }
@@ -341,7 +397,13 @@ async function filterPostingsFor(key: string): Promise<LargeFilterPostings | nul
   const path = manifest?.entrypoints.filter_postings?.[key];
   if (!path) return null;
   if (!filterPostingsCache.has(key)) {
-    filterPostingsCache.set(key, fetchJson<LargeFilterPostings>(resolvePath(path)));
+    filterPostingsCache.set(
+      key,
+      fetchJson<LargeFilterPostings>(
+        bindShardIntegrity(path, 'Search filter-postings shard'),
+        Boolean(releaseDataPlane)
+      )
+    );
   }
   return filterPostingsCache.get(key)!;
 }
@@ -367,7 +429,12 @@ async function entityOrdinals(entity: SearchEntity): Promise<Set<number> | null>
 async function sortValues(): Promise<LargeSortValue[]> {
   const path = manifest?.entrypoints.sort_values;
   if (!path) return [];
-  if (!sortValuesPromise) sortValuesPromise = fetchJson<LargeSortValue[]>(resolvePath(path));
+  if (!sortValuesPromise) {
+    sortValuesPromise = fetchJson<LargeSortValue[]>(
+      bindShardIntegrity(path, 'Search sort-values shard'),
+      Boolean(releaseDataPlane)
+    );
+  }
   return sortValuesPromise;
 }
 
@@ -401,6 +468,9 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   if (!manifest) throw new Error('Search worker is not initialised');
   const query = request.query.trim();
   const tokens = tokenize(query);
+  if (tokens.length > SEARCH_MANIFEST_LIMITS.maxQueryTokens) {
+    throw new Error('Search query exceeds the supported token limit');
+  }
   const entityRecognition = await recognizedEntity(query);
   const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
   const entryGroups = (await Promise.all(tokens.map(entriesForToken))).filter((group) => group.length);
@@ -508,6 +578,9 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     const path = manifest.entrypoints.result_docs[Math.floor(ordinal / (manifest.result_doc_chunk_size || 1000))];
     if (path) chunkPaths.add(path);
   }
+  if (chunkPaths.size > SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) {
+    throw new Error('Search query exceeds the result-chunk budget');
+  }
   await Promise.all(
     [...chunkPaths].map(async (path) => {
       for (const doc of await docsFor(path)) docsByOrdinal.set(doc.ordinal, doc);
@@ -568,8 +641,15 @@ self.onmessage = async (event: MessageEvent<WorkerMessage>) => {
   const message = event.data;
   try {
     if (message.type === 'init') {
-      baseUrl = message.baseUrl;
-      manifest = await fetchJson<LargeSearchManifest>(message.manifestUrl);
+      baseUrl = new URL(message.baseUrl).toString();
+      releaseDataPlane = message.releaseDataPlane
+        ? await prepareReleaseDataPlane(message.releaseDataPlane, baseUrl, message.snapshot || '')
+        : undefined;
+      manifest = validateLargeSearchManifest(
+        await fetchJson<LargeSearchManifest>(message.manifestReference),
+        message.snapshot || ''
+      );
+      shardIntegrity = await loadShardIntegrity(message.snapshot || '');
       self.postMessage({ type: 'ready', id: message.id, manifest });
       return;
     }
