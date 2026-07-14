@@ -24,6 +24,21 @@ adjacency without loading the corpus-wide edge table. Full relationship chunks
 remain available for explicit corpus-wide analysis, subject to the Explorer's
 documented memory cap.
 
+The large-corpus descriptor may also advertise an optional integrity-bound
+same-origin range-pack data plane. This is a transport extension, not a new
+bundle shape: manifests, search references, record paths, relationship routes,
+query parameters and hash deep links stay unchanged. The central Explorer and
+its search worker resolve a logical shard through the validated v1 range index,
+perform a bounded HTTP 206 read from the bundle's Pages origin, verify packed
+and logical SHA-256 digests, then reverse transport and source compression.
+The release index itself must carry a descriptor-bound SHA-256. Search startup
+also validates the snapshot, exact versioned partition contracts, bounded
+manifest cardinalities, canonical shard-metadata hash and every shard's
+snapshot/hash/pack membership; adjacency loading rejects a mixed snapshot.
+Bundles that publish ordinary files continue down the original direct-fetch
+path. Registry projections remain descriptor registries and do not duplicate
+or specialize a bundle's distribution metadata.
+
 The Explorer continues to consume JSON during the migration. Arbitrary remote
 context retrieval is not enabled in the browser. Contexts are allowlisted,
 pinned locally and expanded during deterministic builds.

@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import type { LargeReleaseDataPlaneIndex } from '$lib/types';
 import { LargeSearchClient } from './largeSearchClient';
 
 type WorkerMessage = Record<string, unknown> & { id: number; type: string };
@@ -42,7 +43,7 @@ describe('LargeSearchClient', () => {
       type: 'init',
       id: 1,
       baseUrl: 'https://example.test/',
-      manifestUrl: 'https://example.test/search/manifest.json'
+      manifestReference: 'https://example.test/search/manifest.json'
     });
     worker.respond({ type: 'ready', id: 1, manifest: { schema: 'search', tokens: 10 } });
     await expect(initPromise).resolves.toEqual({ schema: 'search', tokens: 10 });
@@ -73,6 +74,26 @@ describe('LargeSearchClient', () => {
     worker.respond({ type: 'results', id: 999, response: { results: [] } });
     worker.respond({ type: 'error', id: 1, error: 'search shard missing' });
     await expect(queryPromise).rejects.toThrow('search shard missing');
+  });
+
+  it('passes integrity references, release metadata and snapshot binding to the worker', () => {
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const worker = MockWorker.instances[0];
+    const manifestReference = { path: 'data/search/manifest.json', sha256: 'a'.repeat(64) };
+    const releaseDataPlane = {
+      schema: 'govuk-okf-github-release-pack-index.v1'
+    } as LargeReleaseDataPlaneIndex;
+
+    void client.init('https://example.test/bundle/', manifestReference, releaseDataPlane, 'snapshot-1');
+
+    expect(worker.posted[0]).toMatchObject({
+      type: 'init',
+      baseUrl: 'https://example.test/bundle/',
+      manifestReference,
+      releaseDataPlane,
+      snapshot: 'snapshot-1'
+    });
   });
 
   it('copies reactive request state into structured-clone-safe worker data', () => {

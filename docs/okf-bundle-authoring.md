@@ -154,6 +154,62 @@ observation date and method. Keep update frequency aligned with DCAT
 `dct:accrualPeriodicity` during export, and model full/delta/API access as
 distributions rather than flattening them into the catalogue modified date.
 
+## Optional Same-Origin Range Packs
+
+Large publications that cannot place every virtual shard directly in a Pages
+artifact may advertise `govuk-okf-github-release-pack-index.v1` through the
+descriptor's optional `entrypoints.release_data_plane` reference. Registry
+entries do not change: they still point to the stable `okf-explorer.json`, and
+the descriptor selects the transport.
+
+```json
+{
+  "entrypoints": {
+    "data_manifest": "data/manifest.json",
+    "search_manifest": "data/search/manifest.json",
+    "relationship_adjacency": "data/adjacency/manifest.json",
+    "release_data_plane": "release-data-plane.json"
+  },
+  "entrypoint_integrity": {
+    "release_data_plane": {
+      "path": "release-data-plane.json",
+      "sha256": "<sha256-of-the-index-bytes>"
+    }
+  },
+  "distribution": {
+    "control_plane": "github-pages",
+    "data_plane": "github-pages-same-origin-range-packs",
+    "release_mirror": "immutable-github-release-assets",
+    "browser_release_asset_fetch": false
+  }
+}
+```
+
+Entrypoints remain string paths for generic-client compatibility; integrity
+metadata for the range index lives in the matching `entrypoint_integrity`
+object. The v1 range index preserves every logical shard path. Each row binds that path
+to a contiguous member in a same-origin `.pack.gz` file, with the member byte
+range, packed and logical lengths, packed and logical SHA-256 digests, source
+compression and transport compression. The Explorer validates the complete
+index before use, then requires an exact HTTP 206 response and `Content-Range`,
+rejects `Content-Encoding`, bounds both network and decompressed bytes, and
+verifies both hashes before parsing JSON. Search workers independently validate
+the same index. A range-packed search manifest must also bind its snapshot,
+bounded partitioning contract and canonical shard-metadata hash; every search
+shard row must bind the same snapshot and a valid SHA-256, and every advertised
+search shard must occur in the pack index. Query token and result-chunk fan-out
+remain bounded. Route-adjacency manifests must bind
+the loaded bundle snapshot as well. Record chunks, search shards and FNV-1a
+route-adjacency shards therefore keep their existing paths and route/deep-link
+behavior.
+
+All pack paths and logical references must be safe descriptor-relative paths.
+Absolute paths, cross-origin references, traversal (including percent-encoded
+traversal), query strings and fragments fail closed. Packs remain on the bundle
+Pages origin; an immutable GitHub Release can mirror identical bytes for
+preservation, but browser code does not fetch Release assets. Direct and gzip
+static bundles without `release_data_plane` remain fully supported.
+
 For example, HM Land Registry’s current
 [Overseas companies dataset](https://use-land-property-data.service.gov.uk/datasets/ocod)
 and [technical specification](https://use-land-property-data.service.gov.uk/datasets/ocod/tech-spec)

@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { LargeSearchManifest } from '$lib/types';
+import { canonicalJson, sha256Hex } from '$lib/sources/releaseDataPlane';
+import { makeRangePackFixture, rangeResponse } from '../test/rangePackFixture';
 
 type WorkerHarness = {
   onmessage?: (event: MessageEvent) => Promise<void>;
@@ -63,7 +65,7 @@ async function harness(manifest = baseManifest()) {
   }));
   vi.resetModules();
   await import('./largeSearch.worker');
-  await workerSelf.onmessage?.({ data: { type: 'init', id: 1, baseUrl: 'https://example.test/', manifestUrl: 'https://example.test/manifest.json' } } as MessageEvent);
+  await workerSelf.onmessage?.({ data: { type: 'init', id: 1, baseUrl: 'https://example.test/', manifestReference: 'https://example.test/manifest.json' } } as MessageEvent);
   workerSelf.postMessage.mockClear();
   return workerSelf;
 }
@@ -118,6 +120,21 @@ describe('large static search worker', () => {
     expect(response.results[0].name).toBe('flood-api');
   });
 
+  it('rejects a query that exceeds the bounded token contract before shard fan-out', async () => {
+    const worker = await harness();
+    const query = Array.from({ length: 25 }, (_value, index) => `term${index}`).join(' ');
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query, filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    expect(worker.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('token limit')
+    });
+  });
+
   it('recognises a multi-word organisation from legacy delta-encoded publisher facets', async () => {
     const manifest = baseManifest();
     manifest.schema = 'gov-ckan-static-search.v1';
@@ -166,5 +183,226 @@ describe('large static search worker', () => {
       kind: 'entity',
       label: 'Department for Science Innovation and Technology'
     });
+  });
+
+  it('searches through integrity-checked range-packed lexicon, postings and record shards', async () => {
+    const manifest = baseManifest();
+    const fixture = await makeRangePackFixture([
+      { path: 'lexicon.json', value: [{ token: 'flood', df: 1, postings: 'postings.json' }] },
+      { path: 'postings.json', value: { tokens: { flood: [[0, 20, 1]] } } },
+      {
+        path: 'docs.json',
+        value: [
+          {
+            ordinal: 0,
+            name: 'flood-api',
+            title: 'Flood API',
+            publisher: 'ea',
+            publisher_title: 'EA',
+            resource_count: 1,
+            formats: [],
+            tags: [],
+            open: 'dataset/flood-api'
+          }
+        ]
+      }
+    ]);
+    const [lexiconEntry, postingsEntry, resultEntry] = fixture.document.entries;
+    const shards = {
+      lexicon: [{ path: lexiconEntry.path, sha256: lexiconEntry.sha256, snapshot: 'snapshot-1' }],
+      postings: [{ path: postingsEntry.path, sha256: postingsEntry.sha256, snapshot: 'snapshot-1' }],
+      result_docs: [{ path: resultEntry.path, sha256: resultEntry.sha256, snapshot: 'snapshot-1' }]
+    };
+    manifest.snapshot = 'snapshot-1';
+    manifest.shard_metadata = 'search-shards.json';
+    manifest.shard_manifest_sha256 = await sha256Hex(`${canonicalJson(shards)}\n`);
+    const workerSelf: WorkerHarness = { postMessage: vi.fn() };
+    vi.stubGlobal('self', workerSelf);
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = String(input);
+      if (url === 'https://example.test/manifest.json') {
+        return new Response(JSON.stringify(manifest), { headers: { 'content-type': 'application/json' } });
+      }
+      if (url === 'https://example.test/search-shards.json') {
+        return new Response(JSON.stringify({ snapshot: 'snapshot-1', shards }), {
+          headers: { 'content-type': 'application/json' }
+        });
+      }
+      if (url === 'https://example.test/data-packs/fixture.pack.gz') {
+        return rangeResponse(fixture, new Headers(init?.headers).get('Range') || '');
+      }
+      return new Response('', { status: 404, statusText: 'Not Found' });
+    }));
+    vi.resetModules();
+    await import('./largeSearch.worker');
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'init',
+        id: 1,
+        baseUrl: 'https://example.test/',
+        manifestReference: 'manifest.json',
+        releaseDataPlane: fixture.document,
+        snapshot: 'snapshot-1'
+      }
+    } as MessageEvent);
+    expect(workerSelf.postMessage.mock.calls[0][0].type).toBe('ready');
+    workerSelf.postMessage.mockClear();
+
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'query',
+        id: 2,
+        request: { query: 'flood', filters: {}, sort: 'relevance', ranking: 'weighted' }
+      }
+    } as MessageEvent);
+    const response = workerSelf.postMessage.mock.calls[0][0];
+    expect(response.type).toBe('results');
+    expect(response.response.results[0]).toMatchObject({ name: 'flood-api', title: 'Flood API' });
+  });
+
+  it('rejects a search manifest from a different loaded snapshot', async () => {
+    const manifest = baseManifest();
+    manifest.snapshot = 'snapshot-old';
+    const workerSelf: WorkerHarness = { postMessage: vi.fn() };
+    vi.stubGlobal('self', workerSelf);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify(manifest), { headers: { 'content-type': 'application/json' } }))
+    );
+    vi.resetModules();
+    await import('./largeSearch.worker');
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'init',
+        id: 1,
+        baseUrl: 'https://example.test/',
+        manifestReference: 'manifest.json',
+        snapshot: 'snapshot-new'
+      }
+    } as MessageEvent);
+
+    expect(workerSelf.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('snapshot differs')
+    });
+  });
+
+  it('rejects search shard metadata whose canonical manifest hash differs', async () => {
+    const manifest = baseManifest();
+    manifest.snapshot = 'snapshot-1';
+    manifest.shard_metadata = 'search-shards.json';
+    manifest.shard_manifest_sha256 = '0'.repeat(64);
+    const workerSelf: WorkerHarness = { postMessage: vi.fn() };
+    vi.stubGlobal('self', workerSelf);
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      const payload = url.endsWith('/manifest.json')
+        ? manifest
+        : { snapshot: 'snapshot-1', shards: {} };
+      return new Response(JSON.stringify(payload), { headers: { 'content-type': 'application/json' } });
+    }));
+    vi.resetModules();
+    await import('./largeSearch.worker');
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'init',
+        id: 1,
+        baseUrl: 'https://example.test/',
+        manifestReference: 'manifest.json',
+        snapshot: 'snapshot-1'
+      }
+    } as MessageEvent);
+
+    expect(workerSelf.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('metadata integrity check failed')
+    });
+  });
+
+  it('rejects an auxiliary search shard omitted from the release-pack index', async () => {
+    const fixture = await makeRangePackFixture([{ path: 'unused.json', value: {} }]);
+    const manifest = baseManifest();
+    const shards = {
+      filter_postings: [{ path: 'type.json', sha256: 'a'.repeat(64), snapshot: 'snapshot-1' }]
+    };
+    manifest.snapshot = 'snapshot-1';
+    manifest.shard_metadata = 'search-shards.json';
+    manifest.shard_manifest_sha256 = await sha256Hex(`${canonicalJson(shards)}\n`);
+    const workerSelf: WorkerHarness = { postMessage: vi.fn() };
+    vi.stubGlobal('self', workerSelf);
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.endsWith('/manifest.json')) return new Response(JSON.stringify(manifest));
+      if (url.endsWith('/search-shards.json')) {
+        return new Response(JSON.stringify({ snapshot: 'snapshot-1', shards }));
+      }
+      return new Response('', { status: 404, statusText: 'Not Found' });
+    }));
+    vi.resetModules();
+    await import('./largeSearch.worker');
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'init',
+        id: 1,
+        baseUrl: 'https://example.test/',
+        manifestReference: 'manifest.json',
+        releaseDataPlane: fixture.document,
+        snapshot: 'snapshot-1'
+      }
+    } as MessageEvent);
+
+    expect(workerSelf.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('no entry for search shard type.json')
+    });
+  });
+
+  it('does not let a cached path mask a conflicting advertised hash', async () => {
+    const postingsText = JSON.stringify({ tokens: { flood: [[0, 20, 1]], flow: [[0, 16, 1]] } });
+    const correctHash = await sha256Hex(postingsText);
+    const manifest = baseManifest();
+    const lexicon = [
+      { token: 'flood', df: 1, postings: { path: 'postings.json', sha256: correctHash } },
+      { token: 'flow', df: 1, postings: { path: 'postings.json', sha256: '0'.repeat(64) } }
+    ];
+    const workerSelf: WorkerHarness = { postMessage: vi.fn() };
+    const postingsFetches: string[] = [];
+    vi.stubGlobal('self', workerSelf);
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.endsWith('/manifest.json')) return new Response(JSON.stringify(manifest));
+      if (url.endsWith('/lexicon.json')) return new Response(JSON.stringify(lexicon));
+      if (url.endsWith('/facets.json')) return new Response('{}');
+      if (url.endsWith('/postings.json')) {
+        postingsFetches.push(url);
+        return new Response(postingsText);
+      }
+      return new Response('', { status: 404, statusText: 'Not Found' });
+    }));
+    vi.resetModules();
+    await import('./largeSearch.worker');
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'init',
+        id: 1,
+        baseUrl: 'https://example.test/',
+        manifestReference: 'manifest.json'
+      }
+    } as MessageEvent);
+    expect(workerSelf.postMessage.mock.calls[0][0].type).toBe('ready');
+    workerSelf.postMessage.mockClear();
+
+    await workerSelf.onmessage?.({
+      data: {
+        type: 'query',
+        id: 2,
+        request: { query: 'flood flow', filters: {}, sort: 'relevance', ranking: 'weighted' }
+      }
+    } as MessageEvent);
+    expect(workerSelf.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('integrity check failed')
+    });
+    expect(postingsFetches).toHaveLength(2);
   });
 });
