@@ -13,6 +13,12 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Illustrated UK Legislation manual](uk-legislation/illustrated-manual.md) follows legislation-specific personas and user journeys from overview to selected-passage provenance.
 - [Illustrated Explorer manual](okf-explorer-persona-manual.md) describes the
   UI through user stories and screenshots.
+- [Geospatial Map personas and user stories](geospatial-map-personas-and-user-stories.md)
+  explains who needs spatial discovery, what can go wrong and how each need is
+  covered by browser tests.
+- [Illustrated Geospatial Map manual](geospatial-map-manual.md) walks through
+  evidence, place reductions, locator precision, record selection, bounded
+  previews and progressive recovery.
 - [Static search and filtering manual](static-search-filtering-manual.md)
   illustrates deterministic search, multi-value filters, sorting, match
   explanations and durable retrieval URLs against the GOV.UK CKAN corpus.

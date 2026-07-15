@@ -9,6 +9,12 @@ For the current role-based documentation set, start with
 use [ai-okf-usage.md](ai-okf-usage.md). For bundle authoring, use
 [okf-bundle-authoring.md](okf-bundle-authoring.md).
 
+For geography-led browsing, begin with the
+[Map personas and user stories](geospatial-map-personas-and-user-stories.md),
+then follow the [illustrated Map manual](geospatial-map-manual.md). The
+[Map exploration contract](geospatial-map-exploration.md) explains the
+classification and recovery rules behind the interface.
+
 ## Try The Large CKAN Example
 
 Open this URL first:

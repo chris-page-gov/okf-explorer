@@ -5,6 +5,10 @@
 Working prototype contract for the `geospatial` branch. The implementation is
 browser-only, deterministic and additive to existing OKF bundle formats.
 
+Use the [Map personas and user stories](geospatial-map-personas-and-user-stories.md)
+for role-based needs and acceptance traceability, and the
+[illustrated Map manual](geospatial-map-manual.md) for a practical walkthrough.
+
 ## Aim
 
 The Map canvas turns spatial metadata into another way to reduce and inspect an

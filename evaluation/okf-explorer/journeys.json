@@ -1,7 +1,7 @@
 {
   "schema": "okf-explorer-interaction-suite.v1",
   "title": "UK Government APIs persona, story and interaction journeys",
-  "description": "Traceability from the personas and ten user stories in the Explorer manual to the 100-question suite, plus deterministic browser journeys for interaction behaviour the retrieval questions cannot exercise.",
+  "description": "Traceability from seven shared personas and nineteen user stories in the Explorer and geospatial manuals to the 100-question suite, plus deterministic browser journeys and focused Playwright coverage for interaction behaviour the retrieval questions cannot exercise.",
   "target_bundle": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
   "question_suite": "questions.json",
   "personas": [
@@ -9,7 +9,9 @@
     {"id": "API-P02", "name": "Data engineer", "need": "Judge whether endpoints, protocols, licences, contracts and access metadata support reuse."},
     {"id": "API-P03", "name": "Service assessor", "need": "Check that controls, gaps and quality claims are understandable and accessible."},
     {"id": "API-P04", "name": "Knowledge curator", "need": "Check whether the pack supports useful search, facets, graph, timeline, map and resource inspection."},
-    {"id": "API-P05", "name": "AI operator", "need": "Understand corpus boundaries and obtain source-grounded catalogue evidence."}
+    {"id": "API-P05", "name": "AI operator", "need": "Understand corpus boundaries and obtain source-grounded catalogue evidence."},
+    {"id": "API-P06", "name": "Spatial data analyst", "need": "Find coordinates, spatial files and ArcGIS/OGC services, then inspect bounded geometry without losing source context."},
+    {"id": "API-P07", "name": "Area-based policy analyst", "need": "Find statistics, reports and services about named areas even when source geometry is absent."}
   ],
   "stories": [
     {
@@ -68,9 +70,73 @@
     },
     {
       "id": "API-S10",
-      "persona_ids": ["API-P01", "API-P02", "API-P04"],
+      "persona_ids": ["API-P01", "API-P02", "API-P04", "API-P06", "API-P07"],
       "user_story": "Reduce the current context by explainable spatial evidence or UK coverage, select a mapped record and retain the Map reduction in the public URL.",
-      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019", "Q050", "Q057", "Q073", "Q076"]
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019", "Q050", "Q057", "Q073", "Q076"],
+      "playwright_test_ids": ["GEO-E2E-01", "GEO-E2E-02", "GEO-E2E-15"]
+    },
+    {
+      "id": "API-S11",
+      "persona_ids": ["API-P01", "API-P03", "API-P07"],
+      "user_story": "Reduce Map and the shared Explorer context by evidence class, recognised UK area or other declared coverage.",
+      "question_ids": ["Q050", "Q057", "Q073", "Q076", "Q081", "Q082"],
+      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-04"]
+    },
+    {
+      "id": "API-S12",
+      "persona_ids": ["API-P03", "API-P06", "API-P07"],
+      "user_story": "Distinguish source coordinates, representative centroids, marker clusters and spatial records that cannot be located.",
+      "question_ids": ["Q050", "Q057", "Q073"],
+      "playwright_test_ids": ["GEO-E2E-05", "GEO-E2E-06"]
+    },
+    {
+      "id": "API-S13",
+      "persona_ids": ["API-P01", "API-P02", "API-P06"],
+      "user_story": "Select a marker or Map record while retaining the ordinary route, detail card and provenance context.",
+      "question_ids": ["Q031", "Q032", "Q033", "Q095", "Q096", "Q099"],
+      "playwright_test_ids": ["GEO-E2E-07", "GEO-E2E-08"]
+    },
+    {
+      "id": "API-S14",
+      "persona_ids": ["API-P02", "API-P06"],
+      "user_story": "Preview direct GeoJSON only after an explicit action and see bounded feature, coordinate, response and WGS84-bounds metadata.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019"],
+      "playwright_test_ids": ["GEO-E2E-09"]
+    },
+    {
+      "id": "API-S15",
+      "persona_ids": ["API-P02", "API-P06"],
+      "user_story": "Discover the first feature layer from an ArcGIS service root and request a capped GeoJSON preview.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019"],
+      "playwright_test_ids": ["GEO-E2E-10"]
+    },
+    {
+      "id": "API-S16",
+      "persona_ids": ["API-P02", "API-P03", "API-P06"],
+      "user_story": "Recover from linked-only formats or failed preview requests without losing local evidence or the external source route.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q095", "Q096"],
+      "playwright_test_ids": ["GEO-E2E-11", "GEO-E2E-12"]
+    },
+    {
+      "id": "API-S17",
+      "persona_ids": ["API-P01", "API-P03", "API-P07"],
+      "user_story": "Share and revisit Map reductions through view changes, reload and browser Back/Forward using public URL state.",
+      "question_ids": ["Q081", "Q082", "Q083", "Q084", "Q089", "Q090", "Q100"],
+      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-13"]
+    },
+    {
+      "id": "API-S18",
+      "persona_ids": ["API-P03", "API-P06", "API-P07"],
+      "user_story": "Use Map with named controls, keyboard marker activation and a narrow-screen single-column layout.",
+      "question_ids": ["Q097", "Q098", "Q100"],
+      "playwright_test_ids": ["GEO-E2E-14"]
+    },
+    {
+      "id": "API-S19",
+      "persona_ids": ["API-P04", "API-P06"],
+      "user_story": "Author source-backed geography metadata that preserves code, vintage, CRS, boundary variant and derivation.",
+      "question_ids": ["Q031", "Q032", "Q033", "Q093", "Q095", "Q096", "Q099"],
+      "playwright_test_ids": ["GEO-E2E-02"]
     }
   ],
   "journeys": [

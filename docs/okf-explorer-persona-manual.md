@@ -17,7 +17,11 @@ understand real user tasks, make the service simple, make it accessible, expose
 source/provenance clearly, use open standards, protect privacy/security, and
 measure whether the service works.
 
-The machine-readable traceability for these five personas and ten stories is
+The machine-readable traceability now covers seven personas and nineteen
+stories: the ten broad Explorer stories in this manual plus nine focused Map
+stories in the
+[Geospatial Map personas and user stories](geospatial-map-personas-and-user-stories.md).
+It is stored in
 [`evaluation/okf-explorer/journeys.json`](../evaluation/okf-explorer/journeys.json).
 It names the evaluation questions attached to every story and adds browser
 journeys for facet selection, sorting, URL restoration, graph-edge highlighting
@@ -35,6 +39,8 @@ legislation example uses the dedicated
 | Service assessor | Check whether the display makes terms clear, exposes gaps and supports keyboard/accessible inspection. |
 | Knowledge curator | Improve a pack so search, facets, graph, timeline, map and cards work well. |
 | AI operator | Point an AI at the pack and get sourced answers rather than hallucinated catalogue summaries. |
+| Spatial data analyst | Find coordinates, spatial files and ArcGIS/OGC services, then inspect bounded geometry with source context. |
+| Area-based policy analyst | Find statistics, reports and services about named areas even when source geometry is absent. |
 
 ## Story 1: Start With The Overview
 
@@ -322,6 +328,11 @@ As a policy researcher or data engineer, I want to reduce the current context
 by geography or spatial evidence and select a mapped record, so ArcGIS/OGC data
 and area-based statistics are discoverable without turning browsing into an AI
 or server-backed application.
+
+Continue with the [illustrated Map manual](geospatial-map-manual.md) for the
+full workflow and the
+[focused geospatial stories](geospatial-map-personas-and-user-stories.md) for
+precision, preview, recovery, durable-state and accessibility acceptance rules.
 
 Expected behaviour:
 

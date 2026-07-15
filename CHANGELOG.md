@@ -67,6 +67,11 @@ source-of-truth changes.
   URLs; keeps representative centroids distinct from boundaries; and limits
   direct GeoJSON/ArcGIS geometry loading to explicit bounded preview actions
   with source-link recovery.
+- Added dedicated Map personas and user stories for area-based policy analysis,
+  spatial data analysis, provenance-preserving inspection, locator precision,
+  bounded previews, progressive recovery, durable URL state, accessibility and
+  trustworthy pack authoring, with machine-readable links to focused browser
+  assertions.
 - Hardened deterministic large-corpus retrieval against stale bundle responses,
   silent or crashed workers, malformed facet values, metadata-gap filters and
   approximate capped-posting totals. Dynamic facets and result summaries now

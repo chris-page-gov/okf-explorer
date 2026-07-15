@@ -18,7 +18,7 @@ Each example now has explicit persona, user-story and question traceability:
 | Example | Personas and stories | Evaluation questions |
 |---|---|---|
 | UK Legislation OKF | [Six legislation personas and critical journeys][legislation-personas] · [`journeys.json`](evaluation/legislation/journeys.json) | [`questions.json`](evaluation/legislation/questions.json), 100 legal-answer questions |
-| UK Government APIs OKF | [Five shared Explorer personas and ten stories][persona-manual] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions |
+| UK Government APIs OKF | [Seven shared Explorer personas and nineteen stories][geospatial-personas] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions plus focused Map UI tests |
 | GOV.UK CKAN | [Six CKAN-specific personas and user stories][ckan-personas] · [`journeys.json`](evaluation/gov-ckan/journeys.json) | [`questions.json`](evaluation/gov-ckan/questions.json), 100 catalogue questions |
 
 The journey manifests also define opt-in browser interactions for facets,
@@ -29,6 +29,7 @@ unchanged.
 
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
+- [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
@@ -93,6 +94,10 @@ The repository contains:
   extensions.
 - `docs/geospatial-map-exploration.md` - prototype contract for deterministic
   spatial discovery, Map reductions and bounded on-demand external previews.
+- `docs/geospatial-map-personas-and-user-stories.md` - role-based Map needs,
+  risks, acceptance criteria and browser-test traceability.
+- `docs/geospatial-map-manual.md` - screenshot-led Map walkthrough from spatial
+  evidence and area reduction to previews and recovery.
 - `docs/index.md` - documentation landing page for browsing, AI usage,
   authoring, evaluation and review records.
 - `docs/okf-explorer-persona-manual.md` - screenshot-led UI manual using
@@ -252,6 +257,7 @@ Pages to use **GitHub Actions** as the source.
 [ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
+[geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md
