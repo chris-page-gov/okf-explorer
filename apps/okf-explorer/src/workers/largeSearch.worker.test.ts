@@ -30,7 +30,7 @@ const baseManifest = (): LargeSearchManifest => ({
   }
 });
 
-async function harness(manifest = baseManifest()) {
+async function harness(manifest = baseManifest(), payloadOverrides: Array<[string, unknown]> = []) {
   const workerSelf: WorkerHarness = { postMessage: vi.fn() };
   vi.stubGlobal('self', workerSelf);
   const payloads = new Map<string, unknown>([
@@ -58,6 +58,7 @@ async function harness(manifest = baseManifest()) {
       ['2023-01-01', 'Flood Guide', 0.6]
     ]]
   ]);
+  for (const [url, payload] of payloadOverrides) payloads.set(url, payload);
   vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
     const url = String(input);
     if (!payloads.has(url)) return new Response('', { status: 404 });
@@ -132,6 +133,54 @@ describe('large static search worker', () => {
     expect(worker.postMessage.mock.calls[0][0]).toMatchObject({
       type: 'error',
       error: expect.stringContaining('token limit')
+    });
+  });
+
+  it('returns a ranked subset when scattered results reach the result-chunk budget', async () => {
+    const manifest = baseManifest();
+    const resultCount = 18;
+    manifest.result_limit = resultCount;
+    manifest.result_doc_chunk_size = 1;
+    manifest.counts.documents = resultCount;
+    manifest.entrypoints.result_docs = Array.from({ length: resultCount }, (_value, ordinal) => `docs-${ordinal}.json`);
+    const payloads: Array<[string, unknown]> = [
+      ['https://example.test/lexicon.json', [{ token: 'flood', df: resultCount, postings: 'postings.json' }]],
+      ['https://example.test/postings.json', {
+        tokens: { flood: Array.from({ length: resultCount }, (_value, ordinal) => [ordinal, 20, 1]) }
+      }]
+    ];
+    for (let ordinal = 0; ordinal < resultCount; ordinal += 1) {
+      payloads.push([`https://example.test/docs-${ordinal}.json`, [{
+        ordinal,
+        name: `flood-${ordinal}`,
+        title: `Flood ${ordinal}`,
+        publisher: 'ea',
+        publisher_title: 'EA',
+        resource_count: 1,
+        formats: [],
+        tags: [],
+        open: `dataset/flood-${ordinal}`
+      }]]);
+    }
+    const worker = await harness(manifest, payloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'flood', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const message = worker.postMessage.mock.calls[0][0];
+    expect(message.type).toBe('results');
+    expect(message.response.total).toBe(resultCount);
+    expect(message.response.results).toHaveLength(16);
+    expect(message.response.results.map((result: { ordinal: number }) => result.ordinal)).toEqual(
+      Array.from({ length: 16 }, (_value, ordinal) => ordinal)
+    );
+    expect(message.response.truncated).toBe(true);
+    expect(message.response.truncation).toEqual({
+      reason: 'result-chunk-budget',
+      loaded_result_chunks: 16,
+      result_chunk_budget: 16
     });
   });
 

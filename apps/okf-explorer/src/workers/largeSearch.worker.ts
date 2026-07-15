@@ -574,13 +574,18 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   ordinals = ordinals.slice(0, prelimit);
   const docsByOrdinal = new Map<number, SearchResultDoc>();
   const chunkPaths = new Set<string>();
+  const boundedOrdinals: number[] = [];
+  let resultChunkBudgetReached = false;
   for (const ordinal of ordinals) {
     const path = manifest.entrypoints.result_docs[Math.floor(ordinal / (manifest.result_doc_chunk_size || 1000))];
+    if (path && !chunkPaths.has(path) && chunkPaths.size >= SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) {
+      resultChunkBudgetReached = true;
+      break;
+    }
     if (path) chunkPaths.add(path);
+    boundedOrdinals.push(ordinal);
   }
-  if (chunkPaths.size > SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) {
-    throw new Error('Search query exceeds the result-chunk budget');
-  }
+  ordinals = boundedOrdinals;
   await Promise.all(
     [...chunkPaths].map(async (path) => {
       for (const doc of await docsFor(path)) docsByOrdinal.set(doc.ordinal, doc);
@@ -625,10 +630,25 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       }
     });
   }
+  const postingsTruncated = !recognizedOrdinals && cappedCandidates;
+  const resultLimitReached = filtered.ordinals.size > limit;
+  const truncated = resultChunkBudgetReached || postingsTruncated || resultLimitReached;
+  const truncation = resultChunkBudgetReached
+    ? {
+        reason: 'result-chunk-budget' as const,
+        loaded_result_chunks: chunkPaths.size,
+        result_chunk_budget: SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery
+      }
+    : postingsTruncated
+      ? { reason: 'capped-postings' as const }
+      : resultLimitReached
+        ? { reason: 'result-limit' as const }
+        : undefined;
   return {
     results,
     total: filtered.ordinals.size,
-    truncated: (!recognizedOrdinals && cappedCandidates) || filtered.ordinals.size > limit,
+    truncated,
+    ...(truncation ? { truncation } : {}),
     filters_applied: filtered.applied,
     facets,
     ranking: strategy,

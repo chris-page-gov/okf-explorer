@@ -262,10 +262,17 @@ export type SearchEntityMatch = {
   matched_alias?: string;
 };
 
+export type LargeSearchTruncation = {
+  reason: 'result-limit' | 'capped-postings' | 'result-chunk-budget';
+  loaded_result_chunks?: number;
+  result_chunk_budget?: number;
+};
+
 export type LargeSearchResponse = {
   results: SearchResultDoc[];
   total: number;
   truncated: boolean;
+  truncation?: LargeSearchTruncation;
   filters_applied: boolean;
   facets: Record<string, LargeFacetRow[]>;
   ranking: SearchRankingStrategy;

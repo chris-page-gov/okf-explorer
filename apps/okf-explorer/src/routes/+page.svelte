@@ -1085,7 +1085,13 @@
   function searchResultSummary(): string {
     if (largeIndex) return `${largeVisibleDatasets.length.toLocaleString()} records match the active query and filters`;
     if (!largeSearchResponse) return `${largeResults.length.toLocaleString()} shown`;
-    const limitNote = largeSearchResponse.truncated ? ' (result limit reached)' : '';
+    const limitNote = largeSearchResponse.truncation?.reason === 'result-chunk-budget'
+      ? ' (additional matches were not loaded to keep browser memory use bounded)'
+      : largeSearchResponse.truncation?.reason === 'capped-postings'
+        ? ' (common-term index limit reached)'
+        : largeSearchResponse.truncated
+          ? ' (result limit reached)'
+          : '';
     return `${largeResults.length.toLocaleString()} shown of ${largeSearchResponse.total.toLocaleString()} matching records${limitNote}`;
   }
 

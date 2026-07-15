@@ -61,6 +61,10 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Changed broad large-corpus searches that span more than the safe result-chunk
+  budget to return the highest-ranked bounded subset instead of failing. The
+  result summary retains the full match count and explains the browser-memory
+  safeguard without implying AI token usage.
 - Added backward-compatible large-corpus delivery through integrity-bound,
   same-origin byte-range packs. Descriptor, search-worker, record-chunk and
   route-adjacency fetches preserve their logical paths while enforcing the v1
