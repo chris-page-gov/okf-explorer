@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTROLLED_PREFIXES = (
     ".github/workflows/",
     "apps/okf-explorer/src/",
+    "apps/okf-explorer/tests/",
     "explorer/",
     "scripts/",
     "sources/",
@@ -22,10 +23,12 @@ CONTROLLED_PREFIXES = (
     "uk-government-apis/",
     "legislation/",
     "evaluation/legislation/",
+    "evaluation/okf-explorer/",
 )
 CONTROLLED_FILES = (
     "apps/okf-explorer/package.json",
     "apps/okf-explorer/pnpm-lock.yaml",
+    "apps/okf-explorer/playwright.config.ts",
     "README.md",
 )
 DOCUMENTATION_PREFIXES = ("docs/", "sources/")

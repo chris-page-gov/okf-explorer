@@ -3,6 +3,7 @@
     GEOSPATIAL_SIGNAL_LABELS,
     geospatialFilterLabel,
     geospatialFilterMatches,
+    matchUkPlaces,
     type GeospatialRecord,
     type GeospatialResource,
     type GeospatialSignalKind
@@ -87,7 +88,7 @@
     const counts = new Map<string, CountRow>();
     for (const record of values) {
       for (const label of record.coverage) {
-        if (record.places.some((place) => place.matched === label)) continue;
+        if (matchUkPlaces([label], 'declared').length) continue;
         const id = encodeURIComponent(label);
         const row = counts.get(id) || { id, label, count: 0 };
         row.count += 1;

@@ -73,14 +73,14 @@
       "persona_ids": ["API-P01", "API-P02", "API-P04", "API-P06", "API-P07"],
       "user_story": "Reduce the current context by explainable spatial evidence or UK coverage, select a mapped record and retain the Map reduction in the public URL.",
       "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019", "Q050", "Q057", "Q073", "Q076"],
-      "playwright_test_ids": ["GEO-E2E-01", "GEO-E2E-02", "GEO-E2E-15"]
+      "playwright_test_ids": ["GEO-E2E-01", "GEO-E2E-02", "GEO-E2E-15", "GEO-E2E-16", "GEO-E2E-18"]
     },
     {
       "id": "API-S11",
       "persona_ids": ["API-P01", "API-P03", "API-P07"],
       "user_story": "Reduce Map and the shared Explorer context by evidence class, recognised UK area or other declared coverage.",
       "question_ids": ["Q050", "Q057", "Q073", "Q076", "Q081", "Q082"],
-      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-04"]
+      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-04", "GEO-E2E-17", "GEO-E2E-18"]
     },
     {
       "id": "API-S12",
@@ -94,14 +94,14 @@
       "persona_ids": ["API-P01", "API-P02", "API-P06"],
       "user_story": "Select a marker or Map record while retaining the ordinary route, detail card and provenance context.",
       "question_ids": ["Q031", "Q032", "Q033", "Q095", "Q096", "Q099"],
-      "playwright_test_ids": ["GEO-E2E-07", "GEO-E2E-08"]
+      "playwright_test_ids": ["GEO-E2E-06", "GEO-E2E-07", "GEO-E2E-08"]
     },
     {
       "id": "API-S14",
       "persona_ids": ["API-P02", "API-P06"],
       "user_story": "Preview direct GeoJSON only after an explicit action and see bounded feature, coordinate, response and WGS84-bounds metadata.",
       "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019"],
-      "playwright_test_ids": ["GEO-E2E-09"]
+      "playwright_test_ids": ["GEO-E2E-09", "GEO-E2E-11"]
     },
     {
       "id": "API-S15",
@@ -115,21 +115,21 @@
       "persona_ids": ["API-P02", "API-P03", "API-P06"],
       "user_story": "Recover from linked-only formats or failed preview requests without losing local evidence or the external source route.",
       "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q095", "Q096"],
-      "playwright_test_ids": ["GEO-E2E-11", "GEO-E2E-12"]
+      "playwright_test_ids": ["GEO-E2E-08", "GEO-E2E-12"]
     },
     {
       "id": "API-S17",
       "persona_ids": ["API-P01", "API-P03", "API-P07"],
       "user_story": "Share and revisit Map reductions through view changes, reload and browser Back/Forward using public URL state.",
       "question_ids": ["Q081", "Q082", "Q083", "Q084", "Q089", "Q090", "Q100"],
-      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-13"]
+      "playwright_test_ids": ["GEO-E2E-03", "GEO-E2E-13", "GEO-E2E-18"]
     },
     {
       "id": "API-S18",
       "persona_ids": ["API-P03", "API-P06", "API-P07"],
       "user_story": "Use Map with named controls, keyboard marker activation and a narrow-screen single-column layout.",
       "question_ids": ["Q097", "Q098", "Q100"],
-      "playwright_test_ids": ["GEO-E2E-14"]
+      "playwright_test_ids": ["GEO-E2E-06", "GEO-E2E-14"]
     },
     {
       "id": "API-S19",

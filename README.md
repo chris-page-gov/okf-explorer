@@ -27,6 +27,12 @@ resizing, Map reductions, folded record sections, full-record loading and
 source-data/new-tab behaviour. A normal 100-question harness run remains
 unchanged.
 
+The focused geospatial suite runs 18 Playwright scenarios against deterministic
+small- and large-bundle fixtures. It covers every Map control and visible
+state, including successful GeoJSON/OGC/ArcGIS previews, failure recovery,
+keyboard and responsive use, URL history, empty/loading states and display
+bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
+
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
 - [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
@@ -180,6 +186,8 @@ bundle URL history, and route-addressable detail panels.
 cd apps/okf-explorer
 pnpm install
 pnpm check
+pnpm test
+pnpm test:e2e
 pnpm build
 ```
 

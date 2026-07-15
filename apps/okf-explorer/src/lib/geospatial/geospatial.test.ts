@@ -125,6 +125,8 @@ describe('geospatial reductions', () => {
   });
 
   it('recognises bounded UK place aliases and does not match substrings', () => {
+    expect(matchUkPlaces(['London'], 'declared').map((place) => place.id)).toContain('london');
+    expect(matchUkPlaces(['North East'], 'declared').map((place) => place.id)).toContain('north-east');
     expect(matchUkPlaces(['Coverage: Yorkshire and the Humber'], 'declared').map((place) => place.id)).toContain('yorkshire-and-the-humber');
     expect(matchUkPlaces(['A new scotlands dataset'], 'text').map((place) => place.id)).not.toContain('scotland');
   });

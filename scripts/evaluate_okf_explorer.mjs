@@ -197,6 +197,7 @@ function validateJourneys(journeys, journeysPath) {
   const storyIds = new Set();
   const coveredQuestions = new Set();
   const referencedPersonas = new Set();
+  const referencedPlaywrightTests = new Set();
   for (const story of stories) {
     if (!story.id || storyIds.has(story.id) || !story.user_story) {
       throw new Error(`Invalid or duplicate journey story: ${story.id || '(missing id)'}`);
@@ -217,11 +218,36 @@ function validateJourneys(journeys, journeysPath) {
       if (!availableQuestions.has(questionId)) throw new Error(`Story ${story.id} references unknown question ${questionId}.`);
       coveredQuestions.add(questionId);
     }
+    if (story.playwright_test_ids !== undefined) {
+      if (!Array.isArray(story.playwright_test_ids) || !story.playwright_test_ids.length) {
+        throw new Error(`Story ${story.id} playwright_test_ids must be a non-empty array when supplied.`);
+      }
+      for (const testId of story.playwright_test_ids) {
+        if (typeof testId !== 'string' || !/^GEO-E2E-\d{2}$/.test(testId)) {
+          throw new Error(`Story ${story.id} has invalid Playwright test id ${testId}.`);
+        }
+        referencedPlaywrightTests.add(testId);
+      }
+    }
   }
   const unreferencedPersonas = [...personaIds].filter((id) => !referencedPersonas.has(id));
   if (unreferencedPersonas.length) throw new Error(`Personas without stories: ${unreferencedPersonas.join(', ')}`);
   const uncoveredQuestions = [...availableQuestions].filter((id) => !coveredQuestions.has(id));
   if (uncoveredQuestions.length) throw new Error(`Questions without persona/story traceability: ${uncoveredQuestions.join(', ')}`);
+
+  if (referencedPlaywrightTests.size) {
+    const specPath = path.join(repoRoot, 'apps/okf-explorer/tests/ui/geospatial-map.spec.ts');
+    if (!fs.existsSync(specPath)) throw new Error(`Geospatial Playwright spec missing: ${specPath}`);
+    const implementedPlaywrightTests = new Set(fs.readFileSync(specPath, 'utf8').match(/\bGEO-E2E-\d{2}\b/g) || []);
+    const missingPlaywrightTests = [...referencedPlaywrightTests].filter((id) => !implementedPlaywrightTests.has(id));
+    if (missingPlaywrightTests.length) {
+      throw new Error(`Journey stories reference missing Playwright tests: ${missingPlaywrightTests.join(', ')}`);
+    }
+    const untracedPlaywrightTests = [...implementedPlaywrightTests].filter((id) => !referencedPlaywrightTests.has(id));
+    if (untracedPlaywrightTests.length) {
+      throw new Error(`Geospatial Playwright tests without persona/story traceability: ${untracedPlaywrightTests.join(', ')}`);
+    }
+  }
 
   const journeyIds = new Set();
   for (const journey of interactionJourneys) {

@@ -187,7 +187,7 @@ match or representative centroid into source-declared geometry.
 
 ## Test And Review The Feature
 
-The browser suite traces each state back to the story IDs in
+The 18-scenario browser suite traces each state back to the story IDs in
 [Map personas and user stories](geospatial-map-personas-and-user-stories.md):
 
 ```sh

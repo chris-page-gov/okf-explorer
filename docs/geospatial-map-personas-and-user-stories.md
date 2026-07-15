@@ -32,15 +32,15 @@ implemented in `apps/okf-explorer/tests/ui/geospatial-map.spec.ts`.
 
 | Story | User story | Browser coverage |
 |---|---|---|
-| `API-S10` — discover spatial evidence | As a policy researcher, I want Map to classify the current search/facet context so that spatial material is discoverable without AI or a runtime service. | `GEO-E2E-01`, `GEO-E2E-02`, `GEO-E2E-15` |
-| `API-S11` — reduce by evidence or area | As an area-based policy analyst, I want to select an evidence class, recognised UK area or other declared coverage so that the shared result set becomes manageable. | `GEO-E2E-03`, `GEO-E2E-04` |
+| `API-S10` — discover spatial evidence | As a policy researcher, I want Map to classify the current search/facet context so that spatial material is discoverable without AI or a runtime service. | `GEO-E2E-01`, `GEO-E2E-02`, `GEO-E2E-15`, `GEO-E2E-16`, `GEO-E2E-18` |
+| `API-S11` — reduce by evidence or area | As an area-based policy analyst, I want to select an evidence class, recognised UK area or other declared coverage so that the shared result set becomes manageable. | `GEO-E2E-03`, `GEO-E2E-04`, `GEO-E2E-17`, `GEO-E2E-18` |
 | `API-S12` — understand locator precision | As a service assessor, I want exact coordinates, representative centroids, clusters and unlocated records labelled differently so that the locator does not overclaim geometry. | `GEO-E2E-05`, `GEO-E2E-06` |
-| `API-S13` — inspect a mapped record | As a policy researcher, I want marker and list selection to use the ordinary Explorer route and detail card so that spatial discovery retains provenance. | `GEO-E2E-07`, `GEO-E2E-08` |
-| `API-S14` — preview direct geometry | As a spatial data analyst, I want an explicit, bounded GeoJSON preview with feature, coordinate, response and bounds metadata so that I can judge relevance before leaving Explorer. | `GEO-E2E-09` |
+| `API-S13` — inspect a mapped record | As a policy researcher, I want marker and list selection to use the ordinary Explorer route and detail card so that spatial discovery retains provenance. | `GEO-E2E-06`, `GEO-E2E-07`, `GEO-E2E-08` |
+| `API-S14` — preview direct geometry | As a spatial data analyst, I want an explicit, bounded GeoJSON or OGC API preview with feature, coordinate, response and bounds metadata so that I can judge relevance before leaving Explorer. | `GEO-E2E-09`, `GEO-E2E-11` |
 | `API-S15` — discover an ArcGIS layer | As a spatial data analyst, I want Explorer to inspect an ArcGIS service and request a capped first feature layer so that common service roots remain useful. | `GEO-E2E-10` |
-| `API-S16` — recover progressively | As a data engineer, I want linked-only formats and failed previews to retain an external source route and an explanation so that CORS, availability or format limits are not dead ends. | `GEO-E2E-11`, `GEO-E2E-12` |
-| `API-S17` — share and revisit state | As a service assessor, I want `geo=` reductions to survive view changes, reload and Back/Forward so that I can cite and demonstrate the same context. | `GEO-E2E-03`, `GEO-E2E-13` |
-| `API-S18` — browse accessibly | As a keyboard or narrow-screen user, I want named controls, keyboard marker activation and a single-column responsive layout so that Map is not pointer- or desktop-only. | `GEO-E2E-14` |
+| `API-S16` — recover progressively | As a data engineer, I want linked-only formats and failed previews to retain an external source route and an explanation so that CORS, availability or format limits are not dead ends. | `GEO-E2E-08`, `GEO-E2E-12` |
+| `API-S17` — share and revisit state | As a service assessor, I want `geo=` reductions to survive view changes, reload and Back/Forward so that I can cite and demonstrate the same context. | `GEO-E2E-03`, `GEO-E2E-13`, `GEO-E2E-18` |
+| `API-S18` — browse accessibly | As a keyboard or narrow-screen user, I want named controls, keyboard marker activation and a single-column responsive layout so that Map is not pointer- or desktop-only. | `GEO-E2E-06`, `GEO-E2E-14` |
 | `API-S19` — author trustworthy spatial metadata | As a knowledge curator, I want the pack contract to preserve source, geography code, vintage, CRS, boundary variant and derivation so that Explorer can explain what it displays. | Schema/classifier unit tests plus `GEO-E2E-02` |
 
 ## Shared Acceptance Rules
@@ -67,6 +67,20 @@ state, including successful and failed remote previews, keyboard interaction,
 responsive layout, URL history and linked-only formats. Unit tests continue to
 cover lower-level classification, sanitisation, ArcGIS URL construction and
 geometry projection.
+
+The 18 focused scenarios cover these UI surfaces without relying on live
+third-party responses:
+
+| Surface | Tests |
+|---|---|
+| Map entry, no eager geometry request and all evidence/coverage chips | `GEO-E2E-01`–`02` |
+| Evidence, recognised-area and other-coverage reductions and clearing | `GEO-E2E-03`–`04` |
+| Exact/representative markers, clusters, unlocated records and keyboard selection | `GEO-E2E-05`–`06` |
+| List selection, ordinary detail cards, area-only records and linked-only WMS | `GEO-E2E-07`–`08` |
+| Direct GeoJSON loading/success, ArcGIS discovery/feature cap and OGC/drawing cap | `GEO-E2E-09`–`11` |
+| Preview failure and source-link recovery | `GEO-E2E-12` |
+| Cross-view URL state, reload, Back/Forward, responsive layout and Space-key activation | `GEO-E2E-13`–`14` |
+| Large-index loading, empty contexts, the 160-row bound, shared search and malformed `geo` state | `GEO-E2E-15`–`18` |
 
 Run the layers independently:
 

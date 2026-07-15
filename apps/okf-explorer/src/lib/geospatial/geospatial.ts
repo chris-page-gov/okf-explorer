@@ -166,7 +166,7 @@ function escapedPattern(value: string): RegExp {
 
 export function matchUkPlaces(values: string[], source: GeospatialPlace['source']): GeospatialPlace[] {
   const out = new Map<string, GeospatialPlace>();
-  const candidates = UK_PLACES.flatMap((place) => place.aliases.map((alias) => ({ place, alias })))
+  const candidates = UK_PLACES.flatMap((place) => [...new Set([place.label.toLowerCase(), ...place.aliases])].map((alias) => ({ place, alias })))
     .sort((left, right) => right.alias.length - left.alias.length);
   for (const value of values) {
     for (const { place, alias } of candidates) {

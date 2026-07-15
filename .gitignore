@@ -21,6 +21,8 @@ apps/*/node_modules/
 apps/*/.svelte-kit/
 apps/*/build/
 apps/*/coverage/
+apps/*/test-results/
+apps/*/playwright-report/
 .playwright-mcp/
 .pnpm-store/
 
