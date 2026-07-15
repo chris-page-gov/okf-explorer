@@ -48,6 +48,10 @@ APIs exemplar, and related large-corpus OKF packs.
   and intentional deviations.
 - [Explorer overview context](explorer-overview-context.md) specifies the
   generated overview/analysis contract consumed by the Explorer.
+- [Geospatial Map exploration](geospatial-map-exploration.md) specifies the
+  deterministic Map canvas, spatial evidence levels, reduction state and
+  progressive external-preview path being developed on the `geospatial`
+  branch.
 
 ## Dated Review Records
 

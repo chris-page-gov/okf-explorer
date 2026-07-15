@@ -42,6 +42,8 @@ All view tabs render the active context:
 - `Timeline` renders a time distribution before listing records.
 - `Type` renders analysed dimensions and facets, ordered by usefulness.
 - `Resources` renders resource distributions and stack summaries.
+- `Map` renders spatial evidence, geography reductions and bounded on-demand
+  external previews without requiring a map service for initial display.
 - `Narrative` renders a curated or generated explanation of the active context.
 
 Changing search, a facet, a hierarchy node, or a graph overview node changes the
@@ -262,6 +264,22 @@ The Resources overview should describe the resource landscape:
 Narrative should be restored as a first-class view. It should provide a readable
 explanation of the active context and link to the same graph, timeline, links,
 and resource evidence used by the other views.
+
+### Map
+
+Map should treat geography as both evidence and a context reducer. It should
+classify source-declared coverage, recognised UK geographies, explicit
+coordinates and geospatial services/files deterministically. A selected area or
+evidence class must reduce the same active context used by the other views.
+
+Initial display must not depend on a tile service or geocoder. Remote GeoJSON or
+ArcGIS feature data may be previewed only after an explicit action, within
+response and feature limits, with the original source retained as the recovery
+path. Inferred representative centroids must be labelled as navigation aids and
+must never be drawn as authoritative boundaries.
+
+The detailed evidence model and prototype constraints are defined in
+[Geospatial Map Exploration](geospatial-map-exploration.md).
 
 ## Hierarchies
 
