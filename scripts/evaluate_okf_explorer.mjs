@@ -169,7 +169,11 @@ function validateJourneys(journeys, journeysPath) {
   const questionSuitePath = path.resolve(path.dirname(journeysPath), journeys.question_suite);
   if (!fs.existsSync(questionSuitePath)) throw new Error(`Journey question suite missing: ${questionSuitePath}`);
   const questionSuite = readJson(questionSuitePath);
-  const availableQuestions = new Set((questionSuite.questions || []).map((question) => question.id));
+  const availableQuestions = new Set(
+    (questionSuite.questions || [])
+      .map((question) => (typeof question?.id === 'string' ? question.id.trim() : ''))
+      .filter(Boolean)
+  );
   if (!availableQuestions.size) throw new Error('Journey question suite has no question ids.');
 
   const personas = Array.isArray(journeys.personas) ? journeys.personas : [];

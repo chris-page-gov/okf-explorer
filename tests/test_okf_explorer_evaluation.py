@@ -210,6 +210,37 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIsNone(results["summary"]["average_total"])
         self.assertEqual(results["interaction_journeys"]["summary"]["validation_only"], 2)
 
+    def test_journey_validation_rejects_question_suites_without_string_ids(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            journeys = json.loads((LEGISLATION_EVALUATION / "journeys.json").read_text(encoding="utf-8"))
+            questions = json.loads((LEGISLATION_EVALUATION / "questions.json").read_text(encoding="utf-8"))
+            for question in questions["questions"]:
+                question.pop("id", None)
+            journeys["question_suite"] = "questions.json"
+            (temporary / "journeys.json").write_text(json.dumps(journeys), encoding="utf-8")
+            (temporary / "questions.json").write_text(json.dumps(questions), encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(temporary / "journeys.json"),
+                    "--out",
+                    str(temporary / "results"),
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Journey question suite has no question ids.", result.stderr)
+
     def test_static_search_manual_has_verified_ckan_screenshots(self):
         manual = SEARCH_FILTERING_MANUAL.read_text(encoding="utf-8")
         manifest = json.loads((SEARCH_FILTERING_ASSETS / "manifest.json").read_text(encoding="utf-8"))
