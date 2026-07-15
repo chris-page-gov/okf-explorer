@@ -1,14 +1,14 @@
 {
   "schema": "okf-explorer-interaction-suite.v1",
   "title": "UK Government APIs persona, story and interaction journeys",
-  "description": "Traceability from the personas and nine user stories in the Explorer manual to the 100-question suite, plus deterministic browser journeys for interaction behaviour the retrieval questions cannot exercise.",
+  "description": "Traceability from the personas and ten user stories in the Explorer manual to the 100-question suite, plus deterministic browser journeys for interaction behaviour the retrieval questions cannot exercise.",
   "target_bundle": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
   "question_suite": "questions.json",
   "personas": [
     {"id": "API-P01", "name": "Policy researcher", "need": "Find relevant public-sector APIs or data sources and understand their provenance."},
     {"id": "API-P02", "name": "Data engineer", "need": "Judge whether endpoints, protocols, licences, contracts and access metadata support reuse."},
     {"id": "API-P03", "name": "Service assessor", "need": "Check that controls, gaps and quality claims are understandable and accessible."},
-    {"id": "API-P04", "name": "Knowledge curator", "need": "Check whether the pack supports useful search, facets, graph, timeline and resource inspection."},
+    {"id": "API-P04", "name": "Knowledge curator", "need": "Check whether the pack supports useful search, facets, graph, timeline, map and resource inspection."},
     {"id": "API-P05", "name": "AI operator", "need": "Understand corpus boundaries and obtain source-grounded catalogue evidence."}
   ],
   "stories": [
@@ -65,6 +65,12 @@
       "persona_ids": ["API-P05"],
       "user_story": "Treat a small result count as a boundary of this pack rather than a claim about the wider world.",
       "question_ids": ["Q071"]
+    },
+    {
+      "id": "API-S10",
+      "persona_ids": ["API-P01", "API-P02", "API-P04"],
+      "user_story": "Reduce the current context by explainable spatial evidence or UK coverage, select a mapped record and retain the Map reduction in the public URL.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q018", "Q019", "Q050", "Q057", "Q073", "Q076"]
     }
   ],
   "journeys": [
@@ -108,6 +114,25 @@
         {"assertion": "graph_edge_selected"},
         {"assertion": "relationship_drawer_resized"},
         {"assertion": "visible_text", "selector": ".right-panel", "value": "Relationship"}
+      ]
+    },
+    {
+      "id": "API-J03",
+      "title": "Reduce geospatial results on the Map and inspect a record",
+      "persona_ids": ["API-P01", "API-P02", "API-P04"],
+      "story_ids": ["API-S02", "API-S10"],
+      "start": {"query": "Ordnance Survey"},
+      "actions": [
+        {"action": "search", "value": "Ordnance Survey"},
+        {"action": "select_view", "value": "Map"},
+        {"action": "select_map_filter", "value": "Map or feature service"},
+        {"action": "select_map_record"}
+      ],
+      "assertions": [
+        {"assertion": "map_filter_applied"},
+        {"assertion": "url_param_equals", "name": "geo", "value": "signal:service"},
+        {"assertion": "map_marker_visible", "value": 1},
+        {"assertion": "map_record_selected"}
       ]
     }
   ]

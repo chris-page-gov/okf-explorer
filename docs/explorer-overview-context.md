@@ -13,8 +13,8 @@ datasets, resources, and relationships before rendering a first useful screen.
 
 The current large-corpus path loads a lightweight `data/overview.json`, but that
 overview is mostly counts, top facet previews, and a small record sample. This
-means the first Reader, Graph, Links, Timeline, Type, and Resources views do not
-share a meaningful context:
+means the first Reader, Graph, Links, Timeline, Type, Resources, and Map views
+do not share a meaningful context:
 
 - Reader shows a broad dataset/resource sample.
 - Graph renders a sampled raw graph rather than a bundle-level graph overview.
@@ -112,6 +112,7 @@ Large static corpora should expose an additive analysis artifact, for example:
     "timeline": {},
     "type": {},
     "resources": {},
+    "map": {},
     "narrative": {}
   }
 }

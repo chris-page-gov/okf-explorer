@@ -18,13 +18,14 @@ Each example now has explicit persona, user-story and question traceability:
 | Example | Personas and stories | Evaluation questions |
 |---|---|---|
 | UK Legislation OKF | [Six legislation personas and critical journeys][legislation-personas] · [`journeys.json`](evaluation/legislation/journeys.json) | [`questions.json`](evaluation/legislation/questions.json), 100 legal-answer questions |
-| UK Government APIs OKF | [Five shared Explorer personas and nine stories][persona-manual] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions |
+| UK Government APIs OKF | [Five shared Explorer personas and ten stories][persona-manual] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions |
 | GOV.UK CKAN | [Six CKAN-specific personas and user stories][ckan-personas] · [`journeys.json`](evaluation/gov-ckan/journeys.json) | [`questions.json`](evaluation/gov-ckan/questions.json), 100 catalogue questions |
 
 The journey manifests also define opt-in browser interactions for facets,
 sorting, URL Back/Forward restoration, graph edges, relationship-drawer
-resizing, folded record sections, full-record loading and source-data/new-tab
-behaviour. A normal 100-question harness run remains unchanged.
+resizing, Map reductions, folded record sections, full-record loading and
+source-data/new-tab behaviour. A normal 100-question harness run remains
+unchanged.
 
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
@@ -90,6 +91,8 @@ The repository contains:
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
+- `docs/geospatial-map-exploration.md` - prototype contract for deterministic
+  spatial discovery, Map reductions and bounded on-demand external previews.
 - `docs/index.md` - documentation landing page for browsing, AI usage,
   authoring, evaluation and review records.
 - `docs/okf-explorer-persona-manual.md` - screenshot-led UI manual using
@@ -133,8 +136,10 @@ suggestions while typing in the Bundle URL field.
 The Explorer product/data-contract direction is documented in
 [docs/explorer-overview-context.md](docs/explorer-overview-context.md). It
 defines the generated overview context expected by Reader, Graph, Links,
-Timeline, Type, Resources, and Narrative views, including how small bundles can
-embed analysis inline while large bundles reference chunked analysis artifacts.
+Timeline, Type, Resources, Map, and Narrative views, including how small
+bundles can embed analysis inline while large bundles reference chunked
+analysis artifacts. [Geospatial Map exploration](docs/geospatial-map-exploration.md)
+defines the Map evidence levels and progressive recovery model.
 
 ## Relationship To The CKAN Fixture
 

@@ -53,6 +53,34 @@ flowchart LR
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
+6. Map classifies the current search/facet reduction from declared coverage,
+   coordinates, UK place names, ArcGIS/OGC services and spatial file formats.
+   Its place/evidence chips add a `geo=` reduction to the public URL.
+
+## Use The Map Canvas
+
+Map works with existing bundles; no AI, geocoder, tile service or new server is
+required for browsing.
+
+1. Search or apply ordinary facets first so Map starts from a useful context.
+2. Select **Map**. A large corpus loads its ordinary dataset/resource index and
+   classifies it locally; a small bundle reuses its in-memory nodes.
+3. Select an evidence chip such as **Map or feature service** or a recognised
+   UK area such as **Scotland**. The same reduction then applies if you switch
+   to Reader, Graph, Timeline or Resources.
+4. Select a marker or list row to open the normal Explorer detail card. Solid
+   markers are source coordinates; ring markers are labelled representative
+   centroids and do not imply a boundary.
+5. Use **Open source ↗** for every linked spatial resource. For direct GeoJSON,
+   OGC API JSON or an ArcGIS feature service, **Preview on demand** attempts a
+   bounded browser-side feature preview. Failure leaves the local metadata and
+   source link intact.
+
+The preview does not insert credentials or proxy private services. WMS, WFS,
+WMTS, WCS, KML, GML, Shapefile and GeoPackage are discoverable and filterable,
+but this prototype links rather than parses those bodies. See
+[Geospatial Map exploration](geospatial-map-exploration.md) for the evidence,
+CRS, provenance and pack-builder conventions.
 
 ## Large-Corpus Enrichment Contract
 

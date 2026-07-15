@@ -34,6 +34,15 @@
   } from '$lib/search/retrievalState';
   import LegislationDetail from '$lib/legislation/LegislationDetail.svelte';
   import { searchOfficialLegislation } from '$lib/legislation/search';
+  import MapView from '$lib/geospatial/MapView.svelte';
+  import {
+    classifyLargeDataset,
+    classifySmallNode,
+    geospatialFilterLabel,
+    geospatialFilterMatches,
+    isGeospatialFilter,
+    type GeospatialRecord
+  } from '$lib/geospatial/geospatial';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
   import { fetchJson, fetchSourceJson, movedBundleTarget } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
@@ -76,9 +85,10 @@
     { id: 'timeline', label: 'Timeline' },
     { id: 'type', label: 'Type' },
     { id: 'resources', label: 'Resources' },
+    { id: 'map', label: 'Map' },
     { id: 'narrative', label: 'Narrative' }
   ];
-  const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources', 'narrative']);
+  const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources', 'map', 'narrative']);
   const RELATIONSHIP_VIEWS = new Set<ViewMode>();
   const LARGE_FACET_KEYS = ['category', 'type_code', 'document_type', 'creation_year', 'jurisdiction', 'legal_status', 'publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
   const GRAPH_WIDTH = 900;
@@ -275,12 +285,13 @@
   let edgePanelResizing = $state(false);
   let timelineResolution = $state<TimelineResolution>('latest');
   let retrievalSort = $state<RetrievalSort>('newest');
+  let geospatialFilter = $state('');
   let edgePanelResizeCleanup: (() => void) | null = null;
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
   let typeList = $derived([...new Set(nodeList.map((node) => node.type || 'Node'))].sort((a, b) => a.localeCompare(b)));
-  let visibleNodes = $derived(
+  let baseVisibleNodes = $derived(
     nodeList.filter((node) => {
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
@@ -291,6 +302,13 @@
         .includes(query);
     }).sort(compareSmallNodes)
   );
+  let smallGeospatialRecords: GeospatialRecord[] = $derived(
+    baseVisibleNodes.map(classifySmallNode).filter((record): record is GeospatialRecord => Boolean(record))
+  );
+  let smallGeospatialRouteIds: Set<string> = $derived(
+    new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
+  );
+  let visibleNodes = $derived(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes);
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -312,14 +330,29 @@
   );
   let largeResultNames: Set<string> = $derived(new Set(largeResults.map((result) => result.name)));
   let largeResultOrder: Map<string, number> = $derived(new Map(largeResults.map((result, index) => [result.name, index])));
-  let largeVisibleDatasets: LargeDataset[] = $derived(largeIndex ? visibleLargeDatasets() : []);
+  let largeBaseVisibleDatasets: LargeDataset[] = $derived(largeIndex ? visibleLargeDatasets() : []);
+  let largeGeospatialRecords: GeospatialRecord[] = $derived(
+    largeIndex
+      ? largeBaseVisibleDatasets
+          .map((dataset) => classifyLargeDataset(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []))
+          .filter((record): record is GeospatialRecord => Boolean(record))
+      : []
+  );
+  let largeGeospatialRouteIds: Set<string> = $derived(
+    new Set(largeGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
+  );
+  let largeVisibleDatasets: LargeDataset[] = $derived(
+    geospatialFilter
+      ? largeBaseVisibleDatasets.filter((dataset) => largeGeospatialRouteIds.has(dataset.route || `dataset/${dataset.name}`))
+      : largeBaseVisibleDatasets
+  );
   let largeVisibleDatasetNames: Set<string> = $derived(new Set(largeVisibleDatasets.map((dataset) => dataset.name)));
   let largeVisibleResources: LargeResource[] = $derived(
     largeIndex ? largeVisibleDatasets.flatMap((dataset) => largeIndex?.resourcesByDataset.get(dataset.name) || []).slice(0, 600) : []
   );
   let largeDetail: LargeDetail | null = $derived(resolveVisibleLargeDetail(largeInspectedRoute || largeSelectedRoute));
   let largeFacetKeys: string[] = $derived(largeIndex ? Object.keys(largeIndex.facets) : Object.keys(source?.kind === 'large' ? source.overview.facet_previews || {} : {}));
-  let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, 0));
+  let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, geospatialFilter ? 1 : 0));
   let pinnedLabels: Array<{ route: string; label: string }> = $derived(pins.map((route) => ({ route, label: largeLabelForRoute(route) })));
 
   function compareSmallNodes(left: OkfNode, right: OkfNode): number {
@@ -415,8 +448,15 @@
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
     writeRetrievalState(next.searchParams, currentRetrievalState());
+    if (geospatialFilter) next.searchParams.set('geo', geospatialFilter);
+    else next.searchParams.delete('geo');
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
     return next.toString();
+  }
+
+  function geospatialFilterFromParams(params: URLSearchParams): string {
+    const value = params.get('geo') || '';
+    return isGeospatialFilter(value) ? value : '';
   }
 
   function currentRetrievalState(): RetrievalStateV1 {
@@ -501,6 +541,7 @@
     const nextView = initialViewMode();
     if (nextView) void selectView(nextView);
     const hash = safeDecodeHash();
+    geospatialFilter = geospatialFilterFromParams(new URLSearchParams(location.search));
     if (source?.kind === 'large') {
       const params = new URLSearchParams(location.search);
       const state = parseRetrievalState(params, largeSourceFacetKeys(source));
@@ -578,6 +619,7 @@
     inspectedId = '';
     smallQuery = '';
     retrievalSort = 'newest';
+    geospatialFilter = geospatialFilterFromParams(new URLSearchParams(location.search));
     smallInspectedRelationship = null;
     largeSelectedRoute = '';
     largeInspectedRoute = '';
@@ -765,6 +807,7 @@
       }
       const corpus = normalizeSmallBundle(raw);
       source = { kind: 'small', url: `file:${file.name}`, title: corpus.title, corpus };
+      geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
       selectedId = Object.keys(corpus.nodes)[0] || '';
     } catch (err) {
@@ -1168,6 +1211,10 @@
   }
 
   function removeLargeFilter(key: string, value: string) {
+    if (key === '__geo') {
+      clearGeospatialFilter();
+      return;
+    }
     const remaining = (largeFacetFilters[key] || []).filter((item) => item !== value);
     if (remaining.length) largeFacetFilters = { ...largeFacetFilters, [key]: remaining };
     else {
@@ -1297,6 +1344,7 @@
 
   function clearLargeFilters() {
     largeFacetFilters = {};
+    geospatialFilter = '';
     if (largeInspectedRoute && routeForAnalysisNode(largeInspectedRoute)) {
       largeInspectedRoute = '';
       largeHighlightedRoute = '';
@@ -1309,6 +1357,21 @@
     reconcileLargeSelection();
     syncExplorerUrl(true);
     void runLargeSearch(largeQuery, { preserveSelection: true });
+  }
+
+  function setGeospatialFilter(value: string) {
+    geospatialFilter = isGeospatialFilter(value) ? value : '';
+    if (source?.kind === 'large') reconcileLargeSelection();
+    else if (selectedId && !visibleNodes.some((node) => node.id === selectedId)) {
+      selectedId = visibleNodes[0]?.id || '';
+      inspectedId = '';
+      smallInspectedRelationship = null;
+    }
+    syncExplorerUrl(true);
+  }
+
+  function clearGeospatialFilter() {
+    setGeospatialFilter('');
   }
 
   function keyboardActivate(event: KeyboardEvent, action: () => void) {
@@ -2258,14 +2321,17 @@
     if (largeSelectedRoute || largeInspectedRoute) return largeLabelForRoute(largeInspectedRoute || largeSelectedRoute);
     if (largeAppliedQuery.trim()) return `Search: ${largeAppliedQuery.trim()}`;
     const filters = Object.entries(largeFacetFilters).flatMap(([key, values]) => values.map((value) => `${facetLabel(key)}: ${facetValueDisplay(key, value)}`));
+    if (geospatialFilter) filters.unshift(`Map: ${geospatialFilterLabel(geospatialFilter)}`);
     if (filters.length) return filters.join(', ');
     return largeAnalysis()?.narrative?.title || largeAnalysis()?.summary?.title || (source?.kind === 'large' ? source.descriptor.title : 'Overview');
   }
 
   function selectedLargeFilterLabels() {
-    return Object.entries(largeFacetFilters).flatMap(([key, values]) =>
+    const labels = Object.entries(largeFacetFilters).flatMap(([key, values]) =>
       values.map((value) => ({ key, value, label: `${facetLabel(key)}: ${facetValueDisplay(key, value)}` }))
     );
+    if (geospatialFilter) labels.unshift({ key: '__geo', value: geospatialFilter, label: `Map: ${geospatialFilterLabel(geospatialFilter)}` });
+    return labels;
   }
 
   function largeContextMetrics() {
@@ -3620,6 +3686,12 @@
             <h2>Search</h2>
             <input class="search-input" value={smallQuery} oninput={(event) => setSmallQuery(event.currentTarget.value)} placeholder="Search nodes" />
           </section>
+          {#if geospatialFilter}
+            <section class="pinned-list">
+              <h2>Map reduction</h2>
+              <button type="button" onclick={clearGeospatialFilter}>{geospatialFilterLabel(geospatialFilter)} ×</button>
+            </section>
+          {/if}
           <div class="type-filters">
             <div class="filter-heading">
               <span>Filter results</span>
@@ -4199,6 +4271,15 @@
                 {/each}
               </section>
             {/if}
+          {:else if activeView === 'map'}
+            <MapView
+              records={largeGeospatialRecords}
+              filter={geospatialFilter}
+              selectedRoute={largeInspectedRoute || largeSelectedRoute}
+              loading={largeFullLoading}
+              onselect={selectLargeRoute}
+              onfilter={setGeospatialFilter}
+            />
           {:else if activeView === 'narrative'}
             {@const analysis = largeAnalysis()}
             <div class="view-heading">
@@ -4212,7 +4293,7 @@
                   {#if largeIsOverviewContext() && analysis?.narrative?.body}
                     {analysis.narrative.body}
                   {:else if largeIndex}
-                    The active context contains {largeVisibleDatasets.length.toLocaleString()} {recordPlural()} and {largeVisibleResources.length.toLocaleString()} visible {resourcePlural()} after the current search and facet reduction. Use the graph, links, timeline, and resources views to inspect the same reduced context from different angles.
+                    The active context contains {largeVisibleDatasets.length.toLocaleString()} {recordPlural()} and {largeVisibleResources.length.toLocaleString()} visible {resourcePlural()} after the current search and facet reduction. Use the graph, links, timeline, resources, and map views to inspect the same reduced context from different angles.
                   {:else}
                     {analysis?.summary?.description || source.descriptor.description || 'This OKF Explorer view is using the lightweight overview payload until a search, filter, or deep link requires full-record hydration.'}
                   {/if}
@@ -4237,6 +4318,7 @@
                   <button type="button" onclick={() => void selectView('timeline')}>Timeline<span>temporal distribution and dated records</span></button>
                   <button type="button" onclick={() => void selectView('links')}>Links<span>relationship types and selectable edges</span></button>
                   <button type="button" onclick={() => void selectView('resources')}>{capitalise(resourcePlural())}<span>{resourceStackLabel().toLowerCase()} and {formatPlural()}/host landscape</span></button>
+                  <button type="button" onclick={() => void selectView('map')}>Map<span>spatial evidence, coverage and external data</span></button>
                 </section>
                 <section>
                   <h3>Strong dimensions</h3>
@@ -4415,6 +4497,14 @@
               <p class="muted">No resource-like nodes are visible in the current small-bundle reduction.</p>
             {/each}
           </section>
+        {:else if activeView === 'map'}
+          <MapView
+            records={smallGeospatialRecords}
+            filter={geospatialFilter}
+            selectedRoute={inspectedId || selectedId}
+            onselect={selectNode}
+            onfilter={setGeospatialFilter}
+          />
         {:else if activeView === 'narrative'}
           <section class="narrative-view">
             <article>
@@ -4441,6 +4531,7 @@
                 <button type="button" onclick={() => void selectView('graph')}>Graph<span>direct relationship structure</span></button>
                 <button type="button" onclick={() => void selectView('links')}>Links<span>typed relationships</span></button>
                 <button type="button" onclick={() => void selectView('timeline')}>Timeline<span>dated nodes</span></button>
+                <button type="button" onclick={() => void selectView('map')}>Map<span>spatial evidence and coverage</span></button>
               </section>
             </div>
           </section>

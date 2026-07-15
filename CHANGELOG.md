@@ -61,11 +61,12 @@ source-of-truth changes.
 
 ## Unreleased
 
-- Began a deterministic geospatial Map canvas exploration for both small and
-  large OKF bundles. The design treats place and service/file signals as
-  explainable reductions, keeps inferred centroids distinct from boundaries,
-  and limits remote geometry loading to explicit bounded preview actions with
-  source-link recovery.
+- Added a deterministic geospatial Map canvas for both small and large OKF
+  bundles. It classifies declared coverage, coordinates, UK places,
+  ArcGIS/OGC services and spatial files; persists Map reductions in public
+  URLs; keeps representative centroids distinct from boundaries; and limits
+  direct GeoJSON/ArcGIS geometry loading to explicit bounded preview actions
+  with source-link recovery.
 - Hardened deterministic large-corpus retrieval against stale bundle responses,
   silent or crashed workers, malformed facet values, metadata-gap filters and
   approximate capped-posting totals. Dynamic facets and result summaries now
