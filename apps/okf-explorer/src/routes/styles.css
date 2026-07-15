@@ -1224,6 +1224,8 @@ input:focus {
 }
 
 .edge-panel {
+  position: relative;
+  z-index: 3;
   align-self: stretch;
   border: 1px solid var(--line);
   border-radius: 7px;

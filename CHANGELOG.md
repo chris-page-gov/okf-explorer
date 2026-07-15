@@ -61,6 +61,17 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Hardened deterministic large-corpus retrieval against stale bundle responses,
+  silent or crashed workers, malformed facet values, metadata-gap filters and
+  approximate capped-posting totals. Dynamic facets and result summaries now
+  remain explicit about fallback and truncation semantics, and legacy small
+  bundles normalize scalar alias/tag fields before client-side searching.
+- Added persona, user-story and question traceability for every hosted README
+  exemplar, plus opt-in browser journeys for retrieval URL state, facets,
+  sorting, graph relationships, drawer resizing, folded full-record sections
+  and source inspection without replacing the Explorer window.
+- Kept the graph relationship drawer above the sticky pins bar so its resize
+  grip receives real pointer drags as well as keyboard input.
 - Changed broad large-corpus searches that span more than the safe result-chunk
   budget to return the highest-ranked bounded subset instead of failing. The
   result summary retains the full match count and explains the browser-memory

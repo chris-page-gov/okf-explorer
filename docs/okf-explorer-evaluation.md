@@ -22,12 +22,24 @@ review.
 
 - `evaluation/okf-explorer/questions.json` contains 100 UK Government API
   retrieval and inspection tasks.
+- `evaluation/okf-explorer/journeys.json` maps the five Explorer personas and
+  nine manual stories to those questions and defines browser interaction
+  journeys.
 - `evaluation/gov-ckan/questions.json` contains 100 GOV.UK CKAN retrieval and
   inspection tasks using the same rubric.
+- `evaluation/gov-ckan/journeys.json` defines CKAN-specific personas and user
+  stories, maps every CKAN question to at least one story, and covers durable
+  retrieval state, graph interaction and source inspection.
+- `evaluation/legislation/journeys.json` maps the six legislation personas and
+  critical journeys to all 100 legal-answer questions. It records the curator
+  refresh story as an explicit evaluation gap because that operation is covered
+  by generator and documentation-lockstep tests rather than legal questions.
 - `evaluation/okf-explorer/visual-regressions.json` records known visual
   clarity issues that must not be lost during redesign.
-- `evaluation/gov-ckan/visual-regressions.json` is ready for CKAN-specific
-  visual evidence.
+- `evaluation/gov-ckan/visual-regressions.json` intentionally remains empty
+  until a CKAN screenshot is copied into the repository with its provenance;
+  temporary or conversational screenshots are not silently turned into a
+  committed visual baseline.
 - `evaluation/okf-explorer/evidence/graph-layering-overlap-2026-07-08.png`
   captures the current graph readability problem:
 
@@ -70,6 +82,19 @@ publication requirements for large OKF packs:
   grouped year, quarter and month buckets where dated metadata exists.
 - Browser Back and Forward must preserve inspect/reduce context or expose a
   disabled state when no in-app forward target exists.
+
+The interaction manifests make these requirements executable. Their action
+vocabulary covers search, facet opening and selection, sorting, a browser
+Back/Forward round trip, graph-edge selection, pointer-drag resizing of the
+relationship drawer, full-record loading, disclosure folding, in-Explorer
+Source Inspector loading and opening the raw source in a separate tab. Their
+assertions check URL parameters, restored control values, edge selection,
+drawer size, disclosure states, Source Inspector presence and preservation of
+the Explorer tab.
+
+The 100 retrieval questions remain backward compatible. Journey execution is
+opt-in with `--journeys`; a normal suite invocation still runs the same 100
+query records and uses the same 100-point rubric.
 
 ## Rubric
 
@@ -133,6 +158,25 @@ For CI or a quick lockstep check, use `--no-browser`. That mode validates the
 does not assign retrieval/display/accessibility/GOV.UK scores because no browser
 observations have been collected.
 
+Validate persona/story/question traceability and the interaction schema without
+launching a browser:
+
+```sh
+node scripts/evaluate_okf_explorer.mjs \
+  --no-browser \
+  --journeys-only \
+  --journeys evaluation/okf-explorer/journeys.json
+```
+
+Run only the UK Government APIs interaction journeys:
+
+```sh
+node scripts/evaluate_okf_explorer.mjs \
+  --base-url http://127.0.0.1:8002/next/ \
+  --journeys-only \
+  --journeys evaluation/okf-explorer/journeys.json
+```
+
 Run the GOV.UK CKAN parity suite against the hosted CKAN descriptor:
 
 ```sh
@@ -146,6 +190,21 @@ The CKAN suite declares its `target_bundle`; the harness also picks up the
 sibling `visual-regressions.json`, so `--bundle` and `--visual` are optional for
 that run. Reports are written to `evaluation/gov-ckan/results/` unless `--out`
 is specified.
+
+Run the three CKAN interaction journeys, including the source-data/new-tab
+check:
+
+```sh
+node scripts/evaluate_okf_explorer.mjs \
+  --base-url http://127.0.0.1:8002/next/ \
+  --journeys-only \
+  --journeys evaluation/gov-ckan/journeys.json
+```
+
+The legislation journey manifest can be validated or run the same way by
+substituting `evaluation/legislation/journeys.json`. Its legal-answer questions
+continue to be scored by `scripts/evaluate_legislation_answers.py`; the browser
+journeys test the Explorer discovery stage, not legal correctness.
 
 ## Corpus Boundary Note
 

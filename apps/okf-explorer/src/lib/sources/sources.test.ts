@@ -193,7 +193,7 @@ describe('small bundle normalization', () => {
     const corpus = normalizeSmallBundle({
       meta: { title: 'Bundle title', description: 'Bundle description' },
       nodes: {
-        a: { id: 'raw-a', title: 'Alpha' },
+        a: { id: 'raw-a', title: 'Alpha', aliases: 'A; Alpha service', tags: 'one; two' },
         b: { id: 'custom-b', name: 'Beta' },
         c: { id: 'custom-c', label: 'Gamma' },
         d: { id: 'custom-d' }
@@ -209,6 +209,8 @@ describe('small bundle normalization', () => {
     expect(corpus.title).toBe('Bundle title');
     expect(corpus.description).toBe('Bundle description');
     expect(corpus.nodes.a.id).toBe('a');
+    expect(corpus.nodes.a.aliases).toEqual(['A', 'Alpha service']);
+    expect(corpus.nodes.a.tags).toEqual(['one', 'two']);
     expect(corpus.nodes.b.id).toBe('b');
     expect(corpus.nodes.b.title).toBe('Beta');
     expect(corpus.nodes.c.title).toBe('Gamma');

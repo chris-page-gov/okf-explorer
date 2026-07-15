@@ -28,9 +28,13 @@ export function isRetrievalSort(value: string | null): value is RetrievalSort {
 
 export function normalizeRetrievalFilters(
   filters: Record<string, string[]>,
-  allowedKeys?: Iterable<string>
+  allowedKeys?: Iterable<string>,
+  allowedValues?: Readonly<Record<string, Iterable<string>>>
 ): Record<string, string[]> {
   const allowed = allowedKeys ? new Set(allowedKeys) : null;
+  const valueSets = allowedValues
+    ? Object.fromEntries(Object.entries(allowedValues).map(([key, values]) => [key, new Set(values)]))
+    : null;
   const normalized: Record<string, string[]> = {};
   let count = 0;
   for (const key of Object.keys(filters).sort()) {
@@ -42,6 +46,7 @@ export function normalizeRetrievalFilters(
     ) continue;
     const values = [...new Set(filters[key].map((value) => value.trim()).filter(Boolean))]
       .filter((value) => value.length <= MAX_FILTER_VALUE_LENGTH)
+      .filter((value) => !valueSets?.[key] || valueSets[key].has(value))
       .sort((left, right) => left.localeCompare(right));
     if (!values.length) continue;
     const remaining = MAX_FILTER_VALUES - count;
@@ -54,7 +59,8 @@ export function normalizeRetrievalFilters(
 
 export function parseRetrievalState(
   params: URLSearchParams,
-  allowedFilterKeys?: Iterable<string>
+  allowedFilterKeys?: Iterable<string>,
+  allowedFilterValues?: Readonly<Record<string, Iterable<string>>>
 ): RetrievalStateV1 {
   const query = (params.get('q') || '').trim().slice(0, MAX_QUERY_LENGTH);
   const filters: Record<string, string[]> = {};
@@ -69,7 +75,7 @@ export function parseRetrievalState(
   return {
     schema: RETRIEVAL_STATE_SCHEMA,
     query,
-    filters: normalizeRetrievalFilters(filters, allowedFilterKeys),
+    filters: normalizeRetrievalFilters(filters, allowedFilterKeys, allowedFilterValues),
     sort: isRetrievalSort(requestedSort) ? requestedSort : defaultRetrievalSort(query)
   };
 }

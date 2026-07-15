@@ -4,13 +4,23 @@ function titleForNode(id: string, node: OkfNode): string {
   return String(node.title || node.name || node.label || id);
 }
 
+function normalizeStringList(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String).map((item) => item.trim()).filter(Boolean);
+  if (typeof value === 'string') {
+    return value.split(';').map((item) => item.trim()).filter(Boolean);
+  }
+  return [];
+}
+
 function normalizeNode(id: string, node: OkfNode): OkfNode {
   return {
     ...node,
     id,
     title: titleForNode(id, node),
     type: node.type || 'Node',
-    section: node.section || 'root'
+    section: node.section || 'root',
+    aliases: normalizeStringList(node.aliases),
+    tags: normalizeStringList(node.tags)
   };
 }
 

@@ -7,6 +7,8 @@ type WorkerMessage = Record<string, unknown> & { id: number; type: string };
 class MockWorker {
   static instances: MockWorker[] = [];
   onmessage: ((event: MessageEvent) => void) | null = null;
+  onerror: ((event: ErrorEvent) => void) | null = null;
+  onmessageerror: ((event: MessageEvent) => void) | null = null;
   posted: WorkerMessage[] = [];
   terminated = false;
 
@@ -25,10 +27,19 @@ class MockWorker {
   respond(data: Record<string, unknown>) {
     this.onmessage?.({ data } as MessageEvent);
   }
+
+  fail(message: string) {
+    this.onerror?.({ message } as ErrorEvent);
+  }
+
+  failMessage() {
+    this.onmessageerror?.({} as MessageEvent);
+  }
 }
 
 describe('LargeSearchClient', () => {
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     MockWorker.instances = [];
   });
@@ -85,7 +96,7 @@ describe('LargeSearchClient', () => {
       schema: 'govuk-okf-github-release-pack-index.v1'
     } as LargeReleaseDataPlaneIndex;
 
-    void client.init('https://example.test/bundle/', manifestReference, releaseDataPlane, 'snapshot-1');
+    void client.init('https://example.test/bundle/', manifestReference, releaseDataPlane, 'snapshot-1').catch(() => undefined);
 
     expect(worker.posted[0]).toMatchObject({
       type: 'init',
@@ -94,6 +105,7 @@ describe('LargeSearchClient', () => {
       releaseDataPlane,
       snapshot: 'snapshot-1'
     });
+    client.destroy();
   });
 
   it('copies reactive request state into structured-clone-safe worker data', () => {
@@ -109,7 +121,7 @@ describe('LargeSearchClient', () => {
       sort: 'metadata-quality',
       ranking: 'idf',
       facet_keys: ['publisher_family']
-    });
+    }).catch(() => undefined);
 
     const postedRequest = worker.posted[0].request as Record<string, unknown>;
     expect(postedRequest).toEqual({
@@ -121,6 +133,7 @@ describe('LargeSearchClient', () => {
     });
     expect(postedRequest.filters).not.toBe(reactiveFilters);
     expect((postedRequest.filters as Record<string, string[]>).publisher_family).not.toBe(sourceValues);
+    client.destroy();
   });
 
   it('uses safe defaults for incomplete worker responses', async () => {
@@ -154,5 +167,57 @@ describe('LargeSearchClient', () => {
 
     worker.respond({ type: 'unknown', id: 1 });
     await expect(queryPromise).rejects.toThrow('Unknown search worker response: unknown');
+  });
+
+  it('rejects all pending requests when the worker fails', async () => {
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const worker = MockWorker.instances[0];
+    const queryPromise = client.query({ query: 'pending', filters: {}, sort: 'relevance' });
+    const suggestionsPromise = client.suggest('pen');
+
+    worker.fail('worker crashed');
+
+    await expect(queryPromise).rejects.toThrow('worker crashed');
+    await expect(suggestionsPromise).rejects.toThrow('worker crashed');
+    await expect(client.suggest('late')).rejects.toThrow('Search worker has been destroyed');
+    expect(worker.terminated).toBe(true);
+  });
+
+  it('rejects pending and future requests after destroy', async () => {
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const pending = client.query({ query: 'pending', filters: {}, sort: 'relevance' });
+
+    client.destroy();
+
+    await expect(pending).rejects.toThrow('Search worker was destroyed');
+    await expect(client.suggest('late')).rejects.toThrow('Search worker has been destroyed');
+    expect(MockWorker.instances[0].terminated).toBe(true);
+  });
+
+  it('rejects pending requests when a worker message cannot be decoded', async () => {
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const pending = client.query({ query: 'pending', filters: {}, sort: 'relevance' });
+
+    MockWorker.instances[0].failMessage();
+
+    await expect(pending).rejects.toThrow('Search worker returned an unreadable response');
+  });
+
+  it('terminates a silent worker and rejects pending and future requests after the timeout', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('Worker', MockWorker);
+    const client = new LargeSearchClient();
+    const pending = client.query({ query: 'pending', filters: {}, sort: 'relevance' });
+    const rejected = expect(pending).rejects.toThrow('Search worker did not respond within 30 seconds');
+
+    await vi.advanceTimersByTimeAsync(30_000);
+
+    await rejected;
+    await expect(client.suggest('late')).rejects.toThrow('Search worker has been destroyed');
+    expect(client.destroyed).toBe(true);
+    expect(MockWorker.instances[0].terminated).toBe(true);
   });
 });

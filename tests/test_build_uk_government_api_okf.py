@@ -278,6 +278,14 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertEqual(entities[0]["filter_value"], "department-for-science-innovation-and-technology")
         self.assertEqual(entities[0]["kind"], "organisation")
 
+    def test_search_entities_publish_two_letter_organisation_initialisms(self):
+        entities = builder_module.search_entities_from_publishers(
+            [{"name": "home-office", "title": "Home Office", "dataset_count": 5}],
+            kind="organisation",
+        )
+
+        self.assertIn("HO", entities[0]["aliases"])
+
     def test_filter_postings_use_an_explicit_missing_value_bucket(self):
         search = builder_module.build_search(
             [

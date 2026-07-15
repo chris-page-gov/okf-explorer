@@ -4,6 +4,12 @@
 
 These personas anchor documentation, interface review and evaluation. They are behavioural roles rather than claims about every real user in a profession.
 
+Machine-readable traceability lives in
+[`evaluation/legislation/journeys.json`](../../evaluation/legislation/journeys.json).
+It maps every LQ001–LQ100 legal-answer question to one or more journeys and
+records the curator-refresh journey as an explicit question-suite gap covered
+by generator, validator and documentation-lockstep tests.
+
 ## Personas
 
 | Persona | Primary need | Main risk | Evidence of success |

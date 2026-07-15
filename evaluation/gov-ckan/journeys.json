@@ -1,0 +1,118 @@
+{
+  "schema": "okf-explorer-interaction-suite.v1",
+  "title": "GOV.UK CKAN personas, stories and interaction journeys",
+  "description": "CKAN-specific traceability and browser journeys for discovery metadata, dataset reality, source inspection and durable Explorer interactions.",
+  "target_bundle": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json",
+  "question_suite": "questions.json",
+  "personas": [
+    {"id": "CKAN-P01", "name": "Catalogue researcher", "need": "Find datasets by subject or publisher and understand what this harvested catalogue does and does not claim."},
+    {"id": "CKAN-P02", "name": "Department data lead", "need": "Find all catalogue records attributed to a department, including standard names and abbreviations."},
+    {"id": "CKAN-P03", "name": "Data engineer", "need": "Inspect formats, resources, hosts, APIs and download routes before attempting reuse."},
+    {"id": "CKAN-P04", "name": "Service assessor", "need": "Verify deterministic search, facets, sorting, history, disclosures and accessible graph controls."},
+    {"id": "CKAN-P05", "name": "Provenance auditor", "need": "Distinguish stale catalogue metadata from publisher-operated source data and preserve both as evidence."},
+    {"id": "CKAN-P06", "name": "Demonstrator", "need": "Show a repeatable large-corpus journey with clear counts, stable links and no raw JSON replacing Explorer."}
+  ],
+  "stories": [
+    {
+      "id": "CKAN-S01",
+      "persona_ids": ["CKAN-P01", "CKAN-P02"],
+      "user_story": "Search for a public organisation by canonical name or abbreviation and see publisher-aware results rather than common-word noise.",
+      "question_ids": ["Q001", "Q002", "Q003", "Q004", "Q005", "Q006", "Q007", "Q008", "Q009", "Q010", "Q099", "Q100"]
+    },
+    {
+      "id": "CKAN-S02",
+      "persona_ids": ["CKAN-P01", "CKAN-P02"],
+      "user_story": "Find a dataset family by place or subject and use facets to see related records without treating the catalogue as the whole web.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q016", "Q017", "Q018", "Q019", "Q020", "Q041", "Q042", "Q043", "Q044", "Q045", "Q046", "Q047", "Q048", "Q049", "Q050", "Q051", "Q052", "Q053", "Q054", "Q055", "Q056", "Q057", "Q058", "Q059", "Q060", "Q061", "Q062", "Q063", "Q064", "Q065", "Q066", "Q067", "Q068", "Q069", "Q070", "Q071", "Q072", "Q073", "Q074", "Q075", "Q076", "Q077", "Q078", "Q079", "Q080", "Q081", "Q082", "Q083", "Q084", "Q085", "Q086", "Q087", "Q088", "Q089", "Q090", "Q091", "Q092", "Q093", "Q094", "Q095", "Q096", "Q097", "Q098"]
+    },
+    {
+      "id": "CKAN-S03",
+      "persona_ids": ["CKAN-P03"],
+      "user_story": "Inspect formats, API indicators, capability documents and access routes to judge whether a record is operationally reusable.",
+      "question_ids": ["Q021", "Q022", "Q023", "Q024", "Q025", "Q026", "Q027", "Q028", "Q029", "Q030", "Q035", "Q036", "Q037", "Q038", "Q039"]
+    },
+    {
+      "id": "CKAN-S04",
+      "persona_ids": ["CKAN-P03", "CKAN-P04", "CKAN-P05"],
+      "user_story": "Inspect licence, access, quality, catalogue dates and provenance while opening source JSON inside Explorer and preserving the raw endpoint as a new-tab option.",
+      "question_ids": ["Q031", "Q032", "Q033", "Q034", "Q035", "Q036", "Q037", "Q038", "Q039", "Q040", "Q099"]
+    },
+    {
+      "id": "CKAN-S05",
+      "persona_ids": ["CKAN-P01", "CKAN-P06"],
+      "user_story": "Inspect a selected record's graph relationships and resize the row drawer without losing the graph target.",
+      "question_ids": ["Q006", "Q099"]
+    },
+    {
+      "id": "CKAN-S06",
+      "persona_ids": ["CKAN-P02", "CKAN-P04", "CKAN-P06"],
+      "user_story": "Apply a facet and sort, share the public URL state, and restore the same reduction with browser Back and Forward.",
+      "question_ids": ["Q042", "Q100"]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "CKAN-J01",
+      "title": "Filter and sort Land Registry results with Back and Forward restoration",
+      "persona_ids": ["CKAN-P01", "CKAN-P02", "CKAN-P04", "CKAN-P06"],
+      "story_ids": ["CKAN-S01", "CKAN-S06"],
+      "start": {"query": "Land Registry"},
+      "actions": [
+        {"action": "search", "value": "Land Registry"},
+        {"action": "open_facet", "facet_label": "Format"},
+        {"action": "select_facet_value", "facet_key": "format", "facet_label": "Format", "value": "CSV"},
+        {"action": "set_sort", "value": "title"},
+        {"action": "history_round_trip", "alternate_query": "Home Office"}
+      ],
+      "assertions": [
+        {"assertion": "search_value", "value": "Land Registry"},
+        {"assertion": "url_param_equals", "name": "q", "value": "Land Registry"},
+        {"assertion": "url_param_includes", "name": "filter.format", "value": "CSV"},
+        {"assertion": "url_param_equals", "name": "sort", "value": "title"},
+        {"assertion": "sort_value", "value": "title"},
+        {"assertion": "history_round_trip_restored"},
+        {"assertion": "result_count_min", "value": 1}
+      ]
+    },
+    {
+      "id": "CKAN-J02",
+      "title": "Highlight a selected relationship and drag the relationship drawer",
+      "persona_ids": ["CKAN-P01", "CKAN-P04", "CKAN-P06"],
+      "story_ids": ["CKAN-S05"],
+      "start": {"query": "Characteristics of Home Workers"},
+      "actions": [
+        {"action": "search", "value": "Characteristics of Home Workers"},
+        {"action": "open_first_result"},
+        {"action": "select_view", "value": "Graph"},
+        {"action": "select_graph_edge"},
+        {"action": "resize_relationship_drawer", "pixels": 80}
+      ],
+      "assertions": [
+        {"assertion": "graph_edge_selected"},
+        {"assertion": "relationship_drawer_resized"},
+        {"assertion": "visible_text", "selector": ".right-panel", "value": "Relationship"}
+      ]
+    },
+    {
+      "id": "CKAN-J03",
+      "title": "Load a full CKAN record, use folded sections and inspect source data without replacing Explorer",
+      "persona_ids": ["CKAN-P03", "CKAN-P04", "CKAN-P05", "CKAN-P06"],
+      "story_ids": ["CKAN-S03", "CKAN-S04"],
+      "start": {"query": "Land Registry INSPIRE Download Service Metadata"},
+      "actions": [
+        {"action": "search", "value": "Land Registry INSPIRE Download Service Metadata"},
+        {"action": "open_first_result"},
+        {"action": "load_full_record"},
+        {"action": "toggle_disclosure", "label": "Normalized record fields"},
+        {"action": "open_source_inspector", "label": "View source data"},
+        {"action": "open_raw_source_new_tab"}
+      ],
+      "assertions": [
+        {"assertion": "disclosure_defaults_observed"},
+        {"assertion": "disclosure_toggle_observed"},
+        {"assertion": "source_inspector_visible"},
+        {"assertion": "external_link_opened_in_new_tab"}
+      ]
+    }
+  ]
+}

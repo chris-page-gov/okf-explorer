@@ -1019,7 +1019,9 @@ def search_entity_aliases(label: str, declared: list[str] | None = None) -> list
         "".join(word[0] for word in words),
     ]
     aliases = [str(value).strip() for value in (declared or []) if str(value).strip()]
-    aliases.extend(value.upper() for value in inferred if 3 <= len(value) <= 8)
+    # Two-letter initialisms such as Home Office (HO) are useful, provided the
+    # client only recognises them when they resolve to one entity.
+    aliases.extend(value.upper() for value in inferred if 2 <= len(value) <= 8)
     return sorted(set(aliases), key=lambda value: (value.casefold(), value))
 
 

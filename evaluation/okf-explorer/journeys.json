@@ -1,0 +1,114 @@
+{
+  "schema": "okf-explorer-interaction-suite.v1",
+  "title": "UK Government APIs persona, story and interaction journeys",
+  "description": "Traceability from the personas and nine user stories in the Explorer manual to the 100-question suite, plus deterministic browser journeys for interaction behaviour the retrieval questions cannot exercise.",
+  "target_bundle": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+  "question_suite": "questions.json",
+  "personas": [
+    {"id": "API-P01", "name": "Policy researcher", "need": "Find relevant public-sector APIs or data sources and understand their provenance."},
+    {"id": "API-P02", "name": "Data engineer", "need": "Judge whether endpoints, protocols, licences, contracts and access metadata support reuse."},
+    {"id": "API-P03", "name": "Service assessor", "need": "Check that controls, gaps and quality claims are understandable and accessible."},
+    {"id": "API-P04", "name": "Knowledge curator", "need": "Check whether the pack supports useful search, facets, graph, timeline and resource inspection."},
+    {"id": "API-P05", "name": "AI operator", "need": "Understand corpus boundaries and obtain source-grounded catalogue evidence."}
+  ],
+  "stories": [
+    {
+      "id": "API-S01",
+      "persona_ids": ["API-P01", "API-P03"],
+      "user_story": "Start with the overview so the pack boundary, scale and notices are clear before searching.",
+      "question_ids": ["Q098", "Q100"]
+    },
+    {
+      "id": "API-S02",
+      "persona_ids": ["API-P01", "API-P02"],
+      "user_story": "Search by provider, domain, protocol or known term and receive relevant, explainable results.",
+      "question_ids": ["Q001", "Q002", "Q003", "Q004", "Q005", "Q006", "Q007", "Q008", "Q009", "Q010", "Q011", "Q012", "Q013", "Q014", "Q015", "Q016", "Q017", "Q018", "Q019", "Q020", "Q021", "Q022", "Q023", "Q024", "Q025", "Q026", "Q027", "Q028", "Q029", "Q030", "Q046", "Q047", "Q048", "Q049", "Q050", "Q051", "Q052", "Q053", "Q054", "Q055", "Q056", "Q057", "Q058", "Q059", "Q060", "Q061", "Q062", "Q063", "Q064", "Q065", "Q066", "Q067", "Q068", "Q069", "Q070", "Q071", "Q072", "Q073", "Q074", "Q075", "Q076", "Q077", "Q078", "Q079", "Q080", "Q095", "Q096"]
+    },
+    {
+      "id": "API-S03",
+      "persona_ids": ["API-P01", "API-P03", "API-P04"],
+      "user_story": "Filter and sort a reduction while retaining inspectable URL state and honest result counts.",
+      "question_ids": ["Q031", "Q032", "Q033", "Q034", "Q035", "Q036", "Q037", "Q038", "Q039", "Q040", "Q041", "Q042", "Q043", "Q044", "Q045", "Q081", "Q082", "Q083", "Q084", "Q085", "Q086", "Q087", "Q088", "Q089", "Q090", "Q091", "Q092", "Q093", "Q094"]
+    },
+    {
+      "id": "API-S04",
+      "persona_ids": ["API-P02", "API-P03", "API-P05"],
+      "user_story": "Inspect a record card with provenance, access, licence and metadata-quality context while gaps remain explicit.",
+      "question_ids": ["Q031", "Q032", "Q033", "Q034", "Q035", "Q036", "Q037", "Q038", "Q039", "Q040", "Q041", "Q042", "Q043", "Q044", "Q045", "Q089", "Q090", "Q091", "Q092", "Q093", "Q094", "Q095", "Q096", "Q097", "Q098", "Q099", "Q100"]
+    },
+    {
+      "id": "API-S05",
+      "persona_ids": ["API-P01", "API-P04"],
+      "user_story": "Explore graph relationships without losing the selected target and inspect a selected edge.",
+      "question_ids": ["Q001", "Q002", "Q003", "Q004", "Q005", "Q006", "Q007", "Q008", "Q009", "Q010", "Q099"]
+    },
+    {
+      "id": "API-S06",
+      "persona_ids": ["API-P01", "API-P04"],
+      "user_story": "Review dated records in chronological context without treating catalogue dates as operational currency.",
+      "question_ids": ["Q093"]
+    },
+    {
+      "id": "API-S07",
+      "persona_ids": ["API-P03", "API-P04"],
+      "user_story": "Compare record types so API products, operations, data products and capability documents are not conflated.",
+      "question_ids": ["Q017", "Q039", "Q085", "Q086", "Q087", "Q088"]
+    },
+    {
+      "id": "API-S08",
+      "persona_ids": ["API-P02", "API-P04"],
+      "user_story": "Inspect resources, endpoint hosts, formats, documentation and evidence inherited from parent records.",
+      "question_ids": ["Q011", "Q012", "Q013", "Q014", "Q015", "Q016", "Q017", "Q018", "Q019", "Q020", "Q031", "Q032", "Q033", "Q034", "Q035", "Q036", "Q037", "Q038", "Q039", "Q040", "Q095", "Q096", "Q100"]
+    },
+    {
+      "id": "API-S09",
+      "persona_ids": ["API-P05"],
+      "user_story": "Treat a small result count as a boundary of this pack rather than a claim about the wider world.",
+      "question_ids": ["Q071"]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "API-J01",
+      "title": "Search, filter, sort and restore URL state",
+      "persona_ids": ["API-P01", "API-P03"],
+      "story_ids": ["API-S02", "API-S03"],
+      "start": {"query": "Ordnance Survey"},
+      "actions": [
+        {"action": "search", "value": "Ordnance Survey"},
+        {"action": "open_facet", "facet_label": "Record type"},
+        {"action": "select_facet_value", "facet_key": "record_type", "facet_label": "Record type", "value": "API Product"},
+        {"action": "set_sort", "value": "relevance"},
+        {"action": "history_round_trip", "alternate_query": "ONS census API"}
+      ],
+      "assertions": [
+        {"assertion": "search_value", "value": "Ordnance Survey"},
+        {"assertion": "url_param_equals", "name": "q", "value": "Ordnance Survey"},
+        {"assertion": "url_param_includes", "name": "filter.record_type", "value": "API Product"},
+        {"assertion": "url_param_equals", "name": "sort", "value": "relevance"},
+        {"assertion": "sort_value", "value": "relevance"},
+        {"assertion": "history_round_trip_restored"},
+        {"assertion": "result_count_min", "value": 1}
+      ]
+    },
+    {
+      "id": "API-J02",
+      "title": "Select and highlight a graph relationship, then drag its drawer",
+      "persona_ids": ["API-P01", "API-P04"],
+      "story_ids": ["API-S05"],
+      "start": {"query": "osdatahub.os.uk"},
+      "actions": [
+        {"action": "search", "value": "osdatahub.os.uk"},
+        {"action": "open_first_result"},
+        {"action": "select_view", "value": "Graph"},
+        {"action": "select_graph_edge"},
+        {"action": "resize_relationship_drawer", "pixels": 80}
+      ],
+      "assertions": [
+        {"assertion": "graph_edge_selected"},
+        {"assertion": "relationship_drawer_resized"},
+        {"assertion": "visible_text", "selector": ".right-panel", "value": "Relationship"}
+      ]
+    }
+  ]
+}

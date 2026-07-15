@@ -27,12 +27,34 @@ describe('static search filtering and ranking', () => {
     );
     expect([...result.ordinals]).toEqual([0, 2]);
     expect(result.applied).toBe(true);
+    expect(result.ignoredFilters).toEqual({});
   });
 
   it('reports a v1-style fallback when a selected filter index is absent', () => {
     const result = filterOrdinals(new Set([0, 1]), { type: ['API'] }, new Map());
     expect([...result.ordinals]).toEqual([0, 1]);
     expect(result.applied).toBe(false);
+  });
+
+  it('ignores and reports values proven absent from an indexed facet', () => {
+    const postings = new Map([['type', facet('type', { API: [0, 1], Dataset: [2] })]]);
+    const result = filterOrdinals(
+      new Set([0, 1, 2]),
+      { type: ['API', 'not-a-real-type'] },
+      postings
+    );
+
+    expect([...result.ordinals]).toEqual([0, 1]);
+    expect(result.applied).toBe(true);
+    expect(result.ignoredFilters).toEqual({ type: ['not-a-real-type'] });
+  });
+
+  it('does not turn an entirely invalid indexed selection into no results', () => {
+    const postings = new Map([['type', facet('type', { API: [0, 1] })]]);
+    const result = filterOrdinals(new Set([0, 1, 2]), { type: ['old-deep-link-value'] }, postings);
+
+    expect([...result.ordinals]).toEqual([0, 1, 2]);
+    expect(result.ignoredFilters).toEqual({ type: ['old-deep-link-value'] });
   });
 
   it('calculates dynamic facet counts over the supplied candidate universe', () => {

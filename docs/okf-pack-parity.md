@@ -19,13 +19,36 @@ Each large OKF pack should expose:
   services, including DCAT/DCAT-AP terms, OpenAPI terms, export-readiness
   status and missing requirements;
 - generated facet definitions and quality hints that match the UI vocabulary;
-- a 100-question evaluation suite using the shared additive rubric.
+- a 100-question evaluation suite using the shared additive rubric;
+- a persona/story interaction manifest that maps every evaluation question to
+  a user need, records honest coverage gaps, and exercises behaviours that a
+  query-only score cannot observe.
 
 The UK Government APIs pack is the richer multi-source API/data-access exemplar.
 The GOV.UK CKAN pack remains the broad data-catalogue exemplar. Parity does not
 mean identical counts or facets; it means a user can perform the same discovery,
 inspection, provenance, licence/access and graph-reading tasks with comparable
 support.
+
+## Persona And Evaluation Traceability
+
+Each README exemplar has a separate interaction manifest:
+
+| Pack | Manifest | Personas and stories | Question link |
+|---|---|---|---|
+| UK Government APIs | `evaluation/okf-explorer/journeys.json` | Five shared Explorer personas and nine manual stories | Every Q001–Q100 question is named by one or more stories. |
+| GOV.UK CKAN | `evaluation/gov-ckan/journeys.json` | Six CKAN-specific personas and six stories | Every Q001–Q100 CKAN question is named by one or more stories. |
+| UK Legislation | `evaluation/legislation/journeys.json` | Six legislation personas and six critical journeys | Every LQ001–LQ100 question is named; the curator-refresh story is an explicit non-question coverage gap. |
+
+The manifests use explicit IDs rather than broad tag selectors. Static tests
+fail if a referenced question or persona disappears, if a question loses all
+story coverage, or if a story has neither questions nor a documented gap.
+
+The shared interaction action vocabulary covers facets, sorting, URL state,
+Back/Forward, graph-edge selection, relationship-drawer pointer resizing,
+folded card sections, full-record hydration, Source Inspector and raw-source
+new-tab behaviour. Packs can choose the journeys relevant to their source model;
+parity means comparable user outcomes, not identical click scripts.
 
 ## UI Learnings
 
