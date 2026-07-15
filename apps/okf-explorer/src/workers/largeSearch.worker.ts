@@ -580,7 +580,11 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     const path = manifest.entrypoints.result_docs[Math.floor(ordinal / (manifest.result_doc_chunk_size || 1000))];
     if (path && !chunkPaths.has(path) && chunkPaths.size >= SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) {
       resultChunkBudgetReached = true;
-      break;
+      // Keep scanning the ranked candidates: a later candidate can belong to
+      // one of the chunks already admitted. Dropping it merely because an
+      // intervening candidate introduced a seventeenth chunk would under-fill
+      // the result page without reducing the number of fetched chunks.
+      continue;
     }
     if (path) chunkPaths.add(path);
     boundedOrdinals.push(ordinal);

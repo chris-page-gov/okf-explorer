@@ -138,29 +138,38 @@ describe('large static search worker', () => {
 
   it('returns a ranked subset when scattered results reach the result-chunk budget', async () => {
     const manifest = baseManifest();
-    const resultCount = 18;
-    manifest.result_limit = resultCount;
-    manifest.result_doc_chunk_size = 1;
-    manifest.counts.documents = resultCount;
-    manifest.entrypoints.result_docs = Array.from({ length: resultCount }, (_value, ordinal) => `docs-${ordinal}.json`);
+    const rankedOrdinals = [
+      ...Array.from({ length: 16 }, (_value, index) => index * 2),
+      32,
+      1
+    ];
+    manifest.result_limit = rankedOrdinals.length;
+    manifest.result_doc_chunk_size = 2;
+    manifest.counts.documents = 34;
+    manifest.entrypoints.result_docs = Array.from({ length: 17 }, (_value, ordinal) => `docs-${ordinal}.json`);
     const payloads: Array<[string, unknown]> = [
-      ['https://example.test/lexicon.json', [{ token: 'flood', df: resultCount, postings: 'postings.json' }]],
+      ['https://example.test/lexicon.json', [{ token: 'flood', df: rankedOrdinals.length, postings: 'postings.json' }]],
       ['https://example.test/postings.json', {
-        tokens: { flood: Array.from({ length: resultCount }, (_value, ordinal) => [ordinal, 20, 1]) }
+        tokens: {
+          flood: rankedOrdinals.map((ordinal, index) => [ordinal, rankedOrdinals.length - index, 1])
+        }
       }]
     ];
-    for (let ordinal = 0; ordinal < resultCount; ordinal += 1) {
-      payloads.push([`https://example.test/docs-${ordinal}.json`, [{
-        ordinal,
-        name: `flood-${ordinal}`,
-        title: `Flood ${ordinal}`,
-        publisher: 'ea',
-        publisher_title: 'EA',
-        resource_count: 1,
-        formats: [],
-        tags: [],
-        open: `dataset/flood-${ordinal}`
-      }]]);
+    for (let chunk = 0; chunk < 17; chunk += 1) {
+      payloads.push([`https://example.test/docs-${chunk}.json`, [0, 1].map((offset) => {
+        const ordinal = chunk * 2 + offset;
+        return {
+          ordinal,
+          name: `flood-${ordinal}`,
+          title: `Flood ${ordinal}`,
+          publisher: 'ea',
+          publisher_title: 'EA',
+          resource_count: 1,
+          formats: [],
+          tags: [],
+          open: `dataset/flood-${ordinal}`
+        };
+      })]);
     }
     const worker = await harness(manifest, payloads);
     await worker.onmessage?.({ data: {
@@ -171,11 +180,11 @@ describe('large static search worker', () => {
 
     const message = worker.postMessage.mock.calls[0][0];
     expect(message.type).toBe('results');
-    expect(message.response.total).toBe(resultCount);
-    expect(message.response.results).toHaveLength(16);
-    expect(message.response.results.map((result: { ordinal: number }) => result.ordinal)).toEqual(
-      Array.from({ length: 16 }, (_value, ordinal) => ordinal)
-    );
+    expect(message.response.total).toBe(rankedOrdinals.length);
+    expect(message.response.results.map((result: { ordinal: number }) => result.ordinal)).toEqual([
+      ...rankedOrdinals.slice(0, 16),
+      1
+    ]);
     expect(message.response.truncated).toBe(true);
     expect(message.response.truncation).toEqual({
       reason: 'result-chunk-budget',
