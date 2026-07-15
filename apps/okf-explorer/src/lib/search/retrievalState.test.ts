@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  MISSING_FILTER_VALUE,
   RETRIEVAL_STATE_SCHEMA,
   defaultRetrievalSort,
   hasSerializedFilters,
@@ -37,6 +38,28 @@ describe('retrieval URL state', () => {
     const state = parseRetrievalState(params, ['publisher']);
     expect(state.filters).toEqual({ publisher: ['ons'] });
     expect(state.sort).toBe('newest');
+  });
+
+  it('ignores unknown filter values when the complete facet vocabulary is known', () => {
+    const params = new URLSearchParams();
+    params.append('filter.publisher', 'ons');
+    params.append('filter.publisher', 'invented-office');
+    params.append('filter.topic', 'housing');
+
+    expect(parseRetrievalState(params, ['publisher', 'topic'], { publisher: ['ons', 'home-office'] }).filters).toEqual({
+      publisher: ['ons'],
+      topic: ['housing']
+    });
+  });
+
+  it('preserves the explicit metadata-gap bucket when the complete vocabulary is known', () => {
+    const params = new URLSearchParams(`filter.publisher=${MISSING_FILTER_VALUE}`);
+
+    expect(parseRetrievalState(
+      params,
+      ['publisher'],
+      { publisher: ['ons', MISSING_FILTER_VALUE] }
+    ).filters).toEqual({ publisher: [MISSING_FILTER_VALUE] });
   });
 
   it('uses relevance for a query and newest for filter-only browsing', () => {

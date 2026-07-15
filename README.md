@@ -13,6 +13,19 @@ other public HTTPS URL. These hosted examples open without installation:
 | UK Government APIs OKF | Multi-source API/data catalogue with standards and provenance metadata | [Open Explorer][uk-government-apis-example] |
 | GOV.UK CKAN | Large external CKAN corpus loaded by the same hosted Explorer | [Open Explorer][ckan-example] |
 
+Each example now has explicit persona, user-story and question traceability:
+
+| Example | Personas and stories | Evaluation questions |
+|---|---|---|
+| UK Legislation OKF | [Six legislation personas and critical journeys][legislation-personas] · [`journeys.json`](evaluation/legislation/journeys.json) | [`questions.json`](evaluation/legislation/questions.json), 100 legal-answer questions |
+| UK Government APIs OKF | [Five shared Explorer personas and nine stories][persona-manual] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions |
+| GOV.UK CKAN | [Six CKAN-specific personas and user stories][ckan-personas] · [`journeys.json`](evaluation/gov-ckan/journeys.json) | [`questions.json`](evaluation/gov-ckan/questions.json), 100 catalogue questions |
+
+The journey manifests also define opt-in browser interactions for facets,
+sorting, URL Back/Forward restoration, graph edges, relationship-drawer
+resizing, folded record sections, full-record loading and source-data/new-tab
+behaviour. A normal 100-question harness run remains unchanged.
+
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
 - [Use the static search and filtering manual][search-filtering-manual]
@@ -230,6 +243,8 @@ Pages to use **GitHub Actions** as the source.
 [legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
 [legislation-docs]: docs/uk-legislation/index.md
 [legislation-manual]: docs/uk-legislation/illustrated-manual.md
+[legislation-personas]: docs/uk-legislation/personas-and-user-journeys.md
+[ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md

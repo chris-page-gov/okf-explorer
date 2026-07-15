@@ -16,6 +16,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Static search and filtering manual](static-search-filtering-manual.md)
   illustrates deterministic search, multi-value filters, sorting, match
   explanations and durable retrieval URLs against the GOV.UK CKAN corpus.
+- [GOV.UK CKAN personas and user journeys](gov-ckan-personas-and-user-journeys.md)
+  links CKAN-specific user needs to all 100 questions and the executable
+  interaction journeys.
 - [Use an AI with an OKF pack](ai-okf-usage.md) gives prompts and data-access
   rules for asking questions over a pack without losing provenance.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles

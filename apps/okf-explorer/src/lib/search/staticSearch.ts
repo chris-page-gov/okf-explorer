@@ -24,9 +24,10 @@ export function filterOrdinals(
   filters: Record<string, string[]>,
   postings: Map<string, LargeFilterPostings>,
   exceptKey = ''
-): { ordinals: Set<number>; applied: boolean } {
+): { ordinals: Set<number>; applied: boolean; ignoredFilters: Record<string, string[]> } {
   let result = new Set(candidates);
   let applied = true;
+  const ignoredFilters: Record<string, string[]> = {};
   for (const [key, selected] of Object.entries(filters)) {
     if (key === exceptKey || !selected.length) continue;
     const facet = postings.get(key);
@@ -34,10 +35,17 @@ export function filterOrdinals(
       applied = false;
       continue;
     }
-    const allowed = unionOrdinals(selected.map((value) => facet.values[value] || []));
+    const valid = selected.filter((value) => Object.prototype.hasOwnProperty.call(facet.values, value));
+    const ignored = selected.filter((value) => !Object.prototype.hasOwnProperty.call(facet.values, value));
+    if (ignored.length) ignoredFilters[key] = [...new Set(ignored)];
+    // Unknown values can arrive in old or hand-edited deep links. They are not
+    // zero-count selections: the index proves they are not values of this
+    // facet, so ignore them rather than turning the whole result into no-match.
+    if (!valid.length) continue;
+    const allowed = unionOrdinals(valid.map((value) => facet.values[value]));
     result = intersectOrdinals(result, allowed);
   }
-  return { ordinals: result, applied };
+  return { ordinals: result, applied, ignoredFilters };
 }
 
 export function dynamicFacetRows(candidates: Set<number>, postings: LargeFilterPostings): LargeFacetRow[] {

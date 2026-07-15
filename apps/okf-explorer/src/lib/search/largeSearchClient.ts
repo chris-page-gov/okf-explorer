@@ -10,12 +10,17 @@ import type {
 type Pending = {
   resolve: (value: unknown) => void;
   reject: (reason?: unknown) => void;
+  timeout: ReturnType<typeof setTimeout>;
 };
+
+const REQUEST_TIMEOUT_MS = 30_000;
+const INIT_TIMEOUT_MS = 60_000;
 
 export class LargeSearchClient {
   #worker: Worker;
   #nextId = 1;
   #pending = new Map<number, Pending>();
+  #destroyed = false;
   manifest: LargeSearchManifest | null = null;
 
   constructor() {
@@ -24,6 +29,7 @@ export class LargeSearchClient {
       const pending = this.#pending.get(event.data.id);
       if (!pending) return;
       this.#pending.delete(event.data.id);
+      clearTimeout(pending.timeout);
       if (event.data.type === 'error') pending.reject(new Error(event.data.error || 'Search worker failed'));
       else if (event.data.type === 'ready') {
         this.manifest = event.data.manifest || null;
@@ -32,14 +38,47 @@ export class LargeSearchClient {
       else if (event.data.type === 'suggestions') pending.resolve(event.data.suggestions || []);
       else pending.reject(new Error(`Unknown search worker response: ${event.data.type}`));
     };
+    this.#worker.onerror = (event: ErrorEvent) => {
+      const message = event.message || 'Search worker failed';
+      this.#fail(new Error(message));
+    };
+    this.#worker.onmessageerror = () => {
+      this.#fail(new Error('Search worker returned an unreadable response'));
+    };
   }
 
-  #request<T>(message: Record<string, unknown>): Promise<T> {
+  #request<T>(message: Record<string, unknown>, timeoutMs = REQUEST_TIMEOUT_MS): Promise<T> {
+    if (this.#destroyed) return Promise.reject(new Error('Search worker has been destroyed'));
     const id = this.#nextId++;
-    this.#worker.postMessage({ ...message, id });
     return new Promise<T>((resolve, reject) => {
-      this.#pending.set(id, { resolve: resolve as (value: unknown) => void, reject });
+      const timeout = setTimeout(() => {
+        this.#fail(new Error(`Search worker did not respond within ${Math.round(timeoutMs / 1000)} seconds`));
+      }, timeoutMs);
+      this.#pending.set(id, { resolve: resolve as (value: unknown) => void, reject, timeout });
+      try {
+        this.#worker.postMessage({ ...message, id });
+      } catch (error) {
+        const pending = this.#pending.get(id);
+        if (pending) clearTimeout(pending.timeout);
+        this.#pending.delete(id);
+        reject(error);
+      }
     });
+  }
+
+  #rejectPending(error: Error) {
+    for (const pending of this.#pending.values()) {
+      clearTimeout(pending.timeout);
+      pending.reject(error);
+    }
+    this.#pending.clear();
+  }
+
+  #fail(error: Error) {
+    if (this.#destroyed) return;
+    this.#destroyed = true;
+    this.#rejectPending(error);
+    this.#worker.terminate();
   }
 
   init(
@@ -54,7 +93,7 @@ export class LargeSearchClient {
       manifestReference,
       releaseDataPlane,
       snapshot
-    });
+    }, INIT_TIMEOUT_MS);
   }
 
   query(request: LargeSearchRequest): Promise<LargeSearchResponse> {
@@ -74,7 +113,14 @@ export class LargeSearchClient {
     return this.#request<SearchSuggestion[]>({ type: 'suggest', prefix });
   }
 
+  get destroyed(): boolean {
+    return this.#destroyed;
+  }
+
   destroy() {
+    if (this.#destroyed) return;
+    this.#destroyed = true;
+    this.#rejectPending(new Error('Search worker was destroyed'));
     this.#worker.terminate();
   }
 }

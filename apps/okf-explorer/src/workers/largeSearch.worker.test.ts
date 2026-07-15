@@ -101,6 +101,82 @@ describe('large static search worker', () => {
     ]);
     expect(message.response.filters_applied).toBe(true);
     expect(message.response.truncated).toBe(true);
+    expect(message.response.total_relation).toBe('eq');
+    expect(message.response.truncations).toEqual([{ reason: 'result-limit' }]);
+    expect(message.response.ignored_filters).toEqual({});
+  });
+
+  it('ignores invalid indexed values while retaining valid selections', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'flood',
+        filters: { type: ['API', 'retired-value'] },
+        sort: 'relevance',
+        facet_keys: ['type']
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(2);
+    expect(response.filters_applied).toBe(true);
+    expect(response.ignored_filters).toEqual({ type: ['retired-value'] });
+  });
+
+  it('suppresses dynamic facets when an active filter needs full-index fallback', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'flood',
+        filters: { type: ['API'], unindexed: ['current'] },
+        sort: 'relevance',
+        facet_keys: ['type']
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(2);
+    expect(response.filters_applied).toBe(false);
+    expect(response.facets).toEqual({});
+    expect(response.ignored_filters).toEqual({});
+  });
+
+  it('applies filters and returns empty dynamic facets for a lexical no-match', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'zzzz-no-such-term',
+        filters: { type: ['API'] },
+        sort: 'relevance',
+        facet_keys: ['type']
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(0);
+    expect(response.results).toEqual([]);
+    expect(response.filters_applied).toBe(true);
+    expect(response.facets).toEqual({ type: [] });
+  });
+
+  it('does not interpret a non-empty stop-word-only query as match-all browsing', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'the and of', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(0);
+    expect(response.results).toEqual([]);
+    expect(response.total_relation).toBe('eq');
   });
 
   it('reports that v1 manifests need the full-index filter fallback', async () => {
@@ -146,6 +222,7 @@ describe('large static search worker', () => {
     manifest.result_limit = rankedOrdinals.length;
     manifest.result_doc_chunk_size = 2;
     manifest.counts.documents = 34;
+    manifest.counts.max_postings_per_token = 10;
     manifest.entrypoints.result_docs = Array.from({ length: 17 }, (_value, ordinal) => `docs-${ordinal}.json`);
     const payloads: Array<[string, unknown]> = [
       ['https://example.test/lexicon.json', [{ token: 'flood', df: rankedOrdinals.length, postings: 'postings.json' }]],
@@ -191,6 +268,40 @@ describe('large static search worker', () => {
       loaded_result_chunks: 16,
       result_chunk_budget: 16
     });
+    expect(message.response.truncations).toEqual([
+      {
+        reason: 'result-chunk-budget',
+        loaded_result_chunks: 16,
+        result_chunk_budget: 16
+      },
+      { reason: 'capped-postings' }
+    ]);
+    expect(message.response.total_relation).toBe('gte');
+  });
+
+  it('marks a mixed capped and complete multi-token candidate count as approximate', async () => {
+    const manifest = baseManifest();
+    manifest.result_limit = 4;
+    manifest.counts.max_postings_per_token = 2;
+    manifest.entrypoints.lexicon = { fl: 'lexicon.json', ri: 'risk-lexicon.json' };
+    manifest.entrypoints.postings = ['postings.json', 'risk-postings.json'];
+    const worker = await harness(manifest, [
+      ['https://example.test/lexicon.json', [{ token: 'flood', df: 4, postings: 'postings.json' }]],
+      ['https://example.test/risk-lexicon.json', [{ token: 'risk', df: 2, postings: 'risk-postings.json' }]],
+      ['https://example.test/postings.json', { tokens: { flood: [[0, 20, 1]] } }],
+      ['https://example.test/risk-postings.json', { tokens: { risk: [[0, 12, 1], [1, 10, 1]] } }]
+    ]);
+
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'flood risk', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(2);
+    expect(response.total_relation).toBe('unknown');
+    expect(response.truncations).toContainEqual({ reason: 'capped-postings' });
   });
 
   it('recognises a multi-word organisation from legacy delta-encoded publisher facets', async () => {
@@ -241,6 +352,46 @@ describe('large static search worker', () => {
       kind: 'entity',
       label: 'Department for Science Innovation and Technology'
     });
+  });
+
+  it('resolves an unambiguous two-letter organisation initialism', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'HO', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Home Office',
+      matched_alias: 'HO'
+    });
+    expect(response.total).toBe(2);
+  });
+
+  it('does not recognise a two-letter alias shared by multiple organisations', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest, [[
+      'https://example.test/facets.json',
+      { publisher: { 'home-office': [0, 2], 'health-office': [1] } }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'HO', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toBeUndefined();
+    expect(response.total).toBe(0);
   });
 
   it('searches through integrity-checked range-packed lexicon, postings and record shards', async () => {

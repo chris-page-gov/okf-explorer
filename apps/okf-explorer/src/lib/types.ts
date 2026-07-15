@@ -271,9 +271,16 @@ export type LargeSearchTruncation = {
 export type LargeSearchResponse = {
   results: SearchResultDoc[];
   total: number;
+  /** Whether total is exact, a lower bound, or only the size of an approximate candidate set. */
+  total_relation: 'eq' | 'gte' | 'unknown';
   truncated: boolean;
+  /** All simultaneous limits that affected this response. */
+  truncations: LargeSearchTruncation[];
+  /** The first/most actionable truncation, retained for older consumers. */
   truncation?: LargeSearchTruncation;
   filters_applied: boolean;
+  /** Values proven absent from an available filter-postings index. */
+  ignored_filters: Record<string, string[]>;
   facets: Record<string, LargeFacetRow[]>;
   ranking: SearchRankingStrategy;
   elapsed_ms: number;

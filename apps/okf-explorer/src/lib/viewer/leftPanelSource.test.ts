@@ -41,6 +41,16 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("parseRetrievalState(new URLSearchParams(location.search), ['type'])");
     expect(pageSource).toContain('largeFacetFilters = state.filters');
     expect(pageSource).toContain('retrievalSort = state.sort');
+    expect(pageSource).toContain('...rows.map((row) => row.value), MISSING_FILTER_VALUE');
+    expect(pageSource).toContain('return values.length ? values : [MISSING_FILTER_VALUE]');
+  });
+
+  it('restarts one crashed or timed-out search worker without accepting stale results', () => {
+    expect(pageSource).toContain('largeSearchRecoveryAttempts < 1');
+    expect(pageSource).toContain('largeSearchClient = null');
+    expect(pageSource).toContain('Restarting the local search worker');
+    expect(pageSource).toContain('sourceRequestId !== loadRequest');
+    expect(pageSource).toContain('largeSearchClient !== client');
   });
 
   it('separates retrieval controls and explains matches without exposing raw scores', () => {

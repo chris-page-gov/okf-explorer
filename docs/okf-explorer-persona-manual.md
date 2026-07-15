@@ -17,6 +17,15 @@ understand real user tasks, make the service simple, make it accessible, expose
 source/provenance clearly, use open standards, protect privacy/security, and
 measure whether the service works.
 
+The machine-readable traceability for these five personas and nine stories is
+[`evaluation/okf-explorer/journeys.json`](../evaluation/okf-explorer/journeys.json).
+It names the evaluation questions attached to every story and adds browser
+journeys for facet selection, sorting, URL restoration, graph-edge highlighting
+and relationship-drawer resizing. The CKAN example has its own
+[personas and user journeys](gov-ckan-personas-and-user-journeys.md), while the
+legislation example uses the dedicated
+[legislation personas and journeys](uk-legislation/personas-and-user-journeys.md).
+
 ## Personas
 
 | Persona | Goal |

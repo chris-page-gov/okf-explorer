@@ -19,12 +19,14 @@
     ViewMode
   } from '$lib/types';
   import { LargeSearchClient } from '$lib/search/largeSearchClient';
+  import { formatSearchResultSummary } from '$lib/search/searchPresentation';
   import {
     RETRIEVAL_STATE_SCHEMA,
     MISSING_FILTER_VALUE,
     defaultRetrievalSort,
     hasSerializedFilters,
     isRetrievalSort,
+    normalizeRetrievalFilters,
     parseRetrievalState,
     writeRetrievalState,
     type RetrievalSort,
@@ -246,6 +248,7 @@
   let largePreserveSelectionUntilSearch = $state(false);
   let largeSearchClient = $state<LargeSearchClient | null>(null);
   let largeSearchRequest = 0;
+  let largeSearchRecoveryAttempts = 0;
   let loadRequest = 0;
   let largeApiRoute = $state('');
   let largeApiUrl = $state('');
@@ -352,10 +355,14 @@
       if (activeView === 'graph') graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2200);
     return () => {
+      loadRequest += 1;
+      largeSearchRequest += 1;
       window.removeEventListener('popstate', applyBrowserRoute);
       window.removeEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
       window.clearInterval(labelTimer);
       if (largeSearchDebounce !== null) window.clearTimeout(largeSearchDebounce);
+      largeSearchClient?.destroy();
+      largeSearchClient = null;
       edgePanelResizeCleanup?.();
     };
   });
@@ -430,11 +437,48 @@
     };
   }
 
-  function largeSourceFacetKeys(large: Extract<LoadedSource, { kind: 'large' }>): string[] {
+  function largeSourceFacetKeys(
+    large: Extract<LoadedSource, { kind: 'large' }>,
+    manifest = largeSearchClient?.manifest
+  ): string[] {
     return [...new Set([
+      ...LARGE_FACET_KEYS,
       ...Object.keys(large.overview.facet_previews || {}),
-      ...(large.analysis?.facet_analysis || []).map((facet) => facet.key)
+      ...(large.analysis?.facet_analysis || []).map((facet) => facet.key),
+      ...Object.keys(manifest?.entrypoints.filter_postings || {})
     ])];
+  }
+
+  function knownLargeFacetValues(index: LargeFullIndex): Record<string, string[]> {
+    return Object.fromEntries(
+      Object.entries(index.facets).map(([key, rows]) => [
+        key,
+        [...new Set([...rows.map((row) => row.value), MISSING_FILTER_VALUE])]
+      ])
+    );
+  }
+
+  function sanitizeLargeFiltersFromFullIndex(index: LargeFullIndex) {
+    if (source?.kind !== 'large') return;
+    const filters = normalizeRetrievalFilters(
+      largeFacetFilters,
+      largeSourceFacetKeys(source),
+      knownLargeFacetValues(index)
+    );
+    if (JSON.stringify(filters) !== JSON.stringify(largeFacetFilters)) {
+      largeFacetFilters = filters;
+      syncExplorerUrl();
+    }
+  }
+
+  function removeIgnoredLargeFilters(ignored: Record<string, string[]> | undefined) {
+    if (!ignored || !Object.keys(ignored).length) return;
+    const filters = Object.fromEntries(
+      Object.entries(largeFacetFilters)
+        .map(([key, values]) => [key, values.filter((value) => !(ignored[key] || []).includes(value))])
+        .filter(([, values]) => values.length)
+    );
+    largeFacetFilters = filters;
   }
 
   function syncExplorerUrl(push = false) {
@@ -460,14 +504,23 @@
     if (source?.kind === 'large') {
       const params = new URLSearchParams(location.search);
       const state = parseRetrievalState(params, largeSourceFacetKeys(source));
+      const previousFilters = JSON.stringify(largeFacetFilters);
+      const previousSort = retrievalSort;
       largeQuery = state.query;
       retrievalSort = state.sort;
       largeFacetFilters = state.filters;
+      const filtersChanged = previousFilters !== JSON.stringify(largeFacetFilters);
       applyLargeBrowserRoute(hash, hasSerializedFilters(params));
-      if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
+      if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
         void ensureLargeFullIndex();
       }
-      if (state.query !== largeAppliedQuery) void runLargeSearch(state.query, { preserveSelection: true });
+      if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort) {
+        if (largeSearchClient) void runLargeSearch(state.query, { preserveSelection: true });
+        else {
+          largeSearchPendingQuery = state.query;
+          if (!source.searchManifest) void ensureLargeFullIndex();
+        }
+      }
       reconcileLargeSelection();
     } else if (smallCorpus) {
       const state = parseRetrievalState(new URLSearchParams(location.search), ['type']);
@@ -517,6 +570,7 @@
 
   async function loadSource(url: string) {
     const requestId = ++loadRequest;
+    largeSearchRequest += 1;
     const absoluteUrl = toAbsoluteUrl(url);
     loading = true;
     error = '';
@@ -544,9 +598,12 @@
     largeRelationshipsByRoute = new Map();
     largeRelationshipsTruncated = false;
     largeFacetFilters = {};
+    largeFullLoading = false;
+    largeRelationshipsLoading = false;
     largeSearchIndexLoading = false;
     largeSearching = false;
     largeSearchPendingQuery = '';
+    largeSearchRecoveryAttempts = 0;
     largeFacetHydratingKey = '';
     largeFacetApplyingKey = '';
     largeFacetApplyingValue = '';
@@ -589,7 +646,9 @@
         });
         bundleUrl = absoluteUrl;
         const params = new URLSearchParams(location.search);
-        const retrieval = parseRetrievalState(params, largeSourceFacetKeys(large));
+        // The v2 manifest may advertise additional corpus-specific filter keys. Keep
+        // syntactically valid URL filters until that manifest is ready, then validate.
+        const retrieval = parseRetrievalState(params, searchManifest ? undefined : largeSourceFacetKeys(large));
         const query = retrieval.query;
         largeQuery = retrieval.query;
         retrievalSort = retrieval.sort;
@@ -598,10 +657,10 @@
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
-          if (Object.keys(largeFacetFilters).length || ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView))) {
+          if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
             void ensureLargeFullIndex();
           }
-        } else if (Object.keys(largeFacetFilters).length) {
+        } else if (Object.keys(largeFacetFilters).length && !searchManifest) {
           void ensureLargeFullIndex();
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
@@ -654,6 +713,14 @@
         return;
       }
       largeSearchClient = client;
+      const retrieval = parseRetrievalState(
+        new URLSearchParams(location.search),
+        largeSourceFacetKeys(large, client.manifest)
+      );
+      largeQuery = retrieval.query;
+      retrievalSort = retrieval.sort;
+      largeFacetFilters = retrieval.filters;
+      syncExplorerUrl();
       const pendingQuery = largeSearchPendingQuery || initialQuery || largeQuery;
       largeSearchPendingQuery = '';
       if (pendingQuery.trim() || Object.keys(largeFacetFilters).length) {
@@ -661,15 +728,34 @@
       }
     } catch (searchError) {
       client.destroy();
-      if (requestId !== loadRequest) return;
+      if (requestId !== loadRequest || source?.kind !== 'large' || source.url !== large.url) return;
       console.warn(`Search index unavailable for ${large.url}:`, searchError);
+      const detail = searchError instanceof Error ? searchError.message : String(searchError);
+      error = `Static search index unavailable: ${detail}. Full-record views and locally loaded filters remain available.`;
+      if (Object.keys(largeFacetFilters).length) void ensureLargeFullIndex();
     } finally {
-      if (requestId === loadRequest) largeSearchIndexLoading = false;
+      if (requestId === loadRequest && source?.kind === 'large' && source.url === large.url) {
+        largeSearchIndexLoading = false;
+      }
     }
   }
 
   async function loadFile(file: File | null) {
     if (!file) return;
+    loadRequest += 1;
+    largeSearchRequest += 1;
+    largeSearchClient?.destroy();
+    largeSearchClient = null;
+    largeIndex = null;
+    largeRelationships = [];
+    largeRelationshipsByRoute = new Map();
+    largeSearchResponse = null;
+    largeResults = [];
+    largeFullLoading = false;
+    largeRelationshipsLoading = false;
+    largeSearchIndexLoading = false;
+    largeSearching = false;
+    largeSearchRecoveryAttempts = 0;
     loading = true;
     error = '';
     try {
@@ -739,16 +825,23 @@
   async function ensureLargeFullIndex(): Promise<LargeFullIndex | null> {
     if (source?.kind !== 'large') return null;
     if (largeIndex) return largeIndex;
+    const loadingSource = source;
+    const requestId = loadRequest;
     largeFullLoading = true;
     try {
-      largeIndex = await source.loadFullIndex();
+      const index = await loadingSource.loadFullIndex();
+      if (requestId !== loadRequest || source !== loadingSource) return null;
+      largeIndex = index;
+      sanitizeLargeFiltersFromFullIndex(index);
       reconcileLargeSelection();
-      return largeIndex;
+      return index;
     } catch (err) {
-      error = err instanceof Error ? err.message : String(err);
+      if (requestId === loadRequest && source === loadingSource) {
+        error = err instanceof Error ? err.message : String(err);
+      }
       return null;
     } finally {
-      largeFullLoading = false;
+      if (requestId === loadRequest && source === loadingSource) largeFullLoading = false;
     }
   }
 
@@ -781,20 +874,25 @@
 
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
     if (source?.kind !== 'large') return [];
+    const loadingSource = source;
+    const requestId = loadRequest;
     largeRelationshipsLoading = true;
     try {
       if (!largeRelationships.length) {
-        const result = await source.loadRelationships();
+        const result = await loadingSource.loadRelationships();
+        if (requestId !== loadRequest || source !== loadingSource) return [];
         largeRelationships = result.relationships;
         largeRelationshipsTruncated = result.truncated;
         largeRelationshipsByRoute = indexLargeRelationships(largeRelationships);
       }
       return largeRelationships;
     } catch (err) {
-      error = err instanceof Error ? err.message : String(err);
+      if (requestId === loadRequest && source === loadingSource) {
+        error = err instanceof Error ? err.message : String(err);
+      }
       return [];
     } finally {
-      largeRelationshipsLoading = false;
+      if (requestId === loadRequest && source === loadingSource) largeRelationshipsLoading = false;
     }
   }
 
@@ -802,16 +900,21 @@
     if (source?.kind !== 'large' || !route) return [];
     const loaded = largeRelationshipsByRoute.get(route);
     if (loaded) return loaded;
+    const loadingSource = source;
+    const requestId = loadRequest;
     largeRelationshipsLoading = true;
     try {
-      const rows = await source.loadRelationshipsForRoute(route);
+      const rows = await loadingSource.loadRelationshipsForRoute(route);
+      if (requestId !== loadRequest || source !== loadingSource) return [];
       largeRelationshipsByRoute = new Map(largeRelationshipsByRoute).set(route, rows);
       return rows;
     } catch (err) {
-      error = err instanceof Error ? err.message : String(err);
+      if (requestId === loadRequest && source === loadingSource) {
+        error = err instanceof Error ? err.message : String(err);
+      }
       return [];
     } finally {
-      largeRelationshipsLoading = false;
+      if (requestId === loadRequest && source === loadingSource) largeRelationshipsLoading = false;
     }
   }
 
@@ -1083,16 +1186,12 @@
   }
 
   function searchResultSummary(): string {
-    if (largeIndex) return `${largeVisibleDatasets.length.toLocaleString()} records match the active query and filters`;
-    if (!largeSearchResponse) return `${largeResults.length.toLocaleString()} shown`;
-    const limitNote = largeSearchResponse.truncation?.reason === 'result-chunk-budget'
-      ? ' (additional matches were not loaded to keep browser memory use bounded)'
-      : largeSearchResponse.truncation?.reason === 'capped-postings'
-        ? ' (common-term index limit reached)'
-        : largeSearchResponse.truncated
-          ? ' (result limit reached)'
-          : '';
-    return `${largeResults.length.toLocaleString()} shown of ${largeSearchResponse.total.toLocaleString()} matching records${limitNote}`;
+    return formatSearchResultSummary({
+      response: largeSearchResponse,
+      shown: largeResults.length,
+      hydratedMatchingCount: largeIndex ? largeVisibleDatasets.length : undefined,
+      queryActive: Boolean(largeAppliedQuery.trim())
+    });
   }
 
   function searchMatchReason(result: SearchResultDoc): string {
@@ -1289,6 +1388,8 @@
     const hasFilters = Object.keys(largeFacetFilters).length > 0;
     const hasFacetRequest = Boolean(activeFacetKey && supportsWorkerFilter(activeFacetKey));
     const requestId = ++largeSearchRequest;
+    error = '';
+    largeSearchResponse = null;
     if (!trimmed && !hasFilters && !hasFacetRequest) {
       largeAppliedQuery = '';
       largeResults = [];
@@ -1312,9 +1413,14 @@
     }
     if (!largeSearchClient) {
       largeSearchPendingQuery = query;
+      largeResults = [];
+      largeSuggestions = [];
       largeSearching = largeSearchIndexLoading;
       return;
     }
+    const client = largeSearchClient;
+    const searchingSource = source;
+    const sourceRequestId = loadRequest;
     largeAppliedQuery = trimmed;
     largeResults = [];
     largeSuggestions = [];
@@ -1333,7 +1439,12 @@
     largeSearching = true;
     syncExplorerUrl();
     await new Promise((resolve) => setTimeout(resolve, 160));
-    if (requestId !== largeSearchRequest) return;
+    if (
+      requestId !== largeSearchRequest ||
+      sourceRequestId !== loadRequest ||
+      source !== searchingSource ||
+      largeSearchClient !== client
+    ) return;
     try {
       const legislationExtension = source?.kind === 'large'
         ? source.descriptor.extensions?.['okf-legislation-corpus.v1']
@@ -1342,19 +1453,25 @@
         ? legislationExtension.remote_full_text_search
         : '';
       const [localResponse, suggestions, officialResults] = await Promise.all([
-        largeSearchClient.query({
+        client.query({
           query,
           filters: largeFacetFilters,
           sort: retrievalSort,
           ranking: 'weighted',
-          facet_keys: activeFacetKey ? [activeFacetKey] : []
+          facet_keys: [...new Set([activeFacetKey, ...Object.keys(largeFacetFilters)])]
+            .filter((key) => key && supportsWorkerFilter(key))
         }),
-        trimmed ? largeSearchClient.suggest(query) : Promise.resolve([]),
+        trimmed ? client.suggest(query) : Promise.resolve([]),
         trimmed && (!hasFilters || !supportsCurrentWorkerFilters()) && remoteTemplate
           ? searchOfficialLegislation(remoteTemplate, query).catch(() => [])
           : Promise.resolve([])
       ]);
-      if (requestId !== largeSearchRequest) return;
+      if (
+        requestId !== largeSearchRequest ||
+        sourceRequestId !== loadRequest ||
+        source !== searchingSource ||
+        largeSearchClient !== client
+      ) return;
       const merged = new Map<string, SearchResultDoc>();
       for (const result of localResponse.results) merged.set(result.legislation_id_uri || result.url || result.name, result);
       for (const result of officialResults) {
@@ -1362,20 +1479,64 @@
         const local = merged.get(key);
         merged.set(key, local ? { ...result, ...local, official_full_text_match: true } : result);
       }
-      const results = [...merged.values()].slice(0, largeSearchClient.manifest?.result_limit || 200);
+      const mergedCount = merged.size;
+      const results = [...merged.values()].slice(0, client.manifest?.result_limit || 200);
+      const combinedTotal = Math.max(localResponse.total, mergedCount);
+      const combinedTotalRelation: LargeSearchResponse['total_relation'] = localResponse.total_relation === 'unknown'
+        ? 'unknown'
+        : officialResults.length
+          ? 'gte'
+          : localResponse.total_relation;
       largeResults = results;
-      largeSearchResponse = { ...localResponse, results };
+      largeSearchResponse = {
+        ...localResponse,
+        results,
+        total: combinedTotal,
+        total_relation: combinedTotalRelation
+      };
       largeSuggestions = suggestions;
-      if (hasFilters && !localResponse.filters_applied) void ensureLargeFullIndex();
+      removeIgnoredLargeFilters(localResponse.ignored_filters);
+      error = '';
+      if (Object.keys(largeFacetFilters).length && !localResponse.filters_applied) void ensureLargeFullIndex();
       if (!largeSelectedRoute && results[0]) largeHighlightedRoute = `dataset/${results[0].name}`;
       largePreserveSelectionUntilSearch = false;
       reconcileLargeSelection(Boolean(options.preserveSelection));
       syncExplorerUrl();
     } catch (err) {
-      if (requestId === largeSearchRequest) largePreserveSelectionUntilSearch = false;
-      error = err instanceof Error ? err.message : String(err);
+      if (
+        requestId === largeSearchRequest &&
+        sourceRequestId === loadRequest &&
+        source === searchingSource &&
+        largeSearchClient === client
+      ) {
+        largePreserveSelectionUntilSearch = false;
+        largeSearchResponse = null;
+        const detail = err instanceof Error ? err.message : String(err);
+        if (
+          client.destroyed &&
+          searchingSource?.kind === 'large' &&
+          searchingSource.searchManifest &&
+          largeSearchRecoveryAttempts < 1
+        ) {
+          largeSearchRecoveryAttempts += 1;
+          largeSearchClient = null;
+          largeSearching = false;
+          largeSearchPendingQuery = query;
+          error = `Static search stopped unexpectedly (${detail}). Restarting the local search worker…`;
+          void initialiseLargeSearch(searchingSource, searchingSource.searchManifest, query, sourceRequestId);
+        } else {
+          error = client.destroyed
+            ? `Static search stopped unexpectedly: ${detail}. Reload this bundle to retry search.`
+            : detail;
+        }
+      }
     } finally {
-      if (requestId === largeSearchRequest) largeSearching = false;
+      if (
+        requestId === largeSearchRequest &&
+        sourceRequestId === loadRequest &&
+        source === searchingSource &&
+        largeSearchClient === client
+      ) largeSearching = false;
     }
   }
 
@@ -1404,6 +1565,8 @@
     const previousQuery = largeQuery.trim();
     const previousDefault = defaultRetrievalSort(previousQuery);
     largeQuery = query;
+    error = '';
+    largeSearchResponse = null;
     if (retrievalSort === previousDefault) retrievalSort = defaultRetrievalSort(query);
     largeSearchRequest += 1;
     if (largeSearchDebounce !== null) {
@@ -1532,6 +1695,11 @@
   }
 
   function largeDatasetFacetValues(dataset: LargeDataset, key: string): string[] {
+    const values = presentLargeDatasetFacetValues(dataset, key);
+    return values.length ? values : [MISSING_FILTER_VALUE];
+  }
+
+  function presentLargeDatasetFacetValues(dataset: LargeDataset, key: string): string[] {
     if (!largeIndex) return [];
     if (key === 'publisher') return dataset.publisher ? [dataset.publisher] : [];
     if (key === 'format') return dataset.formats || [];
@@ -1610,7 +1778,9 @@
   }
 
   function largeFacetRows(key: string) {
-    if (largeSearchResponse?.facets[key]) return largeSearchResponse.facets[key];
+    if (largeSearchResponse?.filters_applied && largeSearchResponse.facets[key]) {
+      return largeSearchResponse.facets[key];
+    }
     if (!largeIndex) {
       return source?.kind === 'large' ? source.overview.facet_previews?.[key] || [] : [];
     }
@@ -3418,7 +3588,7 @@
             </label>
           </section>
 
-          {#if largeIndex}
+          {#if largeIndex && !(largeAppliedQuery.trim() && largeSearchResponse?.filters_applied)}
             <section class="left-results">
               <h2>{recordPlural()} in current reduction</h2>
               <p>{largeVisibleDatasets.length.toLocaleString()} records match the active search and filters.</p>
@@ -3434,7 +3604,7 @@
           {:else if largeResults.length}
             <section class="left-results">
               <h2>Search matches</h2>
-              <p>{largeResults.length.toLocaleString()} records from the static search index.</p>
+              <p>{largeResults.length.toLocaleString()} retrieved records.</p>
               <div class="node-list">
                 {#each largeResults.slice(0, 80) as result}
                   <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
@@ -3537,7 +3707,7 @@
                 <span>{largeSearching ? 'Searching static index...' : searchResultSummary()}</span>
               </div>
               <div class="result-list">
-                {#if largeIndex}
+                {#if largeIndex && largeSearchResponse && !largeSearchResponse.filters_applied}
                   {#each largeVisibleDatasets.slice(0, 160) as dataset}
                     <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
@@ -4380,7 +4550,7 @@
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
               {#if operationalContext.explicit || operationalContext.catalogueDerived}
-                <details class="record-context operational-context disclosure-section">
+                <details class="record-context operational-context disclosure-section" open>
                   <summary>Current source and maintenance</summary>
                   {#if operationalContext.explicit}
                     <p><strong>Evidence-backed operational metadata supplied by this bundle.</strong>{#if operationalContext.verifiedAt} Verified {sourceDateLabel(operationalContext.verifiedAt)}.{/if}</p>
@@ -4427,7 +4597,7 @@
                 </details>
               {/if}
               {#if dateContext.years.length || dateContext.series}
-                <details class="record-context disclosure-section" open>
+                <details class="record-context disclosure-section" open={!(operationalContext.explicit || operationalContext.catalogueDerived)}>
                   <summary>Dates and related records</summary>
                   <div class="record-context-heading">
                     <span>Series and coverage context</span>
@@ -4462,7 +4632,14 @@
                   {/if}
                 </details>
               {/if}
-              <details class="metadata-section disclosure-section" open={!dateContext.years.length && !dateContext.series}>
+              <details
+                class="metadata-section disclosure-section"
+                open={
+                  !(operationalContext.explicit || operationalContext.catalogueDerived) &&
+                  !dateContext.years.length &&
+                  !dateContext.series
+                }
+              >
                 <summary>Overview</summary>
                 <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>

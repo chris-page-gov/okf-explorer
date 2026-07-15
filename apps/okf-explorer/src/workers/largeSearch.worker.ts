@@ -208,7 +208,7 @@ function inferredEntityAliases(label: string): string[] {
     words.filter((word) => !ENTITY_CONNECTORS.has(word)).map((word) => word[0]).join(''),
     words.map((word) => word[0]).join('')
   ];
-  return [...new Set(candidates.filter((value) => value.length >= 3 && value.length <= 8).map((value) => value.toUpperCase()))];
+  return [...new Set(candidates.filter((value) => value.length >= 2 && value.length <= 8).map((value) => value.toUpperCase()))];
 }
 
 type SearchEntityPayload = { schema?: string; entities?: SearchEntity[] } | SearchEntity[];
@@ -475,17 +475,6 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
   const entryGroups = (await Promise.all(tokens.map(entriesForToken))).filter((group) => group.length);
   entryGroups.sort((a, b) => Math.min(...a.map((entry) => entry.df)) - Math.min(...b.map((entry) => entry.df)));
-  if (tokens.length && !entryGroups.length && !recognizedOrdinals) {
-    return {
-      results: [],
-      total: 0,
-      truncated: false,
-      filters_applied: !Object.keys(request.filters).length,
-      facets: {},
-      ranking: request.ranking || 'weighted',
-      elapsed_ms: Math.round(performance.now() - started)
-    };
-  }
 
   const scores: OrdinalScores = new Map();
   const sets: Set<number>[] = [];
@@ -523,6 +512,11 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   let matches: Set<number>;
   if (recognizedOrdinals) {
     matches = new Set(recognizedOrdinals);
+  } else if (query && (!tokens.length || !entryGroups.length)) {
+    // A non-empty stop-word-only query, or a query with no indexed lexical
+    // term, is not filter-only browsing. Keep its query universe empty while
+    // still validating/applying filters below.
+    matches = new Set<number>();
   } else {
     matches = tokens.length ? intersectionSets[0] || new Set<number>() : allOrdinals();
     for (const set of intersectionSets.slice(1)) matches = intersectOrdinals(matches, set);
@@ -542,11 +536,16 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   }));
   const filtered = filterOrdinals(matches, request.filters, filterIndexes);
   const facets: LargeSearchResponse['facets'] = {};
-  for (const key of request.facet_keys || []) {
-    const postings = filterIndexes.get(key);
-    if (!postings) continue;
-    const facetUniverse = filterOrdinals(matches, request.filters, filterIndexes, key).ordinals;
-    facets[key] = dynamicFacetRows(facetUniverse, postings);
+  // If any active filter needs the v1/full-index fallback, every dynamic count
+  // would omit that constraint. Suppress the partial counts instead of
+  // presenting them as filter-aware.
+  if (filtered.applied) {
+    for (const key of request.facet_keys || []) {
+      const postings = filterIndexes.get(key);
+      if (!postings) continue;
+      const facetUniverse = filterOrdinals(matches, request.filters, filterIndexes, key).ordinals;
+      facets[key] = dynamicFacetRows(facetUniverse, postings);
+    }
   }
 
   const strategy = request.ranking || 'weighted';
@@ -635,25 +634,37 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     });
   }
   const postingsTruncated = !recognizedOrdinals && cappedCandidates;
+  // A single capped token yields a genuine lower bound because every loaded
+  // posting is a match and additional postings may have been omitted. With
+  // multiple lexical token groups, capped groups are intentionally excluded
+  // from strict intersection, so the candidate count can contain false
+  // positives as well as omit matches. Do not mislabel that count as a lower
+  // bound.
+  const totalRelation: LargeSearchResponse['total_relation'] = postingsTruncated
+    ? entryGroups.length === 1
+      ? 'gte'
+      : 'unknown'
+    : 'eq';
   const resultLimitReached = filtered.ordinals.size > limit;
-  const truncated = resultChunkBudgetReached || postingsTruncated || resultLimitReached;
-  const truncation = resultChunkBudgetReached
-    ? {
-        reason: 'result-chunk-budget' as const,
-        loaded_result_chunks: chunkPaths.size,
-        result_chunk_budget: SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery
-      }
-    : postingsTruncated
-      ? { reason: 'capped-postings' as const }
-      : resultLimitReached
-        ? { reason: 'result-limit' as const }
-        : undefined;
+  const truncations: NonNullable<LargeSearchResponse['truncation']>[] = [];
+  if (resultChunkBudgetReached) {
+    truncations.push({
+      reason: 'result-chunk-budget',
+      loaded_result_chunks: chunkPaths.size,
+      result_chunk_budget: SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery
+    });
+  }
+  if (postingsTruncated) truncations.push({ reason: 'capped-postings' });
+  if (resultLimitReached) truncations.push({ reason: 'result-limit' });
   return {
     results,
     total: filtered.ordinals.size,
-    truncated,
-    ...(truncation ? { truncation } : {}),
+    total_relation: totalRelation,
+    truncated: Boolean(truncations.length),
+    truncations,
+    ...(truncations[0] ? { truncation: truncations[0] } : {}),
     filters_applied: filtered.applied,
+    ignored_filters: filtered.ignoredFilters,
     facets,
     ranking: strategy,
     elapsed_ms: Math.round(performance.now() - started),

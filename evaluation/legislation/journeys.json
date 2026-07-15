@@ -1,0 +1,95 @@
+{
+  "schema": "okf-explorer-interaction-suite.v1",
+  "title": "UK Legislation personas, stories and Explorer interaction journeys",
+  "description": "Traceability from the six legislation personas and critical journeys to the 100 legal-answer questions, plus browser checks for catalogue discovery before progressive legal-text research.",
+  "target_bundle": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
+  "question_suite": "questions.json",
+  "personas": [
+    {"id": "LEG-P01", "name": "Barrister", "need": "Locate an operative provision and build a submission with pinpoint official authority."},
+    {"id": "LEG-P02", "name": "Pupil barrister or paralegal", "need": "Distinguish principal, secondary, amendment, commencement and draft material."},
+    {"id": "LEG-P03", "name": "Policy researcher", "need": "Explore statute-book themes without presenting derived topics as official legal classification."},
+    {"id": "LEG-P04", "name": "Legislative data engineer", "need": "Preserve work, manifestation, CLML subdivision and source-native identity."},
+    {"id": "LEG-P05", "name": "Knowledge curator", "need": "Refresh the pack while keeping counts, docs, screenshots and validation synchronized."},
+    {"id": "LEG-P06", "name": "AI operator or evaluator", "need": "Produce a useful answer with complete proposition-level provenance and temporal context."}
+  ],
+  "stories": [
+    {
+      "id": "LEG-S01",
+      "persona_ids": ["LEG-P01"],
+      "user_story": "Find the operative provision, state its rule and retain an official selected-passage route.",
+      "question_ids": ["LQ001", "LQ005", "LQ009", "LQ013", "LQ017", "LQ021", "LQ025", "LQ029", "LQ033", "LQ037", "LQ041", "LQ045", "LQ049", "LQ053", "LQ057", "LQ061", "LQ065", "LQ069", "LQ073", "LQ077", "LQ081", "LQ085", "LQ089", "LQ093", "LQ097"]
+    },
+    {
+      "id": "LEG-S02",
+      "persona_ids": ["LEG-P02"],
+      "user_story": "Apply the correct principal or secondary provision to a disputed fact pattern without inventing facts.",
+      "question_ids": ["LQ002", "LQ006", "LQ010", "LQ014", "LQ018", "LQ022", "LQ026", "LQ030", "LQ034", "LQ038", "LQ042", "LQ046", "LQ050", "LQ054", "LQ058", "LQ062", "LQ066", "LQ070", "LQ074", "LQ078", "LQ082", "LQ086", "LQ090", "LQ094", "LQ098"]
+    },
+    {
+      "id": "LEG-S03",
+      "persona_ids": ["LEG-P03"],
+      "user_story": "Explore a legal theme through pack-derived topics, then verify candidate relevance in official text.",
+      "question_ids": ["LQ001", "LQ005", "LQ017", "LQ021", "LQ029", "LQ049", "LQ053", "LQ057", "LQ061", "LQ065", "LQ069", "LQ077", "LQ081", "LQ085", "LQ093", "LQ097"]
+    },
+    {
+      "id": "LEG-S04",
+      "persona_ids": ["LEG-P04"],
+      "user_story": "Resolve structured text while checking version, commencement, extent and amendment state.",
+      "question_ids": ["LQ003", "LQ007", "LQ011", "LQ015", "LQ019", "LQ023", "LQ027", "LQ031", "LQ035", "LQ039", "LQ043", "LQ047", "LQ051", "LQ055", "LQ059", "LQ063", "LQ067", "LQ071", "LQ075", "LQ079", "LQ083", "LQ087", "LQ091", "LQ095", "LQ099"]
+    },
+    {
+      "id": "LEG-S05",
+      "persona_ids": ["LEG-P06", "LEG-P01"],
+      "user_story": "Produce a concise answer whose every material proposition has complete official provenance.",
+      "question_ids": ["LQ004", "LQ008", "LQ012", "LQ016", "LQ020", "LQ024", "LQ028", "LQ032", "LQ036", "LQ040", "LQ044", "LQ048", "LQ052", "LQ056", "LQ060", "LQ064", "LQ068", "LQ072", "LQ076", "LQ080", "LQ084", "LQ088", "LQ092", "LQ096", "LQ100"]
+    },
+    {
+      "id": "LEG-S06",
+      "persona_ids": ["LEG-P05"],
+      "user_story": "Regenerate, validate and publish the pack with documentation and screenshots in lockstep.",
+      "question_ids": [],
+      "coverage_gap": "The legal-answer suite evaluates research answers, not curator refresh operations; generator and documentation-lockstep tests cover this story separately."
+    }
+  ],
+  "journeys": [
+    {
+      "id": "LEG-J01",
+      "title": "Find and inspect Human Rights Act 1998 before opening progressive legal text",
+      "persona_ids": ["LEG-P01", "LEG-P02", "LEG-P04", "LEG-P06"],
+      "story_ids": ["LEG-S01", "LEG-S02", "LEG-S04", "LEG-S05"],
+      "start": {"query": "Human Rights Act 1998"},
+      "actions": [
+        {"action": "search", "value": "Human Rights Act 1998"},
+        {"action": "open_first_result"},
+        {"action": "load_full_record"}
+      ],
+      "assertions": [
+        {"assertion": "result_count_min", "value": 1},
+        {"assertion": "disclosure_defaults_observed"},
+        {"assertion": "visible_text", "selector": ".right-panel", "value": "Human Rights Act 1998"}
+      ]
+    },
+    {
+      "id": "LEG-J02",
+      "title": "Reduce legislation by year, sort it and restore the public URL state",
+      "persona_ids": ["LEG-P02", "LEG-P03", "LEG-P04"],
+      "story_ids": ["LEG-S02", "LEG-S03", "LEG-S04"],
+      "start": {"query": "Human Rights Act"},
+      "actions": [
+        {"action": "search", "value": "Human Rights Act"},
+        {"action": "open_facet", "facet_label": "Year"},
+        {"action": "select_facet_value", "facet_key": "year", "facet_label": "Year", "value": "1998"},
+        {"action": "set_sort", "value": "title"},
+        {"action": "history_round_trip", "alternate_query": "Equality Act 2010"}
+      ],
+      "assertions": [
+        {"assertion": "search_value", "value": "Human Rights Act"},
+        {"assertion": "url_param_includes", "name": "filter.year", "value": "1998"},
+        {"assertion": "url_param_equals", "name": "sort", "value": "title"},
+        {"assertion": "sort_value", "value": "title"},
+        {"assertion": "history_round_trip_restored"},
+        {"assertion": "result_count_min", "value": 1}
+      ]
+    }
+  ]
+}
