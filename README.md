@@ -18,16 +18,24 @@ Each example now has explicit persona, user-story and question traceability:
 | Example | Personas and stories | Evaluation questions |
 |---|---|---|
 | UK Legislation OKF | [Six legislation personas and critical journeys][legislation-personas] · [`journeys.json`](evaluation/legislation/journeys.json) | [`questions.json`](evaluation/legislation/questions.json), 100 legal-answer questions |
-| UK Government APIs OKF | [Five shared Explorer personas and nine stories][persona-manual] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions |
+| UK Government APIs OKF | [Seven shared Explorer personas and nineteen stories][geospatial-personas] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions plus focused Map UI tests |
 | GOV.UK CKAN | [Six CKAN-specific personas and user stories][ckan-personas] · [`journeys.json`](evaluation/gov-ckan/journeys.json) | [`questions.json`](evaluation/gov-ckan/questions.json), 100 catalogue questions |
 
 The journey manifests also define opt-in browser interactions for facets,
 sorting, URL Back/Forward restoration, graph edges, relationship-drawer
-resizing, folded record sections, full-record loading and source-data/new-tab
-behaviour. A normal 100-question harness run remains unchanged.
+resizing, Map reductions, folded record sections, full-record loading and
+source-data/new-tab behaviour. A normal 100-question harness run remains
+unchanged.
+
+The focused geospatial suite runs 18 Playwright scenarios against deterministic
+small- and large-bundle fixtures. It covers every Map control and visible
+state, including successful GeoJSON/OGC/ArcGIS previews, failure recovery,
+keyboard and responsive use, URL history, empty/loading states and display
+bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 
 - [Start with the OKF Explorer documentation guide][docs-index]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
+- [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
@@ -90,6 +98,12 @@ The repository contains:
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
+- `docs/geospatial-map-exploration.md` - prototype contract for deterministic
+  spatial discovery, Map reductions and bounded on-demand external previews.
+- `docs/geospatial-map-personas-and-user-stories.md` - role-based Map needs,
+  risks, acceptance criteria and browser-test traceability.
+- `docs/geospatial-map-manual.md` - screenshot-led Map walkthrough from spatial
+  evidence and area reduction to previews and recovery.
 - `docs/index.md` - documentation landing page for browsing, AI usage,
   authoring, evaluation and review records.
 - `docs/okf-explorer-persona-manual.md` - screenshot-led UI manual using
@@ -133,8 +147,10 @@ suggestions while typing in the Bundle URL field.
 The Explorer product/data-contract direction is documented in
 [docs/explorer-overview-context.md](docs/explorer-overview-context.md). It
 defines the generated overview context expected by Reader, Graph, Links,
-Timeline, Type, Resources, and Narrative views, including how small bundles can
-embed analysis inline while large bundles reference chunked analysis artifacts.
+Timeline, Type, Resources, Map, and Narrative views, including how small
+bundles can embed analysis inline while large bundles reference chunked
+analysis artifacts. [Geospatial Map exploration](docs/geospatial-map-exploration.md)
+defines the Map evidence levels and progressive recovery model.
 
 ## Relationship To The CKAN Fixture
 
@@ -170,6 +186,8 @@ bundle URL history, and route-addressable detail panels.
 cd apps/okf-explorer
 pnpm install
 pnpm check
+pnpm test
+pnpm test:e2e
 pnpm build
 ```
 
@@ -247,6 +265,7 @@ Pages to use **GitHub Actions** as the source.
 [ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
 [docs-index]: docs/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
+[geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

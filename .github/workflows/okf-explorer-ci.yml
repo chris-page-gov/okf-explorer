@@ -44,6 +44,10 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm build
 
+      - name: Run geospatial Map browser tests
+        working-directory: apps/okf-explorer
+        run: pnpm test:e2e
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

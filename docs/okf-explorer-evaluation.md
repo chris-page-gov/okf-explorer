@@ -22,9 +22,13 @@ review.
 
 - `evaluation/okf-explorer/questions.json` contains 100 UK Government API
   retrieval and inspection tasks.
-- `evaluation/okf-explorer/journeys.json` maps the five Explorer personas and
-  nine manual stories to those questions and defines browser interaction
-  journeys.
+- `evaluation/okf-explorer/journeys.json` maps seven Explorer personas and
+  nineteen broad and geospatial stories to those questions, defines browser
+  interaction journeys and records the focused `GEO-E2E-*` Playwright tests
+  attached to each Map story.
+- `apps/okf-explorer/tests/ui/geospatial-map.spec.ts` contains 18 deterministic
+  browser scenarios covering every Map control and visible state across small
+  and large bundle paths.
 - `evaluation/gov-ckan/questions.json` contains 100 GOV.UK CKAN retrieval and
   inspection tasks using the same rubric.
 - `evaluation/gov-ckan/journeys.json` defines CKAN-specific personas and user
@@ -87,7 +91,8 @@ The interaction manifests make these requirements executable. Their action
 vocabulary covers search, facet opening and selection, sorting, a browser
 Back/Forward round trip, graph-edge selection, pointer-drag resizing of the
 relationship drawer, full-record loading, disclosure folding, in-Explorer
-Source Inspector loading and opening the raw source in a separate tab. Their
+Source Inspector loading, Map reduction/record selection and opening the raw
+source in a separate tab. Their
 assertions check URL parameters, restored control values, edge selection,
 drawer size, disclosure states, Source Inspector presence and preservation of
 the Explorer tab.
@@ -116,6 +121,23 @@ This is not an assurance score for the source APIs. It scores how well the OKF
 Explorer helps a reader inspect the available public metadata.
 
 ## Running Locally
+
+Run the focused Map UI suite directly from the Explorer application:
+
+```sh
+cd apps/okf-explorer
+pnpm test:e2e
+```
+
+Playwright starts the local Vite server and intercepts deterministic public-
+origin fixtures. Geometry bodies are not requested before the preview action,
+and no live ArcGIS/OGC service is required. CI runs this suite after the Svelte
+unit tests and production build. Failure screenshots, traces and reports stay
+under ignored application output folders.
+
+Journey validation cross-checks every `playwright_test_ids` value against the
+spec and fails if an implemented `GEO-E2E-*` scenario has no persona/story, or
+if documentation refers to a test that does not exist.
 
 Build the static site first:
 

@@ -17,11 +17,15 @@ understand real user tasks, make the service simple, make it accessible, expose
 source/provenance clearly, use open standards, protect privacy/security, and
 measure whether the service works.
 
-The machine-readable traceability for these five personas and nine stories is
+The machine-readable traceability now covers seven personas and nineteen
+stories: the ten broad Explorer stories in this manual plus nine focused Map
+stories in the
+[Geospatial Map personas and user stories](geospatial-map-personas-and-user-stories.md).
+It is stored in
 [`evaluation/okf-explorer/journeys.json`](../evaluation/okf-explorer/journeys.json).
 It names the evaluation questions attached to every story and adds browser
 journeys for facet selection, sorting, URL restoration, graph-edge highlighting
-and relationship-drawer resizing. The CKAN example has its own
+relationship-drawer resizing, and Map reduction/record selection. The CKAN example has its own
 [personas and user journeys](gov-ckan-personas-and-user-journeys.md), while the
 legislation example uses the dedicated
 [legislation personas and journeys](uk-legislation/personas-and-user-journeys.md).
@@ -33,8 +37,10 @@ legislation example uses the dedicated
 | Policy researcher | Find relevant APIs/data sources and understand public-sector provenance. |
 | Data engineer | Decide whether a source has usable endpoint, protocol, licence, contract and access metadata. |
 | Service assessor | Check whether the display makes terms clear, exposes gaps and supports keyboard/accessible inspection. |
-| Knowledge curator | Improve a pack so search, facets, graph, timeline and cards work well. |
+| Knowledge curator | Improve a pack so search, facets, graph, timeline, map and cards work well. |
 | AI operator | Point an AI at the pack and get sourced answers rather than hallucinated catalogue summaries. |
+| Spatial data analyst | Find coordinates, spatial files and ArcGIS/OGC services, then inspect bounded geometry with source context. |
+| Area-based policy analyst | Find statistics, reports and services about named areas even when source geometry is absent. |
 
 ## Story 1: Start With The Overview
 
@@ -316,6 +322,35 @@ Expected behaviour:
 
 The evaluation harness includes a Rugby question for this reason.
 
+## Story 10: Reduce And Inspect Spatial Evidence
+
+As a policy researcher or data engineer, I want to reduce the current context
+by geography or spatial evidence and select a mapped record, so ArcGIS/OGC data
+and area-based statistics are discoverable without turning browsing into an AI
+or server-backed application.
+
+Continue with the [illustrated Map manual](geospatial-map-manual.md) for the
+full workflow and the
+[focused geospatial stories](geospatial-map-personas-and-user-stories.md) for
+precision, preview, recovery, durable-state and accessibility acceptance rules.
+
+Expected behaviour:
+
+- Map starts from the same search and facet context as Reader and Graph.
+- Evidence chips distinguish coordinates, declared coverage, map/feature
+  services, spatial files and text-only spatial signals.
+- Recognised UK place chips and evidence chips persist as a `geo=` URL
+  reduction and continue to affect other views until cleared.
+- Solid markers mean source coordinates. Ring markers are labelled
+  representative centroids and do not imply an inferred boundary.
+- Marker and list selection opens the normal provenance-bearing record card.
+- External resources always retain an **Open source ↗** route.
+- Direct GeoJSON and ArcGIS feature services may be previewed only after an
+  explicit action, within response/feature/coordinate caps; CORS, service or
+  format failures leave the local metadata and source link intact.
+- No geocoder, tile service, credentials, AI call or private proxy is required
+  for initial Map browsing.
+
 ## Other UI Behaviours
 
 | Behaviour | Expected result |
@@ -330,6 +365,7 @@ The evaluation harness includes a Rugby question for this reason.
 | Reduce context | Narrow the current view to the selected card or metadata value. |
 | Load full relationships | Hydrate relationship chunks with caps/truncation notices; should not make Graph unreadable. |
 | Links view | Show relationship summaries first, then drill into rows and right-card detail. |
+| Map view | Reduce by explainable spatial evidence/coverage, select records, and progressively load bounded external feature previews. |
 | Narrative view | Present generated pack methodology, caveats, warnings and source boundary notes. |
 | Loading states | Show visible status for bundle loading, index loading, facet hydration and record hydration. |
 | Error states | Explain failed bundle loads, invalid URLs, transient shard errors and unavailable search shards without losing the loaded pack when possible. |

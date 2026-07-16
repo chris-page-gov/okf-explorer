@@ -61,6 +61,28 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added a deterministic geospatial Map canvas for both small and large OKF
+  bundles. It classifies declared coverage, coordinates, UK places,
+  ArcGIS/OGC services and spatial files; persists Map reductions in public
+  URLs; keeps representative centroids distinct from boundaries; and limits
+  direct GeoJSON/ArcGIS geometry loading to explicit bounded preview actions
+  with source-link recovery.
+- Added dedicated Map personas and user stories for area-based policy analysis,
+  spatial data analysis, provenance-preserving inspection, locator precision,
+  bounded previews, progressive recovery, durable URL state, accessibility and
+  trustworthy pack authoring, with machine-readable links to focused browser
+  assertions.
+- Added an 18-scenario Playwright Map suite covering deterministic small and
+  large bundle paths, every reduction and selection control, exact versus
+  representative locator states, GeoJSON/OGC/ArcGIS success and cap handling,
+  linked-only and failed-resource recovery, durable URL history, keyboard and
+  responsive behaviour, empty/loading states and the bounded record list. CI
+  now runs the suite, and documentation lockstep treats its tests, config and
+  journey traceability as controlled publication surfaces. Journey validation
+  also fails on missing or untraced `GEO-E2E-*` identifiers.
+- Fixed the UK place vocabulary to recognise canonical display labels such as
+  `London` and `North East`, preventing recognised areas from also appearing
+  under Other declared coverage.
 - Hardened deterministic large-corpus retrieval against stale bundle responses,
   silent or crashed workers, malformed facet values, metadata-gap filters and
   approximate capped-posting totals. Dynamic facets and result summaries now

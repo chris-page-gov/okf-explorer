@@ -70,6 +70,7 @@ explicitly says so.
 | Timeline | machine-readable dates plus update-year/quarter/month buckets |
 | Type view | record-type counts and representative records |
 | Resources view | resources, endpoints, formats, hosts and documentation links |
+| Map view | source-declared coverage, WGS84 coordinates/bounds, geography codes, CRS/vintage/derivation metadata and spatial resource links |
 | Narrative view | pack summary, methodology, warnings and source limitations |
 | Detail card | provenance, licence basis, access model, contract status, quality signals, source update date, temporal coverage and stable series identity |
 
@@ -92,6 +93,44 @@ Do not copy the source response wholesale into normalized OKF fields. Preserve
 the source link, map governed fields into the bundle with explicit provenance,
 and let the inspector show the unaltered remote response on demand. Explorer
 renders response values as text and does not execute source HTML.
+
+## Geospatial Metadata And Map Recovery
+
+The Map canvas can classify legacy fields and resource formats, but builders
+should make spatial claims explicit so Explorer does not have to rely on prose.
+Prefer a `spatial` object on the record:
+
+```yaml
+spatial:
+  geographies:
+    - code: E12000007
+      name: London
+      level: region
+      source: ONS
+      vintage: "2025"
+  bbox: [-0.5103, 51.2868, 0.3340, 51.6919]
+  crs: EPSG:4326
+  derivation: source-declared
+```
+
+Existing `area_served`, `areaServed`, `spatial_coverage`, `spatialCoverage`,
+`geography`, `location` and `jurisdiction` fields remain useful. Resource URLs
+and formats should identify ArcGIS REST, OGC API Features, WMS, WFS, WMTS, WCS,
+GeoJSON, KML, GML, Shapefile or GeoPackage rather than using a generic `data`
+label.
+
+For UK geographies preserve stable GSS codes where available. Keep the source,
+release/vintage, code family, exact/best-fit derivation, boundary variant and
+CRS with the value. Use `EPSG:4326` for web-map coordinates and retain
+`EPSG:27700` separately when British National Grid is the analysis CRS. Do not
+turn a place name into an invented polygon: a pack without geometry can still
+be filtered by area and displayed at a visibly representative centroid.
+
+For very large packs, a future `okf-geospatial-index.v1` sidecar can provide
+route-level spatial summaries before full-record hydration. Until that contract
+is finalized, keep these fields additive and backward-compatible. See
+[Geospatial Map exploration](geospatial-map-exploration.md) for the current
+evidence and progressive-recovery rules.
 
 ## Operational Metadata From Canonical Sources
 

@@ -1,4 +1,4 @@
-export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type' | 'resources' | 'narrative';
+export type ViewMode = 'reader' | 'graph' | 'links' | 'timeline' | 'type' | 'resources' | 'map' | 'narrative';
 
 export type OkfNode = {
   id: string;

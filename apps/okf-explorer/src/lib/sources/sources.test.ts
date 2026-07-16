@@ -443,7 +443,14 @@ describe('large corpus source', () => {
         ]
       ],
       ['https://example.test/ckan/data/publishers-0.json', [{ id: 'p1', name: 'publisher-one', title: 'Publisher One' }]],
-      ['https://example.test/ckan/data/facets.json', { publisher: [{ value: 'publisher-one', count: 1 }] }],
+      [
+        'https://example.test/ckan/data/facets.json',
+        {
+          schema: 'okf-facets.v1',
+          generated_at: '2026-07-06T00:00:00Z',
+          publisher: [{ value: 'publisher-one', count: 1 }]
+        }
+      ],
       ['https://example.test/ckan/data/graph.json', { nodes: [], edges: [] }],
       ['https://example.test/ckan/data/govuk.json', { paths: [] }],
       [
@@ -491,6 +498,7 @@ describe('large corpus source', () => {
     expect(fullIndex.datasetByName.get('dataset-one')?.title).toBe('Dataset One');
     expect(fullIndex.datasetByName.get('dataset-one')?.operational_metadata?.update_frequency).toBe('Monthly');
     expect(fullIndex.operationalMetadata.schema).toBe('okf-operational-metadata.v1');
+    expect(fullIndex.facets).toEqual({ publisher: [{ value: 'publisher-one', count: 1 }] });
     expect(fullIndex.resourcesByDataset.get('dataset-one')?.map((resource) => resource.id)).toEqual(['r0', 'r00', 'r1', 'r3', 'r2']);
     expect(await source.loadFullIndex()).toBe(fullIndex);
 
