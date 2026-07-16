@@ -4,6 +4,7 @@ import type {
   LargeAnalysisOverview,
   LargeDataManifest,
   LargeDataset,
+  LargeFacetRow,
   LargeFullIndex,
   LargeGovukContent,
   LargeGraphIndex,
@@ -187,6 +188,32 @@ function mergeOperationalMetadata(
   });
 }
 
+const FACET_INDEX_METADATA_KEYS = new Set(['schema', 'snapshot', 'snapshot_id', 'generated_at']);
+
+function normalizeFacetIndex(document: unknown): Record<string, LargeFacetRow[]> {
+  if (!document || typeof document !== 'object' || Array.isArray(document)) {
+    throw new Error('Facet index must be a JSON object');
+  }
+  const facets: Record<string, LargeFacetRow[]> = {};
+  for (const [key, value] of Object.entries(document)) {
+    if (!Array.isArray(value)) {
+      if (FACET_INDEX_METADATA_KEYS.has(key)) continue;
+      throw new Error(`Facet index field ${key} must be an array`);
+    }
+    facets[key] = value.map((row, index) => {
+      if (!row || typeof row !== 'object' || Array.isArray(row)) {
+        throw new Error(`Facet index field ${key}[${index}] must be an object`);
+      }
+      const facet = row as Record<string, unknown>;
+      if (typeof facet.value !== 'string' || typeof facet.count !== 'number' || !Number.isFinite(facet.count) || facet.count < 0) {
+        throw new Error(`Facet index field ${key}[${index}] has an invalid value or count`);
+      }
+      return { value: facet.value, count: facet.count };
+    });
+  }
+  return facets;
+}
+
 export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const descriptor = await fetchJson<LargeCorpusDescriptor>(url);
   if (descriptor.kind !== 'okf-large-corpus') {
@@ -251,12 +278,12 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
       if (!fullIndexPromise) {
         fullIndexPromise = (async () => {
           const operationalPath = descriptorEntrypoint(descriptor, 'operational_metadata') || manifest.indexes.operational_metadata;
-          const [rawDatasets, resources, publishers, facets, graph, govukContent, operationalMetadata] = await Promise.all([
+          const [rawDatasets, resources, publishers, rawFacets, graph, govukContent, operationalMetadata] = await Promise.all([
             loadChunks<LargeDataset>(fetchResource, manifest.chunks.datasets || [], manifest.shards?.datasets, 'Dataset shard'),
             loadChunks<LargeResource>(fetchResource, manifest.chunks.resources || [], manifest.shards?.resources, 'Resource shard'),
             loadChunks<LargePublisher>(fetchResource, manifest.chunks.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
             manifest.indexes.facets
-              ? fetchResource<Record<string, Array<{ value: string; count: number }>>>(manifest.indexes.facets)
+              ? fetchResource<unknown>(manifest.indexes.facets)
               : {},
             manifest.indexes.graph ? fetchResource<LargeGraphIndex>(manifest.indexes.graph) : {},
             manifest.indexes.govuk_content ? fetchResource<LargeGovukContent>(manifest.indexes.govuk_content) : {},
@@ -265,6 +292,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
               : { schema: 'okf-operational-metadata.v1', records: {} }
           ]);
           const datasets = mergeOperationalMetadata(rawDatasets, operationalMetadata);
+          const facets = normalizeFacetIndex(rawFacets);
           return {
             datasets,
             resources,

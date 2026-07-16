@@ -458,7 +458,7 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
         title: 'Large geospatial fixture',
         generated_at: '2026-07-15T00:00:00Z',
         counts: { datasets: 1, resources: 1, publishers: 1, relationships: 0 },
-        indexes: { overview: 'data/overview.json' },
+        indexes: { overview: 'data/overview.json', facets: 'data/facets.json' },
         chunks: {
           datasets: ['data/datasets-0.json'],
           resources: ['data/resources-0.json'],
@@ -469,6 +469,11 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
       if (url.pathname === '/data/overview.json') return json(route, {
         title: 'Large geospatial fixture',
         counts: { datasets: 1, resources: 1, publishers: 1, relationships: 0 }
+      });
+      if (url.pathname === '/data/facets.json') return json(route, {
+        schema: 'okf-facets.v1',
+        generated_at: '2026-07-15T00:00:00Z',
+        publisher: [{ value: 'large-publisher', count: 1 }]
       });
       if (url.pathname === '/data/datasets-0.json') {
         await new Promise((resolve) => setTimeout(resolve, 700));
@@ -503,6 +508,10 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
     await expect(page.getByRole('heading', { name: 'Map & geography' })).toBeVisible();
     await expect(page.getByText('1 records in the current search/facet context have spatial evidence.')).toBeVisible();
     await expect(mapRecord(page, 'Large England map service')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Graph', exact: true }).click();
+    await expect(page.getByRole('img', { name: 'Large corpus graph' })).toBeVisible();
+    await expect(page.locator('.error')).toHaveCount(0);
   });
 
   test('GEO-E2E-16 explains an empty spatial context and recovers when search is cleared', async ({ page }) => {
