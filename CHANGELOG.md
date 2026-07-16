@@ -61,6 +61,9 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Updated the SvelteKit, Svelte, Vite and `svelte-check` development stack while
+  retaining TypeScript 6.0.3 until the Svelte checker supports TypeScript 7's
+  changed module shape.
 - Added repeatable post-deployment Playwright execution against the public
   GitHub Pages Explorer, hardened the browser evaluator against cold large-index
   startup, and corrected journey validation for canonical default-sort URLs and
