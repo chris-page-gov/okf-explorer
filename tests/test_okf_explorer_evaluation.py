@@ -97,6 +97,15 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("runInteractionJourneys", script)
         self.assertIn("interaction_journeys", script)
 
+    def test_live_evaluation_waits_for_cold_search_and_uses_accessible_edge_selection(self):
+        script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
+
+        self.assertIn("Preparing static search index", script)
+        self.assertIn("Loading the record and resource index", script)
+        self.assertIn("url_param_absent", script)
+        self.assertIn("await edge.press('Enter')", script)
+        self.assertIn(".edge-panel button.active", script)
+
     def test_every_readme_example_has_persona_story_question_traceability(self):
         evaluations = [EVALUATION, CKAN_EVALUATION, LEGISLATION_EVALUATION]
         for evaluation_dir in evaluations:

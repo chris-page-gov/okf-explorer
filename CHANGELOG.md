@@ -61,6 +61,10 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added repeatable post-deployment Playwright execution against the public
+  GitHub Pages Explorer, hardened the browser evaluator against cold large-index
+  startup, and corrected journey validation for canonical default-sort URLs and
+  keyboard relationship selection.
 - Added a deterministic geospatial Map canvas for both small and large OKF
   bundles. It classifies declared coverage, coordinates, UK places,
   ArcGIS/OGC services and spatial files; persists Map reductions in public
