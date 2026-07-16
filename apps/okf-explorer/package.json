@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:pages": "PLAYWRIGHT_BASE_URL=https://chris-page-gov.github.io/okf-explorer/ playwright test",
     "test:e2e:headed": "playwright test --headed",
     "benchmark:search": "node ../../scripts/benchmark_static_search.mjs"
   },

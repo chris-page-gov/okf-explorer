@@ -113,6 +113,7 @@ const JOURNEY_ACTIONS = new Set([
 const JOURNEY_ASSERTIONS = new Set([
   'url_param_equals',
   'url_param_includes',
+  'url_param_absent',
   'sort_value',
   'search_value',
   'history_round_trip_restored',
@@ -431,8 +432,17 @@ async function observeQuestion(page, options, question) {
 async function waitForSettledSearch(page) {
   await page.waitForFunction(() => {
     const bodyText = document.body.innerText || '';
-    return !bodyText.includes('Loading bundle...') && !bodyText.includes('Searching static index...');
-  }, { timeout: 30000 }).catch(() => undefined);
+    const query = new URL(window.location.href).searchParams.get('q')?.trim() || '';
+    const busy = [
+      'Loading bundle...',
+      'Preparing static search index',
+      'Searching static index...',
+      'Loading the record and resource index'
+    ].some((message) => bodyText.includes(message));
+    const resultCount = document.querySelectorAll('.result-list > button, .record-list > button').length;
+    const explicitEmptyState = /No results|No records match|No spatial evidence in this context/i.test(bodyText);
+    return !busy && (!query || resultCount > 0 || explicitEmptyState);
+  }, undefined, { timeout: 30000 }).catch(() => undefined);
   await page.waitForTimeout(250);
 }
 
@@ -557,9 +567,10 @@ async function runJourneyAction(page, action, evidence) {
     const edge = page.locator('svg.graph .edge-hit').first();
     await edge.waitFor({ state: 'visible', timeout: 20000 });
     const key = await edge.getAttribute('data-edge');
-    await edge.click({ force: true });
-    await page.waitForTimeout(150);
-    const selectedRows = await page.locator('.relationship-rows button[aria-pressed="true"]').count();
+    await edge.focus();
+    await edge.press('Enter');
+    await page.locator('.right-panel .badge').filter({ hasText: 'Relationship' }).waitFor({ state: 'visible', timeout: 10000 });
+    const selectedRows = await page.locator('.relationship-rows button[aria-pressed="true"], .edge-panel button.active').count();
     const relationshipCard = await page.locator('.right-panel .badge').filter({ hasText: 'Relationship' }).count();
     evidence.graphEdge = { key, selectedRows, relationshipCard, selected: selectedRows > 0 && relationshipCard > 0 };
     return evidence.graphEdge;
@@ -633,11 +644,13 @@ async function runJourneyAction(page, action, evidence) {
 async function evaluateJourneyAssertion(page, assertion, evidence) {
   let passed = false;
   let actual = null;
-  if (assertion.assertion === 'url_param_equals' || assertion.assertion === 'url_param_includes') {
+  if (assertion.assertion === 'url_param_equals' || assertion.assertion === 'url_param_includes' || assertion.assertion === 'url_param_absent') {
     actual = new URL(page.url()).searchParams.getAll(assertion.name);
-    passed = assertion.assertion === 'url_param_equals'
-      ? actual.length === 1 && actual[0] === assertion.value
-      : actual.includes(assertion.value);
+    passed = assertion.assertion === 'url_param_absent'
+      ? actual.length === 0
+      : assertion.assertion === 'url_param_equals'
+        ? actual.length === 1 && actual[0] === assertion.value
+        : actual.includes(assertion.value);
   } else if (assertion.assertion === 'sort_value') {
     actual = await page.locator('.sort-control select').first().inputValue();
     passed = actual === assertion.value;

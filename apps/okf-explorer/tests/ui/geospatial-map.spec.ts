@@ -208,12 +208,9 @@ async function installSmallFixture(
 async function openSmallMap(page: Page, options: { bundle?: ReturnType<typeof mapBundle>; geo?: string; previewDelayMs?: number } = {}) {
   const requests: string[] = [];
   await installSmallFixture(page.context(), options.bundle || mapBundle(), requests, options.previewDelayMs || 0);
-  const url = new URL('/', 'http://127.0.0.1:4173');
-  url.searchParams.set('bundle', `${FIXTURE_ORIGIN}/bundle.json`);
-  url.searchParams.set('view', 'map');
-  if (options.geo) url.searchParams.set('geo', options.geo);
-  url.hash = 'overview';
-  await page.goto(url.toString());
+  const params = new URLSearchParams({ bundle: `${FIXTURE_ORIGIN}/bundle.json`, view: 'map' });
+  if (options.geo) params.set('geo', options.geo);
+  await page.goto(`?${params.toString()}#overview`);
   await expect(page.getByRole('heading', { name: 'Map & geography' })).toBeVisible();
   return requests;
 }
@@ -498,11 +495,8 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
       if (url.pathname === '/data/publishers-0.json') return json(route, [{ id: 'large-publisher', name: 'large-publisher', title: 'Large Publisher' }]);
       return json(route, { error: 'not found' }, 404);
     });
-    const url = new URL('/', 'http://127.0.0.1:4173');
-    url.searchParams.set('bundle', `${LARGE_ORIGIN}/okf-explorer.json`);
-    url.searchParams.set('view', 'map');
-    url.hash = 'overview';
-    await page.goto(url.toString());
+    const params = new URLSearchParams({ bundle: `${LARGE_ORIGIN}/okf-explorer.json`, view: 'map' });
+    await page.goto(`?${params.toString()}#overview`);
 
     await expect(page.getByRole('status')).toContainText('Loading the record and resource index');
     await expect(page.getByRole('heading', { name: 'Map & geography' })).toBeVisible();

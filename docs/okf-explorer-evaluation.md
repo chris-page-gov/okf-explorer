@@ -129,6 +129,15 @@ cd apps/okf-explorer
 pnpm test:e2e
 ```
 
+After `main` has deployed, run the same 18 scenarios through the public Pages
+application. The deterministic bundle and preview fixtures remain intercepted;
+only the Explorer HTML, JavaScript and CSS come from the deployed URL:
+
+```sh
+cd apps/okf-explorer
+pnpm test:e2e:pages
+```
+
 Playwright starts the local Vite server and intercepts deterministic public-
 origin fixtures. Geometry bodies are not requested before the preview action,
 and no live ArcGIS/OGC service is required. CI runs this suite after the Svelte
@@ -160,6 +169,22 @@ node scripts/evaluate_okf_explorer.mjs \
   --limit 100 \
   --out evaluation/okf-explorer/results/latest
 ```
+
+For a post-deployment review, use absolute Pages URLs so the project subpath is
+not mistaken for the GitHub account root:
+
+```sh
+PLAYWRIGHT_PACKAGE="$PWD/apps/okf-explorer/node_modules/@playwright/test" \
+  node scripts/evaluate_okf_explorer.mjs \
+  --base-url https://chris-page-gov.github.io/okf-explorer/ \
+  --bundle https://chris-page-gov.github.io/okf-explorer/uk-government-apis/okf-explorer.json \
+  --limit 100 \
+  --journeys evaluation/okf-explorer/journeys.json
+```
+
+The journey contract treats the default `relevance` sort as canonical when the
+`sort` query parameter is absent. It validates both that omission and the
+restored sort control value after browser Back/Forward.
 
 If Playwright is installed outside the repo, point the script at that module:
 

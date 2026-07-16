@@ -90,6 +90,19 @@ pnpm test
 pnpm test:e2e
 ```
 
+After the feature is merged and Pages has deployed, repeat all 18 Map scenarios
+against the public Explorer build:
+
+```sh
+cd apps/okf-explorer
+pnpm test:e2e:pages
+```
+
+This hosted pass loads the application shell from GitHub Pages while retaining
+deterministic intercepted fixtures for geometry and service responses. It
+therefore validates the deployed build without making third-party ArcGIS, OGC
+or GeoJSON availability part of the acceptance result.
+
 Validate persona/question traceability without launching a browser:
 
 ```sh

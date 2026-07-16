@@ -157,7 +157,7 @@
         {"assertion": "search_value", "value": "Ordnance Survey"},
         {"assertion": "url_param_equals", "name": "q", "value": "Ordnance Survey"},
         {"assertion": "url_param_includes", "name": "filter.record_type", "value": "API Product"},
-        {"assertion": "url_param_equals", "name": "sort", "value": "relevance"},
+        {"assertion": "url_param_absent", "name": "sort"},
         {"assertion": "sort_value", "value": "relevance"},
         {"assertion": "history_round_trip_restored"},
         {"assertion": "result_count_min", "value": 1}

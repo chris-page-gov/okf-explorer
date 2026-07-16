@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const localBaseURL = 'http://127.0.0.1:4173';
+const deployedBaseURL = process.env.PLAYWRIGHT_BASE_URL;
+
 export default defineConfig({
   testDir: './tests/ui',
   outputDir: './test-results/playwright',
@@ -13,14 +16,16 @@ export default defineConfig({
   use: {
     ...devices['Desktop Chrome'],
     channel: 'chrome',
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: deployedBaseURL || localBaseURL,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure'
   },
-  webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000
-  }
+  ...(deployedBaseURL ? {} : {
+    webServer: {
+      command: 'pnpm dev --host 127.0.0.1 --port 4173',
+      url: localBaseURL,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000
+    }
+  })
 });
