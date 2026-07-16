@@ -44,6 +44,12 @@
     type GeospatialRecord
   } from '$lib/geospatial/geospatial';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
+  import {
+    renderSafeMarkdown,
+    smallNodeLinks,
+    smallNodeMetadataRows,
+    smallNodeSearchText
+  } from '$lib/viewer/smallNodePresentation';
   import { fetchJson, fetchSourceJson, movedBundleTarget } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
@@ -297,9 +303,7 @@
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
       if (!query) return true;
-      return `${node.title} ${node.id} ${(node.aliases || []).join(' ')} ${node.description || ''} ${node.summary || ''} ${(node.tags || []).join(' ')}`
-        .toLowerCase()
-        .includes(query);
+      return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
   );
   let smallGeospatialRecords: GeospatialRecord[] = $derived(
@@ -5140,12 +5144,39 @@
             <dt>Source</dt><dd>{metadataDisplayValue(detailNode.source)}</dd>
             <dt>Links</dt><dd>{detailRelationships.length}</dd>
           </dl>
+          {@const nodeLinks = smallNodeLinks(detailNode, source?.kind === 'small' ? source.url : '')}
+          {#if nodeLinks.length}
+            <section class="small-node-links" aria-label="Source and resource links">
+              <h3>Source and resources</h3>
+              {#each nodeLinks as link}
+                <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
+              {/each}
+            </section>
+          {/if}
+          {@const metadataRows = smallNodeMetadataRows(detailNode)}
+          {#if metadataRows.length}
+            <h3>Selected metadata</h3>
+            <dl>
+              {#each metadataRows as row}
+                <dt>{row.label}</dt><dd>{metadataDisplayValue(row.value)}</dd>
+              {/each}
+            </dl>
+          {/if}
+          {#if detailNode.body}
+            <section class="markdown-body" aria-label="Markdown body">
+              {@html renderSafeMarkdown(detailNode.body, source?.kind === 'small' ? source.url : '')}
+            </section>
+          {/if}
           <h3>Relationships</h3>
           {#each detailRelationships.slice(0, 20) as relationship}
             <button type="button" onclick={() => inspectNode(relationship.source === detailNode?.id ? relationship.target : relationship.source)}>
               {relationship.kind || 'related'} · {smallCorpus?.nodes[relationship.source === detailNode.id ? relationship.target : relationship.source]?.title}
             </button>
           {/each}
+          <details class="json-panel">
+            <summary>Node JSON and provenance</summary>
+            <pre>{jsonText(detailNode)}</pre>
+          </details>
         {:else}
           <h2>No selection</h2>
           <p>Select a node or search result to inspect its data.</p>

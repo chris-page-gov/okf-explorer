@@ -45,7 +45,7 @@ export function normalizeSmallBundle(bundle: OkfBundle, preferredCorpus = ''): N
     title: String(rawCorpus.title || bundle.meta?.title || bundle.title || 'OKF bundle'),
     description: String(rawCorpus.description || bundle.meta?.description || ''),
     nodes,
-    relationships: normalizeRelationships(rawCorpus.relationships || bundle.relationships),
+    relationships: normalizeRelationships(rawCorpus.relationships || rawCorpus.edges || bundle.relationships || bundle.edges),
     meta: bundle.meta
   };
 }

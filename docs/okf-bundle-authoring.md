@@ -16,6 +16,30 @@ Small bundles should start from Markdown and `scripts/build_okf_bundle.py`.
 Large bundles should follow the UK Government APIs exemplar and emit a descriptor
 plus lazy shards.
 
+### Small-Bundle Content And Relationship Compatibility
+
+The current Markdown generator writes relationships to the top-level `edges`
+array. The Explorer accepts that generated form as well as the legacy
+`relationships` name, including either name inside a corpus object. Authors
+should emit one name rather than duplicate the same relationships under both.
+
+Preserve the Markdown content of each record in `body`. Small-bundle search
+indexes this text alongside the title, aliases, description, summary and tags,
+and the detail card renders a safe Markdown subset. Raw HTML is displayed as
+text rather than executed. Markdown links may be relative to the bundle URL;
+only HTTP and HTTPS targets are made clickable.
+
+Use `source`, `source_url`, `resource`, `resources`, `url`, `landing_page`,
+`documentation_url` or `schema:url` for source and resource recovery links.
+Do not place credentials in those URLs. The Explorer removes common credential
+query parameters before presenting links, but redaction is a final display
+safeguard rather than a way to distribute secrets.
+
+Selected Schema.org and provenance fields are promoted into the detail card.
+The complete normalized node remains available in the **Node JSON and
+provenance** disclosure, so additional metadata can be inspected without
+requiring every field to have a dedicated UI component.
+
 ## Minimum Record Contract
 
 See [okf-standards-crosswalk.md](okf-standards-crosswalk.md) for how each of

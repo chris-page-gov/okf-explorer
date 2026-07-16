@@ -226,6 +226,20 @@ This concept links to [another concept](another-concept.md).
 Keep links as browser-compatible Markdown links. Do not use Obsidian-only
 wikilinks.
 
+The Explorer preserves more than the frontmatter summary for these small
+bundles:
+
+- generated `edges` and legacy `relationships` both feed Graph and Links;
+- Search includes the Markdown `body` text;
+- selecting a result renders its Markdown body with raw HTML escaped;
+- safe HTTP(S) source and resource links open on demand in a new tab; and
+- selected Schema.org/provenance fields appear above a disclosure containing
+  the full normalized node JSON.
+
+Relative Markdown and resource links resolve from the public bundle URL.
+Credential-like URL query parameters are removed from displayed links. Never
+publish a bundle containing a secret, even if the Explorer would redact it.
+
 ### 2. Ask A Coding Assistant To Normalize The Bundle
 
 Paste this prompt into Codex or another coding assistant while it is opened in
@@ -369,6 +383,9 @@ For a large corpus, use the descriptor URL and a `kind` such as
   published to GitHub Pages yet.
 - If graph or link views are slow, the bundle may need the large-corpus
   descriptor path rather than one monolithic JSON file.
+- If Graph and Links are empty for a hand-built small bundle, emit either a
+  top-level `edges` array (the generator form) or `relationships` array. Do not
+  split relationships between both names.
 - If search works locally but not after publishing, confirm that all generated
   `data/search/*` files are included in the deployed site.
 - If browser navigation loses the bundle, copy the route again from the

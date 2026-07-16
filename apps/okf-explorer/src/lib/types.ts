@@ -43,9 +43,10 @@ export type OkfBundle = {
     generated_at?: string;
     [key: string]: unknown;
   };
-  corpora?: Record<string, Partial<NormalizedCorpus>>;
+  corpora?: Record<string, Partial<NormalizedCorpus> & { edges?: OkfRelationship[] }>;
   nodes?: Record<string, OkfNode>;
   relationships?: OkfRelationship[];
+  edges?: OkfRelationship[];
 };
 
 export type LargeResourceReference =
