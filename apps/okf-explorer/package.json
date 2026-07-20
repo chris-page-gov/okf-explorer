@@ -18,13 +18,13 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@sveltejs/adapter-static": "^3.0.8",
-    "@sveltejs/kit": "^2.69.3",
+    "@sveltejs/kit": "^2.70.1",
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "@vitest/coverage-v8": "^4.1.10",
-    "svelte": "^5.56.5",
+    "svelte": "^5.56.6",
     "svelte-check": "^4.7.3",
-    "typescript": "^6.0.3",
-    "vite": "^8.1.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10"
   },
   "pnpm": {
