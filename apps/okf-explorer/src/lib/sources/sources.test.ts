@@ -246,6 +246,34 @@ describe('small bundle normalization', () => {
     expect(Object.keys(corpus.nodes)).toEqual(['a']);
   });
 
+  it('accepts generator-style edges at bundle and corpus scope', () => {
+    const bundleEdges = normalizeSmallBundle({
+      nodes: {
+        a: { id: 'a', title: 'Alpha' },
+        b: { id: 'b', title: 'Beta' }
+      },
+      edges: [{ source: 'a', target: 'b', type: 'generated edge' }]
+    });
+    expect(bundleEdges.relationships).toEqual([
+      { source: 'a', target: 'b', type: 'generated edge', kind: 'generated edge' }
+    ]);
+
+    const corpusEdges = normalizeSmallBundle({
+      corpora: {
+        selected: {
+          nodes: {
+            a: { id: 'a', title: 'Alpha' },
+            b: { id: 'b', title: 'Beta' }
+          },
+          edges: [{ source: 'b', target: 'a', label: 'corpus edge' }]
+        }
+      }
+    }, 'selected');
+    expect(corpusEdges.relationships).toEqual([
+      { source: 'b', target: 'a', label: 'corpus edge', kind: 'corpus edge' }
+    ]);
+  });
+
   it('normalizes an empty small bundle to safe defaults', () => {
     const corpus = normalizeSmallBundle({} as OkfBundle);
 

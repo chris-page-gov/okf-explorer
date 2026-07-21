@@ -61,6 +61,10 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Restored small-bundle graph and link compatibility with generator-produced
+  `edges`, added Markdown-body search and safe body rendering, exposed
+  credential-redacted source/resource links, and made selected Schema.org,
+  provenance and complete node JSON available from the detail pane.
 - Updated the SvelteKit, Svelte, Vite and `svelte-check` development stack while
   retaining TypeScript 6.0.3 until the Svelte checker supports TypeScript 7's
   changed module shape.
