@@ -151,6 +151,10 @@ def main() -> int:
     for dirname in PUBLIC_DIRS:
         copy_public_tree(ROOT / dirname, OUT / dirname)
 
+    # Schema $id values use the stable singular profile URI; keep the browsable
+    # plural source tree as well as this publication alias.
+    copy_public_tree(ROOT / "profiles", OUT / "profile")
+
     copy_public_tree(ROOT / "explorer", OUT / "legacy")
 
     if SVELTE_EXPLORER_BUILD.exists():

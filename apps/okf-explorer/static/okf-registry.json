@@ -16,6 +16,21 @@
       "version": "0.4.0"
     },
     {
+      "description": "Metadata-only ONS discovery demonstrator with explicit coverage, confusable alternatives, standards evidence and MCP selection bindings.",
+      "home_url": "https://chris-page-gov.github.io/okf-ons/",
+      "id": "https://chris-page-gov.github.io/okf-explorer/bundles/ons-data-discovery",
+      "kind": "large-corpus",
+      "label": "ONS data discovery OKF",
+      "license": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json#rights",
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "publisher": "https://github.com/chris-page-gov/okf-ons",
+      "semantic_url": "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld",
+      "status": "bounded-demonstrator",
+      "title": "ONS data discovery OKF",
+      "url": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+      "version": "0.2.0"
+    },
+    {
       "description": "External large-corpus exemplar using chunked CKAN metadata and static search shards.",
       "home_url": "https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/",
       "id": "https://chris-page-gov.github.io/okf-explorer/bundles/gov-ckan",

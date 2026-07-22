@@ -70,10 +70,27 @@ publication requirements for large OKF packs:
 - Closed facet sections must not render or scan their full value lists. Opening
   a facet should show a facet-local search box, loading state if hydration is
   needed, and paged values.
+- Provider presentation defaults must affect facet labels, order, initial
+  pinning, control choice and panel tabs. Device-local user pin/hide/reorder
+  preferences take precedence for one bundle and **Reset** restores the
+  provider profile.
+- Manageable facets expose a proportional distribution with a textual summary
+  only when the available vocabulary counts are complete; truncated top-value
+  data is labelled as a preview. High-cardinality facets expose examples and
+  search without rendering a long default list. A corpus with tens of thousands
+  of values requires a sharded facet vocabulary rather than eager hydration.
 - Facet search must normalise hyphenated, underscored and spaced terms the same
   way for the query and the candidate value.
-- A plain click on a facet value replaces the previous value for that facet;
-  Ctrl-click, Cmd-click or Shift-click opts into multi-select.
+- A plain click on a facet bar segment or value previews it without changing the
+  filter URL; Ctrl-click or Cmd-click builds a highlighted set. Double-click,
+  Enter or the explicit commit control applies that set as a filter.
+- Low-cardinality facet distributions must be available before a facet is opened
+  and must remain numerically consistent after full-record hydration. The ONS
+  regression fixture expects 382 `region` records both before and after Graph
+  loads nested `geography_metadata`.
+- Facets support direct pinning, multiple open pinned sections and drag reorder,
+  with action-menu move controls as the keyboard fallback. No legacy **Adjust**
+  action is offered and value right-click has no selection meaning.
 - A plain click on a graph node inspects it in the data card. A double-click is
   the graph navigation/reduction gesture.
 - Dense graph stack expansion should re-group by a visible semantic dimension

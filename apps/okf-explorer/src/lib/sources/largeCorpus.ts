@@ -19,6 +19,7 @@ import type {
   LargeResourceReference,
   LargeShardMetadata
 } from '$lib/types';
+import { normalizeExplorerPresentation } from '$lib/viewer/facetPresentation';
 import { baseUrlFor, fetchJson, fetchJsonResource } from './fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -250,14 +251,20 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const analysis = analysisPath
     ? await fetchResource<LargeAnalysisOverview>(analysisPath).catch(() => undefined)
     : undefined;
+  const presentationPath = descriptorEntrypoint(descriptor, 'presentation') || manifest.indexes.presentation;
+  const presentation = presentationPath
+    ? normalizeExplorerPresentation(await fetchResource<unknown>(presentationPath).catch(() => undefined))
+    : undefined;
   const snapshot = consistentSnapshot([
     ['Descriptor', descriptor],
     ['Release data-plane index', releaseDataPlane?.document],
     ['Data manifest', manifest],
     ['Overview', overview],
-    ['Analysis overview', analysis]
+    ['Analysis overview', analysis],
+    ['Presentation profile', presentation]
   ]);
   const searchManifest = descriptorEntrypoint(descriptor, 'search_manifest') || manifest.indexes.search;
+  let facetIndexPromise: Promise<Record<string, LargeFacetRow[]>> | null = null;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
   let relationshipsPromise: Promise<LargeRelationshipsResult> | null = null;
   let adjacencyManifestPromise: Promise<LargeRelationshipAdjacencyManifest> | null = null;
@@ -272,19 +279,31 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     manifest,
     overview,
     analysis,
+    presentation,
     releaseDataPlane: releaseDataPlane?.document,
     searchManifest,
+    loadFacetIndex() {
+      if (!facetIndexPromise) {
+        facetIndexPromise = manifest.indexes.facets
+          ? fetchResource<unknown>(manifest.indexes.facets)
+              .then(normalizeFacetIndex)
+              .catch((error) => {
+                facetIndexPromise = null;
+                throw error;
+              })
+          : Promise.resolve({});
+      }
+      return facetIndexPromise;
+    },
     loadFullIndex() {
       if (!fullIndexPromise) {
-        fullIndexPromise = (async () => {
+        const request = (async () => {
           const operationalPath = descriptorEntrypoint(descriptor, 'operational_metadata') || manifest.indexes.operational_metadata;
-          const [rawDatasets, resources, publishers, rawFacets, graph, govukContent, operationalMetadata] = await Promise.all([
+          const [rawDatasets, resources, publishers, facets, graph, govukContent, operationalMetadata] = await Promise.all([
             loadChunks<LargeDataset>(fetchResource, manifest.chunks.datasets || [], manifest.shards?.datasets, 'Dataset shard'),
             loadChunks<LargeResource>(fetchResource, manifest.chunks.resources || [], manifest.shards?.resources, 'Resource shard'),
             loadChunks<LargePublisher>(fetchResource, manifest.chunks.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
-            manifest.indexes.facets
-              ? fetchResource<unknown>(manifest.indexes.facets)
-              : {},
+            source.loadFacetIndex(),
             manifest.indexes.graph ? fetchResource<LargeGraphIndex>(manifest.indexes.graph) : {},
             manifest.indexes.govuk_content ? fetchResource<LargeGovukContent>(manifest.indexes.govuk_content) : {},
             operationalPath
@@ -292,7 +311,6 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
               : { schema: 'okf-operational-metadata.v1', records: {} }
           ]);
           const datasets = mergeOperationalMetadata(rawDatasets, operationalMetadata);
-          const facets = normalizeFacetIndex(rawFacets);
           return {
             datasets,
             resources,
@@ -307,6 +325,10 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
             resourcesByDataset: indexResourcesByDataset(resources)
           };
         })();
+        fullIndexPromise = request.catch((error) => {
+          fullIndexPromise = null;
+          throw error;
+        });
       }
       return fullIndexPromise;
     },

@@ -120,7 +120,8 @@ describe('LargeSearchClient', () => {
       filters: reactiveFilters,
       sort: 'metadata-quality',
       ranking: 'idf',
-      facet_keys: ['publisher_family']
+      facet_keys: ['publisher_family'],
+      include_results: false
     }).catch(() => undefined);
 
     const postedRequest = worker.posted[0].request as Record<string, unknown>;
@@ -129,7 +130,8 @@ describe('LargeSearchClient', () => {
       filters: { publisher_family: ['local government'] },
       sort: 'metadata-quality',
       ranking: 'idf',
-      facet_keys: ['publisher_family']
+      facet_keys: ['publisher_family'],
+      include_results: false
     });
     expect(postedRequest.filters).not.toBe(reactiveFilters);
     expect((postedRequest.filters as Record<string, string[]>).publisher_family).not.toBe(sourceValues);

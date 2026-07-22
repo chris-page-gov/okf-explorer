@@ -104,7 +104,8 @@ export class LargeSearchClient {
       ),
       sort: request.sort,
       ranking: request.ranking,
-      facet_keys: request.facet_keys ? [...request.facet_keys] : undefined
+      facet_keys: request.facet_keys ? [...request.facet_keys] : undefined,
+      ...(request.include_results !== undefined ? { include_results: request.include_results } : {})
     };
     return this.#request<LargeSearchResponse>({ type: 'query', request: serializableRequest });
   }

@@ -76,17 +76,32 @@ by count.
 
 Expected behaviour:
 
+- Search remains above the **Facets**, **Browse** and **Results** tabs because it
+  changes the shared context used by all three.
+- Manageable closed facets with complete vocabulary counts show a proportional
+  distribution strip on first load. Hovering or focusing a segment names its
+  value and count below the strip; truncated or high-cardinality facets show a
+  labelled search preview with representative examples instead.
 - Clicking a closed facet opens it immediately.
 - If the facet needs full record hydration, it should show a loading state in
   the facet body and then show values without requiring a second click.
 - Only the open facet renders its values. Closed facets show counts and selected
   summaries only.
 - High-cardinality facets expose an in-facet search box and paged values.
-- A plain click selects one value and replaces any previous value in the same
-  facet.
-- Ctrl-click, Cmd-click or Shift-click adds or removes a value for multi-select.
-- The facet remains open after selection so the reader can see the active value
-  and change it.
+- A plain click on a strip segment or value previews it without changing the
+  shared filter URL. Ctrl-click or Cmd-click adds or removes preview highlights.
+- Double-click or Enter commits the preview as a filter; **Filter to
+  highlighted** commits a multi-value set. The facet remains open so the reader
+  can inspect and change the reduction.
+- A direct star pins the facet open while another facet is explored. The drag
+  handle reorders facets; Move earlier/Move later in the actions menu is the
+  keyboard fallback. Preferences are local to this bundle and **Reset** restores
+  provider defaults.
+- The facet actions button, header right-click and `Shift+F10` expose pin, move,
+  hide, clear and explain commands. There is no legacy **Adjust** command, and
+  right-clicking a facet value does not select it.
+- **Browse** renders provider hierarchies as foldable parent/child rows rather
+  than silently truncating them into the ordinary facet list.
 - Clear removes active filters and search context.
 
 If Provider and Canonical provider contain the same user-facing choice, the UI
@@ -127,8 +142,9 @@ Expected behaviour:
 
 - A single click inspects a record and populates the right card.
 - The active result is visibly selected.
-- The right card starts with the record title and summary, then groups metadata
-  under clear headings.
+- The right card starts with the record title and summary, then separates
+  **Overview**, **Evidence** and **Data** as peer tabs. Optional sections remain
+  disclosures within each tab.
 - A lightweight search card puts **Load full record** with the primary actions
   near the title rather than below all available metadata.
 - The first **Overview** disclosure starts open. Context, normalized fields,

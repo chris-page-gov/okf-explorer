@@ -407,6 +407,7 @@ describe('large corpus source', () => {
             data_manifest: 'data/manifest.json',
             overview_index: 'data/overview.json',
             analysis_overview: 'data/analysis/overview.json',
+            presentation: 'data/presentation.json',
             operational_metadata: 'data/operational-metadata.json'
           },
           counts: { datasets: 1, resources: 2, relationships: 1 }
@@ -446,6 +447,14 @@ describe('large corpus source', () => {
           schema: 'okf-explorer-analysis.v1',
           generated_at: '2026-07-06T00:00:00Z',
           summary: { title: 'Analysis' }
+        }
+      ],
+      [
+        'https://example.test/ckan/data/presentation.json',
+        {
+          schema: 'okf-explorer-presentation.v1',
+          status: 'experimental',
+          facets: [{ key: 'publisher', label: 'Provider', default_state: 'pinned' }]
         }
       ],
       [
@@ -520,6 +529,14 @@ describe('large corpus source', () => {
 
     const source = await loadLargeCorpus('https://example.test/ckan/okf-explorer.json');
     expect(source.analysis?.summary?.title).toBe('Analysis');
+    expect(source.presentation?.facets?.[0]).toEqual(
+      expect.objectContaining({ key: 'publisher', label: 'Provider', default_state: 'pinned' })
+    );
+    expect(fetchMock).not.toHaveBeenCalledWith('https://example.test/ckan/data/datasets-0.json', expect.anything());
+
+    const facetIndex = await source.loadFacetIndex();
+    expect(facetIndex).toEqual({ publisher: [{ value: 'publisher-one', count: 1 }] });
+    expect(await source.loadFacetIndex()).toBe(facetIndex);
     expect(fetchMock).not.toHaveBeenCalledWith('https://example.test/ckan/data/datasets-0.json', expect.anything());
 
     const fullIndex = await source.loadFullIndex();
@@ -541,6 +558,48 @@ describe('large corpus source', () => {
       { source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }
     ]);
     await expect(source.loadRelationshipsForRoute('missing/route')).resolves.toEqual([]);
+  });
+
+  it('retries full hydration after a transient lightweight facet failure', async () => {
+    const payloads = new Map<string, unknown>([
+      ['https://example.test/retry/okf-explorer.json', {
+        schema: 'okf-explorer-large-corpus.v1',
+        kind: 'okf-large-corpus',
+        title: 'Retry fixture',
+        entrypoints: { data_manifest: 'data/manifest.json' }
+      }],
+      ['https://example.test/retry/data/manifest.json', {
+        title: 'Retry manifest',
+        generated_at: '2026-07-21T00:00:00Z',
+        counts: { datasets: 0, resources: 0, relationships: 0 },
+        indexes: { overview: 'data/overview.json', facets: 'data/facets.json' },
+        chunks: { datasets: [], resources: [], publishers: [], relationships: [] }
+      }],
+      ['https://example.test/retry/data/overview.json', {
+        title: 'Retry overview',
+        counts: { datasets: 0, resources: 0, relationships: 0 }
+      }],
+      ['https://example.test/retry/data/facets.json', {
+        topic: [{ value: 'population', count: 1 }]
+      }]
+    ]);
+    let facetAttempts = 0;
+    vi.stubGlobal('fetch', vi.fn(async (url: string | URL | Request) => {
+      const key = String(url);
+      if (key.endsWith('/data/facets.json') && facetAttempts++ === 0) {
+        return jsonResponse({}, { status: 404, statusText: 'Not Found' });
+      }
+      return payloads.has(key)
+        ? jsonResponse(payloads.get(key))
+        : jsonResponse({}, { status: 404, statusText: 'Not Found' });
+    }));
+
+    const source = await loadLargeCorpus('https://example.test/retry/okf-explorer.json');
+    await expect(source.loadFullIndex()).rejects.toThrow('404 Not Found');
+    await expect(source.loadFullIndex()).resolves.toEqual(expect.objectContaining({
+      facets: { topic: [{ value: 'population', count: 1 }] }
+    }));
+    expect(facetAttempts).toBe(2);
   });
 
   it('uses the portable UTF-8 FNV-1a adjacency bucket algorithm', () => {

@@ -3,7 +3,7 @@
 "@type": okf:Registry
 title: OKF Explorer Registry
 description: Curated registry of independently publishable OKF bundle examples.
-modified: "2026-07-11T00:00:00Z"
+modified: "2026-07-22T00:00:00Z"
 profile:
   "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
 bundles:
@@ -26,6 +26,25 @@ bundles:
     license:
       "@id": https://creativecommons.org/publicdomain/zero/1.0/
     recordTypeLabel: local-sample
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/ons-data-discovery
+    "@type": okf:Bundle
+    title: ONS data discovery OKF
+    description: Metadata-only ONS discovery demonstrator with explicit coverage, confusable alternatives, standards evidence and MCP selection bindings.
+    version: 0.2.0
+    status: bounded-demonstrator
+    descriptor:
+      "@id": https://chris-page-gov.github.io/okf-ons/okf-explorer.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld
+    home:
+      "@id": https://chris-page-gov.github.io/okf-ons/
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov/okf-ons
+    license:
+      "@id": https://chris-page-gov.github.io/okf-ons/okf-explorer.json#rights
+    recordTypeLabel: large-corpus
   - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/gov-ckan
     "@type": okf:Bundle
     title: GOV.UK CKAN large corpus

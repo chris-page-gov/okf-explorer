@@ -9,6 +9,7 @@ other public HTTPS URL. These hosted examples open without installation:
 
 | Example | What it demonstrates | Open |
 |---|---|---|
+| ONS data discovery OKF | Metadata-only ONS discovery across 5,097 records, with compact facets, static search, standards evidence and explicit coverage | [Open Explorer][ons-example] · [Source pack][ons-pack] |
 | UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalization and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
 | UK Government APIs OKF | Multi-source API/data catalogue with standards and provenance metadata | [Open Explorer][uk-government-apis-example] |
 | GOV.UK CKAN | Large external CKAN corpus loaded by the same hosted Explorer | [Open Explorer][ckan-example] |
@@ -37,13 +38,20 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
 - [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
+- [Review the facet presentation experiment][facet-presentation-experiment]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
 
-The CKAN example demonstrates the main no-install workflow: the Explorer is
-hosted by this repository, while the bundle descriptor and generated data live
-in the separate
+The ONS example is the primary no-install demonstration: the Explorer is hosted
+by this repository, while the bundle descriptor, search indexes and generated
+metadata live in the separate [`okf-ons`][ons-pack] repository.
+
+```text
+https://chris-page-gov.github.io/okf-ons/okf-explorer.json
+```
+
+The CKAN example uses the same cross-repository workflow with the separate
 [`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
 repository.
 
@@ -98,6 +106,8 @@ The repository contains:
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
+- `docs/facet-presentation-experiment.md` - experimental provider/user display
+  contract for facet ordering, compact distributions, search and panel tabs.
 - `docs/geospatial-map-exploration.md` - prototype contract for deterministic
   spatial discovery, Map reductions and bounded on-demand external previews.
 - `docs/geospatial-map-personas-and-user-stories.md` - role-based Map needs,
@@ -257,6 +267,8 @@ The included workflow publishes the static site from `_site/` when pushed to
 Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[ons-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&view=reader#overview
+[ons-pack]: https://github.com/chris-page-gov/okf-ons
 [uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
 [legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
 [legislation-docs]: docs/uk-legislation/index.md
@@ -267,5 +279,6 @@ Pages to use **GitHub Actions** as the source.
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
+[facet-presentation-experiment]: docs/facet-presentation-experiment.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

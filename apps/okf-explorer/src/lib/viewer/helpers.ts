@@ -1,4 +1,5 @@
 import type { LargeAnalysisOverview, LargeDataset, LargeDatasetOperationalMetadata, LargeResource, OkfNode, OkfRelationship } from '$lib/types';
+import { normalizeExplorerDisplay } from './facetPresentation';
 
 export type AnalysisFacet = NonNullable<LargeAnalysisOverview['facet_analysis']>[number];
 export type AnalysisHierarchy = NonNullable<LargeAnalysisOverview['hierarchies']>[number];
@@ -267,7 +268,7 @@ export function selectedFacetValueSummary(
 }
 
 export function formatPercent(value: number | undefined): string {
-  if (value === undefined || Number.isNaN(value)) return 'n/a';
+  if (value === undefined || !Number.isFinite(value) || value < 0 || value > 1) return 'n/a';
   return `${Math.round(value * 100)}%`;
 }
 
@@ -309,8 +310,14 @@ export function analysisFacetRows(
 ): AnalysisFacet[] {
   if (analysis?.facet_analysis?.length) {
     const tierWeight: Record<string, number> = { primary: 0, secondary: 1, advanced: 2, suppressed: 3 };
+    const display = normalizeExplorerDisplay(analysis.display);
+    const configuredOrder = new Map((display.facets?.order || []).map((key, index) => [key, index]));
+    const configuredPins = new Set(display.facets?.pinned || []);
     return [...analysis.facet_analysis].sort(
       (left, right) =>
+        Number(!(left.default_pinned || configuredPins.has(left.key))) - Number(!(right.default_pinned || configuredPins.has(right.key))) ||
+        (configuredOrder.get(left.key) ?? Number.MAX_SAFE_INTEGER) - (configuredOrder.get(right.key) ?? Number.MAX_SAFE_INTEGER) ||
+        (left.display_priority ?? Number.MAX_SAFE_INTEGER) - (right.display_priority ?? Number.MAX_SAFE_INTEGER) ||
         (tierWeight[left.recommendation] ?? 2) - (tierWeight[right.recommendation] ?? 2) ||
         right.expected_reduction - left.expected_reduction ||
         left.label.localeCompare(right.label)

@@ -89,6 +89,8 @@ describe('viewer helpers', () => {
     expect(formatPercent(0.955)).toBe('96%');
     expect(formatPercent(undefined)).toBe('n/a');
     expect(formatPercent(Number.NaN)).toBe('n/a');
+    expect(formatPercent(-0.1)).toBe('n/a');
+    expect(formatPercent(1.1)).toBe('n/a');
     expect(facetLabel('publisher_family')).toBe('publisher family');
     expect(isHttpUrl('https://example.test')).toBe(true);
     expect(isHttpUrl('HTTP://example.test')).toBe(true);
@@ -136,6 +138,18 @@ describe('viewer helpers', () => {
       ]
     };
     expect(analysisFacetRows(withUnknownTier).map((facet) => facet.key)).toEqual(['advanced', 'suppressed']);
+  });
+
+  it('honours explicit provider pinning, order and priority before quality fallbacks', () => {
+    const configured: LargeAnalysisOverview = {
+      ...analysis,
+      display: { facets: { order: ['tag', 'publisher'], pinned: ['publisher'] } },
+      facet_analysis: [
+        { ...analysis.facet_analysis![0], display_priority: 1 },
+        { ...analysis.facet_analysis![1], display_priority: 99 }
+      ]
+    };
+    expect(analysisFacetRows(configured).map((facet) => facet.key)).toEqual(['publisher', 'tag']);
   });
 
   it('builds fallback facets from overview previews', () => {

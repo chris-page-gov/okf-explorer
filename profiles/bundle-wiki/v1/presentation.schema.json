@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/presentation.schema.json",
+  "title": "OKF Explorer presentation profile",
+  "description": "Optional provider defaults for presenting an OKF bundle. User preferences take precedence and counts remain in generated analysis artifacts.",
+  "type": "object",
+  "required": ["schema"],
+  "properties": {
+    "schema": {"const": "okf-explorer-presentation.v1"},
+    "status": {"enum": ["experimental", "stable", "deprecated"]},
+    "snapshot": {"type": "string", "minLength": 1},
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "facet_mode": {"enum": ["suggested", "all"]},
+        "search_threshold": {"type": "integer", "minimum": 12, "maximum": 500},
+        "distribution_segment_limit": {"type": "integer", "minimum": 3, "maximum": 18}
+      },
+      "additionalProperties": false
+    },
+    "facets": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/facet"}
+    },
+    "panels": {
+      "type": "object",
+      "properties": {
+        "left": {"$ref": "#/$defs/leftPanel"},
+        "right": {"$ref": "#/$defs/rightPanel"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "facet": {
+      "type": "object",
+      "required": ["key"],
+      "properties": {
+        "key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"},
+        "label": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "value_type": {"enum": ["nominal", "ordinal", "number", "date"]},
+        "order": {"type": "integer"},
+        "default_state": {"enum": ["pinned", "shown", "hidden"]},
+        "open_control": {"enum": ["auto", "distribution", "histogram", "search", "list"]},
+        "value_order": {"enum": ["count-desc", "label-asc", "label-desc", "value-asc", "value-desc"]},
+        "examples": {
+          "type": "array",
+          "maxItems": 5,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "leftPanel": {
+      "type": "object",
+      "allOf": [
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "facets"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "facets"}}}}
+        },
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "browse"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "browse"}}}}
+        },
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "results"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "results"}}}}
+        }
+      ],
+      "properties": {
+        "tabs": {
+          "type": "array",
+          "items": {"enum": ["facets", "browse", "results"]},
+          "contains": {"const": "facets"},
+          "uniqueItems": true
+        },
+        "default_tab": {"enum": ["facets", "browse", "results"]}
+      },
+      "additionalProperties": false
+    },
+    "rightPanel": {
+      "type": "object",
+      "allOf": [
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "overview"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "overview"}}}}
+        },
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "evidence"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "evidence"}}}}
+        },
+        {
+          "if": {"required": ["default_tab"], "properties": {"default_tab": {"const": "data"}}},
+          "then": {"properties": {"tabs": {"contains": {"const": "data"}}}}
+        }
+      ],
+      "properties": {
+        "tabs": {
+          "type": "array",
+          "items": {"enum": ["overview", "evidence", "data"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "default_tab": {"enum": ["overview", "evidence", "data"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

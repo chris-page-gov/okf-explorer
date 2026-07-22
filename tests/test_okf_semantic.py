@@ -32,6 +32,32 @@ class OkfSemanticTest(unittest.TestCase):
         self.assertEqual([], okf_semantic.schema_errors(bundle, "bundle.schema.json"))
         self.assertTrue(okf_semantic.expand(bundle))
 
+    def test_explorer_presentation_profile_matches_implemented_contract(self) -> None:
+        profile = {
+            "schema": "okf-explorer-presentation.v1",
+            "status": "experimental",
+            "defaults": {"facet_mode": "suggested", "search_threshold": 48},
+            "facets": [
+                {
+                    "key": "publisher",
+                    "label": "Provider",
+                    "default_state": "pinned",
+                    "open_control": "search",
+                }
+            ],
+            "panels": {
+                "left": {"tabs": ["facets", "browse", "results"], "default_tab": "facets"},
+                "right": {"tabs": ["overview", "evidence", "data"], "default_tab": "overview"},
+            },
+        }
+        self.assertEqual([], okf_semantic.schema_errors(profile, "presentation.schema.json"))
+
+        profile["panels"]["right"]["tabs"] = [{"id": "custom", "label": "Custom"}]
+        self.assertTrue(okf_semantic.schema_errors(profile, "presentation.schema.json"))
+
+        profile["panels"]["right"] = {"tabs": ["overview", "data"], "default_tab": "evidence"}
+        self.assertTrue(okf_semantic.schema_errors(profile, "presentation.schema.json"))
+
     def test_yaml_12_and_yaml_ld_representation_rules(self) -> None:
         document = okf_semantic.load_yaml_ld_text("yes: no\nwhen: 2026-07-11\n")
         self.assertEqual({"yes": "no", "when": "2026-07-11"}, document)
@@ -49,7 +75,11 @@ class OkfSemanticTest(unittest.TestCase):
         legacy = json.loads(rendered["legacy"])
         semantic = json.loads(rendered["semantic"])
         self.assertEqual("okf-explorer-registry.v1", legacy["schema"])
-        self.assertEqual(4, len(legacy["bundles"]))
+        self.assertEqual(5, len(legacy["bundles"]))
+        self.assertIn(
+            "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+            {bundle["url"] for bundle in legacy["bundles"]},
+        )
         self.assertEqual("registry/okf-registry.yamlld", legacy["semantic_source"])
         self.assertIn("@context", semantic)
 
