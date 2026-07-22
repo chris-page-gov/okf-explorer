@@ -548,6 +548,22 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     }
   }
 
+  if (request.include_results === false) {
+    return {
+      results: [],
+      total: filtered.ordinals.size,
+      total_relation: 'eq',
+      truncated: false,
+      truncations: [],
+      filters_applied: filtered.applied,
+      ignored_filters: filtered.ignoredFilters,
+      facets,
+      ranking: request.ranking || 'weighted',
+      elapsed_ms: Math.round(performance.now() - started),
+      ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {})
+    };
+  }
+
   const strategy = request.ranking || 'weighted';
   const limit = manifest.result_limit || 200;
   let ordinals = [...filtered.ordinals];

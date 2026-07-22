@@ -19,6 +19,17 @@ The profile URI is:
 - `context/okf-bundle-v1.jsonld` — pinned context copy.
 - `checksums.json` — generated artifact integrity metadata.
 
+An optional `okf-explorer-presentation.v1` profile supplies provider-authored
+display defaults without changing OKF meaning or generated facet counts. A
+large descriptor may embed it in `extensions` or point to a
+`data/presentation.json` entrypoint. The profile schema is
+[`presentation.schema.json`](presentation.schema.json).
+
+Presentation is deliberately bundle-level and explicitly referenced. Explorer
+does not probe for implicit sidecars beside every `index.md`, because nested
+inheritance would otherwise be ambiguous and expensive. Route-scoped overrides
+are deferred until the matching and inheritance rules are specified.
+
 ## Authoring rules
 
 - Use UTF-8 and YAML 1.2 Core Schema.

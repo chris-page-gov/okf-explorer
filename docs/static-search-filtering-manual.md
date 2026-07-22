@@ -16,18 +16,26 @@ embedding service, Vespa deployment, remote retrieval service or agent API.
 
 ## 1. Recognise The New Controls
 
-The left panel now separates three tasks:
+The left panel now separates three tasks, with Search remaining persistent and
+the other controls grouped into task tabs:
 
 1. **Search** finds lexical matches in the static index.
-2. **Filter results** reduces the candidate set using structured metadata.
-3. **Sort** orders the resulting records.
+2. **Facets** and **Browse** reduce the candidate set using structured metadata
+   or provider-defined hierarchies.
+3. **Results** contains sort order and the resulting record list.
 
-![The branch Explorer showing separate Search, Filter results and Sort controls for the GOV.UK CKAN corpus](assets/okf-search-filtering-manual/01-search-filter-sort-controls.png)
+The capture below records the preceding flat-panel implementation used for the
+verified CKAN journey. Search and facet semantics are unchanged, but Sort and
+the record list have since moved into **Results** and hierarchy rows into
+**Browse**.
+
+![Earlier flat-panel Search, Filter results and Sort controls used for the verified GOV.UK CKAN journey](assets/okf-search-filtering-manual/01-search-filter-sort-controls.png)
 
 In this unfiltered state:
 
 - the metrics show the complete large-corpus overview;
-- facets remain folded until opened;
+- facets remain folded until opened, with compact distributions or search
+  previews in their closed state;
 - the default sort is **Newest** because there is no text query;
 - the application has loaded only overview context, not every record; and
 - the selected route remains in the URL hash.

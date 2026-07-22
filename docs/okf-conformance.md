@@ -13,3 +13,10 @@ This repository targets [OKF v0.1](https://github.com/GoogleCloudPlatform/knowle
 ## Scope of validation
 
 `scripts/check_okf.py` validates the hand-authored Markdown corpus only. `uk-government-apis/` is a generated large-corpus Explorer artefact (JSON descriptor + shards), not a Markdown OKF bundle, and is deliberately outside `check_okf.py`'s scope; it is exercised end to end in CI via the fixture-based generator run. Emitting a spec-conformant Markdown layer for that corpus (the `api-records/*.md` files its `concept_id` fields already reference) is tracked as P2 in the code-review completion plan.
+
+**Explorer presentation is optional and non-semantic.**
+`okf-explorer-presentation.v1` carries provider display defaults such as facet
+labels, order and control hints. It is an Explorer extension, not OKF core, and
+does not change node, edge or field meaning. Device-local user preferences may
+override provider facet order, pinning, Suggested visibility and guidance state;
+labels, control definitions and panel structure remain provider-owned.

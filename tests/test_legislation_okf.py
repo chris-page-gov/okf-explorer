@@ -34,6 +34,8 @@ class LegislationOkfTests(unittest.TestCase):
         self.assertEqual(2, corpus["manifest"]["counts"]["works"])
         self.assertIn("document_type", corpus["facets"])
         self.assertIn("topic", corpus["facets"])
+        self.assertTrue(all(0 <= facet["expected_reduction"] <= 1 for facet in corpus["analysis"]["facet_analysis"]))
+        self.assertTrue(any(facet["entropy"] > 0 for facet in corpus["analysis"]["facet_analysis"]))
         self.assertGreater(corpus["manifest"]["counts"]["relationships"], 0)
         self.assertEqual("fnv1a32-prefix-2", corpus["relationship_adjacency"]["algorithm"])
         self.assertIn("relationship_adjacency", corpus["descriptor"]["entrypoints"])

@@ -106,6 +106,31 @@ describe('large static search worker', () => {
     expect(message.response.ignored_filters).toEqual({});
   });
 
+  it('loads exact facet distributions without hydrating result documents', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: '',
+        filters: {},
+        sort: 'newest',
+        facet_keys: ['type'],
+        include_results: false
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(4);
+    expect(response.results).toEqual([]);
+    expect(response.facets.type).toEqual([
+      { value: 'API', count: 2 },
+      { value: 'Dataset', count: 1 },
+      { value: 'Guide', count: 1 }
+    ]);
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/docs.json');
+  });
+
   it('ignores invalid indexed values while retaining valid selections', async () => {
     const worker = await harness();
     await worker.onmessage?.({ data: {

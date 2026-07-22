@@ -974,13 +974,21 @@ def entropy(counts: list[int]) -> float:
     return value
 
 
+def expected_facet_reduction(counts: list[int], record_total: int) -> float:
+    assignment_total = sum(counts)
+    if assignment_total <= 0 or record_total <= 0:
+        return 0.0
+    reduction = 1.0 - sum((count / assignment_total) * (count / record_total) for count in counts)
+    return min(1.0, max(0.0, reduction))
+
+
 def facet_analysis(apis: list[dict[str, Any]], key: str, label: str, control: str, recommendation: str) -> dict[str, Any]:
     rows = facet_counts(apis, key)
     total = len(apis) or 1
     covered = sum(1 for api in apis if facet_values(api, key))
     counts = [row["count"] for row in rows]
     top_share = max(counts) / total if counts else 0.0
-    expected_reduction = 1.0 - sum((count / total) ** 2 for count in counts) if counts else 0.0
+    expected_reduction = expected_facet_reduction(counts, total)
     return {
         "key": key,
         "label": label,

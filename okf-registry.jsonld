@@ -43,6 +43,43 @@
           ]
         },
         {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/ons-data-discovery",
+          "@type": "okf:Bundle",
+          "conformsTo": [
+            "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+          ],
+          "description": [
+            "Metadata-only ONS discovery demonstrator with explicit coverage, confusable alternatives, standards evidence and MCP selection bindings."
+          ],
+          "descriptor": [
+            "https://chris-page-gov.github.io/okf-ons/okf-explorer.json"
+          ],
+          "home": [
+            "https://chris-page-gov.github.io/okf-ons/"
+          ],
+          "license": [
+            "https://chris-page-gov.github.io/okf-ons/okf-explorer.json#rights"
+          ],
+          "publisher": [
+            "https://github.com/chris-page-gov/okf-ons"
+          ],
+          "recordTypeLabel": [
+            "large-corpus"
+          ],
+          "semanticDescriptor": [
+            "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld"
+          ],
+          "status": [
+            "bounded-demonstrator"
+          ],
+          "title": [
+            "ONS data discovery OKF"
+          ],
+          "version": [
+            "0.2.0"
+          ]
+        },
+        {
           "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/gov-ckan",
           "@type": "okf:Bundle",
           "conformsTo": [
@@ -161,7 +198,7 @@
         "Curated registry of independently publishable OKF bundle examples."
       ],
       "modified": [
-        "2026-07-11T00:00:00Z"
+        "2026-07-22T00:00:00Z"
       ],
       "title": [
         "OKF Explorer Registry"

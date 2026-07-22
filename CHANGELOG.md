@@ -61,6 +61,12 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added an experimental bundle-level Explorer presentation profile and a more
+  compact facet workspace: provider labels/order/control defaults, bundle-local
+  user pin/hide/reorder preferences, complete-data distribution strips,
+  numeric/date histograms, search-first high-cardinality previews, hierarchy
+  browsing, and tabbed result/detail panels. Multi-valued facet reduction is
+  now bounded and assignment-aware.
 - Restored small-bundle graph and link compatibility with generator-produced
   `edges`, added Markdown-body search and safe body rendering, exposed
   credential-redacted source/resource links, and made selected Schema.org,

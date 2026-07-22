@@ -300,6 +300,17 @@ For API/data packs, include these dimensions whenever possible:
 High-cardinality facets should be searchable and paged. Do not rely on the top
 20 values by count to make a known provider discoverable.
 
+Presentation defaults belong in the optional
+[`okf-explorer-presentation.v1` profile](facet-presentation-experiment.md), not
+in the generated count rows. Give each authored facet a clear description,
+value type, deliberate order and representative examples. Prefer a compact
+distribution for a manageable categorical domain, value order for numbers and
+dates, and search for identifier-like or high-cardinality domains.
+
+Do not publish thousands of labels as a closed-facet preview. A facet with tens
+of thousands of values needs a prefix-sharded vocabulary index so Explorer can
+show examples and search without first downloading the complete value set.
+
 ## Relationships
 
 Emit relationships as first-class records or rows with:

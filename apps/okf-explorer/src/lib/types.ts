@@ -127,6 +127,7 @@ export type LargeCorpusDescriptor = {
     data_manifest: string;
     overview_index?: string;
     analysis_overview?: string;
+    presentation?: LargeResourceReference;
     search_manifest?: string;
     notes?: string;
     performance?: string;
@@ -169,6 +170,7 @@ export type LargeDataManifest = {
   indexes: {
     overview: string;
     analysis?: string;
+    presentation?: string;
     search?: string;
     facets?: string;
     graph?: string;
@@ -228,6 +230,8 @@ export type LargeSearchRequest = {
   sort: 'relevance' | 'newest' | 'title' | 'metadata-quality';
   ranking?: SearchRankingStrategy;
   facet_keys?: string[];
+  /** Skip result-document hydration when only exact facet distributions are required. */
+  include_results?: boolean;
 };
 
 export type SearchMatchExplanation = {
@@ -308,10 +312,85 @@ export type LargeOverview = {
   notices?: string[];
 };
 
+export type LargeFacetValueType = 'nominal' | 'ordinal' | 'number' | 'date' | string;
+
+export type LargeFacetValueOrder =
+  | 'count-desc'
+  | 'label-asc'
+  | 'label-desc'
+  | 'value-asc'
+  | 'value-desc'
+  | string;
+
+export type LargeFacetAnalysis = {
+  key: string;
+  label: string;
+  description?: string;
+  coverage: number;
+  cardinality: number;
+  top_share: number;
+  entropy: number;
+  expected_reduction: number;
+  recommended_control: string;
+  recommendation: 'primary' | 'secondary' | 'advanced' | 'suppressed' | string;
+  hierarchy_available?: boolean;
+  display_priority?: number;
+  default_pinned?: boolean;
+  default_hidden?: boolean;
+  value_type?: LargeFacetValueType;
+  value_order?: LargeFacetValueOrder;
+  examples?: string[];
+  values?: Array<{ value: string; count: number }>;
+};
+
+export type LargeExplorerDisplay = {
+  facets?: {
+    order?: string[];
+    pinned?: string[];
+    hidden?: string[];
+    default_mode?: 'suggested' | 'all';
+    high_cardinality_threshold?: number;
+    distribution_segments?: number;
+  };
+  detail?: {
+    tabs?: Array<'overview' | 'evidence' | 'data' | string>;
+    default_tab?: 'overview' | 'evidence' | 'data' | string;
+  };
+};
+
+export type LargeExplorerPresentationFacet = {
+  key: string;
+  label?: string;
+  description?: string;
+  value_type?: 'nominal' | 'ordinal' | 'number' | 'date';
+  order?: number;
+  default_state?: 'pinned' | 'shown' | 'hidden';
+  open_control?: 'auto' | 'distribution' | 'histogram' | 'search' | 'list';
+  value_order?: 'count-desc' | 'label-asc' | 'label-desc' | 'value-asc' | 'value-desc';
+  examples?: string[];
+};
+
+export type LargeExplorerPresentation = {
+  schema: 'okf-explorer-presentation.v1';
+  status?: 'experimental' | 'stable' | 'deprecated';
+  snapshot?: string;
+  defaults?: {
+    facet_mode?: 'suggested' | 'all';
+    search_threshold?: number;
+    distribution_segment_limit?: number;
+  };
+  facets?: LargeExplorerPresentationFacet[];
+  panels?: {
+    left?: { tabs?: Array<'facets' | 'browse' | 'results'>; default_tab?: 'facets' | 'browse' | 'results' };
+    right?: { tabs?: Array<'overview' | 'evidence' | 'data'>; default_tab?: 'overview' | 'evidence' | 'data' };
+  };
+};
+
 export type LargeAnalysisOverview = {
   schema: 'okf-explorer-analysis.v1' | string;
   generated_at: string;
   source_bundle?: string;
+  display?: LargeExplorerDisplay;
   summary?: {
     title?: string;
     description?: string;
@@ -336,19 +415,7 @@ export type LargeAnalysisOverview = {
     high_resource_datasets?: Array<{ route: string; label: string; count: number; publisher?: string; samples?: Array<{ id: string; label: string; format?: string; host?: string }> }>;
     distributions?: Record<string, Array<{ value: string; count: number }>>;
   };
-  facet_analysis?: Array<{
-    key: string;
-    label: string;
-    coverage: number;
-    cardinality: number;
-    top_share: number;
-    entropy: number;
-    expected_reduction: number;
-    recommended_control: string;
-    recommendation: 'primary' | 'secondary' | 'advanced' | 'suppressed' | string;
-    hierarchy_available?: boolean;
-    values?: Array<{ value: string; count: number }>;
-  }>;
+  facet_analysis?: LargeFacetAnalysis[];
   hierarchies?: Array<{
     id: string;
     label: string;
@@ -699,8 +766,10 @@ export type LargeCorpusSource = {
   manifest: LargeDataManifest;
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
+  presentation?: LargeExplorerPresentation;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
+  loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
   loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;

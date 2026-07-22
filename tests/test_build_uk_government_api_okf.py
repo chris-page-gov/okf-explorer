@@ -91,6 +91,31 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn("data_gov_uk_ckan", {row["value"] for row in facets["source_adapter"]})
         self.assertIn("Data Access API Endpoint", {row["value"] for row in facets["record_type"]})
 
+    def test_facet_expected_reduction_handles_overlapping_values(self):
+        records = [
+            {"topic": ["A", "B"]},
+            {"topic": ["A"]},
+            {"topic": ["C"]},
+        ]
+
+        analysis = builder_module.facet_analysis(records, "topic", "Topic", "chips", "primary")
+
+        # A value is selected in proportion to its assignments. Selecting A
+        # leaves 2/3 of records; selecting B or C leaves 1/3, so the weighted
+        # expected remaining share is 1/2 and the expected reduction is 1/2.
+        self.assertEqual(analysis["expected_reduction"], 0.5)
+        self.assertEqual(analysis["top_share"], 0.6667)
+
+    def test_facet_expected_reduction_is_zero_when_every_value_matches_every_record(self):
+        records = [
+            {"topic": ["A", "B"]},
+            {"topic": ["A", "B"]},
+        ]
+
+        analysis = builder_module.facet_analysis(records, "topic", "Topic", "chips", "primary")
+
+        self.assertEqual(analysis["expected_reduction"], 0.0)
+
     def test_redact_url_strips_password_param_and_reports_count(self):
         cleaned, dropped = builder_module.redact_url("https://example.gov.uk/api?password=hunter2&format=json")
 

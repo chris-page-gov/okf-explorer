@@ -30,6 +30,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles
   that take full advantage of Explorer facets, search, graph, timeline,
   resources and right-card metadata.
+- [Facet presentation experiment](facet-presentation-experiment.md) defines
+  provider and user control, compact distributions, hierarchy tabs and the
+  optional presentation sidecar.
 - [Federated bundle wiki architecture](okf-bundle-wiki-architecture-2026-07-11.md)
   defines independently published bundle wikis, YAML-LD/JSON-LD semantics,
   registry discovery, compatibility projections and the extraction plan.
@@ -88,10 +91,16 @@ Useful references:
 
 ## Public URLs
 
-Hosted Svelte Explorer with the UK Government APIs exemplar:
+Hosted Svelte Explorer with the primary ONS data-discovery exemplar:
 
 ```text
-https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&view=reader#overview
+```
+
+ONS data-discovery descriptor:
+
+```text
+https://chris-page-gov.github.io/okf-ons/okf-explorer.json
 ```
 
 UK Government APIs descriptor:

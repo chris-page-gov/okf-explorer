@@ -10,7 +10,8 @@ describe('large-corpus left panel UX harness', () => {
 
   it('toggles open facets closed and hydrates unopened facets with a loading state', () => {
     expect(pageSource).toContain('async function openLargeFacet(key: string)');
-    expect(pageSource).toContain('if (activeFacetKey === key)');
+    expect(pageSource).toContain('if (facetIsOpen(key) && !facetIsPinned(key)');
+    expect(pageSource).toContain("return facetIsPinned(key) || Boolean(largeFacetFilters[key]?.length) || activeFacetKey === key");
     expect(pageSource).toContain("largeFacetHydratingKey = key;");
     expect(pageSource).toContain('Loading facet values...');
   });
@@ -19,19 +20,20 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('let largeFacetApplyingKey = $state');
     expect(pageSource).toContain('await tick();');
     expect(pageSource).toContain('aria-live="polite"');
-    expect(pageSource).toContain('Applying {facetLabel(largeFacetApplyingKey)}');
+    expect(pageSource).toContain('Applying {facetDisplayLabel(largeFacetApplyingKey)}');
     expect(pageSource).toContain('disabled={Boolean(largeFacetApplyingKey)}');
   });
 
-  it('keeps hierarchy parent rows informational and sends child rows to the right facet route', () => {
-    expect(pageSource).toContain('<div class="facet-hierarchy-group">');
-    expect(pageSource).toContain('onclick={() => void openHierarchyValue(key, child.route || child.id, child.label)}');
+  it('renders provider hierarchies as foldable browse trees and sends values to their declared facet routes', () => {
+    expect(pageSource).toContain('class="hierarchy-node"');
+    expect(pageSource).toContain('Browse hierarchies');
+    expect(pageSource).toContain('onclick={() => void openHierarchyValue(hierarchy.facet, child.route || child.id, child.label)}');
   });
 
   it('uses real browser history for facet selections and deep links selected facet routes', () => {
     expect(pageSource).toContain('function syncExplorerUrl(push = false)');
     expect(pageSource).toContain('largeInspectedRoute || largeSelectedRoute');
-    expect(pageSource).toContain("window.history.pushState({}, '', url)");
+    expect(pageSource).toContain('pushState(url, {})');
     expect(pageSource).toContain('applyLargeBrowserRoute(hash, hasSerializedFilters(params))');
   });
 
@@ -42,7 +44,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('largeFacetFilters = state.filters');
     expect(pageSource).toContain('retrievalSort = state.sort');
     expect(pageSource).toContain('...rows.map((row) => row.value), MISSING_FILTER_VALUE');
-    expect(pageSource).toContain('return values.length ? values : [MISSING_FILTER_VALUE]');
+    expect(pageSource).toContain('projectLargeDatasetFacetValues(dataset, key, MISSING_FILTER_VALUE');
   });
 
   it('restarts one crashed or timed-out search worker without accepting stale results', () => {
@@ -68,6 +70,56 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('class="left-results"');
     expect(pageSource).toContain('records match the active search and filters');
     expect(pageSource).toContain('Search matches');
+  });
+
+  it('layers bundle-scoped facet preferences over provider defaults', () => {
+    expect(pageSource).toContain("const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1'");
+    expect(pageSource).toContain('function providerFacetPreferences()');
+    expect(pageSource).toContain('function presentedLargeFacetKeys()');
+    expect(pageSource).toContain('Pin facet');
+    expect(pageSource).toContain('Move earlier');
+    expect(pageSource).toContain('Hide from Suggested');
+    expect(pageSource).toContain('oncontextmenu={(event) => openFacetMenu(key, event)}');
+  });
+
+  it('uses corpus-declared facet keys and treats generic facets only as a fallback', () => {
+    expect(pageSource).toContain("let largeFacetKeys: string[] = $derived(source?.kind === 'large' ? declaredLargeFacetKeys(source) : []);");
+    expect(pageSource).toContain('const declared = declaredLargeFacetKeys(large, manifest);');
+    expect(pageSource).toContain('return declared.length ? declared : [...LARGE_FACET_KEYS];');
+    expect(pageSource).toContain('const fallbackKeys = largeFacetKeys.length || largeSearchIndexLoading || largeFullLoading ? [] : LARGE_FACET_KEYS;');
+    expect(pageSource).toContain('...Object.keys(manifest?.entrypoints.filter_postings || {})');
+    expect(pageSource).toContain('largeSearchClient = client;');
+    expect(pageSource).toContain('loadFacetPreferences();');
+    expect(pageSource).toContain('!declaredLargeFacetKeys(large, null).length');
+  });
+
+  it('uses compact distributions for manageable facets and search-first previews for large facets', () => {
+    expect(pageSource).toContain('class="facet-distribution-bar"');
+    expect(pageSource).toContain('facetDistributionSegmentLabel');
+    expect(pageSource).toContain('class="facet-search-ghost"');
+    expect(pageSource).toContain('placeholder={facetSearchPlaceholder(key)}');
+    expect(pageSource).toContain('What makes a useful facet?');
+    expect(pageSource).toContain('if (dynamic !== undefined) return dynamic.length;');
+    expect(pageSource).toContain("Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)");
+    expect(pageSource).toContain('include_results: false');
+  });
+
+  it('uses SeeLinks-style preview, commit, pin-open and drag interactions without legacy Adjust', () => {
+    expect(pageSource).toContain('function previewLargeFacetValue');
+    expect(pageSource).toContain('async function commitFacetHighlights');
+    expect(pageSource).toContain('ondblclick={(event) => void commitFacetHighlights');
+    expect(pageSource).toContain('aria-label={`Reorder ${facetDisplayLabel(key)}`}');
+    expect(pageSource).toContain('function dropFacetBefore');
+    expect(pageSource).toContain("aria-label={`${facetIsPinned(key) ? 'Unpin' : 'Pin'} ${facetDisplayLabel(key)}`}");
+    expect(pageSource).not.toContain('Adjust');
+  });
+
+  it('offers keyboard-navigable left and data-card tab sets while retaining disclosures within tabs', () => {
+    expect(pageSource).toContain('role="tablist" aria-label="Left panel"');
+    expect(pageSource).toContain('function leftPanelTabKeydown');
+    expect(pageSource).toContain('role="tablist" aria-label="Data card sections"');
+    expect(pageSource).toContain('function detailPanelTabKeydown');
+    expect(pageSource).toContain("hidden={detailPanelTab !== 'evidence'}");
   });
 
   it('debounces large-corpus search and exposes explicit search preparation state', () => {
@@ -148,7 +200,8 @@ describe('large-corpus left panel UX harness', () => {
     expect(loadAction).toBeGreaterThan(0);
     expect(searchOverview).toBeGreaterThan(loadAction);
     expect(pageSource.match(/<details class="metadata-section disclosure-section" open>/g)?.length).toBeGreaterThanOrEqual(3);
-    expect(pageSource).toContain('<details class="metadata-section disclosure-section">\n                <summary>Normalized record fields</summary>');
+    expect(pageSource).toContain('id="detail-panel-data" hidden={detailPanelTab !== \'data\'}');
+    expect(pageSource).toContain('<summary>Normalized record fields</summary>');
     expect(pageSource).not.toContain('>Load full record</button>');
   });
 

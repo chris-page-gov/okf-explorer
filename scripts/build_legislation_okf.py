@@ -523,6 +523,22 @@ def build_facets(records: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]
     }
 
 
+def facet_analysis_row(key: str, rows: list[dict[str, Any]], record_count: int) -> dict[str, Any]:
+    counts = [int(row["count"]) for row in rows]
+    return {
+        "key": key,
+        "label": key.replace("_", " ").title(),
+        "coverage": 1.0,
+        "cardinality": len(rows),
+        "top_share": round((max(counts) / record_count), 4) if counts and record_count else 0,
+        "entropy": round(large_corpus.entropy(counts), 4),
+        "expected_reduction": round(large_corpus.expected_facet_reduction(counts, record_count), 4),
+        "recommended_control": "searchable multi-select",
+        "recommendation": "primary" if key in {"category", "document_type", "creation_year", "jurisdiction", "topic"} else "secondary",
+        "values": rows[:18],
+    }
+
+
 def build_publishers(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     counts = Counter(record["publisher"] for record in records)
     return [
@@ -612,7 +628,7 @@ def analysis_for(records: list[dict[str, Any]], facets: dict[str, list[dict[str,
         "timeline_overview": {"buckets": [{"id": decade, "label": decade, "count": count, "route": f"facet/creation_year/{decade[:-1]}"} for decade, count in sorted(decade_counts.items(), reverse=True)]},
         "relationship_overview": {"types": [{"kind": "work-expression-manifestation", "count": sum(record["resource_count"] for record in records)}, {"kind": "work-subdivision", "count": 0, "samples": []}], "top_connected": []},
         "resource_overview": {"total_resources": sum(record["resource_count"] for record in records), "high_resource_datasets": [], "distributions": {"format": facets["format"][:20]}},
-        "facet_analysis": [{"key": key, "label": key.replace("_", " ").title(), "coverage": 1.0, "cardinality": len(rows), "top_share": round((rows[0]["count"] / len(records)), 4) if rows and records else 0, "entropy": 0, "expected_reduction": 0, "recommended_control": "searchable multi-select", "recommendation": "primary" if key in {"category", "document_type", "creation_year", "jurisdiction", "topic"} else "secondary", "values": rows[:18]} for key, rows in facets.items()],
+        "facet_analysis": [facet_analysis_row(key, rows, len(records)) for key, rows in facets.items()],
         "hierarchies": [{"id": "legal-corpus", "label": "Category → document type", "facet": "document_type", "levels": ["category", "document_type"], "values": [{"id": category, "label": category.replace("-", " ").title(), "count": count, "route": f"facet/category/{category}", "children": [{"id": kind, "label": TYPE_TITLES.get(kind, kind), "count": type_count, "route": f"facet/document_type/{kind}"} for kind, type_count in type_counts.most_common() if any(record["category"] == category and record["document_type"] == kind for record in records)]} for category, count in counts.most_common()]}],
         "ontology_candidates": [
             {"id": "eli-1.5", "label": "European Legislation Identifier ontology 1.5", "confidence": 0.96, "coverage": 1.0, "classes": ["eli:LegalResource", "eli:LegalExpression", "eli:Format", "eli:LegalResourceSubdivision"], "properties": ["eli:is_realized_by", "eli:is_embodied_by", "eli:has_part", "eli:changes"], "notes": ["Primary normalization ontology."]},
