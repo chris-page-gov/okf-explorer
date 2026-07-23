@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/provider-datapack.schema.json",
+  "title": "OKF Explorer provider datapack",
+  "description": "A bounded comparison between a governed provider metadata snapshot and a named, reviewed external reference. It does not assert that the reference is current live data.",
+  "type": "object",
+  "required": [
+    "schema",
+    "snapshot",
+    "id",
+    "provider",
+    "selector",
+    "governedSnapshot",
+    "reviewedLiveReference",
+    "comparison",
+    "presentation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-explorer-provider-datapack.v1"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "provider": {
+      "$ref": "#/$defs/provider"
+    },
+    "selector": {
+      "$ref": "#/$defs/selector"
+    },
+    "governedSnapshot": {
+      "$ref": "#/$defs/governedSnapshot"
+    },
+    "reviewedLiveReference": {
+      "$ref": "#/$defs/reviewedLiveReference"
+    },
+    "comparison": {
+      "$ref": "#/$defs/comparison"
+    },
+    "presentation": {
+      "$ref": "#/$defs/presentation"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "pattern": "^https://[^/@\\s]+(?:[/?#][^\\s]*)?$"
+    },
+    "actionUrlTemplate": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            {
+              "not": {
+                "pattern": "[{}]"
+              }
+            }
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^https://[^/@\\s?#]+(?=[^?#]*/\\{native_id\\}(?:/|[?#]|$))(?:(?:/(?:[^/{}?#\\s]+|\\{native_id\\})))*(?:\\?[^#{}\\s]*)?(?:#[^{}\\s]*)?$"
+        }
+      ]
+    },
+    "selector": {
+      "type": "object",
+      "required": [
+        "field",
+        "operator",
+        "value"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+        },
+        "operator": {
+          "const": "equals"
+        },
+        "value": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provider": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "liveServiceUrl",
+        "repositoryUrl"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "liveServiceUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "repositoryUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      },
+      "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "required": [
+        "recordId",
+        "title"
+      ],
+      "properties": {
+        "recordId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "timeCoverageEnd": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "metadataModified": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dataModified": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "governedSnapshot": {
+      "type": "object",
+      "required": [
+        "status",
+        "label",
+        "snapshotId",
+        "recordCount",
+        "sourceCommit",
+        "sourceCommitShort",
+        "sourceAsOf",
+        "sourceAsOfBasis",
+        "metadataOnly",
+        "observationsIncluded",
+        "records"
+      ],
+      "properties": {
+        "status": {
+          "const": "governed-pinned-snapshot"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "snapshotId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "recordCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "sourceCommitShort": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,12}$"
+        },
+        "sourceAsOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sourceAsOfBasis": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "metadataOnly": {
+          "const": true
+        },
+        "observationsIncluded": {
+          "const": false
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "reviewedLiveReference": {
+      "type": "object",
+      "required": [
+        "status",
+        "label",
+        "lastChecked",
+        "network",
+        "liveServiceUrl",
+        "repositoryUrl",
+        "sourceCommit",
+        "sourceCommitShort",
+        "sourceCommitAsOf",
+        "metadataInputSha256",
+        "records"
+      ],
+      "properties": {
+        "status": {
+          "const": "reviewed-reference-not-live-validated"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "lastChecked": {
+          "type": "string",
+          "format": "date"
+        },
+        "network": {
+          "const": "external"
+        },
+        "liveServiceUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "repositoryUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "sourceCommitShort": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,12}$"
+        },
+        "sourceCommitAsOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "metadataInputSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "records": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "comparisonField": {
+      "type": "object",
+      "required": [
+        "field",
+        "snapshot",
+        "reviewedLiveReference"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reviewedLiveReference": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "difference": {
+      "type": "object",
+      "required": [
+        "recordId",
+        "title",
+        "fields"
+      ],
+      "properties": {
+        "recordId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/comparisonField"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "comparison": {
+      "type": "object",
+      "required": [
+        "status",
+        "comparisonAsOf",
+        "summary",
+        "evidenceScope",
+        "exhaustive",
+        "executionRequiresLiveValidation",
+        "differences"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "known-drift",
+            "aligned",
+            "unknown"
+          ]
+        },
+        "comparisonAsOf": {
+          "type": "string",
+          "format": "date"
+        },
+        "summary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "evidenceScope": {
+          "const": "reviewed-record-examples"
+        },
+        "exhaustive": {
+          "const": false
+        },
+        "executionRequiresLiveValidation": {
+          "const": true
+        },
+        "differences": {
+          "type": "array",
+          "maxItems": 1000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/difference"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "known-drift"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "differences": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "differences": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "urlTemplate",
+        "network"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "kind": {
+          "const": "external-link"
+        },
+        "urlTemplate": {
+          "$ref": "#/$defs/actionUrlTemplate"
+        },
+        "network": {
+          "const": "external"
+        }
+      },
+      "additionalProperties": false
+    },
+    "presentation": {
+      "type": "object",
+      "required": [
+        "snapshotLabel",
+        "liveLabel",
+        "lastCheckedWording",
+        "notice",
+        "actions"
+      ],
+      "properties": {
+        "snapshotLabel": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "liveLabel": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "lastCheckedWording": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notice": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "actions": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/action"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

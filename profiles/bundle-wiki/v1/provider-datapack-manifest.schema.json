@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/provider-datapack-manifest.schema.json",
+  "title": "OKF Explorer provider datapack manifest",
+  "description": "A snapshot-bound control-plane index for optional provider datapacks.",
+  "type": "object",
+  "required": [
+    "schema",
+    "snapshot",
+    "packCount",
+    "packs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-explorer-provider-datapack-manifest.v1"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "packCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 50
+    },
+    "packs": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "selector": {
+      "type": "object",
+      "required": [
+        "field",
+        "operator",
+        "value"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+        },
+        "operator": {
+          "const": "equals"
+        },
+        "value": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relativePackPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[%\\\\?#\\u0000])[^/]+(?:/[^/]+)*$"
+    },
+    "entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "selector",
+        "path",
+        "sha256",
+        "status",
+        "lastChecked"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "selector": {
+          "$ref": "#/$defs/selector"
+        },
+        "path": {
+          "$ref": "#/$defs/relativePackPath"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "known-drift",
+            "aligned",
+            "unknown"
+          ]
+        },
+        "lastChecked": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

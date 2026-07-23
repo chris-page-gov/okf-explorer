@@ -10,6 +10,9 @@ import type {
   LargeGraphIndex,
   LargeOverview,
   LargeOperationalMetadataIndex,
+  LargeProviderDatapack,
+  LargeProviderDatapackCollection,
+  LargeProviderDatapackManifest,
   LargePublisher,
   LargeReleaseDataPlaneIndex,
   LargeRelationship,
@@ -20,6 +23,11 @@ import type {
   LargeShardMetadata
 } from '$lib/types';
 import { normalizeExplorerPresentation } from '$lib/viewer/facetPresentation';
+import {
+  normalizeProviderDatapack,
+  normalizeProviderDatapackManifest,
+  validateProviderDatapackCollection
+} from '$lib/viewer/providerDatapack';
 import { baseUrlFor, fetchJson, fetchJsonResource } from './fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -255,14 +263,108 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const presentation = presentationPath
     ? normalizeExplorerPresentation(await fetchResource<unknown>(presentationPath).catch(() => undefined))
     : undefined;
+  const descriptorProviderDatapackPath = descriptorEntrypoint(
+    descriptor,
+    'provider_datapacks'
+  );
+  const descriptorProviderDatapackIntegrity =
+    descriptor.entrypoint_integrity?.provider_datapacks;
+  const manifestProviderDatapackPath = manifest.indexes.provider_datapacks;
+  if (
+    descriptorProviderDatapackPath &&
+    manifestProviderDatapackPath &&
+    resourcePath(descriptorProviderDatapackPath) !== resourcePath(manifestProviderDatapackPath)
+  ) {
+    throw new Error(
+      'Descriptor and data manifest provider-datapack manifest paths differ'
+    );
+  }
+  const descriptorProviderHash = resourceHash(descriptorProviderDatapackPath);
+  const manifestProviderHash = resourceHash(manifestProviderDatapackPath);
+  if (
+    descriptorProviderHash &&
+    manifestProviderHash &&
+    descriptorProviderHash !== manifestProviderHash
+  ) {
+    throw new Error(
+      'Descriptor and data manifest provider-datapack manifest SHA-256 values differ'
+    );
+  }
+  const providerDatapacksAdvertised = Boolean(
+    descriptorProviderDatapackPath || manifestProviderDatapackPath
+  );
+  if (
+    providerDatapacksAdvertised &&
+    (
+      !descriptor.entrypoints.provider_datapacks ||
+      !descriptorProviderDatapackIntegrity ||
+      !resourceHash(descriptorProviderDatapackIntegrity) ||
+      !descriptorProviderHash
+    )
+  ) {
+    throw new Error(
+      'Advertised provider datapacks require a descriptor entrypoint with entrypoint_integrity SHA-256'
+    );
+  }
+  const providerDatapackPath = descriptorProviderDatapackPath;
+  let providerDatapackManifest: LargeProviderDatapackManifest | undefined;
+  let providerDatapackPacks: LargeProviderDatapack[] = [];
+  if (providerDatapackPath) {
+    const manifestSnapshot = declaredSnapshot(manifest, 'Data manifest');
+    if (!descriptorSnapshot || !manifestSnapshot) {
+      throw new Error(
+        'Advertised provider datapacks require snapshot identifiers on both the descriptor and data manifest'
+      );
+    }
+    const bundleBase = new URL(baseUrl);
+    const bundlePathPrefix = bundleBase.pathname.endsWith('/')
+      ? bundleBase.pathname
+      : `${bundleBase.pathname}/`;
+    const resolvedManifest = new URL(resourcePath(providerDatapackPath), baseUrl);
+    if (
+      resolvedManifest.origin !== bundleBase.origin ||
+      !resolvedManifest.pathname.startsWith(bundlePathPrefix)
+    ) {
+      throw new Error('Provider datapack manifest must stay inside the bundle base path');
+    }
+    providerDatapackManifest = normalizeProviderDatapackManifest(
+      await fetchResource<unknown>(providerDatapackPath)
+    );
+    providerDatapackPacks = await Promise.all(
+      providerDatapackManifest.packs.map(async (entry) => {
+        const resolved = new URL(entry.path, baseUrl);
+        if (
+          resolved.origin !== bundleBase.origin ||
+          !resolved.pathname.startsWith(bundlePathPrefix)
+        ) {
+          throw new Error(`Provider datapack ${entry.id} must stay inside the bundle base path`);
+        }
+        return normalizeProviderDatapack(
+          await fetchResource<unknown>({ path: entry.path, sha256: entry.sha256 })
+        );
+      })
+    );
+  }
   const snapshot = consistentSnapshot([
     ['Descriptor', descriptor],
     ['Release data-plane index', releaseDataPlane?.document],
     ['Data manifest', manifest],
     ['Overview', overview],
     ['Analysis overview', analysis],
-    ['Presentation profile', presentation]
+    ['Presentation profile', presentation],
+    ['Provider datapack manifest', providerDatapackManifest],
+    ...providerDatapackPacks.map(
+      (pack) => [`Provider datapack ${pack.id}`, pack] as [string, unknown]
+    )
   ]);
+  const providerDatapacks: LargeProviderDatapackCollection | undefined =
+    providerDatapackManifest
+      ? validateProviderDatapackCollection(
+          providerDatapackManifest,
+          providerDatapackPacks,
+          snapshot
+        )
+      : undefined;
   const searchManifest = descriptorEntrypoint(descriptor, 'search_manifest') || manifest.indexes.search;
   let facetIndexPromise: Promise<Record<string, LargeFacetRow[]>> | null = null;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
@@ -280,6 +382,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     overview,
     analysis,
     presentation,
+    providerDatapacks,
     releaseDataPlane: releaseDataPlane?.document,
     searchManifest,
     loadFacetIndex() {
