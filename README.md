@@ -39,6 +39,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
 - [Review the facet presentation experiment][facet-presentation-experiment]
+- [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
@@ -108,6 +109,9 @@ The repository contains:
   extensions.
 - `docs/facet-presentation-experiment.md` - experimental provider/user display
   contract for facet ordering, compact distributions, search and panel tabs.
+- `docs/provider-datapacks.md` - generic contract and UI rules for governed
+  snapshots, bounded reviewed references, known drift and safe provider
+  hand-offs.
 - `docs/geospatial-map-exploration.md` - prototype contract for deterministic
   spatial discovery, Map reductions and bounded on-demand external previews.
 - `docs/geospatial-map-personas-and-user-stories.md` - role-based Map needs,
@@ -280,5 +284,6 @@ Pages to use **GitHub Actions** as the source.
 [geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
 [facet-presentation-experiment]: docs/facet-presentation-experiment.md
+[provider-datapacks]: docs/provider-datapacks.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

@@ -33,6 +33,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Facet presentation experiment](facet-presentation-experiment.md) defines
   provider and user control, compact distributions, hierarchy tabs and the
   optional presentation sidecar.
+- [Provider datapacks](provider-datapacks.md) define how governed bundle
+  snapshots, bounded reviewed upstream references, known drift and external
+  provider actions remain visibly distinct.
 - [Federated bundle wiki architecture](okf-bundle-wiki-architecture-2026-07-11.md)
   defines independently published bundle wikis, YAML-LD/JSON-LD semantics,
   registry discovery, compatibility projections and the extraction plan.

@@ -1,12 +1,18 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import {
+  ELS_ALIGNED_RECORD_NAME,
+  ELS_RECORD_NAME,
+  ELS_RESOURCE_ID,
+  ELS_UNREVIEWED_RECORD_NAME,
+  ONS_FACET_BUNDLE_URL,
   ONS_RECORD_COUNT,
   ONS_REGION_COUNT,
   displayedFacetOrder,
   facetSection,
   facetSegment,
   facetValue,
+  installOnsFacetFixture,
   openOnsFacetFixture,
   suggestedFacetKeys
 } from './fixtures/ons-facets.fixture';
@@ -311,5 +317,166 @@ test.describe('large-corpus facet interaction contract', () => {
 
     await expect(page.locator('[data-metric="active-filters"] strong')).toHaveText('1');
     expect(ONS_RECORD_COUNT).toBeGreaterThan(ONS_REGION_COUNT);
+  });
+
+  test('FACET-E2E-07 distinguishes the governed snapshot from a bounded reviewed live reference', async ({ page }) => {
+    const requests: string[] = [];
+    await installOnsFacetFixture(page.context(), requests);
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#overview`);
+    await waitForFixtureReady(page);
+
+    const bundleProviderStatus = page.locator(
+      '.stage [data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="bundle"]'
+    );
+    await expect(bundleProviderStatus).toHaveCount(1);
+    await expect(
+      page.locator(
+        '[data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="bundle"]'
+      )
+    ).toHaveCount(1);
+    await expect(bundleProviderStatus).toHaveAttribute('data-comparison-status', 'known-drift');
+    await expect(bundleProviderStatus.getByText('Known snapshot/live difference')).toBeVisible();
+    await expect(bundleProviderStatus.getByText('Governed snapshot', { exact: true })).toHaveCount(1);
+    await expect(bundleProviderStatus).toContainText('revision as of 22 Jul 2026');
+    await expect(bundleProviderStatus).toContainText('Review checked 23 Jul 2026');
+    const bundleLiveAction = bundleProviderStatus.getByRole('link', {
+      name: 'Open live service on ONS Explore Local Statistics (external)'
+    });
+    await expect(bundleLiveAction).toHaveAttribute(
+      'href',
+      'https://www.ons.gov.uk/explore-local-statistics/'
+    );
+    await expect(bundleLiveAction).toHaveClass(/primary-provider-action/);
+    await expect(
+      bundleProviderStatus.getByRole('link', {
+        name: 'Open live indicator on ONS Explore Local Statistics (external)'
+      })
+    ).toHaveCount(0);
+
+    await page.goto(
+      `?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_ALIGNED_RECORD_NAME}`
+    );
+    await page.getByText('Preparing static search index...').waitFor({ state: 'hidden' });
+    const rightPanel = page.locator('.right-panel');
+    const alignedProviderStatus = rightPanel.locator(
+      '[data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="record"]'
+    );
+    await expect(alignedProviderStatus).toHaveAttribute(
+      'data-comparison-status',
+      'aligned-reviewed-fields'
+    );
+    await expect(alignedProviderStatus.getByText('Aligned in reviewed fields')).toBeVisible();
+    await expect(alignedProviderStatus).toContainText(
+      'No difference was recorded in the reviewed fields for this record. This is not an exhaustive live comparison.'
+    );
+    await expect(alignedProviderStatus).not.toContainText(
+      'Average house price extends to May 2026'
+    );
+
+    await page.goto(
+      `?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_UNREVIEWED_RECORD_NAME}`
+    );
+    await page.getByText('Preparing static search index...').waitFor({ state: 'hidden' });
+    const unreviewedProviderStatus = rightPanel.locator(
+      '[data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="record"]'
+    );
+    await expect(unreviewedProviderStatus).toHaveAttribute(
+      'data-comparison-status',
+      'not-reviewed'
+    );
+    await expect(
+      unreviewedProviderStatus.getByText('Record alignment not reviewed')
+    ).toBeVisible();
+    await expect(unreviewedProviderStatus).toContainText(
+      'This record matches the provider datapack, but it was not one of the reviewed comparison examples.'
+    );
+    await expect(unreviewedProviderStatus).not.toContainText(
+      'Average house price extends to May 2026'
+    );
+    await expect(unreviewedProviderStatus.locator('[data-provider-snapshot-coverage]')).toHaveCount(
+      0
+    );
+    await expect(
+      unreviewedProviderStatus.getByRole('link', {
+        name: 'Open live indicator on ONS Explore Local Statistics (external)'
+      })
+    ).toHaveAttribute(
+      'href',
+      'https://www.ons.gov.uk/explore-local-statistics/indicators/record-3'
+    );
+
+    await page.goto(
+      `?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`
+    );
+    await page.getByPlaceholder('Search ONS products, concepts and geographies').waitFor();
+    await page.getByText('Preparing static search index...').waitFor({ state: 'hidden' });
+
+    await expect(rightPanel.getByRole('heading', { name: 'Average house price' })).toBeVisible();
+    const providerStatus = rightPanel.locator(
+      '[data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="record"]'
+    );
+    await expect(providerStatus).toHaveAttribute('data-comparison-status', 'known-drift');
+    await expect(providerStatus.getByText('Known snapshot/live difference')).toBeVisible();
+    await expect(providerStatus).toContainText(
+      'The reviewed upstream reference is newer than the governed metadata snapshot.'
+    );
+    await expect(providerStatus.locator('[data-provider-snapshot-coverage]')).toContainText(
+      'April 2026'
+    );
+    await expect(providerStatus.locator('[data-provider-reviewed-coverage]')).toContainText(
+      'May 2026'
+    );
+    await expect(providerStatus).toContainText('External, not live-validated here.');
+
+    const liveAction = providerStatus.getByRole('link', {
+      name: 'Open live indicator on ONS Explore Local Statistics (external)'
+    });
+    await expect(liveAction).toHaveAttribute(
+      'href',
+      'https://www.ons.gov.uk/explore-local-statistics/indicators/average-house-price'
+    );
+    await expect(liveAction).toHaveAttribute('target', '_blank');
+    await expect(liveAction).toHaveAttribute('rel', 'noopener noreferrer');
+
+    await providerStatus.getByText('Snapshot and review evidence').click();
+    await expect(providerStatus).toContainText(
+      'Reviewed record examples only; not an exhaustive comparison of all 108 provider records.'
+    );
+    await expect(providerStatus).toContainText(
+      'Must be validated by the external provider at the time of use.'
+    );
+
+    // The provider datapack is loaded with the control plane; the full record
+    // and its resources remain lazy until explicitly requested.
+    expect(requests).not.toContain('/data/datasets.json');
+    await rightPanel.getByRole('button', { name: 'Load full record' }).click();
+    await expect.poll(() => requests.includes('/data/datasets.json')).toBe(true);
+    await expect.poll(() => requests.includes('/data/resources.json')).toBe(true);
+    const detailTabs = rightPanel.getByRole('tablist', { name: 'Data card sections' });
+    await detailTabs.getByRole('tab', { name: 'Evidence' }).click();
+    const resourceDisclosure = rightPanel
+      .locator('details')
+      .filter({ hasText: 'Source/access resources (1)' });
+    await resourceDisclosure.locator('summary').click();
+    await resourceDisclosure
+      .getByRole('button', { name: /Explore Local Statistics indicator page/ })
+      .click();
+
+    await expect(
+      rightPanel.getByRole('heading', { name: 'Explore Local Statistics indicator page' })
+    ).toBeVisible();
+    const resourceStatus = rightPanel.locator(
+      `[data-provider-datapack="ons-explore-local-statistics"][data-provider-scope="resource"]`
+    );
+    await expect(resourceStatus.locator('[data-provider-snapshot-coverage]')).toContainText(
+      'April 2026'
+    );
+    await expect(resourceStatus.getByRole('link', {
+      name: 'Open live indicator on ONS Explore Local Statistics (external)'
+    })).toHaveAttribute(
+      'href',
+      'https://www.ons.gov.uk/explore-local-statistics/indicators/average-house-price'
+    );
+    expect(ELS_RESOURCE_ID).toBe('els-average-house-price-source');
   });
 });

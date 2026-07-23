@@ -133,6 +133,7 @@ export type LargeCorpusDescriptor = {
     performance?: string;
     relationship_adjacency?: string;
     operational_metadata?: string;
+    provider_datapacks?: LargeResourceReference;
     release_data_plane?: LargeResourceReference;
   };
   entrypoint_integrity?: Record<string, Exclude<LargeResourceReference, string>>;
@@ -177,6 +178,7 @@ export type LargeDataManifest = {
     govuk_content?: string;
     relationship_adjacency?: string;
     operational_metadata?: string;
+    provider_datapacks?: LargeResourceReference;
   };
   chunks: Record<string, LargeResourceReference[]>;
   shards?: Record<string, LargeShardMetadata[]>;
@@ -386,6 +388,117 @@ export type LargeExplorerPresentation = {
   };
 };
 
+export type LargeProviderDatapackSelector = {
+  field: string;
+  operator: 'equals';
+  value: string;
+};
+
+export type LargeProviderDatapackRecord = {
+  recordId: string;
+  title: string;
+  timeCoverageEnd?: string;
+  metadataModified?: string;
+  dataModified?: string;
+};
+
+export type LargeProviderDatapackAction = {
+  id: string;
+  label: string;
+  kind: 'external-link';
+  urlTemplate: string;
+  network: 'external';
+};
+
+export type LargeProviderDatapackComparisonStatus =
+  | 'known-drift'
+  | 'aligned'
+  | 'unknown';
+
+export type LargeProviderDatapack = {
+  schema: 'okf-explorer-provider-datapack.v1';
+  snapshot: string;
+  id: string;
+  provider: {
+    id: string;
+    title: string;
+    liveServiceUrl: string;
+    repositoryUrl: string;
+  };
+  selector: LargeProviderDatapackSelector;
+  governedSnapshot: {
+    status: 'governed-pinned-snapshot';
+    label: string;
+    snapshotId: string;
+    recordCount: number;
+    sourceCommit: string;
+    sourceCommitShort: string;
+    sourceAsOf: string;
+    sourceAsOfBasis: string;
+    metadataOnly: true;
+    observationsIncluded: false;
+    records: LargeProviderDatapackRecord[];
+  };
+  reviewedLiveReference: {
+    status: 'reviewed-reference-not-live-validated';
+    label: string;
+    lastChecked: string;
+    network: 'external';
+    liveServiceUrl: string;
+    repositoryUrl: string;
+    sourceCommit: string;
+    sourceCommitShort: string;
+    sourceCommitAsOf: string;
+    metadataInputSha256: string;
+    records: LargeProviderDatapackRecord[];
+  };
+  comparison: {
+    status: LargeProviderDatapackComparisonStatus;
+    comparisonAsOf: string;
+    summary: string;
+    evidenceScope: 'reviewed-record-examples';
+    exhaustive: false;
+    executionRequiresLiveValidation: true;
+    differences: Array<{
+      recordId: string;
+      title: string;
+      fields: Array<{
+        field: string;
+        snapshot: string;
+        reviewedLiveReference: string;
+      }>;
+    }>;
+  };
+  presentation: {
+    snapshotLabel: string;
+    liveLabel: string;
+    lastCheckedWording: string;
+    notice: string;
+    actions: LargeProviderDatapackAction[];
+  };
+};
+
+export type LargeProviderDatapackManifestEntry = {
+  id: string;
+  selector: LargeProviderDatapackSelector;
+  path: string;
+  sha256: string;
+  status: LargeProviderDatapackComparisonStatus;
+  lastChecked: string;
+};
+
+export type LargeProviderDatapackManifest = {
+  schema: 'okf-explorer-provider-datapack-manifest.v1';
+  snapshot: string;
+  packCount: number;
+  packs: LargeProviderDatapackManifestEntry[];
+};
+
+export type LargeProviderDatapackCollection = {
+  manifest: LargeProviderDatapackManifest;
+  packs: LargeProviderDatapack[];
+};
+
 export type LargeAnalysisOverview = {
   schema: 'okf-explorer-analysis.v1' | string;
   generated_at: string;
@@ -465,6 +578,9 @@ export type SearchResultDoc = {
   record_type?: string;
   source_tier?: string;
   source_adapter?: string;
+  source_surface?: string;
+  record_id?: string;
+  native_id?: string;
   confidence?: string;
   dcat_type?: string;
   dcat_export_status?: string;
@@ -767,6 +883,7 @@ export type LargeCorpusSource = {
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
   presentation?: LargeExplorerPresentation;
+  providerDatapacks?: LargeProviderDatapackCollection;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;

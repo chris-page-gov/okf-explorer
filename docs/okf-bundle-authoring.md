@@ -118,6 +118,69 @@ the source link, map governed fields into the bundle with explicit provenance,
 and let the inspector show the unaltered remote response on demand. Explorer
 renders response values as text and does not execute source HTML.
 
+## Provider Datapacks For Snapshot And Reviewed-Live Context
+
+Use an optional
+[`okf-explorer-provider-datapack.v1`](provider-datapacks.md) when a governed
+metadata snapshot links to an external provider service that can change
+independently. The provider datapack keeps four claims separate:
+
+- what the static bundle snapshot contains;
+- which named upstream revision was reviewed and when;
+- which bounded differences were actually observed; and
+- which external action lets the reader check the provider at the time of use.
+
+Advertise `provider_datapacks` from the descriptor entrypoints and bind that
+entrypoint's bytes through `entrypoint_integrity`. A data-manifest index may
+mirror the same path and digest for discovery, but it is not the trust root.
+Bind the manifest and every referenced pack to the same top-level `snapshot` as
+the bundle. Provider pack paths are bundle-relative, while rendered external
+actions are HTTPS-only. Validate authored documents against the
+[`provider-datapack-manifest.schema.json`](../profiles/bundle-wiki/v1/provider-datapack-manifest.schema.json)
+and
+[`provider-datapack.schema.json`](../profiles/bundle-wiki/v1/provider-datapack.schema.json)
+profiles; Explorer then checks the cross-document bindings at load time.
+Publish the descriptor's provider-manifest entrypoint together with a matching
+`entrypoint_integrity` `{path, sha256}` object, and put the exact published
+pack-byte digest in every manifest row. Snapshot equality prevents
+cross-snapshot mixing; byte digests bind refreshed review evidence even when
+the governed corpus snapshot remains unchanged.
+
+The v1 comparison is deliberately non-exhaustive:
+
+```json
+{
+  "comparison": {
+    "status": "known-drift",
+    "evidenceScope": "reviewed-record-examples",
+    "exhaustive": false,
+    "executionRequiresLiveValidation": true
+  }
+}
+```
+
+Use a selector over a stable normalized field such as `source_surface`.
+Reviewed examples should bind to stable `record_id` values. Search result
+documents should preserve the selector field, `record_id` and `native_id` so
+Explorer can show the status and resolve a safe provider hand-off before full
+record hydration. Resources inherit their parent record's provider status.
+When a matching record appears in both reviewed arrays without a difference,
+label it **Aligned in reviewed fields** without making an exhaustive
+live-alignment claim. A matching record absent from the reviewed examples is
+**Record alignment not reviewed**. Neither state inherits a provider-wide
+known-difference summary. Builders must emit an exact `comparison.differences`
+row and field/value transition whenever paired record rows differ in title,
+`timeCoverage.end`, `metadataModified` or `dataModified`; Explorer rejects an
+incomplete comparison rather than displaying a false aligned state.
+
+Keep `sourceCommitAsOf` distinct from `lastChecked`: the former dates the named
+upstream revision, while the latter dates the review. Neither makes the
+reference a live-validation result.
+
+Do not put snapshot/live claims in `okf-explorer-presentation.v1`, replace the
+frozen resource URL with a live URL, call a reviewed revision "current", or
+interpret a representative difference as a complete live comparison.
+
 ## Geospatial Metadata And Map Recovery
 
 The Map canvas can classify legacy fields and resource formats, but builders

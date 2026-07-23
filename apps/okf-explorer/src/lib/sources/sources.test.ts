@@ -41,6 +41,95 @@ function jsonResponse(value: unknown, init: ResponseInit = {}) {
   });
 }
 
+function providerDatapackFixture(snapshot = 'snapshot-one') {
+  return {
+    schema: 'okf-explorer-provider-datapack.v1',
+    snapshot,
+    id: 'provider-one',
+    provider: {
+      id: 'provider-one',
+      title: 'Provider One',
+      liveServiceUrl: 'https://provider.example/live/',
+      repositoryUrl: 'https://provider.example/source/'
+    },
+    selector: { field: 'source_surface', operator: 'equals', value: 'provider-one' },
+    governedSnapshot: {
+      status: 'governed-pinned-snapshot',
+      label: 'Governed snapshot',
+      snapshotId: snapshot,
+      recordCount: 1,
+      sourceCommit: 'a'.repeat(40),
+      sourceCommitShort: 'aaaaaaa',
+      sourceAsOf: '2026-07-17T00:00:00Z',
+      sourceAsOfBasis: 'verified source revision',
+      metadataOnly: true,
+      observationsIncluded: false,
+      records: [
+        {
+          recordId: 'provider-one:record-one',
+          title: 'Provider record one',
+          metadataModified: '2026-07-17'
+        }
+      ]
+    },
+    reviewedLiveReference: {
+      status: 'reviewed-reference-not-live-validated',
+      label: 'Reviewed reference',
+      lastChecked: '2026-07-23',
+      network: 'external',
+      liveServiceUrl: 'https://provider.example/live/',
+      repositoryUrl: 'https://provider.example/source/',
+      sourceCommit: 'b'.repeat(40),
+      sourceCommitShort: 'bbbbbbb',
+      sourceCommitAsOf: '2026-07-22T00:00:00Z',
+      metadataInputSha256: 'c'.repeat(64),
+      records: [
+        {
+          recordId: 'provider-one:record-one',
+          title: 'Provider record one',
+          metadataModified: '2026-07-22'
+        }
+      ]
+    },
+    comparison: {
+      status: 'known-drift',
+      comparisonAsOf: '2026-07-23',
+      summary: 'A reviewed difference is known.',
+      evidenceScope: 'reviewed-record-examples',
+      exhaustive: false,
+      executionRequiresLiveValidation: true,
+      differences: [
+        {
+          recordId: 'provider-one:record-one',
+          title: 'Provider record one',
+          fields: [
+            {
+              field: 'metadataModified',
+              snapshot: '2026-07-17',
+              reviewedLiveReference: '2026-07-22'
+            }
+          ]
+        }
+      ]
+    },
+    presentation: {
+      snapshotLabel: 'Snapshot',
+      liveLabel: 'Reviewed reference',
+      lastCheckedWording: 'Last checked 23 July 2026.',
+      notice: 'The external service may have changed.',
+      actions: [
+        {
+          id: 'open-provider',
+          label: 'Open provider',
+          kind: 'external-link',
+          urlTemplate: 'https://provider.example/live/',
+          network: 'external'
+        }
+      ]
+    }
+  };
+}
+
 describe('fetch helpers', () => {
   afterEach(() => {
     vi.restoreAllMocks();
@@ -558,6 +647,365 @@ describe('large corpus source', () => {
       { source: 'dataset/dataset-one', target: 'publisher/publisher-one', kind: 'published by' }
     ]);
     await expect(source.loadRelationshipsForRoute('missing/route')).resolves.toEqual([]);
+  });
+
+  it('loads same-origin provider datapacks at startup and binds every layer to the bundle snapshot', async () => {
+    const providerPack = providerDatapackFixture();
+    const providerManifest = {
+      schema: 'okf-explorer-provider-datapack-manifest.v1',
+      snapshot: 'snapshot-one',
+      packCount: 1,
+      packs: [
+        {
+          id: 'provider-one',
+          selector: { field: 'source_surface', operator: 'equals', value: 'provider-one' },
+          path: 'data/providers/provider-one.json',
+          sha256: await sha256Hex(JSON.stringify(providerPack)),
+          status: 'known-drift',
+          lastChecked: '2026-07-23'
+        }
+      ]
+    };
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/providers/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Provider fixture',
+          snapshot: 'snapshot-one',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            provider_datapacks: 'data/providers/manifest.json'
+          },
+          entrypoint_integrity: {
+            provider_datapacks: {
+              path: 'data/providers/manifest.json',
+              sha256: await sha256Hex(JSON.stringify(providerManifest))
+            }
+          },
+          counts: { datasets: 0, resources: 0, relationships: 0 }
+        }
+      ],
+      [
+        'https://example.test/providers/data/manifest.json',
+        {
+          title: 'Provider fixture',
+          generated_at: '2026-07-23T00:00:00Z',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 0, resources: 0, relationships: 0 },
+          indexes: { overview: 'data/overview.json' },
+          chunks: { datasets: [], resources: [], publishers: [], relationships: [] }
+        }
+      ],
+      [
+        'https://example.test/providers/data/overview.json',
+        {
+          title: 'Provider fixture',
+          generated_at: '2026-07-23T00:00:00Z',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 0, resources: 0, relationships: 0 }
+        }
+      ],
+      ['https://example.test/providers/data/providers/manifest.json', providerManifest],
+      [
+        'https://example.test/providers/data/providers/provider-one.json',
+        providerPack
+      ]
+    ]);
+    const fetchMock = vi.fn(async (url: string | URL | Request) => {
+      const key = String(url);
+      if (!payloads.has(key)) return jsonResponse({ missing: key }, { status: 404, statusText: 'Not Found' });
+      return jsonResponse(payloads.get(key));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus('https://example.test/providers/okf-explorer.json');
+    expect(source.snapshot).toBe('snapshot-one');
+    expect(source.providerDatapacks?.manifest.schema).toBe(
+      'okf-explorer-provider-datapack-manifest.v1'
+    );
+    expect(source.providerDatapacks?.packs[0]).toEqual(
+      expect.objectContaining({
+        id: 'provider-one',
+        snapshot: 'snapshot-one',
+        comparison: expect.objectContaining({ status: 'known-drift', exhaustive: false })
+      })
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://example.test/providers/data/providers/provider-one.json',
+      expect.anything()
+    );
+
+    payloads.set('https://example.test/providers/data/providers/provider-one.json', {
+      ...providerPack,
+      snapshot: 'tampered-after-manifest'
+    });
+    await expect(
+      loadLargeCorpus('https://example.test/providers/okf-explorer.json')
+    ).rejects.toThrow('Resource integrity check failed');
+
+    payloads.set(
+      'https://example.test/providers/data/providers/provider-one.json',
+      providerPack
+    );
+    payloads.set('https://example.test/providers/data/providers/manifest.json', {
+      ...providerManifest,
+      packCount: 0
+    });
+    await expect(
+      loadLargeCorpus('https://example.test/providers/okf-explorer.json')
+    ).rejects.toThrow('Resource integrity check failed');
+  });
+
+  it('fails closed when an advertised provider datapack belongs to another snapshot', async () => {
+    const mismatchedProviderPack = providerDatapackFixture('snapshot-two');
+    const mismatchedProviderManifest = {
+      schema: 'okf-explorer-provider-datapack-manifest.v1',
+      snapshot: 'snapshot-one',
+      packCount: 1,
+      packs: [
+        {
+          id: 'provider-one',
+          selector: { field: 'source_surface', operator: 'equals', value: 'provider-one' },
+          path: 'data/providers/provider-one.json',
+          sha256: await sha256Hex(JSON.stringify(mismatchedProviderPack)),
+          status: 'known-drift',
+          lastChecked: '2026-07-23'
+        }
+      ]
+    };
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/provider-mismatch/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Mismatch fixture',
+          snapshot: 'snapshot-one',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            provider_datapacks: 'data/providers/manifest.json'
+          },
+          entrypoint_integrity: {
+            provider_datapacks: {
+              path: 'data/providers/manifest.json',
+              sha256: await sha256Hex(JSON.stringify(mismatchedProviderManifest))
+            }
+          },
+          counts: { datasets: 0 }
+        }
+      ],
+      [
+        'https://example.test/provider-mismatch/data/manifest.json',
+        {
+          title: 'Mismatch fixture',
+          generated_at: '2026-07-23T00:00:00Z',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 0 },
+          indexes: { overview: 'data/overview.json' },
+          chunks: {}
+        }
+      ],
+      [
+        'https://example.test/provider-mismatch/data/overview.json',
+        {
+          title: 'Mismatch fixture',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 0 }
+        }
+      ],
+      [
+        'https://example.test/provider-mismatch/data/providers/manifest.json',
+        mismatchedProviderManifest
+      ],
+      [
+        'https://example.test/provider-mismatch/data/providers/provider-one.json',
+        mismatchedProviderPack
+      ]
+    ]);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string | URL | Request) => {
+        const key = String(url);
+        if (!payloads.has(key)) return jsonResponse({}, { status: 404, statusText: 'Not Found' });
+        return jsonResponse(payloads.get(key));
+      })
+    );
+
+    await expect(
+      loadLargeCorpus('https://example.test/provider-mismatch/okf-explorer.json')
+    ).rejects.toThrow('advertise different snapshot identifiers');
+  });
+
+  it('requires an integrity-bound provider manifest on a matching bundle path', async () => {
+    async function expectReferenceFailure({
+      suffix,
+      descriptorPath,
+      descriptorIntegrity,
+      manifestReference,
+      message
+    }: {
+      suffix: string;
+      descriptorPath?: string | { path: string; sha256: string };
+      descriptorIntegrity?: { path: string; sha256: string };
+      manifestReference?: string | { path: string; sha256: string };
+      message: string;
+    }) {
+      const prefix = `https://example.test/provider-reference-${suffix}/`;
+      const payloads = new Map<string, unknown>([
+        [
+          `${prefix}okf-explorer.json`,
+          {
+            schema: 'okf-explorer-large-corpus.v1',
+            kind: 'okf-large-corpus',
+            title: 'Provider reference fixture',
+            snapshot: 'snapshot-one',
+            entrypoints: {
+              data_manifest: 'data/manifest.json',
+              ...(descriptorPath ? { provider_datapacks: descriptorPath } : {})
+            },
+            ...(descriptorIntegrity
+              ? { entrypoint_integrity: { provider_datapacks: descriptorIntegrity } }
+              : {}),
+            counts: { datasets: 0 }
+          }
+        ],
+        [
+          `${prefix}data/manifest.json`,
+          {
+            title: 'Provider reference fixture',
+            generated_at: '2026-07-23T00:00:00Z',
+            snapshot: 'snapshot-one',
+            counts: { datasets: 0 },
+            indexes: {
+              overview: 'data/overview.json',
+              ...(manifestReference ? { provider_datapacks: manifestReference } : {})
+            },
+            chunks: {}
+          }
+        ],
+        [
+          `${prefix}data/overview.json`,
+          {
+            title: 'Provider reference fixture',
+            snapshot: 'snapshot-one',
+            counts: { datasets: 0 }
+          }
+        ]
+      ]);
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (url: string | URL | Request) => {
+          const key = String(url);
+          if (!payloads.has(key)) {
+            return jsonResponse({}, { status: 404, statusText: 'Not Found' });
+          }
+          return jsonResponse(payloads.get(key));
+        })
+      );
+      await expect(loadLargeCorpus(`${prefix}okf-explorer.json`)).rejects.toThrow(message);
+    }
+
+    await expectReferenceFailure({
+      suffix: 'unbound',
+      descriptorPath: 'data/providers/manifest.json',
+      manifestReference: 'data/providers/manifest.json',
+      message: 'require a descriptor entrypoint with entrypoint_integrity SHA-256'
+    });
+    await expectReferenceFailure({
+      suffix: 'direct-hash-without-integrity-row',
+      descriptorPath: {
+        path: 'data/providers/manifest.json',
+        sha256: 'd'.repeat(64)
+      },
+      manifestReference: 'data/providers/manifest.json',
+      message: 'require a descriptor entrypoint with entrypoint_integrity SHA-256'
+    });
+    await expectReferenceFailure({
+      suffix: 'manifest-only-hash',
+      manifestReference: {
+        path: 'data/providers/manifest.json',
+        sha256: 'd'.repeat(64)
+      },
+      message: 'require a descriptor entrypoint with entrypoint_integrity SHA-256'
+    });
+    await expectReferenceFailure({
+      suffix: 'path-mismatch',
+      descriptorPath: 'data/providers/manifest.json',
+      descriptorIntegrity: {
+        path: 'data/providers/manifest.json',
+        sha256: 'd'.repeat(64)
+      },
+      manifestReference: 'data/different-provider-manifest.json',
+      message: 'provider-datapack manifest paths differ'
+    });
+    await expectReferenceFailure({
+      suffix: 'outside-base',
+      descriptorPath: '../outside/provider-manifest.json',
+      descriptorIntegrity: {
+        path: '../outside/provider-manifest.json',
+        sha256: 'd'.repeat(64)
+      },
+      message: 'must stay inside the bundle base path'
+    });
+  });
+
+  it('requires descriptor and data-manifest snapshot bindings when provider datapacks are advertised', async () => {
+    for (const missingSnapshot of ['descriptor', 'manifest'] as const) {
+      const prefix = `https://example.test/provider-${missingSnapshot}-snapshot/`;
+      const descriptor = {
+        schema: 'okf-explorer-large-corpus.v1',
+        kind: 'okf-large-corpus',
+        title: 'Provider snapshot requirement fixture',
+        ...(missingSnapshot === 'descriptor' ? {} : { snapshot: 'snapshot-one' }),
+        entrypoints: {
+          data_manifest: 'data/manifest.json',
+          provider_datapacks: 'data/providers/manifest.json'
+        },
+        entrypoint_integrity: {
+          provider_datapacks: {
+            path: 'data/providers/manifest.json',
+            sha256: 'd'.repeat(64)
+          }
+        },
+        counts: { datasets: 0 }
+      };
+      const manifest = {
+        title: 'Provider snapshot requirement fixture',
+        generated_at: '2026-07-23T00:00:00Z',
+        ...(missingSnapshot === 'manifest' ? {} : { snapshot: 'snapshot-one' }),
+        counts: { datasets: 0 },
+        indexes: { overview: 'data/overview.json' },
+        chunks: {}
+      };
+      const payloads = new Map<string, unknown>([
+        [`${prefix}okf-explorer.json`, descriptor],
+        [`${prefix}data/manifest.json`, manifest],
+        [
+          `${prefix}data/overview.json`,
+          {
+            title: 'Provider snapshot requirement fixture',
+            snapshot: 'snapshot-one',
+            counts: { datasets: 0 }
+          }
+        ]
+      ]);
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (url: string | URL | Request) => {
+          const key = String(url);
+          if (!payloads.has(key)) {
+            return jsonResponse({}, { status: 404, statusText: 'Not Found' });
+          }
+          return jsonResponse(payloads.get(key));
+        })
+      );
+
+      await expect(loadLargeCorpus(`${prefix}okf-explorer.json`)).rejects.toThrow(
+        'require snapshot identifiers on both the descriptor and data manifest'
+      );
+    }
   });
 
   it('retries full hydration after a transient lightweight facet failure', async () => {

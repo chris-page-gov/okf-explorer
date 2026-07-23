@@ -48,6 +48,7 @@
     type GeospatialRecord
   } from '$lib/geospatial/geospatial';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
+  import ProviderDatapackStatus from '$lib/viewer/ProviderDatapackStatus.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
     renderSafeMarkdown,
@@ -69,6 +70,7 @@
     type FacetDistributionSegment,
     type FacetPreferences
   } from '$lib/viewer/facetPresentation';
+  import { providerDatapacksForRecord } from '$lib/viewer/providerDatapack';
   import { fetchJson, fetchSourceJson, movedBundleTarget } from '$lib/sources/fetch';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
@@ -4788,6 +4790,9 @@
               {:else}
                 <p class="muted">Search loads generated static shards; facets and deep links hydrate records only when needed. Graph and links start from generated aggregate analysis.</p>
               {/if}
+              {#each source.providerDatapacks?.packs || [] as providerDatapack}
+                <ProviderDatapackStatus pack={providerDatapack} scope="bundle" />
+              {/each}
               <div class="overview-grid">
                 <section>
                   <h3>Entry points</h3>
@@ -5604,6 +5609,13 @@
                 </p>
               {/if}
               <p>{stripHtml(largeDetail.dataset.notes || '')}</p>
+              {#each providerDatapacksForRecord(source.providerDatapacks, largeDetail.dataset) as providerDatapack}
+                <ProviderDatapackStatus
+                  pack={providerDatapack}
+                  record={largeDetail.dataset}
+                  scope="record"
+                />
+              {/each}
               <div class="detail-actions">
                 <button type="button" onclick={() => void selectView('graph')}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
@@ -5880,6 +5892,15 @@
               <span class="badge">{capitalise(resourceSingular())}</span>
               <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
               <p>{stripHtml(largeDetail.resource.description || '') || largeDetail.resource.url}</p>
+              {#if largeDetail.dataset}
+                {#each providerDatapacksForRecord(source.providerDatapacks, largeDetail.dataset) as providerDatapack}
+                  <ProviderDatapackStatus
+                    pack={providerDatapack}
+                    record={largeDetail.dataset}
+                    scope="resource"
+                  />
+                {/each}
+              {/if}
               <div class="detail-actions">
                 <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>{capitalise(recordSingular())}</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
@@ -5992,6 +6013,13 @@
                 </p>
               {/if}
               <p>{stripHtml(largeDetail.result.notes || '')}</p>
+              {#each providerDatapacksForRecord(source.providerDatapacks, largeDetail.result) as providerDatapack}
+                <ProviderDatapackStatus
+                  pack={providerDatapack}
+                  record={largeDetail.result}
+                  scope="record"
+                />
+              {/each}
               <details class="metadata-section disclosure-section" open>
                 <summary>Overview</summary>
                 <dl>
@@ -6092,6 +6120,11 @@
           {:else}
             <h2>{source.descriptor.title}</h2>
             <p>{source.descriptor.description}</p>
+            {#if activeView !== 'reader' || largeQuery || activeLargeFilterCount || !largeHasAnalysisOverview('reader')}
+              {#each source.providerDatapacks?.packs || [] as providerDatapack}
+                <ProviderDatapackStatus pack={providerDatapack} scope="bundle" />
+              {/each}
+            {/if}
             <dl>
               <dt>Schema</dt><dd>{source.descriptor.schema}</dd>
               {#if source.descriptor.version}<dt>Version</dt><dd>{source.descriptor.version}</dd>{/if}

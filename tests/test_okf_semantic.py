@@ -58,6 +58,157 @@ class OkfSemanticTest(unittest.TestCase):
         profile["panels"]["right"] = {"tabs": ["overview", "data"], "default_tab": "evidence"}
         self.assertTrue(okf_semantic.schema_errors(profile, "presentation.schema.json"))
 
+    def test_provider_datapack_profiles_validate_the_bounded_snapshot_contract(self) -> None:
+        snapshot = "monday-2026-07-17-r2"
+        manifest = {
+            "schema": "okf-explorer-provider-datapack-manifest.v1",
+            "snapshot": snapshot,
+            "packCount": 1,
+            "packs": [
+                {
+                    "id": "ons-explore-local-statistics",
+                    "selector": {
+                        "field": "source_surface",
+                        "operator": "equals",
+                        "value": "ons-explore-local-statistics",
+                    },
+                    "path": "data/providers/ons-explore-local-statistics.json",
+                    "sha256": "b" * 64,
+                    "status": "known-drift",
+                    "lastChecked": "2026-07-23",
+                }
+            ],
+        }
+        pack = {
+            "schema": "okf-explorer-provider-datapack.v1",
+            "snapshot": snapshot,
+            "id": "ons-explore-local-statistics",
+            "provider": {
+                "id": "ons-explore-local-statistics",
+                "title": "ONS Explore Local Statistics",
+                "liveServiceUrl": "https://www.ons.gov.uk/explore-local-statistics/",
+                "repositoryUrl": "https://github.com/ONSdigital/explore-local-statistics-app",
+            },
+            "selector": manifest["packs"][0]["selector"],
+            "governedSnapshot": {
+                "status": "governed-pinned-snapshot",
+                "label": "Governed snapshot",
+                "snapshotId": snapshot,
+                "recordCount": 108,
+                "sourceCommit": "795eaf204f47986f6be248a63f857a42afe4fdf2",
+                "sourceCommitShort": "795eaf2",
+                "sourceAsOf": "2026-07-17T08:35:03Z",
+                "sourceAsOfBasis": "provenance.source_commit_as_of",
+                "metadataOnly": True,
+                "observationsIncluded": False,
+                "records": [
+                    {
+                        "recordId": "ons-explore-local-statistics:indicator:average-house-price",
+                        "title": "Average house price",
+                        "timeCoverageEnd": "2026-04-01/P1M",
+                    }
+                ],
+            },
+            "reviewedLiveReference": {
+                "status": "reviewed-reference-not-live-validated",
+                "label": "Reviewed upstream state on 23 July 2026",
+                "lastChecked": "2026-07-23",
+                "network": "external",
+                "liveServiceUrl": "https://www.ons.gov.uk/explore-local-statistics/",
+                "repositoryUrl": "https://github.com/ONSdigital/explore-local-statistics-app",
+                "sourceCommit": "d5f0ac948f8f2f5da2dacd0011ef4e4778918b01",
+                "sourceCommitShort": "d5f0ac9",
+                "sourceCommitAsOf": "2026-07-22T13:44:20Z",
+                "metadataInputSha256": "a" * 64,
+                "records": [
+                    {
+                        "recordId": "ons-explore-local-statistics:indicator:average-house-price",
+                        "title": "Average house price",
+                        "timeCoverageEnd": "2026-05-01/P1M",
+                    }
+                ],
+            },
+            "comparison": {
+                "status": "known-drift",
+                "comparisonAsOf": "2026-07-23",
+                "summary": "The bounded reviewed reference contains a known record difference.",
+                "evidenceScope": "reviewed-record-examples",
+                "exhaustive": False,
+                "executionRequiresLiveValidation": True,
+                "differences": [
+                    {
+                        "recordId": "ons-explore-local-statistics:indicator:average-house-price",
+                        "title": "Average house price",
+                        "fields": [
+                            {
+                                "field": "timeCoverage.end",
+                                "snapshot": "2026-04-01/P1M",
+                                "reviewedLiveReference": "2026-05-01/P1M",
+                            }
+                        ],
+                    }
+                ],
+            },
+            "presentation": {
+                "snapshotLabel": "Governed snapshot",
+                "liveLabel": "Reviewed live reference",
+                "lastCheckedWording": "Last checked 23 July 2026; not live-validated here.",
+                "notice": "The external service may have changed since review.",
+                "actions": [
+                    {
+                        "id": "open-live-indicator",
+                        "label": "Open live indicator",
+                        "kind": "external-link",
+                        "urlTemplate": "https://www.ons.gov.uk/explore-local-statistics/indicators/{native_id}",
+                        "network": "external",
+                    },
+                    {
+                        "id": "open-live-service",
+                        "label": "Open live service",
+                        "kind": "external-link",
+                        "urlTemplate": "https://www.ons.gov.uk/explore-local-statistics/",
+                        "network": "external",
+                    },
+                ],
+            },
+        }
+
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(manifest, "provider-datapack-manifest.schema.json"),
+        )
+        self.assertEqual([], okf_semantic.schema_errors(pack, "provider-datapack.schema.json"))
+
+        unsafe_manifest = json.loads(json.dumps(manifest))
+        unsafe_manifest["packs"][0]["path"] = "%2e%2e/provider.json"
+        self.assertTrue(
+            okf_semantic.schema_errors(
+                unsafe_manifest, "provider-datapack-manifest.schema.json"
+            )
+        )
+
+        exhaustive_pack = json.loads(json.dumps(pack))
+        exhaustive_pack["comparison"]["exhaustive"] = True
+        self.assertTrue(
+            okf_semantic.schema_errors(exhaustive_pack, "provider-datapack.schema.json")
+        )
+
+        aligned_with_differences = json.loads(json.dumps(pack))
+        aligned_with_differences["comparison"]["status"] = "aligned"
+        self.assertTrue(
+            okf_semantic.schema_errors(
+                aligned_with_differences, "provider-datapack.schema.json"
+            )
+        )
+
+        unsafe_action_pack = json.loads(json.dumps(pack))
+        unsafe_action_pack["presentation"]["actions"][0]["urlTemplate"] = (
+            "https://example.test/{record_id}"
+        )
+        self.assertTrue(
+            okf_semantic.schema_errors(unsafe_action_pack, "provider-datapack.schema.json")
+        )
+
     def test_yaml_12_and_yaml_ld_representation_rules(self) -> None:
         document = okf_semantic.load_yaml_ld_text("yes: no\nwhen: 2026-07-11\n")
         self.assertEqual({"yes": "no", "when": "2026-07-11"}, document)
