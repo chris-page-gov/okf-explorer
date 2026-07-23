@@ -61,6 +61,19 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added optional `okf-explorer-provider-datapack.v1` loading for large corpora,
+  with formal pack/manifest schemas, required governed-snapshot bindings,
+  SHA-256 manifest/pack integrity, bundle-base-path validation, non-exhaustive
+  reviewed comparison evidence, HTTPS-only provider actions, and visible
+  bundle, record/search and inherited resource status. Matching records outside
+  the bounded comparison are labelled as not reviewed, while paired examples
+  without a recorded difference are labelled as aligned only in reviewed
+  fields. Paired rows with changed known fields require exact, unique difference
+  evidence and fail closed when it is missing; declared differences must also
+  reference paired examples and match their known values. The deterministic ONS
+  fixture demonstrates a governed April 2026 Average house price snapshot
+  alongside a May 2026 reviewed upstream reference without claiming live
+  validation.
 - Added an experimental bundle-level Explorer presentation profile and a more
   compact facet workspace: provider labels/order/control defaults, bundle-local
   user pin/hide/reorder preferences, complete-data distribution strips,
