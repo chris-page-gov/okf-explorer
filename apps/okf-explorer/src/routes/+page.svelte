@@ -56,6 +56,16 @@
     smallNodeMetadataRows,
     smallNodeSearchText
   } from '$lib/viewer/smallNodePresentation';
+  import { conversationPresentation } from '$lib/viewer/conversationPresentation';
+  import {
+    planDirectedEdges,
+    planGraphLabelLayers,
+    quadraticEdgeGeometry,
+    type GraphBox,
+    type GraphEdgeGeometry,
+    type GraphLabelPlacement,
+    type GraphPoint
+  } from '$lib/viewer/graphPresentation';
   import {
     applyFacetPreferenceOrder,
     facetPreferenceOverrides as getFacetPreferenceOverrides,
@@ -218,15 +228,15 @@
     grouping?: LargeGraphGrouping;
   };
 
-  type GraphPoint = { x: number; y: number };
-  type GraphBox = { x: number; y: number; w: number; h: number };
-  type GraphLabel = {
-    x: number;
-    y: number;
-    anchor: 'start' | 'end' | 'middle';
+  type GraphLabel = GraphLabelPlacement;
+  type GraphEdgeLabelSpec = {
+    id: string;
     text: string;
-    box: GraphBox;
-    stable: boolean;
+    source: GraphPoint;
+    target: GraphPoint;
+    geometry: GraphEdgeGeometry;
+    showLabel: boolean;
+    selected?: boolean;
   };
   type GraphViewport = { x: number; y: number; w: number; h: number; baseW: number; baseH: number };
   type TimelineResolution = 'latest' | 'year' | 'quarter' | 'month';
@@ -331,6 +341,7 @@
   let graphDrag = $state<{ x: number; y: number; box: GraphViewport; moved: boolean } | null>(null);
   let graphSuppressClick = $state(false);
   let graphLabelPhase = $state(0);
+  let graphLabelsPaused = $state(false);
   let spreadPins = $state(false);
   let activeHelpKey = $state('');
   let largeSearchDebounce = $state<number | null>(null);
@@ -435,9 +446,10 @@
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
     window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) graphLabelsPaused = true;
     const labelTimer = window.setInterval(() => {
-      if (activeView === 'graph') graphLabelPhase = (graphLabelPhase + 1) % 100000;
-    }, 2200);
+      if (activeView === 'graph' && !graphLabelsPaused) graphLabelPhase = (graphLabelPhase + 1) % 100000;
+    }, 2000);
     return () => {
       loadRequest += 1;
       largeSearchRequest += 1;
@@ -637,6 +649,7 @@
         selectedId = hash;
         inspectedId = '';
         smallInspectedRelationship = null;
+        if (!nextView) activeView = conversationPresentation(smallCorpus.nodes[hash]) ? 'narrative' : 'reader';
       }
     }
   }
@@ -802,6 +815,7 @@
         bundleUrl = absoluteUrl;
         const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
+        if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
       }
       syncBundleUrlParam(absoluteUrl);
       suggestionsOpen = false;
@@ -911,6 +925,7 @@
 
   async function selectView(view: ViewMode) {
     activeView = view;
+    if (view === 'graph') graphLabelPhase = 0;
     await hydrateForView(view);
     syncExplorerUrl();
   }
@@ -1124,6 +1139,7 @@
     selectedId = id;
     inspectedId = '';
     smallInspectedRelationship = null;
+    graphLabelPhase = 0;
     activeView = activeView || 'reader';
     syncExplorerUrl();
   }
@@ -1145,6 +1161,7 @@
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedGraphGroup = '';
+    graphLabelPhase = 0;
     clearLargeApiPanel();
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
@@ -1629,25 +1646,9 @@
   }
 
   function graphPosition(index: number, count: number, radius: number, cx: number, cy: number) {
-    if (count <= 1) return { x: cx, y: cy };
+    if (count <= 0) return { x: cx, y: cy };
     const angle = -Math.PI / 2 + (index / count) * Math.PI * 2;
     return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
-  }
-
-  function trimmedEdgePoints(source: GraphPoint, target: GraphPoint, sourcePad = 28, targetPad = sourcePad) {
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const sourceTrim = Math.min(sourcePad, length / 3);
-    const targetTrim = Math.min(targetPad, length / 3);
-    const ux = dx / length;
-    const uy = dy / length;
-    return {
-      x1: source.x + ux * sourceTrim,
-      y1: source.y + uy * sourceTrim,
-      x2: target.x - ux * targetTrim,
-      y2: target.y - uy * targetTrim
-    };
   }
 
   function graphModel() {
@@ -1669,17 +1670,87 @@
     return getSmallRelationshipTitle(relationship, smallCorpus?.nodes);
   }
 
+  function smallGraphEdgeKey(relationship: OkfRelationship): string {
+    return `${relationship.source}>${relationship.target}:${smallRelationshipKind(relationship)}`;
+  }
+
+  function smallGraphEdgePlans(relationships: OkfRelationship[]) {
+    return planDirectedEdges(relationships.map((relationship) => ({
+      id: smallGraphEdgeKey(relationship),
+      source: relationship.source,
+      target: relationship.target,
+      label: smallRelationshipKind(relationship)
+    })));
+  }
+
+  function smallGraphEdgeLabelSpecs(
+    relationships: OkfRelationship[],
+    positions: Map<string, GraphPoint>,
+    edgePlans: ReturnType<typeof smallGraphEdgePlans>
+  ): GraphEdgeLabelSpec[] {
+    return relationships.flatMap((relationship) => {
+      const source = positions.get(relationship.source);
+      const target = positions.get(relationship.target);
+      if (!source || !target) return [];
+      const id = smallGraphEdgeKey(relationship);
+      const edgePlan = edgePlans.get(id);
+      return [{
+        id,
+        text: shortLabel(smallRelationshipKind(relationship), 32),
+        source,
+        target,
+        geometry: quadraticEdgeGeometry(source, target, 28, 28, edgePlan?.bend || 0, edgePlan?.labelT || 0.5),
+        showLabel: edgePlan?.showLabel ?? true,
+        selected: smallInspectedRelationship === relationship
+      }];
+    });
+  }
+
+  function smallGraphLabelNodes(nodes: OkfNode[]): LargeGraphNode[] {
+    return nodes.map((node) => ({
+      id: node.id,
+      label: node.title,
+      type: String(node.type || 'node').toLowerCase()
+    }));
+  }
+
   function inspectSmallRelationship(relationship: OkfRelationship) {
     smallInspectedRelationship = relationship;
     inspectedId = '';
     rightCollapsed = false;
   }
 
+  function inspectSmallGraphRelationship(relationship: OkfRelationship) {
+    if (graphSuppressClick) {
+      graphSuppressClick = false;
+      return;
+    }
+    inspectSmallRelationship(relationship);
+  }
+
+  function smallGraphNodeClick(id: string) {
+    if (graphSuppressClick) {
+      graphSuppressClick = false;
+      return;
+    }
+    inspectNode(id);
+  }
+
   function graphPositions(model: ReturnType<typeof graphModel>) {
+    if (selectedNode && model.nodes.some((node) => node.id === selectedNode.id)) {
+      const related = model.nodes.filter((node) => node.id !== selectedNode.id);
+      return new Map([
+        [selectedNode.id, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }],
+        ...related.map((node, index) => [
+          node.id,
+          graphPosition(index, related.length, 240, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2)
+        ] as [string, GraphPoint])
+      ]);
+    }
     return new Map(
       model.nodes.map((node, index) => [
         node.id,
-        graphPosition(index, model.nodes.length, selectedNode ? 210 : 250, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2)
+        graphPosition(index, model.nodes.length, 250, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2)
       ])
     );
   }
@@ -3930,17 +4001,9 @@
       ...lateral,
       { x: point.x, y: point.y - gap, anchor: 'middle' as const },
       { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const }
-    ].map((candidate) => ({ ...candidate, text, box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor), stable: true }));
+    ].map((candidate) => ({ ...candidate, text, box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor) }));
     const bounded = labels.filter(graphLabelInsideBounds);
     return bounded.length ? bounded : labels;
-  }
-
-  function boxesOverlap(left: GraphBox, right: GraphBox): boolean {
-    return left.x < right.x + right.w && left.x + left.w > right.x && left.y < right.y + right.h && left.y + left.h > right.y;
-  }
-
-  function pickGraphLabel(node: LargeGraphNode, point: GraphPoint, blockers: GraphBox[]): GraphLabel | null {
-    return graphLabelCandidates(node, point).find((label) => !blockers.some((box) => boxesOverlap(label.box, box))) || null;
   }
 
   function graphLabelPriority(node: LargeGraphNode, alwaysId: string): number {
@@ -3952,75 +4015,110 @@
     return 4;
   }
 
-  function graphLabelLayers(nodes: LargeGraphNode[], positions: Map<string, GraphPoint>, alwaysId: string) {
-    const labelBudget = nodes.length > 58 ? 18 : nodes.length > 34 ? 28 : 70;
-    const labelable = [...nodes]
-      .sort((left, right) => graphLabelPriority(left, alwaysId) - graphLabelPriority(right, alwaysId) || left.label.localeCompare(right.label))
-      .slice(0, labelBudget);
-    const blockers = nodes.map((node) => graphNodeBox(node, positions.get(node.id))).filter((box): box is GraphBox => Boolean(box));
-    const layout = new Map<string, GraphLabel>();
-    const always = alwaysId ? labelable.filter((node) => node.id === alwaysId || node.type === 'publisher') : [];
-    for (const node of always) {
-      const point = positions.get(node.id);
-      if (!point) continue;
-      const label = pickGraphLabel(node, point, blockers);
-      if (label) {
-        layout.set(node.id, label);
-        blockers.push(label.box);
-      }
-    }
-
-    const candidates = labelable
-      .filter((node) => !layout.has(node.id))
-      .map((node) => {
-        const point = positions.get(node.id);
-        const label = point ? pickGraphLabel(node, point, blockers) : null;
-        return label ? { node, label } : null;
-      })
-      .filter((value): value is { node: LargeGraphNode; label: GraphLabel } => Boolean(value));
-
-    const stable: Array<{ node: LargeGraphNode; label: GraphLabel }> = [];
-    const rotating: Array<{ node: LargeGraphNode; label: GraphLabel }> = [];
-    for (let index = 0; index < candidates.length; index += 1) {
-      const candidate = candidates[index];
-      const conflict = candidates.some((other, otherIndex) => otherIndex !== index && boxesOverlap(candidate.label.box, other.label.box));
-      if (conflict) rotating.push(candidate);
-      else stable.push(candidate);
-    }
-    stable.forEach(({ node, label }) => layout.set(node.id, { ...label, stable: true }));
-    const layers: Array<Array<{ node: LargeGraphNode; label: GraphLabel }>> = [];
-    for (const candidate of rotating) {
-      const layer = layers.find((items) => !items.some((item) => boxesOverlap(item.label.box, candidate.label.box)));
-      if (layer) layer.push(candidate);
-      else layers.push([candidate]);
-    }
-    const activeLayer = layers.length ? layers[graphLabelPhase % layers.length] : [];
-    activeLayer.forEach(({ node, label }) => layout.set(node.id, { ...label, stable: false }));
-    return layout;
+  function graphNodeLabelKey(id: string): string {
+    return `node:${id}`;
   }
 
-  function edgeKindLabels(model: ReturnType<typeof largeGraphModel>, positions: Map<string, GraphPoint>) {
-    const groups = new Map<string, { label: string; edgeCount: number; weightedCount: number; x: number; y: number }>();
-    for (const relationship of model.relationships) {
-      const source = positions.get(relationship.source);
-      const target = positions.get(relationship.target);
-      if (!source || !target) continue;
-      const group = groups.get(relationship.label) || { label: relationship.label, edgeCount: 0, weightedCount: 0, x: 0, y: 0 };
-      group.edgeCount += 1;
-      group.weightedCount += relationship.count || 1;
-      group.x += (source.x + target.x) / 2;
-      group.y += (source.y + target.y) / 2;
-      groups.set(relationship.label, group);
-    }
-    return [...groups.values()].map((group, index, all) => ({
-      text: `${group.label}${group.weightedCount > 1 ? ` x${group.weightedCount}` : ''}`,
-      x: group.x / group.edgeCount + 8,
-      y: group.y / group.edgeCount + (index - (all.length - 1) / 2) * 16 - 6
+  function graphEdgeLabelKey(id: string): string {
+    return `edge:${id}`;
+  }
+
+  function graphEdgeLabelCandidates(spec: GraphEdgeLabelSpec): GraphLabel[] {
+    const dx = spec.target.x - spec.source.x;
+    const dy = spec.target.y - spec.source.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    const labels = [0, 13, -13, 26, -26].map((offset) => {
+      const x = spec.geometry.labelX + nx * offset;
+      const y = spec.geometry.labelY + ny * offset;
+      return {
+        x,
+        y,
+        anchor: 'middle' as const,
+        text: spec.text,
+        box: graphLabelBox(spec.text, x, y, 'middle')
+      };
+    });
+    const bounded = labels.filter(graphLabelInsideBounds);
+    return bounded.length ? bounded : labels;
+  }
+
+  function graphPresentationLayers(
+    nodes: LargeGraphNode[],
+    positions: Map<string, GraphPoint>,
+    edgeLabels: GraphEdgeLabelSpec[],
+    alwaysNodeId: string
+  ) {
+    const obstacles = nodes.flatMap((node) => {
+      const box = graphNodeBox(node, positions.get(node.id));
+      return box ? [{ id: graphNodeLabelKey(node.id), box }] : [];
+    });
+    const nodeItems = nodes.flatMap((node) => {
+      const point = positions.get(node.id);
+      return point
+        ? [{
+            id: graphNodeLabelKey(node.id),
+            priority: graphLabelPriority(node, alwaysNodeId),
+            always: node.id === alwaysNodeId,
+            choices: graphLabelCandidates(node, point)
+          }]
+        : [];
+    });
+    const eligibleEdgeLabels = edgeLabels.length <= 36
+      ? edgeLabels.filter((edge) => edge.showLabel || edge.selected)
+      : edgeLabels.filter((edge) => edge.selected);
+    const edgeItems = eligibleEdgeLabels.map((edge) => ({
+      id: graphEdgeLabelKey(edge.id),
+      priority: edge.selected ? 1 : 5,
+      always: Boolean(edge.selected),
+      choices: graphEdgeLabelCandidates(edge)
     }));
+    return planGraphLabelLayers([...nodeItems, ...edgeItems], obstacles, graphLabelPhase);
   }
 
   function graphEdgeKey(edge: LargeGraphEdge): string {
     return `${edge.source}>${edge.target}:${edge.label}`;
+  }
+
+  function largeGraphEdgePlans(edges: LargeGraphEdge[]) {
+    return planDirectedEdges(edges.map((edge) => ({
+      id: graphEdgeKey(edge),
+      source: edge.source,
+      target: edge.target,
+      label: edge.label
+    })));
+  }
+
+  function largeGraphEdgeLabelSpecs(
+    model: LargeGraphModel,
+    positions: Map<string, GraphPoint>,
+    edgePlans: ReturnType<typeof largeGraphEdgePlans>
+  ): GraphEdgeLabelSpec[] {
+    const nodeMap = new Map(model.nodes.map((node) => [node.id, node]));
+    return model.relationships.flatMap((relationship) => {
+      const source = positions.get(relationship.source);
+      const target = positions.get(relationship.target);
+      if (!source || !target) return [];
+      const id = graphEdgeKey(relationship);
+      const edgePlan = edgePlans.get(id);
+      return [{
+        id,
+        text: shortLabel(`${relationship.label}${(relationship.count || 1) > 1 ? ` x${relationship.count}` : ''}`, 32),
+        source,
+        target,
+        geometry: quadraticEdgeGeometry(
+          source,
+          target,
+          graphNodeEdgePad(nodeMap.get(relationship.source)),
+          graphNodeEdgePad(nodeMap.get(relationship.target)),
+          edgePlan?.bend || 0,
+          edgePlan?.labelT || 0.5
+        ),
+        showLabel: edgePlan?.showLabel ?? true,
+        selected: largeHighlightedEdge === id
+      }];
+    });
   }
 
   function shouldHighlightGraphEdge(edge: LargeGraphEdge, model: ReturnType<typeof largeGraphModel>): boolean {
@@ -4040,6 +4138,14 @@
     largeHighlightedEdge = graphEdgeKey(edge);
     clearLargeApiPanel();
     rightCollapsed = false;
+  }
+
+  function inspectLargeGraphEdge(edge: LargeGraphEdge) {
+    if (graphSuppressClick) {
+      graphSuppressClick = false;
+      return;
+    }
+    inspectLargeEdge(edge);
   }
 
   function inspectLargeRelationship(relationship: LargeRelationship) {
@@ -4094,8 +4200,6 @@
 
   function beginGraphPan(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
-    const target = event.target;
-    if (target instanceof Element && target.closest('[data-route], [data-edge]')) return;
     graphDrag = { x: event.clientX, y: event.clientY, box: { ...graphViewport }, moved: false };
     (event.currentTarget as SVGSVGElement).setPointerCapture?.(event.pointerId);
   }
@@ -4267,6 +4371,11 @@
     <aside class="left-panel">
       <div class="panel-bar">
         <button aria-label="Toggle navigation" type="button" onclick={() => (leftCollapsed = !leftCollapsed)}>{leftCollapsed ? '›' : '‹'}</button>
+        {#if leftCollapsed}
+          <span class="panel-rail-label" title={source?.kind === 'large' ? largeLabelForRoute(largeSelectedRoute || largeInspectedRoute) : detailNode?.title || smallCorpus?.title || 'Browse'}>
+            {source?.kind === 'large' ? largeLabelForRoute(largeSelectedRoute || largeInspectedRoute) || 'Browse' : detailNode?.title || smallCorpus?.title || 'Browse'}
+          </span>
+        {/if}
       </div>
       <div class="left-content">
         {#if source?.kind === 'large'}
@@ -4856,17 +4965,31 @@
           {:else if activeView === 'graph'}
             {@const model = largeGraphModel()}
             {@const positions = largeGraphPositions(model)}
-            {@const labels = graphLabelLayers(model.nodes, positions, model.center)}
-            {@const edgeLabels = edgeKindLabels(model, positions)}
+            {@const edgePlans = largeGraphEdgePlans(model.relationships)}
+            {@const edgeLabelSpecs = largeGraphEdgeLabelSpecs(model, positions, edgePlans)}
+            {@const labelPlan = graphPresentationLayers(model.nodes, positions, edgeLabelSpecs, model.center)}
+            {@const labels = labelPlan.visible}
             <div class="graph-shell">
               <div class="graph-controls">
                 <div class="graph-buttons" aria-label="Graph controls">
                   <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
                   <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
                   <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
+                  {#if labelPlan.layerCount > 1}
+                    <button
+                      type="button"
+                      aria-label={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
+                      aria-pressed={graphLabelsPaused}
+                      title={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
+                      onclick={() => (graphLabelsPaused = !graphLabelsPaused)}
+                    >{graphLabelsPaused ? 'Cycle labels' : 'Pause labels'}</button>
+                  {/if}
                 </div>
                 <div class="graph-summary">
                   <strong>{model.nodes.length}</strong> nodes · <strong>{model.relationships.length}</strong> relationships
+                  {#if labelPlan.layerCount > 1}
+                    · label set <strong>{labelPlan.activeLayer + 1}/{labelPlan.layerCount}</strong>
+                  {/if}
                 </div>
                 <div class="legend" aria-label="Node type key">
                   {#each graphLegendItems() as [type, label]}
@@ -4884,6 +5007,7 @@
                 onpointermove={moveGraphPan}
                 onpointerup={endGraphPan}
                 onpointercancel={endGraphPan}
+                ondragstart={(event) => event.preventDefault()}
                 onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
               >
                 <defs>
@@ -4901,39 +5025,38 @@
                     {@const edgeHighlighted = shouldHighlightGraphEdge(relationship, model)}
                     {@const sourceNode = model.nodes.find((node) => node.id === relationship.source)}
                     {@const targetNode = model.nodes.find((node) => node.id === relationship.target)}
-                    {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos, graphNodeEdgePad(sourceNode), graphNodeEdgePad(targetNode))}
-                    <line
+                    {@const edgePlan = edgePlans.get(graphEdgeKey(relationship))}
+                    {@const edgeGeometry = quadraticEdgeGeometry(sourcePos, targetPos, graphNodeEdgePad(sourceNode), graphNodeEdgePad(targetNode), edgePlan?.bend || 0, edgePlan?.labelT || 0.5)}
+                    {@const edgeLabel = labels.get(graphEdgeLabelKey(graphEdgeKey(relationship)))}
+                    <path
+                      class="graph-edge"
                       class:highlight={edgeHighlighted}
                       class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}
-                      x1={edgeHit.x1}
-                      y1={edgeHit.y1}
-                      x2={edgeHit.x2}
-                      y2={edgeHit.y2}
+                      d={edgeGeometry.d}
                       marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
-                    ></line>
-                    <line
+                    ></path>
+                    <path
                       class="edge-hit"
                       data-edge={graphEdgeKey(relationship)}
                       role="button"
                       tabindex="0"
                       aria-label={relationshipTitle(relationship)}
-                      x1={edgeHit.x1}
-                      y1={edgeHit.y1}
-                      x2={edgeHit.x2}
-                      y2={edgeHit.y2}
-                      onclick={() => inspectLargeEdge(relationship)}
-                      onkeydown={(event) => keyboardActivate(event, () => inspectLargeEdge(relationship))}
+                      d={edgeGeometry.d}
+                      onclick={() => inspectLargeGraphEdge(relationship)}
+                      onkeydown={(event) => keyboardActivate(event, () => inspectLargeGraphEdge(relationship))}
                     >
                       <title>{relationshipTitle(relationship)}</title>
-                    </line>
+                    </path>
+                    {#if edgeLabel}
+                      <text class="edge-label" class:rotating={!edgeLabel.stable} data-label-key={graphEdgeKey(relationship)} x={edgeLabel.x} y={edgeLabel.y} text-anchor={edgeLabel.anchor}>
+                        {edgeLabel.text}
+                      </text>
+                    {/if}
                   {/if}
-                {/each}
-                {#each edgeLabels as edgeLabel}
-                  <text class="edge-label" x={edgeLabel.x} y={edgeLabel.y}>{edgeLabel.text}</text>
                 {/each}
                 {#each model.nodes as node}
                   {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
-                  {@const label = labels.get(node.id)}
+                  {@const label = labels.get(graphNodeLabelKey(node.id))}
                   {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack', 'facet-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
@@ -5348,15 +5471,31 @@
         {:else if activeView === 'graph'}
           {@const model = graphModel()}
           {@const positions = graphPositions(model)}
+          {@const edgePlans = smallGraphEdgePlans(model.relationships)}
+          {@const edgeLabelSpecs = smallGraphEdgeLabelSpecs(model.relationships, positions, edgePlans)}
+          {@const labelPlan = graphPresentationLayers(smallGraphLabelNodes(model.nodes), positions, edgeLabelSpecs, selectedId)}
+          {@const labels = labelPlan.visible}
           <div class="graph-shell">
             <div class="graph-controls">
               <div class="graph-buttons" aria-label="Graph controls">
                 <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
                 <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
                 <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
+                {#if labelPlan.layerCount > 1}
+                  <button
+                    type="button"
+                    aria-label={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
+                    aria-pressed={graphLabelsPaused}
+                    title={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
+                    onclick={() => (graphLabelsPaused = !graphLabelsPaused)}
+                  >{graphLabelsPaused ? 'Cycle labels' : 'Pause labels'}</button>
+                {/if}
               </div>
               <div class="graph-summary">
                 <strong>{model.nodes.length}</strong> nodes · <strong>{model.relationships.length}</strong> relationships
+                {#if labelPlan.layerCount > 1}
+                  · label set <strong>{labelPlan.activeLayer + 1}/{labelPlan.layerCount}</strong>
+                {/if}
               </div>
               <div class="legend" aria-label="Node type key">
                 {#each typeList.slice(0, 8) as type}
@@ -5374,6 +5513,7 @@
               onpointermove={moveGraphPan}
               onpointerup={endGraphPan}
               onpointercancel={endGraphPan}
+              ondragstart={(event) => event.preventDefault()}
               onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
             >
               <defs>
@@ -5389,45 +5529,51 @@
                 {@const targetPos = positions.get(relationship.target)}
                 {#if sourcePos && targetPos}
                   {@const edgeHighlighted = smallInspectedRelationship === relationship}
-                  {@const edgeHit = trimmedEdgePoints(sourcePos, targetPos)}
-                  <line
+                  {@const edgePlan = edgePlans.get(smallGraphEdgeKey(relationship))}
+                  {@const edgeGeometry = quadraticEdgeGeometry(sourcePos, targetPos, 28, 28, edgePlan?.bend || 0, edgePlan?.labelT || 0.5)}
+                  {@const edgeLabel = labels.get(graphEdgeLabelKey(smallGraphEdgeKey(relationship)))}
+                  <path
+                    class="graph-edge"
                     class:highlight={edgeHighlighted}
-                    x1={edgeHit.x1}
-                    y1={edgeHit.y1}
-                    x2={edgeHit.x2}
-                    y2={edgeHit.y2}
+                    d={edgeGeometry.d}
                     marker-end={edgeHighlighted ? 'url(#small-graph-arrow-highlight)' : 'url(#small-graph-arrow)'}
                   />
-                  <line
+                  <path
                     class="edge-hit"
-                    data-edge={`${relationship.source}>${relationship.target}:${smallRelationshipKind(relationship)}`}
+                    data-edge={smallGraphEdgeKey(relationship)}
                     role="button"
                     tabindex="0"
                     aria-label={smallRelationshipTitle(relationship)}
-                    x1={edgeHit.x1}
-                    y1={edgeHit.y1}
-                    x2={edgeHit.x2}
-                    y2={edgeHit.y2}
-                    onclick={() => inspectSmallRelationship(relationship)}
-                    onkeydown={(event) => keyboardActivate(event, () => inspectSmallRelationship(relationship))}
+                    d={edgeGeometry.d}
+                    onclick={() => inspectSmallGraphRelationship(relationship)}
+                    onkeydown={(event) => keyboardActivate(event, () => inspectSmallGraphRelationship(relationship))}
                   >
                     <title>{smallRelationshipTitle(relationship)}</title>
-                  </line>
+                  </path>
+                  {#if edgeLabel}
+                    <text class="edge-label" class:rotating={!edgeLabel.stable} data-label-key={smallGraphEdgeKey(relationship)} x={edgeLabel.x} y={edgeLabel.y} text-anchor={edgeLabel.anchor}>
+                      {edgeLabel.text}
+                    </text>
+                  {/if}
                 {/if}
               {/each}
               {#each model.nodes as node}
                 {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
+                {@const label = labels.get(graphNodeLabelKey(node.id))}
                 <g
                   class:active={node.id === selectedId || node.id === inspectedId}
                   data-route={node.id}
                   role="button"
                   tabindex="0"
-                  onclick={() => inspectNode(node.id)}
+                  onclick={() => smallGraphNodeClick(node.id)}
                   ondblclick={() => selectNode(node.id)}
-                  onkeydown={(event) => keyboardActivate(event, () => inspectNode(node.id))}
+                  onkeydown={(event) => keyboardActivate(event, () => smallGraphNodeClick(node.id))}
                 >
                   <circle cx={pos.x} cy={pos.y} r={node.id === selectedId ? 15 : 10}></circle>
-                  <text x={pos.x + 16} y={pos.y + 5}>{shortLabel(node.title, 52)}</text>
+                  {#if label}
+                    <rect class="label-hit" x={label.box.x} y={label.box.y} width={label.box.w} height={label.box.h} rx="4"></rect>
+                    <text class:rotating={!label.stable} x={label.x} y={label.y} text-anchor={label.anchor}>{label.text}</text>
+                  {/if}
                 </g>
               {/each}
             </svg>
@@ -5457,14 +5603,34 @@
             {/each}
           </section>
         {:else if activeView === 'timeline'}
-          <section class="timeline-view">
-            {#each visibleNodes.filter((node) => node.timestamp).sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp))).slice(0, 120) as node}
-              <button type="button" onclick={() => inspectNode(node.id)}>
-                <time>{String(node.timestamp).slice(0, 10)}</time>
-                <div><strong>{node.title}</strong><span>{node.type || 'Node'}</span></div>
-              </button>
-            {/each}
-          </section>
+          {@const conversation = conversationPresentation(detailNode)}
+          {#if conversation}
+            <section class="conversation-timeline" aria-label={`Conversation timeline for ${detailNode?.title || 'selected exchange'}`}>
+              <header>
+                <h2>{detailNode?.title}</h2>
+                <p>Prompt and responses in recorded order.</p>
+              </header>
+              <article class="conversation-event prompt-event">
+                <div><strong>User prompt</strong><time>{String(detailNode?.timestamp || '')}</time></div>
+                <section class="markdown-body">{@html renderSafeMarkdown(conversation.prompt, source?.kind === 'small' ? source.url : '')}</section>
+              </article>
+              {#each conversation.responses as response}
+                <article class:final-event={response.kind === 'final_answer'} class="conversation-event">
+                  <div><strong>Response {response.number} ({response.kind})</strong><time>{response.timestamp}</time></div>
+                  <section class="markdown-body">{@html renderSafeMarkdown(response.text, source?.kind === 'small' ? source.url : '')}</section>
+                </article>
+              {/each}
+            </section>
+          {:else}
+            <section class="timeline-view">
+              {#each visibleNodes.filter((node) => node.timestamp).sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp))).slice(0, 120) as node}
+                <button type="button" onclick={() => inspectNode(node.id)}>
+                  <time>{String(node.timestamp).slice(0, 10)}</time>
+                  <div><strong>{node.title}</strong><span>{node.type || 'Node'}</span></div>
+                </button>
+              {/each}
+            </section>
+          {/if}
         {:else if activeView === 'resources'}
           <section class="resource-stack-view">
             {#each visibleNodes.filter((node) => String(node.type || '').toLowerCase().includes('resource') || node.source).slice(0, 120) as node}
@@ -5487,35 +5653,67 @@
             onfilter={setGeospatialFilter}
           />
         {:else if activeView === 'narrative'}
-          <section class="narrative-view">
-            <article>
-              <h2>{smallCorpus.title}</h2>
-              <p>{smallCorpus.description || 'This OKF bundle is shown as a reduced set of nodes and relationships. Search and node-type filters in the left panel change the context used by every view.'}</p>
-            </article>
-            <div class="metrics">
-              <article><strong>{visibleNodes.length.toLocaleString()}</strong><span>visible nodes</span></article>
-              <article><strong>{scopedRelationships.length.toLocaleString()}</strong><span>visible relationships</span></article>
-              <article><strong>{typeList.length.toLocaleString()}</strong><span>node types</span></article>
-              <article><strong>{pins.length.toLocaleString()}</strong><span>pins</span></article>
-            </div>
-            <div class="overview-grid">
-              <section>
-                <h3>Visible node types</h3>
-                {#each typeList as type}
-                  <button type="button" onclick={() => { visibleTypes = new Set([type]); }}>
-                    {type}<span>{visibleNodes.filter((node) => (node.type || 'Node') === type).length.toLocaleString()} visible</span>
-                  </button>
+          {@const conversation = conversationPresentation(detailNode)}
+          {#if conversation}
+            <section class="conversation-narrative" aria-label={`Conversation narrative for ${detailNode?.title || 'selected exchange'}`}>
+              <header>
+                <h2>{detailNode?.title}</h2>
+                <p>The question and final answer are foregrounded; commentary remains below in recorded order.</p>
+              </header>
+              <div class="conversation-pair">
+                <article class="conversation-card prompt-card">
+                  <h3>User prompt</h3>
+                  <div class="markdown-body">{@html renderSafeMarkdown(conversation.prompt, source?.kind === 'small' ? source.url : '')}</div>
+                </article>
+                <article class="conversation-card final-card">
+                  <h3>{conversation.final?.kind === 'final_answer' ? 'Final answer' : 'Latest response'}</h3>
+                  {#if conversation.final?.timestamp}<time>{conversation.final.timestamp}</time>{/if}
+                  <div class="markdown-body">{@html renderSafeMarkdown(conversation.final?.text || '_No response captured._', source?.kind === 'small' ? source.url : '')}</div>
+                </article>
+              </div>
+              <section class="conversation-commentary">
+                <h3>Commentary timeline</h3>
+                {#each conversation.commentary as response}
+                  <article class="conversation-card commentary-card">
+                    <div><strong>Response {response.number}</strong><time>{response.timestamp}</time></div>
+                    <div class="markdown-body">{@html renderSafeMarkdown(response.text, source?.kind === 'small' ? source.url : '')}</div>
+                  </article>
+                {:else}
+                  <p class="muted">No commentary responses were captured.</p>
                 {/each}
               </section>
-              <section>
-                <h3>Evidence views</h3>
-                <button type="button" onclick={() => void selectView('graph')}>Graph<span>direct relationship structure</span></button>
-                <button type="button" onclick={() => void selectView('links')}>Links<span>typed relationships</span></button>
-                <button type="button" onclick={() => void selectView('timeline')}>Timeline<span>dated nodes</span></button>
-                <button type="button" onclick={() => void selectView('map')}>Map<span>spatial evidence and coverage</span></button>
-              </section>
-            </div>
-          </section>
+            </section>
+          {:else}
+            <section class="narrative-view">
+              <article>
+                <h2>{smallCorpus.title}</h2>
+                <p>{smallCorpus.description || 'This OKF bundle is shown as a reduced set of nodes and relationships. Search and node-type filters in the left panel change the context used by every view.'}</p>
+              </article>
+              <div class="metrics">
+                <article><strong>{visibleNodes.length.toLocaleString()}</strong><span>visible nodes</span></article>
+                <article><strong>{scopedRelationships.length.toLocaleString()}</strong><span>visible relationships</span></article>
+                <article><strong>{typeList.length.toLocaleString()}</strong><span>node types</span></article>
+                <article><strong>{pins.length.toLocaleString()}</strong><span>pins</span></article>
+              </div>
+              <div class="overview-grid">
+                <section>
+                  <h3>Visible node types</h3>
+                  {#each typeList as type}
+                    <button type="button" onclick={() => { visibleTypes = new Set([type]); }}>
+                      {type}<span>{visibleNodes.filter((node) => (node.type || 'Node') === type).length.toLocaleString()} visible</span>
+                    </button>
+                  {/each}
+                </section>
+                <section>
+                  <h3>Evidence views</h3>
+                  <button type="button" onclick={() => void selectView('graph')}>Graph<span>direct relationship structure</span></button>
+                  <button type="button" onclick={() => void selectView('links')}>Links<span>typed relationships</span></button>
+                  <button type="button" onclick={() => void selectView('timeline')}>Timeline<span>dated nodes</span></button>
+                  <button type="button" onclick={() => void selectView('map')}>Map<span>spatial evidence and coverage</span></button>
+                </section>
+              </div>
+            </section>
+          {/if}
         {:else}
           <section class="type-view">
             {#each typeList as type}
@@ -5551,6 +5749,11 @@
     <aside class="right-panel">
       <div class="panel-bar">
         <button aria-label="Toggle details" type="button" onclick={() => (rightCollapsed = !rightCollapsed)}>{rightCollapsed ? '‹' : '›'}</button>
+        {#if rightCollapsed}
+          <span class="panel-rail-label" title={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) : detailNode?.title || 'Details'}>
+            {source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Details' : detailNode?.title || 'Details'}
+          </span>
+        {/if}
       </div>
       <div class="detail">
         {#if source?.kind === 'large'}

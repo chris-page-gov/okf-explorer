@@ -86,9 +86,14 @@ const records = Array.from({ length: ONS_RECORD_COUNT }, (_unused, ordinal) => {
     publisher: 'office-for-national-statistics',
     publisher_title: 'Office for National Statistics',
     resource_count: 1,
-    formats: ['CSV'],
-    tags: ['deterministic-fixture'],
-    topics: [topic],
+    formats: isElsExample ? ['CSV Collection'] : ['CSV'],
+    tags: isElsExample
+      ? ['Metadata', 'Great Britain', 'CSV Collection', 'Copy Item', 'APR_2016', 'Address Products', '2018', 'NSAL']
+      : ['deterministic-fixture'],
+    topics: isElsExample
+      ? ['NSAL', 'Metadata', 'Great Britain', 'CSV Collection', 'Copy Item', 'APR_2018', '2018', 'Address Products']
+      : [topic],
+    license_id: isElsExample ? 'open-government-licence-v3' : '',
     timestamp: `2026-07-${String((ordinal % 20) + 1).padStart(2, '0')}T12:00:00Z`,
     metadata_modified: `2026-07-${String((ordinal % 20) + 1).padStart(2, '0')}T12:00:00Z`,
     record_type: 'ONS metadata record',

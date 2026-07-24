@@ -322,6 +322,27 @@ input:focus {
   background: var(--surface-2);
 }
 
+.panel-rail-label {
+  min-height: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+
+.leftCollapsed .left-panel .panel-bar,
+.rightCollapsed .right-panel .panel-bar {
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow: hidden;
+}
+
 .right-panel .panel-bar {
   justify-content: flex-start;
 }
@@ -330,6 +351,9 @@ input:focus {
 .detail {
   min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
   padding: 12px;
 }
 
@@ -1609,28 +1633,33 @@ input:focus {
   user-select: none;
 }
 
-.graph.dragging {
+.graph.dragging,
+.graph.dragging * {
   cursor: grabbing;
 }
 
-.graph line {
+.graph line,
+.graph .graph-edge {
   stroke: #9aaaba;
   stroke-width: 1.2;
   pointer-events: none;
 }
 
-.graph line.highlight {
+.graph line.highlight,
+.graph .graph-edge.highlight {
   stroke: var(--accent);
   stroke-width: 3;
 }
 
-.graph line.selected {
+.graph line.selected,
+.graph .graph-edge.selected {
   stroke: var(--selected-edge);
   stroke-width: 5;
   filter: drop-shadow(0 0 2px var(--focus));
 }
 
 .graph .edge-hit {
+  fill: none;
   stroke: transparent;
   stroke-width: 10;
   pointer-events: stroke;
@@ -1647,6 +1676,18 @@ input:focus {
 .graph polygon {
   stroke: #fff;
   stroke-width: 2;
+}
+
+.graph .graph-edge {
+  fill: none;
+  stroke: #9aaaba;
+  stroke-width: 1.2;
+}
+
+.graph .edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 10;
 }
 
 .graph g.active circle,
@@ -1924,6 +1965,85 @@ input:focus {
   margin: 0 0 10px;
 }
 
+.conversation-narrative,
+.conversation-timeline {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.conversation-narrative > header h2,
+.conversation-narrative > header p,
+.conversation-timeline > header h2,
+.conversation-timeline > header p,
+.conversation-commentary > h3 {
+  margin: 0;
+}
+
+.conversation-narrative > header p,
+.conversation-timeline > header p {
+  color: var(--muted);
+}
+
+.conversation-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.conversation-card,
+.conversation-event {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.conversation-card h3 {
+  margin: 0 0 8px;
+}
+
+.conversation-card time,
+.conversation-event time {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.prompt-card,
+.prompt-event {
+  border-left: 5px solid var(--accent);
+}
+
+.final-card,
+.final-event {
+  border-right: 5px solid var(--accent-2);
+}
+
+.conversation-commentary {
+  display: grid;
+  gap: 10px;
+}
+
+.commentary-card > div:first-child,
+.conversation-event > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.conversation-event {
+  display: grid;
+  grid-template-columns: minmax(150px, 230px) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.conversation-event .markdown-body,
+.conversation-card .markdown-body {
+  margin-top: 0;
+}
+
 .ontology-panel {
   display: grid;
   gap: 10px;
@@ -2150,6 +2270,62 @@ button.chip:focus {
   color: var(--muted);
 }
 
+.markdown-table-wrap {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.markdown-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown-table-wrap th,
+.markdown-table-wrap td {
+  min-width: 120px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-table-wrap th {
+  background: var(--surface-2);
+}
+
+.mermaid-lite {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  margin: 12px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+
+.mermaid-lite .mermaid-node rect {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.mermaid-lite .mermaid-node text {
+  fill: var(--ink);
+  font: 13px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.mermaid-lite .mermaid-edge {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 2;
+}
+
+.mermaid-lite .mermaid-arrow {
+  fill: var(--line-strong);
+}
+
 .standard-term {
   padding: 1px 4px;
   border: 1px solid var(--line);
@@ -2311,10 +2487,27 @@ button.chip:focus {
 
   .left-panel,
   .right-panel {
+    height: 45dvh;
     max-height: 45vh;
+  }
+
+  .conversation-pair,
+  .conversation-event {
+    grid-template-columns: 1fr;
   }
 
   .splitter {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
