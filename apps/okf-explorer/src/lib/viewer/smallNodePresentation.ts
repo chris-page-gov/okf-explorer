@@ -72,6 +72,146 @@ function inlineMarkdown(value: string, baseUrl: string): string {
     .replace(/\u0000OKF(\d+)\u0000/g, (_match, index: string) => tokens[Number(index)] || '');
 }
 
+function isTableLine(line: string): boolean {
+  return /^\s*\|.*\|\s*$/.test(line);
+}
+
+function isTableDelimiter(line: string): boolean {
+  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+}
+
+function splitTableRow(line: string): string[] {
+  return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
+}
+
+function renderTable(rows: string[], baseUrl: string): string {
+  const headings = splitTableRow(rows[0]);
+  const body = rows.slice(1).map(splitTableRow);
+  return `<div class="markdown-table-wrap"><table><thead><tr>${headings.map((heading) => `<th>${inlineMarkdown(heading, baseUrl)}</th>`).join('')}</tr></thead><tbody>${body.map((row) => `<tr>${headings.map((_heading, index) => `<td>${inlineMarkdown(row[index] || '', baseUrl)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+function mermaidNodeToken(value: string, nodes: Map<string, string>): string {
+  const token = value.trim().replace(/;$/, '');
+  const match = /^([A-Za-z][A-Za-z0-9_-]*)(?:\["?([^\]]+?)"?\]|\((?:"?)([^)]+?)(?:"?)\))?$/.exec(token);
+  if (!match) return '';
+  const id = match[1];
+  const label = (match[2] || match[3] || id).replace(/^"|"$/g, '').replace(/\\n/g, '\n');
+  if (!nodes.has(id)) nodes.set(id, label);
+  return id;
+}
+
+function wrapMermaidLabel(value: string): string[] {
+  const lines: string[] = [];
+  for (const sourceLine of value.split('\n')) {
+    let line = '';
+    for (const word of sourceLine.split(/\s+/)) {
+      if (!word) continue;
+      if (`${line} ${word}`.trim().length > 24) {
+        if (line) lines.push(line);
+        line = word;
+      } else {
+        line = `${line} ${word}`.trim();
+      }
+    }
+    if (line) lines.push(line);
+  }
+  return lines.length ? lines : [value];
+}
+
+function renderMermaidLite(source: string): string {
+  const lines = source.split('\n').map((line) => line.trim()).filter((line) => line && !line.startsWith('%%'));
+  const heading = lines.shift() || '';
+  const mode = /^(?:flowchart|graph)\s+(LR|RL|TD|TB)$/i.exec(heading);
+  if (!mode) return `<pre><code>${escapeHtml(source)}</code></pre>`;
+
+  const nodes = new Map<string, string>();
+  const edges: Array<[string, string]> = [];
+  for (const line of lines) {
+    const parts = line.replace(/;$/, '').split(/\s*(?:-->|==>|-\.->)\s*/);
+    if (parts.length < 2) continue;
+    const ids = parts.map((part) => mermaidNodeToken(part, nodes));
+    for (let index = 0; index < ids.length - 1; index += 1) {
+      if (ids[index] && ids[index + 1]) edges.push([ids[index], ids[index + 1]]);
+    }
+  }
+  const ids = [...nodes.keys()];
+  if (!ids.length) return `<pre><code>${escapeHtml(source)}</code></pre>`;
+
+  const incoming = new Map(ids.map((id) => [id, 0]));
+  edges.forEach(([, target]) => incoming.set(target, (incoming.get(target) || 0) + 1));
+  const rank = new Map(ids.map((id) => [id, 0]));
+  const queue = ids.filter((id) => !incoming.get(id));
+  const visit = queue.length ? [...queue] : [...ids];
+  let guard = 0;
+  for (let index = 0; index < visit.length && guard < ids.length * ids.length * 4; index += 1, guard += 1) {
+    const id = visit[index];
+    for (const [sourceId, targetId] of edges) {
+      const nextRank = Math.min(ids.length - 1, (rank.get(sourceId) || 0) + 1);
+      if (sourceId === id && (rank.get(targetId) || 0) < nextRank) {
+        rank.set(targetId, nextRank);
+        visit.push(targetId);
+      }
+    }
+  }
+
+  const ranks = [...new Set(ids.map((id) => rank.get(id) || 0))].sort((left, right) => left - right);
+  const reverse = ['RL', 'BT'].includes(mode[1].toUpperCase());
+  if (reverse) ranks.reverse();
+  const groups = new Map(ranks.map((value) => [value, ids.filter((id) => (rank.get(id) || 0) === value)]));
+  const horizontal = ['LR', 'RL'].includes(mode[1].toUpperCase());
+  const nodeW = 190;
+  const nodeH = 76;
+  const gapX = 62;
+  const gapY = 34;
+  const pad = 28;
+  const maxGroup = Math.max(...ranks.map((value) => groups.get(value)?.length || 0));
+  const width = horizontal
+    ? pad * 2 + ranks.length * nodeW + Math.max(0, ranks.length - 1) * gapX
+    : pad * 2 + maxGroup * nodeW + Math.max(0, maxGroup - 1) * gapX;
+  const height = horizontal
+    ? pad * 2 + maxGroup * nodeH + Math.max(0, maxGroup - 1) * gapY
+    : pad * 2 + ranks.length * nodeH + Math.max(0, ranks.length - 1) * gapY;
+  const positions = new Map<string, { x: number; y: number }>();
+  ranks.forEach((value, rankIndex) => {
+    (groups.get(value) || []).forEach((id, itemIndex) => {
+      positions.set(id, horizontal
+        ? { x: pad + rankIndex * (nodeW + gapX), y: pad + itemIndex * (nodeH + gapY) }
+        : { x: pad + itemIndex * (nodeW + gapX), y: pad + rankIndex * (nodeH + gapY) });
+    });
+  });
+
+  let hash = 0;
+  for (const character of source) hash = (hash * 31 + character.charCodeAt(0)) | 0;
+  const marker = `mermaid-arrow-${Math.abs(hash)}`;
+  let svg = `<svg class="mermaid-lite" viewBox="0 0 ${width} ${height}" role="img" aria-label="Mermaid flowchart"><title>Flowchart generated from Mermaid source</title><defs><marker id="${marker}" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path class="mermaid-arrow" d="M0,0 L10,4 L0,8 Z"></path></marker></defs>`;
+  for (const [sourceId, targetId] of edges) {
+    const sourcePoint = positions.get(sourceId);
+    const targetPoint = positions.get(targetId);
+    if (!sourcePoint || !targetPoint) continue;
+    const sourceX = horizontal ? sourcePoint.x + nodeW : sourcePoint.x + nodeW / 2;
+    const sourceY = horizontal ? sourcePoint.y + nodeH / 2 : sourcePoint.y + nodeH;
+    const targetX = horizontal ? targetPoint.x : targetPoint.x + nodeW / 2;
+    const targetY = horizontal ? targetPoint.y + nodeH / 2 : targetPoint.y;
+    const control1X = horizontal ? sourceX + gapX * 0.45 : sourceX;
+    const control1Y = horizontal ? sourceY : sourceY + gapY * 0.45;
+    const control2X = horizontal ? targetX - gapX * 0.45 : targetX;
+    const control2Y = horizontal ? targetY : targetY - gapY * 0.45;
+    svg += `<path class="mermaid-edge" d="M${sourceX} ${sourceY} C${control1X} ${control1Y}, ${control2X} ${control2Y}, ${targetX} ${targetY}" marker-end="url(#${marker})"></path>`;
+  }
+  for (const id of ids) {
+    const point = positions.get(id);
+    if (!point) continue;
+    const labelLines = wrapMermaidLabel(nodes.get(id) || id).slice(0, 4);
+    const startY = point.y + nodeH / 2 - (labelLines.length - 1) * 7;
+    svg += `<g class="mermaid-node"><rect x="${point.x}" y="${point.y}" width="${nodeW}" height="${nodeH}" rx="7"></rect><text text-anchor="middle">`;
+    labelLines.forEach((line, index) => {
+      svg += `<tspan x="${point.x + nodeW / 2}" y="${startY + index * 15}">${escapeHtml(line)}</tspan>`;
+    });
+    svg += '</text></g>';
+  }
+  return `${svg}</svg>`;
+}
+
 export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
   const markdown = valueString(value).replace(/\r\n?/g, '\n');
   if (!markdown) return '';
@@ -82,6 +222,7 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
   let listItems: string[] = [];
   let fenced = false;
   let codeLines: string[] = [];
+  let codeLanguage = '';
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
@@ -95,13 +236,19 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
     listItems = [];
   };
 
-  for (const line of markdown.split('\n')) {
+  const lines = markdown.split('\n');
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
     if (/^\s*```/.test(line)) {
       flushParagraph();
       flushList();
       if (fenced) {
-        html.push(`<pre><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+        const code = codeLines.join('\n');
+        html.push(codeLanguage === 'mermaid' ? renderMermaidLite(code) : `<pre><code>${escapeHtml(code)}</code></pre>`);
         codeLines = [];
+        codeLanguage = '';
+      } else {
+        codeLanguage = line.trim().replace(/^`+/, '').trim().toLowerCase();
       }
       fenced = !fenced;
       continue;
@@ -113,6 +260,19 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
     if (!line.trim()) {
       flushParagraph();
       flushList();
+      continue;
+    }
+    if (isTableLine(line) && isTableDelimiter(lines[index + 1] || '')) {
+      flushParagraph();
+      flushList();
+      const rows = [line];
+      index += 2;
+      while (index < lines.length && isTableLine(lines[index])) {
+        rows.push(lines[index]);
+        index += 1;
+      }
+      index -= 1;
+      html.push(renderTable(rows, baseUrl));
       continue;
     }
     const heading = /^(#{1,6})\s+(.+)$/.exec(line);
@@ -149,7 +309,10 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
     flushList();
     paragraph.push(line.trim());
   }
-  if (fenced && codeLines.length) html.push(`<pre><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+  if (fenced && codeLines.length) {
+    const code = codeLines.join('\n');
+    html.push(codeLanguage === 'mermaid' ? renderMermaidLite(code) : `<pre><code>${escapeHtml(code)}</code></pre>`);
+  }
   flushParagraph();
   flushList();
   return html.join('');

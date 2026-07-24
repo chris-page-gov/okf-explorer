@@ -227,8 +227,9 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}');
   });
 
-  it('draws graph relationship arrows to trimmed icon boundaries', () => {
-    expect(pageSource).toContain('function trimmedEdgePoints(source: GraphPoint, target: GraphPoint');
-    expect(pageSource).toMatch(/<line\s+class:highlight=\{edgeHighlighted\}\s+x1=\{edgeHit\.x1\}\s+y1=\{edgeHit\.y1\}\s+x2=\{edgeHit\.x2\}\s+y2=\{edgeHit\.y2\}/);
+  it('draws directed graph curves to trimmed icon boundaries', () => {
+    expect(pageSource).toContain('quadraticEdgeGeometry(sourcePos, targetPos');
+    expect(pageSource).toMatch(/<path\s+class="graph-edge"\s+class:highlight=\{edgeHighlighted\}/);
+    expect(pageSource).toContain('d={edgeGeometry.d}');
   });
 });

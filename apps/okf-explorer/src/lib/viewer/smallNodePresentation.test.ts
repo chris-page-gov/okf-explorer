@@ -49,6 +49,27 @@ describe('small node presentation', () => {
     expect(html).not.toContain('javascript:');
   });
 
+  it('renders pipe tables and constrained Mermaid flowcharts without active content', () => {
+    const html = renderSafeMarkdown(`# Evidence
+
+| Field | Value |
+|---|---|
+| Source | [record](records/alpha.json) |
+
+\`\`\`mermaid
+flowchart LR
+  Source["Source record"] --> Explorer["OKF Explorer"]
+\`\`\`
+`, 'https://bundle.example/okf-bundle.json');
+
+    expect(html).toContain('<table>');
+    expect(html).toContain('<th>Field</th>');
+    expect(html).toContain('href="https://bundle.example/records/alpha.json"');
+    expect(html).toContain('<svg class="mermaid-lite"');
+    expect(html).toContain('Source record');
+    expect(html).toContain('marker-end=');
+  });
+
   it('resolves, redacts and deduplicates safe source and resource links', () => {
     expect(safeSmallNodeUrl('https://user:pass@example.test/private')).toBe('');
     expect(safeSmallNodeUrl('javascript:alert(1)', 'https://bundle.example/okf-bundle.json')).toBe('');

@@ -61,6 +61,24 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Added a maintained viewer capability inventory, feature matrix, conflict
+  register and regression contract across the classic OKF canvas, modern
+  LLM-Wiki, CFTE, OKFR, original CKAN and canonical Svelte lineages.
+- Added safe small-bundle Markdown tables and Mermaid-lite flowcharts, plus
+  exchange-aware Narrative and Timeline presentations that preserve user
+  prompts, final answers and chronological commentary.
+- Changed small- and large-corpus graphs to use complete non-overlapping
+  node-and-relationship label layers on a two-second cycle, with persistent
+  selected context, Pause/Resume and reduced-motion handling. Reciprocal
+  directed relationships now use distinct curves, collapse identical labels
+  and place different labels nearer their sources.
+- Fixed graph panning that previously failed when a drag began over a node or
+  relationship, suppressed native drag ghosts, retained context in folded side
+  rails, and made detail panels reliably touch-scrollable on mobile.
+- Added unit and Playwright regression coverage for label-layer completeness,
+  reciprocal edges, the ONS 21-node/20-relationship focus graph, graph panning,
+  safe rich Markdown, conversation views, collapsed context and Android-sized
+  detail scrolling.
 - Added optional `okf-explorer-provider-datapack.v1` loading for large corpora,
   with formal pack/manifest schemas, required governed-snapshot bindings,
   SHA-256 manifest/pack integrity, bundle-base-path validation, non-exhaustive

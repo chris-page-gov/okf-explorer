@@ -479,4 +479,41 @@ test.describe('large-corpus facet interaction contract', () => {
     );
     expect(ELS_RESOURCE_ID).toBe('els-average-house-price-source');
   });
+
+  test('FACET-E2E-08 cycles overlapping relationship labels in an ONS-shaped focus graph', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    await expect(graph).toBeVisible();
+    await expect(page.locator('.graph-summary')).toContainText('21 nodes · 20 relationships');
+    await expect(page.locator('.graph-summary')).toContainText(/label set \d+\/(?:[2-9]|\d{2,})/);
+    await expect(page.getByRole('button', { name: 'Pause cycling graph labels' })).toBeVisible();
+
+    const edgeLabels = graph.locator('.edge-label');
+    await expect.poll(() => edgeLabels.count()).toBeGreaterThan(0);
+    await expect.poll(() => edgeLabels.count()).toBeLessThan(20);
+
+    const visibleKeys = () => edgeLabels.evaluateAll((labels) => labels.map((label) => label.getAttribute('data-label-key')));
+    const firstKeys = await visibleKeys();
+    await page.waitForTimeout(2100);
+    expect(await visibleKeys()).not.toEqual(firstKeys);
+
+    const labels = graph.locator('g[data-route] > text:not(.stack-count), .edge-label');
+    const overlapCount = await labels.evaluateAll((elements) => {
+      const boxes = elements.map((element) => element.getBoundingClientRect());
+      let overlaps = 0;
+      for (let left = 0; left < boxes.length; left += 1) {
+        for (let right = left + 1; right < boxes.length; right += 1) {
+          const a = boxes[left];
+          const b = boxes[right];
+          if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top) overlaps += 1;
+        }
+      }
+      return overlaps;
+    });
+    expect(overlapCount).toBe(0);
+  });
 });

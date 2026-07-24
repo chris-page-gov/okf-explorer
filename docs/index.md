@@ -60,6 +60,10 @@ APIs exemplar, and related large-corpus OKF packs.
   and intentional deviations.
 - [Explorer overview context](explorer-overview-context.md) specifies the
   generated overview/analysis contract consumed by the Explorer.
+- [Viewer capability parity](viewer-capability-parity-2026-07-24.md) inventories
+  the LLM-Wiki and OKF viewer lineages, records the complete feature matrix,
+  and makes every retained, ported, equivalent, conflicting or remaining
+  capability explicit.
 - [Geospatial Map exploration](geospatial-map-exploration.md) specifies the
   deterministic Map canvas, spatial evidence levels, reduction state and
   progressive external-preview path being developed on the `geospatial`

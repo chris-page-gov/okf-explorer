@@ -39,6 +39,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
 - [Review the facet presentation experiment][facet-presentation-experiment]
+- [Review the viewer capability parity and conflict register][viewer-parity]
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
@@ -107,6 +108,9 @@ The repository contains:
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
   extensions.
+- `docs/viewer-capability-parity-2026-07-24.md` - complete LLM-Wiki and OKF
+  viewer inventory, feature matrix, conflict decisions and regression contract
+  for the canonical Svelte implementation.
 - `docs/facet-presentation-experiment.md` - experimental provider/user display
   contract for facet ordering, compact distributions, search and panel tabs.
 - `docs/provider-datapacks.md` - generic contract and UI rules for governed
@@ -194,7 +198,11 @@ Explorer product source. It supports the existing monolithic `okf-bundle.json`
 reader and the large-corpus `okf-explorer.json` descriptor path with
 worker-backed static search, lazy full-record hydration, relationship graph
 loading, scoped timeline/link/type/resource views, resource stacks, persistent
-bundle URL history, and route-addressable detail panels.
+bundle URL history, and route-addressable detail panels. The maintained viewer
+parity contract also covers complete non-overlapping node-and-relationship
+graph-label layers, reciprocal directed edges, safe Markdown tables and
+Mermaid-lite diagrams, conversation-aware Narrative and Timeline rendering,
+folded context rails, and touch-scrollable evidence panels.
 
 ```sh
 cd apps/okf-explorer
@@ -284,6 +292,7 @@ Pages to use **GitHub Actions** as the source.
 [geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
 [facet-presentation-experiment]: docs/facet-presentation-experiment.md
+[viewer-parity]: docs/viewer-capability-parity-2026-07-24.md
 [provider-datapacks]: docs/provider-datapacks.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md
