@@ -418,6 +418,21 @@ export async function loadLargeCorpus(
             Array.isArray(locator.buckets) ||
             Object.entries(locator.buckets).some(
               ([bucket, reference]) => !/^[0-9a-f]{2}$/.test(bucket) || !resourcePath(reference)
+            ) ||
+            (
+              locator.route_aliases !== undefined &&
+              (
+                !locator.route_aliases ||
+                typeof locator.route_aliases !== 'object' ||
+                Array.isArray(locator.route_aliases) ||
+                Object.entries(locator.route_aliases).some(
+                  ([alias, canonical]) =>
+                    !/^[a-z][a-z0-9-]*\/[^\s?#]+$/.test(alias) ||
+                    typeof canonical !== 'string' ||
+                    !/^[a-z][a-z0-9-]*\/[^\s?#]+$/.test(canonical) ||
+                    alias === canonical
+                )
+              )
             )
           ) {
             throw new Error('Record locator manifest is malformed');
@@ -515,7 +530,8 @@ export async function loadLargeCorpus(
       }
       const record = (await chunkPromise)[rowIndex];
       const observedRoute = record?.route || (record?.name ? `dataset/${record.name}` : '');
-      if (!record || observedRoute !== route) {
+      const canonicalRoute = locator.route_aliases?.[route] || route;
+      if (!record || observedRoute !== canonicalRoute) {
         throw new Error(`Record locator resolved ${route} to a different record`);
       }
       return record;
@@ -569,10 +585,16 @@ export async function loadLargeCorpus(
       return relationshipsPromise;
     },
     async loadRelationshipsForRoute(route: string) {
+      const locator = await recordLocator();
+      const relationshipRoute = locator?.route_aliases?.[route] || route;
       const adjacencyPath = descriptorEntrypoint(descriptor, 'relationship_adjacency') || manifest.indexes.relationship_adjacency;
       if (!adjacencyPath) {
         const result = await source.loadRelationships();
-        return result.relationships.filter((relationship) => relationship.source === route || relationship.target === route);
+        return result.relationships.filter(
+          (relationship) =>
+            relationship.source === relationshipRoute ||
+            relationship.target === relationshipRoute
+        );
       }
       if (!adjacencyManifestPromise) {
         adjacencyManifestPromise = fetchResource<LargeRelationshipAdjacencyManifest>(adjacencyPath);
@@ -585,7 +607,7 @@ export async function loadLargeCorpus(
       if (adjacencySnapshot && (!snapshot || adjacencySnapshot !== snapshot)) {
         throw new Error('Relationship adjacency manifest snapshot differs from the loaded bundle snapshot');
       }
-      const bucket = relationshipBucket(route);
+      const bucket = relationshipBucket(relationshipRoute);
       const bucketPath = adjacency.buckets[bucket];
       if (!bucketPath) return [];
       const bucketReference = integrityReference(bucketPath, adjacency.shards, 'Relationship adjacency shard');
@@ -595,7 +617,7 @@ export async function loadLargeCorpus(
         adjacencyBucketPromises.set(bucket, bucketPromise);
       }
       const rows = await bucketPromise;
-      return rows[route] || [];
+      return rows[relationshipRoute] || [];
     }
   };
   return source;
