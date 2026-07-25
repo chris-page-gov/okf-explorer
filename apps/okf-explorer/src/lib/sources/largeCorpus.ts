@@ -403,9 +403,9 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
         const request = (async () => {
           const operationalPath = descriptorEntrypoint(descriptor, 'operational_metadata') || manifest.indexes.operational_metadata;
           const [rawDatasets, resources, publishers, facets, graph, govukContent, operationalMetadata] = await Promise.all([
-            loadChunks<LargeDataset>(fetchResource, manifest.chunks.datasets || [], manifest.shards?.datasets, 'Dataset shard'),
-            loadChunks<LargeResource>(fetchResource, manifest.chunks.resources || [], manifest.shards?.resources, 'Resource shard'),
-            loadChunks<LargePublisher>(fetchResource, manifest.chunks.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
+            loadChunks<LargeDataset>(fetchResource, manifest.chunks?.datasets || manifest.chunks?.records || (manifest as Record<string, unknown>).record_shards as string[] || [], manifest.shards?.datasets || manifest.shards?.records, 'Dataset shard'),
+            loadChunks<LargeResource>(fetchResource, manifest.chunks?.resources || [], manifest.shards?.resources, 'Resource shard'),
+            loadChunks<LargePublisher>(fetchResource, manifest.chunks?.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
             source.loadFacetIndex(),
             manifest.indexes.graph ? fetchResource<LargeGraphIndex>(manifest.indexes.graph) : {},
             manifest.indexes.govuk_content ? fetchResource<LargeGovukContent>(manifest.indexes.govuk_content) : {},

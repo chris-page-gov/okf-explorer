@@ -645,19 +645,19 @@
     manifest = largeSearchClient?.manifest
   ): string[] {
     return [...new Set([
-      ...Object.keys(large.overview.facet_previews || {}),
-      ...(large.analysis?.facet_analysis || []).map((facet) => facet.key),
-      ...Object.keys(manifest?.entrypoints.filter_postings || {}),
-      ...Object.keys(largeFacetIndex),
-      ...Object.keys(largeIndex?.facets || {})
+      ...Object.keys(large?.overview?.facet_previews ?? {}),
+      ...(large?.analysis?.facet_analysis ?? []).map((facet) => facet.key),
+      ...Object.keys(manifest?.entrypoints?.filter_postings ?? {}),
+      ...Object.keys(largeFacetIndex ?? {}),
+      ...Object.keys(largeIndex?.facets ?? {})
     ])];
   }
 
   function knownLargeFacetValues(index: LargeFullIndex): Record<string, string[]> {
     return Object.fromEntries(
-      Object.entries(index.facets).map(([key, rows]) => [
+      Object.entries(index?.facets ?? {}).map(([key, rows]) => [
         key,
-        [...new Set([...rows.map((row) => row.value), MISSING_FILTER_VALUE])]
+        [...new Set([...(rows ?? []).map((row) => row.value), MISSING_FILTER_VALUE])]
       ])
     );
   }
@@ -2154,7 +2154,7 @@
   }
 
   function visibleLargeDatasets(): LargeDataset[] {
-    if (!largeIndex) return [];
+    if (!largeIndex?.datasets) return [];
     const queryActive = Boolean(largeAppliedQuery.trim());
     const rows = largeIndex.datasets.filter((dataset) => {
       if (queryActive && !largeResultNames.has(dataset.name)) return false;
@@ -2222,7 +2222,7 @@
     }
     const counts = new Map<string, number>();
     const queryActive = Boolean(largeAppliedQuery.trim());
-    for (const dataset of largeIndex.datasets) {
+    for (const dataset of (largeIndex?.datasets || [])) {
       if (queryActive && !largeResultNames.has(dataset.name)) continue;
       if (!datasetMatchesLargeFilters(dataset, key)) continue;
       for (const value of largeDatasetFacetValues(dataset, key)) counts.set(value, (counts.get(value) || 0) + 1);
@@ -6396,7 +6396,7 @@
           {:else if activeView === 'timeline'}
             <div class="view-heading">
               <h2>Timeline</h2>
-              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${source.manifest.counts.datasets.toLocaleString()} ${recordPlural()} in overview`}</span>
+              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.datasets ?? source.manifest.counts?.records ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
             </div>
             <div class="timeline-toolbar" aria-label="Timeline resolution">
               {#each ['latest', 'year', 'quarter', 'month'] as resolution}
@@ -7345,28 +7345,28 @@
                   <summary>Metadata quality signals</summary>
                   <dl>
                     <dt><span class="label-help">Overall<button class="info-icon" type="button" aria-label="Explain overall quality" onclick={() => toggleHelp('quality-overall')} onmouseenter={() => showHelp('quality-overall')} onmouseleave={() => hideHelp('quality-overall')} onfocus={() => showHelp('quality-overall')} onblur={() => hideHelp('quality-overall')}>i</button>{#if activeHelpKey === 'quality-overall'}<span class="info-bubble" role="tooltip">{helpText('quality-overall')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality.overall)}</dd>
-                    {#each Object.entries(largeDetail.dataset.quality.metrics || {}) as [key, value]}
+                    {#each Object.entries(largeDetail?.dataset?.quality?.metrics ?? {}) as [key, value]}
                       {@const qualityHelpKey = `quality-${key}`}
                       <dt><span class="label-help">{key.replaceAll('_', ' ')}{#if helpText(qualityHelpKey)}<button class="info-icon" type="button" aria-label={`Explain ${key.replaceAll('_', ' ')}`} onclick={() => toggleHelp(qualityHelpKey)} onmouseenter={() => showHelp(qualityHelpKey)} onmouseleave={() => hideHelp(qualityHelpKey)} onfocus={() => showHelp(qualityHelpKey)} onblur={() => hideHelp(qualityHelpKey)}>i</button>{#if activeHelpKey === qualityHelpKey}<span class="info-bubble" role="tooltip">{helpText(qualityHelpKey)}</span>{/if}{/if}</span></dt><dd>{typeof value === 'number' ? formatPercent(value) : displayValue(value)}</dd>
                     {/each}
                   </dl>
                 </details>
               {/if}
-              {#if largeDetail.dataset.provenance}
+              {#if largeDetail?.dataset?.provenance}
                 <details class="metadata-section disclosure-section" hidden={detailPanelTab !== 'evidence'}>
                   <summary>Provenance</summary>
                   <dl>
-                    {#each Object.entries(largeDetail.dataset.provenance).slice(0, 14) as [key, value]}
+                    {#each Object.entries(largeDetail.dataset.provenance ?? {}).slice(0, 14) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
                 </details>
               {/if}
-              {#if largeDetail.dataset.extras && Object.keys(largeDetail.dataset.extras).length}
+              {#if largeDetail?.dataset?.extras && Object.keys(largeDetail.dataset.extras ?? {}).length}
                 <details class="metadata-section disclosure-section" hidden={detailPanelTab !== 'data'}>
                   <summary>Additional metadata</summary>
                   <dl>
-                    {#each Object.entries(largeDetail.dataset.extras).slice(0, 40) as [key, value]}
+                    {#each Object.entries(largeDetail.dataset.extras ?? {}).slice(0, 40) as [key, value]}
                       <dt>{key}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
@@ -7448,11 +7448,11 @@
                   <dt>Schema type</dt><dd>{displayValue(largeDetail.resource.schema_type)}</dd>
                 </dl>
               </details>
-              {#if largeDetail.resource.provenance}
+              {#if largeDetail?.resource?.provenance}
                 <details class="metadata-section disclosure-section">
                   <summary>Provenance</summary>
                   <dl>
-                    {#each Object.entries(largeDetail.resource.provenance).slice(0, 14) as [key, value]}
+                    {#each Object.entries(largeDetail.resource.provenance ?? {}).slice(0, 14) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>
@@ -7484,11 +7484,11 @@
                 <dt>Approval status</dt><dd>{displayValue(largeDetail.publisher.approval_status)}</dd>
                 </dl>
               </details>
-              {#if largeDetail.publisher.provenance}
+              {#if largeDetail?.publisher?.provenance}
                 <details class="metadata-section disclosure-section">
                   <summary>Provenance</summary>
                   <dl>
-                    {#each Object.entries(largeDetail.publisher.provenance).slice(0, 12) as [key, value]}
+                    {#each Object.entries(largeDetail.publisher.provenance ?? {}).slice(0, 12) as [key, value]}
                       <dt>{key.replaceAll('_', ' ')}</dt><dd>{displayValue(value)}</dd>
                     {/each}
                   </dl>

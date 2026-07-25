@@ -43,7 +43,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("parseRetrievalState(new URLSearchParams(location.search), ['type'])");
     expect(pageSource).toContain('largeFacetFilters = state.filters');
     expect(pageSource).toContain('retrievalSort = state.sort');
-    expect(pageSource).toContain('...rows.map((row) => row.value), MISSING_FILTER_VALUE');
+    expect(pageSource).toContain('...(rows ?? []).map((row) => row.value), MISSING_FILTER_VALUE');
     expect(pageSource).toContain('projectLargeDatasetFacetValues(dataset, key, MISSING_FILTER_VALUE');
   });
 
@@ -87,7 +87,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('const declared = declaredLargeFacetKeys(large, manifest);');
     expect(pageSource).toContain('return declared.length ? declared : [...LARGE_FACET_KEYS];');
     expect(pageSource).toContain('const fallbackKeys = largeFacetKeys.length || largeSearchIndexLoading || largeFullLoading ? [] : LARGE_FACET_KEYS;');
-    expect(pageSource).toContain('...Object.keys(manifest?.entrypoints.filter_postings || {})');
+    expect(pageSource).toContain('...Object.keys(manifest?.entrypoints?.filter_postings ?? {})');
     expect(pageSource).toContain('largeSearchClient = client;');
     expect(pageSource).toContain('loadFacetPreferences();');
     expect(pageSource).toContain('!declaredLargeFacetKeys(large, null).length');
