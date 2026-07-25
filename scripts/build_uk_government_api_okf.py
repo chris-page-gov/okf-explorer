@@ -357,6 +357,16 @@ def now_utc() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def okf_datetime(value: str) -> bool:
+    if "T" not in value:
+        return False
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
 def canonical_provider_slug(slug: str, title: str = "") -> str:
     direct = PROVIDER_CANONICAL_ALIASES.get(slug)
     if direct:
@@ -2157,16 +2167,28 @@ def markdown_link(label: str, target: str) -> str:
     return f"[{label}]({target})" if target else label
 
 
-def render_record_markdown(record: dict[str, Any]) -> str:
-    tags = ", ".join(record.get("tags", [])[:12])
+def render_record_markdown(record: dict[str, Any], generated_at: str) -> str:
+    tags = ", ".join(yaml_scalar(tag) for tag in record.get("tags", [])[:12])
+    source_url = record.get("provenance", {}).get("source_url") or record.get("documentation") or record.get("url")
+    source_last_modified = str(
+        record.get("metadata_modified") or record.get("timestamp") or record.get("metadata_created") or ""
+    )[:10]
+    source_parts = [
+        "id: catalogue-source",
+        f"resource: {yaml_scalar(source_url)}",
+    ]
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", source_last_modified):
+        source_parts.append(f"last_modified: {yaml_scalar(source_last_modified)}")
     frontmatter = [
         "---",
         f"type: {yaml_scalar(record.get('record_type'))}",
         f"title: {yaml_scalar(record.get('title'))}",
         f"description: {yaml_scalar(record.get('notes'))}",
         f"resource: {yaml_scalar(record.get('url'))}",
-        f"timestamp: {yaml_scalar(record.get('timestamp'))}",
-        f"tags: {yaml_scalar(tags)}",
+        f"tags: [{tags}]",
+        f"generated: {{ by: process:uk-government-api-okf-builder, at: {yaml_scalar(generated_at)} }}",
+        "status: stable",
+        *([f"sources: [{{ {', '.join(source_parts)} }}]"] if source_url else []),
         f"confidence: {yaml_scalar(record.get('confidence'))}",
         f"source_adapter: {yaml_scalar(record.get('source_adapter'))}",
         "---",
@@ -2228,14 +2250,17 @@ def render_record_markdown(record: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def render_publisher_markdown(publisher: dict[str, Any]) -> str:
+def render_publisher_markdown(publisher: dict[str, Any], generated_at: str) -> str:
+    source_url = publisher.get("provenance", {}).get("source_url", "")
     return "\n".join(
         [
             "---",
             'type: "Organisation"',
             f"title: {yaml_scalar(publisher.get('title'))}",
             f"description: {yaml_scalar(publisher.get('description'))}",
-            f"timestamp: {yaml_scalar(publisher.get('provenance', {}).get('observed_at', ''))}",
+            f"generated: {{ by: process:uk-government-api-okf-builder, at: {yaml_scalar(generated_at)} }}",
+            "status: stable",
+            *([f"sources: [{{ id: catalogue-source, resource: {yaml_scalar(source_url)} }}]"] if source_url else []),
             "---",
             "",
             f"# {publisher.get('title')}",
@@ -2255,18 +2280,17 @@ def render_publisher_markdown(publisher: dict[str, Any]) -> str:
 def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
     files: dict[Path, str] = {}
     records = corpus["records"]
+    generated_at = corpus["descriptor"]["generated_at"]
     selected_records = [record for record in records if record.get("record_type") in MARKDOWN_RECORD_TYPES]
     for record in selected_records:
-        files[Path(record["concept_id"])] = render_record_markdown(record)
+        files[Path(record["concept_id"])] = render_record_markdown(record, generated_at)
     for publisher in corpus["publishers"]:
-        files[Path(publisher["concept_id"])] = render_publisher_markdown(publisher)
+        files[Path(publisher["concept_id"])] = render_publisher_markdown(publisher, generated_at)
     counts = corpus["descriptor"]["counts"]
     files[Path("index.md")] = "\n".join(
         [
             "---",
-            'type: "Index"',
-            'title: "UK Government APIs OKF"',
-            'description: "Generated Markdown entry point for the UK Government APIs OKF exemplar."',
+            'okf_version: "0.2"',
             "---",
             "",
             "# UK Government APIs OKF",
@@ -2300,10 +2324,7 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
     )
     files[Path("log.md")] = "\n".join(
         [
-            "---",
-            'type: "Log"',
-            'title: "UK Government APIs OKF generation log"',
-            "---",
+            "# UK Government APIs OKF generation log",
             "",
             f"## {corpus['descriptor']['generated_at'][:10]}",
             "",
@@ -2649,8 +2670,10 @@ def build_corpus(
     ons_topics: list[dict[str, Any]] | None = None,
     ons_code_lists: list[dict[str, Any]] | None = None,
     ons_root_url: str = DEFAULT_ONS_API_ROOT,
+    generated_at: str | None = None,
 ) -> dict[str, Any]:
     observed_at = infer_observed_at(rows, ckan_packages, ons_datasets)
+    generated_at = generated_at or now_utc()
     builder = CorpusBuilder(source_url, source_hash, observed_at)
     add_api_catalogue_records(builder, rows, source_url, source_hash)
     if ckan_packages:
@@ -2789,8 +2812,6 @@ def build_corpus(
         "missing_licence": sum(1 for record in records if record.get("license_id") == "not-specified"),
         "licence_inferred_from_provider_terms": sum(1 for record in records if record.get("license_basis") == "provider-terms-inferred"),
     }
-    latest_date = max((str(record.get("timestamp") or record.get("metadata_modified") or "")[:10] for record in records if record.get("timestamp") or record.get("metadata_modified")), default="1970-01-01")
-    generated_at = f"{latest_date}T00:00:00Z"
     dcat_gap_counts: Counter[str] = Counter()
     openapi_gap_counts: Counter[str] = Counter()
     for record in records:
@@ -2829,6 +2850,7 @@ def build_corpus(
                 "API inclusion does not imply public accessibility; access conditions stay explicit.",
                 "No API keys, client secrets, tokens, certificates, or live calls are stored in the OKF bundle.",
                 "Selected concept records are also emitted as browser-compatible Markdown files.",
+                "Bundle generation time is recorded separately from each source record's last-modified or observed date.",
                 "ONS records without explicit source licence metadata inherit an inferred Open Government Licence v3.0 from ONS website terms; Ordnance Survey provider-native records inherit an inferred OS licence-required status from OS licensing guidance. Both have lower confidence than source-declared licences.",
                 "API/data records now carry compact DCAT/OpenAPI alignment metadata for export readiness, but the bundle is standards-alignable rather than DCAT-AP or OpenAPI conformant until exporters emit those artefacts.",
             ],
@@ -2960,6 +2982,8 @@ def build_corpus(
         "@id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
         "schema": "okf-explorer-large-corpus.v1",
         "kind": "okf-large-corpus",
+        "okf_version": "0.2",
+        "core_conformance": "Markdown concept layer",
         "title": "UK Government APIs OKF",
         "description": "Large-corpus OKF exemplar generated from GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API sources, with API-domain facets, typed relationships, search shards, and operational metadata.",
         "version": "0.4.0",
@@ -2987,6 +3011,7 @@ def build_corpus(
             "url": "https://www.api.gov.uk/",
             "data_url": source_url,
             "source_sha256": source_hash,
+            "observed_at": observed_at,
             "license": "Open Government Licence v3.0 unless otherwise stated",
             "source_tiers": ["declared_api_catalogue", "provider_native_api", "data_access_endpoint", "contract_discovery"],
             "adapters": ["api_gov_uk_catalogue", "data_gov_uk_ckan", "ordnance_survey_api_os_uk", "ons_beta_api", "contract_discovery"],
@@ -3180,6 +3205,17 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
+def existing_generated_at(output: Path) -> str:
+    descriptor = output / "okf-explorer.json"
+    if not descriptor.is_file():
+        return ""
+    try:
+        value = json.loads(descriptor.read_text(encoding="utf-8")).get("generated_at")
+    except (OSError, json.JSONDecodeError):
+        return ""
+    return str(value or "")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", default=DEFAULT_SOURCE_URL, help="GOV.UK API Catalogue CSV source path or URL")
@@ -3192,9 +3228,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ckan-fixture", type=Path, help="read CKAN package_search fixture JSON instead of live data.gov.uk")
     parser.add_argument("--os-fixture", type=Path, help="read OS document-map fixture JSON instead of live api.os.uk")
     parser.add_argument("--ons-fixture", type=Path, help="read ONS fixture JSON with root/datasets/topics/code_lists instead of live API")
+    parser.add_argument(
+        "--generated-at",
+        help="ISO 8601 bundle build time; defaults to the existing descriptor in --check mode, otherwise now",
+    )
     args = parser.parse_args(argv)
 
     output = args.output if args.output.is_absolute() else ROOT / args.output
+    generated_at = args.generated_at or (existing_generated_at(output) if args.check else "") or now_utc()
+    if not okf_datetime(generated_at):
+        parser.error("--generated-at must be an ISO 8601 datetime")
     source_url, source_hash, rows = load_rows(args.source)
 
     ckan_source_url = DEFAULT_CKAN_API_URL
@@ -3239,6 +3282,7 @@ def main(argv: list[str] | None = None) -> int:
         ons_datasets=ons_datasets,
         ons_topics=ons_topics,
         ons_code_lists=ons_code_lists,
+        generated_at=generated_at,
     )
     files = output_files(corpus)
     if args.check:

@@ -3,8 +3,8 @@ type: "Concept"
 title: "Federated analytics"
 description: "Distributed statistics and monitoring without training a model."
 tags: [fl, analytics, federated]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 Extends decentralisation to statistics and monitoring rather than only model training — answering distributed statistical questions or deriving insight without centralising raw data. Recent work shows TEE-backed federated analytics deployed at production scale.

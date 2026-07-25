@@ -1,14 +1,10 @@
 ---
-type: "Index"
-title: "ai-infrastructure-wiki — AI infrastructure (OKF bundle)"
-description: "An Open Knowledge Format bundle on agent-ready digital infrastructure and the federated collaborative-learning layer."
-tags: [index, root, okf, ai-infrastructure, agentic, federated]
-timestamp: 2026-06-27T00:00:00Z
+okf_version: "0.2"
 ---
 
 # ai-infrastructure-wiki
 
-An **Open Knowledge Format (OKF v0.1)** bundle covering **AI infrastructure** in two complementary threads: the **agent-ready vertical stack** (contracts → discovery → identity → execution → policy → observability/provenance) and the **federated collaborative-learning layer**. Just markdown + YAML frontmatter, cross-linked into a graph; open `viewer.html` for the interactive view.
+An **Open Knowledge Format (OKF v0.2)** bundle covering **AI infrastructure** in two complementary threads: the **agent-ready vertical stack** (contracts → discovery → identity → execution → policy → observability/provenance) and the **federated collaborative-learning layer**. It uses standard Markdown concepts and the v0.2 provenance, trust and lifecycle families, with optional Explorer YAML-LD, federation and presentation extensions.
 
 ## Contents
 - **[The reviewed sources](document/index.md)** — overview, [themes](document/themes/index.md), [source documents](document/sources/index.md), [evaluation](document/peer-review.md).
@@ -19,7 +15,7 @@ An **Open Knowledge Format (OKF v0.1)** bundle covering **AI infrastructure** in
 
 ## Linking conventions
 
-OKF v0.1 links are plain markdown — unidirectional and untyped. This bundle adopts two conventions the spec leaves open (see the companion proposal in the sibling `okf-proposal/`):
+OKF links are plain markdown — unidirectional and untyped. This bundle adopts two conventions the spec leaves open:
 
 1. **Glossary/vocabulary** terms are linked **from the concept that uses them** (a `Terms` section), mirroring wiki practice; each glossary entry also lists where it is used, so the term↔concept relationship is bidirectional in the files.
 2. **Direction is meaningful** (a link means *source references target*); consumers build the reverse index (the viewer's "Referenced by"). Relationship *types* (defines, stewards, introduces, adopts…) are inferred by the viewer from section + direction.

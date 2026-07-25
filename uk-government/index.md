@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "UK government"
-description: "UK policy, standards, guidance and registries."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # UK government
 
 UK policy, standards, guidance and registries.

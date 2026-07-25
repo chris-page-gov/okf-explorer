@@ -5,6 +5,9 @@ Status: experimental implementation profile, 11 July 2026.
 This profile defines a federated publication contract for independently hosted
 Open Knowledge Format bundle wikis. It uses YAML-LD Basic profile semantics for
 authoring and publishes JSON-LD plus Explorer-compatible JSON projections.
+It is additive to the Markdown, provenance, trust, lifecycle and computation
+rules in OKF v0.2; a producer can conform to OKF core without adopting this
+profile.
 
 The profile URI is:
 
@@ -41,6 +44,10 @@ the [provider datapack contract](../../../docs/provider-datapacks.md).
 ## Authoring rules
 
 - Use UTF-8 and YAML 1.2 Core Schema.
+- Follow OKF v0.2 reserved-file structure and declare `okf_version: "0.2"` at
+  the bundle-root index.
+- Use `generated`, `sources`, `verified`, `status` and `stale_after` with their
+  v0.2 meanings. `timestamp` is accepted only as a v0.1 compatibility field.
 - Use one YAML-LD document in each Markdown frontmatter block.
 - Give every production concept an absolute `@id`.
 - Use IRI-valued `@type` values; retain human labels separately.
@@ -65,6 +72,10 @@ Every generated or inferred statement must be distinguishable as one of:
 `okf-explorer-bundle.v0` and `okf-explorer-large-corpus.v1` remain supported
 runtime projections. They are generated artifacts rather than the semantic
 authority.
+
+An Attested Computation contract is metadata. Neither the profile nor Explorer
+authorizes or automatically invokes computation, executor or attester
+resources.
 
 ## Validation
 

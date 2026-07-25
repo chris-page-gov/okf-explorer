@@ -3,8 +3,8 @@ type: "Concept"
 title: "Federated / confidential RAG"
 description: "Applying the federated pattern to LLM-era retrieval and generation."
 tags: [fl, llm, rag, federated]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 Emerging work (e.g. Flower-based secure federated RAG) applies decentralisation to retrieval-augmented generation, keeping documents and indices distributed. The evidence base is still smaller than for classical FL.

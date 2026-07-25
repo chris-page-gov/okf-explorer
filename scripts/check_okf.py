@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the hand-authored Markdown OKF bundle before publication.
+"""Validate OKF v0.2 core plus the Explorer authoring profile.
 
 Scope: the Markdown corpus only. The generated uk-government-apis/
 large-corpus artefact is exercised separately in CI via the
@@ -53,7 +53,10 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"OKF validation passed: {len(graph['nodes'])} nodes, {len(graph['edges'])} edges")
+    print(
+        "OKF v0.2 core and Explorer profile validation passed: "
+        f"{len(graph['nodes'])} nodes, {len(graph['edges'])} edges"
+    )
     return 0
 
 

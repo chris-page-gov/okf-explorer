@@ -3,8 +3,8 @@ type: "Evaluation"
 title: "Evaluation & provenance note"
 description: "How this bundle was built and what is verified vs open."
 tags: [evaluation, document]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # Verdict

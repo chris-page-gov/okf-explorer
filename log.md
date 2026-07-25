@@ -1,12 +1,10 @@
----
-type: "Log"
-title: "Change log & provenance"
-description: "How this bundle was produced and verified."
-tags: [log, provenance]
-timestamp: 2026-07-07T00:00:00Z
----
-
 # Change log & provenance
+
+## 2026-07-25
+
+* **Format**: Migrated the canonical Markdown bundle to OKF v0.2. Concepts now use structured `generated`, `verified`, `status` and `sources` frontmatter; reserved indexes and this log use their v0.2 structures.
+* **Compatibility**: Kept v0.1 consumption through `timestamp` and body `# Citations` fallbacks while giving v0.2 fields precedence.
+* **Explorer**: Added explicit trust-tier, lifecycle, freshness, provenance and passive Attested Computation contract presentation. Loading a bundle never executes declared computation, executor or attester resources.
 
 ## 2026-07-07
 

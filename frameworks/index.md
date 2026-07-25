@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Frameworks & middleware"
-description: "Agent frameworks and federated-learning frameworks."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Frameworks & middleware
 
 Agent frameworks and federated-learning frameworks.

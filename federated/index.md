@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Federated AI"
-description: "The collaborative-learning layer: federated learning, privacy and evaluation."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Federated AI
 
 The collaborative-learning layer: federated learning, privacy and evaluation.

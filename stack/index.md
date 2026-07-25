@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Stack layers"
-description: "The agent-ready vertical stack: from contracts to evidence."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Stack layers
 
 The agent-ready vertical stack: from contracts to evidence.

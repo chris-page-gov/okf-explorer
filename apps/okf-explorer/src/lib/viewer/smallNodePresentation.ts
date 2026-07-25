@@ -1,4 +1,5 @@
 import type { OkfNode } from '$lib/types';
+import { normalizeSources } from '$lib/okfV02';
 
 export type SmallNodeLink = {
   label: string;
@@ -361,7 +362,13 @@ export function smallNodeLinks(node: OkfNode, bundleUrl = ''): SmallNodeLink[] {
   add('Schema.org sameAs', node.same_as || node.sameAs, 'source');
   add('Schema.org sameAs', schema?.same_as || schema?.sameAs, 'source');
   add('Provenance source', provenance?.source_url || provenance?.source, 'source');
+  for (const [index, source] of normalizeSources(node).entries()) {
+    add(source.title || source.id || `Provenance source ${index + 1}`, source.resource, 'source');
+  }
   add('Resource', node.resource, 'resource');
+  add('Computation', node.computation, 'resource');
+  add('Executor', objectValue(node.executor)?.resource, 'resource');
+  add('Attester', objectValue(node.attester)?.resource, 'resource');
 
   const resources = Array.isArray(node.resources) ? node.resources : [];
   for (const [index, resource] of resources.entries()) {

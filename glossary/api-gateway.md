@@ -3,9 +3,9 @@ type: "Glossary term"
 title: "API gateway"
 description: "Runtime enforcement point for authn/z, rate limiting, routing and logging."
 tags: [glossary]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 aliases: "api gateway; gateway"
+status: stable
 ---
 
 # Definition

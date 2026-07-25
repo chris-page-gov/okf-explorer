@@ -142,8 +142,8 @@ The repository contains:
   publication quality, and visual-regression evidence.
 - `docs/okf-pack-parity.md` - parity contract for evaluating the UK Government
   APIs and GOV.UK CKAN OKF packs with the same Explorer behaviours and rubric.
-- `docs/okf-conformance.md` - OKF v0.1 conformance scope and intentional
-  deviations.
+- `docs/okf-conformance.md` - OKF v0.2 core conformance, v0.1 compatibility
+  fallbacks and the additive Explorer profile boundary.
 - `docs/code-review-2026-07-07.md` - Fable 5 code review: findings, fixes,
   and completion plan.
 - `CHANGELOG.md` - publication-quality change history with validation notes.

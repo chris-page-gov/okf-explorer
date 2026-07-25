@@ -3,8 +3,8 @@ type: "Stack layer"
 title: "Execution and orchestration"
 description: "Durable, stateful multi-step execution owned by the runtime, not the prompt."
 tags: [stack, execution, orchestration]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # Role in the stack

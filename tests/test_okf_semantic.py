@@ -20,6 +20,8 @@ class OkfSemanticTest(unittest.TestCase):
         self.assertEqual("https://example.gov.uk/okf/concepts/example", page.metadata["@id"])
         self.assertEqual(["example", "government"], page.metadata["tags"])
         self.assertIn("Human-readable Markdown", page.body)
+        self.assertEqual([], okf_semantic.validate_v02_concept(page.metadata, page.body))
+        self.assertEqual("human-reviewed", okf_semantic.trust_tier(page.metadata))
         self.assertFalse(okf_semantic.schema_errors(page.metadata, "concept.schema.json"))
         expanded = okf_semantic.expand(page.metadata)
         self.assertEqual("https://example.gov.uk/okf/concepts/example", expanded[0]["@id"])

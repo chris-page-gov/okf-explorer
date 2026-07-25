@@ -3,9 +3,9 @@ type: "Glossary term"
 title: "Confused deputy"
 description: "A privileged component tricked into misusing its authority for another."
 tags: [glossary]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 aliases: "confused deputy"
+status: stable
 ---
 
 # Definition

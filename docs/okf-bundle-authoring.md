@@ -16,6 +16,56 @@ Small bundles should start from Markdown and `scripts/build_okf_bundle.py`.
 Large bundles should follow the UK Government APIs exemplar and emit a descriptor
 plus lazy shards.
 
+## Start With The OKF v0.2 Core
+
+The portable layer is always the Markdown bundle. At the root, use:
+
+```yaml
+---
+okf_version: "0.2"
+---
+```
+
+Nested `index.md` files have no frontmatter. `log.md` uses newest-first
+`## YYYY-MM-DD` headings. Every other concept needs only a non-empty `type` for
+core conformance, but an Explorer-ready concept should normally add:
+
+```yaml
+---
+type: Dataset
+title: Example dataset
+description: One sentence describing the governed concept.
+resource: https://example.gov/datasets/example
+tags: [example, public-data]
+generated: { by: process:catalogue-build, at: 2026-07-25T09:00:00Z }
+verified: { by: human:reviewer-id, at: 2026-07-25T10:00:00Z }
+status: stable
+stale_after: 2026-10-25
+sources:
+  - id: catalogue-record
+    resource: https://example.gov/catalogue/example
+    title: Authoritative catalogue record
+    author: process:data-owner-catalogue
+    last_modified: 2026-07-24
+---
+```
+
+Use `<producer>/<version>`, `process:<id>` and `human:<id>` actor identifiers.
+Do not write a subjective trust score: Explorer derives unverified,
+machine-confirmed or human-reviewed from `verified`. Unknown fields and types
+are retained, so domain semantics and the YAML-LD, federation, datapack, facet,
+integrity and presentation extensions can remain alongside the core.
+
+Explorer continues to consume v0.1 `timestamp` and body `# Citations` as
+labelled fallbacks. New producers should emit `generated` and `sources`; when
+both generations are present, v0.2 fields take precedence.
+
+An `Attested Computation` declares `runtime`, typed `parameters`, a computation
+file or inline `# Computation` fence, `executor.resource` plus receipt fields,
+and deterministic `attester.resource`. Publishing that contract does not grant
+execution authority. Explorer displays it but never runs bundle-supplied code
+on load.
+
 ### Small-Bundle Content And Relationship Compatibility
 
 The current Markdown generator writes relationships to the top-level `edges`
@@ -61,7 +111,10 @@ Every record should have:
 - standards alignment fields for API/data bundles: `dcat_type`,
   `openapi_type`, export status and missing standard requirements;
 - tags/topics for user discovery;
-- timestamps or a clear "not recorded in source metadata" state.
+- structured `generated` metadata for concept authorship/change time, with
+  source catalogue/release dates kept in their own fields;
+- `sources` provenance and `verified`, `status` or `stale_after` when the
+  producer can support those claims.
 
 For data published as a recurring series, also provide:
 

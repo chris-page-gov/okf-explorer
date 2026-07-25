@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Source documents"
-description: "The papers and deck this bundle is built from."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Source documents
 
 The papers and deck this bundle is built from.

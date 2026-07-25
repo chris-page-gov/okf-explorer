@@ -3,9 +3,9 @@ type: "Glossary term"
 title: "Sender-constrained token"
 description: "A token usable only by the client that presents the right proof."
 tags: [glossary]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 aliases: "sender-constrained token; sender constrained; proof-of-possession"
+status: stable
 ---
 
 # Definition

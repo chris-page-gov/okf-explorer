@@ -44,8 +44,14 @@ export function normalizeSmallBundle(bundle: OkfBundle, preferredCorpus = ''): N
     id: corpusId || 'default',
     title: String(rawCorpus.title || bundle.meta?.title || bundle.title || 'OKF bundle'),
     description: String(rawCorpus.description || bundle.meta?.description || ''),
+    okfVersion: String(bundle.okf_version || ''),
+    profile: String(bundle.meta?.profile || ''),
     nodes,
     relationships: normalizeRelationships(rawCorpus.relationships || rawCorpus.edges || bundle.relationships || bundle.edges),
-    meta: bundle.meta
+    meta: {
+      ...(bundle.meta || {}),
+      okf_version: bundle.okf_version || '',
+      bundle_version: bundle.version || ''
+    }
   };
 }
