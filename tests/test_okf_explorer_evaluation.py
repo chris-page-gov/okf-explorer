@@ -304,7 +304,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         styles = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "styles.css").read_text(encoding="utf-8")
 
         self.assertIn("TimelineResolution", source)
-        self.assertIn("update_quarter", source)
+        self.assertIn("quarterForStamp", source)
         self.assertIn("currentTimelineBuckets", source)
         self.assertIn("Latest dated records first", source)
         self.assertIn("beginEdgePanelResize", source)
