@@ -223,8 +223,11 @@ function normalizeFacetIndex(document: unknown): Record<string, LargeFacetRow[]>
   return facets;
 }
 
-export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
-  const descriptor = await fetchJson<LargeCorpusDescriptor>(url);
+export async function loadLargeCorpus(
+  url: string,
+  preloadedDescriptor?: LargeCorpusDescriptor
+): Promise<LargeCorpusSource> {
+  const descriptor = preloadedDescriptor || await fetchJson<LargeCorpusDescriptor>(url);
   if (descriptor.kind !== 'okf-large-corpus') {
     throw new Error(`${url}: not an OKF large-corpus descriptor`);
   }

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/federation/v1/relationship-assertion.schema.json",
+  "title": "OKF relationship assertion v2",
+  "type": "object",
+  "required": [
+    "source",
+    "target",
+    "predicate",
+    "authority",
+    "derivation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-relationship-assertion.v2"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "predicate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "derivation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence": {
+      "oneOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "stale_after": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "freshness": {
+      "enum": [
+        "current",
+        "stale",
+        "unknown"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/httpUrl"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "url": {
+                "$ref": "#/$defs/httpUrl"
+              },
+              "resource": {
+                "$ref": "#/$defs/httpUrl"
+              },
+              "@id": {
+                "$ref": "#/$defs/httpUrl"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "url"
+                ]
+              },
+              {
+                "required": [
+                  "resource"
+                ]
+              },
+              {
+                "required": [
+                  "@id"
+                ]
+              }
+            ],
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "rights": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/httpUrl"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "httpUrl": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "class"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "official",
+            "derived",
+            "model-assisted",
+            "unclassified"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/httpUrl"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
