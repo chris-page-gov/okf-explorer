@@ -40,6 +40,10 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm test
 
+      - name: Check CycloneDX dependency inventory
+        working-directory: apps/okf-explorer
+        run: pnpm sbom:check
+
       - name: Build Svelte OKF Explorer
         working-directory: apps/okf-explorer
         run: pnpm build
