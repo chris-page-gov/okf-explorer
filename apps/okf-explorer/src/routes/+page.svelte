@@ -165,6 +165,8 @@
   const DEFAULT_GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
   const FACET_PAGE_SIZE = 30;
+  const MAX_SAFE_FULL_INDEX_RECORDS = 50_000;
+  const MAX_SAFE_FULL_RELATIONSHIPS = 100_000;
   const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1';
   const DEFAULT_FACET_SEARCH_THRESHOLD = 48;
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
@@ -348,6 +350,8 @@
   let largeFacetIndexLoading = $state(false);
   let largeBaselineFacetRows = $state<Record<string, LargeFacetRow[]>>({});
   let largeIndex = $state<LargeFullIndex | null>(null);
+  let largeTargetedDatasets = $state<Map<string, LargeDataset>>(new Map());
+  let largeTargetedLoadingRoute = $state('');
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
   let largeRelationshipsTruncated = $state(false);
@@ -805,6 +809,7 @@
       if (!preserveSerializedFilters) largeFacetFilters = {};
       return;
     }
+    rightCollapsed = false;
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
       activeFacetKey = facetRoute.key;
@@ -854,6 +859,8 @@
     largeFacetIndexLoading = false;
     largeBaselineFacetRows = {};
     largeIndex = null;
+    largeTargetedDatasets = new Map();
+    largeTargetedLoadingRoute = '';
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
     largeRelationshipsTruncated = false;
@@ -932,6 +939,8 @@
           corpus: federation.corpus,
           federation: federation.overview
         };
+        leftCollapsed = true;
+        rightCollapsed = true;
         const availableTypes = [...new Set(Object.values(federation.corpus.nodes).map((node) => node.type || 'Node'))];
         visibleTypes = new Set(availableTypes);
         history = rememberHistory({
@@ -954,13 +963,13 @@
         });
         bundleUrl = resolvedUrl;
         const hash = safeDecodeHash();
-        selectedId = hash && federation.corpus.nodes[hash]
-          ? hash
-          : Object.keys(federation.corpus.nodes)[0] || '';
+        selectedId = hash && hash !== 'overview' && federation.corpus.nodes[hash] ? hash : '';
       } else if (raw.kind === 'okf-large-corpus') {
         const large = await loadLargeCorpus(resolvedUrl, raw as unknown as LargeCorpusDescriptor);
         if (requestId !== loadRequest) return;
         source = large;
+        leftCollapsed = false;
+        rightCollapsed = true;
         loadFacetPreferences();
         void ensureLargeFacetIndex();
         detailPanelTab = providerDefaultDetailTab();
@@ -991,6 +1000,10 @@
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
+          rightCollapsed = false;
+          if (routeKind(hash) === 'dataset' && largeHasRecordLocator()) {
+            void ensureLargeDataset(hash);
+          }
           if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
             void ensureLargeFullIndex();
           }
@@ -1017,6 +1030,9 @@
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
       }
+      if (source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)) {
+        rightCollapsed = false;
+      }
       syncBundleUrlParam(bundleUrl);
       suggestionsOpen = false;
     } catch (err) {
@@ -1040,6 +1056,15 @@
       error = `${child.title} is ${child.status}; no loadable descriptor is declared. Use its documentation or repository route.`;
       return;
     }
+    // A control-plane child id is not a valid route in the child data plane.
+    // Reset the URL and view before loading so `#uk-legislation` cannot be
+    // mistaken for a record route and trigger eager full-index hydration.
+    const next = new URL(location.href);
+    next.search = '';
+    next.searchParams.set('bundle', primary);
+    next.hash = 'overview';
+    activeView = 'reader';
+    replaceState(next, {});
     void loadSource(primary, child.discovery.routes, child.discovery.raw_subpath);
   }
 
@@ -1110,6 +1135,8 @@
     largeFacetIndexLoading = false;
     largeBaselineFacetRows = {};
     largeIndex = null;
+    largeTargetedDatasets = new Map();
+    largeTargetedLoadingRoute = '';
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
     largeSearchResponse = null;
@@ -1218,6 +1245,21 @@
     if (source?.kind !== 'large') return null;
     if (largeIndex) return largeIndex;
     const loadingSource = source;
+    const advertisedRecords = Math.max(
+      Number(loadingSource.descriptor.counts?.records || 0),
+      Number(loadingSource.descriptor.counts?.datasets || 0),
+      Number(loadingSource.descriptor.counts?.works || 0),
+      Number(loadingSource.manifest.counts?.records || 0),
+      Number(loadingSource.manifest.counts?.datasets || 0),
+      Number(loadingSource.manifest.counts?.works || 0)
+    );
+    if (advertisedRecords > MAX_SAFE_FULL_INDEX_RECORDS) {
+      error =
+        `Full-corpus hydration is disabled for this ${advertisedRecords.toLocaleString()}-record bundle ` +
+        `because it would exceed the browser memory safety limit. The overview, static search, facets, ` +
+        `relationship summaries and targeted records remain available; reload the bundle to retry any failed indexed resource.`;
+      return null;
+    }
     const requestId = loadRequest;
     largeFullLoading = true;
     try {
@@ -1236,6 +1278,48 @@
       return null;
     } finally {
       if (requestId === loadRequest && source === loadingSource) largeFullLoading = false;
+    }
+  }
+
+  function largeHasRecordLocator(): boolean {
+    return Boolean(
+      source?.kind === 'large' &&
+      (source.descriptor.entrypoints.record_locator || source.manifest.indexes.record_locator)
+    );
+  }
+
+  async function ensureLargeDataset(
+    route: string,
+    result?: Pick<SearchResultDoc, 'ordinal'>
+  ): Promise<LargeDataset | null> {
+    if (source?.kind !== 'large' || routeKind(route) !== 'dataset') return null;
+    const existing = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(routeValue(route));
+    if (existing) return existing;
+    if (!largeHasRecordLocator()) return null;
+    const loadingSource = source;
+    const requestId = loadRequest;
+    largeTargetedLoadingRoute = route;
+    try {
+      const dataset = await loadingSource.loadDatasetForRoute(route, result?.ordinal);
+      if (requestId !== loadRequest || source !== loadingSource) return null;
+      if (!dataset) {
+        error = `No targeted record location is published for ${route}. Search and corpus-level exploration remain available.`;
+        return null;
+      }
+      largeTargetedDatasets = new Map(largeTargetedDatasets).set(route, dataset);
+      error = '';
+      return dataset;
+    } catch (err) {
+      if (requestId === loadRequest && source === loadingSource) {
+        error =
+          `The selected record could not be loaded without hydrating the whole corpus: ` +
+          `${err instanceof Error ? err.message : String(err)}. Reload the bundle to retry.`;
+      }
+      return null;
+    } finally {
+      if (requestId === loadRequest && source === loadingSource && largeTargetedLoadingRoute === route) {
+        largeTargetedLoadingRoute = '';
+      }
     }
   }
 
@@ -1293,14 +1377,27 @@
   }
 
   async function hydrateLargeFacetValues(key: string) {
+    const loadingSource = source;
+    largeFacetHydratingKey = key;
+    await ensureLargeFacetIndex();
+    if (source !== loadingSource) return;
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) {
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (supportsWorkerFilter(key)) {
-      largeFacetHydratingKey = key;
       await runLargeSearch(largeQuery, { preserveSelection: true });
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
       return;
     }
+    if (source?.kind === 'large' && source.searchManifest && largeSearchIndexLoading) {
+      // The worker will serve this facet if its manifest declares postings.
+      // Do not race worker initialisation by falling back to the complete
+      // record plane.
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (!largeIndex) {
-      largeFacetHydratingKey = key;
       await ensureLargeFullIndex();
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
     }
@@ -1323,6 +1420,17 @@
     return Object.keys(largeFacetFilters).every((key) => supportsWorkerFilter(key));
   }
 
+  function refreshLargeReduction() {
+    if (
+      supportsCurrentWorkerFilters() ||
+      (source?.kind === 'large' && Boolean(source.searchManifest) && largeSearchIndexLoading)
+    ) {
+      void runLargeSearch(largeQuery, { preserveSelection: true });
+      return;
+    }
+    void ensureLargeFullIndex();
+  }
+
   function requestedDynamicFacetKeys(): string[] {
     return [...new Set([
       ...providerOrderedLargeFacetKeys().filter((key) => !facetUsesSearch(key)),
@@ -1334,6 +1442,17 @@
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
     if (source?.kind !== 'large') return [];
     const loadingSource = source;
+    const advertisedRelationships = Math.max(
+      Number(loadingSource.descriptor.counts?.relationships || 0),
+      Number(loadingSource.manifest.counts?.relationships || 0)
+    );
+    if (advertisedRelationships > MAX_SAFE_FULL_RELATIONSHIPS) {
+      error =
+        `Full relationship hydration is disabled for this ${advertisedRelationships.toLocaleString()}-relationship bundle ` +
+        `because it would exceed the browser memory safety limit. Relationship summaries and the selected record's ` +
+        `bounded adjacency remain available.`;
+      return [];
+    }
     const requestId = loadRequest;
     largeRelationshipsLoading = true;
     try {
@@ -1406,6 +1525,7 @@
     graphLabelPhase = 0;
     clearLargeApiPanel();
     rightCollapsed = false;
+    if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute);
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     void ensureLargeRouteRelationships(route);
     syncExplorerUrl(true);
@@ -1421,6 +1541,7 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
+    if (largeHasRecordLocator()) void ensureLargeDataset(route);
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     void ensureLargeRouteRelationships(route);
     syncExplorerUrl(true);
@@ -1642,8 +1763,7 @@
       largeGraphCenterRoute = largeSelectedRoute;
     }
     syncExplorerUrl(true);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function searchResultSummary(): string {
@@ -1775,8 +1895,7 @@
       clearLargeApiPanel();
       reconcileLargeSelection();
       syncExplorerUrl(true);
-      if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-      else void ensureLargeFullIndex();
+      refreshLargeReduction();
     } finally {
       await tick();
       largeFacetApplyingKey = '';
@@ -1840,8 +1959,7 @@
     facetMenuKey = '';
     reconcileLargeSelection();
     syncExplorerUrl(true);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function setGeospatialFilter(value: string) {
@@ -2199,6 +2317,7 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
+    if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute, result);
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     syncExplorerUrl(true);
   }
@@ -2387,6 +2506,9 @@
     if (largeIndex) {
       return orderFacetRows(largeFacetRows(key), facetValueOrder(key), (value) => facetValueDisplay(key, value));
     }
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) {
+      return orderFacetRows(largeFacetIndex[key] || [], facetValueOrder(key), (value) => facetValueDisplay(key, value));
+    }
     const analysed = analysisFacetForKey(key)?.values;
     if (analysed?.length) return orderFacetRows(analysed, facetValueOrder(key), (value) => facetValueDisplay(key, value));
     const overview = source?.kind === 'large' ? source.overview.facet_previews?.[key] : undefined;
@@ -2398,6 +2520,7 @@
     if (dynamicFacetPreviewRows(key)) return true;
     if (Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)) return true;
     if (largeIndex) return true;
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) return true;
     const analysed = analysisFacetForKey(key);
     return Boolean(analysed?.values && analysed.values.length >= analysed.cardinality);
   }
@@ -2411,7 +2534,9 @@
     const configured = providerPresentationFacet(key)?.open_control;
     if (configured && configured !== 'auto') return configured === 'search';
     const control = facetControl(key).toLowerCase();
-    return control.includes('search') || control.includes('value-input') || facetAvailableValueCount(key) > facetSearchThreshold();
+    if (control === 'search' || control.includes('value-input')) return true;
+    if (control.includes('search')) return facetAvailableValueCount(key) > facetSearchThreshold();
+    return facetAvailableValueCount(key) > facetSearchThreshold();
   }
 
   function facetUsesHistogram(key: string): boolean {
@@ -2714,8 +2839,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     syncExplorerUrl(push);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
@@ -3703,7 +3827,7 @@
     const kind = routeKind(route);
     const value = routeValue(route);
     if (kind === 'dataset') {
-      return largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
+      return largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
     }
     if (kind === 'resource') return largeIndex?.resourceById.get(value)?.name || value;
     if (kind === 'publisher') return largeIndex?.publisherByName.get(value)?.title || value;
@@ -3851,7 +3975,7 @@
     const kind = routeKind(route);
     const value = routeValue(route);
     if (kind === 'dataset') {
-      const dataset = largeIndex?.datasetByName.get(value);
+      const dataset = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(value);
       if (dataset) {
         return {
           kind: 'dataset',
@@ -5386,10 +5510,11 @@
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  {#if loading || largeFullLoading || largeRelationshipsLoading}
+  {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute}
     <div class="status">
       {#if loading}Loading descriptor and overview...{/if}
       {#if largeFullLoading} Loading record index...{/if}
+      {#if largeTargetedLoadingRoute} Loading selected record...{/if}
       {#if largeRelationshipsLoading} Loading relationship index...{/if}
     </div>
   {/if}
@@ -5492,6 +5617,9 @@
                   <button class:active={facetPreferences.mode === 'suggested'} type="button" aria-pressed={facetPreferences.mode === 'suggested'} onclick={() => setFacetMode('suggested')}>Suggested</button>
                   <button class:active={facetPreferences.mode === 'all'} type="button" aria-pressed={facetPreferences.mode === 'all'} onclick={() => setFacetMode('all')}>All</button>
                 </div>
+                <span class="facet-inventory" aria-live="polite">
+                  {presentedLargeFacetKeys().length.toLocaleString()} of {providerOrderedLargeFacetKeys().length.toLocaleString()} facets shown
+                </span>
                 <button type="button" aria-pressed={facetPreferences.density === 'explained'} onclick={toggleFacetExplanations}>Guidance</button>
                 <button type="button" onclick={resetFacetPreferences}>Reset</button>
               </div>
@@ -7687,9 +7815,15 @@
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.result.title}</h2>
               <div class="detail-actions primary-detail-actions">
-                <button class="primary-action" type="button" onclick={() => void ensureLargeFullIndex()}>
-                  {largeFullLoading ? 'Loading full record...' : 'Load full record'}
-                </button>
+                {#if largeHasRecordLocator()}
+                  <button class="primary-action" type="button" onclick={() => void ensureLargeDataset(largeDetail.route, largeDetail.result)}>
+                    {largeTargetedLoadingRoute === largeDetail.route ? 'Loading selected record...' : 'Load selected record'}
+                  </button>
+                {:else}
+                  <button class="primary-action" type="button" onclick={() => void ensureLargeFullIndex()}>
+                    {largeFullLoading ? 'Loading full record...' : 'Load full record'}
+                  </button>
+                {/if}
               </div>
               <p class="match-explanation"><strong>Why this matched</strong> {searchMatchReason(largeDetail.result)}</p>
               {#if apiContextNote(largeDetail.result)}

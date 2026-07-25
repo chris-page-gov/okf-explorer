@@ -135,6 +135,25 @@ capability.
 documentation-only routes, but Explorer will not invent a bundle or bypass
 access controls.
 
+An optional `source_families` array can describe researched source classes
+that are wider than the currently implemented child set. Explorer presents
+their authority class, coverage status, source count and minimum provenance in
+a separate expandable inventory. `implemented_bundle` may link a source class
+to an existing child publication; its absence is shown as “no child bundle
+yet”. A source-family row never becomes a loadable child implicitly.
+
+Large children should publish a complete compact facet index and v2 filter
+postings. Opening a facet reads the facet index and never hydrates record
+shards merely because the search worker is still starting. Explorer rejects
+whole-index hydration above 50,000 advertised records; such bundles remain
+usable through their overview, facet, static-search, relationship-summary and
+targeted-record planes. Large bundles can declare an
+`okf-record-locator-sharded.v1` manifest through
+`entrypoints.record_locator` and `indexes.record_locator`; Explorer then loads
+only the locator bucket and record shard needed for the selected route.
+Corpus-wide relationship hydration is rejected above 100,000 advertised rows,
+while hash-sharded route adjacency remains available.
+
 ## Discovery and fallback
 
 Explorer tries the requested URL and then declared descriptor routes in

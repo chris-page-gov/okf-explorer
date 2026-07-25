@@ -40,6 +40,28 @@ function fixture() {
       available: 1,
       planned: 1
     },
+    source_families: [
+      {
+        id: 'SC01',
+        title: 'Primary legislation',
+        definition: 'Acts, Measures and equivalent primary enactments.',
+        authority_class: 'binding-authority',
+        coverage_status: 'available',
+        source_count: 3,
+        source_ids: ['SRC001', 'SRC002', 'SRC007'],
+        related_source_classes: ['SC04', 'SC05'],
+        minimum_provenance: 'Work identity and point-in-time state.',
+        implemented_bundle: '../okf-explorer.json'
+      },
+      {
+        id: 'SC09',
+        title: 'Court judgments',
+        authority_class: 'binding-authority',
+        coverage_status: 'partial',
+        source_count: 9,
+        implemented_bundle: null
+      }
+    ],
     children: [
       {
         id: 'uk-legislation',
@@ -185,6 +207,17 @@ describe('federation overview loader', () => {
     expect(loaded.corpus.relationships).toHaveLength(1);
     expect(loaded.overview.inlineRelationshipSummary.by_authority.derived).toBe(1);
     expect(loaded.overview.descriptor.relationship_summary.total).toBe(4);
+    expect(loaded.overview.descriptor.source_families).toEqual([
+      expect.objectContaining({
+        id: 'SC01',
+        coverage_status: 'available',
+        implemented_bundle: 'https://mirror.example/okf-explorer.json'
+      }),
+      expect.objectContaining({
+        id: 'SC09',
+        coverage_status: 'partial'
+      })
+    ]);
     expect(loaded.overview.resolvedUrl).toBe('https://mirror.example/whole-law/okf-explorer.json');
   });
 
