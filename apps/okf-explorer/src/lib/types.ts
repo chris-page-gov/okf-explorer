@@ -164,6 +164,19 @@ export type FederationChild = {
   extensions?: Record<string, unknown>;
 };
 
+export type FederationSourceFamily = {
+  id: string;
+  title: string;
+  definition?: string;
+  authority_class: string;
+  coverage_status: FederationAvailability;
+  source_count: number;
+  source_ids?: string[];
+  related_source_classes?: string[];
+  minimum_provenance?: string;
+  implemented_bundle?: string;
+};
+
 export type FederationRelationshipAssertion = OkfRelationship & {
   schema?: 'okf-relationship-assertion.v2' | string;
   predicate: string;
@@ -210,6 +223,7 @@ export type FederationDescriptor = {
   discovery: FederationDiscovery;
   counts: Record<string, number>;
   children: FederationChild[];
+  source_families?: FederationSourceFamily[];
   relationships?: FederationRelationshipAssertion[];
   relationship_summary: FederationRelationshipSummary;
   notices?: string[];
@@ -307,6 +321,7 @@ export type LargeCorpusDescriptor = {
     analysis_overview?: string;
     presentation?: LargeResourceReference;
     search_manifest?: string;
+    record_locator?: LargeResourceReference;
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
@@ -351,6 +366,7 @@ export type LargeDataManifest = {
     analysis?: string;
     presentation?: string;
     search?: string;
+    record_locator?: LargeResourceReference;
     facets?: string;
     graph?: string;
     govuk_content?: string;
@@ -1045,6 +1061,17 @@ export type LargeRelationshipAdjacencyManifest = {
   shards?: LargeShardMetadata[];
 };
 
+export type LargeRecordLocatorManifest = {
+  schema: 'okf-record-locator-sharded.v1' | string;
+  algorithm: 'fnv1a32-prefix-2' | string;
+  snapshot?: string;
+  records: number;
+  chunk_size: number;
+  record_chunks: LargeResourceReference[];
+  buckets: Record<string, LargeResourceReference>;
+  bucket_count?: number;
+};
+
 export type LargeGraphIndex = {
   edge_counts?: Array<{ kind: string; count: number }>;
   node_counts?: Record<string, number>;
@@ -1096,6 +1123,7 @@ export type LargeCorpusSource = {
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;
+  loadDatasetForRoute: (route: string, ordinal?: number) => Promise<LargeDataset | null>;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
   loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;

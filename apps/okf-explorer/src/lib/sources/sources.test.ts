@@ -760,6 +760,122 @@ describe('large corpus source', () => {
     await expect(source.loadRelationshipsForRoute('missing/route')).resolves.toEqual([]);
   });
 
+  it('loads one routed record through the sharded locator without hydrating other record chunks', async () => {
+    const route = 'dataset/work-two';
+    const bucket = relationshipBucket(route);
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/locator/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Record locator fixture',
+          snapshot: 'snapshot-one',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            record_locator: 'data/records/manifest.json'
+          },
+          counts: { datasets: 2, resources: 0, relationships: 0 }
+        }
+      ],
+      [
+        'https://example.test/locator/data/manifest.json',
+        {
+          title: 'Record locator fixture',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 2, resources: 0, relationships: 0 },
+          indexes: {
+            overview: 'data/overview.json',
+            record_locator: 'data/records/manifest.json'
+          },
+          chunks: {
+            datasets: ['data/works-0.json', 'data/works-1.json']
+          }
+        }
+      ],
+      [
+        'https://example.test/locator/data/overview.json',
+        {
+          title: 'Record locator fixture',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 2, resources: 0, relationships: 0 }
+        }
+      ],
+      [
+        'https://example.test/locator/data/records/manifest.json',
+        {
+          schema: 'okf-record-locator-sharded.v1',
+          snapshot: 'snapshot-one',
+          algorithm: 'fnv1a32-prefix-2',
+          records: 2,
+          chunk_size: 1,
+          record_chunks: ['data/works-0.json', 'data/works-1.json'],
+          buckets: {
+            [bucket]: `data/records/locator/${bucket}.json`
+          },
+          bucket_count: 1
+        }
+      ],
+      [
+        `https://example.test/locator/data/records/locator/${bucket}.json`,
+        {
+          [route]: [1, 0]
+        }
+      ],
+      [
+        'https://example.test/locator/data/works-0.json',
+        [
+          {
+            name: 'work-one',
+            route: 'dataset/work-one',
+            title: 'Work One'
+          }
+        ]
+      ],
+      [
+        'https://example.test/locator/data/works-1.json',
+        [
+          {
+            name: 'work-two',
+            route,
+            title: 'Work Two'
+          }
+        ]
+      ]
+    ]);
+    const fetchMock = vi.fn(async (url: string | URL | Request) => {
+      const key = String(url);
+      if (!payloads.has(key)) return jsonResponse({ missing: key }, { status: 404, statusText: 'Not Found' });
+      return jsonResponse(payloads.get(key));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus('https://example.test/locator/okf-explorer.json');
+    expect(fetchMock.mock.calls.map(([input]) => String(input))).not.toContain(
+      'https://example.test/locator/data/records/manifest.json'
+    );
+
+    await expect(source.loadDatasetForRoute(route)).resolves.toEqual(
+      expect.objectContaining({ route, title: 'Work Two' })
+    );
+    await expect(source.loadDatasetForRoute(route)).resolves.toEqual(
+      expect.objectContaining({ route, title: 'Work Two' })
+    );
+
+    const requestedUrls = fetchMock.mock.calls.map(([input]) => String(input));
+    expect(requestedUrls).toContain(
+      `https://example.test/locator/data/records/locator/${bucket}.json`
+    );
+    expect(requestedUrls).not.toContain(
+      'https://example.test/locator/data/works-0.json'
+    );
+    expect(
+      requestedUrls.filter(
+        (requestedUrl) => requestedUrl === 'https://example.test/locator/data/works-1.json'
+      )
+    ).toHaveLength(1);
+  });
+
   it('loads same-origin provider datapacks at startup and binds every layer to the bundle snapshot', async () => {
     const providerPack = providerDatapackFixture();
     const providerManifest = {

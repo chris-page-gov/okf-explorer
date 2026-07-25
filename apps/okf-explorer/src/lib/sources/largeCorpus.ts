@@ -17,6 +17,7 @@ import type {
   LargeReleaseDataPlaneIndex,
   LargeRelationship,
   LargeRelationshipAdjacencyManifest,
+  LargeRecordLocatorManifest,
   LargeRelationshipsResult,
   LargeResource,
   LargeResourceReference,
@@ -369,11 +370,104 @@ export async function loadLargeCorpus(
         )
       : undefined;
   const searchManifest = descriptorEntrypoint(descriptor, 'search_manifest') || manifest.indexes.search;
+  const descriptorRecordLocator = descriptorEntrypoint(descriptor, 'record_locator');
+  const manifestRecordLocator = manifest.indexes.record_locator;
+  if (
+    descriptorRecordLocator &&
+    manifestRecordLocator &&
+    resourcePath(descriptorRecordLocator) !== resourcePath(manifestRecordLocator)
+  ) {
+    throw new Error('Descriptor and data manifest record-locator paths differ');
+  }
+  const recordLocatorReference = descriptorRecordLocator || manifestRecordLocator;
   let facetIndexPromise: Promise<Record<string, LargeFacetRow[]>> | null = null;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
   let relationshipsPromise: Promise<LargeRelationshipsResult> | null = null;
   let adjacencyManifestPromise: Promise<LargeRelationshipAdjacencyManifest> | null = null;
   const adjacencyBucketPromises = new Map<string, Promise<Record<string, LargeRelationship[]>>>();
+  let recordLocatorPromise: Promise<LargeRecordLocatorManifest> | null = null;
+  const recordLocatorBucketPromises = new Map<string, Promise<Record<string, [number, number]>>>();
+  const recordChunkPromises = new Map<number, Promise<LargeDataset[]>>();
+
+  async function recordLocator(): Promise<LargeRecordLocatorManifest | null> {
+    if (!recordLocatorReference) return null;
+    if (!recordLocatorPromise) {
+      recordLocatorPromise = fetchResource<LargeRecordLocatorManifest>(recordLocatorReference)
+        .then((locator) => {
+          if (
+            !locator ||
+            locator.schema !== 'okf-record-locator-sharded.v1' ||
+            locator.algorithm !== 'fnv1a32-prefix-2'
+          ) {
+            throw new Error('Record locator uses an unsupported schema or algorithm');
+          }
+          const locatorSnapshot = declaredSnapshot(locator, 'Record locator manifest');
+          if (locatorSnapshot && (!snapshot || locatorSnapshot !== snapshot)) {
+            throw new Error('Record locator manifest snapshot differs from the loaded bundle snapshot');
+          }
+          if (
+            !Number.isSafeInteger(locator.records) ||
+            locator.records < 0 ||
+            !Number.isSafeInteger(locator.chunk_size) ||
+            locator.chunk_size < 1 ||
+            locator.chunk_size > 100_000 ||
+            !Array.isArray(locator.record_chunks) ||
+            locator.record_chunks.length !== Math.ceil(locator.records / locator.chunk_size) ||
+            !locator.buckets ||
+            typeof locator.buckets !== 'object' ||
+            Array.isArray(locator.buckets) ||
+            Object.entries(locator.buckets).some(
+              ([bucket, reference]) => !/^[0-9a-f]{2}$/.test(bucket) || !resourcePath(reference)
+            )
+          ) {
+            throw new Error('Record locator manifest is malformed');
+          }
+          if (locator.bucket_count !== undefined && locator.bucket_count !== Object.keys(locator.buckets).length) {
+            throw new Error('Record locator bucket count is inconsistent');
+          }
+          return locator;
+        })
+        .catch((error) => {
+          recordLocatorPromise = null;
+          throw error;
+        });
+    }
+    return recordLocatorPromise;
+  }
+
+  async function recordLocation(
+    locator: LargeRecordLocatorManifest,
+    route: string,
+    ordinal?: number
+  ): Promise<[number, number] | null> {
+    const bucket = relationshipBucket(route);
+    const bucketReference = locator.buckets[bucket];
+    if (bucketReference) {
+      let bucketPromise = recordLocatorBucketPromises.get(bucket);
+      if (!bucketPromise) {
+        bucketPromise = fetchResource<Record<string, [number, number]>>(bucketReference, true);
+        recordLocatorBucketPromises.set(bucket, bucketPromise);
+      }
+      const location = (await bucketPromise)[route];
+      if (location !== undefined) {
+        if (
+          !Array.isArray(location) ||
+          location.length !== 2 ||
+          !Number.isSafeInteger(location[0]) ||
+          location[0] < 0 ||
+          !Number.isSafeInteger(location[1]) ||
+          location[1] < 0
+        ) {
+          throw new Error(`Record locator bucket contains an invalid location for ${route}`);
+        }
+        return location;
+      }
+    }
+    if (ordinal === undefined || !Number.isSafeInteger(ordinal) || ordinal < 0 || ordinal >= locator.records) {
+      return null;
+    }
+    return [Math.floor(ordinal / locator.chunk_size), ordinal % locator.chunk_size];
+  }
 
   const source: LargeCorpusSource = {
     kind: 'large',
@@ -400,6 +494,31 @@ export async function loadLargeCorpus(
           : Promise.resolve({});
       }
       return facetIndexPromise;
+    },
+    async loadDatasetForRoute(route: string, ordinal?: number) {
+      const locator = await recordLocator();
+      if (!locator) return null;
+      const location = await recordLocation(locator, route, ordinal);
+      if (!location) return null;
+      const [chunkIndex, rowIndex] = location;
+      const recordReference = locator.record_chunks[chunkIndex];
+      if (!recordReference || !Number.isSafeInteger(rowIndex) || rowIndex < 0 || rowIndex >= locator.chunk_size) {
+        throw new Error(`Record locator returned an invalid location for ${route}`);
+      }
+      let chunkPromise = recordChunkPromises.get(chunkIndex);
+      if (!chunkPromise) {
+        chunkPromise = fetchResource<LargeDataset[]>(
+          integrityReference(recordReference, manifest.shards?.datasets || manifest.shards?.records, 'Dataset shard'),
+          true
+        );
+        recordChunkPromises.set(chunkIndex, chunkPromise);
+      }
+      const record = (await chunkPromise)[rowIndex];
+      const observedRoute = record?.route || (record?.name ? `dataset/${record.name}` : '');
+      if (!record || observedRoute !== route) {
+        throw new Error(`Record locator resolved ${route} to a different record`);
+      }
+      return record;
     },
     loadFullIndex() {
       if (!fullIndexPromise) {

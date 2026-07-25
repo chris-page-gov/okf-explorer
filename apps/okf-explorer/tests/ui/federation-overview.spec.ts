@@ -34,6 +34,35 @@ const federation = {
   license: 'https://federation.fixture.test/licence',
   discovery,
   counts: { children: 2, available: 1, planned: 1 },
+  source_families: [
+    {
+      id: 'SC01',
+      title: 'Primary legislation',
+      definition: 'Acts and Measures.',
+      authority_class: 'binding-authority',
+      coverage_status: 'available',
+      source_count: 3,
+      implemented_bundle: CHILD_PRIMARY
+    },
+    {
+      id: 'SC09',
+      title: 'Court judgments',
+      definition: 'Published judgments from courts.',
+      authority_class: 'binding-authority',
+      coverage_status: 'partial',
+      source_count: 9,
+      implemented_bundle: null
+    },
+    ...Array.from({ length: 34 }, (_, index) => ({
+      id: `SCX${String(index + 1).padStart(2, '0')}`,
+      title: `Researched legal source class ${index + 1}`,
+      definition: 'A researched source class that is not yet an independently published child bundle.',
+      authority_class: index % 2 ? 'official-source' : 'binding-authority',
+      coverage_status: index % 3 ? 'partial' : 'planned',
+      source_count: index + 1,
+      implemented_bundle: null
+    }))
+  ],
   children: [
     {
       id: 'legislation',
@@ -189,6 +218,14 @@ test('FEDERATION-E2E-01 loads only the overview and labels relationship authorit
   const authoritySummary = overview.locator('.federation-authority-summary');
   await expect(authoritySummary.locator('[data-relationship-authority="official"]')).toContainText('4');
   await expect(authoritySummary.locator('[data-relationship-authority="model-assisted"]')).toContainText('1');
+  await expect(overview.getByRole('region', { name: 'Federated child bundles' })).toContainText('Legislation child');
+  const sourceClassCoverage = overview.getByRole('region', { name: 'Legal source-class coverage' });
+  await expect(sourceClassCoverage).toContainText('36 legal source classes');
+  await expect(sourceClassCoverage.locator('.federation-source-family-grid article')).toHaveCount(36);
+  await expect(sourceClassCoverage.locator('.federation-source-family-grid article').last()).toBeVisible();
+  const childBox = await overview.getByRole('region', { name: 'Federated child bundles' }).boundingBox();
+  const discoveryBox = await overview.getByRole('region', { name: 'Canonical and alternate publication routes' }).boundingBox();
+  expect(childBox!.y).toBeLessThan(discoveryBox!.y);
   expect(childRequests).toBe(0);
 
   await page.getByRole('button', { name: 'Graph', exact: true }).click();
@@ -224,7 +261,41 @@ test('FEDERATION-E2E-02 uses declared child fallback instead of guessing a path'
 
   const params = new URLSearchParams({ bundle: FEDERATION_URL });
   await page.goto(`?${params.toString()}`);
-  await page.getByRole('region', { name: 'Federated child bundles' }).getByRole('button', { name: 'Load child bundle' }).click();
+  await page.getByRole('region', { name: 'Federated child bundles' }).getByRole('button', { name: 'Open Legislation child' }).click();
   await expect(page.locator('.title-block')).toContainText('Recovered legislation child');
+  expect(new URL(page.url()).hash).toBe('#work');
+  expect(page.url()).not.toContain('#legislation');
   expect(attempted).toEqual([CHILD_PRIMARY, CHILD_FALLBACK]);
+});
+
+test('FEDERATION-E2E-03 keeps a single implemented child prominent above research and recovery detail', async ({ context, page }) => {
+  const singleChildFederation = {
+    ...federation,
+    counts: { children: 1, available: 1 },
+    children: [federation.children[0]],
+    relationships: []
+  };
+  await context.route(FEDERATION_URL, async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: JSON.stringify(singleChildFederation)
+    });
+  });
+
+  await page.goto(`?bundle=${encodeURIComponent(FEDERATION_URL)}#overview`);
+  const overview = page.locator('[data-federation-overview="okf-explorer-federation.v1"]');
+  await expect(overview).toContainText(/1\s*published child bundle/);
+  const child = overview.getByRole('region', { name: 'Federated child bundles' });
+  const sourceClasses = overview.getByRole('region', { name: 'Legal source-class coverage' });
+  const discoveryRoutes = overview.getByRole('region', { name: 'Canonical and alternate publication routes' });
+  await expect(child.getByRole('button', { name: 'Open Legislation child' })).toBeVisible();
+  const [childBox, sourceClassBox, discoveryBox] = await Promise.all([
+    child.boundingBox(),
+    sourceClasses.boundingBox(),
+    discoveryRoutes.boundingBox()
+  ]);
+  expect(childBox!.y).toBeLessThan(sourceClassBox!.y);
+  expect(sourceClassBox!.y).toBeLessThan(discoveryBox!.y);
 });

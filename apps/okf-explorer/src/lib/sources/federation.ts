@@ -10,6 +10,7 @@ import type {
   FederationOverview,
   FederationRelationshipAssertion,
   FederationRelationshipSummary,
+  FederationSourceFamily,
   NormalizedCorpus,
   OkfNode,
   OkfRelationship
@@ -243,6 +244,50 @@ function normalizedChild(value: unknown, baseUrl: string, index: number): Federa
     throw new Error(`${label} is ${status} but has no declared descriptor route`);
   }
   return child;
+}
+
+function normalizedStringList(value: unknown, label: string): string[] | undefined {
+  if (value === undefined) return undefined;
+  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string' || !item.trim())) {
+    throw new Error(`${label} must contain non-empty strings`);
+  }
+  return value.map((item) => item.trim());
+}
+
+function normalizedSourceFamily(value: unknown, baseUrl: string, index: number): FederationSourceFamily {
+  const label = `source_families[${index}]`;
+  const record = recordValue(value, label);
+  const coverageStatus = stringValue(record, 'coverage_status', label) as FederationAvailability;
+  if (!AVAILABILITY.has(coverageStatus)) {
+    throw new Error(`${label}.coverage_status is not supported`);
+  }
+  const sourceFamily: FederationSourceFamily = {
+    id: stringValue(record, 'id', label),
+    title: stringValue(record, 'title', label),
+    authority_class: stringValue(record, 'authority_class', label),
+    coverage_status: coverageStatus,
+    source_count: nonNegativeInteger(record.source_count, `${label}.source_count`)
+  };
+  const definition = optionalString(record, 'definition');
+  const minimumProvenance = optionalString(record, 'minimum_provenance');
+  const implementedBundle = optionalString(record, 'implemented_bundle');
+  if (definition) sourceFamily.definition = definition;
+  if (minimumProvenance) sourceFamily.minimum_provenance = minimumProvenance;
+  if (implementedBundle) {
+    sourceFamily.implemented_bundle = safeResolvedUrl(
+      implementedBundle,
+      baseUrl,
+      `${label}.implemented_bundle`
+    );
+  }
+  const sourceIds = normalizedStringList(record.source_ids, `${label}.source_ids`);
+  const related = normalizedStringList(
+    record.related_source_classes,
+    `${label}.related_source_classes`
+  );
+  if (sourceIds) sourceFamily.source_ids = sourceIds;
+  if (related) sourceFamily.related_source_classes = related;
+  return sourceFamily;
 }
 
 function normalizedSummary(value: unknown, label: string): FederationRelationshipSummary {
@@ -481,6 +526,14 @@ export function loadFederationOverview(
     descriptor['@context'] = context as FederationDescriptor['@context'];
   }
   if (identifier) descriptor['@id'] = safeResolvedUrl(identifier, resolvedUrl, '@id');
+  if (record.source_families !== undefined) {
+    if (!Array.isArray(record.source_families)) {
+      throw new Error('source_families must be an array');
+    }
+    descriptor.source_families = record.source_families.map((sourceFamily, index) =>
+      normalizedSourceFamily(sourceFamily, resolvedUrl, index)
+    );
+  }
   if (relationships.length) descriptor.relationships = relationships;
   if (record.notices !== undefined) {
     if (!Array.isArray(record.notices) || record.notices.some((notice) => typeof notice !== 'string' || !notice.trim())) {
