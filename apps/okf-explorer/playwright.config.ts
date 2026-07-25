@@ -14,12 +14,24 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['line'], ['html', { open: 'never', outputFolder: 'playwright-report' }]] : 'line',
   use: {
-    ...devices['Desktop Chrome'],
-    channel: 'chrome',
     baseURL: deployedBaseURL || localBaseURL,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure'
   },
+  projects: [
+    {
+      name: 'chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' }
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] }
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] }
+    }
+  ],
   ...(deployedBaseURL ? {} : {
     webServer: {
       command: 'pnpm dev --host 127.0.0.1 --port 4173',

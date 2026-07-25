@@ -1004,9 +1004,7 @@
           if (routeKind(hash) === 'dataset' && largeHasRecordLocator()) {
             void ensureLargeDataset(hash);
           }
-          if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
-            void ensureLargeFullIndex();
-          }
+          if (largeSelectedRoute || largeInspectedRoute) void hydrateForView(activeView);
         } else if (Object.keys(largeFacetFilters).length && !searchManifest) {
           void ensureLargeFullIndex();
         }
@@ -1094,7 +1092,6 @@
       loadFacetPreferences();
       await ensureLargeFacetIndex();
       if (requestId !== loadRequest || source?.kind !== 'large' || source.url !== large.url) return;
-      void preloadLargeFacetDistributions(client, large, requestId);
       const retrieval = parseRetrievalState(
         new URLSearchParams(location.search),
         largeSourceFacetKeys(large, client.manifest)
@@ -1202,6 +1199,12 @@
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
+    const selectedRoute = largeSelectedRoute || largeInspectedRoute;
+    if (selectedRoute && routeKind(selectedRoute) === 'dataset' && largeHasRecordLocator()) {
+      await ensureLargeDataset(selectedRoute);
+      if (view === 'graph' || view === 'links') await ensureLargeRouteRelationships(selectedRoute);
+      return;
+    }
     if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
   }
@@ -1346,36 +1349,6 @@
     }
   }
 
-  async function preloadLargeFacetDistributions(
-    client: LargeSearchClient,
-    large: Extract<LoadedSource, { kind: 'large' }>,
-    requestId: number
-  ) {
-    const keys = providerOrderedLargeFacetKeys().filter((key) => supportsWorkerFilter(key) && !facetUsesSearch(key));
-    if (!keys.length) return;
-    try {
-      const response = await client.query({
-        query: '',
-        filters: {},
-        sort: 'newest',
-        ranking: 'weighted',
-        facet_keys: keys,
-        include_results: false
-      });
-      if (
-        requestId !== loadRequest ||
-        source?.kind !== 'large' ||
-        source.url !== large.url ||
-        largeSearchClient !== client
-      ) return;
-      largeBaselineFacetRows = response.facets;
-    } catch (facetError) {
-      if (requestId === loadRequest && source?.kind === 'large' && source.url === large.url) {
-        console.warn(`Facet distributions unavailable for ${large.url}:`, facetError);
-      }
-    }
-  }
-
   async function hydrateLargeFacetValues(key: string) {
     const loadingSource = source;
     largeFacetHydratingKey = key;
@@ -1433,7 +1406,7 @@
 
   function requestedDynamicFacetKeys(): string[] {
     return [...new Set([
-      ...providerOrderedLargeFacetKeys().filter((key) => !facetUsesSearch(key)),
+      ...providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key)),
       activeFacetKey,
       ...Object.keys(largeFacetFilters)
     ])].filter((key) => key && supportsWorkerFilter(key));
@@ -1526,8 +1499,8 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute);
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     void ensureLargeRouteRelationships(route);
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -1542,8 +1515,8 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(route);
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     void ensureLargeRouteRelationships(route);
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -2318,7 +2291,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute, result);
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -4291,7 +4264,7 @@
     };
 
     if (center) addNode(center);
-    if (center && largeRelationships.length) {
+    if (center && (largeRelationships.length || largeRelationshipsByRoute.has(center))) {
       addLoadedRelationshipsForCenter();
     }
 
@@ -5743,6 +5716,7 @@
                                 onmouseleave={() => clearFacetPreviewLabel(key)}
                                 onfocus={() => setFacetPreviewLabel(key, segmentLabel)}
                                 onblur={() => clearFacetPreviewLabel(key)}
+                                oncontextmenu={(event) => event.preventDefault()}
                                 onclick={(event) => segment.otherValues ? void openLargeFacet(key) : previewLargeFacetValue(key, segment.value, event)}
                                 ondblclick={(event) => segment.otherValues ? void openLargeFacet(key) : void commitFacetHighlights(key, segment.value, event)}
                                 onkeydown={(event) => segment.otherValues ? undefined : facetValueKeydown(key, segment.value, event)}

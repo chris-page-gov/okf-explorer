@@ -101,7 +101,9 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('What makes a useful facet?');
     expect(pageSource).toContain('if (dynamic !== undefined) return dynamic.length;');
     expect(pageSource).toContain("Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)");
-    expect(pageSource).toContain('include_results: false');
+    expect(pageSource).toContain('await ensureLargeFacetIndex();');
+    expect(pageSource).toContain('providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key))');
+    expect(pageSource).not.toContain('function preloadLargeFacetDistributions');
   });
 
   it('uses SeeLinks-style preview, commit, pin-open and drag interactions without legacy Adjust', () => {

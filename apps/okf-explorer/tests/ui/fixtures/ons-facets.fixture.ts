@@ -540,34 +540,46 @@ const searchManifest = {
   }
 };
 
-async function json(route: Route, body: unknown, status = 200) {
+export type OnsFacetFixtureOptions = {
+  responseBytes?: number[];
+  filterPaddingBytes?: number;
+};
+
+async function json(route: Route, body: unknown, status = 200, responseBytes?: number[]) {
+  const serialized = JSON.stringify(body);
+  responseBytes?.push(new TextEncoder().encode(serialized).byteLength);
   await route.fulfill({
     status,
     contentType: 'application/json',
     headers: { 'access-control-allow-origin': '*' },
-    body: JSON.stringify(body)
+    body: serialized
   });
 }
 
-export async function installOnsFacetFixture(context: BrowserContext, requestLog: string[] = []) {
+export async function installOnsFacetFixture(
+  context: BrowserContext,
+  requestLog: string[] = [],
+  options: OnsFacetFixtureOptions = {}
+) {
   providerDatapackManifest.packs[0]!.sha256 = await compactJsonSha256(providerDatapack);
   descriptor.entrypoint_integrity.provider_datapacks.sha256 =
     await compactJsonSha256(providerDatapackManifest);
   await context.route(`${ONS_FACET_ORIGIN}/**`, async (route) => {
     const url = new URL(route.request().url());
     requestLog.push(url.pathname);
-    if (url.pathname === '/okf-explorer.json') return json(route, descriptor);
-    if (url.pathname === '/data/manifest.json') return json(route, manifest);
-    if (url.pathname === '/data/overview.json') return json(route, overview);
-    if (url.pathname === '/data/analysis.json') return json(route, analysis);
-    if (url.pathname === '/data/presentation.json') return json(route, presentation);
-    if (url.pathname === '/data/providers/manifest.json') return json(route, providerDatapackManifest);
-    if (url.pathname === '/data/providers/ons-explore-local-statistics.json') return json(route, providerDatapack);
-    if (url.pathname === '/data/facets.json') return json(route, facetRows);
-    if (url.pathname === '/data/datasets.json') return json(route, records);
-    if (url.pathname === '/data/resources.json') return json(route, resources);
+    const respond = (body: unknown, status = 200) => json(route, body, status, options.responseBytes);
+    if (url.pathname === '/okf-explorer.json') return respond(descriptor);
+    if (url.pathname === '/data/manifest.json') return respond(manifest);
+    if (url.pathname === '/data/overview.json') return respond(overview);
+    if (url.pathname === '/data/analysis.json') return respond(analysis);
+    if (url.pathname === '/data/presentation.json') return respond(presentation);
+    if (url.pathname === '/data/providers/manifest.json') return respond(providerDatapackManifest);
+    if (url.pathname === '/data/providers/ons-explore-local-statistics.json') return respond(providerDatapack);
+    if (url.pathname === '/data/facets.json') return respond(facetRows);
+    if (url.pathname === '/data/datasets.json') return respond(records);
+    if (url.pathname === '/data/resources.json') return respond(resources);
     if (url.pathname === '/data/publishers.json') {
-      return json(route, [{
+      return respond([{
         name: 'office-for-national-statistics',
         title: 'Office for National Statistics',
         dataset_count: ONS_RECORD_COUNT,
@@ -575,19 +587,28 @@ export async function installOnsFacetFixture(context: BrowserContext, requestLog
         state: 'active'
       }]);
     }
-    if (url.pathname === '/data/graph.json') return json(route, {});
-    if (url.pathname === '/search/manifest.json') return json(route, searchManifest);
-    if (url.pathname === '/search/result-docs.json') return json(route, records.map(searchDocument));
-    if (url.pathname === '/search/doc-map.json') return json(route, {});
+    if (url.pathname === '/data/graph.json') return respond({});
+    if (url.pathname === '/search/manifest.json') return respond(searchManifest);
+    if (url.pathname === '/search/result-docs.json') return respond(records.map(searchDocument));
+    if (url.pathname === '/search/doc-map.json') return respond({});
     const filterKey = url.pathname.match(/^\/search\/filter-(.+)\.json$/)?.[1];
     if (filterKey && facetPostings[filterKey]) {
-      return json(route, { schema: 'okf-static-filter-postings.v1', key: filterKey, values: facetPostings[filterKey] });
+      return respond({
+        schema: 'okf-static-filter-postings.v1',
+        key: filterKey,
+        values: facetPostings[filterKey],
+        ...(options.filterPaddingBytes ? { padding: 'x'.repeat(options.filterPaddingBytes) } : {})
+      });
     }
-    return json(route, { error: `No fixture route for ${url.pathname}` }, 404);
+    return respond({ error: `No fixture route for ${url.pathname}` }, 404);
   });
 }
 
-export async function openOnsFacetFixture(page: Page, requestLog: string[] = []) {
+export async function openOnsFacetFixture(
+  page: Page,
+  requestLog: string[] = [],
+  options: OnsFacetFixtureOptions = {}
+) {
   await page.context().addInitScript(() => {
     const marker = 'okf-ons-facet-e2e-storage-initialised';
     if (!sessionStorage.getItem(marker)) {
@@ -595,7 +616,7 @@ export async function openOnsFacetFixture(page: Page, requestLog: string[] = [])
       sessionStorage.setItem(marker, 'yes');
     }
   });
-  await installOnsFacetFixture(page.context(), requestLog);
+  await installOnsFacetFixture(page.context(), requestLog, options);
   await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#overview`);
   await page.getByPlaceholder('Search ONS products, concepts and geographies').waitFor();
   await page.locator('[data-facet-key="derivation_mode"]').waitFor();
