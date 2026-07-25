@@ -41,6 +41,46 @@ export type DirectedGraphEdge = {
   label: string;
 };
 
+export type GroupableGraphEdge = DirectedGraphEdge & {
+  predicate?: string;
+};
+
+export type GraphRelationshipDirection = 'outgoing' | 'incoming' | 'lateral';
+export type GraphRelationshipSide = 'left' | 'top' | 'bottom' | 'right';
+
+export type GraphRelationshipGroup = {
+  key: string;
+  label: string;
+  predicate: string;
+  direction: GraphRelationshipDirection;
+  edgeIds: string[];
+  nodeIds: string[];
+};
+
+export type GraphRelationshipSlot = {
+  side: GraphRelationshipSide;
+  lane: number;
+};
+
+export type GraphRelationshipLayoutPlan = {
+  positions: Map<string, GraphPoint>;
+  slots: Map<string, GraphRelationshipSlot>;
+  nodeSlots: Map<string, GraphRelationshipSlot>;
+};
+
+export type GraphEdgeWeightInput = {
+  id: string;
+  metrics: Record<string, number | undefined>;
+};
+
+export type GraphEdgeWeightPlan = {
+  active: boolean;
+  metric: string;
+  min: number;
+  max: number;
+  widths: Map<string, number>;
+};
+
 export type DirectedEdgePlan = {
   id: string;
   showLabel: boolean;
@@ -69,7 +109,8 @@ function choosePlacement(
   item: GraphLabelItem,
   obstacles: GraphObstacle[],
   persistentBoxes: GraphBox[],
-  placedBoxes: GraphBox[]
+  placedBoxes: GraphBox[],
+  futureItems: GraphLabelItem[] = []
 ): GraphLabelPlacement | null {
   if (!item.choices.length) return null;
   const nodeBoxes = obstacles.filter((obstacle) => obstacle.id !== item.id).map((obstacle) => obstacle.box);
@@ -77,9 +118,18 @@ function choosePlacement(
     const persistentOverlaps = overlapCount(choice.box, persistentBoxes);
     const nodeOverlaps = overlapCount(choice.box, nodeBoxes);
     const labelOverlaps = overlapCount(choice.box, placedBoxes);
+    const futureLabelsBlocked = futureItems.filter((future) => (
+      future.choices.length > 0
+      && future.choices.every((candidate) => boxesOverlap(choice.box, candidate.box))
+    )).length;
     return {
       choice,
-      score: persistentOverlaps * 1_000_000 + nodeOverlaps * 10_000 + labelOverlaps * 100 + index
+      score:
+        persistentOverlaps * 1_000_000
+        + futureLabelsBlocked * 100_000
+        + nodeOverlaps * 10_000
+        + labelOverlaps * 100
+        + index
     };
   });
   candidates.sort((left, right) => left.score - right.score);
@@ -104,8 +154,14 @@ export function planGraphLabelLayers(
   const persistentBoxes: GraphBox[] = [];
   const placedBoxes: GraphBox[] = [];
 
-  for (const item of ordered) {
-    const placement = choosePlacement(item, obstacles, persistentBoxes, placedBoxes);
+  for (const [index, item] of ordered.entries()) {
+    const placement = choosePlacement(
+      item,
+      obstacles,
+      persistentBoxes,
+      placedBoxes,
+      item.always ? ordered.slice(index + 1) : []
+    );
     if (!placement) continue;
     placements.set(item.id, placement);
     placedBoxes.push(placement.box);
@@ -198,6 +254,238 @@ export function planDirectedEdges(edges: DirectedGraphEdge[]): Map<string, Direc
     });
   }
   return plan;
+}
+
+function relationshipDirection(edge: GroupableGraphEdge, center: string): GraphRelationshipDirection {
+  if (center && edge.source === center) return 'outgoing';
+  if (center && edge.target === center) return 'incoming';
+  return 'lateral';
+}
+
+export function graphRelationshipGroupKey(edge: GroupableGraphEdge, center: string): string {
+  const predicate = edge.predicate?.trim() || edge.label.trim() || 'related';
+  return `${relationshipDirection(edge, center)}:${predicate}`;
+}
+
+/**
+ * Groups a focus graph by semantic predicate and direction. Predicate IRIs are
+ * preferred when a datapack supplies them; legacy label-only edges remain
+ * compatible.
+ */
+export function groupGraphRelationships(
+  edges: GroupableGraphEdge[],
+  center: string
+): GraphRelationshipGroup[] {
+  const groups = new Map<string, GraphRelationshipGroup>();
+  for (const edge of edges) {
+    const key = graphRelationshipGroupKey(edge, center);
+    const direction = relationshipDirection(edge, center);
+    const predicate = edge.predicate?.trim() || edge.label.trim() || 'related';
+    const group = groups.get(key) || {
+      key,
+      label: edge.label.trim() || predicate,
+      predicate,
+      direction,
+      edgeIds: [],
+      nodeIds: []
+    };
+    group.edgeIds.push(edge.id);
+    const relatedNodeIds = direction === 'outgoing'
+      ? [edge.target]
+      : direction === 'incoming'
+        ? [edge.source]
+        : [edge.source, edge.target].filter((id) => id !== center);
+    for (const id of relatedNodeIds) {
+      if (id && !group.nodeIds.includes(id)) group.nodeIds.push(id);
+    }
+    groups.set(key, group);
+  }
+  return [...groups.values()].sort((left, right) => (
+    right.edgeIds.length - left.edgeIds.length
+    || left.label.localeCompare(right.label)
+    || left.direction.localeCompare(right.direction)
+  ));
+}
+
+export function orderGraphRelationshipGroups(
+  groups: GraphRelationshipGroup[],
+  preferredOrder: string[]
+): GraphRelationshipGroup[] {
+  const byKey = new Map(groups.map((group) => [group.key, group]));
+  return [
+    ...preferredOrder.flatMap((key) => {
+      const group = byKey.get(key);
+      if (!group) return [];
+      byKey.delete(key);
+      return [group];
+    }),
+    ...groups.filter((group) => byKey.has(group.key))
+  ];
+}
+
+const RELATIONSHIP_SIDE_SEQUENCE: GraphRelationshipSide[] = [
+  'left',
+  'top',
+  'bottom',
+  'right',
+  'right',
+  'bottom',
+  'top',
+  'left'
+];
+
+export function graphRelationshipGroupSlot(index: number): GraphRelationshipSlot {
+  const safeIndex = Math.max(0, Math.floor(index));
+  const side = RELATIONSHIP_SIDE_SEQUENCE[safeIndex % RELATIONSHIP_SIDE_SEQUENCE.length];
+  const preceding = RELATIONSHIP_SIDE_SEQUENCE
+    .slice(0, safeIndex % RELATIONSHIP_SIDE_SEQUENCE.length)
+    .filter((candidate) => candidate === side).length;
+  const fullCycles = Math.floor(safeIndex / RELATIONSHIP_SIDE_SEQUENCE.length) * 2;
+  return { side, lane: fullCycles + preceding };
+}
+
+function spreadPosition(index: number, count: number, start: number, end: number): number {
+  if (count <= 1) return (start + end) / 2;
+  return start + ((end - start) * index) / (count - 1);
+}
+
+/**
+ * Places predicate groups in ordered semantic regions around a focus node.
+ * The first four regions are left list, top staircase, bottom staircase and
+ * right list; additional groups occupy deterministic inner lanes.
+ */
+export function planRelationshipGroupPositions(
+  center: string,
+  groups: GraphRelationshipGroup[],
+  width: number,
+  height: number
+): GraphRelationshipLayoutPlan {
+  const positions = new Map<string, GraphPoint>();
+  const slots = new Map<string, GraphRelationshipSlot>();
+  const nodeSlots = new Map<string, GraphRelationshipSlot>();
+  const claimedNodes = new Set<string>();
+  const centerPoint = { x: width * 0.5, y: height * 0.53 };
+  if (center) positions.set(center, centerPoint);
+
+  const plannedGroups = groups.map((group, groupIndex) => {
+    const slot = graphRelationshipGroupSlot(groupIndex);
+    slots.set(group.key, slot);
+    const members = group.nodeIds.filter((id) => id !== center && !claimedNodes.has(id));
+    members.forEach((id) => {
+      claimedNodes.add(id);
+      nodeSlots.set(id, slot);
+    });
+    return { group, slot, members };
+  });
+
+  for (const side of ['left', 'right'] as const) {
+    const sideGroups = plannedGroups.filter((item) => item.slot.side === side && item.members.length);
+    if (!sideGroups.length) continue;
+    const availableHeight = height * 0.68;
+    const preferredRowGap = Math.min(46, height * 0.074);
+    const preferredGroupGap = Math.min(112, height * 0.18);
+    const naturalRows = sideGroups.reduce((sum, item) => sum + Math.max(0, item.members.length - 1), 0);
+    const naturalGroupGaps = Math.max(0, sideGroups.length - 1);
+    const naturalHeight = naturalRows * preferredRowGap + naturalGroupGaps * preferredGroupGap;
+    const scale = naturalHeight > availableHeight ? availableHeight / naturalHeight : 1;
+    const rowGap = Math.max(27, preferredRowGap * scale);
+    const groupGap = Math.max(64, preferredGroupGap * scale);
+    const contentHeight = naturalRows * rowGap + naturalGroupGaps * groupGap;
+    const listCenterY = side === 'right'
+      ? Math.max(centerPoint.y, height * 0.65)
+      : centerPoint.y;
+    let cursorY = listCenterY - contentHeight / 2;
+
+    sideGroups.forEach(({ slot, members }) => {
+      const lane = Math.min(slot.lane, 2);
+      const x = side === 'left'
+        ? width * (0.31 + lane * 0.055)
+        : width * (0.84 - lane * 0.055);
+      members.forEach((id, memberIndex) => {
+        positions.set(id, { x, y: cursorY + memberIndex * rowGap });
+      });
+      cursorY += Math.max(0, members.length - 1) * rowGap + groupGap;
+    });
+  }
+
+  for (const side of ['top', 'bottom'] as const) {
+    const sideGroups = plannedGroups.filter((item) => item.slot.side === side && item.members.length);
+    sideGroups.forEach(({ slot, members }, sideIndex) => {
+      const lane = Math.min(slot.lane, 2);
+      const groupOffset = (sideIndex - (sideGroups.length - 1) / 2) * width * 0.12;
+      const startX = width * (0.38 + lane * 0.025) + groupOffset;
+      const endX = width * (0.84 - lane * 0.035) + groupOffset;
+      const stepRise = Math.min(30, height * 0.048);
+      const baseY = side === 'top'
+        ? height * (0.12 + lane * 0.16)
+        : height * (0.84 - lane * 0.16);
+      members.forEach((id, memberIndex) => {
+        positions.set(id, {
+          x: spreadPosition(memberIndex, members.length, startX, endX),
+          y: baseY + (side === 'top' ? memberIndex : -memberIndex) * stepRise
+        });
+      });
+    });
+  }
+
+  return { positions, slots, nodeSlots };
+}
+
+/**
+ * Encodes a varying, explicitly supplied edge metric as line width. A single
+ * value or a constant range deliberately produces no visual weight claim.
+ */
+export function planGraphEdgeWeights(
+  edges: GraphEdgeWeightInput[],
+  minWidth = 1.2,
+  maxWidth = 5.4
+): GraphEdgeWeightPlan {
+  const widths = new Map(edges.map((edge) => [edge.id, minWidth]));
+  const valuesByMetric = new Map<string, Array<{ id: string; value: number }>>();
+  for (const edge of edges) {
+    for (const [metric, value] of Object.entries(edge.metrics)) {
+      if (!Number.isFinite(value) || Number(value) < 0) continue;
+      const values = valuesByMetric.get(metric) || [];
+      values.push({ id: edge.id, value: Number(value) });
+      valuesByMetric.set(metric, values);
+    }
+  }
+  const candidates = [...valuesByMetric.entries()]
+    .map(([metric, values]) => ({
+      metric,
+      values,
+      min: Math.min(...values.map((item) => item.value)),
+      max: Math.max(...values.map((item) => item.value))
+    }))
+    .filter((candidate) => (
+      candidate.values.length === edges.length
+      && candidate.values.length >= 2
+      && candidate.max > candidate.min
+    ))
+    .sort((left, right) => (
+      right.values.length - left.values.length
+      || Number(right.metric === 'relationship count') - Number(left.metric === 'relationship count')
+      || left.metric.localeCompare(right.metric)
+    ));
+  const selected = candidates[0];
+  if (!selected) return { active: false, metric: '', min: 0, max: 0, widths };
+
+  const logarithmic = selected.min >= 0 && selected.max > Math.max(10, selected.min * 12);
+  const transform = (value: number) => logarithmic ? Math.log1p(value) : value;
+  const transformedMin = transform(selected.min);
+  const transformedMax = transform(selected.max);
+  const range = transformedMax - transformedMin || 1;
+  for (const item of selected.values) {
+    const ratio = (transform(item.value) - transformedMin) / range;
+    widths.set(item.id, minWidth + Math.max(0, Math.min(1, ratio)) * (maxWidth - minWidth));
+  }
+  return {
+    active: true,
+    metric: selected.metric,
+    min: selected.min,
+    max: selected.max,
+    widths
+  };
 }
 
 export function quadraticEdgeGeometry(

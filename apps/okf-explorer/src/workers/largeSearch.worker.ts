@@ -445,7 +445,7 @@ function allOrdinals(): Set<number> {
 
 function matchedFields(mask: number): string[] {
   if (!manifest) return [];
-  return Object.entries(manifest.field_masks)
+  return Object.entries(manifest.field_masks ?? {})
     .filter(([, fieldMask]) => (mask & fieldMask) !== 0)
     .map(([field]) => field);
 }
@@ -528,7 +528,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     }
   }
 
-  const requestedPostingKeys = [...new Set([...Object.keys(request.filters), ...(request.facet_keys || [])])];
+  const requestedPostingKeys = [...new Set([...Object.keys(request.filters ?? {}), ...(request.facet_keys || [])])];
   const filterIndexes = new Map<string, LargeFilterPostings>();
   await Promise.all(requestedPostingKeys.map(async (key) => {
     const postings = await filterPostingsFor(key);

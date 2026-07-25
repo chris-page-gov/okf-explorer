@@ -208,6 +208,9 @@ async function installSmallFixture(
 async function openSmallMap(page: Page, options: { bundle?: ReturnType<typeof mapBundle>; geo?: string; previewDelayMs?: number } = {}) {
   const requests: string[] = [];
   await installSmallFixture(page.context(), options.bundle || mapBundle(), requests, options.previewDelayMs || 0);
+  await page.context().route('https://tile.openstreetmap.org/**', async (route) => {
+    await route.fulfill({ status: 204 });
+  });
   const params = new URLSearchParams({ bundle: `${FIXTURE_ORIGIN}/bundle.json`, view: 'map' });
   if (options.geo) params.set('geo', options.geo);
   await page.goto(`?${params.toString()}#overview`);
@@ -238,7 +241,8 @@ test.describe('geospatial Map discovery and reduction', () => {
     await expect(page.getByRole('button', { name: 'Map', exact: true })).toHaveClass(/active/);
     await expect(page.getByText('9 records in the current search/facet context have spatial evidence.')).toBeVisible();
     await expect(page.getByLabel('Map reductions')).toBeVisible();
-    await expect(page.getByRole('img', { name: 'Schematic UK locator with spatial record markers' })).toBeVisible();
+    await expect(page.getByRole('img', { name: 'UK reference map with spatial record markers' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '© OpenStreetMap contributors' })).toBeVisible();
     expect(requests.filter((url) => !url.endsWith('/bundle.json'))).toEqual([]);
   });
 
@@ -537,6 +541,11 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
 
     await expect(spatialRecords(page).getByRole('button')).toHaveCount(160);
     await expect(spatialRecords(page)).toContainText('Showing the first 160 records; use another map reduction to narrow the set.');
+    const workspaceHeight = await page.locator('.map-workspace').evaluate((element) => element.getBoundingClientRect().height);
+    const listHeight = await page.locator('.map-record-list').evaluate((element) => element.getBoundingClientRect().height);
+    expect(workspaceHeight).toBeLessThanOrEqual(725);
+    expect(listHeight).toBeLessThan(workspaceHeight);
+    expect(await page.locator('.map-record-list').evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
   });
 
   test('GEO-E2E-18 starts from ordinary search context and ignores malformed geo state safely', async ({ page }) => {

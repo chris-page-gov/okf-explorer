@@ -53,20 +53,46 @@ flowchart LR
 1. Reader opens with a lightweight overview of the GOV.UK CKAN corpus.
 2. The left panel contains search and facets such as publisher, controlled
    topic, format, tag, licence, host, resource type, and update year.
+   Suggested omits complete single-valued dimensions because they cannot narrow
+   the result set; use All to inspect them, or pin/select one to retain it.
 3. Searching for `IAPT` reduces the Reader and Graph views to relevant datasets.
-4. Graph shows a bounded context, node-type key, zoom controls, and relationship
-   labels without loading every relationship first.
+4. Graph shows a bounded context, zoom controls, relationship labels and a
+   node-type key filtered to what is present. Dense focus graphs expose ordered
+   relationship regions automatically. Lists use compact
+   rows and staircases reserve an outside-facing label for every node; only
+   conflicting relationship labels cycle. `Labels (a/n)` shows the active
+   non-overlapping label set and pauses or resumes that cycle. `Nodes` exposes
+   only node types in the graph and lets you hide or restore each type.
+   `Relationships (n)` replaces that key with the predicates in the graph; choosing
+   one highlights its source nodes, target nodes and directed edges and opens
+   Source, Relationship and Target inspector tabs. `Nodes (n)` and
+   `Relationships (n)` use pressed styling to identify the active key without
+   implying that the graph itself is switched on or off. These compact controls
+   remain visible while the centre panel scrolls. Use Ctrl/Command+wheel or the
+   +/- buttons to zoom; an unmodified wheel scrolls to the relationship rows
+   below. Focus graphs repeat the focused node name as a title inside the SVG;
+   publisher and licence nodes occupy the lower-left and lower-right anchors so
+   a graph screenshot retains a document-like identity and final line.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
-6. Map classifies the current search/facet reduction from declared coverage,
+6. Timeline groups recurring records by dataset series and the release or
+   coverage period represented by the data. Catalogue update dates appear only
+   as labelled fallbacks. Select a year or month to follow that release's
+   durable Explorer route.
+7. A selected record separates **Other releases** in the same series from
+   **Alternative datasets**. Alternatives link to their own routes and show
+   declared differences where the bundle supplies them.
+8. Map classifies the current search/facet reduction from declared coverage,
    coordinates, UK place names, ArcGIS/OGC services and spatial file formats.
    Its place/evidence chips add a `geo=` reduction to the public URL.
 
 ## Use The Map Canvas
 
-Map works with existing bundles; no AI, geocoder, tile service or new server is
-required for browsing.
+Map works with existing bundles; no AI, geocoder or new application server is
+required for browsing. It requests a small OpenStreetMap reference layer for
+geographic context. If those public tiles are unavailable, the local metadata,
+coverage outline, markers and source links remain usable.
 
 1. Search or apply ordinary facets first so Map starts from a useful context.
 2. Select **Map**. A large corpus loads its ordinary dataset/resource index and
@@ -74,9 +100,11 @@ required for browsing.
 3. Select an evidence chip such as **Map or feature service** or a recognised
    UK area such as **Scotland**. The same reduction then applies if you switch
    to Reader, Graph, Timeline or Resources.
-4. Select a marker or list row to open the normal Explorer detail card. Solid
-   markers are source coordinates; ring markers are labelled representative
-   centroids and do not imply a boundary.
+4. Select a marker or list row to open the normal Explorer detail card. The
+   map and result list share one bounded workspace; the result list scrolls
+   inside that height rather than pushing the map down the page. Solid markers
+   are source coordinates; ring markers are labelled representative centroids
+   and do not imply a boundary.
 5. Use **Open source ↗** for every linked spatial resource. For direct GeoJSON,
    OGC API JSON or an ArcGIS feature service, **Preview on demand** attempts a
    bounded browser-side feature preview. Failure leaves the local metadata and

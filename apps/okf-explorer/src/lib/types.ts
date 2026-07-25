@@ -565,6 +565,7 @@ export type SearchResultDoc = {
   timestamp?: string;
   notes?: string;
   context_note?: string;
+  alternatives?: LargeDatasetAlternative[];
   endpoint_host?: string;
   documentation_host?: string;
   access_model?: string;
@@ -618,6 +619,24 @@ export type SearchResultDoc = {
   effects_made_url?: string;
   effects_received_url?: string;
   official_full_text_match?: boolean;
+};
+
+export type LargeDatasetAlternative = {
+  record_id?: string;
+  title?: string;
+  route?: string;
+  source_surface?: string;
+  record_type?: string;
+  relationship_type?: 'alternative' | 'cross-source-alternative' | string;
+  similarity?: number;
+  shared_terms?: string[];
+  differences?: Array<{
+    field?: string;
+    selected?: unknown;
+    alternative?: unknown;
+  }>;
+  not_enough_evidence?: boolean;
+  [key: string]: unknown;
 };
 
 export type SearchSuggestion = {
@@ -683,6 +702,8 @@ export type LargeDataset = {
   name: string;
   title: string;
   notes?: string;
+  context_note?: string;
+  alternatives?: LargeDatasetAlternative[];
   publisher?: string;
   publisher_title?: string;
   resource_count?: number;

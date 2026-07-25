@@ -480,7 +480,7 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(ELS_RESOURCE_ID).toBe('els-average-house-price-source');
   });
 
-  test('FACET-E2E-08 cycles overlapping relationship labels in an ONS-shaped focus graph', async ({ page }) => {
+  test('FACET-E2E-08 keeps every node label visible and cycles only conflicting edge labels', async ({ page }) => {
     await openOnsFacetFixture(page);
     await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
     await waitForFixtureReady(page);
@@ -489,31 +489,267 @@ test.describe('large-corpus facet interaction contract', () => {
     const graph = page.getByRole('img', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     await expect(page.locator('.graph-summary')).toContainText('21 nodes · 20 relationships');
-    await expect(page.locator('.graph-summary')).toContainText(/label set \d+\/(?:[2-9]|\d{2,})/);
-    await expect(page.getByRole('button', { name: 'Pause cycling graph labels' })).toBeVisible();
 
     const edgeLabels = graph.locator('.edge-label');
-    await expect.poll(() => edgeLabels.count()).toBeGreaterThan(0);
-    await expect.poll(() => edgeLabels.count()).toBeLessThan(20);
-
-    const visibleKeys = () => edgeLabels.evaluateAll((labels) => labels.map((label) => label.getAttribute('data-label-key')));
-    const firstKeys = await visibleKeys();
+    expect(await edgeLabels.count()).toBeGreaterThan(0);
+    await expect(graph.locator('.graph-node-label > text')).toHaveCount(21);
+    const nodeLabelRoutes = () => graph.locator('.graph-node-label').evaluateAll((elements) =>
+      elements.map((element) => element.getAttribute('data-label-route'))
+    );
+    const firstNodeLabels = await nodeLabelRoutes();
     await page.waitForTimeout(2100);
-    expect(await visibleKeys()).not.toEqual(firstKeys);
+    expect(await nodeLabelRoutes()).toEqual(firstNodeLabels);
 
-    const labels = graph.locator('g[data-route] > text:not(.stack-count), .edge-label');
-    const overlapCount = await labels.evaluateAll((elements) => {
+    const labels = graph.locator('.graph-node-label > text, .edge-label');
+    const paintedLabelHitBorders = await graph.locator('.label-hit').evaluateAll((elements) =>
+      elements.filter((element) => {
+        const style = getComputedStyle(element);
+        return Number.parseFloat(style.strokeWidth) > 0 && style.stroke !== 'none';
+      }).length
+    );
+    expect(paintedLabelHitBorders).toBe(0);
+
+    const overlappingPairs = await labels.evaluateAll((elements) => {
       const boxes = elements.map((element) => element.getBoundingClientRect());
-      let overlaps = 0;
+      const overlaps: Array<Array<{ text: string; classes: string; x: string | null; y: string | null }>> = [];
       for (let left = 0; left < boxes.length; left += 1) {
         for (let right = left + 1; right < boxes.length; right += 1) {
           const a = boxes[left];
           const b = boxes[right];
-          if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top) overlaps += 1;
+          if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top) {
+            overlaps.push([
+              {
+                text: elements[left]?.textContent?.trim() || '',
+                classes: elements[left]?.getAttribute('class') || '',
+                x: elements[left]?.getAttribute('x'),
+                y: elements[left]?.getAttribute('y')
+              },
+              {
+                text: elements[right]?.textContent?.trim() || '',
+                classes: elements[right]?.getAttribute('class') || '',
+                x: elements[right]?.getAttribute('x'),
+                y: elements[right]?.getAttribute('y')
+              }
+            ]);
+          }
         }
       }
       return overlaps;
     });
-    expect(overlapCount).toBe(0);
+    expect(overlappingPairs).toEqual([]);
+  });
+
+  test('FACET-E2E-09 filters the key and uses ordered relationship regions', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const summary = page.locator('.graph-summary');
+    const legend = page.getByLabel('Node type key');
+    await expect(graph).toBeVisible();
+    await expect(summary).toContainText('21 nodes · 20 relationships');
+    await expect(legend.getByRole('button')).toHaveCount(7);
+    for (const type of ['ONS metadata record', 'publisher', 'source/access resource', 'formats', 'topic', 'licence', 'tag']) {
+      await expect(legend).toContainText(type);
+    }
+    await expect(legend).not.toContainText('link stack');
+    await expect(legend).not.toContainText('record type stack');
+    await expect(legend).not.toContainText('opened stack group');
+    await expect(legend).not.toContainText('host/other');
+
+    const leftLabelPlacements = await graph.locator('.graph-node[data-relationship-side="left"]').evaluateAll((groups) =>
+      groups.flatMap((group) => {
+        const route = group.getAttribute('data-route');
+        const label = (group as SVGGElement).ownerSVGElement?.querySelector(`.graph-node-label[data-label-route="${CSS.escape(route || '')}"] > text`) as SVGGraphicsElement | null;
+        const symbol = group.querySelector(':scope > .node-symbol, :scope > .resource-card, :scope > .dataset-card, :scope > .stack-card') as SVGGraphicsElement | null;
+        if (!route || !label || !symbol) return [];
+        const labelBox = label.getBBox();
+        const symbolBox = symbol.getBBox();
+        return [{
+          route,
+          labelLeft: labelBox.x,
+          labelBottom: labelBox.y + labelBox.height,
+          nodeLeft: symbolBox.x,
+          nodeTop: symbolBox.y
+        }];
+      })
+    );
+    expect(leftLabelPlacements).toHaveLength(8);
+    const preferredLeftPlacements = leftLabelPlacements.filter((placement) => (
+      placement.labelLeft < placement.nodeLeft
+      && placement.labelBottom <= placement.nodeTop + 1
+    ));
+    expect(preferredLeftPlacements).toHaveLength(leftLabelPlacements.length);
+
+    const relationshipGeometry = await graph.evaluate((svg) => {
+      const measurements = (side: string) => [...svg.querySelectorAll(`.graph-node[data-relationship-side="${side}"]`)]
+        .flatMap((group) => {
+          const route = group.getAttribute('data-route');
+          const symbol = group.querySelector(':scope > .node-symbol, :scope > .resource-card, :scope > .dataset-card, :scope > .stack-card') as SVGGraphicsElement | null;
+          const label = svg.querySelector(`.graph-node-label[data-label-route="${CSS.escape(route || '')}"] > text`) as SVGGraphicsElement | null;
+          if (!route || !symbol || !label) return [];
+          const symbolBox = symbol.getBBox();
+          const labelBox = label.getBBox();
+          return [{
+            route,
+            symbolLeft: symbolBox.x,
+            symbolRight: symbolBox.x + symbolBox.width,
+            symbolX: symbolBox.x + symbolBox.width / 2,
+            symbolY: symbolBox.y + symbolBox.height / 2,
+            symbolTop: symbolBox.y,
+            symbolBottom: symbolBox.y + symbolBox.height,
+            labelBottom: labelBox.y + labelBox.height
+          }];
+        });
+      return {
+        viewBoxWidth: (svg as SVGSVGElement).viewBox.baseVal.width,
+        viewBoxHeight: (svg as SVGSVGElement).viewBox.baseVal.height,
+        left: measurements('left'),
+        top: measurements('top'),
+        right: measurements('right'),
+        documentAnchors: ['dataset', 'publisher', 'license'].map((type) => {
+          const group = svg.querySelector(`.graph-node[data-type="${type}"]`) as SVGGElement;
+          const symbol = group.querySelector(':scope > .node-symbol, :scope > .dataset-card') as SVGGraphicsElement;
+          const box = symbol.getBBox();
+          return { type, x: box.x + box.width / 2, y: box.y + box.height / 2 };
+        })
+      };
+    });
+    const leftRows = relationshipGeometry.left.map((item) => item.symbolY).sort((a, b) => a - b);
+    expect(Math.max(...leftRows.slice(1).map((value, index) => value - leftRows[index]))).toBeLessThanOrEqual(50);
+    expect(relationshipGeometry.top).toHaveLength(8);
+    expect(relationshipGeometry.top.every((item) => item.labelBottom <= item.symbolTop + 1)).toBe(true);
+    expect(Math.max(...relationshipGeometry.top.map((item) => item.symbolX))
+      - Math.min(...relationshipGeometry.top.map((item) => item.symbolX))).toBeGreaterThan(relationshipGeometry.viewBoxWidth * 0.42);
+    const centre = relationshipGeometry.documentAnchors.find((item) => item.type === 'dataset')!;
+    const publisher = relationshipGeometry.documentAnchors.find((item) => item.type === 'publisher')!;
+    const licence = relationshipGeometry.documentAnchors.find((item) => item.type === 'license')!;
+    expect(publisher.x).toBeLessThan(centre.x);
+    expect(licence.x).toBeGreaterThan(centre.x);
+    expect(publisher.y).toBeGreaterThan(centre.y);
+    expect(licence.y).toBeGreaterThan(centre.y);
+    expect(Math.abs(publisher.y - licence.y)).toBeLessThanOrEqual(1);
+    await expect(graph.locator('.graph-focus-title')).toContainText('Average house price');
+
+    // The fixture supplies no quantitative relationship strength. Uniform
+    // lines therefore remain neutral rather than implying unsupported weights.
+    await expect(summary).not.toContainText('line weight');
+    expect(await graph.locator('.graph-edge').evaluateAll((edges) =>
+      [...new Set(edges.map((edge) => edge.getAttribute('data-edge-width')))]
+    )).toHaveLength(1);
+  });
+
+  test('FACET-E2E-10A compacts graph controls and links node and relationship keys to the graph', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const labelsButton = page.getByRole('button', { name: /^Pause cycling graph labels/ });
+    await expect(labelsButton).toContainText(/^Labels \(\d+\/\d+\)$/);
+    await labelsButton.click();
+    const pausedLabelsButton = page.getByRole('button', { name: /^Resume cycling graph labels/ });
+    await expect(pausedLabelsButton).toContainText(/^Labels \(\d+\/\d+\)$/);
+    await expect(graph.locator('.graph-node-label').first()).toBeVisible();
+    const pausedSet = await pausedLabelsButton.textContent();
+    await page.waitForTimeout(2200);
+    await expect(pausedLabelsButton).toHaveText(pausedSet || '');
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.labels')).toBe('off');
+    await pausedLabelsButton.click();
+
+    const nodeKey = page.getByLabel('Node type key');
+    await expect(nodeKey.getByRole('button', { name: /focus$/ })).toHaveAttribute('aria-disabled', 'true');
+    const retainedTopicPosition = await graph.locator('.graph-node[data-type="topic"]').first().evaluate((node) => {
+      const symbol = node.querySelector('.node-symbol') as SVGGraphicsElement;
+      const box = symbol.getBBox();
+      return { x: box.x, y: box.y };
+    });
+    await nodeKey.getByRole('button', { name: /^tag 8$/ }).click();
+    await expect(page.locator('.graph-summary')).toContainText('13 nodes · 12 relationships');
+    await expect(nodeKey.getByRole('button', { name: /^tag 8$/ })).toHaveAttribute('aria-pressed', 'false');
+    await expect.poll(() => new URL(page.url()).searchParams.getAll('graph.hideType')).toEqual(['tag']);
+    expect(await graph.locator('.graph-node[data-type="topic"]').first().evaluate((node) => {
+      const symbol = node.querySelector('.node-symbol') as SVGGraphicsElement;
+      const box = symbol.getBBox();
+      return { x: box.x, y: box.y };
+    })).toEqual(retainedTopicPosition);
+    await nodeKey.getByRole('button', { name: /^tag 8$/ }).click();
+
+    const layoutButton = page.getByRole('button', { name: 'Layout', exact: true });
+    await layoutButton.click();
+    const layoutControls = page.getByRole('region', { name: 'Relationship layout' });
+    await expect(layoutControls).toBeVisible();
+    await layoutControls.getByRole('button', { name: 'By relationship', exact: true }).click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.layout')).toBe('relationships');
+    await layoutControls.getByRole('button', { name: 'Auto', exact: true }).click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.layout')).toBeNull();
+
+    await page.getByRole('button', { name: 'Relationships (20)', exact: true }).click();
+    const relationshipKey = page.getByLabel('Relationship type key');
+    const classifiedAs = relationshipKey.getByRole('button', { name: /^classified as from focus · 8$/ });
+    await classifiedAs.click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.relationship')).toBe('outgoing:classified as');
+    await expect(graph.locator('.graph-edge.highlight')).toHaveCount(8);
+    await expect(graph.locator('.graph-node.relationship-source')).toHaveCount(1);
+    await expect(graph.locator('.graph-node.relationship-target')).toHaveCount(8);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' }).getByRole('tab'))
+      .toHaveText(['Source', 'Relationship', 'Target']);
+    await page.getByRole('tab', { name: 'Source', exact: true }).click();
+    await expect(page.getByRole('tabpanel').last()).toContainText('Source of the selected relationship');
+
+    await classifiedAs.click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.relationship')).toBeNull();
+    await expect(graph.locator('.graph-edge.highlight')).toHaveCount(0);
+    await page.goBack();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.relationship')).toBe('outgoing:classified as');
+    await expect(graph.locator('.graph-edge.highlight')).toHaveCount(8);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+
+    await graph.locator('.edge-hit').first().click();
+    await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
+    await expect(graph.locator('.graph-node.relationship-source')).toHaveCount(1);
+    await expect(graph.locator('.graph-node.relationship-target')).toHaveCount(1);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+    expect(await graph.locator('.edge-hit').first().evaluate((edge) => getComputedStyle(edge).outlineStyle)).toBe('none');
+  });
+
+  test('FACET-E2E-11 keeps controls available, scrolls normally, and sizes both collapsed rails', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const stage = page.locator('.stage');
+    const toolbar = page.locator('.graph-toolbar');
+    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    await expect(graph).toBeVisible();
+    expect(await toolbar.evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
+
+    const initialViewBox = await graph.getAttribute('viewBox');
+    const graphBox = await graph.boundingBox();
+    expect(graphBox).not.toBeNull();
+    await page.mouse.move(graphBox!.x + graphBox!.width / 2, graphBox!.y + Math.min(160, graphBox!.height / 2));
+    await page.mouse.wheel(0, 420);
+    await expect.poll(() => stage.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    expect(await graph.getAttribute('viewBox')).toBe(initialViewBox);
+
+    const stickyTop = (await toolbar.boundingBox())!.y;
+    await stage.evaluate((element) => { element.scrollTop += 260; });
+    await expect.poll(async () => Math.round((await toolbar.boundingBox())!.y)).toBe(Math.round(stickyTop));
+
+    await graph.dispatchEvent('wheel', { deltaY: -100, ctrlKey: true });
+    await expect(graph).not.toHaveAttribute('viewBox', initialViewBox || '');
+
+    await page.getByRole('button', { name: 'Toggle navigation' }).click();
+    await page.getByRole('button', { name: 'Toggle details' }).click();
+    const railWidths = await page.evaluate(() => ({
+      left: document.querySelector('.left-panel')!.getBoundingClientRect().width,
+      right: document.querySelector('.right-panel')!.getBoundingClientRect().width
+    }));
+    expect(railWidths.left).toBeCloseTo(44, 0);
+    expect(railWidths.right).toBeCloseTo(44, 0);
   });
 });

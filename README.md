@@ -40,6 +40,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Use the static search and filtering manual][search-filtering-manual]
 - [Review the facet presentation experiment][facet-presentation-experiment]
 - [Review the viewer capability parity and conflict register][viewer-parity]
+- [Review the ontology and semantic graph architecture][semantic-graph-architecture]
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
@@ -111,6 +112,9 @@ The repository contains:
 - `docs/viewer-capability-parity-2026-07-24.md` - complete LLM-Wiki and OKF
   viewer inventory, feature matrix, conflict decisions and regression contract
   for the canonical Svelte implementation.
+- `docs/ontology-and-semantic-graph-architecture-2026-07-24.md` - layered
+  RDF/RDFS/SKOS/OWL/SHACL/DCAT/PROV architecture, predicate registry proposal,
+  semantic graph interaction contract and delivery roadmap.
 - `docs/facet-presentation-experiment.md` - experimental provider/user display
   contract for facet ordering, compact distributions, search and panel tabs.
 - `docs/provider-datapacks.md` - generic contract and UI rules for governed
@@ -203,6 +207,19 @@ parity contract also covers complete non-overlapping node-and-relationship
 graph-label layers, reciprocal directed edges, safe Markdown tables and
 Mermaid-lite diagrams, conversation-aware Narrative and Timeline rendering,
 folded context rails, and touch-scrollable evidence panels.
+Dense focus graphs automatically group nodes into ordered relationship regions
+and encode line width only from an explicit varying relationship metric. The
+node type key reflects only the nodes currently displayed. Controlled regions keep
+all node labels visible in compact lists and outside-labelled staircases;
+conflicting edge labels alone continue to cycle. Graph controls stay available
+while the centre panel scrolls, and wheel zoom requires Ctrl/Command. The
+two-line toolbar switches its filtered key between counted node types and
+counted relationship types: node chips hide or restore a type, relationship
+chips highlight the corresponding sources, targets and directed edges, and
+`Labels (a/n)` pauses or resumes the non-overlapping label-set cycle. The
+active key uses pressed styling rather than display-like on/off wording. The
+relationship data card explains
+the selected source, predicate and target on separate tabs.
 
 ```sh
 cd apps/okf-explorer
@@ -293,6 +310,7 @@ Pages to use **GitHub Actions** as the source.
 [search-filtering-manual]: docs/static-search-filtering-manual.md
 [facet-presentation-experiment]: docs/facet-presentation-experiment.md
 [viewer-parity]: docs/viewer-capability-parity-2026-07-24.md
+[semantic-graph-architecture]: docs/ontology-and-semantic-graph-architecture-2026-07-24.md
 [provider-datapacks]: docs/provider-datapacks.md
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

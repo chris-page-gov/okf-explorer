@@ -17,6 +17,14 @@ export type FacetDistributionSegment = LargeFacetRow & {
   otherValues?: number;
 };
 
+export type FacetValueFamily = {
+  id: 'year' | 'format' | 'region' | 'other';
+  label: string;
+  count: number;
+  rows: LargeFacetRow[];
+  valueCount: number;
+};
+
 const FACET_KEY_PATTERN = /^[A-Za-z][A-Za-z0-9_-]*$/;
 const FACET_VALUE_TYPES = new Set(['nominal', 'ordinal', 'number', 'date']);
 const FACET_STATES = new Set(['pinned', 'shown', 'hidden']);
@@ -343,6 +351,57 @@ export function facetDistributionSegments(rows: LargeFacetRow[], limit = 10): Fa
       otherValues: omitted.length
     }
   ];
+}
+
+function facetValueFamily(value: string): Omit<FacetValueFamily, 'count' | 'rows' | 'valueCount'> {
+  const normalized = value.trim();
+  const words = normalized.toLowerCase().replace(/[-_]+/g, ' ');
+  if (/^(?:19|20)\d{2}$/.test(normalized)) return { id: 'year', label: 'Year' };
+  if (/\b(csv|tsv|json|geojson|xml|zip|gzip|geopackage|shapefile|parquet|spreadsheet|excel|pdf)\b/.test(words)) {
+    return { id: 'format', label: 'Format' };
+  }
+  if (
+    /^(?:gb|uk)$/i.test(normalized)
+    || /\b(england|scotland|wales|northern ireland|great britain|united kingdom|region|county|borough|district)\b/.test(words)
+  ) {
+    return { id: 'region', label: 'Region' };
+  }
+  return { id: 'other', label: 'Other' };
+}
+
+/**
+ * Produces a deliberately diverse, bounded preview for a high-cardinality
+ * facet. This is a display fallback: provider-declared hierarchies remain the
+ * authoritative grouping when a bundle supplies them.
+ */
+export function diverseFacetValueFamilies(
+  rows: LargeFacetRow[],
+  label: (value: string) => string = (value) => value,
+  valuesPerFamily = 5
+): FacetValueFamily[] {
+  const families = new Map<FacetValueFamily['id'], FacetValueFamily>();
+  for (const row of rows.filter((candidate) => Number.isFinite(candidate.count) && candidate.count > 0)) {
+    const family = facetValueFamily(label(row.value));
+    const current = families.get(family.id) || { ...family, count: 0, rows: [], valueCount: 0 };
+    current.count += row.count;
+    current.valueCount += 1;
+    current.rows.push(row);
+    families.set(family.id, current);
+  }
+  const order: FacetValueFamily['id'][] = ['year', 'format', 'region', 'other'];
+  return order
+    .map((id) => families.get(id))
+    .filter((family): family is FacetValueFamily => Boolean(family))
+    .map((family) => ({
+      ...family,
+      rows: [...family.rows]
+        .sort((left, right) => (
+          family.id === 'year'
+            ? label(left.value).localeCompare(label(right.value), undefined, { numeric: true })
+            : right.count - left.count || label(left.value).localeCompare(label(right.value))
+        ))
+        .slice(0, Math.max(1, valuesPerFamily))
+    }));
 }
 
 function numericValue(value: string): number | null {

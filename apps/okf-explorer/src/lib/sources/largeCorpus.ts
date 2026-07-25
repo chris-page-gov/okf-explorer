@@ -253,13 +253,13 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   if (advertisedRoot && advertisedRoot !== manifestRoot) {
     throw new Error('Descriptor and data manifest integrity roots differ');
   }
-  const overviewPath = descriptorEntrypoint(descriptor, 'overview_index') || manifest.indexes.overview;
+  const overviewPath = descriptorEntrypoint(descriptor, 'overview_index') || manifest.indexes?.overview;
   const overview = await fetchResource<LargeOverview>(overviewPath);
-  const analysisPath = descriptorEntrypoint(descriptor, 'analysis_overview') || manifest.indexes.analysis;
+  const analysisPath = descriptorEntrypoint(descriptor, 'analysis_overview') || manifest.indexes?.analysis;
   const analysis = analysisPath
     ? await fetchResource<LargeAnalysisOverview>(analysisPath).catch(() => undefined)
     : undefined;
-  const presentationPath = descriptorEntrypoint(descriptor, 'presentation') || manifest.indexes.presentation;
+  const presentationPath = descriptorEntrypoint(descriptor, 'presentation') || manifest.indexes?.presentation;
   const presentation = presentationPath
     ? normalizeExplorerPresentation(await fetchResource<unknown>(presentationPath).catch(() => undefined))
     : undefined;
@@ -269,7 +269,7 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   );
   const descriptorProviderDatapackIntegrity =
     descriptor.entrypoint_integrity?.provider_datapacks;
-  const manifestProviderDatapackPath = manifest.indexes.provider_datapacks;
+  const manifestProviderDatapackPath = manifest.indexes?.provider_datapacks;
   if (
     descriptorProviderDatapackPath &&
     manifestProviderDatapackPath &&
@@ -403,9 +403,9 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
         const request = (async () => {
           const operationalPath = descriptorEntrypoint(descriptor, 'operational_metadata') || manifest.indexes.operational_metadata;
           const [rawDatasets, resources, publishers, facets, graph, govukContent, operationalMetadata] = await Promise.all([
-            loadChunks<LargeDataset>(fetchResource, manifest.chunks.datasets || [], manifest.shards?.datasets, 'Dataset shard'),
-            loadChunks<LargeResource>(fetchResource, manifest.chunks.resources || [], manifest.shards?.resources, 'Resource shard'),
-            loadChunks<LargePublisher>(fetchResource, manifest.chunks.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
+            loadChunks<LargeDataset>(fetchResource, manifest.chunks?.datasets || manifest.chunks?.records || (manifest as Record<string, unknown>).record_shards as string[] || [], manifest.shards?.datasets || manifest.shards?.records, 'Dataset shard'),
+            loadChunks<LargeResource>(fetchResource, manifest.chunks?.resources || [], manifest.shards?.resources, 'Resource shard'),
+            loadChunks<LargePublisher>(fetchResource, manifest.chunks?.publishers || [], manifest.shards?.publishers, 'Publisher shard'),
             source.loadFacetIndex(),
             manifest.indexes.graph ? fetchResource<LargeGraphIndex>(manifest.indexes.graph) : {},
             manifest.indexes.govuk_content ? fetchResource<LargeGovukContent>(manifest.indexes.govuk_content) : {},

@@ -3,6 +3,7 @@ import {
   applyFacetPreferenceOrder,
   facetPreferenceOverrides,
   facetDistributionSegments,
+  diverseFacetValueFamilies,
   facetExampleValues,
   mergeExplorerDisplay,
   moveFacetKey,
@@ -182,6 +183,22 @@ describe('facet presentation', () => {
       { value: 'B', count: 4 },
       { value: '__other__', count: 3, otherValues: 2 }
     ]);
+  });
+
+  it('builds a diverse high-cardinality preview instead of taking only the largest values', () => {
+    const families = diverseFacetValueFamilies([
+      { value: 'DOC_ONSUD_UG', count: 20 },
+      { value: '2020', count: 9 },
+      { value: '2017', count: 8 },
+      { value: 'CSV Collection', count: 7 },
+      { value: 'Zip file', count: 5 },
+      { value: 'GB', count: 4 },
+      { value: 'Address Products', count: 3 }
+    ]);
+    expect(families.map((family) => family.label)).toEqual(['Year', 'Format', 'Region', 'Other']);
+    expect(families[0].rows.map((row) => row.value)).toEqual(['2017', '2020']);
+    expect(families[1].rows.map((row) => row.value)).toEqual(['CSV Collection', 'Zip file']);
+    expect(families[3]).toMatchObject({ count: 23, valueCount: 2 });
   });
 
   it('orders categorical and numeric values predictably and supplies useful examples', () => {

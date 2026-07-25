@@ -16,6 +16,21 @@ export type DatasetDateContext = {
   seriesKey: string;
 };
 
+export type DatasetReleasePeriod = {
+  label: string;
+  sortKey: string;
+  year: string;
+  month: number;
+  source: 'declared' | 'title' | 'resource' | 'catalogue';
+  catalogueFallback: boolean;
+};
+
+export type DatasetDisplaySeries = {
+  label: string;
+  key: string;
+  inferred: boolean;
+};
+
 export type DatasetOperationalContext = {
   explicit: boolean;
   catalogueDerived: boolean;
@@ -35,6 +50,20 @@ export type DatasetOperationalContext = {
 };
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_NUMBER = new Map([
+  ['jan', 1], ['january', 1],
+  ['feb', 2], ['february', 2],
+  ['mar', 3], ['march', 3],
+  ['apr', 4], ['april', 4],
+  ['may', 5],
+  ['jun', 6], ['june', 6],
+  ['jul', 7], ['july', 7],
+  ['aug', 8], ['august', 8],
+  ['sep', 9], ['sept', 9], ['september', 9],
+  ['oct', 10], ['october', 10],
+  ['nov', 11], ['november', 11],
+  ['dec', 12], ['december', 12]
+]);
 
 function recordString(record: Record<string, unknown> | undefined, key: string): string {
   const value = record?.[key];
@@ -100,6 +129,157 @@ function yearsFromValue(value: unknown): string[] {
   return String(value).match(/\b(?:18|19|20|21)\d{2}\b/g) || [];
 }
 
+function stringsFromValue(value: unknown): string[] {
+  if (Array.isArray(value)) return value.flatMap(stringsFromValue);
+  if (value && typeof value === 'object') return Object.values(value as Record<string, unknown>).flatMap(stringsFromValue);
+  if (typeof value !== 'string' && typeof value !== 'number') return [];
+  const text = String(value).trim();
+  return text ? [text] : [];
+}
+
+function releasePeriodFromText(
+  value: string,
+  source: DatasetReleasePeriod['source']
+): DatasetReleasePeriod | null {
+  const monthYear = new RegExp(
+    `\\b(${[...MONTH_NUMBER.keys()].sort((left, right) => right.length - left.length).join('|')})[\\s._/-]+((?:18|19|20|21)\\d{2})\\b`,
+    'i'
+  ).exec(value);
+  if (monthYear) {
+    const month = MONTH_NUMBER.get(monthYear[1].toLowerCase()) || 0;
+    const year = monthYear[2];
+    return {
+      label: `${MONTH_NAMES[month - 1]} ${year}`,
+      sortKey: `${year}-${String(month).padStart(2, '0')}`,
+      year,
+      month,
+      source,
+      catalogueFallback: source === 'catalogue'
+    };
+  }
+
+  const isoDate = /\b((?:18|19|20|21)\d{2})-(\d{2})(?:-\d{2})?\b/.exec(value);
+  if (isoDate) {
+    const month = Number(isoDate[2]);
+    const year = isoDate[1];
+    if (month >= 1 && month <= 12) {
+      return {
+        label: `${MONTH_NAMES[month - 1]} ${year}`,
+        sortKey: `${year}-${String(month).padStart(2, '0')}`,
+        year,
+        month,
+        source,
+        catalogueFallback: source === 'catalogue'
+      };
+    }
+  }
+
+  const quarter = /(?:\bQ([1-4])[\s._/-]+((?:18|19|20|21)\d{2})\b|\b((?:18|19|20|21)\d{2})[\s._/-]+Q([1-4])\b)/i.exec(value);
+  if (quarter) {
+    const year = quarter[2] || quarter[3];
+    const quarterNumber = Number(quarter[1] || quarter[4]);
+    const month = quarterNumber * 3;
+    return {
+      label: `Q${quarterNumber} ${year}`,
+      sortKey: `${year}-${String(month).padStart(2, '0')}`,
+      year,
+      month,
+      source,
+      catalogueFallback: source === 'catalogue'
+    };
+  }
+
+  const year = value.match(/\b(?:18|19|20|21)\d{2}\b/)?.[0] || '';
+  return year
+    ? { label: year, sortKey: year, year, month: 0, source, catalogueFallback: source === 'catalogue' }
+    : null;
+}
+
+function explicitSeries(dataset: LargeDataset): { label: string; id: string } {
+  const direct = dataset as Record<string, unknown>;
+  const extras = dataset.extras;
+  return {
+    label:
+      recordString(direct, 'series_title') ||
+      recordString(direct, 'series') ||
+      recordString(extras, 'series_title') ||
+      recordString(extras, 'series'),
+    id: recordString(direct, 'series_id') || recordString(extras, 'series_id')
+  };
+}
+
+function inferredSeriesTitle(title: string): string {
+  let label = title.trim();
+  const monthPattern = [...MONTH_NUMBER.keys()].join('|');
+  label = label
+    .replace(new RegExp(`\\s*\\((?:${monthPattern})[\\s._/-]+(?:18|19|20|21)\\d{2}\\)`, 'gi'), ' ')
+    .replace(/\s*\((?:epoch|edition|release|version)\s+[^)]*\)/gi, ' ')
+    .replace(/\s*\(v(?:ersion)?\s*\d+(?:\.\d+)*\)/gi, ' ')
+    .replace(/\s+(?:v(?:ersion)?\s*\d+(?:\.\d+)*)\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  for (let pass = 0; pass < 3; pass += 1) {
+    const next = label
+      .replace(/\s*\((?:epoch|edition|release|version)\s+[^)]*\)\s*$/i, '')
+      .replace(
+        new RegExp(`\\s*\\((?:${monthPattern})[\\s._/-]+(?:18|19|20|21)\\d{2}\\)\\s*$`, 'i'),
+        ''
+      )
+      .replace(/\s*\((?:18|19|20|21)\d{2}\)\s*$/, '')
+      .trim();
+    if (next === label) break;
+    label = next;
+  }
+  return label || title.trim();
+}
+
+export function datasetDisplaySeries(dataset: LargeDataset): DatasetDisplaySeries {
+  const declared = explicitSeries(dataset);
+  if (declared.label || declared.id) {
+    const label = declared.label || dataset.title;
+    return {
+      label,
+      key: declared.id ? `id:${declared.id}` : `label:${normalizedSeriesValue(label)}`,
+      inferred: false
+    };
+  }
+  const label = inferredSeriesTitle(dataset.title);
+  return {
+    label,
+    key: `presentation:${normalizedSeriesValue(label)}`,
+    inferred: label !== dataset.title.trim()
+  };
+}
+
+export function datasetReleasePeriod(dataset: LargeDataset, resources: LargeResource[] = []): DatasetReleasePeriod | null {
+  const direct = dataset as Record<string, unknown>;
+  const declared = [
+    direct.temporal_coverage,
+    direct.coverage_years,
+    dataset.extras?.temporal_coverage,
+    dataset.extras?.coverage_years,
+    dataset.year
+  ];
+  for (const value of declared.flatMap(stringsFromValue)) {
+    const period = releasePeriodFromText(value, 'declared');
+    if (period) return period;
+  }
+  const titlePeriod = releasePeriodFromText(dataset.title, 'title');
+  if (titlePeriod) return titlePeriod;
+  for (const resource of resources) {
+    for (const value of [resource.name, resource.description].flatMap(stringsFromValue)) {
+      const period = releasePeriodFromText(value, 'resource');
+      if (period) return period;
+    }
+  }
+  for (const value of [dataset.published_at, dataset.updated_at, dataset.metadata_modified, dataset.timestamp, dataset.metadata_created]) {
+    if (typeof value !== 'string') continue;
+    const period = releasePeriodFromText(value, 'catalogue');
+    if (period) return period;
+  }
+  return null;
+}
+
 export function sourceDateLabel(value: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
   if (!match) return value;
@@ -110,12 +290,7 @@ export function sourceDateLabel(value: string): string {
 export function datasetDateContext(dataset: LargeDataset, resources: LargeResource[] = []): DatasetDateContext {
   const direct = dataset as Record<string, unknown>;
   const extras = dataset.extras;
-  const series =
-    recordString(direct, 'series_title') ||
-    recordString(direct, 'series') ||
-    recordString(extras, 'series_title') ||
-    recordString(extras, 'series');
-  const seriesId = recordString(direct, 'series_id') || recordString(extras, 'series_id');
+  const { label: series, id: seriesId } = explicitSeries(dataset);
   const declaredCoverage = [direct.temporal_coverage, direct.coverage_years, extras?.temporal_coverage, extras?.coverage_years, dataset.year];
   const resourceCoverage = resources.flatMap((resource) => yearsFromValue([resource.name, resource.description]));
   const years = [...new Set([...declaredCoverage.flatMap(yearsFromValue), ...resourceCoverage])].sort();
@@ -210,6 +385,22 @@ export function relatedSeriesDatasets(dataset: LargeDataset, datasets: LargeData
       const leftDate = datasetDateContext(left).updated;
       const rightDate = datasetDateContext(right).updated;
       return rightDate.localeCompare(leftDate) || left.title.localeCompare(right.title);
+    });
+}
+
+export function relatedDisplaySeriesDatasets(dataset: LargeDataset, datasets: LargeDataset[]): LargeDataset[] {
+  const series = datasetDisplaySeries(dataset);
+  if (!series.key || (series.inferred && !series.key.startsWith('presentation:'))) return [];
+  return datasets
+    .filter((candidate) => {
+      if (candidate.name === dataset.name) return false;
+      if (datasetDisplaySeries(candidate).key !== series.key) return false;
+      return !dataset.publisher || !candidate.publisher || candidate.publisher === dataset.publisher;
+    })
+    .sort((left, right) => {
+      const leftPeriod = datasetReleasePeriod(left)?.sortKey || '';
+      const rightPeriod = datasetReleasePeriod(right)?.sortKey || '';
+      return rightPeriod.localeCompare(leftPeriod) || left.title.localeCompare(right.title);
     });
 }
 

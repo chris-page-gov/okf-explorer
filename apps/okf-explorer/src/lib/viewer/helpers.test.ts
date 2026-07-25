@@ -9,7 +9,9 @@ import {
   analysisNodeForRoute,
   colorForType,
   datasetDateContext,
+  datasetDisplaySeries,
   datasetOperationalContext,
+  datasetReleasePeriod,
   displayValue,
   facetLabel,
   facetSummary,
@@ -18,6 +20,7 @@ import {
   isHttpUrl,
   orderedFacetKeys,
   relatedSeriesDatasets,
+  relatedDisplaySeriesDatasets,
   relationshipTitle,
   routeForAnalysisNode,
   selectedFacetValueSummary,
@@ -280,6 +283,58 @@ describe('viewer helpers', () => {
     });
     expect(sourceDateLabel('2014-06-04T11:00:07Z')).toBe('4 Jun 2014');
     expect(relatedSeriesDatasets(current, [otherPublisher, earlier, current])).toEqual([earlier]);
+  });
+
+  it('distinguishes release coverage from catalogue timestamps and groups title releases for display', () => {
+    const april: LargeDataset = {
+      name: 'nsul-april-2018',
+      title: 'National Statistics UPRN Lookup (April 2018)',
+      publisher: 'ons',
+      metadata_modified: '2025-08-11'
+    };
+    const august: LargeDataset = {
+      name: 'nsul-august-2021',
+      title: 'National Statistics UPRN Lookup (August 2021)',
+      publisher: 'ons',
+      metadata_modified: '2025-08-11'
+    };
+
+    expect(datasetReleasePeriod(april)).toEqual({
+      label: 'Apr 2018',
+      sortKey: '2018-04',
+      year: '2018',
+      month: 4,
+      source: 'title',
+      catalogueFallback: false
+    });
+    expect(datasetDisplaySeries(april)).toEqual({
+      label: 'National Statistics UPRN Lookup',
+      key: 'presentation:national statistics uprn lookup',
+      inferred: true
+    });
+    expect(relatedDisplaySeriesDatasets(april, [april, august])).toEqual([august]);
+    expect(datasetDisplaySeries({
+      name: 'nsul-guide',
+      title: 'National Statistics UPRN Lookup (April 2024) (Epoch 108) User Guide'
+    }).label).toBe('National Statistics UPRN Lookup User Guide');
+  });
+
+  it('uses declared temporal coverage before a title or catalogue fallback', () => {
+    const declared: LargeDataset = {
+      name: 'release',
+      title: 'Release (April 2018)',
+      temporal_coverage: { start: '2020-06-01', end: '2020-06-30' },
+      metadata_modified: '2025-08-11'
+    };
+    const fallback: LargeDataset = {
+      name: 'undated',
+      title: 'Undated record',
+      metadata_modified: '2025-08-11'
+    };
+
+    expect(datasetReleasePeriod(declared)?.sortKey).toBe('2020-06');
+    expect(datasetReleasePeriod(declared)?.source).toBe('declared');
+    expect(datasetReleasePeriod(fallback)?.catalogueFallback).toBe(true);
   });
 
   it('separates CKAN catalogue dates from evidence-backed operational metadata', () => {
