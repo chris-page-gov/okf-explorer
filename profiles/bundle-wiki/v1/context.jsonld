@@ -136,6 +136,24 @@
       "@id": "schema:url",
       "@type": "@id"
     },
+    "repository": {
+      "@id": "schema:codeRepository",
+      "@type": "@id"
+    },
+    "documentation": {
+      "@id": "okf:documentation",
+      "@type": "@id"
+    },
+    "rawSubpath": "okf:rawSubpath",
+    "releaseArchive": {
+      "@id": "dcat:accessURL",
+      "@type": "@id"
+    },
+    "descriptorAlternates": {
+      "@id": "dcat:accessURL",
+      "@type": "@id",
+      "@container": "@set"
+    },
     "bundles": {
       "@id": "okf:bundle",
       "@container": "@set"

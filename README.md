@@ -9,6 +9,7 @@ other public HTTPS URL. These hosted examples open without installation:
 
 | Example | What it demonstrates | Open |
 |---|---|---|
+| UK Whole-Law OKF | Overview-first federation with explicit child authority, coverage, freshness and recovery routes | [Open Explorer][whole-law-example] · [Federation contract][federation-docs] |
 | ONS data discovery OKF | Metadata-only ONS discovery across 5,097 records, with compact facets, static search, standards evidence and explicit coverage | [Open Explorer][ons-example] · [Source pack][ons-pack] |
 | UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalization and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
 | UK Government APIs OKF | Multi-source API/data catalogue with standards and provenance metadata | [Open Explorer][uk-government-apis-example] |
@@ -42,6 +43,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Review the viewer capability parity and conflict register][viewer-parity]
 - [Review the ontology and semantic graph architecture][semantic-graph-architecture]
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
+- [Publish and consume an overview-first federation][federation-docs]
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
@@ -68,6 +70,13 @@ The UK Legislation pack publishes the complete legislation.gov.uk work catalogue
 
 ```text
 https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json
+```
+
+The UK Whole-Law federation is the overview-first entry point for independently
+governed legal-source bundles. Child descriptors load only after selection:
+
+```text
+https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json
 ```
 
 To open your own public bundle, use this URL pattern:
@@ -199,7 +208,8 @@ CKAN data-catalogue exemplar.
 
 The Svelte implementation is built as a static app and is the canonical OKF
 Explorer product source. It supports the existing monolithic `okf-bundle.json`
-reader and the large-corpus `okf-explorer.json` descriptor path with
+reader, the overview-first `okf-explorer-federation.v1` control plane and the
+large-corpus `okf-explorer.json` descriptor path with
 worker-backed static search, lazy full-record hydration, relationship graph
 loading, scoped timeline/link/type/resource views, resource stacks, persistent
 bundle URL history, and route-addressable detail panels. The maintained viewer
@@ -298,8 +308,8 @@ Pages to use **GitHub Actions** as the source.
 [ckan-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
 [ons-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&view=reader#overview
 [ons-pack]: https://github.com/chris-page-gov/okf-ons
-[uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Fuk-government-apis%2Fokf-explorer.json&view=reader#overview
-[legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
+[uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&view=reader#overview
+[legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview
 [legislation-docs]: docs/uk-legislation/index.md
 [legislation-manual]: docs/uk-legislation/illustrated-manual.md
 [legislation-personas]: docs/uk-legislation/personas-and-user-journeys.md
@@ -312,5 +322,7 @@ Pages to use **GitHub Actions** as the source.
 [viewer-parity]: docs/viewer-capability-parity-2026-07-24.md
 [semantic-graph-architecture]: docs/ontology-and-semantic-graph-architecture-2026-07-24.md
 [provider-datapacks]: docs/provider-datapacks.md
+[federation-docs]: docs/federated-bundles.md
+[whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md

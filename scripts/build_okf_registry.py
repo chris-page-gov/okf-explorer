@@ -27,6 +27,11 @@ def id_value(value: Any) -> str:
     return str(value or "")
 
 
+def id_values(value: Any) -> list[str]:
+    values = value if isinstance(value, list) else [value]
+    return [item for item in (id_value(value) for value in values) if item]
+
+
 def build() -> dict[str, str]:
     document = okf_semantic.load_yaml_ld(SOURCE)
     assert isinstance(document, dict)
@@ -38,23 +43,36 @@ def build() -> dict[str, str]:
         descriptor = id_value(item.get("descriptor"))
         if not descriptor:
             raise okf_semantic.SemanticError(f"registry bundle {item.get('@id', '<unknown>')} has no descriptor")
-        bundles.append(
-            {
-                "id": str(item.get("@id", "")),
-                "label": str(item.get("title", "")),
-                "title": str(item.get("title", "")),
-                "url": descriptor,
-                "semantic_url": id_value(item.get("semanticDescriptor")),
-                "home_url": id_value(item.get("home")),
-                "profile": id_value(item.get("profile")),
-                "version": str(item.get("version", "")),
-                "status": str(item.get("status", "")),
-                "publisher": id_value(item.get("publisher")),
-                "license": id_value(item.get("license")),
-                "kind": str(item.get("recordTypeLabel", "bundle")),
-                "description": str(item.get("description", "")),
-            }
-        )
+        alternate_descriptors = id_values(item.get("descriptorAlternates", []))
+        bundle = {
+            "id": str(item.get("@id", "")),
+            "label": str(item.get("title", "")),
+            "title": str(item.get("title", "")),
+            "url": descriptor,
+            "semantic_url": id_value(item.get("semanticDescriptor")),
+            "home_url": id_value(item.get("home")),
+            "profile": id_value(item.get("profile")),
+            "version": str(item.get("version", "")),
+            "status": str(item.get("status", "")),
+            "publisher": id_value(item.get("publisher")),
+            "license": id_value(item.get("license")),
+            "kind": str(item.get("recordTypeLabel", "bundle")),
+            "description": str(item.get("description", "")),
+            "repository_url": id_value(item.get("repository")),
+            "documentation_url": id_value(item.get("documentation")),
+            "raw_subpath": str(item.get("rawSubpath", "")),
+            "release_archive_url": id_value(item.get("releaseArchive")),
+            "routes": [
+                {
+                    "kind": "raw" if "raw.githubusercontent.com" in url else "published",
+                    "purpose": "descriptor",
+                    "priority": (index + 1) * 10,
+                    "url": url,
+                }
+                for index, url in enumerate(alternate_descriptors)
+            ],
+        }
+        bundles.append({key: value for key, value in bundle.items() if value not in ("", [])})
     legacy = {
         "schema": "okf-explorer-registry.v1",
         "title": str(document.get("title", "OKF Explorer Registry")),
