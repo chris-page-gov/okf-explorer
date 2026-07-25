@@ -1070,6 +1070,12 @@ export type LargeRecordLocatorManifest = {
   record_chunks: LargeResourceReference[];
   buckets: Record<string, LargeResourceReference>;
   bucket_count?: number;
+  route_aliases?: Record<string, string>;
+  collisions?: Array<{
+    alias: string;
+    canonical_route: string;
+    record_id?: string;
+  }>;
 };
 
 export type LargeGraphIndex = {

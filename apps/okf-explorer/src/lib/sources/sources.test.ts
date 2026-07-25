@@ -762,7 +762,10 @@ describe('large corpus source', () => {
 
   it('loads one routed record through the sharded locator without hydrating other record chunks', async () => {
     const route = 'dataset/work-two';
+    const aliasRoute = 'dataset/work-two-case-preserved';
     const bucket = relationshipBucket(route);
+    const aliasBucket = relationshipBucket(aliasRoute);
+    const locatorBucketPath = 'data/records/locator/shared.json';
     const payloads = new Map<string, unknown>([
       [
         'https://example.test/locator/okf-explorer.json',
@@ -775,7 +778,7 @@ describe('large corpus source', () => {
             data_manifest: 'data/manifest.json',
             record_locator: 'data/records/manifest.json'
           },
-          counts: { datasets: 2, resources: 0, relationships: 0 }
+          counts: { datasets: 2, resources: 0, relationships: 1 }
         }
       ],
       [
@@ -783,13 +786,14 @@ describe('large corpus source', () => {
         {
           title: 'Record locator fixture',
           snapshot: 'snapshot-one',
-          counts: { datasets: 2, resources: 0, relationships: 0 },
+          counts: { datasets: 2, resources: 0, relationships: 1 },
           indexes: {
             overview: 'data/overview.json',
             record_locator: 'data/records/manifest.json'
           },
           chunks: {
-            datasets: ['data/works-0.json', 'data/works-1.json']
+            datasets: ['data/works-0.json', 'data/works-1.json'],
+            relationships: ['data/relationships-0.json']
           }
         }
       ],
@@ -798,7 +802,7 @@ describe('large corpus source', () => {
         {
           title: 'Record locator fixture',
           snapshot: 'snapshot-one',
-          counts: { datasets: 2, resources: 0, relationships: 0 }
+          counts: { datasets: 2, resources: 0, relationships: 1 }
         }
       ],
       [
@@ -811,15 +815,20 @@ describe('large corpus source', () => {
           chunk_size: 1,
           record_chunks: ['data/works-0.json', 'data/works-1.json'],
           buckets: {
-            [bucket]: `data/records/locator/${bucket}.json`
+            [bucket]: locatorBucketPath,
+            [aliasBucket]: locatorBucketPath
           },
-          bucket_count: 1
+          bucket_count: new Set([bucket, aliasBucket]).size,
+          route_aliases: {
+            [aliasRoute]: route
+          }
         }
       ],
       [
-        `https://example.test/locator/data/records/locator/${bucket}.json`,
+        `https://example.test/locator/${locatorBucketPath}`,
         {
-          [route]: [1, 0]
+          [route]: [1, 0],
+          [aliasRoute]: [1, 0]
         }
       ],
       [
@@ -841,6 +850,16 @@ describe('large corpus source', () => {
             title: 'Work Two'
           }
         ]
+      ],
+      [
+        'https://example.test/locator/data/relationships-0.json',
+        [
+          {
+            source: route,
+            target: 'dataset/work-one',
+            kind: 'related-to'
+          }
+        ]
       ]
     ]);
     const fetchMock = vi.fn(async (url: string | URL | Request) => {
@@ -858,13 +877,19 @@ describe('large corpus source', () => {
     await expect(source.loadDatasetForRoute(route)).resolves.toEqual(
       expect.objectContaining({ route, title: 'Work Two' })
     );
+    await expect(source.loadRelationshipsForRoute(aliasRoute)).resolves.toEqual([
+      expect.objectContaining({ source: route, target: 'dataset/work-one' })
+    ]);
+    await expect(source.loadDatasetForRoute(aliasRoute)).resolves.toEqual(
+      expect.objectContaining({ route, title: 'Work Two' })
+    );
     await expect(source.loadDatasetForRoute(route)).resolves.toEqual(
       expect.objectContaining({ route, title: 'Work Two' })
     );
 
     const requestedUrls = fetchMock.mock.calls.map(([input]) => String(input));
     expect(requestedUrls).toContain(
-      `https://example.test/locator/data/records/locator/${bucket}.json`
+      `https://example.test/locator/${locatorBucketPath}`
     );
     expect(requestedUrls).not.toContain(
       'https://example.test/locator/data/works-0.json'
