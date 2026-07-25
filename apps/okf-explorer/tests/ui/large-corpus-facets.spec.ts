@@ -200,13 +200,14 @@ test.describe('large-corpus facet interaction contract', () => {
     }
 
     // Low-cardinality distributions are useful while closed, so every one is
-    // present before a value list is opened. Their segments also expose a
-    // categorical palette with deliberately alternating tones.
+    // rendered from the compact facet index before a value list is opened.
+    // The expensive filter postings stay deferred until a facet is opened or
+    // selected. Segments still expose the categorical palette.
     for (const key of ['derivation_mode', 'frequency', 'geography_level', 'state', 'topic']) {
       await expect(facetToggle(page, key)).toHaveAttribute('aria-expanded', 'false');
       await expect(facetSection(page, key).locator('.facet-distribution-bar')).toBeVisible();
       await expect(facetSection(page, key).locator('.facet-distribution-segment').first()).toBeVisible();
-      expect(requests).toContain(`/search/filter-${key}.json`);
+      expect(requests).not.toContain(`/search/filter-${key}.json`);
     }
     const leftPanelBox = await page.locator('.left-panel').boundingBox();
     const firstFacetBox = await facetSection(page, 'derivation_mode').boundingBox();
@@ -229,6 +230,22 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(facetSection(page, 'population_type').locator('.facet-search-ghost')).toContainText(
       'Search values · e.g. All households · Children · Older people'
     );
+  });
+
+  test('FACET-E2E-01A keeps overview-first bundle responses below one MiB', async ({ page }) => {
+    const requests: string[] = [];
+    const responseBytes: number[] = [];
+    await openOnsFacetFixture(page, requests, {
+      responseBytes,
+      // Make an accidental eager filter-posting fetch unambiguously breach the
+      // budget while leaving the compact overview/control plane unchanged.
+      filterPaddingBytes: 1_100_000
+    });
+    await page.waitForLoadState('networkidle');
+
+    expect(requests.filter((path) => path.startsWith('/search/filter-'))).toEqual([]);
+    expect(responseBytes.reduce((total, bytes) => total + bytes, 0)).toBeLessThan(1_048_576);
+    await expect(facetSection(page, 'derivation_mode').locator('.facet-distribution-bar')).toBeVisible();
   });
 
   test('FACET-E2E-12 opens complete facet indexes without hydrating a huge record plane', async ({ page }) => {
@@ -313,7 +330,8 @@ test.describe('large-corpus facet interaction contract', () => {
   });
 
   test('FACET-E2E-03 opens aggregate bars and replaces high cardinality with searchable examples', async ({ page }) => {
-    await openOnsFacetFixture(page);
+    const requests: string[] = [];
+    await openOnsFacetFixture(page, requests);
 
     const aggregate = facetSegment(page, 'derivation_mode', '__other__');
     await expect(aggregate).toHaveAttribute('aria-label', /Open derivation mode to find 4 other values/);
@@ -335,7 +353,10 @@ test.describe('large-corpus facet interaction contract', () => {
 
     await page.getByRole('button', { name: 'Clear', exact: true }).click();
     await page.getByPlaceholder('Search ONS products, concepts and geographies').fill('no matching fixture term');
-    await expect(facetSection(page, 'derivation_mode').locator('.facet-toggle small')).toHaveText('0 values');
+    await expect.poll(() => requests.includes('/search/filter-population_type.json')).toBe(true);
+    expect(requests).not.toContain('/search/filter-derivation_mode.json');
+    await expect(facetSection(page, 'population_type').locator('.facet-toggle small')).toHaveText('0 values');
+    await expect(facetSection(page, 'derivation_mode').locator('.facet-toggle small')).toHaveText('8 values');
   });
 
   test('FACET-E2E-04 pins several open facets directly and persists the open workspace', async ({ page }) => {

@@ -963,7 +963,7 @@ input:focus {
 
 .facet-distribution-segment {
   position: relative;
-  min-width: 12px;
+  min-width: 24px;
   min-height: 24px;
   flex: var(--facet-weight) 1 0;
   padding: 0;
