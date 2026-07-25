@@ -3,8 +3,8 @@ type: "Concept"
 title: "Failure taxonomy"
 description: "Seven failure classes, each with its own controls — not just 'stale data'."
 tags: [theme, reliability, security]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 Agent failure is not merely stale training data. The classes are: **epistemic** (stale knowledge → retrieval/version pinning); **syntactic** (malformed calls → [JSON Schema](../../standards/json-schema.md)/structured output); **semantic** (schema-valid but wrong → [semantic grounding](../../stack/understanding-and-grounding.md)/evals); **operational** (timeouts, duplicates → retries/[idempotency](../../glossary/idempotency.md)); **security** ([prompt injection](../../glossary/prompt-injection.md), poisoned descriptions → trusted registries/sandboxing); **authority** (excess scope, [confused deputy](../../glossary/confused-deputy.md) → [least privilege](../../glossary/least-privilege.md)/scoped tokens); and **governance** (no audit/consent → [provenance](../../glossary/provenance.md), policy logging).

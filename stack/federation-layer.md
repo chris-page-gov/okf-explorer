@@ -3,8 +3,8 @@ type: "Architecture"
 title: "The federation layer (the missing plane)"
 description: "The collaborative-learning plane that lets institutions improve a shared model without centralising data."
 tags: [architecture, federated, stack]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # The missing layer

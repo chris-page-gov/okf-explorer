@@ -61,6 +61,28 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Made OKF Explorer a dual-version OKF v0.2 exemplar. Structured
+  `generated`, `sources`, `verified`, lifecycle, freshness and Attested
+  Computation fields now have first-class passive presentation; v0.1
+  `timestamp` and body `# Citations` remain labelled fallbacks, with v0.2
+  fields taking precedence. Loading a bundle never executes its computation,
+  executor or attester.
+- Migrated the canonical AI infrastructure Markdown to v0.2, including
+  spec-shaped reserved indexes/log, actor-bearing generation and verification,
+  lifecycle status and structured provenance. Generators for the small bundle,
+  UK Government APIs and UK Legislation now emit v0.2 Markdown while retaining
+  the existing YAML-LD, federation, static-search, facet, datapack, integrity
+  and presentation extensions. The migration uses the corpus's Git authoring
+  commit for generation time instead of treating source publication dates as
+  provenance events. Actor-free legacy `verified: yes` flags remain
+  unverified rather than being upgraded into invented human review events.
+- Split documentation and checks between permissive OKF v0.2 core conformance
+  and the stricter Explorer authoring profile. Structured and unknown
+  frontmatter fields/types survive generated bundle projection.
+- Accepted the dual reader against a locally rebuilt pre-migration `okf-ons`
+  publication and its v0.2 successor: both load all 5,097 records, 12 facet
+  bars and the exact 382-record region reduction, while only the v0.2
+  descriptor advertises its core Markdown layer.
 - Changed large-corpus Timeline to distinguish the period represented by a
   release from the date its catalogue metadata was harvested. Repeating
   datasets are grouped into series and compact year/month release links;

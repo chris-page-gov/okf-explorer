@@ -37,6 +37,7 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
             ons_datasets=ons["datasets"],
             ons_topics=ons["topics"],
             ons_code_lists=ons["code_lists"],
+            generated_at="2026-07-25T12:00:00Z",
         )
 
     def test_canonical_counts_keep_api_products_endpoints_and_data_products_separate(self):
@@ -385,6 +386,20 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn(Path("api-records/example-department-example-payments-api.md"), files)
         self.assertIn(Path("organisations/example-department.md"), files)
         self.assertNotIn(Path("api-records/data-gov-uk-test-api-dataset.md"), files)
+        self.assertTrue(files[Path("index.md")].startswith('---\nokf_version: "0.2"\n---'))
+        self.assertTrue(files[Path("log.md")].startswith("# UK Government APIs OKF generation log\n\n## "))
+        record_markdown = files[Path("api-records/example-department-example-payments-api.md")]
+        self.assertIn("generated: { by: process:uk-government-api-okf-builder", record_markdown)
+        self.assertIn('at: "2026-07-25T12:00:00Z"', record_markdown)
+        self.assertIn("sources: [{ id: catalogue-source", record_markdown)
+        self.assertIn("last_modified:", record_markdown)
+        self.assertNotIn("\ntimestamp:", record_markdown)
+        self.assertEqual("0.2", corpus["descriptor"]["okf_version"])
+        self.assertEqual("2026-07-25T12:00:00Z", corpus["descriptor"]["generated_at"])
+        self.assertNotEqual(
+            corpus["descriptor"]["generated_at"],
+            corpus["descriptor"]["source"]["observed_at"],
+        )
 
     def test_records_include_credentials_samples_and_derived_facets(self):
         corpus = self.build_fixture_corpus()

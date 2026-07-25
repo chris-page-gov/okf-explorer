@@ -639,13 +639,43 @@ def analysis_for(records: list[dict[str, Any]], facets: dict[str, list[dict[str,
     }
 
 
-def markdown_frontmatter(type_name: str, title: str, description: str, resource: str, generated_at: str, tags: list[str]) -> str:
-    values = {"type": type_name, "title": title, "description": description, "resource": resource, "timestamp": generated_at, "tags": tags}
+def markdown_frontmatter(
+    type_name: str,
+    title: str,
+    description: str,
+    resource: str,
+    generated_at: str,
+    tags: list[str],
+    sources: list[dict[str, str]] | None = None,
+) -> str:
+    values = {
+        "type": type_name,
+        "title": title,
+        "description": description,
+        "resource": resource,
+        "tags": tags,
+        "generated": {"by": "process:legislation-okf-builder", "at": generated_at},
+        "status": "stable",
+        "sources": sources or ([{"id": "official-source", "resource": resource}] if resource else []),
+    }
     return "---\n" + "\n".join(f"{key}: {json.dumps(value, ensure_ascii=False)}" for key, value in values.items()) + "\n---\n"
 
 
 def concept(type_name: str, title: str, description: str, resource: str, generated_at: str, tags: list[str], body: str) -> str:
-    return markdown_frontmatter(type_name, title, description, resource, generated_at, tags) + "\n" + body.strip() + "\n"
+    sources: list[dict[str, str]] = []
+    if resource:
+        sources.append({"id": "official-source", "resource": resource})
+    for identifier, label, url in re.findall(r"(?m)^\[(\d+)\]\s+\[([^\]]+)\]\(([^)]+)\)\s*$", body):
+        if any(source["resource"] == url for source in sources):
+            continue
+        sources.append({"id": f"reference-{identifier}", "resource": url, "title": label})
+    normalized_body = re.sub(r"(?m)^# Citations\s*$", "# Source notes", body)
+    return (
+        markdown_frontmatter(type_name, title, description, resource, generated_at, tags, sources)
+        + "\n"
+        + normalized_body.strip()
+        + "\n"
+    )
 
 
 def citations(*rows: tuple[str, str]) -> str:
@@ -677,7 +707,7 @@ This pack indexes **{len(records):,} legal works** returned by the official legi
 * [Explorer descriptor](okf-explorer.json)
 
 {citations(("Legislation.gov.uk data reuse documentation", DATA_DOCS), ("Legislation document data model", MODEL_DOCS), ("ELI ontology", ELI), ("Schema.org Legislation", SCHEMA_ORG), ("CLML User Guide", CLML_DOCS))}""")
-    files[Path("log.md")] = concept("Log", "Legislation OKF generation log", "Build history for the generated legislation corpus.", f"{BASE}/update/data.feed", generated_at, ["generation", "provenance"], f"# {generated_at[:10]}\n\n* **Generation**: indexed {len(records):,} official works and {sum(row['resource_count'] for row in records):,} advertised manifestations.\n* **Normalization**: mapped works and subdivisions to ELI 1.5, ELI-I, Schema.org Legislation, CLML and Akoma Ntoso.\n* **Access**: retained Atom, CLML, AKN, RDF/XML, HTML, PDF, CSV, effects and publication-log routes where supplied or documented.\n")
+    files[Path("log.md")] = f"# Legislation OKF generation log\n\n## {generated_at[:10]}\n\n* **Generation**: indexed {len(records):,} official works and {sum(row['resource_count'] for row in records):,} advertised manifestations.\n* **Normalization**: mapped works and subdivisions to ELI 1.5, ELI-I, Schema.org Legislation, CLML and Akoma Ntoso.\n* **Access**: retained Atom, CLML, AKN, RDF/XML, HTML, PDF, CSV, effects and publication-log routes where supplied or documented.\n"
     files[Path("ontology/index.md")] = concept("Ontology Index", "Legal ontology and normalized vocabulary", "Crosswalk between legislation.gov.uk, ELI, Schema.org, CLML and Akoma Ntoso.", ELI, generated_at, ["ontology", "eli", "schema-org", "clml"], f"""# Selected model
 
 ELI 1.5 is the primary interoperability ontology because it models legal works, expressions, manifestations and subdivisions. ELI-I describes amendment impacts. Schema.org `Legislation` is the public-web projection. The official legislation.gov.uk FRBR variant, CLML and Akoma Ntoso provide source-native identity, version and structure.
@@ -728,6 +758,12 @@ ELI 1.5 is the primary interoperability ontology because it models legal works, 
         files[Path("topics") / f"{slugify(topic)}.md"] = concept("Derived Legal Topic", topic, f"Title-derived discovery grouping containing {row['count']:,} works.", f"{BASE}/all/data.feed?title={slugify(topic)}", generated_at, ["topic", "derived", slugify(topic)], f"# Classification\n\n* Indexed works: **{row['count']:,}**\n* Rule: `{rule}`\n* Evidence basis: legislation title only\n* Authority: derived and non-official\n\nUse the Explorer facet to inspect all included works, then verify relevance against official text and status.\n\n{citations(("Search, lists and feeds", SEARCH_DOCS), ("Coverage limitations", COVERAGE_DOCS))}")
     requests = source_meta.get("requests", [])
     files[Path("methodology/index.md")] = concept("Methodology", "Corpus completeness, provenance and limitations", "How the complete website corpus is enumerated, normalized, validated and refreshed.", f"{BASE}/all/data.feed", generated_at, ["methodology", "provenance", "quality"], f"# Completeness contract\n\n* Every official `facetYear` partition is retrieved with `results-count=10000`.\n* The received count for each year must exactly match its advertised facet total or generation stops.\n* IDs are deduplicated across year and draft feeds.\n* **{len(records):,}** unique works were emitted from **{len(requests)}** source requests or cache reads.\n* Every work retains the official identifier, document, CLML, table-of-contents and manifestation links advertised by its Atom entry.\n* Every addressable subdivision is discoverable from its work's official CLML on demand; subdivision instances are not duplicated in Git.\n\n# Source conflict retained\n\nThe public documentation advertises SPARQL and bulk downloads, but both surfaces returned HTTP 401 to anonymous clients during implementation. The Atom and document APIs remained available and are the build source. Topic labels are explicitly derived because the linked-data documentation says subject-classification data are a future development.\n\n# Legal-use warning\n\nLatest-available text may have unapplied changes and is not guaranteed to be legally current. Historical coverage, effects and format availability vary. Answers must cite work/provision URI, version/extent/language context and retrieved passage.\n\n{citations(("Atom API", API_DOCS), ("Coverage limitations", COVERAGE_DOCS), ("Linked Data limitations", LINKED_DOCS), ("Fair use", FAIR_USE_DOCS))}")
+    for path, document in list(files.items()):
+        if path.name != "index.md":
+            continue
+        _frontmatter, body = document.split("\n---\n", 1)
+        prefix = '---\nokf_version: "0.2"\n---\n\n' if path == Path("index.md") else ""
+        files[path] = prefix + body.lstrip("\n")
     return files
 
 
@@ -811,6 +847,8 @@ def build_corpus(records: list[dict[str, Any]], source_meta: dict[str, Any], gen
         "@id": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
         "schema": "okf-explorer-large-corpus.v1",
         "kind": "okf-large-corpus",
+        "okf_version": "0.2",
+        "core_conformance": "Markdown concept layer",
         "title": "UK Legislation OKF",
         "description": "Complete work-level index of legislation.gov.uk with ELI/Schema.org normalization, corpus facets, official full-text search, and live CLML provision-level progressive discovery.",
         "version": "0.2.0",

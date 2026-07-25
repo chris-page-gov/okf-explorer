@@ -102,6 +102,47 @@ const crowdedBundle = {
   }))
 };
 
+const v02Bundle = {
+  okf_version: '0.2',
+  meta: { title: 'OKF v0.2 trust fixture', profile: 'https://example.test/explorer-profile' },
+  nodes: {
+    computation: {
+      id: 'computation',
+      title: 'Governed total',
+      type: 'Attested Computation',
+      description: 'A passive computation contract used to verify the v0.2 presentation.',
+      status: 'stable',
+      stale_after: '2026-07-20',
+      timestamp: '2025-01-01T00:00:00Z',
+      generated: { by: 'process:fixture-build', at: '2026-07-25T09:00:00Z' },
+      verified: { by: 'human:fixture-reviewer', at: '2026-07-25T10:00:00Z' },
+      sources: [{
+        id: 'policy',
+        resource: 'https://policy.fixture.test/total',
+        title: 'Total policy',
+        author: 'team:policy',
+        usage_count: 1200,
+        last_modified: '2026-07-23'
+      }],
+      usage_window: { from: '2026-07-01', to: '2026-07-24' },
+      runtime: 'bigquery',
+      parameters: [{ name: 'year', type: 'integer', required: true }],
+      executor: { resource: 'references/run.md', receipt: ['job_id', 'executed_sql', 'result'] },
+      attester: { resource: 'references/attest.py' },
+      body: `# Computation
+
+\`\`\`sql
+SELECT @year
+\`\`\`
+
+# Citations
+
+- https://legacy.fixture.test/must-not-win`
+    }
+  },
+  edges: []
+};
+
 test.beforeEach(async ({ context, page }) => {
   await context.route(BUNDLE_URL, async (route) => {
     await route.fulfill({
@@ -266,4 +307,35 @@ test('SMALL-E2E-06 keeps collapsed context and touch-scrollable mobile details',
   expect(dimensions.touchAction).toBe('pan-y');
   await detail.evaluate((element) => { element.scrollTop = element.scrollHeight; });
   expect(await detail.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+});
+
+test('SMALL-E2E-07 surfaces v0.2 trust, lifecycle, provenance and passive attestation', async ({ context, page }) => {
+  const url = 'https://small.fixture.test/okf-v02-bundle.json';
+  await context.route(url, async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: JSON.stringify(v02Bundle)
+    });
+  });
+  await page.goto(`?${new URLSearchParams({ bundle: url }).toString()}#computation`);
+
+  const detail = page.locator('.right-panel .detail');
+  await expect(detail.getByText('OKF 0.2', { exact: true })).toBeVisible();
+  await expect(detail.getByText('Human reviewed', { exact: true }).first()).toBeVisible();
+  await expect(detail.getByText('Stale', { exact: true })).toBeVisible();
+
+  const trust = detail.getByRole('region', { name: 'OKF trust, lifecycle and provenance' });
+  await expect(trust).toContainText('process:fixture-build');
+  await expect(trust).toContainText('2026-07-25T09:00:00Z');
+  await expect(trust).not.toContainText('Legacy # Citations fallback');
+  await expect(trust).toContainText('Total policy');
+  await expect(trust).toContainText('Usage 1,200');
+
+  const contract = detail.getByRole('region', { name: 'Attested Computation contract' });
+  await expect(contract).toContainText('Declared contract only');
+  await expect(contract).toContainText('Explorer does not execute');
+  await expect(contract).toContainText('year: integer (required)');
+  await expect(contract.getByRole('button')).toHaveCount(0);
 });

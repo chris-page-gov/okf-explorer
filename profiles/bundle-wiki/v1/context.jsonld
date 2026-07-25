@@ -21,6 +21,57 @@
       "@id": "dcterms:modified",
       "@type": "xsd:dateTime"
     },
+    "generated": "okf:generated",
+    "verified": {
+      "@id": "okf:verified",
+      "@container": "@set"
+    },
+    "by": "prov:wasAssociatedWith",
+    "at": {
+      "@id": "prov:generatedAtTime",
+      "@type": "xsd:dateTime"
+    },
+    "sources": {
+      "@id": "prov:hadPrimarySource",
+      "@container": "@set"
+    },
+    "id": "dcterms:identifier",
+    "author": "dcterms:creator",
+    "usage_count": "okf:usageCount",
+    "last_modified": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:date"
+    },
+    "usage_window": "okf:usageWindow",
+    "from": {
+      "@id": "schema:startDate",
+      "@type": "xsd:date"
+    },
+    "to": {
+      "@id": "schema:endDate",
+      "@type": "xsd:date"
+    },
+    "stale_after": {
+      "@id": "okf:staleAfter",
+      "@type": "xsd:date"
+    },
+    "runtime": "okf:runtime",
+    "parameters": {
+      "@id": "okf:parameter",
+      "@container": "@set"
+    },
+    "name": "schema:name",
+    "required": "okf:required",
+    "computation": {
+      "@id": "okf:computation",
+      "@type": "@id"
+    },
+    "executor": "okf:executor",
+    "receipt": {
+      "@id": "okf:receiptField",
+      "@container": "@set"
+    },
+    "attester": "okf:attester",
     "created": {
       "@id": "dcterms:created",
       "@type": "xsd:dateTime"

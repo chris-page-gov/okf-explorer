@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Research & benchmarks"
-description: "The tool-use and federated-learning research lineage."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Research & benchmarks
 
 The tool-use and federated-learning research lineage.

@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Organisations"
-description: "Bodies that author or steward the standards, frameworks and policy."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Organisations
 
 Bodies that author or steward the standards, frameworks and policy.

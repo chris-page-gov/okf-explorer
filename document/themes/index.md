@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Themes"
-description: "The load-bearing ideas across both threads."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Themes
 
 The load-bearing ideas across both threads.

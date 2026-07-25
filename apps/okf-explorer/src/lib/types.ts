@@ -9,6 +9,28 @@ export type OkfNode = {
   description?: string;
   summary?: string;
   timestamp?: string;
+  generated?: {
+    by?: string;
+    at?: string;
+    [key: string]: unknown;
+  };
+  sources?: Array<{
+    resource?: string;
+    [key: string]: unknown;
+  }>;
+  usage_window?: {
+    from?: string;
+    to?: string;
+    [key: string]: unknown;
+  };
+  verified?: Record<string, unknown> | Array<Record<string, unknown>>;
+  status?: string;
+  stale_after?: string;
+  runtime?: string;
+  parameters?: Array<Record<string, unknown>>;
+  computation?: string;
+  executor?: Record<string, unknown>;
+  attester?: Record<string, unknown>;
   aliases?: string[];
   tags?: string[];
   body?: string;
@@ -28,6 +50,8 @@ export type NormalizedCorpus = {
   id: string;
   title: string;
   description?: string;
+  okfVersion?: string;
+  profile?: string;
   nodes: Record<string, OkfNode>;
   relationships: OkfRelationship[];
   meta?: Record<string, unknown>;
@@ -110,6 +134,8 @@ export type LargeCorpusDescriptor = {
   '@id'?: string;
   schema: 'okf-explorer-large-corpus.v1' | string;
   kind: 'okf-large-corpus' | string;
+  okf_version?: string;
+  core_conformance?: string;
   title: string;
   description?: string;
   version?: string;

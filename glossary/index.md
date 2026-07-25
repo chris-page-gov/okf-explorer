@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Glossary"
-description: "Plain-English definitions of the technical terms used across the bundle."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Glossary
 
 Plain-English definitions of the technical terms used across the bundle.

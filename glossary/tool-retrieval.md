@@ -3,9 +3,9 @@ type: "Glossary term"
 title: "Tool retrieval"
 description: "Selecting a small candidate set from a large inventory at inference time."
 tags: [glossary]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 aliases: "tool retrieval"
+status: stable
 ---
 
 # Definition

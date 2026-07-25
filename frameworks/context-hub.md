@@ -4,9 +4,10 @@ title: "Context Hub"
 description: "Andrew Ng open content/skills registry: curated, versioned docs (and skills) for coding agents."
 resource: "https://github.com/andrewyng/context-hub"
 tags: [registry, agent-skill, discovery, tool]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 vendor: "Andrew Ng / AI Suite"
+status: stable
+sources: [{ id: primary, resource: "https://github.com/andrewyng/context-hub" }]
 ---
 
 # What it is

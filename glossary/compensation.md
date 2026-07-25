@@ -3,9 +3,9 @@ type: "Glossary term"
 title: "Compensation"
 description: "Undoing or offsetting a completed step in a multi-step workflow."
 tags: [glossary]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
 aliases: "compensation; compensating action; rollback"
+status: stable
 ---
 
 # Definition

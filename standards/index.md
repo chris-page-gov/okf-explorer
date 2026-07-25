@@ -1,11 +1,3 @@
----
-type: "Index"
-title: "Standards & specifications"
-description: "Specs, protocols, identity, policy and observability — verified against primary sources."
-tags: [index]
-timestamp: 2026-06-27T00:00:00Z
----
-
 # Standards & specifications
 
 Specs, protocols, identity, policy and observability — verified against primary sources.

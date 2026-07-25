@@ -3,8 +3,8 @@ type: "Stack layer"
 title: "Discovery and current-context retrieval"
 description: "Finding that a capability exists, and selecting a small candidate set at inference time."
 tags: [stack, discovery, retrieval]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # Role in the stack

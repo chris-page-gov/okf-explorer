@@ -3,8 +3,8 @@ type: "Stack layer"
 title: "Understanding and grounding"
 description: "Schema grounding vs semantic grounding: matching types vs matching intent."
 tags: [stack, grounding, semantics]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # Role in the stack

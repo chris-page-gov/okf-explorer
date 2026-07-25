@@ -9,6 +9,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 from urllib.parse import unquote
 
 import okf_semantic
@@ -27,9 +28,10 @@ OKF_DIRS = {
     "standards",
     "uk-government",
 }
-# Repo policy superset of OKF v0.1 §9 (only "type" is spec-required);
-# see docs/okf-conformance.md.
-REQUIRED_FIELDS = ("type", "title", "description", "timestamp")
+# The Explorer authoring profile is intentionally stricter than OKF core.
+# Reserved index/log files are synthesized as Explorer nodes without changing
+# their spec-defined Markdown representation.
+PROFILE_REQUIRED_FIELDS = ("type", "title", "description")
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 
 
@@ -48,12 +50,80 @@ def iter_okf_markdown() -> list[Path]:
     return sorted(paths, key=rel)
 
 
-def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
+def parse_frontmatter(path: Path) -> tuple[dict[str, Any], str]:
     try:
-        document = okf_semantic.parse_markdown(path)
+        document = (
+            okf_semantic.parse_optional_frontmatter(path)
+            if path.name in {"index.md", "log.md"}
+            else okf_semantic.parse_markdown(path)
+        )
     except okf_semantic.SemanticError as exc:
         raise ValueError(str(exc).replace(str(ROOT) + "/", "")) from exc
-    return okf_semantic.legacy_frontmatter(document.metadata), document.body
+    return document.metadata, document.body
+
+
+def heading_title(body: str, fallback: str) -> str:
+    match = re.search(r"^#\s+(.+?)\s*$", body, re.MULTILINE)
+    return match.group(1).strip() if match else fallback
+
+
+def introductory_description(body: str, fallback: str) -> str:
+    for block in re.split(r"\n\s*\n", body):
+        candidate = " ".join(line.strip() for line in block.splitlines()).strip()
+        if candidate and not candidate.startswith(("#", "-", "*", "|", "```")):
+            return candidate
+    return fallback
+
+
+def reserved_metadata(path_id: str, metadata: dict[str, Any], body: str) -> dict[str, Any]:
+    path = Path(path_id)
+    if path.name == "index.md":
+        fallback = "Bundle index" if path_id == "index.md" else path.parent.name.replace("-", " ").title()
+        return {
+            **metadata,
+            "type": "Index",
+            "title": heading_title(body, fallback),
+            "description": introductory_description(
+                body,
+                "Progressive-disclosure index represented as an Explorer navigation node.",
+            ),
+            "status": "stable",
+        }
+    if path.name == "log.md":
+        return {
+            **metadata,
+            "type": "Log",
+            "title": heading_title(body, "Change log"),
+            "description": "Chronological OKF bundle update log.",
+            "status": "stable",
+        }
+    return metadata
+
+
+def validate_v02_core(path_id: str, metadata: dict[str, Any], body: str) -> list[str]:
+    path = Path(path_id)
+    errors: list[str] = []
+    if path.name == "index.md":
+        allowed = {"okf_version"} if path_id == "index.md" else set()
+        unexpected = sorted(set(metadata) - allowed)
+        if unexpected:
+            errors.append(f"reserved index frontmatter contains unsupported keys: {', '.join(unexpected)}")
+        if path_id == "index.md" and metadata.get("okf_version") != "0.2":
+            errors.append('bundle-root index.md must declare okf_version: "0.2" for this exemplar')
+        if not re.search(r"^#\s+\S", body, re.MULTILINE):
+            errors.append("reserved index must contain a top-level heading")
+        return errors
+    if path.name == "log.md":
+        if metadata:
+            errors.append("reserved log.md must not contain frontmatter")
+        headings = re.findall(r"^##\s+(\S+)\s*$", body, re.MULTILINE)
+        invalid = [heading for heading in headings if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", heading)]
+        if invalid:
+            errors.append(f"log date headings must use YYYY-MM-DD: {', '.join(invalid)}")
+        if headings != sorted(headings, reverse=True):
+            errors.append("log date headings must be newest first")
+        return errors
+    return okf_semantic.validate_v02_concept(metadata, body)
 
 
 def section_for(path_id: str) -> str:
@@ -95,30 +165,42 @@ def find_edges(path_id: str, body: str, known_ids: set[str]) -> tuple[list[tuple
 
 
 def build_graph() -> tuple[dict[str, object], list[str]]:
-    nodes: dict[str, dict[str, str]] = {}
+    nodes: dict[str, dict[str, Any]] = {}
     errors: list[str] = []
-    parsed: dict[str, tuple[dict[str, str], str]] = {}
+    parsed: dict[str, tuple[dict[str, Any], str]] = {}
 
     for path in iter_okf_markdown():
         path_id = rel(path)
         try:
             meta, body = parse_frontmatter(path)
         except ValueError as exc:
-            errors.append(str(exc))
+            errors.append(f"OKF v0.2 core: {exc}")
             continue
         parsed[path_id] = (meta, body)
-        for field in REQUIRED_FIELDS:
-            if not meta.get(field):
-                errors.append(f"{path_id} is missing required frontmatter field {field}")
+        core_errors = validate_v02_core(path_id, meta, body)
+        errors.extend(f"{path_id}: OKF v0.2 core: {error}" for error in core_errors)
+        display_meta = reserved_metadata(path_id, meta, body)
+        if path.name not in {"index.md", "log.md"}:
+            for field in PROFILE_REQUIRED_FIELDS:
+                if not display_meta.get(field):
+                    errors.append(f"{path_id}: Explorer profile requires frontmatter field {field}")
+            if not okf_semantic.generated_at(display_meta):
+                errors.append(f"{path_id}: Explorer profile requires generated.at")
+        effective_timestamp = okf_semantic.generated_at(display_meta)
         nodes[path_id] = {
-            "type": meta.get("type", ""),
-            "title": meta.get("title", path_id),
-            "description": meta.get("description", ""),
-            "resource": meta.get("resource", ""),
-            "timestamp": meta.get("timestamp", ""),
-            "aliases": meta.get("aliases", ""),
+            **display_meta,
+            "type": display_meta.get("type", ""),
+            "title": display_meta.get("title", path_id),
+            "description": display_meta.get("description", ""),
+            "resource": display_meta.get("resource", ""),
+            # Compatibility projection for the classic viewer and v0.1-aware
+            # clients. `generated` remains intact and has precedence.
+            "timestamp": effective_timestamp,
+            "aliases": display_meta.get("aliases", []),
             "section": section_for(path_id),
             "body": body,
+            "trust_tier": okf_semantic.trust_tier(display_meta),
+            "stale": okf_semantic.is_stale(display_meta),
         }
 
     known_ids = set(nodes)
@@ -126,7 +208,7 @@ def build_graph() -> tuple[dict[str, object], list[str]]:
     for path_id, (_meta, body) in parsed.items():
         edges, link_errors = find_edges(path_id, body, known_ids)
         edge_set.update(edges)
-        errors.extend(link_errors)
+        errors.extend(f"Explorer profile: {error}" for error in link_errors)
 
     graph = {"nodes": nodes, "edges": [list(edge) for edge in sorted(edge_set)]}
     return graph, errors

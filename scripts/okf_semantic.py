@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from dataclasses import dataclass
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable
 
@@ -106,6 +108,214 @@ def parse_markdown(path: Path) -> MarkdownDocument:
     metadata = load_yaml_ld_text(raw, source=f"{path.as_posix()} frontmatter")
     assert isinstance(metadata, dict)
     return MarkdownDocument(metadata=metadata, body=body)
+
+
+def parse_optional_frontmatter(path: Path) -> MarkdownDocument:
+    """Parse a reserved OKF Markdown file, whose frontmatter is optional."""
+    try:
+        text = path.read_bytes().decode("utf-8", errors="strict")
+    except UnicodeDecodeError as exc:
+        raise SemanticError(f"{path}: Markdown must be UTF-8") from exc
+    if not text.startswith("---\n"):
+        return MarkdownDocument(metadata={}, body=text.strip("\n"))
+    return parse_markdown(path)
+
+
+def normalize_verified(metadata: dict[str, Any]) -> list[dict[str, Any]]:
+    """Normalize the OKF v0.2 single-mapping shorthand to a list."""
+    verified = metadata.get("verified")
+    if isinstance(verified, dict):
+        return [verified]
+    if isinstance(verified, list):
+        return [event for event in verified if isinstance(event, dict)]
+    return []
+
+
+def trust_tier(metadata: dict[str, Any]) -> str:
+    """Derive the normative OKF v0.2 trust tier."""
+    events = [
+        event
+        for event in normalize_verified(metadata)
+        if _valid_actor(event.get("by")) and _valid_datetime(event.get("at"))
+    ]
+    if not events:
+        return "unverified"
+    return "human-reviewed" if any(str(event.get("by") or "").startswith("human:") for event in events) else "machine-confirmed"
+
+
+def is_stale(metadata: dict[str, Any], *, today: date | None = None) -> bool:
+    """Return whether today is on or after a valid `stale_after` date."""
+    raw = metadata.get("stale_after")
+    if not raw:
+        return False
+    try:
+        if isinstance(raw, datetime):
+            stale_after = raw.date()
+        elif isinstance(raw, date):
+            stale_after = raw
+        else:
+            stale_after = date.fromisoformat(str(raw)[:10])
+    except ValueError:
+        return False
+    return (today or date.today()) >= stale_after
+
+
+def generated_at(metadata: dict[str, Any]) -> str:
+    """Read v0.2 `generated.at`, falling back to the v0.1 `timestamp`."""
+    if "generated" in metadata:
+        generated = metadata.get("generated")
+        return legacy_scalar(generated.get("at")) if isinstance(generated, dict) else ""
+    return legacy_scalar(metadata.get("timestamp"))
+
+
+def generated_by(metadata: dict[str, Any]) -> str:
+    generated = metadata.get("generated")
+    return legacy_scalar(generated.get("by")) if isinstance(generated, dict) else ""
+
+
+def _valid_datetime(value: Any) -> bool:
+    candidate = str(value or "").strip()
+    if "T" not in candidate:
+        return False
+    try:
+        datetime.fromisoformat(candidate.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
+def _valid_date(value: Any) -> bool:
+    try:
+        date.fromisoformat(str(value or ""))
+    except ValueError:
+        return False
+    return True
+
+
+def _valid_actor(value: Any) -> bool:
+    candidate = str(value or "").strip()
+    return bool(
+        re.fullmatch(r"(?:human|process):[^\s:]+", candidate)
+        or re.fullmatch(r"[^/\s:]+/[^/\s]+", candidate)
+    )
+
+
+def _validate_usage_window(value: Any, prefix: str) -> list[str]:
+    if not isinstance(value, dict):
+        return [f"{prefix} must be a mapping"]
+    errors: list[str] = []
+    for key in ("from", "to"):
+        if value.get(key) and not _valid_date(value[key]):
+            errors.append(f"{prefix}.{key} must be an ISO 8601 date")
+    if value.get("from") and value.get("to") and not errors:
+        if str(value["from"]) > str(value["to"]):
+            errors.append(f"{prefix}.from must not be after {prefix}.to")
+    return errors
+
+
+def validate_v02_concept(metadata: dict[str, Any], body: str) -> list[str]:
+    """Validate producer-side v0.2 families without rejecting extensions."""
+    errors: list[str] = []
+    if not str(metadata.get("type") or "").strip():
+        errors.append("missing required frontmatter field type")
+
+    generated = metadata.get("generated")
+    if generated is not None:
+        if not isinstance(generated, dict):
+            errors.append("generated must be a mapping")
+        else:
+            if not str(generated.get("by") or "").strip():
+                errors.append("generated.by is required when generated is present")
+            elif not _valid_actor(generated["by"]):
+                errors.append("generated.by must use the OKF actor convention")
+            if generated.get("at") and not _valid_datetime(generated["at"]):
+                errors.append("generated.at must be an ISO 8601 datetime")
+
+    verified = metadata.get("verified")
+    if verified is not None:
+        if not isinstance(verified, (dict, list)):
+            errors.append("verified must be a mapping or list of mappings")
+        elif isinstance(verified, list) and any(not isinstance(event, dict) for event in verified):
+            errors.append("verified list entries must be mappings")
+        for index, event in enumerate(normalize_verified(metadata)):
+            if not str(event.get("by") or "").strip():
+                errors.append(f"verified[{index}].by is required")
+            elif not _valid_actor(event["by"]):
+                errors.append(f"verified[{index}].by must use the OKF actor convention")
+            if not _valid_datetime(event.get("at")):
+                errors.append(f"verified[{index}].at must be an ISO 8601 datetime")
+
+    sources = metadata.get("sources")
+    if sources is not None:
+        if not isinstance(sources, list):
+            errors.append("sources must be a list")
+        else:
+            for index, source in enumerate(sources):
+                if not isinstance(source, dict):
+                    errors.append(f"sources[{index}] must be a mapping")
+                    continue
+                if not str(source.get("resource") or "").strip():
+                    errors.append(f"sources[{index}].resource is required")
+                if source.get("author") and not _valid_actor(source["author"]):
+                    errors.append(f"sources[{index}].author must use the OKF actor convention")
+                usage_count = source.get("usage_count")
+                if usage_count is not None and (
+                    isinstance(usage_count, bool)
+                    or not isinstance(usage_count, int)
+                    or usage_count < 0
+                ):
+                    errors.append(f"sources[{index}].usage_count must be a non-negative integer")
+                if source.get("last_modified") and not _valid_date(source["last_modified"]):
+                    errors.append(f"sources[{index}].last_modified must be an ISO 8601 date")
+                if "usage_window" in source:
+                    errors.extend(_validate_usage_window(source["usage_window"], f"sources[{index}].usage_window"))
+
+    usage_window = metadata.get("usage_window")
+    if usage_window is not None:
+        errors.extend(_validate_usage_window(usage_window, "usage_window"))
+
+    status = metadata.get("status")
+    if status is not None and status not in {"draft", "stable", "deprecated"}:
+        errors.append("status must be draft, stable, or deprecated")
+    if metadata.get("stale_after") and not _valid_date(metadata["stale_after"]):
+        errors.append("stale_after must be an ISO 8601 date")
+
+    if str(metadata.get("type") or "").strip().lower() == "attested computation":
+        if not str(metadata.get("runtime") or "").strip():
+            errors.append("Attested Computation requires runtime")
+        parameters = metadata.get("parameters", [])
+        if not isinstance(parameters, list):
+            errors.append("parameters must be a list")
+        else:
+            for index, parameter in enumerate(parameters):
+                if not isinstance(parameter, dict):
+                    errors.append(f"parameters[{index}] must be a mapping")
+                    continue
+                for key in ("name", "type", "required"):
+                    if key not in parameter:
+                        errors.append(f"parameters[{index}].{key} is required")
+                if "name" in parameter and not str(parameter["name"] or "").strip():
+                    errors.append(f"parameters[{index}].name must be non-empty")
+                if "type" in parameter and not str(parameter["type"] or "").strip():
+                    errors.append(f"parameters[{index}].type must be non-empty")
+                if "required" in parameter and not isinstance(parameter["required"], bool):
+                    errors.append(f"parameters[{index}].required must be boolean")
+        computation = str(metadata.get("computation") or "").strip()
+        inline = bool(re.search(r"(?ims)^#\s+Computation\s*$.*?```.+?```", body))
+        if not computation and not inline:
+            errors.append("Attested Computation requires computation path or an inline Computation fence")
+        if computation and inline:
+            errors.append("Attested Computation must use a computation path or inline fence, not both")
+        for key in ("executor", "attester"):
+            contract = metadata.get(key)
+            if not isinstance(contract, dict) or not str(contract.get("resource") or "").strip():
+                errors.append(f"Attested Computation requires {key}.resource")
+        executor = metadata.get("executor")
+        if isinstance(executor, dict):
+            receipt = executor.get("receipt")
+            if not isinstance(receipt, list) or not receipt or any(not str(field or "").strip() for field in receipt):
+                errors.append("Attested Computation requires a non-empty executor.receipt field list")
+    return errors
 
 
 def legacy_scalar(value: Any) -> str:

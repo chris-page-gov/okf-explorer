@@ -3,8 +3,8 @@ type: "Stack layer"
 title: "Identity and authorisation"
 description: "Establishing who or what is acting, for whom, for what purpose, with which limits."
 tags: [stack, identity, authorisation, security]
-timestamp: 2026-06-27T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
 ---
 
 # Role in the stack

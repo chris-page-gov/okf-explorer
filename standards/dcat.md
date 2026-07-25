@@ -4,8 +4,9 @@ title: "Data Catalog Vocabulary (DCAT) Version 3"
 description: "W3C vocabulary for catalogues, datasets, data services, endpoint URLs, endpoint descriptions, publishers, licences and distributions."
 resource: "https://www.w3.org/TR/vocab-dcat-3/"
 tags: [dcat, standard, catalogue, data-service, dataset]
-timestamp: 2026-07-09T00:00:00Z
-verified: "yes"
+generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+status: stable
+sources: [{ id: primary, resource: "https://www.w3.org/TR/vocab-dcat-3/" }]
 ---
 
 DCAT is the W3C vocabulary used to describe data catalogues. For API-related OKF bundles, the core alignment is `dcat:DataService` for API products and data-access services, `dcat:Dataset` for data products, `dcat:endpointURL` for service entry points, `dcat:endpointDescription` for human or machine-readable endpoint descriptions, and `dcterms:license` / `dcterms:publisher` for legal and organisational metadata.

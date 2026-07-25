@@ -60,8 +60,8 @@ APIs exemplar, and related large-corpus OKF packs.
 - [UK Legislation architecture](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
 - [OKF pack parity](okf-pack-parity.md) keeps the UK Government APIs and GOV.UK
   CKAN packs aligned as paired exemplars.
-- [OKF conformance](okf-conformance.md) records the v0.1 conformance boundary
-  and intentional deviations.
+- [OKF conformance](okf-conformance.md) records the v0.2 core boundary, v0.1
+  compatibility fallbacks and additive Explorer profile.
 - [Explorer overview context](explorer-overview-context.md) specifies the
   generated overview/analysis contract consumed by the Explorer.
 - [Viewer capability parity](viewer-capability-parity-2026-07-24.md) inventories

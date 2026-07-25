@@ -21,7 +21,77 @@
     "title": {"type": "string", "minLength": 1},
     "description": {"type": "string", "minLength": 1},
     "modified": {"type": "string", "format": "date-time"},
-    "timestamp": {"type": "string", "format": "date-time"},
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "deprecated": true,
+      "description": "OKF v0.1 compatibility field; use generated.at for v0.2."
+    },
+    "type": {"type": "string", "minLength": 1},
+    "generated": {
+      "type": "object",
+      "required": ["by"],
+      "properties": {
+        "by": {"type": "string", "minLength": 1},
+        "at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": true
+    },
+    "verified": {
+      "oneOf": [
+        {"$ref": "#/$defs/verification"},
+        {
+          "type": "array",
+          "items": {"$ref": "#/$defs/verification"},
+          "minItems": 1
+        }
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"},
+      "minItems": 1
+    },
+    "usage_window": {"$ref": "#/$defs/usageWindow"},
+    "status": {"enum": ["draft", "stable", "deprecated"]},
+    "stale_after": {"type": "string", "format": "date"},
+    "runtime": {"type": "string", "minLength": 1},
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "required"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "required": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "computation": {"type": "string", "minLength": 1},
+    "executor": {
+      "type": "object",
+      "required": ["resource", "receipt"],
+      "properties": {
+        "resource": {"type": "string", "minLength": 1},
+        "receipt": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "attester": {
+      "type": "object",
+      "required": ["resource"],
+      "properties": {
+        "resource": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
     "source": {
       "oneOf": [
         {"type": "string", "format": "uri"},
@@ -46,6 +116,38 @@
       "type": "object",
       "required": ["@id"],
       "properties": {"@id": {"type": "string", "format": "uri"}},
+      "additionalProperties": true
+    },
+    "verification": {
+      "type": "object",
+      "required": ["by", "at"],
+      "properties": {
+        "by": {"type": "string", "minLength": 1},
+        "at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": true
+    },
+    "usageWindow": {
+      "type": "object",
+      "properties": {
+        "from": {"type": "string", "format": "date"},
+        "to": {"type": "string", "format": "date"}
+      },
+      "minProperties": 1,
+      "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": ["resource"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "resource": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "author": {"type": "string", "minLength": 1},
+        "usage_count": {"type": "integer", "minimum": 0},
+        "last_modified": {"type": "string", "format": "date"},
+        "usage_window": {"$ref": "#/$defs/usageWindow"}
+      },
       "additionalProperties": true
     }
   }
