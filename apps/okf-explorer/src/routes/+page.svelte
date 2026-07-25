@@ -4,6 +4,7 @@
   import type {
     BundleRegistryEntry,
     LargeDataset,
+    LargeDatasetAlternative,
     LargeExplorerDisplay,
     LargeExplorerPresentation,
     LargeExplorerPresentationFacet,
@@ -58,16 +59,26 @@
   } from '$lib/viewer/smallNodePresentation';
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
   import {
+    boxesOverlap,
+    graphRelationshipGroupSlot,
+    groupGraphRelationships,
+    orderGraphRelationshipGroups,
     planDirectedEdges,
+    planGraphEdgeWeights,
     planGraphLabelLayers,
+    planRelationshipGroupPositions,
     quadraticEdgeGeometry,
     type GraphBox,
     type GraphEdgeGeometry,
     type GraphLabelPlacement,
-    type GraphPoint
+    type GraphPoint,
+    type GraphRelationshipGroup,
+    type GraphRelationshipSide,
+    type GraphRelationshipSlot
   } from '$lib/viewer/graphPresentation';
   import {
     applyFacetPreferenceOrder,
+    diverseFacetValueFamilies,
     facetPreferenceOverrides as getFacetPreferenceOverrides,
     facetDistributionSegments,
     facetExampleValues,
@@ -78,6 +89,7 @@
     normalizeFacetPreferences,
     orderFacetRows,
     type FacetDistributionSegment,
+    type FacetValueFamily,
     type FacetPreferences
   } from '$lib/viewer/facetPresentation';
   import { providerDatapacksForRecord } from '$lib/viewer/providerDatapack';
@@ -94,7 +106,9 @@
     analysisNodeForRoute as findAnalysisNodeForRoute,
     colorForType,
     datasetDateContext,
+    datasetDisplaySeries,
     datasetOperationalContext,
+    datasetReleasePeriod,
     displayValue,
     facetLabel,
     facetSummary as getFacetSummary,
@@ -102,7 +116,7 @@
     formatPercent,
     isHttpUrl as isUrl,
     orderedFacetKeys,
-    relatedSeriesDatasets,
+    relatedDisplaySeriesDatasets,
     relationshipTitle as formatRelationshipTitle,
     routeForAnalysisNode,
     selectedFacetValueSummary,
@@ -128,7 +142,7 @@
   const FULL_INDEX_VIEWS = new Set<ViewMode>(['graph', 'links', 'timeline', 'type', 'resources', 'map', 'narrative']);
   const RELATIONSHIP_VIEWS = new Set<ViewMode>();
   const LARGE_FACET_KEYS = ['category', 'type_code', 'document_type', 'creation_year', 'jurisdiction', 'legal_status', 'publisher', 'topic', 'format', 'tag', 'license', 'host', 'resource_type', 'update_year', 'govuk_linked', 'publisher_family', 'publisher_state'];
-  const GRAPH_WIDTH = 900;
+  const DEFAULT_GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
   const FACET_PAGE_SIZE = 30;
   const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1';
@@ -136,6 +150,15 @@
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
   const GRAPH_STACK_THRESHOLD = 18;
   const GRAPH_EXPANDED_GROUP_LIMIT = 72;
+  const GRAPH_RELATIONSHIP_LAYOUT_THRESHOLD = 12;
+  const GRAPH_LAYOUT_PARAM = 'graph.layout';
+  const GRAPH_GROUP_PARAM = 'graph.group';
+  const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
+  const GRAPH_HIDDEN_EDGE_PARAM = 'graph.hideEdge';
+  const GRAPH_HIDDEN_NODE_TYPE_PARAM = 'graph.hideType';
+  const GRAPH_KEY_MODE_PARAM = 'graph.key';
+  const GRAPH_LABELS_PARAM = 'graph.labels';
+  const GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM = 'graph.relationship';
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
@@ -213,6 +236,9 @@
     target: string;
     label: string;
     count?: number;
+    predicate?: string;
+    weightValue?: number;
+    weightMetric?: string;
   };
 
   type LargeGraphGrouping = {
@@ -239,6 +265,9 @@
     selected?: boolean;
   };
   type GraphViewport = { x: number; y: number; w: number; h: number; baseW: number; baseH: number };
+  type GraphLayoutMode = 'auto' | 'relationships';
+  type GraphKeyMode = 'nodes' | 'relationships';
+  type RelationshipDetailTab = 'source' | 'relationship' | 'target';
   type TimelineResolution = 'latest' | 'year' | 'quarter' | 'month';
   type LeftPanelTab = 'facets' | 'browse' | 'results';
   type DetailPanelTab = 'overview' | 'evidence' | 'data';
@@ -246,9 +275,11 @@
     key: string;
     label: string;
     count: number;
+    kind?: 'series' | 'period';
+    catalogueFallbackCount?: number;
     facetKey?: string;
     facetValue?: string;
-    samples: Array<{ title: string; route: string; date: string }>;
+    samples: Array<{ title: string; route: string; date: string; periodLabel?: string; catalogueFallback?: boolean }>;
   };
 
   let bundleUrl = $state(DEFAULT_BUNDLE);
@@ -300,6 +331,7 @@
   let largeFacetApplyingKey = $state('');
   let largeFacetApplyingValue = $state('');
   let largeFacetSearch = $state<Record<string, string>>({});
+  let largeFacetBrowseAll = $state<Record<string, boolean>>({});
   let largeFacetVisibleLimits = $state<Record<string, number>>({});
   let facetPreferences = $state<FacetPreferences>({
     version: 1,
@@ -336,12 +368,25 @@
   let largeApiRequest = 0;
   let activeFacetKey = $state('');
   let pins = $state<string[]>([]);
+  let graphCanvasWidth = $state(DEFAULT_GRAPH_WIDTH);
   let graphZoom = $state(1);
-  let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
+  let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: DEFAULT_GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: DEFAULT_GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
   let graphDrag = $state<{ x: number; y: number; box: GraphViewport; moved: boolean } | null>(null);
   let graphSuppressClick = $state(false);
   let graphLabelPhase = $state(0);
   let graphLabelsPaused = $state(false);
+  let graphKeyMode = $state<GraphKeyMode>('nodes');
+  let graphLayoutControlsOpen = $state(false);
+  let graphLayoutMode = $state<GraphLayoutMode>('auto');
+  let graphRelationshipOrder = $state<string[]>([]);
+  let graphHiddenRelationshipGroups = $state<string[]>([]);
+  let graphHiddenRelationshipEdges = $state<string[]>([]);
+  let graphHiddenNodeTypes = $state<string[]>([]);
+  let graphHighlightedRelationshipGroup = $state('');
+  let relationshipDetailTab = $state<RelationshipDetailTab>('relationship');
+  let graphExpandedRelationshipGroups = $state<string[]>([]);
+  let draggingGraphRelationshipGroup = $state('');
+  let graphRelationshipDropTarget = $state('');
   let spreadPins = $state(false);
   let activeHelpKey = $state('');
   let largeSearchDebounce = $state<number | null>(null);
@@ -498,6 +543,51 @@
     return new URL(url, location.href).toString();
   }
 
+  function boundedGraphParams(params: URLSearchParams, key: string, limit: number): string[] {
+    return [...new Set(
+      params.getAll(key)
+        .map((value) => value.trim())
+        .filter((value) => value && value.length <= 512)
+        .slice(0, limit)
+    )];
+  }
+
+  function applyGraphState(params: URLSearchParams) {
+    graphLayoutMode = params.get(GRAPH_LAYOUT_PARAM) === 'relationships' ? 'relationships' : 'auto';
+    graphKeyMode = params.get(GRAPH_KEY_MODE_PARAM) === 'relationships' ? 'relationships' : 'nodes';
+    graphLabelsPaused = params.get(GRAPH_LABELS_PARAM) === 'off';
+    graphRelationshipOrder = boundedGraphParams(params, GRAPH_GROUP_PARAM, 32);
+    graphHiddenRelationshipGroups = boundedGraphParams(params, GRAPH_HIDDEN_GROUP_PARAM, 32);
+    graphHiddenRelationshipEdges = boundedGraphParams(params, GRAPH_HIDDEN_EDGE_PARAM, 160);
+    graphHiddenNodeTypes = boundedGraphParams(params, GRAPH_HIDDEN_NODE_TYPE_PARAM, 32);
+    graphHighlightedRelationshipGroup = params.get(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM)?.slice(0, 512) || '';
+  }
+
+  function writeGraphState(params: URLSearchParams) {
+    for (const key of [
+      GRAPH_LAYOUT_PARAM,
+      GRAPH_GROUP_PARAM,
+      GRAPH_HIDDEN_GROUP_PARAM,
+      GRAPH_HIDDEN_EDGE_PARAM,
+      GRAPH_HIDDEN_NODE_TYPE_PARAM,
+      GRAPH_KEY_MODE_PARAM,
+      GRAPH_LABELS_PARAM,
+      GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM
+    ]) {
+      params.delete(key);
+    }
+    if (graphLayoutMode === 'relationships') params.set(GRAPH_LAYOUT_PARAM, graphLayoutMode);
+    if (graphKeyMode === 'relationships') params.set(GRAPH_KEY_MODE_PARAM, graphKeyMode);
+    if (graphLabelsPaused) params.set(GRAPH_LABELS_PARAM, 'off');
+    graphRelationshipOrder.forEach((key) => params.append(GRAPH_GROUP_PARAM, key));
+    graphHiddenRelationshipGroups.forEach((key) => params.append(GRAPH_HIDDEN_GROUP_PARAM, key));
+    graphHiddenRelationshipEdges.forEach((key) => params.append(GRAPH_HIDDEN_EDGE_PARAM, key));
+    graphHiddenNodeTypes.forEach((type) => params.append(GRAPH_HIDDEN_NODE_TYPE_PARAM, type));
+    if (graphHighlightedRelationshipGroup) {
+      params.set(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM, graphHighlightedRelationshipGroup);
+    }
+  }
+
   function closeBundleSuggestionsOnPointerDown(event: PointerEvent) {
     const target = event.target instanceof Element ? event.target : null;
     if (!target?.closest('.bundle-box')) suggestionsOpen = false;
@@ -512,6 +602,7 @@
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
     writeRetrievalState(next.searchParams, currentRetrievalState());
+    writeGraphState(next.searchParams);
     if (geospatialFilter) next.searchParams.set('geo', geospatialFilter);
     else next.searchParams.delete('geo');
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
@@ -612,11 +703,18 @@
 
   function applyBrowserRoute() {
     const nextView = initialViewMode();
-    if (nextView) void selectView(nextView);
+    if (nextView) void selectView(nextView, false);
     const hash = safeDecodeHash();
-    geospatialFilter = geospatialFilterFromParams(new URLSearchParams(location.search));
+    const browserParams = new URLSearchParams(location.search);
+    geospatialFilter = geospatialFilterFromParams(browserParams);
+    applyGraphState(browserParams);
+    if (graphHighlightedRelationshipGroup) {
+      void tick().then(restoreGraphRelationshipInspection);
+    } else if (!largeHighlightedEdge) {
+      largeInspectedEdge = null;
+    }
     if (source?.kind === 'large') {
-      const params = new URLSearchParams(location.search);
+      const params = browserParams;
       const state = parseRetrievalState(params, largeSourceFacetKeys(source));
       const previousFilters = JSON.stringify(largeFacetFilters);
       const previousSort = retrievalSort;
@@ -729,6 +827,7 @@
     largeFacetApplyingKey = '';
     largeFacetApplyingValue = '';
     largeFacetSearch = {};
+    largeFacetBrowseAll = {};
     largeFacetVisibleLimits = {};
     facetPreferences = { version: 1, order: [], pinned: [], shown: [], hidden: [], mode: 'suggested', density: 'compact' };
     facetMenuKey = '';
@@ -741,6 +840,19 @@
     detailPanelTab = 'overview';
     edgePanelHeight = 180;
     timelineResolution = 'latest';
+    graphLayoutMode = 'auto';
+    graphKeyMode = 'nodes';
+    graphLabelsPaused = false;
+    graphLayoutControlsOpen = false;
+    graphRelationshipOrder = [];
+    graphHiddenRelationshipGroups = [];
+    graphHiddenRelationshipEdges = [];
+    graphHiddenNodeTypes = [];
+    graphHighlightedRelationshipGroup = '';
+    graphExpandedRelationshipGroups = [];
+    draggingGraphRelationshipGroup = '';
+    graphRelationshipDropTarget = '';
+    applyGraphState(new URLSearchParams(location.search));
     largePreserveSelectionUntilSearch = false;
     activeFacetKey = '';
     largeSearchClient?.destroy();
@@ -904,6 +1016,18 @@
     largeSearchIndexLoading = false;
     largeSearching = false;
     largeSearchRecoveryAttempts = 0;
+    graphLayoutMode = 'auto';
+    graphKeyMode = 'nodes';
+    graphLabelsPaused = false;
+    graphLayoutControlsOpen = false;
+    graphRelationshipOrder = [];
+    graphHiddenRelationshipGroups = [];
+    graphHiddenRelationshipEdges = [];
+    graphHiddenNodeTypes = [];
+    graphHighlightedRelationshipGroup = '';
+    graphExpandedRelationshipGroups = [];
+    draggingGraphRelationshipGroup = '';
+    graphRelationshipDropTarget = '';
     loading = true;
     error = '';
     try {
@@ -923,11 +1047,12 @@
     }
   }
 
-  async function selectView(view: ViewMode) {
+  async function selectView(view: ViewMode, push = true) {
     activeView = view;
     if (view === 'graph') graphLabelPhase = 0;
     await hydrateForView(view);
-    syncExplorerUrl();
+    if (view === 'graph' && graphHighlightedRelationshipGroup) restoreGraphRelationshipInspection();
+    syncExplorerUrl(push);
   }
 
   async function hydrateForView(view: ViewMode) {
@@ -1141,7 +1266,7 @@
     smallInspectedRelationship = null;
     graphLabelPhase = 0;
     activeView = activeView || 'reader';
-    syncExplorerUrl();
+    syncExplorerUrl(true);
   }
 
   function inspectNode(id: string) {
@@ -1181,6 +1306,7 @@
     rightCollapsed = false;
     if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
     void ensureLargeRouteRelationships(route);
+    syncExplorerUrl(true);
   }
 
   function recenterLargeRoute(route: string) {
@@ -1252,6 +1378,7 @@
       largeHighlightedRoute = largeSelectedRoute;
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
+      graphHighlightedRelationshipGroup = '';
       largeExpandedGraphGroup = '';
       clearLargeApiPanel();
     } else {
@@ -1313,25 +1440,10 @@
       closeSourceInspector();
       return;
     }
-    if (source?.kind === 'large' && largeInspectedRoute && largeSelectedRoute && largeInspectedRoute !== largeSelectedRoute) {
-      largeForwardRoute = largeInspectedRoute;
-      clearInspection();
-      return;
-    }
-    if (source?.kind === 'small' && inspectedId) {
-      clearInspection();
-      return;
-    }
     window.history.back();
   }
 
   function navigateForward() {
-    if (source?.kind === 'large' && largeForwardRoute) {
-      const route = largeForwardRoute;
-      largeForwardRoute = '';
-      inspectLargeRoute(route);
-      return;
-    }
     window.history.forward();
   }
 
@@ -1740,17 +1852,17 @@
     if (selectedNode && model.nodes.some((node) => node.id === selectedNode.id)) {
       const related = model.nodes.filter((node) => node.id !== selectedNode.id);
       return new Map([
-        [selectedNode.id, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }],
+        [selectedNode.id, { x: graphCanvasWidth / 2, y: GRAPH_HEIGHT / 2 }],
         ...related.map((node, index) => [
           node.id,
-          graphPosition(index, related.length, 240, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2)
+          graphPosition(index, related.length, 240, graphCanvasWidth / 2, GRAPH_HEIGHT / 2)
         ] as [string, GraphPoint])
       ]);
     }
     return new Map(
       model.nodes.map((node, index) => [
         node.id,
-        graphPosition(index, model.nodes.length, 250, GRAPH_WIDTH / 2, GRAPH_HEIGHT / 2)
+        graphPosition(index, model.nodes.length, 250, graphCanvasWidth / 2, GRAPH_HEIGHT / 2)
       ])
     );
   }
@@ -2200,6 +2312,38 @@
     return facetDistributionSegments(rows, facetDistributionLimit());
   }
 
+  function facetUsesDiverseSummary(key: string): boolean {
+    return facetAvailableValueCount(key) > facetSearchThreshold();
+  }
+
+  function declaredFacetValueFamilies(key: string): FacetValueFamily[] {
+    const rows = new Map(largeFacetRows(key).map((row) => [row.value, row]));
+    return analysisHierarchiesForFacet(key).flatMap((hierarchy) => hierarchy.values.map((value) => {
+      const candidates = [value, ...(value.children || [])];
+      const matches = candidates
+        .map((candidate) => rows.get(candidate.id) || rows.get(candidate.label) || rows.get(candidate.route?.split('/').at(-1) || ''))
+        .filter((row): row is LargeFacetRow => Boolean(row));
+      return {
+        id: 'other' as const,
+        label: value.label,
+        count: matches.reduce((total, row) => total + row.count, 0) || value.count,
+        rows: matches.slice(0, 5),
+        valueCount: matches.length || (value.children?.length || 1)
+      };
+    }));
+  }
+
+  function facetValueFamilies(key: string): FacetValueFamily[] {
+    const declared = declaredFacetValueFamilies(key);
+    return declared.length
+      ? declared
+      : diverseFacetValueFamilies(largeFacetRows(key), (value) => facetValueDisplay(key, value));
+  }
+
+  function showAllFacetValues(key: string) {
+    largeFacetBrowseAll = { ...largeFacetBrowseAll, [key]: true };
+  }
+
   function facetExamples(key: string): string[] {
     const explicit = providerPresentationFacet(key)?.examples || analysisFacetForKey(key)?.examples;
     if (explicit?.length) return facetExampleValues([], explicit, (value) => facetValueDisplay(key, value));
@@ -2296,6 +2440,7 @@
   function setLargeFacetQuery(key: string, value: string) {
     largeFacetSearch = { ...largeFacetSearch, [key]: value };
     largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: FACET_PAGE_SIZE };
+    if (value.trim()) largeFacetBrowseAll = { ...largeFacetBrowseAll, [key]: true };
   }
 
   function largeFacetDisplayLimit(key: string): number {
@@ -2462,8 +2607,8 @@
     applyAnalysisFacet(filter.key, filter.value);
   }
 
-  function datasetTimelineStamp(dataset: LargeDataset | SearchResultDoc): string {
-    return String((dataset as LargeDataset).metadata_modified || dataset.timestamp || '').slice(0, 10);
+  function datasetTimelineStamp(dataset: LargeDataset): string {
+    return datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || [])?.sortKey || '';
   }
 
   function quarterForStamp(stamp: string): string {
@@ -2480,12 +2625,38 @@
   }
 
   function latestTimelineBuckets(rows: LargeDataset[]): TimelineBucket[] {
-    return rows.slice(0, 80).map((dataset) => ({
-      key: datasetRoute(dataset),
-      label: datasetTimelineStamp(dataset),
-      count: 1,
-      samples: [{ title: dataset.title, route: datasetRoute(dataset), date: datasetTimelineStamp(dataset) }]
-    }));
+    const groups = new Map<string, TimelineBucket>();
+    for (const dataset of rows) {
+      const period = datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []);
+      if (!period) continue;
+      const series = datasetDisplaySeries(dataset);
+      const bucket = groups.get(series.key) || {
+        key: series.key,
+        label: series.label,
+        count: 0,
+        kind: 'series',
+        catalogueFallbackCount: 0,
+        samples: []
+      };
+      bucket.count += 1;
+      if (period.catalogueFallback) bucket.catalogueFallbackCount = (bucket.catalogueFallbackCount || 0) + 1;
+      bucket.samples.push({
+        title: dataset.title,
+        route: datasetRoute(dataset),
+        date: period.sortKey,
+        periodLabel: period.label,
+        catalogueFallback: period.catalogueFallback
+      });
+      groups.set(series.key, bucket);
+    }
+    return [...groups.values()]
+      .map((bucket) => ({ ...bucket, samples: bucket.samples.sort((left, right) => right.date.localeCompare(left.date)) }))
+      .sort((left, right) => {
+        const leftLatest = left.samples[0]?.date || '';
+        const rightLatest = right.samples[0]?.date || '';
+        return rightLatest.localeCompare(leftLatest) || left.label.localeCompare(right.label);
+      })
+      .slice(0, 80);
   }
 
   function groupedTimelineBuckets(rows: LargeDataset[], resolution: Exclude<TimelineResolution, 'latest'>): TimelineBucket[] {
@@ -2503,12 +2674,20 @@
         key,
         label: key,
         count: 0,
-        facetKey: resolution === 'year' ? 'update_year' : resolution === 'quarter' ? 'update_quarter' : 'update_month',
-        facetValue: key,
+        kind: 'period',
         samples: []
       };
       bucket.count += 1;
-      if (bucket.samples.length < 3) bucket.samples.push({ title: dataset.title, route: datasetRoute(dataset), date: stamp });
+      if (bucket.samples.length < 8) {
+        const period = datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []);
+        bucket.samples.push({
+          title: dataset.title,
+          route: datasetRoute(dataset),
+          date: stamp,
+          periodLabel: period?.label,
+          catalogueFallback: period?.catalogueFallback
+        });
+      }
       groups.set(key, bucket);
     }
     return [...groups.values()].sort((left, right) => right.key.localeCompare(left.key));
@@ -2549,6 +2728,29 @@
 
   function setTimelineResolution(value: string) {
     if (value === 'latest' || value === 'year' || value === 'quarter' || value === 'month') timelineResolution = value;
+  }
+
+  function timelineReleaseYearGroups(bucket: TimelineBucket) {
+    const years = new Map<string, TimelineBucket['samples']>();
+    for (const sample of bucket.samples) {
+      const year = sample.date.slice(0, 4) || 'Undated';
+      years.set(year, [...(years.get(year) || []), sample]);
+    }
+    return [...years.entries()]
+      .map(([year, samples]) => ({ year, samples }))
+      .sort((left, right) => right.year.localeCompare(left.year));
+  }
+
+  function timelineReleaseLinkLabel(sample: TimelineBucket['samples'][number]): string {
+    if (!sample.periodLabel) return sample.date;
+    const compact = sample.periodLabel.replace(/\s+(?:18|19|20|21)\d{2}$/, '');
+    return compact === sample.periodLabel && /^\d{4}$/.test(sample.periodLabel) ? 'Open' : compact;
+  }
+
+  function followExplorerRoute(event: MouseEvent, route: string) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    inspectLargeRoute(route);
   }
 
   function analysisFacetRows() {
@@ -2725,12 +2927,24 @@
     return facetNeedsSuggestedOverride(key) && !facetPreferences.shown.includes(key);
   }
 
+  function facetIsSingleValued(key: string): boolean {
+    return facetPreviewIsComplete(key) && facetAvailableValueCount(key) === 1;
+  }
+
   function presentedLargeFacetKeys() {
     const ordered = applyFacetPreferenceOrder(providerOrderedLargeFacetKeys(), facetPreferences);
     if (facetPreferences.mode === 'all') return ordered;
     const activeKeys = new Set(Object.keys(largeFacetFilters));
     return ordered.filter(
-      (key) => facetIsPinned(key) || activeKeys.has(key) || (!facetIsHidden(key) && !facetIsLowPriority(key))
+      (key) => (
+        facetIsPinned(key)
+        || activeKeys.has(key)
+        || (
+          !facetIsHidden(key)
+          && !facetIsLowPriority(key)
+          && (!facetIsSingleValued(key) || facetPreferences.shown.includes(key))
+        )
+      )
     );
   }
 
@@ -3070,7 +3284,59 @@
   }
 
   function apiContextNote(record: AnyLargeRecord | undefined): string {
-    return recordString(record, 'context_note');
+    const note = recordString(record, 'context_note');
+    return datasetAlternatives(record).length && /^Compare before selecting:/i.test(note) ? '' : note;
+  }
+
+  function datasetAlternatives(record: AnyLargeRecord | undefined): LargeDatasetAlternative[] {
+    const value = (record as Record<string, unknown> | undefined)?.alternatives;
+    if (!Array.isArray(value)) return [];
+    return value.filter((item): item is LargeDatasetAlternative => Boolean(item && typeof item === 'object' && !Array.isArray(item)));
+  }
+
+  function alternativeRoute(alternative: LargeDatasetAlternative): string {
+    const supplied = typeof alternative.route === 'string'
+      ? alternative.route
+      : typeof alternative.record_id === 'string'
+        ? alternative.record_id
+        : '';
+    if (!supplied) return '';
+    if (supplied.includes('/')) return supplied;
+    const indexed = largeIndex?.datasets.find((dataset) => (
+      dataset.name === supplied
+      || recordString(dataset, 'record_id') === supplied
+      || datasetRoute(dataset) === supplied
+    ));
+    return indexed ? datasetRoute(indexed) : `dataset/${supplied}`;
+  }
+
+  function alternativeDataset(alternative: LargeDatasetAlternative): LargeDataset {
+    const route = alternativeRoute(alternative);
+    return largeIndex?.datasets.find((dataset) => datasetRoute(dataset) === route) || {
+      name: route.replace(/^dataset\//, '') || String(alternative.record_id || alternative.title || 'alternative'),
+      title: String(alternative.title || alternative.record_id || 'Alternative dataset'),
+      source_surface: alternative.source_surface,
+      record_type: alternative.record_type
+    };
+  }
+
+  function alternativeDifferenceSummary(alternative: LargeDatasetAlternative): string[] {
+    return (alternative.differences || []).slice(0, 4).map((difference) => {
+      const field = String(difference.field || 'Difference').replaceAll('_', ' ');
+      return `${capitalise(field)}: ${displayValue(difference.alternative)}`;
+    });
+  }
+
+  function distinctDatasetAlternatives(dataset: LargeDataset): LargeDatasetAlternative[] {
+    const currentSeries = datasetDisplaySeries(dataset).key;
+    const seen = new Set<string>();
+    return datasetAlternatives(dataset).filter((alternative) => {
+      const candidate = alternativeDataset(alternative);
+      const route = alternativeRoute(alternative);
+      if (!route || seen.has(route) || datasetDisplaySeries(candidate).key === currentSeries) return false;
+      seen.add(route);
+      return true;
+    });
   }
 
   function apiRecordMeta(record: AnyLargeRecord | undefined): string {
@@ -3511,6 +3777,25 @@
     return String(dataset.record_type || dataset.type || recordSingular()).trim() || recordSingular();
   }
 
+  function graphEdgeSemanticMetadata(record: Record<string, unknown> | undefined) {
+    if (!record) return {};
+    const predicate = ['predicate', 'property', 'predicate_iri']
+      .map((key) => String(record[key] || '').trim())
+      .find(Boolean);
+    const metrics: Array<[string, string]> = [
+      ['strength', 'relationship strength'],
+      ['weight', 'relationship weight'],
+      ['evidence_count', 'evidence count']
+    ];
+    const metric = metrics
+      .map(([key, label]) => ({ label, value: Number(record[key]) }))
+      .find((candidate) => Number.isFinite(candidate.value) && candidate.value >= 0);
+    return {
+      ...(predicate ? { predicate } : {}),
+      ...(metric ? { weightValue: metric.value, weightMetric: metric.label } : {})
+    };
+  }
+
   function graphContextKey(center: string): string {
     if (center) return center;
     if (largeAppliedQuery.trim()) return `search/${largeAppliedQuery.trim()}`;
@@ -3535,12 +3820,16 @@
           type: node.type,
           count: node.count
         })),
-        relationships: (analysis.graph_overview.edges || []).map((edge) => ({
-          source: edge.source,
-          target: edge.target,
-          label: edge.label,
-          count: edge.count
-        }))
+        relationships: (analysis.graph_overview.edges || []).map((edge) => {
+          const metadata = graphEdgeSemanticMetadata(edge as unknown as Record<string, unknown>);
+          return {
+            source: edge.source,
+            target: edge.target,
+            label: edge.label,
+            count: edge.count,
+            ...metadata
+          };
+        })
       };
     }
 
@@ -3557,13 +3846,13 @@
       if (!id) return;
       if (!nodeMap.has(id)) nodeMap.set(id, { id, label, type, count, stackFor });
     };
-    const addEdge = (sourceId: string, targetId: string, label: string) => {
+    const addEdge = (sourceId: string, targetId: string, label: string, record?: Record<string, unknown>) => {
       const key = `${sourceId}\u0000${targetId}\u0000${label}`;
       if (edgeKeys.has(key)) return;
       edgeKeys.add(key);
       addNode(sourceId);
       addNode(targetId);
-      edges.push({ source: sourceId, target: targetId, label });
+      edges.push({ source: sourceId, target: targetId, label, ...graphEdgeSemanticMetadata(record) });
     };
     const addCountedEdge = (sourceId: string, targetId: string, label: string, count?: number) => {
       const key = `${sourceId}\u0000${targetId}\u0000${label}`;
@@ -3711,7 +4000,12 @@
     const addLoadedRelationshipsForCenter = () => {
       const rows = routeRelationships(center, 120);
       if (rows.length <= 36) {
-        for (const relationship of rows) addEdge(relationship.source, relationship.target, relationship.kind);
+        for (const relationship of rows) addEdge(
+          relationship.source,
+          relationship.target,
+          relationship.kind,
+          relationship
+        );
         return;
       }
       const groups = new Map<string, { kind: string; otherKind: string; direction: 'out' | 'in'; rows: LargeRelationship[] }>();
@@ -3733,7 +4027,12 @@
           if (group.direction === 'out') edges.push({ source: center, target: stackId, label: `${group.kind} x${group.rows.length}` });
           else edges.push({ source: stackId, target: center, label: `${group.kind} x${group.rows.length}` });
         } else {
-          for (const relationship of group.rows) addEdge(relationship.source, relationship.target, relationship.kind);
+          for (const relationship of group.rows) addEdge(
+            relationship.source,
+            relationship.target,
+            relationship.kind,
+            relationship
+          );
           individualCount += group.rows.length;
         }
       }
@@ -3824,7 +4123,7 @@
     const positions = new Map<string, GraphPoint>();
     const root = model.nodes.find((node) => node.id === 'corpus/overview') || model.nodes[0];
     if (!root) return positions;
-    positions.set(root.id, { x: GRAPH_WIDTH * 0.49, y: GRAPH_HEIGHT * 0.53 });
+    positions.set(root.id, { x: graphCanvasWidth * 0.49, y: GRAPH_HEIGHT * 0.53 });
 
     const groups: Record<string, LargeGraphNode[]> = {
       publisher_family: [],
@@ -3843,24 +4142,35 @@
     }
     Object.values(groups).forEach((nodes) => nodes.sort((left, right) => (right.count || 0) - (left.count || 0) || left.label.localeCompare(right.label)));
 
-    placeGrid(positions, groups.format.slice(0, 10), GRAPH_WIDTH * 0.17, GRAPH_HEIGHT * 0.12, 5, 102, 52);
-    placeGrid(positions, groups.topic.slice(0, 10), GRAPH_WIDTH * 0.07, GRAPH_HEIGHT * 0.16, 1, 96, 44);
-    placeGrid(positions, groups.tag.slice(0, 6), GRAPH_WIDTH * 0.08, GRAPH_HEIGHT * 0.58, 1, 88, 44);
-    placeGrid(positions, groups.update_year.slice(0, 8), GRAPH_WIDTH * 0.27, GRAPH_HEIGHT * 0.35, 2, 86, 54);
-    placeGrid(positions, groups.license.slice(0, 6), GRAPH_WIDTH * 0.35, GRAPH_HEIGHT * 0.79, 6, 76, 48);
-    placeGrid(positions, groups.host.slice(0, 8), GRAPH_WIDTH * 0.76, GRAPH_HEIGHT * 0.12, 1, 92, 48);
-    placeGrid(positions, groups.publisher_family.slice(0, 6), GRAPH_WIDTH * 0.76, GRAPH_HEIGHT * 0.53, 1, 92, 50);
-    placeGrid(positions, groups.other, GRAPH_WIDTH * 0.55, GRAPH_HEIGHT * 0.25, 2, 94, 54);
+    placeGrid(positions, groups.format.slice(0, 10), graphCanvasWidth * 0.17, GRAPH_HEIGHT * 0.12, 5, 102, 52);
+    placeGrid(positions, groups.topic.slice(0, 10), graphCanvasWidth * 0.07, GRAPH_HEIGHT * 0.16, 1, 96, 44);
+    placeGrid(positions, groups.tag.slice(0, 6), graphCanvasWidth * 0.08, GRAPH_HEIGHT * 0.58, 1, 88, 44);
+    placeGrid(positions, groups.update_year.slice(0, 8), graphCanvasWidth * 0.27, GRAPH_HEIGHT * 0.35, 2, 86, 54);
+    placeGrid(positions, groups.license.slice(0, 6), graphCanvasWidth * 0.35, GRAPH_HEIGHT * 0.79, 6, 76, 48);
+    placeGrid(positions, groups.host.slice(0, 8), graphCanvasWidth * 0.76, GRAPH_HEIGHT * 0.12, 1, 92, 48);
+    placeGrid(positions, groups.publisher_family.slice(0, 6), graphCanvasWidth * 0.76, GRAPH_HEIGHT * 0.53, 1, 92, 50);
+    placeGrid(positions, groups.other, graphCanvasWidth * 0.55, GRAPH_HEIGHT * 0.25, 2, 94, 54);
     return positions;
   }
 
-  function largeGraphPositions(model: ReturnType<typeof largeGraphModel>) {
+  function largeGraphPositions(
+    model: ReturnType<typeof largeGraphModel>,
+    relationshipGroups: GraphRelationshipGroup[] = []
+  ) {
+    if (graphRelationshipLayoutActive(model, relationshipGroups)) {
+      return planRelationshipGroupPositions(
+        model.center,
+        relationshipGroups,
+        graphCanvasWidth,
+        GRAPH_HEIGHT
+      ).positions;
+    }
     if (!model.center && model.nodes.some((node) => node.id === 'corpus/overview')) return largeOverviewGraphPositions(model);
     const center = model.center && model.nodes.some((node) => node.id === model.center) ? model.center : model.nodes[0]?.id;
     const positions = new Map<string, GraphPoint>();
     if (model.center && center) {
       const centerType = routeKind(center);
-      const cx = centerType === 'publisher' ? GRAPH_WIDTH * 0.27 : GRAPH_WIDTH * 0.5;
+      const cx = centerType === 'publisher' ? graphCanvasWidth * 0.27 : graphCanvasWidth * 0.5;
       const cy = GRAPH_HEIGHT * 0.54;
       positions.set(center, { x: cx, y: cy });
       const groups: Record<string, LargeGraphNode[]> = {
@@ -3885,15 +4195,15 @@
       }
       Object.values(groups).forEach((nodes) => nodes.sort((left, right) => left.label.localeCompare(right.label)));
       if (centerType === 'publisher') {
-        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.11, GRAPH_HEIGHT * 0.16, 2, 116, 70);
-        placeGrid(positions, [...groups['record-type-stack'], ...groups.dataset, ...groups.resource, ...groups['relationship-stack']], GRAPH_WIDTH * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
+        placeGrid(positions, groups['facet-stack'], graphCanvasWidth * 0.11, GRAPH_HEIGHT * 0.16, 2, 116, 70);
+        placeGrid(positions, [...groups['record-type-stack'], ...groups.dataset, ...groups.resource, ...groups['relationship-stack']], graphCanvasWidth * 0.34, GRAPH_HEIGHT * 0.16, 6, 78, 58);
         placeArc(positions, [...groups.format, ...groups.license, ...groups.topic, ...groups.tag], cx, cy, GRAPH_HEIGHT * 0.32, -2.3, -1.1);
       } else {
         placeArc(positions, groups.publisher, cx, cy, GRAPH_HEIGHT * 0.31, -0.22, 0.25);
-        placeGrid(positions, [...groups.resource, ...groups['resource-stack']], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.16, 4, 86, 66);
-        placeGrid(positions, groups['relationship-stack'], GRAPH_WIDTH * 0.69, GRAPH_HEIGHT * 0.15, 2, 98, 68);
-        placeGrid(positions, groups['record-type-stack'], GRAPH_WIDTH * 0.61, GRAPH_HEIGHT * 0.13, 2, 112, 72);
-        placeGrid(positions, groups['facet-stack'], GRAPH_WIDTH * 0.1, GRAPH_HEIGHT * 0.18, 2, 116, 70);
+        placeGrid(positions, [...groups.resource, ...groups['resource-stack']], graphCanvasWidth * 0.1, GRAPH_HEIGHT * 0.16, 4, 86, 66);
+        placeGrid(positions, groups['relationship-stack'], graphCanvasWidth * 0.69, GRAPH_HEIGHT * 0.15, 2, 98, 68);
+        placeGrid(positions, groups['record-type-stack'], graphCanvasWidth * 0.61, GRAPH_HEIGHT * 0.13, 2, 112, 72);
+        placeGrid(positions, groups['facet-stack'], graphCanvasWidth * 0.1, GRAPH_HEIGHT * 0.18, 2, 116, 70);
         placeArc(positions, [...groups.format, ...groups.license], cx, cy, GRAPH_HEIGHT * 0.31, -2.4, -1.32);
         placeArc(positions, groups.topic, cx, cy, GRAPH_HEIGHT * 0.34, 2.05, 2.75);
         placeArc(positions, groups.tag, cx, cy, GRAPH_HEIGHT * 0.37, 2.85, 3.82);
@@ -3901,19 +4211,19 @@
       }
       return positions;
     }
-    if (center) positions.set(center, { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 });
+    if (center) positions.set(center, { x: graphCanvasWidth / 2, y: GRAPH_HEIGHT / 2 });
     const others = model.nodes.filter((node) => node.id !== center);
     const publishers = model.nodes.filter((node) => node.type === 'publisher').sort((left, right) => left.label.localeCompare(right.label));
     const recordTypeStacks = model.nodes.filter((node) => node.type === 'record-type-stack').sort((left, right) => (right.count || 0) - (left.count || 0) || left.label.localeCompare(right.label));
     const datasets = model.nodes.filter((node) => node.type === 'dataset').sort((left, right) => left.label.localeCompare(right.label));
     const other = others.filter((node) => node.type !== 'publisher' && node.type !== 'dataset' && node.type !== 'record-type-stack');
     const columns = Math.max(1, Math.ceil(Math.sqrt(datasets.length + recordTypeStacks.length)));
-    const cellW = Math.min(92, (GRAPH_WIDTH * 0.58) / columns);
+    const cellW = Math.min(92, (graphCanvasWidth * 0.58) / columns);
     const cellH = 58;
     const rows = Math.ceil((datasets.length + recordTypeStacks.length) / columns);
-    placeGrid(positions, [...recordTypeStacks, ...datasets], GRAPH_WIDTH * 0.18, GRAPH_HEIGHT * 0.5 - ((rows - 1) * cellH) / 2, columns, cellW, cellH);
-    placeArc(positions, publishers, GRAPH_WIDTH * 0.78, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.28, -1.0, 1.0);
-    placeArc(positions, other, GRAPH_WIDTH * 0.5, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.36, 1.35, 4.92);
+    placeGrid(positions, [...recordTypeStacks, ...datasets], graphCanvasWidth * 0.18, GRAPH_HEIGHT * 0.5 - ((rows - 1) * cellH) / 2, columns, cellW, cellH);
+    placeArc(positions, publishers, graphCanvasWidth * 0.78, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.28, -1.0, 1.0);
+    placeArc(positions, other, graphCanvasWidth * 0.5, GRAPH_HEIGHT * 0.5, GRAPH_HEIGHT * 0.36, 1.35, 4.92);
     return positions;
   }
 
@@ -3933,8 +4243,9 @@
     return '#607080';
   }
 
-  function graphLegendItems() {
-    return [
+  function graphLegendItems(nodes: LargeGraphNode[]) {
+    const presentTypes = new Set(nodes.map((node) => node.type));
+    const items = [
       ['dataset', recordSingular()],
       ['publisher', publisherSingular()],
       ['resource', resourceSingular()],
@@ -3946,7 +4257,362 @@
       ['license', 'licence'],
       ['tag', 'tag'],
       ['host', 'host/other']
+    ] as Array<[string, string]>;
+    const knownTypes = new Set(items.map(([type]) => type));
+    const unknown = [...presentTypes]
+      .filter((type) => !knownTypes.has(type) && type !== 'resource_type')
+      .sort()
+      .map((type) => [type, type.replaceAll('_', ' ')] as [string, string]);
+    return [
+      ...items.filter(([type]) => (
+        presentTypes.has(type)
+        || (type === 'host' && (presentTypes.has('host') || presentTypes.has('resource_type')))
+      )),
+      ...unknown
     ];
+  }
+
+  function graphLegendTypeMatches(nodeType: string, legendType: string): boolean {
+    return legendType === 'host'
+      ? nodeType === 'host' || nodeType === 'resource_type'
+      : nodeType === legendType;
+  }
+
+  function graphNodeTypeEnabled(type: string): boolean {
+    return !graphHiddenNodeTypes.includes(type);
+  }
+
+  function graphNodeKeyNodes(fullModel: LargeGraphModel, model: LargeGraphModel): LargeGraphNode[] {
+    const visibleIds = new Set(model.nodes.map((node) => node.id));
+    return fullModel.nodes.filter((node) => (
+      visibleIds.has(node.id)
+      || graphHiddenNodeTypes.some((type) => graphLegendTypeMatches(node.type, type))
+    ));
+  }
+
+  function graphFocusNodeType(model: LargeGraphModel): string {
+    return model.nodes.find((node) => node.id === model.center)?.type || '';
+  }
+
+  function graphNodeTypeCanHide(type: string, model: LargeGraphModel): boolean {
+    const focusType = graphFocusNodeType(model);
+    return !focusType || !graphLegendTypeMatches(focusType, type);
+  }
+
+  function toggleGraphNodeType(type: string, model: LargeGraphModel) {
+    if (!graphNodeTypeCanHide(type, model)) {
+      graphHiddenNodeTypes = graphHiddenNodeTypes.filter((candidate) => candidate !== type);
+      syncExplorerUrl(true);
+      return;
+    }
+    graphHiddenNodeTypes = graphNodeTypeEnabled(type)
+      ? [...graphHiddenNodeTypes, type]
+      : graphHiddenNodeTypes.filter((candidate) => candidate !== type);
+    graphLabelPhase = 0;
+    syncExplorerUrl(true);
+  }
+
+  function setGraphKeyMode(mode: GraphKeyMode) {
+    graphKeyMode = mode;
+    syncExplorerUrl(true);
+  }
+
+  function toggleGraphLabels() {
+    graphLabelsPaused = !graphLabelsPaused;
+    syncExplorerUrl(true);
+  }
+
+  function graphRelationshipGroups(model: LargeGraphModel): GraphRelationshipGroup[] {
+    const groups = groupGraphRelationships(
+      model.relationships.map((edge) => ({
+        id: graphEdgeKey(edge),
+        source: edge.source,
+        target: edge.target,
+        label: edge.label,
+        predicate: edge.predicate
+      })),
+      model.center
+    );
+    const labelById = new Map(model.nodes.map((node) => [node.id, node.label]));
+    const sorted = groups.map((group) => ({
+      ...group,
+      nodeIds: [...group.nodeIds].sort((left, right) => (
+        (labelById.get(left) || left).localeCompare(labelById.get(right) || right)
+      ))
+    }));
+    return orderGraphRelationshipGroups(sorted, graphRelationshipOrder);
+  }
+
+  function graphRelationshipLayoutActive(
+    model: LargeGraphModel,
+    groups: GraphRelationshipGroup[]
+  ): boolean {
+    if (!model.center || !groups.length) return false;
+    const centerKind = routeKind(model.center);
+    const metadataFanout = !['dataset', 'publisher', 'resource'].includes(centerKind)
+      && model.relationships.length >= 4;
+    return graphLayoutMode === 'relationships'
+      || metadataFanout
+      || (groups.length >= 2 && model.relationships.length >= GRAPH_RELATIONSHIP_LAYOUT_THRESHOLD);
+  }
+
+  function graphDocumentAnchoredPlan(
+    plan: ReturnType<typeof planRelationshipGroupPositions>,
+    model: LargeGraphModel
+  ): ReturnType<typeof planRelationshipGroupPositions> {
+    const positions = new Map(plan.positions);
+    const nodeSlots = new Map(plan.nodeSlots);
+    const anchors = [
+      { type: 'publisher', x: graphCanvasWidth * 0.27 },
+      { type: 'license', x: graphCanvasWidth * 0.73 }
+    ];
+    for (const anchor of anchors) {
+      const nodes = model.nodes.filter((node) => node.type === anchor.type && node.id !== model.center);
+      nodes.forEach((node, index) => {
+        positions.set(node.id, {
+          x: anchor.x + (index - (nodes.length - 1) / 2) * Math.min(92, graphCanvasWidth * 0.09),
+          y: GRAPH_HEIGHT * 0.91
+        });
+        nodeSlots.set(node.id, { side: 'bottom', lane: 0 });
+      });
+    }
+    return { ...plan, positions, nodeSlots };
+  }
+
+  function graphFocusTitleLines(label: string, maxLineLength = 72): string[] {
+    const words = stripHtml(label).replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+    if (!words.length) return [];
+    const lines: string[] = [];
+    for (const word of words) {
+      const current = lines[lines.length - 1] || '';
+      if (!current || `${current} ${word}`.length > maxLineLength) lines.push(word);
+      else lines[lines.length - 1] = `${current} ${word}`;
+    }
+    return lines.length <= 2 ? lines : [lines[0], `${lines.slice(1).join(' ').slice(0, maxLineLength - 1)}…`];
+  }
+
+  function relationshipFilteredLargeGraphModel(
+    model: LargeGraphModel,
+    groups: GraphRelationshipGroup[]
+  ): LargeGraphModel {
+    if (!model.center) return model;
+    const groupByEdge = new Map(
+      groups.flatMap((group) => group.edgeIds.map((edgeId) => [edgeId, group.key] as const))
+    );
+    const hiddenGroups = new Set(graphHiddenRelationshipGroups);
+    const hiddenEdges = new Set(graphHiddenRelationshipEdges);
+    const relationships = model.relationships.filter((edge) => {
+      const id = graphEdgeKey(edge);
+      return (
+        !hiddenEdges.has(id)
+        && !hiddenGroups.has(groupByEdge.get(id) || '')
+      );
+    });
+    const visibleNodeIds = new Set([
+      model.center,
+      ...relationships.flatMap((edge) => [edge.source, edge.target])
+    ]);
+    return {
+      ...model,
+      nodes: model.nodes.filter((node) => visibleNodeIds.has(node.id)),
+      relationships
+    };
+  }
+
+  function nodeTypeFilteredLargeGraphModel(model: LargeGraphModel): LargeGraphModel {
+    if (!model.center || !graphHiddenNodeTypes.length) return model;
+    const hiddenNodeIds = new Set(model.nodes
+      .filter((node) => (
+        node.id !== model.center
+        && graphHiddenNodeTypes.some((type) => graphLegendTypeMatches(node.type, type))
+      ))
+      .map((node) => node.id));
+    return {
+      ...model,
+      nodes: model.nodes.filter((node) => !hiddenNodeIds.has(node.id)),
+      relationships: model.relationships.filter((edge) => (
+        !hiddenNodeIds.has(edge.source) && !hiddenNodeIds.has(edge.target)
+      ))
+    };
+  }
+
+  function graphGroupDirectionLabel(direction: GraphRelationshipGroup['direction']): string {
+    if (direction === 'outgoing') return 'from focus';
+    if (direction === 'incoming') return 'to focus';
+    return 'between context nodes';
+  }
+
+  function graphGroupControlLabel(group: GraphRelationshipGroup): string {
+    return `${group.label}, ${graphGroupDirectionLabel(group.direction)}`;
+  }
+
+  function graphRelationshipSlotLabel(slot: GraphRelationshipSlot): string {
+    const side = slot.side === 'top' || slot.side === 'bottom'
+      ? `${capitalise(slot.side)} steps`
+      : `${capitalise(slot.side)} list`;
+    return slot.lane ? `${side} ${slot.lane + 1}` : side;
+  }
+
+  function graphGroupEnabled(key: string): boolean {
+    return !graphHiddenRelationshipGroups.includes(key);
+  }
+
+  function graphEdgeEnabled(id: string): boolean {
+    return !graphHiddenRelationshipEdges.includes(id);
+  }
+
+  function setGraphLayoutMode(mode: GraphLayoutMode) {
+    graphLayoutMode = mode;
+    resetGraphView();
+    syncExplorerUrl(true);
+  }
+
+  function toggleGraphRelationshipGroup(key: string) {
+    graphHiddenRelationshipGroups = graphGroupEnabled(key)
+      ? [...graphHiddenRelationshipGroups, key]
+      : graphHiddenRelationshipGroups.filter((candidate) => candidate !== key);
+    graphLabelPhase = 0;
+    syncExplorerUrl();
+  }
+
+  function toggleGraphRelationshipEdge(id: string) {
+    graphHiddenRelationshipEdges = graphEdgeEnabled(id)
+      ? [...graphHiddenRelationshipEdges, id]
+      : graphHiddenRelationshipEdges.filter((candidate) => candidate !== id);
+    graphLabelPhase = 0;
+    syncExplorerUrl();
+  }
+
+  function toggleGraphRelationshipMembers(key: string) {
+    graphExpandedRelationshipGroups = graphExpandedRelationshipGroups.includes(key)
+      ? graphExpandedRelationshipGroups.filter((candidate) => candidate !== key)
+      : [...graphExpandedRelationshipGroups, key];
+  }
+
+  function resetGraphRelationshipControls() {
+    graphLayoutMode = 'auto';
+    graphRelationshipOrder = [];
+    graphHiddenRelationshipGroups = [];
+    graphHiddenRelationshipEdges = [];
+    graphExpandedRelationshipGroups = [];
+    draggingGraphRelationshipGroup = '';
+    graphRelationshipDropTarget = '';
+    graphLabelPhase = 0;
+    resetGraphView();
+    syncExplorerUrl();
+  }
+
+  function orderedGraphGroupKeys(groups: GraphRelationshipGroup[]): string[] {
+    return orderGraphRelationshipGroups(groups, graphRelationshipOrder).map((group) => group.key);
+  }
+
+  function moveGraphRelationshipGroup(
+    groups: GraphRelationshipGroup[],
+    key: string,
+    offset: -1 | 1
+  ) {
+    const keys = orderedGraphGroupKeys(groups);
+    const index = keys.indexOf(key);
+    const target = Math.max(0, Math.min(keys.length - 1, index + offset));
+    if (index < 0 || target === index) return;
+    keys.splice(index, 1);
+    keys.splice(target, 0, key);
+    graphRelationshipOrder = keys;
+    graphLabelPhase = 0;
+    syncExplorerUrl();
+  }
+
+  function startGraphRelationshipDrag(key: string, event: DragEvent) {
+    draggingGraphRelationshipGroup = key;
+    graphRelationshipDropTarget = '';
+    event.dataTransfer?.setData('text/plain', key);
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  function dragGraphRelationshipOver(key: string, event: DragEvent) {
+    if (!draggingGraphRelationshipGroup || draggingGraphRelationshipGroup === key) return;
+    event.preventDefault();
+    graphRelationshipDropTarget = key;
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+  }
+
+  function dropGraphRelationshipBefore(
+    groups: GraphRelationshipGroup[],
+    targetKey: string,
+    event: DragEvent
+  ) {
+    event.preventDefault();
+    const sourceKey = draggingGraphRelationshipGroup || event.dataTransfer?.getData('text/plain') || '';
+    const keys = orderedGraphGroupKeys(groups).filter((key) => key !== sourceKey);
+    const targetIndex = keys.indexOf(targetKey);
+    if (sourceKey && targetIndex >= 0) {
+      keys.splice(targetIndex, 0, sourceKey);
+      graphRelationshipOrder = keys;
+      graphLabelPhase = 0;
+      syncExplorerUrl();
+    }
+    draggingGraphRelationshipGroup = '';
+    graphRelationshipDropTarget = '';
+  }
+
+  function finishGraphRelationshipDrag() {
+    draggingGraphRelationshipGroup = '';
+    graphRelationshipDropTarget = '';
+  }
+
+  function graphGroupEdges(group: GraphRelationshipGroup, model: LargeGraphModel): LargeGraphEdge[] {
+    const ids = new Set(group.edgeIds);
+    return model.relationships
+      .filter((edge) => ids.has(graphEdgeKey(edge)))
+      .sort((left, right) => (
+        graphGroupMemberLabel(left, model.center).localeCompare(graphGroupMemberLabel(right, model.center))
+      ));
+  }
+
+  function graphVisibleGroupSlot(
+    groups: GraphRelationshipGroup[],
+    model: LargeGraphModel,
+    key: string
+  ): GraphRelationshipSlot | null {
+    const visible = groups.filter((group) => (
+      graphGroupEnabled(group.key)
+      && graphGroupEdges(group, model).some((edge) => graphEdgeEnabled(graphEdgeKey(edge)))
+    ));
+    const index = visible.findIndex((group) => group.key === key);
+    return index >= 0 ? graphRelationshipGroupSlot(index) : null;
+  }
+
+  function graphGroupMemberLabel(edge: LargeGraphEdge, center: string): string {
+    if (edge.source === center) return largeLabelForRoute(edge.target);
+    if (edge.target === center) return largeLabelForRoute(edge.source);
+    return `${largeLabelForRoute(edge.source)} → ${largeLabelForRoute(edge.target)}`;
+  }
+
+  function largeGraphEdgeWeightPlan(edges: LargeGraphEdge[]) {
+    return planGraphEdgeWeights(edges.map((edge) => ({
+      id: graphEdgeKey(edge),
+      metrics: {
+        'relationship count': edge.count && edge.count > 0 ? edge.count : undefined,
+        ...(edge.weightMetric && edge.weightValue !== undefined
+          ? { [edge.weightMetric]: edge.weightValue }
+          : {})
+      }
+    })));
+  }
+
+  function graphEdgeStrokeWidth(
+    edge: LargeGraphEdge,
+    plan: ReturnType<typeof largeGraphEdgeWeightPlan>,
+    highlighted: boolean
+  ): number {
+    const base = plan.widths.get(graphEdgeKey(edge)) || 1.2;
+    if (largeHighlightedEdge === graphEdgeKey(edge)) return Math.max(5, base + 2);
+    if (highlighted) return Math.max(3, base + 1.2);
+    return base;
+  }
+
+  function graphWeightValue(value: number): string {
+    return Number.isInteger(value) ? value.toLocaleString() : value.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
 
   function shortLabel(value = '', max = 42): string {
@@ -3981,33 +4647,60 @@
   }
 
   function graphLabelBox(text: string, x: number, y: number, anchor: GraphLabel['anchor']): GraphBox {
-    const w = Math.min(240, text.length * 6.8 + 14);
-    const h = 19;
+    // SVG text metrics vary by browser and zoom. Deliberately overestimate the
+    // collision box so a layer that is non-overlapping in the planner remains
+    // non-overlapping when rendered.
+    const w = Math.min(280, text.length * 7.4 + 20);
+    const h = 22;
     const left = anchor === 'end' ? x - w : anchor === 'middle' ? x - w / 2 : x;
-    return { x: left, y: y - 15, w, h };
+    return { x: left, y: y - 17, w, h };
   }
 
   function graphLabelInsideBounds(label: GraphLabel): boolean {
-    return label.box.x >= 6 && label.box.y >= 6 && label.box.x + label.box.w <= GRAPH_WIDTH - 6 && label.box.y + label.box.h <= GRAPH_HEIGHT - 6;
+    return label.box.x >= 6 && label.box.y >= 6 && label.box.x + label.box.w <= graphCanvasWidth - 6 && label.box.y + label.box.h <= GRAPH_HEIGHT - 6;
   }
 
-  function graphLabelCandidates(node: LargeGraphNode, point: GraphPoint): GraphLabel[] {
+  function graphLabelCandidates(
+    node: LargeGraphNode,
+    point: GraphPoint,
+    relationshipSide: GraphRelationshipSide | null = null
+  ): GraphLabel[] {
     const text = shortLabel(node.label, node.type === 'publisher' ? 44 : 40);
     const gap = node.type === 'resource' || node.type === 'dataset' || isGraphStackNodeType(node.type) ? 36 : 30;
     const right = { x: point.x + gap, y: point.y + 5, anchor: 'start' as const };
     const left = { x: point.x - gap, y: point.y + 5, anchor: 'end' as const };
-    const lateral = point.x > GRAPH_WIDTH * 0.66 ? [left, right] : [right, left];
-    const labels = [
-      ...lateral,
-      { x: point.x, y: point.y - gap, anchor: 'middle' as const },
-      { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const }
-    ].map((candidate) => ({ ...candidate, text, box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor) }));
+    const lateral = point.x > graphCanvasWidth * 0.66 ? [left, right] : [right, left];
+    const above = { x: point.x, y: point.y - gap, anchor: 'middle' as const };
+    const below = { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const };
+    const aboveLeft = { x: point.x - gap, y: point.y - gap, anchor: 'end' as const };
+    const aboveRight = { x: point.x + gap, y: point.y - gap, anchor: 'start' as const };
+    const belowLeft = { x: point.x - gap, y: point.y + gap + 12, anchor: 'end' as const };
+    const belowRight = { x: point.x + gap, y: point.y + gap + 12, anchor: 'start' as const };
+    const candidates = relationshipSide === 'left'
+      ? [aboveLeft, above, left]
+      : relationshipSide === 'right'
+        ? [above, aboveRight, right, left]
+        : relationshipSide === 'top'
+          ? [above, aboveLeft, aboveRight]
+          : relationshipSide === 'bottom'
+            ? [below, belowLeft, belowRight]
+            : [...lateral, above, below];
+    const labels = candidates.map((candidate) => ({
+      ...candidate,
+      text,
+      box: graphLabelBox(text, candidate.x, candidate.y, candidate.anchor)
+    }));
     const bounded = labels.filter(graphLabelInsideBounds);
     return bounded.length ? bounded : labels;
   }
 
-  function graphLabelPriority(node: LargeGraphNode, alwaysId: string): number {
+  function graphLabelPriority(
+    node: LargeGraphNode,
+    alwaysId: string,
+    relationshipSide: GraphRelationshipSide | null = null
+  ): number {
     if (node.id === alwaysId) return 0;
+    if (relationshipSide === 'left') return 0.5;
     if (node.type === 'publisher') return 1;
     if (isGraphStackNodeType(node.type)) return 2;
     if (node.type === 'dataset') return 3;
@@ -4029,7 +4722,7 @@
     const length = Math.hypot(dx, dy) || 1;
     const nx = -dy / length;
     const ny = dx / length;
-    const labels = [0, 13, -13, 26, -26].map((offset) => {
+    const labels = [0, 18, -18, 36, -36, 54, -54, 72, -72].map((offset) => {
       const x = spec.geometry.labelX + nx * offset;
       const y = spec.geometry.labelY + ny * offset;
       return {
@@ -4048,20 +4741,47 @@
     nodes: LargeGraphNode[],
     positions: Map<string, GraphPoint>,
     edgeLabels: GraphEdgeLabelSpec[],
-    alwaysNodeId: string
+    alwaysNodeId: string,
+    relationshipSlots: Map<string, GraphRelationshipSlot> = new Map(),
+    persistentLayout = false
   ) {
     const obstacles = nodes.flatMap((node) => {
       const box = graphNodeBox(node, positions.get(node.id));
       return box ? [{ id: graphNodeLabelKey(node.id), box }] : [];
     });
+    const preferredLeftLabels = new Map(nodes.flatMap((node) => {
+      const point = positions.get(node.id);
+      if (!point || relationshipSlots.get(node.id)?.side !== 'left') return [];
+      const preferred = graphLabelCandidates(node, point, 'left').find((candidate) => (
+        candidate.anchor === 'end'
+        && candidate.x < point.x
+        && candidate.y < point.y
+      ));
+      return preferred ? [[graphNodeLabelKey(node.id), preferred] as const] : [];
+    }));
+    const preferredLeftEntries = [...preferredLeftLabels.entries()];
+    const leftColumnFits = preferredLeftEntries.length <= 12
+      && preferredLeftEntries.every(([id, label], index) => (
+        !obstacles.some((obstacle) => obstacle.id !== id && boxesOverlap(label.box, obstacle.box))
+        && !preferredLeftEntries.slice(index + 1).some(([, other]) => boxesOverlap(label.box, other.box))
+      ));
+    const persistentLeftIds = leftColumnFits
+      ? new Set(preferredLeftLabels.keys())
+      : new Set<string>();
     const nodeItems = nodes.flatMap((node) => {
       const point = positions.get(node.id);
+      const relationshipSide = relationshipSlots.get(node.id)?.side || null;
+      const id = graphNodeLabelKey(node.id);
+      const preferredLeftLabel = persistentLeftIds.has(id) ? preferredLeftLabels.get(id) : null;
+      const alwaysVisible = persistentLayout || node.id === alwaysNodeId || Boolean(preferredLeftLabel);
       return point
         ? [{
-            id: graphNodeLabelKey(node.id),
-            priority: graphLabelPriority(node, alwaysNodeId),
-            always: node.id === alwaysNodeId,
-            choices: graphLabelCandidates(node, point)
+            id,
+            priority: graphLabelPriority(node, alwaysNodeId, relationshipSide),
+            always: alwaysVisible,
+            choices: preferredLeftLabel
+              ? [preferredLeftLabel]
+              : graphLabelCandidates(node, point, relationshipSide)
           }]
         : [];
     });
@@ -4071,6 +4791,8 @@
     const edgeItems = eligibleEdgeLabels.map((edge) => ({
       id: graphEdgeLabelKey(edge.id),
       priority: edge.selected ? 1 : 5,
+      // Controlled layouts reserve stable space for every node label. Edge
+      // labels may still cycle when no collision-free shared layer exists.
       always: Boolean(edge.selected),
       choices: graphEdgeLabelCandidates(edge)
     }));
@@ -4093,9 +4815,14 @@
   function largeGraphEdgeLabelSpecs(
     model: LargeGraphModel,
     positions: Map<string, GraphPoint>,
-    edgePlans: ReturnType<typeof largeGraphEdgePlans>
+    edgePlans: ReturnType<typeof largeGraphEdgePlans>,
+    relationshipGroups: GraphRelationshipGroup[] = []
   ): GraphEdgeLabelSpec[] {
     const nodeMap = new Map(model.nodes.map((node) => [node.id, node]));
+    const representativeEdgeIds = new Set(relationshipGroups.flatMap((group) => {
+      const middle = group.edgeIds[Math.floor(group.edgeIds.length / 2)];
+      return middle ? [middle] : [];
+    }));
     return model.relationships.flatMap((relationship) => {
       const source = positions.get(relationship.source);
       const target = positions.get(relationship.target);
@@ -4115,14 +4842,47 @@
           edgePlan?.bend || 0,
           edgePlan?.labelT || 0.5
         ),
-        showLabel: edgePlan?.showLabel ?? true,
+        showLabel: relationshipGroups.length
+          ? representativeEdgeIds.has(id)
+          : (edgePlan?.showLabel ?? true),
         selected: largeHighlightedEdge === id
       }];
     });
   }
 
+  function highlightedGraphRelationshipGroup(model: LargeGraphModel): GraphRelationshipGroup | null {
+    if (!graphHighlightedRelationshipGroup) return null;
+    return graphRelationshipGroups(model)
+      .find((group) => group.key === graphHighlightedRelationshipGroup) || null;
+  }
+
+  function highlightedGraphRelationshipEdges(model: LargeGraphModel): LargeGraphEdge[] {
+    const group = highlightedGraphRelationshipGroup(model);
+    if (group) return graphGroupEdges(group, model);
+    if (largeHighlightedEdge) {
+      const selected = model.relationships.find((edge) => graphEdgeKey(edge) === largeHighlightedEdge);
+      return selected ? [selected] : [];
+    }
+    return [];
+  }
+
+  function graphRelationshipNodeRole(nodeId: string, model: LargeGraphModel): 'source' | 'target' | 'both' | '' {
+    let sourceNode = false;
+    let targetNode = false;
+    for (const edge of highlightedGraphRelationshipEdges(model)) {
+      if (edge.source === nodeId) sourceNode = true;
+      if (edge.target === nodeId) targetNode = true;
+    }
+    if (sourceNode && targetNode) return 'both';
+    if (sourceNode) return 'source';
+    if (targetNode) return 'target';
+    return '';
+  }
+
   function shouldHighlightGraphEdge(edge: LargeGraphEdge, model: ReturnType<typeof largeGraphModel>): boolean {
     if (largeHighlightedEdge) return graphEdgeKey(edge) === largeHighlightedEdge;
+    const highlightedGroup = highlightedGraphRelationshipGroup(model);
+    if (highlightedGroup) return highlightedGroup.edgeIds.includes(graphEdgeKey(edge));
     if (!largeHighlightedRoute) return false;
     const touchesHighlighted = edge.source === largeHighlightedRoute || edge.target === largeHighlightedRoute;
     if (!touchesHighlighted) return false;
@@ -4132,6 +4892,7 @@
   }
 
   function inspectLargeEdge(edge: LargeGraphEdge) {
+    graphHighlightedRelationshipGroup = '';
     largeInspectedEdge = edge;
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
@@ -4140,16 +4901,102 @@
     rightCollapsed = false;
   }
 
-  function inspectLargeGraphEdge(edge: LargeGraphEdge) {
+  function clearGraphRelationshipHighlight(push = true) {
+    graphHighlightedRelationshipGroup = '';
+    largeInspectedEdge = null;
+    largeHighlightedEdge = '';
+    relationshipDetailTab = 'relationship';
+    if (push) syncExplorerUrl(true);
+  }
+
+  function restoreGraphRelationshipInspection() {
+    if (!graphHighlightedRelationshipGroup) return;
+    const model = largeGraphModel();
+    const group = graphRelationshipGroups(model).find((candidate) => candidate.key === graphHighlightedRelationshipGroup);
+    const first = group ? graphGroupEdges(group, model)[0] : undefined;
+    if (!first) return;
+    largeInspectedEdge = first;
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
+    relationshipDetailTab = 'relationship';
+    rightCollapsed = false;
+  }
+
+  function inspectLargeRelationshipGroup(group: GraphRelationshipGroup, model: LargeGraphModel, event?: MouseEvent) {
+    if (
+      graphHighlightedRelationshipGroup === group.key
+      || event?.ctrlKey
+      || event?.metaKey
+    ) {
+      clearGraphRelationshipHighlight();
+      return;
+    }
+    const edges = graphGroupEdges(group, model);
+    const first = edges[0];
+    if (!first) return;
+    graphHighlightedRelationshipGroup = group.key;
+    graphKeyMode = 'relationships';
+    largeInspectedEdge = first;
+    largeInspectedRoute = '';
+    largeHighlightedRoute = '';
+    largeHighlightedEdge = '';
+    relationshipDetailTab = 'relationship';
+    clearLargeApiPanel();
+    rightCollapsed = false;
+    syncExplorerUrl(true);
+  }
+
+  function selectInspectedRelationshipEdge(edge: LargeGraphEdge) {
+    largeInspectedEdge = edge;
+    relationshipDetailTab = 'relationship';
+  }
+
+  function inspectedRelationshipEdges(): LargeGraphEdge[] {
+    const model = largeGraphModel();
+    const grouped = highlightedGraphRelationshipEdges(model);
+    return grouped.length ? grouped : (largeInspectedEdge ? [largeInspectedEdge] : []);
+  }
+
+  function relationshipEndpointDescription(route: string): string {
+    const detail = resolveLargeDetail(route);
+    if (!detail) return 'This endpoint is not available in the currently loaded bundle.';
+    if (detail.kind === 'dataset') {
+      return stripHtml(detail.dataset.notes || '') || `${detail.dataset.title} is a ${recordSingular()} in the current OKF bundle.`;
+    }
+    if (detail.kind === 'publisher') {
+      return `${detail.publisher.title || detail.publisher.name} publishes ${detail.datasets.length.toLocaleString()} indexed ${recordPlural()}.`;
+    }
+    if (detail.kind === 'resource') {
+      const format = detail.resource.format ? ` ${detail.resource.format}` : '';
+      return `A${format} source or access resource for ${detail.dataset?.title || detail.resource.dataset || 'the selected record'}.`;
+    }
+    if (detail.kind === 'search') {
+      return stripHtml(detail.result.notes || '') || `${detail.result.title} is an indexed search result.`;
+    }
+    return `${routeTypeLabel(route)} node in the current OKF graph.`;
+  }
+
+  function inspectLargeGraphEdge(edge: LargeGraphEdge, event?: MouseEvent) {
     if (graphSuppressClick) {
       graphSuppressClick = false;
+      return;
+    }
+    if (largeHighlightedEdge === graphEdgeKey(edge) || event?.ctrlKey || event?.metaKey) {
+      largeHighlightedEdge = '';
+      largeInspectedEdge = null;
       return;
     }
     inspectLargeEdge(edge);
   }
 
   function inspectLargeRelationship(relationship: LargeRelationship) {
-    inspectLargeEdge({ source: relationship.source, target: relationship.target, label: relationship.kind });
+    inspectLargeEdge({
+      source: relationship.source,
+      target: relationship.target,
+      label: relationship.kind,
+      ...graphEdgeSemanticMetadata(relationship)
+    });
   }
 
   function inspectAnalysisRelationshipType(row: { kind: string; count: number; samples?: Array<{ source: string; target: string; label?: string }> }) {
@@ -4173,7 +5020,8 @@
       return relationships.map((relationship) => ({
         source: relationship.source,
         target: relationship.target,
-        label: relationship.kind
+        label: relationship.kind,
+        ...graphEdgeSemanticMetadata(relationship)
       }));
     }
     return largeGraphModel().relationships.slice(0, limit);
@@ -4185,7 +5033,7 @@
 
   function resetGraphView() {
     graphZoom = 1;
-    graphViewport = { x: 0, y: 0, w: GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: GRAPH_WIDTH, baseH: GRAPH_HEIGHT };
+    graphViewport = { x: 0, y: 0, w: graphCanvasWidth, h: GRAPH_HEIGHT, baseW: graphCanvasWidth, baseH: GRAPH_HEIGHT };
   }
 
   function setGraphZoom(value: number) {
@@ -4198,10 +5046,47 @@
     graphViewport = { ...graphViewport, x: cx - w / 2, y: cy - h / 2, w, h };
   }
 
+  function zoomGraphFromWheel(event: WheelEvent) {
+    if (!event.ctrlKey && !event.metaKey) return;
+    event.preventDefault();
+    const delta = Math.max(-120, Math.min(120, event.deltaY));
+    const factor = Math.exp(-delta * 0.0014);
+    setGraphZoom(graphZoom * factor);
+  }
+
+  function measureGraphViewport(node: SVGSVGElement) {
+    const update = () => {
+      const width = node.clientWidth;
+      const height = node.clientHeight;
+      if (!width || !height) return;
+      const nextBaseWidth = Math.round(Math.max(720, Math.min(1680, GRAPH_HEIGHT * (width / height))));
+      if (Math.abs(nextBaseWidth - graphCanvasWidth) < 3) return;
+      const normalizedCenter = (
+        graphViewport.x + graphViewport.w / 2
+      ) / (graphViewport.baseW || graphCanvasWidth);
+      const nextViewportWidth = nextBaseWidth / graphZoom;
+      graphCanvasWidth = nextBaseWidth;
+      graphViewport = {
+        ...graphViewport,
+        x: normalizedCenter * nextBaseWidth - nextViewportWidth / 2,
+        w: nextViewportWidth,
+        baseW: nextBaseWidth
+      };
+    };
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    update();
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
+
   function beginGraphPan(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
+    graphSuppressClick = false;
     graphDrag = { x: event.clientX, y: event.clientY, box: { ...graphViewport }, moved: false };
-    (event.currentTarget as SVGSVGElement).setPointerCapture?.(event.pointerId);
   }
 
   function moveGraphPan(event: PointerEvent) {
@@ -4209,8 +5094,9 @@
     const svg = event.currentTarget as SVGSVGElement;
     const dx = event.clientX - graphDrag.x;
     const dy = event.clientY - graphDrag.y;
-    if (Math.hypot(dx, dy) <= 3 && !graphDrag.moved) return;
+    if (Math.hypot(dx, dy) <= 8 && !graphDrag.moved) return;
     event.preventDefault();
+    if (!graphDrag.moved) svg.setPointerCapture?.(event.pointerId);
     graphSuppressClick = true;
     graphDrag = { ...graphDrag, moved: true };
     graphViewport = {
@@ -4223,13 +5109,26 @@
   function endGraphPan(event: PointerEvent) {
     const moved = graphDrag?.moved;
     graphDrag = null;
-    (event.currentTarget as SVGSVGElement).releasePointerCapture?.(event.pointerId);
+    const svg = event.currentTarget as SVGSVGElement;
+    if (svg.hasPointerCapture?.(event.pointerId)) svg.releasePointerCapture?.(event.pointerId);
     if (moved) window.setTimeout(() => (graphSuppressClick = false), 80);
   }
 
-  function graphNodeClick(route: string) {
+  function clearGraphNodeHighlight(route: string) {
+    largeHighlightedRoute = '';
+    if (largeInspectedRoute === route && route !== largeSelectedRoute) largeInspectedRoute = '';
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    syncExplorerUrl(true);
+  }
+
+  function graphNodeClick(route: string, event?: MouseEvent) {
     if (graphSuppressClick) {
       graphSuppressClick = false;
+      return;
+    }
+    if (largeHighlightedRoute === route || event?.ctrlKey || event?.metaKey) {
+      clearGraphNodeHighlight(route);
       return;
     }
     if (isRecordTypeStackRoute(route)) {
@@ -4612,6 +5511,7 @@
                     {/if}
 
                     {#if facetIsOpen(key)}
+                      {@const diverseFamilies = facetUsesDiverseSummary(key) ? facetValueFamilies(key) : []}
                       <div id={`facet-panel-${key}`} class="facet-panel">
                         {#if facetPreferences.density === 'explained' && facetTerm}
                           <p class="facet-definition">{facetTerm}</p>
@@ -4623,6 +5523,50 @@
                           <button class="facet-browse-link" type="button" onclick={openBrowseTab}>
                             Browse {facetHierarchies[0].label} →
                           </button>
+                        {/if}
+                        {#if diverseFamilies.length}
+                          <section class="facet-family-summary" aria-label={`${facetDisplayLabel(key)} value families`}>
+                            <div class="facet-family-bar" aria-hidden="true">
+                              {#each diverseFamilies as family, index}
+                                <i
+                                  style={`--facet-weight:${family.count};--facet-colour:${facetSegmentColour(key, index, diverseFamilies.length, family.id === 'other' ? family.valueCount : undefined)}`}
+                                ></i>
+                              {/each}
+                            </div>
+                            <p class="facet-family-key">
+                              {#each diverseFamilies as family, index}
+                                <span style={`--facet-colour:${facetSegmentColour(key, index, diverseFamilies.length, family.id === 'other' ? family.valueCount : undefined)}`}>
+                                  {family.label}
+                                </span>
+                              {/each}
+                            </p>
+                            <div class="facet-family-groups">
+                              {#each diverseFamilies as family}
+                                <div>
+                                  <strong>{family.label}:</strong>
+                                  <span>
+                                    {#each family.rows as row, index}
+                                      {#if index}<b aria-hidden="true">|</b>{/if}
+                                      <button
+                                        class:active={selectedFacetValues.includes(row.value)}
+                                        class:highlighted={facetValueIsHighlighted(key, row.value)}
+                                        type="button"
+                                        aria-pressed={selectedFacetValues.includes(row.value)}
+                                        title={`${row.count.toLocaleString()} records. Click to preview; double-click or press Enter to filter.`}
+                                        disabled={Boolean(largeFacetApplyingKey)}
+                                        onclick={(event) => previewLargeFacetValue(key, row.value, event)}
+                                        ondblclick={(event) => void commitFacetHighlights(key, row.value, event)}
+                                        onkeydown={(event) => facetValueKeydown(key, row.value, event)}
+                                      >{facetValueDisplay(key, row.value)}</button>
+                                    {/each}
+                                    {#if family.valueCount > family.rows.length}
+                                      <em>+{(family.valueCount - family.rows.length).toLocaleString()}</em>
+                                    {/if}
+                                  </span>
+                                </div>
+                              {/each}
+                            </div>
+                          </section>
                         {/if}
                         <div class="facet-values">
                           {#if !largeIndex && largeFacetHydratingKey === key}
@@ -4650,25 +5594,31 @@
                                 <button type="button" onclick={() => clearFacetHighlights(key)}>Clear preview</button>
                               </div>
                             {/if}
-                            {#each visibleFacetRows as value}
-                              <button
-                                class:active={selectedFacetValues.includes(value.value)}
-                                class:highlighted={facetValueIsHighlighted(key, value.value)}
-                                type="button"
-                                aria-pressed={selectedFacetValues.includes(value.value)}
-                                data-facet-value={value.value}
-                                title="Click to preview; double-click or press Enter to filter"
-                                disabled={Boolean(largeFacetApplyingKey)}
-                                onclick={(event) => previewLargeFacetValue(key, value.value, event)}
-                                ondblclick={(event) => void commitFacetHighlights(key, value.value, event)}
-                                onkeydown={(event) => facetValueKeydown(key, value.value, event)}
-                              >
-                                <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
-                              </button>
-                            {/each}
-                            {#if visibleFacetRows.length < filteredFacetRows.length}
-                              <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
-                                <span>Show more</span><small>{(filteredFacetRows.length - visibleFacetRows.length).toLocaleString()} more</small>
+                            {#if !diverseFamilies.length || largeFacetBrowseAll[key] || largeFacetQuery(key).trim()}
+                              {#each visibleFacetRows as value}
+                                <button
+                                  class:active={selectedFacetValues.includes(value.value)}
+                                  class:highlighted={facetValueIsHighlighted(key, value.value)}
+                                  type="button"
+                                  aria-pressed={selectedFacetValues.includes(value.value)}
+                                  data-facet-value={value.value}
+                                  title="Click to preview; double-click or press Enter to filter"
+                                  disabled={Boolean(largeFacetApplyingKey)}
+                                  onclick={(event) => previewLargeFacetValue(key, value.value, event)}
+                                  ondblclick={(event) => void commitFacetHighlights(key, value.value, event)}
+                                  onkeydown={(event) => facetValueKeydown(key, value.value, event)}
+                                >
+                                  <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
+                                </button>
+                              {/each}
+                              {#if visibleFacetRows.length < filteredFacetRows.length}
+                                <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
+                                  <span>Show more</span><small>{(filteredFacetRows.length - visibleFacetRows.length).toLocaleString()} more</small>
+                                </button>
+                              {/if}
+                            {:else}
+                              <button class="facet-more" type="button" onclick={() => showAllFacetValues(key)}>
+                                <span>Browse all values</span><small>{filteredFacetRows.length.toLocaleString()}</small>
                               </button>
                             {/if}
                             {#if !filteredFacetRows.length}
@@ -4963,43 +5913,226 @@
               </div>
             {/if}
           {:else if activeView === 'graph'}
-            {@const model = largeGraphModel()}
-            {@const positions = largeGraphPositions(model)}
+            {@const fullModel = largeGraphModel()}
+            {@const relationshipGroups = graphRelationshipGroups(fullModel)}
+            {@const relationshipModel = relationshipFilteredLargeGraphModel(fullModel, relationshipGroups)}
+            {@const model = nodeTypeFilteredLargeGraphModel(relationshipModel)}
+            {@const layoutGroups = graphRelationshipGroups(relationshipModel)}
+            {@const relationshipLayoutActive = graphRelationshipLayoutActive(relationshipModel, layoutGroups)}
+            {@const baseRelationshipPlan = relationshipLayoutActive
+              ? planRelationshipGroupPositions(relationshipModel.center, layoutGroups, graphCanvasWidth, GRAPH_HEIGHT)
+              : null}
+            {@const relationshipPlan = baseRelationshipPlan
+              ? graphDocumentAnchoredPlan(baseRelationshipPlan, relationshipModel)
+              : null}
+            {@const positions = relationshipPlan?.positions || largeGraphPositions(relationshipModel, layoutGroups)}
             {@const edgePlans = largeGraphEdgePlans(model.relationships)}
-            {@const edgeLabelSpecs = largeGraphEdgeLabelSpecs(model, positions, edgePlans)}
-            {@const labelPlan = graphPresentationLayers(model.nodes, positions, edgeLabelSpecs, model.center)}
+            {@const edgeWeightPlan = largeGraphEdgeWeightPlan(model.relationships)}
+            {@const edgeLabelSpecs = largeGraphEdgeLabelSpecs(
+              model,
+              positions,
+              edgePlans,
+              relationshipPlan ? layoutGroups : []
+            )}
+            {@const labelPlan = graphPresentationLayers(
+              model.nodes,
+              positions,
+              edgeLabelSpecs,
+              model.center,
+              relationshipPlan?.nodeSlots,
+              Boolean(relationshipPlan)
+            )}
             {@const labels = labelPlan.visible}
+            {@const nodeKeyNodes = graphNodeKeyNodes(relationshipModel, model)}
+            {@const focusTitleLines = model.center ? graphFocusTitleLines(largeLabelForRoute(model.center)) : []}
             <div class="graph-shell">
-              <div class="graph-controls">
-                <div class="graph-buttons" aria-label="Graph controls">
-                  <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
-                  <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
-                  <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
-                  {#if labelPlan.layerCount > 1}
+              <div class="graph-toolbar">
+                <div class="graph-control-row">
+                  <div class="graph-buttons" aria-label="Graph controls">
+                    <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
+                    <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
+                    <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
+                  </div>
+                  <div class="graph-mode-buttons" aria-label="Graph display controls">
                     <button
+                      class:active={!graphLabelsPaused}
                       type="button"
-                      aria-label={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
-                      aria-pressed={graphLabelsPaused}
-                      title={graphLabelsPaused ? 'Resume cycling graph labels' : 'Pause cycling graph labels'}
-                      onclick={() => (graphLabelsPaused = !graphLabelsPaused)}
-                    >{graphLabelsPaused ? 'Cycle labels' : 'Pause labels'}</button>
+                      aria-pressed={!graphLabelsPaused}
+                      aria-label={`${graphLabelsPaused ? 'Resume' : 'Pause'} cycling graph labels, set ${labelPlan.activeLayer + 1} of ${labelPlan.layerCount}`}
+                      onclick={toggleGraphLabels}
+                    >Labels ({labelPlan.activeLayer + 1}/{labelPlan.layerCount})</button>
+                    <button
+                      class:active={graphKeyMode === 'nodes'}
+                      type="button"
+                      aria-pressed={graphKeyMode === 'nodes'}
+                      onclick={() => setGraphKeyMode('nodes')}
+                    >Nodes ({model.nodes.length})</button>
+                    <button
+                      class:active={graphKeyMode === 'relationships'}
+                      type="button"
+                      aria-pressed={graphKeyMode === 'relationships'}
+                      onclick={() => setGraphKeyMode('relationships')}
+                    >Relationships ({model.relationships.length})</button>
+                    {#if fullModel.center && relationshipGroups.length}
+                      <button
+                        class:active={graphLayoutControlsOpen}
+                        type="button"
+                        aria-pressed={graphLayoutControlsOpen}
+                        title="Show relationship-region layout controls"
+                        onclick={() => { graphLayoutControlsOpen = !graphLayoutControlsOpen; }}
+                      >Layout</button>
+                    {/if}
+                  </div>
+                  <div class="graph-summary">
+                    <strong>{model.nodes.length}</strong> nodes · <strong>{model.relationships.length}</strong> relationships
+                    {#if edgeWeightPlan.active}
+                      · line weight <strong>{edgeWeightPlan.metric}</strong> {graphWeightValue(edgeWeightPlan.min)}–{graphWeightValue(edgeWeightPlan.max)}
+                    {/if}
+                  </div>
+                </div>
+                <div class="graph-key-strip" aria-label={graphKeyMode === 'nodes' ? 'Node type key' : 'Relationship type key'}>
+                  {#if graphKeyMode === 'nodes'}
+                    {#each graphLegendItems(nodeKeyNodes) as [type, label]}
+                      {@const typeCount = nodeKeyNodes.filter((node) => graphLegendTypeMatches(node.type, type)).length}
+                      {@const canHideType = graphNodeTypeCanHide(type, fullModel)}
+                      <button
+                        type="button"
+                        class:active={!canHideType || graphNodeTypeEnabled(type)}
+                        class:locked={!canHideType}
+                        aria-pressed={!canHideType || graphNodeTypeEnabled(type)}
+                        aria-disabled={!canHideType}
+                        title={!canHideType ? 'The focus node type remains visible' : `Show or hide ${label}`}
+                        onclick={() => toggleGraphNodeType(type, fullModel)}
+                      >
+                        <i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>
+                        {label} <small>{typeCount}{!canHideType ? ' · focus' : ''}</small>
+                      </button>
+                    {/each}
+                  {:else}
+                    {#each relationshipGroups as group}
+                      <button
+                        type="button"
+                        class:active={graphHighlightedRelationshipGroup === group.key}
+                        aria-pressed={graphHighlightedRelationshipGroup === group.key}
+                        onclick={(event) => inspectLargeRelationshipGroup(group, fullModel, event)}
+                      >
+                        {group.label} <small>{graphGroupDirectionLabel(group.direction)} · {group.edgeIds.length}</small>
+                      </button>
+                    {/each}
                   {/if}
                 </div>
-                <div class="graph-summary">
-                  <strong>{model.nodes.length}</strong> nodes · <strong>{model.relationships.length}</strong> relationships
-                  {#if labelPlan.layerCount > 1}
-                    · label set <strong>{labelPlan.activeLayer + 1}/{labelPlan.layerCount}</strong>
-                  {/if}
-                </div>
-                <div class="legend" aria-label="Node type key">
-                  {#each graphLegendItems() as [type, label]}
-                    <span><i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>{label}</span>
-                  {/each}
-                </div>
+                {#if fullModel.center && relationshipGroups.length && graphLayoutControlsOpen}
+                  <section class="relationship-layout-controls" aria-label="Relationship layout">
+                    <header>
+                      <div class="segmented graph-layout-mode" aria-label="Graph layout mode">
+                        <button
+                          class:active={graphLayoutMode === 'auto'}
+                          type="button"
+                          aria-pressed={graphLayoutMode === 'auto'}
+                          onclick={() => setGraphLayoutMode('auto')}
+                        >Auto</button>
+                        <button
+                          class:active={graphLayoutMode === 'relationships'}
+                          type="button"
+                          aria-pressed={graphLayoutMode === 'relationships'}
+                          onclick={() => setGraphLayoutMode('relationships')}
+                        >By relationship</button>
+                      </div>
+                      <strong>{relationshipLayoutActive ? 'Relationship regions' : 'Compact auto layout'}</strong>
+                      <button type="button" onclick={resetGraphRelationshipControls}>Reset</button>
+                    </header>
+                    <div class="relationship-group-strip">
+                      {#each relationshipGroups as group, groupIndex}
+                        {@const groupEdges = graphGroupEdges(group, fullModel)}
+                        {@const activeMembers = groupEdges.filter((edge) => graphEdgeEnabled(graphEdgeKey(edge))).length}
+                        {@const slot = graphVisibleGroupSlot(relationshipGroups, fullModel, group.key)}
+                        <article
+                          class:disabled={!graphGroupEnabled(group.key)}
+                          class:drop-target={graphRelationshipDropTarget === group.key}
+                          data-relationship-group={group.key}
+                          ondragover={(event) => dragGraphRelationshipOver(group.key, event)}
+                          ondrop={(event) => dropGraphRelationshipBefore(relationshipGroups, group.key, event)}
+                        >
+                          <div class="relationship-group-main">
+                            <button
+                              class="relationship-group-drag"
+                              type="button"
+                              draggable={true}
+                              aria-label={`Reorder ${graphGroupControlLabel(group)}`}
+                              title="Drag to reorder"
+                              ondragstart={(event) => startGraphRelationshipDrag(group.key, event)}
+                              ondragend={finishGraphRelationshipDrag}
+                            >⋮⋮</button>
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={graphGroupEnabled(group.key)}
+                                onchange={() => toggleGraphRelationshipGroup(group.key)}
+                              />
+                              <span>
+                                <strong title={group.label}>{group.label}</strong>
+                                <small>{graphGroupDirectionLabel(group.direction)} · {activeMembers}/{groupEdges.length}</small>
+                              </span>
+                            </label>
+                            <span class="relationship-region">
+                              {#if !graphGroupEnabled(group.key)}
+                                Hidden
+                              {:else if relationshipLayoutActive && slot}
+                                {graphRelationshipSlotLabel(slot)}
+                              {:else}
+                                Auto
+                              {/if}
+                            </span>
+                            <div class="relationship-group-actions">
+                              <button
+                                type="button"
+                                aria-label={`Move ${graphGroupControlLabel(group)} earlier`}
+                                title="Move earlier"
+                                disabled={groupIndex === 0}
+                                onclick={() => moveGraphRelationshipGroup(relationshipGroups, group.key, -1)}
+                              >←</button>
+                              <button
+                                type="button"
+                                aria-label={`Move ${graphGroupControlLabel(group)} later`}
+                                title="Move later"
+                                disabled={groupIndex === relationshipGroups.length - 1}
+                                onclick={() => moveGraphRelationshipGroup(relationshipGroups, group.key, 1)}
+                              >→</button>
+                              {#if groupEdges.length > 1}
+                                <button
+                                  type="button"
+                                  aria-label={`${graphExpandedRelationshipGroups.includes(group.key) ? 'Hide' : 'Choose'} ${group.label} members, ${graphGroupDirectionLabel(group.direction)}`}
+                                  aria-expanded={graphExpandedRelationshipGroups.includes(group.key)}
+                                  onclick={() => toggleGraphRelationshipMembers(group.key)}
+                                >Members</button>
+                              {/if}
+                            </div>
+                          </div>
+                          {#if graphExpandedRelationshipGroups.includes(group.key)}
+                            <div class="relationship-member-toggles" aria-label={`${group.label} members`}>
+                              {#each groupEdges as edge}
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    checked={graphEdgeEnabled(graphEdgeKey(edge))}
+                                    disabled={!graphGroupEnabled(group.key)}
+                                    onchange={() => toggleGraphRelationshipEdge(graphEdgeKey(edge))}
+                                  />
+                                  <span>{graphGroupMemberLabel(edge, fullModel.center)}</span>
+                                </label>
+                              {/each}
+                            </div>
+                          {/if}
+                        </article>
+                      {/each}
+                    </div>
+                  </section>
+                {/if}
               </div>
               <svg
                 class="graph"
                 class:dragging={Boolean(graphDrag)}
+                use:measureGraphViewport
                 viewBox={graphViewBox()}
                 role="img"
                 aria-label="Large corpus graph"
@@ -5008,16 +6141,23 @@
                 onpointerup={endGraphPan}
                 onpointercancel={endGraphPan}
                 ondragstart={(event) => event.preventDefault()}
-                onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
+                onwheel={zoomGraphFromWheel}
               >
                 <defs>
-                  <marker id="graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                  <marker id="graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
                     <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
                   </marker>
-                  <marker id="graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                  <marker id="graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
                     <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
                   </marker>
                 </defs>
+                {#if focusTitleLines.length}
+                  <text class="graph-focus-title" x={graphCanvasWidth / 2} y="27" text-anchor="middle" aria-hidden="true">
+                    {#each focusTitleLines as line, index}
+                      <tspan x={graphCanvasWidth / 2} dy={index === 0 ? 0 : 19}>{line}</tspan>
+                    {/each}
+                  </text>
+                {/if}
                 {#each model.relationships as relationship}
                   {@const sourcePos = positions.get(relationship.source)}
                   {@const targetPos = positions.get(relationship.target)}
@@ -5027,13 +6167,14 @@
                     {@const targetNode = model.nodes.find((node) => node.id === relationship.target)}
                     {@const edgePlan = edgePlans.get(graphEdgeKey(relationship))}
                     {@const edgeGeometry = quadraticEdgeGeometry(sourcePos, targetPos, graphNodeEdgePad(sourceNode), graphNodeEdgePad(targetNode), edgePlan?.bend || 0, edgePlan?.labelT || 0.5)}
-                    {@const edgeLabel = labels.get(graphEdgeLabelKey(graphEdgeKey(relationship)))}
                     <path
                       class="graph-edge"
                       class:highlight={edgeHighlighted}
                       class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}
+                      data-edge-width={graphEdgeStrokeWidth(relationship, edgeWeightPlan, edgeHighlighted)}
                       d={edgeGeometry.d}
                       marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
+                      style={`stroke-width:${graphEdgeStrokeWidth(relationship, edgeWeightPlan, edgeHighlighted)}px`}
                     ></path>
                     <path
                       class="edge-hit"
@@ -5042,30 +6183,30 @@
                       tabindex="0"
                       aria-label={relationshipTitle(relationship)}
                       d={edgeGeometry.d}
-                      onclick={() => inspectLargeGraphEdge(relationship)}
+                      onclick={(event) => inspectLargeGraphEdge(relationship, event)}
                       onkeydown={(event) => keyboardActivate(event, () => inspectLargeGraphEdge(relationship))}
                     >
                       <title>{relationshipTitle(relationship)}</title>
                     </path>
-                    {#if edgeLabel}
-                      <text class="edge-label" class:rotating={!edgeLabel.stable} data-label-key={graphEdgeKey(relationship)} x={edgeLabel.x} y={edgeLabel.y} text-anchor={edgeLabel.anchor}>
-                        {edgeLabel.text}
-                      </text>
-                    {/if}
                   {/if}
                 {/each}
                 {#each model.nodes as node}
-                  {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
+                  {@const pos = positions.get(node.id) || { x: graphCanvasWidth / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(graphNodeLabelKey(node.id))}
+                  {@const relationshipRole = graphRelationshipNodeRole(node.id, model)}
                   {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack', 'facet-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
+                    class="graph-node"
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
                     class:spotlight={node.id === largeHighlightedRoute}
+                    class:relationship-source={relationshipRole === 'source' || relationshipRole === 'both'}
+                    class:relationship-target={relationshipRole === 'target' || relationshipRole === 'both'}
                     data-type={node.type}
                     data-route={node.id}
+                    data-relationship-side={relationshipPlan?.nodeSlots.get(node.id)?.side}
                     role="button"
                     tabindex="0"
-                    onclick={() => graphNodeClick(node.id)}
+                    onclick={(event) => graphNodeClick(node.id, event)}
                     ondblclick={() => recenterLargeRoute(node.id)}
                     onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}
                   >
@@ -5118,12 +6259,41 @@
                       <circle class="node-hit" cx={pos.x} cy={pos.y} r="20"></circle>
                       <circle class="node-symbol" cx={pos.x} cy={pos.y} r={node.id === largeSelectedRoute ? 12 : 9} fill={largeTypeColor(node.type)}></circle>
                     {/if}
-                    {#if label}
-                      <rect class="label-hit" x={label.box.x} y={label.box.y} width={label.box.w} height={label.box.h} rx="4"></rect>
-                      <text class:rotating={!label.stable} x={label.x} y={label.y} text-anchor={label.anchor}>{label.text}</text>
-                    {/if}
                   </g>
                 {/each}
+                <g class="graph-edge-label-layer">
+                  {#each edgeLabelSpecs as edgeLabelSpec}
+                    {@const edgeLabel = labels.get(graphEdgeLabelKey(edgeLabelSpec.id))}
+                    {#if edgeLabel}
+                      <text
+                        class="edge-label"
+                        class:rotating={!edgeLabel.stable}
+                        data-label-key={edgeLabelSpec.id}
+                        x={edgeLabel.x}
+                        y={edgeLabel.y}
+                        text-anchor={edgeLabel.anchor}
+                      >{edgeLabel.text}</text>
+                    {/if}
+                  {/each}
+                </g>
+                <g class="graph-node-label-layer">
+                  {#each model.nodes as node}
+                    {@const label = labels.get(graphNodeLabelKey(node.id))}
+                    {#if label}
+                      <g
+                        class="graph-node-label"
+                        data-label-route={node.id}
+                        data-relationship-side={relationshipPlan?.nodeSlots.get(node.id)?.side}
+                        aria-hidden="true"
+                        onclick={() => graphNodeClick(node.id)}
+                        ondblclick={() => recenterLargeRoute(node.id)}
+                      >
+                        <rect class="label-hit" x={label.box.x} y={label.box.y} width={label.box.w} height={label.box.h} rx="4"></rect>
+                        <text class:rotating={!label.stable} x={label.x} y={label.y} text-anchor={label.anchor}>{label.text}</text>
+                      </g>
+                    {/if}
+                  {/each}
+                </g>
               </svg>
               <details class="edge-panel edge-drawer" class:resizing={edgePanelResizing} style={`--edge-panel-height:${edgePanelHeight}px`} open>
                 <summary>
@@ -5158,10 +6328,13 @@
                 {:else}
                   Showing {model.nodes.length} nodes from the current left-panel reduction.
                 {/if}
+                {#if relationshipLayoutActive}
+                  Relationship groups use the ordered regions shown above; hidden groups and members are excluded.
+                {/if}
                 {#if model.grouping}
                   {model.grouping.label} because this view has more than {GRAPH_STACK_THRESHOLD} related records{model.grouping.expandedLabel ? `; expanded ${model.grouping.expandedLabel}.` : '; click a record type stack to expand one group at a time.'}
                 {/if}
-                Drag to pan, use +/- or the mouse wheel to zoom, click a stack to expand it, single-click real nodes to inspect, and double-click metadata nodes to reduce context.
+                Drag to pan, use +/- or Ctrl/Command+wheel to zoom, click a stack to expand it, single-click real nodes to inspect, and double-click metadata nodes to reduce context.
               </p>
             </div>
           {:else if activeView === 'links'}
@@ -5228,27 +6401,62 @@
             <div class="timeline-toolbar" aria-label="Timeline resolution">
               {#each ['latest', 'year', 'quarter', 'month'] as resolution}
                 <button class:active={timelineResolution === resolution} type="button" onclick={() => setTimelineResolution(resolution)}>
-                  {capitalise(resolution)}
+                  {resolution === 'latest' ? 'Releases' : capitalise(resolution)}
                 </button>
               {/each}
-              <span>{timelineResolution === 'latest' ? 'Latest dated records first' : `Grouped by ${timelineResolution}, newest first`}</span>
+              <span>{timelineResolution === 'latest' ? 'Series with release or coverage periods, newest first' : `Release coverage grouped by ${timelineResolution}, newest first`}</span>
             </div>
-            <section class="timeline-view timeline-axis">
-              {#each currentTimelineBuckets().slice(0, 120) as bucket, index}
-                <button style={`--row:${index}`} type="button" onclick={() => applyTimelineBucket(bucket)}>
-                  <time>{bucket.label}</time>
-                  <div>
-                    <strong>{bucket.count.toLocaleString()} {bucket.count === 1 ? recordSingular() : recordPlural()}</strong>
-                    <span>{bucket.samples.slice(0, 3).map((item) => item.title).join(' · ')}</span>
-                  </div>
-                </button>
-              {:else}
-                <p class="muted">Timeline distribution is not available for this bundle yet.</p>
-              {/each}
-            </section>
+            {#if timelineResolution === 'latest' && largeIndex}
+              <section class="timeline-view release-series-list" aria-label="Dataset release series">
+                {#each currentTimelineBuckets().slice(0, 120) as bucket}
+                  <article class="release-series">
+                    <header>
+                      <strong>{bucket.label}</strong>
+                      <span>{bucket.count.toLocaleString()} {bucket.count === 1 ? 'release' : 'releases'}</span>
+                    </header>
+                    <div class="release-year-list" aria-label={`${bucket.label} releases`}>
+                      {#each timelineReleaseYearGroups(bucket) as yearGroup}
+                        <div class="release-year-row">
+                          <strong>{yearGroup.year}</strong>
+                          <div class="release-period-links">
+                            {#each yearGroup.samples as item}
+                              <a
+                                class:catalogue-fallback={item.catalogueFallback}
+                                href={buildExplorerUrl(item.route)}
+                                title={item.catalogueFallback ? `${item.title}; catalogue timestamp fallback` : item.title}
+                                onclick={(event) => followExplorerRoute(event, item.route)}
+                              >{timelineReleaseLinkLabel(item)}</a>
+                            {/each}
+                          </div>
+                        </div>
+                      {/each}
+                    </div>
+                    {#if bucket.catalogueFallbackCount}
+                      <small>{bucket.catalogueFallbackCount.toLocaleString()} period {bucket.catalogueFallbackCount === 1 ? 'uses' : 'use'} a catalogue timestamp fallback because coverage was not supplied.</small>
+                    {/if}
+                  </article>
+                {:else}
+                  <p class="muted">Release or coverage periods are not available for this bundle yet.</p>
+                {/each}
+              </section>
+            {:else}
+              <section class="timeline-view timeline-axis">
+                {#each currentTimelineBuckets().slice(0, 120) as bucket, index}
+                  <button style={`--row:${index}`} type="button" onclick={() => applyTimelineBucket(bucket)}>
+                    <time>{bucket.label}</time>
+                    <div>
+                      <strong>{bucket.count.toLocaleString()} {bucket.count === 1 ? recordSingular() : recordPlural()}</strong>
+                      <span>{bucket.samples.slice(0, 3).map((item) => item.title).join(' · ')}</span>
+                    </div>
+                  </button>
+                {:else}
+                  <p class="muted">Timeline distribution is not available for this bundle yet.</p>
+                {/each}
+              </section>
+            {/if}
             {#if timelineResolution !== 'latest'}
               <div class="timeline-note">
-                Click a {timelineResolution} bucket to filter the current reduction. Use Latest to inspect the newest dated records directly.
+                These groups use declared coverage or release periods first, then title and resource evidence. Catalogue timestamps are only a labelled fallback.
               </div>
             {/if}
           {:else if activeView === 'type'}
@@ -5506,6 +6714,7 @@
             <svg
               class="graph"
               class:dragging={Boolean(graphDrag)}
+              use:measureGraphViewport
               viewBox={graphViewBox()}
               role="img"
               aria-label="OKF graph"
@@ -5514,7 +6723,7 @@
               onpointerup={endGraphPan}
               onpointercancel={endGraphPan}
               ondragstart={(event) => event.preventDefault()}
-              onwheel={(event) => { event.preventDefault(); setGraphZoom(graphZoom * (event.deltaY < 0 ? 1.12 : 0.89)); }}
+              onwheel={zoomGraphFromWheel}
             >
               <defs>
                 <marker id="small-graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
@@ -5558,7 +6767,7 @@
                 {/if}
               {/each}
               {#each model.nodes as node}
-                {@const pos = positions.get(node.id) || { x: GRAPH_WIDTH / 2, y: GRAPH_HEIGHT / 2 }}
+                {@const pos = positions.get(node.id) || { x: graphCanvasWidth / 2, y: GRAPH_HEIGHT / 2 }}
                 {@const label = labels.get(graphNodeLabelKey(node.id))}
                 <g
                   class:active={node.id === selectedId || node.id === inspectedId}
@@ -5758,38 +6967,93 @@
       <div class="detail">
         {#if source?.kind === 'large'}
           {#if largeInspectedEdge}
+            {@const relationshipEdges = inspectedRelationshipEdges()}
+            {@const selectedRelationship = largeInspectedEdge}
             <span class="badge">Relationship</span>
-            <h2>
-              {#if largeInspectedEdge.source && largeInspectedEdge.target}
-                {largeLabelForRoute(largeInspectedEdge.source)} → {largeLabelForRoute(largeInspectedEdge.target)}
-              {:else}
-                {largeInspectedEdge.label}
-              {/if}
-            </h2>
-            <p>{largeInspectedEdge.count ? `${largeInspectedEdge.count.toLocaleString()} relationships` : largeInspectedEdge.label}</p>
+            <h2>{selectedRelationship.label}</h2>
+            <p>
+              {graphHighlightedRelationshipGroup
+                ? `${relationshipEdges.length.toLocaleString()} highlighted ${relationshipEdges.length === 1 ? 'relationship' : 'relationships'}`
+                : relationshipTitle(selectedRelationship)}
+            </p>
             <div class="detail-actions">
-              {#if largeInspectedEdge.source}<button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.source || '')}>Inspect source</button>{/if}
-              {#if largeInspectedEdge.target}<button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.target || '')}>Inspect target</button>{/if}
               <button type="button" onclick={clearInspection}>Clear relationship</button>
             </div>
-            <dl>
-              {#if largeInspectedEdge.source && largeInspectedEdge.target}<dt>Direction</dt><dd>Source → target</dd>{/if}
-              {#if largeInspectedEdge.source}<dt>Source</dt><dd><button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.source || '')}>{largeLabelForRoute(largeInspectedEdge.source)}</button></dd>{/if}
-              <dt>Type</dt><dd>{largeInspectedEdge.label}</dd>
-              {#if largeInspectedEdge.count}<dt>Count</dt><dd>{largeInspectedEdge.count.toLocaleString()}</dd>{/if}
-              {#if largeInspectedEdge.target}<dt>Target</dt><dd><button type="button" onclick={() => inspectLargeRoute(largeInspectedEdge?.target || '')}>{largeLabelForRoute(largeInspectedEdge.target)}</button></dd>{/if}
-              {#if largeInspectedEdge.source}<dt>Source route</dt><dd>{largeInspectedEdge.source}</dd>{/if}
-              {#if largeInspectedEdge.target}<dt>Target route</dt><dd>{largeInspectedEdge.target}</dd>{/if}
-            </dl>
-            <details class="json-panel">
-              <summary>Relationship JSON</summary>
-              <pre>{jsonText({ source: largeInspectedEdge.source || undefined, target: largeInspectedEdge.target || undefined, kind: largeInspectedEdge.label, count: largeInspectedEdge.count })}</pre>
-            </details>
+            <div class="detail-tabs relationship-detail-tabs" role="tablist" aria-label="Relationship data card">
+              {#each ['source', 'relationship', 'target'] as tab}
+                <button
+                  role="tab"
+                  type="button"
+                  aria-selected={relationshipDetailTab === tab}
+                  class:active={relationshipDetailTab === tab}
+                  onclick={() => (relationshipDetailTab = tab as RelationshipDetailTab)}
+                >{capitalise(tab)}</button>
+              {/each}
+            </div>
+            <div class="relationship-detail-content" role="tabpanel" tabindex="0">
+              {#if relationshipDetailTab === 'source'}
+                <span class="badge">{routeTypeLabel(selectedRelationship.source)}</span>
+                <h3>{largeLabelForRoute(selectedRelationship.source)}</h3>
+                <p>{relationshipEndpointDescription(selectedRelationship.source)}</p>
+                <dl>
+                  <dt>Role</dt><dd>Source of the selected relationship</dd>
+                  <dt>Route</dt><dd>{selectedRelationship.source}</dd>
+                </dl>
+                <button type="button" onclick={() => inspectLargeRoute(selectedRelationship.source)}>Inspect source card</button>
+              {:else if relationshipDetailTab === 'target'}
+                <span class="badge">{routeTypeLabel(selectedRelationship.target)}</span>
+                <h3>{largeLabelForRoute(selectedRelationship.target)}</h3>
+                <p>{relationshipEndpointDescription(selectedRelationship.target)}</p>
+                <dl>
+                  <dt>Role</dt><dd>Target of the selected relationship</dd>
+                  <dt>Route</dt><dd>{selectedRelationship.target}</dd>
+                </dl>
+                <button type="button" onclick={() => inspectLargeRoute(selectedRelationship.target)}>Inspect target card</button>
+              {:else}
+                <dl>
+                  <dt>Direction</dt><dd>Source → relationship → target</dd>
+                  <dt>Type</dt><dd>{selectedRelationship.label}</dd>
+                  {#if selectedRelationship.predicate}<dt>Predicate</dt><dd>{selectedRelationship.predicate}</dd>{/if}
+                  {#if selectedRelationship.count}<dt>Count</dt><dd>{selectedRelationship.count.toLocaleString()}</dd>{/if}
+                  {#if selectedRelationship.weightValue !== undefined}
+                    <dt>{selectedRelationship.weightMetric || 'Strength'}</dt><dd>{graphWeightValue(selectedRelationship.weightValue)}</dd>
+                  {/if}
+                </dl>
+                {#if relationshipEdges.length > 1}
+                  <div class="relationship-instance-list" aria-label="Highlighted relationship instances">
+                    {#each relationshipEdges as edge}
+                      <button
+                        type="button"
+                        class:active={graphEdgeKey(edge) === graphEdgeKey(selectedRelationship)}
+                        onclick={() => selectInspectedRelationshipEdge(edge)}
+                      >
+                        <span>{largeLabelForRoute(edge.source)}</span>
+                        <small>{edge.label} → {largeLabelForRoute(edge.target)}</small>
+                      </button>
+                    {/each}
+                  </div>
+                {/if}
+                <details class="json-panel">
+                  <summary>Relationship JSON</summary>
+                  <pre>{jsonText({
+                    source: selectedRelationship.source,
+                    target: selectedRelationship.target,
+                    kind: selectedRelationship.label,
+                    predicate: selectedRelationship.predicate,
+                    count: selectedRelationship.count,
+                    weight: selectedRelationship.weightValue
+                  })}</pre>
+                </details>
+              {/if}
+            </div>
           {:else if largeDetail}
             {#if largeDetail.kind === 'dataset'}
               {@const dateContext = datasetDateContext(largeDetail.dataset, largeDetail.resources)}
               {@const operationalContext = datasetOperationalContext(largeDetail.dataset, largeDetail.resources)}
-              {@const seriesPeers = relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
+              {@const releasePeriod = datasetReleasePeriod(largeDetail.dataset, largeDetail.resources)}
+              {@const displaySeries = datasetDisplaySeries(largeDetail.dataset)}
+              {@const seriesPeers = relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
+              {@const distinctAlternatives = distinctDatasetAlternatives(largeDetail.dataset)}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
               {#if datasetMatchReason(largeDetail.dataset)}
@@ -5797,6 +7061,53 @@
               {/if}
               {#if apiContextNote(largeDetail.dataset)}
                 <p class="context-note">{apiContextNote(largeDetail.dataset)}</p>
+              {/if}
+              {#if seriesPeers.length || distinctAlternatives.length}
+                <section class="dataset-comparison" aria-label="Release and dataset comparison">
+                  <header>
+                    <div>
+                      <strong>{displaySeries.label}</strong>
+                      <span>{displaySeries.inferred ? 'Presentation grouping from release-labelled titles' : 'Declared dataset series'}</span>
+                    </div>
+                    {#if releasePeriod}<span class="selected-release">{releasePeriod.label} selected</span>{/if}
+                  </header>
+                  {#if seriesPeers.length}
+                    <div class="comparison-group">
+                      <h3>Other releases</h3>
+                      <nav class="release-period-links" aria-label={`Other ${displaySeries.label} releases`}>
+                        {#each seriesPeers.slice(0, 24) as peer}
+                          {@const peerPeriod = datasetReleasePeriod(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
+                          <a
+                            href={buildExplorerUrl(datasetRoute(peer))}
+                            title={peer.title}
+                            onclick={(event) => followExplorerRoute(event, datasetRoute(peer))}
+                          >{peerPeriod?.label || peer.title}</a>
+                        {/each}
+                      </nav>
+                    </div>
+                  {/if}
+                  {#if distinctAlternatives.length}
+                    <div class="comparison-group">
+                      <h3>Alternative datasets</h3>
+                      <div class="comparison-alternatives">
+                        {#each distinctAlternatives.slice(0, 6) as alternative}
+                          {@const candidate = alternativeDataset(alternative)}
+                          {@const route = alternativeRoute(alternative)}
+                          <article>
+                            <a href={buildExplorerUrl(route)} onclick={(event) => followExplorerRoute(event, route)}>{candidate.title}</a>
+                            <span>{alternative.relationship_type === 'cross-source-alternative' ? 'Different source' : 'Suggested alternative'}</span>
+                            {#if alternativeDifferenceSummary(alternative).length}
+                              <small>{alternativeDifferenceSummary(alternative).join(' · ')}</small>
+                            {/if}
+                          </article>
+                        {/each}
+                      </div>
+                    </div>
+                  {/if}
+                  {#if displaySeries.inferred}
+                    <small class="comparison-caveat">This release grouping is a display aid, not an asserted semantic identity. Bundles should declare stable series identifiers or SKOS hierarchy relationships when known.</small>
+                  {/if}
+                </section>
               {/if}
               {#if dateContext.updated || dateContext.years.length}
                 <p class="record-date-summary">
@@ -5899,7 +7210,7 @@
                   {/if}
                 </details>
               {/if}
-              {#if dateContext.years.length || dateContext.series}
+              {#if dateContext.years.length || displaySeries.label}
                 <details class="record-context disclosure-section" hidden={detailPanelTab !== 'overview'} open={!(operationalContext.explicit || operationalContext.catalogueDerived)}>
                   <summary>Dates and related records</summary>
                   <div class="record-context-heading">
@@ -5914,24 +7225,22 @@
                   {:else}
                     <p class="muted">No content or resource year is declared for this record.</p>
                   {/if}
-                  {#if dateContext.series}
-                    <p><strong>Series</strong> {dateContext.series}</p>
+                  {#if displaySeries.label}
+                    <p><strong>{displaySeries.inferred ? 'Display series' : 'Series'}</strong> {displaySeries.label}</p>
                     {#if seriesPeers.length}
-                      <h4>Other records in this series</h4>
+                      <h4>Other releases in this series</h4>
                       <div class="series-records">
                         {#each seriesPeers.slice(0, 12) as peer}
-                          {@const peerDate = datasetDateContext(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
-                          <button type="button" onclick={() => selectLargeRoute(datasetRoute(peer))}>
+                          {@const peerPeriod = datasetReleasePeriod(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
+                          <a href={buildExplorerUrl(datasetRoute(peer))} onclick={(event) => followExplorerRoute(event, datasetRoute(peer))}>
                             <strong>{peer.title}</strong>
-                            <span>{peerDate.years.length ? `Resource years ${peerDate.years.join(', ')}` : peerDate.updated ? `${peerDate.updatedLabel} ${sourceDateLabel(peerDate.updated)}` : 'No date supplied'}</span>
-                          </button>
+                            <span>{peerPeriod ? `Release or coverage ${peerPeriod.label}` : 'No release period supplied'}</span>
+                          </a>
                         {/each}
                       </div>
                     {:else}
-                      <p class="muted">No other record with this series identifier is present in this bundle.</p>
+                      <p class="muted">No other release in this series is present in this bundle.</p>
                     {/if}
-                  {:else}
-                    <p class="muted">This bundle does not declare a stable series identifier, so Explorer will not guess that similar titles are the same series.</p>
                   {/if}
                 </details>
               {/if}

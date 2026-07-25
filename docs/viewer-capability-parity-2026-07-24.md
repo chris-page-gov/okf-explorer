@@ -69,7 +69,7 @@ The public Svelte reference reviewed for this audit was:
 | Byte-range corpus packs | No | No | No | Retained | Integrity-bound range-pack delivery |
 | Provider evidence datapacks | No | No | No | Retained | Governed snapshot/reference distinction |
 | Durable route in URL hash | Partial | Yes | Partial | Retained | Record or analysis route remains in the hash |
-| Durable bundle, view and retrieval state | No | Corpus only | Partial | Retained | `bundle`, `view`, query, filter, sort and Map state remain in the query |
+| Durable bundle, view and retrieval state | No | Corpus only | Partial | Retained and Ported | `bundle`, `view`, query, filter, sort, Map and relationship-layout state remain in the query |
 | Browser Back and Forward | Internal stack | Browser history | Mixed | Retained | Native history with explicit controls |
 | Copy current route | No | URL is shareable | Mixed | Retained | Copy route action |
 | Recent bundles and registry suggestions | No | Corpus tabs | No | Retained | Registry plus local bundle history |
@@ -177,6 +177,13 @@ structure from arbitrary prose.
 | Drag individual nodes | Yes | No | No | Conflict |
 | Force simulation | Yes | No | No | Conflict |
 | Deterministic positions | No | Yes | Yes | Retained |
+| Node key filtered to displayed types | Partial | Yes | No | Ported |
+| Group focus graph by relationship type and direction | No | Partial | No | Ported |
+| Show/hide relationship groups and individual members | No | No | No | Ported |
+| Reorder relationship groups by drag or explicit controls | No | No | No | Ported |
+| Deterministic left/top/bottom/right relationship regions | No | No | No | Ported |
+| Persist relationship layout and visibility in URL | No | No | No | Ported |
+| Edge width from an explicit varying metric | Partial | No | Partial | Ported without treating confidence as strength |
 | Dense-graph edge labels | Hover | Bounded | Bounded | Combined cycling through 36 relationships; selected edge and drawer above that bound |
 | Large-corpus grouped nodes/stacks | No | No | Yes | Retained |
 
@@ -188,16 +195,32 @@ The label-layer invariant is now stronger than the earlier implementations:
 2. Labels in one layer do not overlap each other.
 3. Node and relationship labels are planned together, so relationship text
    cannot overlap node text in the active layer.
-4. Labels are not silently discarded because another node occupies their first
+4. Persistent focus labels use placement lookahead so they do not consume the
+   only viable label position for an edge-of-canvas node.
+5. Labels are not silently discarded because another node occupies their first
    candidate position.
-5. Layers advance every two seconds and can be paused.
-6. Reduced-motion users start with cycling paused.
+6. Layers advance every two seconds and can be paused.
+7. Reduced-motion users start with cycling paused.
 
 For focus graphs with up to 36 relationships, node and relationship labels
 share the complete cycling plan. Above that bound, every relationship remains
 selectable and typed in the edge drawer, while only selected relationship text
 is persistent on the graph. Rendering an unbounded number of edge labels would
 make one full cycle take too long to be useful.
+
+Dense focus graphs now add a second deterministic strategy. Auto uses semantic
+relationship regions from twelve visible relationships; By relationship makes
+that choice explicit. Predicate-and-direction groups can be reordered, hidden
+or expanded into member toggles. The first ordered regions are a left list, top
+staircase, bottom staircase and right list, with stable inner lanes thereafter.
+Lists use compact rows and distinct vertical bands for multiple same-side
+groups. Staircases span the available width and put labels outside the edge
+fan, after node symbols in SVG paint order. Their lower-right exit is reserved
+before a right-list band is placed. The logical canvas follows the available
+centre-panel aspect ratio, so opening or folding context panels does not shrink
+the graph inside a fixed-width view box. Every controlled-layout node label is
+persistent; only edge labels that cannot share a collision-free layer cycle.
+All state is presentation-only and round-trips through query parameters.
 
 ### Panels, Responsive Use And Accessibility
 
@@ -253,7 +276,8 @@ Capturing multi-touch pinch inside the graph prevents browser/page zoom and can
 create an accessibility regression.
 
 Decision: retain browser pinch zoom. Provide explicit graph zoom buttons,
-wheel zoom, reset and one-pointer graph panning.
+Ctrl/Command+wheel zoom, reset and one-pointer graph panning. Unmodified wheel
+input scrolls the centre panel so the relationship drawer remains reachable.
 
 ### C5. Complete Edge Labels Versus Legibility
 
@@ -263,7 +287,9 @@ dense graph.
 Decision: plan node and relationship labels together for focus graphs with up
 to 36 relationships, apply reciprocal-edge rules, and cycle complete
 non-overlapping sets every two seconds. A selected relationship remains
-persistent. Above the bound, keep every edge selectable through the edge drawer
+persistent. In a controlled relationship-region layout, node labels occupy
+reserved persistent placements and only conflicting edge labels participate in
+the cycle. Above the bound, keep every edge selectable through the edge drawer
 and Links view while showing selected relationship text on the graph.
 
 ### C6. Full Mermaid Versus Static Safety
@@ -310,6 +336,26 @@ Decision: Svelte is canonical. Compatibility files preserve their published
 contract; new reusable behavior and regression tests belong in
 `apps/okf-explorer/`.
 
+### C11. Ontology Meaning Versus Graph Placement
+
+RDFS/OWL predicates and SKOS concepts can identify semantic relationship
+groups, but a visual region or group order is not an ontology assertion.
+
+Decision: use stable predicate identifiers as grouping keys when supplied and
+keep layout order in the presentation profile or user URL state. The layered
+contract is defined in
+[Ontology and semantic graph architecture](ontology-and-semantic-graph-architecture-2026-07-24.md).
+
+### C12. Confidence Versus Relationship Strength
+
+Confidence, evidence count, aggregate count and domain relationship strength
+can all be numeric but communicate different claims.
+
+Decision: vary edge width only when every displayed edge supplies the same
+named count, strength, weight or evidence-count metric and it has a real range.
+Do not convert confidence, missing values or a constant score into line weight.
+Show the active metric and range in the graph summary.
+
 ## Implemented In This Audit
 
 - Added a shared complete node-and-relationship graph-label layer planner for
@@ -324,6 +370,18 @@ contract; new reusable behavior and regression tests belong in
 - Added exchange-aware Narrative and Timeline presentations.
 - Added context text to collapsed panel rails.
 - Hardened mobile panel scrolling and touch behavior.
+- Fixed the dual-collapsed grid so both rails retain their intended width.
+- Filtered the node key to displayed graph types and added predicate-aware,
+  directional relationship groups with ordered regions, group/member toggles,
+  drag and button ordering, reset and durable URL state.
+- Added compact sticky graph controls, modifier-only wheel zoom, compact list
+  rows, outside-labelled staircases and separated same-side relationship lanes.
+- Added conservative edge-weight rendering for explicit varying metrics and
+  fixed-size arrowheads.
+- Added focus-label placement lookahead so complete cycling layers remain
+  non-overlapping at graph boundaries.
+- Added the RDF/RDFS/SKOS/OWL/SHACL/DCAT/PROV semantic architecture and
+  separated ontology meaning, validation, inference, evidence and presentation.
 
 Implementation and regression evidence:
 
@@ -334,6 +392,8 @@ Implementation and regression evidence:
 - `apps/okf-explorer/src/lib/viewer/smallNodePresentation.ts`
 - `apps/okf-explorer/src/lib/viewer/smallNodePresentation.test.ts`
 - `apps/okf-explorer/tests/ui/small-bundle-content.spec.ts`
+- `apps/okf-explorer/tests/ui/large-corpus-facets.spec.ts`
+- `docs/ontology-and-semantic-graph-architecture-2026-07-24.md`
 
 ## Regression Contract
 
@@ -349,10 +409,14 @@ Any future viewer change must preserve the following:
 5. Sparse reciprocal relationships remain distinct and correctly labeled.
 6. Every relationship remains inspectable even when density suppresses direct
    labels.
-7. Markdown remains inert while supporting the documented readable subset.
-8. Exchange notes retain question, answer, commentary and chronological forms.
-9. Both side panels remain independently usable on desktop and touch devices.
-10. Existing Svelte-only capabilities, including facets, pins, source
+7. A focus graph can group, order and filter relationship types without
+   changing source semantics, and shared URLs restore those choices.
+8. The node key contains only types present in the displayed graph.
+9. Edge thickness remains neutral unless a named numeric metric varies.
+10. Markdown remains inert while supporting the documented readable subset.
+11. Exchange notes retain question, answer, commentary and chronological forms.
+12. Both side panels remain independently usable on desktop and touch devices.
+13. Existing Svelte-only capabilities, including facets, pins, source
     inspection, Map, provider evidence and range packs, remain covered.
 
 At minimum, changes to graph, Markdown, routing or panel behavior must run:

@@ -76,11 +76,35 @@ Explorer treats an explicit identifier as the strongest series link. A
 source-declared series label is accepted within the same publisher. Similar
 titles alone are not enough to claim that two records belong to one series.
 Legacy CKAN records can retain source series metadata under `extras.series`.
+For those legacy records Explorer may group clearly release-labelled title
+variants for presentation, but labels that inferred group as a display aid.
+The inferred group does not create an RDF identity assertion and must not be
+serialized back into the bundle as fact.
 
 Catalogue dates must remain distinct from dataset currency. Map CKAN
 `metadata_created` and `metadata_modified` as catalogue-record dates; do not
 present them as the first publication or latest data release unless the source
 explicitly says so.
+
+When the source or a reviewed augmentation identifies substitutes, emit
+structured `alternatives` rather than a prose comparison sentence:
+
+```yaml
+alternatives:
+  - record_id: onsud-open-geography-dataset
+    title: ONS UPRN Directory
+    route: dataset/onsud-open-geography-dataset
+    relationship_type: cross-source-alternative
+    differences:
+      - field: coverage
+        selected: UPRN lookup
+        alternative: UPRN directory
+```
+
+Use another release of the same `series_id` for temporal navigation, not as an
+alternative. `relationship_type`, provenance and the recorded differences
+must describe reviewed evidence; similarity alone is not enough to claim that
+two datasets are substitutes.
 
 ## Explorer Features To Feed
 
@@ -91,12 +115,68 @@ explicitly says so.
 | Facets | facet definitions, value counts, selected-value routes and facet help text |
 | Graph | typed relationships, relationship counts, node types, groupable fields |
 | Links | relationship kind, source, target, evidence type, confidence and counts |
-| Timeline | machine-readable dates plus update-year/quarter/month buckets |
+| Timeline | temporal coverage/release periods, stable series identity and explicitly separate catalogue timestamps |
 | Type view | record-type counts and representative records |
 | Resources view | resources, endpoints, formats, hosts and documentation links |
 | Map view | source-declared coverage, WGS84 coordinates/bounds, geography codes, CRS/vintage/derivation metadata and spatial resource links |
 | Narrative view | pack summary, methodology, warnings and source limitations |
 | Detail card | provenance, licence basis, access model, contract status, quality signals, source update date, temporal coverage and stable series identity |
+
+## Encode Facet Hierarchies In YAML-LD
+
+YAML-LD can carry governed hierarchy semantics. Use SKOS for ordinary facet
+values such as topics, formats, years and geographies. Use `rdfs:subClassOf`
+only when the values are genuinely classes, and use `rdfs:subPropertyOf` for
+predicate hierarchies. Visual grouping or graph position is presentation
+metadata, not an RDF hierarchy.
+
+The canonical `okf-bundle.yamlld` or Markdown YAML-LD frontmatter should define
+the concept scheme and concepts. For example:
+
+```yaml
+@context:
+  - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
+@graph:
+  - @id: https://example.gov/okf/concept-scheme/topic
+    @type: skos:ConceptScheme
+    skos:prefLabel: Topic
+  - @id: https://example.gov/okf/topic/year
+    @type: skos:Concept
+    skos:prefLabel: Year
+    skos:inScheme:
+      @id: https://example.gov/okf/concept-scheme/topic
+  - @id: https://example.gov/okf/topic/year/2018
+    @type: skos:Concept
+    skos:prefLabel: "2018"
+    skos:broader:
+      @id: https://example.gov/okf/topic/year
+```
+
+Bundle builders should compile these semantic assertions into the Explorer's
+bounded `analysis.hierarchies` projection:
+
+```yaml
+hierarchies:
+  - id: topic
+    label: Topic
+    facet: topic
+    levels: [family, value]
+    values:
+      - id: https://example.gov/okf/topic/year
+        label: Year
+        count: 4
+        children:
+          - id: "2018"
+            label: "2018"
+            count: 7
+            route: facet/topic/2018
+```
+
+The SKOS graph is the semantic authority. `analysis.hierarchies` is a generated,
+snapshot-bound navigation projection and must not introduce broader/narrower
+claims absent from the source semantics. When a legacy bundle has no declared
+hierarchy, the Explorer may group obvious years, formats and regions for a
+diverse display preview; that fallback does not create RDF assertions.
 
 ## Source API Links
 
@@ -381,15 +461,27 @@ Emit relationships as first-class records or rows with:
 - source route;
 - target route;
 - kind/label;
+- stable predicate IRI when a governed vocabulary defines the property;
 - evidence type;
 - confidence;
+- assertion status such as official, normalized, inferred or model-derived;
 - observed timestamp;
 - match key or source basis where the relationship was inferred;
+- an explicit strength metric and unit only when the domain defines one;
 - count when a graph stack collapses repeated edges.
 
 Relationship labels should be readable in a graph: `published by`, `licensed
 as`, `has format`, `classified as`, `described by`, `has operation`, `provided
 by`, `documented at`.
+
+The Explorer groups a focus graph by predicate and direction, falling back to
+the human label for older bundles. Keep confidence, relationship strength and
+aggregate count separate: confidence estimates correctness, strength is a
+domain-defined magnitude and count records multiplicity. Line width is used
+only when the same declared count, strength, weight or evidence-count metric
+covers every displayed edge and varies across them. See
+[Ontology and semantic graph architecture](ontology-and-semantic-graph-architecture-2026-07-24.md)
+for the proposed vocabulary, inference, validation and provenance layers.
 
 ## Metadata Repair Rules
 

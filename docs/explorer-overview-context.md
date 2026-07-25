@@ -310,6 +310,9 @@ hierarchy node reduces all views consistently.
 ## Ontology Analysis
 
 Ontology alignment is optional enrichment, not an OKF core requirement.
+The layered standards boundary, proposed semantic extension, relationship-type
+registry and inference/validation roadmap are defined in
+[Ontology and semantic graph architecture](ontology-and-semantic-graph-architecture-2026-07-24.md).
 
 The builder may inspect local or configured ontology packs, such as schema.org
 or SeeLinks data packs, and produce `ontology_candidates` in the analysis

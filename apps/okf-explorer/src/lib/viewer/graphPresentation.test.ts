@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   boxesOverlap,
+  graphRelationshipGroupSlot,
+  groupGraphRelationships,
+  orderGraphRelationshipGroups,
   planDirectedEdges,
+  planGraphEdgeWeights,
   planGraphLabelLayers,
+  planRelationshipGroupPositions,
   quadraticEdgeGeometry,
   type GraphBox,
   type GraphLabelItem
@@ -55,6 +60,27 @@ describe('graph presentation', () => {
     expect(coverage.size).toBe(items.length);
   });
 
+  it('places a persistent label where it does not block every placement of a later label', () => {
+    const items: GraphLabelItem[] = [
+      {
+        id: 'focus',
+        priority: 0,
+        always: true,
+        choices: [choice(10, 20, 'Focus right'), choice(180, 20, 'Focus left')]
+      },
+      {
+        id: 'edge-node',
+        priority: 1,
+        choices: [choice(35, 20, 'Only safe placement')]
+      }
+    ];
+
+    const plan = planGraphLabelLayers(items, [], 0);
+    expect(plan.visible.get('focus')?.x).toBe(180);
+    expect(plan.visible.get('edge-node')?.x).toBe(35);
+    expect(boxesOverlap(plan.visible.get('focus')!.box, plan.visible.get('edge-node')!.box)).toBe(false);
+  });
+
   it('deduplicates equal reciprocal labels and offsets distinct ones toward their sources', () => {
     const same = planDirectedEdges([
       { id: 'a-b', source: 'a', target: 'b', label: 'related source' },
@@ -77,5 +103,86 @@ describe('graph presentation', () => {
     expect(geometry.d).toContain('80 0');
     expect(geometry.labelX).toBeLessThan(50);
     expect(geometry.labelY).toBeGreaterThan(0);
+  });
+
+  it('groups focus edges by predicate and direction, then honours an explicit order', () => {
+    const groups = groupGraphRelationships([
+      { id: 'tag-a', source: 'focus', target: 'tag/a', label: 'tagged', predicate: 'dcat:keyword' },
+      { id: 'tag-b', source: 'focus', target: 'tag/b', label: 'tagged', predicate: 'dcat:keyword' },
+      { id: 'publisher', source: 'focus', target: 'publisher/ons', label: 'published by', predicate: 'dcterms:publisher' },
+      { id: 'incoming', source: 'catalogue/ons', target: 'focus', label: 'catalogues', predicate: 'dcat:record' }
+    ], 'focus');
+
+    expect(groups.map((group) => [group.key, group.edgeIds.length])).toEqual([
+      ['outgoing:dcat:keyword', 2],
+      ['incoming:dcat:record', 1],
+      ['outgoing:dcterms:publisher', 1]
+    ]);
+    expect(groups[0].nodeIds).toEqual(['tag/a', 'tag/b']);
+    expect(orderGraphRelationshipGroups(groups, ['outgoing:dcterms:publisher'])[0].label).toBe('published by');
+  });
+
+  it('assigns ordered relationship groups to lists and staircases around the focus', () => {
+    const groups = groupGraphRelationships([
+      { id: 'a', source: 'focus', target: 'a', label: 'alpha' },
+      { id: 'b', source: 'focus', target: 'b', label: 'beta' },
+      { id: 'c', source: 'focus', target: 'c', label: 'gamma' },
+      { id: 'd', source: 'focus', target: 'd', label: 'delta' },
+      { id: 'e', source: 'focus', target: 'e', label: 'epsilon' }
+    ], 'focus');
+    const ordered = orderGraphRelationshipGroups(groups, [
+      'outgoing:alpha',
+      'outgoing:beta',
+      'outgoing:gamma',
+      'outgoing:delta',
+      'outgoing:epsilon'
+    ]);
+    const plan = planRelationshipGroupPositions('focus', ordered, 900, 620);
+
+    expect(graphRelationshipGroupSlot(0)).toEqual({ side: 'left', lane: 0 });
+    expect(graphRelationshipGroupSlot(1)).toEqual({ side: 'top', lane: 0 });
+    expect(graphRelationshipGroupSlot(2)).toEqual({ side: 'bottom', lane: 0 });
+    expect(graphRelationshipGroupSlot(3)).toEqual({ side: 'right', lane: 0 });
+    expect(graphRelationshipGroupSlot(4)).toEqual({ side: 'right', lane: 1 });
+    expect(plan.positions.get('focus')).toEqual({ x: 450, y: 328.6 });
+    expect(plan.nodeSlots.get('a')).toEqual({ side: 'left', lane: 0 });
+    expect(plan.nodeSlots.get('b')).toEqual({ side: 'top', lane: 0 });
+    expect(plan.positions.get('a')!.x).toBeCloseTo(279);
+    expect(plan.positions.get('b')!.y).toBeLessThan(100);
+    expect(plan.positions.get('c')!.y).toBeGreaterThan(500);
+    expect(plan.positions.get('d')!.x).toBeGreaterThan(700);
+    expect(plan.positions.get('e')!.x).toBeGreaterThan(680);
+    expect(Math.abs(plan.positions.get('d')!.y - plan.positions.get('e')!.y)).toBeGreaterThan(100);
+  });
+
+  it('uses edge width only for a meaningful varying metric', () => {
+    const inactive = planGraphEdgeWeights([
+      { id: 'a', metrics: { confidence: 0.8 } },
+      { id: 'b', metrics: { confidence: 0.8 } }
+    ]);
+    expect(inactive.active).toBe(false);
+    expect([...inactive.widths.values()]).toEqual([1.2, 1.2]);
+
+    const incomplete = planGraphEdgeWeights([
+      { id: 'a', metrics: { strength: 0.25 } },
+      { id: 'b', metrics: {} },
+      { id: 'c', metrics: { strength: 0.9 } }
+    ]);
+    expect(incomplete.active).toBe(false);
+
+    const active = planGraphEdgeWeights([
+      { id: 'a', metrics: { 'relationship count': 1 } },
+      { id: 'b', metrics: { 'relationship count': 10 } },
+      { id: 'c', metrics: { 'relationship count': 100 } }
+    ]);
+    expect(active).toMatchObject({
+      active: true,
+      metric: 'relationship count',
+      min: 1,
+      max: 100
+    });
+    expect(active.widths.get('a')).toBe(1.2);
+    expect(active.widths.get('b')!).toBeGreaterThan(active.widths.get('a')!);
+    expect(active.widths.get('c')).toBe(5.4);
   });
 });

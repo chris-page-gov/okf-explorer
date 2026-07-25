@@ -174,14 +174,21 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain("if (largeHighlightedEdge && !largeHighlightedRoute) largeHighlightedEdge = '';");
   });
 
-  it('surfaces record dates and explicit series alternatives without guessing from similar titles', () => {
+  it('surfaces record dates, declared series, and clearly labelled presentation release groups', () => {
     expect(pageSource).toContain('class="record-date-summary"');
     expect(pageSource).toContain('{dateContext.updatedLabel}');
     expect(pageSource).toContain('Catalogue date — not necessarily the dataset’s latest release or update frequency.');
     expect(pageSource).toContain('Dates and related records');
     expect(pageSource).toContain('datasetDateContext(largeDetail.dataset, largeDetail.resources)');
-    expect(pageSource).toContain('relatedSeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])');
-    expect(pageSource).toContain('Explorer will not guess that similar titles are the same series');
+    expect(pageSource).toContain('relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])');
+    expect(pageSource).toContain('This release grouping is a display aid, not an asserted semantic identity.');
+  });
+
+  it('replaces legacy comparison prose with structured release and alternative controls', () => {
+    expect(pageSource).toContain("datasetAlternatives(record).length && /^Compare before selecting:/i.test(note) ? '' : note");
+    expect(pageSource).toContain('<h3>Other releases</h3>');
+    expect(pageSource).toContain('<h3>Alternative datasets</h3>');
+    expect(pageSource).toContain('alternativeDifferenceSummary(alternative)');
   });
 
   it('separates CKAN discovery metadata from evidence-backed current operations', () => {

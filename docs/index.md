@@ -39,6 +39,10 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Federated bundle wiki architecture](okf-bundle-wiki-architecture-2026-07-11.md)
   defines independently published bundle wikis, YAML-LD/JSON-LD semantics,
   registry discovery, compatibility projections and the extraction plan.
+- [Ontology and semantic graph architecture](ontology-and-semantic-graph-architecture-2026-07-24.md)
+  separates RDF instances, RDFS/SKOS vocabularies, bounded OWL inference,
+  SHACL validation, PROV/DCAT evidence and Explorer presentation, and records
+  the predicate-aware graph delivery roadmap.
 - [Source constraint ledger](source-constraint-ledger.md) records fair-use,
   access-control, licensing and context-loading concerns for internal
   escalation without silently reducing prototype functionality.

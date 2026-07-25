@@ -49,8 +49,14 @@
   const markers = $derived.by(() => markerGroups(visibleRecords));
   const unlocatedCount = $derived(visibleRecords.filter((record) => !record.point).length);
 
-  const MAP_WIDTH = 620;
-  const MAP_HEIGHT = 720;
+  const MAP_WIDTH = 512;
+  const MAP_HEIGHT = 512;
+  const BASEMAP_ZOOM = 5;
+  const BASEMAP_ORIGIN = { x: 15, y: 9 };
+  const BASEMAP_TILES = [
+    { x: 15, y: 9 }, { x: 16, y: 9 },
+    { x: 15, y: 10 }, { x: 16, y: 10 }
+  ];
   const UK_BOUNDS = { west: -9.2, east: 2.4, south: 49.7, north: 60.9 };
   const GREAT_BRITAIN = [
     [-5.8, 50.0], [-4.2, 50.1], [-3.2, 50.3], [-1.5, 50.6], [0.9, 50.8], [1.7, 51.3], [1.3, 52.1], [0.4, 52.8],
@@ -99,9 +105,13 @@
   }
 
   function mapPoint(longitude: number, latitude: number) {
+    const worldSize = 2 ** BASEMAP_ZOOM;
+    const latitudeRadians = latitude * Math.PI / 180;
+    const worldX = ((longitude + 180) / 360) * worldSize;
+    const worldY = (1 - Math.asinh(Math.tan(latitudeRadians)) / Math.PI) / 2 * worldSize;
     return {
-      x: ((longitude - UK_BOUNDS.west) / (UK_BOUNDS.east - UK_BOUNDS.west)) * MAP_WIDTH,
-      y: ((UK_BOUNDS.north - latitude) / (UK_BOUNDS.north - UK_BOUNDS.south)) * MAP_HEIGHT
+      x: (worldX - BASEMAP_ORIGIN.x) * 256,
+      y: (worldY - BASEMAP_ORIGIN.y) * 256
     };
   }
 
@@ -235,10 +245,23 @@
     <div class="map-workspace">
       <section class="locator-card">
         <div class="locator-note">
-          <strong>Schematic UK locator</strong>
+          <strong>UK reference map</strong>
           <span>Solid markers are source coordinates; rings are representative centroids, not boundaries.</span>
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a>
         </div>
-        <svg class="locator-map" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label="Schematic UK locator with spatial record markers">
+        <svg class="locator-map" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label="UK reference map with spatial record markers">
+          <g class="locator-basemap" aria-hidden="true">
+            {#each BASEMAP_TILES as tile}
+              <image
+                href={`https://tile.openstreetmap.org/${BASEMAP_ZOOM}/${tile.x}/${tile.y}.png`}
+                x={(tile.x - BASEMAP_ORIGIN.x) * 256}
+                y={(tile.y - BASEMAP_ORIGIN.y) * 256}
+                width="256"
+                height="256"
+                preserveAspectRatio="none"
+              ></image>
+            {/each}
+          </g>
           <path class="locator-land" d={locatorPath(GREAT_BRITAIN)}></path>
           <path class="locator-land" d={locatorPath(NORTHERN_IRELAND)}></path>
           <g class="locator-grid" aria-hidden="true">
@@ -368,20 +391,32 @@
   .map-heading h2, .map-evidence h3, .geo-preview h3, .map-results h3 { margin: 0; }
   .map-heading p { margin: 5px 0 0; max-width: 760px; }
   .eyebrow { margin: 0 0 4px; color: #526b80; font-size: 0.76rem; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; }
-  .map-filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .map-filter-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, 1fr);
+    gap: 10px;
+    max-height: 152px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-gutter: stable;
+  }
   .map-filter-grid section, .locator-card, .map-results, .map-evidence, .geo-preview { border: 1px solid #c8d4df; border-radius: 9px; background: #fff; box-shadow: 0 1px 2px rgb(15 42 64 / 7%); }
-  .map-filter-grid section { padding: 12px; }
+  .map-filter-grid section { max-height: 140px; overflow-y: auto; padding: 10px; }
   .map-filter-grid h3, .map-evidence h4 { margin: 0 0 9px; font-size: 0.9rem; }
   .map-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .map-chips button { display: inline-flex; gap: 7px; align-items: center; max-width: 100%; border: 1px solid #9eb3c5; border-radius: 999px; background: #f7fafc; padding: 5px 9px; color: #16324a; }
   .map-chips button span { border-radius: 999px; background: #dce8f2; padding: 1px 6px; font-size: 0.72rem; }
   .map-chips button.active { border-color: #1d70b8; background: #e6f2fb; box-shadow: inset 0 0 0 1px #1d70b8; }
-  .map-workspace { display: grid; grid-template-columns: minmax(320px, 1.15fr) minmax(280px, 0.85fr); gap: 14px; min-height: 610px; }
-  .locator-card { display: grid; grid-template-rows: auto minmax(420px, 1fr) auto; min-width: 0; overflow: hidden; background: linear-gradient(#f6fbff, #eaf4f9); }
+  .map-workspace { display: grid; grid-template-columns: minmax(320px, 1.15fr) minmax(280px, 0.85fr); gap: 14px; height: clamp(520px, 64dvh, 720px); min-height: 0; }
+  .locator-card { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; overflow: hidden; background: #eaf4f9; }
   .locator-note { display: grid; gap: 2px; padding: 12px 14px; border-bottom: 1px solid #c8d4df; background: rgb(255 255 255 / 88%); }
-  .locator-note span, .locator-summary { color: #526b80; font-size: 0.78rem; }
-  .locator-map { width: 100%; height: 100%; min-height: 460px; }
-  .locator-land { fill: #d9e5d2; stroke: #78916d; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .locator-note span, .locator-note a, .locator-summary { color: #526b80; font-size: 0.78rem; }
+  .locator-note a { width: fit-content; }
+  .locator-map { display: block; width: 100%; height: 100%; min-height: 0; background: #dbeaf2; }
+  .locator-basemap { opacity: .78; }
+  .locator-land { fill: rgb(217 229 210 / 18%); stroke: rgb(74 105 68 / 78%); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
   .locator-grid line { stroke: #c6d9e5; stroke-width: 1; stroke-dasharray: 4 7; vector-effect: non-scaling-stroke; }
   .locator-marker { cursor: pointer; color: #d4351c; }
   .locator-marker circle { fill: currentColor; stroke: #fff; stroke-width: 3; vector-effect: non-scaling-stroke; }
@@ -391,10 +426,10 @@
   .locator-marker text { pointer-events: none; fill: #fff; font-size: 10px; font-weight: 800; text-anchor: middle; }
   .locator-marker.representative text { fill: #1d70b8; }
   .locator-summary { margin: 0; padding: 10px 14px; border-top: 1px solid #c8d4df; background: rgb(255 255 255 / 88%); }
-  .map-results { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+  .map-results { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; overflow: hidden; }
   .map-results-heading { padding: 12px; border-bottom: 1px solid #d6e0e8; }
   .map-results-heading span { color: #526b80; font-size: 0.78rem; }
-  .map-record-list { overflow: auto; }
+  .map-record-list { min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
   .map-record-list button { display: grid; gap: 3px; width: 100%; border: 0; border-bottom: 1px solid #e2e9ef; background: #fff; padding: 10px 12px; color: #16324a; text-align: left; }
   .map-record-list button:hover, .map-record-list button.active { background: #eaf4fb; }
   .map-record-list span, .map-record-list small { color: #526b80; }
@@ -427,6 +462,8 @@
   button:disabled { cursor: progress; opacity: 0.65; }
   @media (max-width: 1000px) {
     .map-workspace, .map-evidence-grid { grid-template-columns: 1fr; }
-    .map-results { max-height: 520px; }
+    .map-workspace { height: auto; }
+    .locator-card { height: min(68dvh, 620px); min-height: 460px; }
+    .map-results { height: min(54dvh, 520px); }
   }
 </style>

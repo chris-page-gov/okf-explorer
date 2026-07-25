@@ -61,6 +61,36 @@ source-of-truth changes.
 
 ## Unreleased
 
+- Changed large-corpus Timeline to distinguish the period represented by a
+  release from the date its catalogue metadata was harvested. Repeating
+  datasets are grouped into series and compact year/month release links;
+  catalogue timestamps are used only as an explicitly labelled fallback.
+- Added structured record comparison. Explorer separates other releases in
+  the same series from genuine alternative datasets, links each item to its
+  own durable route, displays declared field differences, and suppresses
+  legacy `Compare before selecting:` prose when the structured alternative
+  records are present. Title-derived series are explicitly labelled as a
+  presentation aid rather than asserted semantic identity.
+- Changed Map to use a bounded viewport with an internally scrolling result
+  list and compact horizontally scrollable reduction controls. A labelled
+  OpenStreetMap reference layer supplies geographic context while the
+  metadata, coverage outline and result list remain usable if map tiles fail.
+- Fixed single-predicate facet graphs to use the same stable relationship
+  region layout as other metadata fan-outs, retain an accessible Layout
+  control, and avoid the inconsistent diagonal stack previously shown for
+  values such as `every 12 weeks`.
+- Added hierarchy-aware, diverse high-cardinality facet previews. Declared
+  bundle hierarchies take precedence; legacy facets receive bounded Year,
+  Format, Region and Other summaries instead of a count-only sample. Documented
+  SKOS hierarchy authoring in YAML-LD and added SKOS/RDFS/OWL prefixes to the
+  pinned bundle-wiki context.
+- Changed committed view, graph-key, label, node-type, relationship-highlight
+  and graph-layout choices to create addressable browser history entries.
+  Re-selecting or Ctrl/Cmd-clicking a highlighted graph node or relationship
+  now clears it. The compact graph toolbar again exposes Auto versus
+  relationship-region layout.
+- Locked the focused node's type in the visible node key so a stale or newly
+  selected hide-type control cannot imply that the graph focus can disappear.
 - Added a maintained viewer capability inventory, feature matrix, conflict
   register and regression contract across the classic OKF canvas, modern
   LLM-Wiki, CFTE, OKFR, original CKAN and canonical Svelte lineages.
@@ -72,9 +102,51 @@ source-of-truth changes.
   selected context, Pause/Resume and reduced-motion handling. Reciprocal
   directed relationships now use distinct curves, collapse identical labels
   and place different labels nearer their sources.
+- Added predicate-and-direction relationship controls for large focus graphs:
+  Auto or explicit semantic regions, group/member visibility, drag and button
+  ordering, reset and durable `graph.*` URL state. The node key now lists only
+  types in the displayed graph, and left-list labels remain visible in an
+  above-left placement that keeps them out of centre-facing relationships.
+  Controlled list and staircase regions keep every node label visible without
+  cycling, paint labels above node symbols, compact vertical lists, spread
+  staircases across the available width and separate same-side relationship
+  lanes. The logical canvas now follows the centre panel aspect ratio, and the
+  lower-right staircase exit is reserved before right-list placement. Repeated
+  edge predicates are consolidated to one label per group; only conflicting
+  edge labels cycle.
+- Made graph and relationship controls compact and sticky within the centre
+  panel. Plain wheel input now scrolls the panel, while the slower graph zoom
+  requires Ctrl/Command+wheel or the explicit buttons.
+- Replaced the wrapping graph key and layout panels with a two-line control
+  surface. The first line keeps zoom, label-set cycling, node types,
+  and relationship types available; the second line switches between
+  only the node and predicate types present in the current graph. Node types
+  can be hidden without losing their restore control, while selecting a
+  relationship type highlights its source nodes, target nodes and directed
+  edges. Relationship inspection now separates Source, Relationship and Target
+  evidence into three tabs, and SVG keyboard focus follows the edge instead of
+  drawing a rectangular outline across unrelated nodes. The Nodes and
+  Relationships mode buttons show their current visible counts. Redundant
+  on/off wording and the exposed Layout panel were removed; pressed styling
+  identifies the active key while the automatic relationship-region layout is
+  retained. Focus graphs now repeat the focused node name as an SVG title and
+  anchor publisher and licence nodes at the lower left and lower right, giving
+  exported screenshots a document-like final line.
+- Fixed the dual-collapsed workspace grid so both context rails remain 44px,
+  and fixed wrapped relationship-drawer rows so their text cannot overlap.
+- Added edge width for an explicit varying numeric relationship metric while
+  keeping constant or undocumented scores neutral and arrowheads fixed-size.
+  Persistent label placement now looks ahead so a focus label cannot consume
+  the only viable position for a boundary-node label.
+- Added a layered ontology and semantic graph architecture covering RDF/JSON-LD
+  instances, RDFS/SKOS vocabularies, bounded OWL 2 RL-style inference, SHACL
+  validation, DCAT/PROV evidence, predicate registries and the strict
+  separation of semantics from Explorer presentation.
 - Fixed graph panning that previously failed when a drag began over a node or
   relationship, suppressed native drag ghosts, retained context in folded side
   rails, and made detail panels reliably touch-scrollable on mobile.
+- Fixed invisible node and label interaction rectangles inheriting white SVG
+  borders that cut through graph labels.
 - Added unit and Playwright regression coverage for label-layer completeness,
   reciprocal edges, the ONS 21-node/20-relationship focus graph, graph panning,
   safe rich Markdown, conversation views, collapsed context and Android-sized
@@ -98,6 +170,9 @@ source-of-truth changes.
   numeric/date histograms, search-first high-cardinality previews, hierarchy
   browsing, and tabbed result/detail panels. Multi-valued facet reduction is
   now bounded and assignment-aware.
+- Removed complete single-valued dimensions from Suggested facets because they
+  cannot reduce the current result set. They remain available under All and
+  remain visible when selected, explicitly shown or pinned.
 - Restored small-bundle graph and link compatibility with generator-produced
   `edges`, added Markdown-body search and safe body rendering, exposed
   credential-redacted source/resource links, and made selected Schema.org,
