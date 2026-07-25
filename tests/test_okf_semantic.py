@@ -228,12 +228,19 @@ class OkfSemanticTest(unittest.TestCase):
         legacy = json.loads(rendered["legacy"])
         semantic = json.loads(rendered["semantic"])
         self.assertEqual("okf-explorer-registry.v1", legacy["schema"])
-        self.assertEqual(5, len(legacy["bundles"]))
+        self.assertEqual(6, len(legacy["bundles"]))
         self.assertIn(
             "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
             {bundle["url"] for bundle in legacy["bundles"]},
         )
         self.assertEqual("registry/okf-registry.yamlld", legacy["semantic_source"])
+        whole_law = next(
+            bundle
+            for bundle in legacy["bundles"]
+            if bundle["url"].endswith("/whole-law/okf-explorer.json")
+        )
+        self.assertEqual("bundle/whole-law", whole_law["raw_subpath"])
+        self.assertEqual("descriptor", whole_law["routes"][0]["purpose"])
         self.assertIn("@context", semantic)
 
 

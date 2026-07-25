@@ -36,6 +36,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Provider datapacks](provider-datapacks.md) define how governed bundle
   snapshots, bounded reviewed upstream references, known drift and external
   provider actions remain visibly distinct.
+- [Federated OKF bundles](federated-bundles.md) define the overview-first
+  control plane, child discovery and fallback routes, relationship authority
+  classes and generator acceptance checks.
 - [Federated bundle wiki architecture](okf-bundle-wiki-architecture-2026-07-11.md)
   defines independently published bundle wikis, YAML-LD/JSON-LD semantics,
   registry discovery, compatibility projections and the extraction plan.
@@ -129,5 +132,11 @@ https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-g
 UK Legislation Explorer:
 
 ```text
-https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview
+```
+
+UK Whole-Law federation:
+
+```text
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 ```

@@ -74,6 +74,33 @@
       "title": "UK Legislation complete work catalogue",
       "url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
       "version": "0.2.0"
+    },
+    {
+      "description": "Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes.",
+      "documentation_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/",
+      "home_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/",
+      "id": "https://chris-page-gov.github.io/okf-explorer/bundles/uk-whole-law",
+      "kind": "federation",
+      "label": "UK Whole-Law OKF",
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/federation/v1/",
+      "publisher": "https://github.com/chris-page-gov",
+      "raw_subpath": "bundle/whole-law",
+      "release_archive_url": "https://github.com/chris-page-gov/okf-uk-legislation/releases",
+      "repository_url": "https://github.com/chris-page-gov/okf-uk-legislation",
+      "routes": [
+        {
+          "kind": "raw",
+          "priority": 10,
+          "purpose": "descriptor",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/main/bundle/whole-law/okf-explorer.json"
+        }
+      ],
+      "semantic_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld",
+      "status": "candidate",
+      "title": "UK Whole-Law OKF",
+      "url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json",
+      "version": "0.3.0"
     }
   ],
   "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",

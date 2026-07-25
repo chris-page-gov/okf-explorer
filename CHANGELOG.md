@@ -59,7 +59,27 @@ All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
 source-of-truth changes.
 
-## Unreleased
+## v0.5.0 - Unreleased
+
+- Added the additive `okf-explorer-federation.v1` control plane and
+  `okf-relationship-assertion.v2` contract. Federations load only their
+  overview first; child descriptors and data shards remain untouched until a
+  user selects a child.
+- Added fail-closed child coverage, authority, freshness, discovery-route and
+  relationship-summary validation. Official, deterministic-derived,
+  model-assisted and unclassified relationships now have distinct labels,
+  detail evidence and graph styling.
+- Added declared descriptor fallback routes so Pages, raw-content and mirrored
+  descriptors can recover in a fixed order without probing guessed repository
+  paths. Repository, documentation and archive links remain visible recovery
+  destinations but are never parsed as descriptors.
+- Added bounded YAML-LD loading for `.yamlld`, `.yaml` and `.yml` documents,
+  including safe JSON content sniffing when static hosts use
+  `application/octet-stream`. YAML uses the 1.2 core schema, unique keys, no
+  merge keys, no aliases and no custom/executable tags.
+- Registered the future UK Whole-Law OKF descriptor and its declared raw
+  fallback, repository, documentation, release archive and repository
+  subpath.
 
 - Made OKF Explorer a dual-version OKF v0.2 exemplar. Structured
   `generated`, `sources`, `verified`, lifecycle, freshness and Attested
