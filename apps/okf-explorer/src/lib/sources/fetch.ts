@@ -1,4 +1,5 @@
-import type { LargeResourceReference } from '$lib/types';
+import { isMap, isScalar, isSeq, parseDocument } from 'yaml';
+import type { FederationAccessRoute, LargeResourceReference } from '$lib/types';
 import {
   type PreparedReleaseDataPlane,
   releaseDataRequest,
@@ -17,6 +18,16 @@ export interface SourceJsonResponse {
   contentType: string;
   retrievedAt: string;
   responseUrl: string;
+}
+
+export interface StructuredDocumentResponse<T> {
+  document: T;
+  bytes: number;
+  contentType: string;
+  retrievedAt: string;
+  requestedUrl: string;
+  responseUrl: string;
+  attemptedUrls: string[];
 }
 
 export function resolveUrl(path: string, base: string): string {
@@ -65,6 +76,196 @@ export async function fetchJson<T>(url: string, timeoutMs = 30000, attempts = 3,
     }
   }
   throw lastError instanceof Error ? lastError : new Error(`${url}: fetch failed`);
+}
+
+function yamlDocumentUrl(url: string): boolean {
+  try {
+    return /\.(?:ya?ml|yamlld)$/i.test(new URL(url).pathname);
+  } catch {
+    return /\.(?:ya?ml|yamlld)(?:[?#]|$)/i.test(url);
+  }
+}
+
+function yamlContentType(contentType: string): boolean {
+  return /^(?:application|text)\/(?:ld\+yaml|yaml|x-yaml)(?:;|$)/i.test(contentType.trim());
+}
+
+function validateYamlRepresentation(value: unknown, path = '$'): void {
+  if (typeof value === 'number' && !Number.isFinite(value)) {
+    throw new Error(`${path}: non-finite numbers are not valid YAML-LD`);
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => validateYamlRepresentation(item, `${path}[${index}]`));
+    return;
+  }
+  if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
+      if (typeof key !== 'string') throw new Error(`${path}: YAML-LD mapping keys must be strings`);
+      validateYamlRepresentation(item, `${path}.${key}`);
+    }
+  }
+}
+
+function validateYamlMappingKeys(node: unknown, path = '$'): void {
+  if (isMap(node)) {
+    for (const pair of node.items) {
+      if (!isScalar(pair.key) || typeof pair.key.value !== 'string') {
+        throw new Error(`${path}: YAML-LD mapping keys must be strings`);
+      }
+      validateYamlMappingKeys(pair.value, `${path}.${pair.key.value}`);
+    }
+    return;
+  }
+  if (isSeq(node)) {
+    node.items.forEach((item, index) => validateYamlMappingKeys(item, `${path}[${index}]`));
+  }
+}
+
+/**
+ * Parse descriptor JSON or YAML-LD without executing tags or resolving remote
+ * contexts. JSON is recognized from its first non-whitespace byte even when a
+ * static host supplies application/octet-stream. YAML is accepted only when
+ * the URL or media type explicitly declares YAML, and uses the YAML 1.2 core
+ * schema with bounded aliases and unique mapping keys.
+ */
+export function parseStructuredDocumentText<T>(
+  text: string,
+  url: string,
+  contentType = ''
+): T {
+  const trimmed = text.trim();
+  if (!trimmed) throw new Error(`${url}: descriptor response is empty`);
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    return JSON.parse(trimmed) as T;
+  }
+  if (!yamlDocumentUrl(url) && !yamlContentType(contentType)) {
+    throw new Error(`${url}: response is neither JSON nor explicitly declared YAML-LD`);
+  }
+  const document = parseDocument(trimmed, {
+    version: '1.2',
+    schema: 'core',
+    merge: false,
+    strict: true,
+    uniqueKeys: true
+  });
+  if (document.errors.length) {
+    throw new Error(`${url}: invalid YAML-LD: ${document.errors.map((error) => error.message).join('; ')}`);
+  }
+  try {
+    validateYamlMappingKeys(document.contents);
+    const value = document.toJS({ maxAliasCount: 0 }) as T;
+    validateYamlRepresentation(value);
+    return value;
+  } catch (error) {
+    throw new Error(`${url}: unsafe or cyclic YAML-LD: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+export async function fetchStructuredDocument<T>(
+  url: string,
+  timeoutMs = 30000,
+  attempts = 3,
+  retryDelayMs = 250
+): Promise<StructuredDocumentResponse<T>> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal
+      ? AbortSignal.timeout(timeoutMs)
+      : undefined;
+    try {
+      const response = await fetch(url, {
+        cache: 'default',
+        headers: {
+          Accept: 'application/json, application/ld+json;q=0.95, application/ld+yaml;q=0.9, application/yaml;q=0.8'
+        },
+        signal
+      });
+      if (!response.ok) {
+        const error = new Error(`${url}: ${response.status} ${response.statusText}`);
+        if (attempt < attempts - 1 && RETRYABLE_STATUS_CODES.has(response.status)) {
+          lastError = error;
+          await retryDelay(retryDelayMs, attempt);
+          continue;
+        }
+        throw error;
+      }
+      const text = await readResponseText(response, url, MAX_JSON_BYTES);
+      const contentType = response.headers.get('content-type') || '';
+      const responseUrl = response.url || url;
+      const parsedResponseUrl = new URL(responseUrl);
+      if (!['http:', 'https:'].includes(parsedResponseUrl.protocol) || parsedResponseUrl.username || parsedResponseUrl.password) {
+        throw new Error(`${url}: response redirected to an unsafe descriptor URL`);
+      }
+      return {
+        document: parseStructuredDocumentText<T>(text, responseUrl, contentType),
+        bytes: new TextEncoder().encode(text).byteLength,
+        contentType,
+        retrievedAt: new Date().toISOString(),
+        requestedUrl: url,
+        responseUrl,
+        attemptedUrls: [url]
+      };
+    } catch (error) {
+      if (attempt < attempts - 1 && isRetryableFetchError(error)) {
+        lastError = error;
+        await retryDelay(retryDelayMs, attempt);
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(`${url}: fetch failed`);
+}
+
+export function declaredDescriptorCandidates(
+  primaryUrl: string,
+  routes: FederationAccessRoute[] = []
+): string[] {
+  const candidates = [{ url: primaryUrl, priority: Number.MIN_SAFE_INTEGER }, ...routes
+    .filter((route) =>
+      route?.url &&
+      (
+        route.purpose === 'descriptor' ||
+        (!route.purpose && ['published', 'raw'].includes(route.kind))
+      )
+    )
+    .map((route, index) => ({
+      url: resolveUrl(route.url, primaryUrl),
+      priority: Number.isFinite(route.priority) ? Number(route.priority) : index
+    }))
+    .sort((left, right) => left.priority - right.priority)];
+  return [...new Set(candidates.map((candidate) => candidate.url))];
+}
+
+export async function fetchStructuredDocumentWithFallback<T>(
+  primaryUrl: string,
+  routes: FederationAccessRoute[] = [],
+  timeoutMs = 30000,
+  attempts = 3,
+  retryDelayMs = 250
+): Promise<StructuredDocumentResponse<T>> {
+  const candidates = declaredDescriptorCandidates(primaryUrl, routes);
+  const attemptedUrls: string[] = [];
+  const failures: string[] = [];
+  for (const candidate of candidates) {
+    attemptedUrls.push(candidate);
+    try {
+      const result = await fetchStructuredDocument<T>(
+        candidate,
+        timeoutMs,
+        attempts,
+        retryDelayMs
+      );
+      return { ...result, requestedUrl: primaryUrl, attemptedUrls };
+    } catch (error) {
+      failures.push(error instanceof Error ? error.message : String(error));
+    }
+  }
+  throw new Error(
+    `No declared descriptor route succeeded. Attempted ${attemptedUrls.join(', ')}. ` +
+    `Repository, documentation and archive links are never guessed or parsed as descriptors. ` +
+    `Failures: ${failures.join(' | ')}`
+  );
 }
 
 export type FetchJsonResourceOptions = {

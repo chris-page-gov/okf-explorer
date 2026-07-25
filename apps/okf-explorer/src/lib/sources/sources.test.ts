@@ -1,11 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   baseUrlFor,
+  declaredDescriptorCandidates,
   fetchJson,
   fetchSourceJson,
+  fetchStructuredDocument,
+  fetchStructuredDocumentWithFallback,
   MAX_JSON_BYTES,
   MAX_SOURCE_JSON_BYTES,
   movedBundleTarget,
+  parseStructuredDocumentText,
   readResponseText,
   resolveUrl,
   sourceJsonCandidates
@@ -223,6 +227,113 @@ describe('fetch helpers', () => {
     );
 
     await expect(readResponseText(response, 'https://example.test/chunked.json', 64)).resolves.toBe('{"ok":true}');
+  });
+
+  it('content-sniffs JSON and safely parses YAML-LD served as octet-stream', async () => {
+    expect(
+      parseStructuredDocumentText<{ schema: string }>(
+        '{"schema":"okf-explorer-federation.v1"}',
+        'https://example.test/federation.json',
+        'application/octet-stream'
+      )
+    ).toEqual({ schema: 'okf-explorer-federation.v1' });
+    expect(
+      parseStructuredDocumentText<{ schema: string; enabled: boolean; date: string }>(
+        'schema: okf-explorer-federation.v1\nenabled: true\ndate: 2026-07-25\n',
+        'https://example.test/federation.yamlld',
+        'application/octet-stream'
+      )
+    ).toEqual({
+      schema: 'okf-explorer-federation.v1',
+      enabled: true,
+      date: '2026-07-25'
+    });
+    expect(() =>
+      parseStructuredDocumentText(
+        'schema: unsafe',
+        'https://example.test/federation.txt',
+        'text/html'
+      )
+    ).toThrow('neither JSON nor explicitly declared YAML-LD');
+    expect(() =>
+      parseStructuredDocumentText(
+        'one: &shared [1, 2]\ntwo: *shared\n',
+        'https://example.test/federation.yamlld',
+        'application/octet-stream'
+      )
+    ).toThrow('unsafe or cyclic YAML-LD');
+    expect(() =>
+      parseStructuredDocumentText(
+        '? [not, a, string]\n: invalid\n',
+        'https://example.test/federation.yamlld',
+        'application/octet-stream'
+      )
+    ).toThrow('mapping keys must be strings');
+  });
+
+  it('retrieves YAML-LD through the structured document fetcher', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () =>
+      new Response('schema: okf-explorer-federation.v1\nkind: okf-federation\n', {
+        headers: { 'content-type': 'application/octet-stream' }
+      })
+    ));
+    const response = await fetchStructuredDocument<Record<string, string>>(
+      'https://example.test/federation.yamlld',
+      30000,
+      1,
+      0
+    );
+    expect(response.document.kind).toBe('okf-federation');
+    expect(response.contentType).toBe('application/octet-stream');
+  });
+
+  it('uses only declared loadable descriptor fallbacks in priority order', async () => {
+    const primary = 'https://pages.example/whole-law/okf-explorer.json';
+    const routes = [
+      {
+        kind: 'repository',
+        purpose: 'source',
+        url: 'https://github.com/example/whole-law'
+      },
+      {
+        kind: 'raw',
+        purpose: 'descriptor',
+        priority: 20,
+        url: 'https://raw.example/main/bundle/whole-law/okf-explorer.json'
+      },
+      {
+        kind: 'published',
+        purpose: 'descriptor',
+        priority: 10,
+        url: 'https://mirror.example/whole-law/okf-explorer.json'
+      }
+    ];
+    expect(declaredDescriptorCandidates(primary, routes)).toEqual([
+      primary,
+      'https://mirror.example/whole-law/okf-explorer.json',
+      'https://raw.example/main/bundle/whole-law/okf-explorer.json'
+    ]);
+
+    const fetchMock = vi.fn(async (url: string) =>
+      url === primary
+        ? jsonResponse({ error: true }, { status: 404, statusText: 'Not Found' })
+        : jsonResponse({ schema: 'okf-explorer-federation.v1' })
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const recovered = await fetchStructuredDocumentWithFallback<{ schema: string }>(
+      primary,
+      routes,
+      30000,
+      1,
+      0
+    );
+    expect(recovered.document.schema).toBe('okf-explorer-federation.v1');
+    expect(recovered.responseUrl).toBe('https://mirror.example/whole-law/okf-explorer.json');
+    expect(recovered.attemptedUrls).toEqual([
+      primary,
+      'https://mirror.example/whole-law/okf-explorer.json'
+    ]);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   it('loads bounded external source JSON with response provenance', async () => {

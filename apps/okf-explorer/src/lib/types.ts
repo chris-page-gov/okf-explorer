@@ -43,6 +43,16 @@ export type OkfRelationship = {
   kind?: string;
   type?: string;
   label?: string;
+  predicate?: string;
+  authority?: FederationAuthority | RelationshipAuthorityClass | string;
+  authority_class?: RelationshipAuthorityClass | string;
+  derivation?: string;
+  confidence?: string | number;
+  observed_at?: string;
+  stale_after?: string;
+  freshness?: FederationFreshnessState | string;
+  evidence?: Array<string | Record<string, unknown>>;
+  rights?: string | Record<string, unknown>;
   [key: string]: unknown;
 };
 
@@ -71,6 +81,147 @@ export type OkfBundle = {
   nodes?: Record<string, OkfNode>;
   relationships?: OkfRelationship[];
   edges?: OkfRelationship[];
+};
+
+export type RelationshipAuthorityClass =
+  | 'official'
+  | 'derived'
+  | 'model-assisted'
+  | 'unclassified';
+
+export type FederationAvailability =
+  | 'available'
+  | 'partial'
+  | 'restricted'
+  | 'unavailable'
+  | 'planned';
+
+export type FederationFreshnessState = 'current' | 'stale' | 'unknown';
+
+export type FederationRouteKind =
+  | 'published'
+  | 'raw'
+  | 'release'
+  | 'repository'
+  | 'documentation'
+  | 'semantic'
+  | string;
+
+export type FederationAccessRoute = {
+  kind: FederationRouteKind;
+  url: string;
+  purpose?: 'descriptor' | 'source' | 'documentation' | 'archive' | 'semantic' | string;
+  media_type?: string;
+  priority?: number;
+  label?: string;
+};
+
+export type FederationAuthority = {
+  class: RelationshipAuthorityClass | string;
+  label?: string;
+  source?: string;
+};
+
+export type FederationCoverage = {
+  status: FederationAvailability;
+  applicable?: number;
+  represented?: number;
+  assertions?: number;
+  percent?: number;
+  as_of?: string;
+  notes?: string[];
+};
+
+export type FederationFreshness = {
+  state?: FederationFreshnessState;
+  observed_at?: string;
+  snapshot?: string;
+  stale_after?: string;
+};
+
+export type FederationDiscovery = {
+  repository: string;
+  documentation: string;
+  raw_subpath: string;
+  release_archive: string;
+  semantic_descriptor?: string;
+  routes: FederationAccessRoute[];
+};
+
+export type FederationChild = {
+  id: string;
+  title: string;
+  description?: string;
+  role: string;
+  status: FederationAvailability;
+  descriptor?: string;
+  semantic_descriptor?: string;
+  authority: FederationAuthority;
+  coverage: FederationCoverage;
+  freshness: FederationFreshness;
+  discovery: FederationDiscovery;
+  counts?: Record<string, number>;
+  extensions?: Record<string, unknown>;
+};
+
+export type FederationRelationshipAssertion = OkfRelationship & {
+  schema?: 'okf-relationship-assertion.v2' | string;
+  predicate: string;
+  authority: FederationAuthority;
+  derivation: string;
+};
+
+export type FederationRelationshipSummary = {
+  scope: 'federated-data-plane' | 'federation-control-plane' | string;
+  total: number;
+  by_predicate: Record<string, number>;
+  by_authority: {
+    official: number;
+    derived: number;
+    'model-assisted': number;
+    unclassified?: number;
+    [key: string]: number | undefined;
+  };
+  by_freshness: {
+    current: number;
+    stale: number;
+    unknown: number;
+    [key: string]: number;
+  };
+  observed_at?: string;
+  snapshot?: string;
+};
+
+export type FederationDescriptor = {
+  '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
+  '@id'?: string;
+  schema: 'okf-explorer-federation.v1';
+  kind: 'okf-federation';
+  okf_version: string;
+  title: string;
+  description?: string;
+  version: string;
+  status: string;
+  generated_at: string;
+  snapshot: string;
+  profile: string;
+  publisher: string;
+  license: string;
+  discovery: FederationDiscovery;
+  counts: Record<string, number>;
+  children: FederationChild[];
+  relationships?: FederationRelationshipAssertion[];
+  relationship_summary: FederationRelationshipSummary;
+  notices?: string[];
+  extensions?: Record<string, unknown>;
+};
+
+export type FederationOverview = {
+  descriptor: FederationDescriptor;
+  requestedUrl: string;
+  resolvedUrl: string;
+  attemptedUrls: string[];
+  inlineRelationshipSummary: FederationRelationshipSummary;
 };
 
 export type LargeResourceReference =
@@ -144,6 +295,7 @@ export type LargeCorpusDescriptor = {
   publisher?: string;
   license?: string;
   semantic_descriptor?: string;
+  discovery?: FederationDiscovery;
   generated_at?: string;
   snapshot?: string;
   snapshot_id?: string;
@@ -865,6 +1017,16 @@ export type LargeRelationship = {
   source: string;
   target: string;
   kind: string;
+  predicate?: string;
+  authority?: FederationAuthority | RelationshipAuthorityClass | string;
+  authority_class?: RelationshipAuthorityClass | string;
+  derivation?: string;
+  confidence?: string | number;
+  observed_at?: string;
+  stale_after?: string;
+  freshness?: FederationFreshnessState | string;
+  evidence?: Array<string | Record<string, unknown>>;
+  rights?: string | Record<string, unknown>;
   [key: string]: unknown;
 };
 
@@ -953,6 +1115,11 @@ export type BundleRegistryEntry = {
   status?: string;
   publisher?: string;
   license?: string;
+  repository_url?: string;
+  documentation_url?: string;
+  raw_subpath?: string;
+  release_archive_url?: string;
+  routes?: FederationAccessRoute[];
 };
 
 export type LoadedSource =
@@ -961,5 +1128,6 @@ export type LoadedSource =
       url: string;
       title: string;
       corpus: NormalizedCorpus;
+      federation?: FederationOverview;
     }
   | LargeCorpusSource;

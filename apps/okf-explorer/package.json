@@ -1,7 +1,7 @@
 {
   "name": "@okf/explorer",
   "private": true,
-  "version": "0.4.2",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -31,5 +31,8 @@
     "overrides": {
       "cookie": "^0.7.2"
     }
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
   }
 }
