@@ -13,12 +13,12 @@ CHANGELOG = ROOT / "CHANGELOG.md"
 
 
 class ReleaseMetadataTest(unittest.TestCase):
-    def test_v051_release_metadata_is_synchronized(self) -> None:
+    def test_v052_release_metadata_is_synchronized(self) -> None:
         package_version = json.loads(PACKAGE.read_text(encoding="utf-8"))["version"]
         citation = CITATION.read_text(encoding="utf-8")
         changelog = CHANGELOG.read_text(encoding="utf-8")
 
-        self.assertEqual("0.5.1", package_version)
+        self.assertEqual("0.5.2", package_version)
         self.assertEqual(
             [package_version, package_version],
             re.findall(r"^\s*version:\s*\"([^\"]+)\"\s*$", citation, re.MULTILINE),
@@ -33,9 +33,13 @@ class ReleaseMetadataTest(unittest.TestCase):
         )
         self.assertRegex(
             changelog,
+            r"(?m)^## v0\.5\.2 - 2026-07-26 - \S",
+        )
+        self.assertNotIn("## v0.5.2 - Unreleased", changelog)
+        self.assertRegex(
+            changelog,
             r"(?m)^## v0\.5\.1 - 2026-07-26 - \S",
         )
-        self.assertNotIn("## v0.5.1 - Unreleased", changelog)
         self.assertRegex(
             changelog,
             r"(?m)^## v0\.5\.0 - 2026-07-26 - \S",
