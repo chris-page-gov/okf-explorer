@@ -44,6 +44,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Review the ontology and semantic graph architecture][semantic-graph-architecture]
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Publish and consume an overview-first federation][federation-docs]
+- [Reproduce the UK Legislation runtime acceptance gate](docs/legislation-runtime-acceptance.md)
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]

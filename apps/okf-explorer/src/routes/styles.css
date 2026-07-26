@@ -2479,10 +2479,14 @@ input:focus {
   pointer-events: none;
 }
 
-.graph line.highlight,
-.graph .graph-edge.highlight {
+.graph line.highlight {
   stroke: var(--accent);
   stroke-width: 3;
+}
+
+.graph .graph-edge.highlight {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 1px var(--focus));
 }
 
 .graph line.selected,

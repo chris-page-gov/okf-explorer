@@ -2523,7 +2523,11 @@
 
   function facetDistribution(key: string): FacetDistributionSegment[] {
     const rows = facetPreviewRows(key);
-    if (facetUsesHistogram(key)) return facetDistributionSegments(rows, 18);
+    // Histogram bars remain keyboard targets, so each segment keeps a 24px
+    // hit area. Respect the provider's bounded segment limit here as well as
+    // for categorical distributions; an unconditional 18-column histogram
+    // overflows the normal navigation panel by more than 160px.
+    if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());
     return facetDistributionSegments(rows, facetDistributionLimit());
   }
 

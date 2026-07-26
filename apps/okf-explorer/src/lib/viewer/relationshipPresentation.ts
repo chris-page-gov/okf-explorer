@@ -36,7 +36,7 @@ function normalizedAuthority(value: string): RelationshipAuthorityClass {
   if (['model', 'model-assisted', 'machine-assisted', 'llm-assisted'].includes(normalized)) {
     return 'model-assisted';
   }
-  if (['derived', 'deterministic', 'computed', 'inferred'].includes(normalized)) {
+  if (['derived', 'derived-non-official', 'deterministic', 'computed', 'inferred'].includes(normalized)) {
     return 'derived';
   }
   return 'unclassified';

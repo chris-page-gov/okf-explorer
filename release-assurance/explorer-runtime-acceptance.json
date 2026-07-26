@@ -1,0 +1,1955 @@
+{
+  "schema": "okf-explorer-runtime-acceptance.v1",
+  "measured_at": "2026-07-26T00:30:12.187Z",
+  "status": "passed",
+  "scope": "Production Explorer build with the final local UK Whole-Law and UK Legislation descriptors and every fetched bundle byte served read-only from the local publication tree.",
+  "runner": {
+    "path": "apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs",
+    "sha256": "0a9fb314ecd368fd00d27fd909bd1f094b6611743334977e292a2deb607039c4",
+    "playwright": "@playwright/test",
+    "accessibility": "@axe-core/playwright",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "server": "temporary same-origin production static server with real gzip transfer and range support",
+    "official_live_search": "disabled with a deterministic empty Atom response; static local search remains under test"
+  },
+  "inputs": {
+    "bundle_root": "../okf-uk-legislation/bundle",
+    "federation_descriptor": {
+      "path": "whole-law/okf-explorer.json",
+      "bytes": 109578,
+      "sha256": "c50c59a467e123f336e46d6bb71ae593a1edc7a6c330b7faee039e5f4dbaef20"
+    },
+    "legislation_descriptor": {
+      "path": "okf-explorer.json",
+      "bytes": 6441,
+      "sha256": "2d7c18dc4e678d7cde63e1bf1bb1c03ca7232cbcc346b9424a5e10dfacb2c73f"
+    },
+    "explorer_build": {
+      "index_sha256": "23a4d8f2e11732d6808a00eaab85a16ed48b2353665e0afa7312dbc8ff8401a3",
+      "files": 16,
+      "sha256": "e3b332894867e9198143335809dde9d1a5e76bf4b86f0c5e3d317fa51dc6e4d2"
+    }
+  },
+  "outputs": {
+    "receipt": "release-assurance/explorer-runtime-acceptance.json",
+    "screenshots": [
+      {
+        "path": "output/playwright/legislation-runtime-graph-chrome.png",
+        "bytes": 293814,
+        "sha256": "5d9680d0e3c72ba45b964931704847580b76461283637db3336c355eef9a4231"
+      },
+      {
+        "path": "output/playwright/legislation-runtime-chrome.png",
+        "bytes": 329693,
+        "sha256": "49436bb67df1e6ed0995877195f1b9d90b4b81f6e17733cc0e36e660c7d7cb59"
+      }
+    ]
+  },
+  "gates": {
+    "startup_transfer": {
+      "status": "passed",
+      "limit_bytes": 1048576,
+      "observed_max_bytes": 414138,
+      "browser_values": {
+        "chrome": 413930,
+        "firefox": 414138,
+        "webkit": 413722
+      }
+    },
+    "cold_search": {
+      "status": "passed",
+      "limit_ms": 3000,
+      "observed_max_ms": 819.151,
+      "browser_values": {
+        "chrome": 807.045,
+        "firefox": 812.391,
+        "webkit": 819.151
+      }
+    },
+    "warm_search": {
+      "status": "passed",
+      "limit_ms": 1000,
+      "observed_max_ms": 849.143,
+      "browser_values": {
+        "chrome": 831.096,
+        "firefox": 849.143,
+        "webkit": 814.689
+      }
+    },
+    "browser_memory": {
+      "status": "passed",
+      "limit_bytes": 268435456,
+      "nominated_metric": "Chrome DevTools Protocol Performance.JSHeapUsedSize",
+      "observed_max_bytes": 20812260,
+      "firefox": "unavailable",
+      "webkit": "unavailable",
+      "note": "Firefox and WebKit are explicitly unavailable for this Chromium-only metric and are not represented as memory passes."
+    },
+    "federation_and_child": {
+      "status": "passed"
+    },
+    "graph_relationship_rendering": {
+      "status": "passed"
+    },
+    "facet_count_colour_and_space": {
+      "status": "passed"
+    },
+    "cross_browser": {
+      "status": "passed",
+      "required": [
+        "chrome",
+        "firefox",
+        "webkit"
+      ],
+      "completed": [
+        "chrome",
+        "firefox",
+        "webkit"
+      ]
+    },
+    "keyboard": {
+      "status": "passed"
+    },
+    "accessibility": {
+      "status": "passed"
+    }
+  },
+  "browsers": [
+    {
+      "browser": "chrome",
+      "version": "150.0.7871.182",
+      "status": "passed",
+      "federation": {
+        "overview_elapsed_ms": 147.649,
+        "child_elapsed_ms": 131.736,
+        "child_load_completed": true,
+        "source_classes_rendered": 36,
+        "child_hash_reset_to_overview": true,
+        "overview_transfer": {
+          "wire_bytes": 212114,
+          "decoded_bytes": 791560,
+          "requests": 14,
+          "explorer_wire_bytes": 198340,
+          "bundle_wire_bytes": 13774,
+          "resources": [
+            {
+              "path": "/",
+              "source": "explorer-build",
+              "wire_bytes": 565,
+              "decoded_bytes": 1319,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/start.BhYFhHST.js",
+              "source": "explorer-build",
+              "wire_bytes": 92,
+              "decoded_bytes": 82,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/DiPpJpSh.js",
+              "source": "explorer-build",
+              "wire_bytes": 10374,
+              "decoded_bytes": 27109,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/BlcF7GWF.js",
+              "source": "explorer-build",
+              "wire_bytes": 18254,
+              "decoded_bytes": 48100,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+              "source": "explorer-build",
+              "wire_bytes": 1850,
+              "decoded_bytes": 3963,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/xihTtKlq.js",
+              "source": "explorer-build",
+              "wire_bytes": 79,
+              "decoded_bytes": 65,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/assets/2.vzlkIutm.css",
+              "source": "explorer-build",
+              "wire_bytes": 13632,
+              "decoded_bytes": 70936,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+              "source": "explorer-build",
+              "wire_bytes": 193,
+              "decoded_bytes": 234,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+              "source": "explorer-build",
+              "wire_bytes": 151351,
+              "decoded_bytes": 522777,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/favicon.svg",
+              "source": "explorer-build",
+              "wire_bytes": 208,
+              "decoded_bytes": 300,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+              "source": "explorer-build",
+              "wire_bytes": 355,
+              "decoded_bytes": 629,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-registry.json",
+              "source": "explorer-build",
+              "wire_bytes": 1179,
+              "decoded_bytes": 6168,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/whole-law/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 13774,
+              "decoded_bytes": 109578,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/favicon.svg",
+              "source": "explorer-build",
+              "wire_bytes": 208,
+              "decoded_bytes": 300,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        },
+        "child_transfer": {
+          "wire_bytes": 216006,
+          "decoded_bytes": 1061141,
+          "requests": 10,
+          "explorer_wire_bytes": 20281,
+          "bundle_wire_bytes": 195725,
+          "resources": [
+            {
+              "path": "/okf-uk-legislation/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2200,
+              "decoded_bytes": 6441,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/favicon.svg",
+              "source": "explorer-build",
+              "wire_bytes": 208,
+              "decoded_bytes": 300,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2275,
+              "decoded_bytes": 16322,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5208,
+              "decoded_bytes": 36784,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/analysis/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5806,
+              "decoded_bytes": 34163,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/presentation.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 868,
+              "decoded_bytes": 2611,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/facets.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5122,
+              "decoded_bytes": 43286,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+              "source": "explorer-build",
+              "wire_bytes": 20073,
+              "decoded_bytes": 60043,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 14826,
+              "decoded_bytes": 122728,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/shards.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 159420,
+              "decoded_bytes": 738463,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        }
+      },
+      "startup_transfer": {
+        "wire_bytes": 413930,
+        "decoded_bytes": 1742523,
+        "requests": 21,
+        "explorer_wire_bytes": 218205,
+        "bundle_wire_bytes": 195725,
+        "resources": [
+          {
+            "path": "/",
+            "source": "explorer-build",
+            "wire_bytes": 565,
+            "decoded_bytes": 1319,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/start.BhYFhHST.js",
+            "source": "explorer-build",
+            "wire_bytes": 92,
+            "decoded_bytes": 82,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/DiPpJpSh.js",
+            "source": "explorer-build",
+            "wire_bytes": 10374,
+            "decoded_bytes": 27109,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/BlcF7GWF.js",
+            "source": "explorer-build",
+            "wire_bytes": 18254,
+            "decoded_bytes": 48100,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+            "source": "explorer-build",
+            "wire_bytes": 1850,
+            "decoded_bytes": 3963,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/xihTtKlq.js",
+            "source": "explorer-build",
+            "wire_bytes": 79,
+            "decoded_bytes": 65,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+            "source": "explorer-build",
+            "wire_bytes": 193,
+            "decoded_bytes": 234,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/assets/2.vzlkIutm.css",
+            "source": "explorer-build",
+            "wire_bytes": 13632,
+            "decoded_bytes": 70936,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+            "source": "explorer-build",
+            "wire_bytes": 151351,
+            "decoded_bytes": 522777,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+            "source": "explorer-build",
+            "wire_bytes": 355,
+            "decoded_bytes": 629,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/favicon.svg",
+            "source": "explorer-build",
+            "wire_bytes": 208,
+            "decoded_bytes": 300,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-registry.json",
+            "source": "explorer-build",
+            "wire_bytes": 1179,
+            "decoded_bytes": 6168,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/okf-explorer.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2200,
+            "decoded_bytes": 6441,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2275,
+            "decoded_bytes": 16322,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5208,
+            "decoded_bytes": 36784,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/analysis/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5806,
+            "decoded_bytes": 34163,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/presentation.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 868,
+            "decoded_bytes": 2611,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/facets.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5122,
+            "decoded_bytes": 43286,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+            "source": "explorer-build",
+            "wire_bytes": 20073,
+            "decoded_bytes": 60043,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 14826,
+            "decoded_bytes": 122728,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/shards.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 159420,
+            "decoded_bytes": 738463,
+            "content_encoding": "gzip",
+            "range": null
+          }
+        ]
+      },
+      "search": {
+        "cold": {
+          "query": "Consumer Credit Act 1974",
+          "elapsed_ms": 807.045
+        },
+        "warm": {
+          "query": "Human Rights Act 1998",
+          "elapsed_ms": 831.096
+        }
+      },
+      "facets": {
+        "inventory": "11 of 14 facets shown",
+        "shown": 11,
+        "available": 14,
+        "rendered_sections": 11,
+        "coloured_segments": 36,
+        "distinct_segment_colours": [
+          "rgb(0, 94, 165)",
+          "rgb(232, 93, 4)",
+          "rgb(0, 112, 60)",
+          "rgb(123, 97, 168)",
+          "rgb(177, 14, 115)",
+          "rgb(0, 131, 143)",
+          "rgb(18, 78, 135)",
+          "rgb(22, 94, 162)",
+          "rgb(26, 110, 188)",
+          "rgb(29, 126, 215)",
+          "rgb(49, 141, 227)",
+          "rgb(75, 156, 231)",
+          "rgb(102, 170, 234)",
+          "rgb(174, 185, 197)",
+          "rgb(212, 53, 28)"
+        ],
+        "layout": {
+          "workspace_width": 1440,
+          "left_panel_width": 320,
+          "stage_width": 1064,
+          "right_panel_width": 44,
+          "stage_share": 0.7389,
+          "left_horizontal_overflow_pixels": 0,
+          "facet_overflow_count": 0
+        }
+      },
+      "graph": {
+        "summary": "19 nodes · 18 relationships",
+        "edge_count": 18,
+        "authorities": [
+          "derived",
+          "official",
+          "unclassified"
+        ],
+        "styles": [
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 210.48204040527344
+          },
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 237.1705322265625
+          },
+          {
+            "authority": "official",
+            "stroke": "rgb(45, 125, 77)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 187.50558471679688
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 229.97695922851562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52264404296875
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52262878417969
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 167.7195281982422
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 178.56639099121094
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 108.38134002685547
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 173.81240844726562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 183.3431854248047
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 171.02073669433594
+          }
+        ],
+        "keyboard_edge_activation": "passed"
+      },
+      "keyboard": {
+        "view_activation": "passed",
+        "search_input": "passed",
+        "graph_edge_activation": "passed"
+      },
+      "accessibility": {
+        "serious_or_critical": [],
+        "all_violation_count": 0,
+        "passes": 29,
+        "incomplete": 2
+      },
+      "memory": {
+        "status": "measured",
+        "metric": "Chrome DevTools Protocol Performance.JSHeapUsedSize",
+        "scope": "Explorer renderer JavaScript heap during normal startup, search and graph exploration",
+        "samples": [
+          {
+            "label": "startup",
+            "status": "measured",
+            "used_js_heap_bytes": 7796772,
+            "total_js_heap_bytes": 13762560
+          },
+          {
+            "label": "cold-search",
+            "status": "measured",
+            "used_js_heap_bytes": 10051684,
+            "total_js_heap_bytes": 16908288
+          },
+          {
+            "label": "graph",
+            "status": "measured",
+            "used_js_heap_bytes": 18945904,
+            "total_js_heap_bytes": 25427968
+          },
+          {
+            "label": "warm-search",
+            "status": "measured",
+            "used_js_heap_bytes": 20812260,
+            "total_js_heap_bytes": 25296896
+          }
+        ],
+        "maximum_used_js_heap_bytes": 20812260
+      }
+    },
+    {
+      "browser": "firefox",
+      "version": "151.0",
+      "status": "passed",
+      "federation": {
+        "overview_elapsed_ms": 189.244,
+        "child_elapsed_ms": 200.639,
+        "child_load_completed": true,
+        "source_classes_rendered": 36,
+        "child_hash_reset_to_overview": true,
+        "overview_transfer": {
+          "wire_bytes": 211906,
+          "decoded_bytes": 791260,
+          "requests": 13,
+          "explorer_wire_bytes": 198132,
+          "bundle_wire_bytes": 13774,
+          "resources": [
+            {
+              "path": "/",
+              "source": "explorer-build",
+              "wire_bytes": 565,
+              "decoded_bytes": 1319,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/start.BhYFhHST.js",
+              "source": "explorer-build",
+              "wire_bytes": 92,
+              "decoded_bytes": 82,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/DiPpJpSh.js",
+              "source": "explorer-build",
+              "wire_bytes": 10374,
+              "decoded_bytes": 27109,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/BlcF7GWF.js",
+              "source": "explorer-build",
+              "wire_bytes": 18254,
+              "decoded_bytes": 48100,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+              "source": "explorer-build",
+              "wire_bytes": 1850,
+              "decoded_bytes": 3963,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/xihTtKlq.js",
+              "source": "explorer-build",
+              "wire_bytes": 79,
+              "decoded_bytes": 65,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+              "source": "explorer-build",
+              "wire_bytes": 193,
+              "decoded_bytes": 234,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/assets/2.vzlkIutm.css",
+              "source": "explorer-build",
+              "wire_bytes": 13632,
+              "decoded_bytes": 70936,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+              "source": "explorer-build",
+              "wire_bytes": 151351,
+              "decoded_bytes": 522777,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+              "source": "explorer-build",
+              "wire_bytes": 355,
+              "decoded_bytes": 629,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/favicon.svg",
+              "source": "explorer-build",
+              "wire_bytes": 208,
+              "decoded_bytes": 300,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-registry.json",
+              "source": "explorer-build",
+              "wire_bytes": 1179,
+              "decoded_bytes": 6168,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/whole-law/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 13774,
+              "decoded_bytes": 109578,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        },
+        "child_transfer": {
+          "wire_bytes": 216006,
+          "decoded_bytes": 1061141,
+          "requests": 10,
+          "explorer_wire_bytes": 20281,
+          "bundle_wire_bytes": 195725,
+          "resources": [
+            {
+              "path": "/okf-uk-legislation/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2200,
+              "decoded_bytes": 6441,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/favicon.svg",
+              "source": "explorer-build",
+              "wire_bytes": 208,
+              "decoded_bytes": 300,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2275,
+              "decoded_bytes": 16322,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5208,
+              "decoded_bytes": 36784,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/analysis/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5806,
+              "decoded_bytes": 34163,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/presentation.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 868,
+              "decoded_bytes": 2611,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/facets.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5122,
+              "decoded_bytes": 43286,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+              "source": "explorer-build",
+              "wire_bytes": 20073,
+              "decoded_bytes": 60043,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 14826,
+              "decoded_bytes": 122728,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/shards.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 159420,
+              "decoded_bytes": 738463,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        }
+      },
+      "startup_transfer": {
+        "wire_bytes": 414138,
+        "decoded_bytes": 1742823,
+        "requests": 22,
+        "explorer_wire_bytes": 218413,
+        "bundle_wire_bytes": 195725,
+        "resources": [
+          {
+            "path": "/",
+            "source": "explorer-build",
+            "wire_bytes": 565,
+            "decoded_bytes": 1319,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/start.BhYFhHST.js",
+            "source": "explorer-build",
+            "wire_bytes": 92,
+            "decoded_bytes": 82,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/DiPpJpSh.js",
+            "source": "explorer-build",
+            "wire_bytes": 10374,
+            "decoded_bytes": 27109,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/xihTtKlq.js",
+            "source": "explorer-build",
+            "wire_bytes": 79,
+            "decoded_bytes": 65,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/BlcF7GWF.js",
+            "source": "explorer-build",
+            "wire_bytes": 18254,
+            "decoded_bytes": 48100,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+            "source": "explorer-build",
+            "wire_bytes": 1850,
+            "decoded_bytes": 3963,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+            "source": "explorer-build",
+            "wire_bytes": 193,
+            "decoded_bytes": 234,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/assets/2.vzlkIutm.css",
+            "source": "explorer-build",
+            "wire_bytes": 13632,
+            "decoded_bytes": 70936,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+            "source": "explorer-build",
+            "wire_bytes": 151351,
+            "decoded_bytes": 522777,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+            "source": "explorer-build",
+            "wire_bytes": 355,
+            "decoded_bytes": 629,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/favicon.svg",
+            "source": "explorer-build",
+            "wire_bytes": 208,
+            "decoded_bytes": 300,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-registry.json",
+            "source": "explorer-build",
+            "wire_bytes": 1179,
+            "decoded_bytes": 6168,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/okf-explorer.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2200,
+            "decoded_bytes": 6441,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2275,
+            "decoded_bytes": 16322,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5208,
+            "decoded_bytes": 36784,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/analysis/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5806,
+            "decoded_bytes": 34163,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/presentation.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 868,
+            "decoded_bytes": 2611,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/facets.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5122,
+            "decoded_bytes": 43286,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+            "source": "explorer-build",
+            "wire_bytes": 20073,
+            "decoded_bytes": 60043,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 14826,
+            "decoded_bytes": 122728,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/shards.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 159420,
+            "decoded_bytes": 738463,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/favicon.svg",
+            "source": "explorer-build",
+            "wire_bytes": 208,
+            "decoded_bytes": 300,
+            "content_encoding": "gzip",
+            "range": null
+          }
+        ]
+      },
+      "search": {
+        "cold": {
+          "query": "Consumer Credit Act 1974",
+          "elapsed_ms": 812.391
+        },
+        "warm": {
+          "query": "Human Rights Act 1998",
+          "elapsed_ms": 849.143
+        }
+      },
+      "facets": {
+        "inventory": "11 of 14 facets shown",
+        "shown": 11,
+        "available": 14,
+        "rendered_sections": 11,
+        "coloured_segments": 36,
+        "distinct_segment_colours": [
+          "rgb(0, 94, 165)",
+          "rgb(232, 93, 4)",
+          "rgb(0, 112, 60)",
+          "rgb(123, 97, 168)",
+          "rgb(177, 14, 115)",
+          "rgb(0, 131, 143)",
+          "rgb(18, 78, 135)",
+          "rgb(22, 94, 162)",
+          "rgb(26, 110, 188)",
+          "rgb(29, 126, 215)",
+          "rgb(49, 141, 227)",
+          "rgb(75, 156, 231)",
+          "rgb(102, 170, 234)",
+          "rgb(174, 185, 197)",
+          "rgb(212, 53, 28)"
+        ],
+        "layout": {
+          "workspace_width": 1440,
+          "left_panel_width": 320,
+          "stage_width": 1064,
+          "right_panel_width": 44,
+          "stage_share": 0.7389,
+          "left_horizontal_overflow_pixels": 0,
+          "facet_overflow_count": 0
+        }
+      },
+      "graph": {
+        "summary": "19 nodes · 18 relationships",
+        "edge_count": 18,
+        "authorities": [
+          "derived",
+          "official",
+          "unclassified"
+        ],
+        "styles": [
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 210.48204040527344
+          },
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 237.1705322265625
+          },
+          {
+            "authority": "official",
+            "stroke": "rgb(45, 125, 77)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 187.50558471679688
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 229.97695922851562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52263641357422
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52262878417969
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 167.7195281982422
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 178.56639099121094
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 108.38134002685547
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 173.81240844726562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 183.3431854248047
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 171.02073669433594
+          }
+        ],
+        "keyboard_edge_activation": "passed"
+      },
+      "keyboard": {
+        "view_activation": "passed",
+        "search_input": "passed",
+        "graph_edge_activation": "passed"
+      },
+      "accessibility": {
+        "serious_or_critical": [],
+        "all_violation_count": 0,
+        "passes": 29,
+        "incomplete": 2
+      },
+      "memory": {
+        "status": "unavailable",
+        "metric": "Chrome DevTools Protocol Performance.JSHeapUsedSize",
+        "reason": "This browser engine does not expose the nominated CDP memory metric",
+        "samples": [
+          {
+            "label": "startup",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "cold-search",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "graph",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "warm-search",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          }
+        ]
+      }
+    },
+    {
+      "browser": "webkit",
+      "version": "26.5",
+      "status": "passed",
+      "federation": {
+        "overview_elapsed_ms": 134.934,
+        "child_elapsed_ms": 162.802,
+        "child_load_completed": true,
+        "source_classes_rendered": 36,
+        "child_hash_reset_to_overview": true,
+        "overview_transfer": {
+          "wire_bytes": 211698,
+          "decoded_bytes": 790960,
+          "requests": 12,
+          "explorer_wire_bytes": 197924,
+          "bundle_wire_bytes": 13774,
+          "resources": [
+            {
+              "path": "/",
+              "source": "explorer-build",
+              "wire_bytes": 565,
+              "decoded_bytes": 1319,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/start.BhYFhHST.js",
+              "source": "explorer-build",
+              "wire_bytes": 92,
+              "decoded_bytes": 82,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/DiPpJpSh.js",
+              "source": "explorer-build",
+              "wire_bytes": 10374,
+              "decoded_bytes": 27109,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/BlcF7GWF.js",
+              "source": "explorer-build",
+              "wire_bytes": 18254,
+              "decoded_bytes": 48100,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+              "source": "explorer-build",
+              "wire_bytes": 1850,
+              "decoded_bytes": 3963,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/chunks/xihTtKlq.js",
+              "source": "explorer-build",
+              "wire_bytes": 79,
+              "decoded_bytes": 65,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+              "source": "explorer-build",
+              "wire_bytes": 151351,
+              "decoded_bytes": 522777,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+              "source": "explorer-build",
+              "wire_bytes": 193,
+              "decoded_bytes": 234,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/assets/2.vzlkIutm.css",
+              "source": "explorer-build",
+              "wire_bytes": 13632,
+              "decoded_bytes": 70936,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+              "source": "explorer-build",
+              "wire_bytes": 355,
+              "decoded_bytes": 629,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-registry.json",
+              "source": "explorer-build",
+              "wire_bytes": 1179,
+              "decoded_bytes": 6168,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/whole-law/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 13774,
+              "decoded_bytes": 109578,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        },
+        "child_transfer": {
+          "wire_bytes": 215798,
+          "decoded_bytes": 1060841,
+          "requests": 9,
+          "explorer_wire_bytes": 20073,
+          "bundle_wire_bytes": 195725,
+          "resources": [
+            {
+              "path": "/okf-uk-legislation/okf-explorer.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2200,
+              "decoded_bytes": 6441,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 2275,
+              "decoded_bytes": 16322,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5208,
+              "decoded_bytes": 36784,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/analysis/overview.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5806,
+              "decoded_bytes": 34163,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/presentation.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 868,
+              "decoded_bytes": 2611,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/facets.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 5122,
+              "decoded_bytes": 43286,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+              "source": "explorer-build",
+              "wire_bytes": 20073,
+              "decoded_bytes": 60043,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/manifest.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 14826,
+              "decoded_bytes": 122728,
+              "content_encoding": "gzip",
+              "range": null
+            },
+            {
+              "path": "/okf-uk-legislation/data/search/shards.json",
+              "source": "legislation-bundle",
+              "wire_bytes": 159420,
+              "decoded_bytes": 738463,
+              "content_encoding": "gzip",
+              "range": null
+            }
+          ]
+        }
+      },
+      "startup_transfer": {
+        "wire_bytes": 413722,
+        "decoded_bytes": 1742223,
+        "requests": 20,
+        "explorer_wire_bytes": 217997,
+        "bundle_wire_bytes": 195725,
+        "resources": [
+          {
+            "path": "/",
+            "source": "explorer-build",
+            "wire_bytes": 565,
+            "decoded_bytes": 1319,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/start.BhYFhHST.js",
+            "source": "explorer-build",
+            "wire_bytes": 92,
+            "decoded_bytes": 82,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/DiPpJpSh.js",
+            "source": "explorer-build",
+            "wire_bytes": 10374,
+            "decoded_bytes": 27109,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/BlcF7GWF.js",
+            "source": "explorer-build",
+            "wire_bytes": 18254,
+            "decoded_bytes": 48100,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/entry/app.DqUrfLCv.js",
+            "source": "explorer-build",
+            "wire_bytes": 1850,
+            "decoded_bytes": 3963,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/0.DHXKMW9a.js",
+            "source": "explorer-build",
+            "wire_bytes": 193,
+            "decoded_bytes": 234,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/chunks/xihTtKlq.js",
+            "source": "explorer-build",
+            "wire_bytes": 79,
+            "decoded_bytes": 65,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/2.DEL77b6k.js",
+            "source": "explorer-build",
+            "wire_bytes": 151351,
+            "decoded_bytes": 522777,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/assets/2.vzlkIutm.css",
+            "source": "explorer-build",
+            "wire_bytes": 13632,
+            "decoded_bytes": 70936,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/nodes/1.ai6TaZgI.js",
+            "source": "explorer-build",
+            "wire_bytes": 355,
+            "decoded_bytes": 629,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-registry.json",
+            "source": "explorer-build",
+            "wire_bytes": 1179,
+            "decoded_bytes": 6168,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/okf-explorer.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2200,
+            "decoded_bytes": 6441,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 2275,
+            "decoded_bytes": 16322,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5208,
+            "decoded_bytes": 36784,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/analysis/overview.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5806,
+            "decoded_bytes": 34163,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/presentation.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 868,
+            "decoded_bytes": 2611,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/facets.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 5122,
+            "decoded_bytes": 43286,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/_app/immutable/workers/largeSearch.worker-CK8gh09v.js",
+            "source": "explorer-build",
+            "wire_bytes": 20073,
+            "decoded_bytes": 60043,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/manifest.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 14826,
+            "decoded_bytes": 122728,
+            "content_encoding": "gzip",
+            "range": null
+          },
+          {
+            "path": "/okf-uk-legislation/data/search/shards.json",
+            "source": "legislation-bundle",
+            "wire_bytes": 159420,
+            "decoded_bytes": 738463,
+            "content_encoding": "gzip",
+            "range": null
+          }
+        ]
+      },
+      "search": {
+        "cold": {
+          "query": "Consumer Credit Act 1974",
+          "elapsed_ms": 819.151
+        },
+        "warm": {
+          "query": "Human Rights Act 1998",
+          "elapsed_ms": 814.689
+        }
+      },
+      "facets": {
+        "inventory": "11 of 14 facets shown",
+        "shown": 11,
+        "available": 14,
+        "rendered_sections": 11,
+        "coloured_segments": 36,
+        "distinct_segment_colours": [
+          "rgb(0, 94, 165)",
+          "rgb(232, 93, 4)",
+          "rgb(0, 112, 60)",
+          "rgb(123, 97, 168)",
+          "rgb(177, 14, 115)",
+          "rgb(0, 131, 143)",
+          "rgb(18, 78, 135)",
+          "rgb(22, 94, 162)",
+          "rgb(26, 110, 188)",
+          "rgb(29, 126, 215)",
+          "rgb(49, 141, 227)",
+          "rgb(75, 156, 231)",
+          "rgb(102, 170, 234)",
+          "rgb(174, 185, 197)",
+          "rgb(212, 53, 28)"
+        ],
+        "layout": {
+          "workspace_width": 1440,
+          "left_panel_width": 320,
+          "stage_width": 1064,
+          "right_panel_width": 44,
+          "stage_share": 0.7389,
+          "left_horizontal_overflow_pixels": 0,
+          "facet_overflow_count": 0
+        }
+      },
+      "graph": {
+        "summary": "19 nodes · 18 relationships",
+        "edge_count": 18,
+        "authorities": [
+          "derived",
+          "official",
+          "unclassified"
+        ],
+        "styles": [
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 210.48202514648438
+          },
+          {
+            "authority": "derived",
+            "stroke": "rgb(87, 124, 168)",
+            "stroke_dasharray": "7px, 4px",
+            "stroke_width": "3px",
+            "path_length": 237.1705322265625
+          },
+          {
+            "authority": "official",
+            "stroke": "rgb(45, 125, 77)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 187.50558471679688
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 229.97695922851562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52262878417969
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 80.71009063720703
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 95.13533020019531
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 120.52262115478516
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 152.95065307617188
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 167.7195281982422
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 178.56639099121094
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 108.38134002685547
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 173.81240844726562
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 183.3431854248047
+          },
+          {
+            "authority": "unclassified",
+            "stroke": "rgb(154, 170, 186)",
+            "stroke_dasharray": "none",
+            "stroke_width": "3px",
+            "path_length": 171.02073669433594
+          }
+        ],
+        "keyboard_edge_activation": "passed"
+      },
+      "keyboard": {
+        "view_activation": "passed",
+        "search_input": "passed",
+        "graph_edge_activation": "passed"
+      },
+      "accessibility": {
+        "serious_or_critical": [],
+        "all_violation_count": 0,
+        "passes": 29,
+        "incomplete": 2
+      },
+      "memory": {
+        "status": "unavailable",
+        "metric": "Chrome DevTools Protocol Performance.JSHeapUsedSize",
+        "reason": "This browser engine does not expose the nominated CDP memory metric",
+        "samples": [
+          {
+            "label": "startup",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "cold-search",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "graph",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          },
+          {
+            "label": "warm-search",
+            "status": "unavailable",
+            "reason": "CDP Performance metrics are Chromium-only"
+          }
+        ]
+      }
+    }
+  ],
+  "failures": [],
+  "limitations": [
+    "The nominated browser-memory measure is the Explorer renderer JavaScript heap exposed by Chrome CDP; Firefox and WebKit do not expose that metric and are recorded unavailable, not passed.",
+    "The source bundle is local and immutable for this run. Live official full-text search is deliberately stubbed so network availability cannot alter search latency or results.",
+    "The Playwright CLI wrapper was attempted first but the current @playwright/mcp package did not expose a playwright-cli executable; the repository-pinned Playwright browser runtime executed this receipt."
+  ]
+}
