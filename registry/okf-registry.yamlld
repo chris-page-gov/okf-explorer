@@ -3,7 +3,7 @@
 "@type": okf:Registry
 title: OKF Explorer Registry
 description: Curated registry of independently publishable OKF bundle examples.
-modified: "2026-07-22T00:00:00Z"
+modified: "2026-07-25T00:00:00Z"
 profile:
   "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
 bundles:
@@ -102,3 +102,31 @@ bundles:
     license:
       "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
     recordTypeLabel: large-corpus
+  - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/uk-whole-law
+    "@type": okf:Bundle
+    title: UK Whole-Law OKF
+    description: Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes.
+    version: 0.3.0
+    status: candidate
+    descriptor:
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json
+    semanticDescriptor:
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld
+    home:
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/whole-law/
+    repository:
+      "@id": https://github.com/chris-page-gov/okf-uk-legislation
+    documentation:
+      "@id": https://chris-page-gov.github.io/okf-uk-legislation/whole-law/
+    rawSubpath: bundle/whole-law
+    releaseArchive:
+      "@id": https://github.com/chris-page-gov/okf-uk-legislation/releases
+    descriptorAlternates:
+      - "@id": https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/main/bundle/whole-law/okf-explorer.json
+    profile:
+      "@id": https://chris-page-gov.github.io/okf-explorer/profile/federation/v1/
+    publisher:
+      "@id": https://github.com/chris-page-gov
+    license:
+      "@id": https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+    recordTypeLabel: federation

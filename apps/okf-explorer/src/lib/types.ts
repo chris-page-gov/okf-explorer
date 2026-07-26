@@ -43,6 +43,16 @@ export type OkfRelationship = {
   kind?: string;
   type?: string;
   label?: string;
+  predicate?: string;
+  authority?: FederationAuthority | RelationshipAuthorityClass | string;
+  authority_class?: RelationshipAuthorityClass | string;
+  derivation?: string;
+  confidence?: string | number;
+  observed_at?: string;
+  stale_after?: string;
+  freshness?: FederationFreshnessState | string;
+  evidence?: Array<string | Record<string, unknown>>;
+  rights?: string | Record<string, unknown>;
   [key: string]: unknown;
 };
 
@@ -71,6 +81,161 @@ export type OkfBundle = {
   nodes?: Record<string, OkfNode>;
   relationships?: OkfRelationship[];
   edges?: OkfRelationship[];
+};
+
+export type RelationshipAuthorityClass =
+  | 'official'
+  | 'derived'
+  | 'model-assisted'
+  | 'unclassified';
+
+export type FederationAvailability =
+  | 'available'
+  | 'partial'
+  | 'restricted'
+  | 'unavailable'
+  | 'planned';
+
+export type FederationFreshnessState = 'current' | 'stale' | 'unknown';
+
+export type FederationRouteKind =
+  | 'published'
+  | 'raw'
+  | 'release'
+  | 'repository'
+  | 'documentation'
+  | 'semantic'
+  | string;
+
+export type FederationAccessRoute = {
+  kind: FederationRouteKind;
+  url: string;
+  purpose?: 'descriptor' | 'source' | 'documentation' | 'archive' | 'semantic' | string;
+  media_type?: string;
+  priority?: number;
+  label?: string;
+};
+
+export type FederationAuthority = {
+  class: RelationshipAuthorityClass | string;
+  label?: string;
+  source?: string;
+};
+
+export type FederationCoverage = {
+  status: FederationAvailability;
+  applicable?: number;
+  represented?: number;
+  assertions?: number;
+  percent?: number;
+  as_of?: string;
+  notes?: string[];
+};
+
+export type FederationFreshness = {
+  state?: FederationFreshnessState;
+  observed_at?: string;
+  snapshot?: string;
+  stale_after?: string;
+};
+
+export type FederationDiscovery = {
+  repository: string;
+  documentation: string;
+  raw_subpath: string;
+  release_archive: string;
+  semantic_descriptor?: string;
+  routes: FederationAccessRoute[];
+};
+
+export type FederationChild = {
+  id: string;
+  title: string;
+  description?: string;
+  role: string;
+  status: FederationAvailability;
+  descriptor?: string;
+  semantic_descriptor?: string;
+  authority: FederationAuthority;
+  coverage: FederationCoverage;
+  freshness: FederationFreshness;
+  discovery: FederationDiscovery;
+  counts?: Record<string, number>;
+  extensions?: Record<string, unknown>;
+};
+
+export type FederationSourceFamily = {
+  id: string;
+  title: string;
+  definition?: string;
+  authority_class: string;
+  coverage_status: FederationAvailability;
+  source_count: number;
+  source_ids?: string[];
+  related_source_classes?: string[];
+  minimum_provenance?: string;
+  implemented_bundle?: string;
+};
+
+export type FederationRelationshipAssertion = OkfRelationship & {
+  schema?: 'okf-relationship-assertion.v2' | string;
+  predicate: string;
+  authority: FederationAuthority;
+  derivation: string;
+};
+
+export type FederationRelationshipSummary = {
+  scope: 'federated-data-plane' | 'federation-control-plane' | string;
+  total: number;
+  by_predicate: Record<string, number>;
+  by_authority: {
+    official: number;
+    derived: number;
+    'model-assisted': number;
+    unclassified?: number;
+    [key: string]: number | undefined;
+  };
+  by_freshness: {
+    current: number;
+    stale: number;
+    unknown: number;
+    [key: string]: number;
+  };
+  observed_at?: string;
+  snapshot?: string;
+};
+
+export type FederationDescriptor = {
+  '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
+  '@id'?: string;
+  schema: 'okf-explorer-federation.v1';
+  kind: 'okf-federation';
+  okf_version: string;
+  title: string;
+  description?: string;
+  version: string;
+  status: string;
+  generated_at: string;
+  snapshot: string;
+  profile: string;
+  publisher: string;
+  license: string;
+  discovery: FederationDiscovery;
+  counts: Record<string, number>;
+  children: FederationChild[];
+  source_families?: FederationSourceFamily[];
+  relationships?: FederationRelationshipAssertion[];
+  relationship_summary: FederationRelationshipSummary;
+  notices?: string[];
+  extensions?: Record<string, unknown>;
+};
+
+export type FederationOverview = {
+  descriptor: FederationDescriptor;
+  requestedUrl: string;
+  resolvedUrl: string;
+  attemptedUrls: string[];
+  inlineRelationshipSummary: FederationRelationshipSummary;
 };
 
 export type LargeResourceReference =
@@ -146,6 +311,7 @@ export type LargeCorpusDescriptor = {
   semantic_descriptor?: string;
   semantic_jsonld?: string;
   semantic_yamlld?: string;
+  discovery?: FederationDiscovery;
   generated_at?: string;
   snapshot?: string;
   snapshot_id?: string;
@@ -163,9 +329,12 @@ export type LargeCorpusDescriptor = {
     analysis_overview?: string;
     presentation?: LargeResourceReference;
     search_manifest?: string;
+    record_locator?: LargeResourceReference;
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    model_enrichment_v2?: LargeResourceReference;
+    official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
     release_data_plane?: LargeResourceReference;
@@ -207,10 +376,13 @@ export type LargeDataManifest = {
     analysis?: string;
     presentation?: string;
     search?: string;
+    record_locator?: LargeResourceReference;
     facets?: string;
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    model_enrichment_v2?: LargeResourceReference;
+    official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
     terms?: LargeResourceReference;
@@ -533,6 +705,48 @@ export type LargeProviderDatapackManifest = {
 export type LargeProviderDatapackCollection = {
   manifest: LargeProviderDatapackManifest;
   packs: LargeProviderDatapack[];
+};
+
+export type LargeRelationshipDatapackChunk = {
+  path: string;
+  sha256: string;
+  bytes: number;
+  records: number;
+  compression: 'gzip' | string;
+  media_type: string;
+};
+
+export type LargeRelationshipDatapackManifest = {
+  schema: 'okf-provider-datapack.v1';
+  id: string;
+  snapshot_id: string;
+  chunks: LargeRelationshipDatapackChunk[];
+  counts?: Record<string, number>;
+};
+
+export type EffectsReconciliationStateId =
+  | 'agreement'
+  | 'live-addition'
+  | 'superseded'
+  | 'inaccessible';
+
+export type EffectsReconciliationState = {
+  id: EffectsReconciliationStateId;
+  label: string;
+  description: string;
+  count: number;
+};
+
+export type LargeEffectsReconciliation = {
+  schema: 'okf-official-effects-reconciliation.v1';
+  snapshotId: string;
+  generatedAt: string;
+  observedAt: string;
+  releaseEffect: string;
+  receipt: string;
+  scope: string;
+  notice: string;
+  states: EffectsReconciliationState[];
 };
 
 export type LargeAnalysisOverview = {
@@ -886,6 +1100,16 @@ export type LargeRelationship = {
   source: string;
   target: string;
   kind: string;
+  predicate?: string;
+  authority?: FederationAuthority | RelationshipAuthorityClass | string;
+  authority_class?: RelationshipAuthorityClass | string;
+  derivation?: string;
+  confidence?: string | number;
+  observed_at?: string;
+  stale_after?: string;
+  freshness?: FederationFreshnessState | string;
+  evidence?: Array<string | Record<string, unknown>>;
+  rights?: string | Record<string, unknown>;
   [key: string]: unknown;
 };
 
@@ -983,6 +1207,23 @@ export type LargeRelationshipAdjacencyManifest = {
   shards?: LargeShardMetadata[];
 };
 
+export type LargeRecordLocatorManifest = {
+  schema: 'okf-record-locator-sharded.v1' | string;
+  algorithm: 'fnv1a32-prefix-2' | string;
+  snapshot?: string;
+  records: number;
+  chunk_size: number;
+  record_chunks: LargeResourceReference[];
+  buckets: Record<string, LargeResourceReference>;
+  bucket_count?: number;
+  route_aliases?: Record<string, string>;
+  collisions?: Array<{
+    alias: string;
+    canonical_route: string;
+    record_id?: string;
+  }>;
+};
+
 export type LargeGraphIndex = {
   edge_counts?: Array<{ kind: string; count: number }>;
   node_counts?: Record<string, number>;
@@ -1034,9 +1275,12 @@ export type LargeCorpusSource = {
   termRegistry?: GovernedTermRegistry;
   termValidation?: GovernedTermValidation;
   providerDatapacks?: LargeProviderDatapackCollection;
+  effectsReconciliation?: LargeEffectsReconciliation;
+  effectsReconciliationError?: string;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;
+  loadDatasetForRoute: (route: string, ordinal?: number) => Promise<LargeDataset | null>;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
   loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;
@@ -1056,6 +1300,11 @@ export type BundleRegistryEntry = {
   status?: string;
   publisher?: string;
   license?: string;
+  repository_url?: string;
+  documentation_url?: string;
+  raw_subpath?: string;
+  release_archive_url?: string;
+  routes?: FederationAccessRoute[];
 };
 
 export type LoadedSource =
@@ -1064,5 +1313,6 @@ export type LoadedSource =
       url: string;
       title: string;
       corpus: NormalizedCorpus;
+      federation?: FederationOverview;
     }
   | LargeCorpusSource;

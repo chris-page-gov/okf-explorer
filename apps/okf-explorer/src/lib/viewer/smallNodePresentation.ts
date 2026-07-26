@@ -399,6 +399,19 @@ export function smallNodeMetadataRows(node: OkfNode): SmallNodeMetadataRow[] {
   add('date_modified', 'Date modified', node.date_modified || node.dateModified);
   add('spatial_coverage', 'Spatial coverage', node.spatial_coverage || node.spatialCoverage);
   add('temporal_coverage', 'Temporal coverage', node.temporal_coverage || node.temporalCoverage);
+  add('federation_role', 'Federation role', node.federation_role);
+  add('federation_status', 'Federation availability', node.federation_status);
+  add('authority_class', 'Authority class', node.authority_class);
+  add('coverage_status', 'Coverage status', node.coverage_status);
+  add('coverage_applicable', 'Applicable records', node.coverage_applicable);
+  add('coverage_represented', 'Represented records', node.coverage_represented);
+  add('coverage_assertions', 'Relationship assertions', node.coverage_assertions);
+  add('coverage_percent', 'Coverage percent', node.coverage_percent);
+  add('coverage_as_of', 'Coverage as of', node.coverage_as_of);
+  add('freshness_state', 'Freshness', node.freshness_state);
+  add('snapshot', 'Snapshot', node.snapshot);
+  add('observed_at', 'Observed', node.observed_at);
+  add('raw_subpath', 'Repository subpath', node.raw_subpath);
 
   const provenance = objectValue(node.provenance);
   if (provenance) {

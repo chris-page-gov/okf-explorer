@@ -244,7 +244,7 @@ test('SMALL-E2E-05 cycles complete non-overlapping label sets and pans from node
   });
   await page.goto(`?${new URLSearchParams({ bundle: crowdedUrl, view: 'graph' }).toString()}#centre`);
 
-  const graph = page.getByRole('img', { name: 'OKF graph' });
+  const graph = page.getByRole('group', { name: 'OKF graph' });
   const pause = page.getByRole('button', { name: 'Pause cycling graph labels' });
   await expect(pause).toBeVisible();
   await expect(page.locator('.graph-summary')).toContainText(/label set \d+\/(?:[2-9]|\d{2,})/);

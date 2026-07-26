@@ -107,6 +107,22 @@ canonical `semantic_descriptor` and explicit `semantic_yamlld` and
 `semantic_jsonld` entrypoints. The current exemplar makes YAML-LD canonical
 while retaining both serializations; the UI does not hard-code that choice.
 
+## Federation conformance
+
+`okf-explorer-federation.v1` is also an Explorer projection, not a replacement
+for an OKF root index. A Whole-Law publication therefore keeps its authored
+OKF 0.2 Markdown/YAML-LD layer and generates the federation JSON descriptor as
+a discovery control plane.
+
+Federation loading is overview-first and passive. It validates child
+availability, coverage, authority, freshness and declared routes without
+loading a child. `okf-relationship-assertion.v2` preserves official,
+deterministically derived, model-assisted and unclassified authority as
+different evidence states. The Viewer does not promote one state into another.
+
+The complete contract, YAML-LD transport rules and generator checks are in
+[Federated OKF bundles](federated-bundles.md).
+
 ## Compatibility acceptance
 
 The v0.2 release was accepted locally against both sides of the ONS migration:

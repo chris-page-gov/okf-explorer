@@ -189,6 +189,56 @@
           "version": [
             "0.2.0"
           ]
+        },
+        {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/uk-whole-law",
+          "@type": "okf:Bundle",
+          "conformsTo": [
+            "https://chris-page-gov.github.io/okf-explorer/profile/federation/v1/"
+          ],
+          "description": [
+            "Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes."
+          ],
+          "descriptor": [
+            "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json"
+          ],
+          "descriptorAlternates": [
+            "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/main/bundle/whole-law/okf-explorer.json",
+            "https://github.com/chris-page-gov/okf-uk-legislation/releases"
+          ],
+          "documentation": [
+            "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/"
+          ],
+          "home": [
+            "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/"
+          ],
+          "license": [
+            "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          ],
+          "publisher": [
+            "https://github.com/chris-page-gov"
+          ],
+          "rawSubpath": [
+            "bundle/whole-law"
+          ],
+          "recordTypeLabel": [
+            "federation"
+          ],
+          "repository": [
+            "https://github.com/chris-page-gov/okf-uk-legislation"
+          ],
+          "semanticDescriptor": [
+            "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld"
+          ],
+          "status": [
+            "candidate"
+          ],
+          "title": [
+            "UK Whole-Law OKF"
+          ],
+          "version": [
+            "0.3.0"
+          ]
         }
       ],
       "conformsTo": [
@@ -198,7 +248,7 @@
         "Curated registry of independently publishable OKF bundle examples."
       ],
       "modified": [
-        "2026-07-22T00:00:00Z"
+        "2026-07-25T00:00:00Z"
       ],
       "title": [
         "OKF Explorer Registry"

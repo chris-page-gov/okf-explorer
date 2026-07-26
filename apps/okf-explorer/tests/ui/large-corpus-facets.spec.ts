@@ -51,6 +51,120 @@ async function dragFacetOnto(page: Page, sourceKey: string, targetKey: string) {
   await dataTransfer.dispose();
 }
 
+const HUGE_FACET_ORIGIN = 'https://huge-facets.fixture.test';
+const HUGE_FACET_URL = `${HUGE_FACET_ORIGIN}/okf-explorer.json`;
+const hugeFacetRows = {
+  category: [
+    { value: 'eu-origin', count: 159_773 },
+    { value: 'secondary', count: 155_712 },
+    { value: 'primary', count: 43_170 },
+    { value: 'draft', count: 7_131 }
+  ]
+};
+
+async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
+  await page.context().route(`${HUGE_FACET_ORIGIN}/**`, async (route) => {
+    const path = new URL(route.request().url()).pathname;
+    requestLog.push(path);
+    const respond = (body: unknown, status = 200) => route.fulfill({
+      status,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: JSON.stringify(body)
+    });
+    if (path === '/okf-explorer.json') return respond({
+      schema: 'okf-explorer-large-corpus.v1',
+      kind: 'okf-large-corpus',
+      title: 'Huge legislation facet fixture',
+      description: 'A large corpus whose legacy search index has no filter postings.',
+      counts: { datasets: 365_786, records: 365_786, relationships: 853_883 },
+      vocabulary: { record_plural: 'legal works', search_placeholder: 'Search legislation' },
+      entrypoints: {
+        data_manifest: 'data/manifest.json',
+        overview_index: 'data/overview.json',
+        analysis_overview: 'data/analysis.json',
+        search_manifest: 'search/manifest.json'
+      }
+    });
+    if (path === '/data/manifest.json') return respond({
+      title: 'Huge legislation facet fixture',
+      generated_at: '2026-07-25T00:00:00Z',
+      counts: { datasets: 365_786, records: 365_786, relationships: 853_883 },
+      indexes: {
+        overview: 'data/overview.json',
+        analysis: 'data/analysis.json',
+        facets: 'data/facets.json',
+        search: 'search/manifest.json'
+      },
+      chunks: {
+        datasets: ['data/works-0.json.gz', 'data/works-1.json.gz'],
+        resources: [],
+        publishers: [],
+        relationships: ['data/relationships-0.json.gz']
+      }
+    });
+    if (path === '/data/overview.json') return respond({
+      schema: 'okf-overview.v1',
+      title: 'Huge legislation facet fixture',
+      generated_at: '2026-07-25T00:00:00Z',
+      counts: { datasets: 365_786, records: 365_786, relationships: 853_883 },
+      facet_previews: hugeFacetRows
+    });
+    if (path === '/data/analysis.json') return respond({
+      schema: 'okf-explorer-analysis.v1',
+      generated_at: '2026-07-25T00:00:00Z',
+      summary: { title: 'Legislation overview', record_count: 365_786, relationship_count: 853_883 },
+      facet_analysis: [{
+        key: 'category',
+        label: 'Category',
+        coverage: 1,
+        cardinality: 4,
+        top_share: 0.44,
+        entropy: 0.8,
+        expected_reduction: 0.56,
+        recommended_control: 'searchable multi-select',
+        recommendation: 'primary',
+        value_type: 'nominal',
+        values: hugeFacetRows.category
+      }]
+    });
+    if (path === '/data/facets.json') return respond(hugeFacetRows);
+    if (path === '/search/manifest.json') {
+      await new Promise((resolve) => setTimeout(resolve, 1_200));
+      return respond({
+        schema: 'okf-static-search.v1',
+        token_min_length: 2,
+        prefix_min_length: 3,
+        lexicon_shard_length: 2,
+        result_limit: 200,
+        result_doc_chunk_size: 1000,
+        weights: {},
+        field_masks: {},
+        counts: {
+          documents: 365_786,
+          max_postings_per_token: 10_000,
+          postings_shards: 0,
+          doc_map_shards: 1
+        },
+        entrypoints: {
+          lexicon: {},
+          prefixes: {},
+          postings: [],
+          result_docs: [],
+          facets: 'data/facets.json',
+          doc_map: 'search/doc-map.json'
+        }
+      });
+    }
+    if (path === '/search/doc-map.json') return respond({});
+    if (path.startsWith('/data/works-')) return respond([{ name: 'must-not-load', title: 'Must not load' }]);
+    if (path.startsWith('/data/relationships-')) {
+      return respond([{ source: 'dataset/must-not-load', target: 'dataset/must-not-load', kind: 'must-not-load' }]);
+    }
+    return respond({ error: `No fixture for ${path}` }, 404);
+  });
+}
+
 test.describe('large-corpus facet interaction contract', () => {
   test('FACET-E2E-01 documents the initial semantic inventory, navigation, tabs and compact controls', async ({ page }) => {
     const requests: string[] = [];
@@ -77,6 +191,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(page.getByRole('button', { name: 'Guidance', exact: true })).toHaveAttribute('aria-pressed', 'false');
     await expect(page.getByRole('button', { name: 'Reset', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Clear', exact: true })).toBeVisible();
+    await expect(page.locator('.facet-inventory')).toHaveText('6 of 7 facets shown');
 
     expect(await displayedFacetOrder(page)).toEqual([...suggestedFacetKeys]);
     await expect(facetSection(page, 'source_surface')).toHaveCount(0);
@@ -85,13 +200,14 @@ test.describe('large-corpus facet interaction contract', () => {
     }
 
     // Low-cardinality distributions are useful while closed, so every one is
-    // present before a value list is opened. Their segments also expose a
-    // categorical palette with deliberately alternating tones.
+    // rendered from the compact facet index before a value list is opened.
+    // The expensive filter postings stay deferred until a facet is opened or
+    // selected. Segments still expose the categorical palette.
     for (const key of ['derivation_mode', 'frequency', 'geography_level', 'state', 'topic']) {
       await expect(facetToggle(page, key)).toHaveAttribute('aria-expanded', 'false');
       await expect(facetSection(page, key).locator('.facet-distribution-bar')).toBeVisible();
       await expect(facetSection(page, key).locator('.facet-distribution-segment').first()).toBeVisible();
-      expect(requests).toContain(`/search/filter-${key}.json`);
+      expect(requests).not.toContain(`/search/filter-${key}.json`);
     }
     const leftPanelBox = await page.locator('.left-panel').boundingBox();
     const firstFacetBox = await facetSection(page, 'derivation_mode').boundingBox();
@@ -114,6 +230,53 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(facetSection(page, 'population_type').locator('.facet-search-ghost')).toContainText(
       'Search values · e.g. All households · Children · Older people'
     );
+  });
+
+  test('FACET-E2E-01A keeps overview-first bundle responses below one MiB', async ({ page }) => {
+    const requests: string[] = [];
+    const responseBytes: number[] = [];
+    await openOnsFacetFixture(page, requests, {
+      responseBytes,
+      // Make an accidental eager filter-posting fetch unambiguously breach the
+      // budget while leaving the compact overview/control plane unchanged.
+      filterPaddingBytes: 1_100_000
+    });
+    await page.waitForLoadState('networkidle');
+
+    expect(requests.filter((path) => path.startsWith('/search/filter-'))).toEqual([]);
+    expect(responseBytes.reduce((total, bytes) => total + bytes, 0)).toBeLessThan(1_048_576);
+    await expect(facetSection(page, 'derivation_mode').locator('.facet-distribution-bar')).toBeVisible();
+  });
+
+  test('FACET-E2E-12 opens complete facet indexes without hydrating a huge record plane', async ({ page }) => {
+    const requests: string[] = [];
+    await installHugeNoPostingsFixture(page, requests);
+    await page.goto(`?bundle=${encodeURIComponent(HUGE_FACET_URL)}#overview`);
+
+    const category = facetSection(page, 'category');
+    await expect(category).toBeVisible();
+    await expect(category.locator('.facet-toggle small')).toHaveText('4 values');
+    await expect(category.locator('.facet-distribution-bar')).toBeVisible();
+    await expect(category.locator('.facet-distribution-segment')).toHaveCount(4);
+
+    await facetToggle(page, 'category').click();
+    await expect(category.locator('.facet-values [data-facet-value]')).toHaveCount(4);
+    await expect(page.getByText('Loading record index...')).toHaveCount(0);
+    expect(requests.filter((path) => path.startsWith('/data/works-'))).toEqual([]);
+
+    await page.getByRole('button', { name: 'Links', exact: true }).click();
+    await page.getByRole('button', { name: /Load full relationship index/ }).click();
+    await expect(page.locator('.error')).toContainText(
+      'Full relationship hydration is disabled for this 853,883-relationship bundle'
+    );
+    expect(requests.filter((path) => path.startsWith('/data/relationships-'))).toEqual([]);
+
+    await page.setViewportSize({ width: 640, height: 900 });
+    const left = await page.locator('.left-panel').boundingBox();
+    const stage = await page.locator('.stage').boundingBox();
+    expect(left!.x).toBeLessThan(stage!.x);
+    expect(left!.y).toBe(stage!.y);
+    expect(left!.width + stage!.width).toBeLessThanOrEqual(641);
   });
 
   test('FACET-E2E-02 previews from bars and lists, commits explicitly, and never assigns right-click to Adjust', async ({ page }) => {
@@ -167,7 +330,8 @@ test.describe('large-corpus facet interaction contract', () => {
   });
 
   test('FACET-E2E-03 opens aggregate bars and replaces high cardinality with searchable examples', async ({ page }) => {
-    await openOnsFacetFixture(page);
+    const requests: string[] = [];
+    await openOnsFacetFixture(page, requests);
 
     const aggregate = facetSegment(page, 'derivation_mode', '__other__');
     await expect(aggregate).toHaveAttribute('aria-label', /Open derivation mode to find 4 other values/);
@@ -189,7 +353,10 @@ test.describe('large-corpus facet interaction contract', () => {
 
     await page.getByRole('button', { name: 'Clear', exact: true }).click();
     await page.getByPlaceholder('Search ONS products, concepts and geographies').fill('no matching fixture term');
-    await expect(facetSection(page, 'derivation_mode').locator('.facet-toggle small')).toHaveText('0 values');
+    await expect.poll(() => requests.includes('/search/filter-population_type.json')).toBe(true);
+    expect(requests).not.toContain('/search/filter-derivation_mode.json');
+    await expect(facetSection(page, 'population_type').locator('.facet-toggle small')).toHaveText('0 values');
+    await expect(facetSection(page, 'derivation_mode').locator('.facet-toggle small')).toHaveText('8 values');
   });
 
   test('FACET-E2E-04 pins several open facets directly and persists the open workspace', async ({ page }) => {
@@ -288,7 +455,7 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(requests).not.toContain('/data/datasets.json');
 
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
-    await expect(page.getByRole('img', { name: 'Large corpus graph' })).toBeVisible();
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
     await expect.poll(() => requests.includes('/data/datasets.json')).toBe(true);
     await expect(page.locator('[data-detail-field="matched-records"]')).toHaveText(`${ONS_REGION_COUNT} in current reduction`);
 
@@ -486,7 +653,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     await expect(page.locator('.graph-summary')).toContainText('21 nodes · 20 relationships');
 
@@ -545,7 +712,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     const summary = page.locator('.graph-summary');
     const legend = page.getByLabel('Node type key');
     await expect(graph).toBeVisible();
@@ -647,7 +814,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     const labelsButton = page.getByRole('button', { name: /^Pause cycling graph labels/ });
     await expect(labelsButton).toContainText(/^Labels \(\d+\/\d+\)$/);
     await labelsButton.click();
@@ -724,7 +891,7 @@ test.describe('large-corpus facet interaction contract', () => {
 
     const stage = page.locator('.stage');
     const toolbar = page.locator('.graph-toolbar');
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     expect(await toolbar.evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
 

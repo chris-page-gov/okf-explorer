@@ -508,7 +508,7 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
     await expect(mapRecord(page, 'Large England map service')).toBeVisible();
 
     await page.getByRole('button', { name: 'Graph', exact: true }).click();
-    await expect(page.getByRole('img', { name: 'Large corpus graph' })).toBeVisible();
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
     await expect(page.locator('.error')).toHaveCount(0);
   });
 

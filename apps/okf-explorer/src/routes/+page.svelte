@@ -3,8 +3,11 @@
   import { pushState, replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
+    FederationAccessRoute,
+    FederationChild,
     LargeDataset,
     LargeDatasetAlternative,
+    LargeCorpusDescriptor,
     LargeExplorerDisplay,
     LargeExplorerPresentation,
     LargeExplorerPresentationFacet,
@@ -19,6 +22,7 @@
     NormalizedCorpus,
     OkfNode,
     OkfRelationship,
+    RelationshipAuthorityClass,
     SearchResultDoc,
     SearchSuggestion,
     ViewMode
@@ -56,6 +60,8 @@
     governedTermIdsForRecord,
     semanticResources
   } from '$lib/viewer/governedTerms';
+  import EffectsReconciliationPanel from '$lib/viewer/EffectsReconciliationPanel.svelte';
+  import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
     renderSafeMarkdown,
@@ -99,7 +105,13 @@
     type FacetPreferences
   } from '$lib/viewer/facetPresentation';
   import { providerDatapacksForRecord } from '$lib/viewer/providerDatapack';
-  import { fetchJson, fetchSourceJson, movedBundleTarget } from '$lib/sources/fetch';
+  import {
+    fetchSourceJson,
+    fetchStructuredDocumentWithFallback,
+    movedBundleTarget,
+    parseStructuredDocumentText
+  } from '$lib/sources/fetch';
+  import { isFederationDescriptor, loadFederationOverview } from '$lib/sources/federation';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
@@ -108,6 +120,10 @@
     okfConceptPresentation,
     trustTierLabel
   } from '$lib/okfV02';
+  import {
+    relationshipPresentation,
+    summarizeRelationships
+  } from '$lib/viewer/relationshipPresentation';
   import {
     analysisFacetForKey as findAnalysisFacetForKey,
     analysisFacetRows as getAnalysisFacetRows,
@@ -156,6 +172,8 @@
   const DEFAULT_GRAPH_WIDTH = 900;
   const GRAPH_HEIGHT = 620;
   const FACET_PAGE_SIZE = 30;
+  const MAX_SAFE_FULL_INDEX_RECORDS = 50_000;
+  const MAX_SAFE_FULL_RELATIONSHIPS = 100_000;
   const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1';
   const DEFAULT_FACET_SEARCH_THRESHOLD = 48;
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
@@ -167,9 +185,16 @@
   const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
   const GRAPH_HIDDEN_EDGE_PARAM = 'graph.hideEdge';
   const GRAPH_HIDDEN_NODE_TYPE_PARAM = 'graph.hideType';
+  const GRAPH_HIDDEN_AUTHORITY_PARAM = 'graph.hideAuthority';
   const GRAPH_KEY_MODE_PARAM = 'graph.key';
   const GRAPH_LABELS_PARAM = 'graph.labels';
   const GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM = 'graph.relationship';
+  const RELATIONSHIP_AUTHORITY_CLASSES: RelationshipAuthorityClass[] = [
+    'official',
+    'derived',
+    'model-assisted',
+    'unclassified'
+  ];
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
@@ -250,6 +275,16 @@
     predicate?: string;
     weightValue?: number;
     weightMetric?: string;
+    authorityClass?: RelationshipAuthorityClass;
+    authorityLabel?: string;
+    authoritySource?: string;
+    derivation?: string;
+    confidence?: string;
+    observedAt?: string;
+    staleAfter?: string;
+    freshness?: 'current' | 'stale' | 'unknown';
+    evidenceUrls?: string[];
+    rights?: string;
   };
 
   type LargeGraphGrouping = {
@@ -329,6 +364,8 @@
   let largeFacetIndexLoading = $state(false);
   let largeBaselineFacetRows = $state<Record<string, LargeFacetRow[]>>({});
   let largeIndex = $state<LargeFullIndex | null>(null);
+  let largeTargetedDatasets = $state<Map<string, LargeDataset>>(new Map());
+  let largeTargetedLoadingRoute = $state('');
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
   let largeRelationshipsTruncated = $state(false);
@@ -393,6 +430,7 @@
   let graphHiddenRelationshipGroups = $state<string[]>([]);
   let graphHiddenRelationshipEdges = $state<string[]>([]);
   let graphHiddenNodeTypes = $state<string[]>([]);
+  let graphHiddenRelationshipAuthorities = $state<RelationshipAuthorityClass[]>([]);
   let graphHighlightedRelationshipGroup = $state('');
   let relationshipDetailTab = $state<RelationshipDetailTab>('relationship');
   let graphExpandedRelationshipGroups = $state<string[]>([]);
@@ -409,6 +447,7 @@
   let edgePanelResizeCleanup: (() => void) | null = null;
 
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
+  let federationOverview = $derived(source?.kind === 'small' ? source.federation : undefined);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
   let typeList = $derived([...new Set(nodeList.map((node) => node.type || 'Node'))].sort((a, b) => a.localeCompare(b)));
   let baseVisibleNodes = $derived(
@@ -430,11 +469,17 @@
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
+  let selectedFederationChild: FederationChild | undefined = $derived(
+    federationOverview?.descriptor.children.find((child) => child.id === detailNode?.id)
+  );
   let visibleNodeIds = $derived(new Set(visibleNodes.map((node) => node.id)));
   let scopedRelationships = $derived(
     smallCorpus
       ? smallCorpus.relationships.filter((relationship) => visibleNodeIds.has(relationship.source) && visibleNodeIds.has(relationship.target))
       : []
+  );
+  let scopedRelationshipSummary = $derived(
+    summarizeRelationships(scopedRelationships as Array<Record<string, unknown>>)
   );
   let detailRelationships = $derived(
     smallCorpus && detailNode
@@ -571,6 +616,13 @@
     graphHiddenRelationshipGroups = boundedGraphParams(params, GRAPH_HIDDEN_GROUP_PARAM, 32);
     graphHiddenRelationshipEdges = boundedGraphParams(params, GRAPH_HIDDEN_EDGE_PARAM, 160);
     graphHiddenNodeTypes = boundedGraphParams(params, GRAPH_HIDDEN_NODE_TYPE_PARAM, 32);
+    graphHiddenRelationshipAuthorities = boundedGraphParams(
+      params,
+      GRAPH_HIDDEN_AUTHORITY_PARAM,
+      RELATIONSHIP_AUTHORITY_CLASSES.length
+    ).filter((value): value is RelationshipAuthorityClass =>
+      RELATIONSHIP_AUTHORITY_CLASSES.includes(value as RelationshipAuthorityClass)
+    );
     graphHighlightedRelationshipGroup = params.get(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM)?.slice(0, 512) || '';
   }
 
@@ -581,6 +633,7 @@
       GRAPH_HIDDEN_GROUP_PARAM,
       GRAPH_HIDDEN_EDGE_PARAM,
       GRAPH_HIDDEN_NODE_TYPE_PARAM,
+      GRAPH_HIDDEN_AUTHORITY_PARAM,
       GRAPH_KEY_MODE_PARAM,
       GRAPH_LABELS_PARAM,
       GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM
@@ -594,6 +647,9 @@
     graphHiddenRelationshipGroups.forEach((key) => params.append(GRAPH_HIDDEN_GROUP_PARAM, key));
     graphHiddenRelationshipEdges.forEach((key) => params.append(GRAPH_HIDDEN_EDGE_PARAM, key));
     graphHiddenNodeTypes.forEach((type) => params.append(GRAPH_HIDDEN_NODE_TYPE_PARAM, type));
+    graphHiddenRelationshipAuthorities.forEach((authority) =>
+      params.append(GRAPH_HIDDEN_AUTHORITY_PARAM, authority)
+    );
     if (graphHighlightedRelationshipGroup) {
       params.set(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM, graphHighlightedRelationshipGroup);
     }
@@ -779,6 +835,7 @@
       if (!preserveSerializedFilters) largeFacetFilters = {};
       return;
     }
+    rightCollapsed = false;
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
       activeFacetKey = facetRoute.key;
@@ -793,7 +850,11 @@
     largeGraphCenterRoute = route;
   }
 
-  async function loadSource(url: string) {
+  async function loadSource(
+    url: string,
+    declaredRoutes: FederationAccessRoute[] = [],
+    declaredRawSubpath = ''
+  ) {
     const requestId = ++loadRequest;
     largeSearchRequest += 1;
     const absoluteUrl = toAbsoluteUrl(url);
@@ -824,6 +885,8 @@
     largeFacetIndexLoading = false;
     largeBaselineFacetRows = {};
     largeIndex = null;
+    largeTargetedDatasets = new Map();
+    largeTargetedLoadingRoute = '';
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
     largeRelationshipsTruncated = false;
@@ -859,6 +922,7 @@
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
     graphHiddenNodeTypes = [];
+    graphHiddenRelationshipAuthorities = [];
     graphHighlightedRelationshipGroup = '';
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
@@ -873,24 +937,73 @@
       if (parsed.origin !== location.origin && parsed.protocol !== 'https:') {
         throw new Error('Only https:// bundle URLs (or same-origin paths) can be loaded.');
       }
-      const raw = await fetchJson<Record<string, unknown>>(absoluteUrl);
+      const fetched = await fetchStructuredDocumentWithFallback<Record<string, unknown>>(
+        absoluteUrl,
+        declaredRoutes
+      );
+      const raw = fetched.document;
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+        throw new Error(`${fetched.responseUrl}: bundle descriptor must be an object`);
+      }
       if (requestId !== loadRequest) return;
-      const movedTo = movedBundleTarget(raw, absoluteUrl);
+      const movedTo = movedBundleTarget(raw, fetched.responseUrl);
       if (movedTo) {
         await loadSource(movedTo);
         return;
       }
-      if (raw.kind === 'okf-large-corpus') {
-        const large = await loadLargeCorpus(absoluteUrl);
+      const resolvedUrl = fetched.responseUrl;
+      if (isFederationDescriptor(raw)) {
+        const federation = loadFederationOverview(
+          raw,
+          absoluteUrl,
+          resolvedUrl,
+          fetched.attemptedUrls
+        );
+        source = {
+          kind: 'small',
+          url: resolvedUrl,
+          title: federation.corpus.title,
+          corpus: federation.corpus,
+          federation: federation.overview
+        };
+        leftCollapsed = true;
+        rightCollapsed = true;
+        const availableTypes = [...new Set(Object.values(federation.corpus.nodes).map((node) => node.type || 'Node'))];
+        visibleTypes = new Set(availableTypes);
+        history = rememberHistory({
+          url: resolvedUrl,
+          title: federation.corpus.title,
+          description: federation.corpus.description,
+          kind: 'federation',
+          semantic_url: federation.overview.descriptor.discovery.semantic_descriptor,
+          home_url: federation.overview.descriptor.discovery.documentation,
+          profile: federation.overview.descriptor.profile,
+          version: federation.overview.descriptor.version,
+          status: federation.overview.descriptor.status,
+          publisher: federation.overview.descriptor.publisher,
+          license: federation.overview.descriptor.license,
+          repository_url: federation.overview.descriptor.discovery.repository,
+          documentation_url: federation.overview.descriptor.discovery.documentation,
+          raw_subpath: federation.overview.descriptor.discovery.raw_subpath,
+          release_archive_url: federation.overview.descriptor.discovery.release_archive,
+          routes: federation.overview.descriptor.discovery.routes
+        });
+        bundleUrl = resolvedUrl;
+        const hash = safeDecodeHash();
+        selectedId = hash && hash !== 'overview' && federation.corpus.nodes[hash] ? hash : '';
+      } else if (raw.kind === 'okf-large-corpus') {
+        const large = await loadLargeCorpus(resolvedUrl, raw as unknown as LargeCorpusDescriptor);
         if (requestId !== loadRequest) return;
         source = large;
+        leftCollapsed = false;
+        rightCollapsed = true;
         loadFacetPreferences();
         void ensureLargeFacetIndex();
         detailPanelTab = providerDefaultDetailTab();
         leftPanelTab = providerDefaultLeftTab();
         const searchManifest = large.searchManifest;
         history = rememberHistory({
-          url: absoluteUrl,
+          url: resolvedUrl,
           title: large.descriptor.title,
           description: large.descriptor.description,
           kind: 'large-corpus',
@@ -901,7 +1014,7 @@
           publisher: large.descriptor.publisher,
           license: large.descriptor.license
         });
-        bundleUrl = absoluteUrl;
+        bundleUrl = resolvedUrl;
         const params = new URLSearchParams(location.search);
         // The v2 manifest may advertise additional corpus-specific filter keys. Keep
         // syntactically valid URL filters until that manifest is ready, then validate.
@@ -914,9 +1027,11 @@
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
-          if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
-            void ensureLargeFullIndex();
+          rightCollapsed = false;
+          if (routeKind(hash) === 'dataset' && largeHasRecordLocator()) {
+            void ensureLargeDataset(hash);
           }
+          if (largeSelectedRoute || largeInspectedRoute) void hydrateForView(activeView);
         } else if (Object.keys(largeFacetFilters).length && !searchManifest) {
           void ensureLargeFullIndex();
         }
@@ -924,7 +1039,7 @@
         if (searchManifest) void initialiseLargeSearch(large, searchManifest, query, requestId);
       } else {
         const corpus = normalizeSmallBundle(raw);
-        source = { kind: 'small', url: absoluteUrl, title: smallBundleTitle(corpus), corpus };
+        source = { kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus };
         const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
         const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
         const requestedTypes = retrieval.filters.type || [];
@@ -934,21 +1049,48 @@
         if (!visibleTypes.size) visibleTypes = new Set(availableTypes);
         smallQuery = retrieval.query;
         retrievalSort = retrieval.sort;
-        history = rememberHistory({ url: absoluteUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
-        bundleUrl = absoluteUrl;
+        history = rememberHistory({ url: resolvedUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
+        bundleUrl = resolvedUrl;
         const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
       }
-      syncBundleUrlParam(absoluteUrl);
+      if (source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)) {
+        rightCollapsed = false;
+      }
+      syncBundleUrlParam(bundleUrl);
       suggestionsOpen = false;
     } catch (err) {
       if (requestId !== loadRequest) return;
       source = null;
-      error = err instanceof Error ? err.message : String(err);
+      const detail = err instanceof Error ? err.message : String(err);
+      error = declaredRawSubpath
+        ? `${detail} Declared repository subpath: ${declaredRawSubpath}.`
+        : detail;
     } finally {
       if (requestId === loadRequest) loading = false;
     }
+  }
+
+  function loadFederationChild(child: FederationChild) {
+    const primary = child.descriptor || child.discovery.routes.find((route) =>
+      route.purpose === 'descriptor' ||
+      (!route.purpose && ['published', 'raw'].includes(route.kind))
+    )?.url;
+    if (!primary) {
+      error = `${child.title} is ${child.status}; no loadable descriptor is declared. Use its documentation or repository route.`;
+      return;
+    }
+    // A control-plane child id is not a valid route in the child data plane.
+    // Reset the URL and view before loading so `#uk-legislation` cannot be
+    // mistaken for a record route and trigger eager full-index hydration.
+    const next = new URL(location.href);
+    next.search = '';
+    next.searchParams.set('bundle', primary);
+    next.hash = 'overview';
+    activeView = 'reader';
+    replaceState(next, {});
+    void loadSource(primary, child.discovery.routes, child.discovery.raw_subpath);
   }
 
   async function initialiseLargeSearch(
@@ -977,7 +1119,6 @@
       loadFacetPreferences();
       await ensureLargeFacetIndex();
       if (requestId !== loadRequest || source?.kind !== 'large' || source.url !== large.url) return;
-      void preloadLargeFacetDistributions(client, large, requestId);
       const retrieval = parseRetrievalState(
         new URLSearchParams(location.search),
         largeSourceFacetKeys(large, client.manifest)
@@ -1018,6 +1159,8 @@
     largeFacetIndexLoading = false;
     largeBaselineFacetRows = {};
     largeIndex = null;
+    largeTargetedDatasets = new Map();
+    largeTargetedLoadingRoute = '';
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
     largeSearchResponse = null;
@@ -1035,6 +1178,7 @@
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
     graphHiddenNodeTypes = [];
+    graphHiddenRelationshipAuthorities = [];
     graphHighlightedRelationshipGroup = '';
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
@@ -1042,12 +1186,26 @@
     loading = true;
     error = '';
     try {
-      const raw = JSON.parse(await file.text()) as Record<string, unknown>;
+      const fileUrl = `file:///${encodeURIComponent(file.name)}`;
+      const raw = parseStructuredDocumentText<Record<string, unknown>>(
+        await file.text(),
+        file.name,
+        file.type
+      );
       if (raw.kind === 'okf-large-corpus') {
         throw new Error('Large-corpus descriptors need remote chunk URLs; publish the descriptor or load it by URL.');
       }
-      const corpus = normalizeSmallBundle(raw);
-      source = { kind: 'small', url: `file:${file.name}`, title: corpus.title, corpus };
+      const federation = isFederationDescriptor(raw)
+        ? loadFederationOverview(raw, fileUrl)
+        : null;
+      const corpus = federation?.corpus || normalizeSmallBundle(raw);
+      source = {
+        kind: 'small',
+        url: fileUrl,
+        title: corpus.title,
+        corpus,
+        ...(federation ? { federation: federation.overview } : {})
+      };
       geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
       selectedId = Object.keys(corpus.nodes)[0] || '';
@@ -1069,6 +1227,12 @@
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
+    const selectedRoute = largeSelectedRoute || largeInspectedRoute;
+    if (selectedRoute && routeKind(selectedRoute) === 'dataset' && largeHasRecordLocator()) {
+      await ensureLargeDataset(selectedRoute);
+      if (view === 'graph' || view === 'links') await ensureLargeRouteRelationships(selectedRoute);
+      return;
+    }
     if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
     if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
   }
@@ -1112,6 +1276,21 @@
     if (source?.kind !== 'large') return null;
     if (largeIndex) return largeIndex;
     const loadingSource = source;
+    const advertisedRecords = Math.max(
+      Number(loadingSource.descriptor.counts?.records || 0),
+      Number(loadingSource.descriptor.counts?.datasets || 0),
+      Number(loadingSource.descriptor.counts?.works || 0),
+      Number(loadingSource.manifest.counts?.records || 0),
+      Number(loadingSource.manifest.counts?.datasets || 0),
+      Number(loadingSource.manifest.counts?.works || 0)
+    );
+    if (advertisedRecords > MAX_SAFE_FULL_INDEX_RECORDS) {
+      error =
+        `Full-corpus hydration is disabled for this ${advertisedRecords.toLocaleString()}-record bundle ` +
+        `because it would exceed the browser memory safety limit. The overview, static search, facets, ` +
+        `relationship summaries and targeted records remain available; reload the bundle to retry any failed indexed resource.`;
+      return null;
+    }
     const requestId = loadRequest;
     largeFullLoading = true;
     try {
@@ -1130,6 +1309,48 @@
       return null;
     } finally {
       if (requestId === loadRequest && source === loadingSource) largeFullLoading = false;
+    }
+  }
+
+  function largeHasRecordLocator(): boolean {
+    return Boolean(
+      source?.kind === 'large' &&
+      (source.descriptor.entrypoints.record_locator || source.manifest.indexes.record_locator)
+    );
+  }
+
+  async function ensureLargeDataset(
+    route: string,
+    result?: Pick<SearchResultDoc, 'ordinal'>
+  ): Promise<LargeDataset | null> {
+    if (source?.kind !== 'large' || routeKind(route) !== 'dataset') return null;
+    const existing = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(routeValue(route));
+    if (existing) return existing;
+    if (!largeHasRecordLocator()) return null;
+    const loadingSource = source;
+    const requestId = loadRequest;
+    largeTargetedLoadingRoute = route;
+    try {
+      const dataset = await loadingSource.loadDatasetForRoute(route, result?.ordinal);
+      if (requestId !== loadRequest || source !== loadingSource) return null;
+      if (!dataset) {
+        error = `No targeted record location is published for ${route}. Search and corpus-level exploration remain available.`;
+        return null;
+      }
+      largeTargetedDatasets = new Map(largeTargetedDatasets).set(route, dataset);
+      error = '';
+      return dataset;
+    } catch (err) {
+      if (requestId === loadRequest && source === loadingSource) {
+        error =
+          `The selected record could not be loaded without hydrating the whole corpus: ` +
+          `${err instanceof Error ? err.message : String(err)}. Reload the bundle to retry.`;
+      }
+      return null;
+    } finally {
+      if (requestId === loadRequest && source === loadingSource && largeTargetedLoadingRoute === route) {
+        largeTargetedLoadingRoute = '';
+      }
     }
   }
 
@@ -1156,45 +1377,28 @@
     }
   }
 
-  async function preloadLargeFacetDistributions(
-    client: LargeSearchClient,
-    large: Extract<LoadedSource, { kind: 'large' }>,
-    requestId: number
-  ) {
-    const keys = providerOrderedLargeFacetKeys().filter((key) => supportsWorkerFilter(key) && !facetUsesSearch(key));
-    if (!keys.length) return;
-    try {
-      const response = await client.query({
-        query: '',
-        filters: {},
-        sort: 'newest',
-        ranking: 'weighted',
-        facet_keys: keys,
-        include_results: false
-      });
-      if (
-        requestId !== loadRequest ||
-        source?.kind !== 'large' ||
-        source.url !== large.url ||
-        largeSearchClient !== client
-      ) return;
-      largeBaselineFacetRows = response.facets;
-    } catch (facetError) {
-      if (requestId === loadRequest && source?.kind === 'large' && source.url === large.url) {
-        console.warn(`Facet distributions unavailable for ${large.url}:`, facetError);
-      }
-    }
-  }
-
   async function hydrateLargeFacetValues(key: string) {
+    const loadingSource = source;
+    largeFacetHydratingKey = key;
+    await ensureLargeFacetIndex();
+    if (source !== loadingSource) return;
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) {
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (supportsWorkerFilter(key)) {
-      largeFacetHydratingKey = key;
       await runLargeSearch(largeQuery, { preserveSelection: true });
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
       return;
     }
+    if (source?.kind === 'large' && source.searchManifest && largeSearchIndexLoading) {
+      // The worker will serve this facet if its manifest declares postings.
+      // Do not race worker initialisation by falling back to the complete
+      // record plane.
+      if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
+      return;
+    }
     if (!largeIndex) {
-      largeFacetHydratingKey = key;
       await ensureLargeFullIndex();
       if (largeFacetHydratingKey === key) largeFacetHydratingKey = '';
     }
@@ -1217,9 +1421,20 @@
     return Object.keys(largeFacetFilters).every((key) => supportsWorkerFilter(key));
   }
 
+  function refreshLargeReduction() {
+    if (
+      supportsCurrentWorkerFilters() ||
+      (source?.kind === 'large' && Boolean(source.searchManifest) && largeSearchIndexLoading)
+    ) {
+      void runLargeSearch(largeQuery, { preserveSelection: true });
+      return;
+    }
+    void ensureLargeFullIndex();
+  }
+
   function requestedDynamicFacetKeys(): string[] {
     return [...new Set([
-      ...providerOrderedLargeFacetKeys().filter((key) => !facetUsesSearch(key)),
+      ...providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key)),
       activeFacetKey,
       ...Object.keys(largeFacetFilters)
     ])].filter((key) => key && supportsWorkerFilter(key));
@@ -1228,6 +1443,17 @@
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
     if (source?.kind !== 'large') return [];
     const loadingSource = source;
+    const advertisedRelationships = Math.max(
+      Number(loadingSource.descriptor.counts?.relationships || 0),
+      Number(loadingSource.manifest.counts?.relationships || 0)
+    );
+    if (advertisedRelationships > MAX_SAFE_FULL_RELATIONSHIPS) {
+      error =
+        `Full relationship hydration is disabled for this ${advertisedRelationships.toLocaleString()}-relationship bundle ` +
+        `because it would exceed the browser memory safety limit. Relationship summaries and the selected record's ` +
+        `bounded adjacency remain available.`;
+      return [];
+    }
     const requestId = loadRequest;
     largeRelationshipsLoading = true;
     try {
@@ -1300,8 +1526,9 @@
     graphLabelPhase = 0;
     clearLargeApiPanel();
     rightCollapsed = false;
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute);
     void ensureLargeRouteRelationships(route);
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -1315,8 +1542,9 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (largeHasRecordLocator()) void ensureLargeDataset(route);
     void ensureLargeRouteRelationships(route);
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -1536,8 +1764,7 @@
       largeGraphCenterRoute = largeSelectedRoute;
     }
     syncExplorerUrl(true);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function searchResultSummary(): string {
@@ -1669,8 +1896,7 @@
       clearLargeApiPanel();
       reconcileLargeSelection();
       syncExplorerUrl(true);
-      if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-      else void ensureLargeFullIndex();
+      refreshLargeReduction();
     } finally {
       await tick();
       largeFacetApplyingKey = '';
@@ -1734,8 +1960,7 @@
     facetMenuKey = '';
     reconcileLargeSelection();
     syncExplorerUrl(true);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function setGeospatialFilter(value: string) {
@@ -2093,7 +2318,8 @@
     largeInspectedEdge = null;
     clearLargeApiPanel();
     rightCollapsed = false;
-    if (FULL_INDEX_VIEWS.has(activeView)) void ensureLargeFullIndex();
+    if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute, result);
+    if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
 
@@ -2289,6 +2515,9 @@
     if (largeIndex) {
       return orderFacetRows(largeFacetRows(key), facetValueOrder(key), (value) => facetValueDisplay(key, value));
     }
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) {
+      return orderFacetRows(largeFacetIndex[key] || [], facetValueOrder(key), (value) => facetValueDisplay(key, value));
+    }
     const analysed = analysisFacetForKey(key)?.values;
     if (analysed?.length) return orderFacetRows(analysed, facetValueOrder(key), (value) => facetValueDisplay(key, value));
     const overview = source?.kind === 'large' ? source.overview.facet_previews?.[key] : undefined;
@@ -2300,6 +2529,7 @@
     if (dynamicFacetPreviewRows(key)) return true;
     if (Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)) return true;
     if (largeIndex) return true;
+    if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) return true;
     const analysed = analysisFacetForKey(key);
     return Boolean(analysed?.values && analysed.values.length >= analysed.cardinality);
   }
@@ -2313,7 +2543,9 @@
     const configured = providerPresentationFacet(key)?.open_control;
     if (configured && configured !== 'auto') return configured === 'search';
     const control = facetControl(key).toLowerCase();
-    return control.includes('search') || control.includes('value-input') || facetAvailableValueCount(key) > facetSearchThreshold();
+    if (control === 'search' || control.includes('value-input')) return true;
+    if (control.includes('search')) return facetAvailableValueCount(key) > facetSearchThreshold();
+    return facetAvailableValueCount(key) > facetSearchThreshold();
   }
 
   function facetUsesHistogram(key: string): boolean {
@@ -2327,7 +2559,11 @@
 
   function facetDistribution(key: string): FacetDistributionSegment[] {
     const rows = facetPreviewRows(key);
-    if (facetUsesHistogram(key)) return facetDistributionSegments(rows, 18);
+    // Histogram bars remain keyboard targets, so each segment keeps a 24px
+    // hit area. Respect the provider's bounded segment limit here as well as
+    // for categorical distributions; an unconditional 18-column histogram
+    // overflows the normal navigation panel by more than 160px.
+    if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());
     return facetDistributionSegments(rows, facetDistributionLimit());
   }
 
@@ -2616,8 +2852,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     syncExplorerUrl(push);
-    if (supportsCurrentWorkerFilters()) void runLargeSearch(largeQuery, { preserveSelection: true });
-    else void ensureLargeFullIndex();
+    refreshLargeReduction();
   }
 
   function applyAnalysisTimelineBucket(bucket: ReturnType<typeof analysisTimelineBuckets>[number]) {
@@ -3624,7 +3859,7 @@
     const routedResult = largeResults.find((result) => datasetRoute(result) === route);
     if (routedResult) return routedResult.title;
     if (kind === 'dataset') {
-      return largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
+      return largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
     }
     if (kind === 'resource') return largeIndex?.resourceById.get(value)?.name || value;
     if (kind === 'publisher') return largeIndex?.publisherByName.get(value)?.title || value;
@@ -3793,7 +4028,7 @@
       largeResults.find((item) => datasetRoute(item) === route) || routedOverviewResult;
     if (routedResult) return { kind: 'search', route, result: routedResult };
     if (kind === 'dataset') {
-      const dataset = largeIndex?.datasetByName.get(value);
+      const dataset = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(value);
       if (dataset) {
         return {
           kind: 'dataset',
@@ -3838,6 +4073,7 @@
 
   function graphEdgeSemanticMetadata(record: Record<string, unknown> | undefined) {
     if (!record) return {};
+    const relationship = relationshipPresentation(record);
     const predicate = ['predicate', 'property', 'predicate_iri']
       .map((key) => String(record[key] || '').trim())
       .find(Boolean);
@@ -3851,7 +4087,17 @@
       .find((candidate) => Number.isFinite(candidate.value) && candidate.value >= 0);
     return {
       ...(predicate ? { predicate } : {}),
-      ...(metric ? { weightValue: metric.value, weightMetric: metric.label } : {})
+      ...(metric ? { weightValue: metric.value, weightMetric: metric.label } : {}),
+      authorityClass: relationship.authorityClass,
+      authorityLabel: relationship.authorityLabel,
+      authoritySource: relationship.authoritySource,
+      derivation: relationship.derivation,
+      confidence: relationship.confidence,
+      observedAt: relationship.observedAt,
+      staleAfter: relationship.staleAfter,
+      freshness: relationship.freshness,
+      evidenceUrls: relationship.evidenceUrls,
+      rights: relationship.rights
     };
   }
 
@@ -4098,20 +4344,23 @@
     };
 
     if (center) addNode(center);
-    if (center && largeRelationships.length) {
+    if (center && (largeRelationships.length || largeRelationshipsByRoute.has(center))) {
       addLoadedRelationshipsForCenter();
     }
 
     if (!largeIndex && center.startsWith('dataset/')) {
-      const result = largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
+      const result =
+        largeTargetedDatasets.get(center) ||
+        largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
       if (result) {
         if (result.publisher) addEdge(center, publisherRoute(result.publisher), 'published by');
         for (const format of (result.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
         for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
         for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
-        if (result.resource_count > 0) {
+        const resourceCount = result.resource_count || 0;
+        if (resourceCount > 0) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${result.resource_count})`, result.resource_count, center);
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${resourceCount})`, resourceCount, center);
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         }
       }
@@ -4460,11 +4709,13 @@
     );
     const hiddenGroups = new Set(graphHiddenRelationshipGroups);
     const hiddenEdges = new Set(graphHiddenRelationshipEdges);
+    const hiddenAuthorities = new Set(graphHiddenRelationshipAuthorities);
     const relationships = model.relationships.filter((edge) => {
       const id = graphEdgeKey(edge);
       return (
         !hiddenEdges.has(id)
         && !hiddenGroups.has(groupByEdge.get(id) || '')
+        && !hiddenAuthorities.has(edge.authorityClass || 'unclassified')
       );
     });
     const visibleNodeIds = new Set([
@@ -4520,6 +4771,43 @@
     return !graphHiddenRelationshipEdges.includes(id);
   }
 
+  function graphRelationshipAuthorityLabel(authority: RelationshipAuthorityClass): string {
+    return {
+      official: 'Official',
+      derived: 'Derived',
+      'model-assisted': 'Model-assisted',
+      unclassified: 'Unclassified'
+    }[authority];
+  }
+
+  function graphRelationshipAuthorityEnabled(authority: RelationshipAuthorityClass): boolean {
+    return !graphHiddenRelationshipAuthorities.includes(authority);
+  }
+
+  function graphRelationshipAuthorities(model: LargeGraphModel): RelationshipAuthorityClass[] {
+    const present = new Set(
+      model.relationships.map((relationship) => relationship.authorityClass || 'unclassified')
+    );
+    return RELATIONSHIP_AUTHORITY_CLASSES.filter((authority) => present.has(authority));
+  }
+
+  function graphRelationshipAuthorityCount(
+    model: LargeGraphModel,
+    authority: RelationshipAuthorityClass
+  ): number {
+    return model.relationships.filter(
+      (relationship) => (relationship.authorityClass || 'unclassified') === authority
+    ).length;
+  }
+
+  function toggleGraphRelationshipAuthority(authority: RelationshipAuthorityClass) {
+    graphHiddenRelationshipAuthorities = graphRelationshipAuthorityEnabled(authority)
+      ? [...graphHiddenRelationshipAuthorities, authority]
+      : graphHiddenRelationshipAuthorities.filter((candidate) => candidate !== authority);
+    graphLabelPhase = 0;
+    syncExplorerUrl(true);
+  }
+
   function setGraphLayoutMode(mode: GraphLayoutMode) {
     graphLayoutMode = mode;
     resetGraphView();
@@ -4553,6 +4841,7 @@
     graphRelationshipOrder = [];
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
+    graphHiddenRelationshipAuthorities = [];
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
     graphRelationshipDropTarget = '';
@@ -5226,6 +5515,8 @@
 
   function beginEdgePanelResize(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.drawer-grip')) return;
     event.preventDefault();
     event.stopPropagation();
     edgePanelResizeCleanup?.();
@@ -5250,6 +5541,13 @@
     window.addEventListener('pointerup', finish);
     window.addEventListener('pointercancel', finish);
     edgePanelResizeCleanup = () => finish();
+  }
+
+  function suppressEdgePanelToggleFromGrip(event: MouseEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.drawer-grip')) return;
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   function resizeEdgePanelWithKeyboard(event: KeyboardEvent) {
@@ -5296,7 +5594,7 @@
         {#if suggestionsOpen && bundleSuggestions.length}
           <div class="bundle-suggestions">
             {#each bundleSuggestions as suggestion}
-              <button type="button" onclick={() => void loadSource(suggestion.url)}>
+              <button type="button" onclick={() => void loadSource(suggestion.url, suggestion.routes || [], suggestion.raw_subpath || '')}>
                 <strong>{suggestion.title || suggestion.label || suggestion.url}</strong>
                 <span>{suggestion.url}</span>
                 {#if suggestion.version || suggestion.status}<small>{suggestion.version ? `v${suggestion.version}` : ''}{suggestion.version && suggestion.status ? ' · ' : ''}{suggestion.status || ''}</small>{/if}
@@ -5308,7 +5606,7 @@
       </div>
       <button type="submit">Load</button>
       <label class="file-button">
-        <input type="file" accept="application/json,.json" onchange={(event) => void loadFile(event.currentTarget.files?.[0] || null)} />
+        <input type="file" accept="application/json,application/ld+json,application/ld+yaml,application/yaml,.json,.jsonld,.yamlld,.yaml,.yml" onchange={(event) => void loadFile(event.currentTarget.files?.[0] || null)} />
         File
       </label>
     </form>
@@ -5317,10 +5615,11 @@
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  {#if loading || largeFullLoading || largeRelationshipsLoading}
+  {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute}
     <div class="status">
       {#if loading}Loading descriptor and overview...{/if}
       {#if largeFullLoading} Loading record index...{/if}
+      {#if largeTargetedLoadingRoute} Loading selected record...{/if}
       {#if largeRelationshipsLoading} Loading relationship index...{/if}
     </div>
   {/if}
@@ -5423,6 +5722,9 @@
                   <button class:active={facetPreferences.mode === 'suggested'} type="button" aria-pressed={facetPreferences.mode === 'suggested'} onclick={() => setFacetMode('suggested')}>Suggested</button>
                   <button class:active={facetPreferences.mode === 'all'} type="button" aria-pressed={facetPreferences.mode === 'all'} onclick={() => setFacetMode('all')}>All</button>
                 </div>
+                <span class="facet-inventory" aria-live="polite">
+                  {presentedLargeFacetKeys().length.toLocaleString()} of {providerOrderedLargeFacetKeys().length.toLocaleString()} facets shown
+                </span>
                 <button type="button" aria-pressed={facetPreferences.density === 'explained'} onclick={toggleFacetExplanations}>Guidance</button>
                 <button type="button" onclick={resetFacetPreferences}>Reset</button>
               </div>
@@ -5546,6 +5848,7 @@
                                 onmouseleave={() => clearFacetPreviewLabel(key)}
                                 onfocus={() => setFacetPreviewLabel(key, segmentLabel)}
                                 onblur={() => clearFacetPreviewLabel(key)}
+                                oncontextmenu={(event) => event.preventDefault()}
                                 onclick={(event) => segment.otherValues ? void openLargeFacet(key) : previewLargeFacetValue(key, segment.value, event)}
                                 ondblclick={(event) => segment.otherValues ? void openLargeFacet(key) : void commitFacetHighlights(key, segment.value, event)}
                                 onkeydown={(event) => segment.otherValues ? undefined : facetValueKeydown(key, segment.value, event)}
@@ -5859,6 +6162,12 @@
                 <article data-metric={metric.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}><strong>{metric.value.toLocaleString()}</strong><span>{metric.label}</span></article>
               {/each}
             </div>
+            {#if !largeQuery && !activeLargeFilterCount && (source.effectsReconciliation || source.effectsReconciliationError)}
+              <EffectsReconciliationPanel
+                reconciliation={source.effectsReconciliation}
+                error={source.effectsReconciliationError}
+              />
+            {/if}
           {/if}
 
           {#if activeView === 'reader'}
@@ -6080,6 +6389,26 @@
                     {/each}
                   {/if}
                 </div>
+                {#if graphRelationshipAuthorities(fullModel).length}
+                  <div class="graph-authority-filters" aria-label="Relationship authority filters">
+                    <span>Authority</span>
+                    {#each graphRelationshipAuthorities(fullModel) as authority}
+                      <button
+                        type="button"
+                        class:active={graphRelationshipAuthorityEnabled(authority)}
+                        data-relationship-authority-filter={authority}
+                        data-authority={authority}
+                        aria-pressed={graphRelationshipAuthorityEnabled(authority)}
+                        aria-label={`${graphRelationshipAuthorityLabel(authority)} relationships`}
+                        onclick={() => toggleGraphRelationshipAuthority(authority)}
+                      >
+                        <i aria-hidden="true"></i>
+                        {graphRelationshipAuthorityLabel(authority)}
+                        <small>{graphRelationshipAuthorityCount(fullModel, authority)}</small>
+                      </button>
+                    {/each}
+                  </div>
+                {/if}
                 {#if fullModel.center && relationshipGroups.length && graphLayoutControlsOpen}
                   <section class="relationship-layout-controls" aria-label="Relationship layout">
                     <header>
@@ -6193,7 +6522,7 @@
                 class:dragging={Boolean(graphDrag)}
                 use:measureGraphViewport
                 viewBox={graphViewBox()}
-                role="img"
+                role="group"
                 aria-label="Large corpus graph"
                 onpointerdown={beginGraphPan}
                 onpointermove={moveGraphPan}
@@ -6230,6 +6559,7 @@
                       class="graph-edge"
                       class:highlight={edgeHighlighted}
                       class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}
+                      data-relationship-authority={relationship.authorityClass || 'unclassified'}
                       data-edge-width={graphEdgeStrokeWidth(relationship, edgeWeightPlan, edgeHighlighted)}
                       d={edgeGeometry.d}
                       marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
@@ -6264,6 +6594,7 @@
                     data-route={node.id}
                     data-relationship-side={relationshipPlan?.nodeSlots.get(node.id)?.side}
                     role="button"
+                    aria-label={node.label || node.id}
                     tabindex="0"
                     onclick={(event) => graphNodeClick(node.id, event)}
                     ondblclick={() => recenterLargeRoute(node.id)}
@@ -6355,16 +6686,17 @@
                 </g>
               </svg>
               <details class="edge-panel edge-drawer" class:resizing={edgePanelResizing} style={`--edge-panel-height:${edgePanelHeight}px`} open>
-                <summary>
-                  <button
+                <summary
+                  aria-label={`Relationships panel, ${model.relationships.length} relationships, ${edgePanelHeight} pixels high; use up and down arrows to resize`}
+                  onpointerdown={beginEdgePanelResize}
+                  onkeydown={resizeEdgePanelWithKeyboard}
+                  onclick={suppressEdgePanelToggleFromGrip}
+                >
+                  <span
                     class="drawer-grip"
-                    type="button"
-                    aria-label={`Resize relationships panel, currently ${edgePanelHeight} pixels high`}
+                    aria-hidden="true"
                     title="Drag to resize relationships"
-                    onpointerdown={beginEdgePanelResize}
-                    onkeydown={resizeEdgePanelWithKeyboard}
-                    onclick={(event) => { event.preventDefault(); event.stopPropagation(); }}
-                  ></button>
+                  ></span>
                   <strong>Relationships ({model.relationships.length})</strong>
                   <span>open for rows</span>
                 </summary>
@@ -6372,11 +6704,13 @@
                   {#each model.relationships.slice(0, 42) as relationship}
                     <button
                       class:active={largeHighlightedEdge === graphEdgeKey(relationship)}
+                      data-relationship-authority={relationship.authorityClass || 'unclassified'}
                       type="button"
                       aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}
                       onclick={() => inspectLargeEdge(relationship)}
                     >
                       {largeLabelForRoute(relationship.source)} → {relationship.label} → {largeLabelForRoute(relationship.target)}
+                      <small>{relationship.authorityLabel || 'Authority not declared'} · {relationship.freshness || 'unknown'}</small>
                     </button>
                   {/each}
                 </div>
@@ -6432,9 +6766,9 @@
               </div>
               <section class="links-view">
                 {#each currentLinkEdges() as relationship}
-                  <button type="button" onclick={() => inspectLargeEdge(relationship)}>
+                  <button data-relationship-authority={relationship.authorityClass || 'unclassified'} type="button" onclick={() => inspectLargeEdge(relationship)}>
                     <strong>{largeLabelForRoute(relationship.source)}</strong>
-                    <span>{relationship.label}</span>
+                    <span>{relationship.label} · {relationship.authorityLabel || 'Authority not declared'}</span>
                     <strong>{largeLabelForRoute(relationship.target)}</strong>
                   </button>
                 {:else}
@@ -6726,15 +7060,23 @@
         </section>
       {:else if smallCorpus}
         {#if activeView === 'reader'}
-          <section class="reader-view">
-            {#each visibleNodes as node}
-              <button class="node-card" class:active={node.id === selectedId} type="button" onclick={() => inspectNode(node.id)} ondblclick={() => selectNode(node.id)}>
-                <span>{node.type || 'Node'}</span>
-                <h2>{node.title}</h2>
-                <p>{node.description || node.summary || node.source || node.id}</p>
-              </button>
-            {/each}
-          </section>
+          {#if federationOverview}
+            <FederationOverviewPanel
+              overview={federationOverview}
+              oninspect={inspectNode}
+              onloadchild={loadFederationChild}
+            />
+          {:else}
+            <section class="reader-view">
+              {#each visibleNodes as node}
+                <button class="node-card" class:active={node.id === selectedId} type="button" onclick={() => inspectNode(node.id)} ondblclick={() => selectNode(node.id)}>
+                  <span>{node.type || 'Node'}</span>
+                  <h2>{node.title}</h2>
+                  <p>{node.description || node.summary || node.source || node.id}</p>
+                </button>
+              {/each}
+            </section>
+          {/if}
         {:else if activeView === 'graph'}
           {@const model = graphModel()}
           {@const positions = graphPositions(model)}
@@ -6775,7 +7117,7 @@
               class:dragging={Boolean(graphDrag)}
               use:measureGraphViewport
               viewBox={graphViewBox()}
-              role="img"
+              role="group"
               aria-label="OKF graph"
               onpointerdown={beginGraphPan}
               onpointermove={moveGraphPan}
@@ -6803,6 +7145,7 @@
                   <path
                     class="graph-edge"
                     class:highlight={edgeHighlighted}
+                    data-relationship-authority={relationshipPresentation(relationship).authorityClass}
                     d={edgeGeometry.d}
                     marker-end={edgeHighlighted ? 'url(#small-graph-arrow-highlight)' : 'url(#small-graph-arrow)'}
                   />
@@ -6832,6 +7175,7 @@
                   class:active={node.id === selectedId || node.id === inspectedId}
                   data-route={node.id}
                   role="button"
+                  aria-label={String(node.label || node.id)}
                   tabindex="0"
                   onclick={() => smallGraphNodeClick(node.id)}
                   ondblclick={() => selectNode(node.id)}
@@ -6849,23 +7193,35 @@
               <strong>Relationships ({model.relationships.length})</strong>
               <div>
                 {#each model.relationships.slice(0, 42) as relationship}
+                  {@const presentation = relationshipPresentation(relationship)}
                   <button
                     class:active={smallInspectedRelationship === relationship}
+                    data-relationship-authority={presentation.authorityClass}
                     type="button"
                     onclick={() => inspectSmallRelationship(relationship)}
                   >
                     {smallRelationshipTitle(relationship)}
+                    <small>{presentation.authorityLabel} · {presentation.freshness}</small>
                   </button>
                 {/each}
               </div>
             </div>
           </div>
         {:else if activeView === 'links'}
+          <div class="relationship-authority-strip" aria-label="Visible relationship authority summary">
+            <span data-relationship-authority="official">Official <strong>{scopedRelationshipSummary.by_authority.official.toLocaleString()}</strong></span>
+            <span data-relationship-authority="derived">Derived <strong>{scopedRelationshipSummary.by_authority.derived.toLocaleString()}</strong></span>
+            <span data-relationship-authority="model-assisted">Model-assisted <strong>{scopedRelationshipSummary.by_authority['model-assisted'].toLocaleString()}</strong></span>
+            {#if scopedRelationshipSummary.by_authority.unclassified}
+              <span data-relationship-authority="unclassified">Unclassified <strong>{scopedRelationshipSummary.by_authority.unclassified.toLocaleString()}</strong></span>
+            {/if}
+          </div>
           <section class="links-view">
             {#each scopedRelationships as relationship}
-              <button type="button" onclick={() => inspectSmallRelationship(relationship)} ondblclick={() => selectNode(relationship.target)}>
+              {@const presentation = relationshipPresentation(relationship)}
+              <button data-relationship-authority={presentation.authorityClass} type="button" onclick={() => inspectSmallRelationship(relationship)} ondblclick={() => selectNode(relationship.target)}>
                 <strong>{smallCorpus.nodes[relationship.source]?.title || relationship.source}</strong>
-                <span>{smallRelationshipKind(relationship)}</span>
+                <span>{smallRelationshipKind(relationship)} · {presentation.authorityLabel}</span>
                 <strong>{smallCorpus.nodes[relationship.target]?.title || relationship.target}</strong>
               </button>
             {/each}
@@ -7028,7 +7384,10 @@
           {#if largeInspectedEdge}
             {@const relationshipEdges = inspectedRelationshipEdges()}
             {@const selectedRelationship = largeInspectedEdge}
+            {@const selectedRelationshipPresentation = relationshipPresentation(selectedRelationship)}
             <span class="badge">Relationship</span>
+            <span class="badge" data-relationship-authority={selectedRelationshipPresentation.authorityClass}>{selectedRelationshipPresentation.authorityLabel}</span>
+            <span class="badge" data-relationship-freshness={selectedRelationshipPresentation.freshness}>{selectedRelationshipPresentation.freshness}</span>
             <h2>{selectedRelationship.label}</h2>
             <p>
               {graphHighlightedRelationshipGroup
@@ -7077,7 +7436,20 @@
                   {#if selectedRelationship.weightValue !== undefined}
                     <dt>{selectedRelationship.weightMetric || 'Strength'}</dt><dd>{graphWeightValue(selectedRelationship.weightValue)}</dd>
                   {/if}
+                  <dt>Authority</dt><dd>{selectedRelationshipPresentation.authorityLabel}</dd>
+                  {#if selectedRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.authoritySource}</a></dd>{/if}
+                  {#if selectedRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{selectedRelationshipPresentation.derivation}</dd>{/if}
+                  {#if selectedRelationshipPresentation.confidence}<dt>Confidence</dt><dd>{selectedRelationshipPresentation.confidence}</dd>{/if}
+                  {#if selectedRelationshipPresentation.observedAt}<dt>Observed</dt><dd>{selectedRelationshipPresentation.observedAt}</dd>{/if}
+                  {#if selectedRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedRelationshipPresentation.staleAfter}</dd>{/if}
+                  <dt>Freshness</dt><dd>{selectedRelationshipPresentation.freshness}</dd>
                 </dl>
+                {#if selectedRelationshipPresentation.evidenceUrls.length}
+                  <h3>Relationship evidence</h3>
+                  {#each selectedRelationshipPresentation.evidenceUrls as evidenceUrl}
+                    <a href={evidenceUrl} target="_blank" rel="noopener noreferrer">{evidenceUrl}</a>
+                  {/each}
+                {/if}
                 {#if relationshipEdges.length > 1}
                   <div class="relationship-instance-list" aria-label="Highlighted relationship instances">
                     {#each relationshipEdges as edge}
@@ -7100,7 +7472,16 @@
                     kind: selectedRelationship.label,
                     predicate: selectedRelationship.predicate,
                     count: selectedRelationship.count,
-                    weight: selectedRelationship.weightValue
+                    weight: selectedRelationship.weightValue,
+                    authority: selectedRelationshipPresentation.authorityClass,
+                    authority_source: selectedRelationshipPresentation.authoritySource,
+                    derivation: selectedRelationshipPresentation.derivation,
+                    confidence: selectedRelationshipPresentation.confidence,
+                    observed_at: selectedRelationshipPresentation.observedAt,
+                    stale_after: selectedRelationshipPresentation.staleAfter,
+                    freshness: selectedRelationshipPresentation.freshness,
+                    evidence: selectedRelationshipPresentation.evidenceUrls,
+                    rights: selectedRelationshipPresentation.rights
                   })}</pre>
                 </details>
               {/if}
@@ -7584,9 +7965,15 @@
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.result.title}</h2>
               <div class="detail-actions primary-detail-actions">
-                <button class="primary-action" type="button" onclick={() => void ensureLargeFullIndex()}>
-                  {largeFullLoading ? 'Loading full record...' : 'Load full record'}
-                </button>
+                {#if largeHasRecordLocator()}
+                  <button class="primary-action" type="button" onclick={() => void ensureLargeDataset(largeDetail.route, largeDetail.result)}>
+                    {largeTargetedLoadingRoute === largeDetail.route ? 'Loading selected record...' : 'Load selected record'}
+                  </button>
+                {:else}
+                  <button class="primary-action" type="button" onclick={() => void ensureLargeFullIndex()}>
+                    {largeFullLoading ? 'Loading full record...' : 'Load full record'}
+                  </button>
+                {/if}
               </div>
               <p class="match-explanation"><strong>Why this matched</strong> {searchMatchReason(largeDetail.result)}</p>
               {#if apiContextNote(largeDetail.result)}
@@ -7733,6 +8120,10 @@
               {#each semanticResources(source.descriptor) as semanticResource}
                 <dt>{semanticResource.label}</dt><dd><a href={bundleResourceUrl(semanticResource.path)} target="_blank" rel="noreferrer">semantic descriptor</a></dd>
               {/each}
+              {#if source.descriptor.discovery?.repository}<dt>Repository</dt><dd><a href={source.descriptor.discovery.repository} target="_blank" rel="noopener noreferrer">source repository</a></dd>{/if}
+              {#if source.descriptor.discovery?.documentation}<dt>Documentation</dt><dd><a href={source.descriptor.discovery.documentation} target="_blank" rel="noopener noreferrer">documentation</a></dd>{/if}
+              {#if source.descriptor.discovery?.raw_subpath}<dt>Repository subpath</dt><dd><code>{source.descriptor.discovery.raw_subpath}</code></dd>{/if}
+              {#if source.descriptor.discovery?.release_archive}<dt>Release archive</dt><dd><a href={source.descriptor.discovery.release_archive} target="_blank" rel="noopener noreferrer">frozen releases</a></dd>{/if}
               {#if source.descriptor.publisher}<dt>Publisher</dt><dd><a href={source.descriptor.publisher} target="_blank" rel="noreferrer">{source.descriptor.publisher}</a></dd>{/if}
               {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">bundle licence</a></dd>{/if}
               {#if source.termRegistry}<dt>Governed terms</dt><dd>{source.termRegistry.terms.length.toLocaleString()} terms across {source.termRegistry.vocabularies.length.toLocaleString()} vocabularies</dd>{/if}
@@ -7753,7 +8144,10 @@
             {/if}
           {/if}
         {:else if smallInspectedRelationship && smallCorpus}
+          {@const selectedSmallRelationshipPresentation = relationshipPresentation(smallInspectedRelationship)}
           <span class="badge">Relationship</span>
+          <span class="badge" data-relationship-authority={selectedSmallRelationshipPresentation.authorityClass}>{selectedSmallRelationshipPresentation.authorityLabel}</span>
+          <span class="badge" data-relationship-freshness={selectedSmallRelationshipPresentation.freshness}>{selectedSmallRelationshipPresentation.freshness}</span>
           <h2>{smallCorpus.nodes[smallInspectedRelationship.source]?.title || smallInspectedRelationship.source} → {smallCorpus.nodes[smallInspectedRelationship.target]?.title || smallInspectedRelationship.target}</h2>
           <p>{smallRelationshipKind(smallInspectedRelationship)}</p>
           <div class="detail-actions">
@@ -7768,7 +8162,20 @@
             <dt>Target</dt><dd><button type="button" onclick={() => inspectNode(smallInspectedRelationship?.target || '')}>{smallCorpus.nodes[smallInspectedRelationship.target]?.title || smallInspectedRelationship.target}</button></dd>
             <dt>Source route</dt><dd>{smallInspectedRelationship.source}</dd>
             <dt>Target route</dt><dd>{smallInspectedRelationship.target}</dd>
+            <dt>Authority</dt><dd>{selectedSmallRelationshipPresentation.authorityLabel}</dd>
+            {#if selectedSmallRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedSmallRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.authoritySource}</a></dd>{/if}
+            {#if selectedSmallRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{selectedSmallRelationshipPresentation.derivation}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.confidence}<dt>Confidence</dt><dd>{selectedSmallRelationshipPresentation.confidence}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.observedAt}<dt>Observed</dt><dd>{selectedSmallRelationshipPresentation.observedAt}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedSmallRelationshipPresentation.staleAfter}</dd>{/if}
+            <dt>Freshness</dt><dd>{selectedSmallRelationshipPresentation.freshness}</dd>
           </dl>
+          {#if selectedSmallRelationshipPresentation.evidenceUrls.length}
+            <h3>Relationship evidence</h3>
+            {#each selectedSmallRelationshipPresentation.evidenceUrls as evidenceUrl}
+              <a href={evidenceUrl} target="_blank" rel="noopener noreferrer">{evidenceUrl}</a>
+            {/each}
+          {/if}
           <details class="json-panel">
             <summary>Relationship JSON</summary>
             <pre>{jsonText(smallInspectedRelationship)}</pre>
@@ -7782,6 +8189,11 @@
           {#if okf.stale}<span class="badge warning" data-stale="true">Stale</span>{/if}
           <h2>{detailNode.title}</h2>
           <p>{detailNode.description || detailNode.summary || detailNode.source || detailNode.id}</p>
+          {#if selectedFederationChild && (selectedFederationChild.descriptor || selectedFederationChild.discovery.routes.some((route) => route.purpose === 'descriptor' || (!route.purpose && ['published', 'raw'].includes(route.kind))))}
+            <div class="detail-actions">
+              <button type="button" onclick={() => loadFederationChild(selectedFederationChild)}>Load child bundle</button>
+            </div>
+          {/if}
           <dl>
             <dt>Route</dt><dd>{detailNode.id}</dd>
             <dt>Section</dt><dd>{detailNode.section || 'root'}</dd>

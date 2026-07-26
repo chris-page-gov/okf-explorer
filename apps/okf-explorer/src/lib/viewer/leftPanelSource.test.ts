@@ -101,7 +101,13 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('What makes a useful facet?');
     expect(pageSource).toContain('if (dynamic !== undefined) return dynamic.length;');
     expect(pageSource).toContain("Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)");
-    expect(pageSource).toContain('include_results: false');
+    expect(pageSource).toContain('await ensureLargeFacetIndex();');
+    expect(pageSource).toContain('providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key))');
+    expect(pageSource).toContain(
+      'if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());'
+    );
+    expect(pageSource).not.toContain('facetDistributionSegments(rows, 18)');
+    expect(pageSource).not.toContain('function preloadLargeFacetDistributions');
   });
 
   it('uses SeeLinks-style preview, commit, pin-open and drag interactions without legacy Adjust', () => {
@@ -166,6 +172,23 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('class="relationship-rows"');
     expect(pageSource).toContain('class:resizing={edgePanelResizing}');
     expect(pageSource).toContain('setPointerCapture');
+  });
+
+  it('exposes graph commands without nesting them inside image or summary controls', () => {
+    expect(pageSource).toContain('role="group"');
+    expect(pageSource).toContain('aria-label={node.label || node.id}');
+    expect(pageSource).toContain('aria-label={String(node.label || node.id)}');
+    const summaryStart = pageSource.indexOf(
+      '<summary\n                  aria-label={`Relationships panel'
+    );
+    const summaryEnd = pageSource.indexOf('</summary>', summaryStart);
+    const drawerSummary = pageSource.slice(summaryStart, summaryEnd);
+
+    expect(summaryStart).toBeGreaterThan(-1);
+    expect(summaryEnd).toBeGreaterThan(summaryStart);
+    expect(drawerSummary).toContain('class="drawer-grip"');
+    expect(drawerSummary).toContain('<span');
+    expect(drawerSummary).not.toContain('<button');
   });
 
   it('keeps an inspected relationship selected independently of route highlighting', () => {

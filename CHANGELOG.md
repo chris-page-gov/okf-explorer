@@ -59,7 +59,53 @@ All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
 source-of-truth changes.
 
-## Unreleased
+## v0.5.0 - 2026-07-26 - Whole-Law federation and bounded runtime
+
+- Added a reproducible production-build acceptance runner and evidence receipt
+  for the final local Whole-Law/Legislation publication. Chrome, Firefox and
+  WebKit now prove federation-child completion, sub-1 MiB compressed startup,
+  bounded cold/warm search, facet layout, coloured graph relationships,
+  keyboard operation and release-blocking axe results.
+- Bounded histogram segment counts by the provider presentation contract so
+  24-pixel keyboard targets no longer overflow the navigation panel, and
+  normalized source-native `derived-non-official` authority to the distinct
+  derived graph style without losing its provenance label.
+- Added the additive `okf-explorer-federation.v1` control plane and
+  `okf-relationship-assertion.v2` contract. Federations load only their
+  overview first; child descriptors and data shards remain untouched until a
+  user selects a child.
+- Added fail-closed child coverage, authority, freshness, discovery-route and
+  relationship-summary validation. Official, deterministic-derived,
+  model-assisted and unclassified relationships now have distinct labels,
+  detail evidence and graph styling.
+- Added declared descriptor fallback routes so Pages, raw-content and mirrored
+  descriptors can recover in a fixed order without probing guessed repository
+  paths. Repository, documentation and archive links remain visible recovery
+  destinations but are never parsed as descriptors.
+- Added bounded YAML-LD loading for `.yamlld`, `.yaml` and `.yml` documents,
+  including safe JSON content sniffing when static hosts use
+  `application/octet-stream`. YAML uses the 1.2 core schema, unique keys, no
+  merge keys, no aliases and no custom/executable tags.
+- Registered the future UK Whole-Law OKF descriptor and its declared raw
+  fallback, repository, documentation, release archive and repository
+  subpath.
+- Made single-child federation landings useful above the fold and added a
+  separate compact inventory for researched source families, so planned legal
+  source coverage is visible without misrepresenting it as implemented child
+  bundles.
+- Prevented complete facet indexes from falling through to whole-corpus record
+  hydration while a search worker is starting or lacks filter postings.
+  Low-cardinality searchable facets retain coloured distributions, facet
+  inventory counts are explicit, stale federation routes are cleared when a
+  child opens, and a 50,000-record safety gate rejects unsafe full-index loads
+  with a recoverable explanation.
+- Added `okf-record-locator-sharded.v1` support so a selected result hydrates
+  one integrity-aware record shard by route or search ordinal. Corpus-wide
+  relationship hydration is likewise bounded at 100,000 advertised rows;
+  larger bundles continue through summaries and route-scoped adjacency.
+- Replaced the intermediate-width stacked workspace with a two-column
+  navigation/stage layout and a collapsible detail row, preserving the
+  overview-first Explorer experience in the in-app browser.
 
 - Made OKF Explorer a dual-version OKF v0.2 exemplar. Structured
   `generated`, `sources`, `verified`, lifecycle, freshness and Attested
