@@ -106,6 +106,15 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("await edge.press('Enter')", script)
         self.assertIn(".edge-panel button.active", script)
 
+    def test_live_journeys_follow_current_compact_facets_and_bounded_record_loading(self):
+        script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
+
+        self.assertIn("section.locator('.facet-toggle, summary').first()", script)
+        self.assertIn("toggle.getAttribute('aria-expanded')", script)
+        self.assertIn("await candidate.press('Enter')", script)
+        self.assertIn("/^Load (?:full|selected) record$/", script)
+        self.assertIn(".right-panel .disclosure-section:visible", script)
+
     def test_every_readme_example_has_persona_story_question_traceability(self):
         evaluations = [EVALUATION, CKAN_EVALUATION, LEGISLATION_EVALUATION]
         for evaluation_dir in evaluations:
@@ -218,6 +227,33 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertEqual(results["summary"]["questions_run"], 0)
         self.assertIsNone(results["summary"]["average_total"])
         self.assertEqual(results["interaction_journeys"]["summary"]["validation_only"], 2)
+
+    def test_explicit_bundle_overrides_the_journey_manifest_for_candidate_validation(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory)
+            candidate = "https://raw.example.test/candidate/bundle/okf-explorer.json"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(LEGISLATION_EVALUATION / "journeys.json"),
+                    "--bundle",
+                    candidate,
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(results["bundle"], candidate)
+        self.assertEqual(results["interaction_journeys"]["target_bundle"], candidate)
 
     def test_journey_validation_rejects_question_suites_without_string_ids(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

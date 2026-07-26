@@ -7,12 +7,14 @@
     FederationChild,
     LargeDataset,
     LargeDatasetAlternative,
+    LargeCorpusSource,
     LargeCorpusDescriptor,
     LargeExplorerDisplay,
     LargeExplorerPresentation,
     LargeExplorerPresentationFacet,
     LargeFacetRow,
     LargeFullIndex,
+    LargeModelEnrichmentState,
     LargePublisher,
     LargeRelationship,
     LargeResourceReference,
@@ -61,6 +63,7 @@
     semanticResources
   } from '$lib/viewer/governedTerms';
   import EffectsReconciliationPanel from '$lib/viewer/EffectsReconciliationPanel.svelte';
+  import ModelEnrichmentStatus from '$lib/viewer/ModelEnrichmentStatus.svelte';
   import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
@@ -122,7 +125,8 @@
   } from '$lib/okfV02';
   import {
     relationshipPresentation,
-    summarizeRelationships
+    summarizeRelationships,
+    type RelationshipEvidencePresentation
   } from '$lib/viewer/relationshipPresentation';
   import {
     analysisFacetForKey as findAnalysisFacetForKey,
@@ -284,7 +288,13 @@
     staleAfter?: string;
     freshness?: 'current' | 'stale' | 'unknown';
     evidenceUrls?: string[];
+    evidenceItems?: RelationshipEvidencePresentation[];
+    supportProfile?: '' | 'title-only' | 'notes-only' | 'multi-field';
+    reviewStatus?: string;
+    officialLegalClassification?: boolean;
     rights?: string;
+    rightsSource?: string;
+    rightsAssertion?: string;
   };
 
   type LargeGraphGrouping = {
@@ -331,6 +341,7 @@
   let bundleUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
   let error = $state('');
+  let modelEnrichmentError = $state('');
   let loading = $state(false);
   let activeView = $state<ViewMode>('reader');
   let selectedId = $state('');
@@ -368,6 +379,7 @@
   let largeTargetedLoadingRoute = $state('');
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
+  let largeIncompleteRelationshipRoutes = $state<Record<string, string>>({});
   let largeRelationshipsTruncated = $state(false);
   let largeFacetFilters = $state<Record<string, string[]>>({});
   let largeFullLoading = $state(false);
@@ -446,6 +458,20 @@
   let geospatialFilter = $state('');
   let edgePanelResizeCleanup: (() => void) | null = null;
 
+  let activeIncompleteRelationshipRoute = $derived(
+    [largeGraphCenterRoute, largeSelectedRoute, largeInspectedRoute]
+      .find((route) => route && largeIncompleteRelationshipRoutes[route]) || ''
+  );
+  let activeIncompleteRelationshipMessage = $derived(
+    activeIncompleteRelationshipRoute
+      ? largeIncompleteRelationshipRoutes[activeIncompleteRelationshipRoute] || ''
+      : ''
+  );
+  let appAlertMessages = $derived([
+    ...new Set(
+      [error, modelEnrichmentError, activeIncompleteRelationshipMessage].filter(Boolean)
+    )
+  ]);
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let federationOverview = $derived(source?.kind === 'small' ? source.federation : undefined);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
@@ -860,6 +886,7 @@
     const absoluteUrl = toAbsoluteUrl(url);
     loading = true;
     error = '';
+    modelEnrichmentError = '';
     selectedId = '';
     inspectedId = '';
     smallQuery = '';
@@ -889,6 +916,7 @@
     largeTargetedLoadingRoute = '';
     largeRelationships = [];
     largeRelationshipsByRoute = new Map();
+    largeIncompleteRelationshipRoutes = {};
     largeRelationshipsTruncated = false;
     largeFacetFilters = {};
     largeFullLoading = false;
@@ -1440,6 +1468,97 @@
     ])].filter((key) => key && supportsWorkerFilter(key));
   }
 
+  function copyModelEnrichmentState(
+    enrichment: LargeModelEnrichmentState | undefined
+  ): LargeModelEnrichmentState | undefined {
+    if (!enrichment) return undefined;
+    return {
+      ...enrichment,
+      ...(enrichment.counts
+        ? {
+            counts: {
+              ...enrichment.counts,
+              ...(enrichment.counts.byKind
+                ? { byKind: { ...enrichment.counts.byKind } }
+                : {}),
+              ...(enrichment.counts.bySupport
+                ? { bySupport: { ...enrichment.counts.bySupport } }
+                : {})
+            }
+          }
+        : {})
+    };
+  }
+
+  function syncModelEnrichmentState(
+    loadingSource: LargeCorpusSource
+  ): LargeModelEnrichmentState | undefined {
+    const snapshot = copyModelEnrichmentState(
+      loadingSource.modelEnrichmentSnapshot()
+    );
+    if (source === loadingSource) {
+      loadingSource.modelEnrichment = snapshot;
+    }
+    return snapshot;
+  }
+
+  function isModelAssistedRelationship(
+    relationship: LargeRelationship
+  ): boolean {
+    return relationshipPresentation(
+      relationship as unknown as Record<string, unknown>
+    ).authorityClass === 'model-assisted';
+  }
+
+  function markRelationshipRoutesIncomplete(
+    routes: Iterable<string>,
+    message: string
+  ) {
+    const next = { ...largeIncompleteRelationshipRoutes };
+    for (const route of routes) {
+      if (route) next[route] = message;
+    }
+    largeIncompleteRelationshipRoutes = next;
+  }
+
+  function clearIncompleteRelationshipRoute(route: string) {
+    if (!largeIncompleteRelationshipRoutes[route]) return;
+    const next = { ...largeIncompleteRelationshipRoutes };
+    delete next[route];
+    largeIncompleteRelationshipRoutes = next;
+  }
+
+  function purgeCachedModelAssistedRelationships(): Set<string> {
+    const affectedRoutes = new Set<string>();
+    const nextByRoute = new Map<string, LargeRelationship[]>();
+    for (const [route, rows] of largeRelationshipsByRoute) {
+      const retained = rows.filter(
+        (relationship) => !isModelAssistedRelationship(relationship)
+      );
+      if (retained.length !== rows.length) affectedRoutes.add(route);
+      nextByRoute.set(route, retained);
+    }
+    largeRelationshipsByRoute = nextByRoute;
+
+    const retainedRelationships: LargeRelationship[] = [];
+    for (const relationship of largeRelationships) {
+      if (isModelAssistedRelationship(relationship)) {
+        affectedRoutes.add(relationship.source);
+        affectedRoutes.add(relationship.target);
+      } else {
+        retainedRelationships.push(relationship);
+      }
+    }
+    largeRelationships = retainedRelationships;
+
+    if (largeInspectedEdge?.authorityClass === 'model-assisted') {
+      largeInspectedEdge = null;
+      largeHighlightedEdge = '';
+      graphHighlightedRelationshipGroup = '';
+    }
+    return affectedRoutes;
+  }
+
   async function ensureLargeRelationships(): Promise<LargeRelationship[]> {
     if (source?.kind !== 'large') return [];
     const loadingSource = source;
@@ -1478,17 +1597,43 @@
   async function ensureLargeRouteRelationships(route: string): Promise<LargeRelationship[]> {
     if (source?.kind !== 'large' || !route) return [];
     const loaded = largeRelationshipsByRoute.get(route);
-    if (loaded) return loaded;
+    if (loaded && !largeIncompleteRelationshipRoutes[route]) return loaded;
     const loadingSource = source;
     const requestId = loadRequest;
     largeRelationshipsLoading = true;
     try {
       const rows = await loadingSource.loadRelationshipsForRoute(route);
       if (requestId !== loadRequest || source !== loadingSource) return [];
-      largeRelationshipsByRoute = new Map(largeRelationshipsByRoute).set(route, rows);
-      return rows;
+      const enrichment = syncModelEnrichmentState(loadingSource);
+      let retainedRows = rows;
+      if (enrichment?.status === 'unavailable') {
+        const affectedRoutes = purgeCachedModelAssistedRelationships();
+        affectedRoutes.add(route);
+        retainedRows = rows.filter(
+          (relationship) => !isModelAssistedRelationship(relationship)
+        );
+        markRelationshipRoutesIncomplete(affectedRoutes, enrichment.message);
+        modelEnrichmentError = enrichment.message;
+      } else if (enrichment?.status === 'ready') {
+        const previousModelError = modelEnrichmentError;
+        modelEnrichmentError = '';
+        if (previousModelError && error === previousModelError) error = '';
+        clearIncompleteRelationshipRoute(route);
+      }
+      largeRelationshipsByRoute = new Map(largeRelationshipsByRoute).set(
+        route,
+        retainedRows
+      );
+      return retainedRows;
     } catch (err) {
       if (requestId === loadRequest && source === loadingSource) {
+        const enrichment = syncModelEnrichmentState(loadingSource);
+        if (enrichment?.status === 'unavailable') {
+          const affectedRoutes = purgeCachedModelAssistedRelationships();
+          affectedRoutes.add(route);
+          markRelationshipRoutesIncomplete(affectedRoutes, enrichment.message);
+          modelEnrichmentError = enrichment.message;
+        }
         error = err instanceof Error ? err.message : String(err);
       }
       return [];
@@ -4097,7 +4242,13 @@
       staleAfter: relationship.staleAfter,
       freshness: relationship.freshness,
       evidenceUrls: relationship.evidenceUrls,
-      rights: relationship.rights
+      evidenceItems: relationship.evidenceItems,
+      supportProfile: relationship.supportProfile,
+      reviewStatus: relationship.reviewStatus,
+      officialLegalClassification: relationship.officialLegalClassification,
+      rights: relationship.rights,
+      rightsSource: relationship.rightsSource,
+      rightsAssertion: relationship.rightsAssertion
     };
   }
 
@@ -5612,17 +5763,29 @@
     </form>
   </header>
 
-  {#if error}
-    <div class="error">{error}</div>
-  {/if}
-  {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute}
-    <div class="status">
-      {#if loading}Loading descriptor and overview...{/if}
-      {#if largeFullLoading} Loading record index...{/if}
-      {#if largeTargetedLoadingRoute} Loading selected record...{/if}
-      {#if largeRelationshipsLoading} Loading relationship index...{/if}
-    </div>
-  {/if}
+  <div class="app-notices">
+    {#if appAlertMessages.length}
+      <div
+        class="error"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        data-incomplete-route={activeIncompleteRelationshipRoute || undefined}
+      >
+        {#each appAlertMessages as message}
+          <p>{message}</p>
+        {/each}
+      </div>
+    {/if}
+    {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute}
+      <div class="status" role="status" aria-live="polite" aria-atomic="true">
+        {#if loading}Loading descriptor and overview...{/if}
+        {#if largeFullLoading} Loading record index...{/if}
+        {#if largeTargetedLoadingRoute} Loading selected record...{/if}
+        {#if largeRelationshipsLoading} Loading relationship index...{/if}
+      </div>
+    {/if}
+  </div>
 
   <main class="workspace">
     <aside class="left-panel">
@@ -6167,6 +6330,9 @@
                 reconciliation={source.effectsReconciliation}
                 error={source.effectsReconciliationError}
               />
+            {/if}
+            {#if !largeQuery && !activeLargeFilterCount && source.modelEnrichment}
+              <ModelEnrichmentStatus enrichment={source.modelEnrichment} />
             {/if}
           {/if}
 
@@ -7444,7 +7610,71 @@
                   {#if selectedRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedRelationshipPresentation.staleAfter}</dd>{/if}
                   <dt>Freshness</dt><dd>{selectedRelationshipPresentation.freshness}</dd>
                 </dl>
-                {#if selectedRelationshipPresentation.evidenceUrls.length}
+                {#if selectedRelationshipPresentation.authorityClass === 'model-assisted' && selectedRelationshipPresentation.evidenceItems.length}
+                  <section
+                    class="model-assisted-provenance"
+                    aria-label="Model-assisted relationship provenance"
+                    data-support-profile={selectedRelationshipPresentation.supportProfile || 'unspecified'}
+                  >
+                    <h3>Model-assisted provenance</h3>
+                    <p>
+                      Governed discovery metadata, not an official legal effect or legal
+                      classification. Official effects are presented separately.
+                    </p>
+                    <dl>
+                      {#if selectedRelationshipPresentation.supportProfile}
+                        <dt>Support profile</dt>
+                        <dd>{selectedRelationshipPresentation.supportProfile}</dd>
+                      {/if}
+                      {#if selectedRelationshipPresentation.reviewStatus}
+                        <dt>Review status</dt>
+                        <dd>{selectedRelationshipPresentation.reviewStatus}</dd>
+                      {/if}
+                      <dt>Official legal classification</dt>
+                      <dd>{selectedRelationshipPresentation.officialLegalClassification === false ? 'No' : 'Not declared'}</dd>
+                      {#if selectedRelationshipPresentation.rightsSource}
+                        <dt>Rights source</dt>
+                        <dd>
+                          {#if isUrl(selectedRelationshipPresentation.rightsSource)}
+                            <a
+                              href={selectedRelationshipPresentation.rightsSource}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >{selectedRelationshipPresentation.rightsSource}</a>
+                          {:else}
+                            {selectedRelationshipPresentation.rightsSource}
+                          {/if}
+                        </dd>
+                      {/if}
+                      {#if selectedRelationshipPresentation.rightsAssertion}
+                        <dt>Rights assertion</dt>
+                        <dd>{selectedRelationshipPresentation.rightsAssertion}</dd>
+                      {/if}
+                    </dl>
+                    <div class="model-evidence-list">
+                      {#each selectedRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
+                        <article
+                          data-evidence-index={evidenceIndex}
+                          data-evidence-source-field={evidence.sourceField || 'unspecified'}
+                        >
+                          <strong>{evidence.sourceField ? `${capitalise(evidence.sourceField)} evidence` : `Evidence ${evidenceIndex + 1}`}</strong>
+                          {#if evidence.value}<span>Matched literal: “{evidence.value}”</span>{/if}
+                          {#if evidence.sourceValue}
+                            <p>{evidence.sourceValue.slice(0, 600)}{evidence.sourceValue.length > 600 ? '…' : ''}</p>
+                          {/if}
+                          {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
+                          {#if evidence.normalization}<small>{evidence.normalization}</small>{/if}
+                          {#if evidence.ruleId || evidence.rationale}
+                            <small>{[evidence.ruleId, evidence.rationale].filter(Boolean).join(' · ')}</small>
+                          {/if}
+                          {#if evidence.url}
+                            <a href={evidence.url} target="_blank" rel="noopener noreferrer">Official source record</a>
+                          {/if}
+                        </article>
+                      {/each}
+                    </div>
+                  </section>
+                {:else if selectedRelationshipPresentation.evidenceUrls.length}
                   <h3>Relationship evidence</h3>
                   {#each selectedRelationshipPresentation.evidenceUrls as evidenceUrl}
                     <a href={evidenceUrl} target="_blank" rel="noopener noreferrer">{evidenceUrl}</a>
@@ -7480,8 +7710,18 @@
                     observed_at: selectedRelationshipPresentation.observedAt,
                     stale_after: selectedRelationshipPresentation.staleAfter,
                     freshness: selectedRelationshipPresentation.freshness,
-                    evidence: selectedRelationshipPresentation.evidenceUrls,
-                    rights: selectedRelationshipPresentation.rights
+                    support_profile: selectedRelationshipPresentation.supportProfile,
+                    review_status: selectedRelationshipPresentation.reviewStatus,
+                    official_legal_classification: selectedRelationshipPresentation.officialLegalClassification,
+                    evidence: selectedRelationshipPresentation.evidenceItems,
+                    rights:
+                      selectedRelationshipPresentation.rightsSource ||
+                      selectedRelationshipPresentation.rightsAssertion
+                        ? {
+                            source: selectedRelationshipPresentation.rightsSource,
+                            assertion: selectedRelationshipPresentation.rightsAssertion
+                          }
+                        : selectedRelationshipPresentation.rights
                   })}</pre>
                 </details>
               {/if}

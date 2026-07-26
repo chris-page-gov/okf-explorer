@@ -155,15 +155,33 @@ Corpus-wide relationship hydration is rejected above 100,000 advertised rows,
 while hash-sharded route adjacency remains available.
 
 External relationship planes can be added without inflating startup transfer.
-`entrypoints.model_enrichment_v2` and `indexes.model_enrichment_v2` may point
-to an `okf-provider-datapack.v1` manifest whose gzip JSON assertion chunks
-align one-for-one with the record locator's `record_chunks`. Each chunk
-declares its exact record count, byte count, media type and SHA-256 digest.
-Explorer loads only the selected record's aligned relationship chunk, verifies
-its digest and count, converts source-native legislation identifiers to the
-canonical record route, and merges the assertions without changing their
-`official`, `derived` or `model-assisted` authority. Unsafe paths, snapshot
-mismatches, misaligned chunks and invalid assertions fail closed.
+`entrypoints.model_enrichment_v3` may point to a SHA-256-bound
+`okf-provider-datapack.v1` projection of independently accepted topic, concept
+and entity assertions. Its bounded gzip JSON chunks align one-for-one with the
+record locator's `record_chunks`; each chunk declares its exact record count,
+compressed byte count, media type and digest. Explorer loads only the selected
+record's aligned accepted chunk and verifies its governed manifest, counts,
+predicate vocabulary, evidence profiles, byte binding, digest and row count.
+Title and notes evidence remains an ordered list, including `title-only`,
+`notes-only` and `multi-field` support.
+
+Before reporting governed v3 as ready, Explorer fetches the descriptor-declared
+public accepted manifest, independent audit and reviewer receipt, verifies each
+exact byte count and SHA-256 digest, and cross-checks their audit identity,
+review decision, counts, material bindings and chunk inventory. A failed
+accepted shard is not retained as a successful base-only route; the route stays
+explicitly incomplete and can be retried.
+
+Governed v3 is the sole active model-assisted plane when declared. Explorer
+does not load, merge or count an accompanying historical v2 publication, and
+does not substitute v2 if advertised v3 material is missing or invalid. A
+legacy descriptor that has no v3 declaration may continue to use
+`model_enrichment_v2` as a compatibility fallback. New
+`model_enrichment_v2_historical` entrypoints are evidence only. Model-assisted
+discovery metadata is presented separately from official legal effects and
+never upgraded to an official classification. Unsafe paths, snapshot
+mismatches, oversized or misaligned chunks, invalid evidence and unreconciled
+counts fail closed while the official and deterministic graph remains usable.
 
 An official-effects publication can also declare a bounded reviewed-live
 comparison at

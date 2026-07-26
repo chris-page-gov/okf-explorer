@@ -358,6 +358,14 @@ export async function fetchJsonResource<T>(
     throw new Error(`Release data-plane index has no entry for ${path}`);
   }
   const url = distributed ? distributed.url : resolveUrl(path, baseUrl);
+  const declaredBytes =
+    typeof reference === 'object' &&
+    reference !== null &&
+    typeof reference.bytes === 'number' &&
+    Number.isSafeInteger(reference.bytes) &&
+    reference.bytes > 0
+      ? reference.bytes
+      : undefined;
   if (options.releaseDataPlane && new URL(url).origin !== new URL(baseUrl).origin) {
     throw new Error('Release data-plane resources must stay on the bundle origin');
   }
@@ -408,7 +416,9 @@ export async function fetchJsonResource<T>(
       const bytes = await readResponseBytes(
         response,
         url,
-        distributed ? distributed.expectedPackedLength : MAX_JSON_BYTES
+        distributed
+          ? distributed.expectedPackedLength
+          : Math.min(MAX_JSON_BYTES, declaredBytes ?? MAX_JSON_BYTES)
       );
       if (distributed && (bytes[0] !== 0x1f || bytes[1] !== 0x8b)) {
         throw new Error('Release-pack transport member is not gzip-framed');
@@ -429,6 +439,11 @@ export async function fetchJsonResource<T>(
       }
       if (distributed && (await sha256Hex(logicalBytes)) !== distributed.expectedHash) {
         throw new Error(`Logical resource integrity check failed for ${distributed.logicalPath}`);
+      }
+      if (declaredBytes !== undefined && logicalBytes.byteLength !== declaredBytes) {
+        throw new Error(
+          `${path}: resource byte length differs from the declared ${declaredBytes}-byte binding`
+        );
       }
 
       const logicalPath = distributed ? distributed.logicalPath : path;
