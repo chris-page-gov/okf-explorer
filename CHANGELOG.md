@@ -61,6 +61,15 @@ source-of-truth changes.
 
 ## v0.5.0 - Unreleased
 
+- Added a reproducible production-build acceptance runner and evidence receipt
+  for the final local Whole-Law/Legislation publication. Chrome, Firefox and
+  WebKit now prove federation-child completion, sub-1 MiB compressed startup,
+  bounded cold/warm search, facet layout, coloured graph relationships,
+  keyboard operation and release-blocking axe results.
+- Bounded histogram segment counts by the provider presentation contract so
+  24-pixel keyboard targets no longer overflow the navigation panel, and
+  normalized source-native `derived-non-official` authority to the distinct
+  derived graph style without losing its provenance label.
 - Added the additive `okf-explorer-federation.v1` control plane and
   `okf-relationship-assertion.v2` contract. Federations load only their
   overview first; child descriptors and data shards remain untouched until a

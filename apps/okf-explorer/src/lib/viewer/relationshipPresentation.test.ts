@@ -8,7 +8,9 @@ import {
 describe('relationship presentation', () => {
   it('keeps official, derived and model-assisted assertions visibly distinct', () => {
     expect(relationshipAuthorityClass({ authority: { class: 'official' } })).toBe('official');
+    expect(relationshipAuthorityClass({ authority: 'official-source' })).toBe('official');
     expect(relationshipAuthorityClass({ derivation: 'deterministic' })).toBe('derived');
+    expect(relationshipAuthorityClass({ authority: 'derived-non-official' })).toBe('derived');
     expect(relationshipAuthorityClass({ authority_class: 'model_assisted' })).toBe('model-assisted');
     expect(relationshipAuthorityClass({})).toBe('unclassified');
   });

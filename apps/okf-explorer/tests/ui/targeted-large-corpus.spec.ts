@@ -268,6 +268,17 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(
       graph.getByRole('button', { name: 'Target Act 1998 → has document type → uk-public-general-act' })
     ).toBeVisible();
+    const relationshipStyles = await graph.locator('.graph-edge').evaluateAll((edges) => edges.map((edge) => ({
+      authority: edge.getAttribute('data-relationship-authority'),
+      stroke: getComputedStyle(edge).stroke,
+      dasharray: getComputedStyle(edge).strokeDasharray
+    })));
+    const officialStyle = relationshipStyles.find((edge) => edge.authority === 'official');
+    const modelStyle = relationshipStyles.find((edge) => edge.authority === 'model-assisted');
+    expect(officialStyle?.stroke).toBeTruthy();
+    expect(modelStyle?.stroke).toBeTruthy();
+    expect(modelStyle?.stroke).not.toBe(officialStyle?.stroke);
+    expect(modelStyle?.dasharray).not.toBe('none');
     expect(requests.filter((path) => path === '/data/adjacency/manifest.json')).toHaveLength(1);
     expectNoFullHydration(requests);
     await expect(page.getByText(/browser memory safety limit/i)).toHaveCount(0);

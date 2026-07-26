@@ -103,6 +103,10 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)");
     expect(pageSource).toContain('await ensureLargeFacetIndex();');
     expect(pageSource).toContain('providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key))');
+    expect(pageSource).toContain(
+      'if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());'
+    );
+    expect(pageSource).not.toContain('facetDistributionSegments(rows, 18)');
     expect(pageSource).not.toContain('function preloadLargeFacetDistributions');
   });
 
