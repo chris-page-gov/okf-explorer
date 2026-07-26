@@ -78,6 +78,7 @@ The profile adds optional capabilities without redefining OKF core:
 - HTTPS federation and registry discovery;
 - large-corpus manifests, deterministic search and lazy shards;
 - provider datapacks and snapshot/live comparison;
+- governed metadata-term registries and closed-world validation reports;
 - facet, graph, timeline, map and detail presentation metadata;
 - integrity manifests, release data planes and publication metadata.
 
@@ -99,6 +100,12 @@ The UK Government APIs and UK Legislation builders emit:
 
 The JSON data plane is an Explorer profile projection. The Markdown concept
 layer is the OKF core bundle.
+
+Semantic descriptor link text is derived from each resource's serialization
+(`.yamlld` → YAML-LD and `.jsonld` → JSON-LD). Producers may advertise one
+canonical `semantic_descriptor` and explicit `semantic_yamlld` and
+`semantic_jsonld` entrypoints. The current exemplar makes YAML-LD canonical
+while retaining both serializations; the UI does not hard-code that choice.
 
 ## Compatibility acceptance
 

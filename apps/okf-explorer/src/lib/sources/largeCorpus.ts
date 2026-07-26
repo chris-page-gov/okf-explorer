@@ -10,6 +10,8 @@ import type {
   LargeGraphIndex,
   LargeOverview,
   LargeOperationalMetadataIndex,
+  GovernedTermRegistry,
+  GovernedTermValidation,
   LargeProviderDatapack,
   LargeProviderDatapackCollection,
   LargeProviderDatapackManifest,
@@ -23,6 +25,11 @@ import type {
   LargeShardMetadata
 } from '$lib/types';
 import { normalizeExplorerPresentation } from '$lib/viewer/facetPresentation';
+import {
+  normalizeGovernedTermRegistry,
+  normalizeGovernedTermValidation,
+  validateGovernedTermEvidence
+} from '$lib/viewer/governedTerms';
 import {
   normalizeProviderDatapack,
   normalizeProviderDatapackManifest,
@@ -263,6 +270,36 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
   const presentation = presentationPath
     ? normalizeExplorerPresentation(await fetchResource<unknown>(presentationPath).catch(() => undefined))
     : undefined;
+  const descriptorTermsPath = descriptorEntrypoint(descriptor, 'terms');
+  const manifestTermsPath = manifest.indexes?.terms;
+  if (
+    descriptorTermsPath &&
+    manifestTermsPath &&
+    resourcePath(descriptorTermsPath) !== resourcePath(manifestTermsPath)
+  ) {
+    throw new Error('Descriptor and data manifest governed-term registry paths differ');
+  }
+  const termsPath = descriptorTermsPath || manifestTermsPath;
+  const termRegistry: GovernedTermRegistry | undefined = termsPath
+    ? normalizeGovernedTermRegistry(await fetchResource<unknown>(termsPath))
+    : undefined;
+  const descriptorTermValidationPath = descriptorEntrypoint(descriptor, 'term_validation');
+  const manifestTermValidationPath = manifest.indexes?.term_validation;
+  if (
+    descriptorTermValidationPath &&
+    manifestTermValidationPath &&
+    resourcePath(descriptorTermValidationPath) !== resourcePath(manifestTermValidationPath)
+  ) {
+    throw new Error('Descriptor and data manifest governed-term validation paths differ');
+  }
+  const termValidationPath = descriptorTermValidationPath || manifestTermValidationPath;
+  if (termValidationPath && !termRegistry) {
+    throw new Error('Governed-term validation is advertised without a governed-term registry');
+  }
+  const termValidation: GovernedTermValidation | undefined = termValidationPath
+    ? normalizeGovernedTermValidation(await fetchResource<unknown>(termValidationPath))
+    : undefined;
+  if (termRegistry) validateGovernedTermEvidence(termRegistry, termValidation);
   const descriptorProviderDatapackPath = descriptorEntrypoint(
     descriptor,
     'provider_datapacks'
@@ -352,6 +389,8 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     ['Overview', overview],
     ['Analysis overview', analysis],
     ['Presentation profile', presentation],
+    ['Governed term registry', termRegistry],
+    ['Governed term validation', termValidation],
     ['Provider datapack manifest', providerDatapackManifest],
     ...providerDatapackPacks.map(
       (pack) => [`Provider datapack ${pack.id}`, pack] as [string, unknown]
@@ -382,6 +421,8 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
     overview,
     analysis,
     presentation,
+    termRegistry,
+    termValidation,
     providerDatapacks,
     releaseDataPlane: releaseDataPlane?.document,
     searchManifest,
@@ -423,6 +464,9 @@ export async function loadLargeCorpus(url: string): Promise<LargeCorpusSource> {
             govukContent,
             operationalMetadata,
             datasetByName: new Map(datasets.map((dataset) => [dataset.name, dataset])),
+            datasetByRoute: new Map(
+              datasets.map((dataset) => [dataset.route || `dataset/${dataset.name}`, dataset])
+            ),
             resourceById: new Map(resources.map((resource) => [resource.id, resource])),
             publisherByName: new Map(publishers.map((publisher) => [publisher.name, publisher])),
             resourcesByDataset: indexResourcesByDataset(resources)

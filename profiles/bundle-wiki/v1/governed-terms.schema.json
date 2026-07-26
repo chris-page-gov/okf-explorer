@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/governed-terms.schema.json",
+  "title": "OKF Explorer governed metadata term registry",
+  "description": "A closed-world registry of metadata and UI terms with specification provenance, declared kind, bounded application and publication usage evidence.",
+  "type": "object",
+  "required": [
+    "schema",
+    "title",
+    "snapshot",
+    "generated_at",
+    "review",
+    "vocabularies",
+    "terms",
+    "counts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-explorer-governed-terms.v1"
+    },
+    "title": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "vocabularies": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/vocabulary"
+      }
+    },
+    "terms": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/term"
+      }
+    },
+    "counts": {
+      "$ref": "#/$defs/counts"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "compactTerm": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*:[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "reference": {
+      "type": "string",
+      "minLength": 1,
+      "anyOf": [
+        {
+          "format": "uri"
+        },
+        {
+          "pattern": "^/?(?:[A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+$"
+        }
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/identifier"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": [
+        "applicationStatus",
+        "checkedAt",
+        "checkedBy",
+        "liveLookupPerformed",
+        "method",
+        "scope"
+      ],
+      "properties": {
+        "applicationStatus": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checkedBy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "liveLookupPerformed": {
+          "type": "boolean"
+        },
+        "method": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "scope": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "vocabulary": {
+      "type": "object",
+      "required": [
+        "id",
+        "namespace",
+        "prefix",
+        "source",
+        "title",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "namespace": {
+          "type": "string",
+          "format": "uri"
+        },
+        "prefix": {
+          "$ref": "#/$defs/identifier"
+        },
+        "source": {
+          "$ref": "#/$defs/reference"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "vocabulary",
+        "resource",
+        "version"
+      ],
+      "properties": {
+        "vocabulary": {
+          "$ref": "#/$defs/identifier"
+        },
+        "resource": {
+          "$ref": "#/$defs/reference"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "usage": {
+      "type": "object",
+      "required": [
+        "artifact",
+        "occurrences",
+        "samplePaths"
+      ],
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/reference"
+        },
+        "occurrences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "samplePaths": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "term": {
+      "type": "object",
+      "required": [
+        "id",
+        "iri",
+        "label",
+        "kind",
+        "definition",
+        "application",
+        "vocabulary",
+        "provenance",
+        "validation",
+        "status",
+        "usage"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/compactTerm"
+        },
+        "iri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "kind": {
+          "enum": [
+            "class",
+            "property",
+            "specification-object",
+            "ui-term"
+          ]
+        },
+        "definition": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "application": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "vocabulary": {
+          "$ref": "#/$defs/identifier"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "validation": {
+          "$ref": "#/$defs/termValidation"
+        },
+        "status": {
+          "enum": [
+            "validated",
+            "pending",
+            "rejected",
+            "deprecated"
+          ]
+        },
+        "helpKey": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9:._-]*$"
+        },
+        "sourceLocator": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+        },
+        "usage": {
+          "type": "array",
+          "maxItems": 2000,
+          "items": {
+            "$ref": "#/$defs/usage"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "specification-object"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "sourceLocator"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "validated"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "validation": {
+                "properties": {
+                  "recognition": {
+                    "const": "validated"
+                  },
+                  "meaning": {
+                    "const": "validated"
+                  },
+                  "application": {
+                    "const": "validated"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "termValidation": {
+      "type": "object",
+      "required": [
+        "recognition",
+        "meaning",
+        "application",
+        "method",
+        "checkedBy",
+        "checkedAt"
+      ],
+      "properties": {
+        "recognition": {
+          "$ref": "#/$defs/termReviewStatus"
+        },
+        "meaning": {
+          "$ref": "#/$defs/termReviewStatus"
+        },
+        "application": {
+          "$ref": "#/$defs/termReviewStatus"
+        },
+        "method": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checkedBy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "termReviewStatus": {
+      "enum": [
+        "validated",
+        "pending",
+        "rejected",
+        "deprecated"
+      ]
+    }
+  }
+}

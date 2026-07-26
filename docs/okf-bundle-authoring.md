@@ -573,6 +573,47 @@ Never claim DCAT-AP or OpenAPI conformance from an OKF record alone. Conformance
 requires an emitted standards artefact and a validation step against that
 standard.
 
+### Govern Every Serialized Term
+
+A bundle can optionally advertise `terms` and `term_validation` entrypoints in
+its large-corpus descriptor and data manifest. Use
+`okf-explorer-governed-terms.v1` to record, for every emitted compact term:
+
+- the compact identifier and expanded IRI;
+- whether it is a class, property, specification object or Explorer UI term;
+- the vocabulary namespace, prefix, version and primary specification;
+- a paraphrased definition and the precise, bounded way the bundle applies it;
+- separate recognition, meaning and bounded-application review status, method,
+  reviewer/process and time; and
+- artifact occurrence counts and sample JSON paths.
+
+Use `okf-explorer-governed-term-validation.v1` to record the deterministic
+checks for unique IDs, namespace expansion, authoritative provenance, declared
+kind, bounded-application review and generated-artifact coverage. A conformant
+report must have no unregistered terms, pending application reviews, unused
+standards terms or failed checks.
+
+This is a closed-world publication check. It catches misspelled, invented,
+unregistered and structurally contradictory terms, but cannot by itself prove
+that a reviewer understood the standard correctly. Record whether a live
+vocabulary lookup or human review occurred and state the limitation. Explorer
+shows those boundaries beside the terms and can use governed `ui-term`
+definitions for its `(i)` help text.
+
+The registry is an additive Explorer profile resource. The normative Markdown
+concept layer remains the OKF v0.2 core, so a producer can be fully core
+conformant without publishing the registry. Conversely, publishing a registry
+does not excuse an incorrect semantic mapping.
+
+Hydra and DCAT terms occupy different fields. `hydra:Operation` is a Hydra
+class and must not be placed in `dcat_type`. Where an operation record needs
+both projections, use `hydra_type: hydra:Operation`, an OpenAPI Operation
+Object mapping, and a DCAT relationship to its parent `dcat:DataService`.
+Likewise, do not use `hydra:expects` for a URI template or
+`hydra:supportedOperation` directly on a service instance when Hydra's domain
+conditions are not met; prefer an explicitly governed OKF property and record
+the standards gap.
+
 ## Quality Signals
 
 Quality percentages in this repository are metadata-quality signals, not an API

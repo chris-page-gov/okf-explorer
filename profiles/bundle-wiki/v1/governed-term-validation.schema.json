@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/governed-term-validation.schema.json",
+  "title": "OKF Explorer governed metadata term validation",
+  "description": "A deterministic report for recognition, provenance, term kind, namespace expansion, bounded-application review and emitted-term coverage.",
+  "type": "object",
+  "required": [
+    "schema",
+    "snapshot",
+    "generated_at",
+    "status",
+    "checkedAt",
+    "checkedBy",
+    "method",
+    "scope",
+    "liveLookupPerformed",
+    "checks",
+    "counts",
+    "limitations",
+    "unregisteredTerms",
+    "unusedStandardsTerms",
+    "pendingApplicationReviews"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-explorer-governed-term-validation.v1"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "conformant",
+        "non-conformant"
+      ]
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checkedBy": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "method": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "scope": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "liveLookupPerformed": {
+      "type": "boolean"
+    },
+    "checks": {
+      "type": "object",
+      "required": [
+        "authoritativeProvenance",
+        "boundedApplicationReviewed",
+        "generatedTermCoverage",
+        "meaningReviewed",
+        "namespaceExpansion",
+        "termRecognition",
+        "termKindDeclared",
+        "uniqueIdentifiers"
+      ],
+      "properties": {
+        "authoritativeProvenance": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "boundedApplicationReviewed": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "generatedTermCoverage": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "meaningReviewed": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "namespaceExpansion": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "termRecognition": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "termKindDeclared": {
+          "$ref": "#/$defs/checkStatus"
+        },
+        "uniqueIdentifiers": {
+          "$ref": "#/$defs/checkStatus"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/checkStatus"
+      }
+    },
+    "counts": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "limitations": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "unregisteredTerms": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "unusedStandardsTerms": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "pendingApplicationReviews": {
+      "$ref": "#/$defs/stringArray"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "conformant"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "checks": {
+            "additionalProperties": {
+              "const": "passed"
+            }
+          },
+          "unregisteredTerms": {
+            "maxItems": 0
+          },
+          "unusedStandardsTerms": {
+            "maxItems": 0
+          },
+          "pendingApplicationReviews": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "checkStatus": {
+      "enum": [
+        "passed",
+        "failed"
+      ]
+    },
+    "stringArray": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    }
+  }
+}

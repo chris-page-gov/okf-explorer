@@ -439,16 +439,23 @@ This phase is implemented in the Svelte Explorer.
 
 ### Phase 2: Governed Vocabulary
 
-- Publish the semantic extension schema.
-- Add a predicate registry and integrity-bound vocabulary entrypoints.
+- Publish the semantic extension schema. The first bounded implementation is
+  now the `okf-explorer-governed-terms.v1` registry and its JSON Schema.
+- Add a predicate registry and integrity-bound vocabulary entrypoints. Large
+  descriptors now support integrity-bound `terms` and `term_validation`
+  entrypoints; richer RDF vocabulary artifacts remain future work.
 - Require stable predicate IRIs for new exemplar packs.
 - Add SKOS concept schemes for governed topics, formats and licences.
 
 ### Phase 3: Validation
 
 - Expand the current SHACL shapes.
-- Publish machine-readable validation reports.
-- Add a Validation view and source-linked remediation paths.
+- Publish machine-readable validation reports. The first closed-world report
+  now checks recognition, namespace expansion, provenance, kind, bounded use
+  and artifact coverage.
+- Add a Validation view and source-linked remediation paths. Explorer now
+  provides searchable term details, source links, validation status and
+  limitations; a cross-bundle remediation workflow remains future work.
 - Keep SHACL 1.2 experiments separate until the specification is stable.
 
 ### Phase 4: Bounded Inference

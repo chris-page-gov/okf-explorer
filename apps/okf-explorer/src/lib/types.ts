@@ -144,6 +144,8 @@ export type LargeCorpusDescriptor = {
   publisher?: string;
   license?: string;
   semantic_descriptor?: string;
+  semantic_jsonld?: string;
+  semantic_yamlld?: string;
   generated_at?: string;
   snapshot?: string;
   snapshot_id?: string;
@@ -151,6 +153,12 @@ export type LargeCorpusDescriptor = {
   entrypoints: {
     viewer?: string;
     data_manifest: string;
+    markdown_index?: string;
+    conformance?: LargeResourceReference;
+    semantic_jsonld?: string;
+    semantic_yamlld?: string;
+    terms?: LargeResourceReference;
+    term_validation?: LargeResourceReference;
     overview_index?: string;
     analysis_overview?: string;
     presentation?: LargeResourceReference;
@@ -205,6 +213,8 @@ export type LargeDataManifest = {
     relationship_adjacency?: string;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
+    terms?: LargeResourceReference;
+    term_validation?: LargeResourceReference;
   };
   chunks: Record<string, LargeResourceReference[]>;
   shards?: Record<string, LargeShardMetadata[]>;
@@ -610,6 +620,9 @@ export type SearchResultDoc = {
   native_id?: string;
   confidence?: string;
   dcat_type?: string;
+  hydra_type?: string;
+  standard_term_ids?: string[];
+  standards_alignment?: LargeDataset['standards_alignment'];
   dcat_export_status?: string;
   openapi_type?: string;
   openapi_export_status?: string;
@@ -768,6 +781,8 @@ export type LargeDataset = {
   operational_metadata?: LargeDatasetOperationalMetadata;
   confidence?: string;
   dcat_type?: string;
+  hydra_type?: string;
+  standard_term_ids?: string[];
   dcat_export_status?: string;
   openapi_type?: string;
   openapi_export_status?: string;
@@ -776,6 +791,12 @@ export type LargeDataset = {
     claim?: string;
     profiles?: string[];
     dcat?: {
+      term?: string;
+      export_status?: string;
+      required_missing?: string[];
+      properties?: string[];
+    };
+    hydra?: {
       term?: string;
       export_status?: string;
       required_missing?: string[];
@@ -868,6 +889,85 @@ export type LargeRelationship = {
   [key: string]: unknown;
 };
 
+export type GovernedTermUsage = {
+  artifact: string;
+  occurrences: number;
+  samplePaths?: string[];
+};
+
+export type GovernedVocabulary = {
+  id: string;
+  title: string;
+  namespace: string;
+  prefix: string;
+  source: string;
+  version?: string;
+};
+
+export type GovernedTerm = {
+  id: string;
+  label: string;
+  iri: string;
+  kind: string;
+  definition: string;
+  application: string;
+  vocabulary: string;
+  status: string;
+  sourceLocator?: string;
+  helpKey?: string;
+  provenance: {
+    vocabulary: string;
+    resource: string;
+    version?: string;
+  };
+  validation: {
+    recognition: string;
+    meaning: string;
+    application: string;
+    method: string;
+    checkedBy: string;
+    checkedAt: string;
+  };
+  usage?: GovernedTermUsage[];
+};
+
+export type GovernedTermRegistry = {
+  schema: 'okf-explorer-governed-terms.v1' | string;
+  title: string;
+  description?: string;
+  snapshot?: string;
+  generated_at?: string;
+  review?: {
+    applicationStatus?: string;
+    checkedAt?: string;
+    checkedBy?: string;
+    liveLookupPerformed?: boolean;
+    method?: string;
+    scope?: string;
+  };
+  vocabularies: GovernedVocabulary[];
+  terms: GovernedTerm[];
+  counts?: Record<string, number>;
+};
+
+export type GovernedTermValidation = {
+  schema: 'okf-explorer-governed-term-validation.v1' | string;
+  snapshot?: string;
+  generated_at?: string;
+  status: string;
+  checkedAt?: string;
+  checkedBy?: string;
+  method?: string;
+  scope?: string;
+  liveLookupPerformed?: boolean;
+  checks: Record<string, string>;
+  counts?: Record<string, number>;
+  limitations?: string[];
+  unregisteredTerms?: string[];
+  unusedStandardsTerms?: string[];
+  pendingApplicationReviews?: string[];
+};
+
 export type LargeRelationshipsResult = {
   relationships: LargeRelationship[];
   truncated: boolean;
@@ -915,6 +1015,7 @@ export type LargeFullIndex = {
   govukContent: LargeGovukContent;
   operationalMetadata: LargeOperationalMetadataIndex;
   datasetByName: Map<string, LargeDataset>;
+  datasetByRoute: Map<string, LargeDataset>;
   resourceById: Map<string, LargeResource>;
   publisherByName: Map<string, LargePublisher>;
   resourcesByDataset: Map<string, LargeResource[]>;
@@ -930,6 +1031,8 @@ export type LargeCorpusSource = {
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
   presentation?: LargeExplorerPresentation;
+  termRegistry?: GovernedTermRegistry;
+  termValidation?: GovernedTermValidation;
   providerDatapacks?: LargeProviderDatapackCollection;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
