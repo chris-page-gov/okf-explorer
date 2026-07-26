@@ -8,7 +8,10 @@ import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { buildRuntimeAcceptanceProjections } from './runtime_acceptance_contract.mjs';
+import {
+  buildFrozenReleaseBinding,
+  buildRuntimeAcceptanceProjections
+} from './runtime_acceptance_contract.mjs';
 
 const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY_ROOT = path.resolve(APP_ROOT, '../..');
@@ -41,9 +44,32 @@ function argument(name, fallback) {
   return path.resolve(args[index + 1]);
 }
 
+function valueArgument(name, fallback = null) {
+  const index = args.indexOf(name);
+  if (index < 0) return fallback;
+  if (!args[index + 1]) throw new Error(`${name} requires a value`);
+  return args[index + 1];
+}
+
 const bundleRoot = argument('--bundle-root', process.env.OKF_LEGISLATION_BUNDLE || DEFAULT_BUNDLE_ROOT);
 const outputPath = argument('--output', process.env.OKF_EXPLORER_ACCEPTANCE_OUTPUT || DEFAULT_OUTPUT);
 const screenshotRoot = argument('--screenshot-root', DEFAULT_SCREENSHOT_ROOT);
+const candidateCommit = valueArgument('--candidate-commit', process.env.OKF_LEGISLATION_COMMIT || null);
+const candidateTree = valueArgument('--candidate-tree', process.env.OKF_LEGISLATION_TREE || null);
+const candidateBundleTree = valueArgument(
+  '--candidate-bundle-tree-sha256',
+  process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
+);
+const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.0');
+const releaseBinding = buildFrozenReleaseBinding({
+  candidateCommit,
+  candidateTree,
+  candidateBundleTree,
+  explorerCommit,
+  explorerTag
+});
+const releaseBound = releaseBinding !== null;
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -783,8 +809,11 @@ async function main() {
   });
   const overall = projections.status;
   const receipt = {
-    schema: 'okf-explorer-runtime-acceptance.v1',
+    schema: releaseBound
+      ? 'okf-explorer-runtime-acceptance.v2'
+      : 'okf-explorer-runtime-acceptance.v1',
     measured_at: new Date().toISOString(),
+    ...(releaseBinding || {}),
     ...projections,
     scope: 'Production Explorer build with the final local UK Whole-Law and UK Legislation descriptors and every fetched bundle byte served read-only from the local publication tree.',
     runner: {

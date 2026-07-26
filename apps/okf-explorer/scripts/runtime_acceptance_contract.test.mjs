@@ -2,11 +2,13 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  buildFrozenReleaseBinding,
   buildRuntimeAcceptanceProjections,
   RUNTIME_GATE_IDS
 } from './runtime_acceptance_contract.mjs';
 
 const SHA = 'a'.repeat(64);
+const GIT_SHA = 'b'.repeat(40);
 const REQUIRED_REPRODUCTION_ASSERTIONS = [
   { pointer: '/status', equals: 'passed' },
   { pointer: '/runtime/status', equals: 'passed' },
@@ -152,4 +154,47 @@ test('does not treat stale screenshots as current evidence after Chrome fails', 
     2
   );
   assert.equal(receipt.status, 'failed');
+});
+
+test('binds a release receipt to exact candidate and Explorer revisions', () => {
+  const binding = buildFrozenReleaseBinding({
+    candidateCommit: GIT_SHA,
+    candidateTree: 'c'.repeat(40),
+    candidateBundleTree: SHA,
+    explorerCommit: 'd'.repeat(40),
+    explorerTag: 'v0.5.0'
+  });
+
+  assert.deepEqual(binding, {
+    candidate: {
+      repository: 'https://github.com/chris-page-gov/okf-uk-legislation',
+      commit: GIT_SHA,
+      tree: 'c'.repeat(40),
+      bundle_tree_sha256: SHA
+    },
+    explorer: {
+      repository: 'https://github.com/chris-page-gov/okf-explorer',
+      tag: 'v0.5.0',
+      commit: 'd'.repeat(40)
+    }
+  });
+});
+
+test('rejects partial or malformed release bindings', () => {
+  assert.equal(buildFrozenReleaseBinding(), null);
+  assert.throws(
+    () => buildFrozenReleaseBinding({ candidateCommit: GIT_SHA }),
+    /requires candidate commit/
+  );
+  assert.throws(
+    () =>
+      buildFrozenReleaseBinding({
+        candidateCommit: GIT_SHA,
+        candidateTree: 'c'.repeat(40),
+        candidateBundleTree: SHA,
+        explorerCommit: 'd'.repeat(40),
+        explorerTag: 'v0.4.0'
+      }),
+    /requires Explorer v0\.5\.0/
+  );
 });
