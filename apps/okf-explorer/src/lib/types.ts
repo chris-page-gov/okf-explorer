@@ -325,6 +325,8 @@ export type LargeCorpusDescriptor = {
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    model_enrichment_v2?: LargeResourceReference;
+    official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
     release_data_plane?: LargeResourceReference;
@@ -371,6 +373,8 @@ export type LargeDataManifest = {
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    model_enrichment_v2?: LargeResourceReference;
+    official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
   };
@@ -691,6 +695,48 @@ export type LargeProviderDatapackManifest = {
 export type LargeProviderDatapackCollection = {
   manifest: LargeProviderDatapackManifest;
   packs: LargeProviderDatapack[];
+};
+
+export type LargeRelationshipDatapackChunk = {
+  path: string;
+  sha256: string;
+  bytes: number;
+  records: number;
+  compression: 'gzip' | string;
+  media_type: string;
+};
+
+export type LargeRelationshipDatapackManifest = {
+  schema: 'okf-provider-datapack.v1';
+  id: string;
+  snapshot_id: string;
+  chunks: LargeRelationshipDatapackChunk[];
+  counts?: Record<string, number>;
+};
+
+export type EffectsReconciliationStateId =
+  | 'agreement'
+  | 'live-addition'
+  | 'superseded'
+  | 'inaccessible';
+
+export type EffectsReconciliationState = {
+  id: EffectsReconciliationStateId;
+  label: string;
+  description: string;
+  count: number;
+};
+
+export type LargeEffectsReconciliation = {
+  schema: 'okf-official-effects-reconciliation.v1';
+  snapshotId: string;
+  generatedAt: string;
+  observedAt: string;
+  releaseEffect: string;
+  receipt: string;
+  scope: string;
+  notice: string;
+  states: EffectsReconciliationState[];
 };
 
 export type LargeAnalysisOverview = {
@@ -1126,6 +1172,8 @@ export type LargeCorpusSource = {
   analysis?: LargeAnalysisOverview;
   presentation?: LargeExplorerPresentation;
   providerDatapacks?: LargeProviderDatapackCollection;
+  effectsReconciliation?: LargeEffectsReconciliation;
+  effectsReconciliationError?: string;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;

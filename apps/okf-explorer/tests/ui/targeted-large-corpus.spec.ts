@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type BrowserContext, type Route } from '@playwright/test';
 
 const ORIGIN = 'https://targeted-legislation.fixture.test';
@@ -56,11 +57,19 @@ async function installTargetedFixture(context: BrowserContext, requests: string[
     },
     {
       source: RECORD_ROUTE,
-      target: 'document-type/uk-public-general-act',
+      target: 'legislation-type/ukpga',
       kind: 'has document type',
       authority: 'official',
       confidence: 1,
       evidence: ['https://www.legislation.gov.uk/id/ukpga/1998/42']
+    },
+    {
+      source: RECORD_ROUTE,
+      target: 'category/primary-legislation',
+      kind: 'has category',
+      authority: 'derived',
+      derivation: 'deterministic-type-code-map',
+      confidence: 1
     }
   ];
   const descriptor = {
@@ -86,6 +95,9 @@ async function installTargetedFixture(context: BrowserContext, requests: string[
       relationship_adjacency: 'data/adjacency/manifest.json'
     },
     extensions: {
+      'okf-official-effects.v1': {
+        reconciliation: 'data/effects/reconciliation.json'
+      },
       'okf-legislation-corpus.v1': {
         remote_full_text_search: `${ORIGIN}/official-search?query={query}`
       }
@@ -208,6 +220,26 @@ async function installTargetedFixture(context: BrowserContext, requests: string[
       });
     }
     if (url.pathname === '/data/facets.json') return json(route, {});
+    if (url.pathname === '/data/effects/reconciliation.json') {
+      return json(route, {
+        schema: 'okf-official-effects-reconciliation.v1',
+        snapshot_id: 'effects-fixture-2026-07-25',
+        generated_at: '2026-07-25T23:00:00Z',
+        post_build_live: {
+          observed_at: '2026-07-25T23:15:00Z',
+          states: {
+            agreement: 7,
+            'live-addition': 2,
+            superseded: 1,
+            inaccessible: 3
+          },
+          scope: {
+            statement: 'A bounded deterministic fixture comparison.'
+          }
+        },
+        notice: 'A fixture refresh never rewrites historical evidence.'
+      });
+    }
     if (url.pathname === '/search/manifest.json') return json(route, searchManifest);
     if (url.pathname === '/search/doc-map.json') return json(route, {});
     if (url.pathname === '/data/records/manifest.json') return json(route, locator);
@@ -240,12 +272,33 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await installTargetedFixture(page.context(), requests);
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
 
-    await expect(page.getByRole('img', { name: 'Large corpus graph' })).toBeVisible();
-    await expect(page.locator('.graph-summary')).toContainText('3 nodes · 2 relationships');
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
+    await expect(page.locator('.graph-summary')).toContainText('9 nodes · 8 relationships');
     expect(requests).toContain('/data/adjacency/manifest.json');
     expect(requests).toContain(`/data/adjacency/${relationshipBucket(RECORD_ROUTE)}.json`);
     expectNoFullHydration(requests);
     await expect(page.getByText(/browser memory safety limit/i)).toHaveCount(0);
+  });
+
+  test('Reader presents all four official-effects reconciliation states explicitly', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests);
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+
+    const reconciliation = page.getByRole('region', {
+      name: 'Official effects live reconciliation'
+    });
+    await expect(reconciliation).toBeVisible();
+    for (const [state, count] of [
+      ['agreement', '7'],
+      ['live-addition', '2'],
+      ['superseded', '1'],
+      ['inaccessible', '3']
+    ] as const) {
+      await expect(reconciliation.locator(`[data-reconciliation-state="${state}"]`)).toContainText(count);
+    }
+    expect(requests).toContain('/data/effects/reconciliation.json');
+    expectNoFullHydration(requests);
   });
 
   test('official search selection hydrates the selected route when Graph opens', async ({ page }) => {
@@ -260,13 +313,13 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await result.click();
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     await expect(
       graph.getByRole('button', { name: 'Target Act 1998 → classified as → consumer-credit' })
     ).toBeVisible();
     await expect(
-      graph.getByRole('button', { name: 'Target Act 1998 → has document type → uk-public-general-act' })
+      graph.getByRole('button', { name: 'Target Act 1998 → has document type → ukpga' })
     ).toBeVisible();
     const relationshipStyles = await graph.locator('.graph-edge').evaluateAll((edges) => edges.map((edge) => ({
       authority: edge.getAttribute('data-relationship-authority'),
@@ -275,12 +328,83 @@ test.describe('targeted large-corpus relationship hydration', () => {
     })));
     const officialStyle = relationshipStyles.find((edge) => edge.authority === 'official');
     const modelStyle = relationshipStyles.find((edge) => edge.authority === 'model-assisted');
+    const derivedStyle = relationshipStyles.find((edge) => edge.authority === 'derived');
     expect(officialStyle?.stroke).toBeTruthy();
     expect(modelStyle?.stroke).toBeTruthy();
+    expect(derivedStyle?.stroke).toBeTruthy();
     expect(modelStyle?.stroke).not.toBe(officialStyle?.stroke);
+    expect(derivedStyle?.stroke).not.toBe(officialStyle?.stroke);
     expect(modelStyle?.dasharray).not.toBe('none');
+    expect(derivedStyle?.dasharray).not.toBe('none');
+
+    const authorityFilters = page.getByLabel('Relationship authority filters');
+    const modelFilter = authorityFilters.getByRole('button', {
+      name: 'Model-assisted relationships'
+    });
+    await expect(modelFilter).toHaveAttribute('aria-pressed', 'true');
+    await modelFilter.click();
+    await expect(modelFilter).toHaveAttribute('aria-pressed', 'false');
+    await expect(graph.locator('.graph-edge[data-relationship-authority="model-assisted"]')).toHaveCount(0);
+    await expect(graph.locator('.graph-edge[data-relationship-authority="official"]')).toHaveCount(1);
+    await expect(graph.locator('.graph-edge[data-relationship-authority="derived"]')).toHaveCount(1);
+    await expect(page).toHaveURL(/graph\.hideAuthority=model-assisted/);
+    await modelFilter.click();
+    await expect(graph.locator('.graph-edge[data-relationship-authority="model-assisted"]')).toHaveCount(1);
     expect(requests.filter((path) => path === '/data/adjacency/manifest.json')).toHaveLength(1);
     expectNoFullHydration(requests);
     await expect(page.getByText(/browser memory safety limit/i)).toHaveCount(0);
+  });
+
+  test('graph commands have names and no interactive container nests controls', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests);
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+    await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    const result = page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first();
+    await expect(result).toBeVisible();
+    await result.click();
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    await expect(graph).toBeVisible();
+    const graphCommands = graph.locator('[role="button"]');
+    expect(await graphCommands.count()).toBeGreaterThan(0);
+    for (let index = 0; index < await graphCommands.count(); index += 1) {
+      await expect(graphCommands.nth(index)).toHaveAccessibleName(/\S/);
+    }
+    for (const route of [
+      RECORD_ROUTE,
+      'topic/consumer-credit',
+      'legislation-type/ukpga',
+      'publisher/legislation-gov-uk',
+      'format/clml',
+      'tag/ukpga'
+    ]) {
+      await expect(graph.locator(`[data-route="${route}"][role="button"]`)).toHaveAccessibleName(/\S/);
+    }
+
+    const summary = page.locator('.edge-drawer > summary');
+    await expect(summary).toHaveAccessibleName(/Relationships panel/);
+    await expect(summary.getByRole('button')).toHaveCount(0);
+    const beforeResize = await summary.getAttribute('aria-label');
+    await summary.focus();
+    await page.keyboard.press('ArrowUp');
+    await expect(summary).not.toHaveAttribute('aria-label', beforeResize || '');
+    await expect(page.locator('.edge-drawer')).toHaveAttribute('open', '');
+
+    const analysis = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(
+      analysis.violations.filter((violation) =>
+        ['nested-interactive', 'aria-command-name'].includes(violation.id)
+      )
+    ).toEqual([]);
+    expect(
+      analysis.violations.filter((violation) =>
+        violation.impact === 'serious' || violation.impact === 'critical'
+      )
+    ).toEqual([]);
+    expectNoFullHydration(requests);
   });
 });

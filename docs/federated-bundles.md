@@ -154,6 +154,26 @@ only the locator bucket and record shard needed for the selected route.
 Corpus-wide relationship hydration is rejected above 100,000 advertised rows,
 while hash-sharded route adjacency remains available.
 
+External relationship planes can be added without inflating startup transfer.
+`entrypoints.model_enrichment_v2` and `indexes.model_enrichment_v2` may point
+to an `okf-provider-datapack.v1` manifest whose gzip JSON assertion chunks
+align one-for-one with the record locator's `record_chunks`. Each chunk
+declares its exact record count, byte count, media type and SHA-256 digest.
+Explorer loads only the selected record's aligned relationship chunk, verifies
+its digest and count, converts source-native legislation identifiers to the
+canonical record route, and merges the assertions without changing their
+`official`, `derived` or `model-assisted` authority. Unsafe paths, snapshot
+mismatches, misaligned chunks and invalid assertions fail closed.
+
+An official-effects publication can also declare a bounded reviewed-live
+comparison at
+`extensions["okf-official-effects.v1"].reconciliation`. The resource must stay
+inside the bundle publication. Explorer always presents four separate states:
+`agreement`, `live-addition`, `superseded` and `inaccessible`; absent
+categories are displayed as explicit zeroes rather than omitted. If an
+advertised optional reconciliation cannot be loaded, the overview reports that
+failure while leaving the frozen static graph usable.
+
 ## Discovery and fallback
 
 Explorer tries the requested URL and then declared descriptor routes in

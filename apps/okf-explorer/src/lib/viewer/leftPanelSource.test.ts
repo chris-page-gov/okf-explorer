@@ -174,6 +174,23 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('setPointerCapture');
   });
 
+  it('exposes graph commands without nesting them inside image or summary controls', () => {
+    expect(pageSource).toContain('role="group"');
+    expect(pageSource).toContain('aria-label={node.label || node.id}');
+    expect(pageSource).toContain('aria-label={String(node.label || node.id)}');
+    const summaryStart = pageSource.indexOf(
+      '<summary\n                  aria-label={`Relationships panel'
+    );
+    const summaryEnd = pageSource.indexOf('</summary>', summaryStart);
+    const drawerSummary = pageSource.slice(summaryStart, summaryEnd);
+
+    expect(summaryStart).toBeGreaterThan(-1);
+    expect(summaryEnd).toBeGreaterThan(summaryStart);
+    expect(drawerSummary).toContain('class="drawer-grip"');
+    expect(drawerSummary).toContain('<span');
+    expect(drawerSummary).not.toContain('<button');
+  });
+
   it('keeps an inspected relationship selected independently of route highlighting', () => {
     expect(pageSource).toContain('class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}');
     expect(pageSource).toContain('aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}');

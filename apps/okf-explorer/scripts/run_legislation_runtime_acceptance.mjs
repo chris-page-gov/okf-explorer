@@ -8,6 +8,7 @@ import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { buildRuntimeAcceptanceProjections } from './runtime_acceptance_contract.mjs';
 
 const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY_ROOT = path.resolve(APP_ROOT, '../..');
@@ -27,8 +28,10 @@ const WARM_SEARCH_LIMIT_MS = 1000;
 const MEMORY_LIMIT = 256 * 1024 * 1024;
 const VIEWPORT = { width: 1440, height: 1000 };
 const COLD_QUERY = 'Consumer Credit Act 1974';
-const WARM_QUERY = 'Human Rights Act 1998';
+const WARM_QUERY = 'The Air Navigation (Amendment) Order 2026';
 const EXPECTED_GRAPH_AUTHORITIES = ['derived', 'official'];
+const EXPECTED_MODEL_GRAPH_AUTHORITIES = ['derived', 'model-assisted', 'official'];
+const RECONCILIATION_STATES = ['agreement', 'live-addition', 'superseded', 'inaccessible'];
 const args = process.argv.slice(2);
 
 function argument(name, fallback) {
@@ -310,6 +313,31 @@ async function facetEvidence(page) {
   };
 }
 
+async function reconciliationEvidence(page) {
+  const panel = page.getByRole('region', { name: 'Official effects live reconciliation' });
+  await panel.waitFor({ state: 'visible' });
+  const states = {};
+  for (const id of RECONCILIATION_STATES) {
+    const card = panel.locator(`[data-reconciliation-state="${id}"]`);
+    await card.waitFor({ state: 'visible' });
+    const raw = (await card.locator('strong').textContent())?.trim() || '';
+    const count = Number(raw.replaceAll(',', ''));
+    invariant(Number.isSafeInteger(count) && count >= 0, `Reconciliation state ${id} has an invalid count: ${raw}`);
+    states[id] = count;
+  }
+  invariant(
+    Object.keys(states).length === RECONCILIATION_STATES.length,
+    `Reconciliation did not expose all four states: ${JSON.stringify(states)}`
+  );
+  return {
+    status: 'passed',
+    states,
+    explicit_zero_states: Object.entries(states)
+      .filter(([, count]) => count === 0)
+      .map(([id]) => id)
+  };
+}
+
 async function axeEvidence(page) {
   const analysis = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
@@ -354,7 +382,7 @@ async function graphEvidence(page, result) {
   await result.click();
   await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).focus();
   await page.keyboard.press('Enter');
-  const graph = page.getByRole('img', { name: 'Large corpus graph' });
+  const graph = page.getByRole('group', { name: 'Large corpus graph' });
   await graph.waitFor({ state: 'visible' });
   await page.waitForFunction((expected) => {
     const edges = [...document.querySelectorAll('.graph-edge')];
@@ -393,6 +421,82 @@ async function graphEvidence(page, result) {
     authorities,
     styles: edges,
     keyboard_edge_activation: 'passed'
+  };
+}
+
+async function modelRelationshipEvidence(page, result) {
+  await result.click();
+  await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+  const graph = page.getByRole('group', { name: 'Large corpus graph' });
+  await graph.waitFor({ state: 'visible' });
+  await page.waitForFunction((expected) => {
+    const authorities = new Set(
+      [...document.querySelectorAll('.graph-edge')]
+        .map((edge) => edge.getAttribute('data-relationship-authority'))
+    );
+    return expected.every((authority) => authorities.has(authority));
+  }, EXPECTED_MODEL_GRAPH_AUTHORITIES);
+  const styles = await graph.locator('.graph-edge').evaluateAll((elements) =>
+    elements.map((element) => {
+      const style = getComputedStyle(element);
+      return {
+        authority: element.getAttribute('data-relationship-authority') || '',
+        stroke: style.stroke,
+        stroke_dasharray: style.strokeDasharray
+      };
+    })
+  );
+  const representative = Object.fromEntries(
+    EXPECTED_MODEL_GRAPH_AUTHORITIES.map((authority) => [
+      authority,
+      styles.find((style) => style.authority === authority)
+    ])
+  );
+  for (const authority of EXPECTED_MODEL_GRAPH_AUTHORITIES) {
+    invariant(representative[authority], `Model-enriched graph is missing ${authority}: ${JSON.stringify(styles)}`);
+  }
+  invariant(
+    new Set(EXPECTED_MODEL_GRAPH_AUTHORITIES.map((authority) => representative[authority].stroke)).size ===
+      EXPECTED_MODEL_GRAPH_AUTHORITIES.length,
+    `Official, derived and model-assisted relationships do not have distinct colours: ${JSON.stringify(representative)}`
+  );
+  invariant(
+    representative['model-assisted'].stroke_dasharray !== 'none',
+    'Model-assisted relationship line is not visually distinguished with a dash pattern'
+  );
+
+  const filters = page.getByLabel('Relationship authority filters');
+  const modelFilter = filters.getByRole('button', { name: 'Model-assisted relationships' });
+  await modelFilter.waitFor({ state: 'visible' });
+  invariant(await modelFilter.getAttribute('aria-pressed') === 'true', 'Model-assisted authority filter did not start enabled');
+  await modelFilter.click();
+  await page.waitForFunction(() =>
+    document.querySelectorAll('.graph-edge[data-relationship-authority="model-assisted"]').length === 0
+  );
+  const officialWhileHidden = await graph.locator('.graph-edge[data-relationship-authority="official"]').count();
+  const derivedWhileHidden = await graph.locator('.graph-edge[data-relationship-authority="derived"]').count();
+  invariant(officialWhileHidden > 0, 'Hiding model-assisted relationships also removed official relationships');
+  invariant(derivedWhileHidden > 0, 'Hiding model-assisted relationships also removed derived relationships');
+  invariant(
+    new URL(page.url()).searchParams.getAll('graph.hideAuthority').includes('model-assisted'),
+    'Model-assisted filter state was not serialized into the Explorer URL'
+  );
+  await modelFilter.click();
+  await page.waitForFunction(() =>
+    document.querySelectorAll('.graph-edge[data-relationship-authority="model-assisted"]').length > 0
+  );
+  return {
+    status: 'passed',
+    authorities: EXPECTED_MODEL_GRAPH_AUTHORITIES,
+    styles: representative,
+    filter: {
+      authority: 'model-assisted',
+      hidden_model_edge_count: 0,
+      official_edges_preserved: officialWhileHidden,
+      derived_edges_preserved: derivedWhileHidden,
+      url_round_trip: 'passed',
+      restored: true
+    }
   };
 }
 
@@ -458,6 +562,7 @@ async function runBrowser(browserName, browserType, transfers, currentRun) {
     memorySamples.push(await sampleChromeMemory(page, memorySession, 'startup'));
     const startupTransfer = phaseTransfer(transfers, browserName, 'direct-startup');
     invariant(startupTransfer.wire_bytes < STARTUP_LIMIT, `Startup transfer is ${startupTransfer.wire_bytes} bytes (limit ${STARTUP_LIMIT})`);
+    const reconciliation = await reconciliationEvidence(page);
     const facets = await facetEvidence(page);
 
     currentRun.phase = 'cold-search';
@@ -484,6 +589,10 @@ async function runBrowser(browserName, browserType, transfers, currentRun) {
       await page.getByPlaceholder('Search titles locally; official full-text results are added automatically').evaluate((element) => document.activeElement === element),
       'Keyboard search did not retain focus'
     );
+    currentRun.phase = 'model-relationship-graph';
+    const modelRelationships = await modelRelationshipEvidence(page, warm.result);
+    memorySamples.push(await sampleChromeMemory(page, memorySession, 'model-relationship-graph'));
+    await noVisibleError(page, 'Model-assisted relationship exploration failed');
 
     currentRun.phase = 'accessibility';
     const accessibility = await axeEvidence(page);
@@ -534,6 +643,8 @@ async function runBrowser(browserName, browserType, transfers, currentRun) {
       },
       facets,
       graph,
+      model_relationships: modelRelationships,
+      reconciliation,
       keyboard: {
         view_activation: 'passed',
         search_input: 'passed',
@@ -627,16 +738,54 @@ async function main() {
     ),
     federation_and_child: gate(completed.length === 3 && completed.every((run) => run.federation.child_load_completed) ? 'passed' : 'failed'),
     graph_relationship_rendering: gate(completed.length === 3 && completed.every((run) => run.graph.edge_count >= 3) ? 'passed' : 'failed'),
+    model_assisted_styling_and_filtering: gate(
+      completed.length === 3 &&
+      completed.every((run) =>
+        run.model_relationships?.status === 'passed' &&
+        run.model_relationships.authorities.includes('official') &&
+        run.model_relationships.authorities.includes('derived') &&
+        run.model_relationships.authorities.includes('model-assisted') &&
+        run.model_relationships.filter.url_round_trip === 'passed'
+      )
+        ? 'passed'
+        : 'failed'
+    ),
+    live_reconciliation_states: gate(
+      completed.length === 3 &&
+      completed.every((run) =>
+        run.reconciliation?.status === 'passed' &&
+        RECONCILIATION_STATES.every((state) => Number.isSafeInteger(run.reconciliation.states[state]))
+      )
+        ? 'passed'
+        : 'failed'
+    ),
     facet_count_colour_and_space: gate(completed.length === 3 && completed.every((run) => run.facets.rendered_sections === run.facets.shown) ? 'passed' : 'failed'),
     cross_browser: gate(completed.length === 3 ? 'passed' : 'failed', { required: ['chrome', 'firefox', 'webkit'], completed: completed.map((run) => run.browser) }),
     keyboard: gate(completed.length === 3 && completed.every((run) => Object.values(run.keyboard).every((value) => value === 'passed')) ? 'passed' : 'failed'),
     accessibility: gate(completed.length === 3 && completed.every((run) => run.accessibility.serious_or_critical.length === 0) ? 'passed' : 'failed')
   };
-  const overall = Object.values(gates).every((row) => row.status === 'passed') && !failures.length ? 'passed' : 'failed';
+  const inputs = {
+    bundle_root: path.relative(REPOSITORY_ROOT, bundleRoot).split(path.sep).join('/'),
+    federation_descriptor: { path: 'whole-law/okf-explorer.json', bytes: federationDescriptor.length, sha256: sha256(federationDescriptor) },
+    legislation_descriptor: { path: 'okf-explorer.json', bytes: legislationDescriptor.length, sha256: sha256(legislationDescriptor) },
+    explorer_build: { index_sha256: sha256(buildIndex), ...buildDigest }
+  };
+  const outputs = {
+    receipt: path.relative(REPOSITORY_ROOT, outputPath).split(path.sep).join('/'),
+    screenshots
+  };
+  const projections = buildRuntimeAcceptanceProjections({
+    gates,
+    failures,
+    browsers: runs,
+    inputs,
+    outputs
+  });
+  const overall = projections.status;
   const receipt = {
     schema: 'okf-explorer-runtime-acceptance.v1',
     measured_at: new Date().toISOString(),
-    status: overall,
+    ...projections,
     scope: 'Production Explorer build with the final local UK Whole-Law and UK Legislation descriptors and every fetched bundle byte served read-only from the local publication tree.',
     runner: {
       path: 'apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs',
@@ -647,16 +796,8 @@ async function main() {
       server: 'temporary same-origin production static server with real gzip transfer and range support',
       official_live_search: 'disabled with a deterministic empty Atom response; static local search remains under test'
     },
-    inputs: {
-      bundle_root: path.relative(REPOSITORY_ROOT, bundleRoot).split(path.sep).join('/'),
-      federation_descriptor: { path: 'whole-law/okf-explorer.json', bytes: federationDescriptor.length, sha256: sha256(federationDescriptor) },
-      legislation_descriptor: { path: 'okf-explorer.json', bytes: legislationDescriptor.length, sha256: sha256(legislationDescriptor) },
-      explorer_build: { index_sha256: sha256(buildIndex), ...buildDigest }
-    },
-    outputs: {
-      receipt: path.relative(REPOSITORY_ROOT, outputPath).split(path.sep).join('/'),
-      screenshots
-    },
+    inputs,
+    outputs,
     gates,
     browsers: runs,
     failures,

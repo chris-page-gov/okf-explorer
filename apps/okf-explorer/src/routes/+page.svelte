@@ -54,6 +54,7 @@
   } from '$lib/geospatial/geospatial';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
   import ProviderDatapackStatus from '$lib/viewer/ProviderDatapackStatus.svelte';
+  import EffectsReconciliationPanel from '$lib/viewer/EffectsReconciliationPanel.svelte';
   import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
@@ -178,9 +179,16 @@
   const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
   const GRAPH_HIDDEN_EDGE_PARAM = 'graph.hideEdge';
   const GRAPH_HIDDEN_NODE_TYPE_PARAM = 'graph.hideType';
+  const GRAPH_HIDDEN_AUTHORITY_PARAM = 'graph.hideAuthority';
   const GRAPH_KEY_MODE_PARAM = 'graph.key';
   const GRAPH_LABELS_PARAM = 'graph.labels';
   const GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM = 'graph.relationship';
+  const RELATIONSHIP_AUTHORITY_CLASSES: RelationshipAuthorityClass[] = [
+    'official',
+    'derived',
+    'model-assisted',
+    'unclassified'
+  ];
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
@@ -416,6 +424,7 @@
   let graphHiddenRelationshipGroups = $state<string[]>([]);
   let graphHiddenRelationshipEdges = $state<string[]>([]);
   let graphHiddenNodeTypes = $state<string[]>([]);
+  let graphHiddenRelationshipAuthorities = $state<RelationshipAuthorityClass[]>([]);
   let graphHighlightedRelationshipGroup = $state('');
   let relationshipDetailTab = $state<RelationshipDetailTab>('relationship');
   let graphExpandedRelationshipGroups = $state<string[]>([]);
@@ -601,6 +610,13 @@
     graphHiddenRelationshipGroups = boundedGraphParams(params, GRAPH_HIDDEN_GROUP_PARAM, 32);
     graphHiddenRelationshipEdges = boundedGraphParams(params, GRAPH_HIDDEN_EDGE_PARAM, 160);
     graphHiddenNodeTypes = boundedGraphParams(params, GRAPH_HIDDEN_NODE_TYPE_PARAM, 32);
+    graphHiddenRelationshipAuthorities = boundedGraphParams(
+      params,
+      GRAPH_HIDDEN_AUTHORITY_PARAM,
+      RELATIONSHIP_AUTHORITY_CLASSES.length
+    ).filter((value): value is RelationshipAuthorityClass =>
+      RELATIONSHIP_AUTHORITY_CLASSES.includes(value as RelationshipAuthorityClass)
+    );
     graphHighlightedRelationshipGroup = params.get(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM)?.slice(0, 512) || '';
   }
 
@@ -611,6 +627,7 @@
       GRAPH_HIDDEN_GROUP_PARAM,
       GRAPH_HIDDEN_EDGE_PARAM,
       GRAPH_HIDDEN_NODE_TYPE_PARAM,
+      GRAPH_HIDDEN_AUTHORITY_PARAM,
       GRAPH_KEY_MODE_PARAM,
       GRAPH_LABELS_PARAM,
       GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM
@@ -624,6 +641,9 @@
     graphHiddenRelationshipGroups.forEach((key) => params.append(GRAPH_HIDDEN_GROUP_PARAM, key));
     graphHiddenRelationshipEdges.forEach((key) => params.append(GRAPH_HIDDEN_EDGE_PARAM, key));
     graphHiddenNodeTypes.forEach((type) => params.append(GRAPH_HIDDEN_NODE_TYPE_PARAM, type));
+    graphHiddenRelationshipAuthorities.forEach((authority) =>
+      params.append(GRAPH_HIDDEN_AUTHORITY_PARAM, authority)
+    );
     if (graphHighlightedRelationshipGroup) {
       params.set(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM, graphHighlightedRelationshipGroup);
     }
@@ -896,6 +916,7 @@
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
     graphHiddenNodeTypes = [];
+    graphHiddenRelationshipAuthorities = [];
     graphHighlightedRelationshipGroup = '';
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
@@ -1151,6 +1172,7 @@
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
     graphHiddenNodeTypes = [];
+    graphHiddenRelationshipAuthorities = [];
     graphHighlightedRelationshipGroup = '';
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
@@ -4273,15 +4295,18 @@
     }
 
     if (!largeIndex && center.startsWith('dataset/')) {
-      const result = largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
+      const result =
+        largeTargetedDatasets.get(center) ||
+        largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
       if (result) {
         if (result.publisher) addEdge(center, publisherRoute(result.publisher), 'published by');
         for (const format of (result.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
         for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
         for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
-        if (result.resource_count > 0) {
+        const resourceCount = result.resource_count || 0;
+        if (resourceCount > 0) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${result.resource_count})`, result.resource_count, center);
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${resourceCount})`, resourceCount, center);
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         }
       }
@@ -4630,11 +4655,13 @@
     );
     const hiddenGroups = new Set(graphHiddenRelationshipGroups);
     const hiddenEdges = new Set(graphHiddenRelationshipEdges);
+    const hiddenAuthorities = new Set(graphHiddenRelationshipAuthorities);
     const relationships = model.relationships.filter((edge) => {
       const id = graphEdgeKey(edge);
       return (
         !hiddenEdges.has(id)
         && !hiddenGroups.has(groupByEdge.get(id) || '')
+        && !hiddenAuthorities.has(edge.authorityClass || 'unclassified')
       );
     });
     const visibleNodeIds = new Set([
@@ -4690,6 +4717,43 @@
     return !graphHiddenRelationshipEdges.includes(id);
   }
 
+  function graphRelationshipAuthorityLabel(authority: RelationshipAuthorityClass): string {
+    return {
+      official: 'Official',
+      derived: 'Derived',
+      'model-assisted': 'Model-assisted',
+      unclassified: 'Unclassified'
+    }[authority];
+  }
+
+  function graphRelationshipAuthorityEnabled(authority: RelationshipAuthorityClass): boolean {
+    return !graphHiddenRelationshipAuthorities.includes(authority);
+  }
+
+  function graphRelationshipAuthorities(model: LargeGraphModel): RelationshipAuthorityClass[] {
+    const present = new Set(
+      model.relationships.map((relationship) => relationship.authorityClass || 'unclassified')
+    );
+    return RELATIONSHIP_AUTHORITY_CLASSES.filter((authority) => present.has(authority));
+  }
+
+  function graphRelationshipAuthorityCount(
+    model: LargeGraphModel,
+    authority: RelationshipAuthorityClass
+  ): number {
+    return model.relationships.filter(
+      (relationship) => (relationship.authorityClass || 'unclassified') === authority
+    ).length;
+  }
+
+  function toggleGraphRelationshipAuthority(authority: RelationshipAuthorityClass) {
+    graphHiddenRelationshipAuthorities = graphRelationshipAuthorityEnabled(authority)
+      ? [...graphHiddenRelationshipAuthorities, authority]
+      : graphHiddenRelationshipAuthorities.filter((candidate) => candidate !== authority);
+    graphLabelPhase = 0;
+    syncExplorerUrl(true);
+  }
+
   function setGraphLayoutMode(mode: GraphLayoutMode) {
     graphLayoutMode = mode;
     resetGraphView();
@@ -4723,6 +4787,7 @@
     graphRelationshipOrder = [];
     graphHiddenRelationshipGroups = [];
     graphHiddenRelationshipEdges = [];
+    graphHiddenRelationshipAuthorities = [];
     graphExpandedRelationshipGroups = [];
     draggingGraphRelationshipGroup = '';
     graphRelationshipDropTarget = '';
@@ -5396,6 +5461,8 @@
 
   function beginEdgePanelResize(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.drawer-grip')) return;
     event.preventDefault();
     event.stopPropagation();
     edgePanelResizeCleanup?.();
@@ -5420,6 +5487,13 @@
     window.addEventListener('pointerup', finish);
     window.addEventListener('pointercancel', finish);
     edgePanelResizeCleanup = () => finish();
+  }
+
+  function suppressEdgePanelToggleFromGrip(event: MouseEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.drawer-grip')) return;
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   function resizeEdgePanelWithKeyboard(event: KeyboardEvent) {
@@ -6034,6 +6108,12 @@
                 <article data-metric={metric.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}><strong>{metric.value.toLocaleString()}</strong><span>{metric.label}</span></article>
               {/each}
             </div>
+            {#if !largeQuery && !activeLargeFilterCount && (source.effectsReconciliation || source.effectsReconciliationError)}
+              <EffectsReconciliationPanel
+                reconciliation={source.effectsReconciliation}
+                error={source.effectsReconciliationError}
+              />
+            {/if}
           {/if}
 
           {#if activeView === 'reader'}
@@ -6255,6 +6335,26 @@
                     {/each}
                   {/if}
                 </div>
+                {#if graphRelationshipAuthorities(fullModel).length}
+                  <div class="graph-authority-filters" aria-label="Relationship authority filters">
+                    <span>Authority</span>
+                    {#each graphRelationshipAuthorities(fullModel) as authority}
+                      <button
+                        type="button"
+                        class:active={graphRelationshipAuthorityEnabled(authority)}
+                        data-relationship-authority-filter={authority}
+                        data-authority={authority}
+                        aria-pressed={graphRelationshipAuthorityEnabled(authority)}
+                        aria-label={`${graphRelationshipAuthorityLabel(authority)} relationships`}
+                        onclick={() => toggleGraphRelationshipAuthority(authority)}
+                      >
+                        <i aria-hidden="true"></i>
+                        {graphRelationshipAuthorityLabel(authority)}
+                        <small>{graphRelationshipAuthorityCount(fullModel, authority)}</small>
+                      </button>
+                    {/each}
+                  </div>
+                {/if}
                 {#if fullModel.center && relationshipGroups.length && graphLayoutControlsOpen}
                   <section class="relationship-layout-controls" aria-label="Relationship layout">
                     <header>
@@ -6368,7 +6468,7 @@
                 class:dragging={Boolean(graphDrag)}
                 use:measureGraphViewport
                 viewBox={graphViewBox()}
-                role="img"
+                role="group"
                 aria-label="Large corpus graph"
                 onpointerdown={beginGraphPan}
                 onpointermove={moveGraphPan}
@@ -6440,6 +6540,7 @@
                     data-route={node.id}
                     data-relationship-side={relationshipPlan?.nodeSlots.get(node.id)?.side}
                     role="button"
+                    aria-label={node.label || node.id}
                     tabindex="0"
                     onclick={(event) => graphNodeClick(node.id, event)}
                     ondblclick={() => recenterLargeRoute(node.id)}
@@ -6531,16 +6632,17 @@
                 </g>
               </svg>
               <details class="edge-panel edge-drawer" class:resizing={edgePanelResizing} style={`--edge-panel-height:${edgePanelHeight}px`} open>
-                <summary>
-                  <button
+                <summary
+                  aria-label={`Relationships panel, ${model.relationships.length} relationships, ${edgePanelHeight} pixels high; use up and down arrows to resize`}
+                  onpointerdown={beginEdgePanelResize}
+                  onkeydown={resizeEdgePanelWithKeyboard}
+                  onclick={suppressEdgePanelToggleFromGrip}
+                >
+                  <span
                     class="drawer-grip"
-                    type="button"
-                    aria-label={`Resize relationships panel, currently ${edgePanelHeight} pixels high`}
+                    aria-hidden="true"
                     title="Drag to resize relationships"
-                    onpointerdown={beginEdgePanelResize}
-                    onkeydown={resizeEdgePanelWithKeyboard}
-                    onclick={(event) => { event.preventDefault(); event.stopPropagation(); }}
-                  ></button>
+                  ></span>
                   <strong>Relationships ({model.relationships.length})</strong>
                   <span>open for rows</span>
                 </summary>
@@ -6961,7 +7063,7 @@
               class:dragging={Boolean(graphDrag)}
               use:measureGraphViewport
               viewBox={graphViewBox()}
-              role="img"
+              role="group"
               aria-label="OKF graph"
               onpointerdown={beginGraphPan}
               onpointermove={moveGraphPan}
@@ -7019,6 +7121,7 @@
                   class:active={node.id === selectedId || node.id === inspectedId}
                   data-route={node.id}
                   role="button"
+                  aria-label={String(node.label || node.id)}
                   tabindex="0"
                   onclick={() => smallGraphNodeClick(node.id)}
                   ondblclick={() => selectNode(node.id)}

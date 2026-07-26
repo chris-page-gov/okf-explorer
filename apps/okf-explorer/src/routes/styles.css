@@ -2193,6 +2193,80 @@ input:focus {
   color: inherit;
 }
 
+.graph-authority-filters {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .96);
+  scrollbar-width: thin;
+}
+
+.graph-authority-filters > span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.graph-authority-filters button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 5px;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 9px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.graph-authority-filters button:not(.active) {
+  opacity: .48;
+}
+
+.graph-authority-filters button i {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.graph-authority-filters button[data-authority="official"] {
+  color: #235c3b;
+}
+
+.graph-authority-filters button[data-authority="derived"] {
+  color: #274d76;
+}
+
+.graph-authority-filters button[data-authority="derived"] i {
+  background: repeating-linear-gradient(90deg, currentColor 0 7px, transparent 7px 11px);
+}
+
+.graph-authority-filters button[data-authority="model-assisted"] {
+  color: #5d3476;
+}
+
+.graph-authority-filters button[data-authority="model-assisted"] i {
+  background: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 7px);
+}
+
+.graph-authority-filters button[data-authority="unclassified"] {
+  color: #52606d;
+}
+
+.graph-authority-filters small {
+  color: inherit;
+}
+
 .relationship-layout-controls {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -2740,7 +2814,7 @@ input:focus {
 }
 
 .drawer-grip:hover::after,
-.drawer-grip:focus::after,
+.edge-panel summary:focus-visible .drawer-grip::after,
 .edge-panel.resizing .drawer-grip::after {
   background: var(--accent);
 }

@@ -23,9 +23,16 @@ Chrome, Firefox and WebKit:
 4. measure a first cold search and a second warm search;
 5. inspect the real facet inventory, coloured distributions and workspace
    geometry;
-6. open the Consumer Credit Act graph, verify official and derived relationship
+6. verify that the official-effects reconciliation panel exposes agreement,
+   live-addition, superseded and inaccessible states, including explicit zero
+   counts;
+7. open the Consumer Credit Act graph, verify official and derived relationship
    line styles, and activate an edge with the keyboard;
-7. run WCAG 2.2 axe checks and capture the Chrome renderer JavaScript heap.
+8. search for The Air Navigation (Amendment) Order 2026, hydrate its aligned
+   model-enrichment shard, verify distinct official, derived and model-assisted
+   relationship lines, then hide and restore only the model-assisted class
+   through the URL-backed authority filter;
+9. run WCAG 2.2 axe checks and capture the Chrome renderer JavaScript heap.
 
 The limits are 1 MiB compressed startup transfer, 3 seconds for cold search,
 1 second for warm search, and 256 MiB for the nominated Chrome CDP JavaScript
@@ -41,3 +48,18 @@ full-text search is replaced with an empty deterministic Atom response so
 source availability cannot change the static local-search measurement.
 The receipt also binds Chrome screenshots of the relationship graph and the
 compact facet/search layout under `output/playwright/`.
+
+The detailed `gates` and `browsers` evidence remains authoritative. Stable
+release-facing projections additionally expose overall runtime counts plus
+`cross_engine`, `accessibility`, `performance` and `integrity` statuses. These
+paths are the contract consumed by the UK Legislation clean-room reproduction
+gate. The integrity projection fails closed unless both descriptors, the
+production build and the two current Chrome screenshots have valid SHA-256
+evidence.
+
+The projection contract can be tested without building the application or
+running the real corpus:
+
+```sh
+pnpm test:acceptance-contract
+```
