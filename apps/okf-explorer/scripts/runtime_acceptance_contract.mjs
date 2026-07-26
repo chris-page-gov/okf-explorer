@@ -1,4 +1,5 @@
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
+const GIT_SHA_PATTERN = /^[0-9a-f]{40}$/;
 
 export const RUNTIME_GATE_IDS = Object.freeze([
   'startup_transfer',
@@ -21,6 +22,55 @@ export const PERFORMANCE_GATE_IDS = Object.freeze([
   'warm_search',
   'browser_memory'
 ]);
+
+export function buildFrozenReleaseBinding({
+  candidateCommit = null,
+  candidateTree = null,
+  candidateBundleTree = null,
+  explorerCommit = null,
+  explorerTag = 'v0.5.0'
+} = {}) {
+  const values = [
+    candidateCommit,
+    candidateTree,
+    candidateBundleTree,
+    explorerCommit
+  ];
+  if (values.every((value) => !value)) return null;
+  if (!values.every(Boolean)) {
+    throw new Error(
+      'Frozen-candidate acceptance requires candidate commit, tree, bundle-tree SHA-256 and Explorer commit together'
+    );
+  }
+  if (!GIT_SHA_PATTERN.test(candidateCommit)) {
+    throw new Error('Candidate commit is not a full Git SHA');
+  }
+  if (!GIT_SHA_PATTERN.test(candidateTree)) {
+    throw new Error('Candidate tree is not a full Git SHA');
+  }
+  if (!SHA256_PATTERN.test(candidateBundleTree)) {
+    throw new Error('Candidate bundle-tree digest is not SHA-256');
+  }
+  if (!GIT_SHA_PATTERN.test(explorerCommit)) {
+    throw new Error('Explorer commit is not a full Git SHA');
+  }
+  if (explorerTag !== 'v0.5.0') {
+    throw new Error('Frozen-candidate acceptance requires Explorer v0.5.0');
+  }
+  return {
+    candidate: {
+      repository: 'https://github.com/chris-page-gov/okf-uk-legislation',
+      commit: candidateCommit,
+      tree: candidateTree,
+      bundle_tree_sha256: candidateBundleTree
+    },
+    explorer: {
+      repository: 'https://github.com/chris-page-gov/okf-explorer',
+      tag: explorerTag,
+      commit: explorerCommit
+    }
+  };
+}
 
 const EXPECTED_SCREENSHOTS = Object.freeze([
   'output/playwright/legislation-runtime-graph-chrome.png',
