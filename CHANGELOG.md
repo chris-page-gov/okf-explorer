@@ -10,6 +10,12 @@
   including the exact `index.html` bytes.
 - Made both pull-request CI and the Pages publication workflow run the
   deterministic two-build proof before site assembly.
+- Published the canonical per-file build manifest with the Pages app and made
+  the release-bound runtime stage its exact bytes plus every described build
+  file, closing the prior self-attested whole-tree digest boundary.
+- Added fail-closed validation for missing, extra, duplicate, unsafe, linked
+  and tampered build materials while retaining in-memory manifest derivation
+  for mutable local v1 acceptance runs.
 
 ## v0.5.2 - 2026-07-26 - Frozen runtime evidence closure
 

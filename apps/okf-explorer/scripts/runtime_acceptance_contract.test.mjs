@@ -6,6 +6,14 @@ import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
 import {
+  BUILD_MANIFEST_FILENAME,
+  BUILD_MANIFEST_SCHEMA,
+  BUILD_TREE_ALGORITHM,
+  canonicalBuildTreeBytes,
+  renderBuildManifest,
+  sha256
+} from './app_build_manifest.mjs';
+import {
   buildFrozenReleaseBinding,
   buildRuntimeAcceptanceProjections,
   publishWriteOnce,
@@ -34,6 +42,46 @@ function pointer(document, jsonPointer) {
     .split('/')
     .slice(1)
     .reduce((value, token) => value[token.replaceAll('~1', '/').replaceAll('~0', '~')], document);
+}
+
+function passingExplorerBuild() {
+  const sourceMaterials = [
+    {
+      path: '404.html',
+      bytes: 80,
+      sha256: SHA
+    },
+    {
+      path: 'index.html',
+      bytes: 100,
+      sha256: SHA
+    }
+  ];
+  const materials = sourceMaterials.map((material) => ({
+    ...material,
+    path: `explorer-build/${material.path}`
+  }));
+  const treeSha256 = sha256(canonicalBuildTreeBytes(sourceMaterials));
+  const manifestBytes = renderBuildManifest({
+    schema: BUILD_MANIFEST_SCHEMA,
+    algorithm: BUILD_TREE_ALGORITHM,
+    file_count: sourceMaterials.length,
+    tree_sha256: treeSha256,
+    materials: sourceMaterials
+  });
+  return {
+    root: 'explorer-build',
+    manifest: {
+      path: `explorer-build/${BUILD_MANIFEST_FILENAME}`,
+      bytes: manifestBytes.length,
+      sha256: sha256(manifestBytes)
+    },
+    index: { ...materials[1] },
+    files: materials.length,
+    sha256: treeSha256,
+    algorithm: BUILD_TREE_ALGORITHM,
+    materials
+  };
 }
 
 function passingEvidence() {
@@ -75,15 +123,7 @@ function passingEvidence() {
         bytes: 100,
         sha256: SHA
       },
-      explorer_build: {
-        index: {
-          path: 'explorer-build/index.html',
-          bytes: 100,
-          sha256: SHA
-        },
-        files: 5,
-        sha256: SHA
-      }
+      explorer_build: passingExplorerBuild()
     },
     outputs: {
       screenshots: [
@@ -200,6 +240,44 @@ test('rejects duplicate or unexpected screenshot material sets', () => {
     receipt.integrity.checks.filter((check) => check.id.startsWith('screenshot:') && check.status === 'failed').length,
     2
   );
+});
+
+test('rejects incomplete, duplicated, unsafe or tampered build evidence', () => {
+  const cases = [
+    (build) => {
+      build.materials.pop();
+    },
+    (build) => {
+      build.materials[1] = { ...build.materials[0] };
+    },
+    (build) => {
+      build.materials[0].path = 'explorer-build/../escape.js';
+    },
+    (build) => {
+      build.sha256 = SHA;
+    },
+    (build) => {
+      build.index = { ...build.materials[0] };
+    },
+    (build) => {
+      delete build.manifest.bytes;
+    },
+    (build) => {
+      build.manifest.sha256 = SHA;
+    },
+    (build) => {
+      build.unexpected = 'self-attested';
+    }
+  ];
+  for (const mutate of cases) {
+    const evidence = passingEvidence();
+    mutate(evidence.inputs.explorer_build);
+
+    const receipt = buildRuntimeAcceptanceProjections(evidence);
+
+    assert.equal(receipt.integrity.status, 'failed');
+    assert.equal(receipt.status, 'failed');
+  }
 });
 
 test('does not treat stale screenshots as current evidence after Chrome fails', () => {

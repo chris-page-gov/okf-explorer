@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import {
-  lstat,
-  readFile,
-  readdir,
-  rm
-} from 'node:fs/promises';
+import { rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import {
+  BUILD_TREE_ALGORITHM,
+  writeCanonicalBuildManifest
+} from './app_build_manifest.mjs';
 
 const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BUILD_ROOT = path.join(APP_ROOT, 'build');
@@ -18,11 +17,13 @@ const GENERATED_ROOTS = [
   path.join(APP_ROOT, '.svelte-kit'),
   path.join(APP_ROOT, 'node_modules', '.vite')
 ];
-const VITE_CLI = path.join(APP_ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
-
-function sha256(bytes) {
-  return createHash('sha256').update(bytes).digest('hex');
-}
+const VITE_CLI = path.join(
+  APP_ROOT,
+  'node_modules',
+  'vite',
+  'bin',
+  'vite.js'
+);
 
 async function cleanGeneratedState() {
   for (const generatedRoot of GENERATED_ROOTS) {
@@ -45,67 +46,29 @@ function runProductionBuild() {
   }
 }
 
-async function buildTreeEntries(root, directory = '') {
-  const absoluteDirectory = path.join(root, directory);
-  const children = await readdir(absoluteDirectory, { withFileTypes: true });
-  children.sort((left, right) =>
-    left.name < right.name ? -1 : left.name > right.name ? 1 : 0
-  );
-  const entries = [];
-  for (const child of children) {
-    const relative = directory
-      ? path.posix.join(directory, child.name)
-      : child.name;
-    const absolute = path.join(root, ...relative.split('/'));
-    const metadata = await lstat(absolute);
-    if (metadata.isSymbolicLink()) {
-      throw new Error(`build tree contains a symbolic link: ${relative}`);
-    }
-    if (metadata.isDirectory()) {
-      entries.push({ path: relative, type: 'directory' });
-      entries.push(...await buildTreeEntries(root, relative));
-      continue;
-    }
-    if (!metadata.isFile()) {
-      throw new Error(`build tree contains a non-regular entry: ${relative}`);
-    }
-    const bytes = await readFile(absolute);
-    entries.push({
-      bytes: bytes.length,
-      path: relative,
-      sha256: sha256(bytes),
-      type: 'file'
-    });
-  }
-  return entries;
-}
-
 async function snapshotBuild() {
-  const rootMetadata = await lstat(BUILD_ROOT);
-  if (!rootMetadata.isDirectory() || rootMetadata.isSymbolicLink()) {
-    throw new Error('Vite did not produce an independent build directory');
-  }
-  const entries = await buildTreeEntries(BUILD_ROOT);
-  const index = entries.find(
-    (entry) => entry.type === 'file' && entry.path === 'index.html'
-  );
-  if (!index) throw new Error('production build has no index.html');
-  const canonicalManifest = Buffer.from(
-    `${JSON.stringify(entries)}\n`,
-    'utf8'
+  const inspection = await writeCanonicalBuildManifest(BUILD_ROOT);
+  const index = inspection.manifest.materials.find(
+    (entry) => entry.path === 'index.html'
   );
   return {
-    entries,
-    files: entries.filter((entry) => entry.type === 'file').length,
+    materials: inspection.manifest.materials,
+    files: inspection.manifest.file_count,
+    manifest_bytes: inspection.manifestMaterial.bytes,
+    manifest_sha256: inspection.manifestMaterial.sha256,
     index_bytes: index.bytes,
     index_sha256: index.sha256,
-    tree_sha256: sha256(canonicalManifest)
+    tree_sha256: inspection.manifest.tree_sha256
   };
 }
 
 function changedPaths(first, second) {
-  const firstByPath = new Map(first.entries.map((entry) => [entry.path, entry]));
-  const secondByPath = new Map(second.entries.map((entry) => [entry.path, entry]));
+  const firstByPath = new Map(
+    first.materials.map((entry) => [entry.path, entry])
+  );
+  const secondByPath = new Map(
+    second.materials.map((entry) => [entry.path, entry])
+  );
   return [...new Set([...firstByPath.keys(), ...secondByPath.keys()])]
     .sort()
     .filter(
@@ -125,6 +88,8 @@ const first = await buildCleanSnapshot();
 const second = await buildCleanSnapshot();
 if (
   first.tree_sha256 !== second.tree_sha256 ||
+  first.manifest_sha256 !== second.manifest_sha256 ||
+  first.manifest_bytes !== second.manifest_bytes ||
   first.index_sha256 !== second.index_sha256 ||
   first.index_bytes !== second.index_bytes
 ) {
@@ -140,8 +105,11 @@ if (
 
 console.log(
   'Deterministic Explorer build passed: ' +
+    `algorithm=${BUILD_TREE_ALGORITHM} ` +
     `files=${second.files} ` +
     `tree_sha256=${second.tree_sha256} ` +
+    `manifest_bytes=${second.manifest_bytes} ` +
+    `manifest_sha256=${second.manifest_sha256} ` +
     `index_bytes=${second.index_bytes} ` +
     `index_sha256=${second.index_sha256}`
 );

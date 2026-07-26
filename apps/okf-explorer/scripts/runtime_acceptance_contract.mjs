@@ -1,10 +1,24 @@
 import { link, lstat, readFile, unlink, writeFile } from 'node:fs/promises';
 
+import {
+  BUILD_MANIFEST_FILENAME,
+  BUILD_MANIFEST_SCHEMA,
+  BUILD_TREE_ALGORITHM,
+  canonicalBuildTreeBytes,
+  compareBuildPath,
+  renderBuildManifest,
+  safeBuildPath,
+  sha256
+} from './app_build_manifest.mjs';
+
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 const GIT_SHA_PATTERN = /^[0-9a-f]{40}$/;
 const FEDERATION_DESCRIPTOR_PATH = 'whole-law/okf-explorer.json';
 const LEGISLATION_DESCRIPTOR_PATH = 'okf-explorer.json';
+const EXPLORER_BUILD_ROOT = 'explorer-build';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
+const EXPLORER_BUILD_MANIFEST_PATH =
+  `explorer-build/${BUILD_MANIFEST_FILENAME}`;
 const EXPLORER_RELEASE_TAG = 'v0.5.3';
 let temporarySequence = 0;
 
@@ -167,7 +181,7 @@ function isStrictMaterial(value, expectedPath = null) {
       typeof value.path === 'string' &&
       value.path.length > 0 &&
       !pathIsUnsafe(value.path) &&
-      Number.isInteger(value.bytes) &&
+      Number.isSafeInteger(value.bytes) &&
       value.bytes > 0 &&
       SHA256_PATTERN.test(value.sha256 || '')
   );
@@ -179,6 +193,100 @@ function pathIsUnsafe(value) {
     value.includes('\\') ||
     value.split('/').some((part) => !part || part === '.' || part === '..')
   );
+}
+
+function sameMaterial(left, right) {
+  return Boolean(
+    isStrictMaterial(left) &&
+      isStrictMaterial(right) &&
+      left.path === right.path &&
+      left.bytes === right.bytes &&
+      left.sha256 === right.sha256
+  );
+}
+
+function explorerBuildState(value) {
+  const state = {
+    manifest: false,
+    materials: false,
+    index: false,
+    tree: false,
+    computedTree: null
+  };
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return state;
+  }
+  if (
+    Object.keys(value).sort().join(',') !==
+    'algorithm,files,index,manifest,materials,root,sha256'
+  ) {
+    return state;
+  }
+  const manifestIdentity =
+    value.root === EXPLORER_BUILD_ROOT &&
+    isStrictMaterial(value.manifest, EXPLORER_BUILD_MANIFEST_PATH);
+  if (!Array.isArray(value.materials) || value.materials.length === 0) {
+    return state;
+  }
+  try {
+    const expectedPrefix = `${EXPLORER_BUILD_ROOT}/`;
+    const sourceMaterials = value.materials.map((material) => {
+      if (
+        !isStrictMaterial(material) ||
+        !material.path.startsWith(expectedPrefix)
+      ) {
+        throw new Error('invalid staged build material');
+      }
+      const sourcePath = safeBuildPath(
+        material.path.slice(expectedPrefix.length)
+      );
+      return {
+        path: sourcePath,
+        bytes: material.bytes,
+        sha256: material.sha256
+      };
+    });
+    const sourcePaths = sourceMaterials.map((material) => material.path);
+    state.materials =
+      value.materials.length === value.files &&
+      new Set(sourcePaths).size === sourcePaths.length &&
+      sourcePaths.every(
+        (current, index) =>
+          index === 0 ||
+          compareBuildPath(sourcePaths[index - 1], current) < 0
+      );
+    if (!state.materials) return state;
+    state.computedTree = sha256(
+      canonicalBuildTreeBytes(sourceMaterials)
+    );
+    state.tree =
+      value.algorithm === BUILD_TREE_ALGORITHM &&
+      Number.isSafeInteger(value.files) &&
+      value.files > 0 &&
+      SHA256_PATTERN.test(value.sha256 || '') &&
+      value.sha256 === state.computedTree;
+    const expectedManifest = renderBuildManifest({
+      schema: BUILD_MANIFEST_SCHEMA,
+      algorithm: BUILD_TREE_ALGORITHM,
+      file_count: sourceMaterials.length,
+      tree_sha256: state.computedTree,
+      materials: sourceMaterials
+    });
+    state.manifest =
+      manifestIdentity &&
+      value.manifest.bytes === expectedManifest.length &&
+      value.manifest.sha256 === sha256(expectedManifest);
+    const indexMaterials = value.materials.filter(
+      (material) => material.path === EXPLORER_BUILD_INDEX_PATH
+    );
+    state.index =
+      indexMaterials.length === 1 &&
+      isStrictMaterial(value.index, EXPLORER_BUILD_INDEX_PATH) &&
+      sameMaterial(value.index, indexMaterials[0]);
+  } catch {
+    // Invalid build evidence is represented by failed integrity checks.
+  }
+  return state;
 }
 
 /**
@@ -239,6 +347,7 @@ export function buildRuntimeAcceptanceProjections({
       }
     );
   });
+  const buildState = explorerBuildState(inputs.explorer_build);
   const integrityChecks = [
     integrityCheck(
       'federation_descriptor',
@@ -261,18 +370,36 @@ export function buildRuntimeAcceptanceProjections({
       }
     ),
     integrityCheck(
+      'explorer_build_manifest',
+      buildState.manifest,
+      {
+        path: inputs.explorer_build?.manifest?.path ?? null,
+        bytes: inputs.explorer_build?.manifest?.bytes ?? null,
+        sha256: inputs.explorer_build?.manifest?.sha256 ?? null
+      }
+    ),
+    integrityCheck(
+      'explorer_build_materials',
+      buildState.materials,
+      {
+        files: Array.isArray(inputs.explorer_build?.materials)
+          ? inputs.explorer_build.materials.length
+          : null
+      }
+    ),
+    integrityCheck(
       'explorer_build_index',
-      isStrictMaterial(inputs.explorer_build?.index, EXPLORER_BUILD_INDEX_PATH),
+      buildState.index,
       { sha256: inputs.explorer_build?.index?.sha256 ?? null }
     ),
     integrityCheck(
       'explorer_build_tree',
-      Number.isInteger(inputs.explorer_build?.files) &&
-        inputs.explorer_build.files > 0 &&
-        SHA256_PATTERN.test(inputs.explorer_build.sha256 || ''),
+      buildState.tree,
       {
+        algorithm: inputs.explorer_build?.algorithm ?? null,
         files: inputs.explorer_build?.files ?? null,
-        sha256: inputs.explorer_build?.sha256 ?? null
+        sha256: inputs.explorer_build?.sha256 ?? null,
+        computed_sha256: buildState.computedTree
       }
     ),
     ...screenshotChecks
