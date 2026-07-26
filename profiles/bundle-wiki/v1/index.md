@@ -41,6 +41,18 @@ and [`provider-datapack.schema.json`](provider-datapack.schema.json). These
 documents do not assert that an external reference is current live data; see
 the [provider datapack contract](../../../docs/provider-datapacks.md).
 
+An optional governed-term datapack makes the metadata vocabulary inspectable
+and testable. Its
+[`governed-terms.schema.json`](governed-terms.schema.json) registry records each
+compact identifier, full IRI, term kind, authoritative specification
+provenance, reader-facing definition, bounded application and emitted usage.
+The companion
+[`governed-term-validation.schema.json`](governed-term-validation.schema.json)
+report records the deterministic checks and their limitations. Large-corpus
+descriptors advertise these resources as `terms` and `term_validation`
+entrypoints. Explorer rejects namespace, provenance, identifier, snapshot or
+conformance contradictions before presenting the registry.
+
 ## Authoring rules
 
 - Use UTF-8 and YAML 1.2 Core Schema.

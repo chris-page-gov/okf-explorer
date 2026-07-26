@@ -60,6 +60,125 @@ class OkfSemanticTest(unittest.TestCase):
         profile["panels"]["right"] = {"tabs": ["overview", "data"], "default_tab": "evidence"}
         self.assertTrue(okf_semantic.schema_errors(profile, "presentation.schema.json"))
 
+    def test_governed_term_profiles_validate_meaning_provenance_and_checks(self) -> None:
+        registry = {
+            "schema": "okf-explorer-governed-terms.v1",
+            "title": "Governed metadata terms",
+            "description": "Terms used by a bounded metadata projection.",
+            "snapshot": "snapshot-1",
+            "generated_at": "2026-07-26T12:00:00Z",
+            "review": {
+                "applicationStatus": "validated-for-bounded-use",
+                "checkedAt": "2026-07-26T12:00:00Z",
+                "checkedBy": "process:standards-review",
+                "liveLookupPerformed": False,
+                "method": "curated-static-specification-review",
+                "scope": "Emitted semantic metadata.",
+            },
+            "vocabularies": [
+                {
+                    "id": "dcat-3",
+                    "namespace": "http://www.w3.org/ns/dcat#",
+                    "prefix": "dcat",
+                    "source": "https://www.w3.org/TR/vocab-dcat-3/",
+                    "title": "Data Catalog Vocabulary (DCAT) Version 3",
+                    "version": "W3C Recommendation",
+                }
+            ],
+            "terms": [
+                {
+                    "application": "Used only for the service-level record.",
+                    "definition": "A collection of operations that provides access to data.",
+                    "id": "dcat:DataService",
+                    "iri": "http://www.w3.org/ns/dcat#DataService",
+                    "kind": "class",
+                    "label": "Data service",
+                    "provenance": {
+                        "resource": "https://www.w3.org/TR/vocab-dcat-3/",
+                        "version": "W3C Recommendation",
+                        "vocabulary": "dcat-3",
+                    },
+                    "validation": {
+                        "recognition": "validated",
+                        "meaning": "validated",
+                        "application": "validated",
+                        "method": "curated-static-specification-review",
+                        "checkedBy": "process:standards-review",
+                        "checkedAt": "2026-07-26T12:00:00Z",
+                    },
+                    "status": "validated",
+                    "usage": [
+                        {
+                            "artifact": "okf-bundle.jsonld",
+                            "occurrences": 1,
+                            "samplePaths": ["$.service.@type"],
+                        }
+                    ],
+                    "vocabulary": "dcat-3",
+                }
+            ],
+            "counts": {
+                "standardsTerms": 1,
+                "uiTerms": 0,
+            },
+        }
+        validation = {
+            "schema": "okf-explorer-governed-term-validation.v1",
+            "snapshot": "snapshot-1",
+            "generated_at": "2026-07-26T12:00:00Z",
+            "status": "conformant",
+            "checkedAt": "2026-07-26T12:00:00Z",
+            "checkedBy": "process:standards-review",
+            "method": "curated-static-specification-review",
+            "scope": "Emitted semantic metadata.",
+            "liveLookupPerformed": False,
+            "checks": {
+                "authoritativeProvenance": "passed",
+                "boundedApplicationReviewed": "passed",
+                "generatedTermCoverage": "passed",
+                "meaningReviewed": "passed",
+                "namespaceExpansion": "passed",
+                "termRecognition": "passed",
+                "termKindDeclared": "passed",
+                "uniqueIdentifiers": "passed",
+            },
+            "counts": {
+                "registeredTerms": 1,
+                "unregisteredTerms": 0,
+            },
+            "limitations": ["Closed-world validation against a curated register."],
+            "unregisteredTerms": [],
+            "unusedStandardsTerms": [],
+            "pendingApplicationReviews": [],
+        }
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(registry, "governed-terms.schema.json"),
+        )
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(
+                validation, "governed-term-validation.schema.json"
+            ),
+        )
+
+        invalid_registry = json.loads(json.dumps(registry))
+        invalid_registry["terms"][0]["id"] = "dcat:Imagined Class"
+        self.assertTrue(
+            okf_semantic.schema_errors(
+                invalid_registry, "governed-terms.schema.json"
+            )
+        )
+
+        contradictory_validation = json.loads(json.dumps(validation))
+        contradictory_validation["unregisteredTerms"] = ["dcat:ImaginedClass"]
+        self.assertTrue(
+            okf_semantic.schema_errors(
+                contradictory_validation,
+                "governed-term-validation.schema.json",
+            )
+        )
+
     def test_provider_datapack_profiles_validate_the_bounded_snapshot_contract(self) -> None:
         snapshot = "monday-2026-07-17-r2"
         manifest = {

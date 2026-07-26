@@ -134,6 +134,95 @@ function providerDatapackFixture(snapshot = 'snapshot-one') {
   };
 }
 
+function governedTermsFixture(snapshot = 'snapshot-one') {
+  return {
+    schema: 'okf-explorer-governed-terms.v1',
+    title: 'Fixture terms',
+    snapshot,
+    generated_at: '2026-07-26T12:00:00Z',
+    review: {
+      applicationStatus: 'validated-for-bounded-use',
+      checkedAt: '2026-07-26T12:00:00Z',
+      checkedBy: 'process:fixture-review',
+      liveLookupPerformed: false,
+      method: 'curated-static-specification-review',
+      scope: 'Fixture UI metadata.'
+    },
+    vocabularies: [
+      {
+        id: 'fixture-ui-v1',
+        namespace: 'https://example.test/ui/',
+        prefix: 'ui',
+        source: 'https://example.test/bundle/data/terms.json',
+        title: 'Fixture UI vocabulary',
+        version: '1'
+      }
+    ],
+    terms: [
+      {
+        id: 'ui:access-model',
+        iri: 'https://example.test/ui/access-model',
+        label: 'Access model',
+        kind: 'ui-term',
+        definition: 'How access requirements are described.',
+        application: 'Explorer help key access-model.',
+        vocabulary: 'fixture-ui-v1',
+        provenance: {
+          vocabulary: 'fixture-ui-v1',
+          resource: 'https://example.test/bundle/data/terms.json',
+          version: '1'
+        },
+        validation: {
+          recognition: 'validated',
+          meaning: 'validated',
+          application: 'validated',
+          method: 'curated-static-specification-review',
+          checkedBy: 'process:fixture-review',
+          checkedAt: '2026-07-26T12:00:00Z'
+        },
+        status: 'validated',
+        helpKey: 'access-model',
+        usage: []
+      }
+    ],
+    counts: { vocabularies: 1, standardsTerms: 0, uiTerms: 1 }
+  };
+}
+
+function governedTermValidationFixture(snapshot = 'snapshot-one') {
+  return {
+    schema: 'okf-explorer-governed-term-validation.v1',
+    snapshot,
+    generated_at: '2026-07-26T12:00:00Z',
+    status: 'conformant',
+    checkedAt: '2026-07-26T12:00:00Z',
+    checkedBy: 'process:fixture-review',
+    method: 'curated-static-specification-review',
+    scope: 'Fixture UI metadata.',
+    liveLookupPerformed: false,
+    checks: {
+      authoritativeProvenance: 'passed',
+      boundedApplicationReviewed: 'passed',
+      generatedTermCoverage: 'passed',
+      meaningReviewed: 'passed',
+      namespaceExpansion: 'passed',
+      termRecognition: 'passed',
+      termKindDeclared: 'passed',
+      uniqueIdentifiers: 'passed'
+    },
+    counts: {
+      registeredTerms: 1,
+      unregisteredTerms: 0,
+      unusedStandardsTerms: 0,
+      pendingApplicationReviews: 0
+    },
+    limitations: ['Closed-world fixture validation.'],
+    unregisteredTerms: [],
+    unusedStandardsTerms: [],
+    pendingApplicationReviews: []
+  };
+}
+
 describe('fetch helpers', () => {
   afterEach(() => {
     vi.restoreAllMocks();
@@ -741,6 +830,7 @@ describe('large corpus source', () => {
 
     const fullIndex = await source.loadFullIndex();
     expect(fullIndex.datasetByName.get('dataset-one')?.title).toBe('Dataset One');
+    expect(fullIndex.datasetByRoute.get('dataset/dataset-one')?.title).toBe('Dataset One');
     expect(fullIndex.datasetByName.get('dataset-one')?.operational_metadata?.update_frequency).toBe('Monthly');
     expect(fullIndex.operationalMetadata.schema).toBe('okf-operational-metadata.v1');
     expect(fullIndex.facets).toEqual({ publisher: [{ value: 'publisher-one', count: 1 }] });
@@ -1955,6 +2045,72 @@ describe('large corpus source', () => {
     await expect(loadLargeCorpus('https://example.test/bundle/okf-explorer.json')).rejects.toThrow(
       'different snapshot identifiers'
     );
+  });
+
+  it('loads and snapshot-binds advertised governed terms and validation evidence', async () => {
+    const snapshot = 'snapshot-one';
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/bundle/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Governed term fixture',
+          snapshot,
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            terms: 'data/terms.json',
+            term_validation: 'data/term-validation.json'
+          },
+          counts: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/manifest.json',
+        {
+          title: 'Manifest',
+          generated_at: '2026-07-26T12:00:00Z',
+          snapshot,
+          counts: {},
+          indexes: {
+            overview: 'data/overview.json',
+            terms: 'data/terms.json',
+            term_validation: 'data/term-validation.json'
+          },
+          chunks: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/overview.json',
+        { schema: 'okf-overview.v1', title: 'Overview', generated_at: '2026-07-26T12:00:00Z', snapshot, counts: {} }
+      ],
+      ['https://example.test/bundle/data/terms.json', governedTermsFixture(snapshot)],
+      [
+        'https://example.test/bundle/data/term-validation.json',
+        governedTermValidationFixture(snapshot)
+      ]
+    ]);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string | URL | Request) => {
+        const value = payloads.get(String(input));
+        return value === undefined
+          ? new Response('', { status: 404, statusText: 'Not Found' })
+          : jsonResponse(value);
+      })
+    );
+
+    const source = await loadLargeCorpus('https://example.test/bundle/okf-explorer.json');
+    expect(source.termRegistry?.terms[0].id).toBe('ui:access-model');
+    expect(source.termValidation?.status).toBe('conformant');
+
+    payloads.set(
+      'https://example.test/bundle/data/term-validation.json',
+      governedTermValidationFixture('snapshot-two')
+    );
+    await expect(
+      loadLargeCorpus('https://example.test/bundle/okf-explorer.json')
+    ).rejects.toThrow('snapshots differ');
   });
 
   it('accepts a legacy snapshotless adjacency manifest but rejects an advertised mismatch', async () => {

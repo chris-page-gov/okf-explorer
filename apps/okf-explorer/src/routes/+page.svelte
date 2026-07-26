@@ -54,6 +54,12 @@
   } from '$lib/geospatial/geospatial';
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
   import ProviderDatapackStatus from '$lib/viewer/ProviderDatapackStatus.svelte';
+  import GovernedTermsPanel from '$lib/viewer/GovernedTermsPanel.svelte';
+  import {
+    governedHelpText,
+    governedTermIdsForRecord,
+    semanticResources
+  } from '$lib/viewer/governedTerms';
   import EffectsReconciliationPanel from '$lib/viewer/EffectsReconciliationPanel.svelte';
   import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
@@ -2325,6 +2331,8 @@
     if (!largeIndex) {
       return kind !== 'dataset' || !largeAppliedQuery.trim() || largeResultNames.has(value);
     }
+    const routedDataset = largeIndex.datasetByRoute.get(route);
+    if (routedDataset) return largeVisibleDatasetNames.has(routedDataset.name);
     if (kind === 'dataset') return largeVisibleDatasetNames.has(value);
     if (kind === 'resource') {
       const resource = largeIndex.resourceById.get(value);
@@ -2346,6 +2354,12 @@
     if (isGraphStackRoute(route)) return true;
     const kind = routeKind(route);
     const value = routeValue(route);
+    if (
+      largeIndex.datasetByRoute.has(route) ||
+      largeResults.some((result) => datasetRoute(result) === route)
+    ) {
+      return true;
+    }
     if (kind === 'dataset') {
       return largeIndex.datasetByName.has(value) || largeResults.some((result) => result.name === value);
     }
@@ -3379,7 +3393,22 @@
   }
 
   function helpText(key: string): string {
-    return HELP_TEXT[key] || HELP_TEXT[key.split(':')[0]] || '';
+    const governed = source?.kind === 'large'
+      ? governedHelpText(source.termRegistry, key)
+      : '';
+    return governed || HELP_TEXT[key] || HELP_TEXT[key.split(':')[0]] || '';
+  }
+
+  function bundleResourceUrl(reference: string): string {
+    if (source?.kind !== 'large') return reference;
+    if (/^https?:\/\//i.test(reference)) return reference;
+    const bundleRelative = reference.startsWith('/') ? reference.slice(1) : reference;
+    return new URL(bundleRelative, source.baseUrl).href;
+  }
+
+  function resourceReferencePath(reference: LargeResourceReference | undefined): string {
+    if (!reference) return '';
+    return typeof reference === 'string' ? reference : reference.path;
   }
 
   function toggleHelp(key: string) {
@@ -3825,6 +3854,10 @@
     if (analysisLabel) return analysisLabel;
     const kind = routeKind(route);
     const value = routeValue(route);
+    const routedDataset = largeIndex?.datasetByRoute.get(route);
+    if (routedDataset) return routedDataset.title;
+    const routedResult = largeResults.find((result) => datasetRoute(result) === route);
+    if (routedResult) return routedResult.title;
     if (kind === 'dataset') {
       return largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
     }
@@ -3973,6 +4006,27 @@
     if (!route) return null;
     const kind = routeKind(route);
     const value = routeValue(route);
+    const routedDataset = largeIndex?.datasetByRoute.get(route);
+    if (routedDataset) {
+      return {
+        kind: 'dataset',
+        route,
+        dataset: routedDataset,
+        resources: largeIndex?.resourcesByDataset.get(routedDataset.name) || [],
+        publisher: routedDataset.publisher
+          ? largeIndex?.publisherByName.get(routedDataset.publisher)
+          : undefined,
+        relationships: routeRelationships(route)
+      };
+    }
+    const routedOverviewResult = source?.kind === 'large'
+      ? source.overview.recent_datasets?.find(
+          (item: SearchResultDoc) => datasetRoute(item) === route
+        )
+      : undefined;
+    const routedResult =
+      largeResults.find((item) => datasetRoute(item) === route) || routedOverviewResult;
+    if (routedResult) return { kind: 'search', route, result: routedResult };
     if (kind === 'dataset') {
       const dataset = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(value);
       if (dataset) {
@@ -7654,6 +7708,7 @@
                 <dt>Visibility</dt><dd>{displayValue(largeDetail.dataset.visibility)}</dd>
                 <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.contract_status)}</dd>
                 <dt><span class="label-help">DCAT term<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.dataset.dcat_type)}</code></dd>
+                <dt><span class="label-help">Hydra term<button class="info-icon" type="button" aria-label="Explain Hydra term" onclick={() => toggleHelp('hydra-type')} onmouseenter={() => showHelp('hydra-type')} onmouseleave={() => hideHelp('hydra-type')} onfocus={() => showHelp('hydra-type')} onblur={() => hideHelp('hydra-type')}>i</button>{#if activeHelpKey === 'hydra-type'}<span class="info-bubble" role="tooltip">{helpText('hydra-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.dataset.hydra_type)}</code></dd>
                 <dt><span class="label-help">OpenAPI term<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.dataset.openapi_type)}</code></dd>
                 <dt>Lifecycle</dt><dd>{displayValue(largeDetail.dataset.lifecycle_status || largeDetail.dataset.state)}</dd>
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
@@ -7711,7 +7766,7 @@
                   <dt>{capitalise(resourceSingular())} hosts</dt><dd>{displayValue(largeDetail.dataset.resource_hosts)}</dd>
                 </dl>
               </details>
-              {#if largeDetail.dataset.dcat_type || largeDetail.dataset.openapi_type || standardsAlignment(largeDetail.dataset)}
+              {#if largeDetail.dataset.dcat_type || largeDetail.dataset.hydra_type || largeDetail.dataset.openapi_type || standardsAlignment(largeDetail.dataset)}
                 {@const alignment = standardsAlignment(largeDetail.dataset)}
                 <details class="metadata-section disclosure-section" id="detail-panel-evidence" hidden={detailPanelTab !== 'evidence'}>
                   <summary>Standards alignment</summary>
@@ -7719,12 +7774,26 @@
                     <dt><span class="label-help">DCAT / DCAT-AP<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.dcat?.term || largeDetail.dataset.dcat_type)}</code></dd>
                     <dt>DCAT export status</dt><dd>{metadataDisplayValue(alignment?.dcat?.export_status || largeDetail.dataset.dcat_export_status)}</dd>
                     <dt>DCAT missing</dt><dd>{#each standardsList(alignment?.dcat?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
+                    <dt><span class="label-help">Hydra<button class="info-icon" type="button" aria-label="Explain Hydra term" onclick={() => toggleHelp('hydra-type')} onmouseenter={() => showHelp('hydra-type')} onmouseleave={() => hideHelp('hydra-type')} onfocus={() => showHelp('hydra-type')} onblur={() => hideHelp('hydra-type')}>i</button>{#if activeHelpKey === 'hydra-type'}<span class="info-bubble" role="tooltip">{helpText('hydra-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.hydra?.term || largeDetail.dataset.hydra_type)}</code></dd>
+                    <dt>Hydra projection status</dt><dd>{metadataDisplayValue(alignment?.hydra?.export_status)}</dd>
+                    <dt>Hydra missing</dt><dd>{#each standardsList(alignment?.hydra?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
                     <dt><span class="label-help">OpenAPI<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.openapi?.term || largeDetail.dataset.openapi_type)}</code></dd>
                     <dt>OpenAPI export status</dt><dd>{metadataDisplayValue(alignment?.openapi?.export_status || largeDetail.dataset.openapi_export_status)}</dd>
                     <dt><span class="label-help">Security scheme<button class="info-icon" type="button" aria-label="Explain OpenAPI security scheme" onclick={() => toggleHelp('openapi-security-scheme')} onmouseenter={() => showHelp('openapi-security-scheme')} onmouseleave={() => hideHelp('openapi-security-scheme')} onfocus={() => showHelp('openapi-security-scheme')} onblur={() => hideHelp('openapi-security-scheme')}>i</button>{#if activeHelpKey === 'openapi-security-scheme'}<span class="info-bubble" role="tooltip">{helpText('openapi-security-scheme')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(alignment?.openapi?.security_scheme_type || largeDetail.dataset.openapi_security_scheme)}</code></dd>
                     <dt>OpenAPI missing</dt><dd>{#each standardsList(alignment?.openapi?.required_missing) as item}<code class="standard-term inline-term">{item}</code>{:else}None recorded{/each}</dd>
                   </dl>
                 </details>
+              {/if}
+              {#if source.termRegistry && governedTermIdsForRecord(largeDetail.dataset).length}
+                <div hidden={detailPanelTab !== 'evidence'}>
+                  <GovernedTermsPanel
+                    registry={source.termRegistry}
+                    validation={source.termValidation}
+                    baseUrl={source.baseUrl}
+                    termIds={governedTermIdsForRecord(largeDetail.dataset)}
+                    open={true}
+                  />
+                </div>
               {/if}
               {#if largeDetail.dataset.quality}
                 <details class="metadata-section disclosure-section" hidden={detailPanelTab !== 'evidence'}>
@@ -7940,6 +8009,7 @@
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
                 <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
                 <dt><span class="label-help">DCAT term<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.dcat_type)}</code></dd>
+                <dt><span class="label-help">Hydra term<button class="info-icon" type="button" aria-label="Explain Hydra term" onclick={() => toggleHelp('hydra-type')} onmouseenter={() => showHelp('hydra-type')} onmouseleave={() => hideHelp('hydra-type')} onfocus={() => showHelp('hydra-type')} onblur={() => hideHelp('hydra-type')}>i</button>{#if activeHelpKey === 'hydra-type'}<span class="info-bubble" role="tooltip">{helpText('hydra-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.hydra_type)}</code></dd>
                 <dt><span class="label-help">OpenAPI term<button class="info-icon" type="button" aria-label="Explain OpenAPI term" onclick={() => toggleHelp('openapi-type')} onmouseenter={() => showHelp('openapi-type')} onmouseleave={() => hideHelp('openapi-type')} onfocus={() => showHelp('openapi-type')} onblur={() => hideHelp('openapi-type')}>i</button>{#if activeHelpKey === 'openapi-type'}<span class="info-bubble" role="tooltip">{helpText('openapi-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.openapi_type)}</code></dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.result.url)}<a href={largeDetail.result.url} target="_blank" rel="noopener">{largeDetail.result.url}</a>{:else}{displayValue(largeDetail.result.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.result.documentation)}<a href={largeDetail.result.documentation} target="_blank" rel="noopener">{largeDetail.result.documentation}</a>{:else}{displayValue(largeDetail.result.documentation)}{/if}</dd>
@@ -7948,6 +8018,15 @@
                 <dt><span class="label-help">Timestamp<button class="info-icon" type="button" aria-label="Explain timestamp" onclick={() => toggleHelp('source-date:search-result')} onmouseenter={() => showHelp('source-date:search-result')} onmouseleave={() => hideHelp('source-date:search-result')} onfocus={() => showHelp('source-date:search-result')} onblur={() => hideHelp('source-date:search-result')}>i</button>{#if activeHelpKey === 'source-date:search-result'}<span class="info-bubble" role="tooltip">{helpText('source-date:search-result')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.timestamp)}</dd>
                 </dl>
               </details>
+              {#if source.termRegistry && governedTermIdsForRecord(largeDetail.result).length}
+                <GovernedTermsPanel
+                  registry={source.termRegistry}
+                  validation={source.termValidation}
+                  baseUrl={source.baseUrl}
+                  termIds={governedTermIdsForRecord(largeDetail.result)}
+                  open={true}
+                />
+              {/if}
               <LegislationDetail record={largeDetail.result} />
               <div class="chips">
                 {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
@@ -8036,13 +8115,19 @@
               {#if source.descriptor.version}<dt>Version</dt><dd>{source.descriptor.version}</dd>{/if}
               {#if source.descriptor.status}<dt>Status</dt><dd>{source.descriptor.status}</dd>{/if}
               {#if source.descriptor.profile}<dt>Profile</dt><dd><a href={source.descriptor.profile} target="_blank" rel="noreferrer">{source.descriptor.profile}</a></dd>{/if}
-              {#if source.descriptor.semantic_descriptor}<dt>YAML-LD</dt><dd><a href={source.descriptor.semantic_descriptor} target="_blank" rel="noreferrer">semantic descriptor</a></dd>{/if}
+              {#if source.descriptor.entrypoints.markdown_index}<dt>OKF Markdown</dt><dd><a href={bundleResourceUrl(source.descriptor.entrypoints.markdown_index)} target="_blank" rel="noreferrer">normative concept index</a></dd>{/if}
+              {#if resourceReferencePath(source.descriptor.entrypoints.conformance)}<dt>Conformance evidence</dt><dd><a href={bundleResourceUrl(resourceReferencePath(source.descriptor.entrypoints.conformance))} target="_blank" rel="noreferrer">validation report</a></dd>{/if}
+              {#each semanticResources(source.descriptor) as semanticResource}
+                <dt>{semanticResource.label}</dt><dd><a href={bundleResourceUrl(semanticResource.path)} target="_blank" rel="noreferrer">semantic descriptor</a></dd>
+              {/each}
               {#if source.descriptor.discovery?.repository}<dt>Repository</dt><dd><a href={source.descriptor.discovery.repository} target="_blank" rel="noopener noreferrer">source repository</a></dd>{/if}
               {#if source.descriptor.discovery?.documentation}<dt>Documentation</dt><dd><a href={source.descriptor.discovery.documentation} target="_blank" rel="noopener noreferrer">documentation</a></dd>{/if}
               {#if source.descriptor.discovery?.raw_subpath}<dt>Repository subpath</dt><dd><code>{source.descriptor.discovery.raw_subpath}</code></dd>{/if}
               {#if source.descriptor.discovery?.release_archive}<dt>Release archive</dt><dd><a href={source.descriptor.discovery.release_archive} target="_blank" rel="noopener noreferrer">frozen releases</a></dd>{/if}
               {#if source.descriptor.publisher}<dt>Publisher</dt><dd><a href={source.descriptor.publisher} target="_blank" rel="noreferrer">{source.descriptor.publisher}</a></dd>{/if}
-              {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">source licence</a></dd>{/if}
+              {#if source.descriptor.license}<dt>Licence</dt><dd><a href={source.descriptor.license} target="_blank" rel="noreferrer">bundle licence</a></dd>{/if}
+              {#if source.termRegistry}<dt>Governed terms</dt><dd>{source.termRegistry.terms.length.toLocaleString()} terms across {source.termRegistry.vocabularies.length.toLocaleString()} vocabularies</dd>{/if}
+              {#if source.termValidation}<dt>Term validation</dt><dd>{source.termValidation.status}</dd>{/if}
               <dt>Generated</dt><dd>{source.descriptor.generated_at || source.manifest.generated_at}</dd>
               <dt>Search index</dt>
               <dd title="Unique normalized terms available to local browser search; no AI or paid token usage">
@@ -8050,6 +8135,13 @@
               </dd>
               <dt>Hydration</dt><dd>{largeIndex ? 'records loaded' : 'overview only'}</dd>
             </dl>
+            {#if source.termRegistry}
+              <GovernedTermsPanel
+                registry={source.termRegistry}
+                validation={source.termValidation}
+                baseUrl={source.baseUrl}
+              />
+            {/if}
           {/if}
         {:else if smallInspectedRelationship && smallCorpus}
           {@const selectedSmallRelationshipPresentation = relationshipPresentation(smallInspectedRelationship)}
