@@ -28,7 +28,7 @@ export function buildFrozenReleaseBinding({
   candidateTree = null,
   candidateBundleTree = null,
   explorerCommit = null,
-  explorerTag = 'v0.5.0'
+  explorerTag = 'v0.5.1'
 } = {}) {
   const values = [
     candidateCommit,
@@ -54,8 +54,8 @@ export function buildFrozenReleaseBinding({
   if (!GIT_SHA_PATTERN.test(explorerCommit)) {
     throw new Error('Explorer commit is not a full Git SHA');
   }
-  if (explorerTag !== 'v0.5.0') {
-    throw new Error('Frozen-candidate acceptance requires Explorer v0.5.0');
+  if (explorerTag !== 'v0.5.1') {
+    throw new Error('Frozen-candidate acceptance requires Explorer v0.5.1');
   }
   return {
     candidate: {

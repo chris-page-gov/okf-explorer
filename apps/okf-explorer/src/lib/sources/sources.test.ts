@@ -853,6 +853,7 @@ describe('large corpus source', () => {
   it('loads one routed record through the sharded locator without hydrating other record chunks', async () => {
     const route = 'dataset/work-two';
     const aliasRoute = 'dataset/work-two-case-preserved';
+    const fallbackAliasRoute = 'dataset/work-two-legacy';
     const bucket = relationshipBucket(route);
     const aliasBucket = relationshipBucket(aliasRoute);
     const locatorBucketPath = 'data/records/locator/shared.json';
@@ -910,7 +911,8 @@ describe('large corpus source', () => {
           },
           bucket_count: new Set([bucket, aliasBucket]).size,
           route_aliases: {
-            [aliasRoute]: route
+            [aliasRoute]: route,
+            [fallbackAliasRoute]: route
           }
         }
       ],
@@ -971,6 +973,9 @@ describe('large corpus source', () => {
       expect.objectContaining({ source: route, target: 'dataset/work-one' })
     ]);
     await expect(source.loadDatasetForRoute(aliasRoute)).resolves.toEqual(
+      expect.objectContaining({ route, title: 'Work Two' })
+    );
+    await expect(source.loadDatasetForRoute(fallbackAliasRoute)).resolves.toEqual(
       expect.objectContaining({ route, title: 'Work Two' })
     );
     await expect(source.loadDatasetForRoute(route)).resolves.toEqual(
@@ -1171,6 +1176,14 @@ describe('large corpus source', () => {
     const source = await loadLargeCorpus(
       'https://example.test/legislation/okf-explorer.json'
     );
+    expect(source.modelEnrichment).toEqual(
+      expect.objectContaining({
+        version: 'v2',
+        mode: 'historical-v2-fallback',
+        status: 'declared',
+        label: 'Historical model-assisted v2 compatibility fallback'
+      })
+    );
     expect(source.effectsReconciliation?.states.map(({ id, count }) => [id, count])).toEqual([
       ['agreement', 16],
       ['live-addition', 2],
@@ -1192,8 +1205,696 @@ describe('large corpus source', () => {
       })
     ]);
     expect(fetchMock.mock.calls.map(([input]) => String(input)).filter((url) => url === modelChunkUrl)).toHaveLength(1);
+    expect(source.modelEnrichment?.status).toBe('ready');
     await source.loadRelationshipsForRoute(route);
     expect(fetchMock.mock.calls.map(([input]) => String(input)).filter((url) => url === modelChunkUrl)).toHaveLength(1);
+  });
+
+  it('loads a collision alias from its requested v3 shard, validates governance and never merges v2', async () => {
+    const route = 'dataset/uksi-2026-99';
+    const aliasRoute = `${route}--collision-fixture`;
+    const otherRoute = 'dataset/uksi-2026-100';
+    const sourceUri = 'https://www.legislation.gov.uk/id/uksi/2026/99';
+    const bucket = relationshipBucket(route);
+    const aliasBucket = relationshipBucket(aliasRoute);
+    const otherBucket = relationshipBucket(otherRoute);
+    const evidence = async (
+      field: 'title' | 'notes',
+      sourceValue: string,
+      value: string
+    ) => ({
+      url: sourceUri,
+      type: `literal-${field}-match`,
+      source_field: field,
+      field_provenance:
+        field === 'title'
+          ? 'official-source-record-work-title'
+          : 'official-source-record-explanatory-note-or-long-title-equivalent',
+      source_value: sourceValue,
+      source_value_sha256: await sha256Hex(JSON.stringify(sourceValue)),
+      source_value_hash_canonicalization: 'canonical-json-utf8',
+      normalization: 'Unicode-NFC-and-whitespace-collapse',
+      value,
+      literal_sha256: await sha256Hex(value),
+      rule_id: 'R001',
+      rationale: 'Literal evidence supports conservative discovery metadata.'
+    });
+    const common = {
+      schema: 'okf-relationship-assertion.v2',
+      source: sourceUri,
+      authority: {
+        class: 'model-assisted',
+        label: 'Governed accepted model-assisted discovery metadata',
+        source: 'https://github.com/example/legislation'
+      },
+      derivation: 'codex-authored-deterministic-literal-rule-v3',
+      review_status: 'accepted-independent-review',
+      official_legal_classification: false,
+      confidence: 0.98,
+      freshness: 'current',
+      rights: {
+        source:
+          'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
+        assertion: 'derived discovery metadata'
+      },
+      rule_id: 'R001',
+      review: {
+        audit_id: 'codex-assisted-v3-independent-audit-20260726',
+        audit_path:
+          'whole-law/assurance/enrichment-v3-independent-audit-20260726.json',
+        review_task_id: 'review-task-fixture',
+        verdict_id: 'verdict-fixture'
+      },
+      verified: [
+        { by: 'process:fixture-reconstruction' },
+        { by: 'process:fixture-semantic-review' }
+      ]
+    };
+    const modelRows = [
+      {
+        ...common,
+        id: `urn:okf:enrichment:sha256:${'1'.repeat(64)}`,
+        acceptance_id: `urn:okf:model-acceptance:${'1'.repeat(64)}`,
+        dimension: 'topic',
+        target: 'topic/transport-and-infrastructure',
+        predicate: 'classified as',
+        support_profile: 'title-only',
+        evidence: [await evidence('title', 'Air Navigation Order 2026', 'Air Navigation')]
+      },
+      {
+        ...common,
+        id: `urn:okf:enrichment:sha256:${'2'.repeat(64)}`,
+        acceptance_id: `urn:okf:model-acceptance:${'2'.repeat(64)}`,
+        dimension: 'concept',
+        target:
+          'https://chris-page-gov.github.io/okf-uk-legislation/profile/whole-law/v1#concept-air-navigation',
+        predicate: 'has discovery concept',
+        support_profile: 'notes-only',
+        evidence: [
+          await evidence(
+            'notes',
+            'This Order concerns air-navigation requirements.',
+            'air-navigation'
+          )
+        ]
+      },
+      {
+        ...common,
+        id: `urn:okf:enrichment:sha256:${'3'.repeat(64)}`,
+        acceptance_id: `urn:okf:model-acceptance:${'3'.repeat(64)}`,
+        dimension: 'entity',
+        target: 'https://www.caa.co.uk/',
+        predicate: 'mentions entity',
+        support_profile: 'multi-field',
+        evidence: [
+          await evidence('title', 'Civil Aviation Authority Order 2026', 'Civil Aviation Authority'),
+          await evidence(
+            'notes',
+            'Functions of the Civil Aviation Authority are described.',
+            'Civil Aviation Authority'
+          )
+        ]
+      }
+    ];
+    const modelText = JSON.stringify(modelRows);
+    const compressed = new Uint8Array(
+      await new Response(
+        new Response(modelText).body!.pipeThrough(new CompressionStream('gzip'))
+      ).arrayBuffer()
+    );
+    const modelHash = await sha256Hex(compressed);
+    const emptyCompressed = new Uint8Array(
+      await new Response(
+        new Response('[]').body!.pipeThrough(new CompressionStream('gzip'))
+      ).arrayBuffer()
+    );
+    const emptyModelHash = await sha256Hex(emptyCompressed);
+    const governanceCounts = {
+      assertions: 3,
+      by_kind: { topic: 1, concept: 1, entity: 1 },
+      by_support: {
+        'title-only': 1,
+        'notes-only': 1,
+        'metadata-only': 0,
+        'multi-field': 1
+      }
+    };
+    const reviewerDocument = {
+      schema: 'okf-codex-semantic-review-task-receipt.v1',
+      status: 'accepted',
+      verdict: 'accepted',
+      review_task_id: 'review-task-fixture',
+      reviewer_visible_model_label: 'Fixture reviewer',
+      source_edits_made_by_reviewer: false,
+      reviewed_materials: Object.fromEntries(
+        [
+          'generator_executable_sha256',
+          'generator_prompt_sha256',
+          'reviewer_prompt_sha256',
+          'rules_sha256',
+          'review_policy_sha256',
+          'calibration_sha256',
+          'calibration_result_sha256',
+          'source_corpus_semantic_sha256',
+          'candidate_manifest_sha256',
+          'terminal_outcome_manifest_sha256',
+          'coverage_sha256',
+          'checkpoints_sha256'
+        ].map((key, index) => [key, index.toString(16).repeat(64)])
+      ),
+      limitations: []
+    };
+    const reviewerText = JSON.stringify(reviewerDocument);
+    const reviewerBinding = {
+      path: 'whole-law/assurance/enrichment-v3-reviewer-task-receipt.json',
+      bytes: new TextEncoder().encode(reviewerText).byteLength,
+      sha256: await sha256Hex(reviewerText)
+    };
+    const acceptedDocument = {
+      schema: 'okf-enrichment-accepted-assertion-manifest.v3',
+      id: 'uk-legislation-codex-assisted-v3-accepted',
+      audit_id: 'codex-assisted-v3-independent-audit-20260726',
+      generated_at: '2026-07-26T12:00:00Z',
+      snapshot_id: 'legislation-work-index-2026-07-11T18:00:00Z',
+      review_materials_sha256: 'a'.repeat(64),
+      counts: governanceCounts,
+      authority: 'derived-model-assisted-discovery-metadata',
+      official_legal_classification: false,
+      chunks: [
+        {
+          path:
+            'bundle/enrichment/codex-assisted-v3/accepted-assertions/assertions-000.json.gz',
+          sha256: modelHash,
+          bytes: compressed.byteLength,
+          records: modelRows.length,
+          compression: 'gzip',
+          media_type: 'application/json'
+        },
+        {
+          path:
+            'bundle/enrichment/codex-assisted-v3/accepted-assertions/assertions-001.json.gz',
+          sha256: emptyModelHash,
+          bytes: emptyCompressed.byteLength,
+          records: 0,
+          compression: 'gzip',
+          media_type: 'application/json'
+        }
+      ]
+    };
+    const acceptedText = JSON.stringify(acceptedDocument);
+    const acceptedBinding = {
+      path: 'enrichment/codex-assisted-v3/accepted-manifest.json',
+      bytes: new TextEncoder().encode(acceptedText).byteLength,
+      sha256: await sha256Hex(acceptedText)
+    };
+    const auditDocument = {
+      schema: 'okf-enrichment-independent-audit.v3',
+      audit_id: 'codex-assisted-v3-independent-audit-20260726',
+      artifact_state: 'hash-bound-accepted',
+      materials: {
+        accepted_manifest: {
+          ...acceptedBinding,
+          path: 'bundle/enrichment/codex-assisted-v3/accepted-manifest.json'
+        },
+        reviewer_task_receipt: {
+          ...reviewerBinding,
+          path: 'enrichment/codex-assisted-v3/reviewer-task-receipt.json'
+        }
+      },
+      counts: {
+        accepted_assertions: governanceCounts.assertions,
+        accepted_by_kind: governanceCounts.by_kind,
+        accepted_by_support: governanceCounts.by_support
+      },
+      checks: [{ id: 'fixture', status: 'passed' }],
+      decision: {
+        release_gate_passed: true,
+        independent_review_status: 'accepted',
+        accepted_assertions: governanceCounts.assertions,
+        accepted_by_kind: governanceCounts.by_kind,
+        errors: []
+      }
+    };
+    const auditText = JSON.stringify(auditDocument);
+    const auditBinding = {
+      path:
+        'whole-law/assurance/enrichment-v3-independent-audit-20260726.json',
+      bytes: new TextEncoder().encode(auditText).byteLength,
+      sha256: await sha256Hex(auditText)
+    };
+    const v3Manifest = {
+      schema: 'okf-provider-datapack.v1',
+      id: 'uk-legislation-codex-assisted-v3-accepted',
+      snapshot_id: 'legislation-work-index-2026-07-11T18:00:00Z',
+      generated_at: '2026-07-26T12:00:00Z',
+      authority: 'derived-model-assisted-discovery-metadata',
+      official_legal_classification: false,
+      source_contract: {
+        ...acceptedBinding,
+        schema: 'okf-enrichment-accepted-assertion-manifest.v3',
+        audit_id: 'codex-assisted-v3-independent-audit-20260726'
+      },
+      independent_audit: auditBinding,
+      semantic_reviewer: reviewerBinding,
+      counts: governanceCounts,
+      relationship_kinds: [
+        { dimension: 'topic', predicate: 'classified as', count: 1 },
+        { dimension: 'concept', predicate: 'has discovery concept', count: 1 },
+        { dimension: 'entity', predicate: 'mentions entity', count: 1 }
+      ],
+      provenance: {
+        evidence_field: 'evidence',
+        evidence_shape: 'stable-ordered-list',
+        source_field_order: ['title', 'notes'],
+        support_profile_field: 'support_profile',
+        support_profiles: {
+          'title-only': ['title'],
+          'notes-only': ['notes'],
+          'multi-field': ['title', 'notes']
+        },
+        item_fields: [
+          'url',
+          'type',
+          'source_field',
+          'field_provenance',
+          'source_value',
+          'source_value_sha256',
+          'source_value_hash_canonicalization',
+          'normalization',
+          'value',
+          'literal_sha256',
+          'rule_id',
+          'rationale'
+        ]
+      },
+      chunks: [
+        {
+          path: 'enrichment/codex-assisted-v3/accepted-assertions/assertions-000.json.gz',
+          sha256: modelHash,
+          bytes: compressed.byteLength,
+          records: modelRows.length,
+          compression: 'gzip',
+          media_type: 'application/json'
+        },
+        {
+          path: 'enrichment/codex-assisted-v3/accepted-assertions/assertions-001.json.gz',
+          sha256: emptyModelHash,
+          bytes: emptyCompressed.byteLength,
+          records: 0,
+          compression: 'gzip',
+          media_type: 'application/json'
+        }
+      ]
+    };
+    const v3ManifestHash = await sha256Hex(JSON.stringify(v3Manifest));
+    const descriptorUrl = 'https://example.test/v3/okf-explorer.json';
+    const payloads = new Map<string, unknown>([
+      [
+        descriptorUrl,
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Governed v3 relationship fixture',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v3: {
+              path: 'data/enrichment-v3/manifest.json',
+              sha256: v3ManifestHash
+            },
+            model_enrichment_v3_accepted_manifest: acceptedBinding,
+            model_enrichment_v3_independent_audit: auditBinding,
+            model_enrichment_v3_reviewer: reviewerBinding,
+            model_enrichment_v2: 'data/enrichment-v2/manifest.json',
+            model_enrichment_v2_historical: 'enrichment/codex-assisted-v2/run.json'
+          },
+          entrypoint_integrity: {
+            model_enrichment_v2: {
+              path: 'data/enrichment-v2/different-manifest.json',
+              sha256: 'f'.repeat(64)
+            }
+          },
+          extensions: {
+            'okf-model-enrichment.v3': {
+              entrypoint: 'model_enrichment_v3',
+              accepted_manifest: 'model_enrichment_v3_accepted_manifest',
+              independent_audit: 'model_enrichment_v3_independent_audit',
+              semantic_reviewer: 'model_enrichment_v3_reviewer',
+              accepted_assertions: 3,
+              accepted_by_kind: { topic: 1, concept: 1, entity: 1 },
+              official_legal_classification: false
+            },
+            'okf-model-enrichment.v2-historical': {
+              entrypoint: 'model_enrichment_v2_historical',
+              included_in_active_relationship_totals: false
+            }
+          },
+          counts: { datasets: 2, relationships: 5 }
+        }
+      ],
+      [
+        'https://example.test/v3/data/manifest.json',
+        {
+          title: 'Governed v3 relationship fixture',
+          generated_at: '2026-07-26T12:00:00Z',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          counts: { datasets: 2, relationships: 5 },
+          indexes: {
+            overview: 'data/overview.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v2: 'data/enrichment-v2/manifest.json'
+          },
+          chunks: {
+            datasets: ['data/works-000.json.gz', 'data/works-001.json.gz']
+          }
+        }
+      ],
+      [
+        'https://example.test/v3/data/overview.json',
+        {
+          title: 'Governed v3 relationship fixture',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          counts: { datasets: 2, relationships: 5 }
+        }
+      ],
+      [
+        'https://example.test/v3/data/records/manifest.json',
+        {
+          schema: 'okf-record-locator-sharded.v1',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          algorithm: 'fnv1a32-prefix-2',
+          records: 2,
+          chunk_size: 1,
+          record_chunks: ['data/works-000.json.gz', 'data/works-001.json.gz'],
+          buckets: {
+            [aliasBucket]: 'data/records/locator.json',
+            [otherBucket]: 'data/records/locator.json'
+          },
+          bucket_count: new Set([aliasBucket, otherBucket]).size,
+          route_aliases: { [aliasRoute]: route }
+        }
+      ],
+      [
+        'https://example.test/v3/data/records/locator.json',
+        { [aliasRoute]: [0, 0], [otherRoute]: [1, 0] }
+      ],
+      [
+        'https://example.test/v3/data/adjacency/manifest.json',
+        {
+          schema: 'okf-relationship-adjacency.v1',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          algorithm: 'fnv1a32-prefix-2',
+          routes: 2,
+          relationships: 2,
+          buckets: {
+            [bucket]: 'data/adjacency/route.json',
+            [otherBucket]: 'data/adjacency/route.json'
+          }
+        }
+      ],
+      [
+        'https://example.test/v3/data/adjacency/route.json',
+        {
+          [route]: [
+            {
+              source: route,
+              target: 'legislation-type/uksi',
+              kind: 'has document type',
+              authority: { class: 'official' }
+            }
+          ],
+          [otherRoute]: [
+            {
+              source: otherRoute,
+              target: 'legislation-type/uksi',
+              kind: 'has document type',
+              authority: { class: 'official' }
+            }
+          ]
+        }
+      ],
+      ['https://example.test/v3/data/enrichment-v3/manifest.json', v3Manifest],
+      [
+        'https://example.test/v3/enrichment/codex-assisted-v3/accepted-manifest.json',
+        acceptedDocument
+      ],
+      [
+        'https://example.test/v3/whole-law/assurance/enrichment-v3-independent-audit-20260726.json',
+        auditDocument
+      ],
+      [
+        'https://example.test/v3/whole-law/assurance/enrichment-v3-reviewer-task-receipt.json',
+        reviewerDocument
+      ]
+    ]);
+    const v3ChunkUrl =
+      'https://example.test/v3/enrichment/codex-assisted-v3/accepted-assertions/assertions-000.json.gz';
+    const emptyV3ChunkUrl =
+      'https://example.test/v3/enrichment/codex-assisted-v3/accepted-assertions/assertions-001.json.gz';
+    let v3ChunkRequests = 0;
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const requested = String(input);
+      if (requested === v3ChunkUrl) {
+        v3ChunkRequests += 1;
+        if (v3ChunkRequests === 1) {
+          return new Response('', { status: 404, statusText: 'Not Found' });
+        }
+        return new Response(compressed.slice(), {
+          headers: {
+            'content-type': 'application/gzip',
+            'content-length': String(compressed.byteLength)
+          }
+        });
+      }
+      if (requested === emptyV3ChunkUrl) {
+        return new Response(emptyCompressed.slice(), {
+          headers: {
+            'content-type': 'application/gzip',
+            'content-length': String(emptyCompressed.byteLength)
+          }
+        });
+      }
+      const value = payloads.get(requested);
+      return value === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : jsonResponse(value);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus(descriptorUrl);
+    expect(source.modelEnrichment).toEqual(
+      expect.objectContaining({
+        version: 'v3',
+        mode: 'governed-v3',
+        status: 'declared',
+        historicalV2Declared: true
+      })
+    );
+
+    await expect(source.loadRelationshipsForRoute(otherRoute)).resolves.toEqual([
+      expect.objectContaining({ kind: 'has document type' })
+    ]);
+    expect(source.modelEnrichmentSnapshot()).toEqual(
+      expect.objectContaining({ status: 'ready' })
+    );
+
+    await expect(source.loadRelationshipsForRoute(aliasRoute)).resolves.toEqual([
+      expect.objectContaining({ kind: 'has document type' })
+    ]);
+    expect(source.modelEnrichmentSnapshot()).toEqual(
+      expect.objectContaining({ status: 'unavailable' })
+    );
+
+    await expect(source.loadRelationshipsForRoute(otherRoute)).resolves.toEqual([
+      expect.objectContaining({ kind: 'has document type' })
+    ]);
+    expect(source.modelEnrichmentSnapshot()).toEqual(
+      expect.objectContaining({ status: 'unavailable' })
+    );
+
+    const relationships = await source.loadRelationshipsForRoute(aliasRoute);
+    expect(relationships).toHaveLength(4);
+    expect(relationships.map(({ kind }) => kind)).toEqual([
+      'has document type',
+      'classified as',
+      'has discovery concept',
+      'mentions entity'
+    ]);
+    expect(
+      relationships.find(({ kind }) => kind === 'mentions entity')
+    ).toEqual(
+      expect.objectContaining({
+        source: route,
+        support_profile: 'multi-field',
+        evidence: [
+          expect.objectContaining({ source_field: 'title' }),
+          expect.objectContaining({ source_field: 'notes' })
+        ]
+      })
+    );
+    expect(source.modelEnrichment).toEqual(
+      expect.objectContaining({
+        status: 'ready',
+        counts: {
+          assertions: 3,
+          byKind: { topic: 1, concept: 1, entity: 1 },
+          bySupport: {
+            'title-only': 1,
+            'notes-only': 1,
+            'metadata-only': 0,
+            'multi-field': 1
+          }
+        }
+      })
+    );
+    const requests = fetchMock.mock.calls.map(([input]) => String(input));
+    expect(requests).toEqual(
+      expect.arrayContaining([
+        'https://example.test/v3/enrichment/codex-assisted-v3/accepted-manifest.json',
+        'https://example.test/v3/whole-law/assurance/enrichment-v3-independent-audit-20260726.json',
+        'https://example.test/v3/whole-law/assurance/enrichment-v3-reviewer-task-receipt.json'
+      ])
+    );
+    expect(requests).not.toContain(
+      'https://example.test/v3/data/enrichment-v2/manifest.json'
+    );
+    expect(requests).not.toContain(
+      'https://example.test/v3/enrichment/codex-assisted-v2/run.json'
+    );
+    expect(requests.filter((url) => url === v3ChunkUrl)).toHaveLength(2);
+    expect(requests.filter((url) => url === emptyV3ChunkUrl)).toHaveLength(1);
+    await source.loadRelationshipsForRoute(aliasRoute);
+    expect(
+      fetchMock.mock.calls
+        .map(([input]) => String(input))
+        .filter((url) => url === v3ChunkUrl)
+    ).toHaveLength(2);
+    expect(source.modelEnrichmentSnapshot()).toEqual(
+      expect.objectContaining({ status: 'ready' })
+    );
+    expect(source.modelEnrichmentSnapshot()).not.toBe(source.modelEnrichment);
+  });
+
+  it('keeps base relationships usable when advertised v3 material is missing and does not substitute v2', async () => {
+    const route = 'dataset/uksi-2026-404';
+    const bucket = relationshipBucket(route);
+    const descriptorUrl = 'https://example.test/missing-v3/okf-explorer.json';
+    const payloads = new Map<string, unknown>([
+      [
+        descriptorUrl,
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Missing governed v3 fixture',
+          snapshot: 'snapshot-one',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v3: {
+              path: 'data/enrichment-v3/manifest.json',
+              sha256: 'a'.repeat(64)
+            },
+            model_enrichment_v2: 'data/enrichment-v2/manifest.json'
+          },
+          extensions: {
+            'okf-model-enrichment.v3': { entrypoint: 'model_enrichment_v3' }
+          },
+          counts: { datasets: 1, relationships: 1 }
+        }
+      ],
+      [
+        'https://example.test/missing-v3/data/manifest.json',
+        {
+          title: 'Missing governed v3 fixture',
+          generated_at: '2026-07-26T12:00:00Z',
+          snapshot: 'snapshot-one',
+          counts: { datasets: 1, relationships: 1 },
+          indexes: {
+            overview: 'data/overview.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v2: 'data/enrichment-v2/manifest.json'
+          },
+          chunks: { datasets: ['data/works-000.json.gz'] }
+        }
+      ],
+      [
+        'https://example.test/missing-v3/data/overview.json',
+        { title: 'Missing governed v3 fixture', snapshot: 'snapshot-one', counts: {} }
+      ],
+      [
+        'https://example.test/missing-v3/data/records/manifest.json',
+        {
+          schema: 'okf-record-locator-sharded.v1',
+          snapshot: 'snapshot-one',
+          algorithm: 'fnv1a32-prefix-2',
+          records: 1,
+          chunk_size: 1,
+          record_chunks: ['data/works-000.json.gz'],
+          buckets: { [bucket]: 'data/records/locator.json' },
+          bucket_count: 1
+        }
+      ],
+      [
+        'https://example.test/missing-v3/data/records/locator.json',
+        { [route]: [0, 0] }
+      ],
+      [
+        'https://example.test/missing-v3/data/adjacency/manifest.json',
+        {
+          schema: 'okf-relationship-adjacency.v1',
+          snapshot: 'snapshot-one',
+          algorithm: 'fnv1a32-prefix-2',
+          routes: 1,
+          relationships: 1,
+          buckets: { [bucket]: 'data/adjacency/route.json' }
+        }
+      ],
+      [
+        'https://example.test/missing-v3/data/adjacency/route.json',
+        {
+          [route]: [
+            {
+              source: route,
+              target: 'legislation-type/uksi',
+              kind: 'has document type',
+              authority: { class: 'official' }
+            }
+          ]
+        }
+      ]
+    ]);
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const value = payloads.get(String(input));
+      return value === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : jsonResponse(value);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus(descriptorUrl);
+    await expect(source.loadRelationshipsForRoute(route)).resolves.toEqual([
+      expect.objectContaining({
+        kind: 'has document type',
+        authority: { class: 'official' }
+      })
+    ]);
+    expect(source.modelEnrichment).toEqual(
+      expect.objectContaining({
+        version: 'v3',
+        status: 'unavailable'
+      })
+    );
+    expect(source.modelEnrichment?.message).toMatch(
+      /v3 enrichment is unavailable.*did not guess a path or substitute historical v2/i
+    );
+    expect(fetchMock.mock.calls.map(([input]) => String(input))).not.toContain(
+      'https://example.test/missing-v3/data/enrichment-v2/manifest.json'
+    );
   });
 
   it('keeps advertised reconciliation evidence inside the bundle origin', async () => {

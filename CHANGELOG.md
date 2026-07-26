@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.5.1 - 2026-07-26 - Governed enrichment runtime hardening
+
+- Added byte- and SHA-verified cross-binding for the accepted assertion
+  manifest, independent audit and reviewer receipt before model-assisted
+  relationships can become available.
+- Made model-enrichment shard loading fail closed and retryable, with global
+  assertion-ID uniqueness, exact route/predicate/target validation and
+  incomplete-route recovery that cannot be hidden by cached healthy shards.
+- Preserved and displayed assertion rights provenance, restored reactive
+  availability state, and announced model-enrichment status and failures to
+  assistive technology.
+- Updated the legislation runtime and evaluation journeys for compact facets,
+  bounded record hydration and the current 906,754-relationship publication.
+
 ## v0.4.2 - 2026-07-11 - Explorer identity alignment
 
 - Aligned the private Explorer package and citation metadata with the current

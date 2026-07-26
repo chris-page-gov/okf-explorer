@@ -244,6 +244,8 @@ export type LargeResourceReference =
       path: string;
       sha256?: string;
       compression?: 'identity' | 'gzip' | string;
+      /** Exact bytes before the resource's own compression is decoded. */
+      bytes?: number;
     };
 
 export type LargeShardMetadata = {
@@ -333,7 +335,14 @@ export type LargeCorpusDescriptor = {
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    model_enrichment_v3?: LargeResourceReference;
+    model_enrichment_v3_accepted_manifest?: LargeResourceReference;
+    model_enrichment_v3_coverage?: LargeResourceReference;
+    model_enrichment_v3_independent_audit?: LargeResourceReference;
+    model_enrichment_v3_reviewer?: LargeResourceReference;
     model_enrichment_v2?: LargeResourceReference;
+    model_enrichment_v2_historical?: LargeResourceReference;
+    model_enrichment_v2_historical_manifest?: LargeResourceReference;
     official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
@@ -381,6 +390,7 @@ export type LargeDataManifest = {
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    model_enrichment_v3?: LargeResourceReference;
     model_enrichment_v2?: LargeResourceReference;
     official_effects?: LargeResourceReference;
     operational_metadata?: string;
@@ -720,8 +730,57 @@ export type LargeRelationshipDatapackManifest = {
   schema: 'okf-provider-datapack.v1';
   id: string;
   snapshot_id: string;
+  generated_at?: string;
   chunks: LargeRelationshipDatapackChunk[];
-  counts?: Record<string, number>;
+  counts?: {
+    assertions?: number;
+    by_kind?: {
+      topic: number;
+      concept: number;
+      entity: number;
+    };
+    by_support?: {
+      'title-only': number;
+      'notes-only': number;
+      'metadata-only': number;
+      'multi-field': number;
+    };
+    [key: string]: unknown;
+  };
+  authority?: string;
+  official_legal_classification?: boolean;
+  source_contract?: Record<string, unknown>;
+  independent_audit?: Record<string, unknown>;
+  semantic_reviewer?: Record<string, unknown>;
+  relationship_kinds?: Array<{
+    dimension: 'topic' | 'concept' | 'entity';
+    predicate: string;
+    count: number;
+  }>;
+  provenance?: Record<string, unknown>;
+};
+
+export type LargeModelEnrichmentState = {
+  version: 'v3' | 'v2';
+  mode: 'governed-v3' | 'historical-v2-fallback';
+  status: 'declared' | 'ready' | 'unavailable';
+  label: string;
+  message: string;
+  historicalV2Declared: boolean;
+  counts?: {
+    assertions: number;
+    byKind?: {
+      topic: number;
+      concept: number;
+      entity: number;
+    };
+    bySupport?: {
+      'title-only': number;
+      'notes-only': number;
+      'metadata-only': number;
+      'multi-field': number;
+    };
+  };
 };
 
 export type EffectsReconciliationStateId =
@@ -1277,6 +1336,8 @@ export type LargeCorpusSource = {
   providerDatapacks?: LargeProviderDatapackCollection;
   effectsReconciliation?: LargeEffectsReconciliation;
   effectsReconciliationError?: string;
+  modelEnrichment?: LargeModelEnrichmentState;
+  modelEnrichmentSnapshot: () => LargeModelEnrichmentState | undefined;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;

@@ -13,7 +13,28 @@ export type RelationshipPresentation = {
   staleAfter: string;
   freshness: 'current' | 'stale' | 'unknown';
   evidenceUrls: string[];
+  evidenceItems: RelationshipEvidencePresentation[];
+  supportProfile: '' | 'title-only' | 'notes-only' | 'multi-field';
+  reviewStatus: string;
+  officialLegalClassification?: boolean;
   rights: string;
+  rightsSource: string;
+  rightsAssertion: string;
+};
+
+export type RelationshipEvidencePresentation = {
+  url: string;
+  type: string;
+  sourceField: string;
+  fieldProvenance: string;
+  sourceValue: string;
+  sourceValueSha256: string;
+  sourceValueHashCanonicalization: string;
+  normalization: string;
+  value: string;
+  literalSha256: string;
+  ruleId: string;
+  rationale: string;
 };
 
 function recordValue(value: unknown): Record<string, unknown> | null {
@@ -54,6 +75,30 @@ function evidenceUrl(value: unknown): string {
   }
 }
 
+function evidencePresentation(value: unknown): RelationshipEvidencePresentation {
+  const record = recordValue(value);
+  return {
+    url: evidenceUrl(value),
+    type: stringValue(record?.type),
+    sourceField: stringValue(record?.source_field || record?.sourceField),
+    fieldProvenance: stringValue(record?.field_provenance || record?.fieldProvenance),
+    sourceValue:
+      typeof (record?.source_value ?? record?.sourceValue) === 'string'
+        ? String(record?.source_value ?? record?.sourceValue)
+        : '',
+    sourceValueSha256: stringValue(record?.source_value_sha256 || record?.sourceValueSha256),
+    sourceValueHashCanonicalization: stringValue(
+      record?.source_value_hash_canonicalization ||
+      record?.sourceValueHashCanonicalization
+    ),
+    normalization: stringValue(record?.normalization),
+    value: typeof record?.value === 'string' ? record.value : '',
+    literalSha256: stringValue(record?.literal_sha256 || record?.literalSha256),
+    ruleId: stringValue(record?.rule_id || record?.ruleId),
+    rationale: typeof record?.rationale === 'string' ? record.rationale : ''
+  };
+}
+
 export function relationshipAuthorityClass(
   relationship: Record<string, unknown> | undefined
 ): RelationshipAuthorityClass {
@@ -92,12 +137,28 @@ export function relationshipPresentation(
   now = new Date()
 ): RelationshipPresentation {
   const authority = recordValue(relationship?.authority);
+  const rights = recordValue(relationship?.rights);
+  const rightsSource = stringValue(
+    rights?.source ||
+    rights?.url ||
+    relationship?.rightsSource ||
+    relationship?.rights
+  );
+  const rightsAssertion = stringValue(
+    rights?.assertion || relationship?.rightsAssertion
+  );
   const authorityClass = relationshipAuthorityClass(relationship);
   const evidence = Array.isArray(relationship?.evidence)
     ? relationship.evidence
+    : Array.isArray(relationship?.evidenceItems)
+      ? relationship.evidenceItems
     : Array.isArray(relationship?.evidenceUrls)
       ? relationship.evidenceUrls
       : [];
+  const evidenceItems = evidence.map(evidencePresentation);
+  const supportProfile = stringValue(
+    relationship?.support_profile || relationship?.supportProfile
+  );
   return {
     authorityClass,
     authorityLabel: stringValue(authority?.label || relationship?.authorityLabel) || {
@@ -112,8 +173,31 @@ export function relationshipPresentation(
     observedAt: stringValue(relationship?.observed_at || relationship?.observedAt),
     staleAfter: stringValue(relationship?.stale_after || relationship?.staleAfter),
     freshness: relationshipFreshness(relationship, now),
-    evidenceUrls: [...new Set(evidence.map(evidenceUrl).filter(Boolean))],
-    rights: stringValue(recordValue(relationship?.rights)?.url || relationship?.rights)
+    evidenceUrls: [...new Set(evidenceItems.map(({ url }) => url).filter(Boolean))],
+    evidenceItems,
+    supportProfile:
+      supportProfile === 'title-only' ||
+      supportProfile === 'notes-only' ||
+      supportProfile === 'multi-field'
+        ? supportProfile
+        : '',
+    reviewStatus: stringValue(
+      relationship?.review_status || relationship?.reviewStatus
+    ),
+    ...(typeof (
+      relationship?.official_legal_classification ??
+      relationship?.officialLegalClassification
+    ) === 'boolean'
+      ? {
+          officialLegalClassification: (
+            relationship?.official_legal_classification ??
+            relationship?.officialLegalClassification
+          ) as boolean
+        }
+      : {}),
+    rights: rightsSource,
+    rightsSource,
+    rightsAssertion
   };
 }
 

@@ -268,10 +268,22 @@ input:focus {
   display: none;
 }
 
+.app-notices {
+  min-width: 0;
+}
+
 .error,
 .status {
   padding: 8px 14px;
   border-bottom: 1px solid var(--line);
+}
+
+.error p {
+  margin: 0;
+}
+
+.error p + p {
+  margin-top: 4px;
 }
 
 .error {
@@ -2643,6 +2655,59 @@ input:focus {
 
 .relationship-detail-content h3 {
   margin: 8px 0 4px;
+}
+
+.model-assisted-provenance {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0;
+  border: 1px solid #cfb8df;
+  border-left: 4px solid #8a64a8;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fbf7fd;
+}
+
+.model-assisted-provenance > h3,
+.model-assisted-provenance > p,
+.model-assisted-provenance dl {
+  margin: 0;
+}
+
+.model-assisted-provenance > p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.model-evidence-list {
+  display: grid;
+  gap: 7px;
+}
+
+.model-evidence-list article {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  border-radius: 5px;
+  padding: 8px;
+  background: var(--surface);
+}
+
+.model-evidence-list article p {
+  max-height: 10em;
+  margin: 0;
+  overflow: auto;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.model-evidence-list article span,
+.model-evidence-list article small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .relationship-instance-list {

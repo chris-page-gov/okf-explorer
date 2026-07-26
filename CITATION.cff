@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "OKF Explorer"
-version: "0.5.0"
+version: "0.5.1"
 authors:
   - family-names: "Page"
     given-names: "Chris"
@@ -12,7 +12,7 @@ url: "https://chris-page-gov.github.io/okf-explorer/"
 preferred-citation:
   type: software
   title: "OKF Explorer"
-  version: "0.5.0"
+  version: "0.5.1"
   authors:
     - family-names: "Page"
       given-names: "Chris"

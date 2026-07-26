@@ -460,14 +460,37 @@ function buildJourneyUrl(baseUrl, bundle, start = {}) {
 
 async function locateFacet(page, action) {
   const label = action.facet_label || action.facet || action.facet_key;
+  const facetKey = action.facet_key || action.facet;
   const sections = page.locator('.facet-section');
   const count = await sections.count();
   for (let index = 0; index < count; index += 1) {
     const section = sections.nth(index);
-    const summaryText = (await section.locator('summary').innerText()).trim().toLowerCase();
-    if (summaryText.includes(String(label).toLowerCase())) return section;
+    const sectionKey = await section.getAttribute('data-facet-key');
+    if (facetKey && sectionKey === String(facetKey)) return section;
+    const control = section.locator('.facet-toggle, summary').first();
+    if (!(await control.count())) continue;
+    const controlText = (await control.innerText()).trim().toLowerCase();
+    if (controlText.includes(String(label).toLowerCase())) return section;
   }
   throw new Error(`Facet section not found: ${label}`);
+}
+
+async function openFacet(section) {
+  const toggle = section.locator('.facet-toggle').first();
+  if (await toggle.count()) {
+    if ((await toggle.getAttribute('aria-expanded')) !== 'true') await toggle.click();
+    await toggle.waitFor({ state: 'visible' });
+    return {
+      label: (await toggle.innerText()).trim(),
+      open: (await toggle.getAttribute('aria-expanded')) === 'true'
+    };
+  }
+  const summary = section.locator('summary').first();
+  if (!(await section.evaluate((node) => node.hasAttribute('open')))) await summary.click();
+  return {
+    label: (await summary.innerText()).trim(),
+    open: await section.evaluate((node) => node.hasAttribute('open'))
+  };
 }
 
 async function runJourneyAction(page, action, evidence) {
@@ -487,13 +510,13 @@ async function runJourneyAction(page, action, evidence) {
   }
   if (action.action === 'open_facet') {
     const section = await locateFacet(page, action);
-    if (!(await section.evaluate((node) => node.hasAttribute('open')))) await section.locator('summary').click();
+    const state = await openFacet(section);
     await page.waitForTimeout(250);
-    return { label: (await section.locator('summary').innerText()).trim(), open: await section.evaluate((node) => node.hasAttribute('open')) };
+    return state;
   }
   if (action.action === 'select_facet_value') {
     const section = await locateFacet(page, action);
-    if (!(await section.evaluate((node) => node.hasAttribute('open')))) await section.locator('summary').click();
+    await openFacet(section);
     const search = section.locator('.facet-search input');
     if (await search.count()) {
       await search.fill(action.search || action.value);
@@ -503,6 +526,15 @@ async function runJourneyAction(page, action, evidence) {
     await candidate.waitFor({ state: 'visible', timeout: 20000 });
     const label = (await candidate.innerText()).trim();
     await candidate.click();
+    const facetKey = action.facet_key || action.facet;
+    if (
+      facetKey &&
+      !new URL(page.url()).searchParams.getAll(`filter.${facetKey}`).includes(String(action.value))
+    ) {
+      // Current compact facets use a first click to preview a value and Enter
+      // to commit it. Legacy facets applied immediately, so retain both paths.
+      await candidate.press('Enter');
+    }
     await waitForSettledSearch(page);
     return { facet: action.facet_key || action.facet, value: action.value, label, url: page.url() };
   }
@@ -593,12 +625,24 @@ async function runJourneyAction(page, action, evidence) {
     return evidence.relationshipDrawer;
   }
   if (action.action === 'load_full_record') {
-    const button = page.getByRole('button', { name: 'Load full record', exact: true });
+    const button = page.getByRole('button', { name: /^Load (?:full|selected) record$/ }).first();
     await button.waitFor({ state: 'visible', timeout: 10000 });
     await button.click();
-    await button.waitFor({ state: 'detached', timeout: 30000 }).catch(() => undefined);
-    await page.waitForTimeout(250);
-    const states = await page.locator('.right-panel .disclosure-section').evaluateAll((nodes) => nodes.map((node) => node.hasAttribute('open')));
+    await page.waitForFunction(() => {
+      const labels = [...document.querySelectorAll('.right-panel button')]
+        .map((node) => (node.textContent || '').trim());
+      const stillLoading = labels.some((label) => /^Loading (?:full|selected) record/.test(label));
+      const stillLoadable = labels.some((label) => /^Load (?:full|selected) record$/.test(label));
+      const visibleDisclosures = [...document.querySelectorAll('.right-panel .disclosure-section')]
+        .filter((node) => {
+          const style = getComputedStyle(node);
+          return !node.hasAttribute('hidden') && style.display !== 'none' && style.visibility !== 'hidden';
+        });
+      return !stillLoading && !stillLoadable && visibleDisclosures.length >= 2;
+    }, undefined, { timeout: 30000 });
+    const states = await page.locator('.right-panel .disclosure-section:visible').evaluateAll(
+      (nodes) => nodes.map((node) => node.hasAttribute('open'))
+    );
     evidence.disclosureDefaults = { states, observed: states.length >= 2 && states[0] === true && states.slice(1).every((open) => !open) };
     return evidence.disclosureDefaults;
   }
@@ -701,12 +745,13 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
 async function runInteractionJourneys(browser, options, journeys) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const records = [];
+  const targetBundle = options.bundleExplicit ? options.bundle : journeys.target_bundle;
   for (const journey of journeys.journeys.slice(0, options.journeyLimit)) {
     const started = Date.now();
     const evidence = {};
     const actionRecords = [];
     try {
-      await page.goto(buildJourneyUrl(options.baseUrl, journeys.target_bundle, journey.start), { waitUntil: 'domcontentloaded' });
+      await page.goto(buildJourneyUrl(options.baseUrl, targetBundle, journey.start), { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('main', { timeout: 20000 });
       await waitForSettledSearch(page);
       for (const action of journey.actions) {
@@ -1042,7 +1087,7 @@ async function main() {
     : null;
   const journeyPayload = journeys ? {
     manifest: path.relative(repoRoot, options.journeys),
-    target_bundle: journeys.target_bundle,
+    target_bundle: options.bundleExplicit ? options.bundle : journeys.target_bundle,
     summary: summariseJourneys(journeyRecords),
     records: journeyRecords
   } : null;

@@ -29,9 +29,10 @@ Chrome, Firefox and WebKit:
 7. open the Consumer Credit Act graph, verify official and derived relationship
    line styles, and activate an edge with the keyboard;
 8. search for The Air Navigation (Amendment) Order 2026, hydrate its aligned
-   model-enrichment shard, verify distinct official, derived and model-assisted
-   relationship lines, then hide and restore only the model-assisted class
-   through the URL-backed authority filter;
+   governed v3 accepted model-enrichment shard, verify distinct official,
+   derived and model-assisted relationship lines plus ordered evidence
+   provenance, then hide and restore only the model-assisted class through the
+   URL-backed authority filter;
 9. run WCAG 2.2 axe checks and capture the Chrome renderer JavaScript heap.
 
 The limits are 1 MiB compressed startup transfer, 3 seconds for cold search,
