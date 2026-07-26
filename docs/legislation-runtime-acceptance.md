@@ -43,20 +43,45 @@ passing them.
 
 The canonical receipt is
 [`release-assurance/explorer-runtime-acceptance.json`](../release-assurance/explorer-runtime-acceptance.json).
-It binds the Explorer build, both legislation descriptors, every browser
-version, exact measurements, gate decisions and limitations. Live official
-full-text search is replaced with an empty deterministic Atom response so
-source availability cannot change the static local-search measurement.
-The receipt also binds Chrome screenshots of the relationship graph and the
-compact facet/search layout under `output/playwright/`.
+An unbound local run writes the mutable `okf-explorer-runtime-acceptance.v1`
+receipt there. A release gate supplies all candidate and Explorer revision
+arguments plus an external `--output` path whose basename must be
+`explorer-runtime-acceptance.json`; that run emits
+`okf-explorer-runtime-acceptance.v2`.
+
+The release-bound runner stages a self-contained evidence tree beside the
+receipt:
+
+- its exact runner bytes at
+  `apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs`;
+- both descriptors under the safe relative `bundle/` root;
+- the production index at `explorer-build/index.html`; and
+- both current Chrome captures under `output/playwright/`.
+
+Every material has an exact positive byte count and SHA-256 digest. The receipt
+reports only these safe paths, never a `../` path back into an Explorer or
+legislation checkout. Its `outputs.receipt` value is exactly
+`explorer-runtime-acceptance.json`, matching the Whole-Law pre-RC controller.
+The production build also has a deterministic file count and tree digest.
+Publication is write-once: the runner creates independent single-link files,
+accepts an already-present file only when its complete bytes are identical, and
+fails rather than replacing a divergent, symbolic or linked destination.
+Use a fresh external directory for each measured attempt.
+
+The receipt binds every browser version, exact measurements, gate decisions and
+limitations. Live official full-text search is replaced with an empty
+deterministic Atom response so source availability cannot change the static
+local-search measurement. The accessibility gate names its assessed standard
+as `WCAG 2.2 AA`.
 
 The detailed `gates` and `browsers` evidence remains authoritative. Stable
 release-facing projections additionally expose overall runtime counts plus
 `cross_engine`, `accessibility`, `performance` and `integrity` statuses. These
 paths are the contract consumed by the UK Legislation clean-room reproduction
 gate. The integrity projection fails closed unless both descriptors, the
-production build and the two current Chrome screenshots have valid SHA-256
-evidence.
+production build and the exact two-current-Chrome-screenshot set have canonical
+paths, positive byte counts and valid SHA-256 evidence. A stale, missing,
+duplicated or extra screenshot cannot satisfy a passing receipt.
 
 The projection contract can be tested without building the application or
 running the real corpus:

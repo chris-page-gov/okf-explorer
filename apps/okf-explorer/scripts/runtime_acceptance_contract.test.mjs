@@ -1,9 +1,14 @@
 import assert from 'node:assert/strict';
+import { lstat, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
 import {
   buildFrozenReleaseBinding,
   buildRuntimeAcceptanceProjections,
+  publishWriteOnce,
   RUNTIME_GATE_IDS
 } from './runtime_acceptance_contract.mjs';
 
@@ -59,6 +64,7 @@ function passingEvidence() {
       }
     ],
     inputs: {
+      bundle_root: 'bundle',
       federation_descriptor: {
         path: 'whole-law/okf-explorer.json',
         bytes: 100,
@@ -70,7 +76,11 @@ function passingEvidence() {
         sha256: SHA
       },
       explorer_build: {
-        index_sha256: SHA,
+        index: {
+          path: 'explorer-build/index.html',
+          bytes: 100,
+          sha256: SHA
+        },
         files: 5,
         sha256: SHA
       }
@@ -138,8 +148,58 @@ test('does not report integrity when a current Chrome screenshot is absent', () 
 
   assert.equal(receipt.runtime.status, 'passed');
   assert.equal(receipt.integrity.status, 'failed');
-  assert.equal(receipt.integrity.summary.checks_failed, 1);
+  assert.equal(receipt.integrity.summary.checks_failed, 2);
   assert.equal(receipt.status, 'failed');
+});
+
+test('rejects non-canonical or incomplete material identities', () => {
+  const evidence = passingEvidence();
+  evidence.inputs.bundle_root = '../okf-uk-legislation/bundle';
+  evidence.inputs.federation_descriptor.path = '../whole-law/okf-explorer.json';
+  delete evidence.inputs.explorer_build.index.bytes;
+  evidence.outputs.screenshots[0].extra = 'self-attested';
+
+  const receipt = buildRuntimeAcceptanceProjections(evidence);
+  const failed = receipt.integrity.checks
+    .filter((check) => check.status === 'failed')
+    .map((check) => check.id);
+
+  assert.deepEqual(failed, [
+    'federation_descriptor',
+    'legislation_descriptor',
+    'explorer_build_index',
+    'screenshot:output/playwright/legislation-runtime-graph-chrome.png'
+  ]);
+  assert.equal(receipt.status, 'failed');
+});
+
+test('retains mutable local-v1 provenance without relaxing release evidence', () => {
+  const evidence = passingEvidence();
+  evidence.inputs.bundle_root = '../okf-uk-legislation/bundle';
+
+  const localReceipt = buildRuntimeAcceptanceProjections({
+    ...evidence,
+    canonicalEvidence: false
+  });
+  const releaseReceipt = buildRuntimeAcceptanceProjections(evidence);
+
+  assert.equal(localReceipt.integrity.status, 'passed');
+  assert.equal(localReceipt.status, 'passed');
+  assert.equal(releaseReceipt.integrity.status, 'failed');
+  assert.equal(releaseReceipt.status, 'failed');
+});
+
+test('rejects duplicate or unexpected screenshot material sets', () => {
+  const evidence = passingEvidence();
+  evidence.outputs.screenshots[1] = { ...evidence.outputs.screenshots[0] };
+
+  const receipt = buildRuntimeAcceptanceProjections(evidence);
+
+  assert.equal(receipt.integrity.status, 'failed');
+  assert.equal(
+    receipt.integrity.checks.filter((check) => check.id.startsWith('screenshot:') && check.status === 'failed').length,
+    2
+  );
 });
 
 test('does not treat stale screenshots as current evidence after Chrome fails', () => {
@@ -162,7 +222,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     candidateTree: 'c'.repeat(40),
     candidateBundleTree: SHA,
     explorerCommit: 'd'.repeat(40),
-    explorerTag: 'v0.5.1'
+    explorerTag: 'v0.5.2'
   });
 
   assert.deepEqual(binding, {
@@ -174,7 +234,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     },
     explorer: {
       repository: 'https://github.com/chris-page-gov/okf-explorer',
-      tag: 'v0.5.1',
+      tag: 'v0.5.2',
       commit: 'd'.repeat(40)
     }
   });
@@ -195,6 +255,40 @@ test('rejects partial or malformed release bindings', () => {
         explorerCommit: 'd'.repeat(40),
         explorerTag: 'v0.4.0'
       }),
-    /requires Explorer v0\.5\.1/
+    /requires Explorer v0\.5\.2/
   );
+});
+
+test('publishes write-once evidence without replacing divergent output', async (context) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'okf-runtime-write-once-'));
+  context.after(async () => {
+    await rm(directory, { recursive: true, force: true });
+  });
+  const destination = path.join(directory, 'explorer-runtime-acceptance.json');
+  const expected = Buffer.from('canonical receipt\n');
+
+  assert.equal(await publishWriteOnce(destination, expected), 'created');
+  assert.equal((await lstat(destination)).nlink, 1);
+  assert.equal(await publishWriteOnce(destination, expected), 'existing-identical');
+  await assert.rejects(
+    publishWriteOnce(destination, Buffer.from('divergent receipt\n')),
+    /different bytes/
+  );
+  assert.deepEqual(await readFile(destination), expected);
+  assert.equal((await lstat(destination)).nlink, 1);
+});
+
+test('runner rejects a non-canonical external receipt basename before execution', () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      path.resolve('scripts/run_legislation_runtime_acceptance.mjs'),
+      '--output',
+      path.join(tmpdir(), 'not-the-runtime-receipt.json')
+    ],
+    { encoding: 'utf8' }
+  );
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /canonical basename explorer-runtime-acceptance\.json/);
 });

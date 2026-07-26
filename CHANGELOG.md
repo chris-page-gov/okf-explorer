@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.5.2 - 2026-07-26 - Frozen runtime evidence closure
+
+- Made the release-bound legislation runtime receipt self-contained beneath its
+  external evidence directory, with safe relative paths and byte/SHA-256
+  identities for the runner, both bundle descriptors, the Pages build index
+  and every Chrome screenshot.
+- Added exact build-index/tree and screenshot-set integrity checks, the
+  canonical external receipt basename, and an explicit WCAG 2.2 AA
+  accessibility gate for the Whole-Law release controller.
+- Kept the Explorer UI and browser journey unchanged while making a passing
+  `okf-explorer-runtime-acceptance.v2` receipt independently rehashable.
+
 ## v0.5.1 - 2026-07-26 - Governed enrichment runtime hardening
 
 - Added byte- and SHA-verified cross-binding for the accepted assertion

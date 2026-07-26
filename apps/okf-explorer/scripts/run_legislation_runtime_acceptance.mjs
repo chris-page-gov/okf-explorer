@@ -4,13 +4,14 @@ import AxeBuilder from '@axe-core/playwright';
 import { chromium, firefox, webkit } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
-import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
 import {
   buildFrozenReleaseBinding,
-  buildRuntimeAcceptanceProjections
+  buildRuntimeAcceptanceProjections,
+  publishWriteOnce
 } from './runtime_acceptance_contract.mjs';
 
 const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -19,6 +20,13 @@ const BUILD_ROOT = path.join(APP_ROOT, 'build');
 const DEFAULT_BUNDLE_ROOT = path.resolve(REPOSITORY_ROOT, '../okf-uk-legislation/bundle');
 const DEFAULT_OUTPUT = path.join(REPOSITORY_ROOT, 'release-assurance/explorer-runtime-acceptance.json');
 const DEFAULT_SCREENSHOT_ROOT = path.join(REPOSITORY_ROOT, 'output/playwright');
+const OUTPUT_BASENAME = 'explorer-runtime-acceptance.json';
+const EVIDENCE_RUNNER_PATH = 'apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs';
+const EVIDENCE_BUNDLE_ROOT = 'bundle';
+const EVIDENCE_FEDERATION_DESCRIPTOR_PATH = 'whole-law/okf-explorer.json';
+const EVIDENCE_LEGISLATION_DESCRIPTOR_PATH = 'okf-explorer.json';
+const EVIDENCE_BUILD_INDEX_PATH = 'explorer-build/index.html';
+const EVIDENCE_SCREENSHOT_ROOT = 'output/playwright';
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.OKF_EXPLORER_ACCEPTANCE_PORT || 4178);
 const BASE_URL = `http://${HOST}:${PORT}`;
@@ -61,7 +69,10 @@ const candidateBundleTree = valueArgument(
   process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
 );
 const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
-const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.1');
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.2');
+if (path.basename(outputPath) !== OUTPUT_BASENAME) {
+  throw new Error(`--output must use the canonical basename ${OUTPUT_BASENAME}`);
+}
 const releaseBinding = buildFrozenReleaseBinding({
   candidateCommit,
   candidateTree,
@@ -77,6 +88,81 @@ function invariant(condition, message) {
 
 function sha256(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
+}
+
+function safeEvidencePath(relative) {
+  invariant(typeof relative === 'string' && relative.length > 0, 'Evidence path must be a non-empty string');
+  invariant(!relative.includes('\\'), `Evidence path must use POSIX separators: ${relative}`);
+  const normalized = path.posix.normalize(relative);
+  invariant(
+    normalized === relative &&
+      !path.posix.isAbsolute(normalized) &&
+      normalized.split('/').every((part) => part && part !== '.' && part !== '..'),
+    `Unsafe evidence path: ${relative}`
+  );
+  return normalized;
+}
+
+async function ensureRealDirectoryTree(root, relativeDirectory = '') {
+  await mkdir(root, { recursive: true });
+  let current = root;
+  const parts = relativeDirectory ? safeEvidencePath(relativeDirectory).split('/') : [];
+  for (const part of ['', ...parts]) {
+    if (part) {
+      current = path.join(current, part);
+      await mkdir(current, { recursive: true });
+    }
+    const info = await lstat(current);
+    invariant(info.isDirectory() && !info.isSymbolicLink(), `Evidence directory is not a real directory: ${current}`);
+  }
+}
+
+async function stageEvidenceMaterial(evidenceRoot, relative, bytes) {
+  const safe = safeEvidencePath(relative);
+  const absolute = path.resolve(evidenceRoot, ...safe.split('/'));
+  invariant(
+    absolute.startsWith(`${path.resolve(evidenceRoot)}${path.sep}`),
+    `Evidence path escaped its root: ${relative}`
+  );
+  await ensureRealDirectoryTree(evidenceRoot, path.posix.dirname(safe) === '.' ? '' : path.posix.dirname(safe));
+  await publishWriteOnce(absolute, bytes);
+  const info = await lstat(absolute);
+  invariant(
+    info.isFile() && !info.isSymbolicLink() && info.nlink === 1,
+    `Staged evidence is not an independent regular file: ${relative}`
+  );
+  const staged = await readFile(absolute);
+  invariant(staged.length === bytes.length, `Staged evidence byte count changed: ${relative}`);
+  invariant(sha256(staged) === sha256(bytes), `Staged evidence digest changed: ${relative}`);
+  return {
+    path: safe,
+    bytes: staged.length,
+    sha256: sha256(staged)
+  };
+}
+
+function identifyEvidenceMaterial(relative, bytes) {
+  return {
+    path: safeEvidencePath(relative),
+    bytes: bytes.length,
+    sha256: sha256(bytes)
+  };
+}
+
+async function captureEvidenceMaterial(evidenceRoot, relative, bytes) {
+  return releaseBound
+    ? stageEvidenceMaterial(evidenceRoot, relative, bytes)
+    : identifyEvidenceMaterial(relative, bytes);
+}
+
+async function writeReceipt(output, bytes) {
+  const evidenceRoot = path.dirname(output);
+  await ensureRealDirectoryTree(evidenceRoot);
+  if (releaseBound) {
+    await publishWriteOnce(output, bytes);
+  } else {
+    await writeFile(output, bytes, { mode: 0o644 });
+  }
 }
 
 function round(value, places = 3) {
@@ -685,6 +771,7 @@ async function runBrowser(browserName, browserType, transfers, currentRun) {
 }
 
 async function main() {
+  const evidenceRoot = path.dirname(outputPath);
   const [buildIndex, federationDescriptor, legislationDescriptor] = await Promise.all([
     readFile(path.join(BUILD_ROOT, 'index.html')),
     readFile(path.join(bundleRoot, 'whole-law/okf-explorer.json')),
@@ -720,18 +807,21 @@ async function main() {
   const completed = runs.filter((run) => run.status === 'passed');
   const named = Object.fromEntries(runs.map((run) => [run.browser, run]));
   const screenshots = [];
-  for (const name of ['legislation-runtime-graph-chrome.png', 'legislation-runtime-chrome.png']) {
-    try {
-      const screenshotPath = path.join(screenshotRoot, name);
-      const screenshotBytes = await readFile(screenshotPath);
-      screenshots.push({
-        path: path.relative(REPOSITORY_ROOT, screenshotPath).split(path.sep).join('/'),
-        bytes: screenshotBytes.length,
-        sha256: sha256(screenshotBytes)
-      });
-    } catch {
-      // A failed Chrome run may legitimately leave no screenshot; the failed
-      // browser receipt remains the authoritative explanation.
+  if (named.chrome?.status === 'passed') {
+    for (const name of ['legislation-runtime-graph-chrome.png', 'legislation-runtime-chrome.png']) {
+      try {
+        const screenshotBytes = await readFile(path.join(screenshotRoot, name));
+        screenshots.push(
+          await captureEvidenceMaterial(
+            evidenceRoot,
+            `${EVIDENCE_SCREENSHOT_ROOT}/${name}`,
+            screenshotBytes
+          )
+        );
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : String(error);
+        failures.push(`chrome screenshot ${name}: ${detail}`);
+      }
     }
   }
   const startupValues = completed.map((run) => run.startup_transfer.wire_bytes);
@@ -788,16 +878,55 @@ async function main() {
     facet_count_colour_and_space: gate(completed.length === 3 && completed.every((run) => run.facets.rendered_sections === run.facets.shown) ? 'passed' : 'failed'),
     cross_browser: gate(completed.length === 3 ? 'passed' : 'failed', { required: ['chrome', 'firefox', 'webkit'], completed: completed.map((run) => run.browser) }),
     keyboard: gate(completed.length === 3 && completed.every((run) => Object.values(run.keyboard).every((value) => value === 'passed')) ? 'passed' : 'failed'),
-    accessibility: gate(completed.length === 3 && completed.every((run) => run.accessibility.serious_or_critical.length === 0) ? 'passed' : 'failed')
+    accessibility: gate(
+      completed.length === 3 &&
+        completed.every((run) => run.accessibility.serious_or_critical.length === 0)
+        ? 'passed'
+        : 'failed',
+      { standard: 'WCAG 2.2 AA' }
+    )
   };
+  const runnerMaterial = await captureEvidenceMaterial(
+    evidenceRoot,
+    EVIDENCE_RUNNER_PATH,
+    runnerBytes
+  );
+  const federationMaterial = await captureEvidenceMaterial(
+    evidenceRoot,
+    `${EVIDENCE_BUNDLE_ROOT}/${EVIDENCE_FEDERATION_DESCRIPTOR_PATH}`,
+    federationDescriptor
+  );
+  const legislationMaterial = await captureEvidenceMaterial(
+    evidenceRoot,
+    `${EVIDENCE_BUNDLE_ROOT}/${EVIDENCE_LEGISLATION_DESCRIPTOR_PATH}`,
+    legislationDescriptor
+  );
+  const buildIndexMaterial = await captureEvidenceMaterial(
+    evidenceRoot,
+    EVIDENCE_BUILD_INDEX_PATH,
+    buildIndex
+  );
   const inputs = {
-    bundle_root: path.relative(REPOSITORY_ROOT, bundleRoot).split(path.sep).join('/'),
-    federation_descriptor: { path: 'whole-law/okf-explorer.json', bytes: federationDescriptor.length, sha256: sha256(federationDescriptor) },
-    legislation_descriptor: { path: 'okf-explorer.json', bytes: legislationDescriptor.length, sha256: sha256(legislationDescriptor) },
-    explorer_build: { index_sha256: sha256(buildIndex), ...buildDigest }
+    bundle_root: releaseBound
+      ? EVIDENCE_BUNDLE_ROOT
+      : path.relative(REPOSITORY_ROOT, bundleRoot).split(path.sep).join('/'),
+    federation_descriptor: {
+      ...federationMaterial,
+      path: EVIDENCE_FEDERATION_DESCRIPTOR_PATH
+    },
+    legislation_descriptor: {
+      ...legislationMaterial,
+      path: EVIDENCE_LEGISLATION_DESCRIPTOR_PATH
+    },
+    explorer_build: {
+      index: buildIndexMaterial,
+      ...buildDigest
+    }
   };
   const outputs = {
-    receipt: path.relative(REPOSITORY_ROOT, outputPath).split(path.sep).join('/'),
+    receipt: releaseBound
+      ? OUTPUT_BASENAME
+      : path.relative(REPOSITORY_ROOT, outputPath).split(path.sep).join('/'),
     screenshots
   };
   const projections = buildRuntimeAcceptanceProjections({
@@ -805,7 +934,8 @@ async function main() {
     failures,
     browsers: runs,
     inputs,
-    outputs
+    outputs,
+    canonicalEvidence: releaseBound
   });
   const overall = projections.status;
   const receipt = {
@@ -816,15 +946,7 @@ async function main() {
     ...(releaseBinding || {}),
     ...projections,
     scope: 'Production Explorer build with the final local UK Whole-Law and UK Legislation descriptors and every fetched bundle byte served read-only from the local publication tree.',
-    runner: {
-      path: 'apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs',
-      sha256: sha256(runnerBytes),
-      playwright: '@playwright/test',
-      accessibility: '@axe-core/playwright',
-      viewport: VIEWPORT,
-      server: 'temporary same-origin production static server with real gzip transfer and range support',
-      official_live_search: 'disabled with a deterministic empty Atom response; static local search remains under test'
-    },
+    runner: runnerMaterial,
     inputs,
     outputs,
     gates,
@@ -836,8 +958,7 @@ async function main() {
       'The Playwright CLI wrapper was attempted first but the current @playwright/mcp package did not expose a playwright-cli executable; the repository-pinned Playwright browser runtime executed this receipt.'
     ]
   };
-  await mkdir(path.dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, `${JSON.stringify(receipt, null, 2)}\n`);
+  await writeReceipt(outputPath, Buffer.from(`${JSON.stringify(receipt, null, 2)}\n`));
   process.stdout.write(`${JSON.stringify({ status: overall, output: outputPath, gates, failures }, null, 2)}\n`);
   if (overall !== 'passed') process.exitCode = 1;
 }

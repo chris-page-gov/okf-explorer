@@ -1,5 +1,62 @@
+import { link, lstat, readFile, unlink, writeFile } from 'node:fs/promises';
+
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 const GIT_SHA_PATTERN = /^[0-9a-f]{40}$/;
+const FEDERATION_DESCRIPTOR_PATH = 'whole-law/okf-explorer.json';
+const LEGISLATION_DESCRIPTOR_PATH = 'okf-explorer.json';
+const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
+const EXPLORER_RELEASE_TAG = 'v0.5.2';
+let temporarySequence = 0;
+
+async function verifyExistingWriteOnceFile(destination, expected) {
+  const before = await lstat(destination);
+  if (!before.isFile() || before.isSymbolicLink() || before.nlink !== 1) {
+    throw new Error(`Existing write-once destination is not an independent regular file: ${destination}`);
+  }
+  const actual = await readFile(destination);
+  const after = await lstat(destination);
+  if (
+    before.dev !== after.dev ||
+    before.ino !== after.ino ||
+    before.size !== after.size ||
+    before.mtimeMs !== after.mtimeMs ||
+    before.ctimeMs !== after.ctimeMs ||
+    after.nlink !== 1
+  ) {
+    throw new Error(`Existing write-once destination changed while it was verified: ${destination}`);
+  }
+  if (!actual.equals(expected)) {
+    throw new Error(`Existing write-once destination has different bytes: ${destination}`);
+  }
+}
+
+/**
+ * Publish bytes without replacing an existing path. A byte-identical,
+ * independent regular file is accepted to make interrupted attempts safely
+ * resumable; divergent, linked or symbolic destinations fail closed.
+ */
+export async function publishWriteOnce(destination, bytes) {
+  const expected = Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes);
+  const temporary = `${destination}.tmp-${process.pid}-${Date.now()}-${temporarySequence++}`;
+  await writeFile(temporary, expected, { flag: 'wx', mode: 0o644 });
+  try {
+    try {
+      await link(temporary, destination);
+    } catch (error) {
+      if (error?.code !== 'EEXIST') throw error;
+      await verifyExistingWriteOnceFile(destination, expected);
+      return 'existing-identical';
+    }
+    await unlink(temporary);
+    const published = await lstat(destination);
+    if (!published.isFile() || published.isSymbolicLink() || published.nlink !== 1) {
+      throw new Error(`Published write-once destination is not an independent regular file: ${destination}`);
+    }
+    return 'created';
+  } finally {
+    await unlink(temporary).catch(() => {});
+  }
+}
 
 export const RUNTIME_GATE_IDS = Object.freeze([
   'startup_transfer',
@@ -28,7 +85,7 @@ export function buildFrozenReleaseBinding({
   candidateTree = null,
   candidateBundleTree = null,
   explorerCommit = null,
-  explorerTag = 'v0.5.1'
+  explorerTag = EXPLORER_RELEASE_TAG
 } = {}) {
   const values = [
     candidateCommit,
@@ -54,8 +111,8 @@ export function buildFrozenReleaseBinding({
   if (!GIT_SHA_PATTERN.test(explorerCommit)) {
     throw new Error('Explorer commit is not a full Git SHA');
   }
-  if (explorerTag !== 'v0.5.1') {
-    throw new Error('Frozen-candidate acceptance requires Explorer v0.5.1');
+  if (explorerTag !== EXPLORER_RELEASE_TAG) {
+    throw new Error(`Frozen-candidate acceptance requires Explorer ${EXPLORER_RELEASE_TAG}`);
   }
   return {
     candidate: {
@@ -100,6 +157,30 @@ function integrityCheck(id, condition, evidence = {}) {
   };
 }
 
+function isStrictMaterial(value, expectedPath = null) {
+  return Boolean(
+    value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      Object.keys(value).sort().join(',') === 'bytes,path,sha256' &&
+      (expectedPath === null || value.path === expectedPath) &&
+      typeof value.path === 'string' &&
+      value.path.length > 0 &&
+      !pathIsUnsafe(value.path) &&
+      Number.isInteger(value.bytes) &&
+      value.bytes > 0 &&
+      SHA256_PATTERN.test(value.sha256 || '')
+  );
+}
+
+function pathIsUnsafe(value) {
+  return (
+    value.startsWith('/') ||
+    value.includes('\\') ||
+    value.split('/').some((part) => !part || part === '.' || part === '..')
+  );
+}
+
 /**
  * Build stable, release-facing acceptance projections without discarding the
  * detailed `gates` and `browsers` evidence retained by the runner.
@@ -109,7 +190,8 @@ function integrityCheck(id, condition, evidence = {}) {
  *   failures?: string[],
  *   browsers?: Array<Record<string, any>>,
  *   inputs: Record<string, any>,
- *   outputs: Record<string, any>
+ *   outputs: Record<string, any>,
+ *   canonicalEvidence?: boolean
  * }} evidence
  */
 export function buildRuntimeAcceptanceProjections({
@@ -117,7 +199,8 @@ export function buildRuntimeAcceptanceProjections({
   failures = [],
   browsers = [],
   inputs,
-  outputs
+  outputs,
+  canonicalEvidence = true
 }) {
   const runtimeSummary = gateSummary(gates, RUNTIME_GATE_IDS);
   runtimeSummary.all_passed = runtimeSummary.checks_failed === 0 && failures.length === 0;
@@ -146,9 +229,9 @@ export function buildRuntimeAcceptanceProjections({
     return integrityCheck(
       `screenshot:${expectedPath}`,
       chromePassed &&
-        Number.isInteger(screenshot?.bytes) &&
-        screenshot.bytes > 0 &&
-        SHA256_PATTERN.test(screenshot.sha256 || ''),
+        screenshots.length === EXPECTED_SCREENSHOTS.length &&
+        screenshotByPath.size === EXPECTED_SCREENSHOTS.length &&
+        isStrictMaterial(screenshot, expectedPath),
       {
         path: expectedPath,
         bytes: screenshot?.bytes ?? null,
@@ -159,9 +242,8 @@ export function buildRuntimeAcceptanceProjections({
   const integrityChecks = [
     integrityCheck(
       'federation_descriptor',
-      Number.isInteger(inputs.federation_descriptor?.bytes) &&
-        inputs.federation_descriptor.bytes > 0 &&
-        SHA256_PATTERN.test(inputs.federation_descriptor.sha256 || ''),
+      (!canonicalEvidence || inputs.bundle_root === 'bundle') &&
+        isStrictMaterial(inputs.federation_descriptor, FEDERATION_DESCRIPTOR_PATH),
       {
         path: inputs.federation_descriptor?.path ?? null,
         bytes: inputs.federation_descriptor?.bytes ?? null,
@@ -170,9 +252,8 @@ export function buildRuntimeAcceptanceProjections({
     ),
     integrityCheck(
       'legislation_descriptor',
-      Number.isInteger(inputs.legislation_descriptor?.bytes) &&
-        inputs.legislation_descriptor.bytes > 0 &&
-        SHA256_PATTERN.test(inputs.legislation_descriptor.sha256 || ''),
+      (!canonicalEvidence || inputs.bundle_root === 'bundle') &&
+        isStrictMaterial(inputs.legislation_descriptor, LEGISLATION_DESCRIPTOR_PATH),
       {
         path: inputs.legislation_descriptor?.path ?? null,
         bytes: inputs.legislation_descriptor?.bytes ?? null,
@@ -181,8 +262,8 @@ export function buildRuntimeAcceptanceProjections({
     ),
     integrityCheck(
       'explorer_build_index',
-      SHA256_PATTERN.test(inputs.explorer_build?.index_sha256 || ''),
-      { sha256: inputs.explorer_build?.index_sha256 ?? null }
+      isStrictMaterial(inputs.explorer_build?.index, EXPLORER_BUILD_INDEX_PATH),
+      { sha256: inputs.explorer_build?.index?.sha256 ?? null }
     ),
     integrityCheck(
       'explorer_build_tree',
