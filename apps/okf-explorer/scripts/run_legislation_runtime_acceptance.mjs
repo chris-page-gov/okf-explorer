@@ -2,12 +2,17 @@
 
 import AxeBuilder from '@axe-core/playwright';
 import { chromium, firefox, webkit } from '@playwright/test';
-import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
-import { lstat, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
+import {
+  captureAppBuildEvidence,
+  inspectBuildSourceTree,
+  inspectCanonicalBuildRoot,
+  sha256
+} from './app_build_manifest.mjs';
 import {
   buildFrozenReleaseBinding,
   buildRuntimeAcceptanceProjections,
@@ -25,7 +30,7 @@ const EVIDENCE_RUNNER_PATH = 'apps/okf-explorer/scripts/run_legislation_runtime_
 const EVIDENCE_BUNDLE_ROOT = 'bundle';
 const EVIDENCE_FEDERATION_DESCRIPTOR_PATH = 'whole-law/okf-explorer.json';
 const EVIDENCE_LEGISLATION_DESCRIPTOR_PATH = 'okf-explorer.json';
-const EVIDENCE_BUILD_INDEX_PATH = 'explorer-build/index.html';
+const EVIDENCE_BUILD_ROOT = 'explorer-build';
 const EVIDENCE_SCREENSHOT_ROOT = 'output/playwright';
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.OKF_EXPLORER_ACCEPTANCE_PORT || 4178);
@@ -69,7 +74,7 @@ const candidateBundleTree = valueArgument(
   process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
 );
 const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
-const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.2');
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.3');
 if (path.basename(outputPath) !== OUTPUT_BASENAME) {
   throw new Error(`--output must use the canonical basename ${OUTPUT_BASENAME}`);
 }
@@ -84,10 +89,6 @@ const releaseBound = releaseBinding !== null;
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
-}
-
-function sha256(bytes) {
-  return createHash('sha256').update(bytes).digest('hex');
 }
 
 function safeEvidencePath(relative) {
@@ -165,6 +166,15 @@ async function writeReceipt(output, bytes) {
   }
 }
 
+async function inspectRuntimeBuildRoot() {
+  try {
+    return await inspectCanonicalBuildRoot(BUILD_ROOT);
+  } catch (error) {
+    if (releaseBound || error?.code !== 'ENOENT') throw error;
+    return inspectBuildSourceTree(BUILD_ROOT);
+  }
+}
+
 function round(value, places = 3) {
   return Number(value.toFixed(places));
 }
@@ -209,22 +219,6 @@ function rangeSlice(header, total) {
   const end = match[2] ? Number(match[2]) : total - 1;
   if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start || start >= total) return null;
   return { start, end: Math.min(end, total - 1) };
-}
-
-async function treeDigest(root) {
-  const rows = [];
-  async function visit(directory) {
-    for (const entry of (await readdir(directory, { withFileTypes: true })).sort((left, right) => left.name.localeCompare(right.name))) {
-      const absolute = path.join(directory, entry.name);
-      if (entry.isDirectory()) await visit(absolute);
-      if (entry.isFile()) {
-        const bytes = await readFile(absolute);
-        rows.push(`${path.relative(root, absolute).split(path.sep).join('/')}\0${bytes.length}\0${sha256(bytes)}`);
-      }
-    }
-  }
-  await visit(root);
-  return { files: rows.length, sha256: sha256(Buffer.from(rows.join('\n'))) };
 }
 
 function gate(status, evidence = {}) {
@@ -772,12 +766,15 @@ async function runBrowser(browserName, browserType, transfers, currentRun) {
 
 async function main() {
   const evidenceRoot = path.dirname(outputPath);
-  const [buildIndex, federationDescriptor, legislationDescriptor] = await Promise.all([
-    readFile(path.join(BUILD_ROOT, 'index.html')),
+  const [
+    initialBuildInspection,
+    federationDescriptor,
+    legislationDescriptor
+  ] = await Promise.all([
+    inspectRuntimeBuildRoot(),
     readFile(path.join(bundleRoot, 'whole-law/okf-explorer.json')),
     readFile(path.join(bundleRoot, 'okf-explorer.json'))
   ]);
-  const buildDigest = await treeDigest(BUILD_ROOT);
   const runnerBytes = await readFile(fileURLToPath(import.meta.url));
   const transfers = [];
   const currentRun = { browser: 'preflight', phase: 'preflight' };
@@ -803,6 +800,13 @@ async function main() {
   } finally {
     await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
   }
+  const buildInspection = await inspectRuntimeBuildRoot();
+  invariant(
+    initialBuildInspection.manifestBytes.equals(
+      buildInspection.manifestBytes
+    ),
+    'Explorer app-build tree changed during runtime acceptance'
+  );
 
   const completed = runs.filter((run) => run.status === 'passed');
   const named = Object.fromEntries(runs.map((run) => [run.browser, run]));
@@ -901,10 +905,11 @@ async function main() {
     `${EVIDENCE_BUNDLE_ROOT}/${EVIDENCE_LEGISLATION_DESCRIPTOR_PATH}`,
     legislationDescriptor
   );
-  const buildIndexMaterial = await captureEvidenceMaterial(
-    evidenceRoot,
-    EVIDENCE_BUILD_INDEX_PATH,
-    buildIndex
+  const explorerBuild = await captureAppBuildEvidence(
+    buildInspection,
+    (relative, bytes) =>
+      captureEvidenceMaterial(evidenceRoot, relative, bytes),
+    EVIDENCE_BUILD_ROOT
   );
   const inputs = {
     bundle_root: releaseBound
@@ -918,10 +923,7 @@ async function main() {
       ...legislationMaterial,
       path: EVIDENCE_LEGISLATION_DESCRIPTOR_PATH
     },
-    explorer_build: {
-      index: buildIndexMaterial,
-      ...buildDigest
-    }
+    explorer_build: explorerBuild
   };
   const outputs = {
     receipt: releaseBound

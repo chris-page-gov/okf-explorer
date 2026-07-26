@@ -44,9 +44,9 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm sbom:check
 
-      - name: Build Svelte OKF Explorer
+      - name: Prove deterministic Svelte OKF Explorer build
         working-directory: apps/okf-explorer
-        run: pnpm build
+        run: pnpm build:determinism
 
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
