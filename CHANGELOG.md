@@ -59,7 +59,7 @@ All notable changes to this repository are recorded here. Entries are grouped by
 date and describe the user-visible publication effect, validation run, and any
 source-of-truth changes.
 
-## v0.5.0 - Unreleased
+## v0.5.0 - 2026-07-26 - Whole-Law federation and bounded runtime
 
 - Added a reproducible production-build acceptance runner and evidence receipt
   for the final local Whole-Law/Legislation publication. Chrome, Firefox and
