@@ -502,7 +502,11 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
     const params = new URLSearchParams({ bundle: `${LARGE_ORIGIN}/okf-explorer.json`, view: 'map' });
     await page.goto(`?${params.toString()}#overview`);
 
-    await expect(page.getByRole('status')).toContainText('Loading the record and resource index');
+    await expect(
+      page.getByRole('status').filter({
+        hasText: 'Loading the record and resource index'
+      })
+    ).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Map & geography' })).toBeVisible();
     await expect(page.getByText('1 records in the current search/facet context have spatial evidence.')).toBeVisible();
     await expect(mapRecord(page, 'Large England map service')).toBeVisible();
