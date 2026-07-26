@@ -61,6 +61,11 @@ source-of-truth changes.
 
 ## v0.5.0 - 2026-07-26 - Whole-Law federation and bounded runtime
 
+- Added governed metadata-term registries and closed-world validation reports
+  to the bundle-wiki profile. Explorer now provides searchable bundle-wide and
+  record-scoped term definitions, provenance and validation evidence; bundle
+  UI terms can also supply existing `(i)` help text. Semantic-resource labels
+  are derived from their actual YAML-LD or JSON-LD serialization.
 - Added a reproducible production-build acceptance runner and evidence receipt
   for the final local Whole-Law/Legislation publication. Chrome, Firefox and
   WebKit now prove federation-child completion, sub-1 MiB compressed startup,
