@@ -1,11 +1,12 @@
 {
   "name": "@okf/explorer",
   "private": true,
-  "version": "0.5.2",
+  "version": "0.5.3",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
+    "build:determinism": "node scripts/check_deterministic_build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run && node --test scripts/runtime_acceptance_contract.test.mjs",

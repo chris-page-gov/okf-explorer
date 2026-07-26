@@ -5,7 +5,7 @@ const GIT_SHA_PATTERN = /^[0-9a-f]{40}$/;
 const FEDERATION_DESCRIPTOR_PATH = 'whole-law/okf-explorer.json';
 const LEGISLATION_DESCRIPTOR_PATH = 'okf-explorer.json';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
-const EXPLORER_RELEASE_TAG = 'v0.5.2';
+const EXPLORER_RELEASE_TAG = 'v0.5.3';
 let temporarySequence = 0;
 
 async function verifyExistingWriteOnceFile(destination, expected) {

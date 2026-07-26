@@ -222,7 +222,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     candidateTree: 'c'.repeat(40),
     candidateBundleTree: SHA,
     explorerCommit: 'd'.repeat(40),
-    explorerTag: 'v0.5.2'
+    explorerTag: 'v0.5.3'
   });
 
   assert.deepEqual(binding, {
@@ -234,7 +234,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     },
     explorer: {
       repository: 'https://github.com/chris-page-gov/okf-explorer',
-      tag: 'v0.5.2',
+      tag: 'v0.5.3',
       commit: 'd'.repeat(40)
     }
   });
@@ -255,7 +255,7 @@ test('rejects partial or malformed release bindings', () => {
         explorerCommit: 'd'.repeat(40),
         explorerTag: 'v0.4.0'
       }),
-    /requires Explorer v0\.5\.2/
+    /requires Explorer v0\.5\.3/
   );
 });
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.5.3 - 2026-07-27 - Reproducible production builds
+
+- Bound SvelteKit's application-version seed to the synchronized package
+  version, removing its timestamp default from application-version metadata
+  and client chunk generation.
+- Added a fail-closed two-build regression that cleans generated state before
+  each production build and compares every generated path and file digest,
+  including the exact `index.html` bytes.
+- Made both pull-request CI and the Pages publication workflow run the
+  deterministic two-build proof before site assembly.
+
 ## v0.5.2 - 2026-07-26 - Frozen runtime evidence closure
 
 - Made the release-bound legislation runtime receipt self-contained beneath its
