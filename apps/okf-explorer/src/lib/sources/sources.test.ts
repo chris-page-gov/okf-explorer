@@ -901,6 +901,261 @@ describe('large corpus source', () => {
     ).toHaveLength(1);
   });
 
+  it('hydrates the aligned model relationship shard and presents all four live-reconciliation states', async () => {
+    const route = 'dataset/uksi-2026-99';
+    const bucket = relationshipBucket(route);
+    const modelRows = [
+      {
+        id: 'model-one',
+        source: 'https://www.legislation.gov.uk/id/uksi/2026/99',
+        target: 'topic/transport-and-infrastructure',
+        predicate: 'classified as',
+        authority: {
+          class: 'model-assisted',
+          label: 'Model-assisted candidate'
+        },
+        confidence: 0.98
+      }
+    ];
+    const modelText = JSON.stringify(modelRows);
+    const compressed = new Uint8Array(
+      await new Response(
+        new Response(modelText).body!.pipeThrough(new CompressionStream('gzip'))
+      ).arrayBuffer()
+    );
+    const modelHash = await sha256Hex(compressed);
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/legislation/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Legislation relationship fixture',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          entrypoints: {
+            data_manifest: 'data/manifest.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v2: 'data/enrichment/manifest.json'
+          },
+          extensions: {
+            'okf-official-effects.v1': {
+              reconciliation: 'data/effects/reconciliation.json'
+            }
+          },
+          counts: { datasets: 1, relationships: 3 }
+        }
+      ],
+      [
+        'https://example.test/legislation/data/manifest.json',
+        {
+          title: 'Legislation relationship fixture',
+          generated_at: '2026-07-25T22:20:00Z',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          counts: { datasets: 1, relationships: 3 },
+          indexes: {
+            overview: 'data/overview.json',
+            record_locator: 'data/records/manifest.json',
+            relationship_adjacency: 'data/adjacency/manifest.json',
+            model_enrichment_v2: 'data/enrichment/manifest.json'
+          },
+          chunks: {
+            datasets: ['data/works-000.json.gz']
+          }
+        }
+      ],
+      [
+        'https://example.test/legislation/data/overview.json',
+        {
+          title: 'Legislation relationship fixture',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          counts: { datasets: 1, relationships: 3 }
+        }
+      ],
+      [
+        'https://example.test/legislation/data/effects/reconciliation.json',
+        {
+          schema: 'okf-official-effects-reconciliation.v1',
+          snapshot_id: 'legislation-effects-2026-07-25',
+          generated_at: '2026-07-25T21:30:00Z',
+          post_build_live: {
+            observed_at: '2026-07-26T00:34:00Z',
+            states: {
+              agreement: 16,
+              'live-addition': 2,
+              superseded: 1,
+              'inaccessible-consistent': 6
+            }
+          }
+        }
+      ],
+      [
+        'https://example.test/legislation/data/records/manifest.json',
+        {
+          schema: 'okf-record-locator-sharded.v1',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          algorithm: 'fnv1a32-prefix-2',
+          records: 1,
+          chunk_size: 1,
+          record_chunks: ['data/works-000.json.gz'],
+          buckets: {
+            [bucket]: 'data/records/locator.json'
+          },
+          bucket_count: 1
+        }
+      ],
+      [
+        'https://example.test/legislation/data/records/locator.json',
+        {
+          [route]: [0, 0]
+        }
+      ],
+      [
+        'https://example.test/legislation/data/adjacency/manifest.json',
+        {
+          schema: 'okf-relationship-adjacency.v1',
+          snapshot: 'legislation-work-index-2026-07-11T18:00:00Z',
+          algorithm: 'fnv1a32-prefix-2',
+          routes: 1,
+          relationships: 2,
+          buckets: {
+            [bucket]: 'data/adjacency/route.json'
+          }
+        }
+      ],
+      [
+        'https://example.test/legislation/data/adjacency/route.json',
+        {
+          [route]: [
+            {
+              source: route,
+              target: 'legislation-type/uksi',
+              kind: 'has document type',
+              authority: { class: 'official' }
+            },
+            {
+              source: route,
+              target: 'topic/unclassified-title-only-heuristic',
+              kind: 'classified as',
+              authority: { class: 'derived' }
+            }
+          ]
+        }
+      ],
+      [
+        'https://example.test/legislation/data/enrichment/manifest.json',
+        {
+          schema: 'okf-provider-datapack.v1',
+          id: 'legislation-model-assisted-v2',
+          snapshot_id: 'legislation-2026-07-11T18:00:00Z',
+          chunks: [
+            {
+              path: 'data/enrichment/assertions-000.json.gz',
+              sha256: modelHash,
+              bytes: compressed.byteLength,
+              records: modelRows.length,
+              compression: 'gzip',
+              media_type: 'application/json'
+            }
+          ],
+          counts: { assertions: modelRows.length }
+        }
+      ]
+    ]);
+    const modelChunkUrl =
+      'https://example.test/legislation/data/enrichment/assertions-000.json.gz';
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url === modelChunkUrl) {
+        return new Response(compressed.slice(), {
+          headers: { 'content-type': 'application/gzip' }
+        });
+      }
+      const value = payloads.get(url);
+      return value === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : jsonResponse(value);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus(
+      'https://example.test/legislation/okf-explorer.json'
+    );
+    expect(source.effectsReconciliation?.states.map(({ id, count }) => [id, count])).toEqual([
+      ['agreement', 16],
+      ['live-addition', 2],
+      ['superseded', 1],
+      ['inaccessible', 6]
+    ]);
+    expect(fetchMock.mock.calls.map(([input]) => String(input))).not.toContain(modelChunkUrl);
+
+    const relationships = await source.loadRelationshipsForRoute(route);
+    expect(relationships).toEqual([
+      expect.objectContaining({ authority: { class: 'official' } }),
+      expect.objectContaining({ authority: { class: 'derived' } }),
+      expect.objectContaining({
+        id: 'model-one',
+        source: route,
+        target: 'topic/transport-and-infrastructure',
+        kind: 'classified as',
+        authority: { class: 'model-assisted', label: 'Model-assisted candidate' }
+      })
+    ]);
+    expect(fetchMock.mock.calls.map(([input]) => String(input)).filter((url) => url === modelChunkUrl)).toHaveLength(1);
+    await source.loadRelationshipsForRoute(route);
+    expect(fetchMock.mock.calls.map(([input]) => String(input)).filter((url) => url === modelChunkUrl)).toHaveLength(1);
+  });
+
+  it('keeps advertised reconciliation evidence inside the bundle origin', async () => {
+    const payloads = new Map<string, unknown>([
+      [
+        'https://example.test/bundle/okf-explorer.json',
+        {
+          schema: 'okf-explorer-large-corpus.v1',
+          kind: 'okf-large-corpus',
+          title: 'Unsafe reconciliation fixture',
+          snapshot: 'snapshot-one',
+          entrypoints: { data_manifest: 'data/manifest.json' },
+          extensions: {
+            'okf-official-effects.v1': {
+              reconciliation: 'https://untrusted.example/reconciliation.json'
+            }
+          },
+          counts: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/manifest.json',
+        {
+          title: 'Unsafe reconciliation fixture',
+          generated_at: '2026-07-26T00:00:00Z',
+          snapshot: 'snapshot-one',
+          counts: {},
+          indexes: { overview: 'data/overview.json' },
+          chunks: {}
+        }
+      ],
+      [
+        'https://example.test/bundle/data/overview.json',
+        { title: 'Unsafe reconciliation fixture', snapshot: 'snapshot-one', counts: {} }
+      ]
+    ]);
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const value = payloads.get(String(input));
+      return value === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : jsonResponse(value);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const source = await loadLargeCorpus('https://example.test/bundle/okf-explorer.json');
+    expect(source.effectsReconciliation).toBeUndefined();
+    expect(source.effectsReconciliationError).toMatch(/path is unsafe|inside the bundle/);
+    expect(fetchMock.mock.calls.map(([input]) => String(input))).not.toContain(
+      'https://untrusted.example/reconciliation.json'
+    );
+  });
+
   it('loads same-origin provider datapacks at startup and binds every layer to the bundle snapshot', async () => {
     const providerPack = providerDatapackFixture();
     const providerManifest = {

@@ -455,7 +455,7 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(requests).not.toContain('/data/datasets.json');
 
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
-    await expect(page.getByRole('img', { name: 'Large corpus graph' })).toBeVisible();
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
     await expect.poll(() => requests.includes('/data/datasets.json')).toBe(true);
     await expect(page.locator('[data-detail-field="matched-records"]')).toHaveText(`${ONS_REGION_COUNT} in current reduction`);
 
@@ -653,7 +653,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     await expect(page.locator('.graph-summary')).toContainText('21 nodes · 20 relationships');
 
@@ -712,7 +712,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     const summary = page.locator('.graph-summary');
     const legend = page.getByLabel('Node type key');
     await expect(graph).toBeVisible();
@@ -814,7 +814,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFixtureReady(page);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     const labelsButton = page.getByRole('button', { name: /^Pause cycling graph labels/ });
     await expect(labelsButton).toContainText(/^Labels \(\d+\/\d+\)$/);
     await labelsButton.click();
@@ -891,7 +891,7 @@ test.describe('large-corpus facet interaction contract', () => {
 
     const stage = page.locator('.stage');
     const toolbar = page.locator('.graph-toolbar');
-    const graph = page.getByRole('img', { name: 'Large corpus graph' });
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
     await expect(graph).toBeVisible();
     expect(await toolbar.evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
 
