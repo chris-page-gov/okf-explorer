@@ -61,7 +61,7 @@ const candidateBundleTree = valueArgument(
   process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
 );
 const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
-const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.0');
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.1');
 const releaseBinding = buildFrozenReleaseBinding({
   candidateCommit,
   candidateTree,

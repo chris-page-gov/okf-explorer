@@ -74,7 +74,7 @@ async function build() {
   const missing = directRefs.filter((reference) => !known.has(reference));
   if (missing.length) throw new Error(`direct dependencies absent from package inventory: ${missing.join(', ')}`);
 
-  const rootRef = 'pkg:github/chris-page-gov/okf-explorer@0.5.0';
+  const rootRef = `pkg:github/chris-page-gov/okf-explorer@${packageDocument.version}`;
   return {
     bomFormat: 'CycloneDX',
     specVersion: '1.6',
