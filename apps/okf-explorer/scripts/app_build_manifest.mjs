@@ -287,6 +287,54 @@ async function collectSourceFiles(root, directory = '') {
   return files;
 }
 
+async function collectAppNamespaceFiles(root, directory = '_app') {
+  const absoluteDirectory = path.join(
+    root,
+    ...directory.split('/')
+  );
+  const directoryMetadata = await lstat(absoluteDirectory);
+  invariant(
+    directoryMetadata.isDirectory() &&
+      !directoryMetadata.isSymbolicLink(),
+    `Assembled app namespace is not a real directory: ${directory}`
+  );
+  const children = await readdir(absoluteDirectory, {
+    withFileTypes: true
+  });
+  children.sort((left, right) =>
+    compareBuildPath(left.name, right.name)
+  );
+  const materials = [];
+  for (const child of children) {
+    const relative = safeBuildPath(
+      path.posix.join(directory, child.name)
+    );
+    const absolute = path.join(root, ...relative.split('/'));
+    const metadata = await lstat(absolute);
+    invariant(
+      !metadata.isSymbolicLink(),
+      `Assembled app namespace contains a symbolic link: ${relative}`
+    );
+    if (metadata.isDirectory()) {
+      materials.push(
+        ...await collectAppNamespaceFiles(root, relative)
+      );
+      continue;
+    }
+    invariant(
+      metadata.isFile(),
+      `Assembled app namespace contains a non-regular entry: ${relative}`
+    );
+    const bytes = await readStableRegularFile(absolute, relative);
+    materials.push({
+      path: relative,
+      bytes: bytes.length,
+      sha256: sha256(bytes)
+    });
+  }
+  return materials;
+}
+
 export async function inspectBuildSourceTree(root) {
   const absoluteRoot = path.resolve(root);
   const files = await collectSourceFiles(absoluteRoot);
@@ -334,6 +382,75 @@ export async function inspectCanonicalBuildRoot(root) {
       path: BUILD_MANIFEST_FILENAME,
       bytes: manifestBytes.length,
       sha256: sha256(manifestBytes)
+    }
+  };
+}
+
+export async function verifyAssembledAppBuild(
+  siteRoot,
+  appBuildRoot
+) {
+  const absoluteSiteRoot = path.resolve(siteRoot);
+  const source = await inspectCanonicalBuildRoot(appBuildRoot);
+  const assembledManifestPath = path.join(
+    absoluteSiteRoot,
+    BUILD_MANIFEST_FILENAME
+  );
+  const assembledManifestBytes = await readStableRegularFile(
+    assembledManifestPath,
+    BUILD_MANIFEST_FILENAME
+  );
+  const assembledManifest = parseCanonicalBuildManifest(
+    assembledManifestBytes
+  );
+  invariant(
+    assembledManifestBytes.equals(source.manifestBytes),
+    'Assembled site build manifest differs from the canonical app build'
+  );
+
+  for (const material of assembledManifest.materials) {
+    const absolute = path.join(
+      absoluteSiteRoot,
+      ...material.path.split('/')
+    );
+    const bytes = await readStableRegularFile(
+      absolute,
+      material.path
+    );
+    invariant(
+      bytes.length === material.bytes &&
+        sha256(bytes) === material.sha256,
+      `Assembled app material differs: ${material.path}`
+    );
+  }
+
+  const declaredAppNamespace = assembledManifest.materials
+    .filter((material) => material.path.startsWith('_app/'));
+  invariant(
+    declaredAppNamespace.length > 0,
+    'Canonical app build declares no _app namespace materials'
+  );
+  const assembledAppNamespace = await collectAppNamespaceFiles(
+    absoluteSiteRoot
+  );
+  assembledAppNamespace.sort((left, right) =>
+    compareBuildPath(left.path, right.path)
+  );
+  invariant(
+    JSON.stringify(assembledAppNamespace) ===
+      JSON.stringify(declaredAppNamespace),
+    'Assembled _app namespace differs from the canonical app build'
+  );
+
+  return {
+    schema: BUILD_MANIFEST_SCHEMA,
+    algorithm: assembledManifest.algorithm,
+    files: assembledManifest.file_count,
+    tree_sha256: assembledManifest.tree_sha256,
+    manifest: {
+      path: BUILD_MANIFEST_FILENAME,
+      bytes: assembledManifestBytes.length,
+      sha256: sha256(assembledManifestBytes)
     }
   };
 }

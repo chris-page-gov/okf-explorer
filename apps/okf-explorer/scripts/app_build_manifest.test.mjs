@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {
+  cp,
   link,
   lstat,
   mkdir,
@@ -22,6 +23,7 @@ import {
   inspectCanonicalBuildRoot,
   parseCanonicalBuildManifest,
   sha256,
+  verifyAssembledAppBuild,
   writeCanonicalBuildManifest
 } from './app_build_manifest.mjs';
 
@@ -120,6 +122,70 @@ test('rejects missing, extra and tampered source files', async (context) => {
   await assert.rejects(
     inspectCanonicalBuildRoot(tampered),
     /does not describe the exact app-build source tree/
+  );
+});
+
+test('rejects the former post-copy 404 overwrite', async (context) => {
+  const appBuild = await fixture(context);
+  await writeCanonicalBuildManifest(appBuild);
+  const assembled = await mkdtemp(
+    path.join(tmpdir(), 'okf-assembled-site-')
+  );
+  context.after(() =>
+    rm(assembled, { recursive: true, force: true })
+  );
+  await cp(appBuild, assembled, { recursive: true });
+
+  await writeFile(
+    path.join(assembled, '404.html'),
+    '<!doctype html><meta http-equiv="refresh" content="0; url=./">\n'
+  );
+
+  await assert.rejects(
+    verifyAssembledAppBuild(assembled, appBuild),
+    /Assembled app material differs: 404\.html/
+  );
+});
+
+test('accepts fixed assembly and rejects extra app namespace files', async (context) => {
+  const appBuild = await fixture(context);
+  await mkdir(path.join(appBuild, '_app', 'a'));
+  await writeFile(
+    path.join(appBuild, '_app', 'a', 'nested.js'),
+    'export const nested = true;\n'
+  );
+  await writeFile(
+    path.join(appBuild, '_app', 'a.txt'),
+    'flat sibling\n'
+  );
+  const source = await writeCanonicalBuildManifest(appBuild);
+  const assembled = await mkdtemp(
+    path.join(tmpdir(), 'okf-assembled-site-')
+  );
+  context.after(() =>
+    rm(assembled, { recursive: true, force: true })
+  );
+  await cp(appBuild, assembled, { recursive: true });
+  await writeFile(path.join(assembled, 'README.md'), 'Legacy content\n');
+  await writeFile(path.join(assembled, '.nojekyll'), '');
+
+  const verified = await verifyAssembledAppBuild(
+    assembled,
+    appBuild
+  );
+  assert.equal(verified.files, source.manifest.file_count);
+  assert.equal(
+    verified.tree_sha256,
+    source.manifest.tree_sha256
+  );
+
+  await writeFile(
+    path.join(assembled, '_app', 'undeclared.js'),
+    'throw new Error("undeclared");\n'
+  );
+  await assert.rejects(
+    verifyAssembledAppBuild(assembled, appBuild),
+    /Assembled _app namespace differs/
   );
 });
 
