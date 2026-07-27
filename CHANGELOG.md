@@ -10,6 +10,10 @@
   hash-lockable contract instead of an unbounded transcript.
 - Added a profile validator for JSON Schema, evidence/task/rights/decision
   cross-references and byte-independent JSON/YAML data equivalence.
+- Made the handoff carry an explicit collection profile, material claim
+  register, calibrated-confidence rules, source format/identity/version
+  behavior, identifier schemes, task risks and standards conflicts so the
+  machine contract can represent every fact required by the warm-up prompt.
 - Encoded source-native identity, orthogonal authority/evidence axes,
   standards applicability, tiny-fixture preflight, immutable acquisition,
   content-addressed reuse, optional governed model enrichment, frozen-candidate
