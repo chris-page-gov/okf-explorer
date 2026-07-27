@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased - OKF Foundry authoring protocol
+
+- Added a general two-stage OKF authoring protocol: a read-only domain and
+  standards warm-up followed by a deterministic build, assurance and
+  publication controller.
+- Added the versioned `okf-domain-profile.v1` JSON Schema and a complete YAML
+  template so research decisions pass between tasks as a bounded,
+  hash-lockable contract instead of an unbounded transcript.
+- Added a profile validator for JSON Schema, evidence/task/rights/decision
+  cross-references and byte-independent JSON/YAML data equivalence.
+- Encoded source-native identity, orthogonal authority/evidence axes,
+  standards applicability, tiny-fixture preflight, immutable acquisition,
+  content-addressed reuse, optional governed model enrichment, frozen-candidate
+  security and byte-identical RC promotion.
+- Grounded the protocol with cross-domain checks for UK legislation, ONS data
+  discovery and GOV.UK content while retaining the strict boundary between OKF
+  0.2 core conformance and the additive Foundry production profile.
+
 ## v0.5.4 - 2026-07-27 - Pages artefact closure
 
 - Preserved the deterministic Svelte fallback during final Pages assembly

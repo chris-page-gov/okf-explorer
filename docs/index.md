@@ -30,6 +30,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles
   that take full advantage of Explorer facets, search, graph, timeline,
   resources and right-card metadata.
+- [OKF Foundry prompt kit](okf-authoring-prompt-kit.md) provides a general
+  two-stage domain-research and build protocol, a versioned machine handoff and
+  reusable assurance gates for any document or record collection.
 - [Facet presentation experiment](facet-presentation-experiment.md) defines
   provider and user control, compact distributions, hierarchy tabs and the
   optional presentation sidecar.
