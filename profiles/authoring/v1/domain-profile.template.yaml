@@ -1,0 +1,276 @@
+$schema: https://chris-page-gov.github.io/okf-explorer/profile/authoring/v1/domain-profile.schema.json
+schema: okf-domain-profile.v1
+profile_id: urn:okf-domain-profile:replace-me:v1
+version: "1"
+status: draft
+prepared_at: "2026-07-27T00:00:00Z"
+research_cutoff: "2026-07-27"
+title: Replace-me collection domain profile
+description: Replace every example value with evidence from the collection warm-up.
+
+intent:
+  problem: Make this collection reliably discoverable and explainable.
+  desired_outcomes:
+    - People can find relevant documents and inspect their source evidence.
+  non_goals:
+    - The bundle will not replace the authoritative source.
+  target_okf_version: "0.2"
+  risk_level: unknown
+
+input_snapshot:
+  locations:
+    - ./collection
+  snapshot_id: replace-me-snapshot
+  inventory_sha256: unknown
+  item_count: null
+  byte_count: null
+  sampling_method: Metadata census and a stratified content sample.
+  exclusions: []
+
+scope:
+  record_definition: One source-native document or record.
+  included:
+    - Documents present in the declared input snapshot.
+  excluded: []
+  boundary_status: unknown
+  denominators: []
+  unexplained_omissions: []
+  snapshot_policy: snapshot-bounded
+
+authority_model:
+  source_authorities:
+    - The named source publisher is authoritative for its supplied content and metadata.
+  semantic_authorities:
+    - Source-native definitions take precedence over local normalization.
+  operational_authorities:
+    - The repository maintainer controls the generated publication.
+  decision_authorities:
+    - The project owner approves scope and release decisions.
+
+sources:
+  - id: SRC-001
+    title: Replace-me source
+    owner: Replace-me publisher
+    authority_role: unknown
+    url: https://example.org/
+    access_status: documented-not-tested
+    access_tested_at: "2026-07-27T00:00:00Z"
+    coverage: Coverage is unknown until a denominator is established.
+    rights_ref: RIGHT-001
+    freshness_policy: Record source observation time; do not infer currency.
+    evidence_refs:
+      - EV-001
+
+users:
+  - id: USER-001
+    role: Collection researcher
+    needs:
+      - Find records and inspect their provenance.
+    risks:
+      - Mistaking generated metadata for an authoritative source statement.
+    evidence_refs:
+      - EV-001
+
+tasks:
+  - id: TASK-001
+    user_ids:
+      - USER-001
+    goal: Find a relevant record and verify its source.
+    required_evidence:
+      - Source URL and observation time.
+    freshness_tolerance: Unknown until the owner decides.
+    hard_failures:
+      - A generated assertion is presented as source-native.
+    success: The result is findable and its evidence is inspectable.
+
+terminology:
+  - id: TERM-001
+    preferred_label: Document
+    definition: Replace with the source or domain definition.
+    source_scope: Replace-me source
+    variants: []
+    mapping_status: unresolved
+    evidence_refs:
+      - EV-001
+
+semantic_model:
+  entity_types:
+    - id: TYPE-001
+      label: Document
+      source_native_type: document
+      identity_key: Preserve the source-native identifier when present.
+      version_key: Treat versions as distinct only when the source does.
+      task_refs:
+        - TASK-001
+      evidence_refs:
+        - EV-001
+  identifier_policy:
+    native_identifier_rule: Preserve source identifiers verbatim alongside normalized routes.
+    route_rule: Create deterministic route-safe local identifiers and record collisions.
+    iri_rule: Use a repository-controlled namespace until a permanent domain is approved.
+    collision_rule: Fail closed on two source identities mapping to one local identifier.
+    redirect_rule: Publish explicit moved descriptors or redirects; never rely on guessed paths.
+  relationship_types: []
+  temporal_model:
+    distinctions:
+      - Source publication time
+      - Source modification time
+      - Acquisition time
+      - Bundle generation time
+    version_semantics: Preserve source-native version semantics; otherwise record them as unknown.
+    freshness_semantics: Freshness is measured against a declared source observation and policy.
+  equivalence_policy: Do not assert identity from label, URL, hierarchy or embedding similarity.
+  prohibited_inferences:
+    - Do not infer absence from missing metadata.
+    - Do not infer authority from model confidence.
+    - Do not use owl:sameAs without authoritative identity evidence.
+
+standards:
+  - id: STD-OKF-02
+    title: Open Knowledge Format
+    version: "0.2 at commit 3fcbb9f828c2f23d109c855ee403c3a4c81f3a96"
+    publication_status: Repository specification
+    canonical_url: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md
+    applicability: normative
+    scope: Portable Markdown bundle core.
+    terms_adopted:
+      - type
+      - generated
+      - sources
+      - verified
+      - status
+      - stale_after
+    conformance_artifact: An OKF 0.2 Markdown tree.
+    validation: Validate reserved files and every non-reserved concept against OKF 0.2.
+    retrieved_at: "2026-07-27T00:00:00Z"
+    evidence_refs:
+      - EV-OKF-001
+
+rights_access_privacy:
+  - id: RIGHT-001
+    layer: Source metadata and document content
+    operation: Read, transform, model-process and redistribute
+    status: unknown
+    basis: No rights conclusion has yet been evidenced.
+    attribution: ""
+    owner: Project owner
+    evidence_refs:
+      - EV-001
+
+architecture:
+  profile_level: minimal-okf
+  bundle_shape: small-markdown
+  canonical_authoring: markdown
+  generated_representations:
+    - okf-small-bundle
+    - okf-explorer-descriptor
+    - release-archive
+  refresh_strategy: Immutable source snapshots with explicit later refresh attempts.
+  namespace_strategy: Repository-controlled namespace pending a permanent domain.
+  scale_assumptions: Reassess after the inventory establishes record and relationship counts.
+
+enrichment:
+  enabled: false
+  purpose: No model enrichment is justified by the current evidence.
+  permitted_derivations:
+    - source-native
+    - normalized
+  evidence_requirement: Every non-source-native assertion identifies its inputs and derivation.
+  independent_review: Deterministic validation plus a separate domain review for material semantic claims.
+  authority_boundary: Generated assertions never become official source statements.
+  budget: No paid model calls are authorized by this profile.
+
+validation:
+  - id: VAL-001
+    target: OKF 0.2 Markdown tree
+    method: Parse every reserved and concept file and apply core conformance rules.
+    validator: Pinned local OKF validator
+    severity: error
+    release_gate: true
+    receipt: validation/okf-core.json
+
+evaluation:
+  competency_questions:
+    - id: CQ-001
+      question: Can a user find a relevant record and inspect the authoritative source?
+      task_refs:
+        - TASK-001
+      expected_evidence: Source URL, source identity and observation time.
+      near_miss_rule: A result without an inspectable source is not correct.
+      verification_status: candidate
+  hard_failures:
+    - A result cannot resolve its source evidence.
+  citation_policy: Every answer proposition names an immutable or precisely observed source.
+  independent_verification: Candidate questions and expected answers require separate evidence review.
+  baselines:
+    - Direct inspection of the declared source snapshot.
+
+constraints: []
+gaps:
+  - id: GAP-001
+    description: The collection denominator is not yet established.
+    impact: No completeness claim is permitted.
+    blocking: false
+    owner: Project owner
+    next_action: Complete the read-only inventory.
+decisions:
+  - id: DEC-001
+    question: What is the acceptable freshness target?
+    recommended_default: Snapshot-bounded publication with visible observation time.
+    status: open
+    owner: Project owner
+    blocking_for_build: false
+    evidence_refs:
+      - EV-001
+traceability:
+  - id: TRACE-001
+    intent_or_requirement: People can find relevant documents and inspect their source evidence.
+    task_refs:
+      - TASK-001
+    planned_artifacts:
+      - index.md
+      - okf-bundle.json
+      - checksums.json
+    validation_refs:
+      - VAL-001
+    evidence_refs:
+      - EV-001
+    status: proposed
+evidence:
+  - id: EV-001
+    title: Collection inventory placeholder
+    authority: Local collection observation
+    location: ./inventory.json
+    locator: Entire file
+    retrieved_at: "2026-07-27T00:00:00Z"
+    verification: unverified
+    sha256: unknown
+    supports:
+      - Initial collection scope and research plan
+  - id: EV-OKF-001
+    title: Open Knowledge Format 0.2 specification
+    authority: GoogleCloudPlatform knowledge-catalog repository
+    location: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md
+    locator: Version 0.2 specification
+    retrieved_at: "2026-07-27T00:00:00Z"
+    verification: locator-checked
+    sha256: unknown
+    supports:
+      - STD-OKF-02
+      - OKF 0.2 core requirements
+
+build_recommendation:
+  required_features:
+    - Stable source-native identity and deterministic routes
+    - Source provenance and observation time
+    - Search, useful facets and record detail
+  deferred_features:
+    - Domain ontology until competency questions justify it
+    - Model-assisted enrichment until a semantic gap and review method are approved
+  blocking_decision_ids: []
+  canonical_fixture: Include one normal record, one missing-metadata record, one conflict and one unsafe-link case.
+  acceptance_gates:
+    - Domain profile validates and its digest is recorded.
+    - Tiny fixture passes twice with byte-identical output.
+    - The complete bundle reconciles to the declared input population.
+    - The frozen release reproduces and public routes parse.

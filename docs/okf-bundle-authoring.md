@@ -5,6 +5,13 @@ OKF bundle is not only a list of records; it is a static knowledge product with
 search, facets, routes, relationships, provenance, quality signals and a clear
 overview.
 
+If the collection's terminology, identity, authority, standards or rights have
+not yet been decided, begin with the
+[OKF Foundry prompt kit](okf-authoring-prompt-kit.md). Its read-only domain
+warm-up produces a validated, checksummed profile; the separate build prompt
+then applies the concrete authoring rules below without replaying the research
+transcript.
+
 ## Choose The Bundle Shape
 
 | Use this | When | Output |

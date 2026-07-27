@@ -48,6 +48,8 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
+- [Use the OKF Foundry prompts to research a domain, then build and publish its
+  bundle][authoring-prompt-kit]
 
 The ONS example is the primary no-install demonstration: the Explorer is hosted
 by this repository, while the bundle descriptor, search indexes and generated
@@ -144,6 +146,10 @@ The repository contains:
   answer questions from OKF bundles.
 - `docs/okf-bundle-authoring.md` - bundle-authoring guide for Explorer-ready
   facets, search, graph, timeline, resources and provenance.
+- `docs/okf-authoring-prompt-kit.md` - reusable two-stage warm-up/build
+  protocol with the `okf-domain-profile.v1` handoff and assurance gates.
+- `scripts/check_domain_profile.py` - schema, cross-reference and JSON/YAML
+  equivalence validator for an OKF Foundry domain handoff.
 - `docs/demo-script-2026-07-09.md` - 20 minute demonstration script.
 - `docs/use-okf-explorer.md` - novice-friendly manual for generating,
   publishing, and browsing OKF bundles with the hosted Svelte Explorer.
@@ -327,3 +333,4 @@ Pages to use **GitHub Actions** as the source.
 [whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md
+[authoring-prompt-kit]: docs/okf-authoring-prompt-kit.md
