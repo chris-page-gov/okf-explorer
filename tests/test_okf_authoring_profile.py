@@ -47,6 +47,10 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertEqual(self.schema["$id"], self.template["$schema"])
         self.assertEqual([], self.errors(self.template))
         self.assertEqual([], check_domain_profile.reference_errors(self.template))
+        self.assertTrue(self.template["collection_profile"]["document_families"])
+        self.assertEqual("hypothesis", self.template["claims"][0]["claim_status"])
+        self.assertIn("identifier_model", self.template["sources"][0])
+        self.assertIn("semantic_conflicts", self.template["standards"][0])
 
     def test_profile_rejects_an_unreviewed_applicability_vocabulary(self) -> None:
         invalid = json.loads(json.dumps(self.template))

@@ -27,6 +27,19 @@ input_snapshot:
   sampling_method: Metadata census and a stratified content sample.
   exclusions: []
 
+collection_profile:
+  document_families:
+    - Source-native document
+  formats:
+    - Unknown until inventoried
+  languages:
+    - Unknown until inventoried
+  date_ranges: []
+  representation_relationships: []
+  duplicate_policy: Preserve originals; identify exact and near duplicates without silently deleting them.
+  extraction_constraints: []
+  sensitivity_findings: []
+
 scope:
   record_definition: One source-native document or record.
   included:
@@ -47,6 +60,28 @@ authority_model:
   decision_authorities:
     - The project owner approves scope and release decisions.
 
+claims:
+  - id: CLAIM-001
+    statement: The declared collection location is the starting boundary for the inventory.
+    claim_status: hypothesis
+    workflow_status: proposed
+    derivation: expert-asserted
+    authority: Profile author pending inventory evidence
+    confidence:
+      level: unknown
+      score: null
+      calibrated: false
+      method: Not yet assessed
+      basis:
+        - EV-001
+      limitations:
+        - The collection inventory is a placeholder.
+    evidence_refs:
+      - EV-001
+    decision_refs: []
+    gap_refs:
+      - GAP-001
+
 sources:
   - id: SRC-001
     title: Replace-me source
@@ -55,7 +90,19 @@ sources:
     url: https://example.org/
     access_status: documented-not-tested
     access_tested_at: "2026-07-27T00:00:00Z"
+    source_families:
+      - Source-native document
+    access_methods:
+      - Read-only local or public retrieval
+    formats:
+      - Unknown until inventoried
+    schemas: []
+    identifier_model: Preserve any source-assigned identifier.
+    version_model: Unknown until researched.
+    update_cadence: Unknown until researched.
     coverage: Coverage is unknown until a denominator is established.
+    known_omissions: []
+    acquisition_method: Immutable, hash-verified source envelopes.
     rights_ref: RIGHT-001
     freshness_policy: Record source observation time; do not infer currency.
     evidence_refs:
@@ -64,6 +111,9 @@ sources:
 users:
   - id: USER-001
     role: Collection researcher
+    context: Researching a bounded collection without replacing its source authority.
+    authority_requirement: Results must distinguish source statements from generated metadata.
+    accessibility_language_needs: []
     needs:
       - Find records and inspect their provenance.
     risks:
@@ -76,9 +126,15 @@ tasks:
     user_ids:
       - USER-001
     goal: Find a relevant record and verify its source.
+    context: Search and provenance inspection.
+    authority_requirement: Source evidence must remain inspectable.
     required_evidence:
       - Source URL and observation time.
     freshness_tolerance: Unknown until the owner decides.
+    likely_confusions:
+      - Generated metadata versus a source-native statement.
+    consequences_of_error:
+      - A user may rely on an unsupported classification.
     hard_failures:
       - A generated assertion is presented as source-native.
     success: The result is findable and its evidence is inspectable.
@@ -88,7 +144,10 @@ terminology:
     preferred_label: Document
     definition: Replace with the source or domain definition.
     source_scope: Replace-me source
+    language: und
+    owner: Replace-me publisher
     variants: []
+    confusable_terms: []
     mapping_status: unresolved
     evidence_refs:
       - EV-001
@@ -98,10 +157,30 @@ semantic_model:
     - id: TYPE-001
       label: Document
       source_native_type: document
+      proposed_class: Keep source-native until a domain standard is selected.
       identity_key: Preserve the source-native identifier when present.
       version_key: Treat versions as distinct only when the source does.
+      required_properties:
+        - Stable local route
+        - Source provenance
+      optional_properties: []
+      examples: []
+      excluded_conflations:
+        - A file representation is not automatically the persistent document identity.
       task_refs:
         - TASK-001
+      evidence_refs:
+        - EV-001
+  identifier_schemes:
+    - id: IDSCHEME-001
+      issuer: Replace-me source publisher
+      syntax: Preserve the source-native syntax; local routes use a deterministic safe projection.
+      scope: Source-native documents
+      persistence: Unknown until researched.
+      normalization: Preserve the native value and add, never replace it with, a local route.
+      collision_policy: Fail closed and report every collision.
+      uri_policy: Use a repository-controlled namespace until a permanent domain is approved.
+      equivalence_policy: Identifier similarity does not establish entity identity.
       evidence_refs:
         - EV-001
   identifier_policy:
@@ -140,8 +219,14 @@ standards:
       - verified
       - status
       - stale_after
+    supported_source_fields:
+      - Source-native identifiers and metadata are preserved in additive fields.
+    mappings: []
+    unmet_requirements: []
+    semantic_conflicts: []
     conformance_artifact: An OKF 0.2 Markdown tree.
     validation: Validate reserved files and every non-reserved concept against OKF 0.2.
+    licence: See the upstream repository.
     retrieved_at: "2026-07-27T00:00:00Z"
     evidence_refs:
       - EV-OKF-001
@@ -152,7 +237,11 @@ rights_access_privacy:
     operation: Read, transform, model-process and redistribute
     status: unknown
     basis: No rights conclusion has yet been evidenced.
+    licence: Unknown
     attribution: ""
+    third_party_terms: Unknown
+    access_constraint: Do not infer permission from accessibility.
+    mitigation: Publish only evidence-backed permitted layers; record unresolved operations as constraints.
     owner: Project owner
     evidence_refs:
       - EV-001
@@ -200,10 +289,20 @@ evaluation:
       verification_status: candidate
   hard_failures:
     - A result cannot resolve its source evidence.
+  strata:
+    - Normal record discovery
+    - Missing metadata
+    - Conflicting source evidence
   citation_policy: Every answer proposition names an immutable or precisely observed source.
   independent_verification: Candidate questions and expected answers require separate evidence review.
   baselines:
     - Direct inspection of the declared source snapshot.
+  metrics:
+    - Retrieval success
+    - Resolvable citation rate
+  thresholds:
+    - Zero hard failures
+  challenge_policy: Run two disjoint held-out passes and require no new critical category in the second.
 
 constraints: []
 gaps:
@@ -217,9 +316,15 @@ decisions:
   - id: DEC-001
     question: What is the acceptable freshness target?
     recommended_default: Snapshot-bounded publication with visible observation time.
+    alternatives:
+      - Live resolution
+      - Hybrid snapshot and bounded live reconciliation
+    consequences:
+      - The choice determines refresh and stale-state behavior.
     status: open
     owner: Project owner
     blocking_for_build: false
+    due_point: Before production freshness claims.
     evidence_refs:
       - EV-001
 traceability:
@@ -239,25 +344,34 @@ traceability:
 evidence:
   - id: EV-001
     title: Collection inventory placeholder
+    evidence_type: Local inventory
     authority: Local collection observation
     location: ./inventory.json
     locator: Entire file
     retrieved_at: "2026-07-27T00:00:00Z"
+    observed_at: "2026-07-27T00:00:00Z"
+    access_state: documented-not-tested
     verification: unverified
     sha256: unknown
     supports:
       - Initial collection scope and research plan
+    contradicts: []
+    rights_ref: RIGHT-001
   - id: EV-OKF-001
     title: Open Knowledge Format 0.2 specification
+    evidence_type: Normative specification
     authority: GoogleCloudPlatform knowledge-catalog repository
     location: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md
     locator: Version 0.2 specification
     retrieved_at: "2026-07-27T00:00:00Z"
+    observed_at: "2026-07-27T00:00:00Z"
+    access_state: verified-working
     verification: locator-checked
     sha256: unknown
     supports:
       - STD-OKF-02
       - OKF 0.2 core requirements
+    contradicts: []
 
 build_recommendation:
   required_features:

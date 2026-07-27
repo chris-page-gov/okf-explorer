@@ -15,8 +15,10 @@
     "title",
     "intent",
     "input_snapshot",
+    "collection_profile",
     "scope",
     "authority_model",
+    "claims",
     "sources",
     "users",
     "tasks",
@@ -140,6 +142,46 @@
       },
       "additionalProperties": false
     },
+    "collection_profile": {
+      "type": "object",
+      "required": [
+        "document_families",
+        "formats",
+        "languages",
+        "date_ranges",
+        "representation_relationships",
+        "duplicate_policy",
+        "extraction_constraints",
+        "sensitivity_findings"
+      ],
+      "properties": {
+        "document_families": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "formats": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "languages": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "date_ranges": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "representation_relationships": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "duplicate_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "extraction_constraints": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "sensitivity_findings": {
+          "$ref": "#/$defs/stringArray"
+        }
+      },
+      "additionalProperties": false
+    },
     "scope": {
       "type": "object",
       "required": [
@@ -212,6 +254,13 @@
       },
       "additionalProperties": false
     },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
     "sources": {
       "type": "array",
       "minItems": 1,
@@ -243,6 +292,7 @@
       "type": "object",
       "required": [
         "entity_types",
+        "identifier_schemes",
         "identifier_policy",
         "relationship_types",
         "temporal_model",
@@ -255,6 +305,13 @@
           "minItems": 1,
           "items": {
             "$ref": "#/$defs/entityType"
+          }
+        },
+        "identifier_schemes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/identifierScheme"
           }
         },
         "identifier_policy": {
@@ -421,6 +478,9 @@
             "$ref": "#/$defs/competencyQuestion"
           }
         },
+        "strata": {
+          "$ref": "#/$defs/stringArray"
+        },
         "hard_failures": {
           "$ref": "#/$defs/nonEmptyStringArray"
         },
@@ -432,6 +492,15 @@
         },
         "baselines": {
           "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "metrics": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "thresholds": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "challenge_policy": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -605,6 +674,121 @@
         "$ref": "#/$defs/nonEmpty"
       }
     },
+    "confidence": {
+      "type": "object",
+      "required": [
+        "level",
+        "score",
+        "calibrated",
+        "method",
+        "basis",
+        "limitations"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "unknown"
+          ]
+        },
+        "score": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "calibrated": {
+          "type": "boolean"
+        },
+        "method": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "basis": {
+          "$ref": "#/$defs/evidenceRefs"
+        },
+        "limitations": {
+          "$ref": "#/$defs/stringArray"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "score": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "score"
+            ]
+          },
+          "then": {
+            "properties": {
+              "calibrated": {
+                "const": true
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "id",
+        "statement",
+        "claim_status",
+        "workflow_status",
+        "derivation",
+        "authority",
+        "confidence",
+        "evidence_refs",
+        "decision_refs",
+        "gap_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "statement": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "claim_status": {
+          "$ref": "#/$defs/claimStatus"
+        },
+        "workflow_status": {
+          "$ref": "#/$defs/workflowStatus"
+        },
+        "derivation": {
+          "$ref": "#/$defs/derivation"
+        },
+        "authority": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        },
+        "decision_refs": {
+          "$ref": "#/$defs/idArray"
+        },
+        "gap_refs": {
+          "$ref": "#/$defs/idArray"
+        }
+      },
+      "additionalProperties": false
+    },
     "denominator": {
       "type": "object",
       "required": [
@@ -683,8 +867,38 @@
           "type": "string",
           "format": "date-time"
         },
+        "source_families": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "access_methods": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "formats": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "schemas": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "identifier_model": {
+          "type": "string"
+        },
+        "version_model": {
+          "type": "string"
+        },
+        "update_cadence": {
+          "type": "string"
+        },
         "coverage": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "coverage_denominator_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "known_omissions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "acquisition_method": {
+          "type": "string"
         },
         "rights_ref": {
           "$ref": "#/$defs/nonEmpty"
@@ -713,6 +927,15 @@
         },
         "role": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "context": {
+          "type": "string"
+        },
+        "authority_requirement": {
+          "type": "string"
+        },
+        "accessibility_language_needs": {
+          "$ref": "#/$defs/stringArray"
         },
         "needs": {
           "$ref": "#/$defs/nonEmptyStringArray"
@@ -747,11 +970,23 @@
         "goal": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "context": {
+          "type": "string"
+        },
+        "authority_requirement": {
+          "type": "string"
+        },
         "required_evidence": {
           "$ref": "#/$defs/nonEmptyStringArray"
         },
         "freshness_tolerance": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "likely_confusions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "consequences_of_error": {
+          "$ref": "#/$defs/stringArray"
         },
         "hard_failures": {
           "$ref": "#/$defs/nonEmptyStringArray"
@@ -785,8 +1020,20 @@
         "source_scope": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "language": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
         "variants": {
           "$ref": "#/$defs/stringArray"
+        },
+        "confusable_terms": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "deprecated_by": {
+          "type": "string"
         },
         "mapping_status": {
           "enum": [
@@ -825,14 +1072,77 @@
         "source_native_type": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "proposed_class": {
+          "type": "string"
+        },
         "identity_key": {
           "$ref": "#/$defs/nonEmpty"
         },
         "version_key": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "required_properties": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "optional_properties": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "examples": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "excluded_conflations": {
+          "$ref": "#/$defs/stringArray"
+        },
         "task_refs": {
           "$ref": "#/$defs/idArray"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "identifierScheme": {
+      "type": "object",
+      "required": [
+        "id",
+        "issuer",
+        "syntax",
+        "scope",
+        "persistence",
+        "normalization",
+        "collision_policy",
+        "uri_policy",
+        "equivalence_policy",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "issuer": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "syntax": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "scope": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "persistence": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "normalization": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "collision_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "uri_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "equivalence_policy": {
+          "$ref": "#/$defs/nonEmpty"
         },
         "evidence_refs": {
           "$ref": "#/$defs/evidenceRefs"
@@ -888,6 +1198,12 @@
         "label": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "predicate_iri": {
+          "type": "string"
+        },
+        "inverse_label": {
+          "type": "string"
+        },
         "source_types": {
           "$ref": "#/$defs/nonEmptyStringArray"
         },
@@ -913,6 +1229,12 @@
         },
         "temporal_meaning": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "cardinality": {
+          "type": "string"
+        },
+        "non_properties": {
+          "$ref": "#/$defs/stringArray"
         },
         "task_refs": {
           "$ref": "#/$defs/idArray"
@@ -988,11 +1310,26 @@
         "terms_adopted": {
           "$ref": "#/$defs/stringArray"
         },
+        "supported_source_fields": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "mappings": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "unmet_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "semantic_conflicts": {
+          "$ref": "#/$defs/stringArray"
+        },
         "conformance_artifact": {
           "$ref": "#/$defs/nonEmpty"
         },
         "validation": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "licence": {
+          "type": "string"
         },
         "retrieved_at": {
           "type": "string",
@@ -1037,7 +1374,19 @@
         "basis": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "licence": {
+          "type": "string"
+        },
         "attribution": {
+          "type": "string"
+        },
+        "third_party_terms": {
+          "type": "string"
+        },
+        "access_constraint": {
+          "type": "string"
+        },
+        "mitigation": {
           "type": "string"
         },
         "owner": {
@@ -1111,6 +1460,12 @@
         },
         "expected_evidence": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "temporal_context": {
+          "type": "string"
+        },
+        "citation_expectation": {
+          "type": "string"
         },
         "near_miss_rule": {
           "$ref": "#/$defs/nonEmpty"
@@ -1207,6 +1562,9 @@
         },
         "next_action": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
         }
       },
       "additionalProperties": false
@@ -1232,6 +1590,12 @@
         "recommended_default": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "alternatives": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "consequences": {
+          "$ref": "#/$defs/stringArray"
+        },
         "status": {
           "enum": [
             "open",
@@ -1246,6 +1610,9 @@
         },
         "blocking_for_build": {
           "type": "boolean"
+        },
+        "due_point": {
+          "type": "string"
         },
         "evidence_refs": {
           "$ref": "#/$defs/evidenceRefs"
@@ -1308,6 +1675,9 @@
         "title": {
           "$ref": "#/$defs/nonEmpty"
         },
+        "evidence_type": {
+          "type": "string"
+        },
         "authority": {
           "$ref": "#/$defs/nonEmpty"
         },
@@ -1320,6 +1690,13 @@
         "retrieved_at": {
           "type": "string",
           "format": "date-time"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "access_state": {
+          "$ref": "#/$defs/accessStatus"
         },
         "verification": {
           "enum": [
@@ -1336,6 +1713,12 @@
         },
         "supports": {
           "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "contradicts": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "rights_ref": {
+          "type": "string"
         }
       },
       "additionalProperties": false

@@ -84,6 +84,7 @@ def reference_errors(value: dict[str, Any]) -> list[str]:
 
     sections: dict[str, set[str]] = {}
     for section in (
+        "claims",
         "sources",
         "users",
         "tasks",
@@ -109,17 +110,32 @@ def reference_errors(value: dict[str, Any]) -> list[str]:
         "user_ids": sections["users"],
         "task_refs": sections["tasks"],
         "validation_refs": sections["validation"],
+        "decision_refs": sections["decisions"],
+        "gap_refs": sections["gaps"],
     }
     for key, allowed in expected_refs.items():
         missing = sorted(set(referenced_values(value, key)) - allowed)
         errors.extend(f"{key} references unknown id {identifier!r}" for identifier in missing)
 
     rights_ids = sections["rights_access_privacy"]
-    for source in value.get("sources", []):
-        if isinstance(source, dict) and source.get("rights_ref") not in rights_ids:
+    for item in objects:
+        if "rights_ref" in item and item.get("rights_ref") not in rights_ids:
             errors.append(
-                f"source {source.get('id', '<unknown>')!r} references unknown rights_ref "
-                f"{source.get('rights_ref')!r}"
+                f"{item.get('id', '<unknown>')!r} references unknown rights_ref "
+                f"{item.get('rights_ref')!r}"
+            )
+
+    denominator_ids = {
+        item["id"]
+        for item in value.get("scope", {}).get("denominators", [])
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    for source in value.get("sources", []):
+        denominator_ref = source.get("coverage_denominator_ref")
+        if denominator_ref is not None and denominator_ref not in denominator_ids:
+            errors.append(
+                f"source {source.get('id', '<unknown>')!r} references unknown "
+                f"coverage_denominator_ref {denominator_ref!r}"
             )
 
     decisions = {

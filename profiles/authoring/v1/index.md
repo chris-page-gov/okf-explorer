@@ -23,6 +23,10 @@ freezes:
 
 - purpose, scope, exclusions and any completeness denominator;
 - source, semantic, operational and decision authority;
+- the collection's document families, representations, formats, languages,
+  extraction constraints and sensitivity findings;
+- material research claims with separate claim, workflow, derivation,
+  authority, confidence and evidence fields;
 - source access, rights, privacy, freshness and acquisition evidence;
 - user roles, tasks, evidence needs and hard failures;
 - source-native terminology, entities, identifiers, versions and
