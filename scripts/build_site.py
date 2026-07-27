@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import shutil
+import subprocess
 from pathlib import Path
 
 import build_okf_bundle
@@ -11,6 +12,13 @@ import build_okf_bundle
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
 SVELTE_EXPLORER_BUILD = ROOT / "apps" / "okf-explorer" / "build"
+ASSEMBLED_SITE_VERIFIER = (
+    ROOT
+    / "apps"
+    / "okf-explorer"
+    / "scripts"
+    / "verify_assembled_site.mjs"
+)
 PUBLIC_ROOT_FILES = [
     "viewer.html",
     "view.html",
@@ -123,6 +131,39 @@ def assert_no_forbidden_files() -> None:
         raise RuntimeError(f"forbidden files in site build:\n{joined}")
 
 
+def write_legacy_404_if_absent() -> None:
+    target = OUT / "404.html"
+    if target.exists():
+        return
+    target.write_text(
+        "<!doctype html><meta charset=\"utf-8\"><title>OKF Explorer</title>"
+        "<meta http-equiv=\"refresh\" content=\"0; url=./\">"
+        "<p>Return to <a href=\"./\">OKF Explorer</a>.</p>\n",
+        encoding="utf-8",
+    )
+
+
+def verify_assembled_app_build() -> None:
+    if not SVELTE_EXPLORER_BUILD.exists():
+        return
+    result = subprocess.run(
+        [
+            "node",
+            str(ASSEMBLED_SITE_VERIFIER),
+            "--site-root",
+            str(OUT),
+            "--app-build-root",
+            str(SVELTE_EXPLORER_BUILD),
+        ],
+        cwd=ROOT,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            "assembled Explorer app differs from its canonical build manifest"
+        )
+
+
 def main() -> int:
     if OUT.exists():
         for _attempt in range(3):
@@ -164,14 +205,10 @@ def main() -> int:
     (OUT / "next" / "index.html").write_text(render_next_redirect(), encoding="utf-8")
 
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
-    (OUT / "404.html").write_text(
-        "<!doctype html><meta charset=\"utf-8\"><title>OKF Explorer</title>"
-        "<meta http-equiv=\"refresh\" content=\"0; url=./\">"
-        "<p>Return to <a href=\"./\">OKF Explorer</a>.</p>\n",
-        encoding="utf-8",
-    )
+    write_legacy_404_if_absent()
 
     assert_no_forbidden_files()
+    verify_assembled_app_build()
     file_count = sum(1 for path in OUT.rglob("*") if path.is_file())
     print(f"built {OUT.relative_to(ROOT)} with {file_count} files")
     return 0

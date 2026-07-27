@@ -74,7 +74,7 @@ const candidateBundleTree = valueArgument(
   process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
 );
 const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
-const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.3');
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.4');
 if (path.basename(outputPath) !== OUTPUT_BASENAME) {
   throw new Error(`--output must use the canonical basename ${OUTPUT_BASENAME}`);
 }

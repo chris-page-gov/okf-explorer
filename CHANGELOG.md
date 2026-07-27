@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.5.4 - 2026-07-27 - Pages artefact closure
+
+- Preserved the deterministic Svelte fallback during final Pages assembly
+  instead of replacing its manifest-bound `404.html` with a second file.
+- Added a fail-closed post-assembly check that rehashes every application
+  material declared by the canonical build manifest before Pages upload.
+- Retained the independently observed v0.5.3 mismatch as evidence for the
+  corrective release rather than weakening the immutable-artefact gate.
+
 ## v0.5.3 - 2026-07-27 - Reproducible production builds
 
 - Bound SvelteKit's application-version seed to the synchronized package
