@@ -125,6 +125,11 @@ python3 scripts/build_site.py
 
 ## How To Decide What To Read
 
+If the terminology or architecture is new to you, start with
+[OKF Explorer from the beginning](beginners/index.md). Its coverage map
+provides a staged route from browser and data basics to every advanced
+specification used by the implementation.
+
 If you are browsing an existing pack, start with
 [okf-explorer-persona-manual.md](okf-explorer-persona-manual.md).
 

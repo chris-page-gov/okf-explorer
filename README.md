@@ -2,6 +2,12 @@
 
 Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 
+New to this area? Start with
+[OKF Explorer from the beginning](docs/beginners/index.md). It assumes no
+background in web development, search, knowledge graphs, semantic-web
+standards, data catalogues, geospatial or legislation data, AI infrastructure
+or this repository's v0.2, federation, Foundry and release-assurance model.
+
 ## Open The Hosted Explorer
 
 The Svelte OKF Explorer can load OKF bundles from this repository or from any
@@ -36,6 +42,7 @@ keyboard and responsive use, URL history, empty/loading states and display
 bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 
 - [Start with the OKF Explorer documentation guide][docs-index]
+- [Learn the whole system from first principles][beginner-guide]
 - [Read the illustrated OKF Explorer persona manual][persona-manual]
 - [Explore the geospatial Map personas, stories and illustrated manual][geospatial-personas]
 - [Use the static search and filtering manual][search-filtering-manual]
@@ -322,6 +329,7 @@ Pages to use **GitHub Actions** as the source.
 [legislation-personas]: docs/uk-legislation/personas-and-user-journeys.md
 [ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
 [docs-index]: docs/index.md
+[beginner-guide]: docs/beginners/index.md
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md

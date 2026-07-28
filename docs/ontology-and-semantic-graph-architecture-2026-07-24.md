@@ -2,6 +2,13 @@
 
 Status: design baseline, 24 July 2026.
 
+If RDF, RDFS, SKOS, OWL, SHACL, DCAT, PROV or the open-world distinction are
+new to you, first read
+[Knowledge graphs and stable identifiers](beginners/06-knowledge-graphs-and-identifiers.md),
+[The semantic web and ontologies](beginners/07-semantic-web-and-ontologies.md)
+and
+[Validation, provenance and catalogue standards](beginners/08-validation-provenance-and-catalogue-standards.md).
+
 This document defines how OKF bundles and the OKF Explorer should grow from
 typed navigation graphs into evidence-bearing semantic knowledge graphs. It
 also records the boundary between semantic meaning, validation, inference and
