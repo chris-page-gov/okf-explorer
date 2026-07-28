@@ -83,6 +83,21 @@ class BuildSiteTests(unittest.TestCase):
             self.assertIn('href="02-web-and-browser-foundations.html"', first)
             self.assertIn('href="index.html"', first)
 
+    def test_beginner_sidebar_scrolls_independently_on_desktop(self) -> None:
+        stylesheet = build_site.BEGINNER_GUIDE_CSS.read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("position: sticky;", stylesheet)
+        self.assertIn("height: 100dvh;", stylesheet)
+        self.assertIn("overflow-y: auto;", stylesheet)
+        self.assertIn("overscroll-behavior-y: contain;", stylesheet)
+        self.assertIn("scrollbar-gutter: stable;", stylesheet)
+        self.assertIn(
+            ".guide-sidebar nav { position: static; }",
+            stylesheet,
+        )
+        self.assertIn("overscroll-behavior-y: auto;", stylesheet)
+
     def test_beginner_renderer_escapes_raw_html_and_unsafe_links(self) -> None:
         renderer = build_site.beginner_markdown_renderer()
         rendered = renderer.render(
