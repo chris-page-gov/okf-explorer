@@ -12,6 +12,7 @@
     "test": "vitest run && node --test scripts/app_build_manifest.test.mjs scripts/runtime_acceptance_contract.test.mjs",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:foundry": "playwright test --config=playwright.foundry.config.ts",
     "test:e2e:pages": "PLAYWRIGHT_BASE_URL=https://chris-page-gov.github.io/okf-explorer/ playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:build-manifest": "node --test scripts/app_build_manifest.test.mjs",

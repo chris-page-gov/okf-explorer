@@ -111,3 +111,7 @@ jobs:
 
       - name: Build static site
         run: python3 scripts/build_site.py
+
+      - name: Test Foundry Pages in Chrome, Firefox and WebKit
+        working-directory: apps/okf-explorer
+        run: pnpm test:e2e:foundry

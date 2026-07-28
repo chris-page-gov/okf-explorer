@@ -38,6 +38,62 @@ flowchart LR
 The profile—not the chat history—is the durable interface between research and
 implementation.
 
+## Use This With Any Capable AI
+
+The workflow is product-neutral. Use an AI that can inspect the supplied
+collection and create the required files. The build stage additionally needs
+permission to write to the target repository, run its validators and publish
+only when publication is authorised. A chat-only AI can prepare a handoff; it
+must not claim that it built, tested or published a bundle.
+
+1. Record the collection location, intended outcome, users/tasks, operating
+   context, repository or publication target, research cut-off, access policy,
+   known owner decisions and bounded budget. Never put secrets in a prompt.
+2. Open the [formatted domain warm-up](prompts/okf-domain-warm-up.md), select
+   **Copy full prompt**, replace every `{{PLACEHOLDER}}`, and run it read-only.
+3. Require the complete domain-profile pack, JSON/YAML data equivalence, schema
+   validation, evidence references and checksums. A prose report alone is not
+   the handoff.
+4. Review the decisions marked `blocking_for_build: true`. Record the owner's
+   decisions, freeze the accepted pack and retain its root SHA-256.
+5. Open the [formatted build prompt](prompts/okf-bundle-build.md), select
+   **Copy full prompt**, and provide the exact profile, inventory and snapshot
+   digests plus repository, access, model-cost and publication authority.
+6. Keep the complete bundle outcome as the AI's visible goal. Require the tiny
+   positive/negative fixture before corpus, network or paid work, and no more
+   than three stable workstreams.
+7. Require evidence for every gate. Missing or excepted evidence is
+   `blocked`, `deferred` or `exception-recorded`; it is never silently passed.
+8. Freeze one reproducible candidate, assure that exact tree, publish one
+   release candidate, verify its public representations, and promote identical
+   bytes rather than rebuilding.
+
+## Success Checklist
+
+Do not accept completion until all applicable statements are true:
+
+- every run input was filled deliberately and no secret was copied into the
+  prompt, repository or logs;
+- the domain profile validates against
+  [`okf-domain-profile.v1`](../profiles/authoring/v1/domain-profile.schema.json),
+  its JSON and YAML forms are equivalent, and its evidence references resolve;
+- the approved profile, evidence and input inventory have recorded SHA-256
+  identities;
+- scope, denominator, rights, access, authority, derivation, freshness and
+  unresolved gaps remain distinct and visible;
+- each selected standard has an exact version, applicability decision,
+  conformance artefact and validator rather than a name-only claim;
+- the tiny fixture proves positive, negative and degraded behaviour before the
+  full collection is processed;
+- generated outputs reproduce cleanly and every release gate has a receipt or
+  an explicitly owner-accepted exception;
+- user-task evaluation, citations, accessibility and the security method
+  applicable to the frozen candidate are reported honestly;
+- the publication exposes working human documentation, machine descriptors,
+  raw/release fallbacks, checksums, coverage counts, costs and limitations; and
+- the published release candidate has the same recorded bytes and digests as
+  the candidate that passed assurance.
+
 ## What Is Fixed And What Is Researched
 
 The portable core is fixed:

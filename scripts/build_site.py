@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import html
+import posixpath
 import re
 import shutil
 import subprocess
@@ -17,6 +18,43 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
 BEGINNER_DOCS = ROOT / "docs" / "beginners"
 BEGINNER_GUIDE_CSS = BEGINNER_DOCS / "guide.css"
+FOUNDRY_CSS = ROOT / "docs" / "foundry.css"
+FOUNDRY_JS = ROOT / "docs" / "foundry.js"
+FOUNDRY_PAGES = (
+    (
+        ROOT / "docs" / "okf-authoring-prompt-kit.md",
+        Path("docs/okf-authoring-prompt-kit.html"),
+        "Prompt kit",
+    ),
+    (
+        ROOT / "docs" / "prompts" / "okf-domain-warm-up.md",
+        Path("docs/prompts/okf-domain-warm-up.html"),
+        "1. Domain warm-up",
+    ),
+    (
+        ROOT / "docs" / "prompts" / "okf-bundle-build.md",
+        Path("docs/prompts/okf-bundle-build.html"),
+        "2. Build and publish",
+    ),
+    (
+        ROOT / "docs" / "prompts" / "domain-profile-examples.md",
+        Path("docs/prompts/domain-profile-examples.html"),
+        "Worked examples",
+    ),
+    (
+        ROOT / "profiles" / "authoring" / "v1" / "index.md",
+        Path("profile/authoring/v1/index.html"),
+        "Authoring profile",
+    ),
+)
+FOUNDRY_PROMPT_SOURCES = {
+    (ROOT / "docs" / "prompts" / "okf-domain-warm-up.md").resolve(),
+    (ROOT / "docs" / "prompts" / "okf-bundle-build.md").resolve(),
+}
+COPY_READY_PROMPT = re.compile(
+    r"^```text[ \t]*\n(?P<prompt>.*?)^```[ \t]*$",
+    flags=re.MULTILINE | re.DOTALL,
+)
 SVELTE_EXPLORER_BUILD = ROOT / "apps" / "okf-explorer" / "build"
 ASSEMBLED_SITE_VERIFIER = (
     ROOT
@@ -83,27 +121,61 @@ def markdown_title(source: Path) -> str:
     return match.group(1) if match else source.stem.replace("-", " ").title()
 
 
-def rewrite_beginner_href(href: str, source: Path) -> str:
+def published_source_routes() -> dict[Path, Path]:
+    routes = {
+        source.resolve(): target
+        for source, target, _label in FOUNDRY_PAGES
+    }
+    routes.update(
+        {
+            source.resolve(): (
+                Path("docs")
+                / "beginners"
+                / source.with_suffix(".html").name
+            )
+            for source in beginner_sources()
+        }
+    )
+    return routes
+
+
+def relative_site_href(source_route: Path, target_route: Path) -> str:
+    return posixpath.relpath(
+        target_route.as_posix(),
+        start=source_route.parent.as_posix(),
+    )
+
+
+def rewrite_published_href(
+    href: str,
+    source: Path,
+    output_route: Path,
+) -> str:
     parts = urlsplit(href)
     if parts.scheme or parts.netloc or not parts.path or parts.path.startswith("/"):
         return href
     candidate = (source.parent / unquote(parts.path)).resolve()
-    guide_root = BEGINNER_DOCS.resolve()
-    if (
-        candidate.suffix.lower() == ".md"
-        and candidate.is_relative_to(guide_root)
-        and candidate.is_file()
-    ):
-        return urlunsplit(
-            (
-                "",
-                "",
-                candidate.with_suffix(".html").name,
-                parts.query,
-                parts.fragment,
-            )
+    target_route = published_source_routes().get(candidate)
+    if target_route is None:
+        return href
+    return urlunsplit(
+        (
+            "",
+            "",
+            relative_site_href(output_route, target_route),
+            parts.query,
+            parts.fragment,
         )
-    return href
+    )
+
+
+def rewrite_beginner_href(href: str, source: Path) -> str:
+    output_route = (
+        Path("docs")
+        / "beginners"
+        / source.with_suffix(".html").name
+    )
+    return rewrite_published_href(href, source, output_route)
 
 
 def beginner_markdown_renderer() -> MarkdownIt:
@@ -235,6 +307,220 @@ def write_beginner_guide() -> None:
             encoding="utf-8",
         )
     copy_file(BEGINNER_GUIDE_CSS, target_dir / "guide.css")
+
+
+def foundry_markdown_renderer() -> MarkdownIt:
+    renderer = MarkdownIt(
+        "commonmark",
+        {"html": False, "breaks": False, "typographer": False},
+    ).enable(["table", "strikethrough"])
+
+    def render_link_open(tokens, index, options, env):
+        source = env.get("source")
+        output_route = env.get("output_route")
+        href = tokens[index].attrGet("href")
+        if source and output_route and href:
+            tokens[index].attrSet(
+                "href",
+                rewrite_published_href(
+                    href,
+                    Path(source),
+                    Path(output_route),
+                ),
+            )
+        return renderer.renderer.renderToken(tokens, index, options, env)
+
+    def render_table_open(_tokens, _index, _options, _env):
+        return '<div class="table-scroll"><table>\n'
+
+    def render_table_close(_tokens, _index, _options, _env):
+        return "</table></div>\n"
+
+    renderer.renderer.rules["link_open"] = render_link_open
+    renderer.renderer.rules["table_open"] = render_table_open
+    renderer.renderer.rules["table_close"] = render_table_close
+    return renderer
+
+
+def extract_copy_ready_prompt(
+    markdown: str,
+) -> tuple[str, str, str] | None:
+    match = COPY_READY_PROMPT.search(markdown)
+    if match is None:
+        return None
+    return (
+        markdown[: match.start()],
+        match.group("prompt"),
+        markdown[match.end() :],
+    )
+
+
+def demote_prompt_headings(markdown: str) -> str:
+    return re.sub(
+        r"^(#{1,5})([ \t]+)",
+        lambda match: f"#{match.group(1)}{match.group(2)}",
+        markdown,
+        flags=re.MULTILINE,
+    )
+
+
+def canonical_foundry_url(target: Path) -> str:
+    base = "https://chris-page-gov.github.io/okf-explorer/"
+    if target == Path("profile/authoring/v1/index.html"):
+        return f"{base}profile/authoring/v1/"
+    return f"{base}{target.as_posix()}"
+
+
+def render_foundry_page(
+    source: Path,
+    target: Path,
+    label: str,
+) -> tuple[str, str | None]:
+    markdown = source.read_text(encoding="utf-8")
+    renderer = foundry_markdown_renderer()
+    env = {"source": str(source), "output_route": str(target)}
+    extracted = (
+        extract_copy_ready_prompt(markdown)
+        if source.resolve() in FOUNDRY_PROMPT_SOURCES
+        else None
+    )
+    prompt_text: str | None = None
+    if extracted is None:
+        body = renderer.render(markdown, env)
+    else:
+        before_prompt, prompt_text, after_prompt = extracted
+        body = renderer.render(before_prompt, env)
+        prompt_body = renderer.render(
+            demote_prompt_headings(prompt_text),
+            env,
+        )
+        plain_text_href = html.escape(
+            target.with_suffix(".txt").name,
+            quote=True,
+        )
+        prompt_source = html.escape(prompt_text, quote=False)
+        body += f"""
+<section class="prompt-publication" aria-labelledby="formatted-prompt-heading">
+  <div class="prompt-actions">
+    <button type="button" class="copy-prompt" data-copy-target="copy-ready-prompt"
+      aria-describedby="copy-prompt-help">Copy full prompt</button>
+    <a class="secondary-action" href="{plain_text_href}" download>Download plain text</a>
+  </div>
+  <p id="copy-prompt-help" class="prompt-help">
+    Copies the exact prompt, including its placeholders, without this page's controls.
+  </p>
+  <p id="copy-prompt-status" class="copy-status" role="status" aria-live="polite"></p>
+  <textarea id="copy-ready-prompt" class="copy-source" hidden
+    aria-hidden="true" tabindex="-1">{prompt_source}</textarea>
+  <div class="formatted-prompt">
+    <h2 id="formatted-prompt-heading">Formatted prompt</h2>
+{prompt_body}
+  </div>
+</section>
+"""
+        body += renderer.render(after_prompt, env)
+
+    navigation = []
+    for nav_source, nav_target, nav_label in FOUNDRY_PAGES:
+        current = ' aria-current="page"' if nav_source == source else ""
+        href = html.escape(
+            relative_site_href(target, nav_target),
+            quote=True,
+        )
+        navigation.append(
+            f'<li><a href="{href}"{current}>'
+            f"{html.escape(nav_label)}</a></li>"
+        )
+
+    stylesheet_href = html.escape(
+        relative_site_href(
+            target,
+            Path("docs/beginners/guide.css"),
+        ),
+        quote=True,
+    )
+    foundry_stylesheet_href = html.escape(
+        relative_site_href(target, Path("docs/foundry.css")),
+        quote=True,
+    )
+    script_href = html.escape(
+        relative_site_href(target, Path("docs/foundry.js")),
+        quote=True,
+    )
+    explorer_href = html.escape(
+        relative_site_href(target, Path("index.html")),
+        quote=True,
+    )
+    source_markdown_href = html.escape(
+        relative_site_href(
+            target,
+            source.relative_to(ROOT),
+        ),
+        quote=True,
+    )
+    title = markdown_title(source)
+    return (
+        f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>{html.escape(title)} · OKF Foundry</title>
+<link rel="canonical" href="{html.escape(canonical_foundry_url(target), quote=True)}">
+<link rel="stylesheet" href="{stylesheet_href}">
+<link rel="stylesheet" href="{foundry_stylesheet_href}">
+<script src="{script_href}" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to the documentation</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__title" href="{explorer_href}">OKF Explorer</a>
+    <span class="site-header__meta">OKF Foundry documentation</span>
+  </div>
+</header>
+<nav class="foundry-nav" aria-label="OKF Foundry documentation">
+  <ol>{"".join(navigation)}</ol>
+</nav>
+<main class="guide-main foundry-main" id="main-content" tabindex="-1">
+  <article class="guide-content">
+{body}
+  </article>
+  <footer class="guide-footer">
+    <p>Read the <a href="{source_markdown_href}">source Markdown</a>
+    or return to the <a href="{explorer_href}">OKF Explorer</a>.</p>
+    <p>Profile status: experimental production profile, 27 July 2026.</p>
+  </footer>
+</main>
+</body>
+</html>
+""",
+        prompt_text,
+    )
+
+
+def write_foundry_pages() -> None:
+    for source, target, label in FOUNDRY_PAGES:
+        rendered, prompt_text = render_foundry_page(
+            source,
+            target,
+            label,
+        )
+        output = OUT / target
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(rendered, encoding="utf-8")
+        if prompt_text is not None:
+            output.with_suffix(".txt").write_text(
+                prompt_text,
+                encoding="utf-8",
+            )
+
+    canonical_profile = OUT / "profile" / "authoring" / "v1" / "index.html"
+    compatibility_profile = (
+        OUT / "profiles" / "authoring" / "v1" / "index.html"
+    )
+    copy_file(canonical_profile, compatibility_profile)
 
 
 def render_next_redirect() -> str:
@@ -382,6 +668,7 @@ def main() -> int:
     # Schema $id values use the stable singular profile URI; keep the browsable
     # plural source tree as well as this publication alias.
     copy_public_tree(ROOT / "profiles", OUT / "profile")
+    write_foundry_pages()
 
     copy_public_tree(ROOT / "explorer", OUT / "legacy")
 

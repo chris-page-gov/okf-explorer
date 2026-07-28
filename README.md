@@ -342,4 +342,4 @@ Pages to use **GitHub Actions** as the source.
 [whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 [ai-okf-usage]: docs/ai-okf-usage.md
 [bundle-authoring]: docs/okf-bundle-authoring.md
-[authoring-prompt-kit]: docs/okf-authoring-prompt-kit.md
+[authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html

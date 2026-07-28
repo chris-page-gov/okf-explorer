@@ -202,6 +202,32 @@ rather than rebuilding from nominally the same source.
 This prevents a successful test from referring to one artifact while the
 public release contains another.
 
+## Use It With Any AI
+
+This workflow does not require a particular AI product.
+
+1. Use an AI that can read the supplied collection and create files. For the
+   build stage it must also be able to work in the repository and run the
+   validators. A chat-only AI may produce the research handoff, but cannot
+   truthfully claim to have built or published the bundle.
+2. Open the [formatted domain warm-up prompt](../prompts/okf-domain-warm-up.md),
+   copy it with the page's **Copy full prompt** button, fill every placeholder
+   and run it read-only.
+3. Validate the resulting JSON/YAML domain profile and evidence, resolve only
+   decisions marked `blocking_for_build: true`, then record the approved
+   profile digest.
+4. Open the [formatted build prompt](../prompts/okf-bundle-build.md), copy it,
+   supply that exact profile digest and run the build as one outcome workflow.
+5. Accept success only when the tiny fixture, source and rights receipts,
+   standards checks, user-task evaluation, accessibility and frozen-candidate
+   assurance pass—or when an owner has explicitly accepted and published the
+   remaining exception.
+6. Verify the final human pages and machine descriptors by content and digest,
+   not merely by receiving HTTP status 200.
+
+The [prompt kit checklist](../okf-authoring-prompt-kit.md#success-checklist)
+gives the complete, copy-ready acceptance procedure.
+
 ## Continue
 
 Use the [OKF Foundry prompt kit](../okf-authoring-prompt-kit.md) and

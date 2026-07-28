@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import html
+import re
 import sys
 import tempfile
 import unittest
@@ -125,6 +127,216 @@ class BuildSiteTests(unittest.TestCase):
                 source,
             ),
         )
+
+    def test_foundry_pages_are_rendered_with_exact_copyable_prompts(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-foundry-"
+        ) as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_foundry_pages()
+
+            expected_routes = [
+                output / target
+                for _source, target, _label in build_site.FOUNDRY_PAGES
+            ]
+            for route in expected_routes:
+                self.assertTrue(route.is_file(), route)
+                page = route.read_text(encoding="utf-8")
+                self.assertIn("<!doctype html>", page)
+                self.assertIn('aria-label="OKF Foundry documentation"', page)
+                self.assertIn('rel="canonical"', page)
+
+            compatibility_profile = (
+                output
+                / "profiles"
+                / "authoring"
+                / "v1"
+                / "index.html"
+            )
+            self.assertTrue(compatibility_profile.is_file())
+            self.assertIn(
+                'href="https://chris-page-gov.github.io/okf-explorer/'
+                'profile/authoring/v1/"',
+                compatibility_profile.read_text(encoding="utf-8"),
+            )
+
+            for source in build_site.FOUNDRY_PROMPT_SOURCES:
+                target = build_site.published_source_routes()[source]
+                page = (output / target).read_text(encoding="utf-8")
+                extracted = build_site.extract_copy_ready_prompt(
+                    source.read_text(encoding="utf-8")
+                )
+                self.assertIsNotNone(extracted)
+                assert extracted is not None
+                _before, prompt, _after = extracted
+                text_target = (output / target).with_suffix(".txt")
+                self.assertEqual(prompt, text_target.read_text(encoding="utf-8"))
+                textarea = re.search(
+                    r'<textarea id="copy-ready-prompt".*?>(.*?)</textarea>',
+                    page,
+                    flags=re.DOTALL,
+                )
+                self.assertIsNotNone(textarea)
+                assert textarea is not None
+                self.assertEqual(prompt, html.unescape(textarea.group(1)))
+                self.assertIn(
+                    '<button type="button" class="copy-prompt"',
+                    page,
+                )
+                self.assertIn("Copy full prompt", page)
+                self.assertIn('role="status" aria-live="polite"', page)
+                self.assertIn("<h2>OKF Foundry", page)
+                self.assertNotIn("<h1>OKF Foundry", page)
+                if source.name == "okf-domain-warm-up.md":
+                    self.assertLess(
+                        page.index("Copy full prompt"),
+                        page.index("Owner Inputs Worth Supplying"),
+                    )
+
+    def test_foundry_and_beginner_links_target_rendered_html(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-foundry-links-"
+        ) as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_beginner_guide()
+                build_site.write_foundry_pages()
+
+            chapter = (
+                output
+                / "docs"
+                / "beginners"
+                / "19-foundry-authoring-and-domain-profiles.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'href="../okf-authoring-prompt-kit.html"',
+                chapter,
+            )
+            self.assertIn(
+                'href="../../profile/authoring/v1/index.html"',
+                chapter,
+            )
+            self.assertIn(
+                'href="../prompts/okf-domain-warm-up.html"',
+                chapter,
+            )
+            self.assertNotIn(
+                'href="../okf-authoring-prompt-kit.md"',
+                chapter,
+            )
+
+            kit = (
+                output / "docs" / "okf-authoring-prompt-kit.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'href="prompts/okf-domain-warm-up.html"',
+                kit,
+            )
+            self.assertIn(
+                'href="prompts/okf-bundle-build.html"',
+                kit,
+            )
+            self.assertIn(
+                'href="../profile/authoring/v1/index.html"',
+                kit,
+            )
+
+            warm_up = (
+                output / "docs" / "prompts" / "okf-domain-warm-up.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('href="okf-bundle-build.html"', warm_up)
+
+            profile = (
+                output / "profile" / "authoring" / "v1" / "index.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'href="../../../docs/okf-authoring-prompt-kit.html"',
+                profile,
+            )
+
+    def test_foundry_rewriter_is_bounded_and_preserves_fragments(self) -> None:
+        source = (
+            build_site.ROOT
+            / "docs"
+            / "beginners"
+            / "19-foundry-authoring-and-domain-profiles.md"
+        )
+        output = Path(
+            "docs/beginners/"
+            "19-foundry-authoring-and-domain-profiles.html"
+        )
+        self.assertEqual(
+            "../okf-authoring-prompt-kit.html?mode=read#success-checklist",
+            build_site.rewrite_published_href(
+                "../okf-authoring-prompt-kit.md"
+                "?mode=read#success-checklist",
+                source,
+                output,
+            ),
+        )
+        self.assertEqual(
+            "../repository-guide.md",
+            build_site.rewrite_published_href(
+                "../repository-guide.md",
+                source,
+                output,
+            ),
+        )
+        self.assertEqual(
+            "https://example.gov/guide.md",
+            build_site.rewrite_published_href(
+                "https://example.gov/guide.md",
+                source,
+                output,
+            ),
+        )
+        self.assertEqual(
+            "#local-section",
+            build_site.rewrite_published_href(
+                "#local-section",
+                source,
+                output,
+            ),
+        )
+
+    def test_foundry_renderer_escapes_html_and_rejects_unsafe_links(self) -> None:
+        renderer = build_site.foundry_markdown_renderer()
+        rendered = renderer.render(
+            "# Safe\n\n<script>alert('no')</script>\n\n"
+            "[unsafe](javascript:alert('no'))\n",
+            {
+                "source": str(
+                    build_site.ROOT
+                    / "docs"
+                    / "okf-authoring-prompt-kit.md"
+                ),
+                "output_route": "docs/okf-authoring-prompt-kit.html",
+            },
+        )
+        self.assertIn("&lt;script&gt;", rendered)
+        self.assertNotIn("<script>", rendered)
+        self.assertNotIn('href="javascript:', rendered)
+
+    def test_foundry_kit_contains_ai_neutral_success_procedure(self) -> None:
+        source = (
+            build_site.ROOT / "docs" / "okf-authoring-prompt-kit.md"
+        ).read_text(encoding="utf-8")
+        required_phrases = [
+            "Use This With Any Capable AI",
+            "Never put secrets in a prompt",
+            "blocking_for_build: true",
+            "positive/negative fixture",
+            "Success Checklist",
+            "byte-identical",
+        ]
+        for phrase in required_phrases:
+            self.assertIn(phrase, source)
+
+        script = build_site.FOUNDRY_JS.read_text(encoding="utf-8")
+        self.assertIn("navigator.clipboard.writeText(source.value)", script)
+        self.assertIn('document.execCommand("copy")', script)
+        self.assertNotIn("innerHTML", script)
 
 
 if __name__ == "__main__":
