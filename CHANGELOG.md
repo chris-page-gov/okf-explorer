@@ -2,6 +2,17 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Added a 20-chapter, zero-background learning path covering the complete OKF
+  Explorer foundation: browser and static-app concepts, Markdown and bundle
+  publication, large-corpus loading, deterministic retrieval, graph and
+  semantic-web modelling, validation and provenance, coordinated views,
+  geospatial and legislation data, AI infrastructure and federated AI,
+  OKF v0.2 trust and lifecycle, bundle federation, Foundry authoring, governed
+  enrichment and release assurance, security and accessibility, publication
+  checks and contributor workflows.
+  The documentation landing page, repository guide, README and advanced
+  ontology architecture now route unfamiliar readers into the relevant
+  beginner chapters.
 - Added a general two-stage OKF authoring protocol: a read-only domain and
   standards warm-up followed by a deterministic build, assurance and
   publication controller.
