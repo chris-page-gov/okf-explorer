@@ -2,6 +2,9 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Updated Playwright to 1.62.0 and `svelte-check` to 4.7.4 in one
+  release-assured maintenance change, including the synchronized lockfile and
+  CycloneDX dependency inventory.
 - Updated SvelteKit to 2.70.1, Svelte to 5.56.8 and Vite to 8.1.5 while
   retaining the compatible TypeScript 6 toolchain, and limited the Dependabot
   Explorer stack group to minor and patch releases so future major migrations

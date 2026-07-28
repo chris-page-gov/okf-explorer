@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "fa17e306831e9e15e9c5867bd53fc1f1912d359c0384bb5df83da37170bb33fc"
+        "value": "25eb2cd4f1dd2f93ce89e3884e3d9293d490371bd55d4469bba0263ee083ffc1"
       }
     ],
     "tools": {
@@ -242,15 +242,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40playwright/test@1.61.1",
+      "bom-ref": "pkg:npm/%40playwright/test@1.62.0",
       "name": "@playwright/test",
-      "purl": "pkg:npm/%40playwright/test@1.61.1",
+      "purl": "pkg:npm/%40playwright/test@1.62.0",
       "type": "library",
-      "version": "1.61.1",
+      "version": "1.62.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "f272afebed112522fd144e2360e1065e73de33f1e0d76a99a66ab3663461dea33463b737cf59ab3937c52e276cef6443418561f56a4b11f47959da4d5f87e48a"
+          "content": "f73389e9941101e9dadf5329387f554b3233f0ebb7609ff0b58fde426e53dae85f846eff53708eacc4bcc4eb54ad9ae9f4e81d9b3127218383c9ede763556acc"
         }
       ]
     },
@@ -528,15 +528,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40sveltejs/load-config@0.2.0",
+      "bom-ref": "pkg:npm/%40sveltejs/load-config@0.2.1",
       "name": "@sveltejs/load-config",
-      "purl": "pkg:npm/%40sveltejs/load-config@0.2.0",
+      "purl": "pkg:npm/%40sveltejs/load-config@0.2.1",
       "type": "library",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "d4b819fea52a4a8abe428ac3f37964da191aefd3f1d305cd5b6ab95759d99711a1420c358ebb086d5cf962209eb9c54ba385ef14b8d7ba451a423222aa8c2472"
+          "content": "e66dc1d9c6ea4384dbc16e97921eba36dc3a743ee035cefb702c400534deb1672af63c48ccc81393dee9671e6f12dbd0c7c8a89208bb188a61a997be3c6c1c64"
         }
       ]
     },
@@ -1425,28 +1425,28 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/playwright-core@1.61.1",
+      "bom-ref": "pkg:npm/playwright-core@1.62.0",
       "name": "playwright-core",
-      "purl": "pkg:npm/playwright-core@1.61.1",
+      "purl": "pkg:npm/playwright-core@1.62.0",
       "type": "library",
-      "version": "1.61.1",
+      "version": "1.62.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "87b425b7a9b8444a76e6abc876f6c3b55983e0ba955dfa51c61391bfd2f48f3113334e69e1fb8f27774acae4974310d26d79e64bbf470208bde7cf65192a4b92"
+          "content": "9ec351caad2bdb3b06f007111d692773d4110395c2b9e0bb81632bb3e1b1dad9599fd85c97ccee75f874d258493d8d4313b36667a6c3b13f60db27b2f265e58c"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/playwright@1.61.1",
+      "bom-ref": "pkg:npm/playwright@1.62.0",
       "name": "playwright",
-      "purl": "pkg:npm/playwright@1.61.1",
+      "purl": "pkg:npm/playwright@1.62.0",
       "type": "library",
-      "version": "1.61.1",
+      "version": "1.62.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "0d69d8e68dd86cb58ae06a2fb80570a6a2fed55c0635d506ad1afefbc8fc3ed410cef01565420c8ca43dd1f63af3db042592416d9570d6b5da38a4938ad9333d"
+          "content": "675e1d1b7d3976068bbba7e80754d741a805896f097d250851a52e3da290e8db413ca1753ffa9772a7e1e9ce8afe270fa9dcb7ec99a36e20577fa24d83a4b297"
         }
       ]
     },
@@ -1607,15 +1607,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/svelte-check@4.7.3",
+      "bom-ref": "pkg:npm/svelte-check@4.7.4",
       "name": "svelte-check",
-      "purl": "pkg:npm/svelte-check@4.7.3",
+      "purl": "pkg:npm/svelte-check@4.7.4",
       "type": "library",
-      "version": "4.7.3",
+      "version": "4.7.4",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "0c77530865fad91d1f0b1044693f9449d012027a1a44169a35cce44499742bba375b2a0279551b571a3a7caaa93a597f07e58c582b2214ad1e16b25234129922"
+          "content": "216f68b7d62a028caff05bf237e79be194def3381c299ac92cd614e9dcd22a41b0101b123dce0aee5990f1b2a7f16d9831733a5837d949254e686b5e93251f39"
         }
       ]
     },
@@ -1807,12 +1807,12 @@
       "ref": "pkg:github/chris-page-gov/okf-explorer@0.5.4",
       "dependsOn": [
         "pkg:npm/%40axe-core/playwright@4.12.1",
-        "pkg:npm/%40playwright/test@1.61.1",
+        "pkg:npm/%40playwright/test@1.62.0",
         "pkg:npm/%40sveltejs/adapter-static@3.0.10",
         "pkg:npm/%40sveltejs/kit@2.70.1",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.2.0",
         "pkg:npm/%40vitest/coverage-v8@4.1.10",
-        "pkg:npm/svelte-check@4.7.3",
+        "pkg:npm/svelte-check@4.7.4",
         "pkg:npm/svelte@5.56.8",
         "pkg:npm/typescript@6.0.3",
         "pkg:npm/vite@8.1.5",
