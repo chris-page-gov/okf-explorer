@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "c977e14f3ec94f032b58f6760c0f9f9e8e8765e5bc759ffe39303b18a6b30923"
+        "value": "fa17e306831e9e15e9c5867bd53fc1f1912d359c0384bb5df83da37170bb33fc"
       }
     ],
     "tools": {
@@ -515,15 +515,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40sveltejs/kit@2.69.3",
+      "bom-ref": "pkg:npm/%40sveltejs/kit@2.70.1",
       "name": "@sveltejs/kit",
-      "purl": "pkg:npm/%40sveltejs/kit@2.69.3",
+      "purl": "pkg:npm/%40sveltejs/kit@2.70.1",
       "type": "library",
-      "version": "2.69.3",
+      "version": "2.70.1",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "729870a8c45c135f7ff5592b20faf9a99850d12a6d4920df0f3454a581eef4e243146b98045c89ccaf8a400dbbc01e181b7d8eff21764230640e64f2a34bed0b"
+          "content": "9d8f523c718e66ba37768b9df6f6570c1c25f6d099228bae273b638121ece8f008aeff4cff3e4eede3a13d5e7153b0a054703defa270bb7040d61205bd7ced90"
         }
       ]
     },
@@ -1620,15 +1620,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/svelte@5.56.5",
+      "bom-ref": "pkg:npm/svelte@5.56.8",
       "name": "svelte",
-      "purl": "pkg:npm/svelte@5.56.5",
+      "purl": "pkg:npm/svelte@5.56.8",
       "type": "library",
-      "version": "5.56.5",
+      "version": "5.56.8",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "3f4dd8266532d89a0ec581dbe0a6b7a056add61ab6928da2b7530e22d4a3b09e01e968193cb737f91cb253ee7b3865a1b3721eabbe0426966d4a73577401a00f"
+          "content": "3d8f0b3b0ef13fa73c20e895a9da34b1b6d95588574527e494e40b014c8604aaa34d7d30c7fcf897ff49f8f981a6694b9f1cc46f536a96dc50e7fc1999efc29a"
         }
       ]
     },
@@ -1724,15 +1724,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/vite@8.1.4",
+      "bom-ref": "pkg:npm/vite@8.1.5",
       "name": "vite",
-      "purl": "pkg:npm/vite@8.1.4",
+      "purl": "pkg:npm/vite@8.1.5",
       "type": "library",
-      "version": "8.1.4",
+      "version": "8.1.5",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "6d34fd3ec7563be31030d1bd65720ffea33dc06877ec31714d5fec3eaf5c1691ebdf0e2392079fd37d8f9002fd8c0aa1937373f0d430dcef27ebfc4592a3b841"
+          "content": "ed42cbc2c09d631fe7472ae9884c2fa9be53147acc559c81b7eae0fce0174fbae08ffcfe0ed4c3c8a15e2c074392e6c3543283f233ac9dd9b2ee6e795dc7d4b3"
         }
       ]
     },
@@ -1809,13 +1809,13 @@
         "pkg:npm/%40axe-core/playwright@4.12.1",
         "pkg:npm/%40playwright/test@1.61.1",
         "pkg:npm/%40sveltejs/adapter-static@3.0.10",
-        "pkg:npm/%40sveltejs/kit@2.69.3",
+        "pkg:npm/%40sveltejs/kit@2.70.1",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.2.0",
         "pkg:npm/%40vitest/coverage-v8@4.1.10",
         "pkg:npm/svelte-check@4.7.3",
-        "pkg:npm/svelte@5.56.5",
+        "pkg:npm/svelte@5.56.8",
         "pkg:npm/typescript@6.0.3",
-        "pkg:npm/vite@8.1.4",
+        "pkg:npm/vite@8.1.5",
         "pkg:npm/vitest@4.1.10",
         "pkg:npm/yaml@2.9.0"
       ]
