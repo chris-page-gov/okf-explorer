@@ -2,6 +2,8 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Made the rendered beginner guide's desktop chapter panel independently
+  scrollable without moving the article, while retaining normal mobile flow.
 - Added deterministic, browser-rendered HTML publication for the complete
   beginner learning path, with accessible chapter navigation, responsive
   tables, safe Markdown handling and links back to the source files.

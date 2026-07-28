@@ -68,11 +68,19 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
   margin: 0 auto;
 }
 .guide-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
   border-right: 1px solid var(--line);
   background: #eaf1f6;
   padding: 1.5rem 1rem 2rem;
 }
-.guide-sidebar nav { position: sticky; top: 1rem; }
+.guide-sidebar nav { position: static; }
 .guide-sidebar h2 {
   margin: 0 0 0.65rem;
   font-size: 0.82rem;
@@ -197,8 +205,15 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
 @media (max-width: 760px) {
   .site-header__inner { align-items: flex-start; flex-direction: column; }
   .guide-layout { grid-template-columns: 1fr; }
-  .guide-sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
-  .guide-sidebar nav { position: static; }
+  .guide-sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    overscroll-behavior-y: auto;
+    scrollbar-gutter: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
   .guide-sidebar ol {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
