@@ -2,6 +2,9 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Added deterministic, browser-rendered HTML publication for the complete
+  beginner learning path, with accessible chapter navigation, responsive
+  tables, safe Markdown handling and links back to the source files.
 - Updated Playwright to 1.62.0 and `svelte-check` to 4.7.4 in one
   release-assured maintenance change, including the synchronized lockfile and
   CycloneDX dependency inventory.

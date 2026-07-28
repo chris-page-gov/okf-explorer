@@ -2,11 +2,12 @@
 
 Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 
-New to this area? Start with
-[OKF Explorer from the beginning](docs/beginners/index.md). It assumes no
-background in web development, search, knowledge graphs, semantic-web
-standards, data catalogues, geospatial or legislation data, AI infrastructure
-or this repository's v0.2, federation, Foundry and release-assurance model.
+New to this area? Start with the
+[browser-rendered OKF Explorer beginner guide][beginner-guide]. Its
+[source Markdown](docs/beginners/index.md) assumes no background in web
+development, search, knowledge graphs, semantic-web standards, data catalogues,
+geospatial or legislation data, AI infrastructure or this repository's v0.2,
+federation, Foundry and release-assurance model.
 
 ## Open The Hosted Explorer
 
@@ -329,7 +330,7 @@ Pages to use **GitHub Actions** as the source.
 [legislation-personas]: docs/uk-legislation/personas-and-user-journeys.md
 [ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
 [docs-index]: docs/index.md
-[beginner-guide]: docs/beginners/index.md
+[beginner-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/
 [persona-manual]: docs/okf-explorer-persona-manual.md
 [geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
 [search-filtering-manual]: docs/static-search-filtering-manual.md
