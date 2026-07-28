@@ -2,6 +2,10 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Updated SvelteKit to 2.70.1, Svelte to 5.56.8 and Vite to 8.1.5 while
+  retaining the compatible TypeScript 6 toolchain, and limited the Dependabot
+  Explorer stack group to minor and patch releases so future major migrations
+  receive isolated pull requests and validation.
 - Added a 20-chapter, zero-background learning path covering the complete OKF
   Explorer foundation: browser and static-app concepts, Markdown and bundle
   publication, large-corpus loading, deterministic retrieval, graph and
