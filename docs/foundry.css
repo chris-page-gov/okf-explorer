@@ -1,0 +1,127 @@
+.foundry-nav {
+  border-bottom: 1px solid var(--line);
+  background: #eaf1f6;
+}
+
+.foundry-nav ol {
+  display: flex;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0.65rem clamp(1rem, 4vw, 3rem);
+  gap: 0.4rem;
+  list-style: none;
+  overflow-x: auto;
+}
+
+.foundry-nav a {
+  display: block;
+  min-height: 2.75rem;
+  border: 2px solid transparent;
+  border-radius: 0.35rem;
+  padding: 0.55rem 0.7rem;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.foundry-nav a:hover { background: rgb(255 255 255 / 75%); }
+
+.foundry-nav a[aria-current="page"] {
+  border-color: var(--accent);
+  background: var(--paper);
+}
+
+.foundry-nav a:focus-visible,
+.copy-prompt:focus-visible,
+.secondary-action:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.foundry-main {
+  min-height: calc(100vh - 8rem);
+}
+
+.prompt-publication {
+  margin-top: 1.5rem;
+}
+
+.prompt-actions {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border: 1px solid #aebfcb;
+  border-radius: 0.45rem;
+  background: rgb(255 255 255 / 96%);
+  padding: 0.75rem;
+  box-shadow: 0 0.25rem 0.75rem rgb(24 43 58 / 10%);
+}
+
+.copy-prompt,
+.secondary-action {
+  min-height: 2.75rem;
+  border: 2px solid var(--accent-dark);
+  border-radius: 0.35rem;
+  padding: 0.55rem 0.85rem;
+  font: inherit;
+  font-weight: 750;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.copy-prompt {
+  background: var(--accent);
+  color: #fff;
+}
+
+.copy-prompt:hover { background: var(--accent-dark); }
+
+.secondary-action {
+  background: var(--paper);
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+.prompt-help {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.copy-status {
+  min-height: 1.65rem;
+  color: #174c2b;
+  font-weight: 750;
+}
+
+.formatted-prompt {
+  margin-top: 1.5rem;
+  border-top: 4px solid var(--accent);
+  padding-top: 0.5rem;
+}
+
+.formatted-prompt h2:first-child {
+  border-top: 0;
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .foundry-nav ol { padding-inline: 0.75rem; }
+  .foundry-main { padding-inline: 1rem; }
+  .prompt-actions {
+    position: static;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .copy-prompt, .secondary-action { width: 100%; text-align: center; }
+}
+
+@media print {
+  .foundry-nav, .prompt-actions, .prompt-help, .copy-status {
+    display: none;
+  }
+}
