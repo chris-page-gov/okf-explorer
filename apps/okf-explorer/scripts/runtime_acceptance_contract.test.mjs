@@ -333,7 +333,7 @@ test('rejects partial or malformed release bindings', () => {
         explorerCommit: 'd'.repeat(40),
         explorerTag: 'v0.4.0'
       }),
-    /requires Explorer v0\.5\.5/
+    /requires Explorer v0\.5\.6/
   );
 });
 
