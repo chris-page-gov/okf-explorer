@@ -56,7 +56,7 @@ async function json(route: Route, body: unknown, status = 200) {
 async function installTargetedFixture(
   context: BrowserContext,
   requests: string[],
-  options: { modelChunkFailures?: number } = {}
+  options: { modelChunkFailures?: number; omitAdjacency?: boolean } = {}
 ) {
   let modelChunkFailuresRemaining = options.modelChunkFailures || 0;
   const bucket = relationshipBucket(RECORD_ROUTE);
@@ -360,7 +360,9 @@ async function installTargetedFixture(
       analysis_overview: 'data/analysis.json',
       search_manifest: 'search/manifest.json',
       record_locator: 'data/records/manifest.json',
-      relationship_adjacency: 'data/adjacency/manifest.json',
+      ...(options.omitAdjacency
+        ? {}
+        : { relationship_adjacency: 'data/adjacency/manifest.json' }),
       model_enrichment_v3: {
         path: MODEL_MANIFEST_PATH,
         sha256: await sha256(JSON.stringify(modelManifest))
@@ -403,7 +405,9 @@ async function installTargetedFixture(
       facets: 'data/facets.json',
       search: 'search/manifest.json',
       record_locator: 'data/records/manifest.json',
-      relationship_adjacency: 'data/adjacency/manifest.json'
+      ...(options.omitAdjacency
+        ? {}
+        : { relationship_adjacency: 'data/adjacency/manifest.json' })
     },
     chunks: {
       datasets: [
@@ -616,6 +620,24 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(assertionCount.locator('span')).toHaveText('accepted assertions');
   });
 
+  test('Reader does not bypass the relationship memory guard when adjacency is absent', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      omitAdjacency: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#${RECORD_ROUTE}`);
+
+    await expect(page.locator('.right-panel').getByRole('heading', {
+      name: 'Target Act 1998'
+    })).toBeVisible();
+    expect(requests).toContain('/data/works-0.json');
+    expect(requests).not.toContain('/data/adjacency/manifest.json');
+    expect(requests).not.toContain('/data/relationships-full.json');
+    expectNoFullHydration(requests);
+  });
+
   test('Reader presents all four official-effects reconciliation states explicitly', async ({ page }) => {
     const requests: string[] = [];
     await installTargetedFixture(page.context(), requests);
@@ -667,6 +689,9 @@ test.describe('targeted large-corpus relationship hydration', () => {
     const result = page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first();
     await expect(result).toBeVisible();
     await result.click();
+    await expect(page.locator('.right-panel')).toContainText('Relationships (3)');
+    expect(requests).toContain('/data/adjacency/manifest.json');
+    expect(requests).toContain(`/data/adjacency/${relationshipBucket(RECORD_ROUTE)}.json`);
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
 
     const graph = page.getByRole('group', { name: 'Large corpus graph' });

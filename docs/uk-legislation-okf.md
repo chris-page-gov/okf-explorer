@@ -10,6 +10,23 @@ The canonical bundle descriptor is `https://chris-page-gov.github.io/okf-uk-legi
 
 Work and search-result chunks use deterministic gzip files. The Explorer streams and decompresses only the requested chunks in the browser; manifests, facets, ontology pages and search shards remain directly inspectable. This keeps the complete publication within practical GitHub/Pages limits without dropping records.
 
+The semantic publication is intentionally small. The root legislation
+publication has YAML-LD and JSON-LD semantic overview documents; the Whole-Law
+federation additionally publishes a Turtle projection. The 365,786-work
+operational corpus and its relationship assertions remain chunked JSON rather
+than being duplicated into one monolithic RDF file. Those JSON assertions are
+still machine-readable semantic data: they retain stable routes, predicates,
+authority, derivation and evidence, and an agent can traverse them through the
+published search and adjacency manifests.
+
+The currently published artifacts are inconsistent: the operational Explorer
+descriptor identifies release `0.3.0`, while the root YAML-LD and JSON-LD
+representations still identify bundle version `0.2.0`. For this demonstration,
+agents should treat `0.3.0` as the operational release and identify the
+semantic representations as stale and not release-aligned; they must not
+silently combine the conflicting metadata. The root publication does not
+currently expose a Turtle document.
+
 ## What “complete” means
 
 The generator first reads the `/all/data.feed` facets, then retrieves every year with `results-count=10000` and checks that each response count exactly equals the official year-facet count. It separately retrieves `/draft/data.feed`. Work IDs are deduplicated by the official `/id/{type}/{year}/{number}` identifier. The corpus validator requires at least 300,000 unique works and representative primary, secondary, devolved and EU-origin type codes.
@@ -53,6 +70,20 @@ table. The model runner records prompt version, model, review state, token usage
 and cost. Its first direct API attempt was rejected for project quota before
 output, so the current accepted rules were supplied by the Codex session and
 the recorded API cost is $0.00.
+
+Facet values are navigation indexes, not automatically relationship nodes. For
+example, **Scotland** has an exact snapshot-bound posting of 13,270 works, but
+the label means “territorial publication context inferred from the official
+type code”; it is not provision-level legal extent or applicability. Explorer
+therefore shows a bounded membership preview and derived membership graph for
+that card. Selecting a legal work then loads the work's route-scoped adjacency.
+
+The current route resolver combines the core adjacency with governed
+model-assisted enrichment available for the selected work. Official-effects
+assertions are present in the release-wide effect datapack and reconciliation
+evidence, but are not yet indexed by both source and target work route. This is
+a declared publication limitation; the selected-work card must not be
+described as the complete combined 906,754-assertion graph.
 
 ## Official access methods
 

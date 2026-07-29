@@ -6,16 +6,45 @@ This guide defines how an agent should use the UK Legislation OKF pack without l
 
 ## Progressive discovery algorithm
 
-1. Fetch `legislation/okf-explorer.json`.
+1. Fetch
+   `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`.
 2. Read the descriptor, overview, counts, notices and available facets.
 3. Convert the user question into candidate title terms, citation terms, jurisdiction, time and document-type constraints.
-4. Search titles locally; use the official remote full-text search when wording rather than title is needed.
-5. Rank candidate works, but require identity confirmation from title/type/year/number/official ID.
-6. Load only the selected work's official CLML structure.
-7. Locate the smallest relevant subdivisions and retain their source IDs.
-8. Open selected-passage, work, contents and changes/effects links as required.
-9. Check version, commencement, extent and amendment context.
-10. Write discrete propositions with a citation ledger and explicit uncertainty.
+4. Follow the descriptor's declared static-search manifest and filter postings;
+   never guess a raw repository path.
+5. Treat facet membership as snapshot-bound navigation metadata. In
+   particular, the jurisdiction facet is territorial publication context
+   inferred from official type code, not proof of provision-level extent or
+   applicability.
+6. Rank candidate works, but require identity confirmation from
+   title/type/year/number/official ID.
+7. Follow the declared relationship-adjacency manifest to load the selected
+   work's bounded core assertion shard.
+8. Resolve the selected route through the declared record locator. When the
+   descriptor declares governed `model_enrichment_v3`, use that record-chunk
+   index to load the same-index accepted enrichment chunk and retain only rows
+   whose source or target is the selected route.
+9. Load only the selected work's official CLML structure.
+10. Locate the smallest relevant subdivisions and retain their source IDs.
+11. Open selected-passage, work, contents and changes/effects links as
+    required.
+12. Check version, commencement, extent and amendment context.
+13. Write discrete propositions with a citation ledger and explicit
+    uncertainty.
+
+The compact JSON record and relationship planes are suitable for AI access;
+they do not need to be duplicated into one giant RDF document. Root YAML-LD
+and JSON-LD, plus the Whole-Law federation's Turtle projection, describe the
+governed semantic contract; search postings, core adjacency shards and aligned
+accepted model-enrichment chunks provide scalable traversal.
+
+Current limitation: core and model-assisted relationships have separate
+bounded paths. Core assertions use the relationship-adjacency manifest;
+governed v3 assertions use the selected route's record-locator chunk index and
+the aligned accepted enrichment chunk. Official effects remain available in
+the release-wide effect datapack and reconciliation material but are not yet
+source-and-target indexed per selected work. State that limit explicitly when
+answering a relationship-completeness question.
 
 ## Source hierarchy
 

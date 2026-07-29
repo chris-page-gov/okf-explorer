@@ -24,6 +24,30 @@ For a large corpus, give the AI:
   `confidence`, `license_basis`, standards-alignment fields and source URLs
   where available.
 
+## Large JSON Graphs Are Still Semantic Data
+
+A large OKF publication does not need one giant Turtle or JSON-LD document for
+an AI to traverse it. The public descriptor and vocabulary define the semantic
+contract; chunked JSON carries the operational records and assertions with
+stable source and target routes, predicates, authority, derivation and
+evidence.
+
+This separation is deliberate:
+
+- RDF/YAML-LD/JSON-LD describes the governed semantic contract and the parts
+  explicitly published as RDF;
+- the large-corpus manifests, static search postings and adjacency shards make
+  hundreds of thousands of records practical to query;
+- an AI or browser follows declared entry points and loads only the relevant
+  shards;
+- absence from the RDF descriptor does not mean that a compact JSON assertion
+  is absent or meaningless.
+
+Do not claim that every corpus record is RDF-materialized when only the
+descriptor graph is. Equally, do not describe the operational JSON graph as
+inaccessible to AI merely because it is not duplicated into one monolithic RDF
+file.
+
 ## Prompt Template
 
 ```text
@@ -65,6 +89,67 @@ PASTE_QUESTION
    chunks containing selected records or relationships.
 6. Use `concept_id` to link back to generated Markdown records when a concise
    human-readable concept page exists.
+
+## Copy-Ready UK Legislation Demonstration
+
+Give a code-capable AI this prompt:
+
+```text
+Use the UK Legislation OKF as a progressively loaded machine-readable pack.
+
+Descriptor:
+https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json
+
+Task:
+1. Read the descriptor first and follow only its declared entry points.
+2. Report the operational bundle release, snapshot and relationship counts
+   from that descriptor. If a linked semantic representation declares a
+   different bundle version, report the publication inconsistency and identify
+   that representation as stale rather than treating both as valid or silently
+   combining them.
+3. Use the static jurisdiction filter posting to find works indexed with the
+   Scotland territorial publication context. Do not describe that context as
+   provision-level legal extent or applicability.
+4. Select one returned legal-work route.
+5. Load that route's core assertions from the declared
+   `relationship_adjacency` manifest and its hash-selected adjacency shard.
+6. Resolve the same route through the declared `record_locator`. If the
+   descriptor declares governed `model_enrichment_v3`, use the route's record
+   chunk index to load the same-index accepted v3 chunk and retain rows whose
+   source or target is the selected route. Do not substitute historical
+   enrichment or load the whole record or relationship corpus.
+7. List each returned source → predicate → target assertion and distinguish
+   official, deterministic-derived and model-assisted authority.
+8. Cite every public URL and route used. State any relationship layer that is
+   not route-indexed rather than implying it was checked.
+```
+
+The corresponding Explorer journey is:
+
+1. open the descriptor in Explorer;
+2. filter **Jurisdiction** to **Scotland**;
+3. open the Scotland card to see the exact match total and bounded loaded
+   preview;
+4. choose **Graph related records** or **View related legal works**;
+5. select one legal work to load its core adjacency shard and the aligned,
+   accepted model-enrichment chunk when that governed layer is declared.
+
+Facet membership and legal-work assertions are different things. The Scotland
+card uses an exact snapshot-bound filter posting and labels the link as derived
+navigation metadata. A legal-work card uses the route-scoped relationship
+adjacency. The browser never needs to hydrate all corpus relationships.
+
+The two bounded relationship paths are separate. Core assertions use the
+descriptor's `relationship_adjacency` entry point and a hash-selected shard.
+Governed model-assisted v3 assertions use the `record_locator` result to select
+the same-index accepted relationship chunk from the descriptor's
+`model_enrichment_v3` datapack, then filter it to the selected route.
+
+Current publication limitation: official effect assertions are published in
+their release-wide datapack and reconciliation evidence, but that effects
+plane does not yet have a source-and-target route index. An agent must report
+that limitation instead of calling a selected work's route view the complete
+combined graph.
 
 ## Example Questions
 

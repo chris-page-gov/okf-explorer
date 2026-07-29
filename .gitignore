@@ -23,6 +23,7 @@ apps/*/build/
 apps/*/coverage/
 apps/*/test-results/
 apps/*/playwright-report/
+.playwright-cli/
 .playwright-mcp/
 .pnpm-store/
 
