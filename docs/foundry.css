@@ -43,6 +43,27 @@
   min-height: calc(100vh - 8rem);
 }
 
+.source-metadata {
+  margin: 0 0 1.5rem;
+  border: 1px solid #bdcbd5;
+  border-radius: 0.4rem;
+  background: #f5f8fa;
+}
+
+.source-metadata summary {
+  padding: 0.65rem 0.8rem;
+  color: var(--accent-dark);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.source-metadata pre {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #bdcbd5;
+  border-radius: 0;
+}
+
 .prompt-publication {
   margin-top: 1.5rem;
 }

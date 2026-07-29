@@ -4,7 +4,8 @@ Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
 
 New to this area? Start with the
 [browser-rendered OKF Explorer beginner guide][beginner-guide]. Its
-[source Markdown](docs/beginners/index.md) assumes no background in web
+[maintained source on GitHub](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/beginners/index.md)
+assumes no background in web
 development, search, knowledge graphs, semantic-web standards, data catalogues,
 geospatial or legislation data, AI infrastructure or this repository's v0.2,
 federation, Foundry and release-assurance model.
@@ -52,7 +53,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Review the ontology and semantic graph architecture][semantic-graph-architecture]
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Publish and consume an overview-first federation][federation-docs]
-- [Reproduce the UK Legislation runtime acceptance gate](docs/legislation-runtime-acceptance.md)
+- [Reproduce the UK Legislation runtime acceptance gate](https://chris-page-gov.github.io/okf-explorer/docs/legislation-runtime-acceptance.html)
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
@@ -325,21 +326,21 @@ Pages to use **GitHub Actions** as the source.
 [ons-pack]: https://github.com/chris-page-gov/okf-ons
 [uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&view=reader#overview
 [legislation-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview
-[legislation-docs]: docs/uk-legislation/index.md
-[legislation-manual]: docs/uk-legislation/illustrated-manual.md
-[legislation-personas]: docs/uk-legislation/personas-and-user-journeys.md
-[ckan-personas]: docs/gov-ckan-personas-and-user-journeys.md
-[docs-index]: docs/index.md
+[legislation-docs]: https://chris-page-gov.github.io/okf-explorer/docs/uk-legislation/
+[legislation-manual]: https://chris-page-gov.github.io/okf-explorer/docs/uk-legislation/illustrated-manual.html
+[legislation-personas]: https://chris-page-gov.github.io/okf-explorer/docs/uk-legislation/personas-and-user-journeys.html
+[ckan-personas]: https://chris-page-gov.github.io/okf-explorer/docs/gov-ckan-personas-and-user-journeys.html
+[docs-index]: https://chris-page-gov.github.io/okf-explorer/docs/
 [beginner-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/
-[persona-manual]: docs/okf-explorer-persona-manual.md
-[geospatial-personas]: docs/geospatial-map-personas-and-user-stories.md
-[search-filtering-manual]: docs/static-search-filtering-manual.md
-[facet-presentation-experiment]: docs/facet-presentation-experiment.md
-[viewer-parity]: docs/viewer-capability-parity-2026-07-24.md
-[semantic-graph-architecture]: docs/ontology-and-semantic-graph-architecture-2026-07-24.md
-[provider-datapacks]: docs/provider-datapacks.md
-[federation-docs]: docs/federated-bundles.md
+[persona-manual]: https://chris-page-gov.github.io/okf-explorer/docs/okf-explorer-persona-manual.html
+[geospatial-personas]: https://chris-page-gov.github.io/okf-explorer/docs/geospatial-map-personas-and-user-stories.html
+[search-filtering-manual]: https://chris-page-gov.github.io/okf-explorer/docs/static-search-filtering-manual.html
+[facet-presentation-experiment]: https://chris-page-gov.github.io/okf-explorer/docs/facet-presentation-experiment.html
+[viewer-parity]: https://chris-page-gov.github.io/okf-explorer/docs/viewer-capability-parity-2026-07-24.html
+[semantic-graph-architecture]: https://chris-page-gov.github.io/okf-explorer/docs/ontology-and-semantic-graph-architecture-2026-07-24.html
+[provider-datapacks]: https://chris-page-gov.github.io/okf-explorer/docs/provider-datapacks.html
+[federation-docs]: https://chris-page-gov.github.io/okf-explorer/docs/federated-bundles.html
 [whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
-[ai-okf-usage]: docs/ai-okf-usage.md
-[bundle-authoring]: docs/okf-bundle-authoring.md
+[ai-okf-usage]: https://chris-page-gov.github.io/okf-explorer/docs/ai-okf-usage.html
+[bundle-authoring]: https://chris-page-gov.github.io/okf-explorer/docs/okf-bundle-authoring.html
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html

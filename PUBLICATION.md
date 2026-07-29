@@ -22,6 +22,12 @@ from `main` with semantic tags such as `v0.3.0`.
 - UK Legislation documentation: the maintained spine is published under
   `docs/uk-legislation/`, with screenshot assets and their refresh manifest
   under `docs/assets/uk-legislation-manual/`.
+- Human-readable documentation: every local Markdown dependency reachable
+  from `docs/` and `profiles/` is published at a deterministic HTML route.
+  Same-site Markdown navigation, missing targets and missing heading fragments
+  fail the Pages build, as do missing scripts, stylesheets, images and duplicate
+  identifiers. Raw Markdown remains a machine-discoverable exact-build
+  alternate; ordinary human navigation always uses rendered HTML.
 - Optional DOI: connect the public repository to Zenodo after the first release
   if a persistent scholarly citation is required.
 

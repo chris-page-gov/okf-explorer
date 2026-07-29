@@ -8,8 +8,10 @@ import posixpath
 import re
 import shutil
 import subprocess
+from functools import lru_cache
+from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import unquote, urlsplit, urlunsplit
+from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
 import build_okf_bundle
 from markdown_it import MarkdownIt
@@ -92,12 +94,16 @@ PUBLIC_DIRS = [
     "uk-government-apis",
     "legislation",
     "evaluation",
+    "release-assurance",
     "explorer",
     "docs",
     "profiles",
     "registry",
     "constraints",
 ]
+MARKDOWN_DISCOVERY_ROOTS = ("docs", "profiles")
+MARKDOWN_DISCOVERY_EXCLUDED_DIRS = {"uk-government-apis"}
+GITHUB_REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
 FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
 
@@ -112,20 +118,122 @@ def beginner_sources() -> list[Path]:
     return ([index] if index.exists() else []) + chapters
 
 
+def markdown_link_hrefs(source: Path) -> list[str]:
+    renderer = MarkdownIt(
+        "commonmark",
+        {"html": False, "breaks": False, "typographer": False},
+    ).enable(["table", "strikethrough"])
+    hrefs: list[str] = []
+
+    def collect(tokens) -> None:
+        for token in tokens:
+            if token.type == "link_open":
+                href = token.attrGet("href")
+                if href:
+                    hrefs.append(href)
+            if token.children:
+                collect(token.children)
+
+    collect(renderer.parse(source.read_text(encoding="utf-8")))
+    return hrefs
+
+
+def is_excluded_markdown_dependency(source: Path) -> bool:
+    try:
+        relative = source.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        return True
+    return bool(
+        relative.parts
+        and relative.parts[0] in MARKDOWN_DISCOVERY_EXCLUDED_DIRS
+    )
+
+
+@lru_cache(maxsize=1)
+def readable_markdown_sources() -> tuple[Path, ...]:
+    """Return the bounded Markdown dependency closure for public reading pages."""
+
+    pending = sorted(
+        {
+            source.resolve()
+            for dirname in MARKDOWN_DISCOVERY_ROOTS
+            for source in (ROOT / dirname).rglob("*.md")
+        }
+    )
+    discovered: set[Path] = set()
+    while pending:
+        source = pending.pop()
+        if source in discovered:
+            continue
+        if not source.is_file() or is_excluded_markdown_dependency(source):
+            continue
+        discovered.add(source)
+        for href in markdown_link_hrefs(source):
+            parts = urlsplit(href)
+            if (
+                parts.scheme
+                or parts.netloc
+                or not parts.path
+                or parts.path.startswith("/")
+                or not parts.path.lower().endswith(".md")
+            ):
+                continue
+            dependency = (source.parent / unquote(parts.path)).resolve()
+            try:
+                dependency.relative_to(ROOT.resolve())
+            except ValueError:
+                continue
+            if (
+                dependency.is_file()
+                and dependency not in discovered
+                and not is_excluded_markdown_dependency(dependency)
+            ):
+                pending.append(dependency)
+    return tuple(sorted(discovered))
+
+
+def default_readable_route(source: Path) -> Path:
+    relative = source.resolve().relative_to(ROOT.resolve())
+    if relative == Path("index.md"):
+        return Path("catalogue/index.html")
+    if relative.parts and relative.parts[0] == "profiles":
+        relative = Path("profile", *relative.parts[1:])
+    return relative.with_suffix(".html")
+
+
 def markdown_title(source: Path) -> str:
+    markdown = source.read_text(encoding="utf-8")
+    frontmatter, body = split_frontmatter(markdown)
+    if frontmatter:
+        title_match = re.search(
+            r'^title:\s*["\']?(.*?)["\']?\s*$',
+            frontmatter,
+            flags=re.MULTILINE,
+        )
+        if title_match:
+            return title_match.group(1)
     match = re.search(
         r"^#\s+(.+?)\s*$",
-        source.read_text(encoding="utf-8"),
+        body,
         flags=re.MULTILINE,
     )
-    return match.group(1) if match else source.stem.replace("-", " ").title()
+    if match:
+        return match.group(1)
+    return source.stem.replace("-", " ").title()
 
 
+@lru_cache(maxsize=1)
 def published_source_routes() -> dict[Path, Path]:
     routes = {
-        source.resolve(): target
-        for source, target, _label in FOUNDRY_PAGES
+        source: default_readable_route(source)
+        for source in readable_markdown_sources()
     }
+    routes.update(
+        {
+            source.resolve(): target
+            for source, target, _label in FOUNDRY_PAGES
+        }
+    )
     routes.update(
         {
             source.resolve(): (
@@ -135,6 +243,28 @@ def published_source_routes() -> dict[Path, Path]:
             )
             for source in beginner_sources()
         }
+    )
+    sources_by_route: dict[Path, Path] = {}
+    collisions: list[tuple[Path, Path, Path]] = []
+    for source, route in routes.items():
+        previous = sources_by_route.setdefault(route, source)
+        if previous != source:
+            collisions.append((route, previous, source))
+    if collisions:
+        details = "\n".join(
+            f"- {route}: {first.relative_to(ROOT)} and {second.relative_to(ROOT)}"
+            for route, first, second in collisions
+        )
+        raise RuntimeError(f"published documentation route collision:\n{details}")
+    return routes
+
+
+def published_reading_routes() -> set[Path]:
+    routes = set(published_source_routes().values())
+    routes.update(
+        source.relative_to(ROOT).with_suffix(".html")
+        for source in readable_markdown_sources()
+        if source.relative_to(ROOT).parts[0] == "profiles"
     )
     return routes
 
@@ -178,7 +308,17 @@ def rewrite_beginner_href(href: str, source: Path) -> str:
     return rewrite_published_href(href, source, output_route)
 
 
-def beginner_markdown_renderer() -> MarkdownIt:
+def heading_slug(label: str) -> str:
+    normalized = "".join(
+        character
+        for character in html.unescape(label).casefold()
+        if character.isalnum() or character in {" ", "-", "_"}
+    )
+    slug = re.sub(r"-+", "-", re.sub(r"\s+", "-", normalized)).strip("-")
+    return slug or "section"
+
+
+def published_markdown_renderer() -> MarkdownIt:
     renderer = MarkdownIt(
         "commonmark",
         {"html": False, "breaks": False, "typographer": False},
@@ -186,12 +326,28 @@ def beginner_markdown_renderer() -> MarkdownIt:
 
     def render_link_open(tokens, index, options, env):
         source = env.get("source")
+        output_route = env.get("output_route")
         href = tokens[index].attrGet("href")
-        if source and href:
+        if source and output_route and href:
             tokens[index].attrSet(
                 "href",
-                rewrite_beginner_href(href, Path(source)),
+                rewrite_published_href(
+                    href,
+                    Path(source),
+                    Path(output_route),
+                ),
             )
+        return renderer.renderer.renderToken(tokens, index, options, env)
+
+    def render_heading_open(tokens, index, options, env):
+        inline = tokens[index + 1] if index + 1 < len(tokens) else None
+        label = inline.content if inline and inline.type == "inline" else "section"
+        base = heading_slug(label)
+        counts = env.setdefault("_heading_slug_counts", {})
+        occurrence = counts.get(base, 0)
+        counts[base] = occurrence + 1
+        identifier = base if occurrence == 0 else f"{base}-{occurrence}"
+        tokens[index].attrSet("id", identifier)
         return renderer.renderer.renderToken(tokens, index, options, env)
 
     def render_table_open(_tokens, _index, _options, _env):
@@ -201,9 +357,14 @@ def beginner_markdown_renderer() -> MarkdownIt:
         return "</table></div>\n"
 
     renderer.renderer.rules["link_open"] = render_link_open
+    renderer.renderer.rules["heading_open"] = render_heading_open
     renderer.renderer.rules["table_open"] = render_table_open
     renderer.renderer.rules["table_close"] = render_table_close
     return renderer
+
+
+def beginner_markdown_renderer() -> MarkdownIt:
+    return published_markdown_renderer()
 
 
 def render_beginner_page(
@@ -212,7 +373,15 @@ def render_beginner_page(
     titles: dict[Path, str],
 ) -> str:
     markdown = source.read_text(encoding="utf-8")
-    body = beginner_markdown_renderer().render(markdown, {"source": str(source)})
+    output_route = (
+        Path("docs")
+        / "beginners"
+        / source.with_suffix(".html").name
+    )
+    body = beginner_markdown_renderer().render(
+        markdown,
+        {"source": str(source), "output_route": str(output_route)},
+    )
     current_index = sources.index(source)
 
     sidebar_items = []
@@ -251,6 +420,11 @@ def render_beginner_page(
         )
 
     title = titles[source]
+    source_href = html.escape(github_source_url(source), quote=True)
+    markdown_alternate_href = html.escape(
+        relative_site_href(output_route, source.relative_to(ROOT)),
+        quote=True,
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -258,6 +432,9 @@ def render_beginner_page(
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>{html.escape(title)} · OKF Explorer</title>
+<link rel="canonical" href="{html.escape(canonical_page_url(output_route), quote=True)}">
+<link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
+  title="Markdown source">
 <link rel="stylesheet" href="guide.css">
 </head>
 <body>
@@ -283,7 +460,7 @@ def render_beginner_page(
       {"".join(chapter_links)}
     </nav>
     <footer class="guide-footer">
-      <p>Read the <a href="{html.escape(source.name, quote=True)}">source Markdown</a>
+      <p><a href="{source_href}">View source on GitHub</a>
       or return to the <a href="../../">OKF Explorer</a>.</p>
     </footer>
   </main>
@@ -302,6 +479,11 @@ def write_beginner_guide() -> None:
     titles = {source: markdown_title(source) for source in sources}
     for source in sources:
         target = target_dir / source.with_suffix(".html").name
+        if target.exists():
+            raise RuntimeError(
+                "rendered documentation would overwrite "
+                f"{target.relative_to(OUT)}"
+            )
         target.write_text(
             render_beginner_page(source, sources, titles),
             encoding="utf-8",
@@ -310,36 +492,7 @@ def write_beginner_guide() -> None:
 
 
 def foundry_markdown_renderer() -> MarkdownIt:
-    renderer = MarkdownIt(
-        "commonmark",
-        {"html": False, "breaks": False, "typographer": False},
-    ).enable(["table", "strikethrough"])
-
-    def render_link_open(tokens, index, options, env):
-        source = env.get("source")
-        output_route = env.get("output_route")
-        href = tokens[index].attrGet("href")
-        if source and output_route and href:
-            tokens[index].attrSet(
-                "href",
-                rewrite_published_href(
-                    href,
-                    Path(source),
-                    Path(output_route),
-                ),
-            )
-        return renderer.renderer.renderToken(tokens, index, options, env)
-
-    def render_table_open(_tokens, _index, _options, _env):
-        return '<div class="table-scroll"><table>\n'
-
-    def render_table_close(_tokens, _index, _options, _env):
-        return "</table></div>\n"
-
-    renderer.renderer.rules["link_open"] = render_link_open
-    renderer.renderer.rules["table_open"] = render_table_open
-    renderer.renderer.rules["table_close"] = render_table_close
-    return renderer
+    return published_markdown_renderer()
 
 
 def extract_copy_ready_prompt(
@@ -364,11 +517,138 @@ def demote_prompt_headings(markdown: str) -> str:
     )
 
 
-def canonical_foundry_url(target: Path) -> str:
+def canonical_page_url(target: Path) -> str:
     base = "https://chris-page-gov.github.io/okf-explorer/"
-    if target == Path("profile/authoring/v1/index.html"):
-        return f"{base}profile/authoring/v1/"
+    if target.name == "index.html":
+        parent = target.parent.as_posix()
+        return f"{base}{parent}/" if parent != "." else base
     return f"{base}{target.as_posix()}"
+
+
+def canonical_foundry_url(target: Path) -> str:
+    return canonical_page_url(target)
+
+
+def github_source_url(source: Path) -> str:
+    relative = source.resolve().relative_to(ROOT.resolve()).as_posix()
+    return f"{GITHUB_REPOSITORY}/blob/main/{quote(relative, safe='/')}"
+
+
+def split_frontmatter(markdown: str) -> tuple[str | None, str]:
+    if not markdown.startswith("---\n"):
+        return None, markdown
+    end = markdown.find("\n---\n", 4)
+    if end == -1:
+        return None, markdown
+    return markdown[4:end], markdown[end + 5 :]
+
+
+def documentation_navigation(target: Path) -> str:
+    routes = published_source_routes()
+    items = (
+        ("Documentation", routes[(ROOT / "docs" / "index.md").resolve()]),
+        (
+            "Beginner guide",
+            routes[(ROOT / "docs" / "beginners" / "index.md").resolve()],
+        ),
+        (
+            "Foundry prompt kit",
+            routes[(ROOT / "docs" / "okf-authoring-prompt-kit.md").resolve()],
+        ),
+        (
+            "Bundle authoring",
+            routes[(ROOT / "docs" / "okf-bundle-authoring.md").resolve()],
+        ),
+    )
+    links = []
+    for label, route in items:
+        current = ' aria-current="page"' if route == target else ""
+        href = html.escape(relative_site_href(target, route), quote=True)
+        links.append(
+            f'<li><a href="{href}"{current}>{html.escape(label)}</a></li>'
+        )
+    return "".join(links)
+
+
+def render_generic_page(source: Path, target: Path) -> str:
+    markdown = source.read_text(encoding="utf-8")
+    frontmatter, body_markdown = split_frontmatter(markdown)
+    title = markdown_title(source)
+    if not re.search(r"^#\s+", body_markdown, flags=re.MULTILINE):
+        body_markdown = f"# {title}\n\n{body_markdown.lstrip()}"
+    body = published_markdown_renderer().render(
+        body_markdown,
+        {"source": str(source), "output_route": str(target)},
+    )
+    metadata = ""
+    if frontmatter:
+        metadata = (
+            '<details class="source-metadata">'
+            "<summary>Record metadata</summary>"
+            f"<pre><code>{html.escape(frontmatter)}</code></pre>"
+            "</details>"
+        )
+
+    stylesheet_href = html.escape(
+        relative_site_href(target, Path("docs/beginners/guide.css")),
+        quote=True,
+    )
+    navigation_stylesheet_href = html.escape(
+        relative_site_href(target, Path("docs/foundry.css")),
+        quote=True,
+    )
+    explorer_href = html.escape(
+        relative_site_href(target, Path("index.html")),
+        quote=True,
+    )
+    source_href = html.escape(github_source_url(source), quote=True)
+    markdown_alternate_href = html.escape(
+        relative_site_href(target, source.relative_to(ROOT.resolve())),
+        quote=True,
+    )
+    relative = source.resolve().relative_to(ROOT.resolve())
+    page_kind = (
+        "OKF Explorer documentation"
+        if relative.parts and relative.parts[0] == "docs"
+        else "OKF knowledge page"
+    )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>{html.escape(title)} · OKF Explorer</title>
+<link rel="canonical" href="{html.escape(canonical_page_url(target), quote=True)}">
+<link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
+  title="Markdown source">
+<link rel="stylesheet" href="{stylesheet_href}">
+<link rel="stylesheet" href="{navigation_stylesheet_href}">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to the documentation</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__title" href="{explorer_href}">OKF Explorer</a>
+    <span class="site-header__meta">{html.escape(page_kind)}</span>
+  </div>
+</header>
+<nav class="foundry-nav" aria-label="Documentation">
+  <ol>{documentation_navigation(target)}</ol>
+</nav>
+<main class="guide-main foundry-main" id="main-content" tabindex="-1">
+  <article class="guide-content">
+{metadata}
+{body}
+  </article>
+  <footer class="guide-footer">
+    <p><a href="{source_href}">View source on GitHub</a>
+    or return to the <a href="{explorer_href}">OKF Explorer</a>.</p>
+  </footer>
+</main>
+</body>
+</html>
+"""
 
 
 def render_foundry_page(
@@ -402,7 +682,7 @@ def render_foundry_page(
         body += f"""
 <section class="prompt-publication" aria-labelledby="formatted-prompt-heading">
   <div class="prompt-actions">
-    <button type="button" class="copy-prompt" data-copy-target="copy-ready-prompt"
+    <button type="button" class="copy-prompt" data-copy-target="copy-ready-prompt-source"
       aria-describedby="copy-prompt-help">Copy full prompt</button>
     <a class="secondary-action" href="{plain_text_href}" download>Download plain text</a>
   </div>
@@ -410,7 +690,7 @@ def render_foundry_page(
     Copies the exact prompt, including its placeholders, without this page's controls.
   </p>
   <p id="copy-prompt-status" class="copy-status" role="status" aria-live="polite"></p>
-  <textarea id="copy-ready-prompt" class="copy-source" hidden
+  <textarea id="copy-ready-prompt-source" class="copy-source" hidden
     aria-hidden="true" tabindex="-1">{prompt_source}</textarea>
   <div class="formatted-prompt">
     <h2 id="formatted-prompt-heading">Formatted prompt</h2>
@@ -451,11 +731,9 @@ def render_foundry_page(
         relative_site_href(target, Path("index.html")),
         quote=True,
     )
-    source_markdown_href = html.escape(
-        relative_site_href(
-            target,
-            source.relative_to(ROOT),
-        ),
+    source_markdown_href = html.escape(github_source_url(source), quote=True)
+    markdown_alternate_href = html.escape(
+        relative_site_href(target, source.relative_to(ROOT)),
         quote=True,
     )
     title = markdown_title(source)
@@ -468,6 +746,8 @@ def render_foundry_page(
 <meta name="color-scheme" content="light">
 <title>{html.escape(title)} · OKF Foundry</title>
 <link rel="canonical" href="{html.escape(canonical_foundry_url(target), quote=True)}">
+<link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
+  title="Markdown source">
 <link rel="stylesheet" href="{stylesheet_href}">
 <link rel="stylesheet" href="{foundry_stylesheet_href}">
 <script src="{script_href}" defer></script>
@@ -488,7 +768,7 @@ def render_foundry_page(
 {body}
   </article>
   <footer class="guide-footer">
-    <p>Read the <a href="{source_markdown_href}">source Markdown</a>
+    <p><a href="{source_markdown_href}">View source on GitHub</a>
     or return to the <a href="{explorer_href}">OKF Explorer</a>.</p>
     <p>Profile status: experimental production profile, 27 July 2026.</p>
   </footer>
@@ -509,6 +789,10 @@ def write_foundry_pages() -> None:
         )
         output = OUT / target
         output.parent.mkdir(parents=True, exist_ok=True)
+        if output.exists():
+            raise RuntimeError(
+                f"rendered documentation would overwrite {target}"
+            )
         output.write_text(rendered, encoding="utf-8")
         if prompt_text is not None:
             output.with_suffix(".txt").write_text(
@@ -520,7 +804,43 @@ def write_foundry_pages() -> None:
     compatibility_profile = (
         OUT / "profiles" / "authoring" / "v1" / "index.html"
     )
+    if compatibility_profile.exists():
+        raise RuntimeError(
+            "rendered documentation would overwrite "
+            "profiles/authoring/v1/index.html"
+        )
     copy_file(canonical_profile, compatibility_profile)
+
+
+def write_generic_reading_pages() -> None:
+    specialised = {source.resolve() for source in beginner_sources()}
+    specialised.update(
+        source.resolve() for source, _target, _label in FOUNDRY_PAGES
+    )
+    routes = published_source_routes()
+    for source in readable_markdown_sources():
+        if source in specialised:
+            continue
+        target = routes[source]
+        output = OUT / target
+        output.parent.mkdir(parents=True, exist_ok=True)
+        if output.exists():
+            raise RuntimeError(
+                f"rendered documentation would overwrite {target}"
+            )
+        output.write_text(
+            render_generic_page(source, target),
+            encoding="utf-8",
+        )
+        relative = source.relative_to(ROOT.resolve())
+        if relative.parts and relative.parts[0] == "profiles":
+            compatibility = OUT / relative.with_suffix(".html")
+            if compatibility.exists():
+                raise RuntimeError(
+                    "rendered documentation would overwrite "
+                    f"{compatibility.relative_to(OUT)}"
+                )
+            copy_file(output, compatibility)
 
 
 def render_next_redirect() -> str:
@@ -635,6 +955,154 @@ def verify_assembled_app_build() -> None:
         )
 
 
+def assert_app_does_not_replace_reading_pages() -> None:
+    if not SVELTE_EXPLORER_BUILD.exists():
+        return
+    app_routes = {
+        source.relative_to(SVELTE_EXPLORER_BUILD)
+        for source in SVELTE_EXPLORER_BUILD.rglob("*")
+        if source.is_file()
+    }
+    collisions = sorted(app_routes.intersection(published_reading_routes()))
+    if collisions:
+        details = "\n".join(f"- {route}" for route in collisions)
+        raise RuntimeError(
+            "Explorer app build would replace rendered documentation:\n"
+            f"{details}"
+        )
+
+
+class ReadingPageLinks(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.hrefs: list[str] = []
+        self.references: list[tuple[str, str]] = []
+        self.identifiers: set[str] = set()
+        self.duplicate_identifiers: set[str] = set()
+
+    def handle_starttag(self, tag: str, attrs) -> None:
+        attributes = dict(attrs)
+        identifier = attributes.get("id")
+        if identifier:
+            if identifier in self.identifiers:
+                self.duplicate_identifiers.add(identifier)
+            self.identifiers.add(identifier)
+        href = attributes.get("href")
+        if tag == "a" and href:
+            self.hrefs.append(href)
+            self.references.append(("a[href]", href))
+        elif tag == "link" and href:
+            self.references.append(("link[href]", href))
+        source = attributes.get("src")
+        if tag in {"img", "script", "source"} and source:
+            self.references.append((f"{tag}[src]", source))
+        srcset = attributes.get("srcset")
+        if tag in {"img", "source"} and srcset:
+            for candidate in srcset.split(","):
+                url = candidate.strip().split(maxsplit=1)[0]
+                if url:
+                    self.references.append((f"{tag}[srcset]", url))
+
+
+def local_site_path(source_route: Path, href: str) -> tuple[Path, str] | None:
+    parts = urlsplit(href)
+    path = unquote(parts.path)
+    if parts.scheme or parts.netloc:
+        if (
+            parts.scheme not in {"http", "https"}
+            or parts.netloc != "chris-page-gov.github.io"
+            or not path.startswith("/okf-explorer/")
+        ):
+            return None
+        path = path.removeprefix("/okf-explorer/")
+        target = Path(posixpath.normpath(path))
+    elif path.startswith("/"):
+        if not path.startswith("/okf-explorer/"):
+            return None
+        target = Path(
+            posixpath.normpath(path.removeprefix("/okf-explorer/"))
+        )
+    elif path:
+        target = Path(
+            posixpath.normpath(
+                posixpath.join(source_route.parent.as_posix(), path)
+            )
+        )
+    else:
+        target = source_route
+    if target.as_posix() == ".":
+        target = Path("index.html")
+    if target.as_posix().startswith("../"):
+        raise ValueError("link escapes the published site root")
+    return target, unquote(parts.fragment)
+
+
+def final_link_target(target: Path) -> Path:
+    output = OUT / target
+    if output.is_dir() or target.as_posix().endswith("/"):
+        return target / "index.html"
+    return target
+
+
+def parse_reading_page(route: Path) -> ReadingPageLinks:
+    parser = ReadingPageLinks()
+    parser.feed((OUT / route).read_text(encoding="utf-8"))
+    return parser
+
+
+def assert_readable_document_links() -> None:
+    routes = published_reading_routes()
+    errors: list[str] = []
+    parsed_pages: dict[Path, ReadingPageLinks] = {}
+    checked_links = 0
+
+    for route in sorted(routes):
+        page = OUT / route
+        if not page.is_file():
+            errors.append(f"{route}: rendered page is missing")
+            continue
+        parsed = parsed_pages.setdefault(route, parse_reading_page(route))
+        for identifier in sorted(parsed.duplicate_identifiers):
+            errors.append(f"{route}: duplicate HTML id #{identifier}")
+        for reference_kind, href in parsed.references:
+            checked_links += 1
+            try:
+                local = local_site_path(route, href)
+            except ValueError as error:
+                errors.append(f"{route}: {href}: {error}")
+                continue
+            if local is None:
+                continue
+            target, fragment = local
+            if reference_kind == "a[href]" and target.suffix.lower() == ".md":
+                errors.append(
+                    f"{route}: internal Markdown navigation must use HTML: {href}"
+                )
+                continue
+            target = final_link_target(target)
+            target_file = OUT / target
+            if not target_file.is_file():
+                errors.append(f"{route}: missing local target {href} -> {target}")
+                continue
+            if reference_kind == "a[href]" and fragment and target in routes:
+                target_page = parsed_pages.setdefault(
+                    target,
+                    parse_reading_page(target),
+                )
+                if fragment not in target_page.identifiers:
+                    errors.append(
+                        f"{route}: missing fragment #{fragment} in {target}"
+                    )
+
+    if errors:
+        joined = "\n".join(f"- {error}" for error in errors)
+        raise RuntimeError(f"readable documentation link audit failed:\n{joined}")
+    print(
+        "verified readable documentation links: "
+        f"pages={len(routes)} links={checked_links}"
+    )
+
+
 def main() -> int:
     if OUT.exists():
         for _attempt in range(3):
@@ -663,16 +1131,17 @@ def main() -> int:
     for dirname in PUBLIC_DIRS:
         copy_public_tree(ROOT / dirname, OUT / dirname)
 
-    write_beginner_guide()
-
     # Schema $id values use the stable singular profile URI; keep the browsable
     # plural source tree as well as this publication alias.
     copy_public_tree(ROOT / "profiles", OUT / "profile")
+    write_generic_reading_pages()
+    write_beginner_guide()
     write_foundry_pages()
 
     copy_public_tree(ROOT / "explorer", OUT / "legacy")
 
     if SVELTE_EXPLORER_BUILD.exists():
+        assert_app_does_not_replace_reading_pages()
         copy_public_tree(SVELTE_EXPLORER_BUILD, OUT)
 
     (OUT / "next").mkdir(parents=True, exist_ok=True)
@@ -684,6 +1153,7 @@ def main() -> int:
     remove_platform_metadata()
     assert_no_forbidden_files()
     verify_assembled_app_build()
+    assert_readable_document_links()
     file_count = sum(1 for path in OUT.rglob("*") if path.is_file())
     print(f"built {OUT.relative_to(ROOT)} with {file_count} files")
     return 0
