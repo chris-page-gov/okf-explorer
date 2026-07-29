@@ -337,10 +337,43 @@ def reference_errors(value: dict[str, Any]) -> list[str]:
     return errors
 
 
-def validate(value: dict[str, Any]) -> list[str]:
+def repository_path_errors(
+    value: dict[str, Any], repository_root: Path
+) -> list[str]:
+    errors: list[str] = []
+    root = repository_root.resolve()
+    graph = value.get("consumer_contract", {}).get("dependency_graph", {})
+    for node in graph.get("nodes", []) if isinstance(graph, dict) else []:
+        if not isinstance(node, dict) or node.get("kind") != "validator":
+            continue
+        for relative in node.get("repository_paths", []):
+            if not isinstance(relative, str):
+                continue
+            candidate = (root / relative).resolve()
+            try:
+                candidate.relative_to(root)
+            except ValueError:
+                errors.append(
+                    f"validator node {node.get('id', '<unknown>')!r} has unsafe "
+                    f"repository path {relative!r}"
+                )
+                continue
+            if not candidate.is_file():
+                errors.append(
+                    f"validator node {node.get('id', '<unknown>')!r} references "
+                    f"absent repository path {relative!r}"
+                )
+    return errors
+
+
+def validate(
+    value: dict[str, Any], repository_root: Path | None = None
+) -> list[str]:
     errors = schema_errors(value)
     if not errors:
         errors.extend(reference_errors(value))
+        if repository_root is not None:
+            errors.extend(repository_path_errors(value, repository_root))
     return errors
 
 
@@ -352,14 +385,31 @@ def main() -> int:
         type=Path,
         help="optional JSON/YAML counterpart that must represent exactly the same data",
     )
+    parser.add_argument(
+        "--repository-root",
+        type=Path,
+        help=(
+            "repository root used to resolve dependency-graph validator paths; "
+            "defaults to the parent of a domain-profile directory"
+        ),
+    )
     args = parser.parse_args()
 
     try:
+        repository_root = (
+            args.repository_root
+            if args.repository_root is not None
+            else (
+                args.profile.parent.parent
+                if args.profile.parent.name == "domain-profile"
+                else args.profile.parent
+            )
+        )
         profile = load_document(args.profile)
-        errors = validate(profile)
+        errors = validate(profile, repository_root)
         if args.equivalent:
             equivalent = load_document(args.equivalent)
-            equivalent_errors = validate(equivalent)
+            equivalent_errors = validate(equivalent, repository_root)
             errors.extend(
                 f"{args.equivalent}: {error}" for error in equivalent_errors
             )

@@ -18,6 +18,18 @@ assumptions or their very large working transcripts.
 3. [Build, validate and publish](prompts/okf-bundle-build.md). The builder
    consumes that exact handoff and implements the smallest justified bundle.
 
+For an empty or imported target, begin the build with the fail-safe repository
+bootstrap:
+
+```sh
+python3 scripts/okf_repository_bootstrap.py /path/to/target
+python3 scripts/okf_repository_bootstrap.py /path/to/target --apply
+python3 scripts/okf_repository_bootstrap.py /path/to/target --check --adopt-existing
+```
+
+The first command is a dry run. Adoption is always explicit. The scaffolder
+does not initialize Git, create a remote, commit, enable CI, push or publish.
+
 The handoff is validated by the
 [`okf-domain-profile.v1` schema](../profiles/authoring/v1/domain-profile.schema.json).
 Start from the complete
@@ -75,6 +87,11 @@ must not claim that it built, tested or published a bundle.
 9. After deployment, open the exact consumer deep links for overview, record,
    query/filter and any other selected state. Verify the expected bundle
    identity, snapshot, state and digest roots, not merely HTTP status.
+10. Never provide a public bundle URL before that exact deployed URL passes
+    the real-browser identity and journey check. Give a URL check a 60-second,
+    tool-first budget. Report failure immediately, label the URL unverified and
+    use the dependency graph to limit any correction; do not silently expand
+    the check into a release rebuild.
 
 ## Success Checklist
 
@@ -110,6 +127,9 @@ Do not accept completion until all applicable statements are true:
   raw/release fallbacks, checksums, coverage counts, costs and limitations; and
 - deployed consumer deep links restore the expected bundle identity, view,
   record/query/filter state and applicable digest roots; and
+- every public bundle link offered to a reader is the exact browser-verified
+  URL; any failed or incomplete check is reported immediately and the link is
+  labelled unverified; and
 - the published release candidate has the same recorded bytes and digests as
   the candidate that passed assurance.
 

@@ -118,27 +118,57 @@ that cannot safely be inferred.
 15. Cancellation must terminate and await the whole process group. One
     confirmed repeatable GUI/helper crash is a stop condition for that helper;
     continue through a headless or deterministic path and log the limitation.
-16. Retry only after obtaining new evidence or changing the failed condition.
+16. Never provide a public bundle URL until that exact deployed URL passes a
+    real-browser identity and journey check. Give URL verification a
+    60-second, tool-first budget. If it fails, report the failure immediately,
+    label the URL unverified and do not silently expand into a release rebuild.
+17. Use the dependency graph to limit a correction to affected planes,
+    consumers and gates. Prefer deterministic checks or a smaller model for
+    bounded work; use the highest-cost reasoning tier only after an explicit,
+    evidence-backed escalation.
+
+18. Retry only after obtaining new evidence or changing the failed condition.
     Never repeat a large build merely to see whether it works this time.
-17. Use high-cost/high-reasoning models only for standards conflicts,
+19. Use high-cost/high-reasoning models only for standards conflicts,
     identity/ontology decisions, semantic adjudication and adversarial review.
     Use deterministic tools for inventory, transforms, hashes, tests, waits,
     docs synchronization and publication checks.
-18. A sandbox authentication failure remains environment-classified until the
+20. A sandbox authentication failure remains environment-classified until the
     approved host boundary is checked. Do not repeatedly diagnose a known
     sandbox limitation as a repository failure.
-19. Preflight security-tool compatibility against a tiny fixture early. Run
+21. Preflight security-tool compatibility against a tiny fixture early. Run
     substantive security analysis once against the exact frozen candidate.
-20. Report limitations and accepted exceptions; never relabel an unpassed gate
+22. Report limitations and accepted exceptions; never relabel an unpassed gate
     as passed.
-21. Execute the actual pinned consumers. A schema-only validator, mock UI,
+23. Execute the actual pinned consumers. A schema-only validator, mock UI,
     hand-written compatibility parser or HTTP status probe cannot substitute
     for the reader, generator, finalizer or archive consumer it is meant to
     protect.
-22. Maintain an explicit dependency graph and independent digest roots for
+24. Maintain an explicit dependency graph and independent digest roots for
     applicable source, control, data, search, semantic, presentation and
     release planes. Reuse or selective rerun is permitted only when the graph's
     transitive impact closure and relevant roots prove it safe.
+
+## Phase 0 — Classify And Bootstrap The Repository
+
+Before acquisition, generation or corpus work:
+
+1. classify the target as `existing`, `empty-new` or `imported`;
+2. run the fail-safe scaffolder as a dry run, then use `--apply` only after
+   reviewing its plan; refuse a non-empty or dirty target unless
+   `--adopt-existing` is explicit;
+3. create `.gitignore`, `AGENTS.md`, README/status, SECURITY and licensing
+   decisions plus documented source/generated boundaries and disabled CI;
+4. make one initialization-only default-branch commit containing no corpus,
+   generated bundle or release evidence;
+5. configure the intended required checks while keeping CI disabled until its
+   commands and permissions are reviewed; and
+6. perform domain and build work on a feature branch through a reviewed pull
+   request.
+
+The scaffolder must never create a remote, push, publish or enable CI
+implicitly. Record its classification, plan, check output, initial commit and
+handoff in repository-lifecycle evidence.
 23. Test producer/consumer compatibility in both directions and retain the
     fixtures that define the supported window.
 

@@ -73,6 +73,9 @@
     "description": {
       "type": "string"
     },
+    "repository_lifecycle": {
+      "$ref": "#/$defs/repositoryLifecycle"
+    },
     "intent": {
       "type": "object",
       "required": [
@@ -787,6 +790,9 @@
         },
         "evidence_refs": {
           "$ref": "#/$defs/evidenceRefs"
+        },
+        "executable_identity": {
+          "$ref": "#/$defs/executableIdentity"
         }
       },
       "additionalProperties": false
@@ -874,9 +880,31 @@
         },
         "plane_ref": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "repository_paths": {
+          "$ref": "#/$defs/nonEmptyStringArray"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "validator"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "repository_paths"
+            ]
+          }
+        }
+      ]
     },
     "dependencyEdge": {
       "type": "object",
@@ -1043,11 +1071,15 @@
       "type": "object",
       "required": [
         "support_policy",
+        "window_decision",
         "cases"
       ],
       "properties": {
         "support_policy": {
           "$ref": "#/$defs/nonEmpty"
+        },
+        "window_decision": {
+          "$ref": "#/$defs/compatibilityWindow"
         },
         "cases": {
           "type": "array",
@@ -1055,6 +1087,130 @@
           "items": {
             "$ref": "#/$defs/compatibilityCase"
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    "repositoryLifecycle": {
+      "type": "object",
+      "required": [
+        "classification",
+        "bootstrap_status",
+        "bootstrap_evidence",
+        "initial_commit_policy",
+        "default_branch",
+        "feature_branch_policy",
+        "required_checks",
+        "ci_state",
+        "source_paths",
+        "generated_paths",
+        "remote_policy",
+        "handoff"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "existing",
+            "empty-new",
+            "imported"
+          ]
+        },
+        "bootstrap_status": {
+          "enum": [
+            "planned",
+            "scaffolded",
+            "committed",
+            "adopted-reviewed"
+          ]
+        },
+        "bootstrap_evidence": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "initial_commit_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "default_branch": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "feature_branch_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "required_checks": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "ci_state": {
+          "enum": [
+            "disabled-pending-validation",
+            "enabled-required",
+            "not-applicable"
+          ]
+        },
+        "source_paths": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "generated_paths": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "remote_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "handoff": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "executableIdentity": {
+      "type": "object",
+      "required": [
+        "package",
+        "version",
+        "commit",
+        "lock_sha256",
+        "command"
+      ],
+      "properties": {
+        "package": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "commit": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "lock_sha256": {
+          "$ref": "#/$defs/sha256OrUnknown"
+        },
+        "command": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "compatibilityWindow": {
+      "type": "object",
+      "required": [
+        "supported_producer_contracts",
+        "supported_consumer_versions",
+        "unsupported_behavior",
+        "decision_refs"
+      ],
+      "properties": {
+        "supported_producer_contracts": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "supported_consumer_versions": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "unsupported_behavior": {
+          "enum": [
+            "explicit-degraded",
+            "fail-closed"
+          ]
+        },
+        "decision_refs": {
+          "$ref": "#/$defs/idArray"
         }
       },
       "additionalProperties": false
@@ -1108,7 +1264,9 @@
         "expected_identity",
         "expected_content",
         "digest_plane_refs",
-        "validation_refs"
+        "validation_refs",
+        "tool_first_budget_seconds",
+        "share_policy"
       ],
       "properties": {
         "id": {
@@ -1134,6 +1292,12 @@
         },
         "validation_refs": {
           "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "tool_first_budget_seconds": {
+          "const": 60
+        },
+        "share_policy": {
+          "const": "withhold-until-exact-url-browser-verified"
         }
       },
       "additionalProperties": false

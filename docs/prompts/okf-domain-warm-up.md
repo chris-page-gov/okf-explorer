@@ -162,6 +162,12 @@ record one applicability decision:
 
 - Read repository instructions and identify source-of-truth versus generated
   material.
+- Classify the repository target as `existing`, `empty-new` or `imported`.
+  Record whether non-empty or dirty work requires an explicit clean handoff.
+- Define the initialization-only default-branch commit, feature-branch/PR
+  policy, required checks, disabled-until-reviewed CI state, source/generated
+  boundaries and the rule that bootstrap tooling never creates remotes,
+  pushes or publishes.
 - Produce a read-only inventory by source family, format, media type, size,
   language, date, extraction state and sensitivity signal.
 - Identify encrypted, corrupt, duplicate, generated, binary, OCR-dependent,
@@ -313,6 +319,9 @@ A researched source family without an implemented child remains
   other task-critical state. Each check names the actual consumer, exact URL
   template, expected bundle identity/snapshot, restored state, expected
   content, plane roots and validator.
+- Give each public-URL verification a 60-second, tool-first budget and a
+  `withhold-until-exact-url-browser-verified` share policy. Report a failed
+  check immediately and keep the URL explicitly unverified.
 
 ### J. Validation and evaluation design
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -51,6 +52,11 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertEqual("hypothesis", self.template["claims"][0]["claim_status"])
         self.assertIn("identifier_model", self.template["sources"][0])
         self.assertIn("semantic_conflicts", self.template["standards"][0])
+        lifecycle = self.template["repository_lifecycle"]
+        self.assertEqual("empty-new", lifecycle["classification"])
+        self.assertEqual("disabled-pending-validation", lifecycle["ci_state"])
+        self.assertIn("source/", lifecycle["source_paths"])
+        self.assertIn("bundle/", lifecycle["generated_paths"])
         consumer_contract = self.template["consumer_contract"]
         self.assertEqual(
             ["CONSUMER-001"],
@@ -73,6 +79,15 @@ class OkfAuthoringProfileTests(unittest.TestCase):
             ]
         )
         self.assertEqual(
+            "@okf/explorer",
+            consumer_contract["inventory"][0]["executable_identity"]["package"],
+        )
+        self.assertTrue(
+            consumer_contract["compatibility"]["window_decision"][
+                "supported_producer_contracts"
+            ]
+        )
+        self.assertEqual(
             {
                 "backward-new-producer-old-consumer",
                 "forward-old-producer-new-consumer",
@@ -83,6 +98,81 @@ class OkfAuthoringProfileTests(unittest.TestCase):
             },
         )
         self.assertTrue(consumer_contract["post_deploy_deep_links"])
+        deep_link = consumer_contract["post_deploy_deep_links"][0]
+        self.assertEqual(60, deep_link["tool_first_budget_seconds"])
+        self.assertEqual(
+            "withhold-until-exact-url-browser-verified",
+            deep_link["share_policy"],
+        )
+
+    def test_validator_dependency_nodes_require_concrete_repository_paths(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["consumer_contract"]["dependency_graph"]["nodes"].append(
+            {
+                "id": "NODE-VALIDATOR",
+                "kind": "validator",
+                "label": "Repository tests",
+                "location": "tests",
+            }
+        )
+        invalid["consumer_contract"]["dependency_graph"]["edges"].append(
+            {
+                "id": "EDGE-VALIDATOR-CONSUMER",
+                "from_node": "NODE-VALIDATOR",
+                "to_node": "NODE-CONSUMER",
+                "contract": "Concrete tests verify the consumer contract.",
+                "change_impacts": ["Consumer changes rerun these tests."],
+                "affected_plane_refs": ["PLANE-CONTROL"],
+                "validation_refs": ["VAL-CONSUMER-001"],
+            }
+        )
+        self.assertTrue(
+            any("repository_paths" in message for message in self.errors(invalid))
+        )
+        invalid["consumer_contract"]["dependency_graph"]["nodes"][-1][
+            "repository_paths"
+        ] = ["tests/test_explorer_contract.py"]
+        self.assertEqual([], self.errors(invalid))
+
+    def test_semantic_validation_fails_for_an_absent_validator_path(self) -> None:
+        value = json.loads(json.dumps(self.template))
+        value["consumer_contract"]["dependency_graph"]["nodes"].append(
+            {
+                "id": "NODE-VALIDATOR",
+                "kind": "validator",
+                "label": "Explorer contract tests",
+                "location": "tests/test_explorer_contract.py",
+                "repository_paths": ["tests/test_explorer_contract.py"],
+            }
+        )
+        value["consumer_contract"]["dependency_graph"]["edges"].append(
+            {
+                "id": "EDGE-VALIDATOR-CONSUMER",
+                "from_node": "NODE-VALIDATOR",
+                "to_node": "NODE-CONSUMER",
+                "contract": "The named repository test validates the consumer.",
+                "change_impacts": ["Consumer changes rerun the named test."],
+                "affected_plane_refs": ["PLANE-CONTROL"],
+                "validation_refs": ["VAL-CONSUMER-001"],
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertTrue(
+                any(
+                    "absent repository path" in error
+                    for error in check_domain_profile.repository_path_errors(
+                        value, root
+                    )
+                )
+            )
+            path = root / "tests" / "test_explorer_contract.py"
+            path.parent.mkdir()
+            path.write_text("# concrete test\n", encoding="utf-8")
+            self.assertEqual(
+                [],
+                check_domain_profile.repository_path_errors(value, root),
+            )
 
     def test_consumer_contract_is_additive_for_existing_v1_profiles(self) -> None:
         legacy = json.loads(json.dumps(self.template))
@@ -224,6 +314,9 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertIn("profile-selected deep link", build)
         self.assertIn("substantive security analysis once", build)
         self.assertIn("Promote the exact RC artefacts", build)
+        self.assertIn("Phase 0 — Classify And Bootstrap The Repository", build)
+        self.assertIn("60-second, tool-first budget", build)
+        self.assertIn("label the URL unverified", build)
 
     def test_examples_exercise_three_materially_different_domains(self) -> None:
         examples = (DOCS / "prompts" / "domain-profile-examples.md").read_text()

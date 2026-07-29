@@ -8,6 +8,29 @@ research_cutoff: "2026-07-27"
 title: Replace-me collection domain profile
 description: Replace every example value with evidence from the collection warm-up.
 
+repository_lifecycle:
+  classification: empty-new
+  bootstrap_status: planned
+  bootstrap_evidence:
+    - validation/repository-bootstrap.json
+  initial_commit_policy: The default branch starts with one reviewed initialization-only commit containing governance and source/generated boundaries, never the corpus, generated bundle or release evidence.
+  default_branch: main
+  feature_branch_policy: Perform acquisition, domain and build work on a feature branch and merge it through a reviewed pull request.
+  required_checks:
+    - Domain profile and repository bootstrap validation
+    - Deterministic build and actual-consumer acceptance
+    - Release evidence closure
+  ci_state: disabled-pending-validation
+  source_paths:
+    - source/
+    - domain-profile/
+  generated_paths:
+    - generated/
+    - bundle/
+    - release-assurance/
+  remote_policy: Bootstrap tooling never creates remotes, pushes or publishes; those actions require separate explicit authority.
+  handoff: Record a clean commit SHA and owner before adopting concurrent or imported work.
+
 intent:
   problem: Make this collection reliably discoverable and explainable.
   desired_outcomes:
@@ -273,6 +296,12 @@ consumer_contract:
       deep_link_required: true
       evidence_refs:
         - EV-001
+      executable_identity:
+        package: "@okf/explorer"
+        version: replace-me-exact-version
+        commit: replace-me-full-commit-sha
+        lock_sha256: unknown
+        command: pnpm --dir path/to/okf-explorer acceptance:bundle -- --bundle-root bundle --journeys evaluation/journeys.json
   lock:
     path: domain-profile/consumer-lock.json
     sha256: unknown
@@ -471,6 +500,14 @@ consumer_contract:
         - VAL-DEPLOY-001
   compatibility:
     support_policy: Test the new producer with every supported locked consumer and test the current consumer with retained fixtures from every supported producer contract.
+    window_decision:
+      supported_producer_contracts:
+        - okf-explorer-bundle.v0
+      supported_consumer_versions:
+        - replace-me-exact-version
+      unsupported_behavior: fail-closed
+      decision_refs:
+        - DEC-001
     cases:
       - id: COMPAT-BACKWARD-001
         direction: backward-new-producer-old-consumer
@@ -501,6 +538,8 @@ consumer_contract:
         - PLANE-PRESENTATION
       validation_refs:
         - VAL-DEPLOY-001
+      tool_first_budget_seconds: 60
+      share_policy: withhold-until-exact-url-browser-verified
 
 enrichment:
   enabled: false

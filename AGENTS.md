@@ -13,6 +13,16 @@ Format (OKF) Markdown bundle for the AI infrastructure research material.
   `okf-bundle.json` stays synchronized.
 - Also run `python3 scripts/update_viewer.py` so the legacy `viewer.html` stays
   synchronized.
+- Never provide a public bundle URL until that exact deployed URL passes a
+  real-browser identity and journey check. A URL-verification request gets a
+  60-second, tool-first budget; if it fails, report the failure immediately
+  and label the link unverified.
+- Do not silently turn a failed public verification into a release rebuild.
+  Use the dependency graph to limit any correction and rerun to the affected
+  planes and gates.
+- Prefer deterministic checks and bounded tooling. Escalate to a more
+  expensive or higher-reasoning model only when the recorded ambiguity
+  justifies it explicitly.
 - Before committing publication changes, run:
 
 ```sh

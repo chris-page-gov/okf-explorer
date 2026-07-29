@@ -2,6 +2,17 @@
 
 ## v0.5.6 - 2026-07-29 - Consumer-proof Foundry releases
 
+- Added a dry-run-first repository bootstrap scaffolder/checker for empty,
+  imported and explicitly adopted targets. It creates only reviewed
+  foundations and disabled CI, preserves existing files and never initializes
+  Git, creates a remote, pushes or publishes.
+- Added a bundle-agnostic, package-level real-browser acceptance command that
+  binds the exact Explorer source/lock/build, bundle tree and descriptor
+  identity to declarative journeys, requests, console output, restored state
+  and terminal outcome.
+- Extended the authoring profile with repository lifecycle, executable
+  consumer identity, explicit compatibility windows, concrete validator paths
+  and a 60-second tool-first public-URL share gate.
 - Made the Foundry authoring contract machine-check a pinned consumer
   inventory and lock, a connected producer-to-public-route dependency graph,
   two-stage real-consumer fixtures, digest planes, bidirectional compatibility
