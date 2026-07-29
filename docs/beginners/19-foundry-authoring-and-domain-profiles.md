@@ -32,18 +32,23 @@ The warm-up is read-only with respect to the production bundle. It studies
 sources, formats, identifiers, user tasks, standards and risks.
 
 Its product is an `okf-domain-profile.v1` document and evidence register.
+For a release-facing build, it also identifies every real downstream consumer,
+pins those consumers in a checksummed lock and records the dependency/impact
+graph that joins producers, digest planes, consumers and public routes.
 
 ### Stage 2: Build And Assurance
 
 The builder consumes an approved, hash-locked profile and:
 
 1. acquires immutable source material;
-2. creates a tiny representative fixture;
-3. implements the smallest justified publication;
-4. validates data and semantics;
-5. tests user tasks and failure cases;
-6. freezes one release candidate;
-7. promotes the identical bytes after assurance.
+2. builds a tiny producer fixture twice;
+3. executes the actual locked consumers against those fixture bytes;
+4. implements the smallest justified publication;
+5. validates data, semantics and per-plane digest roots;
+6. tests user tasks, both compatibility directions and failure cases;
+7. freezes one release candidate;
+8. checks exact public deep links in the locked consumer; and
+9. promotes the identical bytes after assurance.
 
 This keeps research decisions reviewable and prevents implementation drift.
 
@@ -58,6 +63,11 @@ The profile records:
 - native concepts, identifiers, versions and relationships;
 - standards decisions;
 - target OKF and Explorer architecture;
+- a pinned consumer inventory and checksummed consumer lock;
+- a producer-to-plane-to-consumer dependency and impact graph;
+- per-plane digest roots and invalidation rules;
+- producer/consumer compatibility in both directions;
+- post-deploy deep links and their expected restored state;
 - validation and evaluation;
 - unresolved owner decisions;
 - traceability from outcomes to artifacts and checks.
@@ -68,6 +78,27 @@ It is a control artifact. It is not:
 - an ontology;
 - a licence decision by itself;
 - proof that the eventual release passed.
+
+## Consumers Are Part Of The Contract
+
+A bundle is not complete merely because its files match a schema. The actual
+reader, validator, search worker, generator, finalizer or archive reader may
+still reject those files or interpret them differently.
+
+The profile therefore inventories every release-relevant consumer and pins an
+exact release, commit, binary, container or dependency digest. The lock is
+checksummed and reviewed with the profile. Avoid moving labels such as
+`latest`: they make a passing result impossible to reproduce.
+
+The accompanying dependency graph makes change impact explicit:
+
+```text
+source/producer → generated plane → consumer/finalizer → public route
+```
+
+Every edge records its contract, affected planes and validations. When an
+input, schema, route or consumer changes, this graph determines the transitive
+set of work that must rerun.
 
 ## Evidence Has Several Axes
 
@@ -126,9 +157,10 @@ preserving evidence and future extension points.
 
 A small Markdown bundle can be the right production result.
 
-## Tiny Fixture First
+## Two-Stage Tiny Fixture First
 
-Before processing the full source, build a small fixture covering:
+Before processing the full source, Stage 1 builds a small producer fixture
+twice, covering:
 
 - valid positive data;
 - missing optional data;
@@ -139,8 +171,47 @@ Before processing the full source, build a small fixture covering:
 - rights restrictions;
 - digest mismatch.
 
-The fixture proves that the contract and failure behaviour work before a large
-harvest makes mistakes expensive.
+The clean builds must be byte-identical and must produce the expected digest
+roots.
+
+Stage 2 then executes every required, locked consumer against those exact
+bytes through its real entrypoint. A mock, schema-only validator or hand-written
+parser is not a substitute. The stage records the consumer version, command,
+loaded bundle identity, requested state and terminal outcome.
+
+Together the two stages prove that both the producer contract and real consumer
+behaviour work before a large harvest makes mistakes expensive.
+
+## Plane Roots And Selective Reruns
+
+Control, data, search, semantic, presentation and release content change for
+different reasons. Give every applicable plane its own ordered manifest,
+digest root, invalidation triggers, consumers and validation receipt.
+
+Selective reruns are safe only when the dependency graph proves that a changed
+input cannot affect a reused plane or consumer. Follow the graph's transitive
+impact closure and compare roots. A timestamp, unchanged filename or intuition
+is not reuse evidence.
+
+## Compatibility Runs Both Ways
+
+Retain fixtures that define the supported compatibility window and test:
+
+1. current producer output with every supported locked consumer; and
+2. every retained supported producer fixture with the current consumer.
+
+Each case declares whether it should be accepted, degrade explicitly or fail
+closed. Testing only the first direction can miss a consumer regression;
+testing only the second can miss a producer break.
+
+## Post-Deploy Deep Links
+
+After deployment, open exact overview, record, query, filter and other
+task-critical links in the locked public consumer. Verify the bundle identity,
+snapshot, restored view/state, expected content and applicable plane roots.
+
+HTTP status 200 proves only that a server returned something. It does not prove
+that the consumer loaded the intended bundle or restored the requested state.
 
 ## Rights And Access
 
@@ -187,8 +258,8 @@ The builder must not fill a non-blocking gap with an invented semantic claim.
 
 ## Hash-Locked Handoff
 
-The approved domain profile and evidence register are hashed. The build records
-the exact digest it consumed.
+The approved domain profile, evidence register and consumer lock are hashed.
+The build records the exact digests it consumed.
 
 If semantic scope or standards decisions change, the profile receives a new
 version or recorded override. This makes it possible to explain why two builds
@@ -215,15 +286,18 @@ This workflow does not require a particular AI product.
    and run it read-only.
 3. Validate the resulting JSON/YAML domain profile and evidence, resolve only
    decisions marked `blocking_for_build: true`, then record the approved
-   profile digest.
+   profile and consumer-lock digests. Review the consumer inventory and
+   dependency/impact graph rather than accepting placeholders.
 4. Open the [formatted build prompt](../prompts/okf-bundle-build.md), copy it,
-   supply that exact profile digest and run the build as one outcome workflow.
-5. Accept success only when the tiny fixture, source and rights receipts,
-   standards checks, user-task evaluation, accessibility and frozen-candidate
-   assurance pass—or when an owner has explicitly accepted and published the
-   remaining exception.
-6. Verify the final human pages and machine descriptors by content and digest,
-   not merely by receiving HTTP status 200.
+   supply those exact digests and run the build as one outcome workflow.
+5. Accept success only when both tiny-fixture stages, per-plane roots, both
+   compatibility directions, source and rights receipts, standards checks,
+   user-task evaluation, accessibility and frozen-candidate assurance pass—or
+   when an owner has explicitly accepted and published the remaining
+   exception.
+6. Verify the final human pages, machine descriptors and task-critical deep
+   links by content, restored state and digest, not merely by receiving HTTP
+   status 200.
 
 The [prompt kit checklist](../okf-authoring-prompt-kit.md#success-checklist)
 gives the complete, copy-ready acceptance procedure.

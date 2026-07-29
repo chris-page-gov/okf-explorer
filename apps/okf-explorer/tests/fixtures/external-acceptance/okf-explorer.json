@@ -1,0 +1,26 @@
+{
+  "schema": "okf-explorer-bundle.v0",
+  "bundle_id": "urn:okf:fixture:external-acceptance",
+  "version": "fixture-1",
+  "snapshot_id": "external-acceptance-snapshot",
+  "okf_version": "0.2",
+  "meta": {
+    "title": "External acceptance fixture"
+  },
+  "nodes": {
+    "alpha": {
+      "id": "alpha",
+      "title": "Alpha external acceptance record",
+      "type": "Dataset",
+      "description": "A deterministic record used by the generic consumer harness.",
+      "body": "# Alpha\n\nThe actual Explorer rendered this record."
+    },
+    "negative-control": {
+      "id": "negative-control",
+      "title": "Negative control record",
+      "type": "Guidance",
+      "description": "This record must not replace Alpha in the selected-record journey."
+    }
+  },
+  "edges": []
+}

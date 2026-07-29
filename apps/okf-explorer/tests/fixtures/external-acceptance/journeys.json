@@ -1,0 +1,53 @@
+{
+  "schema": "okf-explorer-journeys.v1",
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_identity": {
+    "schema": "okf-explorer-bundle.v0",
+    "id": "urn:okf:fixture:external-acceptance",
+    "version": "fixture-1",
+    "snapshot": "external-acceptance-snapshot"
+  },
+  "journeys": [
+    {
+      "id": "load-selected-record",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#alpha"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "visible",
+          "selector": "main"
+        },
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Alpha external acceptance record"
+        },
+        {
+          "type": "not_text",
+          "selector": ".right-panel",
+          "includes": "Negative control record"
+        },
+        {
+          "type": "url_hash",
+          "equals": "#alpha"
+        },
+        {
+          "type": "requested",
+          "includes": "/bundle/okf-explorer.json"
+        },
+        {
+          "type": "not_requested",
+          "includes": "/bundle/forbidden.json"
+        }
+      ]
+    }
+  ]
+}

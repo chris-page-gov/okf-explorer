@@ -1269,6 +1269,14 @@
     const selectedRoute = largeSelectedRoute || largeInspectedRoute;
     if (selectedRoute && routeKind(selectedRoute) === 'dataset' && largeHasRecordLocator()) {
       await ensureLargeDataset(selectedRoute);
+      // A record locator hydrates only the selected dataset. The resource
+      // stack is assembled from the corpus-wide resource index, so it must
+      // load that index before rendering even when a targeted dataset is
+      // already available.
+      if (view === 'resources') {
+        await ensureLargeFullIndex();
+        return;
+      }
       if (largeHasRelationshipAdjacency()) {
         await ensureLargeRouteRelationships(selectedRoute);
       } else if (RELATIONSHIP_VIEWS.has(view)) {

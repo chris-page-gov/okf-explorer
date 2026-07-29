@@ -23,12 +23,12 @@ PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
 
 
 class ReleaseMetadataTest(unittest.TestCase):
-    def test_v055_release_metadata_is_synchronized(self) -> None:
+    def test_v056_release_metadata_is_synchronized(self) -> None:
         package_version = json.loads(PACKAGE.read_text(encoding="utf-8"))["version"]
         citation = CITATION.read_text(encoding="utf-8")
         changelog = CHANGELOG.read_text(encoding="utf-8")
 
-        self.assertEqual("0.5.5", package_version)
+        self.assertEqual("0.5.6", package_version)
         self.assertEqual(
             [package_version, package_version],
             re.findall(r"^\s*version:\s*\"([^\"]+)\"\s*$", citation, re.MULTILINE),
@@ -45,7 +45,7 @@ class ReleaseMetadataTest(unittest.TestCase):
             changelog,
             r"(?m)^## v0\.5\.5 - 2026-07-29 - \S",
         )
-        self.assertNotIn("## v0.5.5 - Unreleased", changelog)
+        self.assertNotIn("## v0.5.6 - Unreleased", changelog)
         self.assertRegex(
             changelog,
             r"(?m)^## v0\.5\.4 - 2026-07-27 - \S",

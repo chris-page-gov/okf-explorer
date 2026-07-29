@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.5.6 - 2026-07-29 - Consumer-proof Foundry releases
+
+- Added a dry-run-first repository bootstrap scaffolder/checker for empty,
+  imported and explicitly adopted targets. It creates only reviewed
+  foundations and disabled CI, preserves existing files and never initializes
+  Git, creates a remote, pushes or publishes.
+- Added a bundle-agnostic, package-level real-browser acceptance command that
+  binds the exact Explorer source/lock/build, bundle tree and descriptor
+  identity to declarative journeys, requests, console output, restored state
+  and terminal outcome.
+- Extended the authoring profile with repository lifecycle, executable
+  consumer identity, explicit compatibility windows, concrete validator paths
+  and a 60-second tool-first public-URL share gate.
+- Made the Foundry authoring contract machine-check a pinned consumer
+  inventory and lock, a connected producer-to-public-route dependency graph,
+  two-stage real-consumer fixtures, digest planes, bidirectional compatibility
+  and post-deployment deep links.
+- Updated both Foundry prompts, the prompt kit, beginner guidance, schema,
+  template and semantic validator so a producer-only pass cannot authorise a
+  release.
+- Made a selected large-corpus record hydrate its resource index before the
+  Resources view renders, with a three-browser regression proving the linked
+  resource is visible while targeted Graph hydration remains bounded.
+
 ## v0.5.5 - 2026-07-29 - Bounded relationship navigation and OKF Foundry
 
 - Replaced the misleading whole-relationship loader on large-corpus facet
