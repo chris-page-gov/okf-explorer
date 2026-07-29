@@ -85,6 +85,43 @@ test('chapter 19 routes readers to the rendered kit and profile', async ({ page 
   ).toHaveAttribute('href', '../prompts/okf-domain-warm-up.html');
 });
 
+test('the beginner coverage table opens rendered HTML documentation', async ({ page }) => {
+  const response = await page.goto('docs/beginners/index.html');
+  expect(response?.ok()).toBe(true);
+
+  const coverageTable = page.locator('table').first();
+  const repositoryGuide = coverageTable.getByRole('link', {
+    name: 'Repository guide',
+    exact: true
+  }).first();
+  await expect(repositoryGuide).toHaveAttribute('href', '../repository-guide.html');
+
+  const [navigation] = await Promise.all([
+    page.waitForNavigation(),
+    repositoryGuide.click()
+  ]);
+  expect(navigation?.ok()).toBe(true);
+  expect(navigation?.headers()['content-type']).toContain('text/html');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Repository Guide' })
+  ).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Documentation' })).toBeVisible();
+});
+
+test('cross-page fragments arrive at generated heading anchors', async ({ page }) => {
+  await page.goto('docs/beginners/19-foundry-authoring-and-domain-profiles.html');
+  const checklist = page.getByRole('link', { name: 'prompt kit checklist' });
+  await expect(checklist).toHaveAttribute(
+    'href',
+    '../okf-authoring-prompt-kit.html#success-checklist'
+  );
+  await checklist.click();
+  await expect(page).toHaveURL(/okf-authoring-prompt-kit\.html#success-checklist$/);
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'Success Checklist' })
+  ).toBeVisible();
+});
+
 test('Foundry pages have no serious accessibility violations', async ({ page }) => {
   await page.goto('docs/prompts/okf-domain-warm-up.html');
   const results = await new AxeBuilder({ page }).analyze();

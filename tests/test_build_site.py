@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
+from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,7 +69,8 @@ class BuildSiteTests(unittest.TestCase):
 
             index = (target / "index.html").read_text(encoding="utf-8")
             self.assertIn(
-                "<h1>OKF Explorer From The Beginning</h1>",
+                '<h1 id="okf-explorer-from-the-beginning">'
+                "OKF Explorer From The Beginning</h1>",
                 index,
             )
             self.assertIn(
@@ -111,7 +113,7 @@ class BuildSiteTests(unittest.TestCase):
         self.assertNotIn("<script>", rendered)
         self.assertNotIn('href="javascript:', rendered)
 
-    def test_beginner_links_rewrite_only_rendered_guide_markdown(self) -> None:
+    def test_beginner_links_rewrite_every_published_markdown_target(self) -> None:
         source = build_site.BEGINNER_DOCS / "index.md"
         self.assertEqual(
             "01-product-in-plain-language.html#the-problem",
@@ -121,7 +123,7 @@ class BuildSiteTests(unittest.TestCase):
             ),
         )
         self.assertEqual(
-            "../repository-guide.md",
+            "../repository-guide.html",
             build_site.rewrite_beginner_href(
                 "../repository-guide.md",
                 source,
@@ -173,7 +175,7 @@ class BuildSiteTests(unittest.TestCase):
                 text_target = (output / target).with_suffix(".txt")
                 self.assertEqual(prompt, text_target.read_text(encoding="utf-8"))
                 textarea = re.search(
-                    r'<textarea id="copy-ready-prompt".*?>(.*?)</textarea>',
+                    r'<textarea id="copy-ready-prompt-source".*?>(.*?)</textarea>',
                     page,
                     flags=re.DOTALL,
                 )
@@ -186,7 +188,7 @@ class BuildSiteTests(unittest.TestCase):
                 )
                 self.assertIn("Copy full prompt", page)
                 self.assertIn('role="status" aria-live="polite"', page)
-                self.assertIn("<h2>OKF Foundry", page)
+                self.assertIn('<h2 id="okf-foundry', page)
                 self.assertNotIn("<h1>OKF Foundry", page)
                 if source.name == "okf-domain-warm-up.md":
                     self.assertLess(
@@ -255,7 +257,217 @@ class BuildSiteTests(unittest.TestCase):
                 profile,
             )
 
-    def test_foundry_rewriter_is_bounded_and_preserves_fragments(self) -> None:
+    def test_readable_dependency_closure_has_total_html_routes(self) -> None:
+        routes = build_site.published_source_routes()
+        self.assertGreaterEqual(len(routes), 200)
+        self.assertEqual(len(routes), len(set(routes.values())))
+        self.assertEqual(
+            Path("catalogue/index.html"),
+            routes[(build_site.ROOT / "index.md").resolve()],
+        )
+        expected = {
+            "docs/repository-guide.md": "docs/repository-guide.html",
+            "docs/uk-legislation/index.md": "docs/uk-legislation/index.html",
+            "glossary/provenance.md": "glossary/provenance.html",
+            "profiles/federation/v1/index.md": (
+                "profile/federation/v1/index.html"
+            ),
+            "standards/dcat.md": "standards/dcat.html",
+        }
+        for source, route in expected.items():
+            self.assertEqual(
+                Path(route),
+                routes[(build_site.ROOT / source).resolve()],
+            )
+
+        for source in build_site.readable_markdown_sources():
+            for href in build_site.markdown_link_hrefs(source):
+                parts = urlsplit(href)
+                if (
+                    parts.scheme
+                    or parts.netloc
+                    or not parts.path
+                    or parts.path.startswith("/")
+                    or not parts.path.lower().endswith(".md")
+                ):
+                    continue
+                dependency = (source.parent / unquote(parts.path)).resolve()
+                if dependency.is_file() and not (
+                    build_site.is_excluded_markdown_dependency(dependency)
+                ):
+                    self.assertIn(
+                        dependency,
+                        routes,
+                        f"{source.relative_to(build_site.ROOT)} -> {href}",
+                    )
+
+    def test_every_generated_reading_page_uses_html_navigation(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-all-docs-"
+        ) as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_generic_reading_pages()
+                build_site.write_beginner_guide()
+                build_site.write_foundry_pages()
+
+            for route in build_site.published_source_routes().values():
+                page = output / route
+                self.assertTrue(page.is_file(), route)
+                parser = build_site.ReadingPageLinks()
+                parser.feed(page.read_text(encoding="utf-8"))
+                self.assertTrue(
+                    any(
+                        kind == "link[href]" and href.endswith(".md")
+                        for kind, href in parser.references
+                    ),
+                    f"{route}: missing exact-build Markdown alternate",
+                )
+                for href in parser.hrefs:
+                    parts = urlsplit(href)
+                    if parts.scheme or parts.netloc:
+                        continue
+                    self.assertNotEqual(
+                        ".md",
+                        Path(unquote(parts.path)).suffix.lower(),
+                        f"{route}: {href}",
+                    )
+
+            guide = (
+                output / "docs" / "beginners" / "index.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('href="../repository-guide.html"', guide)
+            self.assertIn('href="../okf-standards-crosswalk.html"', guide)
+            self.assertIn('href="../../catalogue/index.html"', guide)
+
+            chapter = (
+                output
+                / "docs"
+                / "beginners"
+                / "19-foundry-authoring-and-domain-profiles.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'href="../okf-authoring-prompt-kit.html#success-checklist"',
+                chapter,
+            )
+            kit = (
+                output / "docs" / "okf-authoring-prompt-kit.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('id="success-checklist"', kit)
+
+    def test_readable_link_audit_rejects_local_markdown_navigation(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-link-audit-"
+        ) as temporary:
+            output = Path(temporary)
+            route = Path("docs/index.html")
+            target = output / route
+            target.parent.mkdir(parents=True)
+            target.write_text(
+                '<!doctype html><a href="repository-guide.md">Broken</a>',
+                encoding="utf-8",
+            )
+            source = (build_site.ROOT / "docs" / "index.md").resolve()
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "published_source_routes",
+                    return_value={source: route},
+                ),
+                mock.patch.object(
+                    build_site,
+                    "readable_markdown_sources",
+                    return_value=(source,),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "internal Markdown navigation must use HTML",
+                ):
+                    build_site.assert_readable_document_links()
+
+    def test_readable_link_audit_rejects_missing_script_resource(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-resource-audit-"
+        ) as temporary:
+            output = Path(temporary)
+            route = Path("docs/index.html")
+            target = output / route
+            target.parent.mkdir(parents=True)
+            target.write_text(
+                '<!doctype html><script src="missing.js"></script>',
+                encoding="utf-8",
+            )
+            source = (build_site.ROOT / "docs" / "index.md").resolve()
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "published_source_routes",
+                    return_value={source: route},
+                ),
+                mock.patch.object(
+                    build_site,
+                    "readable_markdown_sources",
+                    return_value=(source,),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "missing local target missing.js",
+                ):
+                    build_site.assert_readable_document_links()
+
+    def test_readable_link_audit_rejects_duplicate_html_ids(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-id-audit-"
+        ) as temporary:
+            output = Path(temporary)
+            route = Path("docs/index.html")
+            target = output / route
+            target.parent.mkdir(parents=True)
+            target.write_text(
+                '<!doctype html><h1 id="repeated">One</h1>'
+                '<p id="repeated">Two</p>',
+                encoding="utf-8",
+            )
+            source = (build_site.ROOT / "docs" / "index.md").resolve()
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "published_source_routes",
+                    return_value={source: route},
+                ),
+                mock.patch.object(
+                    build_site,
+                    "readable_markdown_sources",
+                    return_value=(source,),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "duplicate HTML id #repeated",
+                ):
+                    build_site.assert_readable_document_links()
+
+    def test_heading_ids_are_stable_and_disambiguated(self) -> None:
+        renderer = build_site.published_markdown_renderer()
+        source = build_site.ROOT / "docs" / "index.md"
+        rendered = renderer.render(
+            "# Same Heading\n\n## Same Heading\n\n"
+            "## Symbols, RDF & YAML-LD!\n",
+            {
+                "source": str(source),
+                "output_route": "docs/index.html",
+            },
+        )
+        self.assertIn('id="same-heading"', rendered)
+        self.assertIn('id="same-heading-1"', rendered)
+        self.assertIn('id="symbols-rdf-yaml-ld"', rendered)
+
+    def test_foundry_rewriter_covers_docs_and_preserves_fragments(self) -> None:
         source = (
             build_site.ROOT
             / "docs"
@@ -276,7 +488,7 @@ class BuildSiteTests(unittest.TestCase):
             ),
         )
         self.assertEqual(
-            "../repository-guide.md",
+            "../repository-guide.html",
             build_site.rewrite_published_href(
                 "../repository-guide.md",
                 source,

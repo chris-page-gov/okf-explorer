@@ -64,6 +64,16 @@ sources and fixtures. The generated JSON and selected Markdown files under
 `uk-government-apis/` are committed so the exemplar can be browsed and tested
 without a live server.
 
+For human documentation, `build_site.py` discovers every local Markdown
+dependency reachable from `docs/` and `profiles/`, publishes a corresponding
+HTML page, rewrites links in paragraphs, lists and tables, and gives headings
+stable fragment identifiers. The build then crawls the generated reading
+pages. A same-site `.md` link, missing target or missing fragment fails before
+Pages upload. Missing scripts, stylesheets and images, duplicate identifiers,
+and route collisions also fail closed. Canonical Markdown remains in Git,
+is advertised as an exact-build alternate for machines, and is available to
+people through GitHub's rendered HTML source view.
+
 The UK Legislation source boundary is the generator plus official Atom/CLML
 interfaces and cached source responses. Generated compressed work/search
 chunks are committed; provision trees are resolved from official CLML only

@@ -2,6 +2,14 @@
 
 ## Unreleased - OKF Foundry authoring protocol
 
+- Published the complete documentation dependency graph as responsive HTML,
+  including links embedded in tables and links from documentation into the
+  sample knowledge corpus. Internal Markdown navigation now rewrites to
+  deterministic HTML routes with stable heading anchors; a post-build crawl
+  fails publication for raw same-site Markdown links, missing targets or
+  missing fragments, duplicate identifiers, and missing scripts, stylesheets
+  or images. Raw source remains machine-discoverable as an exact-build
+  alternate, while the visible source link uses GitHub's rendered HTML view.
 - Published the Foundry prompt kit, both copy-ready prompts, worked examples
   and authoring profile as safe, responsive HTML. The prompt pages provide
   accessible one-click exact-copy controls, plain-text downloads and an
