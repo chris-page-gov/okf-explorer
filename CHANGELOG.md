@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.5.7 - 2026-07-29 - Fail-closed descriptor identity
+
+- Fail closed when a document declares a large-corpus schema without the
+  matching `okf-large-corpus` kind, or declares the large-corpus kind without
+  the supported schema, instead of silently normalizing it as an empty small
+  bundle.
+- Added unit and real-browser malformed/degraded descriptor coverage for
+  producer compatibility gates.
+
 ## v0.5.6 - 2026-07-29 - Consumer-proof Foundry releases
 
 - Added a dry-run-first repository bootstrap scaffolder/checker for empty,
