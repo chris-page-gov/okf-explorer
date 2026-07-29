@@ -35,7 +35,8 @@ The journey manifests also define opt-in browser interactions for facets,
 sorting, URL Back/Forward restoration, graph edges, relationship-drawer
 resizing, Map reductions, folded record sections, full-record loading and
 source-data/new-tab behaviour. A normal 100-question harness run remains
-unchanged.
+unchanged. Acceptance fixtures wait for bundle-specific hydrated content rather
+than using an application-shell selector as their readiness signal.
 
 The focused geospatial suite runs 18 Playwright scenarios against deterministic
 small- and large-bundle fixtures. It covers every Map control and visible
