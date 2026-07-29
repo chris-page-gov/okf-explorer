@@ -19,7 +19,7 @@ const EXPLORER_BUILD_ROOT = 'explorer-build';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
 const EXPLORER_BUILD_MANIFEST_PATH =
   `explorer-build/${BUILD_MANIFEST_FILENAME}`;
-const EXPLORER_RELEASE_TAG = 'v0.5.6';
+const EXPLORER_RELEASE_TAG = 'v0.5.7';
 let temporarySequence = 0;
 
 async function verifyExistingWriteOnceFile(destination, expected) {

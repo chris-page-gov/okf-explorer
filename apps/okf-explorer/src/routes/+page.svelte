@@ -114,6 +114,7 @@
     movedBundleTarget,
     parseStructuredDocumentText
   } from '$lib/sources/fetch';
+  import { isLargeCorpusDescriptor } from '$lib/sources/descriptor';
   import { isFederationDescriptor, loadFederationOverview } from '$lib/sources/federation';
   import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
@@ -1019,7 +1020,7 @@
         bundleUrl = resolvedUrl;
         const hash = safeDecodeHash();
         selectedId = hash && hash !== 'overview' && federation.corpus.nodes[hash] ? hash : '';
-      } else if (raw.kind === 'okf-large-corpus') {
+      } else if (isLargeCorpusDescriptor(raw)) {
         const large = await loadLargeCorpus(resolvedUrl, raw as unknown as LargeCorpusDescriptor);
         if (requestId !== loadRequest) return;
         source = large;
@@ -1220,7 +1221,7 @@
         file.name,
         file.type
       );
-      if (raw.kind === 'okf-large-corpus') {
+      if (isLargeCorpusDescriptor(raw)) {
         throw new Error('Large-corpus descriptors need remote chunk URLs; publish the descriptor or load it by URL.');
       }
       const federation = isFederationDescriptor(raw)
