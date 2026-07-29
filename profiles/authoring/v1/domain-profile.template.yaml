@@ -258,6 +258,250 @@ architecture:
   namespace_strategy: Repository-controlled namespace pending a permanent domain.
   scale_assumptions: Reassess after the inventory establishes record and relationship counts.
 
+consumer_contract:
+  inventory:
+    - id: CONSUMER-001
+      title: Replace-me actual OKF reader
+      kind: viewer
+      version_or_digest: replace-me-exact-release-commit-or-image-digest
+      source: https://example.org/consumer
+      interfaces:
+        - okf-small-bundle
+        - public deep links
+      execution: Run the pinned consumer itself against the generated tiny fixture; a schema-only substitute does not satisfy this consumer check.
+      required_for_release: true
+      deep_link_required: true
+      evidence_refs:
+        - EV-001
+  lock:
+    path: domain-profile/consumer-lock.json
+    sha256: unknown
+    consumer_ids:
+      - CONSUMER-001
+    update_policy: Change a consumer version only through a reviewed lock update that reruns its dependency-graph closure and both compatibility directions.
+  dependency_graph:
+    nodes:
+      - id: NODE-PRODUCER
+        kind: producer
+        label: Deterministic OKF bundle builder
+        location: scripts/build.py
+      - id: NODE-CONTROL
+        kind: plane
+        label: Descriptor and control plane
+        location: okf-explorer.json
+        plane_ref: PLANE-CONTROL
+      - id: NODE-DATA
+        kind: plane
+        label: Record and evidence data plane
+        location: data/
+        plane_ref: PLANE-DATA
+      - id: NODE-PRESENTATION
+        kind: plane
+        label: Human pages and consumer route plane
+        location: bundle/
+        plane_ref: PLANE-PRESENTATION
+      - id: NODE-CONSUMER
+        kind: consumer
+        label: Pinned actual reader
+        location: consumer-lock.json#CONSUMER-001
+        consumer_ref: CONSUMER-001
+      - id: NODE-PUBLIC-ROUTE
+        kind: public-route
+        label: Published overview and record deep links
+        location: https://example.org/bundle/
+        consumer_ref: CONSUMER-001
+    edges:
+      - id: EDGE-PRODUCER-CONTROL
+        from_node: NODE-PRODUCER
+        to_node: NODE-CONTROL
+        contract: The producer emits the pinned descriptor schema and binds the data-plane root.
+        change_impacts:
+          - Descriptor schema, entrypoint or snapshot-binding changes invalidate the control plane and all downstream consumer checks.
+        affected_plane_refs:
+          - PLANE-CONTROL
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+      - id: EDGE-PRODUCER-DATA
+        from_node: NODE-PRODUCER
+        to_node: NODE-DATA
+        contract: The producer emits normalized records, relationships and evidence under the frozen data-plane manifest.
+        change_impacts:
+          - Source, normalization, identity, rights or relationship changes invalidate the data plane and its downstream consumer checks.
+        affected_plane_refs:
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-001
+          - VAL-CONSUMER-001
+      - id: EDGE-PRODUCER-PRESENTATION
+        from_node: NODE-PRODUCER
+        to_node: NODE-PRESENTATION
+        contract: The producer emits the human pages, descriptor links and durable route templates under the presentation-plane manifest.
+        change_impacts:
+          - Documentation, route-template or hosting-base changes invalidate the presentation plane and post-deploy checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+      - id: EDGE-CONTROL-CONSUMER
+        from_node: NODE-CONTROL
+        to_node: NODE-CONSUMER
+        contract: The locked consumer loads the descriptor and resolves every required entrypoint without guessing.
+        change_impacts:
+          - Consumer or descriptor changes rerun the actual-consumer fixture and both compatibility directions.
+        affected_plane_refs:
+          - PLANE-CONTROL
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+          - VAL-COMPAT-001
+      - id: EDGE-DATA-CONSUMER
+        from_node: NODE-DATA
+        to_node: NODE-CONSUMER
+        contract: The locked consumer resolves and interprets the records, relationships and evidence bound by the data-plane root.
+        change_impacts:
+          - Data-plane changes rerun the actual-consumer fixture, relevant task journeys and public deep-link checks.
+        affected_plane_refs:
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+          - VAL-DEPLOY-001
+      - id: EDGE-PRESENTATION-PUBLIC
+        from_node: NODE-PRESENTATION
+        to_node: NODE-PUBLIC-ROUTE
+        contract: The published routes expose the frozen presentation-plane bytes and links without path guessing.
+        change_impacts:
+          - Presentation-plane changes rerun route parsing, accessibility and post-deploy deep-link checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+      - id: EDGE-CONSUMER-PUBLIC
+        from_node: NODE-CONSUMER
+        to_node: NODE-PUBLIC-ROUTE
+        contract: Published deep links restore the declared bundle, view and record or query state.
+        change_impacts:
+          - Consumer, route, hosting-base or descriptor changes rerun post-deploy deep-link checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+  fixture_protocol:
+    max_seconds: 60
+    producer_stage:
+      id: FIXTURE-STAGE-PRODUCER
+      purpose: Build the tiny source fixture twice and prove schemas, negative cases, deterministic bytes and plane roots before invoking external consumers.
+      commands:
+        - python3 scripts/build.py --fixture --clean
+        - python3 scripts/check.py --fixture
+      cases:
+        - Valid record with source evidence
+        - Missing optional metadata
+        - Conflicting identity
+        - Unsafe link
+        - Digest mismatch
+      expected_outcomes:
+        - Both clean builds are byte-identical.
+        - Invalid, unsafe and mismatched cases fail closed.
+        - Every selected plane has a reproducible root receipt.
+      consumer_refs: []
+      validation_refs:
+        - VAL-001
+    consumer_stage:
+      id: FIXTURE-STAGE-CONSUMER
+      purpose: Execute every required locked consumer against the producer-stage bytes and inspect real routes, state restoration and degraded behavior.
+      commands:
+        - replace-me-command-that-runs-the-pinned-consumer-against-the-fixture
+      cases:
+        - Overview load
+        - Search and facet state
+        - Selected record deep link
+        - Missing optional entrypoint
+        - Corrupt digest
+      expected_outcomes:
+        - The actual consumer loads valid fixture bytes without a guessed path.
+        - Deep links restore the expected bundle identity and view state.
+        - Unsupported or corrupt input degrades explicitly or fails closed.
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+        - VAL-COMPAT-001
+  planes:
+    - id: PLANE-CONTROL
+      title: Descriptor and control plane
+      role: control
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/control-plane.json
+      root_receipt: validation/digests/control-plane-root.json
+      invalidated_by:
+        - Descriptor, schema, entrypoint, snapshot or consumer-interface changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+    - id: PLANE-DATA
+      title: Record, evidence and relationship data plane
+      role: data
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/data-plane.json
+      root_receipt: validation/digests/data-plane-root.json
+      invalidated_by:
+        - Source snapshot, normalization, identity, rights, record or relationship changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-001
+        - VAL-CONSUMER-001
+    - id: PLANE-PRESENTATION
+      title: Human pages and consumer route plane
+      role: presentation
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/presentation-plane.json
+      root_receipt: validation/digests/presentation-plane-root.json
+      invalidated_by:
+        - Documentation, route, hosting-base, consumer or public-state changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+        - VAL-DEPLOY-001
+  compatibility:
+    support_policy: Test the new producer with every supported locked consumer and test the current consumer with retained fixtures from every supported producer contract.
+    cases:
+      - id: COMPAT-BACKWARD-001
+        direction: backward-new-producer-old-consumer
+        producer_fixture: fixtures/current-producer/
+        consumer_ref: CONSUMER-001
+        expected_result: accept
+        validation_refs:
+          - VAL-COMPAT-001
+      - id: COMPAT-FORWARD-001
+        direction: forward-old-producer-new-consumer
+        producer_fixture: fixtures/supported-producer-v0/
+        consumer_ref: CONSUMER-001
+        expected_result: explicit-degraded
+        validation_refs:
+          - VAL-COMPAT-001
+  post_deploy_deep_links:
+    - id: DEEP-LINK-001
+      consumer_ref: CONSUMER-001
+      url_template: https://example.org/consumer/?bundle={{PERCENT_ENCODED_PUBLIC_DESCRIPTOR_URL}}&view=reader#overview
+      state: Reader overview for the exact published descriptor; add record, search and filter cases selected by the profile.
+      expected_identity: The consumer reports the published bundle ID, snapshot and version rather than its empty state or another cached bundle.
+      expected_content:
+        - No loader error
+        - Expected title and record count
+        - Restored Reader overview state
+      digest_plane_refs:
+        - PLANE-CONTROL
+        - PLANE-PRESENTATION
+      validation_refs:
+        - VAL-DEPLOY-001
+
 enrichment:
   enabled: false
   purpose: No model enrichment is justified by the current evidence.
@@ -277,6 +521,27 @@ validation:
     severity: error
     release_gate: true
     receipt: validation/okf-core.json
+  - id: VAL-CONSUMER-001
+    target: Two-stage tiny fixture and every required locked consumer
+    method: Build the fixture twice, then execute the pinned consumer itself against the exact fixture bytes and verify valid, degraded and fail-closed outcomes.
+    validator: Pinned producer checks plus the exact consumer execution from consumer-lock.json
+    severity: error
+    release_gate: true
+    receipt: validation/consumer-fixture.json
+  - id: VAL-COMPAT-001
+    target: Bidirectional producer/consumer compatibility matrix
+    method: Run current producer bytes through supported consumers and retained supported producer fixtures through the current consumer.
+    validator: Pinned compatibility harness and consumer lock
+    severity: error
+    release_gate: true
+    receipt: validation/consumer-compatibility.json
+  - id: VAL-DEPLOY-001
+    target: Published consumer deep links
+    method: Open each exact public deep link unauthenticated and verify bundle identity, snapshot, view/query/record state, expected content and applicable plane roots.
+    validator: Pinned browser and HTTP content checks
+    severity: error
+    release_gate: true
+    receipt: validation/post-deploy-deep-links.json
 
 evaluation:
   competency_questions:
@@ -382,9 +647,12 @@ build_recommendation:
     - Domain ontology until competency questions justify it
     - Model-assisted enrichment until a semantic gap and review method are approved
   blocking_decision_ids: []
-  canonical_fixture: Include one normal record, one missing-metadata record, one conflict and one unsafe-link case.
+  canonical_fixture: Use two stages—first build and validate one normal record, one missing-metadata record, one conflict, one unsafe-link case and one digest mismatch; then execute every required locked consumer against those exact bytes.
   acceptance_gates:
     - Domain profile validates and its digest is recorded.
-    - Tiny fixture passes twice with byte-identical output.
+    - Consumer inventory and lock are pinned, and every dependency edge resolves to an impact and validation closure.
+    - The two-stage tiny fixture passes twice with byte-identical producer output and successful actual-consumer execution.
+    - Both producer-to-consumer compatibility directions pass or degrade exactly as declared.
+    - Per-plane digest roots permit only evidence-backed selective reruns.
     - The complete bundle reconciles to the declared input population.
-    - The frozen release reproduces and public routes parse.
+    - The frozen release reproduces and post-deploy overview, record, query and filter deep links restore exact state.

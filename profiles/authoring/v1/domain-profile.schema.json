@@ -415,6 +415,9 @@
       },
       "additionalProperties": false
     },
+    "consumer_contract": {
+      "$ref": "#/$defs/consumerContract"
+    },
     "enrichment": {
       "type": "object",
       "required": [
@@ -673,6 +676,467 @@
       "items": {
         "$ref": "#/$defs/nonEmpty"
       }
+    },
+    "nonEmptyIdArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmpty"
+      }
+    },
+    "consumerContract": {
+      "type": "object",
+      "required": [
+        "inventory",
+        "lock",
+        "dependency_graph",
+        "fixture_protocol",
+        "planes",
+        "compatibility",
+        "post_deploy_deep_links"
+      ],
+      "properties": {
+        "inventory": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/consumer"
+          }
+        },
+        "lock": {
+          "$ref": "#/$defs/consumerLock"
+        },
+        "dependency_graph": {
+          "$ref": "#/$defs/dependencyGraph"
+        },
+        "fixture_protocol": {
+          "$ref": "#/$defs/fixtureProtocol"
+        },
+        "planes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/digestPlane"
+          }
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibilityContract"
+        },
+        "post_deploy_deep_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/postDeployDeepLink"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumer": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "kind",
+        "version_or_digest",
+        "source",
+        "interfaces",
+        "execution",
+        "required_for_release",
+        "deep_link_required",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "kind": {
+          "enum": [
+            "viewer",
+            "site-generator",
+            "validator",
+            "search-worker",
+            "semantic-processor",
+            "release-finalizer",
+            "archive-reader",
+            "downstream-agent",
+            "other"
+          ]
+        },
+        "version_or_digest": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "execution": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "required_for_release": {
+          "type": "boolean"
+        },
+        "deep_link_required": {
+          "type": "boolean"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumerLock": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "consumer_ids",
+        "update_policy"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256OrUnknown"
+        },
+        "consumer_ids": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "update_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyGraph": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/dependencyNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/dependencyEdge"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyNode": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "label",
+        "location"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "kind": {
+          "enum": [
+            "source",
+            "producer",
+            "artifact",
+            "plane",
+            "consumer",
+            "public-route",
+            "validator",
+            "finalizer"
+          ]
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "location": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "consumer_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "plane_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyEdge": {
+      "type": "object",
+      "required": [
+        "id",
+        "from_node",
+        "to_node",
+        "contract",
+        "change_impacts",
+        "affected_plane_refs",
+        "validation_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "from_node": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "to_node": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "contract": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "change_impacts": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "affected_plane_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fixtureProtocol": {
+      "type": "object",
+      "required": [
+        "max_seconds",
+        "producer_stage",
+        "consumer_stage"
+      ],
+      "properties": {
+        "max_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 600
+        },
+        "producer_stage": {
+          "$ref": "#/$defs/fixtureStage"
+        },
+        "consumer_stage": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/fixtureStage"
+            },
+            {
+              "properties": {
+                "consumer_refs": {
+                  "$ref": "#/$defs/nonEmptyIdArray"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "fixtureStage": {
+      "type": "object",
+      "required": [
+        "id",
+        "purpose",
+        "commands",
+        "cases",
+        "expected_outcomes",
+        "consumer_refs",
+        "validation_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "commands": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "cases": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "expected_outcomes": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "consumer_refs": {
+          "$ref": "#/$defs/idArray"
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "digestPlane": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "role",
+        "digest_algorithm",
+        "digest_manifest",
+        "root_receipt",
+        "invalidated_by",
+        "consumer_refs",
+        "validation_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "role": {
+          "enum": [
+            "source",
+            "control",
+            "data",
+            "search",
+            "semantic",
+            "presentation",
+            "release"
+          ]
+        },
+        "digest_algorithm": {
+          "enum": [
+            "sha256",
+            "rdf-canon-sha256",
+            "mixed-declared"
+          ]
+        },
+        "digest_manifest": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "root_receipt": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "invalidated_by": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "consumer_refs": {
+          "$ref": "#/$defs/idArray"
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "compatibilityContract": {
+      "type": "object",
+      "required": [
+        "support_policy",
+        "cases"
+      ],
+      "properties": {
+        "support_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "cases": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/compatibilityCase"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "compatibilityCase": {
+      "type": "object",
+      "required": [
+        "id",
+        "direction",
+        "producer_fixture",
+        "consumer_ref",
+        "expected_result",
+        "validation_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "direction": {
+          "enum": [
+            "backward-new-producer-old-consumer",
+            "forward-old-producer-new-consumer"
+          ]
+        },
+        "producer_fixture": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "consumer_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "expected_result": {
+          "enum": [
+            "accept",
+            "explicit-degraded",
+            "fail-closed"
+          ]
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "postDeployDeepLink": {
+      "type": "object",
+      "required": [
+        "id",
+        "consumer_ref",
+        "url_template",
+        "state",
+        "expected_identity",
+        "expected_content",
+        "digest_plane_refs",
+        "validation_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "consumer_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "url_template": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "state": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "expected_identity": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "expected_content": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "digest_plane_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        }
+      },
+      "additionalProperties": false
     },
     "confidence": {
       "type": "object",

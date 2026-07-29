@@ -51,6 +51,44 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertEqual("hypothesis", self.template["claims"][0]["claim_status"])
         self.assertIn("identifier_model", self.template["sources"][0])
         self.assertIn("semantic_conflicts", self.template["standards"][0])
+        consumer_contract = self.template["consumer_contract"]
+        self.assertEqual(
+            ["CONSUMER-001"],
+            consumer_contract["lock"]["consumer_ids"],
+        )
+        dependency_graph = consumer_contract["dependency_graph"]
+        self.assertTrue(dependency_graph["edges"])
+        connected_nodes = {
+            edge[key]
+            for edge in dependency_graph["edges"]
+            for key in ("from_node", "to_node")
+        }
+        self.assertEqual(
+            {node["id"] for node in dependency_graph["nodes"]},
+            connected_nodes,
+        )
+        self.assertTrue(
+            consumer_contract["fixture_protocol"]["consumer_stage"][
+                "consumer_refs"
+            ]
+        )
+        self.assertEqual(
+            {
+                "backward-new-producer-old-consumer",
+                "forward-old-producer-new-consumer",
+            },
+            {
+                case["direction"]
+                for case in consumer_contract["compatibility"]["cases"]
+            },
+        )
+        self.assertTrue(consumer_contract["post_deploy_deep_links"])
+
+    def test_consumer_contract_is_additive_for_existing_v1_profiles(self) -> None:
+        legacy = json.loads(json.dumps(self.template))
+        del legacy["consumer_contract"]
+        self.assertEqual([], self.errors(legacy))
+        self.assertEqual([], check_domain_profile.reference_errors(legacy))
 
     def test_profile_rejects_an_unreviewed_applicability_vocabulary(self) -> None:
         invalid = json.loads(json.dumps(self.template))
@@ -74,13 +112,116 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertIn("user_ids references unknown id 'USER-MISSING'", errors)
         self.assertTrue(any("unknown rights_ref" in item for item in errors))
 
+    def test_semantic_validation_rejects_unpinned_consumer_contracts(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["consumer_contract"]["lock"]["consumer_ids"] = [
+            "CONSUMER-MISSING"
+        ]
+        invalid["consumer_contract"]["inventory"][0][
+            "version_or_digest"
+        ] = "latest"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertIn(
+            "consumer_contract.lock.consumer_ids must exactly match the "
+            "consumer inventory",
+            errors,
+        )
+        self.assertTrue(
+            any("unpinned version_or_digest" in item for item in errors)
+        )
+
+        approved = json.loads(json.dumps(self.template))
+        approved["status"] = "approved"
+        approved_errors = check_domain_profile.reference_errors(approved)
+        self.assertIn(
+            "an approved domain profile must pin the consumer lock SHA-256",
+            approved_errors,
+        )
+
+    def test_semantic_validation_rejects_broken_consumer_graph_references(
+        self,
+    ) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["consumer_contract"]["dependency_graph"]["edges"][0][
+            "to_node"
+        ] = "NODE-MISSING"
+        invalid["consumer_contract"]["dependency_graph"]["nodes"][1][
+            "plane_ref"
+        ] = "PLANE-MISSING"
+        invalid["consumer_contract"]["compatibility"]["cases"][0][
+            "consumer_ref"
+        ] = "CONSUMER-MISSING"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("unknown to_node 'NODE-MISSING'" in item for item in errors)
+        )
+        self.assertIn(
+            "plane reference points to unknown plane 'PLANE-MISSING'",
+            errors,
+        )
+        self.assertIn(
+            "consumer reference points to unknown consumer 'CONSUMER-MISSING'",
+            errors,
+        )
+
+    def test_semantic_validation_requires_consumer_execution_compatibility_and_links(
+        self,
+    ) -> None:
+        invalid_fixture = json.loads(json.dumps(self.template))
+        invalid_fixture["consumer_contract"]["fixture_protocol"][
+            "consumer_stage"
+        ]["consumer_refs"] = []
+        fixture_errors = check_domain_profile.reference_errors(invalid_fixture)
+        self.assertTrue(
+            any(
+                "does not execute every required consumer" in item
+                for item in fixture_errors
+            )
+        )
+
+        invalid_compatibility = json.loads(json.dumps(self.template))
+        invalid_compatibility["consumer_contract"]["compatibility"]["cases"] = (
+            invalid_compatibility["consumer_contract"]["compatibility"][
+                "cases"
+            ][:1]
+        )
+        compatibility_errors = check_domain_profile.reference_errors(
+            invalid_compatibility
+        )
+        self.assertIn(
+            "consumer compatibility cases must cover both producer/consumer "
+            "directions",
+            compatibility_errors,
+        )
+
+        invalid_links = json.loads(json.dumps(self.template))
+        invalid_links["consumer_contract"]["post_deploy_deep_links"] = []
+        link_errors = check_domain_profile.reference_errors(invalid_links)
+        self.assertTrue(
+            any(
+                "do not cover every deep-link consumer" in item
+                for item in link_errors
+            )
+        )
+
     def test_prompts_keep_research_and_build_as_separate_hash_bound_stages(self) -> None:
         warmup = (DOCS / "prompts" / "okf-domain-warm-up.md").read_text()
         build = (DOCS / "prompts" / "okf-bundle-build.md").read_text()
         self.assertIn("Do not implement the bundle", warmup)
         self.assertIn("CHECKSUMS.sha256", warmup)
+        self.assertIn(
+            "{{KNOWN_CONSUMERS_AND_COMPATIBILITY_WINDOW}}",
+            warmup,
+        )
+        self.assertIn("consumer-lock.json", warmup)
+        self.assertIn("bidirectional compatibility cases", warmup)
         self.assertIn("{{DOMAIN_PROFILE_ROOT_SHA256}}", build)
-        self.assertIn("Tiny canonical fixture", build)
+        self.assertIn("{{CONSUMER_LOCK_SHA256}}", build)
+        self.assertIn("Two-stage tiny canonical fixture", build)
+        self.assertIn("Execute the actual consumer", build)
+        self.assertIn("both compatibility directions", build)
+        self.assertIn("selective-rerun decision", build)
+        self.assertIn("profile-selected deep link", build)
         self.assertIn("substantive security analysis once", build)
         self.assertIn("Promote the exact RC artefacts", build)
 

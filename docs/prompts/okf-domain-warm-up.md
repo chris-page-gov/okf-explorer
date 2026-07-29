@@ -35,6 +35,10 @@ Jurisdiction, language and operating context:
 Repository or candidate publication location:
 {{REPOSITORY_OR_PUBLICATION_LOCATION}}
 
+Known readers, validators, site generators, finalizers, archive readers and
+other downstream consumers, including supported versions where known:
+{{KNOWN_CONSUMERS_AND_COMPATIBILITY_WINDOW}}
+
 Research cut-off (ISO date):
 {{RESEARCH_CUTOFF}}
 
@@ -108,13 +112,16 @@ budget, or silently decide a material owner question.
     requirements.
 16. Pin exact versions, publication dates or commits. Never write "latest" in
     a reproducible profile.
-17. Test external source routes read-only and boundedly. Never bypass
+17. Treat every reader, validator, generator, finalizer and public UI as a
+    versioned consumer contract. Inventory and pin the actual executable or
+    release; a schema that resembles its input is not proof the consumer works.
+18. Test external source routes read-only and boundedly. Never bypass
     authentication, access controls, robots restrictions or publisher limits.
-18. Quote no more source content than is required to evidence a decision.
+19. Quote no more source content than is required to evidence a decision.
     Retain hashes and precise locators where redistribution is constrained.
-19. Stop broadening research when the declared saturation test is met. Publish
+20. Stop broadening research when the declared saturation test is met. Publish
     residual gaps instead of researching indefinitely.
-20. This profile informs a build. It is not itself a knowledge graph,
+21. This profile informs a build. It is not itself a knowledge graph,
     production release, legal determination or independent assurance.
 
 ## Fixed interoperability floor to assess
@@ -269,7 +276,45 @@ release cadences or scale—not by a desire to make one repository look larger.
 A researched source family without an implemented child remains
 `planned`, `restricted` or `unavailable`, not a loadable child.
 
-### I. Validation and evaluation design
+### I. Consumers, impact and compatibility
+
+- Inventory every release-relevant consumer: Explorer/reader, search worker,
+  validator, semantic processor, site generator, release finalizer, archive
+  reader and downstream agent contract.
+- Pin each consumer to an exact release, commit, dependency lock, binary,
+  container or fixture digest. Produce one checksummed `consumer-lock.json`;
+  never use `latest`.
+- Draw an explicit dependency graph from source and producer through each
+  generated plane and artifact to each consumer, validator, finalizer and
+  public route.
+- Give every edge its consumed interface, likely change impacts, affected
+  plane IDs and validation checks. The graph must answer which consumers and
+  downstream planes rerun when a field, path, schema, normalization rule,
+  consumer version or hosting base changes.
+- Define separately rooted source, control, data, search, semantic,
+  presentation and release planes when applicable. For each, name the digest
+  algorithm, manifest, root receipt, invalidation triggers, consumers and
+  validation checks.
+- Design the tiny fixture in two stages:
+  1. the producer stage builds positive, negative and degraded cases twice and
+     proves byte/digest determinism and fail-closed contracts; then
+  2. the consumer stage executes every required locked consumer against those
+     exact fixture bytes and verifies real load, search/state restoration,
+     finalization or archive behavior.
+- A mocked UI, hand-written parser or schema-only test does not replace the
+  actual consumer stage.
+- Define bidirectional compatibility cases:
+  - new producer output through every supported locked consumer; and
+  - retained fixtures from every supported producer contract through the new
+    consumer.
+- For each compatibility case declare `accept`, `explicit-degraded` or
+  `fail-closed`; silent partial success is not acceptable.
+- Define post-deploy deep links for overview, record, search/filter and every
+  other task-critical state. Each check names the actual consumer, exact URL
+  template, expected bundle identity/snapshot, restored state, expected
+  content, plane roots and validator.
+
+### J. Validation and evaluation design
 
 - Define syntax, structure, identity, referential integrity, semantics,
   provenance, rights, coverage, link, publication and reproducibility checks.
@@ -282,8 +327,11 @@ A researched source family without an implemented child remains
 - Define a direct-source baseline and separate discovery, retrieval,
   evidence-inspection and downstream-answer metrics.
 - Hard failures override averages.
+- Include consumer-contract, impact-closure, selective-rerun, both
+  compatibility directions and post-deploy deep-link checks as release-gated
+  validations.
 
-### J. Adversarial challenge and saturation
+### K. Adversarial challenge and saturation
 
 Challenge:
 
@@ -296,8 +344,12 @@ Challenge:
 - source-content prompt injection;
 - unavailable-source fabrication;
 - standards-name decoration without conformance;
-- generated questions mislabelled as verified gold; and
-- architecture that is much larger than evidenced needs.
+- generated questions mislabelled as verified gold;
+- architecture that is much larger than evidenced needs;
+- a schema-valid producer that no locked consumer can actually load;
+- a change declared "unaffected" without graph and plane-root evidence;
+- compatibility tested in only one direction; and
+- a public URL checked only for HTTP 200 without restored consumer state.
 
 Research is saturated only when:
 
@@ -305,6 +357,11 @@ Research is saturated only when:
   decision, freshness behavior and denominator basis or explicit unknown;
 - every critical task has evidence and hard-failure criteria;
 - every selected standard has an exact version and validation method;
+- every required consumer is pinned, represented in the dependency graph and
+  exercised by the second fixture stage;
+- every applicable plane has a digest-root and invalidation plan;
+- both compatibility directions and task-critical public deep links have
+  expected outcomes;
 - every proposed entity/relationship answers a task or competency question;
 - a second adversarial pass adds no critical category; and
 - unresolved equivalences remain explicitly unresolved.
@@ -318,6 +375,8 @@ domain-profile/
   domain-profile.json
   domain-profile.yaml
   evidence-register.jsonl
+  consumer-lock.json
+  dependency-impact.json
   decision-register.md
   traceability.json
   CHECKSUMS.sha256
@@ -330,12 +389,16 @@ Requirements:
    duplicating the entire evidence register.
 3. `evidence-register.jsonl` may carry evidence too large for the control
    document; profile evidence IDs and hashes must still resolve.
-4. `decision-register.md` contains only material owner decisions, ordered by
+4. `consumer-lock.json` contains the exact consumer inventory and immutable
+   version/digest lock. Its IDs and SHA-256 must match `consumer_contract`.
+5. `dependency-impact.json` is the machine graph from producer/input through
+   planes and consumers to public routes, including selective-rerun closure.
+6. `decision-register.md` contains only material owner decisions, ordered by
    build impact, with a recommended default and consequences.
-5. `traceability.json` maps intent/requirement → user task → proposed artefact
+7. `traceability.json` maps intent/requirement → user task → proposed artefact
    → validation → evidence.
-6. `CHECKSUMS.sha256` binds every file. Record one root digest for the handoff.
-7. Do not mark the profile `approved` unless the named decision authority
+8. `CHECKSUMS.sha256` binds every file. Record one root digest for the handoff.
+9. Do not mark the profile `approved` unless the named decision authority
    actually approved it.
 
 Use the public template as the structural starting point:
@@ -365,7 +428,8 @@ Return:
 - its root SHA-256;
 - profile status;
 - selected architecture level and bundle shape;
-- source, standards, user/task, gap and blocking-decision counts;
+- source, standards, user/task, consumer, digest-plane, compatibility-case,
+  deep-link, gap and blocking-decision counts;
 - the three most consequential decisions;
 - the three largest residual risks;
 - exact validation commands and results; and
@@ -393,6 +457,8 @@ effect on the result:
 7. Which errors could cause material harm?
 8. Which normalized, inferred or model-assisted assertions are permitted?
 9. Which unresolved matters genuinely block a minimal build?
+10. Which consumer versions and producer/consumer compatibility window must
+    the release support?
 
 Safe defaults are source-native identity, snapshot-bounded publication,
 metadata and links rather than unevidenced full-content redistribution, no

@@ -56,7 +56,11 @@ async function json(route: Route, body: unknown, status = 200) {
 async function installTargetedFixture(
   context: BrowserContext,
   requests: string[],
-  options: { modelChunkFailures?: number; omitAdjacency?: boolean } = {}
+  options: {
+    modelChunkFailures?: number;
+    omitAdjacency?: boolean;
+    resourceHydrationSafe?: boolean;
+  } = {}
 ) {
   let modelChunkFailuresRemaining = options.modelChunkFailures || 0;
   const bucket = relationshipBucket(RECORD_ROUTE);
@@ -69,7 +73,8 @@ async function installTargetedFixture(
     notes: 'A deterministic legal work used to prove bounded record and relationship hydration.',
     publisher: 'legislation-gov-uk',
     publisher_title: 'legislation.gov.uk',
-    resource_count: 0,
+    resource_count: 1,
+    resource_ids: ['target-act-html'],
     formats: ['clml', 'website'],
     tags: ['ukpga', 'year-1998'],
     topics: [],
@@ -79,6 +84,16 @@ async function installTargetedFixture(
     document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
     open: RECORD_ROUTE
+  };
+  const resource = {
+    id: 'target-act-html',
+    name: 'Target Act HTML',
+    dataset: record.name,
+    route: 'resource/target-act-html',
+    format: 'HTML',
+    host: 'www.legislation.gov.uk',
+    position: 0,
+    url: record.url
   };
   const relationships = [
     {
@@ -346,7 +361,12 @@ async function installTargetedFixture(
     title: 'Targeted legislation hydration fixture',
     description: 'A huge logical corpus with bounded record and relationship indexes.',
     snapshot: SNAPSHOT,
-    counts: { datasets: 365_786, records: 365_786, resources: 0, relationships: 853_883 },
+    counts: {
+      datasets: options.resourceHydrationSafe ? 4 : 365_786,
+      records: options.resourceHydrationSafe ? 4 : 365_786,
+      resources: 1,
+      relationships: 853_883
+    },
     vocabulary: {
       record_singular: 'legal work',
       record_plural: 'legal works',
@@ -416,7 +436,7 @@ async function installTargetedFixture(
         'data/works-2.json',
         'data/works-3.json'
       ],
-      resources: [],
+      resources: ['data/resources.json'],
       publishers: [],
       relationships: ['data/relationships-full.json']
     }
@@ -540,6 +560,7 @@ async function installTargetedFixture(
       return json(route, { [RECORD_ROUTE]: [0, 0] });
     }
     if (url.pathname === '/data/works-0.json') return json(route, [record]);
+    if (url.pathname === '/data/resources.json') return json(route, [resource]);
     if (url.pathname === '/data/adjacency/manifest.json') return json(route, adjacency);
     if (url.pathname === `/data/adjacency/${bucket}.json`) {
       return json(route, { [RECORD_ROUTE]: relationships });
@@ -601,7 +622,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
 
     await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
-    await expect(page.locator('.graph-summary')).toContainText('9 nodes · 8 relationships');
+    await expect(page.locator('.graph-summary')).toContainText('10 nodes · 9 relationships');
     expect(requests).toContain('/data/adjacency/manifest.json');
     expect(requests).toContain(`/data/adjacency/${relationshipBucket(RECORD_ROUTE)}.json`);
     expectNoFullHydration(requests);
@@ -618,6 +639,21 @@ test.describe('targeted large-corpus relationship hydration', () => {
     const assertionCount = modelEnrichment.locator('.enrichment-counts article').first();
     await expect(assertionCount.locator('strong')).toHaveText('1');
     await expect(assertionCount.locator('span')).toHaveText('accepted assertions');
+  });
+
+  test('deep-linked Resources hydrates the resource index for the selected record', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${RECORD_ROUTE}`);
+
+    await expect(page.getByRole('heading', { name: 'Resource stack' })).toBeVisible();
+    await expect(page.getByText('1 manifestations shown from current reduction')).toBeVisible();
+    await expect(page.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    expect(requests).toContain('/data/resources.json');
   });
 
   test('Reader does not bypass the relationship memory guard when adjacency is absent', async ({

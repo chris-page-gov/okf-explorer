@@ -1,6 +1,6 @@
 # OKF Authoring Profile v1
 
-Status: experimental production profile, 27 July 2026.
+Status: experimental production profile, 29 July 2026.
 
 This profile defines the bounded handoff between domain research and an OKF
 bundle build. It exists so a builder can reuse domain decisions without
@@ -33,6 +33,14 @@ freezes:
   relationships;
 - the exact standards selected for the domain and how each will be tested;
 - the smallest justified OKF/Explorer publication architecture;
+- the exact downstream consumers, their version/digest lock and the
+  producer-to-plane-to-consumer impact graph;
+- a two-stage tiny-fixture protocol that validates producer bytes first and
+  then executes the actual locked consumers;
+- per-plane digest roots, invalidation triggers and selective-rerun closure;
+- backward and forward producer/consumer compatibility expectations;
+- post-deploy deep links whose bundle identity and restored state must be
+  checked;
 - validation, evaluation, unresolved gaps and owner decisions; and
 - traceability from intended outcomes to planned artefacts and checks.
 
@@ -98,6 +106,11 @@ only when a calibration method and evidence are declared.
 ## Change And Build Rules
 
 - Hash-lock an approved domain profile and its evidence register.
+- Pin every release-relevant consumer to an exact release, commit, binary,
+  container or dependency-lock digest in one checksummed consumer lock.
+- Maintain an explicit dependency graph from producer and input through each
+  digest plane, consumer and public route. Every edge names its change impact
+  and validation closure.
 - A builder consumes that exact profile; it does not rewrite it.
 - Only unresolved decisions explicitly marked `blocking_for_build: true`
   prevent the smallest viable build.
@@ -105,9 +118,41 @@ only when a calibration method and evidence are declared.
   recorded decision override.
 - Non-blocking uncertainty becomes a visible gap or constraint, not an
   invented value.
-- Begin every implementation with a tiny fixture covering positive, negative,
-  stale, unavailable, conflicting, unsafe and digest-mismatch cases.
+- Begin every implementation with a two-stage tiny fixture. Stage 1 builds and
+  validates positive, negative, stale, unavailable, conflicting, unsafe and
+  digest-mismatch cases twice. Stage 2 executes every required locked consumer
+  against those exact bytes; schema-only or mocked substitutes do not close
+  the consumer gate.
+- Give control, data, search, semantic, presentation and release planes their
+  own applicable digest roots. Rerun only the transitive impacted planes and
+  consumers proven by the graph; a timestamp or an assertion that a change is
+  harmless is not reuse evidence.
+- Test compatibility in both directions: new producer output with every
+  supported consumer, and retained supported producer fixtures with the new
+  consumer.
 - Freeze and assure one release candidate, then promote identical bytes.
+- After deployment, open the exact public overview, record, search/filter and
+  other selected deep links in the actual consumer. Verify bundle identity,
+  snapshot, restored view/state, expected content and applicable plane roots;
+  HTTP 200 alone is insufficient.
+
+## Additive Consumer Contract
+
+The schema exposes an optional `consumer_contract` so profiles created before
+this clarification remain valid `v1` documents. New or materially revised
+Foundry profiles should populate it from the public template. It contains:
+
+- `inventory` and `lock`;
+- `dependency_graph`;
+- `fixture_protocol.producer_stage` and `consumer_stage`;
+- independently rooted `planes`;
+- two-direction `compatibility` cases; and
+- `post_deploy_deep_links`.
+
+An approved profile that uses this contract must have a real consumer-lock
+SHA-256. The semantic validator also checks lock/inventory equivalence,
+consumer and plane references, required-consumer execution, both compatibility
+directions and deep-link coverage.
 
 The copy-ready prompts and complete workflow are in the
 [OKF Foundry prompt kit](../../../docs/okf-authoring-prompt-kit.md).

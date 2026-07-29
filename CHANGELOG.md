@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.5.6 - 2026-07-29 - Consumer-proof Foundry releases
+
+- Made the Foundry authoring contract machine-check a pinned consumer
+  inventory and lock, a connected producer-to-public-route dependency graph,
+  two-stage real-consumer fixtures, digest planes, bidirectional compatibility
+  and post-deployment deep links.
+- Updated both Foundry prompts, the prompt kit, beginner guidance, schema,
+  template and semantic validator so a producer-only pass cannot authorise a
+  release.
+- Made a selected large-corpus record hydrate its resource index before the
+  Resources view renders, with a three-browser regression proving the linked
+  resource is visible while targeted Graph hydration remains bounded.
+
 ## v0.5.5 - 2026-07-29 - Bounded relationship navigation and OKF Foundry
 
 - Replaced the misleading whole-relationship loader on large-corpus facet

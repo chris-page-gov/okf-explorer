@@ -4,7 +4,7 @@
   "version": 1,
   "metadata": {
     "component": {
-      "bom-ref": "pkg:github/chris-page-gov/okf-explorer@0.5.5",
+      "bom-ref": "pkg:github/chris-page-gov/okf-explorer@0.5.6",
       "licenses": [
         {
           "license": {
@@ -14,7 +14,7 @@
       ],
       "name": "@okf/explorer",
       "type": "application",
-      "version": "0.5.5"
+      "version": "0.5.6"
     },
     "properties": [
       {
@@ -1804,7 +1804,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/chris-page-gov/okf-explorer@0.5.5",
+      "ref": "pkg:github/chris-page-gov/okf-explorer@0.5.6",
       "dependsOn": [
         "pkg:npm/%40axe-core/playwright@4.12.1",
         "pkg:npm/%40playwright/test@1.62.0",

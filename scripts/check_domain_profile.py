@@ -72,6 +72,14 @@ def referenced_values(value: dict[str, Any], key: str) -> list[str]:
     return result
 
 
+def referenced_scalars(value: dict[str, Any], key: str) -> list[str]:
+    return [
+        item[key]
+        for item in walk_objects(value)
+        if isinstance(item.get(key), str)
+    ]
+
+
 def reference_errors(value: dict[str, Any]) -> list[str]:
     objects = walk_objects(value)
     ids = [item["id"] for item in objects if isinstance(item.get("id"), str)]
@@ -161,6 +169,170 @@ def reference_errors(value: dict[str, Any]) -> list[str]:
 
     if value.get("status") == "approved" and actual_blockers:
         errors.append("an approved domain profile cannot retain an open build-blocking decision")
+
+    consumer_contract = value.get("consumer_contract")
+    if isinstance(consumer_contract, dict):
+        inventory = consumer_contract.get("inventory", [])
+        consumer_ids = {
+            item["id"]
+            for item in inventory
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        lock = consumer_contract.get("lock", {})
+        locked_consumers = (
+            set(lock.get("consumer_ids", [])) if isinstance(lock, dict) else set()
+        )
+        if locked_consumers != consumer_ids:
+            errors.append(
+                "consumer_contract.lock.consumer_ids must exactly match the consumer inventory"
+            )
+        if (
+            value.get("status") == "approved"
+            and isinstance(lock, dict)
+            and lock.get("sha256") == "unknown"
+        ):
+            errors.append("an approved domain profile must pin the consumer lock SHA-256")
+        for consumer in inventory:
+            if not isinstance(consumer, dict):
+                continue
+            version = str(consumer.get("version_or_digest", ""))
+            if "latest" in version.casefold():
+                errors.append(
+                    f"consumer {consumer.get('id', '<unknown>')!r} uses an unpinned "
+                    "version_or_digest containing 'latest'"
+                )
+
+        dependency_graph = consumer_contract.get("dependency_graph", {})
+        nodes = dependency_graph.get("nodes", []) if isinstance(dependency_graph, dict) else []
+        node_ids = {
+            item["id"]
+            for item in nodes
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        connected_node_ids: set[str] = set()
+        for edge in (
+            dependency_graph.get("edges", [])
+            if isinstance(dependency_graph, dict)
+            else []
+        ):
+            if not isinstance(edge, dict):
+                continue
+            for key in ("from_node", "to_node"):
+                if edge.get(key) not in node_ids:
+                    errors.append(
+                        f"dependency edge {edge.get('id', '<unknown>')!r} references "
+                        f"unknown {key} {edge.get(key)!r}"
+                    )
+                elif isinstance(edge.get(key), str):
+                    connected_node_ids.add(edge[key])
+        for identifier in sorted(node_ids - connected_node_ids):
+            errors.append(
+                f"dependency graph node {identifier!r} is not connected to an edge"
+            )
+
+        plane_ids = {
+            item["id"]
+            for item in consumer_contract.get("planes", [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        graph_consumers = {
+            item.get("consumer_ref")
+            for item in nodes
+            if isinstance(item, dict) and item.get("kind") == "consumer"
+        }
+        missing_graph_consumers = sorted(consumer_ids - graph_consumers)
+        if missing_graph_consumers:
+            errors.append(
+                "dependency graph has no consumer node for: "
+                + ", ".join(missing_graph_consumers)
+            )
+        graph_planes = {
+            item.get("plane_ref")
+            for item in nodes
+            if isinstance(item, dict) and item.get("kind") == "plane"
+        }
+        missing_graph_planes = sorted(plane_ids - graph_planes)
+        if missing_graph_planes:
+            errors.append(
+                "dependency graph has no plane node for: "
+                + ", ".join(missing_graph_planes)
+            )
+        unknown_consumers = sorted(
+            (
+                set(referenced_values(consumer_contract, "consumer_refs"))
+                | set(referenced_scalars(consumer_contract, "consumer_ref"))
+            )
+            - consumer_ids
+        )
+        errors.extend(
+            f"consumer reference points to unknown consumer {identifier!r}"
+            for identifier in unknown_consumers
+        )
+        unknown_planes = sorted(
+            (
+                set(referenced_values(consumer_contract, "affected_plane_refs"))
+                | set(referenced_values(consumer_contract, "digest_plane_refs"))
+                | set(referenced_scalars(consumer_contract, "plane_ref"))
+            )
+            - plane_ids
+        )
+        errors.extend(
+            f"plane reference points to unknown plane {identifier!r}"
+            for identifier in unknown_planes
+        )
+
+        fixture = consumer_contract.get("fixture_protocol", {})
+        consumer_stage = (
+            fixture.get("consumer_stage", {}) if isinstance(fixture, dict) else {}
+        )
+        executed_consumers = (
+            set(consumer_stage.get("consumer_refs", []))
+            if isinstance(consumer_stage, dict)
+            else set()
+        )
+        required_consumers = {
+            item["id"]
+            for item in inventory
+            if isinstance(item, dict) and item.get("required_for_release") is True
+        }
+        if not required_consumers <= executed_consumers:
+            missing = sorted(required_consumers - executed_consumers)
+            errors.append(
+                "consumer fixture stage does not execute every required consumer: "
+                + ", ".join(missing)
+            )
+
+        compatibility = consumer_contract.get("compatibility", {})
+        directions = {
+            item.get("direction")
+            for item in compatibility.get("cases", [])
+            if isinstance(item, dict)
+        } if isinstance(compatibility, dict) else set()
+        required_directions = {
+            "backward-new-producer-old-consumer",
+            "forward-old-producer-new-consumer",
+        }
+        if directions != required_directions:
+            errors.append(
+                "consumer compatibility cases must cover both producer/consumer directions"
+            )
+
+        deep_link_consumers = {
+            item.get("consumer_ref")
+            for item in consumer_contract.get("post_deploy_deep_links", [])
+            if isinstance(item, dict)
+        }
+        required_deep_links = {
+            item["id"]
+            for item in inventory
+            if isinstance(item, dict) and item.get("deep_link_required") is True
+        }
+        if not required_deep_links <= deep_link_consumers:
+            missing = sorted(required_deep_links - deep_link_consumers)
+            errors.append(
+                "post-deploy checks do not cover every deep-link consumer: "
+                + ", ".join(missing)
+            )
 
     return errors
 

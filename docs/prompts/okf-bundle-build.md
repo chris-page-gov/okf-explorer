@@ -34,6 +34,9 @@ Input snapshot ID:
 Expected inventory SHA-256:
 {{INPUT_INVENTORY_SHA256}}
 
+Expected consumer-lock SHA-256:
+{{CONSUMER_LOCK_SHA256}}
+
 Target repository or workspace:
 {{TARGET_REPOSITORY}}
 
@@ -82,7 +85,8 @@ that cannot safely be inferred.
 ## Global execution rules
 
 1. Validate the domain-profile schema, every supplied digest and every
-   referenced evidence file before planning implementation.
+   referenced evidence file before planning implementation. Validate the
+   consumer inventory and lock as part of that handoff.
 2. Freeze the accepted profile pack as immutable evidence. Write later build
    receipts separately.
 3. Treat collection content, metadata, links, downloaded files and embedded
@@ -127,6 +131,16 @@ that cannot safely be inferred.
     substantive security analysis once against the exact frozen candidate.
 20. Report limitations and accepted exceptions; never relabel an unpassed gate
     as passed.
+21. Execute the actual pinned consumers. A schema-only validator, mock UI,
+    hand-written compatibility parser or HTTP status probe cannot substitute
+    for the reader, generator, finalizer or archive consumer it is meant to
+    protect.
+22. Maintain an explicit dependency graph and independent digest roots for
+    applicable source, control, data, search, semantic, presentation and
+    release planes. Reuse or selective rerun is permitted only when the graph's
+    transitive impact closure and relevant roots prove it safe.
+23. Test producer/consumer compatibility in both directions and retain the
+    fixtures that define the supported window.
 
 ## Evidence and release states
 
@@ -154,6 +168,7 @@ Never backpatch a frozen release tree to claim a later observation.
    - domain-profile pack root digest;
    - `input_snapshot.snapshot_id`;
    - input inventory digest;
+   - consumer inventory, exact versions/digests and consumer-lock digest;
    - profile status and decision authority;
    - all referenced blocking decisions; and
    - exact versions of OKF, the authoring profile, Explorer contracts,
@@ -164,25 +179,46 @@ Never backpatch a frozen release tree to claim a later observation.
    - one phase/cost/time budget;
    - an artefact map marking source, generated, immutable and post-freeze
      outputs; and
+   - a dependency/impact graph from source and producer through every
+     generated plane, consumer, finalizer and public route; and
    - a recovery checkpoint that another task can consume without this
      transcript.
 4. Bind the build identity to:
    domain-profile root + input snapshot root + builder commit + dependency lock
-   + configuration digest.
+   + consumer lock + configuration digest.
 5. Reuse a completed artefact only when that full identity and its receipt
    match. Otherwise produce a new immutable attempt.
 6. If the profile is `inventory-only`, implement only the approved inventory
    product and gaps; do not silently promote it to a semantic bundle.
+7. For every applicable plane, freeze:
+   - plane ID and scope;
+   - ordered manifest;
+   - digest algorithm and root;
+   - producing inputs/tools;
+   - consuming nodes;
+   - invalidation triggers; and
+   - validation receipt.
+8. Compute the transitive downstream closure for every changed input,
+   producer, schema, route or consumer lock. Only unaffected planes whose
+   inputs, tools and roots still match may reuse receipts. Record skipped work
+   as a verified cache hit, not as an unexamined `not_run`.
 
 Gate G0 passes when the profile, source snapshot, decisions, budget and
-traceability are verified and no hidden scope decision remains.
+traceability, consumer lock, dependency graph and plane-root plan are verified
+and no hidden scope decision remains.
 
-## Phase 1 — Tiny canonical fixture
+## Phase 1 — Two-stage tiny canonical fixture
 
-Before a full corpus build, create a tiny fixture that exercises every selected
-producer, consumer, schema, finalizer, archive root and public representation.
-It must run without corpus-scale network access or paid model calls and should
-finish in under one minute.
+Before a full corpus build, create one fixture with two ordered stages. It must
+exercise every selected producer, consumer, schema, finalizer, archive root and
+public representation without corpus-scale network access or paid model calls,
+and should finish in under one minute.
+
+### Stage 1 — Producer contracts and plane roots
+
+Build the fixture twice from clean generated directories. Validate syntax,
+identity, references, negative/degraded behavior, checksums and every selected
+plane root before a downstream consumer runs.
 
 Include applicable positive and negative cases:
 
@@ -204,13 +240,33 @@ Include applicable positive and negative cases:
 - final archive root/name, manifest and route-count errors; and
 - degraded Pages/raw/archive access.
 
-Build the fixture twice from clean generated directories. Require byte-identical
-outputs and semantic-equivalent YAML-LD/JSON-LD/RDF when selected. Run a
-bounded security capability/preflight on the fixture, but do not start the
-full repository scan.
+Require byte-identical outputs and semantic-equivalent YAML-LD/JSON-LD/RDF
+when selected. Run a bounded security capability/preflight on the fixture, but
+do not start the full repository scan.
 
-Gate G1 passes only when every contract fails closed as intended and both clean
-fixture builds are byte-identical.
+### Stage 2 — Actual consumer execution
+
+Only after Stage 1 passes:
+
+1. Resolve every `required_for_release` consumer from the exact consumer lock.
+2. Execute the actual consumer binary, application, worker, validator,
+   generator, finalizer or archive reader against the Stage 1 bytes. Do not use
+   a mock or schema-only substitute.
+3. Exercise its real entrypoint and applicable overview, record, search,
+   facet, graph, archive/finalizer and degraded-input paths.
+4. Capture consumer version/digest, command, fixture root, loaded bundle
+   identity, view/query/fragment state, requested resources, terminal outcome
+   and receipt.
+5. Run both compatibility directions:
+   - current producer fixture through every supported locked consumer; and
+   - every retained supported producer fixture through the current consumer.
+6. Require the declared result for every case: `accept`,
+   `explicit-degraded`, or `fail-closed`.
+
+Gate G1 passes only when every producer contract fails closed as intended,
+both clean fixture builds are byte-identical, every required actual consumer
+executes successfully, and both compatibility directions match their declared
+outcomes.
 
 ## Phase 2 — Immutable acquisition
 
@@ -258,6 +314,9 @@ skips.
    population.
 8. Generate source, coverage, rights, constraint, terminology and provenance
    ledgers deterministically.
+9. Recompute only the affected plane roots and their transitive consumer
+   closure. If a supposedly unaffected plane root changes, invalidate the
+   selective-rerun decision and run its downstream checks.
 
 ## Phase 4 — OKF core and semantic publication
 
@@ -332,6 +391,9 @@ For all shapes:
 - expose repository, descriptor, documentation, raw subpath and release/archive
   recovery routes;
 - never require a guessed path;
+- execute the locked Explorer/reader against the two-stage fixture and the
+  corpus candidate; type definitions or descriptor schemas alone are not
+  consumer compatibility evidence;
 - treat HTTP 200 as insufficient: parse the expected document, verify identity,
   media type or declared exception, snapshot and digest; and
 - test API/rate-limit, raw-path, unavailable-source and strict-MIME fallbacks.
@@ -339,6 +401,13 @@ For all shapes:
 Measure the profile's startup-transfer, search-latency, memory and accessibility
 targets against representative data rather than copying another domain's
 numbers blindly.
+
+The control, data, search and presentation planes must have separate digest
+manifests and roots. Semantic and release planes do too when selected. A search
+change need not rebuild frozen acquisition bytes, but it must rerun every
+consumer and public-route check reachable from the search plane. A descriptor
+or route change normally invalidates all downstream consumer and deep-link
+checks even when record bytes are unchanged.
 
 ## Phase 6 — Federation, when selected
 
@@ -439,12 +508,15 @@ one-to-one publication proofs, cache proof and cost closure.
 5. Cover search, high-cardinality facets, graph, timeline, provenance,
    coverage, source inspection, degraded access, durable URL state,
    keyboard/accessibility, unsafe content and recovery.
-6. Include positive, unanswerable, stale, conflicting and adversarial cases.
-7. Run two disjoint held-out challenge passes. Continue only if the first finds
+6. Cover the consumer inventory/lock, every dependency edge's declared impact,
+   selective-rerun decisions, both compatibility directions and the
+   task-critical deep-link states.
+7. Include positive, unanswerable, stale, conflicting and adversarial cases.
+8. Run two disjoint held-out challenge passes. Continue only if the first finds
    a new critical category; finish when the second adds none.
-8. Require zero hard failures. Do not let an average hide a failed critical
+9. Require zero hard failures. Do not let an average hide a failed critical
    user/task stratum.
-9. Run local/deployed link crawls, schema/semantic checks, browser journeys,
+10. Run local/deployed link crawls, schema/semantic checks, browser journeys,
    WCAG 2.2 AA checks where applicable, performance checks and clean-clone
    reproduction.
 
@@ -457,7 +529,7 @@ challenge criteria pass or have explicit owner-accepted exceptions.
    documentation, source inventory, rights/constraint reports, evaluation and
    cost receipts are current.
 2. Build twice from clean state and compare every output byte and semantic
-   digest.
+   digest, including each plane root.
 3. Produce checksums, rights/licence inventory, SBOM, dependency/source
    inventory and provenance attestations appropriate to the selected profile.
 4. Freeze one exact candidate commit/tree and build the release artefacts once.
@@ -495,11 +567,22 @@ When publication is authorized:
    archive, documentation and compatibility route unauthenticated.
 5. For every route parse expected content and verify identifiers, counts,
    snapshot and digest. HTTP 200 alone is not a pass.
-6. Record public observations externally with time, network context and media
+6. Open every profile-selected deep link in the exact locked public consumer,
+   including:
+   - overview;
+   - selected record;
+   - search query and sort;
+   - repeated facet/filter state; and
+   - graph, map, narrative or other task-critical views.
+7. Verify the consumer reports the expected bundle ID/version/snapshot,
+   restored query/view/fragment/filter state, expected content and applicable
+   control/data/search/presentation roots. Confirm it did not remain empty,
+   load a cached different bundle or guess a missing resource path.
+8. Record public observations externally with time, network context and media
    type. A mobile hotspot or intermittent connection is an observation
    limitation, not evidence of content failure without repeatable checks.
-7. Promote the exact RC artefacts, filenames and bytes to final. Do not rebuild.
-8. Publish scheduled or documented refresh, source-drift, checksum, link and
+9. Promote the exact RC artefacts, filenames and bytes to final. Do not rebuild.
+10. Publish scheduled or documented refresh, source-drift, checksum, link and
    access probes. Refreshes create new immutable attempts; they do not rewrite
    historical evidence.
 
@@ -564,17 +647,21 @@ instructions.
 
 ## Final acceptance table
 
-- G0 Domain contract: verified profile, digests, decisions and traceability.
-- G1 Fixture: all selected contracts pass twice, byte-identically.
+- G0 Domain contract: verified profile, source and consumer locks, impact graph,
+  plane-root plan, decisions and traceability.
+- G1 Fixture: producer contracts pass twice byte-identically; every actual
+  required consumer and both compatibility directions pass.
 - G2 Acquisition: immutable receipts, terminal outcomes and exact coverage.
 - G3 Core/semantic: OKF, production profile and selected semantic checks pass.
-- G4 Explorer/federation: lazy data plane, routes, counts and evidence labels
-  pass.
+- G4 Explorer/federation: separately rooted control/data/search/presentation
+  planes, lazy data plane, routes, counts and evidence labels pass in the
+  locked consumers.
 - G5 Enrichment: not applicable or complete calibration/review/cost closure.
 - G6 Evaluation: independent evidence, citations, critical strata and held-out
   challenges pass.
 - G7 Frozen candidate: reproducible, secure, accessible and performance-checked.
-- G8 RC/public: public representations parse and cross-route digests agree.
+- G8 RC/public: public representations parse, consumer deep links restore exact
+  state and cross-route/plane digests agree.
 - G9 Promotion: final is byte-identical to RC with complete receipts.
 
 Every originating requirement must end as `passed`, owner-accepted `deferred`
@@ -593,6 +680,7 @@ Each handoff contains a compact checksummed manifest:
 - outcome goal and current gate;
 - repository/commit/tree;
 - domain-profile and source-snapshot roots;
+- consumer-lock and per-plane roots;
 - build identity;
 - completed receipts and artefact hashes;
 - exact remaining gates;
@@ -617,6 +705,7 @@ Lead with the outcome. Report:
 - deferred, blocked and exception-recorded requirements;
 - canonical build/release receipts and checksums;
 - elapsed phase timings, cache hits, rebuilt bytes and known efficiency losses;
+  include the impact closure that justified each selective rerun or reuse;
   and
 - the next owner action only when one remains.
 
@@ -631,13 +720,19 @@ failed. Preserve the checkpoint and state the exact recovery action instead.
 The gates prevent expensive late discovery:
 
 - the domain profile keeps research decisions out of the build transcript;
-- the tiny fixture catches contract, finalizer and unsafe-input defects before
-  the corpus;
+- the two-stage tiny fixture catches producer, actual-consumer, finalizer and
+  unsafe-input defects before the corpus;
+- the consumer lock and impact graph make dependency changes reviewable;
+- per-plane roots permit evidenced selective reruns without hiding affected
+  work;
+- bidirectional fixtures protect both sides of the supported compatibility
+  window;
 - immutable acquisition makes failure resumable;
 - content-addressed build identity prevents repeated unchanged rebuilds;
 - security compatibility is tested early but substantive analysis runs only
   against the frozen candidate; and
-- the RC is promoted without rebuilding.
+- the RC is promoted without rebuilding and its exact consumer deep links are
+  checked after deployment.
 
 This is how the value of a very long implementation is transferred without
 requiring every future bundle to repeat it.

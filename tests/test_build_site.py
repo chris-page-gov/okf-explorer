@@ -539,6 +539,12 @@ class BuildSiteTests(unittest.TestCase):
             "Never put secrets in a prompt",
             "blocking_for_build: true",
             "positive/negative fixture",
+            "`consumer-lock.json`",
+            "dependency/impact graph",
+            "actual locked consumers",
+            "selective reruns",
+            "compatibility passes in both directions",
+            "deployed consumer deep links",
             "Success Checklist",
             "byte-identical",
         ]

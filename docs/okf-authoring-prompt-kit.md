@@ -10,9 +10,11 @@ assumptions or their very large working transcripts.
 
 1. [Compile the domain profile](prompts/okf-domain-warm-up.md). This read-only
    warm-up researches the collection, people/tasks, terminology, authority,
-   rights, identifiers, versions, relationships and applicable standards.
+   rights, identifiers, versions, relationships, applicable standards and the
+   actual software consumers that must read or publish the result.
 2. Review any genuinely blocking owner decisions and approve the checksummed
-   `okf-domain-profile.v1` handoff.
+   `okf-domain-profile.v1` handoff plus its pinned consumer lock and explicit
+   dependency/impact graph.
 3. [Build, validate and publish](prompts/okf-bundle-build.md). The builder
    consumes that exact handoff and implements the smallest justified bundle.
 
@@ -25,11 +27,13 @@ Start from the complete
 flowchart LR
     C["Collection and owner intent"] --> W["Domain warm-up"]
     W --> P["Hash-locked domain profile"]
-    P --> R{"Owner decision required?"}
-    R -- "No" --> F["Tiny fixture"]
+    P --> L["Pinned consumer lock and impact graph"]
+    L --> R{"Owner decision required?"}
+    R -- "No" --> F["Stage 1: producer fixture"]
     R -- "Yes" --> D["Bounded owner decision"]
     D --> F
-    F --> B["Deterministic OKF build"]
+    F --> CF["Stage 2: actual consumers"]
+    CF --> B["Deterministic OKF build"]
     B --> E["Evaluation and frozen-candidate assurance"]
     E --> RC["Immutable release candidate"]
     RC --> PUB["Promote identical bytes"]
@@ -52,21 +56,25 @@ must not claim that it built, tested or published a bundle.
 2. Open the [formatted domain warm-up](prompts/okf-domain-warm-up.md), select
    **Copy full prompt**, replace every `{{PLACEHOLDER}}`, and run it read-only.
 3. Require the complete domain-profile pack, JSON/YAML data equivalence, schema
-   validation, evidence references and checksums. A prose report alone is not
-   the handoff.
+   validation, evidence references, checksums, consumer inventory/lock and
+   dependency/impact graph. A prose report alone is not the handoff.
 4. Review the decisions marked `blocking_for_build: true`. Record the owner's
    decisions, freeze the accepted pack and retain its root SHA-256.
 5. Open the [formatted build prompt](prompts/okf-bundle-build.md), select
    **Copy full prompt**, and provide the exact profile, inventory and snapshot
-   digests plus repository, access, model-cost and publication authority.
+   digests, consumer-lock digest and supported compatibility window plus
+   repository, access, model-cost and publication authority.
 6. Keep the complete bundle outcome as the AI's visible goal. Require the tiny
-   positive/negative fixture before corpus, network or paid work, and no more
-   than three stable workstreams.
+   positive/negative producer fixture and actual-consumer fixture before
+   corpus, network or paid work, and no more than three stable workstreams.
 7. Require evidence for every gate. Missing or excepted evidence is
    `blocked`, `deferred` or `exception-recorded`; it is never silently passed.
 8. Freeze one reproducible candidate, assure that exact tree, publish one
    release candidate, verify its public representations, and promote identical
    bytes rather than rebuilding.
+9. After deployment, open the exact consumer deep links for overview, record,
+   query/filter and any other selected state. Verify the expected bundle
+   identity, snapshot, state and digest roots, not merely HTTP status.
 
 ## Success Checklist
 
@@ -79,18 +87,29 @@ Do not accept completion until all applicable statements are true:
   its JSON and YAML forms are equivalent, and its evidence references resolve;
 - the approved profile, evidence and input inventory have recorded SHA-256
   identities;
+- every release-relevant reader, validator, generator, finalizer and archive
+  reader is inventoried and pinned in one checksummed consumer lock;
+- the producer → artifact/plane → consumer → public-route dependency graph
+  gives every edge an impact description and validation closure;
 - scope, denominator, rights, access, authority, derivation, freshness and
   unresolved gaps remain distinct and visible;
 - each selected standard has an exact version, applicability decision,
   conformance artefact and validator rather than a name-only claim;
-- the tiny fixture proves positive, negative and degraded behaviour before the
-  full collection is processed;
+- the two-stage tiny fixture first proves deterministic producer contracts,
+  then runs the actual locked consumers against the same bytes and proves
+  positive, negative and degraded behavior before the full collection;
+- each selected plane has a scoped digest root and selective reruns follow the
+  graph's transitive impact closure rather than intuition;
+- compatibility passes in both directions: new producer with supported
+  consumers, and retained supported producer fixtures with the new consumer;
 - generated outputs reproduce cleanly and every release gate has a receipt or
   an explicitly owner-accepted exception;
 - user-task evaluation, citations, accessibility and the security method
   applicable to the frozen candidate are reported honestly;
 - the publication exposes working human documentation, machine descriptors,
   raw/release fallbacks, checksums, coverage counts, costs and limitations; and
+- deployed consumer deep links restore the expected bundle identity, view,
+  record/query/filter state and applicable digest roots; and
 - the published release candidate has the same recorded bytes and digests as
   the candidate that passed assurance.
 
@@ -170,10 +189,18 @@ The build prompt encodes the operational lessons that matter most:
 
 - one visible outcome goal, with security/enrichment/release as phases;
 - no more than three stable workstreams;
-- one small positive/negative fixture before corpus, network or paid work;
+- one two-stage positive/negative fixture before corpus, network or paid work:
+  producer contracts first, actual pinned consumers second;
+- a checksummed consumer lock and explicit dependency/impact graph before
+  implementation;
 - immutable acquisition attempts and explicit denominators;
 - build identity keyed by profile, source snapshot, builder, dependencies and
-  configuration;
+  configuration plus the consumer lock;
+- independent digest roots for applicable source, control, data, search,
+  semantic, presentation and release planes;
+- transitive impact-based selective reruns, with no reuse when a relevant
+  digest, tool or consumer lock changed;
+- bidirectional producer/consumer compatibility fixtures;
 - content-addressed reuse instead of unchanged rebuilds;
 - checkpoints containing digests and receipts rather than full transcripts;
 - early security-tool compatibility testing, with substantive security only
@@ -182,7 +209,8 @@ The build prompt encodes the operational lessons that matter most:
 - no retry without new evidence or a changed condition;
 - clean build and semantic equivalence before release;
 - one RC build, followed by byte-identical promotion; and
-- post-freeze public observations stored outside the frozen tree.
+- post-freeze public observations stored outside the frozen tree, including
+  exact post-deploy consumer deep-link receipts.
 
 These controls are deliberately part of the reusable prompt because they are
 what prevent a sound semantic design from becoming an unbounded and
@@ -235,10 +263,13 @@ core.
    ```
 
 3. Review only decisions where `blocking_for_build` is `true`.
-4. Record the approved pack SHA-256 in the build prompt.
-5. Run the build. Do not bypass the tiny-fixture gate.
-6. Review its gate table and public route receipts before treating the bundle
-   as published.
+4. Freeze `consumer-lock.json`, review the dependency/impact graph and record
+   both the approved pack and consumer-lock SHA-256 values in the build prompt.
+5. Run the build. Do not bypass either tiny-fixture stage.
+6. Review both compatibility directions, per-plane roots and selective-rerun
+   receipts.
+7. Review the gate table and post-deploy consumer deep-link receipts before
+   treating the bundle as published.
 
 For the concrete record, facet, hierarchy, relationship, source and Explorer
 contracts, continue with [Create OKF bundles](okf-bundle-authoring.md).
