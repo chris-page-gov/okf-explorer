@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased - Acceptance-fixture readiness
+
+- Made the external tiny-bundle acceptance fixture wait for the expected
+  selected-record heading, so browser success proves hydration completed
+  instead of merely observing the pre-hydration panel shell.
+
 ## v0.5.7 - 2026-07-29 - Fail-closed descriptor identity
 
 - Fail closed when a document declares a large-corpus schema without the

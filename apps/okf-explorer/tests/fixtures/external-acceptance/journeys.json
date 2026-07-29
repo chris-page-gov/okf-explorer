@@ -17,7 +17,7 @@
         },
         {
           "type": "wait_for",
-          "selector": ".right-panel"
+          "selector": ".right-panel h2:has-text(\"Alpha external acceptance record\")"
         }
       ],
       "assertions": [
