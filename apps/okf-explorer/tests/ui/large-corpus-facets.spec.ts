@@ -329,6 +329,69 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(page.locator('.active-filter-chips')).toContainText('state: published');
   });
 
+  test('FACET-E2E-02A renders bounded related records for a facet card without full hydration', async ({ page }) => {
+    const requests: string[] = [];
+    await openOnsFacetFixture(page, requests);
+
+    const region = facetSegment(page, 'geography_level', 'region');
+    await region.click();
+    await region.dblclick();
+    await waitForFilter(page, 'geography_level', ['region']);
+    await expect(page.getByText('Preparing static search index...')).toHaveCount(0);
+
+    const details = page.locator('.right-panel');
+    await expect(details.getByRole('heading', { name: /region/i, exact: true })).toBeVisible();
+    await expect(details.getByRole('button', { name: /Load full relationships/ })).toHaveCount(0);
+    await expect(details.getByRole('button', { name: 'Graph related records' })).toBeVisible();
+    await expect(details.getByRole('heading', { name: 'Related ONS metadata records' })).toBeVisible();
+    await expect(details.locator('[data-detail-field="record-preview"]')).toContainText(
+      `loaded of ${ONS_REGION_COUNT}`
+    );
+    await expect(details).toContainText(/derived from the snapshot-bound static facet index/i);
+    expect(requests).not.toContain('/data/datasets.json');
+
+    await details.getByRole('button', { name: 'Graph related records' }).click();
+    await expect(page).toHaveURL(/(?:\?|&)view=graph(?:&|#)/);
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    await expect(graph).toBeVisible();
+    await expect(page.locator('.graph-caption')).toContainText(
+      `loaded of ${ONS_REGION_COUNT} exact index matches`
+    );
+    await expect(graph.locator('.graph-edge[data-relationship-authority="derived"]')).toBeVisible();
+    await expect(page.getByText(/browser memory safety limit/i)).toHaveCount(0);
+    expect(requests).not.toContain('/data/datasets.json');
+
+    await page.getByRole('button', { name: 'Links', exact: true }).click();
+    await expect(page.locator('.view-heading')).toContainText('bounded current-facet links');
+    await expect(page.locator('.links-view')).toContainText('Derived from the static facet index');
+    await expect(page.getByRole('button', { name: /Load full relationship index/ })).toHaveCount(0);
+    expect(requests).not.toContain('/data/datasets.json');
+  });
+
+  test('FACET-E2E-02B keeps direct metadata-route counts aligned with card previews', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installOnsFacetFixture(page.context(), requests);
+    await page.goto(
+      `?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#topic/Economy`
+    );
+    await waitForFixtureReady(page);
+
+    const details = page.locator('.right-panel');
+    await expect(details.getByRole('heading', { name: 'Economy', exact: true })).toBeVisible();
+    await expect(details.locator('[data-detail-field="matched-records"]')).toContainText(
+      '47 in whole corpus'
+    );
+    await expect(details.locator('[data-detail-field="record-preview"]')).toContainText(
+      'loaded of 47'
+    );
+    await expect(details.locator('[data-detail-field="record-preview"]')).not.toContainText(
+      'loaded of 0'
+    );
+    expect(requests).not.toContain('/data/datasets.json');
+  });
+
   test('FACET-E2E-03 opens aggregate bars and replaces high cardinality with searchable examples', async ({ page }) => {
     const requests: string[] = [];
     await openOnsFacetFixture(page, requests);
@@ -442,7 +505,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(facetSection(page, 'source_surface')).toHaveCount(0);
   });
 
-  test('FACET-E2E-06 preserves the exact nested geography count across Graph full hydration', async ({ page }) => {
+  test('FACET-E2E-06 preserves the exact nested geography count across bounded Graph navigation', async ({ page }) => {
     const requests: string[] = [];
     await openOnsFacetFixture(page, requests);
     expect(requests).not.toContain('/data/datasets.json');
@@ -456,16 +519,17 @@ test.describe('large-corpus facet interaction contract', () => {
 
     await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
     await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
-    await expect.poll(() => requests.includes('/data/datasets.json')).toBe(true);
+    expect(requests).not.toContain('/data/datasets.json');
     await expect(page.locator('[data-detail-field="matched-records"]')).toHaveText(`${ONS_REGION_COUNT} in current reduction`);
 
     await page.getByLabel('Views').getByRole('button', { name: 'Reader', exact: true }).click();
-    await expect(page.locator('[data-metric="ons-metadata-records"] strong')).toHaveText(String(ONS_REGION_COUNT));
+    await expect(page.locator('[data-metric="ons-metadata-records-matching"] strong')).toHaveText(String(ONS_REGION_COUNT));
     await expect(page.locator('[data-detail-field="matched-records"]')).toHaveText(`${ONS_REGION_COUNT} in current reduction`);
 
     await page.getByRole('tab', { name: 'Results' }).click();
-    await expect(page.getByRole('heading', { name: 'ONS metadata records in current reduction' })).toBeVisible();
-    await expect(page.getByText(`${ONS_REGION_COUNT} records match the active search and filters.`)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Search matches' })).toBeVisible();
+    await expect(page.getByText('200 retrieved records.')).toBeVisible();
+    expect(requests).not.toContain('/data/datasets.json');
     await page.getByRole('tab', { name: 'Facets' }).click();
 
     const firstResult = page.locator('.result-list').getByRole('button').first();
@@ -473,14 +537,10 @@ test.describe('large-corpus facet interaction contract', () => {
     await facetSegment(page, 'state', 'published').click();
     await expect(page.locator('.right-panel').getByRole('heading', { name: 'published' })).toBeVisible();
     await firstResult.click();
-    await expect(page.locator('.right-panel').getByRole('heading', { name: firstResultTitle })).toBeVisible();
-    const detailTabs = page.getByRole('tablist', { name: 'Data card sections' });
-    await expect(detailTabs.getByRole('tab')).toHaveText(['Overview', 'Evidence', 'Data']);
-    await expect(detailTabs.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true');
-    await detailTabs.getByRole('tab', { name: 'Evidence' }).click();
-    await expect(detailTabs.getByRole('tab', { name: 'Evidence' })).toHaveAttribute('aria-selected', 'true');
-    await detailTabs.getByRole('tab', { name: 'Data' }).click();
-    await expect(detailTabs.getByRole('tab', { name: 'Data' })).toHaveAttribute('aria-selected', 'true');
+    const rightPanel = page.locator('.right-panel');
+    await expect(rightPanel.getByRole('heading', { name: firstResultTitle })).toBeVisible();
+    await expect(rightPanel.getByRole('button', { name: 'Load full record' })).toBeVisible();
+    expect(requests).not.toContain('/data/datasets.json');
 
     await expect(page.locator('[data-metric="active-filters"] strong')).toHaveText('1');
     expect(ONS_RECORD_COUNT).toBeGreaterThan(ONS_REGION_COUNT);

@@ -817,7 +817,7 @@
       const filtersChanged = previousFilters !== JSON.stringify(largeFacetFilters);
       applyLargeBrowserRoute(hash, hasSerializedFilters(params));
       if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
-        void ensureLargeFullIndex();
+        void hydrateForView(activeView);
       }
       if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort) {
         if (largeSearchClient) void runLargeSearch(state.query, { preserveSelection: true });
@@ -1252,13 +1252,34 @@
     syncExplorerUrl(push);
   }
 
+  function largeHasBoundedMetadataRouteContext(
+    route = largeSelectedRoute || largeInspectedRoute
+  ): boolean {
+    const facet = route ? metadataFacetForRoute(route) : null;
+    return Boolean(
+      facet &&
+      supportsWorkerFilter(facet.key) &&
+      (largeFacetFilters[facet.key] || []).includes(facet.value)
+    );
+  }
+
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
     const selectedRoute = largeSelectedRoute || largeInspectedRoute;
     if (selectedRoute && routeKind(selectedRoute) === 'dataset' && largeHasRecordLocator()) {
       await ensureLargeDataset(selectedRoute);
-      if (view === 'graph' || view === 'links') await ensureLargeRouteRelationships(selectedRoute);
+      if (largeHasRelationshipAdjacency()) {
+        await ensureLargeRouteRelationships(selectedRoute);
+      } else if (RELATIONSHIP_VIEWS.has(view)) {
+        await ensureLargeRelationships();
+      }
+      return;
+    }
+    if (largeHasBoundedMetadataRouteContext(selectedRoute)) {
+      // The static filter posting and bounded search result documents already
+      // provide the current facet's record membership. Graph and Links can
+      // project that context without hydrating the complete record plane.
       return;
     }
     if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
@@ -1344,6 +1365,16 @@
     return Boolean(
       source?.kind === 'large' &&
       (source.descriptor.entrypoints.record_locator || source.manifest.indexes.record_locator)
+    );
+  }
+
+  function largeHasRelationshipAdjacency(): boolean {
+    return Boolean(
+      source?.kind === 'large' &&
+      (
+        source.descriptor.entrypoints.relationship_adjacency ||
+        source.manifest.indexes.relationship_adjacency
+      )
     );
   }
 
@@ -1672,7 +1703,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute);
-    void ensureLargeRouteRelationships(route);
+    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(route);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -1688,7 +1719,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(route);
-    void ensureLargeRouteRelationships(route);
+    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(route);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -1714,8 +1745,9 @@
     }
     const facetRoute = metadataFacetForRoute(route);
     if (facetRoute) {
-      applyAnalysisFacet(facetRoute.key, facetRoute.value);
       activeView = 'graph';
+      graphLabelPhase = 0;
+      applyAnalysisFacet(facetRoute.key, facetRoute.value);
       return;
     }
     if (route.startsWith('resource-stack/')) {
@@ -2464,6 +2496,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute, result);
+    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(largeSelectedRoute);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -4048,6 +4081,23 @@
     return 'related';
   }
 
+  function metadataMembershipLabel(route: string): string {
+    const facet = metadataFacetForRoute(route);
+    if (facet?.key === 'jurisdiction') return 'indexed with territorial publication context';
+    return facet ? `matches ${facetLabel(facet.key).toLowerCase()}` : metadataRelationshipLabel(route);
+  }
+
+  function metadataMembershipDescription(route: string): string {
+    const facet = metadataFacetForRoute(route);
+    if (facet?.key === 'jurisdiction') {
+      return 'Territorial publication context is inferred from the official type code. It is an index navigation fact, not provision-level territorial extent or legal applicability.';
+    }
+    if (facet) {
+      return 'These links are derived from the snapshot-bound static facet index. Select a record to load that record’s governed semantic relationships.';
+    }
+    return 'This route is not a static facet value. Loaded governed semantic relationships are shown when the bundle publishes them for this route.';
+  }
+
   function datasetMatchesMetadataRoute(dataset: LargeDataset, route: string): boolean {
     if (!largeIndex || !route) return false;
     const analysisFacet = routeForAnalysisNode(route);
@@ -4071,8 +4121,43 @@
     return largeVisibleDatasets.filter((dataset) => datasetMatchesMetadataRoute(dataset, route)).slice(0, limit);
   }
 
+  function searchResultsForMetadataRoute(route: string, limit = 80): SearchResultDoc[] {
+    const facet = metadataFacetForRoute(route);
+    if (!facet) return [];
+    const selectedValues = largeFacetFilters[facet.key] || [];
+    const rows = selectedValues.includes(facet.value)
+      ? largeResults
+      : largeResults.filter((result) =>
+          largeDatasetFacetValues(result as LargeDataset, facet.key).includes(facet.value)
+        );
+    return rows.slice(0, limit);
+  }
+
+  function metadataRoutePreviewRecords(route: string, limit = 80): Array<LargeDataset | SearchResultDoc> {
+    return largeIndex
+      ? datasetsForMetadataRoute(route, limit)
+      : searchResultsForMetadataRoute(route, limit);
+  }
+
+  function showMetadataRouteRecords(route: string) {
+    const facet = metadataFacetForRoute(route);
+    if (!facet) return;
+    leftCollapsed = false;
+    leftPanelTab = 'results';
+    if (!(largeFacetFilters[facet.key] || []).includes(facet.value)) {
+      applyAnalysisFacet(facet.key, facet.value);
+    }
+  }
+
+  function openMetadataPreviewRecord(record: LargeDataset | SearchResultDoc) {
+    if (typeof record.ordinal === 'number' && typeof record.open === 'string') {
+      chooseLargeResult(record as SearchResultDoc);
+    }
+    else selectLargeRoute(datasetRoute(record));
+  }
+
   function datasetCountForMetadataRoute(route: string): number {
-    const facet = routeForAnalysisNode(route);
+    const facet = metadataFacetForRoute(route);
     if (facet) {
       const selected = largeFacetFilters[facet.key] || [];
       if (
@@ -4094,7 +4179,7 @@
   }
 
   function datasetCountScopeForMetadataRoute(route: string): string {
-    const facet = routeForAnalysisNode(route);
+    const facet = metadataFacetForRoute(route);
     if (!facet) return 'in current reduction';
     if ((largeFacetFilters[facet.key] || []).includes(facet.value)) return 'in current reduction';
     if (dynamicFacetPreviewRows(facet.key)) return 'available with other filters applied';
@@ -4164,6 +4249,19 @@
         relationships: routeRelationships(route)
       };
     }
+    const targetedDataset = largeTargetedDatasets.get(route);
+    if (targetedDataset) {
+      return {
+        kind: 'dataset',
+        route,
+        dataset: targetedDataset,
+        resources: largeIndex?.resourcesByDataset.get(targetedDataset.name) || [],
+        publisher: targetedDataset.publisher
+          ? largeIndex?.publisherByName.get(targetedDataset.publisher)
+          : undefined,
+        relationships: routeRelationships(route)
+      };
+    }
     const routedOverviewResult = source?.kind === 'large'
       ? source.overview.recent_datasets?.find(
           (item: SearchResultDoc) => datasetRoute(item) === route
@@ -4173,7 +4271,7 @@
       largeResults.find((item) => datasetRoute(item) === route) || routedOverviewResult;
     if (routedResult) return { kind: 'search', route, result: routedResult };
     if (kind === 'dataset') {
-      const dataset = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(value);
+      const dataset = largeIndex?.datasetByName.get(value);
       if (dataset) {
         return {
           kind: 'dataset',
@@ -4310,13 +4408,19 @@
       addNode(targetId);
       edges.push({ source: sourceId, target: targetId, label, ...graphEdgeSemanticMetadata(record) });
     };
-    const addCountedEdge = (sourceId: string, targetId: string, label: string, count?: number) => {
+    const addCountedEdge = (
+      sourceId: string,
+      targetId: string,
+      label: string,
+      count?: number,
+      record?: Record<string, unknown>
+    ) => {
       const key = `${sourceId}\u0000${targetId}\u0000${label}`;
       if (edgeKeys.has(key)) return;
       edgeKeys.add(key);
       addNode(sourceId);
       addNode(targetId);
-      edges.push({ source: sourceId, target: targetId, label, count });
+      edges.push({ source: sourceId, target: targetId, label, count, ...graphEdgeSemanticMetadata(record) });
     };
     const addDatasetNode = (dataset: LargeDataset) => {
       addNode(datasetRoute(dataset), 'dataset', dataset.title);
@@ -4364,7 +4468,14 @@
       }
       return null;
     };
-    const addOpenedStackSubgroups = (rows: LargeDataset[], stackId: string, target: string, label: string, direction: 'to-target' | 'from-target') => {
+    const addOpenedStackSubgroups = (
+      rows: LargeDataset[],
+      stackId: string,
+      target: string,
+      label: string,
+      direction: 'to-target' | 'from-target',
+      relationshipMetadata?: Record<string, unknown>
+    ) => {
       const subgroup = bestStackSubgroups(rows);
       if (!subgroup || rows.length <= GRAPH_STACK_THRESHOLD) return false;
       grouping = {
@@ -4375,18 +4486,24 @@
       for (const group of subgroup.rows) {
         const subgroupId = `facet-stack/${routeSlug(stackId)}/${routeSlug(subgroup.dimension)}/${routeSlug(group.value)}`;
         addNode(subgroupId, 'facet-stack', `${facetValueDisplay(subgroup.dimension, group.value)} (${group.rows.length})`, group.rows.length, stackId);
-        if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length);
-        else addCountedEdge(target, subgroupId, label, group.rows.length);
+        if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length, relationshipMetadata);
+        else addCountedEdge(target, subgroupId, label, group.rows.length, relationshipMetadata);
       }
       return true;
     };
-    const addGroupedDatasetEdges = (datasets: LargeDataset[], target: string, label: string, direction: 'to-target' | 'from-target' = 'to-target') => {
+    const addGroupedDatasetEdges = (
+      datasets: LargeDataset[],
+      target: string,
+      label: string,
+      direction: 'to-target' | 'from-target' = 'to-target',
+      relationshipMetadata?: Record<string, unknown>
+    ) => {
       const rows = datasets;
       if (rows.length <= GRAPH_STACK_THRESHOLD) {
         for (const dataset of rows) {
           addDatasetNode(dataset);
-          if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
-          else addEdge(target, datasetRoute(dataset), label);
+          if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label, relationshipMetadata);
+          else addEdge(target, datasetRoute(dataset), label, relationshipMetadata);
         }
         return;
       }
@@ -4401,17 +4518,17 @@
               : undefined
         );
         if (expanded) {
-          if (!addOpenedStackSubgroups(group.rows, stackId, target, label, direction)) {
+          if (!addOpenedStackSubgroups(group.rows, stackId, target, label, direction, relationshipMetadata)) {
             for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
               addDatasetNode(dataset);
-              if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label);
-              else addEdge(target, datasetRoute(dataset), label);
+              if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label, relationshipMetadata);
+              else addEdge(target, datasetRoute(dataset), label, relationshipMetadata);
             }
           }
         } else {
           addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, center || contextKey);
-          if (direction === 'to-target') addCountedEdge(stackId, target, label, group.rows.length);
-          else addCountedEdge(target, stackId, label, group.rows.length);
+          if (direction === 'to-target') addCountedEdge(stackId, target, label, group.rows.length, relationshipMetadata);
+          else addCountedEdge(target, stackId, label, group.rows.length, relationshipMetadata);
         }
       }
     };
@@ -4533,9 +4650,25 @@
           for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), `has ${resourceSingular()}`);
         }
       }
-    } else if (largeIndex && center) {
-      const relationshipLabel = metadataRelationshipLabel(center);
-      addGroupedDatasetEdges(datasetsForMetadataRoute(center, Number.MAX_SAFE_INTEGER), center, relationshipLabel);
+    } else if (center) {
+      const relationshipLabel = metadataMembershipLabel(center);
+      const membershipMetadata = {
+        authority: {
+          class: 'derived',
+          label: 'Derived from the static facet index',
+          source: 'Snapshot-bound filter posting'
+        },
+        derivation: 'static-facet-membership',
+        confidence: 'snapshot-exact'
+      };
+      const matchedRecords = metadataRoutePreviewRecords(center, Number.MAX_SAFE_INTEGER);
+      addGroupedDatasetEdges(
+        matchedRecords as LargeDataset[],
+        center,
+        relationshipLabel,
+        'to-target',
+        membershipMetadata
+      );
     } else if (!center && largeIndex) {
       addGroupedPublisherEdges(largeVisibleDatasets);
     } else if (!center && !largeIndex) {
@@ -6882,7 +7015,9 @@
                 </div>
               </details>
               <p class="graph-caption">
-                {#if model.center}
+                {#if model.center && metadataFacetForRoute(model.center)}
+                  Showing a bounded membership graph for {metadataRoutePreviewRecords(model.center, Number.MAX_SAFE_INTEGER).length.toLocaleString()} loaded of {datasetCountForMetadataRoute(model.center).toLocaleString()} exact index matches.
+                {:else if model.center}
                   Showing {model.nodes.length} nodes directly related to {largeLabelForRoute(model.center)}.
                 {:else}
                   Showing {model.nodes.length} nodes from the current left-panel reduction.
@@ -6926,9 +7061,10 @@
                 </section>
               {/if}
             {:else}
+              {@const boundedMetadataContext = largeHasBoundedMetadataRouteContext()}
               <div class="view-heading">
                 <h2>Links</h2>
-                <span>{largeRelationships.length ? 'full relationship chunks loaded' : 'current graph relationships'}</span>
+                <span>{largeRelationships.length ? 'full relationship chunks loaded' : boundedMetadataContext ? 'bounded current-facet links' : 'current graph relationships'}</span>
               </div>
               <section class="links-view">
                 {#each currentLinkEdges() as relationship}
@@ -6938,9 +7074,9 @@
                     <strong>{largeLabelForRoute(relationship.target)}</strong>
                   </button>
                 {:else}
-                  <p class="muted">Select a dataset, apply a filter, or load the full relationship index.</p>
+                  <p class="muted">Select a record or apply a supported facet to load bounded links.</p>
                 {/each}
-                {#if !largeRelationships.length}
+                {#if !largeRelationships.length && !boundedMetadataContext}
                   <button type="button" onclick={() => void ensureLargeRelationships()}>
                     <strong>Load full relationship index</strong>
                     <span>{source.manifest.counts.relationships?.toLocaleString() || 'all'} relationships</span>
@@ -8274,51 +8410,53 @@
                 {#each (largeDetail.result.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
               </div>
             {:else}
-              {@const routeDatasets = datasetsForMetadataRoute(largeDetail.route, 40)}
+              {@const routeLoadedRecords = metadataRoutePreviewRecords(largeDetail.route, Number.MAX_SAFE_INTEGER)}
+              {@const routePreviewRecords = routeLoadedRecords.slice(0, 12)}
               {@const routeResources = resourcesForMetadataRoute(largeDetail.route, 40)}
               {@const routeDatasetTotal = datasetCountForMetadataRoute(largeDetail.route)}
               {@const analysisNode = analysisNodeForRoute(largeDetail.route)}
               {@const analysisFacet = routeForAnalysisNode(largeDetail.route)}
+              {@const metadataFacet = metadataFacetForRoute(largeDetail.route)}
               {@const facetMeta = analysisFacet ? analysisFacetForKey(analysisFacet.key) : null}
               {@const hierarchyValue = analysisHierarchyValueForRoute(largeDetail.route)}
               <span class="badge">{routeTypeLabel(largeDetail.route)}</span>
               <h2>{largeDetail.label}</h2>
               <div class="detail-actions">
-                <button type="button" onclick={() => void selectView('graph')}>Graph</button>
-                {#if analysisFacet}<button type="button" onclick={() => applyAnalysisFacet(analysisFacet.key, analysisFacet.value)}>Reduce context</button>{/if}
+                <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph related records</button>
+                {#if metadataFacet}<button type="button" onclick={() => showMetadataRouteRecords(largeDetail.route)}>View related {recordPlural()}</button>{/if}
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
-                {#if !largeRelationships.length}<button type="button" onclick={() => void ensureLargeRelationships()}>Load full relationships</button>{/if}
               </div>
+              <p class="context-note">{metadataMembershipDescription(largeDetail.route)}</p>
               <dl>
                 <dt>Route</dt><dd>{largeDetail.route}</dd>
                 <dt>Kind</dt><dd>{routeKind(largeDetail.route)}</dd>
-                <dt>Relationship</dt><dd>{metadataRelationshipLabel(largeDetail.route)}</dd>
+                <dt>{metadataFacet ? 'Indexed link' : 'Relationship'}</dt><dd>{metadataMembershipLabel(largeDetail.route)}</dd>
                 {#if analysisNode}<dt>Analysis count</dt><dd>{(analysisNode.count || 0).toLocaleString()}</dd>{/if}
                 {#if analysisFacet}<dt>Facet</dt><dd>{facetDisplayLabel(analysisFacet.key)}</dd>{/if}
                 {#if analysisFacet}<dt>Facet value</dt><dd>{analysisFacet.value}</dd>{/if}
                 {#if facetMeta}<dt><span class="label-help">Facet navigation signal<button class="info-icon" type="button" aria-label="Explain facet navigation signal" onclick={() => toggleHelp('facet-quality')} onmouseenter={() => showHelp('facet-quality')} onmouseleave={() => hideHelp('facet-quality')} onfocus={() => showHelp('facet-quality')} onblur={() => hideHelp('facet-quality')}>i</button>{#if activeHelpKey === 'facet-quality'}<span class="info-bubble" role="tooltip">{helpText('facet-quality')}</span>{/if}</span></dt><dd>{facetMeta.recommendation} · {facetMeta.recommended_control} · reduction {formatPercent(facetMeta.expected_reduction)}</dd>{/if}
                 {#if hierarchyValue}<dt>Hierarchy</dt><dd>{hierarchyValue.hierarchy.label}{hierarchyValue.parent ? ` / ${hierarchyValue.parent.label}` : ''}</dd>{/if}
-                <dt>Matched {recordPlural()}</dt><dd data-detail-field="matched-records">{routeDatasetTotal.toLocaleString()} {datasetCountScopeForMetadataRoute(largeDetail.route)}</dd>
-                <dt>{capitalise(recordPlural())} preview</dt><dd data-detail-field="record-preview">{largeIndex ? `${routeDatasets.length.toLocaleString()} shown` : 'Not hydrated'}</dd>
-                <dt>{capitalise(resourcePlural())} preview</dt><dd data-detail-field="resource-preview">{largeIndex ? `${routeResources.length.toLocaleString()} shown` : 'Not hydrated'}</dd>
-                <dt>Full links</dt><dd>{largeRelationships.length ? largeDetail.relationships.length.toLocaleString() : 'Not loaded'}</dd>
+                {#if metadataFacet}<dt>Matched {recordPlural()}</dt><dd data-detail-field="matched-records">{routeDatasetTotal.toLocaleString()} {datasetCountScopeForMetadataRoute(largeDetail.route)}</dd>{/if}
+                {#if metadataFacet}<dt>Bounded index context</dt><dd data-detail-field="record-preview">{routeLoadedRecords.length.toLocaleString()} loaded of {routeDatasetTotal.toLocaleString()}</dd>{/if}
+                {#if largeIndex}<dt>{capitalise(resourcePlural())} preview</dt><dd data-detail-field="resource-preview">{routeResources.length.toLocaleString()} shown</dd>{/if}
+                <dt>Direct semantic assertions</dt><dd>{largeDetail.relationships.length ? largeDetail.relationships.length.toLocaleString() : metadataFacet ? 'No facet-node assertions published' : 'None loaded for this route'}</dd>
               </dl>
               {#if largeFullLoading && !largeIndex}
                 <p class="facet-loading">Loading {recordPlural()} for this value...</p>
               {/if}
-              {#if routeDatasets.length}
-                <h3>{capitalise(recordPlural())} preview</h3>
-                {#if routeDatasetTotal > routeDatasets.length}
-                  <p class="muted">Showing {routeDatasets.length.toLocaleString()} of {routeDatasetTotal.toLocaleString()} matched {recordPlural()}.</p>
+              {#if metadataFacet && routePreviewRecords.length}
+                <h3>Related {recordPlural()}</h3>
+                {#if routeDatasetTotal > routePreviewRecords.length}
+                  <p class="muted">Showing {routePreviewRecords.length.toLocaleString()} card previews from {routeLoadedRecords.length.toLocaleString()} loaded records and {routeDatasetTotal.toLocaleString()} exact index matches.</p>
                 {/if}
-                {#each routeDatasets.slice(0, 12) as dataset}
-                  <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                    <strong>{dataset.title}</strong>
-                    <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
-                    {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
-                    <p>{stripHtml(dataset.notes || '').slice(0, 180)}</p>
-                    {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
+                {#each routePreviewRecords as record}
+                  <button type="button" onclick={() => openMetadataPreviewRecord(record)}>
+                    <strong>{record.title}</strong>
+                    <span>{record.publisher_title || record.publisher || `Unknown ${publisherSingular()}`} · {record.resource_count || 0} {resourcePlural()}</span>
+                    {#if apiContextNote(record)}<p class="context-note">{apiContextNote(record)}</p>{/if}
+                    <p>{stripHtml(record.notes || '').slice(0, 180)}</p>
+                    {#if apiRecordMeta(record)}<small class="result-meta">{apiRecordMeta(record)}</small>{/if}
                   </button>
                 {/each}
               {/if}

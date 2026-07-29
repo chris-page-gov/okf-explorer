@@ -111,6 +111,13 @@ Examples include:
 Indexes duplicate selected information intentionally. The canonical record is
 still distinct from its search or display projection.
 
+A facet value such as `Scotland` may therefore have an exact posting list
+without being a materialized relationship node. Explorer can show a bounded
+membership preview and graph from that posting, clearly labelled as
+index-derived. Selecting one real record then loads that record's adjacency
+shard. Asking a facet card to load every corpus relationship is both unnecessary
+and semantically wrong.
+
 ## Progressive Loading
 
 The normal large-corpus sequence is:

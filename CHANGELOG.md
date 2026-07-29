@@ -1,7 +1,18 @@
 # Changelog
 
-## Unreleased - OKF Foundry authoring protocol
+## v0.5.5 - 2026-07-29 - Bounded relationship navigation and OKF Foundry
 
+- Replaced the misleading whole-relationship loader on large-corpus facet
+  cards with bounded related-record previews, exact match totals and
+  index-derived Graph/Links projections. Worker-backed facets no longer
+  attempt full record or relationship hydration when their bounded postings
+  already provide the required context.
+- Made search-result selection load the chosen record's route-scoped adjacency
+  immediately, while preserving the whole-corpus memory guard.
+- Documented the distinction between the small semantic representations,
+  chunked JSON assertion plane and facet membership; added a copy-ready UK
+  Legislation AI traversal and declared the current absence of a
+  source-and-target route index for the official-effects datapack.
 - Published the complete documentation dependency graph as responsive HTML,
   including links embedded in tables and links from documentation into the
   sample knowledge corpus. Internal Markdown navigation now rewrites to
