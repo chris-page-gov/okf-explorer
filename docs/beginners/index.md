@@ -31,7 +31,10 @@ After working through this guide, you should be able to explain:
   authority;
 - how federations discover independent child bundles without loading them;
 - how domain profiles, governed enrichment and hash-bound release evidence
-  connect research decisions to tested public bytes.
+  connect research decisions to tested public bytes;
+- what release gates, checks, evidence, receipts, candidate roots, independent
+  review, owner approval and byte-identical promotion each mean; and
+- why a gate number must name its Foundry or project-specific catalogue.
 
 You do not need to learn every acronym before opening the Explorer. The aim is
 to build one idea at a time and show where it appears in the implementation.
@@ -93,6 +96,10 @@ Read the chapters in order if the subject is new to you:
 20. [Governed enrichment and release assurance](20-governed-enrichment-and-release-assurance.md)
     explains model-assisted assertion governance, independent acceptance
     evidence, deterministic builds, SBOMs and multi-browser runtime receipts.
+21. [Release gates, evidence and owner review](21-release-gates-evidence-and-owner-review.md)
+    explains every Foundry G0–G9 gate from first principles, distinguishes
+    project-local gate catalogues, and gives beginner review checklists and
+    copy-ready owner decisions.
 
 ## Shorter Routes
 
@@ -106,12 +113,16 @@ If the ontology architecture document brought you here, read chapters 6, 7, 8
 and 9. They explain every conceptual layer assumed by
 [Ontology and semantic graph architecture](../ontology-and-semantic-graph-architecture-2026-07-24.md).
 
-If you want to contribute code, read chapters 1 through 9, then 13 through 20.
+If you want to contribute code, read chapters 1 through 9, then 13 through 21.
 The domain chapters are still important before changing Map or legislation
 features.
 
 If you want an AI to research a pack, read chapters 1, 5 and 8, then follow
 [Use an AI with an OKF pack](../ai-okf-usage.md).
+
+If you own or review a release but do not implement it, read chapters 13, 14,
+19, 20 and 21. Chapter 21 explains exactly which decisions require owner input
+and which results must come from tools or independent reviewers.
 
 ## Coverage Map
 
@@ -141,6 +152,7 @@ explanation; “continue with” is the detailed contract or operating manual.
 | Federation loading and relationship authority | 18 | [Federated bundles](../federated-bundles.md) |
 | Domain warm-up and reproducible authoring handoff | 19 | [Foundry prompt kit](../okf-authoring-prompt-kit.md) |
 | Governed enrichment and frozen runtime evidence | 20 | [Legislation runtime acceptance](../legislation-runtime-acceptance.md) |
+| Release gates, receipts, independent review and owner decisions | 21 | [Foundry build prompt](../prompts/okf-bundle-build.md) |
 
 ## Implementation Coverage Audit
 
@@ -169,6 +181,7 @@ only the concepts named in architecture documents:
 | Authoring profiles and warm-up/build handoff | 19 |
 | Governed model enrichment and official-effects reconciliation | 20 |
 | Deterministic build manifests, SBOM and runtime acceptance | 20 |
+| Foundry G0–G9, project gate catalogues and owner review | 21 |
 
 ## One Principle To Keep Throughout
 

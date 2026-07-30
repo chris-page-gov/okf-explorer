@@ -10,8 +10,9 @@ APIs exemplar, and related large-corpus OKF packs.
   and OKF bundles, large-corpus loading, search, graphs, semantic-web
   standards, provenance, Explorer views, geospatial and legislation data, AI
   infrastructure, v0.2 trust, federation, Foundry authoring, governed
-  enrichment, release assurance, safety, testing and contribution workflow
-  before routing into the advanced specifications.
+  enrichment, release gates, evidence receipts, owner review, release
+  assurance, safety, testing and contribution workflow before routing into
+  the advanced specifications.
 - [Repository guide](repository-guide.md) explains where the important files
   live and how the publication pipeline fits together.
 - [Use the OKF Explorer](use-okf-explorer.md) remains the short path from a

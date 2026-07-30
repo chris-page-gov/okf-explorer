@@ -92,6 +92,11 @@ must not claim that it built, tested or published a bundle.
     tool-first budget. Report failure immediately, label the URL unverified and
     use the dependency graph to limit any correction; do not silently expand
     the check into a release rebuild.
+11. Treat `G0`–`G9` in the generic build prompt as the **Foundry gate
+    catalogue**. If a target repository defines a differently numbered local
+    release-gate catalogue, qualify every reference with its catalogue and
+    descriptive title and publish a crosswalk. Never report a bare `G5` or
+    similar identifier when two catalogues are in scope.
 
 ## Success Checklist
 
@@ -121,6 +126,8 @@ Do not accept completion until all applicable statements are true:
   consumers, and retained supported producer fixtures with the new consumer;
 - generated outputs reproduce cleanly and every release gate has a receipt or
   an explicitly owner-accepted exception;
+- every gate reference names its catalogue and descriptive title; any
+  project-local numbering has a published crosswalk to the Foundry gates;
 - user-task evaluation, citations, accessibility and the security method
   applicable to the frozen candidate are reported honestly;
 - the publication exposes working human documentation, machine descriptors,

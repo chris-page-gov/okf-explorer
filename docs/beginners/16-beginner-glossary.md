@@ -28,6 +28,10 @@ software system to use another.
 A produced file or data object, such as a manifest, search shard or validation
 report.
 
+**Approval**
+An authorized decision to proceed after reviewing applicable evidence,
+limitations and residual risk. Approval does not make an unrun check pass.
+
 **Assertion**
 A statement represented in the data, ideally with status and evidence.
 
@@ -40,6 +44,10 @@ A published OKF collection and its supporting metadata and indexes.
 
 **Cache**
 Stored data reused to avoid repeating a fetch or calculation.
+
+**Candidate**
+One proposed set of source, generated and release bytes being tested and
+reviewed. It is not yet a final release.
 
 **Cardinality**
 In facets, the number of distinct values. In validation, the permitted number
@@ -144,11 +152,23 @@ Structured metadata at the beginning of a Markdown file.
 **GeoJSON**
 A JSON format for geographic features and geometries.
 
+**Gate**
+A named release question with declared evidence and a pass criterion. A gate
+number has meaning only within its named gate catalogue.
+
+**Gate catalogue**
+The versioned list that defines gate identifiers, titles, required evidence,
+pass criteria and responsible roles.
+
 **Graph**
 Nodes connected by edges.
 
 **Hash**
 A fixed-length fingerprint calculated from bytes, used for integrity checks.
+
+**Hard failure**
+A condition the release contract says must block publication. It cannot be
+turned into a pass by owner acceptance.
 
 **Hydration**
 Loading fuller data for a compact result or selected record.
@@ -161,6 +181,11 @@ than terms appearing in most documents.
 
 **Index**
 Precomputed data that makes a question such as term lookup or adjacency faster.
+
+**Independent reviewer**
+A reviewer sufficiently separate from the implementation or expectations under
+review to reduce self-confirmation. The receipt records the actual role and
+limitations of that independence.
 
 **Inference**
 Deriving additional statements from declared rules.
@@ -233,6 +258,10 @@ security schemes.
 The rule that a statement missing from a graph is generally unknown, not
 false.
 
+**Owner, project or release**
+The person or organization authorized to decide scope, public claims,
+exceptions, residual-risk acceptance and release promotion.
+
 **OWL**
 Web Ontology Language, used for expressive class and property semantics.
 
@@ -276,11 +305,27 @@ properties, domain, range and hierarchies.
 **Record**
 One described item and its fields in an OKF corpus.
 
+**Receipt**
+A durable record connecting a check or review, its evidence and result to
+exact inputs, tools, candidate bytes and reviewer roles.
+
 **Registry**
 A discoverable list of bundle entry points.
 
+**Release candidate, RC**
+The proposed final release bytes deployed for last-mile public validation.
+Final promotion should reuse these exact bytes.
+
+**Release root**
+A digest calculated from an ordered inventory of governed release materials,
+used to identify the exact candidate covered by evidence and approval.
+
 **Relationship**
 A directed connection between records or concepts.
+
+**Residual risk**
+Risk remaining after controls and checks. An authorized owner may accept it
+without claiming that missing evidence or an absent audit exists.
 
 **Resource**
 Depending on context, an identified semantic thing or an access/download item
@@ -359,6 +404,11 @@ JavaScript with development-time types, used by the canonical Explorer.
 
 **Validation**
 Checking data against declared rules.
+
+**Waiver**
+An authorized, recorded exception to a non-hard requirement. A waiver does not
+apply to a declared hard failure unless the governing contract itself is
+changed and re-reviewed.
 
 **Vocabulary**
 A governed set of identified terms and descriptions.

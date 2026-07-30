@@ -246,5 +246,11 @@ Read [UK Legislation runtime acceptance](../legislation-runtime-acceptance.md),
 [Federated OKF bundles](../federated-bundles.md) and the release-assurance
 artifacts for the exact gates.
 
+## Next
+
+[Release gates, evidence and owner review](21-release-gates-evidence-and-owner-review.md)
+explains the gate vocabulary, Foundry G0–G9 sequence, evidence roles and owner
+decisions from first principles.
+
 Return to [A contributor's repository tour](15-contributor-repository-tour.md)
 before changing these contracts.
