@@ -677,6 +677,12 @@ instructions.
 
 ## Final acceptance table
 
+The identifiers below are the **Foundry gate catalogue**. Cite them as
+`Foundry G0`, `Foundry G1` and so on. A target repository may add a
+project-specific release-evidence catalogue, but it must name and version that
+catalogue, publish a crosswalk and qualify every reference. Never use a bare
+`G5` when more than one catalogue is in scope.
+
 - G0 Domain contract: verified profile, source and consumer locks, impact graph,
   plane-root plan, decisions and traceability.
 - G1 Fixture: producer contracts pass twice byte-identically; every actual
