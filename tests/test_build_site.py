@@ -20,6 +20,22 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_project_root_href_is_directory_canonical(self) -> None:
+        self.assertEqual(
+            "../",
+            build_site.relative_site_directory_href(
+                Path("docs/page.html"),
+                Path("."),
+            ),
+        )
+        self.assertEqual(
+            "../../",
+            build_site.relative_site_directory_href(
+                Path("docs/beginners/page.html"),
+                Path("."),
+            ),
+        )
+
     def test_local_candidate_receipt_fails_closed_on_stale_site_claims(
         self,
     ) -> None:
@@ -600,13 +616,31 @@ class BuildSiteTests(unittest.TestCase):
                 / "19-foundry-authoring-and-domain-profiles.html"
             ).read_text(encoding="utf-8")
             self.assertIn(
+                'class="site-header__title" href="../../">OKF Explorer</a>',
+                chapter,
+            )
+            self.assertIn(
                 'href="../okf-authoring-prompt-kit.html#success-checklist"',
                 chapter,
             )
             kit = (
                 output / "docs" / "okf-authoring-prompt-kit.html"
             ).read_text(encoding="utf-8")
+            self.assertIn(
+                'class="site-header__title" href="../">OKF Explorer</a>',
+                kit,
+            )
+            self.assertNotIn('href="../index.html"', kit)
             self.assertIn('id="success-checklist"', kit)
+
+            generic = (
+                output / "docs" / "heritage-evaluation-report.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'class="site-header__title" href="../">OKF Explorer</a>',
+                generic,
+            )
+            self.assertNotIn('href="../index.html"', generic)
 
     def test_readable_link_audit_rejects_local_markdown_navigation(self) -> None:
         with tempfile.TemporaryDirectory(

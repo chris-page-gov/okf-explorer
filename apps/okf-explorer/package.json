@@ -9,7 +9,7 @@
     "build:determinism": "node scripts/check_deterministic_build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "test": "vitest run && node --test scripts/app_build_manifest.test.mjs scripts/runtime_acceptance_contract.test.mjs scripts/external_bundle_acceptance_contract.test.mjs",
+    "test": "vitest run && node --test scripts/app_build_manifest.test.mjs scripts/pages_fallback.test.mjs scripts/runtime_acceptance_contract.test.mjs scripts/external_bundle_acceptance_contract.test.mjs",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:foundry": "playwright test --config=playwright.foundry.config.ts",

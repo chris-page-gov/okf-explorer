@@ -7,7 +7,7 @@ description: Source-backed NHLE spatial intersection and sanctioned annual Herit
 resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json
 generated:
   by: process:heritage-evaluation-builder
-  at: "2026-08-03T08:22:13Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: real-world
 aliases:

@@ -1,12 +1,12 @@
 ---
 "@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
-"@id": https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile
+"@id": https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html
 type: Evaluation Profile
 title: Coventry and Warwickshire heritage evaluation profile
 description: Beginner-readable entry point to the source scope, mappings, fixtures, questions, journeys and publication boundary.
 generated:
   by: process:heritage-evaluation-profile-authoring
-  at: "2026-08-03T00:00:00Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -46,7 +46,7 @@ intersection claim; locality-only matches are excluded.
 ## Current Assurance Status
 
 This profile is **provisional**. A clean local site build rendered 239 reading
-pages, resolved 4,134 internal page references and passed the 1 GB GitHub Pages
+pages, resolved 4,135 internal page references and passed the 1 GB GitHub Pages
 published-site limit with more than 12 MB of headroom.
 The local faithful journey also exercised all eight Explorer presentation
 views while preserving one query and facet state.

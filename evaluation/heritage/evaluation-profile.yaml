@@ -7,13 +7,13 @@ description: >-
   A reproducible Evaluation Foundry profile for testing every OKF Explorer
   presentation plane against complete, source-defined heritage populations,
   a tiny assurance fixture, and a visibly separate synthetic supplement.
-prepared_at: "2026-08-03T00:00:00Z"
+prepared_at: "2026-08-03T10:29:12Z"
 publication_assurance:
   status: provisional
   local_build:
     status: passed
     reading_pages: 239
-    internal_page_references: 4134
+    internal_page_references: 4135
     github_pages_size_gate: passed-under-1000000000-bytes
   explorer_presentation_views:
     status: passed-locally

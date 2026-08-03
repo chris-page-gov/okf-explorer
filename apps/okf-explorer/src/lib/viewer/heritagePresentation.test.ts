@@ -102,13 +102,26 @@ describe('heritage record presentation', () => {
       ...record,
       source_adapter: 'evaluation-foundry-synthetic',
       assertion_status: 'model-derived',
-      assertion_scope: 'synthetic-fixture'
+      assertion_scope: 'synthetic-fixture',
+      url: 'https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/index.html#synthetic-place'
     };
     const semantic = heritageDetailSections(synthetic).find((section) => section.id === 'semantic');
+    const designation = heritageDetailSections(synthetic).find(
+      (section) => section.id === 'designation'
+    );
     expect(semantic?.fields).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ key: 'assertion_status', value: 'model-derived' }),
         expect.objectContaining({ key: 'assertion_scope', value: 'synthetic-fixture' })
+      ])
+    );
+    expect(designation?.fields).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          key: 'url',
+          label: 'Synthetic fixture page',
+          help: expect.stringContaining('not an official Historic England representation')
+        })
       ])
     );
   });
@@ -139,6 +152,7 @@ describe('heritage record presentation', () => {
       ...record,
       record_type: 'Heritage at Risk Observation',
       register_year: '2013',
+      url: 'https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1342941',
       condition: '',
       vulnerability: [],
       extras: {
@@ -148,6 +162,18 @@ describe('heritage record presentation', () => {
       }
     };
     const risk = heritageDetailSections(annual).find((section) => section.id === 'risk');
+    const designation = heritageDetailSections(annual).find(
+      (section) => section.id === 'designation'
+    );
+    expect(designation?.fields).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          key: 'url',
+          label: 'Official register search',
+          help: expect.stringContaining('not a derived item page')
+        })
+      ])
+    );
     expect(risk?.fields).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

@@ -32,7 +32,7 @@ and [journeys](journeys.json) are the controlling artifacts. The
 results and limitations.
 
 Publication assurance is provisional. The clean local build produced 239
-reading pages, resolved 4,134 internal page references, passed the deterministic
+reading pages, resolved 4,135 internal page references, passed the deterministic
 1 GB GitHub Pages size gate with more than 12 MB of headroom and exercised the
 eight Explorer presentation views, but the publication capability remains
 undemonstrated until the exact

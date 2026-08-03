@@ -305,6 +305,15 @@ def relative_site_href(source_route: Path, target_route: Path) -> str:
     )
 
 
+def relative_site_directory_href(
+    source_route: Path,
+    target_directory: Path,
+) -> str:
+    """Return a relative directory URL with browser-significant trailing slash."""
+    href = relative_site_href(source_route, target_directory)
+    return f"{href.rstrip('/')}/"
+
+
 def rewrite_published_href(
     href: str,
     source: Path,
@@ -627,7 +636,7 @@ def render_generic_page(source: Path, target: Path) -> str:
         quote=True,
     )
     explorer_href = html.escape(
-        relative_site_href(target, Path("index.html")),
+        relative_site_directory_href(target, Path(".")),
         quote=True,
     )
     source_href = html.escape(github_source_url(source), quote=True)
@@ -757,7 +766,7 @@ def render_foundry_page(
         quote=True,
     )
     explorer_href = html.escape(
-        relative_site_href(target, Path("index.html")),
+        relative_site_directory_href(target, Path(".")),
         quote=True,
     )
     source_markdown_href = html.escape(github_source_url(source), quote=True)

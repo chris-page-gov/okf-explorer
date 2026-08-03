@@ -215,6 +215,45 @@ class EvaluationFoundryValidatorTests(unittest.TestCase):
         (family / "evidence.md").write_text("# Evidence\n", encoding="utf-8")
         return family
 
+    @staticmethod
+    def genuine_browser_receipt(
+        records: list[dict[str, object]],
+        *,
+        observed_at: str = "2026-08-03T12:00:00Z",
+        browser: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        return {
+            "schema": "okf-genuine-browser-link-receipt.v1",
+            "observed_at": observed_at,
+            "browser": browser
+            or {
+                "channel": "interactive-chrome",
+                "user_agent": "Example Chrome/150",
+                "webdriver": False,
+            },
+            "records": records,
+        }
+
+    @staticmethod
+    def genuine_browser_record(
+        *,
+        requested_url: str,
+        final_url: str | None = None,
+        expected_text: str = "Record",
+        observed_at: str = "2026-08-03T12:00:00Z",
+    ) -> dict[str, object]:
+        return {
+            "observed_at": observed_at,
+            "requested_url": requested_url,
+            "final_url": final_url or requested_url,
+            "expected_text": expected_text,
+            "title": f"{expected_text} page",
+            "response_status": 200,
+            "identity_matched": True,
+            "identity_source": "document.body.innerText",
+            "identity_excerpt": f"Page content containing {expected_text}.",
+        }
+
     def test_valid_family_passes_schema_reference_isolation_and_file_checks(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             repository_root = Path(directory)
@@ -436,6 +475,324 @@ class EvaluationFoundryValidatorTests(unittest.TestCase):
             "references unknown question 'HQ001'",
         )
         for fragment in expected:
+            self.assertTrue(any(fragment in error for error in errors), fragment)
+
+    def test_verify_url_expected_final_hash_must_be_a_safe_hash(self) -> None:
+        journeys = self.valid_documents()["journeys"]
+        for final_hash in ("record/with whitespace", "#"):
+            journeys["journeys"][0]["actions"].append(
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/record",
+                    "expected_text": "Record",
+                    "expected_final_hash": final_hash,
+                }
+            )
+
+        errors = check_evaluation_foundry.journey_shape_errors(journeys)
+
+        self.assertEqual(
+            2,
+            sum("expected_final_hash must be" in error for error in errors),
+        )
+
+    def test_genuine_browser_receipt_passes_with_declared_redirect_and_hash(self) -> None:
+        documents = self.valid_documents()
+        actions = documents["journeys"]["journeys"][0]["actions"]
+        actions.append(
+            {
+                "action": "verify_url",
+                "value": "https://example.test/legacy#requested",
+                "expected_text": "Canonical record",
+                "expected_final_url": "https://example.test/canonical",
+                "verification_channel": "genuine-browser-receipt",
+                "receipt": "evidence/protected-source-link-receipt.json",
+            }
+        )
+        receipt = self.genuine_browser_receipt(
+            [
+                self.genuine_browser_record(
+                    requested_url="https://example.test/legacy#requested",
+                    final_url="https://example.test/canonical#observed",
+                    expected_text="Canonical record",
+                )
+            ]
+        )
+        # The browser contract compares identity text case-insensitively because
+        # presentation casing can differ between a heading and the journey claim.
+        receipt["records"][0]["identity_excerpt"] = (
+            receipt["records"][0]["identity_excerpt"].lower()
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            family = self.write_family(root, documents)
+            write_document(
+                family / "evidence" / "protected-source-link-receipt.json",
+                receipt,
+            )
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+
+        self.assertEqual([], errors)
+
+    def test_genuine_browser_receipt_action_shape_is_strict(self) -> None:
+        journeys = self.valid_documents()["journeys"]
+        actions = journeys["journeys"][0]["actions"]
+        actions.extend(
+            [
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/record",
+                    "expected_text": "Record",
+                    "verification_channel": "automated-headless",
+                    "receipt": "evidence/receipt.json",
+                },
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/record",
+                    "expected_text": "Record",
+                    "verification_channel": "genuine-browser-receipt",
+                    "receipt": "../outside.json",
+                    "expected_final_url": "https://user:secret@example.test/record",
+                },
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/record?api_key=secret",
+                    "expected_text": "Record",
+                },
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/record",
+                    "expected_text": "Record",
+                    "expected_final_url": "https://example.test/canonical#record",
+                },
+            ]
+        )
+
+        errors = check_evaluation_foundry.journey_shape_errors(journeys)
+
+        for fragment in (
+            "verification_channel must be 'genuine-browser-receipt'",
+            "receipt must be a safe fixture-relative JSON path",
+            "expected_final_url must be a credential-free http(s) URL",
+            ".value must be a credential-free http(s) URL",
+            "URL without a fragment",
+        ):
+            self.assertTrue(any(fragment in error for error in errors), fragment)
+
+    def test_http_urls_reject_credential_like_query_keys(self) -> None:
+        for key in (
+            "api_key",
+            "API-KEY",
+            "client_secret",
+            "access-token",
+            "refresh_token",
+            "password",
+            "passwd",
+            "bearer",
+            "token",
+            "%61pi_key",
+        ):
+            self.assertIsNone(
+                check_evaluation_foundry._http_url_identity(
+                    f"https://example.test/record?{key}=secret"
+                ),
+                key,
+            )
+        self.assertIsNotNone(
+            check_evaluation_foundry._http_url_identity(
+                "https://example.test/record?q=token"
+            )
+        )
+
+    def test_genuine_browser_receipt_must_exist_and_cover_the_action(self) -> None:
+        documents = self.valid_documents()
+        documents["journeys"]["journeys"][0]["actions"].append(
+            {
+                "action": "verify_url",
+                "value": "https://example.test/record",
+                "expected_text": "Record",
+                "verification_channel": "genuine-browser-receipt",
+                "receipt": "evidence/protected-source-link-receipt.json",
+            }
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            family = self.write_family(root, documents)
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+            self.assertTrue(any("file does not exist" in error for error in errors))
+
+            write_document(
+                family / "evidence" / "protected-source-link-receipt.json",
+                self.genuine_browser_receipt(
+                    [
+                        self.genuine_browser_record(
+                            requested_url="https://example.test/other"
+                        )
+                    ]
+                ),
+            )
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+
+        self.assertTrue(any("receipt has no record" in error for error in errors))
+
+    def test_genuine_browser_receipt_rejects_untrusted_observations(self) -> None:
+        documents = self.valid_documents()
+        documents["journeys"]["journeys"][0]["actions"].append(
+            {
+                "action": "verify_url",
+                "value": "https://example.test/record",
+                "expected_text": "Record",
+                "verification_channel": "genuine-browser-receipt",
+                "receipt": "evidence/protected-source-link-receipt.json",
+            }
+        )
+        receipt = self.genuine_browser_receipt(
+            [
+                {
+                    **self.genuine_browser_record(
+                        requested_url="https://example.test/record",
+                        final_url="https://example.test/unrelated",
+                        expected_text="Different text",
+                    ),
+                    "response_status": 403,
+                    "identity_matched": False,
+                },
+                self.genuine_browser_record(
+                    requested_url="https://example.test/record",
+                ),
+                self.genuine_browser_record(
+                    requested_url="https://user:secret@example.test/private",
+                    final_url="javascript:alert(1)",
+                    expected_text="Unsafe",
+                ),
+                self.genuine_browser_record(
+                    requested_url="https://example.test/private?token=secret",
+                    final_url="https://example.test/private?client_secret=secret",
+                    expected_text="Private",
+                ),
+            ],
+            browser={
+                "channel": "interactive-chrome",
+                "user_agent": "Example Chrome/150",
+                "webdriver": True,
+            },
+        )
+        receipt["schema"] = "wrong-schema"
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            family = self.write_family(root, documents)
+            write_document(
+                family / "evidence" / "protected-source-link-receipt.json",
+                receipt,
+            )
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+
+        for fragment in (
+            "schema must be 'okf-genuine-browser-link-receipt.v1'",
+            "browser.webdriver must be false",
+            "requested_url 'https://example.test/record' is not unique",
+            "requested_url must be a credential-free http(s) URL",
+            "final_url must be a credential-free http(s) URL",
+            "response_status must be from 200 to 399",
+            "identity_matched must be true",
+            "receipt expected_text must exactly match the action",
+            "receipt final origin/path/query does not match",
+        ):
+            self.assertTrue(any(fragment in error for error in errors), fragment)
+
+    def test_genuine_browser_receipt_requires_browser_identity_and_timestamps(
+        self,
+    ) -> None:
+        documents = self.valid_documents()
+        documents["journeys"]["journeys"][0]["actions"].append(
+            {
+                "action": "verify_url",
+                "value": "https://example.test/record",
+                "expected_text": "Record",
+                "verification_channel": "genuine-browser-receipt",
+                "receipt": "evidence/protected-source-link-receipt.json",
+            }
+        )
+        record = self.genuine_browser_record(
+            requested_url="https://example.test/record"
+        )
+        record.update(
+            {
+                "observed_at": "not-a-timestamp",
+                "title": " ",
+                "identity_source": "document.title",
+                "identity_excerpt": "Unrelated content",
+            }
+        )
+        receipt = self.genuine_browser_receipt(
+            [record],
+            observed_at="not-a-timestamp",
+            browser={"channel": " ", "user_agent": "", "webdriver": False},
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            family = self.write_family(root, documents)
+            write_document(
+                family / "evidence" / "protected-source-link-receipt.json",
+                receipt,
+            )
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+
+        for fragment in (
+            "observed_at must be a timezone-qualified timestamp",
+            "browser.channel must be a nonempty string",
+            "browser.user_agent must be a nonempty string",
+            ".title must be a nonempty string",
+            ".identity_source must be 'document.body.innerText'",
+            ".identity_excerpt must contain expected_text",
+        ):
+            self.assertTrue(any(fragment in error for error in errors), fragment)
+
+    def test_genuine_browser_receipt_record_timestamps_are_ordered_and_bounded(
+        self,
+    ) -> None:
+        documents = self.valid_documents()
+        documents["journeys"]["journeys"][0]["actions"].append(
+            {
+                "action": "verify_url",
+                "value": "https://example.test/record",
+                "expected_text": "Record",
+                "verification_channel": "genuine-browser-receipt",
+                "receipt": "evidence/protected-source-link-receipt.json",
+            }
+        )
+        receipt = self.genuine_browser_receipt(
+            [
+                self.genuine_browser_record(
+                    requested_url="https://example.test/record",
+                    observed_at="2026-08-03T12:01:00Z",
+                ),
+                self.genuine_browser_record(
+                    requested_url="https://example.test/earlier",
+                    observed_at="2026-08-03T11:59:00Z",
+                ),
+            ],
+            observed_at="2026-08-03T12:00:00Z",
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            family = self.write_family(root, documents)
+            write_document(
+                family / "evidence" / "protected-source-link-receipt.json",
+                receipt,
+            )
+            errors = check_evaluation_foundry.validate_fixture_family(family, root)
+
+        for fragment in (
+            "observed_at must not be later than the receipt observed_at",
+            "records must be ordered by observed_at",
+            "observed_at must equal the latest ordered record observed_at",
+        ):
             self.assertTrue(any(fragment in error for error in errors), fragment)
 
     def test_ci_and_pages_workflows_run_the_validator(self) -> None:

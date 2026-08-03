@@ -226,6 +226,10 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         self.assertIn("Modern Coventry Cathedral", asset["search_aliases"])
         self.assertIn("Basil Spence Cathedral", asset["search_aliases"])
         risk = next(record for record in corpus["records"] if record["route"].startswith("risk/"))
+        self.assertEqual(
+            "https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1342941",
+            risk["url"],
+        )
         self.assertEqual("", risk["timestamp"])
         self.assertEqual("", risk["metadata_created"])
         self.assertEqual("2025", risk["year"])
@@ -238,6 +242,8 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             ),
             risk["@id"],
         )
+        self.assertTrue(risk["@id"].startswith(f"{heritage.EXPLORER_BASE}?bundle="))
+        self.assertNotIn("/index.html?", risk["@id"])
         self.assertIn("Microsoft Excel Open XML Spreadsheet", risk["formats"])
         self.assertIn("risk register 2025", risk["search_aliases"])
         self.assertIn("risk observation assesses NHLE", risk["search_aliases"])
@@ -247,6 +253,19 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             row for row in corpus["resources"] if row["route"].endswith("/spreadsheet")
         )
         self.assertEqual("XLSX", resource["source_format"])
+        register_search = next(
+            row
+            for row in corpus["resources"]
+            if row["resource_type"] == "official-register-search"
+        )
+        self.assertEqual("Official Heritage at Risk register search", register_search["name"])
+        self.assertTrue(register_search["route"].endswith("/register-search"))
+        self.assertEqual(risk["url"], register_search["url"])
+        self.assertNotIn("rich-page", register_search["route"])
+        self.assertEqual(
+            "https://historicengland.org.uk/listing/the-list/list-entry/1342941",
+            asset["url"],
+        )
         resource_routes = {row["route"] for row in corpus["resources"]}
         self.assertTrue(
             all(
@@ -375,6 +394,27 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         self.assertNotIn(Path("evaluation-profile.yaml"), files)
         self.assertNotIn(Path("journeys.json"), files)
 
+    def test_faithful_publication_copies_an_executable_journey_closure(self) -> None:
+        snapshot = tiny_snapshot()
+        snapshot["publication"]["role"] = "faithful"
+        files = heritage.output_files(
+            heritage.build_corpus(copy.deepcopy(snapshot), GENERATED_AT), snapshot
+        )
+
+        for source, target in (
+            (heritage.JOURNEYS_PATH, Path("journeys.json")),
+            (heritage.QUESTIONS_PATH, Path("questions.json")),
+            (
+                heritage.PROTECTED_SOURCE_RECEIPT_PATH,
+                Path("evidence/protected-source-link-receipt.json"),
+            ),
+        ):
+            with self.subTest(target=target):
+                self.assertEqual(source.read_text(encoding="utf-8"), files[target])
+
+        receipt = json.loads(files[Path("evidence/protected-source-link-receipt.json")])
+        self.assertEqual("okf-genuine-browser-link-receipt.v1", receipt["schema"])
+
     def test_fixed_timestamp_build_is_byte_deterministic(self) -> None:
         snapshot = tiny_snapshot()
         first = heritage.output_files(
@@ -424,6 +464,63 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "does not bind its List entry"):
             heritage.link_validation(corpus["records"], corpus["resources"], snapshot)
 
+    def test_har_deprecated_entry_route_normalizes_to_live_register_search(self) -> None:
+        deprecated = (
+            "https://www.historicengland.org.uk/listing/heritage-at-risk/"
+            "search-register/list-entry/1342941/"
+        )
+
+        self.assertEqual(
+            "https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1342941",
+            heritage.har_register_search_url("1342941", deprecated),
+        )
+
+    def test_har_register_search_normalization_requires_exact_identifier_binding(self) -> None:
+        canonical = (
+            "https://historicengland.org.uk/listing/heritage-at-risk/"
+            "search-register/results?q=1342941"
+        )
+        self.assertEqual(canonical, heritage.har_register_search_url("1342941", canonical))
+        self.assertTrue(heritage.exact_har_register_search_binding(canonical, "1342941"))
+
+        malformed = [
+            canonical.replace("q=1342941", "q=9999999"),
+            f"{canonical}&page=1",
+            f"{canonical}&q=1342941",
+            canonical.replace("results?q=", "result?q="),
+            canonical.replace("results?q=1342941", "list-entry/9999999"),
+            f"{canonical}#record",
+        ]
+        for candidate in malformed:
+            with self.subTest(candidate=candidate):
+                with self.assertRaisesRegex(ValueError, "exact q parameter"):
+                    heritage.har_register_search_url("1342941", candidate)
+                self.assertFalse(
+                    heritage.exact_har_register_search_binding(candidate, "1342941")
+                )
+
+    def test_link_validation_rejects_tampered_har_q_bindings(self) -> None:
+        snapshot = tiny_snapshot()
+        corpus = heritage.build_corpus(snapshot, GENERATED_AT)
+
+        tampered_records = copy.deepcopy(corpus["records"])
+        risk = next(
+            record for record in tampered_records if record["route"].startswith("risk/")
+        )
+        risk["url"] = risk["url"].replace("q=1342941", "q=9999999")
+        with self.assertRaisesRegex(ValueError, "register search does not bind exact q=1342941"):
+            heritage.link_validation(tampered_records, corpus["resources"], snapshot)
+
+        tampered_resources = copy.deepcopy(corpus["resources"])
+        search = next(
+            resource
+            for resource in tampered_resources
+            if resource["resource_type"] == "official-register-search"
+        )
+        search["url"] = f"{search['url']}&page=1"
+        with self.assertRaisesRegex(ValueError, "register search does not bind exact q=1342941"):
+            heritage.link_validation(corpus["records"], tampered_resources, snapshot)
+
     def test_url_policy_rejects_credentials_and_non_http_schemes(self) -> None:
         self.assertEqual("", heritage.safe_http_url("javascript:alert(1)"))
         self.assertEqual("", heritage.safe_http_url("https://user:secret@example.test/data"))
@@ -452,12 +549,46 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sanctioned Historic England"):
             heritage.build_corpus(bad_annual, GENERATED_AT)
 
-        bad_rich = tiny_snapshot()
-        bad_rich["har"]["annual"][0]["rows"][0]["URL"] = (
-            "https://evil.example/listing/heritage-at-risk/search-register/list-entry/1342941"
+        bad_search = tiny_snapshot()
+        bad_search["har"]["annual"][0]["rows"][0]["URL"] = (
+            "https://historicengland.org.uk.evil.example/listing/heritage-at-risk/"
+            "search-register/results?q=1342941"
         )
-        with self.assertRaisesRegex(ValueError, "non-Historic-England rich URL"):
-            heritage.build_corpus(bad_rich, GENERATED_AT)
+        with self.assertRaisesRegex(ValueError, "not sanctioned Historic England HTTPS"):
+            heritage.build_corpus(bad_search, GENERATED_AT)
+
+        credentialed = tiny_snapshot()
+        credentialed["har"]["annual"][0]["rows"][0]["URL"] = (
+            "https://attacker:secret@historicengland.org.uk/listing/heritage-at-risk/"
+            "search-register/results?q=1342941"
+        )
+        with self.assertRaisesRegex(ValueError, "not sanctioned Historic England HTTPS"):
+            heritage.build_corpus(credentialed, GENERATED_AT)
+
+    def test_nhle_rich_page_requires_the_exact_path_without_query_or_fragment(self) -> None:
+        invalid_urls = [
+            "https://historicengland.org.uk/other/list-entry/1342941",
+            "https://historicengland.org.uk/listing/the-list/list-entry/1342941?view=full",
+            "https://historicengland.org.uk/listing/the-list/list-entry/1342941#details",
+            "https://historicengland.org.uk/listing/the-list/list-entry/1342941/extra",
+        ]
+        for invalid_url in invalid_urls:
+            with self.subTest(url=invalid_url):
+                snapshot = tiny_snapshot()
+                snapshot["nhle"]["layers"][0]["features"][0]["attributes"][
+                    "hyperlink"
+                ] = invalid_url
+                with self.assertRaisesRegex(ValueError, "identifier-bound Historic England page"):
+                    heritage.build_corpus(snapshot, GENERATED_AT)
+
+        canonical = heritage.list_entry_url(
+            "1342941",
+            "https://www.historicengland.org.uk/listing/the-list/list-entry/1342941",
+        )
+        self.assertEqual(
+            "https://historicengland.org.uk/listing/the-list/list-entry/1342941",
+            canonical,
+        )
 
     def test_link_receipt_rechecks_origins_and_relationship_panel_links(self) -> None:
         snapshot = tiny_snapshot()
@@ -466,16 +597,56 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             corpus["records"], corpus["resources"], snapshot, corpus["relationships"]
         )
         self.assertGreater(receipt["counts"]["relationship_ui_links"], 0)
+        self.assertEqual(4, receipt["counts"]["identifier_bound_rich_links"])
 
         tampered = copy.deepcopy(corpus["resources"])
         official = next(
-            row for row in tampered if row["resource_type"] == "official-record-page"
+            row
+            for row in tampered
+            if row["resource_type"] == "official-register-search"
         )
-        official["url"] = "https://evil.example/list-entry/1342941"
+        official["url"] = (
+            "https://evil.example/listing/heritage-at-risk/search-register/"
+            "results?q=1342941"
+        )
         with self.assertRaisesRegex(ValueError, "origin allowlist"):
             heritage.link_validation(
                 corpus["records"], tampered, snapshot, corpus["relationships"]
             )
+
+    def test_source_provenance_labels_and_reconciles_har_prefilter_rows(self) -> None:
+        snapshot = tiny_snapshot()
+        snapshot["sources"] = [
+            {
+                "id": "har-test",
+                "semantic_sheets": [
+                    {"semantic_role": "entries", "scope_rows": 2},
+                    {"semantic_role": "additions", "scope_rows": 1},
+                ],
+            }
+        ]
+        snapshot["denominators"] = [
+            {"id": "har-2025-entries-scope-rows", "count": 1},
+            {"id": "har-2025-additions-scope-rows", "count": 1},
+        ]
+
+        receipt = heritage.source_provenance(snapshot)
+
+        reconciliation = receipt["scope_reconciliation"]
+        self.assertEqual(3, reconciliation["acquisition_prefilter"]["rows"])
+        self.assertEqual(2, reconciliation["authoritative_emitted"]["rows"])
+        self.assertEqual(
+            1,
+            reconciliation[
+                "excluded_after_authoritative_geography_reconciliation"
+            ]["rows"],
+        )
+        self.assertTrue(
+            all(
+                sheet["scope_rows_stage"].startswith("acquisition-prefilter")
+                for sheet in receipt["sources"][0]["semantic_sheets"]
+            )
+        )
 
     def test_family_build_preserves_nested_fixture_outputs(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
