@@ -134,7 +134,7 @@ exercise:
 - exact, alias and misspelling-tolerant search;
 - facets over the three records;
 - point and polygon geometry;
-- an official rich page and machine-readable source resource;
+- an NHLE rich page, an exact HAR register search and machine-readable source resources;
 - a relationship with evidence;
 - a timeline bucket and data card.
 
@@ -207,7 +207,11 @@ Validation has several layers:
    outside that closure are not covered by this claim.
 4. The assembled Site audit checks the rewritten HTML routes and internal
    references in the reading closure.
-5. Representative protected source pages are opened in a real browser.
+5. Representative protected source pages are opened in a genuine interactive
+   browser. A small receipt records when each page was seen, its requested and
+   final URL, status, title and expected identity text. The evaluator rejects a
+   challenge page, failed status, unexpected redirect or mismatched identity;
+   the receipt is evidence, not a waiver.
 6. The exact deployed Explorer, report, methodology, profile, tiny and
    synthetic URLs are checked by identity and content—not only HTTP status.
 7. Controls are keyboard reachable, status changes are named, focus remains
@@ -223,10 +227,10 @@ The repository keeps ordinary, browser-compatible Markdown as its source of
 truth. It uses normal Markdown links rather than editor-specific wikilinks.
 During publication, each in-scope `.md` reading page is rendered as an `.html`
 page and internal links are rewritten and checked against those HTML routes.
-Explorer deep links point to the published `index.html`, identify the bundle,
-and carry an encoded record route in the fragment. A copied URL can therefore
-reopen the same record in the interface instead of exposing a filesystem path
-or relying on a Markdown renderer.
+Explorer deep links point to the published project-root URL ending in `/`,
+identify the bundle and carry an encoded record route in the fragment. A
+copied URL can therefore reopen the same record in the interface instead of
+exposing a filesystem path or relying on a Markdown renderer.
 
 ### E9 — Publish The Bytes That Passed
 
@@ -245,7 +249,7 @@ OKF Markdown already starts with human-readable YAML:
 ---
 type: Heritage Asset
 title: Coventry Cathedral
-resource: https://historicengland.org.uk/example
+resource: https://historicengland.org.uk/listing/the-list/list-entry/1342941
 ---
 ```
 
@@ -296,10 +300,10 @@ reified assertion carries the evidence and provenance for that link.
 The example uses the official NHLE page as the asset identity because it is a
 stable, identifier-bound source page. Some records, such as an annual workbook
 row, have no equivalent public item page. For those records the exemplar uses
-a canonical Explorer deep-link IRI: the published `index.html`, the exact
-bundle URL and an encoded record route. The IRI is therefore dereferenceable
-through the interface without inventing an official source identity. The
-linked workbook resource remains the evidence.
+a canonical Explorer deep-link IRI: the published project-root URL ending in
+`/`, the exact bundle URL and an encoded record route. The IRI is therefore
+dereferenceable through the interface without inventing an official source
+identity. The linked workbook resource remains the evidence.
 
 ## What YAML-LD Adds Beyond Existing OKF
 

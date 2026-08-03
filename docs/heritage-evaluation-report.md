@@ -2,14 +2,14 @@
 "@context":
   - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
   - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-context.jsonld
-"@id": https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report
+"@id": https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html
 "@type": https://schema.org/Report
 type: Evaluation Report
 title: Coventry and Warwickshire heritage functionality evaluation
 description: A beginner-readable, evidence-bounded report on the Heritage Evaluation Foundry exemplar, its source coverage, Explorer capabilities and additive YAML-LD proposal.
 generated:
   by: process:heritage-evaluation-report-authoring
-  at: "2026-08-03T07:36:44Z"
+  at: "2026-08-03T12:02:00Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -224,6 +224,10 @@ The frozen source-provenance ledger records this in-scope annual reconciliation:
 These rows are observations from particular annual sheets, not 1,084 unique
 sites and not a claim about current condition. The inspectable ledger is the
 [source-provenance receipt](../evaluation/heritage/data/source-provenance.json).
+Its `semantic_sheets[].scope_rows` values are explicitly labelled as the broad
+acquisition prefilter: 1,109 rows. The structured `scope_reconciliation` then
+records the 25 locality-only false positives removed by the authoritative
+geography rule, leaving the 1,084 emitted observations above.
 
 ## Generated Results Handoff
 
@@ -241,15 +245,15 @@ terminal receipts remain separate release gates.
 | Distinct source resources | **22,200** | overview → `counts.resources` |
 | Qualified graph relationships | **9,566** | overview → `counts.relationships` |
 | Search documents | **7,640** | [manifest](../evaluation/heritage/data/manifest.json) → `search.documents` |
-| Search vocabulary | **22,039 tokens; 626,287 postings** | manifest and search-shard metadata |
+| Search vocabulary | **22,040 tokens; 626,287 postings** | manifest and search-shard metadata |
 | Typo tolerance | **At most one edit per corrected token** | manifest → `search.typo_tolerance.max_edit_distance` |
 | Registered semantic IRIs | **7,646** | [semantic validation](../evaluation/heritage/data/semantic/validation-report.json) → `counts.registered_iris` |
 | Governed predicates | **3** | semantic validation → `counts.predicates` |
 | Semantic assertions | **9,566; valid with 0 errors** | semantic validation → `counts.assertions`, `valid`, `errors` |
-| Identifier-bound rich links | **14,196** | [link validation](../evaluation/heritage/data/link-validation.json) → `counts.identifier_bound_rich_links` |
+| Identifier-bound official-link occurrences | **15,280** NHLE direct pages or HAR exact register searches across record-primary and resource representations | [link validation](../evaluation/heritage/data/link-validation.json) → `counts.identifier_bound_rich_links` (retained field name) |
 | Relationship-panel links checked | **65,878** | link validation → `counts.relationship_ui_links` |
 | Build-time link-contract failures | **0** | [link validation](../evaluation/heritage/data/link-validation.json) → `counts.failures` |
-| Determinism release gate | **0 differences across two independent 2,938-file builds** | Local candidate receipt → `determinism` |
+| Determinism release gate | **0 differences across two independent 2,940-file builds** | Local candidate receipt → `determinism` |
 | Question-suite result | **100/100 scored; average 92.7; all 100 at least 80; none below 60** | local candidate receipt → `question_suite` |
 | Local tiny/faithful/synthetic journeys | **3/3 passed; 0 failures or errors** | local candidate receipt → `local_journeys` |
 | Public GitHub Pages journey | **Not yet run for an exact deployed candidate** | Post-deployment identity and journey receipt |
@@ -271,7 +275,7 @@ table.
 | Search | Preferred names, source identifiers, geography names/codes, grades, categories, annual risk fields, aliases and explained one-edit corrections | A correction is a retrieval aid, not a renamed record or semantic assertion |
 | Facets | Exact postings for category, grade, local authority, date, geometry, risk fields, source adapter and assertion labels | Not every field applies to every category or workbook year |
 | Type | Source designation categories, heritage assets and annual observation/event records | Display type, source category and semantic type remain distinguishable |
-| Resources | Official rich pages, exact FeatureServer queries, annual workbooks and frozen GeoJSON | Linked rich narrative is not copied or relicensed |
+| Resources | NHLE rich pages, HAR register searches bound to `q=ListEntry`, exact FeatureServer queries, annual workbooks and frozen GeoJSON | Linked rich narrative is not copied or relicensed; an annual HAR row does not invent Historic England's opaque live-register item ID |
 | Graph | Exact NHLE boundary intersections, exact HAR-to-NHLE identifier joins, and reversible HAR authority-field normalizations with their source field and value | A HAR geography normalization is not described as a spatial intersection; no person, period or authorship edge is inferred from prior knowledge |
 | Links | Internal entity routes, external official representations and evidence-bearing relationship targets | An internal route is allowed only through the integrity-bound IRI registry |
 | Timeline | Designation/amendment dates and annual register years | Different designation categories have different statutory date meanings |
@@ -334,10 +338,14 @@ associated with Coventry” into a person-to-building edge. A future governed
 source could add that evidence; the isolated synthetic supplement can show how
 the interface would present it without claiming it is true.
 
-Two representative identifier-bound rich pages are Historic England’s
+Two representative identifier-bound NHLE rich pages are Historic England’s
 [Cathedral Church of St Michael, Coventry](https://historicengland.org.uk/listing/the-list/list-entry/1342941)
 and [Warwick Castle](https://historicengland.org.uk/listing/the-list/list-entry/1364805).
 They are representations to inspect, not text ingested into the corpus.
+For a HAR annual row, the safe live counterpart is instead Historic England's
+[register search for its source List Entry Number](https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1184627).
+The register's per-result item ID is opaque and is not derivable from the NHLE
+number, so the producer must not fabricate a `/list-entry/{NHLE}` path.
 
 ## Search: Alternatives And Misspellings Without Corrupting Evidence
 
@@ -522,7 +530,7 @@ graph:
 - The map and timeline can project the same identified records as the current
   query and facets.
 - Resources can distinguish an internal entity route, frozen machine-readable
-  evidence and an external official rich page.
+  evidence, an NHLE rich page and an exact HAR register search.
 - The selected-record card can show both human-readable fields and semantic
   identifiers without asking a beginner to read raw RDF.
 
@@ -565,23 +573,50 @@ For every NHLE record the producer:
    is absent or unsuitable;
 5. records the exact machine-readable query and frozen evidence separately.
 
+For every annual HAR record, the frozen workbook row remains the time-specific
+authority. Where it supplies a numeric List Entry Number, the producer links
+to the current official results endpoint with exactly `q={number}`. Historic
+England's old `/search-register/list-entry/{NHLE}` pattern returns a 404 and
+the current result's opaque item ID cannot be inferred safely. Deprecated
+fixture URLs are therefore normalized to the exact search; credentials,
+extra query parameters, fragments and lookalike origins fail closed.
+
 Link assurance has five distinct gates:
 
 | Gate | What it checks |
 |---|---|
 | Corpus manifest and digest integrity | Descriptor, chunk, shard, registry and context paths stay within their publication root and match their declared digests |
-| Build-time URL contract | All 7,640 record links and 22,200 resource links have safe schemes and no credentials; 14,196 rich links bind their source identifier; all 22,200 internal resource references resolve; and 65,878 relationship-panel link occurrences pass the same route/origin policy. Each count remains separate, and the generated report records zero failures |
+| Build-time URL contract | All 7,640 record links and 22,200 resource links have safe schemes and no credentials; 15,280 official-link occurrences across record-primary and resource representations bind either an NHLE direct-page identifier or an exact HAR `q=ListEntry` search; all 22,200 internal resource references resolve; and 65,878 relationship-panel link occurrences pass the same route/origin policy. Each count remains separate, and the generated report records zero failures |
 | Repository Markdown check | Relative links in the bounded public reading closure resolve and each in-scope Markdown document can be rendered; this is not a claim about every Markdown file in the repository |
-| Assembled Site audit | The unadvertised local candidate renders 239 reading pages, resolves 4,134 internal link or asset references in the bounded public reading closure and passes the 1 GB Pages size gate. The local candidate receipt binds the exact non-receipt Site file tree, byte inventory and headroom; corpus descriptors and data paths are validated by the separate manifest gate |
-| Real-browser deployment journey | The exact deployed Explorer, report, profile, methodology, tiny fixture, synthetic fixture and representative Historic England pages show the expected identity/content |
+| Assembled Site audit | The unadvertised local candidate renders 239 reading pages, resolves 4,135 internal link or asset references in the bounded public reading closure and passes the 1 GB Pages size gate. The local candidate receipt binds the exact non-receipt Site file tree, byte inventory and headroom; corpus descriptors and data paths are validated by the separate manifest gate |
+| Real-browser deployment journey | The exact deployed Explorer, report, profile, methodology, tiny fixture and synthetic fixture show the expected identity/content; every unique external hyperlink authored into this report is identity-checked as a terminal action, using live navigation for ordinary pages and an auditable genuine-browser receipt for protected Historic England pages |
 
 A live URL can change after the observation time. Cloudflare can also make a
 generic unattended HTTP client a poor proxy for a user browser. Identifier
-binding is therefore exhaustive, while representative protected pages and all
-publication-critical local routes are checked in a real browser. The generated
-receipt deliberately records **zero live external receipts**: zero structural
-failures is not evidence that every external page was live. The public
-real-browser terminal gate has not yet been run for an exact deployed candidate.
+binding is therefore exhaustive, while all 16 unique external destinations
+authored into this report and all publication-critical local routes are checked
+through browser evidence. Ordinary pages are navigated live by the terminal
+journey. Historic England pages that challenge fresh automated contexts are
+opened in a genuine interactive browser and recorded with requested and final
+URLs, HTTP status, page title, a bounded excerpt captured from
+`document.body.innerText`, expected identity text and per-page observation
+time. The evaluator checks that excerpt case-insensitively and records the
+receipt's SHA-256 in terminal evidence. The
+thousands of generated corpus URL occurrences are not
+bulk-requested from the source service: their identifier/origin/query contracts
+are checked structurally, and the report's selected pages exercise every link
+class without creating abusive traffic. The generated receipt deliberately
+records **zero live external receipts**: zero structural failures is not evidence
+that every external page was live. The public real-browser terminal gate has not
+yet been run for an exact deployed candidate.
+The protected-page receipt is executable evidence, not an exemption. The
+evaluator accepts it only when it declares a non-WebDriver interactive Chrome
+session, matches the journey's exact requested URL and expected text, records a
+successful response, preserves the expected final origin/path/query and reports
+that the identity text was present. The
+[protected-source browser receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/protected-source-link-receipt.json)
+is published for inspection. A challenge page, HTTP 403, unexpected redirect or
+missing identity remains a failed action.
 A successful link check does not expand the page’s licence or authorize copying
 its text. The machine-readable data attribution remains subject to the source
 terms and the
@@ -621,9 +656,12 @@ and reload preserve the intended state.
 
 The publication journey separately checks the generated index, methodology,
 profile, beginner chapter and this report as HTML pages. The bytes published
-to GitHub Pages must be the bytes that passed. A failed deployed URL is
-reported as unverified; it is not silently converted into a rebuild with the
-same release identity.
+to GitHub Pages must be the bytes that passed. Before the journey starts, the
+evaluator compares both the deployed descriptor SHA-256 and the deployed
+plane-root release digest with the local candidate receipt; a stable descriptor
+cannot disguise an older executable closure. A failed deployed URL is reported
+as unverified; it is not silently converted into a rebuild with the same
+release identity.
 
 ## Synthetic Capability Supplement
 

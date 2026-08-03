@@ -7,7 +7,7 @@ description: Scope, acquisition, normalization, link and completeness rules for 
 resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder
-  at: "2026-08-03T08:12:27Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: synthetic-fixture
 ---

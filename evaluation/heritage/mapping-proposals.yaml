@@ -83,12 +83,13 @@ proposals:
     limitations:
       - Different heritage categories use different statutory date concepts.
   - id: map-rich-representations
-    source: Source hyperlink and ListEntry
-    target: Official rich-page resource with identifier-bound canonical URL
+    source: NHLE source hyperlink or HAR annual-row ListEntry
+    target: Official NHLE rich-page resource or exact HAR register search
     evidence:
       - https://historicengland.org.uk/listing/the-list/list-entry/1342941
+      - https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1184627
     confidence: 1.0
-    derivation: Accept the source URL only on an allowed Historic England origin and when its trailing identifier matches ListEntry; otherwise construct the canonical URL.
+    derivation: For NHLE, accept the source URL only on an allowed Historic England origin and when its trailing identifier matches ListEntry; otherwise construct the canonical direct URL. For HAR annual rows, bind the numeric ListEntry as the sole q parameter on the official register-results endpoint because the live register item ID is opaque and cannot be inferred from NHLE identity.
     assertion_status: official
     assertion_scope: real-world
     reversible: true

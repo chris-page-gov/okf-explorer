@@ -7,7 +7,7 @@ description: Scope, acquisition, normalization, link and completeness rules for 
 resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder
-  at: "2026-08-03T08:22:13Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: real-world
 ---
@@ -27,8 +27,9 @@ every intersection.
   names, categories, grades, dates, National Grid references and geometry.
 - Sanctioned annual Heritage at Risk spreadsheets supply annual entries,
   additions and positive removals. Missing historical columns remain unknown.
-- Historic England's rich HTML pages remain linked official resources; their
-  narrative is not bulk-copied into this repository.
+- Historic England's NHLE rich HTML pages and HAR register searches remain
+  linked official resources; their narrative is not bulk-copied into this
+  repository, and an opaque HAR item route is never inferred.
 
 ## Geometry
 
@@ -41,10 +42,11 @@ geometry is retained in bounded GeoJSON shards.
 
 ## Link validation
 
-Every rich link is bound to its source identifier and allowed origin. Local
-Markdown-to-HTML links and fragments are checked by the assembled-site audit.
-The publication gate additionally opens representative source pages and every
-task-critical deployed route in a real browser.
+Every NHLE rich page and HAR register search is bound to its source identifier
+and allowed origin. Local Markdown-to-HTML links and fragments are checked by
+the assembled-site audit. The publication gate additionally opens
+representative source pages and every task-critical deployed route in a real
+browser.
 
 ## Relationship projection rules
 

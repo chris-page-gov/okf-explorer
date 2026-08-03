@@ -3,10 +3,12 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+from datetime import datetime
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from urllib.parse import parse_qs, urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,50 +23,229 @@ HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-rec
 
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
+    def _write_validation_journey(
+        self,
+        temporary: Path,
+        action: dict,
+        receipt: dict | None = None,
+    ) -> Path:
+        journeys = json.loads(
+            (LEGISLATION_EVALUATION / "journeys.json").read_text(encoding="utf-8")
+        )
+        questions = json.loads(
+            (LEGISLATION_EVALUATION / "questions.json").read_text(encoding="utf-8")
+        )
+        journeys["question_suite"] = "questions.json"
+        journeys["journeys"][0]["actions"].append(action)
+        journey_path = temporary / "journeys.json"
+        journey_path.write_text(json.dumps(journeys), encoding="utf-8")
+        (temporary / "questions.json").write_text(
+            json.dumps(questions), encoding="utf-8"
+        )
+        if receipt is not None:
+            receipt_path = temporary / action["receipt"]
+            receipt_path.parent.mkdir(parents=True, exist_ok=True)
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        return journey_path
+
+    @staticmethod
+    def _genuine_browser_receipt(
+        *,
+        requested_url: str = "https://source.example.test/item?id=42",
+        final_url: str = "https://source.example.test/item?id=42",
+        expected_text: str = "Example identity",
+    ) -> dict:
+        return {
+            "schema": "okf-genuine-browser-link-receipt.v1",
+            "observed_at": "2026-08-03T12:00:00Z",
+            "browser": {
+                "channel": "interactive-chrome",
+                "user_agent": "Example Chrome/150",
+                "webdriver": False,
+            },
+            "records": [
+                {
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "requested_url": requested_url,
+                    "final_url": final_url,
+                    "expected_text": expected_text,
+                    "title": "Example identity page",
+                    "response_status": 200,
+                    "identity_matched": True,
+                    "identity_source": "document.body.innerText",
+                    "identity_excerpt": f"Verified page text: {expected_text.lower()}",
+                }
+            ],
+        }
+
     def test_heritage_local_candidate_receipt_binds_its_executed_results(self):
         receipt = json.loads(HERITAGE_LOCAL_RECEIPT.read_text(encoding="utf-8"))
-        plane_roots = json.loads(
-            (ROOT / "evaluation" / "heritage" / "assurance" / "plane-roots.json").read_text(
-                encoding="utf-8"
-            )
+        self.assertEqual(
+            {
+                "schema",
+                "observed_at",
+                "scope",
+                "candidate",
+                "determinism",
+                "question_suite",
+                "local_journeys",
+                "terminal_publication_gate",
+            },
+            set(receipt),
+        )
+        self.assertEqual("okf-heritage-local-candidate-receipt.v1", receipt["schema"])
+        self.assertEqual(
+            {
+                "snapshot",
+                "generated_at",
+                "heritage_descriptor_sha256",
+                "heritage_release_root_sha256",
+                "tiny_release_root_sha256",
+                "synthetic_release_root_sha256",
+                "explorer_tree_sha256",
+                "explorer_manifest_sha256",
+                "site_reading_pages",
+                "site_internal_references",
+                "site_file_count",
+                "site_tree_algorithm",
+                "site_tree_sha256",
+                "site_size_gate",
+            },
+            set(receipt["candidate"]),
         )
         self.assertEqual(
-            receipt["candidate"]["heritage_release_root_sha256"],
-            plane_roots["release_root_sha256"],
+            {
+                "status",
+                "builds",
+                "files_per_build",
+                "differences",
+                "comparison_tree_algorithm",
+                "comparison_tree_sha256",
+                "corpora",
+            },
+            set(receipt["determinism"]),
         )
-        generated_paths = [
-            Path(entry["path"])
-            for plane in plane_roots["planes"].values()
-            for entry in plane["entries"]
-        ]
-        generated_paths.append(Path("assurance/plane-roots.json"))
-        tree_entries = []
-        for relative in sorted(generated_paths, key=lambda path: path.as_posix()):
-            raw = (ROOT / "evaluation" / "heritage" / relative).read_bytes()
-            tree_entries.append(
-                {
-                    "path": relative.as_posix(),
-                    "bytes": len(raw),
-                    "sha256": hashlib.sha256(raw).hexdigest(),
-                }
-            )
-        canonical_tree = (
-            json.dumps(
-                tree_entries,
-                ensure_ascii=False,
-                separators=(",", ":"),
-                sort_keys=True,
-            )
-            + "\n"
-        ).encode("utf-8")
-        self.assertEqual(receipt["determinism"]["files_per_build"], len(tree_entries))
+        self.assertEqual(
+            {
+                "status",
+                "suite",
+                "suite_sha256",
+                "base_url",
+                "bundle",
+                "result",
+                "result_gzip_sha256",
+                "result_json_sha256",
+                "questions_run",
+                "questions_scored",
+                "average_total",
+                "average_retrieval",
+                "average_display",
+                "average_accessibility",
+                "average_plain_language_and_government_style",
+                "scores_at_least_80",
+                "scores_below_60",
+            },
+            set(receipt["question_suite"]),
+        )
+        self.assertEqual(
+            {
+                "status",
+                "manifest",
+                "manifest_sha256",
+                "base_url",
+                "start_bundles",
+                "result",
+                "result_gzip_sha256",
+                "result_json_sha256",
+                "journeys_run",
+                "passed",
+                "failed",
+                "errors",
+                "validation_only",
+                "journey_ids",
+            },
+            set(receipt["local_journeys"]),
+        )
+        self.assertEqual("passed", receipt["determinism"]["status"])
+        self.assertEqual(2, receipt["determinism"]["builds"])
+        self.assertEqual(0, receipt["determinism"]["differences"])
         self.assertEqual(
             "sha256-over-canonical-json-path-bytes-digest-list-v1",
             receipt["determinism"]["comparison_tree_algorithm"],
         )
+
+        corpus_specs = {
+            "faithful": (Path("evaluation/heritage"), "heritage_release_root_sha256"),
+            "tiny": (Path("evaluation/heritage/tiny"), "tiny_release_root_sha256"),
+            "synthetic": (
+                Path("evaluation/heritage/synthetic"),
+                "synthetic_release_root_sha256",
+            ),
+        }
+        descriptors = {}
+        for name, (corpus_path, candidate_root_key) in corpus_specs.items():
+            corpus_root = ROOT / corpus_path
+            plane_roots = json.loads(
+                (corpus_root / "assurance" / "plane-roots.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(
+                plane_roots["release_root_sha256"],
+                receipt["candidate"][candidate_root_key],
+            )
+            generated_paths = [
+                Path(entry["path"])
+                for plane in plane_roots["planes"].values()
+                for entry in plane["entries"]
+            ]
+            generated_paths.append(Path("assurance/plane-roots.json"))
+            tree_entries = []
+            for relative in sorted(generated_paths, key=lambda path: path.as_posix()):
+                raw = (corpus_root / relative).read_bytes()
+                tree_entries.append(
+                    {
+                        "path": relative.as_posix(),
+                        "bytes": len(raw),
+                        "sha256": hashlib.sha256(raw).hexdigest(),
+                    }
+                )
+            canonical_tree = (
+                json.dumps(
+                    tree_entries,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                )
+                + "\n"
+            ).encode("utf-8")
+            observed_tree = hashlib.sha256(canonical_tree).hexdigest()
+            determinism = receipt["determinism"]["corpora"][name]
+            self.assertEqual(2, determinism["builds"])
+            self.assertEqual(0, determinism["differences"])
+            self.assertEqual(len(tree_entries), determinism["files_per_build"])
+            self.assertEqual(observed_tree, determinism["comparison_tree_sha256"])
+            if name == "faithful":
+                self.assertEqual(len(tree_entries), receipt["determinism"]["files_per_build"])
+                self.assertEqual(observed_tree, receipt["determinism"]["comparison_tree_sha256"])
+            descriptor_bytes = (corpus_root / "okf-explorer.json").read_bytes()
+            descriptors[name] = (json.loads(descriptor_bytes), descriptor_bytes)
+
+        faithful_descriptor, faithful_bytes = descriptors["faithful"]
+        self.assertEqual(faithful_descriptor["snapshot"], receipt["candidate"]["snapshot"])
         self.assertEqual(
-            receipt["determinism"]["comparison_tree_sha256"],
-            hashlib.sha256(canonical_tree).hexdigest(),
+            faithful_descriptor["generated_at"], receipt["candidate"]["generated_at"]
+        )
+        self.assertEqual(
+            hashlib.sha256(faithful_bytes).hexdigest(),
+            receipt["candidate"]["heritage_descriptor_sha256"],
+        )
+
+        candidate_time = datetime.fromisoformat(
+            receipt["candidate"]["generated_at"].replace("Z", "+00:00")
+        )
+        receipt_time = datetime.fromisoformat(
+            receipt["observed_at"].replace("Z", "+00:00")
         )
 
         for key, expected_status in (("question_suite", "passed"), ("local_journeys", "passed")):
@@ -80,17 +261,69 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             raw = gzip.decompress(compressed.read_bytes())
             self.assertEqual(section["result_json_sha256"], hashlib.sha256(raw).hexdigest())
             result = json.loads(raw)
+            self.assertEqual("okf-explorer-evaluation-results.v1", result["schema"])
+            self.assertEqual(section["base_url"], result["base_url"])
+            self.assertEqual(
+                {
+                    "bundle_url": "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json",
+                    "descriptor_sha256": receipt["candidate"]["heritage_descriptor_sha256"],
+                    "schema": faithful_descriptor["schema"],
+                    "snapshot": receipt["candidate"]["snapshot"],
+                    "generated_at": receipt["candidate"]["generated_at"],
+                },
+                result["candidate"],
+            )
+            evidence_time = datetime.fromisoformat(
+                result["generated_at"].replace("Z", "+00:00")
+            )
+            self.assertLessEqual(candidate_time, evidence_time)
+            self.assertLessEqual(evidence_time, receipt_time)
             if key == "question_suite":
-                self.assertEqual(section["questions_run"], result["summary"]["questions_run"])
-                self.assertEqual(section["average_total"], result["summary"]["average_total"])
-                self.assertEqual(section["scores_at_least_80"], result["summary"]["pass_count_80"])
+                self.assertEqual(section["bundle"], result["bundle"])
+                summary = result["summary"]
+                for receipt_key, result_key in (
+                    ("questions_run", "questions_run"),
+                    ("questions_scored", "questions_scored"),
+                    ("average_total", "average_total"),
+                    ("average_retrieval", "average_retrieval"),
+                    ("average_display", "average_display"),
+                    ("average_accessibility", "average_accessibility"),
+                    ("average_plain_language_and_government_style", "average_govuk"),
+                    ("scores_at_least_80", "pass_count_80"),
+                    ("scores_below_60", "fail_count_below_60"),
+                ):
+                    self.assertEqual(section[receipt_key], summary[result_key])
+                self.assertEqual(100, section["scores_at_least_80"])
+                self.assertEqual(0, section["scores_below_60"])
             else:
                 summary = result["interaction_journeys"]["summary"]
+                self.assertEqual(section["manifest"], result["interaction_journeys"]["manifest"])
+                self.assertEqual(section["start_bundles"][1], result["bundle"])
+                self.assertEqual(result["bundle"], result["interaction_journeys"]["target_bundle"])
                 self.assertEqual(section["journeys_run"], summary["journeys_run"])
                 self.assertEqual(section["passed"], summary["passed"])
+                self.assertEqual(section["failed"], summary["failed"])
+                self.assertEqual(section["errors"], summary["errors"])
+                self.assertEqual(section["validation_only"], summary["validation_only"])
+                self.assertEqual(0, section["failed"])
+                self.assertEqual(0, section["errors"])
+                self.assertEqual(0, section["validation_only"])
                 self.assertEqual(
                     section["journey_ids"],
                     [record["id"] for record in result["interaction_journeys"]["records"]],
+                )
+                self.assertTrue(
+                    all(
+                        record["status"] == "passed"
+                        for record in result["interaction_journeys"]["records"]
+                    )
+                )
+                self.assertEqual(
+                    section["start_bundles"],
+                    [
+                        parse_qs(urlparse(record["start_url"]).query)["bundle"][0]
+                        for record in result["interaction_journeys"]["records"]
+                    ],
                 )
 
     def test_heritage_receipt_binds_exact_explorer_build_identity(self):
@@ -492,6 +725,846 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
 
         self.assertEqual(results["bundle"], candidate)
         self.assertEqual(results["interaction_journeys"]["target_bundle"], candidate)
+        self.assertEqual(results["metadata"]["candidate_bundle_url"], candidate)
+        start_url = results["interaction_journeys"]["records"][0]["start_url"]
+        self.assertEqual(parse_qs(urlparse(start_url).query)["bundle"], [candidate])
+
+    def test_bundle_root_preserves_per_journey_bundle_below_a_pages_project_path(self):
+        canonical_root = "https://pages.example.test/okf-explorer/"
+        for bundle_root in (canonical_root, canonical_root.rstrip("/")):
+            with self.subTest(bundle_root=bundle_root):
+                with tempfile.TemporaryDirectory() as temporary_directory:
+                    output = Path(temporary_directory)
+                    subprocess.run(
+                        [
+                            "node",
+                            str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                            "--no-browser",
+                            "--journeys-only",
+                            "--journeys",
+                            str(HERITAGE_EVALUATION / "journeys.json"),
+                            "--bundle-root",
+                            bundle_root,
+                            "--journey-limit",
+                            "1",
+                            "--out",
+                            str(output),
+                        ],
+                        cwd=ROOT,
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                    )
+                    results = json.loads(
+                        (output / "results.json").read_text(encoding="utf-8")
+                    )
+
+                start_url = results["interaction_journeys"]["records"][0][
+                    "start_url"
+                ]
+                self.assertEqual(
+                    parse_qs(urlparse(start_url).query)["bundle"],
+                    [
+                        f"{canonical_root}evaluation/heritage/tiny/"
+                        "okf-explorer.json"
+                    ],
+                )
+
+    def test_candidate_bundle_binds_receipt_without_overriding_per_journey_starts(self):
+        candidate = "/evaluation/heritage/okf-explorer.json"
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory)
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(HERITAGE_EVALUATION / "journeys.json"),
+                    "--candidate-bundle",
+                    candidate,
+                    "--bundle-root",
+                    "http://127.0.0.1:8002",
+                    "--journey-limit",
+                    "3",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(candidate, results["bundle"])
+        self.assertEqual(candidate, results["interaction_journeys"]["target_bundle"])
+        self.assertEqual(
+            "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json",
+            results["metadata"]["candidate_bundle_url"],
+        )
+        self.assertEqual(
+            [
+                "http://127.0.0.1:8002/evaluation/heritage/tiny/okf-explorer.json",
+                "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json",
+                "http://127.0.0.1:8002/evaluation/heritage/synthetic/okf-explorer.json",
+            ],
+            [
+                parse_qs(urlparse(record["start_url"]).query)["bundle"][0]
+                for record in results["interaction_journeys"]["records"]
+            ],
+        )
+
+    def test_absolute_candidate_bundle_remains_exact_with_a_bundle_root(self):
+        candidate = "https://assets.example.test/releases/heritage/okf-explorer.json"
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "results"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(HERITAGE_EVALUATION / "journeys.json"),
+                    "--candidate-bundle",
+                    candidate,
+                    "--bundle-root",
+                    "https://pages.example.test/okf-explorer",
+                    "--journey-limit",
+                    "1",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(candidate, results["metadata"]["candidate_bundle_url"])
+
+    def test_root_relative_explicit_bundle_uses_the_normalized_bundle_root(self):
+        candidate = "/evaluation/heritage/okf-explorer.json"
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "results"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(HERITAGE_EVALUATION / "journeys.json"),
+                    "--bundle",
+                    candidate,
+                    "--bundle-root",
+                    "https://pages.example.test/okf-explorer",
+                    "--journey-limit",
+                    "1",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            "https://pages.example.test/okf-explorer/evaluation/heritage/okf-explorer.json",
+            results["metadata"]["candidate_bundle_url"],
+        )
+
+    def test_journey_id_runs_only_the_requested_terminal_gate(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory)
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(HERITAGE_EVALUATION / "journeys.json"),
+                    "--journey-id",
+                    "journey-publication",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        records = results["interaction_journeys"]["records"]
+        self.assertEqual([record["id"] for record in records], ["journey-publication"])
+
+    def test_generated_heritage_journey_copy_is_self_contained(self):
+        generated = ROOT / "evaluation" / "heritage"
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory)
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(generated / "journeys.json"),
+                    "--journey-id",
+                    "journey-publication",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            ["journey-publication"],
+            [record["id"] for record in results["interaction_journeys"]["records"]],
+        )
+
+    def test_journey_specific_options_require_a_journey_manifest(self):
+        for option, value in (
+            ("--journey-id", "journey-publication"),
+            ("--bundle-root", "https://pages.example.test/okf-explorer/"),
+            ("--candidate-bundle", "/evaluation/heritage/okf-explorer.json"),
+            ("--candidate-receipt", "evidence/local-candidate-receipt.json"),
+            ("--verification-delay-ms", "1000"),
+        ):
+            with self.subTest(option=option):
+                result = subprocess.run(
+                    [
+                        "node",
+                        str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                        "--no-browser",
+                        option,
+                        value,
+                    ],
+                    cwd=ROOT,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(f"{option} requires --journeys", result.stderr)
+
+    def test_verification_delay_is_bounded_and_integral(self):
+        for value in ("-1", "10001", "1.5", "not-a-number"):
+            with self.subTest(value=value):
+                result = subprocess.run(
+                    [
+                        "node",
+                        str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                        "--no-browser",
+                        "--journeys-only",
+                        "--journeys",
+                        str(HERITAGE_EVALUATION / "journeys.json"),
+                        "--verification-delay-ms",
+                        value,
+                    ],
+                    cwd=ROOT,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("integer from 0 to 10000", result.stderr)
+
+    def test_candidate_fetch_has_an_abort_timeout_and_clear_timeout_failure(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ inspectCandidate }} from {json.dumps(module_url)};
+            let signalProvided = false;
+            globalThis.fetch = async (_url, options) => {{
+              signalProvided = Boolean(options?.signal);
+              const error = new Error('simulated timeout');
+              error.name = 'TimeoutError';
+              throw error;
+            }};
+            let message = '';
+            try {{
+              await inspectCandidate({{
+                bundle: '/evaluation/heritage/okf-explorer.json',
+                bundleRoot: 'https://pages.example.test/okf-explorer/',
+                baseUrl: 'https://pages.example.test/okf-explorer/'
+              }});
+            }} catch (error) {{
+              message = error.message;
+            }}
+            if (!signalProvided || !message) throw new Error('timeout contract was not exercised');
+            globalThis.fetch = async () => ({{
+              ok: true,
+              arrayBuffer: async () => {{
+                const error = new Error('simulated body timeout');
+                error.name = 'AbortError';
+                throw error;
+              }}
+            }});
+            let bodyMessage = '';
+            try {{
+              await inspectCandidate({{
+                bundle: '/evaluation/heritage/okf-explorer.json',
+                bundleRoot: 'https://pages.example.test/okf-explorer/',
+                baseUrl: 'https://pages.example.test/okf-explorer/'
+              }});
+            }} catch (error) {{
+              bodyMessage = error.message;
+            }}
+            if (!bodyMessage) throw new Error('body timeout contract was not exercised');
+            console.log(message);
+            console.log(bodyMessage);
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(2, result.stdout.count("timed out after 30000 ms"))
+        self.assertIn(
+            "https://pages.example.test/okf-explorer/evaluation/heritage/okf-explorer.json",
+            result.stdout,
+        )
+
+    def test_candidate_fetch_rejects_redirects_without_following_them(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ inspectCandidate }} from {json.dumps(module_url)};
+            let redirectMode = '';
+            globalThis.fetch = async (url, options) => {{
+              redirectMode = options?.redirect || '';
+              return {{
+                ok: false,
+                status: 302,
+                url: url.toString(),
+                arrayBuffer: async () => new ArrayBuffer(0)
+              }};
+            }};
+            let message = '';
+            try {{
+              await inspectCandidate({{
+                bundle: '/evaluation/heritage/okf-explorer.json',
+                bundleRoot: 'https://pages.example.test/okf-explorer/',
+                baseUrl: 'https://pages.example.test/okf-explorer/'
+              }});
+            }} catch (error) {{
+              message = error.message;
+            }}
+            if (redirectMode !== 'manual') throw new Error('candidate redirects were not disabled');
+            if (!message) throw new Error('candidate redirect was accepted');
+            console.log(message);
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertIn("redirected with HTTP 302", result.stdout)
+        self.assertIn("exact deployed URL", result.stdout)
+
+    def test_candidate_receipt_accepts_exact_descriptor_and_rejects_stale_bytes(self):
+        descriptor = {
+            "schema": "heritage-evaluation-large-corpus.v1",
+            "snapshot": "snapshot-exact",
+            "generated_at": "2026-08-03T12:00:00Z",
+            "entrypoints": {"plane_roots": "assurance/plane-roots.json"},
+        }
+        descriptor_bytes = (json.dumps(descriptor, separators=(",", ":")) + "\n").encode()
+        descriptor_sha256 = hashlib.sha256(descriptor_bytes).hexdigest()
+        release_root_sha256 = "b" * 64
+        plane_roots = {"release_root_sha256": release_root_sha256}
+        plane_roots_bytes = (
+            json.dumps(plane_roots, separators=(",", ":")) + "\n"
+        ).encode()
+        receipt = {
+            "schema": "okf-heritage-local-candidate-receipt.v1",
+            "observed_at": "2026-08-03T12:01:00Z",
+            "candidate": {
+                "heritage_descriptor_sha256": descriptor_sha256,
+                "heritage_release_root_sha256": release_root_sha256,
+            },
+        }
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            receipt_path = Path(temporary_directory) / "candidate-receipt.json"
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+            program = f"""
+                import {{ inspectCandidate, loadCandidateReceipt }} from {json.dumps(module_url)};
+                const descriptor = Buffer.from({json.dumps(descriptor_bytes.decode())}, 'utf8');
+                const planeRoots = Buffer.from({json.dumps(plane_roots_bytes.decode())}, 'utf8');
+                const candidateUrl = 'https://pages.example.test/okf-explorer/evaluation/heritage/okf-explorer.json';
+                const planeRootsUrl = 'https://pages.example.test/okf-explorer/evaluation/heritage/assurance/plane-roots.json';
+                globalThis.fetch = async (url, options) => ({{
+                  ok: true,
+                  status: 200,
+                  url: url.toString(),
+                  arrayBuffer: async () => url.toString() === planeRootsUrl ? planeRoots : descriptor
+                }});
+                const options = {{
+                  bundle: '/evaluation/heritage/okf-explorer.json',
+                  bundleRoot: 'https://pages.example.test/okf-explorer/',
+                  baseUrl: 'https://pages.example.test/okf-explorer/'
+                }};
+                const receipt = loadCandidateReceipt({json.dumps(str(receipt_path))});
+                const exact = await inspectCandidate(options, receipt);
+                let staleMessage = '';
+                try {{
+                  await inspectCandidate(options, {{
+                    ...receipt,
+                    expected_descriptor_sha256: '0'.repeat(64)
+                  }});
+                }} catch (error) {{
+                  staleMessage = error.message;
+                }}
+                if (!staleMessage) throw new Error('stale descriptor bytes were accepted');
+                let staleReleaseMessage = '';
+                try {{
+                  await inspectCandidate(options, {{
+                    ...receipt,
+                    expected_release_root_sha256: '0'.repeat(64)
+                  }});
+                }} catch (error) {{
+                  staleReleaseMessage = error.message;
+                }}
+                if (!staleReleaseMessage) throw new Error('stale release root was accepted');
+                console.log(JSON.stringify({{ exact, staleMessage, staleReleaseMessage }}));
+            """
+            result = subprocess.run(
+                ["node", "--input-type=module", "--eval", program],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        payload = json.loads(result.stdout)
+
+        self.assertEqual(descriptor_sha256, payload["exact"]["descriptor_sha256"])
+        self.assertEqual(
+            descriptor_sha256,
+            payload["exact"]["candidate_receipt"]["expected_descriptor_sha256"],
+        )
+        self.assertRegex(
+            payload["exact"]["candidate_receipt"]["raw_sha256"],
+            r"^[0-9a-f]{64}$",
+        )
+        self.assertEqual(
+            release_root_sha256,
+            payload["exact"]["release_root"]["release_root_sha256"],
+        )
+        self.assertRegex(
+            payload["exact"]["release_root"]["plane_roots_sha256"],
+            r"^[0-9a-f]{64}$",
+        )
+        self.assertIn("differs from the local candidate receipt", payload["staleMessage"])
+        self.assertIn(
+            "release root differs from the local candidate receipt",
+            payload["staleReleaseMessage"],
+        )
+
+    def test_publication_candidate_cannot_decouple_from_start_or_public_url(self):
+        journeys = json.loads(
+            (HERITAGE_EVALUATION / "journeys.json").read_text(encoding="utf-8")
+        )
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        candidate_receipt = {
+            "expected_descriptor_sha256": "a" * 64,
+        }
+        options = {
+            "bundle": "/evaluation/heritage/okf-explorer.json",
+            "bundleRoot": "https://chris-page-gov.github.io/okf-explorer/",
+            "baseUrl": "https://chris-page-gov.github.io/okf-explorer/",
+            "bundleExplicit": False,
+            "journeyIds": ["journey-publication"],
+            "journeyLimit": 100,
+        }
+        program = f"""
+            import {{ assertPublicationCandidateBinding }} from {json.dumps(module_url)};
+            const journeys = {json.dumps(journeys)};
+            const exact = {json.dumps(options)};
+            const receipt = {json.dumps(candidate_receipt)};
+            let missingReceiptMessage = '';
+            try {{
+              assertPublicationCandidateBinding(exact, journeys, null);
+            }} catch (error) {{
+              missingReceiptMessage = error.message;
+            }}
+            if (!missingReceiptMessage) throw new Error('publication accepted no candidate receipt');
+            assertPublicationCandidateBinding(exact, journeys, receipt);
+            const failures = [];
+            for (const changed of [
+              {{ ...exact, bundleRoot: 'https://pages.example.test/other-project/' }},
+              {{
+                ...exact,
+                bundle: 'https://assets.example.test/releases/other.json'
+              }},
+              {{
+                ...exact,
+                bundle: 'https://assets.example.test/releases/other.json',
+                bundleExplicit: true
+              }},
+              {{ ...exact, baseUrl: 'https://pages.example.test/okf-explorer/' }}
+            ]) {{
+              try {{
+                assertPublicationCandidateBinding(changed, journeys, receipt);
+              }} catch (error) {{
+                failures.push(error.message);
+              }}
+            }}
+            if (failures.length !== 4) throw new Error('publication binding accepted decoupled inputs');
+            console.log(JSON.stringify({{ missingReceiptMessage, failures }}));
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        payload = json.loads(result.stdout)
+        failures = payload["failures"]
+
+        self.assertIn("requires --candidate-receipt", payload["missingReceiptMessage"])
+        self.assertTrue(
+            any("candidate/public URL binding" in message for message in failures)
+        )
+        self.assertTrue(
+            any("candidate/start binding" in message for message in failures)
+        )
+        self.assertTrue(any("base URL" in message for message in failures))
+
+    def test_candidate_receipt_rejects_wrong_schema_and_digest_shape(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        invalid_receipts = (
+            (
+                {
+                    "schema": "self-attested-candidate.v1",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "a" * 64,
+                        "heritage_release_root_sha256": "b" * 64,
+                    },
+                },
+                "schema must be okf-heritage-local-candidate-receipt.v1",
+            ),
+            (
+                {
+                    "schema": "okf-heritage-local-candidate-receipt.v1",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "not-a-digest",
+                        "heritage_release_root_sha256": "b" * 64,
+                    },
+                },
+                "candidate.heritage_descriptor_sha256",
+            ),
+            (
+                {
+                    "schema": "okf-heritage-local-candidate-receipt.v1",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "a" * 64,
+                        "heritage_release_root_sha256": "not-a-digest",
+                    },
+                },
+                "candidate.heritage_release_root_sha256",
+            ),
+        )
+        for receipt, expected_error in invalid_receipts:
+            with self.subTest(expected_error=expected_error):
+                with tempfile.TemporaryDirectory() as temporary_directory:
+                    receipt_path = Path(temporary_directory) / "candidate.json"
+                    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+                    program = f"""
+                        import {{ loadCandidateReceipt }} from {json.dumps(module_url)};
+                        let message = '';
+                        try {{
+                          loadCandidateReceipt({json.dumps(str(receipt_path))});
+                        }} catch (error) {{
+                          message = error.message;
+                        }}
+                        if (!message) throw new Error('invalid candidate receipt was accepted');
+                        console.log(message);
+                    """
+                    result = subprocess.run(
+                        ["node", "--input-type=module", "--eval", program],
+                        cwd=ROOT,
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                    )
+                self.assertIn(expected_error, result.stdout)
+
+    def test_final_url_location_assertion_ignores_hash_but_rejects_redirect_drift(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ assertFinalLocation }} from {json.dumps(module_url)};
+            assertFinalLocation(
+              'https://example.test/page?q=one#actual',
+              'https://example.test/page?q=one#requested'
+            );
+            let message = '';
+            try {{
+              assertFinalLocation(
+                'https://other.example.test/page?q=one',
+                'https://example.test/page?q=one'
+              );
+            }} catch (error) {{
+              message = error.message;
+            }}
+            if (!message) throw new Error('redirect drift was accepted');
+            console.log(message);
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertIn("unexpected origin, path, or query", result.stdout)
+
+    def test_genuine_browser_receipt_is_validated_and_returned_as_action_evidence(self):
+        action = {
+            "action": "verify_url",
+            "value": "https://source.example.test/legacy?id=42",
+            "expected_text": "Example identity",
+            "expected_final_url": "https://source.example.test/item?id=42",
+            "verification_channel": "genuine-browser-receipt",
+            "receipt": "evidence/genuine-browser.json",
+        }
+        receipt = self._genuine_browser_receipt(
+            requested_url=action["value"],
+            final_url=action["expected_final_url"],
+            expected_text=action["expected_text"],
+        )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            journey_path = self._write_validation_journey(
+                temporary, action, receipt
+            )
+            output = temporary / "results"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(journey_path),
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+            program = f"""
+                import {{ genuineBrowserReceiptEvidence }} from {json.dumps(module_url)};
+                const evidence = genuineBrowserReceiptEvidence(
+                  {json.dumps(action)},
+                  {json.dumps(str(journey_path))}
+                );
+                console.log(JSON.stringify(evidence));
+            """
+            helper = subprocess.run(
+                ["node", "--input-type=module", "--eval", program],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            evidence = json.loads(helper.stdout)
+
+        self.assertEqual("genuine-browser-receipt", evidence["verificationChannel"])
+        self.assertEqual(action["receipt"], evidence["receipt"])
+        self.assertEqual(action["expected_final_url"], evidence["finalUrl"])
+        self.assertEqual(200, evidence["status"])
+        self.assertTrue(evidence["identityMatched"])
+        self.assertTrue(evidence["finalLocationMatched"])
+        self.assertFalse(evidence["browser"]["webdriver"])
+        self.assertRegex(evidence["receiptSha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(
+            receipt["records"][0]["observed_at"], evidence["recordObservedAt"]
+        )
+        self.assertEqual("document.body.innerText", evidence["identitySource"])
+        self.assertIn(
+            action["expected_text"].lower(), evidence["identityExcerpt"].lower()
+        )
+
+    def test_genuine_browser_receipt_rejects_unsafe_missing_and_unbound_evidence(self):
+        base_action = {
+            "action": "verify_url",
+            "value": "https://source.example.test/item?id=42",
+            "expected_text": "Example identity",
+            "verification_channel": "genuine-browser-receipt",
+            "receipt": "evidence/genuine-browser.json",
+        }
+        valid_receipt = self._genuine_browser_receipt()
+        cases = []
+
+        unsupported = dict(base_action, verification_channel="session-screenshot")
+        cases.append(("unsupported channel", unsupported, None, "unsupported verification_channel"))
+
+        unsafe = dict(base_action, receipt="../outside.json")
+        cases.append(("unsafe path", unsafe, None, "safe and fixture-relative"))
+
+        missing = dict(base_action, receipt="evidence/missing.json")
+        cases.append(("missing file", missing, None, "file is missing"))
+
+        mismatched = self._genuine_browser_receipt(expected_text="Different identity")
+        cases.append(("unbound identity", base_action, mismatched, "exact requested_url/expected_text match"))
+
+        duplicate = self._genuine_browser_receipt()
+        duplicate["records"].append(dict(duplicate["records"][0]))
+        cases.append(("duplicate binding", base_action, duplicate, "duplicates requested_url and expected_text"))
+
+        automated = self._genuine_browser_receipt()
+        automated["browser"]["webdriver"] = True
+        cases.append(("webdriver browser", base_action, automated, "browser.webdriver as false"))
+
+        blocked = self._genuine_browser_receipt()
+        blocked["records"][0]["response_status"] = 403
+        cases.append(("blocked response", base_action, blocked, "integer from 200 to 399"))
+
+        false_identity = self._genuine_browser_receipt()
+        false_identity["records"][0]["identity_matched"] = False
+        cases.append(("false identity", base_action, false_identity, "identity_matched must be true"))
+
+        missing_record_time = self._genuine_browser_receipt()
+        del missing_record_time["records"][0]["observed_at"]
+        cases.append(
+            (
+                "missing record observation time",
+                base_action,
+                missing_record_time,
+                "record 1 observed_at must be a timezone-qualified timestamp",
+            )
+        )
+
+        wrong_identity_source = self._genuine_browser_receipt()
+        wrong_identity_source["records"][0]["identity_source"] = "document.title"
+        cases.append(
+            (
+                "wrong identity source",
+                base_action,
+                wrong_identity_source,
+                "identity_source must be document.body.innerText",
+            )
+        )
+
+        unbound_excerpt = self._genuine_browser_receipt()
+        unbound_excerpt["records"][0]["identity_excerpt"] = "Unrelated page text"
+        cases.append(
+            (
+                "unbound identity excerpt",
+                base_action,
+                unbound_excerpt,
+                "identity_excerpt must contain expected_text",
+            )
+        )
+
+        unordered = self._genuine_browser_receipt()
+        later = dict(unordered["records"][0])
+        later.update(
+            {
+                "observed_at": "2026-08-03T12:01:00Z",
+                "requested_url": "https://source.example.test/other",
+                "expected_text": "Other identity",
+                "identity_excerpt": "Verified page text: Other identity",
+            }
+        )
+        unordered["records"].insert(0, later)
+        cases.append(
+            (
+                "unordered observations",
+                base_action,
+                unordered,
+                "records must be ordered by observed_at",
+            )
+        )
+
+        redirected = self._genuine_browser_receipt(
+            final_url="https://other.example.test/item?id=42"
+        )
+        cases.append(("redirect drift", base_action, redirected, "unexpected origin, path, or query"))
+
+        for name, action, receipt, expected_error in cases:
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory() as temporary_directory:
+                    temporary = Path(temporary_directory)
+                    journey_path = self._write_validation_journey(
+                        temporary, action, receipt
+                    )
+                    result = subprocess.run(
+                        [
+                            "node",
+                            str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                            "--no-browser",
+                            "--journeys-only",
+                            "--journeys",
+                            str(journey_path),
+                            "--out",
+                            str(temporary / "results"),
+                        ],
+                        cwd=ROOT,
+                        capture_output=True,
+                        text=True,
+                    )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(expected_error, result.stderr)
+
+    def test_expected_final_url_is_credential_free_and_uses_separate_hash(self):
+        for value, expected_error in (
+            ("https://user:secret@example.test/item", "must not contain credentials"),
+            ("https://example.test/item?access_token=secret", "must not contain credentials"),
+            ("https://example.test/item#section", "use expected_final_hash instead"),
+            ("file:///tmp/item", "only supports HTTP(S)"),
+        ):
+            with self.subTest(value=value):
+                action = {
+                    "action": "verify_url",
+                    "value": "https://example.test/item",
+                    "expected_text": "Example identity",
+                    "expected_final_url": value,
+                }
+                with tempfile.TemporaryDirectory() as temporary_directory:
+                    temporary = Path(temporary_directory)
+                    journey_path = self._write_validation_journey(temporary, action)
+                    result = subprocess.run(
+                        [
+                            "node",
+                            str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                            "--no-browser",
+                            "--journeys-only",
+                            "--journeys",
+                            str(journey_path),
+                            "--out",
+                            str(temporary / "results"),
+                        ],
+                        cwd=ROOT,
+                        capture_output=True,
+                        text=True,
+                    )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(expected_error, result.stderr)
 
     def test_journey_validation_rejects_question_suites_without_string_ids(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -523,6 +1596,38 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Journey question suite has no question ids.", result.stderr)
+
+    def test_journey_validation_rejects_malformed_expected_final_hash(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            journey_path = self._write_validation_journey(
+                temporary,
+                {
+                    "action": "verify_url",
+                    "value": "https://example.test/item",
+                    "expected_text": "Example identity",
+                    "expected_final_hash": "risk/with whitespace",
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--journeys-only",
+                    "--journeys",
+                    str(journey_path),
+                    "--out",
+                    str(temporary / "results"),
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("expected_final_hash must be", result.stderr)
 
     def test_static_search_manual_has_verified_ckan_screenshots(self):
         manual = SEARCH_FILTERING_MANUAL.read_text(encoding="utf-8")

@@ -1,1 +1,1 @@
-{"keys":{"rsk":[{"df":1,"token":"risk"}],"rst":[{"df":2,"token":"rest"}]},"schema":"okf-search-typo-deletions.v1"}
+{"keys":{"rsk":[{"df":1,"token":"risk"}],"rst":[{"df":2,"token":"rest"}],"rsults":[{"df":1,"token":"results"}]},"schema":"okf-search-typo-deletions.v1"}

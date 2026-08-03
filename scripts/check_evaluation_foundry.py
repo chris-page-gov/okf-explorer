@@ -6,11 +6,13 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import sys
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qsl, unquote, urlsplit
 
 from jsonschema import Draft202012Validator, FormatChecker
 from ruamel.yaml import YAML
@@ -25,6 +27,14 @@ MAX_CONTROL_FILE_BYTES = 2 * 1024 * 1024
 EXPECTED_QUESTION_COUNT = 100
 JOURNEY_SCHEMA = "okf-explorer-interaction-suite.v1"
 QUESTION_SUITE_SCHEMA = "okf-explorer-evaluation-suite.v1"
+GENUINE_BROWSER_RECEIPT_SCHEMA = "okf-genuine-browser-link-receipt.v1"
+GENUINE_BROWSER_VERIFICATION_CHANNEL = "genuine-browser-receipt"
+CREDENTIAL_QUERY_KEY = re.compile(
+    r"^(?:api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|"
+    r"password|passwd|bearer|token)$",
+    re.IGNORECASE,
+)
+TIMEZONE_QUALIFIED_TIMESTAMP = re.compile(r"(?:Z|[+-]\d{2}:\d{2})$")
 REQUIRED_ARTIFACTS = {
     "profile": "evaluation-profile.yaml",
     "mappings": "mapping-proposals.yaml",
@@ -453,6 +463,50 @@ def journey_shape_errors(journeys: dict[str, Any]) -> list[str]:
                     f"journeys: journeys[{index}].actions[{action_index}] "
                     "must declare value and expected_text"
                 )
+            elif (
+                action["action"] == "verify_url"
+                and "expected_final_hash" in action
+                and (
+                    not isinstance(action["expected_final_hash"], str)
+                    or not action["expected_final_hash"].startswith("#")
+                    or len(action["expected_final_hash"]) < 2
+                    or any(char.isspace() for char in action["expected_final_hash"])
+                )
+            ):
+                errors.append(
+                    f"journeys: journeys[{index}].actions[{action_index}] "
+                    "expected_final_hash must be a nonempty URL hash without whitespace"
+                )
+            if not isinstance(action, dict) or action.get("action") != "verify_url":
+                continue
+            location = f"journeys: journeys[{index}].actions[{action_index}]"
+            channel = action.get("verification_channel")
+            if channel is not None and channel != GENUINE_BROWSER_VERIFICATION_CHANNEL:
+                errors.append(
+                    f"{location}.verification_channel must be "
+                    f"{GENUINE_BROWSER_VERIFICATION_CHANNEL!r}"
+                )
+            if channel == GENUINE_BROWSER_VERIFICATION_CHANNEL:
+                if _safe_fixture_relative_receipt_path(action.get("receipt")) is None:
+                    errors.append(
+                        f"{location}.receipt must be a safe fixture-relative JSON path"
+                    )
+            elif "receipt" in action:
+                errors.append(
+                    f"{location}.receipt requires verification_channel "
+                    f"{GENUINE_BROWSER_VERIFICATION_CHANNEL!r}"
+                )
+            if _http_url_identity(action.get("value")) is None:
+                errors.append(
+                    f"{location}.value must be a credential-free http(s) URL"
+                )
+            if "expected_final_url" in action and _http_url_identity(
+                action.get("expected_final_url"), allow_fragment=False
+            ) is None:
+                errors.append(
+                    f"{location}.expected_final_url must be a credential-free http(s) "
+                    "URL without a fragment"
+                )
         for assertion_index, assertion in enumerate(journey.get("assertions", [])):
             if not isinstance(assertion, dict):
                 errors.append(
@@ -463,6 +517,303 @@ def journey_shape_errors(journeys: dict[str, Any]) -> list[str]:
                 errors.append(
                     f"journeys: journeys[{index}].assertions[{assertion_index}].assertion "
                     f"must be a supported evaluator assertion"
+                )
+    return errors
+
+
+def _safe_fixture_relative_receipt_path(value: Any) -> Path | None:
+    """Return a normalized receipt path only when it stays fixture-relative."""
+
+    if (
+        not isinstance(value, str)
+        or not value
+        or value != value.strip()
+        or any(character.isspace() for character in value)
+        or "\\" in value
+        or unquote(value) != value
+    ):
+        return None
+    try:
+        parsed = urlsplit(value)
+    except ValueError:
+        return None
+    if parsed.scheme or parsed.netloc or parsed.query or parsed.fragment:
+        return None
+    path = Path(parsed.path)
+    if (
+        path.is_absolute()
+        or not path.parts
+        or any(part in {"", ".", ".."} for part in path.parts)
+        or path.suffix.casefold() != ".json"
+    ):
+        return None
+    return path
+
+
+def _http_url_identity(
+    value: Any,
+    *,
+    allow_fragment: bool = True,
+) -> tuple[str, str, int | None, str, str] | None:
+    """Return URL origin/path/query identity for a safe credential-free URL."""
+
+    if (
+        not isinstance(value, str)
+        or not value
+        or value != value.strip()
+        or any(character.isspace() or ord(character) < 32 for character in value)
+        or "\\" in value
+    ):
+        return None
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port
+    except ValueError:
+        return None
+    scheme = parsed.scheme.casefold()
+    if (
+        scheme not in {"http", "https"}
+        or not parsed.netloc
+        or parsed.hostname is None
+        or parsed.username is not None
+        or parsed.password is not None
+        or (not allow_fragment and bool(parsed.fragment))
+    ):
+        return None
+    try:
+        query_keys = (
+            key
+            for key, _value in parse_qsl(parsed.query, keep_blank_values=True)
+        )
+        if any(CREDENTIAL_QUERY_KEY.fullmatch(key) for key in query_keys):
+            return None
+    except ValueError:
+        return None
+    if (scheme, port) in {("http", 80), ("https", 443)}:
+        port = None
+    return (
+        scheme,
+        parsed.hostname.casefold(),
+        port,
+        parsed.path or "/",
+        parsed.query,
+    )
+
+
+def _observed_at_timestamp(value: Any) -> datetime | None:
+    """Parse an unambiguous ISO 8601 observation timestamp."""
+
+    if (
+        not isinstance(value, str)
+        or not value.strip()
+        or value != value.strip()
+        or TIMEZONE_QUALIFIED_TIMESTAMP.search(value) is None
+    ):
+        return None
+    normalized = f"{value[:-1]}+00:00" if value.endswith("Z") else value
+    try:
+        observed_at = datetime.fromisoformat(normalized)
+    except ValueError:
+        return None
+    if observed_at.tzinfo is None or observed_at.utcoffset() is None:
+        return None
+    return observed_at
+
+
+def genuine_browser_receipt_errors(
+    journeys: dict[str, Any],
+    fixture_dir: Path,
+) -> list[str]:
+    """Validate session-backed evidence used by protected ``verify_url`` actions."""
+
+    errors: list[str] = []
+    grouped_actions: dict[Path, list[tuple[str, dict[str, Any]]]] = {}
+    fixture_root = fixture_dir.resolve()
+    for journey_index, journey in enumerate(journeys.get("journeys", [])):
+        if not isinstance(journey, dict):
+            continue
+        for action_index, action in enumerate(journey.get("actions", [])):
+            if (
+                not isinstance(action, dict)
+                or action.get("action") != "verify_url"
+                or action.get("verification_channel")
+                != GENUINE_BROWSER_VERIFICATION_CHANNEL
+            ):
+                continue
+            location = (
+                f"journeys: journeys[{journey_index}].actions[{action_index}]"
+            )
+            relative_path = _safe_fixture_relative_receipt_path(action.get("receipt"))
+            if relative_path is None:
+                continue
+            try:
+                receipt_path = (fixture_dir / relative_path).resolve()
+            except (OSError, ValueError):
+                errors.append(f"{location}.receipt cannot be resolved safely")
+                continue
+            if not receipt_path.is_relative_to(fixture_root):
+                errors.append(f"{location}.receipt must stay within the fixture directory")
+                continue
+            grouped_actions.setdefault(receipt_path, []).append((location, action))
+
+    for receipt_path, actions in grouped_actions.items():
+        receipt_label = f"browser receipt {receipt_path.relative_to(fixture_root)}"
+        if not receipt_path.is_file():
+            errors.append(f"{receipt_label}: file does not exist")
+            continue
+        try:
+            receipt = load_document(receipt_path)
+        except ValueError as error:
+            errors.append(str(error))
+            continue
+        if receipt.get("schema") != GENUINE_BROWSER_RECEIPT_SCHEMA:
+            errors.append(
+                f"{receipt_label}: schema must be {GENUINE_BROWSER_RECEIPT_SCHEMA!r}"
+            )
+        receipt_observed_at = _observed_at_timestamp(receipt.get("observed_at"))
+        if receipt_observed_at is None:
+            errors.append(
+                f"{receipt_label}: observed_at must be a timezone-qualified timestamp"
+            )
+        browser = receipt.get("browser")
+        if not isinstance(browser, dict) or browser.get("webdriver") is not False:
+            errors.append(f"{receipt_label}: browser.webdriver must be false")
+        if (
+            not isinstance(browser, dict)
+            or not isinstance(browser.get("channel"), str)
+            or not browser["channel"].strip()
+        ):
+            errors.append(f"{receipt_label}: browser.channel must be a nonempty string")
+        if (
+            not isinstance(browser, dict)
+            or not isinstance(browser.get("user_agent"), str)
+            or not browser["user_agent"].strip()
+        ):
+            errors.append(
+                f"{receipt_label}: browser.user_agent must be a nonempty string"
+            )
+        records = receipt.get("records")
+        if not isinstance(records, list) or not records:
+            errors.append(f"{receipt_label}: records must be a nonempty array")
+            continue
+
+        records_by_url: dict[str, dict[str, Any]] = {}
+        previous_observed_at: datetime | None = None
+        for record_index, record in enumerate(records):
+            record_label = f"{receipt_label}: records[{record_index}]"
+            if not isinstance(record, dict):
+                errors.append(f"{record_label} must be an object")
+                continue
+            observed_at = _observed_at_timestamp(record.get("observed_at"))
+            if observed_at is None:
+                errors.append(
+                    f"{record_label}.observed_at must be a timezone-qualified "
+                    "timestamp"
+                )
+            else:
+                if (
+                    previous_observed_at is not None
+                    and observed_at < previous_observed_at
+                ):
+                    errors.append(
+                        f"{receipt_label}: records must be ordered by observed_at"
+                    )
+                if (
+                    receipt_observed_at is not None
+                    and observed_at > receipt_observed_at
+                ):
+                    errors.append(
+                        f"{record_label}.observed_at must not be later than the "
+                        "receipt observed_at"
+                    )
+                previous_observed_at = observed_at
+            requested_url = record.get("requested_url")
+            if _http_url_identity(requested_url) is None:
+                errors.append(
+                    f"{record_label}.requested_url must be a credential-free http(s) URL"
+                )
+            elif requested_url in records_by_url:
+                errors.append(
+                    f"{receipt_label}: requested_url {requested_url!r} is not unique"
+                )
+            else:
+                records_by_url[requested_url] = record
+            if _http_url_identity(record.get("final_url")) is None:
+                errors.append(
+                    f"{record_label}.final_url must be a credential-free http(s) URL"
+                )
+            if (
+                not isinstance(record.get("expected_text"), str)
+                or not record["expected_text"].strip()
+            ):
+                errors.append(f"{record_label}.expected_text must be a nonempty string")
+            if (
+                not isinstance(record.get("title"), str)
+                or not record["title"].strip()
+            ):
+                errors.append(f"{record_label}.title must be a nonempty string")
+            if record.get("identity_source") != "document.body.innerText":
+                errors.append(
+                    f"{record_label}.identity_source must be "
+                    "'document.body.innerText'"
+                )
+            identity_excerpt = record.get("identity_excerpt")
+            if not isinstance(identity_excerpt, str) or not identity_excerpt.strip():
+                errors.append(
+                    f"{record_label}.identity_excerpt must be a nonempty string"
+                )
+            elif (
+                isinstance(record.get("expected_text"), str)
+                and record["expected_text"].strip()
+                and record["expected_text"].casefold()
+                not in identity_excerpt.casefold()
+            ):
+                errors.append(
+                    f"{record_label}.identity_excerpt must contain expected_text"
+                )
+            response_status = record.get("response_status")
+            if (
+                isinstance(response_status, bool)
+                or not isinstance(response_status, int)
+                or not 200 <= response_status <= 399
+            ):
+                errors.append(f"{record_label}.response_status must be from 200 to 399")
+            if record.get("identity_matched") is not True:
+                errors.append(f"{record_label}.identity_matched must be true")
+
+        if (
+            receipt_observed_at is not None
+            and previous_observed_at is not None
+            and previous_observed_at != receipt_observed_at
+        ):
+            errors.append(
+                f"{receipt_label}: observed_at must equal the latest ordered record "
+                "observed_at"
+            )
+
+        for location, action in actions:
+            requested_url = action.get("value")
+            record = records_by_url.get(requested_url)
+            if record is None:
+                errors.append(
+                    f"{location}: receipt has no record for requested URL {requested_url!r}"
+                )
+                continue
+            if record.get("expected_text") != action.get("expected_text"):
+                errors.append(
+                    f"{location}: receipt expected_text must exactly match the action"
+                )
+            expected_final_url = action.get("expected_final_url", requested_url)
+            final_identity = _http_url_identity(record.get("final_url"))
+            expected_identity = _http_url_identity(expected_final_url)
+            if (
+                final_identity is not None
+                and expected_identity is not None
+                and final_identity != expected_identity
+            ):
+                errors.append(
+                    f"{location}: receipt final origin/path/query does not match "
+                    "expected_final_url or requested URL"
                 )
     return errors
 
@@ -827,6 +1178,12 @@ def validate_fixture_family(
         )
     )
     errors.extend(journey_shape_errors(documents["journeys"]))
+    errors.extend(
+        genuine_browser_receipt_errors(
+            documents["journeys"],
+            fixture_dir,
+        )
+    )
     question_suite, question_errors = load_question_suite(
         documents["journeys"],
         paths["journeys"],

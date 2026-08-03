@@ -79,13 +79,24 @@ export function isHeritageEvaluationRecord(record: LargeDataset | undefined): bo
 export function heritageDetailSections(record: LargeDataset): HeritageDetailSection[] {
   if (!isHeritageEvaluationRecord(record)) return [];
   const isAnnualRiskRecord = String(record.record_type || '').startsWith('Heritage at Risk');
+  const isSyntheticFixture = String(record.assertion_scope || '') === 'synthetic-fixture';
   const sourceUnknown = isAnnualRiskRecord
     ? 'Unknown — not supplied by this annual source row'
     : undefined;
+  const primaryLinkLabel = isSyntheticFixture
+    ? 'Synthetic fixture page'
+    : isAnnualRiskRecord
+      ? 'Official register search'
+      : 'Official rich page';
+  const primaryLinkHelp = isSyntheticFixture
+    ? 'An isolated, invented demonstration page; this is not an official Historic England representation.'
+    : isAnnualRiskRecord
+      ? 'Historic England results bound to the source List Entry Number; this is not a derived item page.'
+      : 'The identifier-bound Historic England HTML representation.';
   const designation = fields([
     field(record, 'native_id', 'Source-native identifier'),
     field(record, 'list_entry_number', 'NHLE List entry', 'The identifier used by Historic England; blank when the source row has no List entry.'),
-    field(record, 'url', 'Official rich page', 'The identifier-bound Historic England HTML representation.'),
+    field(record, 'url', primaryLinkLabel, primaryLinkHelp),
     field(record, 'heritage_category', 'Heritage category'),
     field(record, 'grade', 'Grade', 'Source grade; not every designation category has one.'),
     field(record, 'designation_date', 'Designation date'),

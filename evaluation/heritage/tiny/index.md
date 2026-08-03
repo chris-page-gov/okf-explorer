@@ -7,7 +7,7 @@ description: Three exact Historic England source records for fast, deterministic
 resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/okf-explorer.json
 generated:
   by: process:heritage-evaluation-builder
-  at: "2026-08-03T08:12:27Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: real-world
 aliases:

@@ -2,6 +2,18 @@
 
 ## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
+- Made the public verification harness resolve GitHub Pages project-root
+  bundle paths, wait for client-rendered identity, select a single terminal
+  journey and return a failing exit status when any browser journey fails.
+- Made every rendered reading-page return link target the project directory
+  root rather than the non-route `/index.html`, and replaced the generated SPA
+  fallback with a standalone, accessible 404 whose assets and return link stay
+  inside the `/okf-explorer/` GitHub Pages project root.
+- Replaced the retired HAR `/list-entry/{NHLE}` inference with the live
+  Historic England register search bound by an exact `q=ListEntry` parameter;
+  direct NHLE rich pages remain unchanged. YAML-LD record links now prefer the
+  Pages project root so SvelteKit hydrates the governed deep route rather than
+  treating `/index.html` as an application route.
 - Made the external tiny-bundle acceptance fixture wait for the expected
   selected-record heading, so browser success proves hydration completed
   instead of merely observing the pre-hydration panel shell.

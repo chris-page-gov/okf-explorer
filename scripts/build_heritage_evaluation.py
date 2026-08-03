@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import copy
 import gzip
 import hashlib
 import io
@@ -21,7 +22,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import quote, unquote, urlencode, urlparse
+from urllib.parse import parse_qsl, quote, unquote, urlencode, urlparse
 
 import build_uk_government_api_okf as large_corpus
 import okf_semantic
@@ -44,6 +45,9 @@ NHLE_SERVICE = (
 )
 NHLE_ITEM = "https://www.arcgis.com/home/item.html?id=767f279327a24845bf47dfe5eae9862b"
 NHLE_SEARCH = "https://historicengland.org.uk/listing/the-list/list-entry/"
+HAR_SEARCH_RESULTS = (
+    "https://historicengland.org.uk/listing/heritage-at-risk/search-register/results"
+)
 HAR_ANNUAL = (
     "https://historicengland.org.uk/listing/heritage-at-risk/search-register/"
     "annual-heritage-at-risk-registers-and-maps/"
@@ -61,7 +65,11 @@ PROFILE_PATH = (
 )
 MAPPING_PATH = PROFILE_PATH.with_name("mapping-proposals.yaml")
 JOURNEYS_PATH = PROFILE_PATH.with_name("journeys.json")
+QUESTIONS_PATH = PROFILE_PATH.with_name("questions.json")
 FEATURE_COVERAGE_PATH = PROFILE_PATH.with_name("feature-coverage.json")
+PROTECTED_SOURCE_RECEIPT_PATH = (
+    PROFILE_PATH.parent / "evidence" / "protected-source-link-receipt.json"
+)
 
 LAYER_TYPES = {
     0: ("Listed Building", "listed-building"),
@@ -292,8 +300,24 @@ def explorer_record_iri(public_base: str, route: str) -> str:
     bundle = f"{public_base.rstrip('/')}/okf-explorer.json"
     route_token = base64.urlsafe_b64encode(route.encode("utf-8")).decode("ascii").rstrip("=")
     return (
-        f"{EXPLORER_BASE}index.html?bundle={quote(bundle, safe='')}"
+        f"{EXPLORER_BASE}?bundle={quote(bundle, safe='')}"
         f"#record:{route_token}"
+    )
+
+
+def exact_nhle_list_entry_binding(value: Any, list_entry: Any) -> bool:
+    """Whether ``value`` is exactly the official NHLE page for ``list_entry``."""
+
+    identifier = clean_text(list_entry)
+    candidate = official_historic_england_url(value)
+    if not candidate or not identifier.isdigit():
+        return False
+    parsed = urlparse(candidate)
+    return (
+        parsed.path == f"/listing/the-list/list-entry/{identifier}"
+        and not parsed.params
+        and not parsed.query
+        and not parsed.fragment
     )
 
 
@@ -301,13 +325,79 @@ def list_entry_url(list_entry: str, declared: Any = "") -> str:
     canonical = f"{NHLE_SEARCH}{quote(list_entry)}"
     declared_text = clean_text(declared)
     if declared_text:
-        candidate = official_historic_england_url(declared_text)
-        if not candidate or not candidate.rstrip("/").endswith(f"/list-entry/{list_entry}"):
+        if not exact_nhle_list_entry_binding(declared_text, list_entry):
             raise ValueError(
                 f"NHLE {list_entry} supplied rich page is not the identifier-bound Historic England page"
             )
-        return candidate
+        return canonical
     return canonical
+
+
+def har_register_search_url(list_entry: str, declared: Any = "") -> str:
+    """Return the live HAR register search bound to one List Entry Number.
+
+    Historic England's former ``search-register/list-entry/<LEN>`` route is no
+    longer a live record page.  Frozen source rows may still contain that
+    official deprecated route, so accept it only when its path binds the same
+    identifier and normalize it to the current ``results?q=<LEN>`` search.
+    """
+
+    identifier = clean_text(list_entry)
+    declared_text = clean_text(declared)
+    if not identifier.isdigit():
+        if declared_text:
+            raise ValueError(
+                "HAR register search requires a numeric List Entry Number for identifier binding"
+            )
+        return ""
+
+    canonical = f"{HAR_SEARCH_RESULTS}?q={quote(identifier, safe='')}"
+    if not declared_text:
+        return canonical
+
+    candidate = official_historic_england_url(declared_text)
+    if not candidate:
+        raise ValueError(
+            f"HAR List entry {identifier} supplied search URL is not sanctioned Historic England HTTPS"
+        )
+
+    parsed = urlparse(candidate)
+    path = parsed.path.rstrip("/")
+    current_path = urlparse(HAR_SEARCH_RESULTS).path
+    deprecated_path = (
+        "/listing/heritage-at-risk/search-register/list-entry/"
+        f"{identifier}"
+    )
+    current_binding = (
+        path == current_path
+        and parse_qsl(parsed.query, keep_blank_values=True) == [("q", identifier)]
+        and not parsed.fragment
+    )
+    deprecated_binding = (
+        path == deprecated_path and not parsed.query and not parsed.fragment
+    )
+    if current_binding or deprecated_binding:
+        return canonical
+    raise ValueError(
+        f"HAR List entry {identifier} supplied search URL does not bind the exact q parameter"
+    )
+
+
+def exact_har_register_search_binding(value: Any, list_entry: Any) -> bool:
+    """Whether ``value`` is the canonical HAR search for exactly ``list_entry``."""
+
+    identifier = clean_text(list_entry)
+    candidate = official_historic_england_url(value)
+    if not candidate or not identifier.isdigit():
+        return False
+    parsed = urlparse(candidate)
+    return (
+        parsed.scheme == "https"
+        and parsed.netloc.lower() == "historicengland.org.uk"
+        and parsed.path == urlparse(HAR_SEARCH_RESULTS).path
+        and parse_qsl(parsed.query, keep_blank_values=True) == [("q", identifier)]
+        and not parsed.fragment
+    )
 
 
 def flatten_coordinates(value: Any) -> list[tuple[float, float]]:
@@ -797,14 +887,8 @@ def har_record(row: dict[str, Any], annual: dict[str, Any], index: int, snapshot
     places = row.get("scope_geographies") if isinstance(row.get("scope_geographies"), list) else []
     place_names = [clean_text(place.get("name")) for place in places if isinstance(place, dict)]
     place_codes = [clean_text(place.get("code")) for place in places if isinstance(place, dict)]
-    declared_rich_url = field_value(row, "url", "har link", "link")
-    rich_url = official_historic_england_url(declared_rich_url)
-    if declared_rich_url and not rich_url:
-        raise ValueError(
-            f"HAR {year} row {row.get('record_id', index + 1)} supplies a non-Historic-England rich URL"
-        )
-    if not rich_url and list_entry.isdigit():
-        rich_url = f"https://historicengland.org.uk/listing/heritage-at-risk/search-register/list-entry/{list_entry}"
+    declared_search_url = field_value(row, "url", "har link", "link")
+    register_search_url = har_register_search_url(list_entry, declared_search_url)
     record_type = {
         "entry": "Heritage at Risk Observation",
         "addition": "Heritage at Risk Addition",
@@ -855,8 +939,8 @@ def har_record(row: dict[str, Any], annual: dict[str, Any], index: int, snapshot
     )
     record_name = f"har-{year}-{slugify(event_type)}-{stable_id}"
     resource_ids = [f"resource/{record_name}/spreadsheet"]
-    if rich_url:
-        resource_ids.append(f"resource/{record_name}/rich-page")
+    if register_search_url:
+        resource_ids.append(f"resource/{record_name}/register-search")
     return {
         "@id": explorer_record_iri(public_base, route),
         "@type": "https://www.w3.org/ns/prov#Entity",
@@ -872,7 +956,7 @@ def har_record(row: dict[str, Any], annual: dict[str, Any], index: int, snapshot
         "publisher_title": "Historic England",
         "resource_count": len(resource_ids),
         "resource_ids": resource_ids,
-        "formats": [spreadsheet_format, "HTML"] if rich_url else [spreadsheet_format],
+        "formats": [spreadsheet_format, "HTML"] if register_search_url else [spreadsheet_format],
         "tags": sorted({"heritage-at-risk", slugify(event_type), slugify(methodology), slugify(category), grade, *place_codes} - {""}),
         "topics": ["Heritage at Risk", category or "Heritage risk assessment"],
         "timestamp": "",
@@ -889,7 +973,7 @@ def har_record(row: dict[str, Any], annual: dict[str, Any], index: int, snapshot
         "license_basis": "source-declared",
         "route": route,
         "concept_id": f"har:{year}:{stable_id}",
-        "url": rich_url or source_url,
+        "url": register_search_url or source_url,
         "documentation": f"{public_base}methodology.html",
         "record_type": record_type,
         "type": methodology or record_type,
@@ -1101,16 +1185,19 @@ def resource_rows(records: list[dict[str, Any]], snapshot: dict[str, Any]) -> li
             if record.get("url") and record["url"] != source_url:
                 resources.append(
                     {
-                        "id": f"{stable}-rich-page",
+                        "id": f"{stable}-register-search",
                         "dataset": dataset,
-                        "name": "Official Heritage at Risk page",
-                        "description": "Official live record page; the annual snapshot remains the time-specific evidence.",
+                        "name": "Official Heritage at Risk register search",
+                        "description": (
+                            "Official live register search bound to the source row's List Entry Number; "
+                            "the annual snapshot remains the time-specific evidence."
+                        ),
                         "format": "HTML",
                         "source_format": "HTML",
-                        "route": f"resource/{stable}/rich-page",
+                        "route": f"resource/{stable}/register-search",
                         "url": record["url"],
                         "host": "historicengland.org.uk",
-                        "resource_type": "official-record-page",
+                        "resource_type": "official-register-search",
                         "position": 1,
                         "provenance": {"assertion_status": "official", "assertion_scope": record["assertion_scope"]},
                     }
@@ -2187,8 +2274,8 @@ its omitted boundary polygons are present.
 ## Link validation
 
 The same identifier-binding and local Markdown-to-HTML link gates apply to the
-tiny fixture. Its official rich pages and exact frozen source-feature URLs are
-kept distinct.'''
+tiny fixture. Its NHLE rich pages, HAR register searches bound to exact source
+List Entry Numbers and frozen source-feature URLs are kept distinct.'''
         if publication["role"] == "tiny"
         else '''## Scope
 
@@ -2203,8 +2290,9 @@ every intersection.
   names, categories, grades, dates, National Grid references and geometry.
 - Sanctioned annual Heritage at Risk spreadsheets supply annual entries,
   additions and positive removals. Missing historical columns remain unknown.
-- Historic England's rich HTML pages remain linked official resources; their
-  narrative is not bulk-copied into this repository.
+- Historic England's NHLE rich HTML pages and HAR register searches remain
+  linked official resources; their narrative is not bulk-copied into this
+  repository, and an opaque HAR item route is never inferred.
 
 ## Geometry
 
@@ -2217,10 +2305,11 @@ geometry is retained in bounded GeoJSON shards.
 
 ## Link validation
 
-Every rich link is bound to its source identifier and allowed origin. Local
-Markdown-to-HTML links and fragments are checked by the assembled-site audit.
-The publication gate additionally opens representative source pages and every
-task-critical deployed route in a real browser.'''
+Every NHLE rich page and HAR register search is bound to its source identifier
+and allowed origin. Local Markdown-to-HTML links and fragments are checked by
+the assembled-site audit. The publication gate additionally opens
+representative source pages and every task-critical deployed route in a real
+browser.'''
     )
     method_content += '''
 
@@ -2500,17 +2589,74 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
 
 
 def source_provenance(snapshot: dict[str, Any]) -> dict[str, Any]:
-    return {
+    sources = copy.deepcopy(snapshot.get("sources", []))
+    acquisition_prefilter: Counter[str] = Counter()
+    for source in sources:
+        for sheet in source.get("semantic_sheets", []):
+            scope_rows = sheet.get("scope_rows")
+            if isinstance(scope_rows, int):
+                role = clean_text(sheet.get("semantic_role"))
+                acquisition_prefilter[role] += scope_rows
+                sheet["scope_rows_stage"] = (
+                    "acquisition-prefilter-before-authoritative-geography-reconciliation"
+                )
+
+    authoritative_emitted: Counter[str] = Counter()
+    denominator_pattern = re.compile(
+        r"har-\d{4}-(entries|additions|positive_removals)-scope-rows"
+    )
+    for denominator in snapshot.get("denominators", []):
+        match = denominator_pattern.fullmatch(clean_text(denominator.get("id")))
+        count = denominator.get("count")
+        if match and isinstance(count, int):
+            authoritative_emitted[match.group(1)] += count
+
+    provenance = {
         "schema": "heritage-evaluation-source-provenance.v1",
         "snapshot_id": snapshot.get("snapshot_id", ""),
         "observed_at": snapshot.get("observed_at", ""),
         "geometry_delivery": snapshot.get("geometry_delivery", {}),
         "scope": snapshot.get("scope", {}),
-        "sources": snapshot.get("sources", []),
+        "sources": sources,
         "denominators": snapshot.get("denominators", []),
         "requests": snapshot.get("requests", []),
         "limitations": snapshot.get("limitations", []),
     }
+    if acquisition_prefilter:
+        roles = sorted(set(acquisition_prefilter) | set(authoritative_emitted))
+        excluded = {
+            role: acquisition_prefilter[role] - authoritative_emitted[role]
+            for role in roles
+        }
+        if any(count < 0 for count in excluded.values()):
+            raise ValueError(
+                "authoritative HAR scope count exceeds acquisition prefilter count"
+            )
+        prefilter_total = sum(acquisition_prefilter.values())
+        emitted_total = sum(authoritative_emitted.values())
+        provenance["scope_reconciliation"] = {
+            "acquisition_prefilter": {
+                "rows": prefilter_total,
+                "by_event_kind": dict(sorted(acquisition_prefilter.items())),
+                "field": "sources[].semantic_sheets[].scope_rows",
+            },
+            "authoritative_emitted": {
+                "rows": emitted_total,
+                "by_event_kind": dict(sorted(authoritative_emitted.items())),
+                "field": "denominators[har-*-*-scope-rows].count",
+            },
+            "excluded_after_authoritative_geography_reconciliation": {
+                "rows": prefilter_total - emitted_total,
+                "by_event_kind": dict(sorted(excluded.items())),
+            },
+            "method": (
+                "The acquisition prefilter supported broad workbook discovery. "
+                "The authoritative emitted stage accepts only sanctioned local-"
+                "authority fields or explicit Warwickshire county evidence and "
+                "excludes locality-only matches such as Warwick Bridge in Cumbria."
+            ),
+        }
+    return provenance
 
 
 def link_validation(
@@ -2566,7 +2712,9 @@ def link_validation(
         elif route.startswith("asset/") and not official_historic_england_url(url):
             status = "invalid"
             failures.append(f"{route}: rich page is outside the Historic England origin allowlist")
-        elif route.startswith("asset/") and not url.rstrip("/").endswith(f"/list-entry/{record['native_id']}"):
+        elif route.startswith("asset/") and not exact_nhle_list_entry_binding(
+            url, record["native_id"]
+        ):
             status = "invalid"
             failures.append(f"{route}: rich page does not bind its List entry")
         elif route.startswith("asset/"):
@@ -2576,9 +2724,13 @@ def link_validation(
             if not official_historic_england_url(url):
                 status = "invalid"
                 failures.append(f"{route}: annual record URL is outside the Historic England origin allowlist")
-            elif list_entry and not url.rstrip("/").endswith(f"/list-entry/{list_entry}"):
+            elif list_entry and not exact_har_register_search_binding(url, list_entry):
                 status = "invalid"
-                failures.append(f"{route}: annual rich page does not bind List entry {list_entry}")
+                failures.append(
+                    f"{route}: annual register search does not bind exact q={list_entry}"
+                )
+            elif list_entry:
+                rich_bindings += 1
         elif record.get("assertion_scope") == "synthetic-fixture" and not url.startswith(public_base):
             status = "invalid"
             failures.append(f"{route}: synthetic primary URL is outside its isolated corpus namespace")
@@ -2621,12 +2773,27 @@ def link_validation(
             if not official_historic_england_url(url):
                 status = "invalid"
                 failures.append(f"{route}: official page is outside the Historic England origin allowlist")
-            elif list_entry and not url.rstrip("/").endswith(f"/list-entry/{list_entry}"):
+            elif list_entry and not exact_nhle_list_entry_binding(url, list_entry):
                 status = "invalid"
                 failures.append(f"{route}: official rich page does not bind List entry {list_entry}")
             elif list_entry:
                 rich_bindings += 1
                 basis = "official source row/feature plus exact List-entry URL binding"
+        elif resource.get("resource_type") == "official-register-search":
+            list_entry = clean_text(record.get("extras", {}).get("list_entry_number"))
+            if not official_historic_england_url(url):
+                status = "invalid"
+                failures.append(
+                    f"{route}: official register search is outside the Historic England origin allowlist"
+                )
+            elif not list_entry or not exact_har_register_search_binding(url, list_entry):
+                status = "invalid"
+                failures.append(
+                    f"{route}: official register search does not bind exact q={list_entry}"
+                )
+            else:
+                rich_bindings += 1
+                basis = "official HAR register results path plus exact q=ListEntry binding"
         elif resource.get("resource_type") == "official-source-feature":
             list_entry = clean_text(record.get("native_id"))
             decoded_url = unquote(url)
@@ -2711,7 +2878,7 @@ def link_validation(
         "schema": "heritage-evaluation-link-validation.v1",
         "snapshot": snapshot.get("snapshot_id", ""),
         "checked_at": snapshot.get("observed_at", ""),
-        "method": "Every record, resource and relationship-panel URL is parsed with credentials rejected and checked against an explicit source or generated-origin policy. Internal routes resolve; official rich pages and FeatureServer queries bind the frozen ListEntry; annual sources bind their register year; semantic endpoint IRIs bind registered Explorer routes or official pages. Individual external HTML pages are not represented as bulk live-HTTP checks.",
+        "method": "Every record, resource and relationship-panel URL is parsed with credentials rejected and checked against an explicit source or generated-origin policy. Internal routes resolve; official NHLE rich pages and FeatureServer queries bind the frozen ListEntry; HAR register searches bind the exact q=ListEntry parameter; annual sources bind their register year; semantic endpoint IRIs bind registered Explorer routes or official pages. Individual external HTML pages are not represented as bulk live-HTTP checks.",
         "counts": {
             "record_links": len(record_checks),
             "resource_links": len(resource_checks),
@@ -2726,7 +2893,7 @@ def link_validation(
             "all_resource_urls": "structural-origin-and-corpus-route",
             "all_relationship_panel_urls": "structural-origin-and-registered-route",
             "all_internal_resource_references": "resolved",
-            "individual_external_html_availability": "not-claimed; representative browser gate is separate",
+            "individual_external_html_availability": "not-claimed for every generated URL occurrence; the terminal browser gate covers every external destination authored into the evaluation report",
             "assembled_local_html_and_markdown": "checked by scripts/build_site.py",
         },
         "checks": [*record_checks, *resource_checks],
@@ -2734,7 +2901,7 @@ def link_validation(
         "resource_checks": resource_checks,
         "live_receipts": live_receipts,
         "limitations": [
-            "The source site rate limits and challenges bulk HTML requests; identifier and corpus binding is complete, while representative rich pages are checked in a real browser.",
+            "The source site rate limits and challenges bulk HTML requests; identifier and corpus binding is complete, while every unique external destination authored into the evaluation report is checked in a real browser without bulk-requesting all generated occurrences.",
             "A successful link does not expand the licence or authorize bulk reproduction of rich-page narrative.",
         ],
     }
@@ -2785,7 +2952,12 @@ def output_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path,
             (PROFILE_PATH, Path("evaluation-profile.yaml")),
             (MAPPING_PATH, Path("mapping-proposals.yaml")),
             (JOURNEYS_PATH, Path("journeys.json")),
+            (QUESTIONS_PATH, Path("questions.json")),
             (FEATURE_COVERAGE_PATH, Path("feature-coverage.json")),
+            (
+                PROTECTED_SOURCE_RECEIPT_PATH,
+                Path("evidence/protected-source-link-receipt.json"),
+            ),
         ):
             if source.is_file():
                 files[target] = source.read_text(encoding="utf-8")

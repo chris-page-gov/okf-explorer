@@ -7,7 +7,7 @@ description: Scope, acquisition, normalization, link and completeness rules for 
 resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder
-  at: "2026-08-03T08:12:27Z"
+  at: "2026-08-03T10:29:12Z"
 assertion_status: normalized
 assertion_scope: real-world
 ---
@@ -38,8 +38,8 @@ its omitted boundary polygons are present.
 ## Link validation
 
 The same identifier-binding and local Markdown-to-HTML link gates apply to the
-tiny fixture. Its official rich pages and exact frozen source-feature URLs are
-kept distinct.
+tiny fixture. Its NHLE rich pages, HAR register searches bound to exact source
+List Entry Numbers and frozen source-feature URLs are kept distinct.
 
 ## Relationship projection rules
 

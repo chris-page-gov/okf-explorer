@@ -106,7 +106,7 @@
   ],
   "normalized_records": [
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
       "@type": "https://schema.org/LandmarksOrHistoricalBuildings",
       "id": "synthetic:place:meridian-dye-works",
       "record_id": "synthetic:place:meridian-dye-works",
@@ -165,7 +165,7 @@
       "extras": {"synthetic":true,"uncertainty":"person attribution intentionally uncertain"}
     },
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
       "@type": "https://schema.org/Person",
       "id": "synthetic:person:asha-bennett",
       "record_id": "synthetic:person:asha-bennett",
@@ -221,7 +221,7 @@
       "extras": {"synthetic":true,"birth_year":"1862 (invented)"}
     },
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
       "@type": "https://schema.org/Event",
       "id": "synthetic:event:flood-resilience-2031",
       "record_id": "synthetic:event:flood-resilience-2031",
@@ -286,8 +286,8 @@
       "id":"relationship/synthetic-designed-by",
       "source":"synthetic/place/meridian-dye-works",
       "target":"synthetic/person/asha-bennett",
-      "source_iri":"https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
-      "target_iri":"https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
+      "source_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "target_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
       "kind":"possibly designed by",
       "label":"possibly designed by",
       "inverse_label":"possibly designed",
@@ -306,8 +306,8 @@
       "id":"relationship/synthetic-protects",
       "source":"synthetic/event/flood-resilience-2031",
       "target":"synthetic/place/meridian-dye-works",
-      "source_iri":"https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
-      "target_iri":"https://chris-page-gov.github.io/okf-explorer/index.html?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "source_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
+      "target_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
       "kind":"proposes protection for",
       "label":"proposes protection for",
       "inverse_label":"would be protected by",
