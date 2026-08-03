@@ -1,0 +1,30 @@
+{
+  "schema": "okf-explorer-visual-regressions.v1",
+  "title": "Coventry and Warwickshire heritage visual evidence",
+  "items": [
+    {
+      "id": "HVR001",
+      "view": "search",
+      "image": "evidence/familiar-name-search.png",
+      "comment": "The provenance-reviewed familiar name St Mary's Guildhall must retrieve the official St Mary's Hall record without replacing its source title or hiding the bounded result count.",
+      "checks": [
+        "The active query, result count and official source title remain visible together.",
+        "A familiar discovery name never replaces the canonical Historic England title.",
+        "Search, facets and view controls remain readable without horizontal clipping at 1440 by 1000 pixels.",
+        "The empty/unmatched and spelling-tolerance notices reserve space without obscuring results."
+      ]
+    },
+    {
+      "id": "HVR002",
+      "view": "reader",
+      "image": "evidence/yaml-ld-heritage-detail.png",
+      "comment": "The selected St Mary's Hall route must connect the familiar-name result to additive YAML-LD identity and assertion boundaries in one beginner-readable detail experience.",
+      "checks": [
+        "The selected record retains its official title and NHLE identifier.",
+        "The familiar-name result retains the official source title while the semantic panel is open.",
+        "YAML-LD identity and assertion scope are presented in plain language rather than only as raw JSON.",
+        "Long identifiers and source links wrap without covering controls or adjacent evidence."
+      ]
+    }
+  ]
+}

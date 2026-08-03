@@ -1,0 +1,70 @@
+{
+  "schema": "okf-heritage-local-candidate-receipt.v1",
+  "observed_at": "2026-08-03T08:58:39Z",
+  "scope": "Local deterministic and real-browser gates for the pre-publication candidate; this receipt does not claim that GitHub Pages is deployed.",
+  "candidate": {
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+    "heritage_release_root_sha256": "0166104ad963c24cfb80218908c313865ca8cd02781c44c49b798d7ea914e349",
+    "explorer_tree_sha256": "bdbcbf7cb3ba5e6736e2ab09d786df4a8d173f12b46398f07109f4744c97c347",
+    "explorer_manifest_sha256": "392efc171051686e56d6d892e908f42ad804d66c1a416bf058fcfaaa21a140bc",
+    "site_reading_pages": 239,
+    "site_internal_references": 4134,
+    "site_file_count": 14006,
+    "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
+    "site_tree_sha256": "c7bc739cd05ca28b6d4dbcd98002011582480ecbcfd2782593c4821b102fd81f",
+    "site_size_gate": {
+      "status": "passed",
+      "limit_bytes": 1000000000,
+      "site_bytes": 987424628,
+      "headroom_bytes": 12575372
+    }
+  },
+  "determinism": {
+    "status": "passed",
+    "builds": 2,
+    "files_per_build": 2938,
+    "differences": 0,
+    "comparison_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
+    "comparison_tree_sha256": "18977e6718fa07bd2b1ff92f42bcf374f64d96f12ef5cbb67164cf53c4d8d959"
+  },
+  "question_suite": {
+    "status": "passed",
+    "suite": "evaluation-foundry/fixtures/heritage-warwickshire/questions.json",
+    "suite_sha256": "78d49a8880fb6164c74d24ffd4ee359efffa768ac7990522c6302d2654e97419",
+    "result": "evidence/receipts/question-suite-results.json.gz",
+    "result_gzip_sha256": "f8350c5337500a6c9558568e03374c287a36ede180e631e905aa7a10ae1b2eae",
+    "result_json_sha256": "d0528f2d00ca783d1ab92f4d505370b6dd684aaa1397003784270051309f1171",
+    "questions_run": 100,
+    "questions_scored": 100,
+    "average_total": 92.7,
+    "average_retrieval": 31.3,
+    "average_display": 24.2,
+    "average_accessibility": 20,
+    "average_plain_language_and_government_style": 17.2,
+    "scores_at_least_80": 100,
+    "scores_below_60": 0
+  },
+  "local_journeys": {
+    "status": "passed",
+    "manifest": "evaluation-foundry/fixtures/heritage-warwickshire/journeys.json",
+    "manifest_sha256": "63d219a2d6d202607932659438f091419d6fe217eef56c3facbf6e81b12c9962",
+    "result": "evidence/receipts/local-journey-results.json.gz",
+    "result_gzip_sha256": "46d268c658f7bf610204616aec210959a70a8bad3165df26432a130eddd4d843",
+    "result_json_sha256": "c84d775b476d7a7f81970d4b364afe23bc0f40fc1cf6b051767ee0bb863f7807",
+    "journeys_run": 3,
+    "passed": 3,
+    "failed": 0,
+    "errors": 0,
+    "journey_ids": [
+      "journey-tiny",
+      "journey-faithful",
+      "journey-synthetic-isolation"
+    ]
+  },
+  "terminal_publication_gate": {
+    "status": "pending",
+    "journey_id": "journey-publication",
+    "rich_page_identity_check": "pending-terminal-real-browser-check",
+    "claim": "No public URL is verified by this local receipt."
+  }
+}

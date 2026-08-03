@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-model.schema.json",
+  "title": "OKF semantic-model descriptor extension",
+  "type": "object",
+  "required": ["schema", "status", "contexts", "id_registry", "predicate_registry"],
+  "properties": {
+    "schema": {"const": "okf-semantic-model.v1"},
+    "status": {"enum": ["experimental", "stable", "deprecated"]},
+    "contexts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/contextReference"},
+      "minItems": 1
+    },
+    "id_registry": {
+      "oneOf": [
+        {"$ref": "#/$defs/resourceReference"},
+        {"$ref": "#/$defs/inlineIdRegistry"}
+      ]
+    },
+    "predicate_registry": {
+      "oneOf": [
+        {"$ref": "#/$defs/resourceReference"},
+        {"$ref": "#/$defs/inlinePredicateRegistry"}
+      ]
+    },
+    "vocabularies": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/versionedResource"}
+    },
+    "ontologies": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/versionedResource"}
+    },
+    "shapes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/versionedResource"}
+    },
+    "validation_report": {"$ref": "#/$defs/resourceReference"},
+    "semantic_dataset": {
+      "type": "object",
+      "required": ["jsonld", "canonical_nquads", "dataset_root"],
+      "properties": {
+        "jsonld": {"$ref": "#/$defs/resourceReference"},
+        "canonical_nquads": {"$ref": "#/$defs/resourceReference"},
+        "dataset_root": {
+          "type": "object",
+          "required": ["algorithm", "sha256"],
+          "properties": {
+            "algorithm": {"const": "rdfc-1.0-sha256"},
+            "sha256": {"$ref": "#/$defs/sha256"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "inference": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["not-run", "materialized"]},
+        "profile": {"type": "string", "minLength": 1},
+        "materialized_entrypoint": {"$ref": "#/$defs/resourceReference"},
+        "rule_manifest": {"$ref": "#/$defs/resourceReference"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "safePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "resourceReference": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "contextReference": {
+      "type": "object",
+      "required": ["url", "path", "sha256"],
+      "properties": {
+        "url": {"type": "string", "format": "uri"},
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "versionedResource": {
+      "type": "object",
+      "required": ["id", "version", "path", "sha256"],
+      "properties": {
+        "id": {"type": "string", "format": "uri"},
+        "version": {"type": "string", "minLength": 1},
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "inlineIdRegistry": {
+      "type": "object",
+      "required": ["schema", "entries", "counts", "root_sha256"],
+      "properties": {
+        "schema": {"const": "okf-iri-route-registry.v1"},
+        "snapshot": {"type": "string", "minLength": 1},
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["iri", "route"],
+            "properties": {
+              "iri": {"type": "string", "format": "uri"},
+              "route": {
+                "type": "string",
+                "minLength": 1,
+                "allOf": [
+                  {"pattern": "^[A-Za-z0-9][A-Za-z0-9._~/-]*$"},
+                  {"not": {"pattern": "(^|/)\\.\\.(/|$)"}},
+                  {"not": {"pattern": "\\.[mM][dD]$"}}
+                ]
+              },
+              "page": {"type": "string", "minLength": 1},
+              "fragment": {"type": "string", "minLength": 1},
+              "kind": {"type": "string", "minLength": 1},
+              "title": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "counts": {
+          "type": "object",
+          "required": ["entries"],
+          "properties": {"entries": {"type": "integer", "minimum": 1}},
+          "additionalProperties": false
+        },
+        "root_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "inlinePredicateRegistry": {
+      "type": "object",
+      "required": ["schema", "snapshot", "generated_at", "predicates", "counts", "root_sha256"],
+      "properties": {
+        "schema": {"const": "okf-predicate-registry.v1"},
+        "snapshot": {"type": "string", "minLength": 1},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "predicates": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/predicate"},
+          "minItems": 1
+        },
+        "counts": {
+          "type": "object",
+          "required": ["predicates"],
+          "properties": {"predicates": {"type": "integer", "minimum": 1}},
+          "additionalProperties": false
+        },
+        "root_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "iriArray": {
+      "type": "array",
+      "items": {"type": "string", "format": "uri"},
+      "uniqueItems": true
+    },
+    "predicate": {
+      "type": "object",
+      "required": [
+        "iri",
+        "preferred_label",
+        "inverse_label",
+        "description",
+        "domain",
+        "range",
+        "assertion_statuses",
+        "evidence_policy",
+        "source_vocabulary",
+        "status"
+      ],
+      "properties": {
+        "iri": {"type": "string", "format": "uri"},
+        "preferred_label": {"$ref": "#/$defs/nonEmptyString"},
+        "inverse_label": {"$ref": "#/$defs/nonEmptyString"},
+        "description": {"$ref": "#/$defs/nonEmptyString"},
+        "domain": {"$ref": "#/$defs/iriArray"},
+        "range": {"$ref": "#/$defs/iriArray"},
+        "super_properties": {"$ref": "#/$defs/iriArray"},
+        "characteristics": {"$ref": "#/$defs/iriArray"},
+        "assertion_statuses": {
+          "type": "array",
+          "items": {"enum": ["official", "normalized", "inferred", "model-derived"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "evidence_policy": {
+          "type": "object",
+          "required": ["minimum_fields"],
+          "properties": {
+            "minimum_fields": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/nonEmptyString"},
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "notes": {"$ref": "#/$defs/nonEmptyString"}
+          },
+          "additionalProperties": false
+        },
+        "weight_metric": {
+          "type": "object",
+          "required": ["field", "label", "unit"],
+          "properties": {
+            "field": {"$ref": "#/$defs/nonEmptyString"},
+            "label": {"$ref": "#/$defs/nonEmptyString"},
+            "unit": {"$ref": "#/$defs/nonEmptyString"}
+          },
+          "additionalProperties": false
+        },
+        "source_vocabulary": {
+          "type": "object",
+          "required": ["iri", "version"],
+          "properties": {
+            "iri": {"type": "string", "format": "uri"},
+            "version": {"$ref": "#/$defs/nonEmptyString"}
+          },
+          "additionalProperties": false
+        },
+        "status": {"enum": ["active", "deprecated"]},
+        "replaced_by": {"type": "string", "format": "uri"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "deprecated"}}, "required": ["status"]},
+          "then": {"required": ["replaced_by"]}
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,176 @@
+schema: okf-evaluation-mapping-proposals.v1
+profile_id: heritage-coventry-warwickshire-v1
+proposals:
+  - id: map-source-identity
+    source: NHLE ListEntry or HAR source-row identity
+    target: OKF record id, route, native_id and stable IRI
+    evidence:
+      - Source identifier is retained verbatim in provenance and linked resources.
+    confidence: 1.0
+    derivation: Deterministic, reversible prefixing and route-safe encoding.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, resources, graph, data-card, provenance]
+    limitations: []
+  - id: map-category-and-grade
+    source: Source layer identity and source Grade field
+    target: heritage_category, grade, type and searchable facet values
+    evidence:
+      - https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer
+    confidence: 1.0
+    derivation: Layer-number lookup plus verbatim Grade value; no significance inference.
+    assertion_status: official
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, facets, types, data-card, provenance]
+    limitations:
+      - Grade is not applicable to every designation category.
+  - id: map-exact-boundary-membership
+    source: NHLE source geometry intersected with pinned LAD geometry
+    target: geography_code, local_authority and containedInPlace relationship
+    evidence:
+      - https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+      - Each acquisition request and every matching geography are retained in source provenance.
+    confidence: 1.0
+    derivation: Exact ArcGIS spatial intersection; multi-boundary features are deduplicated only after all memberships are retained.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, facets, graph, map, data-card, provenance]
+    limitations:
+      - Boundary membership changes when either source geometry or boundary vintage changes.
+      - This mapping applies to NHLE features only; annual HAR workbook rows use the separate reversible source-field mapping below.
+  - id: map-har-location-membership
+    source: Exact annual HAR Local Planning Authority, Unitary Authority, District/Borough or explicit Warwickshire County field value
+    target: geography_code, local_authority and containedInPlace relationship
+    evidence:
+      - The workbook year, sheet, row, exact source field and exact source value are retained with the relationship.
+    confidence: 1.0
+    derivation: Deterministic phrase mapping over authoritative local-government fields only; locality, parish, town and city text are never treated as LAD evidence.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, facets, graph, data-card, provenance]
+    limitations:
+      - This is a reversible source-field normalization, not a spatial intersection.
+      - An explicit county-only Warwickshire value is retained at county level without inferring a LAD.
+  - id: map-source-geometry
+    source: FeatureServer geometry requested in EPSG 4326
+    target: Bounded GeoJSON shard, map feature and labelled representative point
+    evidence:
+      - Full source geometry and source spatial reference remain linked to the record.
+    confidence: 1.0
+    derivation: Retain FeatureServer coordinates delivered in EPSG 4326; translate Esri point and ring structures into GeoJSON, grouping exterior rings and contained holes as Polygon or MultiPolygon; use a deterministic bounding-box centre only as a labelled schematic representative point.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [resources, map, data-card, provenance]
+    limitations:
+      - A bounding-box centre may lie outside a polygon and is never presented as the authoritative location.
+      - The structural Esri-to-GeoJSON conversion does not claim a coordinate-reference-system transformation.
+  - id: map-designation-time
+    source: ListDate, SchedDate, RegDate, DesigDate, InscrDate and amendment fields
+    target: metadata_created, metadata_modified, timestamp and timeline bucket
+    evidence:
+      - The chosen source field and raw source values remain in the data card.
+    confidence: 1.0
+    derivation: First category-applicable source date normalized to ISO 8601 without imputation.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [facets, timeline, data-card, provenance]
+    limitations:
+      - Different heritage categories use different statutory date concepts.
+  - id: map-rich-representations
+    source: Source hyperlink and ListEntry
+    target: Official rich-page resource with identifier-bound canonical URL
+    evidence:
+      - https://historicengland.org.uk/listing/the-list/list-entry/1342941
+    confidence: 1.0
+    derivation: Accept the source URL only on an allowed Historic England origin and when its trailing identifier matches ListEntry; otherwise construct the canonical URL.
+    assertion_status: official
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, resources, data-card, provenance]
+    limitations:
+      - Rich narrative is linked, not bulk-reproduced; automated HTTP checks are supplemented with representative real-browser checks.
+  - id: map-har-observation
+    source: One annual HAR workbook row and its year, sheet and row address
+    target: Time-specific risk observation, addition or positive-removal record
+    evidence:
+      - https://historicengland.org.uk/listing/heritage-at-risk/search-register/annual-heritage-at-risk-registers-and-maps/
+    confidence: 1.0
+    derivation: Schema-aware column aliases preserve source values and missingness; no annual row is treated as a current live claim.
+    assertion_status: official
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, facets, types, resources, timeline, data-card, provenance]
+    limitations:
+      - Columns, terminology and identifiers vary by year.
+  - id: map-har-to-nhle
+    source: Source-declared List entry number on an annual HAR row
+    target: assesses relationship to the matching faithful NHLE asset
+    evidence:
+      - Both source rows and their identifiers are retained in relationship evidence.
+    confidence: 1.0
+    derivation: Exact identifier join only; titles are not used to manufacture an official link.
+    assertion_status: official
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [graph, timeline, data-card, provenance]
+    limitations:
+      - Rows without a source List entry number remain unlinked rather than guessed.
+  - id: map-search-aliases
+    source: Names, identifiers, geography names and codes, known abbreviations and deterministic textual variants
+    target: Weighted search_aliases plus bounded typo dictionary
+    evidence:
+      - Original tokens, aliases and any one-edit correction are exposed in result explanation.
+    confidence: 0.98
+    derivation: Unicode folding, punctuation normalization, St/Saint and and/ampersand variants, category vocabulary, identifiers and exact one-edit Damerau-Levenshtein candidates.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [search, data-card]
+    limitations:
+      - Typo tolerance is deliberately bounded and does not claim semantic equivalence.
+  - id: map-yaml-ld-identifiers
+    source: YAML front-matter @context, @id and typed values
+    target: JSON-LD-compatible node identity and integrity-bound Explorer route
+    evidence:
+      - https://www.w3.org/TR/json-ld11/
+    confidence: 1.0
+    derivation: YAML is parsed as JSON-compatible data; JSON-LD keywords are preserved while OKF display fields remain available.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [types, resources, graph, data-card, provenance]
+    limitations:
+      - YAML-LD is an additive proposal beyond the current OKF core, not a claim that YAML itself is RDF syntax.
+  - id: map-reified-relationship
+    source: Explicit source, predicate, target, authority, evidence and derivation
+    target: Direct graph edge plus RDF Statement and OKF RelationshipAssertion metadata node
+    evidence:
+      - https://www.w3.org/TR/rdf12-concepts/
+      - A reified statement describes an assertion but does not itself assert the triple, so the direct edge is retained.
+    confidence: 1.0
+    derivation: One-to-one deterministic compilation validated against the predicate and IRI route registries.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [graph, data-card, provenance]
+    limitations:
+      - Consumers that ignore the extension still see legacy graph edges without assertion metadata.
+  - id: map-provenance-and-authority
+    source: Source URL, object or row identity, snapshot timestamp and mechanical derivation
+    target: provenance block and orthogonal assertion_status/assertion_scope labels
+    evidence:
+      - Every displayed relationship and transformed field can point back to a source or declared derivation.
+    confidence: 1.0
+    derivation: Preserve source evidence; classify authority independently from real-world versus synthetic scope.
+    assertion_status: normalized
+    assertion_scope: real-world
+    reversible: true
+    feature_effects: [resources, graph, data-card, provenance]
+    limitations:
+      - A provenance trail improves inspectability but does not independently prove the source claim true.

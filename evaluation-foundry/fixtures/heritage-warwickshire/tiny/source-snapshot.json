@@ -1,0 +1,1045 @@
+{
+  "denominators": [
+    {
+      "count": 2,
+      "definition": "The two declared NHLE assurance anchors, selected by exact ListEntry from the complete parent spatial intersection.",
+      "id": "tiny-declared-nhle-records",
+      "method": "Exact ListEntry allow-list: 1342941 and 1184627",
+      "status": "complete-for-declared-assurance-subset"
+    },
+    {
+      "count": 1,
+      "definition": "The single declared 2025 HAR entry linked to NHLE 1184627.",
+      "id": "tiny-declared-har-records",
+      "method": "Exact year, event type and List Entry selection",
+      "status": "complete-for-declared-assurance-subset"
+    }
+  ],
+  "geometry_delivery": {
+    "arcgis_out_sr": "4326",
+    "basis": "Every retained NHLE and mapped HAR geometry is requested from ArcGIS with outSR=4326. Response spatialReference values are validated; source receipts and per-feature declarations, where present, bind this contract.",
+    "coordinate_order": "longitude-latitude",
+    "coordinate_transformation": "none-after-source-delivery",
+    "crs": "EPSG:4326"
+  },
+  "har": {
+    "annual": [
+      {
+        "event_type": "entry",
+        "header_row": 1,
+        "identity_collisions": [],
+        "rows": [
+          {
+            "All designations (includes co-locations and dual designations)": "Listed Place of Worship grade II, CA",
+            "Assessment Type": "Place of worship",
+            "Broad Term": "Religious ritual and funerary",
+            "Ceremonial County": "Warwickshire",
+            "Civil Parish": "Radway",
+            "Combined Authority (if applicable)": "",
+            "Condition": "Poor",
+            "County Council (if applicable)": "Warwickshire",
+            "Designation": "Listed Building",
+            "District/Borough": "Stratford-on-Avon",
+            "Government Region": "West Midlands",
+            "Grade": "II",
+            "Heritage Category": "Listed Building",
+            "Historic England Administrative Region": "Midlands",
+            "LEN or CAN or LENS of dual designations": "1184627",
+            "List Entry": "1184627",
+            "List Entry Number (LEN) or Conservation Area Number (CAN)": "1184627",
+            "Local Planning Authority": "Stratford-on-Avon",
+            "Locality": "",
+            "Name": "Church of St Peter, Tysoe Road, Radway, Radway",
+            "Narrow Term": "Church",
+            "National Park": "",
+            "New entry?": "No",
+            "Parliamentary Constituency": "Kenilworth and Southam",
+            "Priority category": "C - Slow decay; no solution agreed",
+            "Published Owner Type": "Religious organisation",
+            "Published contact": "",
+            "Published site name": "Church of St Peter, Tysoe Road, Radway, Radway",
+            "Risk methodology": "Place of worship",
+            "Site Subtype": "Church",
+            "Site Type": "Religious ritual and funerary",
+            "Trend": "Declining",
+            "Unitary Authority": "",
+            "Vulnerability": "Medium",
+            "event_type": "entry",
+            "geometry": {
+              "rings": [
+                [
+                  [
+                    -1.4635606787185,
+                    52.1298131846725
+                  ],
+                  [
+                    -1.46359719882806,
+                    52.1298133506599
+                  ],
+                  [
+                    -1.46357870521128,
+                    52.1298327325696
+                  ],
+                  [
+                    -1.4635606787185,
+                    52.1298131846725
+                  ]
+                ]
+              ]
+            },
+            "identity_basis": "source-composite",
+            "mapped_geometry_join": [
+              {
+                "candidate_rows_for_feature": 1,
+                "method": "list-entry-methodology",
+                "scope_geographies": [
+                  {
+                    "basis": "exact-source-geometry-intersection",
+                    "code": "E07000221",
+                    "name": "Stratford-on-Avon"
+                  }
+                ],
+                "source_object_id": 4600,
+                "source_service": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/HAR_2025_OTHR_WGS84/FeatureServer/0",
+                "year": 2025
+              }
+            ],
+            "normalized_fields": {
+              "Assessment Type": "Place of worship",
+              "Designation": "Listed Building",
+              "List Entry": "1184627",
+              "Name": "Church of St Peter, Tysoe Road, Radway, Radway",
+              "Site Subtype": "Church",
+              "Site Type": "Religious ritual and funerary"
+            },
+            "record_id": "036682fa45484e9f8975",
+            "scope_geographies": [
+              {
+                "basis": "source-local-authority-field",
+                "code": "E07000221",
+                "name": "Stratford-on-Avon"
+              }
+            ],
+            "scope_match_evidence": [
+              {
+                "field": "District/Borough",
+                "matched_code": "E07000221",
+                "value": "Stratford-on-Avon"
+              },
+              {
+                "field": "Local Planning Authority",
+                "matched_code": "E07000221",
+                "value": "Stratford-on-Avon"
+              }
+            ],
+            "source_excluded_fields": [
+              "Published contact"
+            ],
+            "source_row": 3606,
+            "source_sheet": "Entries_on_the_Register",
+            "source_values": {
+              "All designations (includes co-locations and dual designations)": "Listed Place of Worship grade II, CA",
+              "Broad Term": "Religious ritual and funerary",
+              "Ceremonial County": "Warwickshire",
+              "Civil Parish": "Radway",
+              "Combined Authority (if applicable)": "",
+              "Condition": "Poor",
+              "County Council (if applicable)": "Warwickshire",
+              "District/Borough": "Stratford-on-Avon",
+              "Government Region": "West Midlands",
+              "Grade": "II",
+              "Heritage Category": "Listed Building",
+              "Historic England Administrative Region": "Midlands",
+              "LEN or CAN or LENS of dual designations": "1184627",
+              "List Entry Number (LEN) or Conservation Area Number (CAN)": "1184627",
+              "Local Planning Authority": "Stratford-on-Avon",
+              "Locality": "",
+              "Narrow Term": "Church",
+              "National Park": "",
+              "New entry?": "No",
+              "Parliamentary Constituency": "Kenilworth and Southam",
+              "Priority category": "C - Slow decay; no solution agreed",
+              "Published Owner Type": "Religious organisation",
+              "Published contact": "",
+              "Published site name": "Church of St Peter, Tysoe Road, Radway, Radway",
+              "Risk methodology": "Place of worship",
+              "Trend": "Declining",
+              "Unitary Authority": "",
+              "Vulnerability": "Medium"
+            }
+          }
+        ],
+        "semantic_role": "entries",
+        "sha256": "c045c544ed609e65c7b06fd536c68532607d764f481cbe37a0648cda6c1af427",
+        "source_data_rows": 4891,
+        "source_headers": [
+          "Government Region",
+          "Historic England Administrative Region",
+          "Published site name",
+          "Locality",
+          "Civil Parish",
+          "District/Borough",
+          "County Council (if applicable)",
+          "Unitary Authority",
+          "National Park",
+          "Ceremonial County",
+          "Parliamentary Constituency",
+          "Local Planning Authority",
+          "Combined Authority (if applicable)",
+          "Heritage Category",
+          "Grade",
+          "List Entry Number (LEN) or Conservation Area Number (CAN)",
+          "All designations (includes co-locations and dual designations)",
+          "LEN or CAN or LENS of dual designations",
+          "Risk methodology",
+          "Condition",
+          "Vulnerability",
+          "Trend",
+          "Priority category",
+          "New entry?",
+          "Published Owner Type",
+          "Published contact",
+          "Broad Term",
+          "Narrow Term"
+        ],
+        "source_sheet": "Entries_on_the_Register",
+        "source_url": "https://historicengland.org.uk/content/docs/har/har-2025-entries-additions-removals/",
+        "subset": {
+          "parent_scope_rows": 72,
+          "retained_rows": 1,
+          "role": "tiny-assurance-selection",
+          "selector": {
+            "event_type": "entry",
+            "list_entry": "1184627",
+            "year": 2025
+          }
+        },
+        "workbook_format": "ods",
+        "year": 2025
+      }
+    ],
+    "mapped_geometry_completeness": "optional enrichment only; never the HAR denominator",
+    "parent_mapped_geometry_join": [
+      {
+        "ambiguous_features": 0,
+        "completeness_role": "geometry-enrichment-only",
+        "mapped_features": 72,
+        "mapped_features_joined": 72,
+        "one_to_many_feature_joins": 2,
+        "row_geometry_links": 74,
+        "spreadsheet_rows_with_geometry": 74,
+        "unmatched_features": 0,
+        "year": 2025
+      }
+    ],
+    "workbook_schemas": [
+      {
+        "format": "ods",
+        "missing_semantic_roles": [],
+        "sha256": "c045c544ed609e65c7b06fd536c68532607d764f481cbe37a0648cda6c1af427",
+        "sheets": [
+          {
+            "name": "PLEASE_READ_How_to_use",
+            "physical_rows": 75,
+            "semantic_role": "introduction"
+          },
+          {
+            "header_row": 1,
+            "headers": [
+              "Government Region",
+              "Historic England Administrative Region",
+              "Published site name",
+              "Locality",
+              "Civil Parish",
+              "District/Borough",
+              "County Council (if applicable)",
+              "Unitary Authority",
+              "National Park",
+              "Ceremonial County",
+              "Parliamentary Constituency",
+              "Local Planning Authority",
+              "Combined Authority (if applicable)",
+              "Heritage Category",
+              "Grade",
+              "List Entry Number (LEN) or Conservation Area Number (CAN)",
+              "All designations (includes co-locations and dual designations)",
+              "LEN or CAN or LENS of dual designations",
+              "Risk methodology",
+              "Condition",
+              "Vulnerability",
+              "Trend",
+              "Priority category",
+              "New entry?",
+              "Published Owner Type",
+              "Published contact",
+              "Broad Term",
+              "Narrow Term"
+            ],
+            "identity_collisions": [],
+            "name": "Entries_on_the_Register",
+            "physical_rows": 4892,
+            "scope_rows": 72,
+            "semantic_role": "entries",
+            "source_data_rows": 4891
+          },
+          {
+            "header_row": 1,
+            "headers": [
+              "Government Region",
+              "Historic England Administrative Region",
+              "Published site name",
+              "Locality",
+              "Civil Parish",
+              "District/ Borough",
+              "County Council (if applicable)",
+              "Unitary Authority",
+              "National Park",
+              "Ceremonial County",
+              "Parliamentary Constituency",
+              "Local Planning Authority",
+              "Combined Authority (if applicable)",
+              "Heritage Category",
+              "Grade",
+              "List Entry Number (LEN) or Conservation Area Number (CAN)",
+              "All designations (includes co-locations and dual designations)",
+              "LEN or CAN or LENS of dual designations",
+              "Risk methodology",
+              "Condition",
+              "Vulnerability",
+              "Trend",
+              "Priority category",
+              "New entry?",
+              "Published Owner Type",
+              "Published contact",
+              "Broad Term",
+              "Narrow Term"
+            ],
+            "identity_collisions": [],
+            "name": "Additions",
+            "physical_rows": 139,
+            "scope_rows": 2,
+            "semantic_role": "additions",
+            "source_data_rows": 138
+          },
+          {
+            "header_row": 1,
+            "headers": [
+              "Government Region",
+              "Historic England Administrative Region",
+              "Published site name",
+              "Locality",
+              "Civil Parish",
+              "District/Borough",
+              "County Council (if applicable)",
+              "Unitary Authority",
+              "National Park",
+              "Ceremonial County",
+              "Parliamentary Constituency",
+              "Local Planning Authority",
+              "Combined Authority",
+              "Heritage Category",
+              "Grade",
+              "List Entry Number (LEN) or Conservation Area Number (CAN)",
+              "All designations (includes co-locations and dual designations)",
+              "LEN or CAN or LENs of dual designations",
+              "Risk methodology",
+              "Published Owner Type",
+              "Reason for removal category",
+              "Broad Term",
+              "Narrow Term"
+            ],
+            "identity_collisions": [],
+            "name": "Positive_Removals",
+            "physical_rows": 130,
+            "scope_rows": 0,
+            "semantic_role": "positive_removals",
+            "source_data_rows": 129
+          }
+        ],
+        "source_url": "https://historicengland.org.uk/content/docs/har/har-2025-entries-additions-removals/",
+        "year": 2025
+      }
+    ]
+  },
+  "limitations": [
+    "This fixture is an intentionally declared assurance subset, not a geographic or annual-register denominator.",
+    "It contains only source-backed real-world records; no fields or relationships are invented.",
+    "Full boundary coordinate arrays are omitted after their canonical digests are recorded; each selected feature retains the parent's exact spatial-membership evidence."
+  ],
+  "link_validation": {
+    "live_receipts": []
+  },
+  "nhle": {
+    "layers": [
+      {
+        "data_last_edit_date": 1785477646431,
+        "features": [
+          {
+            "attributes": {
+              "AmendDate": null,
+              "CaptureScale": "1:1250",
+              "Easting": 433627,
+              "Grade": "I",
+              "ListDate": 575596800000,
+              "ListEntry": 1342941,
+              "NGR": "SP 33627 79065",
+              "Name": "Cathedral of St Michael",
+              "Northing": 279065,
+              "OBJECTID": 319093,
+              "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1342941"
+            },
+            "geometry": {
+              "points": [
+                [
+                  -1.50708643842631,
+                  52.4085794802815
+                ]
+              ]
+            },
+            "scope_geographies": [
+              {
+                "basis": "exact-source-geometry-intersection",
+                "code": "E08000026",
+                "name": "Coventry"
+              }
+            ],
+            "scope_membership_basis": "Union of ArcGIS esriSpatialRelIntersects results for the canonical representation and its official alternate polygon representation",
+            "scope_membership_evidence": [
+              {
+                "code": "E08000026",
+                "layer_ids": [
+                  0,
+                  3
+                ]
+              }
+            ],
+            "source_layer_ids": [
+              0
+            ],
+            "source_spatial_layer_ids": [
+              0,
+              3
+            ],
+            "spatialReference": {
+              "latestWkid": 4326,
+              "wkid": 4326
+            }
+          },
+          {
+            "attributes": {
+              "AmendDate": 544838400000,
+              "CaptureScale": "1:2500",
+              "Easting": 436816,
+              "Grade": "II",
+              "ListDate": -81820800000,
+              "ListEntry": 1184627,
+              "NGR": "SP 36816 48080",
+              "Name": "CHURCH OF ST PETER",
+              "Northing": 248080,
+              "OBJECTID": 161914,
+              "hyperlink": "https://historicengland.org.uk/listing/the-list/list-entry/1184627"
+            },
+            "geometry": {
+              "points": [
+                [
+                  -1.46357886071764,
+                  52.1298197559626
+                ]
+              ]
+            },
+            "scope_geographies": [
+              {
+                "basis": "exact-source-geometry-intersection",
+                "code": "E07000221",
+                "name": "Stratford-on-Avon"
+              }
+            ],
+            "scope_membership_basis": "Union of ArcGIS esriSpatialRelIntersects results for the canonical representation and its official alternate polygon representation",
+            "scope_membership_evidence": [
+              {
+                "code": "E07000221",
+                "layer_ids": [
+                  0,
+                  3
+                ]
+              }
+            ],
+            "source_layer_ids": [
+              0
+            ],
+            "source_spatial_layer_ids": [
+              0,
+              3
+            ],
+            "spatialReference": {
+              "latestWkid": 4326,
+              "wkid": 4326
+            }
+          }
+        ],
+        "fields": [
+          {
+            "alias": "OBJECTID",
+            "defaultValue": null,
+            "domain": null,
+            "editable": false,
+            "isViewOverride": true,
+            "name": "OBJECTID",
+            "nullable": false,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeOID"
+          },
+          {
+            "alias": "List Entry Number",
+            "defaultValue": null,
+            "description": "{\"value\":\"Unique reference number from the National Heritage List for England\",\"fieldValueType\":\"uniqueIdentifier\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "name": "ListEntry",
+            "nullable": false,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeInteger"
+          },
+          {
+            "alias": "List Entry Name",
+            "defaultValue": null,
+            "description": "{\"value\":\"Name of building\",\"fieldValueType\":\"nameOrTitle\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 1000,
+            "name": "Name",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeString"
+          },
+          {
+            "alias": "Grade",
+            "defaultValue": null,
+            "description": "{\"value\":\"Grade of building; in descending order of importance: I, II*,II\",\"fieldValueType\":\"typeOrCategory\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 100,
+            "name": "Grade",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeString"
+          },
+          {
+            "alias": "Listing date",
+            "defaultValue": null,
+            "description": "{\"value\":\"Date on which the building was added to the Statutory List of Buildings\",\"fieldValueType\":\"\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 8,
+            "name": "ListDate",
+            "nullable": true,
+            "precision": 1,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeDate"
+          },
+          {
+            "alias": "Date of most recent amendment",
+            "defaultValue": null,
+            "description": "{\"value\":\"Date on which the listing was last amended\",\"fieldValueType\":\"dateAndTime\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 8,
+            "name": "AmendDate",
+            "nullable": true,
+            "precision": 1,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeDate"
+          },
+          {
+            "alias": "Capture scale",
+            "defaultValue": null,
+            "description": "{\"value\":\"Scale at which the spatial representation of that listed building was captured\",\"fieldValueType\":\"percentageOrRatio\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 15,
+            "name": "CaptureScale",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeString"
+          },
+          {
+            "alias": "NHLE link",
+            "defaultValue": null,
+            "description": "{\"value\":\"URL of the record on the Historic England website\",\"fieldValueType\":\"description\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 255,
+            "name": "hyperlink",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeString"
+          },
+          {
+            "alias": "National Grid Reference",
+            "defaultValue": null,
+            "description": "{\"value\":\"Ordnance Survey national grid reference of centroid\",\"fieldValueType\":\"coordinate\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "length": 2147483647,
+            "name": "NGR",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeString"
+          },
+          {
+            "alias": "Easting",
+            "defaultValue": null,
+            "description": "{\"value\":\"Centroid easting\",\"fieldValueType\":\"coordinate\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "name": "Easting",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeDouble"
+          },
+          {
+            "alias": "Northing",
+            "defaultValue": null,
+            "description": "{\"value\":\"Centroid northing\",\"fieldValueType\":\"coordinate\"}",
+            "domain": null,
+            "editable": true,
+            "isViewOverride": true,
+            "name": "Northing",
+            "nullable": true,
+            "sqlType": "sqlTypeOther",
+            "type": "esriFieldTypeDouble"
+          }
+        ],
+        "geometry_type": "esriGeometryMultipoint",
+        "id": 0,
+        "name": "Listed Building points",
+        "object_id_field": "OBJECTID",
+        "source_feature_count": 6320,
+        "subset_role": "tiny-assurance-selection"
+      }
+    ],
+    "reconciliation": {
+      "expected_unique_list_entries": 2,
+      "observed_unique_list_entries": 2,
+      "parent_reconciliation_sha256": "cba743d84d10739b57741332f31154a46257695ad91b8cf6efe9f24eb762bac9",
+      "selection_role": "declared-assurance-subset-not-a-geographic-denominator"
+    }
+  },
+  "observed_at": "2026-08-03T00:00:00Z",
+  "publication": {
+    "description": "Three exact Historic England source records for fast, deterministic producer and real-consumer assurance.",
+    "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "public_base": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/",
+    "publisher": "https://historicengland.org.uk/",
+    "publisher_title": "Historic England",
+    "role": "tiny",
+    "status": "assurance-fixture",
+    "title": "Tiny source-backed heritage assurance fixture"
+  },
+  "requests": [
+    {
+      "final_url": "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0/query",
+      "id": "request-0001",
+      "method": "POST",
+      "response_bytes": 1500887,
+      "response_digest_basis": "accepted-arcgis-feature-json",
+      "response_media_type": "application/json",
+      "response_sha256": "c3a2a5f90d79b2e8293d8c2960b063e21fe50a62056dfd1a3711d2e38b3efd15",
+      "status": 200,
+      "url": "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0/query"
+    },
+    {
+      "final_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/layers?f=json",
+      "id": "request-0002",
+      "method": "GET",
+      "response_bytes": 124343,
+      "response_digest_basis": "canonical-json",
+      "response_media_type": "application/json",
+      "response_sha256": "3c8f5fcfdee80b3ee325636a3c477ac0d81027181c87caa62d7e2fd9da40d80a",
+      "status": 200,
+      "url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/layers"
+    },
+    {
+      "final_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/layers?f=json",
+      "id": "request-0085",
+      "method": "GET",
+      "response_bytes": 124343,
+      "response_digest_basis": "canonical-json",
+      "response_media_type": "application/json",
+      "response_sha256": "3c8f5fcfdee80b3ee325636a3c477ac0d81027181c87caa62d7e2fd9da40d80a",
+      "status": 200,
+      "url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/layers"
+    },
+    {
+      "final_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/HAR_2025_OTHR_WGS84/FeatureServer/0?f=json",
+      "id": "request-0118",
+      "method": "GET",
+      "response_bytes": 10630,
+      "response_digest_basis": "canonical-json",
+      "response_media_type": "application/json",
+      "response_sha256": "2bfb16e0eed0e72102da9a02e3279d75bb69f03d81e0f4c432637b44cad951d5",
+      "status": 200,
+      "url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/HAR_2025_OTHR_WGS84/FeatureServer/0"
+    }
+  ],
+  "schema": "heritage-evaluation-source-snapshot.v1",
+  "scope": {
+    "assertion_scope": "real-world",
+    "boundaries": [
+      {
+        "aliases": [
+          "Coventry",
+          "City of Coventry",
+          "Coventry City Council",
+          "City of Coventry Council",
+          "Coventry UA"
+        ],
+        "code": "E08000026",
+        "name": "Coventry",
+        "source_attributes": {
+          "BNG_E": 432809,
+          "BNG_N": 279689,
+          "FID": 250,
+          "GlobalID": "3d332774-f6e8-4553-ba8c-74799d82821f",
+          "LAD25CD": "E08000026",
+          "LAD25NM": "Coventry",
+          "LAD25NMW": " ",
+          "LAT": 52.41424,
+          "LONG": -1.519052,
+          "Shape__Area": 98649500.88695526,
+          "Shape__Length": 54150.09468751019
+        },
+        "source_geometry_receipt": {
+          "algorithm": "sha256-over-canonical-json",
+          "geometry_omitted_from_tiny_fixture": true,
+          "sha256": "e778ab28dc654120feb577298a809b432fd8a7b3ab265d0c042d59c01d814a99"
+        },
+        "source_object_id": 250
+      },
+      {
+        "aliases": [
+          "Stratford-on-Avon",
+          "Stratford upon Avon",
+          "Stratford-on-Avon District Council",
+          "Stratford upon Avon District Council",
+          "Stratford-on-Avon DC"
+        ],
+        "code": "E07000221",
+        "name": "Stratford-on-Avon",
+        "source_attributes": {
+          "BNG_E": 425019,
+          "BNG_N": 251537,
+          "FID": 207,
+          "GlobalID": "c5ebee15-1849-49b6-b9d0-22dbaac7b715",
+          "LAD25CD": "E07000221",
+          "LAD25NM": "Stratford-on-Avon",
+          "LAD25NMW": " ",
+          "LAT": 52.16156,
+          "LONG": -1.635658,
+          "Shape__Area": 977895420.8178177,
+          "Shape__Length": 262212.8540320852
+        },
+        "source_geometry_receipt": {
+          "algorithm": "sha256-over-canonical-json",
+          "geometry_omitted_from_tiny_fixture": true,
+          "sha256": "43476f11ee3eec9c590811453d4deb818f2545e8ea9119c57a5a930991969adb"
+        },
+        "source_object_id": 207
+      }
+    ],
+    "boundary_item_id": "92150c7aa60540c5814abe3b26bce6d0",
+    "boundary_service": "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0",
+    "intersection_method": "ArcGIS esriSpatialRelIntersects independently against each full-resolution source LAD polygon; one List Entry emitted once with every intersected LAD retained.",
+    "subset_note": "The full-resolution source boundary geometries were used during parent acquisition. This tiny derivative keeps their identity and canonical geometry digests while omitting the large coordinate arrays.",
+    "vintage": "Local Authority Districts (December 2025) Boundaries UK BFC"
+  },
+  "snapshot_id": "heritage-coventry-warwickshire-20260803-v2-tiny-v1",
+  "source_adapter": "heritage-evaluation-tiny-subset-v1",
+  "source_data_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer",
+  "source_title": "Deterministic subset of the frozen Coventry and Warwickshire heritage evaluation sources",
+  "source_url": "https://historicengland.org.uk/listing/the-list/",
+  "sources": [
+    {
+      "attribution": "Source: Office for National Statistics licensed under the Open Government Licence v.3.0. Contains OS data © Crown copyright and database right 2026.",
+      "bytes": 1500887,
+      "digest_basis": "accepted-arcgis-feature-json",
+      "id": "ons-lad-dec-2025-bfc",
+      "item_id": "92150c7aa60540c5814abe3b26bce6d0",
+      "item_url": "https://www.arcgis.com/home/item.html?id=92150c7aa60540c5814abe3b26bce6d0",
+      "kind": "scope-boundary",
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "media_type": "application/json",
+      "request_id": "request-0001",
+      "service_url": "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0",
+      "sha256": "c3a2a5f90d79b2e8293d8c2960b063e21fe50a62056dfd1a3711d2e38b3efd15",
+      "title": "Local Authority Districts (December 2025) Boundaries UK BFC"
+    },
+    {
+      "attribution": "© Historic England 2026. Contains Ordnance Survey data © Crown copyright and database right 2026.",
+      "data_last_edit_dates": {
+        "0": 1785477646431,
+        "1": 1785477646651,
+        "10": 1785477710629,
+        "2": 1785477647014,
+        "3": 1785477699985,
+        "4": 1785477700064,
+        "5": 1785477700235,
+        "6": 1785477707809,
+        "7": 1785477709799,
+        "8": 1785477709977,
+        "9": 1785477710096
+      },
+      "id": "historic-england-nhle-v02",
+      "item_id": "767f279327a24845bf47dfe5eae9862b",
+      "item_url": "https://www.arcgis.com/home/item.html?id=767f279327a24845bf47dfe5eae9862b",
+      "kind": "designation-register",
+      "layer_ids": [
+        0,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "metadata_digest_basis": "canonical-json",
+      "metadata_request_ids": [
+        "request-0002",
+        "request-0085"
+      ],
+      "metadata_sha256_after": "3c8f5fcfdee80b3ee325636a3c477ac0d81027181c87caa62d7e2fd9da40d80a",
+      "metadata_sha256_before": "3c8f5fcfdee80b3ee325636a3c477ac0d81027181c87caa62d7e2fd9da40d80a",
+      "service_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer",
+      "spatial_evidence_layer_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "spatial_identity_policy": "Layers 0/1/2 supply canonical records; paired polygon layers 3/4/5 supply alternate intersection evidence only. Other categories use their single polygon layer.",
+      "terms": "https://historicengland.org.uk/terms/website-terms-conditions/open-data-hub/",
+      "title": "National Heritage List for England open data"
+    },
+    {
+      "annual_index_url": "https://historicengland.org.uk/listing/heritage-at-risk/search-register/annual-heritage-at-risk-registers-and-maps/",
+      "attribution": "© Historic England 2026.",
+      "bytes": 909784,
+      "declared_media_type": "application/vnd.oasis.opendocument.spreadsheet",
+      "filename_or_disposition": "har-2025.ods",
+      "final_url": "https://historicengland.org.uk/content/docs/har/har-2025-entries-additions-removals/",
+      "format": "ods",
+      "id": "historic-england-har-2025-workbook",
+      "kind": "annual-risk-register",
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "request_id": "",
+      "response_headers": {
+        "content-type": "application/vnd.oasis.opendocument.spreadsheet"
+      },
+      "semantic_sheets": [
+        {
+          "name": "PLEASE_READ_How_to_use",
+          "physical_rows": 75,
+          "semantic_role": "introduction"
+        },
+        {
+          "header_row": 1,
+          "headers": [
+            "Government Region",
+            "Historic England Administrative Region",
+            "Published site name",
+            "Locality",
+            "Civil Parish",
+            "District/Borough",
+            "County Council (if applicable)",
+            "Unitary Authority",
+            "National Park",
+            "Ceremonial County",
+            "Parliamentary Constituency",
+            "Local Planning Authority",
+            "Combined Authority (if applicable)",
+            "Heritage Category",
+            "Grade",
+            "List Entry Number (LEN) or Conservation Area Number (CAN)",
+            "All designations (includes co-locations and dual designations)",
+            "LEN or CAN or LENS of dual designations",
+            "Risk methodology",
+            "Condition",
+            "Vulnerability",
+            "Trend",
+            "Priority category",
+            "New entry?",
+            "Published Owner Type",
+            "Published contact",
+            "Broad Term",
+            "Narrow Term"
+          ],
+          "identity_collisions": [],
+          "name": "Entries_on_the_Register",
+          "physical_rows": 4892,
+          "scope_rows": 74,
+          "semantic_role": "entries",
+          "source_data_rows": 4891
+        },
+        {
+          "header_row": 1,
+          "headers": [
+            "Government Region",
+            "Historic England Administrative Region",
+            "Published site name",
+            "Locality",
+            "Civil Parish",
+            "District/ Borough",
+            "County Council (if applicable)",
+            "Unitary Authority",
+            "National Park",
+            "Ceremonial County",
+            "Parliamentary Constituency",
+            "Local Planning Authority",
+            "Combined Authority (if applicable)",
+            "Heritage Category",
+            "Grade",
+            "List Entry Number (LEN) or Conservation Area Number (CAN)",
+            "All designations (includes co-locations and dual designations)",
+            "LEN or CAN or LENS of dual designations",
+            "Risk methodology",
+            "Condition",
+            "Vulnerability",
+            "Trend",
+            "Priority category",
+            "New entry?",
+            "Published Owner Type",
+            "Published contact",
+            "Broad Term",
+            "Narrow Term"
+          ],
+          "identity_collisions": [],
+          "name": "Additions",
+          "physical_rows": 139,
+          "scope_rows": 2,
+          "semantic_role": "additions",
+          "source_data_rows": 138
+        },
+        {
+          "header_row": 1,
+          "headers": [
+            "Government Region",
+            "Historic England Administrative Region",
+            "Published site name",
+            "Locality",
+            "Civil Parish",
+            "District/Borough",
+            "County Council (if applicable)",
+            "Unitary Authority",
+            "National Park",
+            "Ceremonial County",
+            "Parliamentary Constituency",
+            "Local Planning Authority",
+            "Combined Authority",
+            "Heritage Category",
+            "Grade",
+            "List Entry Number (LEN) or Conservation Area Number (CAN)",
+            "All designations (includes co-locations and dual designations)",
+            "LEN or CAN or LENs of dual designations",
+            "Risk methodology",
+            "Published Owner Type",
+            "Reason for removal category",
+            "Broad Term",
+            "Narrow Term"
+          ],
+          "identity_collisions": [],
+          "name": "Positive_Removals",
+          "physical_rows": 130,
+          "scope_rows": 0,
+          "semantic_role": "positive_removals",
+          "source_data_rows": 129
+        }
+      ],
+      "sha256": "c045c544ed609e65c7b06fd536c68532607d764f481cbe37a0648cda6c1af427",
+      "source_url": "https://historicengland.org.uk/content/docs/har/har-2025-entries-additions-removals/",
+      "terms": "https://historicengland.org.uk/terms/website-terms-conditions/open-data-hub/",
+      "title": "Heritage at Risk 2025: entries, additions and positive removals",
+      "transport": "provided-local-cache",
+      "year": 2025
+    },
+    {
+      "completeness_role": "geometry-enrichment-only",
+      "data_last_edit_date": 1767613240960,
+      "features_intersecting_scope": 72,
+      "id": "historic-england-har-2025-mapped-layer",
+      "kind": "optional-risk-geometry",
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "limitation": "Mapped HAR geometry is not the annual denominator; Historic England states that Conservation Area spatial coverage is incomplete.",
+      "metadata_digest_basis": "canonical-json",
+      "metadata_request_id": "request-0118",
+      "metadata_sha256": "2bfb16e0eed0e72102da9a02e3279d75bb69f03d81e0f4c432637b44cad951d5",
+      "service_url": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/HAR_2025_OTHR_WGS84/FeatureServer/0",
+      "terms": "https://historicengland.org.uk/terms/website-terms-conditions/open-data-hub/",
+      "year": 2025
+    }
+  ],
+  "subset_provenance": {
+    "algorithm": "exact-identity-selection-from-frozen-parent-v1",
+    "counts": {
+      "har_rows": 1,
+      "nhle_features": 2,
+      "records": 3,
+      "scope_boundaries": 2
+    },
+    "network_access": "none",
+    "parent": {
+      "compressed_file_sha256": "32e459722e3c05995674cde0256957e8e5fa8c4b25ea254d1147694f647e5208",
+      "observed_at": "2026-08-03T00:00:00Z",
+      "snapshot_id": "heritage-coventry-warwickshire-20260803-v2",
+      "source_path": "evaluation-foundry/fixtures/heritage-warwickshire/source-snapshot.json.gz",
+      "uncompressed_json_sha256": "afb8d98add113474dd395cdf4f61d50533c447253d27aa3e02be46f80fcb69ac"
+    },
+    "schema": "heritage-evaluation-subset-receipt.v1",
+    "selection": [
+      {
+        "kind": "nhle-feature",
+        "list_entry": "1342941",
+        "reason": "Coventry Cathedral search, Grade I facet and real-record journey anchor",
+        "source_layer_id": 0,
+        "source_object_id": 319093,
+        "source_object_sha256": "81fcbd0d360072551ce447cae759af8a1de194eb28b5a2c1b303c52a862282b3"
+      },
+      {
+        "kind": "nhle-feature",
+        "list_entry": "1184627",
+        "reason": "NHLE side of the source-declared 2025 Heritage at Risk relationship",
+        "source_layer_id": 0,
+        "source_object_id": 161914,
+        "source_object_sha256": "0d21409b03d8ea7ffba73ff394f6b54b69cd545a274aa5eab6d65b5215c4f63a"
+      },
+      {
+        "event_type": "entry",
+        "kind": "heritage-at-risk-row",
+        "list_entry": "1184627",
+        "reason": "HAR side of the source-declared NHLE relationship and graph path",
+        "source_object_sha256": "a974dff57c639e1e730316d2398fc0d8a0be7d6db43fd2e00a731bd46ddf1ea3",
+        "source_record_id": "036682fa45484e9f8975",
+        "source_row": 3606,
+        "source_sheet": "Entries_on_the_Register",
+        "year": 2025
+      }
+    ]
+  }
+}

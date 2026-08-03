@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   boxesOverlap,
+  filterGraphRelationshipsBySemantics,
   graphRelationshipGroupSlot,
   groupGraphRelationships,
   orderGraphRelationshipGroups,
@@ -120,6 +121,37 @@ describe('graph presentation', () => {
     ]);
     expect(groups[0].nodeIds).toEqual(['tag/a', 'tag/b']);
     expect(orderGraphRelationshipGroups(groups, ['outgoing:dcterms:publisher'])[0].label).toBe('published by');
+  });
+
+  it('filters semantic relationships without conflating status, scope and authority', () => {
+    const edges = [
+      {
+        id: 'official', source: 'focus', target: 'a', label: 'has designation',
+        predicate: 'heritage:hasDesignation', assertionStatus: 'official',
+        assertionScope: 'real-world', authorityClass: 'official'
+      },
+      {
+        id: 'inferred', source: 'focus', target: 'b', label: 'located in',
+        predicate: 'geo:sfWithin', assertionStatus: 'inferred',
+        assertionScope: 'real-world', authorityClass: 'derived'
+      },
+      {
+        id: 'fixture', source: 'focus', target: 'c', label: 'located in',
+        predicate: 'geo:sfWithin', assertionStatus: 'normalized',
+        assertionScope: 'synthetic-fixture', authorityClass: 'synthetic'
+      }
+    ];
+
+    expect(filterGraphRelationshipsBySemantics(edges, {
+      assertionScopes: ['real-world'],
+      authorityClasses: ['derived']
+    }).map(({ id }) => id)).toEqual(['inferred']);
+
+    const groups = groupGraphRelationships(edges, 'focus');
+    const spatial = groups.find(({ predicate }) => predicate === 'geo:sfWithin');
+    expect(spatial?.assertionStatuses).toEqual(['inferred', 'normalized']);
+    expect(spatial?.assertionScopes).toEqual(['real-world', 'synthetic-fixture']);
+    expect(spatial?.authorityClasses).toEqual(['derived', 'synthetic']);
   });
 
   it('assigns ordered relationship groups to lists and staircases around the focus', () => {

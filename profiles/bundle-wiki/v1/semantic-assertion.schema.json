@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-assertion.schema.json",
+  "title": "OKF evidence-bearing semantic relationship assertion",
+  "type": "object",
+  "required": [
+    "@id",
+    "@type",
+    "source",
+    "predicate",
+    "target",
+    "kind",
+    "inverse_label",
+    "assertion_status",
+    "assertion_scope",
+    "authority",
+    "derivation",
+    "observed_at",
+    "evidence",
+    "rights"
+  ],
+  "properties": {
+    "@id": {"type": "string", "format": "uri"},
+    "@type": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "source": {"$ref": "#/$defs/iriValue"},
+    "predicate": {"$ref": "#/$defs/iriValue"},
+    "target": {"$ref": "#/$defs/iriValue"},
+    "kind": {"$ref": "#/$defs/nonEmptyString"},
+    "label": {"$ref": "#/$defs/nonEmptyString"},
+    "inverse_label": {"$ref": "#/$defs/nonEmptyString"},
+    "assertion_status": {
+      "enum": ["official", "normalized", "inferred", "model-derived"]
+    },
+    "assertion_scope": {
+      "enum": ["real-world", "synthetic-fixture"]
+    },
+    "authority": {"$ref": "#/$defs/authority"},
+    "derivation": {"$ref": "#/$defs/iriValue"},
+    "derivation_activity": {"$ref": "#/$defs/iriValue"},
+    "rule": {"$ref": "#/$defs/iriValue"},
+    "supporting_assertions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/iriValue"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "strength": {"type": "number"},
+    "count": {"type": "integer", "minimum": 0},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "stale_after": {"type": "string", "format": "date-time"},
+    "review_status": {"$ref": "#/$defs/nonEmptyString"},
+    "evidence": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidence"},
+      "minItems": 1
+    },
+    "rights": {"$ref": "#/$defs/rights"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"assertion_scope": {"const": "synthetic-fixture"}},
+        "required": ["assertion_scope"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "synthetic"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"const": "official"}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "official"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"enum": ["normalized", "inferred"]}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "derived"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"const": "model-derived"}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "model-assisted"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"assertion_status": {"const": "inferred"}},
+        "required": ["assertion_status"]
+      },
+      "then": {
+        "required": ["rule", "supporting_assertions", "confidence_score", "derivation_activity"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"assertion_status": {"const": "model-derived"}},
+        "required": ["assertion_status"]
+      },
+      "then": {
+        "required": ["confidence_score", "derivation_activity", "review_status"]
+      }
+    }
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "iriValue": {
+      "oneOf": [
+        {"type": "string", "minLength": 1, "pattern": "^[^\\s:]+:.+$"},
+        {
+          "type": "object",
+          "required": ["@id"],
+          "properties": {
+            "@id": {"type": "string", "minLength": 1, "pattern": "^[^\\s:]+:.+$"}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "required": ["class", "label", "source"],
+      "properties": {
+        "class": {
+          "enum": ["official", "derived", "model-assisted", "synthetic", "unclassified"]
+        },
+        "label": {"$ref": "#/$defs/nonEmptyString"},
+        "source": {"type": "string", "format": "uri"}
+      },
+      "additionalProperties": false
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidence": {
+      "type": "object",
+      "required": ["@id", "type", "url", "source_field", "source_value_sha256", "retrieved_at"],
+      "properties": {
+        "@id": {"type": "string", "format": "uri"},
+        "type": {"$ref": "#/$defs/nonEmptyString"},
+        "url": {"type": "string", "format": "uri"},
+        "resource": {"type": "string", "format": "uri"},
+        "source_artifact": {"$ref": "#/$defs/nonEmptyString"},
+        "source_sha256": {"$ref": "#/$defs/sha256"},
+        "source_field": {"$ref": "#/$defs/nonEmptyString"},
+        "field_provenance": {"$ref": "#/$defs/nonEmptyString"},
+        "source_value": {},
+        "source_value_sha256": {"$ref": "#/$defs/sha256"},
+        "source_value_hash_canonicalization": {"$ref": "#/$defs/nonEmptyString"},
+        "literal_sha256": {"$ref": "#/$defs/sha256"},
+        "locator": {"$ref": "#/$defs/nonEmptyString"},
+        "normalization": {"$ref": "#/$defs/iriValue"},
+        "rule_id": {"$ref": "#/$defs/iriValue"},
+        "rationale": {"$ref": "#/$defs/nonEmptyString"},
+        "retrieved_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": true
+    },
+    "rights": {
+      "type": "object",
+      "required": ["source", "assertion"],
+      "properties": {
+        "source": {"type": "string", "format": "uri"},
+        "assertion": {"$ref": "#/$defs/nonEmptyString"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import copy
+import hashlib
 import html
+import json
 import re
 import sys
 import tempfile
@@ -17,6 +20,256 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_local_candidate_receipt_fails_closed_on_stale_site_claims(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-receipt-"
+        ) as temporary:
+            output = Path(temporary)
+            app_bytes = b"<!doctype html><title>Exact app</title>\n"
+            (output / "index.html").write_bytes(app_bytes)
+            materials = [
+                {
+                    "path": "index.html",
+                    "bytes": len(app_bytes),
+                    "sha256": hashlib.sha256(app_bytes).hexdigest(),
+                }
+            ]
+            tree_bytes = (
+                json.dumps(
+                    materials,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                )
+                + "\n"
+            ).encode("utf-8")
+            tree_sha256 = hashlib.sha256(tree_bytes).hexdigest()
+            manifest = {
+                "schema": "okf-explorer-app-build-manifest.v1",
+                "algorithm": "sha256-canonical-json-materials-v1",
+                "file_count": 1,
+                "tree_sha256": tree_sha256,
+                "materials": materials,
+            }
+            manifest_bytes = (
+                json.dumps(manifest, indent=2) + "\n"
+            ).encode("utf-8")
+            (output / build_site.EXPLORER_BUILD_MANIFEST).write_bytes(
+                manifest_bytes
+            )
+            site_asset = output / "docs" / "page.html"
+            site_asset.parent.mkdir()
+            site_asset.write_bytes(b"site")
+            receipt_path = (
+                output / build_site.HERITAGE_LOCAL_CANDIDATE_RECEIPT
+            )
+            receipt_path.parent.mkdir(parents=True)
+            receipt = {
+                "candidate": {
+                    "explorer_tree_sha256": tree_sha256,
+                    "explorer_manifest_sha256": hashlib.sha256(
+                        manifest_bytes
+                    ).hexdigest(),
+                    "site_reading_pages": 7,
+                    "site_internal_references": 11,
+                    "site_size_gate": {
+                        "status": "passed",
+                        "limit_bytes": 1_000,
+                        "site_bytes": 400,
+                        "headroom_bytes": 600,
+                    },
+                }
+            }
+
+            def write_receipt(value: dict) -> None:
+                receipt_path.write_text(
+                    json.dumps(value),
+                    encoding="utf-8",
+                )
+
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "GITHUB_PAGES_SITE_LIMIT_BYTES",
+                    1_000,
+                ),
+            ):
+                site_tree = build_site.published_site_tree_receipt()
+                receipt["candidate"].update(
+                    site_file_count=site_tree["file_count"],
+                    site_tree_algorithm=site_tree["algorithm"],
+                    site_tree_sha256=site_tree["tree_sha256"],
+                )
+                write_receipt(receipt)
+                build_site.assert_local_candidate_receipt_matches_built_site(
+                    reading_pages=7,
+                    internal_references=11,
+                    site_bytes=400,
+                    remaining_bytes=600,
+                )
+
+                mutations = {
+                    "explorer_tree_sha256": lambda value: value["candidate"].update(
+                        explorer_tree_sha256="0" * 64
+                    ),
+                    "explorer_manifest_sha256": lambda value: value[
+                        "candidate"
+                    ].update(explorer_manifest_sha256="0" * 64),
+                    "site_reading_pages": lambda value: value["candidate"].update(
+                        site_reading_pages=8
+                    ),
+                    "site_internal_references": lambda value: value[
+                        "candidate"
+                    ].update(site_internal_references=12),
+                    "site_file_count": lambda value: value["candidate"].update(
+                        site_file_count=4
+                    ),
+                    "site_tree_algorithm": lambda value: value[
+                        "candidate"
+                    ].update(site_tree_algorithm="different-v1"),
+                    "site_tree_sha256": lambda value: value["candidate"].update(
+                        site_tree_sha256="0" * 64
+                    ),
+                    "site_size_gate.limit_bytes": lambda value: value[
+                        "candidate"
+                    ]["site_size_gate"].update(limit_bytes=999),
+                    "site_size_gate.site_bytes": lambda value: value[
+                        "candidate"
+                    ]["site_size_gate"].update(site_bytes=401),
+                    "site_size_gate.headroom_bytes": lambda value: value[
+                        "candidate"
+                    ]["site_size_gate"].update(headroom_bytes=599),
+                    "site_size_gate.status": lambda value: value[
+                        "candidate"
+                    ]["site_size_gate"].update(status="pending"),
+                }
+                for claim, mutate in mutations.items():
+                    with self.subTest(claim=claim):
+                        stale = copy.deepcopy(receipt)
+                        mutate(stale)
+                        write_receipt(stale)
+                        with self.assertRaisesRegex(RuntimeError, claim):
+                            build_site.assert_local_candidate_receipt_matches_built_site(
+                                reading_pages=7,
+                                internal_references=11,
+                                site_bytes=400,
+                                remaining_bytes=600,
+                            )
+
+                write_receipt(receipt)
+                (output / "index.html").write_bytes(app_bytes + b"tamper")
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "does not describe its exact published material bytes",
+                ):
+                    build_site.assert_local_candidate_receipt_matches_built_site(
+                        reading_pages=7,
+                        internal_references=11,
+                        site_bytes=400,
+                        remaining_bytes=600,
+                    )
+
+                (output / "index.html").write_bytes(app_bytes)
+                site_asset.write_bytes(b"same")
+                with self.assertRaisesRegex(RuntimeError, "site_tree_sha256"):
+                    build_site.assert_local_candidate_receipt_matches_built_site(
+                        reading_pages=7,
+                        internal_references=11,
+                        site_bytes=400,
+                        remaining_bytes=600,
+                    )
+
+                site_asset.write_bytes(b"site")
+                added = output / "added.txt"
+                added.write_bytes(b"added")
+                with self.assertRaisesRegex(RuntimeError, "site_file_count"):
+                    build_site.assert_local_candidate_receipt_matches_built_site(
+                        reading_pages=7,
+                        internal_references=11,
+                        site_bytes=400,
+                        remaining_bytes=600,
+                    )
+
+                added.unlink()
+                site_asset.unlink()
+                with self.assertRaisesRegex(RuntimeError, "site_file_count"):
+                    build_site.assert_local_candidate_receipt_matches_built_site(
+                        reading_pages=7,
+                        internal_references=11,
+                        site_bytes=400,
+                        remaining_bytes=600,
+                    )
+
+    def test_ephemeral_evaluator_results_are_not_public_site_inputs(self) -> None:
+        self.assertTrue(
+            build_site.is_ephemeral_evaluation_result(
+                Path("evaluation/gov-ckan/results/latest/results.md")
+            )
+        )
+        self.assertFalse(
+            build_site.is_ephemeral_evaluation_result(
+                Path("evaluation/heritage/methodology.md")
+            )
+        )
+
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-results-"
+        ) as temporary:
+            root = Path(temporary)
+            source = root / "evaluation"
+            ordinary = source / "heritage" / "methodology.md"
+            ignored = source / "heritage" / "results" / "latest" / "results.md"
+            ordinary.parent.mkdir(parents=True)
+            ignored.parent.mkdir(parents=True)
+            ordinary.write_text("# Methodology\n", encoding="utf-8")
+            ignored.write_text("# Ephemeral result\n", encoding="utf-8")
+            target = root / "site" / "evaluation"
+
+            with mock.patch.object(build_site, "ROOT", root):
+                build_site.copy_public_tree(source, target)
+
+            self.assertTrue((target / "heritage" / "methodology.md").is_file())
+            self.assertFalse(
+                (target / "heritage" / "results" / "latest" / "results.md").exists()
+            )
+
+    def test_site_size_gate_uses_the_published_pages_limit(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-size-"
+        ) as temporary:
+            output = Path(temporary)
+            (output / "index.html").write_bytes(b"12345")
+            (output / ".DS_Store").write_bytes(b"local Finder metadata")
+
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "GITHUB_PAGES_SITE_LIMIT_BYTES",
+                    5,
+                ),
+            ):
+                self.assertEqual(
+                    (5, 0),
+                    build_site.assert_site_size_within_github_pages_limit(),
+                )
+
+            with (
+                mock.patch.object(build_site, "OUT", output),
+                mock.patch.object(
+                    build_site,
+                    "GITHUB_PAGES_SITE_LIMIT_BYTES",
+                    4,
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "exceeds the GitHub Pages 1 GB published-site limit",
+                ):
+                    build_site.assert_site_size_within_github_pages_limit()
+
     def test_platform_metadata_is_removed_from_generated_site(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix="okf-build-site-metadata-"

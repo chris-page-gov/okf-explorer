@@ -28,6 +28,7 @@ Each example now has explicit persona, user-story and question traceability:
 | Example | Personas and stories | Evaluation questions |
 |---|---|---|
 | UK Legislation OKF | [Six legislation personas and critical journeys][legislation-personas] · [`journeys.json`](evaluation/legislation/journeys.json) | [`questions.json`](evaluation/legislation/questions.json), 100 legal-answer questions |
+| Coventry and Warwickshire heritage evaluation | [Evaluation profile and executable journeys](evaluation-foundry/fixtures/heritage-warwickshire/README.md) | [`questions.json`](evaluation-foundry/fixtures/heritage-warwickshire/questions.json), 100 source, interface, semantics and publication questions |
 | UK Government APIs OKF | [Seven shared Explorer personas and nineteen stories][geospatial-personas] · [`journeys.json`](evaluation/okf-explorer/journeys.json) | [`questions.json`](evaluation/okf-explorer/questions.json), 100 retrieval and inspection questions plus focused Map UI tests |
 | GOV.UK CKAN | [Six CKAN-specific personas and user stories][ckan-personas] · [`journeys.json`](evaluation/gov-ckan/journeys.json) | [`questions.json`](evaluation/gov-ckan/questions.json), 100 catalogue questions |
 
@@ -60,6 +61,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
 - [Use the OKF Foundry prompts to research a domain, then build and publish its
   bundle][authoring-prompt-kit]
+- [Use the Evaluation Foundry and YAML-LD heritage exemplar][evaluation-foundry-guide]
 
 The ONS example is the primary no-install demonstration: the Explorer is hosted
 by this repository, while the bundle descriptor, search indexes and generated
@@ -120,13 +122,21 @@ The repository contains:
   definitive OKF Explorer implementation.
 - `okf.config.json` - local corpus configuration.
 - `okf-bundle.json` - generated bundle consumed by the explorer.
-- `okf-registry.json` - starter registry for discoverable bundles and Bundle
-  URL suggestions.
+- `registry/okf-registry.yamlld` - canonical semantic source for the curated
+  bundle registry; `okf-registry.json`, `okf-registry.jsonld` and the Explorer
+  static copy are generated projections.
 - `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
   GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API
   metadata.
 - `legislation/` - generated complete work-level catalogue for legislation.gov.uk, normalized with ELI, Schema.org Legislation and CLML and equipped with live provision-level progressive discovery.
 - `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
+- `evaluation-foundry/` - schemas, reversible mappings, coverage evidence,
+  journeys and question suites for functionality evaluations.
+- `evaluation/heritage/` - the faithful Coventry and Warwickshire heritage
+  evaluation corpus, its tiny assurance fixture and its isolated synthetic
+  capability supplement.
+- `docs/heritage-evaluation-report.md` - the beginner-readable exemplar report,
+  including the additive YAML-LD design and publication boundary.
 - `docs/uk-legislation/` - maintained UK Legislation documentation spine with getting-started guidance, personas, user journeys, an illustrated manual, agent research rules, evaluation and refresh instructions.
 - `docs/explorer-overview-context.md` - design specification for generated
   overview contexts, facet analysis, hierarchy support, and Explorer analysis
@@ -268,6 +278,15 @@ Explorer. The old dependency-free Explorer is copied to `_site/legacy/`.
 python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/check_legislation_okf.py
 python3 scripts/build_legislation_evaluation.py
+python3 scripts/check_evaluation_foundry.py
+python3 scripts/build_heritage_evaluation.py --check
+python3 scripts/build_heritage_evaluation.py --check \
+  --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json \
+  --output evaluation/heritage/tiny
+python3 scripts/build_heritage_evaluation.py --check \
+  --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json \
+  --output evaluation/heritage/synthetic
+python3 scripts/build_okf_registry.py --check
 python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
 python3 scripts/update_viewer.py --check
@@ -282,7 +301,14 @@ root redirect into the Svelte Explorer, publishes the Svelte Explorer under
 `next/`, publishes the compatibility Explorer under `legacy/`, preserves
 `viewer.html` and `view.html`, publishes the UK Government APIs large-corpus
 descriptor, and copies the public OKF Markdown corpus beside it.
-The legislation work catalogue, ontology documentation and legal-answer evaluation suite are also published.
+The legislation work catalogue, ontology documentation, legal-answer evaluation
+suite and all three deliberately separated heritage evaluation corpora are also
+published.
+
+To regenerate the heritage evaluation from its frozen, network-independent
+source snapshots, run the same three `build_heritage_evaluation.py` commands
+without `--check`. Live source acquisition is a separate, reviewable step; CI
+never refreshes mutable upstream data.
 
 To regenerate the explorer bundle after Markdown changes:
 
@@ -345,3 +371,4 @@ Pages to use **GitHub Actions** as the source.
 [ai-okf-usage]: https://chris-page-gov.github.io/okf-explorer/docs/ai-okf-usage.html
 [bundle-authoring]: https://chris-page-gov.github.io/okf-explorer/docs/okf-bundle-authoring.html
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html
+[evaluation-foundry-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html

@@ -1,0 +1,1 @@
+{"algorithm":"fnv1a32-prefix-2","buckets":{"0d":"data/adjacency/0d.json.gz","10":"data/adjacency/10.json.gz","4a":"data/adjacency/4a.json.gz","51":"data/adjacency/51.json.gz","bb":"data/adjacency/bb.json.gz"},"relationships":4,"routes":5,"schema":"okf-relationship-adjacency.v1","snapshot":"heritage-coventry-warwickshire-20260803-v2-tiny-v1"}

@@ -41,6 +41,13 @@ APIs exemplar, and related large-corpus OKF packs.
 - [OKF Foundry prompt kit](okf-authoring-prompt-kit.md) provides a general
   two-stage domain-research and build protocol, a versioned machine handoff and
   reusable assurance gates for any document or record collection.
+- [Evaluation Foundry and YAML-LD](beginners/22-evaluation-foundry-and-yaml-ld.md)
+  adapts that process for functionality evaluation, explains additive semantic
+  identity and assertions for beginners, and keeps source-backed, tiny and
+  synthetic products visibly separate.
+- [Coventry and Warwickshire heritage fixture family](../evaluation-foundry/fixtures/heritage-warwickshire/README.md)
+  links the evaluation profile, reversible mappings, executable journeys,
+  question suite and three generated corpus roles.
 - [Facet presentation experiment](facet-presentation-experiment.md) defines
   provider and user control, compact distributions, hierarchy tabs and the
   optional presentation sidecar.
@@ -71,6 +78,9 @@ APIs exemplar, and related large-corpus OKF packs.
 - [OKF Explorer evaluation harness](okf-explorer-evaluation.md) defines the
   100-question scoring suite, accessibility checks, GOV.UK-aligned publication
   rubric and visual-regression evidence.
+- [Coventry and Warwickshire heritage evaluation report](heritage-evaluation-report.md)
+  records the source scope, feature evidence, limitations, link checks,
+  consumer journeys and the extra value provided by the YAML-LD extension.
 - [UK Legislation architecture](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
 - [OKF pack parity](okf-pack-parity.md) keeps the UK Government APIs and GOV.UK
   CKAN packs aligned as paired exemplars.
@@ -151,3 +161,8 @@ UK Whole-Law federation:
 ```text
 https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 ```
+
+The Coventry and Warwickshire heritage functionality evaluation is a staged
+publication candidate. Its copy-ready public Explorer URL is intentionally
+withheld until the exact deployed candidate passes the terminal real-browser
+identity and journey gate.

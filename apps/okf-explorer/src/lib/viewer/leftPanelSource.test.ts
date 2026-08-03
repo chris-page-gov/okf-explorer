@@ -229,6 +229,7 @@ describe('large-corpus left panel UX harness', () => {
     const searchOverview = pageSource.indexOf('<summary>Overview</summary>', loadAction);
     expect(loadAction).toBeGreaterThan(0);
     expect(searchOverview).toBeGreaterThan(loadAction);
+    expect(pageSource).toContain('!displaySeries.label');
     expect(pageSource.match(/<details class="metadata-section disclosure-section" open>/g)?.length).toBeGreaterThanOrEqual(3);
     expect(pageSource).toContain('id="detail-panel-data" hidden={detailPanelTab !== \'data\'}');
     expect(pageSource).toContain('<summary>Normalized record fields</summary>');

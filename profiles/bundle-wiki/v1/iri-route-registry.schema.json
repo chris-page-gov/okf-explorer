@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/iri-route-registry.schema.json",
+  "title": "OKF semantic IRI-to-Explorer-route registry",
+  "type": "object",
+  "required": ["schema", "entries", "counts", "root_sha256"],
+  "properties": {
+    "schema": {"const": "okf-iri-route-registry.v1"},
+    "snapshot": {"type": "string", "minLength": 1},
+    "entries": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/entry"},
+      "minItems": 1
+    },
+    "counts": {
+      "type": "object",
+      "required": ["entries"],
+      "properties": {
+        "entries": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "root_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "entry": {
+      "type": "object",
+      "required": ["iri", "route"],
+      "properties": {
+        "iri": {"type": "string", "format": "uri"},
+        "route": {
+          "type": "string",
+          "minLength": 1,
+          "allOf": [
+            {"pattern": "^[A-Za-z0-9][A-Za-z0-9._~/-]*$"},
+            {"not": {"pattern": "(^|/)\\.\\.(/|$)"}},
+            {"not": {"pattern": "\\.[mM][dD]$"}}
+          ]
+        },
+        "page": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+\\.html$"
+        },
+        "fragment": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "kind": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

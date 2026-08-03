@@ -1,13 +1,25 @@
 import type {
   FederationRelationshipSummary,
+  RelationshipAssertionScope,
+  RelationshipAssertionStatus,
   RelationshipAuthorityClass
 } from '$lib/types';
 
 export type RelationshipPresentation = {
+  id: string;
+  predicate: string;
+  inverseLabel: string;
+  sourceIri: string;
+  targetIri: string;
+  assertionStatus: RelationshipAssertionStatus | 'unclassified';
+  assertionScope: RelationshipAssertionScope | 'unclassified';
   authorityClass: RelationshipAuthorityClass;
   authorityLabel: string;
   authoritySource: string;
   derivation: string;
+  derivationActivity: string;
+  rule: string;
+  supportingAssertions: string[];
   confidence: string;
   observedAt: string;
   staleAfter: string;
@@ -26,6 +38,8 @@ export type RelationshipEvidencePresentation = {
   url: string;
   type: string;
   sourceField: string;
+  sourceArtifact: string;
+  sourceSha256: string;
   fieldProvenance: string;
   sourceValue: string;
   sourceValueSha256: string;
@@ -35,6 +49,8 @@ export type RelationshipEvidencePresentation = {
   literalSha256: string;
   ruleId: string;
   rationale: string;
+  locator: string;
+  retrievedAt: string;
 };
 
 function recordValue(value: unknown): Record<string, unknown> | null {
@@ -56,6 +72,9 @@ function normalizedAuthority(value: string): RelationshipAuthorityClass {
   }
   if (['model', 'model-assisted', 'machine-assisted', 'llm-assisted'].includes(normalized)) {
     return 'model-assisted';
+  }
+  if (['synthetic', 'synthetic-fixture', 'fixture'].includes(normalized)) {
+    return 'synthetic';
   }
   if (['derived', 'derived-non-official', 'deterministic', 'computed', 'inferred'].includes(normalized)) {
     return 'derived';
@@ -81,6 +100,8 @@ function evidencePresentation(value: unknown): RelationshipEvidencePresentation 
     url: evidenceUrl(value),
     type: stringValue(record?.type),
     sourceField: stringValue(record?.source_field || record?.sourceField),
+    sourceArtifact: stringValue(record?.source_artifact || record?.sourceArtifact),
+    sourceSha256: stringValue(record?.source_sha256 || record?.sourceSha256 || record?.sha256),
     fieldProvenance: stringValue(record?.field_provenance || record?.fieldProvenance),
     sourceValue:
       typeof (record?.source_value ?? record?.sourceValue) === 'string'
@@ -95,7 +116,9 @@ function evidencePresentation(value: unknown): RelationshipEvidencePresentation 
     value: typeof record?.value === 'string' ? record.value : '',
     literalSha256: stringValue(record?.literal_sha256 || record?.literalSha256),
     ruleId: stringValue(record?.rule_id || record?.ruleId),
-    rationale: typeof record?.rationale === 'string' ? record.rationale : ''
+    rationale: typeof record?.rationale === 'string' ? record.rationale : '',
+    locator: stringValue(record?.locator || record?.source_locator || record?.sourceLocator),
+    retrievedAt: stringValue(record?.retrieved_at || record?.retrievedAt)
   };
 }
 
@@ -103,6 +126,10 @@ export function relationshipAuthorityClass(
   relationship: Record<string, unknown> | undefined
 ): RelationshipAuthorityClass {
   if (!relationship) return 'unclassified';
+  if (
+    stringValue(relationship.assertion_scope || relationship.assertionScope) ===
+    'synthetic-fixture'
+  ) return 'synthetic';
   const authority = recordValue(relationship.authority);
   const declared = stringValue(
     authority?.class ||
@@ -159,17 +186,52 @@ export function relationshipPresentation(
   const supportProfile = stringValue(
     relationship?.support_profile || relationship?.supportProfile
   );
+  const supportingAssertions =
+    relationship?.supporting_assertions || relationship?.supportingAssertions;
   return {
+    id: stringValue(relationship?.id || relationship?.['@id']),
+    predicate: stringValue(
+      relationship?.predicate || relationship?.kind || relationship?.type || relationship?.label
+    ),
+    inverseLabel: stringValue(relationship?.inverse_label || relationship?.inverseLabel),
+    sourceIri: stringValue(relationship?.source_iri || relationship?.sourceIri),
+    targetIri: stringValue(relationship?.target_iri || relationship?.targetIri),
+    assertionStatus: (() => {
+      const value = stringValue(
+        relationship?.assertion_status || relationship?.assertionStatus
+      );
+      return value === 'official' || value === 'normalized' || value === 'inferred' || value === 'model-derived'
+        ? value
+        : 'unclassified';
+    })(),
+    assertionScope: (() => {
+      const value = stringValue(
+        relationship?.assertion_scope || relationship?.assertionScope
+      );
+      return value === 'real-world' || value === 'synthetic-fixture'
+        ? value
+        : 'unclassified';
+    })(),
     authorityClass,
     authorityLabel: stringValue(authority?.label || relationship?.authorityLabel) || {
       official: 'Official source',
       derived: 'Deterministically derived',
       'model-assisted': 'Model-assisted candidate',
+      synthetic: 'Synthetic assurance fixture',
       unclassified: 'Authority not declared'
     }[authorityClass],
     authoritySource: stringValue(authority?.source || relationship?.authoritySource),
     derivation: stringValue(relationship?.derivation),
-    confidence: stringValue(relationship?.confidence),
+    derivationActivity: stringValue(
+      relationship?.derivation_activity || relationship?.derivationActivity
+    ),
+    rule: stringValue(relationship?.rule || relationship?.rule_id || relationship?.ruleId),
+    supportingAssertions: Array.isArray(supportingAssertions)
+      ? supportingAssertions.map(stringValue).filter(Boolean)
+      : [],
+    confidence: stringValue(
+      relationship?.confidence_score ?? relationship?.confidenceScore ?? relationship?.confidence
+    ),
     observedAt: stringValue(relationship?.observed_at || relationship?.observedAt),
     staleAfter: stringValue(relationship?.stale_after || relationship?.staleAfter),
     freshness: relationshipFreshness(relationship, now),
@@ -211,6 +273,7 @@ export function summarizeRelationships(
     official: 0,
     derived: 0,
     'model-assisted': 0,
+    synthetic: 0,
     unclassified: 0
   };
   const byFreshness: FederationRelationshipSummary['by_freshness'] = {

@@ -164,6 +164,11 @@
       <span data-relationship-authority="model-assisted">
         Model-assisted <strong>{relationshipSummary.by_authority['model-assisted'].toLocaleString()}</strong>
       </span>
+      {#if relationshipSummary.by_authority.synthetic}
+        <span data-relationship-authority="synthetic">
+          Synthetic fixture <strong>{relationshipSummary.by_authority.synthetic.toLocaleString()}</strong>
+        </span>
+      {/if}
       {#if relationshipSummary.by_authority.unclassified}
         <span data-relationship-authority="unclassified">
           Unclassified <strong>{relationshipSummary.by_authority.unclassified.toLocaleString()}</strong>

@@ -94,6 +94,7 @@ Options:
 
 const JOURNEY_ACTIONS = new Set([
   'search',
+  'open_external_link_new_tab',
   'open_first_result',
   'open_facet',
   'select_facet_value',
@@ -107,7 +108,8 @@ const JOURNEY_ACTIONS = new Set([
   'load_full_record',
   'toggle_disclosure',
   'open_source_inspector',
-  'open_raw_source_new_tab'
+  'open_raw_source_new_tab',
+  'verify_url'
 ]);
 
 const JOURNEY_ASSERTIONS = new Set([
@@ -148,6 +150,17 @@ function validateSuite(suite) {
     if (!question.query || !question.intent) throw new Error(`Question ${question.id} must have query and intent.`);
     if (!Array.isArray(question.expected_terms) || !question.expected_terms.length) {
       throw new Error(`Question ${question.id} must have expected_terms.`);
+    }
+    const expectedMin = question.expected_min_results ?? 1;
+    const expectedMax = question.expected_max_results ?? null;
+    if (!Number.isInteger(expectedMin) || expectedMin < 0) {
+      throw new Error(`Question ${question.id} expected_min_results must be a non-negative integer.`);
+    }
+    if (expectedMax !== null && (!Number.isInteger(expectedMax) || expectedMax < 0)) {
+      throw new Error(`Question ${question.id} expected_max_results must be a non-negative integer when supplied.`);
+    }
+    if (expectedMax !== null && expectedMax < expectedMin) {
+      throw new Error(`Question ${question.id} expected_max_results must be greater than or equal to expected_min_results.`);
     }
   }
   const total = Object.values(suite.rubric || {}).reduce((sum, part) => sum + Number(part.points || 0), 0);
@@ -265,6 +278,12 @@ function validateJourneys(journeys, journeysPath) {
     if (!Array.isArray(journey.assertions) || !journey.assertions.length) throw new Error(`Journey ${journey.id} needs assertions.`);
     for (const action of journey.actions) {
       if (!JOURNEY_ACTIONS.has(action.action)) throw new Error(`Journey ${journey.id} has unknown action ${action.action}.`);
+      if (action.action === 'open_external_link_new_tab' && !action.href_includes) {
+        throw new Error(`Journey ${journey.id} external-link action needs href_includes.`);
+      }
+      if (action.action === 'verify_url' && (!action.value || !action.expected_text)) {
+        throw new Error(`Journey ${journey.id} verify_url action needs value and expected_text.`);
+      }
     }
     for (const assertion of journey.assertions) {
       if (!JOURNEY_ASSERTIONS.has(assertion.assertion)) {
@@ -290,6 +309,20 @@ function buildUrl(baseUrl, bundle, query) {
   return url.toString();
 }
 
+function receiptUrl(value) {
+  try {
+    const url = new URL(value);
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^(?:__cf|cf_|challenge|captcha)|(?:^|[_-])(?:access|refresh|session)?token$/i.test(key)) {
+        url.searchParams.delete(key);
+      }
+    }
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
 function includesAny(text, terms) {
   const lower = text.toLowerCase();
   return terms.some((term) => lower.includes(String(term).toLowerCase()));
@@ -305,7 +338,12 @@ function scoreQuestion(question, observation) {
   const expectedMatches = countTerms(text, question.expected_terms);
   const expectedRatio = expectedMatches / Math.max(question.expected_terms.length, 1);
   const expectedMin = Number(question.expected_min_results ?? 1);
-  const hasExpectedResults = expectedMin === 0 ? observation.resultCount >= 0 : observation.resultCount >= expectedMin;
+  const expectedMax = question.expected_max_results === undefined || question.expected_max_results === null
+    ? null
+    : Number(question.expected_max_results);
+  const meetsExpectedMinimum = observation.resultCount >= expectedMin;
+  const meetsExpectedMaximum = expectedMax === null || observation.resultCount <= expectedMax;
+  const hasExpectedResults = meetsExpectedMinimum && meetsExpectedMaximum;
   const hasRoute = Boolean(observation.hash || observation.detailText.match(/\bRoute\b/i));
   const metadataTerms = ['Provider', 'Record type', 'Source', 'Protocol'].filter((term) => text.includes(term)).length;
   const hasSearchStatus = /Search Results|shown|No results|Searching static index|Preparing static search index/i.test(observation.mainText);
@@ -314,6 +352,14 @@ function scoreQuestion(question, observation) {
   const noRawGaps = !RAW_GAP_PATTERN.test(observation.detailText);
   const hasFollowOn = observation.chipCount > 0 || /Copy route|Graph|Pin|Load full relationships/i.test(observation.detailText);
   const notLoadingStuck = !/Loading bundle|Searching static index|Preparing static search index/i.test(observation.bodyText) || observation.resultCount > 0 || hasDetailBasics;
+  const expectsEmpty = expectedMin === 0 && observation.resultCount === 0 && meetsExpectedMaximum;
+  const queryRetained = String(observation.searchValue || '').trim() === String(question.query || '').trim();
+  const explicitEmptySummary = /\b0\s+shown\s+of\s+0\s+matching\s+records\b/i.test(observation.mainText);
+  const explicitEmptyMessage = /No static-search matches|No results|No records match|No matching records/i.test(observation.mainText);
+  const emptyRecovery = /Clear search|Reset|Clear (?:all|filters?)|widen/i.test(observation.mainText);
+  const meaningfulBoundedEmpty = Boolean(
+    expectsEmpty && queryRetained && explicitEmptySummary && explicitEmptyMessage && notLoadingStuck
+  );
   const namedControls = observation.emptyButtonCount === 0 && observation.emptyLinkCount === 0;
   const hasLandmarks = observation.landmarkCount >= 3;
   const hasLiveStatus = observation.liveRegionCount >= 1;
@@ -331,15 +377,15 @@ function scoreQuestion(question, observation) {
     govuk: 0
   };
   score.retrieval += hasExpectedResults ? 10 : 0;
-  score.retrieval += Math.round(expectedRatio * 10);
+  score.retrieval += meaningfulBoundedEmpty ? 10 : Math.round(expectedRatio * 10);
   score.retrieval += hasSearchStatus ? 5 : 0;
-  score.retrieval += hasRoute ? 5 : 0;
-  score.retrieval += Math.min(metadataTerms, 4) >= 3 ? 5 : Math.min(metadataTerms, 4);
+  score.retrieval += hasRoute || meaningfulBoundedEmpty ? 5 : 0;
+  score.retrieval += meaningfulBoundedEmpty ? 5 : Math.min(metadataTerms, 4) >= 3 ? 5 : Math.min(metadataTerms, 4);
 
-  score.display += hasDetailBasics ? 5 : 0;
+  score.display += hasDetailBasics || meaningfulBoundedEmpty ? 5 : 0;
   score.display += hasLicenceAccess ? 5 : 0;
   score.display += noRawGaps ? 5 : 0;
-  score.display += hasFollowOn ? 5 : 0;
+  score.display += hasFollowOn || (meaningfulBoundedEmpty && emptyRecovery) ? 5 : 0;
   score.display += notLoadingStuck ? 5 : 0;
 
   score.accessibility += namedControls ? 5 : 0;
@@ -347,7 +393,7 @@ function scoreQuestion(question, observation) {
   score.accessibility += hasFocusableControls ? 5 : 0;
   score.accessibility += hasLandmarks && noOverlapFlag ? 5 : Math.min(hasLandmarks ? 3 : 0, 3);
 
-  score.govuk += plainLanguage ? 5 : 0;
+  score.govuk += plainLanguage || meaningfulBoundedEmpty ? 5 : 0;
   score.govuk += provenance ? 5 : 0;
   score.govuk += /Copy route|Clear search|Load full relationships|Reduce context/i.test(observation.bodyText) ? 5 : 0;
   score.govuk += qualityExplained && noSecrets ? 5 : noSecrets ? 3 : 0;
@@ -360,7 +406,17 @@ function scoreQuestion(question, observation) {
       resultCount: observation.resultCount,
       expectedMatches,
       expectedTerms: question.expected_terms,
+      expectedMinResults: expectedMin,
+      expectedMaxResults: expectedMax,
+      meetsExpectedMinimum,
+      meetsExpectedMaximum,
       hasExpectedResults,
+      expectsEmpty,
+      meaningfulBoundedEmpty,
+      queryRetained,
+      explicitEmptySummary,
+      explicitEmptyMessage,
+      emptyRecovery,
       hasRoute,
       hasDetailBasics,
       noRawGaps,
@@ -413,6 +469,7 @@ async function observeQuestion(page, options, question) {
       mainText: main.innerText,
       detailText: detailRoot.innerText,
       detailTitle,
+      searchValue: document.querySelector('.search-input')?.value || '',
       resultCount: Math.max(
         document.querySelectorAll('.result-list button, .record-list button').length,
         document.querySelectorAll('.api-card, .dataset-card-ui, .large-card').length
@@ -440,7 +497,7 @@ async function waitForSettledSearch(page) {
       'Loading the record and resource index'
     ].some((message) => bodyText.includes(message));
     const resultCount = document.querySelectorAll('.result-list > button, .record-list > button').length;
-    const explicitEmptyState = /No results|No records match|No spatial evidence in this context/i.test(bodyText);
+    const explicitEmptyState = /No static-search matches|No results|No records match|No spatial evidence in this context|0\s+shown\s+of\s+0\s+matching\s+records/i.test(bodyText);
     return !busy && (!query || resultCount > 0 || explicitEmptyState);
   }, undefined, { timeout: 30000 }).catch(() => undefined);
   await page.waitForTimeout(250);
@@ -448,7 +505,7 @@ async function waitForSettledSearch(page) {
 
 function buildJourneyUrl(baseUrl, bundle, start = {}) {
   const url = new URL(baseUrl);
-  url.searchParams.set('bundle', bundle);
+  url.searchParams.set('bundle', typeof start.bundle === 'string' && start.bundle.trim() ? start.bundle.trim() : bundle);
   if (start.query) url.searchParams.set('q', start.query);
   if (start.sort) url.searchParams.set('sort', start.sort);
   for (const [key, values] of Object.entries(start.filters || {})) {
@@ -539,10 +596,17 @@ async function runJourneyAction(page, action, evidence) {
     return { facet: action.facet_key || action.facet, value: action.value, label, url: page.url() };
   }
   if (action.action === 'set_sort') {
-    const select = page.locator('.sort-control select').first();
+    let select = page.locator('.sort-control select').first();
+    if (!(await select.count())) {
+      const resultsTab = page.getByRole('tab', { name: 'Results', exact: true }).first();
+      await resultsTab.waitFor({ state: 'visible', timeout: 10000 });
+      await resultsTab.click();
+      select = page.locator('.sort-control select').first();
+    }
     await select.selectOption(action.value);
     await page.waitForTimeout(150);
-    return { value: await select.inputValue(), url: page.url() };
+    evidence.sortState = { value: await select.inputValue(), url: page.url() };
+    return evidence.sortState;
   }
   if (action.action === 'history_round_trip') {
     const originalUrl = page.url();
@@ -587,47 +651,82 @@ async function runJourneyAction(page, action, evidence) {
   if (action.action === 'select_map_record') {
     const record = page.locator('.map-record-list button').first();
     await record.waitFor({ state: 'visible', timeout: 20000 });
+    const markerCount = await page.locator('.locator-marker').count();
     const title = (await record.locator('strong').first().innerText()).trim();
     await record.click();
     await page.waitForTimeout(200);
     const selected = await record.evaluate((node) => node.classList.contains('active'));
     const detailText = await page.locator('.right-panel').innerText();
-    evidence.mapRecord = { title, selected, detailVisible: detailText.includes(title), url: page.url() };
+    evidence.mapRecord = { title, markerCount, selected, detailVisible: detailText.includes(title), url: page.url() };
     return evidence.mapRecord;
   }
   if (action.action === 'select_graph_edge') {
-    const edge = page.locator('svg.graph .edge-hit').first();
+    const edges = page.locator('svg.graph .edge-hit');
+    let edge = edges.first();
+    if (action.key_includes) {
+      edge = null;
+      for (let index = 0; index < await edges.count(); index += 1) {
+        const candidate = edges.nth(index);
+        const candidateKey = await candidate.getAttribute('data-edge');
+        if (candidateKey?.includes(action.key_includes)) {
+          edge = candidate;
+          break;
+        }
+      }
+      if (!edge) throw new Error(`Graph edge not found: ${action.key_includes}`);
+    }
     await edge.waitFor({ state: 'visible', timeout: 20000 });
     const key = await edge.getAttribute('data-edge');
     await edge.focus();
     await edge.press('Enter');
-    await page.locator('.right-panel .badge').filter({ hasText: 'Relationship' }).waitFor({ state: 'visible', timeout: 10000 });
+    const relationshipBadge = page.locator('.right-panel .badge').filter({ hasText: /^Relationship$/ }).first();
+    await relationshipBadge.waitFor({ state: 'visible', timeout: 10000 });
     const selectedRows = await page.locator('.relationship-rows button[aria-pressed="true"], .edge-panel button.active').count();
-    const relationshipCard = await page.locator('.right-panel .badge').filter({ hasText: 'Relationship' }).count();
-    evidence.graphEdge = { key, selectedRows, relationshipCard, selected: selectedRows > 0 && relationshipCard > 0 };
+    const relationshipCard = await relationshipBadge.count();
+    const detailText = await page.locator('.right-panel').innerText();
+    const expectedText = Array.isArray(action.expected_text) ? action.expected_text : [];
+    const expectedTextMatched = expectedText.every((value) => detailText.toLowerCase().includes(String(value).toLowerCase()));
+    evidence.graphEdge = {
+      key,
+      selectedRows,
+      relationshipCard,
+      expectedText,
+      expectedTextMatched,
+      selected: selectedRows > 0 && relationshipCard > 0 && expectedTextMatched
+    };
     return evidence.graphEdge;
   }
   if (action.action === 'resize_relationship_drawer') {
-    const grip = page.locator('.drawer-grip').first();
-    await grip.waitFor({ state: 'visible', timeout: 10000 });
-    await grip.scrollIntoViewIfNeeded();
-    const beforeLabel = await grip.getAttribute('aria-label');
+    const summary = page.locator('.edge-panel summary').first();
+    await summary.waitFor({ state: 'visible', timeout: 10000 });
+    await summary.scrollIntoViewIfNeeded();
+    const beforeLabel = await summary.getAttribute('aria-label');
     const before = Number((beforeLabel || '').match(/(\d+) pixels/)?.[1] || 0);
-    const box = await grip.boundingBox();
-    if (!box) throw new Error('Relationship drawer resize grip has no bounding box.');
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.down();
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 - Number(action.pixels || 80), { steps: 5 });
-    await page.mouse.up();
-    const afterLabel = await grip.getAttribute('aria-label');
+    const requestedPixels = Number(action.pixels || 80);
+    const resizeKey = requestedPixels >= 0 ? 'ArrowUp' : 'ArrowDown';
+    const keyPresses = Math.max(1, Math.ceil(Math.abs(requestedPixels) / 20));
+    await summary.focus();
+    for (let index = 0; index < keyPresses; index += 1) await summary.press(resizeKey);
+    await page.waitForTimeout(100);
+    const afterLabel = await summary.getAttribute('aria-label');
     const after = Number((afterLabel || '').match(/(\d+) pixels/)?.[1] || 0);
-    evidence.relationshipDrawer = { before, after, resized: Math.abs(after - before) >= 20 };
+    evidence.relationshipDrawer = {
+      before,
+      after,
+      input: 'keyboard',
+      resized: before > 0 && Math.abs(after - before) >= 20
+    };
     return evidence.relationshipDrawer;
   }
   if (action.action === 'load_full_record') {
     const button = page.getByRole('button', { name: /^Load (?:full|selected) record$/ }).first();
-    await button.waitFor({ state: 'visible', timeout: 10000 });
-    await button.click();
+    // Search selection may already have completed bounded locator hydration.
+    // Keep the action idempotent so success proves the loaded state, not that
+    // a transient button happened to remain on screen long enough to click.
+    if (await button.count()) {
+      await button.waitFor({ state: 'visible', timeout: 10000 });
+      await button.click();
+    }
     await page.waitForFunction(() => {
       const labels = [...document.querySelectorAll('.right-panel button')]
         .map((node) => (node.textContent || '').trim());
@@ -640,6 +739,11 @@ async function runJourneyAction(page, action, evidence) {
         });
       return !stillLoading && !stillLoadable && visibleDisclosures.length >= 2;
     }, undefined, { timeout: 30000 });
+    // A locator hydration can replace the lightweight search card without a
+    // user-visible Load button. Give Svelte one settled paint before recording
+    // disclosure defaults so the evidence never mixes the outgoing and
+    // hydrated cards.
+    await page.waitForTimeout(250);
     const states = await page.locator('.right-panel .disclosure-section:visible').evaluateAll(
       (nodes) => nodes.map((node) => node.hasAttribute('open'))
     );
@@ -658,12 +762,44 @@ async function runJourneyAction(page, action, evidence) {
     return evidence.disclosureToggle;
   }
   if (action.action === 'open_source_inspector') {
-    const button = page.getByRole('button', { name: action.label || 'View source data', exact: true });
+    const button = page.getByRole('button', { name: action.label || 'View source data', exact: true }).first();
     await button.waitFor({ state: 'visible', timeout: 10000 });
     await button.click();
     await page.locator('.source-inspector').waitFor({ state: 'visible', timeout: 20000 });
     evidence.sourceInspector = { visible: true, openerUrl: page.url() };
     return evidence.sourceInspector;
+  }
+  if (action.action === 'open_external_link_new_tab') {
+    const links = page.locator('a[target="_blank"]:visible');
+    let link = null;
+    for (let index = 0; index < await links.count(); index += 1) {
+      const candidate = links.nth(index);
+      const href = await candidate.getAttribute('href');
+      if (href?.includes(action.href_includes)) {
+        link = candidate;
+        break;
+      }
+    }
+    if (!link) throw new Error(`External link not found: ${action.href_includes}`);
+    await link.waitFor({ state: 'visible', timeout: 10000 });
+    const openerUrl = page.url();
+    const popupPromise = page.waitForEvent('popup', { timeout: 10000 });
+    await link.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => undefined);
+    const popupUrl = receiptUrl(popup.url());
+    const externalTab = {
+      openerUrl,
+      popupUrl,
+      openerUnchanged: page.url() === openerUrl,
+      separatePage: popup !== page,
+      opened: Boolean(popupUrl && popupUrl !== 'about:blank'),
+      hrefIncludes: action.href_includes
+    };
+    evidence.externalTab = externalTab;
+    evidence.externalTabs = [...(evidence.externalTabs || []), externalTab];
+    await popup.close().catch(() => undefined);
+    return externalTab;
   }
   if (action.action === 'open_raw_source_new_tab') {
     const openerUrl = page.url();
@@ -679,8 +815,33 @@ async function runJourneyAction(page, action, evidence) {
       separatePage: popup !== page,
       opened: Boolean(popupUrl && popupUrl !== 'about:blank')
     };
+    evidence.externalTabs = [...(evidence.externalTabs || []), evidence.externalTab];
     await popup.close().catch(() => undefined);
     return evidence.externalTab;
+  }
+  if (action.action === 'verify_url') {
+    const expectedUrl = new URL(action.value);
+    if (!['http:', 'https:'].includes(expectedUrl.protocol)) {
+      throw new Error(`verify_url only supports HTTP(S): ${action.value}`);
+    }
+    const candidate = await page.context().newPage();
+    try {
+      const response = await candidate.goto(expectedUrl.toString(), {
+        waitUntil: 'domcontentloaded',
+        timeout: Number(action.timeout_ms || 30000)
+      });
+      const status = response?.status() ?? 0;
+      const finalUrl = candidate.url();
+      const bodyText = await candidate.locator('body').innerText();
+      const identityMatched = bodyText.toLowerCase().includes(String(action.expected_text).toLowerCase());
+      if (status < 200 || status >= 400) throw new Error(`Published URL returned HTTP ${status}: ${action.value}`);
+      if (!identityMatched) throw new Error(`Published URL did not contain expected identity ${action.expected_text}: ${action.value}`);
+      const receipt = { requestedUrl: action.value, finalUrl, status, expectedText: action.expected_text, identityMatched };
+      evidence.verifiedUrls = [...(evidence.verifiedUrls || []), receipt];
+      return receipt;
+    } finally {
+      await candidate.close().catch(() => undefined);
+    }
   }
   throw new Error(`Unsupported journey action: ${action.action}`);
 }
@@ -694,10 +855,13 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
       ? actual.length === 0
       : assertion.assertion === 'url_param_equals'
         ? actual.length === 1 && actual[0] === assertion.value
-        : actual.includes(assertion.value);
+        : actual.some((value) => value.includes(String(assertion.value)));
   } else if (assertion.assertion === 'sort_value') {
-    actual = await page.locator('.sort-control select').first().inputValue();
-    passed = actual === assertion.value;
+    const urlValue = new URL(page.url()).searchParams.get('sort');
+    const control = page.locator('.sort-control select').first();
+    const controlValue = await control.count() ? await control.inputValue() : null;
+    actual = { url: urlValue, control: controlValue, action: evidence.sortState?.value || null };
+    passed = urlValue === assertion.value && actual.action === assertion.value && (controlValue === null || controlValue === assertion.value);
   } else if (assertion.assertion === 'search_value') {
     actual = await page.locator('.search-input').first().inputValue();
     passed = actual === assertion.value;
@@ -711,7 +875,10 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
     actual = evidence.mapFilter || null;
     passed = Boolean(actual?.active && actual?.value);
   } else if (assertion.assertion === 'map_marker_visible') {
-    actual = await page.locator('.locator-marker').count();
+    // The journey intentionally leaves Map before final assertions. Preserve
+    // the count observed at map-record selection instead of inspecting the
+    // final Reader projection and producing a false negative.
+    actual = evidence.mapRecord?.markerCount ?? await page.locator('.locator-marker').count();
     passed = actual >= Number(assertion.value || 1);
   } else if (assertion.assertion === 'map_record_selected') {
     actual = evidence.mapRecord || null;
@@ -729,10 +896,13 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
     actual = evidence.disclosureToggle || null;
     passed = Boolean(actual?.observed);
   } else if (assertion.assertion === 'source_inspector_visible') {
-    actual = await page.locator('.source-inspector').count();
-    passed = actual > 0;
+    actual = evidence.sourceInspector || null;
+    passed = Boolean(actual?.visible);
   } else if (assertion.assertion === 'external_link_opened_in_new_tab') {
-    actual = evidence.externalTab || null;
+    const tabs = evidence.externalTabs || (evidence.externalTab ? [evidence.externalTab] : []);
+    actual = assertion.href_includes
+      ? tabs.find((tab) => tab.popupUrl?.includes(assertion.href_includes)) || null
+      : tabs.at(-1) || null;
     passed = Boolean(actual?.opened && actual?.separatePage && actual?.openerUnchanged);
   } else if (assertion.assertion === 'visible_text') {
     const root = assertion.selector ? page.locator(assertion.selector).first() : page.locator('body');
@@ -742,8 +912,8 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
   return { assertion: assertion.assertion, passed, expected: assertion.value ?? null, actual };
 }
 
-async function runInteractionJourneys(browser, options, journeys) {
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+async function runInteractionJourneys(browserContext, options, journeys) {
+  const page = await browserContext.newPage();
   const records = [];
   const targetBundle = options.bundleExplicit ? options.bundle : journeys.target_bundle;
   for (const journey of journeys.journeys.slice(0, options.journeyLimit)) {
@@ -819,7 +989,8 @@ async function runBrowserEvaluation(options, suite) {
   const launchOptions = { headless: !options.headed };
   if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
   const browser = await chromium.launch(launchOptions);
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const browserContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const page = await browserContext.newPage();
   const questions = suite.questions.slice(0, options.limit);
   const records = [];
   for (const question of questions) {
@@ -836,6 +1007,8 @@ async function runBrowserEvaluation(options, suite) {
         elapsed_ms: Date.now() - started,
         evidence: {
           result_count: observation.resultCount,
+          expected_min_results: question.expected_min_results ?? 1,
+          expected_max_results: question.expected_max_results ?? null,
           detail_title: observation.detailTitle,
           hash: observation.hash,
           warnings: observation.visualWarnings
@@ -855,6 +1028,7 @@ async function runBrowserEvaluation(options, suite) {
       process.stdout.write(`${question.id} 0/100 ${question.query} (${error.message})\n`);
     }
   }
+  await browserContext.close();
   await browser.close();
   return records;
 }
@@ -864,9 +1038,11 @@ async function runBrowserJourneys(options, journeys) {
   const launchOptions = { headless: !options.headed };
   if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
   const browser = await chromium.launch(launchOptions);
+  const browserContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   try {
-    return await runInteractionJourneys(browser, options, journeys);
+    return await runInteractionJourneys(browserContext, options, journeys);
   } finally {
+    await browserContext.close();
     await browser.close();
   }
 }
@@ -887,13 +1063,16 @@ function buildValidationOnlyRecords(options, suite) {
       checks: {
         validation_only: true,
         expected_terms: question.expected_terms,
-        expected_min_results: question.expected_min_results ?? 1
+        expected_min_results: question.expected_min_results ?? 1,
+        expected_max_results: question.expected_max_results ?? null
       }
     },
     elapsed_ms: 0,
     evidence: {
       validation_only: true,
-      expected_terms: question.expected_terms
+      expected_terms: question.expected_terms,
+      expected_min_results: question.expected_min_results ?? 1,
+      expected_max_results: question.expected_max_results ?? null
     }
   }));
 }
@@ -1025,12 +1204,19 @@ function renderMarkdown(payload, suite) {
   lines.push('| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |');
   for (const record of payload.records) {
     const evidence = record.evidence.validation_only
-      ? `validation-only; expected terms: ${(record.evidence.expected_terms || []).join(', ')}`
-      : record.evidence.error || `${record.evidence.result_count} results; ${record.evidence.detail_title || 'no detail title'}`;
+      ? `validation-only; expected results: ${formatExpectedResults(record.evidence.expected_min_results, record.evidence.expected_max_results)}; expected terms: ${(record.evidence.expected_terms || []).join(', ')}`
+      : record.evidence.error || `${record.evidence.result_count} results (expected ${formatExpectedResults(record.evidence.expected_min_results, record.evidence.expected_max_results)}); ${record.evidence.detail_title || 'no detail title'}`;
     lines.push(`| ${record.id} | ${formatScore(record.score.total, 100)} | ${formatScore(record.score.retrieval, 35)} | ${formatScore(record.score.display, 25)} | ${formatScore(record.score.accessibility, 20)} | ${formatScore(record.score.govuk, 20)} | ${escapePipe(record.query)} | ${escapePipe(evidence)} |`);
   }
   lines.push('');
   return `${lines.join('\n')}\n`;
+}
+
+function formatExpectedResults(minimum, maximum) {
+  const min = Number(minimum ?? 1);
+  if (maximum === undefined || maximum === null) return `at least ${min}`;
+  const max = Number(maximum);
+  return min === max ? `exactly ${min}` : `${min} to ${max}`;
 }
 
 function formatScore(value, max) {

@@ -24,7 +24,7 @@ export type GeospatialSignal = {
 export type GeospatialPlace = {
   id: string;
   label: string;
-  level: 'uk' | 'country' | 'region';
+  level: 'uk' | 'country' | 'region' | 'county' | 'local-authority';
   latitude: number;
   longitude: number;
   matched: string;
@@ -82,7 +82,14 @@ export const UK_PLACES: PlaceDefinition[] = [
   { id: 'east-of-england', label: 'East of England', level: 'region', latitude: 52.2, longitude: 0.5, aliases: ['east of england', 'eastern england'] },
   { id: 'london', label: 'London', level: 'region', latitude: 51.5074, longitude: -0.1278, aliases: ['greater london', 'london region', 'london-wide', 'london wide'] },
   { id: 'south-east', label: 'South East', level: 'region', latitude: 51.3, longitude: -0.5, aliases: ['south east england', 'south-east england', 'south east region'] },
-  { id: 'south-west', label: 'South West', level: 'region', latitude: 50.8, longitude: -3.2, aliases: ['south west england', 'south-west england', 'south west region'] }
+  { id: 'south-west', label: 'South West', level: 'region', latitude: 50.8, longitude: -3.2, aliases: ['south west england', 'south-west england', 'south west region'] },
+  { id: 'E10000031', label: 'Warwickshire', level: 'county', latitude: 52.28, longitude: -1.59, aliases: ['warwickshire', 'warwickshire county'] },
+  { id: 'E08000026', label: 'Coventry', level: 'local-authority', latitude: 52.4081, longitude: -1.5106, aliases: ['coventry', 'coventry city'] },
+  { id: 'E07000218', label: 'North Warwickshire', level: 'local-authority', latitude: 52.58, longitude: -1.62, aliases: ['north warwickshire'] },
+  { id: 'E07000219', label: 'Nuneaton and Bedworth', level: 'local-authority', latitude: 52.51, longitude: -1.47, aliases: ['nuneaton and bedworth', 'nuneaton & bedworth'] },
+  { id: 'E07000220', label: 'Rugby', level: 'local-authority', latitude: 52.37, longitude: -1.26, aliases: ['rugby borough', 'rugby'] },
+  { id: 'E07000221', label: 'Stratford-on-Avon', level: 'local-authority', latitude: 52.13, longitude: -1.71, aliases: ['stratford-on-avon', 'stratford on avon', 'stratford-upon-avon district'] },
+  { id: 'E07000222', label: 'Warwick', level: 'local-authority', latitude: 52.29, longitude: -1.58, aliases: ['warwick district'] }
 ];
 
 const COVERAGE_KEYS = [
@@ -224,6 +231,28 @@ function coordinatePair(record: Record<string, unknown>): GeospatialPoint | unde
     const latitude = finiteCoordinate(value[1]);
     if (latitude !== null && longitude !== null && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180) {
       return { latitude, longitude, source, precision: 'explicit' };
+    }
+  }
+
+  const representative = spatial.representative_point && typeof spatial.representative_point === 'object' && !Array.isArray(spatial.representative_point)
+    ? (spatial.representative_point as Record<string, unknown>)
+    : {};
+  const representativeCandidates: Array<[unknown, unknown, string]> = [
+    [representative.latitude, representative.longitude, String(representative.derivation || 'spatial.representative_point')],
+    [spatial.centroid_latitude, spatial.centroid_longitude, String(spatial.centroid_derivation || 'spatial centroid')]
+  ];
+  if (Array.isArray(representative.coordinates) && representative.coordinates.length >= 2) {
+    representativeCandidates.push([
+      representative.coordinates[1],
+      representative.coordinates[0],
+      String(representative.derivation || 'spatial.representative_point.coordinates')
+    ]);
+  }
+  for (const [rawLatitude, rawLongitude, source] of representativeCandidates) {
+    const latitude = finiteCoordinate(rawLatitude);
+    const longitude = finiteCoordinate(rawLongitude);
+    if (latitude !== null && longitude !== null && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180) {
+      return { latitude, longitude, source, precision: 'representative' };
     }
   }
 
@@ -401,14 +430,14 @@ export function geospatialFilterMatches(record: GeospatialRecord, filter: string
   const [kind, value] = filter.split(':', 2);
   if (!value) return false;
   if (kind === 'signal') return record.signals.some((signal) => signal.kind === value);
-  if (kind === 'area') return record.places.some((place) => place.id === value);
+  if (kind === 'area') return record.places.some((place) => place.id.toLowerCase() === value.toLowerCase());
   if (kind === 'coverage') return record.coverage.some((item) => item.toLowerCase() === decodeURIComponent(value).toLowerCase());
   return false;
 }
 
 export function isGeospatialFilter(value: string): boolean {
   if (/^signal:(geometry|coverage|service|file|text)$/.test(value)) return true;
-  if (/^area:[a-z0-9-]+$/.test(value)) return true;
+  if (/^area:[A-Za-z0-9-]+$/.test(value)) return true;
   if (!value.startsWith('coverage:')) return false;
   try {
     const decoded = decodeURIComponent(value.slice('coverage:'.length));
@@ -422,7 +451,7 @@ export function geospatialFilterLabel(filter: string): string {
   if (!filter) return 'All spatial evidence';
   const [kind, value] = filter.split(':', 2);
   if (kind === 'signal' && value in GEOSPATIAL_SIGNAL_LABELS) return GEOSPATIAL_SIGNAL_LABELS[value as GeospatialSignalKind];
-  if (kind === 'area') return UK_PLACES.find((place) => place.id === value)?.label || value.replaceAll('-', ' ');
+  if (kind === 'area') return UK_PLACES.find((place) => place.id.toLowerCase() === value.toLowerCase())?.label || value.replaceAll('-', ' ');
   if (kind === 'coverage') {
     try {
       return decodeURIComponent(value);

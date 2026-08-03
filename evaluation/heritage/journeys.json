@@ -1,0 +1,178 @@
+{
+  "schema": "okf-explorer-interaction-suite.v1",
+  "profile_id": "heritage-coventry-warwickshire-v1",
+  "title": "Coventry and Warwickshire heritage evaluation journeys",
+  "description": "Executable consumer journeys derived from the target conversation: discover, narrow, compare representations, inspect a record and its trust evidence, preserve state, and verify publication.",
+  "target_bundle": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json",
+  "question_suite": "questions.json",
+  "personas": [
+    {"id":"persona-curious-beginner","name":"Curious beginner","need":"Understand what exists locally and why the answer can be trusted."},
+    {"id":"persona-domain-reviewer","name":"Heritage domain reviewer","need":"Challenge completeness, categories, dates, links and asserted relationships using prior knowledge."},
+    {"id":"persona-implementer","name":"OKF implementer","need":"Evaluate additive YAML-LD semantics and backward-compatible consumer behaviour."}
+  ],
+  "stories": [
+    {
+      "id": "story-discovery",
+      "title": "Discover and narrow a large source-backed population",
+      "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer"],
+      "user_story": "As a local researcher, I want to search places, familiar names, grades and designation types so that I can discover what is actually present in the bounded source population.",
+      "question_ids": ["HQ001","HQ002","HQ003","HQ004","HQ005","HQ006","HQ007","HQ008","HQ009","HQ010","HQ011","HQ012","HQ013","HQ014","HQ015","HQ016","HQ017","HQ018","HQ019","HQ020","HQ021","HQ022","HQ023","HQ024","HQ025","HQ026","HQ027","HQ028","HQ029","HQ030","HQ031","HQ032","HQ033","HQ034","HQ035","HQ081","HQ082","HQ083","HQ084","HQ085","HQ086","HQ087","HQ088","HQ089","HQ090"]
+    },
+    {
+      "id": "story-inspection",
+      "title": "Inspect one asset, its representations and provenance",
+      "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer"],
+      "user_story": "As a reviewer, I want to inspect risk, source, licence and derivation evidence so that I can distinguish annual observations and mechanical normalization from unsupported claims.",
+      "question_ids": ["HQ036","HQ037","HQ038","HQ039","HQ040","HQ041","HQ042","HQ043","HQ044","HQ045","HQ046","HQ047","HQ048","HQ049","HQ050","HQ051","HQ052","HQ053","HQ054","HQ055","HQ091","HQ092","HQ093","HQ094","HQ095"]
+    },
+    {
+      "id": "story-projections",
+      "title": "Carry one result set through graph, time and space",
+      "persona_ids": ["persona-domain-reviewer", "persona-implementer"],
+      "user_story": "As a domain reviewer, I want to test period, person and relationship questions across graph, timeline and map so that source evidence and its limits stay visible.",
+      "question_ids": ["HQ056","HQ057","HQ058","HQ059","HQ060","HQ061","HQ062","HQ063","HQ064","HQ065","HQ066","HQ067","HQ068","HQ069","HQ070","HQ071","HQ072","HQ073","HQ074","HQ075","HQ076","HQ077","HQ078","HQ079","HQ080"]
+    },
+    {
+      "id": "story-assurance",
+      "title": "Prove isolation, deterministic assembly and public rendering",
+      "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer", "persona-implementer"],
+      "user_story": "As an implementer, I want executable YAML-LD, isolation and publication checks so that the exemplar demonstrates new capability without being mistaken for an assured register.",
+      "question_ids": ["HQ096","HQ097","HQ098","HQ099","HQ100"]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "journey-tiny",
+      "title": "Tiny fixture assurance before the large corpus",
+      "persona_ids": ["persona-implementer"],
+      "story_ids": ["story-assurance"],
+      "start": {
+        "bundle": "/evaluation/heritage/tiny/okf-explorer.json",
+        "query": "Coventry Cathedral"
+      },
+      "actions": [
+        {"sequence":1,"action":"search","value":"Coventry Cathedral","intent":"Search an exact familiar name in the separate tiny corpus.","capability_ids":["search","publication"],"mapping_ids":["map-source-identity","map-search-aliases"]},
+        {"sequence":2,"action":"search","value":"Coventtry Cathedral","intent":"Repeat with a one-edit misspelling and expose the correction in result evidence.","capability_ids":["search"],"mapping_ids":["map-search-aliases"]},
+        {"sequence":3,"action":"open_first_result","intent":"Open the selected tiny record with keyboard-compatible semantics.","capability_ids":["accessibility","data-card"]},
+        {"sequence":4,"action":"load_full_record","intent":"Hydrate the exact record and observe disclosure defaults.","capability_ids":["data-card","provenance"],"mapping_ids":["map-provenance-and-authority"]},
+        {"sequence":5,"action":"toggle_disclosure","label":"Overview","intent":"Open and close folded secondary metadata with the native disclosure control.","capability_ids":["accessibility","data-card"]},
+        {"sequence":6,"action":"open_source_inspector","intent":"Inspect the frozen source response without changing the selected record.","capability_ids":["resources","provenance"]},
+        {"sequence":7,"action":"open_raw_source_new_tab","intent":"Open raw source JSON in a separate tab and keep Explorer state intact.","capability_ids":["resources","durable-state"]},
+        {"sequence":8,"action":"history_round_trip","alternate_query":"Warwick Castle","intent":"Prove Back and Forward restore the tiny fixture state.","capability_ids":["durable-state","publication"]}
+      ],
+      "assertions": [
+        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/tiny/okf-explorer.json"},
+        {"assertion":"search_value","value":"Coventtry Cathedral"},
+        {"assertion":"result_count_min","value":1},
+        {"assertion":"disclosure_defaults_observed"},
+        {"assertion":"disclosure_toggle_observed"},
+        {"assertion":"source_inspector_visible"},
+        {"assertion":"external_link_opened_in_new_tab"},
+        {"assertion":"history_round_trip_restored"}
+      ]
+    },
+    {
+      "id": "journey-faithful",
+      "title": "Full Explorer conversation and state-preservation journey",
+      "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer", "persona-implementer"],
+      "story_ids": ["story-discovery", "story-inspection", "story-projections"],
+      "start": {
+        "bundle": "/evaluation/heritage/okf-explorer.json",
+        "query": "Coventry Cathedral"
+      },
+      "actions": [
+        {"sequence":1,"action":"search","value":"Coventry Cathedral","intent":"Confirm the faithful corpus and search by a familiar name.","capability_ids":["search","publication","provenance"],"mapping_ids":["map-source-identity","map-provenance-and-authority"]},
+        {"sequence":2,"action":"search","value":"Cathedral Church of St Michael","intent":"Repeat with a formal source-style alternative.","capability_ids":["search"],"mapping_ids":["map-search-aliases"]},
+        {"sequence":3,"action":"search","value":"Coventtry Cathedral","intent":"Repeat with a one-edit misspelling and retain the canonical title.","capability_ids":["search"],"mapping_ids":["map-search-aliases"]},
+        {"sequence":4,"action":"open_facet","facet_key":"local_authority","facet_label":"Local authority","intent":"Open the exact geography facet.","capability_ids":["facets"]},
+        {"sequence":5,"action":"select_facet_value","facet_key":"local_authority","facet_label":"Local authority","value":"Coventry","intent":"Reduce the result set to Coventry and retain the filter in the URL.","capability_ids":["facets","durable-state"],"mapping_ids":["map-exact-boundary-membership"]},
+        {"sequence":6,"action":"search","value":"NHLE 1076651","intent":"Resolve the ruined cathedral asset whose annual risk observations supply governed YAML-LD relationships.","capability_ids":["search","provenance"],"mapping_ids":["map-source-identity","map-har-to-nhle"]},
+        {"sequence":7,"action":"set_sort","value":"title","intent":"Apply a deterministic title sort and retain it in the URL before selecting a record.","capability_ids":["search","durable-state"]},
+        {"sequence":8,"action":"open_first_result","intent":"Select the exact NHLE record before opening its lazy graph neighbourhood.","capability_ids":["data-card","provenance"]},
+        {"sequence":9,"action":"load_full_record","intent":"Hydrate the exact record and its governed adjacency shard.","capability_ids":["data-card","provenance"],"mapping_ids":["map-provenance-and-authority","map-reified-relationship"]},
+        {"sequence":10,"action":"toggle_disclosure","label":"Overview","intent":"Open and close the secondary metadata disclosure while preserving the selected record.","capability_ids":["accessibility","data-card"]},
+        {"sequence":11,"action":"select_view","value":"Type","intent":"Compare type counts for the same filtered record.","capability_ids":["types","durable-state"],"mapping_ids":["map-category-and-grade"]},
+        {"sequence":12,"action":"select_view","value":"Resources","intent":"Inspect official, machine-readable and frozen representations.","capability_ids":["resources","durable-state"],"mapping_ids":["map-rich-representations"]},
+        {"sequence":13,"action":"select_view","value":"Graph","intent":"Open the hydrated YAML-LD neighbourhood without changing the canonical reduction.","capability_ids":["graph","durable-state"],"mapping_ids":["map-yaml-ld-identifiers","map-reified-relationship"]},
+        {"sequence":14,"action":"select_graph_edge","key_includes":":assesses","expected_text":["Official source relationship","official","real-world","Relationship evidence and provenance"],"intent":"Inspect predicate, official authority, evidence and real-world assertion scope for an annual HAR-to-NHLE edge.","capability_ids":["graph","provenance"],"mapping_ids":["map-reified-relationship","map-har-to-nhle"]},
+        {"sequence":15,"action":"resize_relationship_drawer","pixels":80,"intent":"Resize the keyboard-labelled relationship drawer without losing the governed edge selection.","capability_ids":["graph","accessibility","durable-state"]},
+        {"sequence":16,"action":"select_view","value":"Links","intent":"Inspect governed relationship rows as a non-graph projection of the same hydrated neighbourhood.","capability_ids":["links","durable-state","provenance"],"mapping_ids":["map-reified-relationship","map-har-to-nhle"]},
+        {"sequence":17,"action":"select_view","value":"Timeline","intent":"Compare designation and annual register dates for the same result set.","capability_ids":["timeline","durable-state"],"mapping_ids":["map-designation-time","map-har-observation"]},
+        {"sequence":18,"action":"select_view","value":"Map","intent":"Compare source geometry and labelled representative locations.","capability_ids":["map","durable-state"],"mapping_ids":["map-source-geometry","map-exact-boundary-membership"]},
+        {"sequence":19,"action":"select_map_filter","value":"Explicit geometry","intent":"Reduce the map to records carrying explicit source geometry and retain the reduction in the URL.","capability_ids":["map","durable-state"],"mapping_ids":["map-source-geometry"]},
+        {"sequence":20,"action":"select_map_record","intent":"Select the mapped asset and keep its data card coherent.","capability_ids":["map","data-card"]},
+        {"sequence":21,"action":"select_view","value":"Narrative","intent":"Read the generated explanation that keeps every presentation tied to one evidence-bound result set.","capability_ids":["narrative","durable-state","publication"]},
+        {"sequence":22,"action":"select_view","value":"Reader","intent":"Return to the result list with the same query and facet state.","capability_ids":["durable-state","data-card"]},
+        {"sequence":23,"action":"search","value":"NHLE 1342941","intent":"Resolve Coventry Cathedral by its source-native list-entry identifier before opening the rich representation.","capability_ids":["search","provenance"],"mapping_ids":["map-source-identity"]},
+        {"sequence":24,"action":"open_first_result","intent":"Select the exact NHLE record and read its source-native identity.","capability_ids":["data-card","provenance"]},
+        {"sequence":25,"action":"load_full_record","intent":"Hydrate its full fields, quality note and provenance disclosures.","capability_ids":["data-card","provenance"],"mapping_ids":["map-provenance-and-authority"]},
+        {"sequence":26,"action":"open_external_link_new_tab","href_includes":"historicengland.org.uk/listing/the-list/list-entry/1342941","intent":"Open the identifier-bound Historic England rich page in a separate tab.","capability_ids":["resources","provenance"],"mapping_ids":["map-rich-representations"]},
+        {"sequence":27,"action":"history_round_trip","alternate_query":"Warwick Castle","intent":"Use Back and Forward and restore query, facet and view state.","capability_ids":["durable-state","publication"]}
+      ],
+      "assertions": [
+        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/okf-explorer.json"},
+        {"assertion":"url_param_includes","name":"filter.local_authority","value":"Coventry"},
+        {"assertion":"search_value","value":"NHLE 1342941"},
+        {"assertion":"sort_value","value":"title"},
+        {"assertion":"result_count_min","value":1},
+        {"assertion":"graph_edge_selected"},
+        {"assertion":"relationship_drawer_resized"},
+        {"assertion":"map_filter_applied"},
+        {"assertion":"map_marker_visible","value":1},
+        {"assertion":"map_record_selected"},
+        {"assertion":"disclosure_defaults_observed"},
+        {"assertion":"disclosure_toggle_observed"},
+        {"assertion":"external_link_opened_in_new_tab","href_includes":"historicengland.org.uk/listing/the-list/list-entry/1342941"},
+        {"assertion":"history_round_trip_restored"},
+        {"assertion":"visible_text","value":"Historic England"}
+      ]
+    },
+    {
+      "id": "journey-synthetic-isolation",
+      "title": "Explicitly load the default-off synthetic supplement",
+      "persona_ids": ["persona-domain-reviewer", "persona-implementer"],
+      "story_ids": ["story-assurance", "story-projections"],
+      "start": {
+        "bundle": "/evaluation/heritage/synthetic/okf-explorer.json",
+        "query": "SYN-PLACE-001"
+      },
+      "actions": [
+        {"sequence":1,"action":"search","value":"SYN-PLACE-001","intent":"Resolve an invented identifier only after explicitly loading the default-off supplement.","capability_ids":["publication","search"]},
+        {"sequence":2,"action":"open_first_result","intent":"Select the invented place without entering the faithful corpus.","capability_ids":["data-card","provenance"]},
+        {"sequence":3,"action":"load_full_record","intent":"Hydrate the synthetic record and its separate adjacency shard.","capability_ids":["data-card","graph"]},
+        {"sequence":4,"action":"select_view","value":"Graph","intent":"Inspect the separate synthetic graph only after explicit loading.","capability_ids":["publication","graph"],"mapping_ids":["map-yaml-ld-identifiers","map-reified-relationship"]},
+        {"sequence":5,"action":"select_graph_edge","key_includes":":possibly designed by","expected_text":["Invented Evaluation Foundry assertion","model-derived","synthetic-fixture","Relationship evidence and provenance"],"intent":"Inspect a visibly synthetic model-derived relationship and its assertion scope.","capability_ids":["graph","provenance"],"mapping_ids":["map-reified-relationship"]}
+      ],
+      "assertions": [
+        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/synthetic/okf-explorer.json"},
+        {"assertion":"graph_edge_selected"},
+        {"assertion":"visible_text","value":"synthetic"}
+      ]
+    },
+    {
+      "id": "journey-publication",
+      "title": "Published Site identity, links and Markdown rendering",
+      "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer"],
+      "story_ids": ["story-assurance"],
+      "start": {
+        "bundle": "/evaluation/heritage/okf-explorer.json"
+      },
+      "actions": [
+        {"sequence":1,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json","expected_text":"Coventry and Warwickshire","intent":"Open the exact deployed Explorer URL and verify bundle identity.","capability_ids":["publication"]},
+        {"sequence":2,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/index.html","expected_text":"Coventry and Warwickshire Heritage Evaluation","intent":"Verify the generated corpus start page is published as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":3,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/methodology.html","expected_text":"Coventry and Warwickshire Heritage Evaluation methodology","intent":"Verify the methodology Markdown renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":4,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/index.html","expected_text":"Tiny source-backed heritage assurance fixture","intent":"Verify the tiny assurance landing page renders as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":5,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/methodology.html","expected_text":"Tiny source-backed heritage assurance fixture methodology","intent":"Verify the tiny methodology renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":6,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/index.html","expected_text":"Synthetic heritage capability supplement","intent":"Verify the synthetic supplement landing page renders separately as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":7,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/methodology.html","expected_text":"Synthetic heritage capability supplement methodology","intent":"Verify the synthetic methodology renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":8,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html","expected_text":"Heritage Evaluation Profile","intent":"Verify the beginner-readable profile page.","capability_ids":["publication","accessibility"]},
+        {"sequence":9,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html","expected_text":"Evaluation Foundry","intent":"Verify the beginner process renders as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":10,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html","expected_text":"Coventry and Warwickshire","intent":"Verify the exemplar report renders as HTML.","capability_ids":["publication","accessibility"]}
+      ],
+      "assertions": [
+        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/okf-explorer.json"},
+        {"assertion":"visible_text","value":"Coventry and Warwickshire"}
+      ]
+    }
+  ]
+}

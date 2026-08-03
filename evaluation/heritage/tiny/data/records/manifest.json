@@ -1,0 +1,1 @@
+{"algorithm":"fnv1a32-prefix-2","bucket_count":3,"buckets":{"0d":"data/records/0d.json","4a":"data/records/4a.json","51":"data/records/51.json"},"chunk_size":500,"record_chunks":["data/records-0.json.gz"],"records":3,"schema":"okf-record-locator-sharded.v1","snapshot":"heritage-coventry-warwickshire-20260803-v2-tiny-v1"}

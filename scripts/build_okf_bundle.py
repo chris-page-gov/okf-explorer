@@ -72,6 +72,7 @@ def normalized_nodes(nodes: dict[str, dict[str, Any]], source_root: str) -> dict
     normalized: dict[str, dict[str, Any]] = {}
     prefix = "" if source_root in {"", "."} else f"{source_root.rstrip('/')}/"
     for path_id, node in nodes.items():
+        source_path = str(node.get("source_path") or path_id)
         normalized[path_id] = {
             **node,
             "id": path_id,
@@ -83,7 +84,7 @@ def normalized_nodes(nodes: dict[str, dict[str, Any]], source_root: str) -> dict
             "aliases": node.get("aliases", []),
             "route_aliases": route_aliases(path_id, node),
             "section": node.get("section", "root"),
-            "source": f"{prefix}{path_id}",
+            "source": f"{prefix}{source_path}",
             "body": node.get("body", ""),
         }
     return normalized
@@ -132,6 +133,13 @@ def build_bundle() -> tuple[dict[str, Any], list[str]]:
         "nodes": normalized_nodes(nodes, corpus_config["sourceRoot"]),
         "edges": normalized_edges(graph),
     }
+    if isinstance(graph.get("relationships"), list):
+        corpus["relationships"] = graph["relationships"]
+        corpus["assertion_scope"] = graph.get("assertion_scope", "real-world")
+        if graph.get("default_loaded") is False:
+            corpus["default_loaded"] = False
+            corpus["include_in_counts"] = False
+            corpus["include_in_search"] = False
     bundle = {
         "schema": "okf-explorer-bundle.v0",
         "kind": "okf-bundle",
@@ -153,6 +161,10 @@ def build_bundle() -> tuple[dict[str, Any], list[str]]:
         },
         "corpora": {corpus_id: corpus},
     }
+    if isinstance(graph.get("semantic_model"), dict):
+        bundle["extensions"] = {
+            "okf-semantic-model.v1": graph["semantic_model"],
+        }
     return bundle, []
 
 

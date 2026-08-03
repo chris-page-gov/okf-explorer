@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { LargeSearchManifest } from '$lib/types';
 import { canonicalJson, sha256Hex } from '$lib/sources/releaseDataPlane';
+import { TYPO_TOLERANCE_CONTRACT } from '$lib/search/typoTolerance';
 import { makeRangePackFixture, rangeResponse } from '../test/rangePackFixture';
 
 type WorkerHarness = {
@@ -29,6 +30,14 @@ const baseManifest = (): LargeSearchManifest => ({
     sort_values: 'sort-values.json'
   }
 });
+
+const typoManifest = (): LargeSearchManifest => {
+  const manifest = baseManifest();
+  manifest.typo_tolerance = { ...TYPO_TOLERANCE_CONTRACT };
+  manifest.entrypoints.typo_deletions = { _: 'typos.json' };
+  manifest.counts.typo_deletion_shards = 1;
+  return manifest;
+};
 
 async function harness(manifest = baseManifest(), payloadOverrides: Array<[string, unknown]> = []) {
   const workerSelf: WorkerHarness = { postMessage: vi.fn() };
@@ -188,6 +197,250 @@ describe('large static search worker', () => {
     expect(response.results).toEqual([]);
     expect(response.filters_applied).toBe(true);
     expect(response.facets).toEqual({ type: [] });
+  });
+
+  it('requires every meaningful query token instead of falling back to partial OR matches', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'world flood', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(0);
+    expect(response.results).toEqual([]);
+    expect(response.unresolved_tokens).toEqual(['world']);
+  });
+
+  it('recovers a manifest-declared one-edit misspelling and explains each contributing match', async () => {
+    const manifest = typoManifest();
+    manifest.counts.tokens = 2;
+    manifest.entrypoints.lexicon.co = 'coventry-lexicon.json';
+    manifest.entrypoints.prefixes.co = 'coventry-prefixes.json';
+    manifest.entrypoints.postings.push('coventry-postings.json');
+    const worker = await harness(manifest, [
+      ['https://example.test/typos.json', {
+        schema: 'okf-search-typo-deletions.v1',
+        keys: { covetry: [{ token: 'coventry', df: 1 }] }
+      }],
+      ['https://example.test/coventry-lexicon.json', [
+        { token: 'coventry', df: 1, postings: 'coventry-postings.json' }
+      ]],
+      // The legacy short-prefix fallback can already surface Coventry for
+      // "covnetry". The declared typo index takes precedence so the match is
+      // verified and explainable instead of looking like an opaque prefix hit.
+      ['https://example.test/coventry-prefixes.json', {
+        cov: [{ token: 'coventry', label: 'Coventry', query: 'coventry', df: 1 }]
+      }],
+      ['https://example.test/coventry-postings.json', { tokens: { coventry: [[0, 30, 1]] } }],
+      ['https://example.test/docs.json', [
+        { ordinal: 0, name: 'coventry-cathedral', title: 'Coventry Cathedral', publisher: 'he', publisher_title: 'Historic England', resource_count: 1, formats: [], tags: [], open: 'asset/coventry-cathedral' }
+      ]]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'Covnetry', filters: {}, sort: 'relevance', ranking: 'idf-exact' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    const correction = {
+      query_token: 'covnetry',
+      matched_token: 'coventry',
+      edit_distance: 1,
+      method: 'symmetric-delete-damerau-levenshtein-v1',
+      candidate_rank: 1
+    };
+    expect(response.total).toBe(1);
+    expect(response.results[0].name).toBe('coventry-cathedral');
+    expect(response.query_corrections).toEqual([correction]);
+    expect(response.results[0].match).toMatchObject({
+      query_tokens: ['covnetry'],
+      matched_fields: ['title'],
+      corrected_tokens: [correction]
+    });
+    // Exact-document boosting remains tied to the actual query, not the
+    // rewritten token, so correction cannot impersonate an exact phrase hit.
+    expect(response.results[0].match.score_components.exact).toBe(0);
+  });
+
+  it('accepts a typo only when it co-occurs with resolved query terms', async () => {
+    const manifest = typoManifest();
+    manifest.counts = { documents: 3, tokens: 4, max_postings_per_token: 100, typo_deletion_shards: 1 };
+    manifest.entrypoints.lexicon = {
+      ba: 'name-lexicon.json', ca: 'name-lexicon.json', co: 'name-lexicon.json', sp: 'name-lexicon.json'
+    };
+    manifest.entrypoints.postings = ['name-postings.json'];
+    manifest.entrypoints.result_docs = ['name-docs.json'];
+    const worker = await harness(manifest, [
+      ['https://example.test/name-lexicon.json', [
+        { token: 'basin', df: 1, postings: 'name-postings.json' },
+        { token: 'cathedral', df: 1, postings: 'name-postings.json' },
+        { token: 'coventry', df: 1, postings: 'name-postings.json' },
+        { token: 'spencer', df: 1, postings: 'name-postings.json' }
+      ]],
+      ['https://example.test/name-postings.json', { tokens: {
+        basin: [[1, 16, 1]],
+        cathedral: [[0, 16, 1]],
+        coventry: [[0, 16, 1]],
+        spencer: [[2, 16, 1]]
+      } }],
+      ['https://example.test/typos.json', {
+        schema: 'okf-search-typo-deletions.v1',
+        keys: {
+          basi: [{ token: 'basin', df: 1 }],
+          spence: [{ token: 'spencer', df: 1 }],
+          coventry: [{ token: 'coventry', df: 1 }]
+        }
+      }],
+      ['https://example.test/name-docs.json', [
+        { ordinal: 0, name: 'coventry-cathedral', title: 'Coventry Cathedral', publisher: 'he', publisher_title: 'Historic England', resource_count: 1, formats: [], tags: [], open: 'asset/coventry-cathedral' },
+        { ordinal: 1, name: 'canal-basin', title: 'Canal Basin', publisher: 'he', publisher_title: 'Historic England', resource_count: 1, formats: [], tags: [], open: 'asset/canal-basin' },
+        { ordinal: 2, name: 'spencer-hall', title: 'Spencer Hall', publisher: 'he', publisher_title: 'Historic England', resource_count: 1, formats: [], tags: [], open: 'asset/spencer-hall' }
+      ]]
+    ]);
+
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'Basil Spence Cathedral', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+    const rejected = worker.postMessage.mock.calls[0][0].response;
+    expect(rejected.total).toBe(0);
+    expect(rejected.query_corrections).toBeUndefined();
+    expect(rejected.unresolved_tokens).toEqual(['basil', 'spence']);
+
+    worker.postMessage.mockClear();
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 3, request: { query: 'Coventtry Cathedral', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+    const accepted = worker.postMessage.mock.calls[0][0].response;
+    expect(accepted.total).toBe(1);
+    expect(accepted.results[0].name).toBe('coventry-cathedral');
+    expect(accepted.query_corrections).toEqual([
+      expect.objectContaining({ query_token: 'coventtry', matched_token: 'coventry' })
+    ]);
+    expect(accepted.unresolved_tokens).toBeUndefined();
+  });
+
+  it('searches declared record aliases without replacing the canonical result title', async () => {
+    const manifest = baseManifest();
+    manifest.weights.search_aliases = 12;
+    manifest.field_masks.search_aliases = 2048;
+    manifest.entrypoints.lexicon.gr = 'greyfriars-lexicon.json';
+    manifest.entrypoints.postings.push('greyfriars-postings.json');
+    const worker = await harness(manifest, [
+      ['https://example.test/greyfriars-lexicon.json', [
+        { token: 'greyfriars', df: 1, postings: 'greyfriars-postings.json' }
+      ]],
+      ['https://example.test/greyfriars-postings.json', { tokens: { greyfriars: [[0, 12, 2048]] } }],
+      ['https://example.test/docs.json', [
+        {
+          ordinal: 0,
+          name: 'coventry-cathedral',
+          title: 'Coventry Cathedral',
+          search_aliases: ['Greyfriars'],
+          publisher: 'he',
+          publisher_title: 'Historic England',
+          resource_count: 1,
+          formats: [],
+          tags: [],
+          open: 'asset/coventry-cathedral'
+        }
+      ]]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'Greyfriars', filters: {}, sort: 'relevance', ranking: 'idf-exact' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(1);
+    expect(response.results[0]).toMatchObject({
+      title: 'Coventry Cathedral',
+      search_aliases: ['Greyfriars'],
+      match: { matched_fields: ['search_aliases'] }
+    });
+    expect(response.results[0].match.score_components.exact).toBe(0);
+  });
+
+  it('keeps exact and prefix lookup ahead of typo correction', async () => {
+    const manifest = typoManifest();
+    manifest.entrypoints.prefixes.fl = 'prefixes.json';
+    const worker = await harness(manifest, [
+      ['https://example.test/prefixes.json', {
+        floo: [{ token: 'flood', label: 'flood', query: 'flood', df: 4 }]
+      }],
+      ['https://example.test/typos.json', {
+        schema: 'okf-search-typo-deletions.v1',
+        keys: { floo: [{ token: 'floor', df: 1 }] }
+      }]
+    ]);
+
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'flood', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+    expect(worker.postMessage.mock.calls[0][0].response.query_corrections).toBeUndefined();
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/typos.json');
+
+    worker.postMessage.mockClear();
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 3, request: { query: 'floo', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+    expect(worker.postMessage.mock.calls[0][0].response.total).toBe(4);
+    expect(worker.postMessage.mock.calls[0][0].response.query_corrections).toBeUndefined();
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/typos.json');
+  });
+
+  it('keeps a unique entity alias ahead of typo correction', async () => {
+    const worker = await harness(typoManifest());
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'DSIT', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Department for Science Innovation and Technology',
+      matched_alias: 'DSIT'
+    });
+    expect(response.query_corrections).toBeUndefined();
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/typos.json');
+  });
+
+  it('bounds missing-token correction and reports when the query budget is reached', async () => {
+    const worker = await harness(typoManifest(), [[
+      'https://example.test/typos.json',
+      { schema: 'okf-search-typo-deletions.v1', keys: {} }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'aaaa bbbb cccc dddd eeee', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(0);
+    expect(response.correction_truncated).toBe(true);
+    expect(vi.mocked(fetch).mock.calls.filter(([input]) => String(input) === 'https://example.test/typos.json')).toHaveLength(1);
+  });
+
+  it('rejects a typo shard that advertises unbounded candidate expansion', async () => {
+    const candidates = Array.from(
+      { length: TYPO_TOLERANCE_CONTRACT.max_candidates_per_delete_key + 1 },
+      (_value, index) => ({ token: `candidate${index}`, df: 1 })
+    );
+    const worker = await harness(typoManifest(), [[
+      'https://example.test/typos.json',
+      { schema: 'okf-search-typo-deletions.v1', keys: { zzzz: candidates } }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'zzzz', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    expect(worker.postMessage.mock.calls[0][0]).toMatchObject({
+      type: 'error',
+      error: expect.stringContaining('candidate expansion')
+    });
   });
 
   it('does not interpret a non-empty stop-word-only query as match-all browsing', async () => {

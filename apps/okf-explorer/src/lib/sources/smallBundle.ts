@@ -1,4 +1,10 @@
-import type { NormalizedCorpus, OkfBundle, OkfNode, OkfRelationship } from '$lib/types';
+import type {
+  NormalizedCorpus,
+  OkfBundle,
+  OkfNode,
+  OkfRelationship,
+  RelationshipAssertionScope
+} from '$lib/types';
 
 function titleForNode(id: string, node: OkfNode): string {
   return String(node.title || node.name || node.label || id);
@@ -33,10 +39,28 @@ function normalizeRelationships(values: OkfRelationship[] | undefined): OkfRelat
     }));
 }
 
+function assertionScope(value: unknown): RelationshipAssertionScope | undefined {
+  return value === 'real-world' || value === 'synthetic-fixture' ? value : undefined;
+}
+
 export function normalizeSmallBundle(bundle: OkfBundle, preferredCorpus = ''): NormalizedCorpus {
   const corpora = bundle.corpora || {};
-  const corpusId = preferredCorpus && corpora[preferredCorpus] ? preferredCorpus : Object.keys(corpora)[0];
+  const corpusEntries = Object.entries(corpora);
+  const isDefaultLoaded = (corpus: Partial<NormalizedCorpus>) => {
+    const record = corpus as unknown as Record<string, unknown>;
+    return record.default_loaded !== false && corpus.defaultLoaded !== false;
+  };
+  const declaredDefault = typeof bundle.meta?.default_corpus === 'string'
+    ? bundle.meta.default_corpus
+    : '';
+  const corpusId = preferredCorpus && corpora[preferredCorpus]
+    ? preferredCorpus
+    : declaredDefault && corpora[declaredDefault] && isDefaultLoaded(corpora[declaredDefault])
+      ? declaredDefault
+      : corpusEntries.find(([, corpus]) => isDefaultLoaded(corpus))?.[0]
+        || corpusEntries[0]?.[0];
   const rawCorpus = (corpusId ? corpora[corpusId] : bundle) as Partial<NormalizedCorpus> & OkfBundle;
+  const rawRecord = rawCorpus as unknown as Record<string, unknown>;
   const nodes = Object.fromEntries(
     Object.entries(rawCorpus.nodes || bundle.nodes || {}).map(([id, node]) => [id, normalizeNode(id, node)])
   );
@@ -48,10 +72,24 @@ export function normalizeSmallBundle(bundle: OkfBundle, preferredCorpus = ''): N
     profile: String(bundle.meta?.profile || ''),
     nodes,
     relationships: normalizeRelationships(rawCorpus.relationships || rawCorpus.edges || bundle.relationships || bundle.edges),
+    assertionScope: assertionScope(rawRecord.assertion_scope || rawCorpus.assertionScope),
+    defaultLoaded:
+      typeof rawRecord.default_loaded === 'boolean'
+        ? rawRecord.default_loaded
+        : rawCorpus.defaultLoaded,
+    includeInCounts:
+      typeof rawRecord.include_in_counts === 'boolean'
+        ? rawRecord.include_in_counts
+        : rawCorpus.includeInCounts,
+    includeInSearch:
+      typeof rawRecord.include_in_search === 'boolean'
+        ? rawRecord.include_in_search
+        : rawCorpus.includeInSearch,
     meta: {
       ...(bundle.meta || {}),
       okf_version: bundle.okf_version || '',
-      bundle_version: bundle.version || ''
+      bundle_version: bundle.version || '',
+      semantic_model: bundle.extensions?.['okf-semantic-model.v1']
     }
   };
 }

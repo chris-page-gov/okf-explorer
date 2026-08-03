@@ -14,6 +14,10 @@
     "schema": {
       "const": "okf-relationship-assertion.v2"
     },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
     "source": {
       "type": "string",
       "minLength": 1
@@ -21,6 +25,14 @@
     "target": {
       "type": "string",
       "minLength": 1
+    },
+    "source_iri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "target_iri": {
+      "type": "string",
+      "format": "uri"
     },
     "predicate": {
       "type": "string",
@@ -34,12 +46,47 @@
       "type": "string",
       "minLength": 1
     },
+    "inverse_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assertion_status": {
+      "enum": [
+        "official",
+        "normalized",
+        "inferred",
+        "model-derived"
+      ]
+    },
+    "assertion_scope": {
+      "enum": [
+        "real-world",
+        "synthetic-fixture"
+      ]
+    },
     "authority": {
       "$ref": "#/$defs/authority"
     },
     "derivation": {
       "type": "string",
       "minLength": 1
+    },
+    "derivation_activity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supporting_assertions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
     },
     "confidence": {
       "oneOf": [
@@ -53,6 +100,18 @@
           "minLength": 1
         }
       ]
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "strength": {
+      "type": "number"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
     },
     "observed_at": {
       "type": "string",
@@ -68,6 +127,10 @@
         "stale",
         "unknown"
       ]
+    },
+    "review_status": {
+      "type": "string",
+      "minLength": 1
     },
     "evidence": {
       "type": "array",
@@ -92,6 +155,42 @@
               "sha256": {
                 "type": "string",
                 "pattern": "^[0-9a-f]{64}$"
+              },
+              "source_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "source_value_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "literal_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "source_artifact": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_field": {
+                "type": "string",
+                "minLength": 1
+              },
+              "field_provenance": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_value_hash_canonicalization": {
+                "type": "string",
+                "minLength": 1
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "retrieved_at": {
+                "type": "string",
+                "format": "date-time"
               }
             },
             "anyOf": [
@@ -129,6 +228,91 @@
       ]
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"assertion_scope": {"const": "synthetic-fixture"}},
+        "required": ["assertion_scope"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "synthetic"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"const": "official"}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "official"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"enum": ["normalized", "inferred"]}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "derived"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "assertion_scope": {"const": "real-world"},
+          "assertion_status": {"const": "model-derived"}
+        },
+        "required": ["assertion_scope", "assertion_status"]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "properties": {"class": {"const": "model-assisted"}},
+            "required": ["class"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"assertion_status": {"const": "inferred"}},
+        "required": ["assertion_status"]
+      },
+      "then": {
+        "required": ["rule", "supporting_assertions", "confidence_score", "derivation_activity"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"assertion_status": {"const": "model-derived"}},
+        "required": ["assertion_status"]
+      },
+      "then": {
+        "required": ["confidence_score", "derivation_activity", "review_status"]
+      }
+    }
+  ],
   "additionalProperties": true,
   "$defs": {
     "httpUrl": {
@@ -146,6 +330,7 @@
             "official",
             "derived",
             "model-assisted",
+            "synthetic",
             "unclassified"
           ]
         },
