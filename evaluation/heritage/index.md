@@ -26,10 +26,14 @@ tags:
 This corpus demonstrates OKF Explorer functionality over **7,640**
 source-backed records. It is an evaluation, not a source of legal or operational truth.
 
-Public Explorer, report, profile and methodology links are intentionally
-withheld while this deployment candidate awaits its terminal real-browser
-identity and journey gate. Stable YAML-LD identities remain in the front
-matter so the deployed bytes can be verified before those links are promoted.
+Published entry points for this faithful source-backed evaluation corpus:
+
+- [Open the faithful source-backed evaluation corpus in OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json)
+- [Read this corpus landing page as HTML](https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/index.html)
+- [Read this corpus methodology as HTML](https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/methodology.html)
+- [Read the evaluation profile as HTML](https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html)
+- [Read the full evaluation report as HTML](https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html)
+- [Inspect the immutable exemplar release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803)
 
 ## Publication boundary
 

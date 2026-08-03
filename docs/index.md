@@ -162,7 +162,8 @@ UK Whole-Law federation:
 https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 ```
 
-The Coventry and Warwickshire heritage functionality evaluation is a staged
-publication candidate. Its copy-ready public Explorer URL is intentionally
-withheld until the exact deployed candidate passes the terminal real-browser
-identity and journey gate.
+Coventry and Warwickshire heritage functionality evaluation:
+
+```text
+https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json
+```

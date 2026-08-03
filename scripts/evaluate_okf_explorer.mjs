@@ -1072,6 +1072,18 @@ function assertPublicationCandidateBinding(options, journeys, candidateReceipt) 
         'journey-publication must verify a public Explorer URL carrying the exact candidate bundle.'
       );
     }
+    const declaredBundleUrls = new Set(
+      journeys.journeys
+        .map((declaredJourney) => declaredJourney.start?.bundle)
+        .filter((declaredBundle) => typeof declaredBundle === 'string' && declaredBundle.trim())
+        .map((declaredBundle) => credentialFreeHttpUrl(
+          declaredBundle.startsWith('/')
+            ? new URL(declaredBundle.replace(/^\/+/, ''), options.bundleRoot).toString()
+            : new URL(declaredBundle, options.bundleRoot || options.baseUrl).toString(),
+          'journey-publication declared auxiliary bundle'
+        ).toString())
+    );
+    let exactCandidateActions = 0;
     for (const action of publicExplorerActions) {
       const publicExplorerUrl = credentialFreeHttpUrl(
         action.value,
@@ -1082,11 +1094,6 @@ function assertPublicationCandidateBinding(options, journeys, candidateReceipt) 
         publicBundleValue,
         'journey-publication public Explorer bundle'
       );
-      assertFinalLocation(
-        publicBundleUrl.toString(),
-        candidateUrl.toString(),
-        'journey-publication candidate/public URL binding'
-      );
       const publicExplorerLocation = `${publicExplorerUrl.origin}${publicExplorerUrl.pathname}`;
       const expectedExplorerLocation = `${baseUrl.origin}${baseUrl.pathname}`;
       if (publicExplorerLocation !== expectedExplorerLocation) {
@@ -1095,6 +1102,19 @@ function assertPublicationCandidateBinding(options, journeys, candidateReceipt) 
           `expected ${expectedExplorerLocation}, got ${publicExplorerLocation}`
         );
       }
+      if (publicBundleUrl.toString() === candidateUrl.toString()) {
+        exactCandidateActions += 1;
+      } else if (!declaredBundleUrls.has(publicBundleUrl.toString())) {
+        throw new Error(
+          'journey-publication candidate/public URL binding rejected an undeclared auxiliary bundle; ' +
+          `got ${publicBundleUrl.toString()}`
+        );
+      }
+    }
+    if (!exactCandidateActions) {
+      throw new Error(
+        'journey-publication candidate/public URL binding requires at least one public Explorer action carrying the exact candidate bundle.'
+      );
     }
   }
 }

@@ -263,9 +263,14 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             result = json.loads(raw)
             self.assertEqual("okf-explorer-evaluation-results.v1", result["schema"])
             self.assertEqual(section["base_url"], result["base_url"])
+            expected_candidate_bundle_url = (
+                "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json"
+                if key == "question_suite"
+                else json.loads(source.read_text(encoding="utf-8"))["target_bundle"]
+            )
             self.assertEqual(
                 {
-                    "bundle_url": "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json",
+                    "bundle_url": expected_candidate_bundle_url,
                     "descriptor_sha256": receipt["candidate"]["heritage_descriptor_sha256"],
                     "schema": faithful_descriptor["schema"],
                     "snapshot": receipt["candidate"]["snapshot"],
@@ -298,8 +303,19 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             else:
                 summary = result["interaction_journeys"]["summary"]
                 self.assertEqual(section["manifest"], result["interaction_journeys"]["manifest"])
-                self.assertEqual(section["start_bundles"][1], result["bundle"])
+                journey_manifest = json.loads(source.read_text(encoding="utf-8"))
+                self.assertEqual(journey_manifest["target_bundle"], result["bundle"])
                 self.assertEqual(result["bundle"], result["interaction_journeys"]["target_bundle"])
+                records_by_id = {
+                    record["id"]: record
+                    for record in result["interaction_journeys"]["records"]
+                }
+                for journey_id, expected_bundle in zip(
+                    section["journey_ids"], section["start_bundles"], strict=True
+                ):
+                    start_url = records_by_id[journey_id]["start_url"]
+                    actual_bundle = parse_qs(urlparse(start_url).query)["bundle"][0]
+                    self.assertEqual(expected_bundle, urlparse(actual_bundle).path)
                 self.assertEqual(section["journeys_run"], summary["journeys_run"])
                 self.assertEqual(section["passed"], summary["passed"])
                 self.assertEqual(section["failed"], summary["failed"])
@@ -321,7 +337,9 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 self.assertEqual(
                     section["start_bundles"],
                     [
-                        parse_qs(urlparse(record["start_url"]).query)["bundle"][0]
+                        urlparse(
+                            parse_qs(urlparse(record["start_url"]).query)["bundle"][0]
+                        ).path
                         for record in result["interaction_journeys"]["records"]
                     ],
                 )
@@ -1205,6 +1223,18 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             }}
             if (!missingReceiptMessage) throw new Error('publication accepted no candidate receipt');
             assertPublicationCandidateBinding(exact, journeys, receipt);
+            const rogueAuxiliary = structuredClone(journeys);
+            rogueAuxiliary.journeys
+              .find((journey) => journey.id === 'journey-publication')
+              .actions.find((action) => action.sequence === 29).value =
+                'https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fassets.example.test%2Fundocumented.json';
+            let rogueAuxiliaryMessage = '';
+            try {{
+              assertPublicationCandidateBinding(exact, rogueAuxiliary, receipt);
+            }} catch (error) {{
+              rogueAuxiliaryMessage = error.message;
+            }}
+            if (!rogueAuxiliaryMessage) throw new Error('publication accepted an undeclared auxiliary bundle');
             const failures = [];
             for (const changed of [
               {{ ...exact, bundleRoot: 'https://pages.example.test/other-project/' }},
@@ -1226,7 +1256,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
               }}
             }}
             if (failures.length !== 4) throw new Error('publication binding accepted decoupled inputs');
-            console.log(JSON.stringify({{ missingReceiptMessage, failures }}));
+            console.log(JSON.stringify({{ missingReceiptMessage, rogueAuxiliaryMessage, failures }}));
         """
         result = subprocess.run(
             ["node", "--input-type=module", "--eval", program],
@@ -1239,6 +1269,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         failures = payload["failures"]
 
         self.assertIn("requires --candidate-receipt", payload["missingReceiptMessage"])
+        self.assertIn("undeclared auxiliary bundle", payload["rogueAuxiliaryMessage"])
         self.assertTrue(
             any("candidate/public URL binding" in message for message in failures)
         )

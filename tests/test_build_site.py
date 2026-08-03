@@ -224,9 +224,24 @@ class BuildSiteTests(unittest.TestCase):
                 Path("evaluation/gov-ckan/results/latest/results.md")
             )
         )
+        self.assertTrue(
+            build_site.is_ephemeral_evaluation_result(
+                Path(
+                    "evaluation-foundry/fixtures/heritage-warwickshire/"
+                    "results/latest/results.md"
+                )
+            )
+        )
         self.assertFalse(
             build_site.is_ephemeral_evaluation_result(
                 Path("evaluation/heritage/methodology.md")
+            )
+        )
+        self.assertFalse(
+            build_site.is_ephemeral_evaluation_result(
+                Path(
+                    "evaluation-foundry/fixtures/heritage-warwickshire/README.md"
+                )
             )
         )
 
@@ -242,13 +257,54 @@ class BuildSiteTests(unittest.TestCase):
             ordinary.write_text("# Methodology\n", encoding="utf-8")
             ignored.write_text("# Ephemeral result\n", encoding="utf-8")
             target = root / "site" / "evaluation"
+            foundry_source = root / "evaluation-foundry"
+            foundry_ordinary = (
+                foundry_source
+                / "fixtures"
+                / "heritage-warwickshire"
+                / "README.md"
+            )
+            foundry_ignored = (
+                foundry_source
+                / "fixtures"
+                / "heritage-warwickshire"
+                / "results"
+                / "latest"
+                / "results.md"
+            )
+            foundry_ordinary.parent.mkdir(parents=True)
+            foundry_ignored.parent.mkdir(parents=True)
+            foundry_ordinary.write_text("# Fixture\n", encoding="utf-8")
+            foundry_ignored.write_text(
+                "# Ephemeral Foundry result\n", encoding="utf-8"
+            )
+            foundry_target = root / "site" / "evaluation-foundry"
 
             with mock.patch.object(build_site, "ROOT", root):
                 build_site.copy_public_tree(source, target)
+                build_site.copy_public_tree(foundry_source, foundry_target)
 
             self.assertTrue((target / "heritage" / "methodology.md").is_file())
             self.assertFalse(
                 (target / "heritage" / "results" / "latest" / "results.md").exists()
+            )
+            self.assertTrue(
+                (
+                    foundry_target
+                    / "fixtures"
+                    / "heritage-warwickshire"
+                    / "README.md"
+                ).is_file()
+            )
+            self.assertFalse(
+                (
+                    foundry_target
+                    / "fixtures"
+                    / "heritage-warwickshire"
+                    / "results"
+                    / "latest"
+                    / "results.md"
+                ).exists()
             )
 
     def test_site_size_gate_uses_the_published_pages_limit(self) -> None:
