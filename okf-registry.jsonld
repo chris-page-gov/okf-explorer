@@ -239,6 +239,55 @@
           "version": [
             "0.3.0"
           ]
+        },
+        {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/heritage-coventry-warwickshire",
+          "@type": "okf:Bundle",
+          "conformsTo": [
+            "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html"
+          ],
+          "description": [
+            "Publicly verified Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement."
+          ],
+          "descriptor": [
+            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json"
+          ],
+          "descriptorAlternates": [
+            "https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803"
+          ],
+          "documentation": [
+            "https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html"
+          ],
+          "home": [
+            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/"
+          ],
+          "license": [
+            "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          ],
+          "publisher": [
+            "https://github.com/chris-page-gov"
+          ],
+          "rawSubpath": [
+            "evaluation/heritage"
+          ],
+          "recordTypeLabel": [
+            "large-corpus"
+          ],
+          "repository": [
+            "https://github.com/chris-page-gov/okf-explorer"
+          ],
+          "semanticDescriptor": [
+            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-bundle.yamlld"
+          ],
+          "status": [
+            "evaluated"
+          ],
+          "title": [
+            "Coventry and Warwickshire Heritage Evaluation"
+          ],
+          "version": [
+            "1.0.0"
+          ]
         }
       ],
       "conformsTo": [

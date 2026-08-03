@@ -1,19 +1,20 @@
 schema: okf-evaluation-profile.v1
 profile_id: heritage-coventry-warwickshire-v1
 version: 1.0.0
-status: provisional
+status: evaluated
 title: Coventry and Warwickshire heritage functionality evaluation
 description: >-
   A reproducible Evaluation Foundry profile for testing every OKF Explorer
   presentation plane against complete, source-defined heritage populations,
   a tiny assurance fixture, and a visibly separate synthetic supplement.
 prepared_at: "2026-08-03T10:29:12Z"
+evaluated_at: "2026-08-03T12:29:08.274Z"
 publication_assurance:
-  status: provisional
+  status: passed
   local_build:
     status: passed
     reading_pages: 239
-    internal_page_references: 4135
+    internal_page_references: 4157
     github_pages_size_gate: passed-under-1000000000-bytes
   explorer_presentation_views:
     status: passed-locally
@@ -28,9 +29,30 @@ publication_assurance:
       - Map
       - Narrative
   public_verification:
-    status: pending
-    demonstrated: false
+    status: passed
+    demonstrated: true
     journey: journey-publication
+    observed_at: "2026-08-03T12:29:08.274Z"
+    deployment:
+      commit: c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2
+      pages_run: 30813485357
+      pages_run_url: https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357
+      site: https://chris-page-gov.github.io/okf-explorer/
+    candidate:
+      descriptor_sha256: 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149
+      release_root_sha256: aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb
+    outcome:
+      journeys_passed: 1
+      journeys_total: 1
+      actions_passed: 27
+      actions_total: 27
+      assertions_passed: 2
+      assertions_total: 2
+    result_sha256: 36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4
+    immutable_evidence:
+      release: https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803
+      final_promotion_gate: action-28-release-page-validation
+      attachment_policy: exact terminal results are attached to the tagged promoted commit without mutating the verified Site bytes
 scope:
   record_definition: >-
     One unique current NHLE ListEntry intersecting at least one pinned scope
@@ -169,8 +191,10 @@ consumer_contract:
 publication_boundary: >-
   This is a functionality evaluation and evidence-bound projection, not an
   assured heritage register, legal designation search, condition survey or
-  replacement for Historic England. The clean local build and local browser
-  journeys do not establish public availability; publication remains
-  provisional until the exact deployed GitHub Pages URLs pass the terminal
-  publication journey. Synthetic records are separately named, default-off
-  and excluded from faithful counts and search.
+  replacement for Historic England. Public verification demonstrates the
+  exact recorded deployment only: commit c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2,
+  Pages run 30813485357 and the candidate digests recorded above, observed at
+  2026-08-03T12:29:08.274Z. It does not make mutable Pages or source URLs
+  permanently current. Synthetic records are separately named, default-off
+  and excluded from faithful counts and search. The final promotion journey
+  additionally validates the immutable release page as action 28.

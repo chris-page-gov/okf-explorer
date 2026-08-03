@@ -2179,6 +2179,7 @@ def semantic_descriptor(corpus: dict[str, Any], _snapshot: dict[str, Any]) -> di
 def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str]:
     publication = publication_config(snapshot)
     public_base = publication["public_base"]
+    role = publication["role"]
     generated_at = corpus["descriptor"]["generated_at"]
     counts = corpus["descriptor"]["counts"]
     record_claim = (
@@ -2191,6 +2192,34 @@ def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Pat
         if publication["role"] == "synthetic"
         else "The corpus contains only official fields and visibly labelled mechanical normalizations. Synthetic capability examples are isolated in a different bundle and namespace and do not affect these counts."
     )
+    descriptor_url = f"{public_base}okf-explorer.json"
+    explorer_url = f"{EXPLORER_BASE}?bundle={quote(descriptor_url, safe='')}"
+    entry_scope = {
+        "faithful": "faithful source-backed evaluation corpus",
+        "tiny": "tiny source-backed assurance subset",
+        "synthetic": "separate, default-off synthetic capability supplement",
+    }.get(role, "scoped evaluation corpus")
+    entry_links = [
+        f"- [Open the {entry_scope} in OKF Explorer]({explorer_url})",
+        f"- [Read this corpus landing page as HTML]({public_base}index.html)",
+        f"- [Read this corpus methodology as HTML]({public_base}methodology.html)",
+    ]
+    if role != "faithful":
+        entry_links.append(
+            f"- [Return to the faithful evaluation corpus]({PUBLIC_BASE}index.html)"
+        )
+    entry_links.extend(
+        [
+            "- [Read the evaluation profile as HTML]"
+            f"({EXPLORER_BASE}evaluation-foundry/fixtures/heritage-warwickshire/profile.html)",
+            "- [Read the full evaluation report as HTML]"
+            f"({EXPLORER_BASE}docs/heritage-evaluation-report.html)",
+            "- [Inspect the immutable exemplar release]"
+            "(https://github.com/chris-page-gov/okf-explorer/releases/tag/"
+            "heritage-coventry-warwickshire-20260803)",
+        ]
+    )
+    published_entry_points = "\n".join(entry_links)
     index = f'''---
 "@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
 "@id": {public_base}
@@ -2219,10 +2248,9 @@ tags:
 This corpus demonstrates OKF Explorer functionality over **{counts['records']:,}**
 {record_claim}. It is an evaluation, not a source of legal or operational truth.
 
-Public Explorer, report, profile and methodology links are intentionally
-withheld while this deployment candidate awaits its terminal real-browser
-identity and journey gate. Stable YAML-LD identities remain in the front
-matter so the deployed bytes can be verified before those links are promoted.
+Published entry points for this {entry_scope}:
+
+{published_entry_points}
 
 ## Publication boundary
 

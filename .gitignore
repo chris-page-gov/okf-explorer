@@ -28,3 +28,4 @@ apps/*/playwright-report/
 .pnpm-store/
 
 evaluation/*/results/
+evaluation-foundry/fixtures/*/results/

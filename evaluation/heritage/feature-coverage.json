@@ -4,9 +4,9 @@
   "bundle": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json",
   "generated_at": "2026-08-03T10:29:12Z",
   "suitability": "strong",
-  "assessment_stage": "provisional-local-validation",
-  "publication_status": "provisional",
-  "demonstrated_definition": "True means the capability has source support plus generated-artifact, automated-test or local real-browser evidence. It does not mean that the public site has been verified. Publication remains false until the exact deployed GitHub Pages candidate passes the terminal publication journey.",
+  "assessment_stage": "evaluated-public-verification-passed",
+  "publication_status": "passed",
+  "demonstrated_definition": "True means the capability has source support plus generated-artifact, automated-test or real-browser evidence. Publication is demonstrated for the exact deployment and candidate digests observed at 2026-08-03T12:29:08.274Z; mutable Pages and source URLs require a new observation after change.",
   "local_evidence": {
     "corpus_descriptor": {"receipt":"evaluation/heritage/okf-explorer.json","snapshot":"heritage-coventry-warwickshire-20260803-v2","generated_at":"2026-08-03T10:29:12Z","records":7640,"heritage_assets":6556,"risk_records":1084,"resources":22200,"relationships":9566},
     "search": {"receipt":"evaluation/heritage/data/search/manifest.json","documents":7640,"tokens":22040,"postings":626287,"max_edit_distance":1},
@@ -14,8 +14,27 @@
     "links": {"receipt":"evaluation/heritage/data/link-validation.json","failures":0,"record_links":7640,"resource_links":22200,"internal_resource_references":22200,"identifier_bound_rich_links":15280,"relationship_ui_links":65878,"live_external_receipts":0},
     "release_artifact_planes": {"receipt":"evaluation/heritage/assurance/plane-roots.json","count":5,"names":["control","data","presentation","search","semantic"]},
     "explorer_presentation_views": {"journey":"journey-faithful","status":"passed-locally","count":8,"names":["Reader","Graph","Links","Timeline","Type","Resources","Map","Narrative"]},
-    "site_build": {"command":".venv/bin/python scripts/build_site.py","status":"passed-locally","reading_pages":239,"internal_page_references":4135,"github_pages_size_gate":"passed-under-1000000000-bytes"},
-    "public_verification": {"journey":"journey-publication","status":"pending","demonstrated":false}
+    "site_build": {"command":".venv/bin/python scripts/build_site.py","status":"passed-locally","reading_pages":239,"internal_page_references":4157,"github_pages_size_gate":"passed-under-1000000000-bytes"},
+    "public_verification": {
+      "journey": "journey-publication",
+      "status": "passed",
+      "demonstrated": true,
+      "observed_at": "2026-08-03T12:29:08.274Z",
+      "deployment_commit": "c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2",
+      "pages_run": 30813485357,
+      "pages_run_url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
+      "descriptor_sha256": "2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149",
+      "release_root_sha256": "aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb",
+      "journeys": {"passed":1,"total":1},
+      "actions": {"passed":27,"total":27},
+      "assertions": {"passed":2,"total":2},
+      "result_sha256": "36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4",
+      "immutable_evidence": {
+        "release": "https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803",
+        "final_promotion_gate": "action-28-release-page-validation",
+        "attachment_policy": "Exact terminal results are attached to the tagged promoted commit without mutating the verified Site bytes"
+      }
+    }
   },
   "capabilities": [
     {"id":"search","source_support":"strong","demonstrated":true,"evidence":["Weighted names, identifiers, alternatives and bounded typo correction with explanations"],"journey":"journey-faithful","limitations":["One-edit correction is intentionally conservative"],"synthetic_demonstration":false},
@@ -31,7 +50,7 @@
     {"id":"provenance","source_support":"strong","demonstrated":true,"evidence":["Snapshot, request, source object or workbook row, relationship evidence and assertion labels"],"journey":"journey-faithful","limitations":["Source provenance is not an independent factual audit"],"synthetic_demonstration":false},
     {"id":"durable-state","source_support":"strong","demonstrated":true,"evidence":["The local real-browser faithful journey preserves one query and facet state through view changes, Back, Forward and reload"],"journey":"journey-faithful","limitations":[],"synthetic_demonstration":false},
     {"id":"accessibility","source_support":"partial","demonstrated":true,"evidence":["Keyboard-reachable controls, semantic labels, live result summaries, reduced-motion behavior and HVR001/HVR002 viewport evidence"],"journey":"journey-tiny","limitations":["Automated checks complement but do not replace assistive-technology user testing"],"synthetic_demonstration":false},
-    {"id":"publication","source_support":"strong","demonstrated":false,"evidence":["The clean local site build rendered 239 reading pages, resolved 4,135 internal page references and passed the 1 GB GitHub Pages size gate","Five release artifact planes have rooted digests, and all eight Explorer presentation views passed the local faithful journey"],"journey":"journey-publication","limitations":["Local build and journey evidence do not prove public availability","The exact GitHub Pages URLs remain a terminal post-deployment gate","Live source URLs can change after the recorded observation time"],"synthetic_demonstration":false}
+    {"id":"publication","source_support":"strong","demonstrated":true,"evidence":["The current promotion-candidate Site build rendered 239 reading pages, resolved 4,157 internal page references and passed the 1 GB GitHub Pages size gate","Five release artifact planes have rooted digests, and all eight Explorer presentation views passed the local faithful journey","The exact GitHub Pages candidate at commit c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2 passed journey-publication: 1/1 journey, 27/27 actions and 2/2 assertions","The deployed descriptor SHA-256 was 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149 and release root was aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb","The promoted journey validates the immutable release page as action 28, and exact terminal results are attached to that tagged commit"],"journey":"journey-publication","limitations":["The pass is an observation of Pages run 30813485357 at 2026-08-03T12:29:08.274Z; mutable Pages and external source URLs can change","Publication success does not turn this evaluation into a legal register or make Historic England source claims independently assured"],"synthetic_demonstration":false}
   ],
   "publication_boundary": "The faithful corpus is an evaluation projection, not a legal register; the synthetic bundle is separately identified, default-off and excluded from faithful counts and search."
 }

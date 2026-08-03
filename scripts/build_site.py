@@ -169,12 +169,19 @@ def is_excluded_markdown_dependency(source: Path) -> bool:
 
 
 def is_ephemeral_evaluation_result(relative: Path) -> bool:
-    """Return true for ignored evaluator output below evaluation/*/results/."""
+    """Return true for ignored evaluator output in corpus or Foundry results."""
 
     return (
-        len(relative.parts) >= 3
-        and relative.parts[0] == "evaluation"
-        and relative.parts[2] == "results"
+        (
+            len(relative.parts) >= 3
+            and relative.parts[0] == "evaluation"
+            and relative.parts[2] == "results"
+        )
+        or (
+            len(relative.parts) >= 4
+            and relative.parts[:2] == ("evaluation-foundry", "fixtures")
+            and relative.parts[3] == "results"
+        )
     )
 
 

@@ -35,6 +35,14 @@
   consumer journeys, source acquisition and reconciliation receipts,
   identifier-bound link validation, release-root integrity checks and rendered
   HTML publication for the faithful, tiny and synthetic products.
+- Promoted the Coventry and Warwickshire profile from provisional to evaluated
+  after its exact GitHub Pages descriptor and release root passed the terminal
+  browser journey; published copy-ready faithful, tiny and synthetic entry
+  points and registered the exemplar in the YAML-LD bundle registry.
+- Added a final release-page journey action and an immutable tagged-release
+  evidence handoff, while excluding accidental Foundry evaluator output from
+  both Git and Site assembly so post-deployment receipts cannot alter the
+  verified publication closure.
 
 ## v0.5.7 - 2026-07-29 - Fail-closed descriptor identity
 
