@@ -563,6 +563,68 @@ describe('small bundle normalization', () => {
     ]);
   });
 
+  it('retains a separately declared default-off synthetic semantic corpus', () => {
+    const corpus = normalizeSmallBundle({
+      extensions: {
+        'okf-semantic-model.v1': {
+          schema: 'okf-semantic-model.v1',
+          status: 'experimental'
+        }
+      },
+      corpora: {
+        assurance: {
+          id: 'assurance',
+          title: 'Synthetic assurance fixture',
+          nodes: { a: { id: 'a', title: 'Synthetic asset' } },
+          relationships: [{
+            source: 'a', target: 'a', predicate: 'dcterms:references',
+            assertion_scope: 'synthetic-fixture', authority: { class: 'synthetic' }
+          }],
+          assertion_scope: 'synthetic-fixture',
+          default_loaded: false,
+          include_in_counts: false,
+          include_in_search: false
+        }
+      }
+    } as unknown as OkfBundle, 'assurance');
+
+    expect(corpus.assertionScope).toBe('synthetic-fixture');
+    expect(corpus.defaultLoaded).toBe(false);
+    expect(corpus.includeInCounts).toBe(false);
+    expect(corpus.includeInSearch).toBe(false);
+    expect(corpus.meta?.semantic_model).toEqual(expect.objectContaining({
+      schema: 'okf-semantic-model.v1'
+    }));
+  });
+
+  it('does not select a default-off synthetic corpus ahead of a faithful corpus', () => {
+    const corpus = normalizeSmallBundle({
+      meta: { default_corpus: 'synthetic' },
+      corpora: {
+        synthetic: {
+          id: 'synthetic',
+          title: 'Synthetic supplement',
+          nodes: { synthetic: { id: 'synthetic', title: 'Invented record' } },
+          assertion_scope: 'synthetic-fixture',
+          default_loaded: false,
+          include_in_counts: false,
+          include_in_search: false
+        },
+        faithful: {
+          id: 'faithful',
+          title: 'Faithful source corpus',
+          nodes: { official: { id: 'official', title: 'Source-backed record' } },
+          assertion_scope: 'real-world',
+          default_loaded: true
+        }
+      }
+    } as unknown as OkfBundle);
+
+    expect(corpus.id).toBe('faithful');
+    expect(corpus.assertionScope).toBe('real-world');
+    expect(Object.keys(corpus.nodes)).toEqual(['official']);
+  });
+
   it('normalizes an empty small bundle to safe defaults', () => {
     const corpus = normalizeSmallBundle({} as OkfBundle);
 

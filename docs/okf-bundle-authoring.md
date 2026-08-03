@@ -194,22 +194,22 @@ The canonical `okf-bundle.yamlld` or Markdown YAML-LD frontmatter should define
 the concept scheme and concepts. For example:
 
 ```yaml
-@context:
+"@context":
   - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
-@graph:
-  - @id: https://example.gov/okf/concept-scheme/topic
-    @type: skos:ConceptScheme
+"@graph":
+  - "@id": https://example.gov/okf/concept-scheme/topic
+    "@type": skos:ConceptScheme
     skos:prefLabel: Topic
-  - @id: https://example.gov/okf/topic/year
-    @type: skos:Concept
+  - "@id": https://example.gov/okf/topic/year
+    "@type": skos:Concept
     skos:prefLabel: Year
     skos:inScheme:
-      @id: https://example.gov/okf/concept-scheme/topic
-  - @id: https://example.gov/okf/topic/year/2018
-    @type: skos:Concept
+      "@id": https://example.gov/okf/concept-scheme/topic
+  - "@id": https://example.gov/okf/topic/year/2018
+    "@type": skos:Concept
     skos:prefLabel: "2018"
     skos:broader:
-      @id: https://example.gov/okf/topic/year
+      "@id": https://example.gov/okf/topic/year
 ```
 
 Bundle builders should compile these semantic assertions into the Explorer's

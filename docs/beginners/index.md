@@ -100,6 +100,10 @@ Read the chapters in order if the subject is new to you:
     explains every Foundry G0–G9 gate from first principles, distinguishes
     project-local gate catalogues, and gives beginner review checklists and
     copy-ready owner decisions.
+22. [Evaluation Foundry and YAML-LD](22-evaluation-foundry-and-yaml-ld.md)
+    adapts the Foundry process for functionality evaluation, then explains
+    what additive YAML-LD identity, predicates, assertion evidence and linked
+    Explorer routes provide beyond ordinary OKF front matter.
 
 ## Shorter Routes
 
@@ -153,6 +157,7 @@ explanation; “continue with” is the detailed contract or operating manual.
 | Domain warm-up and reproducible authoring handoff | 19 | [Foundry prompt kit](../okf-authoring-prompt-kit.md) |
 | Governed enrichment and frozen runtime evidence | 20 | [Legislation runtime acceptance](../legislation-runtime-acceptance.md) |
 | Release gates, receipts, independent review and owner decisions | 21 | [Foundry build prompt](../prompts/okf-bundle-build.md) |
+| Functionality evaluation, isolated synthetic fixtures and YAML-LD | 22 | [Heritage evaluation profile](../../evaluation-foundry/fixtures/heritage-warwickshire/profile.md) |
 
 ## Implementation Coverage Audit
 
@@ -182,6 +187,7 @@ only the concepts named in architecture documents:
 | Governed model enrichment and official-effects reconciliation | 20 |
 | Deterministic build manifests, SBOM and runtime acceptance | 20 |
 | Foundry G0–G9, project gate catalogues and owner review | 21 |
+| Evaluation profiles, YAML-LD semantic registries and direct/reified graph assertions | 22 |
 
 ## One Principle To Keep Throughout
 

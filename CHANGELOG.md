@@ -1,10 +1,28 @@
 # Changelog
 
-## Unreleased - Acceptance-fixture readiness
+## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
 - Made the external tiny-bundle acceptance fixture wait for the expected
   selected-record heading, so browser success proves hydration completed
   instead of merely observing the pre-hydration panel shell.
+- Added a production-scale Evaluation Foundry exemplar for every supported
+  National Heritage List for England feature intersecting the exact Coventry
+  and Warwickshire district boundaries, plus sanctioned annual Heritage at
+  Risk workbook evidence from 2013 to 2025.
+- Added a separate source-backed tiny assurance fixture and a clearly labelled,
+  default-off synthetic supplement so sparse semantic capabilities can be
+  demonstrated without contaminating faithful records, counts or search.
+- Extended OKF Markdown additively with governed YAML-LD identity, predicates,
+  qualified assertions and deterministic JSON-LD projections, while retaining
+  backward-compatible rendering for consumers that understand only ordinary
+  YAML front matter and Markdown.
+- Added Explorer presentations for heritage detail, source geometry and
+  qualified graph evidence, together with bounded alternative-name and
+  one-edit typo-tolerant search whose corrections remain visible to users.
+- Added a beginner-facing process, 100-question evaluation suite, executable
+  consumer journeys, source acquisition and reconciliation receipts,
+  identifier-bound link validation, release-root integrity checks and rendered
+  HTML publication for the faithful, tiny and synthetic products.
 
 ## v0.5.7 - 2026-07-29 - Fail-closed descriptor identity
 

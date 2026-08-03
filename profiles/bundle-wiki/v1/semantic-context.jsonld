@@ -1,0 +1,170 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "okf": "https://chris-page-gov.github.io/okf-explorer/ns#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "assertions": {
+      "@id": "okf:assertion",
+      "@container": "@set",
+      "@context": {
+        "source": {
+          "@id": "rdf:subject",
+          "@type": "@id"
+        },
+        "predicate": {
+          "@id": "rdf:predicate",
+          "@type": "@id"
+        },
+        "target": {
+          "@id": "rdf:object",
+          "@type": "@id"
+        },
+        "kind": "rdfs:label",
+        "label": "rdfs:label",
+        "inverse_label": "okf:inverseLabel",
+        "assertion_status": {
+          "@id": "okf:assertionStatus",
+          "@type": "@vocab"
+        },
+        "assertion_scope": {
+          "@id": "okf:assertionScope",
+          "@type": "@vocab"
+        },
+        "official": "okf:OfficialAssertion",
+        "normalized": "okf:NormalizedAssertion",
+        "inferred": "okf:InferredAssertion",
+        "model-derived": "okf:ModelDerivedAssertion",
+        "real-world": "okf:RealWorldScope",
+        "synthetic-fixture": "okf:SyntheticFixtureScope",
+        "authority": {
+          "@id": "okf:authority",
+          "@context": {
+            "class": {
+              "@id": "okf:authorityClass",
+              "@type": "@vocab"
+            },
+            "official": "okf:OfficialAuthority",
+            "derived": "okf:DerivedAuthority",
+            "model-assisted": "okf:ModelAssistedAuthority",
+            "synthetic": "okf:SyntheticAuthority",
+            "unclassified": "okf:UnclassifiedAuthority",
+            "label": "rdfs:label",
+            "source": {
+              "@id": "http://purl.org/dc/terms/source",
+              "@type": "@id"
+            }
+          }
+        },
+        "derivation": {
+          "@id": "okf:derivationMethod",
+          "@type": "@id"
+        },
+        "derivation_activity": {
+          "@id": "prov:wasGeneratedBy",
+          "@type": "@id"
+        },
+        "rule": {
+          "@id": "okf:rule",
+          "@type": "@id"
+        },
+        "supporting_assertions": {
+          "@id": "prov:wasDerivedFrom",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "confidence_score": {
+          "@id": "okf:confidenceScore",
+          "@type": "xsd:decimal"
+        },
+        "strength": {
+          "@id": "okf:strength",
+          "@type": "xsd:decimal"
+        },
+        "count": {
+          "@id": "okf:count",
+          "@type": "xsd:integer"
+        },
+        "observed_at": {
+          "@id": "prov:generatedAtTime",
+          "@type": "xsd:dateTime"
+        },
+        "stale_after": {
+          "@id": "okf:staleAfter",
+          "@type": "xsd:dateTime"
+        },
+        "review_status": "okf:reviewStatus",
+        "evidence": {
+          "@id": "prov:hadPrimarySource",
+          "@container": "@set",
+          "@context": {
+            "type": "okf:evidenceType",
+            "url": {
+              "@id": "https://schema.org/url",
+              "@type": "@id"
+            },
+            "resource": {
+              "@id": "http://purl.org/dc/terms/source",
+              "@type": "@id"
+            },
+            "source_artifact": "okf:sourceArtifact",
+            "source_sha256": "okf:sourceSha256",
+            "source_field": "okf:sourceField",
+            "field_provenance": "okf:fieldProvenance",
+            "source_value": "okf:sourceValue",
+            "source_value_sha256": "okf:sourceValueSha256",
+            "source_value_hash_canonicalization": "okf:sourceValueHashCanonicalization",
+            "literal_sha256": "okf:literalSha256",
+            "locator": "okf:sourceLocator",
+            "normalization": {
+              "@id": "okf:normalizationRule",
+              "@type": "@id"
+            },
+            "rule_id": {
+              "@id": "okf:rule",
+              "@type": "@id"
+            },
+            "rationale": "okf:rationale",
+            "retrieved_at": {
+              "@id": "prov:generatedAtTime",
+              "@type": "xsd:dateTime"
+            }
+          }
+        },
+        "rights": {
+          "@id": "okf:rights",
+          "@context": {
+            "source": {
+              "@id": "http://purl.org/dc/terms/license",
+              "@type": "@id"
+            },
+            "assertion": "okf:assertionRights"
+          }
+        }
+      }
+    },
+    "search_variants": {
+      "@id": "okf:searchVariant",
+      "@container": "@set",
+      "@context": {
+        "value": "rdf:value",
+        "kind": "okf:variantKind",
+        "language": "http://purl.org/dc/terms/language",
+        "visible": {
+          "@id": "okf:visible",
+          "@type": "xsd:boolean"
+        },
+        "activity": {
+          "@id": "prov:wasGeneratedBy",
+          "@type": "@id"
+        },
+        "rule": {
+          "@id": "okf:rule",
+          "@type": "@id"
+        }
+      }
+    }
+  }
+}

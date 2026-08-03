@@ -25,7 +25,9 @@ const AVAILABILITY = new Set<FederationAvailability>([
   'unavailable',
   'planned'
 ]);
-const AUTHORITY = new Set(['official', 'derived', 'model-assisted', 'unclassified']);
+const AUTHORITY = new Set(['official', 'derived', 'model-assisted', 'synthetic', 'unclassified']);
+const ASSERTION_STATUS = new Set(['official', 'normalized', 'inferred', 'model-derived']);
+const ASSERTION_SCOPE = new Set(['real-world', 'synthetic-fixture']);
 const FRESHNESS = new Set(['current', 'stale', 'unknown']);
 
 function recordValue(value: unknown, label: string): Record<string, unknown> {
@@ -141,7 +143,7 @@ function normalizedAuthority(value: unknown, baseUrl: string, label: string): Fe
   const record = recordValue(value, label);
   const authorityClass = stringValue(record, 'class', label).toLowerCase().replace(/_/g, '-');
   if (!AUTHORITY.has(authorityClass)) {
-    throw new Error(`${label}.class must be official, derived, model-assisted or unclassified`);
+    throw new Error(`${label}.class must be official, derived, model-assisted, synthetic or unclassified`);
   }
   const authority: FederationAuthority = { class: authorityClass };
   const authorityLabel = optionalString(record, 'label');
@@ -355,17 +357,76 @@ function normalizedRelationship(
     derivation: stringValue(record, 'derivation', label)
   };
   const schema = optionalString(record, 'schema');
+  const identifier = optionalString(record, 'id');
+  const sourceIri = optionalString(record, 'source_iri');
+  const targetIri = optionalString(record, 'target_iri');
   const relationshipLabel = optionalString(record, 'label');
+  const inverseLabel = optionalString(record, 'inverse_label');
+  const assertionStatus = optionalString(record, 'assertion_status');
+  const assertionScope = optionalString(record, 'assertion_scope');
+  const derivationActivity = optionalString(record, 'derivation_activity');
+  const rule = optionalString(record, 'rule');
+  const reviewStatus = optionalString(record, 'review_status');
   const confidence = record.confidence;
   const observedAt = optionalString(record, 'observed_at');
   const staleAfter = optionalString(record, 'stale_after');
   const freshness = optionalString(record, 'freshness');
   if (schema) relationship.schema = schema;
+  if (identifier) relationship.id = identifier;
+  if (sourceIri) relationship.source_iri = sourceIri;
+  if (targetIri) relationship.target_iri = targetIri;
   if (relationshipLabel) relationship.label = relationshipLabel;
+  if (inverseLabel) relationship.inverse_label = inverseLabel;
+  if (assertionStatus) {
+    if (!ASSERTION_STATUS.has(assertionStatus)) throw new Error(`${label}.assertion_status is invalid`);
+    relationship.assertion_status = assertionStatus;
+  }
+  if (assertionScope) {
+    if (!ASSERTION_SCOPE.has(assertionScope)) throw new Error(`${label}.assertion_scope is invalid`);
+    relationship.assertion_scope = assertionScope;
+  }
+  if (assertionStatus && assertionScope) {
+    const authorityByStatus: Record<string, string> = {
+      official: 'official',
+      normalized: 'derived',
+      inferred: 'derived',
+      'model-derived': 'model-assisted'
+    };
+    const expectedAuthority = assertionScope === 'synthetic-fixture'
+      ? 'synthetic'
+      : authorityByStatus[assertionStatus];
+    if (relationship.authority.class !== expectedAuthority) {
+      throw new Error(`${label}.authority.class does not match assertion status and scope`);
+    }
+  }
+  if (derivationActivity) relationship.derivation_activity = derivationActivity;
+  if (rule) relationship.rule = rule;
+  if (reviewStatus) relationship.review_status = reviewStatus;
+  if (record.supporting_assertions !== undefined) {
+    if (
+      !Array.isArray(record.supporting_assertions)
+      || !record.supporting_assertions.length
+      || record.supporting_assertions.some((item) => typeof item !== 'string' || !item.trim())
+    ) throw new Error(`${label}.supporting_assertions must contain non-empty strings`);
+    relationship.supporting_assertions = record.supporting_assertions as string[];
+  }
   if (confidence !== undefined) {
     if (!['string', 'number'].includes(typeof confidence)) throw new Error(`${label}.confidence must be a string or number`);
     relationship.confidence = confidence as string | number;
   }
+  if (record.confidence_score !== undefined) {
+    const confidenceScore = Number(record.confidence_score);
+    if (!Number.isFinite(confidenceScore) || confidenceScore < 0 || confidenceScore > 1) {
+      throw new Error(`${label}.confidence_score must be between zero and one`);
+    }
+    relationship.confidence_score = confidenceScore;
+  }
+  if (record.strength !== undefined) {
+    const strength = Number(record.strength);
+    if (!Number.isFinite(strength)) throw new Error(`${label}.strength must be numeric`);
+    relationship.strength = strength;
+  }
+  if (record.count !== undefined) relationship.count = nonNegativeInteger(record.count, `${label}.count`);
   if (observedAt) relationship.observed_at = observedAt;
   if (staleAfter) relationship.stale_after = staleAfter;
   if (freshness) {

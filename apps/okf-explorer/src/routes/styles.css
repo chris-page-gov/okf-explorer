@@ -2033,6 +2033,18 @@ input:focus {
   padding: 12px 18px 0;
 }
 
+.semantic-scope-notice {
+  display: grid;
+  gap: 3px;
+  margin: 10px 14px 0;
+  padding: 9px 11px;
+  border: 1px solid #a86e25;
+  border-radius: 7px;
+  color: #72440e;
+  background: #fff4df;
+  font-size: 12px;
+}
+
 [data-relationship-authority="official"] {
   border-color: #4b8f68 !important;
 }
@@ -2043,6 +2055,10 @@ input:focus {
 
 [data-relationship-authority="model-assisted"] {
   border-color: #8a64a8 !important;
+}
+
+[data-relationship-authority="synthetic"] {
+  border-color: #a86e25 !important;
 }
 
 .badge[data-relationship-authority="official"],
@@ -2066,6 +2082,19 @@ input:focus {
   background: #f7effb;
 }
 
+.badge[data-relationship-authority="synthetic"],
+.relationship-authority-strip [data-relationship-authority="synthetic"],
+.federation-authority-summary [data-relationship-authority="synthetic"] {
+  color: #72440e;
+  background: #fff4df;
+}
+
+.badge[data-relationship-scope="synthetic-fixture"] {
+  border-color: #a86e25;
+  color: #72440e;
+  background: #fff4df;
+}
+
 .badge[data-relationship-freshness="stale"] {
   border-color: #b85c49;
   color: #7a2e20;
@@ -2084,6 +2113,11 @@ input:focus {
 .graph .graph-edge[data-relationship-authority="model-assisted"] {
   stroke: #8a64a8;
   stroke-dasharray: 3 4;
+}
+
+.graph .graph-edge[data-relationship-authority="synthetic"] {
+  stroke: #a86e25;
+  stroke-dasharray: 2 5;
 }
 
 .edge-panel button[data-relationship-authority] small {
@@ -2269,6 +2303,14 @@ input:focus {
 
 .graph-authority-filters button[data-authority="model-assisted"] i {
   background: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 7px);
+}
+
+.graph-authority-filters button[data-authority="synthetic"] {
+  color: #72440e;
+}
+
+.graph-authority-filters button[data-authority="synthetic"] i {
+  background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 7px);
 }
 
 .graph-authority-filters button[data-authority="unclassified"] {

@@ -1,4 +1,5 @@
 import type { LargeSearchManifest } from '$lib/types';
+import { TYPO_TOLERANCE_CONTRACT } from '$lib/search/typoTolerance';
 
 export const SEARCH_MANIFEST_LIMITS = Object.freeze({
   maxManifestShardReferences: 4096,
@@ -100,6 +101,24 @@ export function validateLargeSearchManifest(value: unknown, expectedSnapshot = '
     }
   }
 
+  const declaresTypoContract = Object.prototype.hasOwnProperty.call(document, 'typo_tolerance');
+  const declaresTypoShards = Object.prototype.hasOwnProperty.call(entries, 'typo_deletions');
+  if (declaresTypoContract !== declaresTypoShards) {
+    throw new Error('Search manifest typo tolerance must declare both its contract and deletion shards');
+  }
+  if (declaresTypoContract) {
+    if (document.schema !== 'okf-static-search.v2') {
+      throw new Error('Search manifest typo tolerance is supported only by okf-static-search.v2');
+    }
+    exactContract(document.typo_tolerance, TYPO_TOLERANCE_CONTRACT, 'typo_tolerance');
+    if (
+      references(entries.typo_deletions, 'typo_deletions', 'object') >
+      SEARCH_MANIFEST_LIMITS.maxManifestShardReferences
+    ) {
+      throw new Error('Search manifest typo_deletions entrypoints exceed the supported limit');
+    }
+  }
+
   if (Object.prototype.hasOwnProperty.call(document, 'postings_partitioning')) {
     exactContract(document.postings_partitioning, POSTINGS_PARTITIONING_CONTRACT, 'postings_partitioning');
     if (Number(document.lexicon_shard_length) !== POSTINGS_PARTITIONING_CONTRACT.logical_shard_length) {
@@ -133,6 +152,13 @@ export function validateLargeSearchManifest(value: unknown, expectedSnapshot = '
   const docMapCount = Array.isArray(entries.doc_map) ? entries.doc_map.length : 1;
   if (countRows.doc_map_shards !== undefined && Number(countRows.doc_map_shards) !== docMapCount) {
     throw new Error('Search manifest doc_map_shards count differs from its entrypoints');
+  }
+  const typoDeletionCount = declaresTypoShards ? Object.keys(entries.typo_deletions as object).length : 0;
+  if (
+    countRows.typo_deletion_shards !== undefined &&
+    Number(countRows.typo_deletion_shards) !== typoDeletionCount
+  ) {
+    throw new Error('Search manifest typo_deletion_shards count differs from its entrypoints');
   }
 
   return {

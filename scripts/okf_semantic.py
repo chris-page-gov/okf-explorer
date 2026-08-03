@@ -3,13 +3,17 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
+from collections import Counter
 from dataclasses import dataclass
 from datetime import date, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import urlsplit
 
 from jsonschema import Draft202012Validator, FormatChecker
 from pyld import jsonld
@@ -19,7 +23,21 @@ ROOT = Path(__file__).resolve().parents[1]
 PROFILE_ROOT = ROOT / "profiles" / "bundle-wiki" / "v1"
 CONTEXT_PATH = PROFILE_ROOT / "context.jsonld"
 CONTEXT_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld"
+SEMANTIC_CONTEXT_PATH = PROFILE_ROOT / "semantic-context.jsonld"
+SEMANTIC_CONTEXT_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-context.jsonld"
 PROFILE_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+
+RDF_TYPE = "@type"
+RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+RDF_SUBJECT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"
+RDF_PREDICATE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
+RDF_OBJECT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
+OKF_ASSERTION = "https://chris-page-gov.github.io/okf-explorer/ns#assertion"
+OKF_RELATIONSHIP_ASSERTION = "https://chris-page-gov.github.io/okf-explorer/ns#RelationshipAssertion"
+DCTERMS_REFERENCES = "http://purl.org/dc/terms/references"
+ASSERTION_STATUSES = {"official", "normalized", "inferred", "model-derived"}
+ASSERTION_SCOPES = {"real-world", "synthetic-fixture"}
+AUTHORITY_CLASSES = {"official", "derived", "model-assisted", "synthetic", "unclassified"}
 
 
 class SemanticError(ValueError):
@@ -345,19 +363,94 @@ def legacy_frontmatter(metadata: dict[str, Any]) -> dict[str, str]:
     return projected
 
 
+@lru_cache(maxsize=None)
 def load_schema(name: str) -> dict[str, Any]:
-    return json.loads((PROFILE_ROOT / name).read_text(encoding="utf-8"))
+    relative = Path(name)
+    path = PROFILE_ROOT / relative
+    if not path.is_file():
+        path = ROOT / "profiles" / relative
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=None)
+def schema_validator(name: str) -> Draft202012Validator:
+    return Draft202012Validator(load_schema(name), format_checker=FormatChecker())
 
 
 def schema_errors(document: dict[str, Any], schema_name: str) -> list[str]:
-    validator = Draft202012Validator(load_schema(schema_name), format_checker=FormatChecker())
+    validator = schema_validator(schema_name)
     return [f"{'.'.join(str(part) for part in error.absolute_path) or '$'}: {error.message}" for error in sorted(validator.iter_errors(document), key=lambda item: list(item.absolute_path))]
 
 
-def pinned_document_loader(extra: dict[str, Any] | None = None) -> Callable[[str, dict[str, Any] | None], dict[str, Any]]:
-    contexts: dict[str, Any] = {
-        CONTEXT_URL: json.loads(CONTEXT_PATH.read_text(encoding="utf-8")),
+def canonical_json_bytes(document: Any) -> bytes:
+    """Return the repository's deterministic JSON root material."""
+    return (
+        json.dumps(
+            document,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def sha256_hex(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def _context_documents() -> dict[str, Any]:
+    """Load repository-reviewed contexts without permitting network retrieval."""
+    contexts: dict[str, Any] = {}
+    profile_root = ROOT / "profiles"
+    for path in sorted(profile_root.rglob("*.jsonld")):
+        if "context" not in path.name.casefold():
+            continue
+        relative = path.relative_to(profile_root).as_posix()
+        document = json.loads(path.read_text(encoding="utf-8"))
+        for prefix in (
+            "https://chris-page-gov.github.io/okf-explorer/profile/",
+            "https://chris-page-gov.github.io/okf-explorer/profiles/",
+        ):
+            contexts[f"{prefix}{relative}"] = document
+    # Retain these explicit aliases as a fail-safe if profile discovery changes.
+    contexts.setdefault(
+        CONTEXT_URL,
+        json.loads(CONTEXT_PATH.read_text(encoding="utf-8")),
+    )
+    contexts.setdefault(
+        SEMANTIC_CONTEXT_URL,
+        json.loads(SEMANTIC_CONTEXT_PATH.read_text(encoding="utf-8")),
+    )
+    return contexts
+
+
+def context_reference(url: str) -> dict[str, str]:
+    """Return the local path and byte digest for a pinned public context URL."""
+    prefixes = (
+        "https://chris-page-gov.github.io/okf-explorer/profile/",
+        "https://chris-page-gov.github.io/okf-explorer/profiles/",
+    )
+    relative = next((url.removeprefix(prefix) for prefix in prefixes if url.startswith(prefix)), "")
+    profile_root = (ROOT / "profiles").resolve()
+    path = (profile_root / relative).resolve()
+    if (
+        not relative
+        or not path.is_relative_to(profile_root)
+        or not path.is_file()
+        or "context" not in path.name.casefold()
+    ):
+        raise SemanticError(f"pinned JSON-LD context has no reviewed local copy: {url}")
+    return {
+        "url": url,
+        "path": path.relative_to(ROOT).as_posix(),
+        "sha256": sha256_hex(path.read_bytes()),
+        "media_type": "application/ld+json",
     }
+
+
+def pinned_document_loader(extra: dict[str, Any] | None = None) -> Callable[[str, dict[str, Any] | None], dict[str, Any]]:
+    contexts = _context_documents()
     contexts.update(extra or {})
 
     def load(url: str, _options: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -373,23 +466,700 @@ def pinned_document_loader(extra: dict[str, Any] | None = None) -> Callable[[str
     return load
 
 
-def expand(document: dict[str, Any]) -> list[dict[str, Any]]:
+def expand(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     try:
-        return jsonld.expand(document, options={"documentLoader": pinned_document_loader()})
+        return jsonld.expand(
+            document,
+            options={"documentLoader": pinned_document_loader(extra_contexts)},
+        )
     except Exception as exc:
         raise SemanticError(f"JSON-LD expansion failed: {exc}") from exc
 
 
-def compact(document: dict[str, Any]) -> dict[str, Any]:
+def compact(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    compacting_context: Any = document.get("@context") or CONTEXT_URL
     try:
         return jsonld.compact(
-            expand(document),
-            CONTEXT_URL,
-            options={"documentLoader": pinned_document_loader(), "compactArrays": False},
+            expand(document, extra_contexts=extra_contexts),
+            compacting_context,
+            options={
+                "documentLoader": pinned_document_loader(extra_contexts),
+                "compactArrays": False,
+            },
         )
     except Exception as exc:
         raise SemanticError(f"JSON-LD compaction failed: {exc}") from exc
 
 
-def semantic_json(document: dict[str, Any]) -> str:
-    return json.dumps(compact(document), ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+def semantic_json(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> str:
+    return (
+        json.dumps(
+            compact(document, extra_contexts=extra_contexts),
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+
+
+def _as_list(value: Any) -> list[Any]:
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
+
+
+def iri_value(value: Any) -> str:
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, dict):
+        return str(value.get("@id") or "").strip()
+    return ""
+
+
+def _expanded_ids(node: dict[str, Any], predicate: str) -> list[str]:
+    values: list[str] = []
+    for value in _as_list(node.get(predicate)):
+        if isinstance(value, dict) and str(value.get("@id") or "").strip():
+            values.append(str(value["@id"]).strip())
+    return values
+
+
+def _expanded_assertion_nodes(expanded: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    assertions: list[dict[str, Any]] = []
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
+        if not isinstance(value, dict):
+            return
+        for assertion in _as_list(value.get(OKF_ASSERTION)):
+            if isinstance(assertion, dict):
+                assertions.append(assertion)
+        for key, item in value.items():
+            if key != OKF_ASSERTION:
+                visit(item)
+
+    visit(expanded)
+    return assertions
+
+
+def _expanded_node_index(expanded: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    index: dict[str, list[dict[str, Any]]] = {}
+    seen_objects: set[int] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
+        if not isinstance(value, dict) or id(value) in seen_objects:
+            return
+        seen_objects.add(id(value))
+        identifier = str(value.get("@id") or "").strip()
+        if identifier:
+            index.setdefault(identifier, []).append(value)
+        for item in value.values():
+            visit(item)
+
+    visit(expanded)
+    return index
+
+
+def _expanded_assertion_rows_with_document(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> tuple[list[dict[str, Any]], list[str], list[dict[str, Any]] | None]:
+    """Return authored assertions paired with their fully expanded RDF triple."""
+    raw_assertions = document.get("assertions")
+    if raw_assertions is None:
+        return [], [], None
+    if not isinstance(raw_assertions, list) or not raw_assertions:
+        return [], ["assertions must be a non-empty list"], None
+
+    errors: list[str] = []
+    for index, assertion in enumerate(raw_assertions):
+        if not isinstance(assertion, dict):
+            errors.append(f"assertions[{index}] must be a mapping")
+            continue
+        errors.extend(
+            f"assertions[{index}].{error}"
+            for error in schema_errors(assertion, "semantic-assertion.schema.json")
+        )
+    if errors:
+        return [], errors, None
+
+    try:
+        expanded = expand(document, extra_contexts=extra_contexts)
+    except SemanticError as exc:
+        return [], [str(exc)], None
+    expanded_nodes = _expanded_assertion_nodes(expanded)
+    expanded_by_id: dict[str, dict[str, Any]] = {}
+    for node in expanded_nodes:
+        identifier = str(node.get("@id") or "").strip()
+        if not identifier:
+            errors.append("expanded semantic assertion is missing @id")
+        elif identifier in expanded_by_id:
+            errors.append(f"duplicate expanded semantic assertion @id: {identifier}")
+        else:
+            expanded_by_id[identifier] = node
+
+    rows: list[dict[str, Any]] = []
+    for index, raw in enumerate(raw_assertions):
+        assert isinstance(raw, dict)
+        identifier = str(raw.get("@id") or "").strip()
+        node = expanded_by_id.get(identifier)
+        if node is None:
+            errors.append(f"assertions[{index}] did not expand to okf:assertion: {identifier or '<missing @id>'}")
+            continue
+        types = {str(value) for value in _as_list(node.get(RDF_TYPE))}
+        for required_type in (RDF_STATEMENT, OKF_RELATIONSHIP_ASSERTION):
+            if required_type not in types:
+                errors.append(
+                    f"assertions[{index}] must expand @type to {required_type}"
+                )
+        triple: list[str] = []
+        for label, predicate in (
+            ("source", RDF_SUBJECT),
+            ("predicate", RDF_PREDICATE),
+            ("target", RDF_OBJECT),
+        ):
+            values = _expanded_ids(node, predicate)
+            if len(values) != 1:
+                errors.append(
+                    f"assertions[{index}].{label} must expand to exactly one IRI"
+                )
+                triple.append("")
+            else:
+                triple.append(values[0])
+        rows.append(
+            {
+                "id": identifier,
+                "raw": raw,
+                "expanded": node,
+                "source_iri": triple[0],
+                "predicate": triple[1],
+                "target_iri": triple[2],
+            }
+        )
+    return rows, errors, expanded
+
+
+def expanded_assertion_rows(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Return authored assertions paired with their fully expanded RDF triple."""
+    rows, errors, _expanded = _expanded_assertion_rows_with_document(
+        document,
+        extra_contexts=extra_contexts,
+    )
+    return rows, errors
+
+
+def _semantic_assertion_reconciliation_errors(
+    rows: list[dict[str, Any]],
+    expanded: list[dict[str, Any]],
+) -> list[str]:
+    errors: list[str] = []
+    scopes = {
+        str(row["raw"].get("assertion_scope") or "")
+        for row in rows
+    }
+    if len(scopes) > 1:
+        errors.append(
+            "real-world and synthetic-fixture assertions must be published "
+            "as separate semantic documents"
+        )
+    triples = [
+        (row["source_iri"], row["predicate"], row["target_iri"])
+        for row in rows
+        if row["source_iri"] and row["predicate"] and row["target_iri"]
+    ]
+    duplicate_triples = sorted(
+        triple for triple, count in Counter(triples).items() if count > 1
+    )
+    errors.extend(
+        "more than one assertion reifies direct triple " + " → ".join(triple)
+        for triple in duplicate_triples
+    )
+    node_index = _expanded_node_index(expanded)
+    asserted_predicates = {predicate for _source, predicate, _target in triples}
+    assertion_ids = {row["id"] for row in rows}
+    direct_triples: set[tuple[str, str, str]] = set()
+    for source, nodes in node_index.items():
+        if source in assertion_ids:
+            continue
+        for node in nodes:
+            types = {str(value) for value in _as_list(node.get(RDF_TYPE))}
+            if RDF_STATEMENT in types or OKF_RELATIONSHIP_ASSERTION in types:
+                continue
+            for predicate in asserted_predicates:
+                for target in _expanded_ids(node, predicate):
+                    direct_triples.add((source, predicate, target))
+
+    assertion_triples = set(triples)
+    for triple in sorted(assertion_triples - direct_triples):
+        errors.append(
+            "reified assertion has no matching direct triple: "
+            + " → ".join(triple)
+        )
+    for triple in sorted(direct_triples - assertion_triples):
+        errors.append(
+            "direct semantic triple has no matching reified assertion: "
+            + " → ".join(triple)
+        )
+    return errors
+
+
+def validate_semantic_assertions(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> list[str]:
+    """Validate evidence-bearing assertions and their asserted direct triples."""
+    rows, errors, expanded = _expanded_assertion_rows_with_document(
+        document,
+        extra_contexts=extra_contexts,
+    )
+    if errors or not rows or expanded is None:
+        return errors
+    return [
+        *errors,
+        *_semantic_assertion_reconciliation_errors(rows, expanded),
+    ]
+
+
+def _route_error(route: str) -> str:
+    if not route:
+        return "route must be non-empty"
+    if route.startswith("/") or "\\" in route or "?" in route or "#" in route:
+        return "route must be a relative path without query, fragment or backslash"
+    if any(part in {"", ".", ".."} for part in route.split("/")):
+        return "route contains an empty or dot path segment"
+    if route.casefold().endswith(".md"):
+        return "semantic routes must not expose Markdown filenames"
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._~/-]*", route):
+        return "route contains unsupported characters"
+    return ""
+
+
+def _local_page_for_iri(iri: str) -> tuple[str, str]:
+    parts = urlsplit(iri)
+    if (
+        parts.scheme in {"http", "https"}
+        and parts.netloc == "chris-page-gov.github.io"
+        and parts.path.startswith("/okf-explorer/")
+        and parts.path.casefold().endswith(".html")
+    ):
+        return parts.path.removeprefix("/okf-explorer/"), parts.fragment
+    return "", parts.fragment
+
+
+def build_iri_route_registry(
+    records: dict[str, dict[str, Any]],
+    *,
+    snapshot: str = "",
+) -> dict[str, Any]:
+    """Build a deterministic, integrity-bound semantic IRI-to-route registry."""
+    entries_by_iri: dict[str, dict[str, str]] = {}
+    iri_by_route: dict[str, str] = {}
+    errors: list[str] = []
+
+    def register(value: dict[str, Any], fallback_route: str = "") -> None:
+        iri = str(value.get("@id") or "").strip()
+        route = str(value.get("route") or fallback_route).strip()
+        if not iri or not route:
+            return
+        parsed = urlsplit(iri)
+        if not parsed.scheme:
+            errors.append(f"semantic @id is not absolute: {iri}")
+            return
+        route_problem = _route_error(route)
+        if route_problem:
+            errors.append(f"{route}: {route_problem}")
+            return
+        page = str(value.get("page") or "").strip()
+        derived_page, fragment = _local_page_for_iri(iri)
+        if not page:
+            page = derived_page
+        fragment = str(value.get("fragment") or fragment).strip()
+        semantic_type = value.get("@type")
+        if isinstance(semantic_type, list):
+            semantic_type = semantic_type[0] if semantic_type else ""
+        entry = {
+            "iri": iri,
+            "route": route,
+            **({"page": page} if page else {}),
+            **({"fragment": fragment} if fragment else {}),
+            **(
+                {"kind": str(value.get("type") or semantic_type).strip()}
+                if str(value.get("type") or semantic_type).strip()
+                else {}
+            ),
+            **(
+                {"title": str(value.get("title") or value.get("name")).strip()}
+                if str(value.get("title") or value.get("name")).strip()
+                else {}
+            ),
+        }
+        existing = entries_by_iri.get(iri)
+        if existing:
+            for key in ("route", "page", "fragment", "kind", "title"):
+                previous = str(existing.get(key) or "")
+                candidate = str(entry.get(key) or "")
+                if previous and candidate and previous != candidate:
+                    errors.append(
+                        f"semantic IRI maps inconsistently for {key}: {iri}"
+                    )
+                    return
+                if candidate and not previous:
+                    existing[key] = candidate
+            entry = existing
+        previous_iri = iri_by_route.get(route)
+        if previous_iri and previous_iri != iri:
+            errors.append(
+                f"semantic route collision: {route} maps {previous_iri} and {iri}"
+            )
+            return
+        entries_by_iri[iri] = entry
+        iri_by_route[route] = iri
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
+        if not isinstance(value, dict):
+            return
+        if value.get("route"):
+            register(value)
+        for key, item in value.items():
+            if key != "assertions":
+                visit(item)
+
+    for fallback_route, metadata in sorted(records.items()):
+        register(metadata, fallback_route)
+        visit(metadata)
+    if errors:
+        raise SemanticError("invalid semantic IRI-to-route registry:\n- " + "\n- ".join(errors))
+    if not entries_by_iri:
+        raise SemanticError("semantic IRI-to-route registry has no entries")
+
+    material: dict[str, Any] = {
+        "schema": "okf-iri-route-registry.v1",
+        **({"snapshot": snapshot} if snapshot else {}),
+        "entries": sorted(
+            entries_by_iri.values(),
+            key=lambda entry: (entry["iri"], entry["route"]),
+        ),
+    }
+    material["counts"] = {"entries": len(material["entries"])}
+    registry = {
+        **material,
+        "root_sha256": sha256_hex(canonical_json_bytes(material)),
+    }
+    validation_errors = validate_iri_route_registry(registry)
+    if validation_errors:
+        raise SemanticError(
+            "invalid semantic IRI-to-route registry:\n- "
+            + "\n- ".join(validation_errors)
+        )
+    return registry
+
+
+def validate_iri_route_registry(registry: dict[str, Any]) -> list[str]:
+    errors = schema_errors(registry, "iri-route-registry.schema.json")
+    entries = registry.get("entries")
+    if not isinstance(entries, list):
+        return errors
+    iris: set[str] = set()
+    routes: set[str] = set()
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            continue
+        iri = str(entry.get("iri") or "")
+        route = str(entry.get("route") or "")
+        if iri in iris:
+            errors.append(f"entries[{index}].iri is duplicated: {iri}")
+        if route in routes:
+            errors.append(f"entries[{index}].route is duplicated: {route}")
+        iris.add(iri)
+        routes.add(route)
+        route_problem = _route_error(route)
+        if route_problem:
+            errors.append(f"entries[{index}].route: {route_problem}")
+    if registry.get("counts", {}).get("entries") != len(entries):
+        errors.append("counts.entries differs from entries length")
+    material = {key: value for key, value in registry.items() if key != "root_sha256"}
+    expected_root = sha256_hex(canonical_json_bytes(material))
+    if registry.get("root_sha256") != expected_root:
+        errors.append("root_sha256 does not bind the canonical registry material")
+    return errors
+
+
+def validate_predicate_registry(registry: dict[str, Any]) -> list[str]:
+    errors = schema_errors(registry, "predicate-registry.schema.json")
+    predicates = registry.get("predicates")
+    if not isinstance(predicates, list):
+        return errors
+    iris: set[str] = set()
+    for index, predicate in enumerate(predicates):
+        if not isinstance(predicate, dict):
+            continue
+        iri = str(predicate.get("iri") or "")
+        if iri in iris:
+            errors.append(f"predicates[{index}].iri is duplicated: {iri}")
+        iris.add(iri)
+    if registry.get("counts", {}).get("predicates") != len(predicates):
+        errors.append("counts.predicates differs from predicates length")
+    material = {key: value for key, value in registry.items() if key != "root_sha256"}
+    expected_root = sha256_hex(canonical_json_bytes(material))
+    if registry.get("root_sha256") != expected_root:
+        errors.append("root_sha256 does not bind the canonical predicate registry")
+    return errors
+
+
+def build_predicate_registry(
+    predicates: list[dict[str, Any]],
+    *,
+    snapshot: str,
+    generated_at_value: str,
+) -> dict[str, Any]:
+    material = {
+        "schema": "okf-predicate-registry.v1",
+        "snapshot": snapshot,
+        "generated_at": generated_at_value,
+        "predicates": sorted(
+            predicates,
+            key=lambda item: str(item.get("iri") or ""),
+        ),
+        "counts": {"predicates": len(predicates)},
+    }
+    registry = {
+        **material,
+        "root_sha256": sha256_hex(canonical_json_bytes(material)),
+    }
+    errors = validate_predicate_registry(registry)
+    if errors:
+        raise SemanticError(
+            "invalid predicate registry:\n- " + "\n- ".join(errors)
+        )
+    return registry
+
+
+def predicate_registry_from_relationships(
+    relationships: list[dict[str, Any]],
+    *,
+    snapshot: str,
+    generated_at_value: str,
+) -> dict[str, Any]:
+    """Build the bounded predicate registry declared by authored assertions."""
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for relationship in relationships:
+        predicate = str(relationship.get("predicate") or "").strip()
+        if predicate:
+            grouped.setdefault(predicate, []).append(relationship)
+    predicates: list[dict[str, Any]] = []
+    for predicate, rows in sorted(grouped.items()):
+        labels = {str(row.get("kind") or row.get("label") or "").strip() for row in rows}
+        inverse_labels = {str(row.get("inverse_label") or "").strip() for row in rows}
+        if len(labels - {""}) != 1 or len(inverse_labels - {""}) != 1:
+            raise SemanticError(
+                f"predicate {predicate} has conflicting or missing preferred/inverse labels"
+            )
+        statuses = sorted(
+            {
+                str(row.get("assertion_status") or "")
+                for row in rows
+                if str(row.get("assertion_status") or "") in ASSERTION_STATUSES
+            }
+        )
+        namespace = predicate.rsplit("#", 1)[0] if "#" in predicate else predicate.rsplit("/", 1)[0]
+        predicates.append(
+            {
+                "iri": predicate,
+                "preferred_label": next(iter(labels - {""})),
+                "inverse_label": next(iter(inverse_labels - {""})),
+                "description": "Relationship predicate declared by the authored YAML-LD assertions.",
+                "domain": [],
+                "range": [],
+                "super_properties": [],
+                "characteristics": [],
+                "assertion_statuses": statuses or ["normalized"],
+                "evidence_policy": {
+                    "minimum_fields": ["source_field", "source_value_sha256"]
+                },
+                "source_vocabulary": {
+                    "iri": namespace or predicate,
+                    "version": snapshot,
+                },
+                "status": "active",
+            }
+        )
+    if not predicates:
+        raise SemanticError("cannot build a predicate registry without relationships")
+    return build_predicate_registry(
+        predicates,
+        snapshot=snapshot,
+        generated_at_value=generated_at_value,
+    )
+
+
+def semantic_model_extension(
+    iri_route_registry: dict[str, Any],
+    predicate_registry: dict[str, Any],
+    *,
+    status: str = "experimental",
+    context_urls: list[str] | None = None,
+) -> dict[str, Any]:
+    """Build an additive semantic-model extension from inline registries or refs.
+
+    Inline registries receive structural and integrity-root validation here.
+    Resource references bind external registry bytes by SHA-256; callers must
+    validate the referenced registry document before publishing the reference.
+    """
+    errors: list[str] = []
+    if iri_route_registry.get("schema") == "okf-iri-route-registry.v1":
+        errors.extend(validate_iri_route_registry(iri_route_registry))
+    if predicate_registry.get("schema") == "okf-predicate-registry.v1":
+        errors.extend(validate_predicate_registry(predicate_registry))
+    contexts = [
+        context_reference(url)
+        for url in (context_urls or [CONTEXT_URL, SEMANTIC_CONTEXT_URL])
+    ]
+    extension = {
+        "schema": "okf-semantic-model.v1",
+        "status": status,
+        "contexts": contexts,
+        "id_registry": iri_route_registry,
+        "predicate_registry": predicate_registry,
+    }
+    errors.extend(schema_errors(extension, "semantic-model.schema.json"))
+    if errors:
+        raise SemanticError(
+            "invalid semantic-model extension:\n- " + "\n- ".join(errors)
+        )
+    return extension
+
+
+def compile_semantic_relationships(
+    document: dict[str, Any],
+    iri_route_registry: dict[str, Any],
+    *,
+    predicate_registry: dict[str, Any] | None = None,
+    extra_contexts: dict[str, Any] | None = None,
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Compile YAML-LD assertions into Explorer-compatible relationship rows."""
+    rows, errors, expanded = _expanded_assertion_rows_with_document(
+        document,
+        extra_contexts=extra_contexts,
+    )
+    if rows and expanded is not None:
+        errors.extend(_semantic_assertion_reconciliation_errors(rows, expanded))
+    errors.extend(validate_iri_route_registry(iri_route_registry))
+    predicate_lookup: dict[str, dict[str, Any]] = {}
+    if predicate_registry is not None:
+        errors.extend(validate_predicate_registry(predicate_registry))
+        predicate_lookup = {
+            str(item.get("iri") or ""): item
+            for item in predicate_registry.get("predicates", [])
+            if isinstance(item, dict)
+        }
+    if errors:
+        return [], sorted(set(errors))
+
+    iri_routes = {
+        str(entry["iri"]): str(entry["route"])
+        for entry in iri_route_registry["entries"]
+    }
+    compiled: list[dict[str, Any]] = []
+    for row in rows:
+        raw = row["raw"]
+        source_iri = str(row["source_iri"])
+        target_iri = str(row["target_iri"])
+        predicate = str(row["predicate"])
+        source_route = iri_routes.get(source_iri, "")
+        target_route = iri_routes.get(target_iri, "")
+        if not source_route:
+            errors.append(f"assertion {row['id']} source IRI has no registered route: {source_iri}")
+        if not target_route:
+            errors.append(f"assertion {row['id']} target IRI has no registered route: {target_iri}")
+        governed = predicate_lookup.get(predicate)
+        if predicate_registry is not None and governed is None:
+            errors.append(f"assertion {row['id']} predicate is not governed: {predicate}")
+        kind = str(
+            (governed or {}).get("preferred_label")
+            or raw.get("kind")
+            or raw.get("label")
+            or predicate.rsplit("/", 1)[-1].rsplit("#", 1)[-1]
+        ).strip()
+        inverse_label = str(
+            (governed or {}).get("inverse_label")
+            or raw.get("inverse_label")
+            or ""
+        ).strip()
+        passthrough: dict[str, Any] = {
+            key: value
+            for key, value in raw.items()
+            if key not in {"@id", "@type", "source", "predicate", "target", "kind", "label"}
+        }
+        for field in ("derivation", "derivation_activity", "rule"):
+            if field in raw:
+                passthrough[field] = iri_value(raw[field])
+        if isinstance(raw.get("supporting_assertions"), list):
+            passthrough["supporting_assertions"] = [
+                iri_value(value)
+                for value in raw["supporting_assertions"]
+            ]
+        relationship: dict[str, Any] = {
+            **passthrough,
+            "schema": "okf-relationship-assertion.v2",
+            "id": str(row["id"]),
+            "source": source_route,
+            "target": target_route,
+            "source_iri": source_iri,
+            "target_iri": target_iri,
+            "predicate": predicate,
+            "kind": kind,
+            "label": kind,
+            **({"inverse_label": inverse_label} if inverse_label else {}),
+        }
+        if "confidence_score" in raw:
+            relationship["confidence"] = raw["confidence_score"]
+        errors.extend(
+            f"assertion {row['id']} runtime projection {error}"
+            for error in schema_errors(
+                relationship,
+                "federation/v1/relationship-assertion.schema.json",
+            )
+        )
+        compiled.append(relationship)
+    return (
+        sorted(
+            compiled,
+            key=lambda item: (
+                str(item.get("source") or ""),
+                str(item.get("predicate") or ""),
+                str(item.get("target") or ""),
+                str(item.get("id") or ""),
+            ),
+        ),
+        sorted(set(errors)),
+    )

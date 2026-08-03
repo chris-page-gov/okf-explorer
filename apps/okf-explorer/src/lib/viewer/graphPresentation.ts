@@ -43,6 +43,15 @@ export type DirectedGraphEdge = {
 
 export type GroupableGraphEdge = DirectedGraphEdge & {
   predicate?: string;
+  assertionStatus?: string;
+  assertionScope?: string;
+  authorityClass?: string;
+};
+
+export type GraphSemanticFilters = {
+  assertionStatuses?: string[];
+  assertionScopes?: string[];
+  authorityClasses?: string[];
 };
 
 export type GraphRelationshipDirection = 'outgoing' | 'incoming' | 'lateral';
@@ -53,6 +62,9 @@ export type GraphRelationshipGroup = {
   label: string;
   predicate: string;
   direction: GraphRelationshipDirection;
+  assertionStatuses: string[];
+  assertionScopes: string[];
+  authorityClasses: string[];
   edgeIds: string[];
   nodeIds: string[];
 };
@@ -267,6 +279,20 @@ export function graphRelationshipGroupKey(edge: GroupableGraphEdge, center: stri
   return `${relationshipDirection(edge, center)}:${predicate}`;
 }
 
+export function filterGraphRelationshipsBySemantics(
+  edges: GroupableGraphEdge[],
+  filters: GraphSemanticFilters
+): GroupableGraphEdge[] {
+  const statuses = new Set(filters.assertionStatuses || []);
+  const scopes = new Set(filters.assertionScopes || []);
+  const authorities = new Set(filters.authorityClasses || []);
+  return edges.filter((edge) => (
+    (!statuses.size || statuses.has(edge.assertionStatus || 'unclassified'))
+    && (!scopes.size || scopes.has(edge.assertionScope || 'unclassified'))
+    && (!authorities.size || authorities.has(edge.authorityClass || 'unclassified'))
+  ));
+}
+
 /**
  * Groups a focus graph by semantic predicate and direction. Predicate IRIs are
  * preferred when a datapack supplies them; legacy label-only edges remain
@@ -286,9 +312,19 @@ export function groupGraphRelationships(
       label: edge.label.trim() || predicate,
       predicate,
       direction,
+      assertionStatuses: [],
+      assertionScopes: [],
+      authorityClasses: [],
       edgeIds: [],
       nodeIds: []
     };
+    for (const [values, value] of [
+      [group.assertionStatuses, edge.assertionStatus || 'unclassified'],
+      [group.assertionScopes, edge.assertionScope || 'unclassified'],
+      [group.authorityClasses, edge.authorityClass || 'unclassified']
+    ] as Array<[string[], string]>) {
+      if (!values.includes(value)) values.push(value);
+    }
     group.edgeIds.push(edge.id);
     const relatedNodeIds = direction === 'outgoing'
       ? [edge.target]

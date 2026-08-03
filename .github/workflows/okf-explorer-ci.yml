@@ -64,6 +64,19 @@ jobs:
       - name: Install semantic OKF dependencies
         run: python3 -m pip install -r requirements-okf.txt
 
+      - name: Validate Evaluation Foundry fixtures
+        run: python3 scripts/check_evaluation_foundry.py
+
+      - name: Validate generated heritage evaluation corpora
+        run: |
+          python3 scripts/build_heritage_evaluation.py --check
+          python3 scripts/build_heritage_evaluation.py --check \
+            --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json \
+            --output evaluation/heritage/tiny
+          python3 scripts/build_heritage_evaluation.py --check \
+            --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json \
+            --output evaluation/heritage/synthetic
+
       - name: Run OKF generator tests
         run: python3 -m unittest discover -s tests
 

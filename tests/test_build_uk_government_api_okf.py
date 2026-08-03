@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -20,7 +21,7 @@ spec.loader.exec_module(builder_module)
 
 
 class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
-    def build_fixture_corpus(self):
+    def build_fixture_corpus(self, *, enable_typo_tolerance: bool = False):
         csv_bytes = (FIXTURES / "api_catalogue.csv").read_bytes()
         source_hash, rows = builder_module.rows_from_csv("file://api_catalogue.csv", csv_bytes)
         ckan = json.loads((FIXTURES / "ckan_package_search.json").read_text(encoding="utf-8"))
@@ -38,6 +39,7 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
             ons_topics=ons["topics"],
             ons_code_lists=ons["code_lists"],
             generated_at="2026-07-25T12:00:00Z",
+            enable_typo_tolerance=enable_typo_tolerance,
         )
 
     def test_canonical_counts_keep_api_products_endpoints_and_data_products_separate(self):
@@ -283,6 +285,151 @@ class UkGovernmentApiOkfGeneratorTest(unittest.TestCase):
         self.assertIn(Path(record_type_path), files)
         self.assertIn(Path("data/search/sort-values.json"), files)
         self.assertIn(Path("data/search/entities.json"), files)
+
+    def test_typo_tolerance_is_explicit_and_preserves_legacy_output_by_default(self):
+        corpus = self.build_fixture_corpus()
+        search = corpus["search"]
+        files = builder_module.output_files(corpus)
+
+        self.assertNotIn("typo_tolerance", search["manifest"])
+        self.assertNotIn("typo_deletions", search["manifest"]["entrypoints"])
+        self.assertNotIn("typo_deletions", search)
+        self.assertNotIn("shard_metadata", search["manifest"])
+        self.assertNotIn(Path("data/search/shards.json"), files)
+        self.assertFalse(any("/typos/" in path.as_posix() for path in files))
+
+    def test_typo_tolerance_emits_the_exact_bounded_runtime_contract_deterministically(self):
+        record = {
+            "name": "coventry-cathedral",
+            "title": "Coventry Cathedral",
+            "publisher": "historic-england",
+            "publisher_title": "Historic England",
+            "resource_count": 0,
+            "formats": [],
+            "tags": [],
+            "topics": ["heritage"],
+            "quality": {"overall": 1.0},
+            "route": "dataset/coventry-cathedral",
+        }
+        search = builder_module.build_search([record], enable_typo_tolerance=True)
+        manifest = search["manifest"]
+
+        self.assertEqual(
+            manifest["typo_tolerance"],
+            {
+                "schema": "okf-search-typo-tolerance.v1",
+                "algorithm": "symmetric-delete-damerau-levenshtein-v1",
+                "max_edit_distance": 1,
+                "min_token_length": 4,
+                "max_token_length": 32,
+                "max_delete_keys_per_token": 33,
+                "max_candidates_per_delete_key": 8,
+                "max_candidates_per_token": 3,
+                "max_corrected_tokens_per_query": 4,
+                "max_shards_per_query": 12,
+                "max_keys_per_shard": 50_000,
+                "shard_length": 2,
+            },
+        )
+        self.assertEqual(manifest["counts"]["typo_deletion_shards"], len(search["typo_deletions"]))
+        self.assertEqual(
+            set(manifest["entrypoints"]["typo_deletions"]),
+            set(search["typo_deletions"]),
+        )
+        # "covnetry" and "coventry" both delete one character to this key;
+        # the runtime then verifies that the transposition is exactly one edit.
+        self.assertIn("covetry", builder_module.symmetric_delete_keys("covnetry"))
+        self.assertEqual(
+            search["typo_deletions"]["co"]["keys"]["covetry"],
+            [{"token": "coventry", "df": 1}],
+        )
+        self.assertTrue(
+            all(
+                payload["schema"] == "okf-search-typo-deletions.v1"
+                for payload in search["typo_deletions"].values()
+            )
+        )
+
+        collisions = [
+            {"token": f"aaaa{index}", "df": index + 1, "postings": "unused.json"}
+            for index in range(10)
+        ]
+        forward = builder_module.build_typo_deletion_shards(collisions)
+        reverse = builder_module.build_typo_deletion_shards(list(reversed(collisions)))
+        self.assertEqual(forward, reverse)
+        self.assertEqual(len(forward["aa"]["keys"]["aaaa"]), 8)
+        self.assertEqual(
+            [row["token"] for row in forward["aa"]["keys"]["aaaa"]],
+            ["aaaa9", "aaaa8", "aaaa7", "aaaa6", "aaaa5", "aaaa4", "aaaa3", "aaaa2"],
+        )
+
+    def test_typo_search_shards_are_in_the_same_integrity_chain_as_core_search_data(self):
+        corpus = self.build_fixture_corpus(enable_typo_tolerance=True)
+        search = corpus["search"]
+        manifest = search["manifest"]
+        metadata = search["shard_metadata"]
+        files = builder_module.output_files(corpus)
+
+        self.assertEqual(manifest["shard_metadata"], "data/search/shards.json")
+        self.assertIn(Path("data/search/shards.json"), files)
+        self.assertEqual(
+            manifest["shard_manifest_sha256"],
+            hashlib.sha256(builder_module.render_json(metadata["shards"]).encode("utf-8")).hexdigest(),
+        )
+        rows = [row for group in metadata["shards"].values() for row in group]
+        rows_by_path = {row["path"]: row for row in rows}
+        typo_paths = set(manifest["entrypoints"]["typo_deletions"].values())
+        self.assertTrue(typo_paths)
+        self.assertTrue(typo_paths <= set(rows_by_path))
+
+        entrypoints = manifest["entrypoints"]
+        lazy_paths = {
+            *entrypoints["lexicon"].values(),
+            *entrypoints["prefixes"].values(),
+            *entrypoints["postings"],
+            *entrypoints["result_docs"],
+            *entrypoints["filter_postings"].values(),
+            *entrypoints["typo_deletions"].values(),
+            entrypoints["sort_values"],
+            entrypoints["doc_map"],
+            entrypoints["entities"],
+        }
+        self.assertTrue(lazy_paths <= set(rows_by_path))
+        for path in lazy_paths:
+            self.assertEqual(
+                rows_by_path[path]["sha256"],
+                hashlib.sha256(files[Path(path)].encode("utf-8")).hexdigest(),
+            )
+
+    def test_search_aliases_are_indexed_as_explainable_alternatives_without_replacing_the_title(self):
+        record = {
+            "name": "coventry-cathedral",
+            "title": "Coventry Cathedral",
+            "publisher": "historic-england",
+            "publisher_title": "Historic England",
+            "resource_count": 0,
+            "formats": [],
+            "tags": [],
+            "topics": ["heritage"],
+            "quality": {"overall": 1.0},
+            "route": "dataset/coventry-cathedral",
+            "search_aliases": ["Greyfriars", "Old Cathedral", "Greyfriars"],
+        }
+        search = builder_module.build_search([record])
+        result = search["result_doc_chunks"][0][1][0]
+        lexicon = {
+            row["token"]: row
+            for rows in search["lexicon"].values()
+            for row in rows
+        }
+        alias_entry = lexicon["greyfriars"]
+        posting = search["postings"][alias_entry["postings"]]["tokens"]["greyfriars"]
+
+        self.assertEqual(result["title"], "Coventry Cathedral")
+        self.assertEqual(result["search_aliases"], ["Greyfriars", "Old Cathedral"])
+        self.assertEqual(search["manifest"]["weights"]["search_aliases"], 12)
+        self.assertEqual(search["manifest"]["field_masks"]["search_aliases"], 2048)
+        self.assertEqual(posting, [[0, 12, 2048]])
 
     def test_search_entities_publish_declared_and_deterministic_organisation_aliases(self):
         entities = builder_module.search_entities_from_publishers(

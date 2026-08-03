@@ -70,6 +70,29 @@ describe('geospatial classification', () => {
     expect(result?.signals[0]).toEqual(expect.objectContaining({ kind: 'geometry' }));
   });
 
+  it('prefers an explicitly labelled polygon representative point over its source bbox', () => {
+    const result = classifyGeospatialRecord({
+      id: 'scheduled-monument',
+      title: 'Scheduled monument in Rugby',
+      spatial: {
+        crs: 'EPSG:4326',
+        geometry_type: 'MultiPolygon',
+        bbox: [-1.268, 52.366, -1.254, 52.376],
+        representative_point: {
+          coordinates: [-1.261, 52.371],
+          derivation: 'derived from source geometry bounding-box centre; may fall outside the feature'
+        }
+      }
+    });
+
+    expect(result?.point).toEqual({
+      latitude: 52.371,
+      longitude: -1.261,
+      source: 'derived from source geometry bounding-box centre; may fall outside the feature',
+      precision: 'representative'
+    });
+  });
+
   it('keeps service and file formats distinct', () => {
     expect(geospatialResourceKind('https://example.test/wfs?service=WFS', '')).toBe('wfs');
     expect(geospatialResourceKind('https://example.test/tiles', 'WMTS')).toBe('wmts');
@@ -124,11 +147,33 @@ describe('geospatial reductions', () => {
     expect(geospatialFilterLabel('signal:service')).toBe('Map or feature service');
   });
 
+  it('round-trips an uppercase ONS area filter through validation, matching, and labelling', () => {
+    const coventry = classifyGeospatialRecord({
+      id: 'coventry-asset',
+      title: 'Listed building in Coventry',
+      area_served: ['E08000026 Coventry']
+    })!;
+    const filter = `area:${coventry.places.find((place) => place.id === 'E08000026')?.id}`;
+
+    expect(filter).toBe('area:E08000026');
+    expect(isGeospatialFilter(filter)).toBe(true);
+    expect(geospatialFilterMatches(coventry, filter)).toBe(true);
+    expect(geospatialFilterMatches(coventry, 'area:e08000026')).toBe(true);
+    expect(geospatialFilterLabel(filter)).toBe('Coventry');
+    expect(geospatialFilterLabel('area:e08000026')).toBe('Coventry');
+  });
+
   it('recognises bounded UK place aliases and does not match substrings', () => {
     expect(matchUkPlaces(['London'], 'declared').map((place) => place.id)).toContain('london');
     expect(matchUkPlaces(['North East'], 'declared').map((place) => place.id)).toContain('north-east');
     expect(matchUkPlaces(['Coverage: Yorkshire and the Humber'], 'declared').map((place) => place.id)).toContain('yorkshire-and-the-humber');
     expect(matchUkPlaces(['A new scotlands dataset'], 'text').map((place) => place.id)).not.toContain('scotland');
+    expect(matchUkPlaces(['E08000026 Coventry'], 'declared')).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id: 'E08000026', level: 'local-authority' })])
+    );
+    expect(matchUkPlaces(['Stratford-on-Avon, Warwickshire'], 'declared').map((place) => place.id)).toEqual(
+      expect.arrayContaining(['E07000221', 'E10000031'])
+    );
   });
 
   it('removes sensitive parameters while retaining ordinary query state', () => {

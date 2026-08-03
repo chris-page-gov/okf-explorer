@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import html
+import json
 import posixpath
 import re
 import shutil
@@ -18,6 +20,7 @@ from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
+GITHUB_PAGES_SITE_LIMIT_BYTES = 1_000_000_000
 BEGINNER_DOCS = ROOT / "docs" / "beginners"
 BEGINNER_GUIDE_CSS = BEGINNER_DOCS / "guide.css"
 FOUNDRY_CSS = ROOT / "docs" / "foundry.css"
@@ -58,6 +61,18 @@ COPY_READY_PROMPT = re.compile(
     flags=re.MULTILINE | re.DOTALL,
 )
 SVELTE_EXPLORER_BUILD = ROOT / "apps" / "okf-explorer" / "build"
+EXPLORER_BUILD_MANIFEST = "okf-explorer-build-manifest.json"
+SITE_TREE_ALGORITHM = (
+    "sha256-over-canonical-json-path-bytes-digest-list-"
+    "excluding-receipt-v1"
+)
+HERITAGE_LOCAL_CANDIDATE_RECEIPT = Path(
+    "evaluation-foundry",
+    "fixtures",
+    "heritage-warwickshire",
+    "evidence",
+    "local-candidate-receipt.json",
+)
 ASSEMBLED_SITE_VERIFIER = (
     ROOT
     / "apps"
@@ -94,6 +109,7 @@ PUBLIC_DIRS = [
     "uk-government-apis",
     "legislation",
     "evaluation",
+    "evaluation-foundry",
     "release-assurance",
     "explorer",
     "docs",
@@ -101,7 +117,7 @@ PUBLIC_DIRS = [
     "registry",
     "constraints",
 ]
-MARKDOWN_DISCOVERY_ROOTS = ("docs", "profiles")
+MARKDOWN_DISCOVERY_ROOTS = ("docs", "profiles", "evaluation-foundry", "evaluation")
 MARKDOWN_DISCOVERY_EXCLUDED_DIRS = {"uk-government-apis"}
 GITHUB_REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
 FORBIDDEN_NAMES = {".DS_Store"}
@@ -144,8 +160,21 @@ def is_excluded_markdown_dependency(source: Path) -> bool:
     except ValueError:
         return True
     return bool(
-        relative.parts
-        and relative.parts[0] in MARKDOWN_DISCOVERY_EXCLUDED_DIRS
+        (
+            relative.parts
+            and relative.parts[0] in MARKDOWN_DISCOVERY_EXCLUDED_DIRS
+        )
+        or is_ephemeral_evaluation_result(relative)
+    )
+
+
+def is_ephemeral_evaluation_result(relative: Path) -> bool:
+    """Return true for ignored evaluator output below evaluation/*/results/."""
+
+    return (
+        len(relative.parts) >= 3
+        and relative.parts[0] == "evaluation"
+        and relative.parts[2] == "results"
     )
 
 
@@ -894,6 +923,12 @@ def copy_public_tree(source_dir: Path, target_dir: Path) -> None:
     for source in source_dir.rglob("*"):
         if source.is_dir():
             continue
+        try:
+            relative_to_root = source.resolve().relative_to(ROOT.resolve())
+        except ValueError:
+            relative_to_root = Path()
+        if is_ephemeral_evaluation_result(relative_to_root):
+            continue
         if source.name in FORBIDDEN_NAMES or source.name.startswith("~$"):
             continue
         if source.suffix.lower() in FORBIDDEN_SUFFIXES:
@@ -914,6 +949,207 @@ def assert_no_forbidden_files() -> None:
     if errors:
         joined = "\n".join(f"- {error}" for error in errors)
         raise RuntimeError(f"forbidden files in site build:\n{joined}")
+
+
+def published_site_inventory() -> tuple[int, int]:
+    """Return one file-count and byte-size observation of the built Site."""
+
+    files = [
+        path
+        for path in OUT.rglob("*")
+        if path.is_file()
+        and path.name not in FORBIDDEN_NAMES
+        and not path.name.startswith("~$")
+        and path.suffix.lower() not in FORBIDDEN_SUFFIXES
+    ]
+    return len(files), sum(path.stat().st_size for path in files)
+
+
+def published_site_tree_receipt() -> dict[str, object]:
+    """Root every publishable Site file except this self-binding receipt."""
+
+    entries: list[dict[str, object]] = []
+    for path in sorted(
+        OUT.rglob("*"),
+        key=lambda value: value.relative_to(OUT).as_posix(),
+    ):
+        if (
+            not path.is_file()
+            or path.name in FORBIDDEN_NAMES
+            or path.name.startswith("~$")
+            or path.suffix.lower() in FORBIDDEN_SUFFIXES
+        ):
+            continue
+        relative = path.relative_to(OUT)
+        if relative == HERITAGE_LOCAL_CANDIDATE_RECEIPT:
+            continue
+        raw = path.read_bytes()
+        entries.append(
+            {
+                "path": relative.as_posix(),
+                "bytes": len(raw),
+                "sha256": sha256_bytes(raw),
+            }
+        )
+    canonical = (
+        json.dumps(
+            entries,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
+    return {
+        "algorithm": SITE_TREE_ALGORITHM,
+        "file_count": len(entries),
+        "tree_sha256": sha256_bytes(canonical),
+    }
+
+
+def assert_site_size_within_github_pages_limit(
+    site_bytes: int | None = None,
+) -> tuple[int, int]:
+    if site_bytes is None:
+        _file_count, site_bytes = published_site_inventory()
+    remaining_bytes = GITHUB_PAGES_SITE_LIMIT_BYTES - site_bytes
+    if remaining_bytes < 0:
+        raise RuntimeError(
+            "assembled site exceeds the GitHub Pages 1 GB published-site "
+            f"limit: bytes={site_bytes} limit={GITHUB_PAGES_SITE_LIMIT_BYTES}"
+        )
+    return site_bytes, remaining_bytes
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def assembled_explorer_identity() -> tuple[str, str]:
+    """Recompute the app tree and manifest hashes from assembled Site bytes."""
+
+    manifest_path = OUT / EXPLORER_BUILD_MANIFEST
+    manifest_bytes = manifest_path.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    materials = manifest.get("materials")
+    if not isinstance(materials, list) or not materials:
+        raise RuntimeError("assembled Explorer build manifest has no materials")
+
+    observed: list[dict[str, object]] = []
+    for entry in materials:
+        if not isinstance(entry, dict) or set(entry) != {
+            "path",
+            "bytes",
+            "sha256",
+        }:
+            raise RuntimeError(
+                "assembled Explorer build manifest has an invalid material"
+            )
+        relative = entry["path"]
+        if not isinstance(relative, str):
+            raise RuntimeError(
+                "assembled Explorer build manifest material path is invalid"
+            )
+        target = OUT / relative
+        raw = target.read_bytes()
+        observed.append(
+            {
+                "path": relative,
+                "bytes": len(raw),
+                "sha256": sha256_bytes(raw),
+            }
+        )
+
+    canonical = (
+        json.dumps(
+            observed,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+    observed_tree = sha256_bytes(canonical)
+    if observed != materials or manifest.get("tree_sha256") != observed_tree:
+        raise RuntimeError(
+            "assembled Explorer build manifest does not describe its exact "
+            "published material bytes"
+        )
+    return observed_tree, sha256_bytes(manifest_bytes)
+
+
+def assert_local_candidate_receipt_matches_built_site(
+    *,
+    reading_pages: int,
+    internal_references: int,
+    site_bytes: int,
+    remaining_bytes: int,
+) -> dict[str, object]:
+    """Fail if local-candidate publication claims are stale after assembly."""
+
+    published_receipt = OUT / HERITAGE_LOCAL_CANDIDATE_RECEIPT
+    receipt = json.loads(published_receipt.read_text(encoding="utf-8"))
+    candidate = receipt["candidate"]
+    observed_tree, observed_manifest = assembled_explorer_identity()
+    site_tree = published_site_tree_receipt()
+    size_gate = candidate["site_size_gate"]
+    claims = {
+        "explorer_tree_sha256": (
+            candidate["explorer_tree_sha256"],
+            observed_tree,
+        ),
+        "explorer_manifest_sha256": (
+            candidate["explorer_manifest_sha256"],
+            observed_manifest,
+        ),
+        "site_reading_pages": (
+            candidate["site_reading_pages"],
+            reading_pages,
+        ),
+        "site_internal_references": (
+            candidate["site_internal_references"],
+            internal_references,
+        ),
+        "site_file_count": (
+            candidate["site_file_count"],
+            site_tree["file_count"],
+        ),
+        "site_tree_algorithm": (
+            candidate["site_tree_algorithm"],
+            site_tree["algorithm"],
+        ),
+        "site_tree_sha256": (
+            candidate["site_tree_sha256"],
+            site_tree["tree_sha256"],
+        ),
+        "site_size_gate.limit_bytes": (
+            size_gate["limit_bytes"],
+            GITHUB_PAGES_SITE_LIMIT_BYTES,
+        ),
+        "site_size_gate.site_bytes": (
+            size_gate["site_bytes"],
+            site_bytes,
+        ),
+        "site_size_gate.headroom_bytes": (
+            size_gate["headroom_bytes"],
+            remaining_bytes,
+        ),
+        "site_size_gate.status": (
+            size_gate["status"],
+            "passed",
+        ),
+    }
+    stale = [
+        f"{name}: claimed={claimed!r} observed={observed!r}"
+        for name, (claimed, observed) in claims.items()
+        if claimed != observed
+    ]
+    if stale:
+        details = "\n".join(f"- {item}" for item in stale)
+        raise RuntimeError(
+            "local candidate receipt differs from exact built artifacts:\n"
+            f"{details}"
+        )
+    return site_tree
 
 
 def remove_platform_metadata() -> None:
@@ -1050,11 +1286,12 @@ def parse_reading_page(route: Path) -> ReadingPageLinks:
     return parser
 
 
-def assert_readable_document_links() -> None:
+def assert_readable_document_links() -> tuple[int, int]:
     routes = published_reading_routes()
     errors: list[str] = []
     parsed_pages: dict[Path, ReadingPageLinks] = {}
     checked_links = 0
+    internal_references = 0
 
     for route in sorted(routes):
         page = OUT / route
@@ -1073,6 +1310,7 @@ def assert_readable_document_links() -> None:
                 continue
             if local is None:
                 continue
+            internal_references += 1
             target, fragment = local
             if reference_kind == "a[href]" and target.suffix.lower() == ".md":
                 errors.append(
@@ -1099,8 +1337,10 @@ def assert_readable_document_links() -> None:
         raise RuntimeError(f"readable documentation link audit failed:\n{joined}")
     print(
         "verified readable documentation links: "
-        f"pages={len(routes)} links={checked_links}"
+        f"pages={len(routes)} links={checked_links} "
+        f"internal_references={internal_references}"
     )
+    return len(routes), internal_references
 
 
 def main() -> int:
@@ -1153,9 +1393,28 @@ def main() -> int:
     remove_platform_metadata()
     assert_no_forbidden_files()
     verify_assembled_app_build()
-    assert_readable_document_links()
-    file_count = sum(1 for path in OUT.rglob("*") if path.is_file())
-    print(f"built {OUT.relative_to(ROOT)} with {file_count} files")
+    reading_pages, internal_references = assert_readable_document_links()
+    # Finder can recreate metadata while the longer link and app audits run.
+    # Remove and assert once more immediately before recording publication
+    # inventory so a local GUI cannot change the deterministic evidence.
+    remove_platform_metadata()
+    assert_no_forbidden_files()
+    file_count, site_bytes = published_site_inventory()
+    site_bytes, remaining_bytes = assert_site_size_within_github_pages_limit(
+        site_bytes
+    )
+    site_tree = assert_local_candidate_receipt_matches_built_site(
+        reading_pages=reading_pages,
+        internal_references=internal_references,
+        site_bytes=site_bytes,
+        remaining_bytes=remaining_bytes,
+    )
+    print(
+        f"built {OUT.relative_to(ROOT)} with {file_count} files; "
+        f"bytes={site_bytes} pages_limit_remaining={remaining_bytes}; "
+        f"receipt_tree_files={site_tree['file_count']} "
+        f"receipt_tree_sha256={site_tree['tree_sha256']}"
+    )
     return 0
 
 

@@ -140,15 +140,23 @@ function fixture() {
     relationships: [
       {
         schema: 'okf-relationship-assertion.v2',
+        id: 'https://example.test/assertions/legislation-informs-case-law',
         source: 'uk-legislation',
         target: 'case-law',
+        source_iri: 'https://example.test/bundles/uk-legislation',
+        target_iri: 'https://example.test/bundles/case-law',
         predicate: 'informs',
+        inverse_label: 'is informed by',
+        assertion_status: 'normalized',
+        assertion_scope: 'real-world',
         authority: {
           class: 'derived',
           source: 'https://example.test/methodology'
         },
         derivation: 'deterministic',
+        derivation_activity: 'https://example.test/activities/federation-build',
         confidence: 1,
+        confidence_score: 1,
         observed_at: '2026-07-25T12:00:00Z',
         freshness: 'current',
         evidence: ['https://example.test/evidence/reconciliation.json']
@@ -205,6 +213,16 @@ describe('federation overview loader', () => {
       ])
     );
     expect(loaded.corpus.relationships).toHaveLength(1);
+    expect(loaded.corpus.relationships[0]).toEqual(expect.objectContaining({
+      id: 'https://example.test/assertions/legislation-informs-case-law',
+      source_iri: 'https://example.test/bundles/uk-legislation',
+      target_iri: 'https://example.test/bundles/case-law',
+      inverse_label: 'is informed by',
+      assertion_status: 'normalized',
+      assertion_scope: 'real-world',
+      derivation_activity: 'https://example.test/activities/federation-build',
+      confidence_score: 1
+    }));
     expect(loaded.overview.inlineRelationshipSummary.by_authority.derived).toBe(1);
     expect(loaded.overview.descriptor.relationship_summary.total).toBe(4);
     expect(loaded.overview.descriptor.source_families).toEqual([

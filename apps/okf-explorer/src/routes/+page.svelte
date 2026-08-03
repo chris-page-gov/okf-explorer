@@ -57,6 +57,7 @@
   import SourceInspector from '$lib/viewer/SourceInspector.svelte';
   import ProviderDatapackStatus from '$lib/viewer/ProviderDatapackStatus.svelte';
   import GovernedTermsPanel from '$lib/viewer/GovernedTermsPanel.svelte';
+  import HeritageDetail from '$lib/viewer/HeritageDetail.svelte';
   import {
     governedHelpText,
     governedTermIdsForRecord,
@@ -198,6 +199,7 @@
     'official',
     'derived',
     'model-assisted',
+    'synthetic',
     'unclassified'
   ];
   const HELP_TEXT: Record<string, string> = {
@@ -276,14 +278,23 @@
     source: string;
     target: string;
     label: string;
+    id?: string;
     count?: number;
     predicate?: string;
+    inverseLabel?: string;
+    sourceIri?: string;
+    targetIri?: string;
+    assertionStatus?: string;
+    assertionScope?: string;
     weightValue?: number;
     weightMetric?: string;
     authorityClass?: RelationshipAuthorityClass;
     authorityLabel?: string;
     authoritySource?: string;
     derivation?: string;
+    derivationActivity?: string;
+    rule?: string;
+    supportingAssertions?: string[];
     confidence?: string;
     observedAt?: string;
     staleAfter?: string;
@@ -615,9 +626,15 @@
   function safeDecodeHash(): string {
     const raw = location.hash.replace(/^#/, '');
     try {
-      return decodeURIComponent(raw);
+      const decoded = decodeURIComponent(raw);
+      if (!decoded.startsWith('record:')) return decoded;
+      const token = decoded.slice('record:'.length);
+      if (!/^[A-Za-z0-9_-]+$/.test(token)) return decoded;
+      const padded = token.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - token.length % 4) % 4);
+      const bytes = Uint8Array.from(atob(padded), (value) => value.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
     } catch {
-      // Malformed percent-encoding in a shared link should not break routing.
+      // Malformed percent/base64 encoding in a shared link should not break routing.
       return raw;
     }
   }
@@ -1057,7 +1074,7 @@
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
           rightCollapsed = false;
-          if (routeKind(hash) === 'dataset' && largeHasRecordLocator()) {
+          if (largeHasRecordLocator()) {
             void ensureLargeDataset(hash);
           }
           if (largeSelectedRoute || largeInspectedRoute) void hydrateForView(activeView);
@@ -1268,8 +1285,13 @@
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
     const selectedRoute = largeSelectedRoute || largeInspectedRoute;
-    if (selectedRoute && routeKind(selectedRoute) === 'dataset' && largeHasRecordLocator()) {
-      await ensureLargeDataset(selectedRoute);
+    if (selectedRoute && largeHasRecordLocator()) {
+      const selectedDataset = await ensureLargeDataset(selectedRoute);
+      if (!selectedDataset) {
+        if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
+        if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
+        return;
+      }
       // A record locator hydrates only the selected dataset. The resource
       // stack is assembled from the corpus-wide resource index, so it must
       // load that index before rendering even when a targeted dataset is
@@ -1391,7 +1413,10 @@
     route: string,
     result?: Pick<SearchResultDoc, 'ordinal'>
   ): Promise<LargeDataset | null> {
-    if (source?.kind !== 'large' || routeKind(route) !== 'dataset') return null;
+    // Large-corpus profiles may publish source-native record routes such as
+    // `asset/…` or `risk/…`. The locator, not a hard-coded `dataset/` prefix,
+    // is the authority for whether a route hydrates a record.
+    if (source?.kind !== 'large' || !route) return null;
     const existing = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(routeValue(route));
     if (existing) return existing;
     if (!largeHasRecordLocator()) return null;
@@ -1402,7 +1427,9 @@
       const dataset = await loadingSource.loadDatasetForRoute(route, result?.ordinal);
       if (requestId !== loadRequest || source !== loadingSource) return null;
       if (!dataset) {
-        error = `No targeted record location is published for ${route}. Search and corpus-level exploration remain available.`;
+        if (result) {
+          error = `No targeted record location is published for ${route}. Search and corpus-level exploration remain available.`;
+        }
         return null;
       }
       largeTargetedDatasets = new Map(largeTargetedDatasets).set(route, dataset);
@@ -1983,6 +2010,12 @@
       const otherReasons = reasons.filter((reason) => reason !== labels[entity.filter_key]);
       const suffix = otherReasons.length ? `; also matched ${[...new Set(otherReasons)].join(', ')}` : '';
       return `Recognised ${entity.kind} “${entity.label}”${entity.matched_alias ? ` from alias “${entity.matched_alias}”` : ''}${suffix}`;
+    }
+    const corrections = result.match?.corrected_tokens || [];
+    for (const correction of corrections.slice().reverse()) {
+      reasons.unshift(
+        `one-edit correction “${correction.query_token}” → “${correction.matched_token}”`
+      );
     }
     if ((result.match?.score_components.exact || 0) > 0) reasons.unshift('exact phrase or identifier');
     if (result.official_full_text_match) reasons.push('official full text');
@@ -4338,12 +4371,25 @@
       .map(([key, label]) => ({ label, value: Number(record[key]) }))
       .find((candidate) => Number.isFinite(candidate.value) && candidate.value >= 0);
     return {
+      ...(relationship.id ? { id: relationship.id } : {}),
       ...(predicate ? { predicate } : {}),
+      ...(relationship.inverseLabel ? { inverseLabel: relationship.inverseLabel } : {}),
+      ...(relationship.sourceIri ? { sourceIri: relationship.sourceIri } : {}),
+      ...(relationship.targetIri ? { targetIri: relationship.targetIri } : {}),
+      ...(relationship.assertionStatus !== 'unclassified'
+        ? { assertionStatus: relationship.assertionStatus }
+        : {}),
+      ...(relationship.assertionScope !== 'unclassified'
+        ? { assertionScope: relationship.assertionScope }
+        : {}),
       ...(metric ? { weightValue: metric.value, weightMetric: metric.label } : {}),
       authorityClass: relationship.authorityClass,
       authorityLabel: relationship.authorityLabel,
       authoritySource: relationship.authoritySource,
       derivation: relationship.derivation,
+      derivationActivity: relationship.derivationActivity,
+      rule: relationship.rule,
+      supportingAssertions: relationship.supportingAssertions,
       confidence: relationship.confidence,
       observedAt: relationship.observedAt,
       staleAfter: relationship.staleAfter,
@@ -4930,7 +4976,10 @@
         source: edge.source,
         target: edge.target,
         label: edge.label,
-        predicate: edge.predicate
+        predicate: edge.predicate,
+        assertionStatus: edge.assertionStatus,
+        assertionScope: edge.assertionScope,
+        authorityClass: edge.authorityClass
       })),
       model.center
     );
@@ -5069,6 +5118,7 @@
       official: 'Official',
       derived: 'Derived',
       'model-assisted': 'Model-assisted',
+      synthetic: 'Synthetic fixture',
       unclassified: 'Unclassified'
     }[authority];
   }
@@ -5976,6 +6026,24 @@
                 {/if}
               </p>
             {/if}
+            {#if largeSearchResponse?.query_corrections?.length}
+              <p class="search-interpretation" aria-live="polite">
+                <strong>Spelling tolerance applied</strong>
+                <span>
+                  {largeSearchResponse.query_corrections
+                    .map((correction) => `“${correction.query_token}” → “${correction.matched_token}”`)
+                    .join(', ')}
+                </span>
+                <small>Each change is exactly one verified edit and must agree with the other indexed terms.</small>
+              </p>
+            {/if}
+            {#if largeSearchResponse?.unresolved_tokens?.length}
+              <p class="search-interpretation" aria-live="polite">
+                <strong>Unmatched {largeSearchResponse.unresolved_tokens.length === 1 ? 'term' : 'terms'}</strong>
+                <span>{largeSearchResponse.unresolved_tokens.join(', ')}</span>
+                <small>All meaningful terms are required, so unrelated partial matches are not shown.</small>
+              </p>
+            {/if}
           </section>
 
           {#if pins.length}
@@ -6461,6 +6529,12 @@
         />
       {:else if source?.kind === 'large'}
         <section class="large-view">
+          {#if source.descriptor.assertion_scope === 'synthetic-fixture'}
+            <aside class="semantic-scope-notice" data-relationship-scope="synthetic-fixture" aria-label="Synthetic fixture boundary">
+              <strong>Synthetic assurance fixture</strong>
+              <span>Invented test assertions are isolated from faithful counts and search and load only when this corpus is opened explicitly.</span>
+            </aside>
+          {/if}
           {#if activeView === 'reader'}
             <div class="metrics">
               {#each largeContextMetrics() as metric}
@@ -6868,6 +6942,8 @@
                       class:highlight={edgeHighlighted}
                       class:selected={largeHighlightedEdge === graphEdgeKey(relationship)}
                       data-relationship-authority={relationship.authorityClass || 'unclassified'}
+                      data-relationship-status={relationship.assertionStatus || 'unclassified'}
+                      data-relationship-scope={relationship.assertionScope || 'unclassified'}
                       data-edge-width={graphEdgeStrokeWidth(relationship, edgeWeightPlan, edgeHighlighted)}
                       d={edgeGeometry.d}
                       marker-end={edgeHighlighted ? 'url(#graph-arrow-highlight)' : 'url(#graph-arrow)'}
@@ -7013,12 +7089,14 @@
                     <button
                       class:active={largeHighlightedEdge === graphEdgeKey(relationship)}
                       data-relationship-authority={relationship.authorityClass || 'unclassified'}
+                      data-relationship-status={relationship.assertionStatus || 'unclassified'}
+                      data-relationship-scope={relationship.assertionScope || 'unclassified'}
                       type="button"
                       aria-pressed={largeHighlightedEdge === graphEdgeKey(relationship)}
                       onclick={() => inspectLargeEdge(relationship)}
                     >
                       {largeLabelForRoute(relationship.source)} → {relationship.label} → {largeLabelForRoute(relationship.target)}
-                      <small>{relationship.authorityLabel || 'Authority not declared'} · {relationship.freshness || 'unknown'}</small>
+                      <small>{relationship.authorityLabel || 'Authority not declared'}{relationship.assertionStatus ? ` · ${relationship.assertionStatus}` : ''}{relationship.assertionScope ? ` · ${relationship.assertionScope}` : ''} · {relationship.freshness || 'unknown'}</small>
                     </button>
                   {/each}
                 </div>
@@ -7077,9 +7155,15 @@
               </div>
               <section class="links-view">
                 {#each currentLinkEdges() as relationship}
-                  <button data-relationship-authority={relationship.authorityClass || 'unclassified'} type="button" onclick={() => inspectLargeEdge(relationship)}>
+                  <button
+                    data-relationship-authority={relationship.authorityClass || 'unclassified'}
+                    data-relationship-status={relationship.assertionStatus || 'unclassified'}
+                    data-relationship-scope={relationship.assertionScope || 'unclassified'}
+                    type="button"
+                    onclick={() => inspectLargeEdge(relationship)}
+                  >
                     <strong>{largeLabelForRoute(relationship.source)}</strong>
-                    <span>{relationship.label} · {relationship.authorityLabel || 'Authority not declared'}</span>
+                    <span>{relationship.label} · {relationship.authorityLabel || 'Authority not declared'}{relationship.assertionStatus ? ` · ${relationship.assertionStatus}` : ''}{relationship.assertionScope ? ` · ${relationship.assertionScope}` : ''}</span>
                     <strong>{largeLabelForRoute(relationship.target)}</strong>
                   </button>
                 {:else}
@@ -7370,6 +7454,12 @@
           {/if}
         </section>
       {:else if smallCorpus}
+        {#if smallCorpus.assertionScope === 'synthetic-fixture'}
+          <aside class="semantic-scope-notice" data-relationship-scope="synthetic-fixture" aria-label="Synthetic fixture boundary">
+            <strong>Synthetic assurance fixture</strong>
+            <span>Invented test assertions are isolated from faithful counts and search and load only when this corpus is opened explicitly.</span>
+          </aside>
+        {/if}
         {#if activeView === 'reader'}
           {#if federationOverview}
             <FederationOverviewPanel
@@ -7457,6 +7547,8 @@
                     class="graph-edge"
                     class:highlight={edgeHighlighted}
                     data-relationship-authority={relationshipPresentation(relationship).authorityClass}
+                    data-relationship-status={relationshipPresentation(relationship).assertionStatus}
+                    data-relationship-scope={relationshipPresentation(relationship).assertionScope}
                     d={edgeGeometry.d}
                     marker-end={edgeHighlighted ? 'url(#small-graph-arrow-highlight)' : 'url(#small-graph-arrow)'}
                   />
@@ -7508,11 +7600,13 @@
                   <button
                     class:active={smallInspectedRelationship === relationship}
                     data-relationship-authority={presentation.authorityClass}
+                    data-relationship-status={presentation.assertionStatus}
+                    data-relationship-scope={presentation.assertionScope}
                     type="button"
                     onclick={() => inspectSmallRelationship(relationship)}
                   >
                     {smallRelationshipTitle(relationship)}
-                    <small>{presentation.authorityLabel} · {presentation.freshness}</small>
+                    <small>{presentation.authorityLabel}{presentation.assertionStatus !== 'unclassified' ? ` · ${presentation.assertionStatus}` : ''}{presentation.assertionScope !== 'unclassified' ? ` · ${presentation.assertionScope}` : ''} · {presentation.freshness}</small>
                   </button>
                 {/each}
               </div>
@@ -7523,6 +7617,9 @@
             <span data-relationship-authority="official">Official <strong>{scopedRelationshipSummary.by_authority.official.toLocaleString()}</strong></span>
             <span data-relationship-authority="derived">Derived <strong>{scopedRelationshipSummary.by_authority.derived.toLocaleString()}</strong></span>
             <span data-relationship-authority="model-assisted">Model-assisted <strong>{scopedRelationshipSummary.by_authority['model-assisted'].toLocaleString()}</strong></span>
+            {#if scopedRelationshipSummary.by_authority.synthetic}
+              <span data-relationship-authority="synthetic">Synthetic fixture <strong>{scopedRelationshipSummary.by_authority.synthetic.toLocaleString()}</strong></span>
+            {/if}
             {#if scopedRelationshipSummary.by_authority.unclassified}
               <span data-relationship-authority="unclassified">Unclassified <strong>{scopedRelationshipSummary.by_authority.unclassified.toLocaleString()}</strong></span>
             {/if}
@@ -7530,9 +7627,16 @@
           <section class="links-view">
             {#each scopedRelationships as relationship}
               {@const presentation = relationshipPresentation(relationship)}
-              <button data-relationship-authority={presentation.authorityClass} type="button" onclick={() => inspectSmallRelationship(relationship)} ondblclick={() => selectNode(relationship.target)}>
+              <button
+                data-relationship-authority={presentation.authorityClass}
+                data-relationship-status={presentation.assertionStatus}
+                data-relationship-scope={presentation.assertionScope}
+                type="button"
+                onclick={() => inspectSmallRelationship(relationship)}
+                ondblclick={() => selectNode(relationship.target)}
+              >
                 <strong>{smallCorpus.nodes[relationship.source]?.title || relationship.source}</strong>
-                <span>{smallRelationshipKind(relationship)} · {presentation.authorityLabel}</span>
+                <span>{smallRelationshipKind(relationship)} · {presentation.authorityLabel}{presentation.assertionStatus !== 'unclassified' ? ` · ${presentation.assertionStatus}` : ''}{presentation.assertionScope !== 'unclassified' ? ` · ${presentation.assertionScope}` : ''}</span>
                 <strong>{smallCorpus.nodes[relationship.target]?.title || relationship.target}</strong>
               </button>
             {/each}
@@ -7698,6 +7802,12 @@
             {@const selectedRelationshipPresentation = relationshipPresentation(selectedRelationship)}
             <span class="badge">Relationship</span>
             <span class="badge" data-relationship-authority={selectedRelationshipPresentation.authorityClass}>{selectedRelationshipPresentation.authorityLabel}</span>
+            {#if selectedRelationshipPresentation.assertionStatus !== 'unclassified'}
+              <span class="badge" data-relationship-status={selectedRelationshipPresentation.assertionStatus}>{selectedRelationshipPresentation.assertionStatus}</span>
+            {/if}
+            {#if selectedRelationshipPresentation.assertionScope !== 'unclassified'}
+              <span class="badge" data-relationship-scope={selectedRelationshipPresentation.assertionScope}>{selectedRelationshipPresentation.assertionScope}</span>
+            {/if}
             <span class="badge" data-relationship-freshness={selectedRelationshipPresentation.freshness}>{selectedRelationshipPresentation.freshness}</span>
             <h2>{selectedRelationship.label}</h2>
             <p>
@@ -7742,18 +7852,29 @@
                 <dl>
                   <dt>Direction</dt><dd>Source → relationship → target</dd>
                   <dt>Type</dt><dd>{selectedRelationship.label}</dd>
+                  {#if selectedRelationshipPresentation.id}<dt>Assertion ID</dt><dd>{selectedRelationshipPresentation.id}</dd>{/if}
                   {#if selectedRelationship.predicate}<dt>Predicate</dt><dd>{selectedRelationship.predicate}</dd>{/if}
+                  {#if selectedRelationshipPresentation.inverseLabel}<dt>Inverse label</dt><dd>{selectedRelationshipPresentation.inverseLabel}</dd>{/if}
+                  {#if selectedRelationshipPresentation.sourceIri}<dt>Source IRI</dt><dd>{#if isUrl(selectedRelationshipPresentation.sourceIri)}<a href={selectedRelationshipPresentation.sourceIri} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.sourceIri}</a>{:else}{selectedRelationshipPresentation.sourceIri}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.targetIri}<dt>Target IRI</dt><dd>{#if isUrl(selectedRelationshipPresentation.targetIri)}<a href={selectedRelationshipPresentation.targetIri} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.targetIri}</a>{:else}{selectedRelationshipPresentation.targetIri}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.assertionStatus !== 'unclassified'}<dt>Assertion status</dt><dd>{selectedRelationshipPresentation.assertionStatus}</dd>{/if}
+                  {#if selectedRelationshipPresentation.assertionScope !== 'unclassified'}<dt>Assertion scope</dt><dd>{selectedRelationshipPresentation.assertionScope}</dd>{/if}
                   {#if selectedRelationship.count}<dt>Count</dt><dd>{selectedRelationship.count.toLocaleString()}</dd>{/if}
                   {#if selectedRelationship.weightValue !== undefined}
                     <dt>{selectedRelationship.weightMetric || 'Strength'}</dt><dd>{graphWeightValue(selectedRelationship.weightValue)}</dd>
                   {/if}
                   <dt>Authority</dt><dd>{selectedRelationshipPresentation.authorityLabel}</dd>
                   {#if selectedRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.authoritySource}</a></dd>{/if}
-                  {#if selectedRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{selectedRelationshipPresentation.derivation}</dd>{/if}
+                  {#if selectedRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{#if isUrl(selectedRelationshipPresentation.derivation)}<a href={selectedRelationshipPresentation.derivation} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.derivation}</a>{:else}{selectedRelationshipPresentation.derivation}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.derivationActivity}<dt>Derivation activity</dt><dd>{#if isUrl(selectedRelationshipPresentation.derivationActivity)}<a href={selectedRelationshipPresentation.derivationActivity} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.derivationActivity}</a>{:else}{selectedRelationshipPresentation.derivationActivity}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.rule}<dt>Rule</dt><dd>{#if isUrl(selectedRelationshipPresentation.rule)}<a href={selectedRelationshipPresentation.rule} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.rule}</a>{:else}{selectedRelationshipPresentation.rule}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.supportingAssertions.length}<dt>Supporting assertions</dt><dd>{selectedRelationshipPresentation.supportingAssertions.join(', ')}</dd>{/if}
                   {#if selectedRelationshipPresentation.confidence}<dt>Confidence</dt><dd>{selectedRelationshipPresentation.confidence}</dd>{/if}
                   {#if selectedRelationshipPresentation.observedAt}<dt>Observed</dt><dd>{selectedRelationshipPresentation.observedAt}</dd>{/if}
                   {#if selectedRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedRelationshipPresentation.staleAfter}</dd>{/if}
                   <dt>Freshness</dt><dd>{selectedRelationshipPresentation.freshness}</dd>
+                  {#if selectedRelationshipPresentation.rightsSource}<dt>Rights source</dt><dd>{#if isUrl(selectedRelationshipPresentation.rightsSource)}<a href={selectedRelationshipPresentation.rightsSource} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.rightsSource}</a>{:else}{selectedRelationshipPresentation.rightsSource}{/if}</dd>{/if}
+                  {#if selectedRelationshipPresentation.rightsAssertion}<dt>Rights assertion</dt><dd>{selectedRelationshipPresentation.rightsAssertion}</dd>{/if}
                 </dl>
                 {#if selectedRelationshipPresentation.authorityClass === 'model-assisted' && selectedRelationshipPresentation.evidenceItems.length}
                   <section
@@ -7777,24 +7898,6 @@
                       {/if}
                       <dt>Official legal classification</dt>
                       <dd>{selectedRelationshipPresentation.officialLegalClassification === false ? 'No' : 'Not declared'}</dd>
-                      {#if selectedRelationshipPresentation.rightsSource}
-                        <dt>Rights source</dt>
-                        <dd>
-                          {#if isUrl(selectedRelationshipPresentation.rightsSource)}
-                            <a
-                              href={selectedRelationshipPresentation.rightsSource}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >{selectedRelationshipPresentation.rightsSource}</a>
-                          {:else}
-                            {selectedRelationshipPresentation.rightsSource}
-                          {/if}
-                        </dd>
-                      {/if}
-                      {#if selectedRelationshipPresentation.rightsAssertion}
-                        <dt>Rights assertion</dt>
-                        <dd>{selectedRelationshipPresentation.rightsAssertion}</dd>
-                      {/if}
                     </dl>
                     <div class="model-evidence-list">
                       {#each selectedRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
@@ -7808,6 +7911,10 @@
                             <p>{evidence.sourceValue.slice(0, 600)}{evidence.sourceValue.length > 600 ? '…' : ''}</p>
                           {/if}
                           {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
+                          {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
+                          {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                          {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
+                          {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
                           {#if evidence.normalization}<small>{evidence.normalization}</small>{/if}
                           {#if evidence.ruleId || evidence.rationale}
                             <small>{[evidence.ruleId, evidence.rationale].filter(Boolean).join(' · ')}</small>
@@ -7819,11 +7926,21 @@
                       {/each}
                     </div>
                   </section>
-                {:else if selectedRelationshipPresentation.evidenceUrls.length}
-                  <h3>Relationship evidence</h3>
-                  {#each selectedRelationshipPresentation.evidenceUrls as evidenceUrl}
-                    <a href={evidenceUrl} target="_blank" rel="noopener noreferrer">{evidenceUrl}</a>
-                  {/each}
+                {:else if selectedRelationshipPresentation.evidenceItems.length}
+                  <h3>Relationship evidence and provenance</h3>
+                  <div class="model-evidence-list">
+                    {#each selectedRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
+                      <article data-evidence-index={evidenceIndex} data-evidence-source-field={evidence.sourceField || 'unspecified'}>
+                        <strong>{evidence.sourceField || `Evidence ${evidenceIndex + 1}`}</strong>
+                        {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
+                        {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                        {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
+                        {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
+                        {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
+                        {#if evidence.url}<a href={evidence.url} target="_blank" rel="noopener noreferrer">Source evidence</a>{/if}
+                      </article>
+                    {/each}
+                  </div>
                 {/if}
                 {#if relationshipEdges.length > 1}
                   <div class="relationship-instance-list" aria-label="Highlighted relationship instances">
@@ -7844,13 +7961,22 @@
                   <pre>{jsonText({
                     source: selectedRelationship.source,
                     target: selectedRelationship.target,
+                    id: selectedRelationshipPresentation.id,
+                    source_iri: selectedRelationshipPresentation.sourceIri,
+                    target_iri: selectedRelationshipPresentation.targetIri,
                     kind: selectedRelationship.label,
                     predicate: selectedRelationship.predicate,
+                    inverse_label: selectedRelationshipPresentation.inverseLabel,
+                    assertion_status: selectedRelationshipPresentation.assertionStatus,
+                    assertion_scope: selectedRelationshipPresentation.assertionScope,
                     count: selectedRelationship.count,
                     weight: selectedRelationship.weightValue,
                     authority: selectedRelationshipPresentation.authorityClass,
                     authority_source: selectedRelationshipPresentation.authoritySource,
                     derivation: selectedRelationshipPresentation.derivation,
+                    derivation_activity: selectedRelationshipPresentation.derivationActivity,
+                    rule: selectedRelationshipPresentation.rule,
+                    supporting_assertions: selectedRelationshipPresentation.supportingAssertions,
                     confidence: selectedRelationshipPresentation.confidence,
                     observed_at: selectedRelationshipPresentation.observedAt,
                     stale_after: selectedRelationshipPresentation.staleAfter,
@@ -7988,6 +8114,9 @@
                 tabindex="0"
                 aria-labelledby={`detail-tab-${detailPanelTab}`}
               >
+              {#if detailPanelTab === 'overview'}
+                <HeritageDetail record={largeDetail.dataset} />
+              {/if}
               {#if operationalContext.explicit || operationalContext.catalogueDerived}
                 <details class="record-context operational-context disclosure-section" id="detail-panel-overview" hidden={detailPanelTab !== 'overview'} open>
                   <summary>Current source and maintenance</summary>
@@ -8075,7 +8204,7 @@
                 open={
                   !(operationalContext.explicit || operationalContext.catalogueDerived) &&
                   !dateContext.years.length &&
-                  !dateContext.series
+                  !displaySeries.label
                 }
               >
                 <summary>Overview</summary>
@@ -8534,6 +8663,12 @@
           {@const selectedSmallRelationshipPresentation = relationshipPresentation(smallInspectedRelationship)}
           <span class="badge">Relationship</span>
           <span class="badge" data-relationship-authority={selectedSmallRelationshipPresentation.authorityClass}>{selectedSmallRelationshipPresentation.authorityLabel}</span>
+          {#if selectedSmallRelationshipPresentation.assertionStatus !== 'unclassified'}
+            <span class="badge" data-relationship-status={selectedSmallRelationshipPresentation.assertionStatus}>{selectedSmallRelationshipPresentation.assertionStatus}</span>
+          {/if}
+          {#if selectedSmallRelationshipPresentation.assertionScope !== 'unclassified'}
+            <span class="badge" data-relationship-scope={selectedSmallRelationshipPresentation.assertionScope}>{selectedSmallRelationshipPresentation.assertionScope}</span>
+          {/if}
           <span class="badge" data-relationship-freshness={selectedSmallRelationshipPresentation.freshness}>{selectedSmallRelationshipPresentation.freshness}</span>
           <h2>{smallCorpus.nodes[smallInspectedRelationship.source]?.title || smallInspectedRelationship.source} → {smallCorpus.nodes[smallInspectedRelationship.target]?.title || smallInspectedRelationship.target}</h2>
           <p>{smallRelationshipKind(smallInspectedRelationship)}</p>
@@ -8549,19 +8684,41 @@
             <dt>Target</dt><dd><button type="button" onclick={() => inspectNode(smallInspectedRelationship?.target || '')}>{smallCorpus.nodes[smallInspectedRelationship.target]?.title || smallInspectedRelationship.target}</button></dd>
             <dt>Source route</dt><dd>{smallInspectedRelationship.source}</dd>
             <dt>Target route</dt><dd>{smallInspectedRelationship.target}</dd>
+            {#if selectedSmallRelationshipPresentation.id}<dt>Assertion ID</dt><dd>{selectedSmallRelationshipPresentation.id}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.predicate}<dt>Predicate IRI</dt><dd>{selectedSmallRelationshipPresentation.predicate}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.inverseLabel}<dt>Inverse label</dt><dd>{selectedSmallRelationshipPresentation.inverseLabel}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.sourceIri}<dt>Source IRI</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.sourceIri)}<a href={selectedSmallRelationshipPresentation.sourceIri} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.sourceIri}</a>{:else}{selectedSmallRelationshipPresentation.sourceIri}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.targetIri}<dt>Target IRI</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.targetIri)}<a href={selectedSmallRelationshipPresentation.targetIri} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.targetIri}</a>{:else}{selectedSmallRelationshipPresentation.targetIri}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.assertionStatus !== 'unclassified'}<dt>Assertion status</dt><dd>{selectedSmallRelationshipPresentation.assertionStatus}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.assertionScope !== 'unclassified'}<dt>Assertion scope</dt><dd>{selectedSmallRelationshipPresentation.assertionScope}</dd>{/if}
             <dt>Authority</dt><dd>{selectedSmallRelationshipPresentation.authorityLabel}</dd>
             {#if selectedSmallRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedSmallRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.authoritySource}</a></dd>{/if}
-            {#if selectedSmallRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{selectedSmallRelationshipPresentation.derivation}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivation)}<a href={selectedSmallRelationshipPresentation.derivation} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivation}</a>{:else}{selectedSmallRelationshipPresentation.derivation}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.derivationActivity}<dt>Derivation activity</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivationActivity)}<a href={selectedSmallRelationshipPresentation.derivationActivity} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivationActivity}</a>{:else}{selectedSmallRelationshipPresentation.derivationActivity}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.rule}<dt>Rule</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.rule)}<a href={selectedSmallRelationshipPresentation.rule} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.rule}</a>{:else}{selectedSmallRelationshipPresentation.rule}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.supportingAssertions.length}<dt>Supporting assertions</dt><dd>{selectedSmallRelationshipPresentation.supportingAssertions.join(', ')}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.confidence}<dt>Confidence</dt><dd>{selectedSmallRelationshipPresentation.confidence}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.observedAt}<dt>Observed</dt><dd>{selectedSmallRelationshipPresentation.observedAt}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedSmallRelationshipPresentation.staleAfter}</dd>{/if}
             <dt>Freshness</dt><dd>{selectedSmallRelationshipPresentation.freshness}</dd>
+            {#if selectedSmallRelationshipPresentation.rightsSource}<dt>Rights source</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.rightsSource)}<a href={selectedSmallRelationshipPresentation.rightsSource} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.rightsSource}</a>{:else}{selectedSmallRelationshipPresentation.rightsSource}{/if}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.rightsAssertion}<dt>Rights assertion</dt><dd>{selectedSmallRelationshipPresentation.rightsAssertion}</dd>{/if}
           </dl>
-          {#if selectedSmallRelationshipPresentation.evidenceUrls.length}
-            <h3>Relationship evidence</h3>
-            {#each selectedSmallRelationshipPresentation.evidenceUrls as evidenceUrl}
-              <a href={evidenceUrl} target="_blank" rel="noopener noreferrer">{evidenceUrl}</a>
-            {/each}
+          {#if selectedSmallRelationshipPresentation.evidenceItems.length}
+            <h3>Relationship evidence and provenance</h3>
+            <div class="model-evidence-list">
+              {#each selectedSmallRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
+                <article data-evidence-index={evidenceIndex} data-evidence-source-field={evidence.sourceField || 'unspecified'}>
+                  <strong>{evidence.sourceField || `Evidence ${evidenceIndex + 1}`}</strong>
+                  {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
+                  {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                  {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
+                  {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
+                  {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
+                  {#if evidence.url}<a href={evidence.url} target="_blank" rel="noopener noreferrer">Source evidence</a>{/if}
+                </article>
+              {/each}
+            </div>
           {/if}
           <details class="json-panel">
             <summary>Relationship JSON</summary>

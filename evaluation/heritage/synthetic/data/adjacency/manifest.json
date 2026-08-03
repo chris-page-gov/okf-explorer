@@ -1,0 +1,1 @@
+{"algorithm":"fnv1a32-prefix-2","buckets":{"20":"data/adjacency/20.json.gz","8e":"data/adjacency/8e.json.gz","f2":"data/adjacency/f2.json.gz"},"relationships":2,"routes":3,"schema":"okf-relationship-adjacency.v1","snapshot":"heritage-warwickshire-synthetic-capability-v1"}

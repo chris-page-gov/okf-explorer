@@ -10,7 +10,8 @@ import type {
   SearchEntity,
   SearchEntityMatch,
   SearchResultDoc,
-  SearchSuggestion
+  SearchSuggestion,
+  SearchTokenCorrection
 } from '$lib/types';
 import {
   compareSortValues,
@@ -22,6 +23,14 @@ import {
   type OrdinalScores
 } from '$lib/search/staticSearch';
 import { SEARCH_MANIFEST_LIMITS, validateLargeSearchManifest } from '$lib/search/largeSearchContract';
+import {
+  TYPO_TOLERANCE_CONTRACT,
+  correctionFor,
+  symmetricDeleteKeys,
+  typoShardFor,
+  validateTypoDeletionShard,
+  type TypoDeletionShard
+} from '$lib/search/typoTolerance';
 import { fetchJsonResource } from '$lib/sources/fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -56,6 +65,18 @@ type SuggestMessage = {
 
 type WorkerMessage = InitMessage | QueryMessage | SuggestMessage;
 type SearchEntry = { token: string; df: number; postings: string };
+type TokenEntryGroup = {
+  queryToken: string;
+  entries: SearchEntry[];
+  /** Legacy short-prefix expansion, retained if bounded typo lookup has no verified candidate. */
+  fallbackEntries: SearchEntry[];
+  corrections: Map<string, SearchTokenCorrection>;
+};
+type TypoQueryBudget = {
+  tokensConsidered: number;
+  shardPaths: Set<string>;
+  truncated: boolean;
+};
 
 const STOP_WORDS = new Set(['a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'in', 'into', 'is', 'it', 'of', 'on', 'or', 'the', 'to', 'with']);
 const ENTITY_CONNECTORS = new Set(['a', 'an', 'and', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'with']);
@@ -70,6 +91,7 @@ const lexiconCache = new Map<string, Promise<Map<string, SearchEntry>>>();
 const postingsCache = new Map<string, Promise<Record<string, Array<[number, number, number]>>>>();
 const docCache = new Map<string, Promise<SearchResultDoc[]>>();
 const prefixCache = new Map<string, Promise<Record<string, SearchSuggestion[]>>>();
+const typoDeletionCache = new Map<string, Promise<TypoDeletionShard>>();
 const filterPostingsCache = new Map<string, Promise<LargeFilterPostings>>();
 let sortValuesPromise: Promise<LargeSortValue[]> | null = null;
 let entitiesPromise: Promise<SearchEntity[]> | null = null;
@@ -362,12 +384,107 @@ async function suggestionsFor(prefix: string): Promise<SearchSuggestion[]> {
   return (await lexicalSuggestionsFor(prefix)).slice(0, 8);
 }
 
-async function entriesForToken(token: string): Promise<SearchEntry[]> {
+async function lexicalEntriesForToken(token: string): Promise<TokenEntryGroup> {
   const exact = await lexiconEntry(token);
-  if (exact) return [exact];
+  if (exact) return { queryToken: token, entries: [exact], fallbackEntries: [], corrections: new Map() };
   const suggestions = (await lexicalSuggestionsFor(token)).slice(0, 3);
   const entries = await Promise.all(suggestions.map((suggestion) => lexiconEntry(suggestion.token)));
-  return entries.filter((entry): entry is SearchEntry => Boolean(entry));
+  const resolved = entries.filter((entry): entry is SearchEntry => Boolean(entry));
+  // Prefix shards intentionally fall back from a long, absent prefix to a
+  // shorter stored prefix. With an opt-in typo index, only genuine prefixes
+  // retain precedence; broad legacy expansion remains the fallback if no
+  // one-edit candidate verifies. Old manifests keep their exact behaviour.
+  const exactPrefixes = resolved.filter((entry) => entry.token.startsWith(token));
+  const deferBroadPrefix = Boolean(manifest?.typo_tolerance && resolved.length && !exactPrefixes.length);
+  return {
+    queryToken: token,
+    entries: deferBroadPrefix ? [] : exactPrefixes.length ? exactPrefixes : resolved,
+    fallbackEntries: deferBroadPrefix ? resolved : [],
+    corrections: new Map()
+  };
+}
+
+async function typoDeletionShard(path: string): Promise<TypoDeletionShard> {
+  if (!manifest) throw new Error('Search worker is not initialised');
+  if (!typoDeletionCache.has(path)) {
+    const request = fetchJson<unknown>(
+      bindShardIntegrity(path, 'Search typo-deletion shard'),
+      Boolean(releaseDataPlane)
+    ).then((payload) => validateTypoDeletionShard(payload, {
+      documents: manifest?.counts.documents || 0,
+      path
+    }));
+    request.catch(() => typoDeletionCache.delete(path));
+    typoDeletionCache.set(path, request);
+  }
+  return typoDeletionCache.get(path)!;
+}
+
+async function typoEntriesForToken(token: string, budget: TypoQueryBudget): Promise<TokenEntryGroup> {
+  const empty = (): TokenEntryGroup => ({ queryToken: token, entries: [], fallbackEntries: [], corrections: new Map() });
+  if (!manifest?.typo_tolerance || !manifest.entrypoints.typo_deletions) return empty();
+  if (
+    token.length < TYPO_TOLERANCE_CONTRACT.min_token_length ||
+    token.length > TYPO_TOLERANCE_CONTRACT.max_token_length
+  ) {
+    return empty();
+  }
+  if (budget.tokensConsidered >= TYPO_TOLERANCE_CONTRACT.max_corrected_tokens_per_query) {
+    budget.truncated = true;
+    return empty();
+  }
+
+  const keys = symmetricDeleteKeys(token);
+  if (keys.length > TYPO_TOLERANCE_CONTRACT.max_delete_keys_per_token) {
+    throw new Error('Search typo correction exceeds the supported delete-key limit');
+  }
+  const shardPaths = [...new Set(keys
+    .map((key) => typoShardFor(key, TYPO_TOLERANCE_CONTRACT.shard_length))
+    .map((shard) => manifest?.entrypoints.typo_deletions?.[shard] || manifest?.entrypoints.typo_deletions?._)
+    .filter((path): path is string => Boolean(path)))]
+    .sort();
+  if (!shardPaths.length) return empty();
+
+  const additionalPaths = shardPaths.filter((path) => !budget.shardPaths.has(path));
+  if (budget.shardPaths.size + additionalPaths.length > TYPO_TOLERANCE_CONTRACT.max_shards_per_query) {
+    budget.truncated = true;
+    return empty();
+  }
+  budget.tokensConsidered += 1;
+  for (const path of additionalPaths) budget.shardPaths.add(path);
+
+  const shards = await Promise.all(shardPaths.map(typoDeletionShard));
+  const candidates = new Map<string, number>();
+  for (const shard of shards) {
+    for (const key of keys) {
+      for (const candidate of shard.keys[key] || []) {
+        if (!correctionFor(token, candidate.token, 1)) continue;
+        const priorDf = candidates.get(candidate.token);
+        if (priorDf !== undefined && priorDf !== candidate.df) {
+          throw new Error(`Typo deletion candidate ${candidate.token} has conflicting document frequencies`);
+        }
+        candidates.set(candidate.token, candidate.df);
+      }
+    }
+  }
+
+  const ranked = [...candidates]
+    .sort(([leftToken, leftDf], [rightToken, rightDf]) => rightDf - leftDf || leftToken.localeCompare(rightToken))
+    .slice(0, TYPO_TOLERANCE_CONTRACT.max_candidates_per_token);
+  const entries = await Promise.all(ranked.map(([candidate]) => lexiconEntry(candidate)));
+  const corrections = new Map<string, SearchTokenCorrection>();
+  const acceptedEntries: SearchEntry[] = [];
+  for (const [index, [candidate, advertisedDf]] of ranked.entries()) {
+    const entry = entries[index];
+    if (!entry || entry.token !== candidate || entry.df !== advertisedDf) {
+      throw new Error(`Typo deletion candidate ${candidate} differs from the search lexicon`);
+    }
+    const correction = correctionFor(token, candidate, index + 1);
+    if (!correction) continue;
+    acceptedEntries.push(entry);
+    corrections.set(candidate, correction);
+  }
+  return { queryToken: token, entries: acceptedEntries, fallbackEntries: [], corrections };
 }
 
 async function postingsFor(path: string) {
@@ -381,6 +498,21 @@ async function postingsFor(path: string) {
     );
   }
   return postingsCache.get(path)!;
+}
+
+async function ordinalSetForEntries(entries: SearchEntry[]): Promise<Set<number>> {
+  const ordinals = new Set<number>();
+  for (const entry of entries) {
+    const chunk = await postingsFor(entry.postings);
+    for (const [ordinal] of chunk[entry.token] || []) ordinals.add(ordinal);
+  }
+  return ordinals;
+}
+
+function setsOverlap(left: Set<number>, right: Set<number>): boolean {
+  const [smaller, larger] = left.size <= right.size ? [left, right] : [right, left];
+  for (const value of smaller) if (larger.has(value)) return true;
+  return false;
 }
 
 async function docsFor(path: string) {
@@ -473,16 +605,70 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   }
   const entityRecognition = await recognizedEntity(query);
   const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
-  const entryGroups = (await Promise.all(tokens.map(entriesForToken))).filter((group) => group.length);
-  entryGroups.sort((a, b) => Math.min(...a.map((entry) => entry.df)) - Math.min(...b.map((entry) => entry.df)));
+  const resolvedGroups = await Promise.all(tokens.map(lexicalEntriesForToken));
+  const lexicalAnchorGroups = resolvedGroups.filter((group) => group.entries.length);
+  let lexicalAnchorOrdinals: Set<number> | null = null;
+  const maximumPostings = manifest.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER;
+  const completeAnchorGroups = lexicalAnchorGroups.filter((group) =>
+    group.entries.every((entry) => entry.df <= maximumPostings)
+  );
+  if (completeAnchorGroups.length) {
+    const anchorSets = await Promise.all(
+      completeAnchorGroups.map((group) => ordinalSetForEntries(group.entries))
+    );
+    lexicalAnchorOrdinals = anchorSets[0] || new Set<number>();
+    for (const set of anchorSets.slice(1)) {
+      lexicalAnchorOrdinals = intersectOrdinals(lexicalAnchorOrdinals, set);
+    }
+  }
+  const typoBudget: TypoQueryBudget = { tokensConsidered: 0, shardPaths: new Set(), truncated: false };
+  if (!entityRecognition) {
+    for (const [index, group] of resolvedGroups.entries()) {
+      if (group.entries.length) continue;
+      let corrected = await typoEntriesForToken(group.queryToken, typoBudget);
+      if (corrected.entries.length && lexicalAnchorOrdinals) {
+        const acceptedEntries: SearchEntry[] = [];
+        for (const entry of corrected.entries) {
+          const candidateOrdinals = await ordinalSetForEntries([entry]);
+          if (setsOverlap(candidateOrdinals, lexicalAnchorOrdinals)) acceptedEntries.push(entry);
+        }
+        const acceptedTokens = new Set(acceptedEntries.map((entry) => entry.token));
+        corrected = {
+          ...corrected,
+          entries: acceptedEntries,
+          corrections: new Map(
+            [...corrected.corrections].filter(([token]) => acceptedTokens.has(token))
+          )
+        };
+      }
+      resolvedGroups[index] = corrected.entries.length
+        ? corrected
+        : {
+            ...group,
+            entries: manifest.typo_tolerance ? [] : group.fallbackEntries,
+            fallbackEntries: []
+          };
+    }
+  }
+  const queryCorrections = resolvedGroups.flatMap((group) => [...group.corrections.values()]);
+  const unresolvedTokens = resolvedGroups
+    .filter((group) => !group.entries.length)
+    .map((group) => group.queryToken);
+  const entryGroups = resolvedGroups.filter((group) => group.entries.length);
+  entryGroups.sort(
+    (a, b) =>
+      Math.min(...a.entries.map((entry) => entry.df)) - Math.min(...b.entries.map((entry) => entry.df)) ||
+      a.queryToken.localeCompare(b.queryToken)
+  );
 
   const scores: OrdinalScores = new Map();
+  const correctionsByOrdinal = new Map<number, Map<string, SearchTokenCorrection>>();
   const sets: Set<number>[] = [];
   const completeSets: Set<number>[] = [];
   let cappedCandidates = false;
-  for (const entries of entryGroups) {
+  for (const group of entryGroups) {
     const set = new Set<number>();
-    for (const entry of entries) {
+    for (const entry of group.entries) {
       const chunk = await postingsFor(entry.postings);
       const postings = chunk[entry.token] || [];
       const idf = inverseDocumentFrequency(manifest.counts.documents || 0, entry.df);
@@ -495,10 +681,15 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
           idf: current.idf + weighted * idf,
           mask: current.mask | mask
         });
+        const correction = group.corrections.get(entry.token);
+        if (correction) {
+          if (!correctionsByOrdinal.has(ordinal)) correctionsByOrdinal.set(ordinal, new Map());
+          correctionsByOrdinal.get(ordinal)!.set(`${correction.query_token}\u0000${correction.matched_token}`, correction);
+        }
       }
     }
     sets.push(set);
-    if (entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
+    if (group.entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
       completeSets.push(set);
     } else {
       cappedCandidates = true;
@@ -512,7 +703,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   let matches: Set<number>;
   if (recognizedOrdinals) {
     matches = new Set(recognizedOrdinals);
-  } else if (query && (!tokens.length || !entryGroups.length)) {
+  } else if (query && (!tokens.length || !entryGroups.length || unresolvedTokens.length)) {
     // A non-empty stop-word-only query, or a query with no indexed lexical
     // term, is not filter-only browsing. Keep its query universe empty while
     // still validating/applying filters below.
@@ -520,12 +711,6 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   } else {
     matches = tokens.length ? intersectionSets[0] || new Set<number>() : allOrdinals();
     for (const set of intersectionSets.slice(1)) matches = intersectOrdinals(matches, set);
-    if (!matches.size && intersectionSets.length > 1) {
-      matches = new Set<number>();
-      for (const set of intersectionSets) {
-        for (const value of set) matches.add(value);
-      }
-    }
   }
 
   const requestedPostingKeys = [...new Set([...Object.keys(request.filters ?? {}), ...(request.facet_keys || [])])];
@@ -560,7 +745,10 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       facets,
       ranking: request.ranking || 'weighted',
       elapsed_ms: Math.round(performance.now() - started),
-      ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {})
+      ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {}),
+      ...(queryCorrections.length ? { query_corrections: queryCorrections } : {}),
+      ...(unresolvedTokens.length ? { unresolved_tokens: unresolvedTokens } : {}),
+      ...(typoBudget.truncated ? { correction_truncated: true } : {})
     };
   }
 
@@ -631,6 +819,8 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     const entityScore = recognizedOrdinals?.has(ordinal) ? ENTITY_SCORE : 0;
     const total = request.sort === 'relevance' ? rankingScore(score, strategy, exact) + entityScore : 0;
     const fields = matchedFields(score.mask);
+    const correctedTokens = [...(correctionsByOrdinal.get(ordinal)?.values() || [])]
+      .sort((left, right) => left.candidate_rank - right.candidate_rank || left.matched_token.localeCompare(right.matched_token));
     if (entityRecognition && !fields.includes(entityRecognition.entity.filter_key)) fields.unshift(entityRecognition.entity.filter_key);
     results.push({
       ...doc,
@@ -638,6 +828,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       match: {
         query_tokens: tokens,
         matched_fields: fields,
+        ...(correctedTokens.length ? { corrected_tokens: correctedTokens } : {}),
         ...(entityRecognition ? { recognized_entity: entityRecognition.match } : {}),
         score_components: {
           weighted: Math.round(score.weighted * 1000) / 1000,
@@ -684,7 +875,10 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     facets,
     ranking: strategy,
     elapsed_ms: Math.round(performance.now() - started),
-    ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {})
+    ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {}),
+    ...(queryCorrections.length ? { query_corrections: queryCorrections } : {}),
+    ...(unresolvedTokens.length ? { unresolved_tokens: unresolvedTokens } : {}),
+    ...(typoBudget.truncated ? { correction_truncated: true } : {})
   };
 }
 

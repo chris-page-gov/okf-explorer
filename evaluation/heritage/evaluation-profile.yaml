@@ -1,0 +1,176 @@
+schema: okf-evaluation-profile.v1
+profile_id: heritage-coventry-warwickshire-v1
+version: 1.0.0
+status: provisional
+title: Coventry and Warwickshire heritage functionality evaluation
+description: >-
+  A reproducible Evaluation Foundry profile for testing every OKF Explorer
+  presentation plane against complete, source-defined heritage populations,
+  a tiny assurance fixture, and a visibly separate synthetic supplement.
+prepared_at: "2026-08-03T00:00:00Z"
+publication_assurance:
+  status: provisional
+  local_build:
+    status: passed
+    reading_pages: 239
+    internal_page_references: 4134
+    github_pages_size_gate: passed-under-1000000000-bytes
+  explorer_presentation_views:
+    status: passed-locally
+    count: 8
+    names:
+      - Reader
+      - Graph
+      - Links
+      - Timeline
+      - Type
+      - Resources
+      - Map
+      - Narrative
+  public_verification:
+    status: pending
+    demonstrated: false
+    journey: journey-publication
+scope:
+  record_definition: >-
+    One unique current NHLE ListEntry intersecting at least one pinned scope
+    boundary, or one sanctioned annual Heritage at Risk source row whose
+    authoritative local-government fields place it in the same scope.
+  included:
+    - NHLE layers 0, 1, 2, 6, 7, 8, 9 and 10, with duplicate display layers 3, 4 and 5 excluded.
+    - Every unique source feature that spatially intersects the exact pinned boundaries, including boundary-crossing features once with every matching geography retained.
+    - Sanctioned Historic England annual Heritage at Risk entries, additions and positive removals from 2013 through 2025 when Local Planning Authority, Local Authority, Unitary Authority, District/Borough or Council fields identify the scope; locality-only names are excluded.
+    - Source-native fields, source geometry, deterministic normalization, provenance, aliases, relationship assertions and linked official HTML records.
+  excluded:
+    - Rich-page narrative copied in bulk from Historic England HTML pages.
+    - Heritage assets outside the exact pinned boundary intersection.
+    - Claims invented to fill absent source fields.
+    - Synthetic capability examples from faithful counts, search and default loading.
+  boundary_codes:
+    - code: E08000026
+      name: Coventry
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    - code: E07000218
+      name: North Warwickshire
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    - code: E07000219
+      name: Nuneaton and Bedworth
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    - code: E07000220
+      name: Rugby
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    - code: E07000221
+      name: Stratford-on-Avon
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    - code: E07000222
+      name: Warwick
+      vintage: December 2025 BFC
+      source: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+  denominators:
+    - id: denominator-nhle-current
+      definition: Unique current NHLE ListEntry values intersecting one or more scope boundaries.
+      method: ArcGIS spatial intersection against every supported non-duplicate source layer, followed by ListEntry deduplication.
+      status: complete
+      count: 6556
+      limitations:
+        - Completeness is relative to the pinned live-source snapshot and boundary vintage.
+    - id: denominator-har-annual
+      definition: Annual Heritage at Risk source rows in scope from the sanctioned 2013–2025 workbooks.
+      method: Schema-aware authoritative local-government field filtering with retained workbook, sheet, row, field and value provenance; locality-only names are excluded.
+      status: bounded
+      count: 1084
+      limitations:
+        - Annual workbook schemas vary and some earlier records lack modern identifiers or geometry.
+        - The generated provenance ledger supplies per-year input and output counts.
+sources:
+  - id: source-nhle-feature-service
+    title: National Heritage List for England open-data FeatureServer
+    url: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer
+    authority: Historic England
+    access: Public ArcGIS REST query and extract
+    rights: Open Government Licence v3.0 with stated Crown copyright and Ordnance Survey attribution
+    coverage: Current supported NHLE designation layers for England
+    automation_limit: Use non-duplicate data layers only and retain the source edit timestamp.
+  - id: source-har-annual
+    title: Annual Heritage at Risk Registers and maps
+    url: https://historicengland.org.uk/listing/heritage-at-risk/search-register/annual-heritage-at-risk-registers-and-maps/
+    authority: Historic England
+    access: Sanctioned annual ODS or XLSX workbooks
+    rights: Historic England open-data terms and Open Government Licence where declared by the source
+    coverage: Annual entries, additions and positive removals, 2013–2025
+    automation_limit: Do not scrape the interactive HAR site; preserve schema drift and unknown values.
+  - id: source-ons-lad-boundaries
+    title: Local Authority Districts December 2025 Boundaries UK BFC
+    url: https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0
+    authority: Office for National Statistics Geography
+    access: Public ArcGIS REST geometry query
+    rights: Source-declared ONS geography and Ordnance Survey terms
+    coverage: Exact full-resolution December 2025 local-authority boundaries
+    automation_limit: Query only the six declared LAD25CD values and preserve their source geometry.
+assertion_policy:
+  statuses:
+    - official
+    - normalized
+    - inferred
+    - model-derived
+  scopes:
+    - real-world
+    - synthetic-fixture
+  synthetic_isolation: true
+  rule: >-
+    Assertion status describes authority; assertion scope independently says
+    whether a statement concerns the real world or an invented test case.
+mapping_proposals:
+  - map-source-identity
+  - map-category-and-grade
+  - map-exact-boundary-membership
+  - map-har-location-membership
+  - map-source-geometry
+  - map-designation-time
+  - map-rich-representations
+  - map-har-observation
+  - map-har-to-nhle
+  - map-search-aliases
+  - map-yaml-ld-identifiers
+  - map-reified-relationship
+  - map-provenance-and-authority
+capabilities:
+  - search
+  - facets
+  - types
+  - resources
+  - graph
+  - links
+  - timeline
+  - map
+  - narrative
+  - data-card
+  - provenance
+  - durable-state
+  - accessibility
+  - publication
+fixtures:
+  tiny: ../../../evaluation/heritage/tiny/okf-explorer.json
+  faithful: ../../../evaluation/heritage/okf-explorer.json
+  synthetic: ../../../evaluation/heritage/synthetic/okf-explorer.json
+consumer_contract:
+  consumer: OKF Explorer static PWA and browser-compatible generated Site
+  journeys: ./journeys.json
+  deterministic_builds: 2
+  compatibility:
+    - Existing OKF Markdown without YAML-LD remains valid and renders as before.
+    - YAML-LD is additive; unknown extension fields are preserved or ignored without breaking legacy views.
+    - One canonical query and facet state drives Reader, Graph, Links, Timeline, Type, Resources, Map and Narrative projections.
+publication_boundary: >-
+  This is a functionality evaluation and evidence-bound projection, not an
+  assured heritage register, legal designation search, condition survey or
+  replacement for Historic England. The clean local build and local browser
+  journeys do not establish public availability; publication remains
+  provisional until the exact deployed GitHub Pages URLs pass the terminal
+  publication journey. Synthetic records are separately named, default-off
+  and excluded from faithful counts and search.

@@ -48,7 +48,24 @@ MAX_SEARCH_POSTINGS_PER_TOKEN = 2000
 MAX_SEARCH_NOTES_CHARS = 360
 MAX_SEARCH_CONTEXT_CHARS = 180
 MAX_SEARCH_URL_CHARS = 500
+MAX_SEARCH_ALIASES = 64
+MAX_SEARCH_ALIAS_CHARS = 180
 MAX_RECORD_NOTES_CHARS = 1200
+TYPO_DELETION_SHARD_SCHEMA = "okf-search-typo-deletions.v1"
+TYPO_TOLERANCE_CONTRACT = {
+    "schema": "okf-search-typo-tolerance.v1",
+    "algorithm": "symmetric-delete-damerau-levenshtein-v1",
+    "max_edit_distance": 1,
+    "min_token_length": 4,
+    "max_token_length": 32,
+    "max_delete_keys_per_token": 33,
+    "max_candidates_per_delete_key": 8,
+    "max_candidates_per_token": 3,
+    "max_corrected_tokens_per_query": 4,
+    "max_shards_per_query": 12,
+    "max_keys_per_shard": 50_000,
+    "shard_length": 2,
+}
 MARKDOWN_RECORD_TYPES = {"API Product", "Provider API Portal", "API Operation", "Schema", "Contract", "Capability Document"}
 CONTRACT_SOURCE_STATUSES = {"capability-document", "openapi-indicated", "wsdl-indicated", "dataset-api", "code-list", "taxonomy"}
 CONTRACT_PROTOCOLS = {"WMS", "WFS", "WMTS", "WCS", "OGC API", "SPARQL", "OpenAPI", "SOAP/WSDL"}
@@ -1091,6 +1108,57 @@ def plain_text(value: Any, limit: int = MAX_RECORD_NOTES_CHARS) -> str:
 def search_shard(value: str, length: int = 2) -> str:
     clean = re.sub(r"[^a-z0-9]", "", value.lower())
     return clean[:length] or "_"
+
+
+def symmetric_delete_keys(token: str) -> list[str]:
+    """Return a deterministic token plus all unique one-character deletions."""
+    return sorted({token, *(token[:index] + token[index + 1 :] for index in range(len(token)))})
+
+
+def build_typo_deletion_shards(
+    lexicon_rows: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Build the bounded static candidate index consumed by the Explorer worker.
+
+    The worker still verifies every candidate with a one-edit
+    Damerau-Levenshtein check. These shards only make candidate discovery
+    possible without hydrating the lexicon or corpus in the browser.
+    """
+    by_shard: dict[str, dict[str, dict[str, int]]] = defaultdict(lambda: defaultdict(dict))
+    minimum = TYPO_TOLERANCE_CONTRACT["min_token_length"]
+    maximum = TYPO_TOLERANCE_CONTRACT["max_token_length"]
+    shard_length = TYPO_TOLERANCE_CONTRACT["shard_length"]
+    for row in sorted(lexicon_rows, key=lambda item: str(item["token"])):
+        token = str(row["token"])
+        if not minimum <= len(token) <= maximum:
+            continue
+        frequency = int(row["df"])
+        keys = symmetric_delete_keys(token)
+        if len(keys) > TYPO_TOLERANCE_CONTRACT["max_delete_keys_per_token"]:
+            raise ValueError(f"typo deletion key limit exceeded for {token}")
+        for key in keys:
+            shard = search_shard(key, shard_length)
+            by_shard[shard][key][token] = frequency
+
+    payloads: dict[str, dict[str, Any]] = {}
+    candidate_limit = TYPO_TOLERANCE_CONTRACT["max_candidates_per_delete_key"]
+    key_limit = TYPO_TOLERANCE_CONTRACT["max_keys_per_shard"]
+    for shard, keys in sorted(by_shard.items()):
+        if len(keys) > key_limit:
+            raise ValueError(f"typo deletion shard {shard} exceeds the key limit")
+        payloads[shard] = {
+            "schema": TYPO_DELETION_SHARD_SCHEMA,
+            "keys": {
+                key: [
+                    {"token": token, "df": frequency}
+                    for token, frequency in sorted(candidates.items(), key=lambda item: (-item[1], item[0]))[
+                        :candidate_limit
+                    ]
+                ]
+                for key, candidates in sorted(keys.items())
+            },
+        }
+    return payloads
 
 
 def record_route(slug: str) -> str:
@@ -2337,9 +2405,27 @@ def markdown_output_files(corpus: dict[str, Any]) -> dict[Path, str]:
     return files
 
 
+def normalized_search_aliases(record: dict[str, Any]) -> list[str]:
+    raw = record.get("search_aliases")
+    if not isinstance(raw, list):
+        return []
+    aliases: set[str] = set()
+    for alias in raw:
+        if not isinstance(alias, str) or not alias.strip():
+            continue
+        clean = plain_text(alias, MAX_SEARCH_ALIAS_CHARS)
+        if clean:
+            aliases.add(clean)
+    return sorted(
+        aliases,
+        key=lambda value: (value.casefold(), value),
+    )[:MAX_SEARCH_ALIASES]
+
+
 def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     docs: list[dict[str, Any]] = []
     for ordinal, record in enumerate(records):
+        aliases = normalized_search_aliases(record)
         docs.append(
             {
                 "ordinal": ordinal,
@@ -2351,6 +2437,7 @@ def search_docs(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "formats": record["formats"],
                 "tags": record["tags"],
                 "topics": record["topics"],
+                **({"search_aliases": aliases} if aliases else {}),
                 "quality_score": record["quality"]["overall"],
                 "timestamp": record.get("timestamp", ""),
                 "notes": truncate_text(record.get("notes", ""), MAX_SEARCH_NOTES_CHARS),
@@ -2479,12 +2566,15 @@ def build_search(
     max_postings_per_token: int = MAX_SEARCH_POSTINGS_PER_TOKEN,
     filter_facets: dict[str, list[dict[str, Any]]] | None = None,
     search_entities: list[dict[str, Any]] | None = None,
+    enable_typo_tolerance: bool = False,
 ) -> dict[str, Any]:
     result_docs = search_docs(records)
     posting_heaps: dict[str, list[tuple[int, int, int, int]]] = defaultdict(list)
     document_frequency: Counter[str] = Counter()
+    aliases_enabled = any(doc.get("search_aliases") for doc in result_docs)
     weights = {
         "title": 16,
+        **({"search_aliases": 12} if aliases_enabled else {}),
         "publisher": 8,
         "context": 6,
         "description": 5,
@@ -2496,11 +2586,12 @@ def build_search(
         "tags": 3,
         "url": 2,
     }
-    masks = {"title": 1, "publisher": 2, "context": 4, "description": 8, "topics": 16, "tags": 32, "url": 64, "record_type": 128, "protocol": 256, "source": 512, "standards": 1024}
+    masks = {"title": 1, "publisher": 2, "context": 4, "description": 8, "topics": 16, "tags": 32, "url": 64, "record_type": 128, "protocol": 256, "source": 512, "standards": 1024, **({"search_aliases": 2048} if aliases_enabled else {})}
     for doc in result_docs:
         token_scores: dict[str, list[int]] = {}
         fields = {
             "title": doc["title"],
+            **({"search_aliases": " ".join(doc["search_aliases"])} if doc.get("search_aliases") else {}),
             "publisher": doc["publisher_title"],
             "description": doc.get("notes", ""),
             "context": doc.get("context_note", ""),
@@ -2546,6 +2637,8 @@ def build_search(
         for prefix, rows in payload.items():
             payload[prefix] = sorted(rows, key=lambda item: (-item["df"], item["token"]))[:16]
 
+    typo_deletions = build_typo_deletion_shards(lexicon_rows) if enable_typo_tolerance else {}
+
     result_doc_chunks = chunk_paths("search/results", result_docs, SEARCH_RESULT_DOC_CHUNK_SIZE)
     filter_entrypoints, filter_postings = build_filter_postings(records, filter_facets or {})
     sort_values = [
@@ -2556,7 +2649,7 @@ def build_search(
         ]
         for record in records
     ]
-    return {
+    search = {
         "manifest": {
             "schema": "okf-static-search.v2",
             "token_min_length": 2,
@@ -2566,12 +2659,14 @@ def build_search(
             "result_doc_chunk_size": SEARCH_RESULT_DOC_CHUNK_SIZE,
             "weights": weights,
             "field_masks": masks,
+            **({"typo_tolerance": dict(TYPO_TOLERANCE_CONTRACT)} if enable_typo_tolerance else {}),
             "counts": {
                 "documents": len(result_docs),
                 "tokens": len(lexicon_rows),
                 "postings": sum(len(token_rows) for token_map in postings_by_path.values() for token_rows in token_map.values()),
                 "uncapped_postings": sum(document_frequency.values()),
                 "max_postings_per_token": max_postings_per_token,
+                **({"typo_deletion_shards": len(typo_deletions)} if enable_typo_tolerance else {}),
             },
             "entrypoints": {
                 "lexicon": {shard: f"data/search/lexicon/{shard}.json" for shard in sorted(lexicon_by_shard)},
@@ -2583,6 +2678,16 @@ def build_search(
                 "filter_postings": filter_entrypoints,
                 "sort_values": "data/search/sort-values.json",
                 **({"entities": "data/search/entities.json"} if search_entities else {}),
+                **(
+                    {
+                        "typo_deletions": {
+                            shard: f"data/search/typos/{shard}.json"
+                            for shard in sorted(typo_deletions)
+                        }
+                    }
+                    if enable_typo_tolerance
+                    else {}
+                ),
             },
         },
         "lexicon": dict(sorted(lexicon_by_shard.items())),
@@ -2596,7 +2701,11 @@ def build_search(
             "schema": "okf-static-search-entities.v1",
             "entities": search_entities or [],
         },
+        **({"typo_deletions": typo_deletions} if enable_typo_tolerance else {}),
     }
+    if enable_typo_tolerance:
+        bind_search_shard_integrity(search)
+    return search
 
 
 def chunk_paths(prefix: str, rows: list[dict[str, Any]], chunk_size: int = 1000) -> list[tuple[Path, list[dict[str, Any]]]]:
@@ -2671,6 +2780,7 @@ def build_corpus(
     ons_code_lists: list[dict[str, Any]] | None = None,
     ons_root_url: str = DEFAULT_ONS_API_ROOT,
     generated_at: str | None = None,
+    enable_typo_tolerance: bool = False,
 ) -> dict[str, Any]:
     observed_at = infer_observed_at(rows, ckan_packages, ons_datasets)
     generated_at = generated_at or now_utc()
@@ -2939,6 +3049,7 @@ def build_corpus(
         records,
         filter_facets=facets,
         search_entities=search_entities_from_publishers(publishers, kind="organisation"),
+        enable_typo_tolerance=enable_typo_tolerance,
     )
     record_chunks = chunk_paths("apis", records)
     resource_chunks = chunk_paths("resources", resources)
@@ -3087,6 +3198,67 @@ def render_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n"
 
 
+def rendered_search_data_files(search: dict[str, Any]) -> dict[Path, str]:
+    """Render every independently fetched search resource except manifests."""
+    files = {
+        Path("data/search/doc-map.json"): render_json(search["doc_map"]),
+        Path("data/search/sort-values.json"): render_json(search["sort_values"]),
+    }
+    if search["entities"]["entities"]:
+        files[Path("data/search/entities.json")] = render_json(search["entities"])
+    for shard, rows in search["lexicon"].items():
+        files[Path(f"data/search/lexicon/{shard}.json")] = render_json(rows)
+    for shard, payload in search["prefixes"].items():
+        files[Path(f"data/search/prefixes/{shard}.json")] = render_json(payload)
+    for shard, payload in search.get("typo_deletions", {}).items():
+        files[Path(f"data/search/typos/{shard}.json")] = render_json(payload)
+    for path, payload in search["postings"].items():
+        files[Path(path)] = render_json(payload)
+    for path, payload in search["filter_postings"].items():
+        files[Path(path)] = render_json(payload)
+    for path, rows in search["result_doc_chunks"]:
+        files[path] = render_json(rows)
+    return files
+
+
+def search_integrity_group(path: Path) -> str:
+    value = path.as_posix()
+    if "/lexicon/" in value:
+        return "lexicon"
+    if "/prefixes/" in value:
+        return "prefixes"
+    if "/typos/" in value:
+        return "typo_deletions"
+    if "/postings/" in value:
+        return "postings"
+    if "/filters/" in value:
+        return "filter_postings"
+    if value.startswith("data/search/results-"):
+        return "result_docs"
+    return "auxiliary"
+
+
+def bind_search_shard_integrity(search: dict[str, Any]) -> None:
+    """Bind all lazy search resources, including typo shards, by SHA-256."""
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for path, content in sorted(rendered_search_data_files(search).items(), key=lambda item: item[0].as_posix()):
+        grouped[search_integrity_group(path)].append(
+            {
+                "path": path.as_posix(),
+                "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            }
+        )
+    shards = {group: rows for group, rows in sorted(grouped.items())}
+    search["shard_metadata"] = {
+        "schema": "okf-search-shard-integrity.v1",
+        "shards": shards,
+    }
+    search["manifest"]["shard_metadata"] = "data/search/shards.json"
+    search["manifest"]["shard_manifest_sha256"] = hashlib.sha256(
+        render_json(shards).encode("utf-8")
+    ).hexdigest()
+
+
 def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
     files = {
         Path("okf-explorer.json"): render_json(corpus["descriptor"]),
@@ -3097,11 +3269,7 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         Path("data/graph.json"): render_json(corpus["graph"]),
         Path("data/adjacency/manifest.json"): render_json(corpus["relationship_adjacency"]),
         Path("data/search/manifest.json"): render_json(corpus["search"]["manifest"]),
-        Path("data/search/doc-map.json"): render_json(corpus["search"]["doc_map"]),
-        Path("data/search/sort-values.json"): render_json(corpus["search"]["sort_values"]),
     }
-    if corpus["search"]["entities"]["entities"]:
-        files[Path("data/search/entities.json")] = render_json(corpus["search"]["entities"])
     for path, rows in corpus["record_chunks"]:
         files[path] = render_json(rows)
     for path, rows in corpus["resource_chunks"]:
@@ -3112,25 +3280,29 @@ def output_files(corpus: dict[str, Any]) -> dict[Path, str]:
         files[path] = render_json(rows)
     for path, routes in corpus["relationship_adjacency_buckets"]:
         files[path] = render_json(routes)
-    for shard, rows in corpus["search"]["lexicon"].items():
-        files[Path(f"data/search/lexicon/{shard}.json")] = render_json(rows)
-    for shard, payload in corpus["search"]["prefixes"].items():
-        files[Path(f"data/search/prefixes/{shard}.json")] = render_json(payload)
-    for path, payload in corpus["search"]["postings"].items():
-        files[Path(path)] = render_json(payload)
-    for path, payload in corpus["search"]["filter_postings"].items():
-        files[Path(path)] = render_json(payload)
-    for path, rows in corpus["search"]["result_doc_chunks"]:
-        files[path] = render_json(rows)
+    files.update(rendered_search_data_files(corpus["search"]))
+    if corpus["search"].get("shard_metadata"):
+        files[Path("data/search/shards.json")] = render_json(corpus["search"]["shard_metadata"])
     files.update(markdown_output_files(corpus))
     return files
 
 
-def clear_output_files(output: Path) -> None:
+def _is_preserved_relative_path(path: Path, preserve_prefixes: tuple[Path, ...]) -> bool:
+    return any(path == prefix or prefix in path.parents for prefix in preserve_prefixes)
+
+
+def clear_output_files(
+    output: Path,
+    *,
+    preserve_prefixes: tuple[Path, ...] = (),
+) -> None:
     if not output.exists():
         output.mkdir(parents=True)
         return
     for path in sorted(output.rglob("*"), key=lambda item: len(item.parts), reverse=True):
+        relative = path.relative_to(output)
+        if _is_preserved_relative_path(relative, preserve_prefixes):
+            continue
         if path.is_file() or path.is_symlink():
             path.unlink()
         elif path.is_dir():
@@ -3140,8 +3312,13 @@ def clear_output_files(output: Path) -> None:
                 pass
 
 
-def write_files(output: Path, files: dict[Path, str | bytes]) -> None:
-    clear_output_files(output)
+def write_files(
+    output: Path,
+    files: dict[Path, str | bytes],
+    *,
+    preserve_prefixes: tuple[Path, ...] = (),
+) -> None:
+    clear_output_files(output, preserve_prefixes=preserve_prefixes)
     output.mkdir(parents=True, exist_ok=True)
     for rel_path, content in files.items():
         target = output / rel_path
@@ -3152,7 +3329,12 @@ def write_files(output: Path, files: dict[Path, str | bytes]) -> None:
             target.write_text(content, encoding="utf-8")
 
 
-def check_files(output: Path, files: dict[Path, str | bytes]) -> list[str]:
+def check_files(
+    output: Path,
+    files: dict[Path, str | bytes],
+    *,
+    preserve_prefixes: tuple[Path, ...] = (),
+) -> list[str]:
     errors: list[str] = []
     expected_paths = set(files)
     for rel_path, expected in sorted(files.items()):
@@ -3189,6 +3371,8 @@ def check_files(output: Path, files: dict[Path, str | bytes]) -> list[str]:
     if output.exists():
         for target in sorted(path for path in output.rglob("*") if path.is_file()):
             rel_path = target.relative_to(output)
+            if _is_preserved_relative_path(rel_path, preserve_prefixes):
+                continue
             if rel_path not in expected_paths and target.name != ".DS_Store":
                 errors.append(f"{display_path(target)} is unexpected")
     return errors
@@ -3224,6 +3408,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--skip-ckan", action="store_true", help="skip data.gov.uk CKAN enrichment")
     parser.add_argument("--skip-os", action="store_true", help="skip Ordnance Survey API enrichment")
     parser.add_argument("--skip-ons", action="store_true", help="skip ONS API enrichment")
+    parser.add_argument(
+        "--enable-typo-tolerance",
+        action="store_true",
+        help="publish bounded symmetric-delete typo shards and search-shard integrity metadata",
+    )
     parser.add_argument("--max-ckan-packages", type=int, default=0, help="limit CKAN packages for local debugging; 0 means all")
     parser.add_argument("--ckan-fixture", type=Path, help="read CKAN package_search fixture JSON instead of live data.gov.uk")
     parser.add_argument("--os-fixture", type=Path, help="read OS document-map fixture JSON instead of live api.os.uk")
@@ -3283,6 +3472,7 @@ def main(argv: list[str] | None = None) -> int:
         ons_topics=ons_topics,
         ons_code_lists=ons_code_lists,
         generated_at=generated_at,
+        enable_typo_tolerance=args.enable_typo_tolerance,
     )
     files = output_files(corpus)
     if args.check:

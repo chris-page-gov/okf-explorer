@@ -38,19 +38,33 @@ export type OkfNode = {
 };
 
 export type OkfRelationship = {
+  schema?: 'okf-relationship-assertion.v2' | string;
+  id?: string;
   source: string;
   target: string;
+  source_iri?: string;
+  target_iri?: string;
   kind?: string;
   type?: string;
   label?: string;
+  inverse_label?: string;
   predicate?: string;
+  assertion_status?: RelationshipAssertionStatus | string;
+  assertion_scope?: RelationshipAssertionScope | string;
   authority?: FederationAuthority | RelationshipAuthorityClass | string;
   authority_class?: RelationshipAuthorityClass | string;
   derivation?: string;
+  derivation_activity?: string;
+  rule?: string;
+  supporting_assertions?: string[];
   confidence?: string | number;
+  confidence_score?: number;
+  strength?: number;
+  count?: number;
   observed_at?: string;
   stale_after?: string;
   freshness?: FederationFreshnessState | string;
+  review_status?: string;
   evidence?: Array<string | Record<string, unknown>>;
   rights?: string | Record<string, unknown>;
   [key: string]: unknown;
@@ -64,6 +78,10 @@ export type NormalizedCorpus = {
   profile?: string;
   nodes: Record<string, OkfNode>;
   relationships: OkfRelationship[];
+  assertionScope?: RelationshipAssertionScope;
+  defaultLoaded?: boolean;
+  includeInCounts?: boolean;
+  includeInSearch?: boolean;
   meta?: Record<string, unknown>;
 };
 
@@ -81,13 +99,25 @@ export type OkfBundle = {
   nodes?: Record<string, OkfNode>;
   relationships?: OkfRelationship[];
   edges?: OkfRelationship[];
+  extensions?: Record<string, Record<string, unknown>>;
 };
 
 export type RelationshipAuthorityClass =
   | 'official'
   | 'derived'
   | 'model-assisted'
+  | 'synthetic'
   | 'unclassified';
+
+export type RelationshipAssertionStatus =
+  | 'official'
+  | 'normalized'
+  | 'inferred'
+  | 'model-derived';
+
+export type RelationshipAssertionScope =
+  | 'real-world'
+  | 'synthetic-fixture';
 
 export type FederationAvailability =
   | 'available'
@@ -192,6 +222,7 @@ export type FederationRelationshipSummary = {
     official: number;
     derived: number;
     'model-assisted': number;
+    synthetic?: number;
     unclassified?: number;
     [key: string]: number | undefined;
   };
@@ -307,6 +338,10 @@ export type LargeCorpusDescriptor = {
   description?: string;
   version?: string;
   status?: string;
+  assertion_scope?: RelationshipAssertionScope | string;
+  default_loaded?: boolean;
+  include_in_counts?: boolean;
+  include_in_search?: boolean;
   profile?: string;
   publisher?: string;
   license?: string;
@@ -429,6 +464,8 @@ export type LargeSearchManifest = {
   shard_manifest_sha256?: string;
   postings_partitioning?: Record<string, unknown>;
   doc_map_partitioning?: Record<string, unknown>;
+  /** Optional, bounded one-edit correction contract for v2 static indexes. */
+  typo_tolerance?: LargeSearchTypoTolerance;
   entrypoints: {
     lexicon: Record<string, string>;
     prefixes: Record<string, string>;
@@ -439,7 +476,24 @@ export type LargeSearchManifest = {
     filter_postings?: Record<string, string>;
     sort_values?: string;
     entities?: string;
+    /** Symmetric-delete key shards, addressed by their normalized key prefix. */
+    typo_deletions?: Record<string, string>;
   };
+};
+
+export type LargeSearchTypoTolerance = {
+  schema: 'okf-search-typo-tolerance.v1' | string;
+  algorithm: 'symmetric-delete-damerau-levenshtein-v1' | string;
+  max_edit_distance: number;
+  min_token_length: number;
+  max_token_length: number;
+  max_delete_keys_per_token: number;
+  max_candidates_per_delete_key: number;
+  max_candidates_per_token: number;
+  max_corrected_tokens_per_query: number;
+  max_shards_per_query: number;
+  max_keys_per_shard: number;
+  shard_length: number;
 };
 
 export type SearchRankingStrategy = 'weighted' | 'idf' | 'idf-exact';
@@ -457,6 +511,8 @@ export type LargeSearchRequest = {
 export type SearchMatchExplanation = {
   query_tokens: string[];
   matched_fields: string[];
+  /** One-edit rewrites whose postings contributed to this result. */
+  corrected_tokens?: SearchTokenCorrection[];
   recognized_entity?: SearchEntityMatch;
   score_components: {
     weighted: number;
@@ -465,6 +521,15 @@ export type SearchMatchExplanation = {
     entity?: number;
     total: number;
   };
+};
+
+export type SearchTokenCorrection = {
+  query_token: string;
+  matched_token: string;
+  edit_distance: 1;
+  method: 'symmetric-delete-damerau-levenshtein-v1';
+  /** Stable rank among the bounded candidates considered for this query token. */
+  candidate_rank: number;
 };
 
 export type SearchEntity = {
@@ -510,6 +575,12 @@ export type LargeSearchResponse = {
   ranking: SearchRankingStrategy;
   elapsed_ms: number;
   interpreted_entity?: SearchEntityMatch;
+  /** All verified token rewrites admitted to this query's candidate groups. */
+  query_corrections?: SearchTokenCorrection[];
+  /** Meaningful query tokens that had no exact, prefix, entity or accepted one-edit match. */
+  unresolved_tokens?: string[];
+  /** Correction stopped at the declared per-query token or shard budget. */
+  correction_truncated?: boolean;
 };
 
 export type LargeFilterPostings = {
@@ -870,6 +941,8 @@ export type SearchResultDoc = {
   formats: string[];
   tags: string[];
   topics?: string[];
+  /** Alternative names indexed for retrieval; never a replacement display title. */
+  search_aliases?: string[];
   quality_score?: number;
   timestamp?: string;
   notes?: string;
@@ -1016,6 +1089,8 @@ export type LargeDataset = {
   notes?: string;
   context_note?: string;
   alternatives?: LargeDatasetAlternative[];
+  /** Alternative names indexed for retrieval; never a replacement display title. */
+  search_aliases?: string[];
   publisher?: string;
   publisher_title?: string;
   resource_count?: number;
@@ -1156,14 +1231,28 @@ export type LargePublisher = {
 };
 
 export type LargeRelationship = {
+  schema?: 'okf-relationship-assertion.v2' | string;
+  id?: string;
   source: string;
   target: string;
   kind: string;
+  label?: string;
+  source_iri?: string;
+  target_iri?: string;
   predicate?: string;
+  inverse_label?: string;
+  assertion_status?: RelationshipAssertionStatus | string;
+  assertion_scope?: RelationshipAssertionScope | string;
   authority?: FederationAuthority | RelationshipAuthorityClass | string;
   authority_class?: RelationshipAuthorityClass | string;
   derivation?: string;
+  derivation_activity?: string;
+  rule?: string;
+  supporting_assertions?: string[];
   confidence?: string | number;
+  confidence_score?: number;
+  strength?: number;
+  count?: number;
   observed_at?: string;
   stale_after?: string;
   freshness?: FederationFreshnessState | string;

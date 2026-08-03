@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -13,11 +14,121 @@ EVALUATION_ROOT = ROOT / "evaluation"
 EVALUATION = EVALUATION_ROOT / "okf-explorer"
 CKAN_EVALUATION = EVALUATION_ROOT / "gov-ckan"
 LEGISLATION_EVALUATION = EVALUATION_ROOT / "legislation"
+HERITAGE_EVALUATION = ROOT / "evaluation-foundry" / "fixtures" / "heritage-warwickshire"
 SEARCH_FILTERING_MANUAL = ROOT / "docs" / "static-search-filtering-manual.md"
 SEARCH_FILTERING_ASSETS = ROOT / "docs" / "assets" / "okf-search-filtering-manual"
+HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-receipt.json"
 
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
+    def test_heritage_local_candidate_receipt_binds_its_executed_results(self):
+        receipt = json.loads(HERITAGE_LOCAL_RECEIPT.read_text(encoding="utf-8"))
+        plane_roots = json.loads(
+            (ROOT / "evaluation" / "heritage" / "assurance" / "plane-roots.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            receipt["candidate"]["heritage_release_root_sha256"],
+            plane_roots["release_root_sha256"],
+        )
+        generated_paths = [
+            Path(entry["path"])
+            for plane in plane_roots["planes"].values()
+            for entry in plane["entries"]
+        ]
+        generated_paths.append(Path("assurance/plane-roots.json"))
+        tree_entries = []
+        for relative in sorted(generated_paths, key=lambda path: path.as_posix()):
+            raw = (ROOT / "evaluation" / "heritage" / relative).read_bytes()
+            tree_entries.append(
+                {
+                    "path": relative.as_posix(),
+                    "bytes": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            )
+        canonical_tree = (
+            json.dumps(
+                tree_entries,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            + "\n"
+        ).encode("utf-8")
+        self.assertEqual(receipt["determinism"]["files_per_build"], len(tree_entries))
+        self.assertEqual(
+            "sha256-over-canonical-json-path-bytes-digest-list-v1",
+            receipt["determinism"]["comparison_tree_algorithm"],
+        )
+        self.assertEqual(
+            receipt["determinism"]["comparison_tree_sha256"],
+            hashlib.sha256(canonical_tree).hexdigest(),
+        )
+
+        for key, expected_status in (("question_suite", "passed"), ("local_journeys", "passed")):
+            section = receipt[key]
+            self.assertEqual(expected_status, section["status"])
+            source = ROOT / section["suite" if key == "question_suite" else "manifest"]
+            self.assertEqual(
+                section["suite_sha256" if key == "question_suite" else "manifest_sha256"],
+                hashlib.sha256(source.read_bytes()).hexdigest(),
+            )
+            compressed = HERITAGE_EVALUATION / section["result"]
+            self.assertEqual(section["result_gzip_sha256"], hashlib.sha256(compressed.read_bytes()).hexdigest())
+            raw = gzip.decompress(compressed.read_bytes())
+            self.assertEqual(section["result_json_sha256"], hashlib.sha256(raw).hexdigest())
+            result = json.loads(raw)
+            if key == "question_suite":
+                self.assertEqual(section["questions_run"], result["summary"]["questions_run"])
+                self.assertEqual(section["average_total"], result["summary"]["average_total"])
+                self.assertEqual(section["scores_at_least_80"], result["summary"]["pass_count_80"])
+            else:
+                summary = result["interaction_journeys"]["summary"]
+                self.assertEqual(section["journeys_run"], summary["journeys_run"])
+                self.assertEqual(section["passed"], summary["passed"])
+                self.assertEqual(
+                    section["journey_ids"],
+                    [record["id"] for record in result["interaction_journeys"]["records"]],
+                )
+
+    def test_heritage_receipt_binds_exact_explorer_build_identity(self):
+        receipt = json.loads(HERITAGE_LOCAL_RECEIPT.read_text(encoding="utf-8"))
+        app_root = ROOT / "apps" / "okf-explorer" / "build"
+        app_manifest_path = app_root / "okf-explorer-build-manifest.json"
+        app_manifest_bytes = app_manifest_path.read_bytes()
+        app_manifest = json.loads(app_manifest_bytes)
+        app_materials = []
+        for declared in app_manifest["materials"]:
+            raw = (app_root / declared["path"]).read_bytes()
+            app_materials.append(
+                {
+                    "path": declared["path"],
+                    "bytes": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            )
+        app_tree_bytes = (
+            json.dumps(
+                app_materials,
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+        app_tree_sha256 = hashlib.sha256(app_tree_bytes).hexdigest()
+        self.assertEqual(app_manifest["materials"], app_materials)
+        self.assertEqual(app_manifest["tree_sha256"], app_tree_sha256)
+        self.assertEqual(
+            receipt["candidate"]["explorer_tree_sha256"],
+            app_tree_sha256,
+        )
+        self.assertEqual(
+            receipt["candidate"]["explorer_manifest_sha256"],
+            hashlib.sha256(app_manifest_bytes).hexdigest(),
+        )
+
     def test_question_suite_has_100_unique_questions_and_100_point_rubric(self):
         for evaluation_dir in [EVALUATION, CKAN_EVALUATION]:
             with self.subTest(suite=evaluation_dir.name):
@@ -96,6 +207,128 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("--journeys-only", script)
         self.assertIn("runInteractionJourneys", script)
         self.assertIn("interaction_journeys", script)
+        self.assertIn("function receiptUrl(value)", script)
+        self.assertIn("receiptUrl(popup.url())", script)
+
+    def test_heritage_suite_uses_exact_zero_bounds_and_source_grounded_positive_minimums(self):
+        suite = json.loads((HERITAGE_EVALUATION / "questions.json").read_text(encoding="utf-8"))
+        by_id = {question["id"]: question for question in suite["questions"]}
+
+        exact_zero_ids = {"HQ031", "HQ032", "HQ033", "HQ080", "HQ099"}
+        for question_id in exact_zero_ids:
+            with self.subTest(question=question_id):
+                self.assertEqual(by_id[question_id]["expected_min_results"], 0)
+                self.assertEqual(by_id[question_id]["expected_max_results"], 0)
+
+        positive_ids = {
+            "HQ034", "HQ036", "HQ037", "HQ038", "HQ039", "HQ040", "HQ041", "HQ042",
+            "HQ043", "HQ044", "HQ045", "HQ046", "HQ047", "HQ048", "HQ049", "HQ050",
+            "HQ051", "HQ052", "HQ053", "HQ054", "HQ055", "HQ056", "HQ063", "HQ064",
+            "HQ071", "HQ073", "HQ074", "HQ075", "HQ076", "HQ077", "HQ078", "HQ079",
+            "HQ085", "HQ088", "HQ094", "HQ096", "HQ097", "HQ098",
+        }
+        for question_id in positive_ids:
+            with self.subTest(question=question_id):
+                self.assertEqual(by_id[question_id]["expected_min_results"], 1)
+                self.assertNotIn("expected_max_results", by_id[question_id])
+
+    def test_question_result_bounds_are_validated_and_reported(self):
+        base_suite = json.loads((EVALUATION / "questions.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            invalid_suite = json.loads(json.dumps(base_suite))
+            invalid_suite["questions"][0]["expected_min_results"] = 2
+            invalid_suite["questions"][0]["expected_max_results"] = 1
+            invalid_path = temporary / "invalid-questions.json"
+            invalid_path.write_text(json.dumps(invalid_suite), encoding="utf-8")
+            invalid_result = subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--suite",
+                    str(invalid_path),
+                    "--visual",
+                    str(EVALUATION / "visual-regressions.json"),
+                    "--out",
+                    str(temporary / "invalid-results"),
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(invalid_result.returncode, 0)
+            self.assertIn(
+                "expected_max_results must be greater than or equal to expected_min_results",
+                invalid_result.stderr,
+            )
+
+            output = temporary / "heritage-results"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--suite",
+                    str(HERITAGE_EVALUATION / "questions.json"),
+                    "--visual",
+                    str(EVALUATION / "visual-regressions.json"),
+                    "--limit",
+                    "31",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            results = json.loads((output / "results.json").read_text(encoding="utf-8"))
+            exact_zero = next(record for record in results["records"] if record["id"] == "HQ031")
+            markdown = (output / "results.md").read_text(encoding="utf-8")
+
+        self.assertEqual(exact_zero["score"]["checks"]["expected_min_results"], 0)
+        self.assertEqual(exact_zero["score"]["checks"]["expected_max_results"], 0)
+        self.assertIn("expected results: exactly 0", markdown)
+
+    def test_heritage_suite_has_its_default_visual_contract(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result = subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--suite",
+                    str(HERITAGE_EVALUATION / "questions.json"),
+                    "--limit",
+                    "1",
+                    "--out",
+                    str(Path(temporary_directory) / "results"),
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_browser_scoring_requires_both_result_bounds(self):
+        script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
+
+        self.assertIn("const meetsExpectedMinimum = observation.resultCount >= expectedMin", script)
+        self.assertIn("const meetsExpectedMaximum = expectedMax === null || observation.resultCount <= expectedMax", script)
+        self.assertIn("const hasExpectedResults = meetsExpectedMinimum && meetsExpectedMaximum", script)
+
+    def test_expected_empty_scoring_requires_retained_query_explicit_settled_evidence(self):
+        script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
+
+        self.assertIn("expectedMin === 0 && observation.resultCount === 0 && meetsExpectedMaximum", script)
+        self.assertIn("queryRetained && explicitEmptySummary && explicitEmptyMessage && notLoadingStuck", script)
+        self.assertIn("meaningfulBoundedEmpty ? 10 : Math.round(expectedRatio * 10)", script)
+        self.assertIn("hasFollowOn || (meaningfulBoundedEmpty && emptyRecovery)", script)
+        self.assertNotIn("expectedMin === 0 || observation.resultCount === 0", script)
 
     def test_live_evaluation_waits_for_cold_search_and_uses_accessible_edge_selection(self):
         script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
@@ -103,8 +336,12 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("Preparing static search index", script)
         self.assertIn("Loading the record and resource index", script)
         self.assertIn("url_param_absent", script)
+        self.assertIn("actual.some((value) => value.includes(String(assertion.value)))", script)
         self.assertIn("await edge.press('Enter')", script)
         self.assertIn(".edge-panel button.active", script)
+        self.assertIn("await summary.press(resizeKey)", script)
+        self.assertIn("input: 'keyboard'", script)
+        self.assertIn("evidence.mapRecord?.markerCount", script)
 
     def test_live_journeys_follow_current_compact_facets_and_bounded_record_loading(self):
         script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(encoding="utf-8")
@@ -113,6 +350,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("toggle.getAttribute('aria-expanded')", script)
         self.assertIn("await candidate.press('Enter')", script)
         self.assertIn("/^Load (?:full|selected) record$/", script)
+        self.assertIn("if (await button.count())", script)
         self.assertIn(".right-panel .disclosure-section:visible", script)
 
     def test_every_readme_example_has_persona_story_question_traceability(self):

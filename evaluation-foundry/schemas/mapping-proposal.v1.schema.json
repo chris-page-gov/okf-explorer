@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/mapping-proposal.v1.schema.json",
+  "title": "Evaluation Foundry mapping proposals v1",
+  "type": "object",
+  "required": ["schema", "profile_id", "proposals"],
+  "properties": {
+    "schema": {"const": "okf-evaluation-mapping-proposals.v1"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "target",
+          "evidence",
+          "confidence",
+          "derivation",
+          "assertion_status",
+          "assertion_scope",
+          "reversible",
+          "feature_effects"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "minLength": 1},
+          "target": {"type": "string", "minLength": 1},
+          "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "derivation": {"type": "string", "minLength": 1},
+          "assertion_status": {"enum": ["official", "normalized", "inferred", "model-derived"]},
+          "assertion_scope": {"enum": ["real-world", "synthetic-fixture"]},
+          "reversible": {"type": "boolean"},
+          "feature_effects": {
+            "type": "array",
+            "items": {"enum": ["search", "facets", "types", "resources", "graph", "timeline", "map", "data-card", "provenance"]}
+          },
+          "limitations": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

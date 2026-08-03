@@ -781,9 +781,10 @@ test.describe('targeted large-corpus relationship hydration', () => {
       'not an official legal effect or legal classification'
     );
     await expect(provenance).toContainText('accepted-independent-review');
-    await expect(provenance).toContainText('derived discovery metadata');
+    await expect(provenance).toContainText('Governed discovery metadata');
+    const relationshipDetail = page.locator('.relationship-detail-content');
     await expect(
-      provenance.getByRole('link', {
+      relationshipDetail.getByRole('link', {
         name:
           'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'
       })

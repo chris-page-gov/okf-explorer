@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import copy
 import json
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import build_okf_bundle  # noqa: E402
 import build_okf_registry  # noqa: E402
 import okf_semantic  # noqa: E402
+import update_viewer  # noqa: E402
 
 
 class OkfSemanticTest(unittest.TestCase):
@@ -33,6 +37,272 @@ class OkfSemanticTest(unittest.TestCase):
         assert isinstance(bundle, dict)
         self.assertEqual([], okf_semantic.schema_errors(bundle, "bundle.schema.json"))
         self.assertTrue(okf_semantic.expand(bundle))
+
+    def test_semantic_assertion_reconciles_direct_triple_and_compiles_routes(self) -> None:
+        page = okf_semantic.parse_markdown(
+            self.fixture_root / "semantic_concept.md"
+        )
+        self.assertEqual([], okf_semantic.validate_semantic_assertions(page.metadata))
+
+        registry = okf_semantic.build_iri_route_registry(
+            {"semantic/example": page.metadata},
+            snapshot="semantic-fixture-1",
+        )
+        self.assertEqual([], okf_semantic.validate_iri_route_registry(registry))
+        self.assertEqual(2, registry["counts"]["entries"])
+
+        predicate_registry = okf_semantic.build_predicate_registry(
+            [
+                {
+                    "iri": "https://example.test/vocabulary/heritage#hasDesignation",
+                    "preferred_label": "has designation",
+                    "inverse_label": "designation of",
+                    "description": "Links an asset to its designation record.",
+                    "domain": ["https://example.test/vocabulary/heritage#HeritageAsset"],
+                    "range": ["https://example.test/vocabulary/heritage#Designation"],
+                    "super_properties": [],
+                    "characteristics": [],
+                    "assertion_statuses": ["normalized"],
+                    "evidence_policy": {
+                        "minimum_fields": ["source_field", "source_value_sha256"]
+                    },
+                    "source_vocabulary": {
+                        "iri": "https://example.test/vocabulary/heritage",
+                        "version": "1",
+                    },
+                    "status": "active",
+                }
+            ],
+            snapshot="semantic-fixture-1",
+            generated_at_value="2026-08-01T12:00:00Z",
+        )
+        relationships, errors = okf_semantic.compile_semantic_relationships(
+            page.metadata,
+            registry,
+            predicate_registry=predicate_registry,
+        )
+        self.assertEqual([], errors)
+        self.assertEqual(1, len(relationships))
+        relationship = relationships[0]
+        self.assertEqual("heritage/asset/example", relationship["source"])
+        self.assertEqual("heritage/designation/example", relationship["target"])
+        self.assertEqual("normalized", relationship["assertion_status"])
+        self.assertEqual("real-world", relationship["assertion_scope"])
+        self.assertEqual("derived", relationship["authority"]["class"])
+        self.assertEqual(
+            "https://example.test/vocabulary/heritage#hasDesignation",
+            relationship["predicate"],
+        )
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(
+                okf_semantic.semantic_model_extension(
+                    registry,
+                    predicate_registry,
+                ),
+                "semantic-model.schema.json",
+            ),
+        )
+
+        object_form = copy.deepcopy(page.metadata)
+        assertion = object_form["assertions"][0]
+        assertion["derivation"] = {"@id": assertion["derivation"]}
+        assertion["derivation_activity"] = {
+            "@id": assertion["derivation_activity"]
+        }
+        assertion["rule"] = {"@id": "https://example.test/rules/normalization-v1"}
+        assertion["supporting_assertions"] = [
+            {"@id": "https://example.test/assertions/source-1"}
+        ]
+        object_relationships, object_errors = okf_semantic.compile_semantic_relationships(
+            object_form,
+            registry,
+            predicate_registry=predicate_registry,
+        )
+        self.assertEqual([], object_errors)
+        self.assertEqual(
+            "https://example.test/rules/normalization-v1",
+            object_relationships[0]["rule"],
+        )
+        self.assertEqual(
+            ["https://example.test/assertions/source-1"],
+            object_relationships[0]["supporting_assertions"],
+        )
+
+    def test_explorer_graph_projects_semantic_routes_and_runtime_assertions(self) -> None:
+        fixture = self.fixture_root / "semantic_concept.md"
+        reference = self.fixture_root / "semantic_reference.md"
+        with patch.object(
+            update_viewer,
+            "iter_okf_markdown",
+            return_value=[fixture, reference],
+        ):
+            graph, errors = update_viewer.build_graph()
+
+        self.assertEqual([], errors)
+        self.assertEqual(
+            {
+                "heritage/asset/example",
+                "heritage/designation/example",
+                "heritage/method/example",
+            },
+            set(graph["nodes"]),
+        )
+        self.assertEqual(
+            [
+                ["heritage/asset/example", "heritage/designation/example"],
+                ["heritage/asset/example", "heritage/method/example"],
+            ],
+            graph["edges"],
+        )
+        self.assertEqual("real-world", graph["assertion_scope"])
+        self.assertEqual(2, len(graph["relationships"]))
+        relationship = next(
+            row
+            for row in graph["relationships"]
+            if row["predicate"]
+            == "https://example.test/vocabulary/heritage#hasDesignation"
+        )
+        self.assertEqual("okf-relationship-assertion.v2", relationship["schema"])
+        self.assertEqual("normalized", relationship["assertion_status"])
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(
+                relationship,
+                "federation/v1/relationship-assertion.schema.json",
+            ),
+        )
+        self.assertEqual(
+            "okf-semantic-model.v1",
+            graph["semantic_model"]["schema"],
+        )
+        reference_relationship = next(
+            row
+            for row in graph["relationships"]
+            if row["predicate"] == okf_semantic.DCTERMS_REFERENCES
+        )
+        self.assertEqual("normalized", reference_relationship["assertion_status"])
+        self.assertEqual("derived", reference_relationship["authority"]["class"])
+        self.assertEqual(
+            "https://example.test/heritage/references/method.html",
+            reference_relationship["target_iri"],
+        )
+        self.assertEqual(
+            "tests/fixtures/yaml_ld/semantic_concept.md",
+            reference_relationship["evidence"][0]["source_artifact"],
+        )
+        self.assertEqual(
+            "tests/fixtures/yaml_ld/semantic_reference.md",
+            reference_relationship["evidence"][0]["source_value"],
+        )
+        self.assertRegex(
+            reference_relationship["evidence"][0]["source_sha256"],
+            r"^[0-9a-f]{64}$",
+        )
+
+    def test_semantic_model_accepts_integrity_bound_external_registries(self) -> None:
+        reference = {
+            "path": "data/semantic/registry.json",
+            "sha256": "a" * 64,
+            "media_type": "application/json",
+        }
+        extension = okf_semantic.semantic_model_extension(
+            reference,
+            {
+                **reference,
+                "path": "data/semantic/predicates.json",
+                "sha256": "b" * 64,
+            },
+        )
+        self.assertEqual([], okf_semantic.schema_errors(extension, "semantic-model.schema.json"))
+
+    def test_normalized_bundle_keeps_semantics_and_markdown_source_paths(self) -> None:
+        fixtures = [
+            self.fixture_root / "semantic_concept.md",
+            self.fixture_root / "semantic_reference.md",
+        ]
+        with patch.object(update_viewer, "iter_okf_markdown", return_value=fixtures):
+            bundle, errors = build_okf_bundle.build_bundle()
+
+        self.assertEqual([], errors)
+        corpus = next(iter(bundle["corpora"].values()))
+        self.assertEqual("real-world", corpus["assertion_scope"])
+        self.assertEqual(2, len(corpus["relationships"]))
+        self.assertEqual(
+            "tests/fixtures/yaml_ld/semantic_concept.md",
+            corpus["nodes"]["heritage/asset/example"]["source"],
+        )
+        self.assertEqual(
+            "okf-semantic-model.v1",
+            bundle["extensions"]["okf-semantic-model.v1"]["schema"],
+        )
+
+    def test_semantic_assertions_fail_closed_on_projection_or_integrity_drift(self) -> None:
+        page = okf_semantic.parse_markdown(
+            self.fixture_root / "semantic_concept.md"
+        )
+        without_direct_triple = copy.deepcopy(page.metadata)
+        without_direct_triple.pop("has_designation")
+        errors = okf_semantic.validate_semantic_assertions(without_direct_triple)
+        self.assertTrue(
+            any("no matching direct triple" in error for error in errors),
+            errors,
+        )
+
+        registry = okf_semantic.build_iri_route_registry(
+            {"semantic/example": page.metadata},
+            snapshot="semantic-fixture-1",
+        )
+        registry["entries"][0]["route"] = "heritage/asset/tampered"
+        errors = okf_semantic.validate_iri_route_registry(registry)
+        self.assertIn(
+            "root_sha256 does not bind the canonical registry material",
+            errors,
+        )
+
+        invalid_runtime = {
+            "schema": "okf-relationship-assertion.v2",
+            "source": "heritage/asset/example",
+            "target": "heritage/designation/example",
+            "predicate": "https://example.test/vocabulary/hasDesignation",
+            "assertion_status": "official",
+            "assertion_scope": "real-world",
+            "authority": {"class": "derived"},
+            "derivation": "source field",
+        }
+        self.assertTrue(
+            okf_semantic.schema_errors(
+                invalid_runtime,
+                "federation/v1/relationship-assertion.schema.json",
+            )
+        )
+
+        mixed_scope = copy.deepcopy(page.metadata)
+        synthetic_assertion = copy.deepcopy(mixed_scope["assertions"][0])
+        synthetic_assertion["@id"] = "https://example.test/assertions/synthetic-copy"
+        synthetic_assertion["assertion_scope"] = "synthetic-fixture"
+        synthetic_assertion["authority"] = {
+            "class": "synthetic",
+            "label": "Synthetic copy",
+            "source": "https://example.test/source/example",
+        }
+        mixed_scope["assertions"].append(synthetic_assertion)
+        self.assertIn(
+            "real-world and synthetic-fixture assertions must be published as separate semantic documents",
+            okf_semantic.validate_semantic_assertions(mixed_scope),
+        )
+
+    def test_semantic_context_loader_rejects_unreviewed_remote_context(self) -> None:
+        with self.assertRaisesRegex(
+            okf_semantic.SemanticError,
+            "not allowlisted",
+        ):
+            okf_semantic.expand(
+                {
+                    "@context": "https://example.test/unreviewed-context.jsonld",
+                    "@id": "https://example.test/id",
+                }
+            )
 
     def test_explorer_presentation_profile_matches_implemented_contract(self) -> None:
         profile = {
@@ -347,11 +617,34 @@ class OkfSemanticTest(unittest.TestCase):
         legacy = json.loads(rendered["legacy"])
         semantic = json.loads(rendered["semantic"])
         self.assertEqual("okf-explorer-registry.v1", legacy["schema"])
-        self.assertEqual(6, len(legacy["bundles"]))
+        self.assertEqual(
+            len(semantic["@graph"][0]["bundles"]),
+            len(legacy["bundles"]),
+        )
         self.assertIn(
             "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
             {bundle["url"] for bundle in legacy["bundles"]},
         )
+        heritage_url = (
+            "https://chris-page-gov.github.io/okf-explorer/"
+            "evaluation/heritage/okf-explorer.json"
+        )
+        heritage_coverage = json.loads(
+            (
+                ROOT
+                / "evaluation-foundry"
+                / "fixtures"
+                / "heritage-warwickshire"
+                / "feature-coverage.json"
+            ).read_text(encoding="utf-8")
+        )
+        registered_urls = {bundle["url"] for bundle in legacy["bundles"]}
+        if heritage_coverage["local_evidence"]["public_verification"][
+            "demonstrated"
+        ]:
+            self.assertIn(heritage_url, registered_urls)
+        else:
+            self.assertNotIn(heritage_url, registered_urls)
         self.assertEqual("registry/okf-registry.yamlld", legacy["semantic_source"])
         whole_law = next(
             bundle

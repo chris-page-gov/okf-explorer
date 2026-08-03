@@ -1,0 +1,1 @@
+{"algorithm":"fnv1a32-prefix-2","bucket_count":3,"buckets":{"20":"data/records/20.json","8e":"data/records/8e.json","f2":"data/records/f2.json"},"chunk_size":500,"record_chunks":["data/records-0.json.gz"],"records":3,"schema":"okf-record-locator-sharded.v1","snapshot":"heritage-warwickshire-synthetic-capability-v1"}

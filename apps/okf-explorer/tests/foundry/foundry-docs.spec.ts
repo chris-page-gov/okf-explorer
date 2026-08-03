@@ -13,6 +13,54 @@ const routes = [
   ['Authoring profile', 'profile/authoring/v1/', 'OKF Authoring Profile v1']
 ] as const;
 
+const heritageRoutes = [
+  [
+    'Evaluation Foundry beginner chapter',
+    'docs/beginners/22-evaluation-foundry-and-yaml-ld.html',
+    'Evaluation Foundry And YAML-LD'
+  ],
+  [
+    'Heritage evaluation report',
+    'docs/heritage-evaluation-report.html',
+    'Coventry And Warwickshire Heritage Functionality Evaluation'
+  ],
+  [
+    'Heritage evaluation profile',
+    'evaluation-foundry/fixtures/heritage-warwickshire/profile.html',
+    'Coventry And Warwickshire Heritage Evaluation Profile'
+  ],
+  [
+    'Faithful heritage landing page',
+    'evaluation/heritage/index.html',
+    'Coventry and Warwickshire Heritage Evaluation'
+  ],
+  [
+    'Faithful heritage methodology',
+    'evaluation/heritage/methodology.html',
+    'Coventry and Warwickshire Heritage Evaluation methodology'
+  ],
+  [
+    'Tiny heritage landing page',
+    'evaluation/heritage/tiny/index.html',
+    'Tiny source-backed heritage assurance fixture'
+  ],
+  [
+    'Tiny heritage methodology',
+    'evaluation/heritage/tiny/methodology.html',
+    'Tiny source-backed heritage assurance fixture methodology'
+  ],
+  [
+    'Synthetic heritage landing page',
+    'evaluation/heritage/synthetic/index.html',
+    'Synthetic Heritage Capability Supplement'
+  ],
+  [
+    'Synthetic heritage methodology',
+    'evaluation/heritage/synthetic/methodology.html',
+    'Synthetic Heritage Capability Supplement methodology'
+  ]
+] as const;
+
 for (const [label, route, heading] of routes) {
   test(`${label} is published as readable HTML`, async ({ page }) => {
     const response = await page.goto(route);
@@ -20,6 +68,16 @@ for (const [label, route, heading] of routes) {
     expect(response?.headers()['content-type']).toContain('text/html');
     await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'OKF Foundry documentation' })).toBeVisible();
+  });
+}
+
+for (const [label, route, heading] of heritageRoutes) {
+  test(`${label} renders its Markdown identity as HTML`, async ({ page }) => {
+    const response = await page.goto(route);
+    expect(response?.ok()).toBe(true);
+    expect(response?.headers()['content-type']).toContain('text/html');
+    await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
+    await expect(page.locator('main')).toBeVisible();
   });
 }
 

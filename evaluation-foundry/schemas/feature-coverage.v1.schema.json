@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/feature-coverage.v1.schema.json",
+  "title": "Evaluation Foundry feature coverage v1",
+  "type": "object",
+  "required": ["schema", "profile_id", "bundle", "capabilities", "publication_boundary"],
+  "properties": {
+    "schema": {"const": "okf-evaluation-feature-coverage.v1"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "bundle": {"type": "string", "format": "uri-reference"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "suitability": {"enum": ["strong", "partial", "weak"]},
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "source_support", "demonstrated", "evidence", "journey", "limitations"],
+        "properties": {
+          "id": {"enum": ["search", "facets", "types", "resources", "graph", "links", "timeline", "map", "narrative", "data-card", "provenance", "durable-state", "accessibility", "publication"]},
+          "source_support": {"enum": ["strong", "partial", "weak", "unavailable"]},
+          "demonstrated": {"type": "boolean"},
+          "evidence": {"type": "array", "items": {"type": "string"}},
+          "journey": {"type": "string"},
+          "limitations": {"type": "array", "items": {"type": "string"}},
+          "synthetic_demonstration": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "publication_boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}
