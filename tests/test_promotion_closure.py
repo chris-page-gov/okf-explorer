@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import check_promotion_envelope as promotion  # noqa: E402
+import check_terminal_promotion_envelope as terminal_promotion  # noqa: E402
 import observe_link_intents as link_intents  # noqa: E402
 
 
@@ -79,6 +80,26 @@ class PromotionClosureTests(unittest.TestCase):
             "protected_browser_channel": "genuine-google-chrome-cdp",
             "receipt_location": "evidence-only",
         }
+
+    def test_terminal_size_override_is_exactly_scoped_to_the_link_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            exact = Path(directory) / terminal_promotion.TERMINAL_LINK_RECEIPT_NAME
+            payload = {
+                "schema": "fixture",
+                "padding": "x" * (terminal_promotion.foundry.MAX_CONTROL_FILE_BYTES + 256),
+            }
+            exact.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "control file exceeds"):
+                promotion.load_document(exact)
+            self.assertEqual(payload, terminal_promotion.load_terminal_document(exact))
+            wrong_name = exact.with_name("not-the-terminal-link-receipt.json")
+            exact.rename(wrong_name)
+            with self.assertRaisesRegex(ValueError, "control file exceeds"):
+                terminal_promotion.load_terminal_document(wrong_name)
+            self.assertEqual(
+                2 * 1024 * 1024,
+                terminal_promotion.foundry.MAX_CONTROL_FILE_BYTES,
+            )
 
     def subject(self, link_manifest_sha256: str = "pending-test-value") -> dict[str, object]:
         return {

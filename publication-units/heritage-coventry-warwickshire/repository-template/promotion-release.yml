@@ -207,7 +207,7 @@ jobs:
           --output "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
       - name: Validate R1-compatible R2 with trusted exact controls
         run: >-
-          python3 assurance/scripts/check_promotion_envelope.py
+          python3 assurance/scripts/check_terminal_promotion_envelope.py
           "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
           --repository-root "$RUNNER_TEMP/promotion-workspace"
           --publication-root publication/site

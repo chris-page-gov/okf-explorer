@@ -2172,12 +2172,17 @@ function summarise(records) {
   return summary;
 }
 
+function resultTimestamp(value = new Date()) {
+  const milliseconds = value.toISOString();
+  return `${milliseconds.slice(0, -1)}000Z`;
+}
+
 function writeReports(options, suite, visuals, records, metadata, candidate = null, journeyPayload = null) {
   fs.mkdirSync(options.out, { recursive: true });
   const summary = summarise(records);
   const payload = {
     schema: 'okf-explorer-evaluation-results.v1',
-    generated_at: new Date().toISOString(),
+    generated_at: resultTimestamp(),
     base_url: options.baseUrl,
     bundle: options.bundle,
     suite: path.relative(repoRoot, options.suite),
@@ -2366,6 +2371,7 @@ export {
   inspectCandidate,
   loadCandidateReceipt,
   parseArgs,
+  resultTimestamp,
   selectPlaywrightBrowser,
   validateJourneys
 };

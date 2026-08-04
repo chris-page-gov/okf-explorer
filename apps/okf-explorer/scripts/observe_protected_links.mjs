@@ -13,6 +13,7 @@ const RECEIPT_SCHEMA = 'okf-genuine-browser-link-receipt.v1';
 const JOURNEY_ID = 'journey-publication';
 const VERIFICATION_CHANNEL = 'genuine-browser-receipt';
 const IDENTITY_SOURCE = 'document.body.innerText';
+const BROWSER_CHANNEL = 'genuine-google-chrome-cdp';
 const DEFAULT_TIMEOUT_MS = 65_000;
 const CHROME_STOP_TIMEOUT_MS = 3_000;
 const PROFILE_REMOVE_MAX_RETRIES = 10;
@@ -579,7 +580,7 @@ async function observeAction(session, action, timeoutMs) {
       identity_matched: true,
       identity_excerpt: excerpt,
       browser: {
-        channel: 'google-chrome-cdp',
+        channel: BROWSER_CHANNEL,
         user_agent: pageIdentity.userAgent,
         webdriver: pageIdentity.webdriver,
         languages: pageIdentity.languages
