@@ -23,7 +23,7 @@
         "pull-request-head-observed",
         "required-checks-passed"
       ],
-      "note": "This is the exact assured implementation-head snapshot used by both PR CI and terminal assurance. The later evidence/report-only tail is deliberately outside that historical candidate identity; merge_commit remains null until GitHub creates it."
+      "note": "This is the exact assured implementation-head snapshot used by both PR CI and terminal assurance. The later central tail adds reporting, browser-test robustness and workflow permission scoping without changing the external candidate identity. This historical record predates the final merge, so merge_commit intentionally remains null."
     },
     {
       "id": "PUBEV-002",

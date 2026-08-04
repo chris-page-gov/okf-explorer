@@ -9,7 +9,7 @@ title: "Postmortem methodology and metric definitions"
 description: "Scope, extraction, evidence, measurement and limitation rules for the heritage Foundry postmortem."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -29,7 +29,7 @@ browsing behaviour.
 ## Evidence Scope
 
 The collection boundary is the task from `2026-08-02T21:46:49Z` through the
-recommendation-implementation handoff, plus repository/GitHub evidence for PRs
+final publication-closure handoff, plus repository/GitHub evidence for PRs
 #67–#69. The private
 plane contains raw GitHub logs, structured PR/run metadata, release assets, Git
 outputs and three deployment archives. The public plane contains hashes,
@@ -76,10 +76,10 @@ the same full trace regardless of rollout milestone status.
 
 ## Conversation Extraction
 
-The curated source has SHA-256 `747b638f5a2ba42333eebdd5c1c506ff160d2db2555120eb075934b439a5c8ce` and contained
-`57,596,313` bytes at extraction. The public trace contains
+The curated source has SHA-256 `0dbb30121104c82f4347c22aea32a0f670a25d8bfeae70cf8a4edd33cb66d6e6` and contained
+`58,524,942` bytes at extraction. The public trace contains
 `8` user exchanges and
-`302` visible Codex messages at extraction.
+`309` visible Codex messages at extraction.
 Local paths and token-shaped strings are redacted. The public lint rejects local
 user paths, Codex rollout paths, private evidence paths and common token forms.
 

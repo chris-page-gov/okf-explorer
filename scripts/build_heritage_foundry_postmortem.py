@@ -53,7 +53,7 @@ BASE_URL = (
     "https://chris-page-gov.github.io/okf-explorer/"
     "docs/postmortems/heritage-foundry-2026"
 )
-CAPTURED_AT = "2026-08-04T05:00:00Z"
+CAPTURED_AT = "2026-08-04T13:16:54Z"
 
 CURRENT_PUBLICATION_EVIDENCE_SPECS = (
     {
@@ -1629,12 +1629,12 @@ def render_index(metrics: dict[str, Any], exchanges: list[Exchange]) -> tuple[Pa
                     "R1/terminal/R2 attempts",
                     metrics["release_closure_attempts"],
                     f"{metrics['release_closure_successes']} passed; "
-                    f"{metrics['release_closure_failures']} fail-closed findings",
+                    f"{metrics['release_closure_failures']} failed closed",
                 ),
                 ("GitHub workflow wall time", format_duration(metrics["all_workflow_wall_seconds"]), "Three CI plus three Pages runs"),
                 ("PR file touches", f"{metrics['file_touches_across_prs']:,}", "Includes repeated generated files"),
                 ("Late findings reconstructed", metrics["late_findings"], "Local audits and public gates"),
-                ("Final Site", f"{metrics['final_site_files']:,} files", f"{metrics['final_site_bytes']:,} bytes"),
+                ("Historical central Site", f"{metrics['final_site_files']:,} files", f"{metrics['final_site_bytes']:,} bytes at PR #69"),
                 ("Visible prompt-response exchanges", metrics["conversation_exchanges"], f"{metrics['visible_assistant_messages']} Codex responses at extraction"),
             ],
             ("Measure", "Value", "Definition"),
@@ -1691,7 +1691,7 @@ def render_methodology(metadata: dict[str, Any], metrics: dict[str, Any]) -> tup
         ## Evidence Scope
 
         The collection boundary is the task from `2026-08-02T21:46:49Z` through the
-        recommendation-implementation handoff, plus repository/GitHub evidence for PRs
+        final publication-closure handoff, plus repository/GitHub evidence for PRs
         #67–#69. The private
         plane contains raw GitHub logs, structured PR/run metadata, release assets, Git
         outputs and three deployment archives. The public plane contains hashes,
@@ -2873,7 +2873,7 @@ def render_postmortem(
 
         ### 5. The Site is a capacity and coupling boundary
 
-        The final Site has {metrics['final_site_files']:,} files and
+        The historical central Site at PR #69 has {metrics['final_site_files']:,} files and
         {metrics['final_site_bytes']:,} bytes, leaving only
         {metrics['pages_limit_remaining_bytes']:,} bytes ({100 * metrics['pages_limit_remaining_bytes'] / 1_000_000_000:.3f}%)
         below the configured one-billion-byte Pages limit. Every candidate rebuild scans,
@@ -2969,10 +2969,38 @@ def render_postmortem(
         Releases attestation and became platform-immutable.
 
         One human-readable ambiguity remains visible by design: the annotated promotion
-        tag message names earlier successful terminal run `30907144661`, while the final
-        attested envelope unambiguously binds run `30908844005`. Both target the same
-        candidate. Moving the published tag would weaken provenance, so the report records
-        the discrepancy and treats the envelope, not tag prose, as authoritative status.
+        tag message names earlier successful terminal run `30907144661`, while the R2
+        assets contain the receipt hashes produced by final run `30908844005`. The
+        normalized publication register and retained R2 Actions artifact make that
+        cross-walk explicit. Moving the published tag would weaken provenance, so the
+        report records the discrepancy and treats the attested envelope plus exact
+        evidence cross-walk, not tag prose, as authoritative status.
+
+        The immutable R2 envelope does not itself carry the terminal run ID or terminal
+        artifact digest. Those facts are retained in the central evidence register and in
+        R2 Actions artifact `8892339639`, whose platform retention expires on 2 November
+        2026. This satisfies the declared release policy, but a future envelope schema
+        should include both fields so long-term provenance is self-contained after the
+        workflow artifact expires.
+
+        ### 8a. The final central audit caught two more shell defects before merge
+
+        Exact-head PR run
+        [30911393031](https://github.com/chris-page-gov/okf-explorer/actions/runs/30911393031)
+        passed the impact, adversarial, Foundry, documentation, app, release-policy, Site
+        and Python-contract jobs, then failed closed in one Firefox documentation test.
+        The server returned HTTP 200 twice, but a zero-delay cross-origin meta refresh let
+        Firefox replace the initial navigation before `page.goto()` could return its
+        response. Chrome and WebKit passed. The correction now verifies the exact direct
+        HTTP response separately and renders that same HTML without its navigation
+        directive for deterministic three-engine body assertions.
+
+        A concurrent least-privilege audit found that the central Pages workflow granted
+        `pages: write` and `id-token: write` to every job. The corrected topology gives
+        ordinary jobs only `contents: read`, gives the Site builder `pages: read`, and
+        confines both write permissions to deployment. A machine test now rejects future
+        permission widening. Neither correction touches the external candidate or its
+        deployed Site; only a new exact-head central CI run is required.
 
         ## Local Build And Test Activity
 
@@ -3038,6 +3066,9 @@ def render_postmortem(
           excludes hidden reasoning and tool payloads.
         - The promotion tag is annotated but unsigned. Policy requires an annotated tag
           plus an attested promotion envelope; it does not claim a signed Git tag.
+        - The immutable R2 envelope binds the terminal receipt hashes but does not embed
+          the terminal run ID or artifact digest. The public evidence register preserves
+          that cross-walk; a future envelope revision should make it self-contained.
 
         ## Resolved Architecture And Release Questions
 

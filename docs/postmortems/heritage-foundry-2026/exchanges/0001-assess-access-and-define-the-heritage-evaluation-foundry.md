@@ -9,7 +9,7 @@ title: "Assess access and define the heritage Evaluation Foundry"
 description: "Redacted prompt-response exchange EX-0001 from the heritage Foundry task."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:

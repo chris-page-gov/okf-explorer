@@ -9,7 +9,7 @@ title: "Heritage Evaluation Foundry engineering postmortem"
 description: "End-to-end evidence, late-finding analysis and implemented selective-rerun controls."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -131,7 +131,7 @@ diagnosis; “CI failure churn” is not.
 
 ### 5. The Site is a capacity and coupling boundary
 
-The final Site has 14,010 files and
+The historical central Site at PR #69 has 14,010 files and
 987,329,754 bytes, leaving only
 12,670,246 bytes (1.267%)
 below the configured one-billion-byte Pages limit. Every candidate rebuild scans,
@@ -235,10 +235,38 @@ actions plus two assertions. R2 then bound all ten release assets in a GitHub
 Releases attestation and became platform-immutable.
 
 One human-readable ambiguity remains visible by design: the annotated promotion
-tag message names earlier successful terminal run `30907144661`, while the final
-attested envelope unambiguously binds run `30908844005`. Both target the same
-candidate. Moving the published tag would weaken provenance, so the report records
-the discrepancy and treats the envelope, not tag prose, as authoritative status.
+tag message names earlier successful terminal run `30907144661`, while the R2
+assets contain the receipt hashes produced by final run `30908844005`. The
+normalized publication register and retained R2 Actions artifact make that
+cross-walk explicit. Moving the published tag would weaken provenance, so the
+report records the discrepancy and treats the attested envelope plus exact
+evidence cross-walk, not tag prose, as authoritative status.
+
+The immutable R2 envelope does not itself carry the terminal run ID or terminal
+artifact digest. Those facts are retained in the central evidence register and in
+R2 Actions artifact `8892339639`, whose platform retention expires on 2 November
+2026. This satisfies the declared release policy, but a future envelope schema
+should include both fields so long-term provenance is self-contained after the
+workflow artifact expires.
+
+### 8a. The final central audit caught two more shell defects before merge
+
+Exact-head PR run
+[30911393031](https://github.com/chris-page-gov/okf-explorer/actions/runs/30911393031)
+passed the impact, adversarial, Foundry, documentation, app, release-policy, Site
+and Python-contract jobs, then failed closed in one Firefox documentation test.
+The server returned HTTP 200 twice, but a zero-delay cross-origin meta refresh let
+Firefox replace the initial navigation before `page.goto()` could return its
+response. Chrome and WebKit passed. The correction now verifies the exact direct
+HTTP response separately and renders that same HTML without its navigation
+directive for deterministic three-engine body assertions.
+
+A concurrent least-privilege audit found that the central Pages workflow granted
+`pages: write` and `id-token: write` to every job. The corrected topology gives
+ordinary jobs only `contents: read`, gives the Site builder `pages: read`, and
+confines both write permissions to deployment. A machine test now rejects future
+permission widening. Neither correction touches the external candidate or its
+deployed Site; only a new exact-head central CI run is required.
 
 ## Local Build And Test Activity
 
@@ -330,6 +358,9 @@ classified, while nightly and terminal full audits protect against planner error
   excludes hidden reasoning and tool payloads.
 - The promotion tag is annotated but unsigned. Policy requires an annotated tag
   plus an attested promotion envelope; it does not claim a signed Git tag.
+- The immutable R2 envelope binds the terminal receipt hashes but does not embed
+  the terminal run ID or artifact digest. The public evidence register preserves
+  that cross-walk; a future envelope revision should make it self-contained.
 
 ## Resolved Architecture And Release Questions
 
