@@ -542,6 +542,39 @@ class PromotionClosureTests(unittest.TestCase):
             )
             receipt = self.genuine_receipt(action)
             self.assertEqual([], self.errors("protected", receipt, root))
+            reprobed_action = copy.deepcopy(action)
+            reprobed_action["expected_final_url"] = f"{action['value']}?canonical=1"
+            (root / "journeys.json").write_text(
+                json.dumps(
+                    {
+                        "journeys": [
+                            {
+                                "id": "journey-publication",
+                                "actions": [reprobed_action],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            reprobed = self.genuine_receipt(reprobed_action)
+            reprobed["records"][0].update(
+                {
+                    "requested_final_url": action["value"],
+                    "canonical_reprobe": True,
+                    "validation_basis": (
+                        "requested-page-and-declared-canonical-page-"
+                        "both-identity-matched"
+                    ),
+                }
+            )
+            self.assertEqual([], self.errors("protected", reprobed, root))
+            (root / "journeys.json").write_text(
+                json.dumps(
+                    {"journeys": [{"id": "journey-publication", "actions": [action]}]}
+                ),
+                encoding="utf-8",
+            )
             broken = copy.deepcopy(receipt)
             broken["records"].append(copy.deepcopy(broken["records"][0]))
             broken["scope"]["sequences"] = [99]

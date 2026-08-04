@@ -7,9 +7,12 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import {
+  appendCleanupDiagnostics,
   assertReceiptContract,
   buildReceipt,
+  canonicalReprobeTarget,
   main,
+  removeChromeProfile,
   protectedActions
 } from './observe_protected_links.mjs';
 
@@ -120,6 +123,76 @@ test('rejects automation identity and unordered record times', () => {
   receipt.records[1].observed_at = '2026-08-04T09:59:59.000Z';
   receipt.observed_at = receipt.records[1].observed_at;
   assert.throws(() => assertReceiptContract(receipt), /not ordered/);
+});
+
+test('reprobes a declared canonical URL only when the requested page stayed put', () => {
+  const requested = 'https://example.test/results?q=1184627';
+  const canonical = `${requested}&size=n_24_n`;
+  const sourceAction = {
+    ...action(16, requested, 'Church of St Peter'),
+    expected_final_url: canonical
+  };
+  assert.equal(canonicalReprobeTarget(sourceAction, requested), canonical);
+  assert.equal(canonicalReprobeTarget(sourceAction, canonical), null);
+  assert.equal(
+    canonicalReprobeTarget(sourceAction, 'https://unexpected.example.test/'),
+    null
+  );
+});
+
+test('retains both final URLs when the declared canonical endpoint is reprobed', () => {
+  const requested = 'https://example.test/results?q=1184627';
+  const canonical = `${requested}&size=n_24_n`;
+  const sourceAction = {
+    ...action(16, requested, 'Church of St Peter'),
+    expected_final_url: canonical
+  };
+  const reprobed = {
+    ...observation(canonical, '2026-08-04T10:00:00.000Z', 'Church of St Peter'),
+    requested_url: requested,
+    requested_final_url: requested,
+    requested_response_status: 200,
+    requested_title: 'Church of St Peter | Historic England',
+    requested_identity_excerpt: 'Official page identity: Church of St Peter',
+    canonical_reprobe: true,
+    validation_basis:
+      'requested-page-and-declared-canonical-page-both-identity-matched'
+  };
+  const receipt = buildReceipt([sourceAction], [reprobed], browser);
+  assert.equal(receipt.records[0].requested_url, requested);
+  assert.equal(receipt.records[0].requested_final_url, requested);
+  assert.equal(receipt.records[0].requested_response_status, 200);
+  assert.equal(receipt.records[0].final_url, canonical);
+  assert.equal(receipt.records[0].canonical_reprobe, true);
+  assertReceiptContract(receipt);
+});
+
+test('removes the Chrome profile with bounded transient-error retries', async () => {
+  const calls = [];
+  await removeChromeProfile('/tmp/okf-genuine-chrome-fixture', async (...args) => {
+    calls.push(args);
+  });
+  assert.deepEqual(calls, [
+    [
+      '/tmp/okf-genuine-chrome-fixture',
+      {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 100
+      }
+    ]
+  ]);
+});
+
+test('preserves a primary observation failure while attaching cleanup diagnostics', () => {
+  const observationError = new Error('DOM identity text did not appear');
+  const cleanupError = new Error('ENOTEMPTY while removing Chrome profile');
+  const completed = appendCleanupDiagnostics(observationError, [cleanupError]);
+  assert.equal(completed, observationError);
+  assert.match(completed.stack, /DOM identity text did not appear/);
+  assert.match(completed.stack, /Cleanup diagnostics/);
+  assert.match(completed.stack, /ENOTEMPTY while removing Chrome profile/);
 });
 
 test(

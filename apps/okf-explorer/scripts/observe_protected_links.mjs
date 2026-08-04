@@ -6,6 +6,7 @@ import { mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promise
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { dirname } from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
 
 const RECEIPT_SCHEMA = 'okf-genuine-browser-link-receipt.v1';
@@ -13,6 +14,11 @@ const JOURNEY_ID = 'journey-publication';
 const VERIFICATION_CHANNEL = 'genuine-browser-receipt';
 const IDENTITY_SOURCE = 'document.body.innerText';
 const DEFAULT_TIMEOUT_MS = 65_000;
+const CHROME_STOP_TIMEOUT_MS = 3_000;
+const PROFILE_REMOVE_MAX_RETRIES = 10;
+const PROFILE_REMOVE_RETRY_DELAY_MS = 100;
+const CANONICAL_REPROBE_BASIS =
+  'requested-page-and-declared-canonical-page-both-identity-matched';
 const CREDENTIAL_QUERY_KEY =
   /^(?:api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|password|passwd|bearer|token)$/i;
 
@@ -168,6 +174,35 @@ export function assertReceiptContract(receipt) {
     const key = `${record.requested_url}\u0000${record.expected_text}`;
     if (keys.has(key)) throw new Error(`${prefix} duplicates a URL/text identity.`);
     keys.add(key);
+    if (record.canonical_reprobe === true) {
+      if (
+        record.validation_basis !== CANONICAL_REPROBE_BASIS ||
+        locationIdentity(record.requested_final_url) !==
+          locationIdentity(record.requested_url) ||
+        locationIdentity(record.final_url) ===
+          locationIdentity(record.requested_final_url) ||
+        !Number.isInteger(record.requested_response_status) ||
+        record.requested_response_status < 200 ||
+        record.requested_response_status >= 400 ||
+        typeof record.requested_title !== 'string' ||
+        !record.requested_title.trim() ||
+        typeof record.requested_identity_excerpt !== 'string' ||
+        !record.requested_identity_excerpt
+          .toLocaleLowerCase('en-GB')
+          .includes(record.expected_text.toLocaleLowerCase('en-GB'))
+      ) {
+        throw new Error(`${prefix} has invalid canonical-reprobe evidence.`);
+      }
+    } else if (
+      'canonical_reprobe' in record ||
+      'requested_final_url' in record ||
+      'requested_response_status' in record ||
+      'requested_title' in record ||
+      'requested_identity_excerpt' in record ||
+      'validation_basis' in record
+    ) {
+      throw new Error(`${prefix} has incomplete canonical-reprobe evidence.`);
+    }
   }
   if (timestamp(receipt.observed_at, 'receipt observed_at') !== previous) {
     throw new Error('receipt observed_at must equal the latest record observed_at.');
@@ -195,6 +230,16 @@ export function buildReceipt(actions, observations, browser) {
     return {
       observed_at: observation.observed_at,
       requested_url: action.value,
+      ...(observation.canonical_reprobe === true
+        ? {
+            requested_final_url: observation.requested_final_url,
+            requested_response_status: observation.requested_response_status,
+            requested_title: observation.requested_title,
+            requested_identity_excerpt: observation.requested_identity_excerpt,
+            canonical_reprobe: true,
+            validation_basis: observation.validation_basis
+          }
+        : {}),
       final_url: observation.final_url,
       title: observation.title,
       response_status: observation.response_status,
@@ -219,7 +264,7 @@ export function buildReceipt(actions, observations, browser) {
       journey_id: JOURNEY_ID,
       sequences: actions.map((action) => action.sequence),
       limitation:
-        'This receipt proves response status, final URL, title and quoted DOM identity in Google Chrome without an automation launch flag.'
+        'This receipt proves response status, final URL, title and quoted DOM identity in Google Chrome without an automation launch flag. When a publisher stops redirecting a requested page to its declared canonical URL, canonical-reprobe records expose both final URLs and prove the same identity at each endpoint.'
     },
     records
   };
@@ -372,8 +417,13 @@ class CdpSession {
     return () => listeners.delete(listener);
   }
 
-  close() {
+  async close() {
+    if (this.socket.readyState >= 2) return;
+    const closed = new Promise((resolve) => {
+      this.socket.addEventListener('close', resolve, { once: true });
+    });
     this.socket.close();
+    await Promise.race([closed, delay(1_000)]);
   }
 }
 
@@ -405,6 +455,18 @@ function identityExcerpt(bodyText, expectedText) {
   const start = Math.max(0, index - 100);
   const end = Math.min(normalized.length, index + expectedText.length + 220);
   return normalized.slice(start, end);
+}
+
+export function canonicalReprobeTarget(action, observedFinalUrl) {
+  if (
+    typeof action.expected_final_url === 'string' &&
+    !action.expected_final_hash &&
+    locationIdentity(observedFinalUrl) === locationIdentity(action.value) &&
+    locationIdentity(observedFinalUrl) !== locationIdentity(action.expected_final_url)
+  ) {
+    return action.expected_final_url;
+  }
+  return null;
 }
 
 async function observeAction(session, action, timeoutMs) {
@@ -448,21 +510,6 @@ async function observeAction(session, action, timeoutMs) {
     if (!Array.isArray(pageIdentity.languages) || pageIdentity.languages.length === 0) {
       throw new Error('navigator.languages must be a nonempty array.');
     }
-    const expectedFinalUrl = action.expected_final_url || action.value;
-    if (locationIdentity(pageIdentity.href) !== locationIdentity(expectedFinalUrl)) {
-      throw new Error(
-        `final URL ${pageIdentity.href} does not match ${expectedFinalUrl}.`
-      );
-    }
-    if (
-      action.expected_final_hash &&
-      new URL(pageIdentity.href).hash !== action.expected_final_hash
-    ) {
-      throw new Error(
-        `final URL hash ${new URL(pageIdentity.href).hash || '(empty)'} does not match ` +
-          `${action.expected_final_hash}.`
-      );
-    }
     const response = [...documentResponses]
       .reverse()
       .find(
@@ -477,6 +524,51 @@ async function observeAction(session, action, timeoutMs) {
       responseStatus >= 400
     ) {
       throw new Error(`final document response status is invalid: ${responseStatus}.`);
+    }
+    const expectedFinalUrl = action.expected_final_url || action.value;
+    if (locationIdentity(pageIdentity.href) !== locationIdentity(expectedFinalUrl)) {
+      const reprobeTarget = canonicalReprobeTarget(action, pageIdentity.href);
+      if (reprobeTarget) {
+        const canonicalObservation = await observeAction(
+          session,
+          {
+            ...action,
+            value: reprobeTarget,
+            expected_final_url: reprobeTarget
+          },
+          timeoutMs
+        );
+        if (
+          canonicalObservation.browser.user_agent !== pageIdentity.userAgent ||
+          JSON.stringify(canonicalObservation.browser.languages) !==
+            JSON.stringify(pageIdentity.languages) ||
+          canonicalObservation.browser.webdriver !== pageIdentity.webdriver
+        ) {
+          throw new Error('browser identity changed during a canonical reprobe.');
+        }
+        return {
+          ...canonicalObservation,
+          requested_url: action.value,
+          requested_final_url: pageIdentity.href,
+          requested_response_status: responseStatus,
+          requested_title: pageIdentity.title.trim(),
+          requested_identity_excerpt: excerpt,
+          canonical_reprobe: true,
+          validation_basis: CANONICAL_REPROBE_BASIS
+        };
+      }
+      throw new Error(
+        `final URL ${pageIdentity.href} does not match ${expectedFinalUrl}.`
+      );
+    }
+    if (
+      action.expected_final_hash &&
+      new URL(pageIdentity.href).hash !== action.expected_final_hash
+    ) {
+      throw new Error(
+        `final URL hash ${new URL(pageIdentity.href).hash || '(empty)'} does not match ` +
+          `${action.expected_final_hash}.`
+      );
     }
     return {
       observed_at: new Date().toISOString(),
@@ -498,14 +590,46 @@ async function observeAction(session, action, timeoutMs) {
   }
 }
 
-async function stopChrome(processHandle) {
+export async function stopChrome(processHandle) {
   if (processHandle.exitCode !== null) return;
+  const exited = once(processHandle, 'exit');
   processHandle.kill('SIGTERM');
-  await Promise.race([
-    once(processHandle, 'exit'),
-    new Promise((resolve) => setTimeout(resolve, 3_000))
-  ]);
-  if (processHandle.exitCode === null) processHandle.kill('SIGKILL');
+  await Promise.race([exited, delay(CHROME_STOP_TIMEOUT_MS)]);
+  if (processHandle.exitCode === null) {
+    processHandle.kill('SIGKILL');
+    await Promise.race([exited, delay(CHROME_STOP_TIMEOUT_MS)]);
+  }
+  if (processHandle.exitCode === null) {
+    throw new Error('Google Chrome did not exit after SIGTERM and SIGKILL.');
+  }
+}
+
+export async function removeChromeProfile(profile, remover = rm) {
+  await remover(profile, {
+    recursive: true,
+    force: true,
+    maxRetries: PROFILE_REMOVE_MAX_RETRIES,
+    retryDelay: PROFILE_REMOVE_RETRY_DELAY_MS
+  });
+}
+
+export function appendCleanupDiagnostics(operationError, cleanupErrors) {
+  if (cleanupErrors.length === 0) return operationError;
+  const details = cleanupErrors
+    .map((error) => error?.stack || error?.message || String(error))
+    .join('\n');
+  operationError.stack = `${operationError.stack || operationError.message}\n` +
+    `Cleanup diagnostics:\n${details}`;
+  return operationError;
+}
+
+async function closeChromeSession(session) {
+  try {
+    await Promise.race([session.send('Browser.close'), delay(1_000)]);
+  } catch {
+    // Closing the browser can close CDP before Browser.close replies.
+  }
+  await session.close();
 }
 
 async function writeReceipt(outputPath, receipt) {
@@ -524,6 +648,7 @@ export async function main(argv = process.argv.slice(2)) {
   const port = await availablePort();
   let chrome;
   let session;
+  let operationError;
   try {
     chrome = await launchChrome(options.chromePath, profile, port);
     await waitForDevTools(
@@ -561,10 +686,39 @@ export async function main(argv = process.argv.slice(2)) {
       `observed ${receipt.records.length} protected URLs with ${chromeVersion}; ` +
         `receipt=${options.outputPath}`
     );
-  } finally {
-    if (session) session.close();
-    if (chrome) await stopChrome(chrome.processHandle);
-    await rm(profile, { recursive: true, force: true });
+  } catch (error) {
+    operationError = error;
+  }
+  const cleanupErrors = [];
+  if (session) {
+    try {
+      await closeChromeSession(session);
+    } catch (error) {
+      cleanupErrors.push(error);
+    }
+  }
+  if (chrome) {
+    try {
+      await stopChrome(chrome.processHandle);
+    } catch (error) {
+      cleanupErrors.push(error);
+    }
+  }
+  try {
+    await removeChromeProfile(profile);
+  } catch (error) {
+    cleanupErrors.push(error);
+  }
+  if (operationError) {
+    throw appendCleanupDiagnostics(operationError, cleanupErrors);
+  }
+  if (cleanupErrors.length > 0) {
+    throw new AggregateError(
+      cleanupErrors,
+      `Google Chrome cleanup failed: ${cleanupErrors
+        .map((error) => error?.message || String(error))
+        .join('; ')}`
+    );
   }
 }
 
