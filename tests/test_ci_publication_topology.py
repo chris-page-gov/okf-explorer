@@ -313,6 +313,11 @@ class CiPublicationTopologyTests(unittest.TestCase):
             )
         self.assertIn("--all-shards", terminal)
         self.assertIn("--fail-on-error", terminal)
+        self.assertIn("if: ${{ always() }}", terminal)
+        self.assertIn("if-no-files-found: warn", terminal)
+        self.assertIn(
+            "Upload the timestamped closure or failure diagnostics", terminal
+        )
         self.assertIn("--browser-engine \"$engine\"", terminal)
         self.assertIn("version: 10", terminal)
         self.assertIn(

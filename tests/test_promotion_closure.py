@@ -329,6 +329,7 @@ class PromotionClosureTests(unittest.TestCase):
                         **identity,
                         "observed_at": iso(observed_at),
                         "engine": "python-urllib",
+                        "attempt_count": 1,
                         "status": "reachable",
                         "http_status": 200,
                         "final_url": url,
@@ -442,6 +443,7 @@ class PromotionClosureTests(unittest.TestCase):
                         "observed_at": iso(observed_at),
                         "expires_at": expiry,
                         "engine": "python-urllib",
+                        "attempt_count": 1,
                         "status": "reachable",
                         "http_status": 200,
                         "final_url": url,
@@ -482,6 +484,20 @@ class PromotionClosureTests(unittest.TestCase):
                 "delegated": delegated,
             }
             self.assertEqual([], self.errors("links", receipt, root))
+
+            not_modified = copy.deepcopy(receipt)
+            reachable_index = next(
+                index
+                for index, record in enumerate(not_modified["records"])
+                if record["status"] == "reachable"
+            )
+            not_modified["records"][reachable_index].update(
+                {
+                    "http_status": 304,
+                    "reachability_basis": "http-304-not-modified-resource-exists",
+                }
+            )
+            self.assertEqual([], self.errors("links", not_modified, root))
 
             missing_anchor = copy.deepcopy(receipt)
             missing_anchor["records"] = [
