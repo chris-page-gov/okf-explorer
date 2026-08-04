@@ -17,7 +17,7 @@ import {
 } from './observe_protected_links.mjs';
 
 const browser = {
-  channel: 'google-chrome-cdp',
+  channel: 'genuine-google-chrome-cdp',
   user_agent: 'Mozilla/5.0 Chrome/150.0.0.0',
   webdriver: false,
   languages: ['en-GB', 'en']

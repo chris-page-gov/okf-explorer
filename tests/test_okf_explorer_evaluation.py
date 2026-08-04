@@ -534,6 +534,21 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         )
         self.assertEqual(["chromium", "firefox", "webkit"], parsed["calls"])
 
+    def test_evaluation_receipt_timestamp_matches_python_microsecond_rendering(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ resultTimestamp }} from {json.dumps(module_url)};
+            console.log(resultTimestamp(new Date('2026-08-04T12:02:13.149Z')));
+        """
+        helper = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual("2026-08-04T12:02:13.149000Z", helper.stdout.strip())
+
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "results"
             subprocess.run(

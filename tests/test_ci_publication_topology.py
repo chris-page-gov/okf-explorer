@@ -207,10 +207,13 @@ class CiPublicationTopologyTests(unittest.TestCase):
         observer = self.text(
             "apps/okf-explorer/scripts/observe_protected_links.mjs"
         )
+        link_policy = json.loads(
+            self.text("release-assurance/link-observation-policy.json")
+        )
         self.assertIn("okf-genuine-browser-link-receipt.v1", observer)
         self.assertIn("navigator.webdriver", observer)
         self.assertIn("navigator.languages", observer)
-        self.assertIn("google-chrome-cdp", observer)
+        self.assertIn(link_policy["protected_browser_channel"], observer)
         self.assertIn("Network.responseReceived", observer)
         for automation_flag in (
             "--enable-automation",
@@ -391,7 +394,7 @@ class CiPublicationTopologyTests(unittest.TestCase):
             promotion,
         )
         self.assertIn(
-            "python3 assurance/scripts/check_promotion_envelope.py",
+            "python3 assurance/scripts/check_terminal_promotion_envelope.py",
             promotion,
         )
         self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", promotion)
