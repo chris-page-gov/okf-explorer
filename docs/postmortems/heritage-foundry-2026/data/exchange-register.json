@@ -82,7 +82,7 @@
     "session_source_id": "CONV-001",
     "title": "Implement every recommended refactoring and publication control",
     "user_timestamp": "2026-08-04T07:21:33.342Z",
-    "assistant_message_count": 36,
+    "assistant_message_count": 48,
     "public_path": "../exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md",
     "user_contribution": "Authorized implementation of every postmortem recommendation, including the release-integrity and external-publication controls.",
     "codex_contribution": "Implemented the v2 profile, planner, modular outputs, early fixtures, conditional assurance, external unit and release policy, with public promotion kept pending until terminal verification."

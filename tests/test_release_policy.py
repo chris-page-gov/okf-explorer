@@ -34,9 +34,9 @@ class ReleasePolicyTests(unittest.TestCase):
         ):
             identity = check_release_policy.validate_annotated_tag(
                 "v1.0.0",
-                attested_envelope=False,
+                attestation_fallback=None,
             )
-        self.assertEqual("verified", identity["signature"])
+        self.assertEqual("verified-signature", identity["authentication"])
 
         with mock.patch.object(
             check_release_policy,
@@ -46,7 +46,7 @@ class ReleasePolicyTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "annotated"):
                 check_release_policy.validate_annotated_tag(
                     "v1.0.0",
-                    attested_envelope=False,
+                    attestation_fallback=None,
                 )
 
     def test_unverified_signature_fails_closed(self) -> None:
@@ -59,7 +59,7 @@ class ReleasePolicyTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "not verified"):
                 check_release_policy.validate_annotated_tag(
                     "v1.0.0",
-                    attested_envelope=False,
+                    attestation_fallback=None,
                 )
 
         responses = iter(
@@ -76,9 +76,31 @@ class ReleasePolicyTests(unittest.TestCase):
         ):
             identity = check_release_policy.validate_annotated_tag(
                 "v1.0.0",
-                attested_envelope=True,
+                attestation_fallback="verified-archive-attestation",
             )
-        self.assertEqual("attested-promotion-envelope", identity["signature"])
+        self.assertEqual(
+            "verified-archive-attestation", identity["authentication"]
+        )
+
+        responses = iter(
+            [
+                self.result("tag\n"),
+                self.result(stderr="unsigned", code=1),
+                self.result("a" * 40 + "\n"),
+            ]
+        )
+        with mock.patch.object(
+            check_release_policy,
+            "run_git",
+            side_effect=lambda *_args: next(responses),
+        ):
+            identity = check_release_policy.validate_annotated_tag(
+                "v1.0.0-promotion.1",
+                attestation_fallback="attested-promotion-envelope",
+            )
+        self.assertEqual(
+            "attested-promotion-envelope", identity["authentication"]
+        )
 
     def test_exact_envelope_requires_cryptographic_github_attestation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -111,6 +133,7 @@ class ReleasePolicyTests(unittest.TestCase):
                         "github.com/owner/repository/.github/workflows/"
                         "promotion-release.yml"
                     ),
+                    signer_digest="d" * 40,
                     source_ref="refs/tags/v1.0.0-promotion.1",
                     source_digest="a" * 40,
                 )
@@ -122,6 +145,8 @@ class ReleasePolicyTests(unittest.TestCase):
                 "owner/repository",
                 "--signer-workflow",
                 "github.com/owner/repository/.github/workflows/promotion-release.yml",
+                "--signer-digest",
+                "d" * 40,
                 "--source-ref",
                 "refs/tags/v1.0.0-promotion.1",
                 "--source-digest",
@@ -157,6 +182,7 @@ class ReleasePolicyTests(unittest.TestCase):
                             "github.com/owner/repository/.github/workflows/"
                             "promotion-release.yml"
                         ),
+                        signer_digest="d" * 40,
                         source_ref="refs/tags/v1.0.0-promotion.1",
                         source_digest="a" * 40,
                     )
@@ -177,6 +203,7 @@ class ReleasePolicyTests(unittest.TestCase):
                         "github.com/owner/repository/.github/workflows/"
                         "candidate-release.yml"
                     ),
+                    signer_digest="d" * 40,
                     source_ref="refs/tags/candidate-1",
                     source_digest="b" * 40,
                 )
@@ -189,13 +216,15 @@ class ReleasePolicyTests(unittest.TestCase):
                 "owner/repository",
                 "--signer-workflow",
                 "github.com/owner/repository/.github/workflows/candidate-release.yml",
+                "--signer-digest",
+                "d" * 40,
                 "--source-ref",
                 "refs/tags/candidate-1",
                 "--source-digest",
                 "b" * 40,
             )
 
-    def test_immutable_release_capability_is_required(self) -> None:
+    def test_optional_operator_capability_evidence_is_validated(self) -> None:
         check_release_policy.validate_immutable_settings(
             {"enabled": True, "enforced_by_owner": False}
         )
@@ -205,6 +234,43 @@ class ReleasePolicyTests(unittest.TestCase):
             )
         with self.assertRaisesRegex(RuntimeError, "response is invalid"):
             check_release_policy.validate_immutable_settings({"enabled": True})
+
+    def test_attestation_provenance_is_separate_and_exact(self) -> None:
+        check_release_policy.validate_attestation_provenance(
+            repository="owner/repository",
+            workflow="candidate-release.yml",
+            workflow_ref=(
+                "owner/repository/.github/workflows/"
+                "candidate-release.yml@refs/heads/main"
+            ),
+            workflow_commit="d" * 40,
+            source_ref="refs/heads/main",
+            source_commit="c" * 40,
+        )
+        with self.assertRaisesRegex(RuntimeError, "workflow ref differs"):
+            check_release_policy.validate_attestation_provenance(
+                repository="owner/repository",
+                workflow="candidate-release.yml",
+                workflow_ref=(
+                    "owner/repository/.github/workflows/"
+                    "candidate-release.yml@refs/tags/candidate"
+                ),
+                workflow_commit="d" * 40,
+                source_ref="refs/heads/main",
+                source_commit="c" * 40,
+            )
+        with self.assertRaisesRegex(RuntimeError, "40-hex"):
+            check_release_policy.validate_attestation_provenance(
+                repository="owner/repository",
+                workflow="candidate-release.yml",
+                workflow_ref=(
+                    "owner/repository/.github/workflows/"
+                    "candidate-release.yml@refs/heads/main"
+                ),
+                workflow_commit="d" * 40,
+                source_ref="refs/heads/main",
+                source_commit="candidate-source-is-not-assurance-source",
+            )
 
     def test_cycle_free_tag_patterns_and_published_immutability(self) -> None:
         policy = __import__("json").loads(

@@ -6,6 +6,7 @@
     "conversation-summary.md",
     "data/architecture-decisions.json",
     "data/command-event-register.json",
+    "data/current-publication-evidence.json",
     "data/evidence-register.json",
     "data/exchange-register.json",
     "data/generated-file-manifest.json",

@@ -38,14 +38,19 @@ normalized registers, bounded excerpts and this analysis.
 The primary performance reconstruction ends at the terminal 3 August release.
 The 4 August postmortem publication is reported separately as a controlled
 documentation-only invalidation exercise; it is not added to the three historical
-PR totals or six GitHub workflow totals.
+PR totals or six GitHub workflow totals. Current PR #70 and the replacement
+external publication are recorded through the normalized
+[publication-evidence register](data/current-publication-evidence.json); pending
+records do not change historical timing metrics or imply success.
 
 The prior
 [hackathon postmortem pattern](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026/tree/8418bce78496e36598b10d4562b1fb275ad610bb/postmortem-public)
 was reused: one exchange begins with a visible user prompt and contains every
 visible assistant commentary/final message until the next prompt. System and
 developer instructions, private reasoning, tool arguments and tool outputs are
-not part of a prompt-response trace.
+not part of a prompt-response trace. Publication-evidence records are never
+converted into conversation messages, so the same rollout bytes always produce
+the same full trace regardless of rollout milestone status.
 
 ## Metric Definitions
 
@@ -71,10 +76,10 @@ not part of a prompt-response trace.
 
 ## Conversation Extraction
 
-The curated source has SHA-256 `5e14241c6cc19bb0d5c683d55f920a043204af057d3a3fe501fc34ce8dccafac` and contained
-`52,425,297` bytes at extraction. The public trace contains
+The curated source has SHA-256 `db415b12079338b37583e12b719b5e08bab9abd982bd53df6bf98f900785b29b` and contained
+`53,611,624` bytes at extraction. The public trace contains
 `8` user exchanges and
-`250` visible Codex messages at extraction.
+`262` visible Codex messages at extraction.
 Local paths and token-shaped strings are redacted. The public lint rejects local
 user paths, Codex rollout paths, private evidence paths and common token forms.
 

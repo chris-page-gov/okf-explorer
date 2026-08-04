@@ -192,6 +192,28 @@ def main(argv: list[str] | None = None) -> int:
         ],
     }
     archive = candidate_release.get("archive", {})
+    expected_workflow_ref = (
+        f"{repository}/.github/workflows/candidate-release.yml@"
+        f"{archive.get('attestation_source_ref')}"
+    )
+    if (
+        archive.get("attestation_workflow_ref") != expected_workflow_ref
+        or not isinstance(archive.get("attestation_workflow_commit"), str)
+        or len(archive["attestation_workflow_commit"]) != 40
+        or any(
+            character not in "0123456789abcdef"
+            for character in archive["attestation_workflow_commit"]
+        )
+        or not isinstance(archive.get("attestation_source_commit"), str)
+        or len(archive["attestation_source_commit"]) != 40
+        or any(
+            character not in "0123456789abcdef"
+            for character in archive["attestation_source_commit"]
+        )
+    ):
+        raise RuntimeError(
+            "candidate archive attestation lacks exact assurance workflow provenance"
+        )
     envelope["attestations"] = [
         {
             "kind": "github-artifact-attestation",

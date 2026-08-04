@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+import json
 import sys
 import tempfile
 import unittest
@@ -13,6 +15,80 @@ import build_heritage_foundry_postmortem as postmortem  # noqa: E402
 
 
 class HeritageFoundryPostmortemTests(unittest.TestCase):
+    def verified_publication_evidence_input(self) -> dict:
+        value = copy.deepcopy(
+            json.loads(
+                postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH.read_text(
+                    encoding="utf-8"
+                )
+            )
+        )
+        spec_by_id = {
+            spec["id"]: spec
+            for spec in postmortem.CURRENT_PUBLICATION_EVIDENCE_SPECS
+        }
+        integer_keys = {
+            "number",
+            "ci_run_id",
+            "pages_run_id",
+            "release_id",
+            "workflow_run_id",
+        }
+        commit_keys = {
+            "head_commit",
+            "merge_commit",
+            "source_commit",
+            "assurance_source_commit",
+        }
+        for record in value["records"]:
+            spec = spec_by_id[record["id"]]
+            record["status"] = "verified"
+            record["subject_url"] = record["subject_url"] or (
+                f"https://github.com/chris-page-gov/"
+                f"okf-heritage-coventry-warwickshire/actions/runs/{record['id'][-1]}"
+            )
+            record["observed_at"] = "2026-08-04T12:00:00Z"
+            record["evidence_urls"] = [record["subject_url"]]
+            record["claims"] = list(reversed(spec["required_claims"]))
+            for key, identity in record["identities"].items():
+                if identity is not None:
+                    continue
+                if key in integer_keys:
+                    record["identities"][key] = 70 if key == "number" else 1
+                elif key in commit_keys:
+                    record["identities"][key] = "a" * 40
+                elif key.endswith("_sha256") or key in {
+                    "attestation_digest",
+                    "artifact_digest",
+                }:
+                    record["identities"][key] = "b" * 64
+                elif key in {"tag", "candidate_tag"}:
+                    record["identities"][key] = (
+                        "heritage-coventry-warwickshire-20260804"
+                    )
+                elif key == "promotion_tag":
+                    record["identities"][key] = (
+                        "heritage-coventry-warwickshire-20260804-promotion.1"
+                    )
+                else:
+                    self.fail(f"unhandled publication evidence identity: {key}")
+        by_id = {record["id"]: record for record in value["records"]}
+        by_id["PUBEV-004"]["subject_url"] = (
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+            "releases/tag/heritage-coventry-warwickshire-20260804"
+        )
+        by_id["PUBEV-005"]["subject_url"] = (
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+            "actions/runs/1"
+        )
+        by_id["PUBEV-006"]["subject_url"] = (
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+            "releases/tag/heritage-coventry-warwickshire-20260804-promotion.1"
+        )
+        for record in value["records"]:
+            record["evidence_urls"] = [record["subject_url"]]
+        return value
+
     def test_injected_runtime_context_is_not_a_visible_prompt(self) -> None:
         self.assertTrue(
             postmortem.is_injected_context(
@@ -111,6 +187,108 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
             "terminal external release pending",
             next(item for item in decisions if item["id"] == "ADR-006")["status"],
         )
+
+    def test_current_publication_evidence_is_pending_until_exact_urls_are_supplied(
+        self,
+    ) -> None:
+        evidence = postmortem.load_current_publication_evidence()
+        self.assertEqual("pending", evidence["status"])
+        self.assertEqual(
+            postmortem.sha256_file(postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH),
+            evidence["source_sha256"],
+        )
+        self.assertEqual(
+            [f"PUBEV-{number:03d}" for number in range(1, 7)],
+            [record["id"] for record in evidence["records"]],
+        )
+        pr = postmortem.current_evidence_record(evidence, "PUBEV-001")
+        self.assertEqual(70, pr["identities"]["number"])
+        self.assertEqual(
+            "https://github.com/chris-page-gov/okf-explorer/pull/70",
+            pr["subject_url"],
+        )
+        self.assertTrue(all(record["status"] == "pending" for record in evidence["records"]))
+        public_records = postmortem.public_current_evidence_records(evidence, 33)
+        self.assertTrue(
+            all(
+                record["normalized_input_sha256"] == evidence["source_sha256"]
+                for record in public_records
+            )
+        )
+
+        invented = copy.deepcopy(
+            json.loads(
+                postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH.read_text(
+                    encoding="utf-8"
+                )
+            )
+        )
+        invented["records"][0]["status"] = "verified"
+        with self.assertRaisesRegex(ValueError, "cannot be verified"):
+            postmortem.normalize_current_publication_evidence(invented)
+
+    def test_verified_publication_evidence_drives_terminal_register_states(self) -> None:
+        evidence_input = self.verified_publication_evidence_input()
+        shuffled = copy.deepcopy(evidence_input)
+        shuffled["records"].reverse()
+        normalized = postmortem.normalize_current_publication_evidence(evidence_input)
+        self.assertEqual(
+            normalized,
+            postmortem.normalize_current_publication_evidence(shuffled),
+        )
+        self.assertEqual("verified", normalized["status"])
+        implementations = {
+            item["id"]: item
+            for item in postmortem.implementation_acceptance_register(normalized)
+        }
+        self.assertEqual(
+            "implemented-and-external-promotion-verified",
+            implementations["IMP-009"]["status"],
+        )
+        self.assertEqual(
+            "implemented-and-terminal-release-verified",
+            implementations["IMP-010"]["status"],
+        )
+        decisions = {
+            item["id"]: item
+            for item in postmortem.architecture_decisions(normalized)
+        }
+        self.assertEqual(
+            "policy implemented; terminal releases verified",
+            decisions["ADR-006"]["status"],
+        )
+        inconsistent = self.verified_publication_evidence_input()
+        inconsistent["records"][2]["identities"]["source_commit"] = "c" * 40
+        with self.assertRaisesRegex(ValueError, "inconsistent source commits"):
+            postmortem.normalize_current_publication_evidence(inconsistent)
+
+    def test_publication_evidence_cannot_change_the_deterministic_conversation_trace(
+        self,
+    ) -> None:
+        exchange = postmortem.Exchange(
+            sequence=1,
+            title="Trace fixture",
+            slug="trace-fixture",
+            user=postmortem.Message(
+                role="user",
+                timestamp="2026-08-04T00:00:00Z",
+                text="A visible prompt",
+            ),
+            responses=[
+                postmortem.Message(
+                    role="assistant",
+                    timestamp="2026-08-04T00:00:01Z",
+                    text="A visible response",
+                    phase="final_answer",
+                )
+            ],
+        )
+        before = postmortem.render_reader([exchange])[1]
+        postmortem.normalize_current_publication_evidence(
+            self.verified_publication_evidence_input()
+        )
+        after = postmortem.render_reader([exchange])[1]
+        self.assertEqual(before, after)
 
     def test_markdown_template_dedent_preserves_interpolated_table(self) -> None:
         rendered = postmortem.dedent_markdown(

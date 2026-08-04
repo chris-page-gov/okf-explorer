@@ -1,12 +1,13 @@
 name: Publish immutable candidate release
 
 on:
-  push:
-    tags: ["heritage-coventry-warwickshire-*"]
   workflow_dispatch:
     inputs:
       tag:
         description: Existing annotated candidate tag
+        required: true
+      assurance_ref:
+        description: Exact 40-hex okf-explorer commit containing release controls
         required: true
 
 permissions:
@@ -18,51 +19,67 @@ jobs:
   candidate-release:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+      TAG: ${{ inputs.tag }}
+      ASSURANCE_REF: ${{ inputs.assurance_ref }}
+      ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}
+      ATTESTATION_WORKFLOW_COMMIT: ${{ github.workflow_sha }}
+      ATTESTATION_SOURCE_REF: ${{ github.ref }}
+      ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Check out the exact immutable candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-          ref: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+          ref: ${{ inputs.tag }}
+          path: publication
+      - name: Check out exact least-privilege release controls
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: chris-page-gov/okf-explorer
+          ref: ${{ inputs.assurance_ref }}
+          path: assurance
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - run: python3 -m pip install -r site/requirements-okf.txt
-      - name: Require the exact annotated candidate tag
+      - run: python3 -m pip install -r assurance/requirements-okf.txt
+      - name: Separate candidate identity from assurance workflow provenance
         run: |
-          test "$GITHUB_REF" = "refs/tags/$TAG"
-          test "$(git cat-file -t "$TAG")" = tag
-          test "$(git rev-parse "${TAG}^{commit}")" = "$(git rev-parse HEAD)"
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$ATTESTATION_SOURCE_REF" = "$GITHUB_REF"
+          test "$ATTESTATION_WORKFLOW_COMMIT" = "$GITHUB_SHA"
+          test "$ATTESTATION_SOURCE_COMMIT" = "$GITHUB_SHA"
+          test "$ATTESTATION_WORKFLOW_REF" = "$GITHUB_REPOSITORY/.github/workflows/candidate-release.yml@$ATTESTATION_SOURCE_REF"
+          printf '%s\n' "$ATTESTATION_SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$'
+          printf '%s\n' "$ATTESTATION_WORKFLOW_COMMIT" | grep -Eq '^[0-9a-f]{40}$'
+          printf '%s\n' "$ASSURANCE_REF" | grep -Eq '^[0-9a-f]{40}$'
+          test "$(git -C assurance rev-parse 'HEAD^{commit}')" = "$ASSURANCE_REF"
+          test "$(git -C publication cat-file -t "$TAG")" = tag
+          candidate_commit="$(git -C publication rev-parse "${TAG}^{commit}")"
+          test "$candidate_commit" = "$(git -C publication rev-parse HEAD)"
           expected_release_url="https://github.com/$GITHUB_REPOSITORY/releases/tag/$TAG"
-          action_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url")] | length' site/journeys.json)"
-          action_url="$(jq -r '.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url") | .value' site/journeys.json)"
-          live_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel != "genuine-browser-receipt")] | length' site/journeys.json)"
-          receipt_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel == "genuine-browser-receipt")] | length' site/journeys.json)"
+          action_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url")] | length' publication/site/journeys.json)"
+          action_url="$(jq -r '.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url") | .value' publication/site/journeys.json)"
+          live_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel != "genuine-browser-receipt")] | length' publication/site/journeys.json)"
+          receipt_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel == "genuine-browser-receipt")] | length' publication/site/journeys.json)"
           test "$action_count" = 1
           test "$action_url" = "$expected_release_url"
           test "$live_count" = 21
           test "$receipt_count" = 11
-      - name: Query immutable-release capability
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh api --header "X-GitHub-Api-Version: 2026-03-10"
-          "repos/$GITHUB_REPOSITORY/immutable-releases"
-          > "$RUNNER_TEMP/immutable-releases.json"
       - name: Validate exact candidate and issue a bound receipt
         run: |
-          python3 site/scripts/check_publication_unit_manifest.py site
-          python3 site/scripts/build_publication_assurance_receipt.py validation \
-            --publication-root site \
+          python3 assurance/scripts/check_publication_unit_manifest.py publication/site
+          python3 assurance/scripts/build_publication_assurance_receipt.py validation \
+            --publication-root publication/site \
             --repository "$GITHUB_REPOSITORY" \
-            --source-commit "$(git rev-parse HEAD)" \
+            --source-commit "$(git -C publication rev-parse HEAD)" \
             --candidate-tag "$TAG" \
             --output "$RUNNER_TEMP/publication-validation-receipt.json"
       - name: Build deterministic portable archive and checksum
         run: |
           tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
-            -cf "$RUNNER_TEMP/heritage-coventry-warwickshire.tar" -C site .
+            -cf "$RUNNER_TEMP/heritage-coventry-warwickshire.tar" -C publication/site .
           gzip -n "$RUNNER_TEMP/heritage-coventry-warwickshire.tar"
           cd "$RUNNER_TEMP"
           sha256sum heritage-coventry-warwickshire.tar.gz > SHA256SUMS
@@ -73,37 +90,45 @@ jobs:
           subject-path: ${{ runner.temp }}/heritage-coventry-warwickshire.tar.gz
       - name: Build candidate-release identity receipt
         run: >-
-          python3 site/scripts/build_publication_assurance_receipt.py release
+          python3 assurance/scripts/build_publication_assurance_receipt.py release
           --validation-receipt "$RUNNER_TEMP/publication-validation-receipt.json"
           --archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
           --attestation-url "${{ steps.archive-attestation.outputs.attestation-url }}"
           --attestation-issuer "https://github.com/$GITHUB_REPOSITORY/.github/workflows/candidate-release.yml"
+          --attestation-workflow-ref "$ATTESTATION_WORKFLOW_REF"
+          --attestation-workflow-commit "$ATTESTATION_WORKFLOW_COMMIT"
+          --attestation-source-ref "$ATTESTATION_SOURCE_REF"
+          --attestation-source-commit "$ATTESTATION_SOURCE_COMMIT"
           --output "$RUNNER_TEMP/candidate-release-receipt.json"
-      - name: Enforce candidate tag, archive attestation and immutable capability
+      - name: Enforce candidate tag and exact archive attestation before mutation
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          python3 site/scripts/check_release_policy.py
+          python3 assurance/scripts/check_release_policy.py
           --phase candidate
           --tag "$TAG"
-          --immutable-settings "$RUNNER_TEMP/immutable-releases.json"
           --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
           --repository "$GITHUB_REPOSITORY"
+          --source-repository-root publication
+          --attestation-workflow-ref "$ATTESTATION_WORKFLOW_REF"
+          --attestation-workflow-commit "$ATTESTATION_WORKFLOW_COMMIT"
+          --attestation-source-ref "$ATTESTATION_SOURCE_REF"
+          --attestation-source-commit "$ATTESTATION_SOURCE_COMMIT"
       - name: Draft, attach the complete candidate closure, then publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$TAG" --verify-tag --draft \
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
             --title "Coventry and Warwickshire Heritage Evaluation Exemplar" \
             --notes "Immutable candidate R1. Promotion status is intentionally absent until terminal public assurance passes."
-          gh release upload "$TAG" \
+          gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" \
             "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
             "$RUNNER_TEMP/SHA256SUMS" \
-            site/publication-unit-manifest.json \
+            publication/site/publication-unit-manifest.json \
             "$RUNNER_TEMP/publication-validation-receipt.json" \
             "$RUNNER_TEMP/candidate-release-receipt.json"
-          gh release edit "$TAG" --draft=false
-      - name: Verify the published candidate is platform immutable
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false
+      - name: Verify published immutability and exact attested asset closure
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -120,17 +145,21 @@ jobs:
             test "$attempt" = 6 || sleep 5
           done
           test "$release_verified" = true
-          python3 site/scripts/check_release_policy.py \
+          python3 assurance/scripts/check_release_policy.py \
             --phase candidate \
             --tag "$TAG" \
-            --immutable-settings "$RUNNER_TEMP/immutable-releases.json" \
             --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
             --repository "$GITHUB_REPOSITORY" \
+            --source-repository-root publication \
+            --attestation-workflow-ref "$ATTESTATION_WORKFLOW_REF" \
+            --attestation-workflow-commit "$ATTESTATION_WORKFLOW_COMMIT" \
+            --attestation-source-ref "$ATTESTATION_SOURCE_REF" \
+            --attestation-source-commit "$ATTESTATION_SOURCE_COMMIT" \
             --release-json "$RUNNER_TEMP/release.json" \
             --release-attestation-json "$RUNNER_TEMP/release-attestation.json" \
             --release-asset "heritage-coventry-warwickshire.tar.gz=$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
             --release-asset "SHA256SUMS=$RUNNER_TEMP/SHA256SUMS" \
-            --release-asset "publication-unit-manifest.json=site/publication-unit-manifest.json" \
+            --release-asset "publication-unit-manifest.json=publication/site/publication-unit-manifest.json" \
             --release-asset "publication-validation-receipt.json=$RUNNER_TEMP/publication-validation-receipt.json" \
             --release-asset "candidate-release-receipt.json=$RUNNER_TEMP/candidate-release-receipt.json"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

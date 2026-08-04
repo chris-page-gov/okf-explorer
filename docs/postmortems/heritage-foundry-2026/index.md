@@ -40,7 +40,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 | PR file touches | 4,280 | Includes repeated generated files |
 | Late findings reconstructed | 13 | Local audits and public gates |
 | Final Site | 14,010 files | 987,329,754 bytes |
-| Visible prompt-response exchanges | 8 | 250 Codex responses at extraction |
+| Visible prompt-response exchanges | 8 | 262 Codex responses at extraction |
 
 ## Prompt-Response Exchanges
 
@@ -53,7 +53,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 | [EX-0005](exchanges/0005-confirm-graph-browsing-cannot-mutate-the-bundle.md) | Confirm graph browsing cannot mutate the bundle | 54 |
 | [EX-0006](exchanges/0006-create-the-end-to-end-engineering-postmortem.md) | Create the end-to-end engineering postmortem | 16 |
 | [EX-0007](exchanges/0007-resolve-the-postmortem-architecture-questions.md) | Resolve the postmortem architecture questions | 1 |
-| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 36 |
+| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 48 |
 
 ## Machine-Readable Registers
 
@@ -63,6 +63,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 - [GitHub run register](data/github-run-register.json)
 - [Rebuild-cycle register](data/rebuild-cycle-register.json)
 - [Evidence register](data/evidence-register.json)
+- [Current PR/publication/release evidence](data/current-publication-evidence.json)
 - [Report metrics](data/report-metrics.json)
 - [Implementation and acceptance register](data/implementation-acceptance-register.json)
 - [Architecture and release decisions](data/architecture-decisions.json)

@@ -133,7 +133,8 @@
     "artifacts": [
       "publication-units/heritage-coventry-warwickshire/publication-unit.json",
       "scripts/export_publication_unit.py",
-      "publication-units/heritage-coventry-warwickshire/repository-template/pages.yml"
+      "publication-units/heritage-coventry-warwickshire/repository-template/pages.yml",
+      "release-assurance/heritage-postmortem-publication-evidence.json"
     ],
     "acceptance_tests": [
       "tests/test_publication_units.py"
@@ -148,7 +149,8 @@
     "artifacts": [
       "release-assurance/release-policy.json",
       "scripts/check_release_policy.py",
-      "publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml"
+      "publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml",
+      "release-assurance/heritage-postmortem-publication-evidence.json"
     ],
     "acceptance_tests": [
       "tests/test_release_policy.py",

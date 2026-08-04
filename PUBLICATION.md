@@ -113,10 +113,12 @@ and its assurance receipts.
 2. Run the publication checks below, export the exact candidate, commit it, push
    `main`, and wait for that same commit's Pages deployment.
 3. Create and push an annotated R1 tag matching
-   `heritage-coventry-warwickshire-YYYYMMDD`. The candidate workflow checks that
-   action 32 names this exact release URL, attests the deterministic archive,
-   attaches the complete candidate closure to a draft, publishes it, and then
-   verifies platform immutability.
+   `heritage-coventry-warwickshire-YYYYMMDD`. Dispatch `candidate-release.yml`
+   from updated `main` with that existing tag and the exact 40-hex OKF Explorer
+   assurance commit. The workflow checks that action 32 names the exact release
+   URL, builds only from the tagged `site/`, records the separate workflow ref
+   and commit in the archive-attestation receipt, attaches the complete closure
+   to a draft, publishes it, and then verifies platform immutability.
 4. Dispatch `terminal-assurance.yml` at the R1 tag and supply an exact 40-hex
    OKF Explorer assurance commit. It reconstructs one exact URL closure from
    every rendered external HTML anchor plus the faithful, tiny and synthetic
@@ -133,18 +135,26 @@ and its assurance receipts.
 5. After terminal assurance succeeds, create an annotated R2 tag at exactly the
    R1 commit using
    `heritage-coventry-warwickshire-YYYYMMDD-promotion.N`.
-6. Dispatch `promotion-release.yml` at the R2 tag with both tags, the
+6. Dispatch `promotion-release.yml` from updated `main` with both tags, the
    successful terminal workflow run ID, and the same exact 40-hex OKF Explorer
    assurance commit. It verifies the run repository,
    workflow, result, commit, timing and artifact identity; rechecks R1;
    materializes and attests the promotion envelope; and publishes the complete
    closure from a draft.
-7. Each post-publication gate requires GitHub's verified release attestation
+7. Each post-publication gate requires `release.immutable == true`, GitHub's
+   verified release attestation
    and the exact policy-declared asset closure. The release API names, byte
    counts and SHA-256 digests must match the local files, and every digest must
    also appear in `gh release verify` output. The promotion workflow then
    records R2's platform observation outside the envelope, avoiding a
    self-referential release.
+
+The release jobs need no personal access token and do not read the repository
+administration endpoint. Their scoped `GITHUB_TOKEN` publishes and reads the
+release; the post-publication release object, `gh release verify`, and exact
+asset closure are authoritative. The Pages push trigger is restricted to
+`site/**`, so installing or correcting workflows on `main` cannot replace an
+already verified Pages deployment.
 
 The external repository templates implement this ordering. See GitHub's
 [immutable release guidance](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/establish-provenance-and-integrity/prevent-release-changes)

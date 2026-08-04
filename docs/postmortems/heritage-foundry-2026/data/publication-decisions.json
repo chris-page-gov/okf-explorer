@@ -46,5 +46,11 @@
     "decision": "Record the five architecture resolutions and release policy as machine-readable decisions.",
     "status": "applied",
     "rationale": "The earlier open questions now control executable profile, CI, publication and release behavior."
+  },
+  {
+    "id": "PUB-009",
+    "decision": "Derive current rollout status only from normalized exact public evidence.",
+    "status": "applied",
+    "rationale": "PR #70, external Pages, R1, terminal and R2 remain pending until each record contains all required identities, claims, timestamps and URLs."
   }
 ]

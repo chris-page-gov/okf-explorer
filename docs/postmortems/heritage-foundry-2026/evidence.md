@@ -27,6 +27,24 @@ deployment archives captured before their one-day retention expired. The public
 [evidence register](data/evidence-register.json) publishes source URLs, byte
 counts, hashes and treatment decisions without publishing raw logs or local paths.
 
+The current rollout is a separate
+[normalized input](../../../release-assurance/heritage-postmortem-publication-evidence.json).
+It records PR #70, the external candidate and Pages deployment, R1, terminal
+assurance and R2. Its generated
+[current-publication register](data/current-publication-evidence.json) and the
+appended public records in the [evidence register](data/evidence-register.json)
+retain `pending` rather than deriving success from local implementation.
+
+| ID | Milestone | State | Subject | Claims | Public evidence |
+|---|---|---|---|---|---|
+| PUBEV-001 | central-pull-request | pending | [subject](https://github.com/chris-page-gov/okf-explorer/pull/70) | 0/2 | none supplied |
+| PUBEV-002 | external-candidate | pending | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire) | 0/2 | none supplied |
+| PUBEV-003 | external-pages | pending | [subject](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | 0/2 | none supplied |
+| PUBEV-004 | candidate-release-r1 | pending | not supplied | 0/4 | none supplied |
+| PUBEV-005 | terminal-assurance | pending | not supplied | 0/4 | none supplied |
+| PUBEV-006 | promotion-release-r2 | pending | not supplied | 0/4 | none supplied |
+
+
 ## Preserved Deployment Archives
 
 GitHub downloads the Pages artifact as an exact `artifact.tar`. The private copy
@@ -64,8 +82,9 @@ The replacement policy is now implemented in
 [external promotion workflow template](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml).
 It requires an annotated tag, GitHub artifact attestation, immutable releases,
 draft-first asset attachment and a deterministic archive retained as a release
-asset. Those controls remain **terminally unverified for the new external unit**
-until its real tag, attestation and published immutable release exist.
+asset.
+
+Those controls remain **terminally unverified for the new external unit**. A pending record may name its intended public subject, but it cannot become verified until every required identity, claim, timestamp and evidence URL is supplied.
 
 ## Publication Boundary
 

@@ -1,6 +1,6 @@
 {
   "conversation_exchanges": 8,
-  "visible_assistant_messages": 250,
+  "visible_assistant_messages": 262,
   "relevant_local_command_events": 364,
   "local_command_counts": {
     "app-build": 21,
@@ -29,6 +29,7 @@
   "pages_workflow_wall_seconds": 680,
   "all_workflow_wall_seconds": 2621,
   "private_evidence_records": 33,
+  "normalized_current_evidence_records": 6,
   "late_findings": 13,
   "final_site_files": 14010,
   "final_site_bytes": 987329754,
