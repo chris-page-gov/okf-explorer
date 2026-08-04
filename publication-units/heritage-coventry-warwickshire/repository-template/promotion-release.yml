@@ -236,7 +236,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          python3 assurance/scripts/check_release_policy.py
+          python3 assurance/scripts/check_terminal_release_policy.py
           --phase promotion
           --tag "$PROMOTION_TAG"
           --candidate-tag "$CANDIDATE_TAG"
@@ -279,7 +279,7 @@ jobs:
             test "$attempt" = 6 || sleep 5
           done
           test "$release_verified" = true
-          python3 assurance/scripts/check_release_policy.py \
+          python3 assurance/scripts/check_terminal_release_policy.py \
             --phase promotion \
             --tag "$PROMOTION_TAG" \
             --candidate-tag "$CANDIDATE_TAG" \

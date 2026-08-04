@@ -397,6 +397,12 @@ class CiPublicationTopologyTests(unittest.TestCase):
             "python3 assurance/scripts/check_terminal_promotion_envelope.py",
             promotion,
         )
+        self.assertEqual(
+            2,
+            promotion.count(
+                "python3 assurance/scripts/check_terminal_release_policy.py"
+            ),
+        )
         self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", promotion)
         self.assertIn("ATTESTATION_WORKFLOW_COMMIT: ${{ github.workflow_sha }}", promotion)
         self.assertIn("ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}", promotion)

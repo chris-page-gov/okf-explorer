@@ -13,11 +13,33 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import check_release_policy  # noqa: E402
+import check_terminal_release_policy  # noqa: E402
 
 
 class ReleasePolicyTests(unittest.TestCase):
     def result(self, stdout: str = "", stderr: str = "", code: int = 0):
         return subprocess.CompletedProcess([], code, stdout, stderr)
+
+    def test_terminal_wrapper_scopes_the_loader_to_promotion_policy(self) -> None:
+        original = check_terminal_release_policy.promotion.load_document
+
+        def inspect_loader(_argv):
+            self.assertIs(
+                check_terminal_release_policy.load_terminal_document,
+                check_terminal_release_policy.promotion.load_document,
+            )
+            return 0
+
+        with mock.patch.object(
+            check_terminal_release_policy.release,
+            "main",
+            side_effect=inspect_loader,
+        ):
+            self.assertEqual(0, check_terminal_release_policy.main(["--fixture"]))
+        self.assertIs(
+            original,
+            check_terminal_release_policy.promotion.load_document,
+        )
 
     def test_annotated_tag_accepts_a_verified_signature(self) -> None:
         responses = iter(
