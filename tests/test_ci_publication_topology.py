@@ -79,9 +79,29 @@ class CiPublicationTopologyTests(unittest.TestCase):
         python_job = workflow[
             workflow.index("  python-contracts:") : workflow.index("\n  app:")
         ]
+        self.assertEqual(
+            {"impact-plan", "adversarial-gate", "app"},
+            self.job_needs(jobs["python-contracts"]),
+        )
+        self.assertIn(
+            "Download exact app build for identity-bound Python contracts", python_job
+        )
+        self.assertIn("name: okf-explorer-app-build", python_job)
+        self.assertIn("path: apps/okf-explorer/build", python_job)
+        self.assertLess(
+            python_job.index(
+                "Download exact app build for identity-bound Python contracts"
+            ),
+            python_job.index("python3 -m unittest discover -s tests"),
+        )
         self.assertIn("check_impacted_heritage_evaluation.py", python_job)
         self.assertIn("needs.impact-plan.outputs.builder_fixtures", python_job)
         self.assertIn("needs.impact-plan.outputs.builder_planes", python_job)
+
+        app_job = workflow[
+            workflow.index("  app:") : workflow.index("\n  browser-targeted:")
+        ]
+        self.assertIn("needs.impact-plan.outputs.python == 'true'", app_job)
 
         targeted = workflow[
             workflow.index("  browser-targeted:") : workflow.index("\n  browser-full:")
@@ -91,12 +111,28 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("IMPACT_JOURNEY_GROUPS", targeted)
         self.assertIn("steps.browser-plan.outputs.requires_site", targeted)
         self.assertIn("pnpm test:e2e:impacted", targeted)
+        self.assertLess(
+            targeted.index("pnpm install --frozen-lockfile"),
+            targeted.index("pnpm exec svelte-kit sync"),
+        )
+        self.assertLess(
+            targeted.index("pnpm exec svelte-kit sync"),
+            targeted.index("pnpm test:e2e:impacted"),
+        )
 
         full = workflow[
             workflow.index("  browser-full:") : workflow.index("\n  foundry:")
         ]
         self.assertIn("python3 scripts/build_site.py", full)
         self.assertIn("pnpm test:e2e:terminal", full)
+        self.assertLess(
+            full.index("pnpm install --frozen-lockfile"),
+            full.index("pnpm exec svelte-kit sync"),
+        )
+        self.assertLess(
+            full.index("pnpm exec svelte-kit sync"),
+            full.index("pnpm test:e2e:terminal"),
+        )
 
     def test_pages_uses_push_impact_and_external_pack_does_not_key_main_cache(
         self,
@@ -145,6 +181,19 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertEqual(
             {"adversarial-gate"},
             self.job_needs(shadow_jobs["foundry-full-family"]),
+        )
+        shadow_browser = shadow[
+            shadow.index("  browser-three-engine:") : shadow.index(
+                "\n  foundry-full-family:"
+            )
+        ]
+        self.assertLess(
+            shadow_browser.index("pnpm install --frozen-lockfile"),
+            shadow_browser.index("pnpm exec svelte-kit sync"),
+        )
+        self.assertLess(
+            shadow_browser.index("pnpm exec svelte-kit sync"),
+            shadow_browser.index("pnpm test:e2e:terminal"),
         )
         self.assertIn("schedule:", links)
         self.assertIn("observe_link_intents.py", links)

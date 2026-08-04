@@ -69,7 +69,7 @@ jobs:
           path: ${{ runner.temp }}/adversarial-results.json
 
   python-contracts:
-    needs: [impact-plan, adversarial-gate]
+    needs: [impact-plan, adversarial-gate, app]
     if: needs.impact-plan.outputs.python == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -81,6 +81,11 @@ jobs:
           python-version: "3.12"
       - name: Install semantic OKF dependencies
         run: python3 -m pip install -r requirements-okf.txt
+      - name: Download exact app build for identity-bound Python contracts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
       - name: Run deterministic Python contracts
         run: python3 -m unittest discover -s tests
       - name: Validate YAML-LD registry and constraints
@@ -99,6 +104,7 @@ jobs:
   app:
     needs: [impact-plan, adversarial-gate]
     if: >-
+      needs.impact-plan.outputs.python == 'true' ||
       needs.impact-plan.outputs.app == 'true' ||
       needs.impact-plan.outputs.site == 'true' ||
       needs.impact-plan.outputs.browser_targeted == 'true' ||
@@ -161,6 +167,9 @@ jobs:
           --github-output "$GITHUB_OUTPUT"
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
+      - name: Materialize SvelteKit TypeScript configuration
+        working-directory: apps/okf-explorer
+        run: pnpm exec svelte-kit sync
       - if: steps.browser-plan.outputs.requires_site == 'true'
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -203,6 +212,9 @@ jobs:
           python-version: "3.12"
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
+      - name: Materialize SvelteKit TypeScript configuration
+        working-directory: apps/okf-explorer
+        run: pnpm exec svelte-kit sync
       - name: Install Site dependencies
         run: python3 -m pip install -r requirements-okf.txt
       - name: Download exact app build for Foundry browser assurance
