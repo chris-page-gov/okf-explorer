@@ -9,7 +9,7 @@ title: "Heritage Evaluation Foundry engineering postmortem"
 description: "Evidence-backed process analysis, complete trace and selective-rerun implementation register."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -36,12 +36,12 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 | Measure | Value | Definition |
 |---|---|---|
 | Original PR/Pages runs | 6 | All successful, all attempt 1 |
-| R1/terminal/R2 attempts | 9 | 5 passed; 4 fail-closed findings |
+| R1/terminal/R2 attempts | 9 | 5 passed; 4 failed closed |
 | GitHub workflow wall time | 43m 41s | Three CI plus three Pages runs |
 | PR file touches | 4,280 | Includes repeated generated files |
 | Late findings reconstructed | 13 | Local audits and public gates |
-| Final Site | 14,010 files | 987,329,754 bytes |
-| Visible prompt-response exchanges | 8 | 302 Codex responses at extraction |
+| Historical central Site | 14,010 files | 987,329,754 bytes at PR #69 |
+| Visible prompt-response exchanges | 8 | 309 Codex responses at extraction |
 
 ## Prompt-Response Exchanges
 
@@ -54,7 +54,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 | [EX-0005](exchanges/0005-confirm-graph-browsing-cannot-mutate-the-bundle.md) | Confirm graph browsing cannot mutate the bundle | 54 |
 | [EX-0006](exchanges/0006-create-the-end-to-end-engineering-postmortem.md) | Create the end-to-end engineering postmortem | 16 |
 | [EX-0007](exchanges/0007-resolve-the-postmortem-architecture-questions.md) | Resolve the postmortem architecture questions | 1 |
-| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 88 |
+| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 95 |
 
 ## Machine-Readable Registers
 

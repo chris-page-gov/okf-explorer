@@ -9,7 +9,7 @@ title: "Heritage Foundry postmortem evidence"
 description: "Evidence inventory, retention boundary, hashes and release qualifications."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:

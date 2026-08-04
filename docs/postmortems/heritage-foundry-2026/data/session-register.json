@@ -3,10 +3,10 @@
     "source_id": "CONV-001",
     "title": "Draft Foundry evaluation process",
     "start_timestamp": "2026-08-02T21:46:44.880Z",
-    "private_evidence_sha256": "747b638f5a2ba42333eebdd5c1c506ff160d2db2555120eb075934b439a5c8ce",
-    "private_evidence_bytes": 57596313,
+    "private_evidence_sha256": "0dbb30121104c82f4347c22aea32a0f670a25d8bfeae70cf8a4edd33cb66d6e6",
+    "private_evidence_bytes": 58524942,
     "user_message_count": 8,
-    "assistant_message_count": 302,
+    "assistant_message_count": 309,
     "public_source_path": "../sources/conv-001-heritage-evaluation-foundry.md",
     "public_reader_path": "../readers/conv-001-heritage-evaluation-foundry.md"
   }

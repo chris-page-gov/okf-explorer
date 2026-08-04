@@ -9,7 +9,7 @@ title: "Heritage Evaluation Foundry task source"
 description: "Source note for the curated Codex task used by this postmortem."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -22,11 +22,11 @@ tags:
 ## Source Identity
 
 - Source: one curated local Codex rollout JSONL.
-- SHA-256 at extraction: `747b638f5a2ba42333eebdd5c1c506ff160d2db2555120eb075934b439a5c8ce`.
-- Source bytes at extraction: `57596313`.
+- SHA-256 at extraction: `0dbb30121104c82f4347c22aea32a0f670a25d8bfeae70cf8a4edd33cb66d6e6`.
+- Source bytes at extraction: `58524942`.
 - Visible exchanges: `8`.
 - Visible user messages: `8`.
-- Visible assistant messages: `302`.
+- Visible assistant messages: `308`.
 - Raw path: retained only in the ignored private evidence plane.
 
 ## Reading Routes

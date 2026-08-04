@@ -9,7 +9,7 @@ title: "Implemented selective-rerun architecture for the Evaluation Foundry"
 description: "Implemented dependency graph, impact planner, assurance tiers and candidate/evidence separation."
 generated:
   by: process:heritage-foundry-postmortem-builder
-  at: "2026-08-04T05:00:00Z"
+  at: "2026-08-04T13:16:54Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:

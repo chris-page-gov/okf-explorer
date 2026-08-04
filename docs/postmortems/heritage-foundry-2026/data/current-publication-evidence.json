@@ -29,7 +29,7 @@
         "pull-request-head-observed",
         "required-checks-passed"
       ],
-      "note": "This is the exact assured implementation-head snapshot used by both PR CI and terminal assurance. The later evidence/report-only tail is deliberately outside that historical candidate identity; merge_commit remains null until GitHub creates it."
+      "note": "This is the exact assured implementation-head snapshot used by both PR CI and terminal assurance. The later central tail adds reporting, browser-test robustness and workflow permission scoping without changing the external candidate identity. This historical record predates the final merge, so merge_commit intentionally remains null."
     },
     {
       "id": "PUBEV-002",
@@ -191,5 +191,5 @@
       "note": "The immutable R2 release binds all ten asset digests and the final terminal run. Its annotated tag message names an earlier successful run, but the release envelope and attestation unambiguously bind final run 30908844005; the tag was not moved."
     }
   ],
-  "source_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60"
+  "source_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf"
 }

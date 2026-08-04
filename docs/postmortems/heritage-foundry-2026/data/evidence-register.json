@@ -292,7 +292,7 @@
       "pull-request-head-observed",
       "required-checks-passed"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
@@ -320,7 +320,7 @@
       "candidate-commit-pushed",
       "publication-manifest-verified"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
@@ -351,7 +351,7 @@
       "pages-deployment-succeeded",
       "real-browser-identity-journey-passed"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
@@ -385,7 +385,7 @@
       "candidate-release-immutable",
       "exact-candidate-asset-closure-verified"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
@@ -421,7 +421,7 @@
       "three-engine-journey-passed",
       "workflow-run-succeeded"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
@@ -456,7 +456,7 @@
       "promotion-release-immutable",
       "same-commit-promotion-tag-verified"
     ],
-    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
+    "normalized_input_sha256": "279cebff1ac1838e4578598e4096658cccfb7a6b7605d659d1baa152613ad8bf",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   }
 ]

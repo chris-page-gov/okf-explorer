@@ -72,10 +72,21 @@ for (const [label, route, heading] of routes) {
 }
 
 for (const [label, route, heading] of heritageRoutes) {
-  test(`${label} renders its Markdown identity as HTML`, async ({ page }) => {
-    const response = await page.goto(route);
-    expect(response?.ok()).toBe(true);
-    expect(response?.headers()['content-type']).toContain('text/html');
+  test(`${label} renders its Markdown identity as HTML`, async ({ page, request }) => {
+    const response = await request.get(route);
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('text/html');
+
+    // The externalized faithful landing page deliberately uses an immediate
+    // cross-origin meta refresh. Firefox may let that refresh supersede the
+    // local navigation before page.goto() returns its Response. Verify the
+    // exact published HTTP response first, then render the same HTML with only
+    // that navigation directive removed so every engine can assert its body.
+    const markup = (await response.text()).replace(
+      /<meta http-equiv="refresh" content="0; url=[^"]+">\n?/i,
+      ''
+    );
+    await page.setContent(markup);
     await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible();
     await expect(page.locator('main')).toBeVisible();
   });

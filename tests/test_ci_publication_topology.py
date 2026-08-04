@@ -138,7 +138,20 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self,
     ) -> None:
         workflow = self.text(".github/workflows/pages.yml")
+        document = YAML(typ="safe").load(workflow)
         jobs = self.workflow_jobs(".github/workflows/pages.yml")
+        self.assertNotIn("permissions", document)
+        for job_name in ("impact", "adversarial-gate", "app"):
+            with self.subTest(job=job_name):
+                self.assertEqual({"contents": "read"}, jobs[job_name]["permissions"])
+        self.assertEqual(
+            {"contents": "read", "pages": "read"},
+            jobs["build"]["permissions"],
+        )
+        self.assertEqual(
+            {"pages": "write", "id-token": "write"},
+            jobs["deploy"]["permissions"],
+        )
         self.assertIn("--changed-from HEAD^", workflow)
         self.assertIn("needs.impact.outputs.foundry", workflow)
         self.assertNotIn("'evaluation/**'", workflow)
