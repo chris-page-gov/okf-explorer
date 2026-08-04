@@ -170,9 +170,9 @@ The independently rooted
 [`okf-heritage-coventry-warwickshire` publication unit](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)
 owns corpus/data/readers and release assets; the main repository retains the
 Explorer runtime, common schemas, registry and documentation shell. Export and
-local validation are implemented. Remote repository creation, exact Pages
-identity journeys, registry activation and terminal promotion remain pending
-until their real deployed URLs and bytes can be checked.
+local validation are implemented.
+
+The normalized current-publication register records PR #70 and every external candidate/Pages/R1/terminal/R2 milestone without inferring success. The stages still pending exact public evidence are: `central-pull-request`, `external-candidate`, `external-pages`, `candidate-release-r1`, `terminal-assurance`, `promotion-release-r2`.
 
 Terminal policy requires an annotated tag bound to the exact commit, a GitHub
 artifact attestation, platform immutable releases, draft-first attachment of all
@@ -180,8 +180,9 @@ assets and a deterministic archive retained as an immutable release asset. The
 [policy](../../../release-assurance/release-policy.json),
 [validator](../../../scripts/check_release_policy.py) and
 [external promotion workflow template](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)
-implement those gates; this report does not claim they have passed for a public
-external release yet.
+implement those gates.
+
+This report does not claim the replacement release gates passed: a stage remains pending until its exact URL, identities, timestamp and complete required-claim set are present in the normalized evidence input.
 
 ## Acceptance Boundary
 
@@ -190,4 +191,6 @@ candidate bytes. Only the eventual public identity journey, signed or attested
 promotion envelope and platform immutable release can change the external unit
 from pending to promoted. See the
 [implementation register](data/implementation-acceptance-register.json) and
-[decision register](data/architecture-decisions.json) for that state split.
+[decision register](data/architecture-decisions.json) and
+[current publication evidence](data/current-publication-evidence.json) for that
+state split.

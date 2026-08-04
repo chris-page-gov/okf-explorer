@@ -3,6 +3,8 @@
   "github": {
     "api_version": "2026-03-10",
     "immutable_releases_required": true,
+    "immutable_release_evidence": "post-publication-release-json-and-gh-release-verify",
+    "administration_read_required": false,
     "draft_assets_before_publish": true,
     "artifact_attestation_required": true
   },

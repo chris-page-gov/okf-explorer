@@ -1,0 +1,111 @@
+{
+  "schema": "okf-heritage-foundry-publication-evidence.v1",
+  "records": [
+    {
+      "id": "PUBEV-001",
+      "kind": "central-pull-request",
+      "status": "pending",
+      "subject_url": "https://github.com/chris-page-gov/okf-explorer/pull/70",
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-explorer",
+        "number": 70,
+        "head_commit": null,
+        "merge_commit": null,
+        "ci_run_id": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "PR #70 is the current implementation review; its exact head, checks and merge remain pending evidence."
+    },
+    {
+      "id": "PUBEV-002",
+      "kind": "external-candidate",
+      "status": "pending",
+      "subject_url": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+        "source_commit": null,
+        "publication_manifest_sha256": null,
+        "site_tree_sha256": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "The external repository exists, but the exact candidate commit and publication roots remain pending evidence."
+    },
+    {
+      "id": "PUBEV-003",
+      "kind": "external-pages",
+      "status": "pending",
+      "subject_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+        "source_commit": null,
+        "pages_run_id": null,
+        "publication_manifest_sha256": null,
+        "site_tree_sha256": null,
+        "browser_receipt_sha256": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "This is the intended Pages subject; deployment success and the exact real-browser identity journey remain pending."
+    },
+    {
+      "id": "PUBEV-004",
+      "kind": "candidate-release-r1",
+      "status": "pending",
+      "subject_url": null,
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+        "source_commit": null,
+        "tag": null,
+        "release_id": null,
+        "archive_sha256": null,
+        "attestation_digest": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "The annotated R1 tag, immutable candidate release, archive attestation and exact asset closure remain pending."
+    },
+    {
+      "id": "PUBEV-005",
+      "kind": "terminal-assurance",
+      "status": "pending",
+      "subject_url": null,
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+        "source_commit": null,
+        "candidate_tag": null,
+        "workflow_run_id": null,
+        "artifact_digest": null,
+        "assurance_source_commit": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "The successful terminal workflow, exact link closure, protected-page receipt and three-engine journey remain pending."
+    },
+    {
+      "id": "PUBEV-006",
+      "kind": "promotion-release-r2",
+      "status": "pending",
+      "subject_url": null,
+      "observed_at": null,
+      "identities": {
+        "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+        "source_commit": null,
+        "candidate_tag": null,
+        "promotion_tag": null,
+        "release_id": null,
+        "envelope_sha256": null,
+        "attestation_digest": null
+      },
+      "evidence_urls": [],
+      "claims": [],
+      "note": "The same-commit R2 tag, attested promotion envelope, immutable promotion release and exact asset closure remain pending."
+    }
+  ]
+}

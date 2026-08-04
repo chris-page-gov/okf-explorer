@@ -324,6 +324,102 @@ The deterministic corpus checks are clean: 7,640 faithful records plus the 3-rec
 Local acceptance is now fully green: 297 Python tests, 276 UI unit tests, 32 Node contract tests, zero Svelte diagnostics, a deterministic Explorer build, and the 100-question/three-journey browser evidence. The exact export now contains 4,050 materials and its all-links universe is 13,548 URLs; the publication gate will not accept a partial faithful-only receipt.
 ````
 
+### Response 37 (commentary)
+
+- Timestamp: `2026-08-04T10:19:47.881Z`
+
+````text
+I’ve reached the first publishable candidate boundary. The worktree has only in-scope source, generated corpus, assurance, workflow, report, and test changes; no file exceeds 80 MB, and ignored raw logs/Finder metadata remain outside Git. I’m staging this exact closure now so the remote assurance commit can be referenced by the independent release workflow.
+````
+
+### Response 38 (commentary)
+
+- Timestamp: `2026-08-04T10:21:07.974Z`
+
+````text
+The central assurance commit is now pushed and draft PR #70 exists. I’m keeping it draft while the independent publication runs: the external workflows will pin central commit `8aeca7d8…`, so their evidence cannot drift to later branch content. Next I’m watching PR CI and materializing that same candidate into the dedicated repository.
+````
+
+### Response 39 (commentary)
+
+- Timestamp: `2026-08-04T10:22:13.833Z`
+
+````text
+The external manifest checker caught one transient Python bytecode file that its own import created inside `site/scripts`. That is not candidate content and is precisely why the bootstrap runbook specifies bytecode-disabled validation; I’m removing only that generated `.pyc`, rerunning with bytecode disabled, and leaving the export manifest unchanged.
+````
+
+### Response 40 (commentary)
+
+- Timestamp: `2026-08-04T10:23:25.515Z`
+
+````text
+The external candidate is pushed and its validation/Pages runs have started. One release workflow produced an immediate startup failure on the ordinary `main` push—before R1—so I’m treating that as a workflow-definition defect and inspecting only that failed plane; the candidate and Site bytes are unchanged.
+````
+
+### Response 41 (commentary)
+
+- Timestamp: `2026-08-04T10:26:16.521Z`
+
+````text
+I’m continuing the implementation through the publication chain, beginning with the invalid candidate-tag trigger found during the first independent-repository run. I’ll limit this correction to the workflow/test dependency cone, then resume exact-commit Pages, release, terminal-assurance, promotion, and report closure.
+````
+
+### Response 42 (commentary)
+
+- Timestamp: `2026-08-04T10:26:57.290Z`
+
+````text
+The failure is confirmed as GitHub’s trigger-pattern syntax, not a corpus or bundle defect. The broad tag trigger is now paired with the existing strict release-policy validator, so malformed dates still fail closed without forcing any data rebuild.
+````
+
+### Response 43 (commentary)
+
+- Timestamp: `2026-08-04T10:28:14.077Z`
+
+````text
+The independent repository is now running candidate validation and Pages deployment for exact commit `51881ccc…`. The previous full-candidate commit itself passed both checks; only its malformed release-trigger declaration failed, which confirms the correction stayed isolated from the 4,050-material publication.
+````
+
+### Response 44 (commentary)
+
+- Timestamp: `2026-08-04T10:29:52.966Z`
+
+````text
+Exact-commit candidate validation and Pages deployment both passed for `51881ccc…`, and GitHub’s deployment record binds the public environment to that SHA. I’m now freezing this same commit as the immutable R1 candidate; the release contains no promotion/status metadata by design.
+````
+
+### Response 45 (commentary)
+
+- Timestamp: `2026-08-04T10:30:39.363Z`
+
+````text
+R1 reached the platform but failed during release construction, so I’m stopping the promotion chain at that boundary and inspecting the exact failing step. The deployed candidate remains unchanged and valid; I won’t retag or rebuild until the failure’s dependency cone is known.
+````
+
+### Response 46 (commentary)
+
+- Timestamp: `2026-08-04T10:35:26.695Z`
+
+````text
+Two live runs have now exposed exactly the late-stage coupling the refactor was meant to reveal: Python contracts implicitly depended on a locally prebuilt app, and browser tests implicitly depended on generated SvelteKit state. Both are being converted into explicit, early artifact/setup dependencies. Separately, the release control is being revised so GitHub’s least-privilege workflow token never needs repository-administration access; immutable release evidence will come from the published release and its signed release attestation.
+````
+
+### Response 47 (commentary)
+
+- Timestamp: `2026-08-04T10:38:48.614Z`
+
+````text
+The release redesign is converging on a clean separation: the tagged commit remains the immutable publication subject, while the updated workflow and an exact Explorer commit form a separately recorded assurance control plane. This also lets workflow-only commits avoid redeploying Pages, preserving the already-proved candidate deployment SHA.
+````
+
+### Response 48 (commentary)
+
+- Timestamp: `2026-08-04T10:44:29.203Z`
+
+````text
+The first live dependency correction is now proven: Python contracts consumed the uploaded app artifact and all 297 tests passed. The three-engine browser job also passed its newly explicit SvelteKit materialization step and is still executing the terminal-equivalent journeys.
+````
+
 ## Contribution Reading
 
 - User contribution: Authorized implementation of every postmortem recommendation, including the release-integrity and external-publication controls.

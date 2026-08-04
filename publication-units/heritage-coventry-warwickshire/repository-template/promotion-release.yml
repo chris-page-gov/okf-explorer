@@ -30,30 +30,50 @@ jobs:
       PROMOTION_TAG: ${{ inputs.promotion_tag }}
       TERMINAL_RUN_ID: ${{ inputs.terminal_run_id }}
       ASSURANCE_REF: ${{ inputs.assurance_ref }}
+      ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}
+      ATTESTATION_WORKFLOW_COMMIT: ${{ github.workflow_sha }}
+      ATTESTATION_SOURCE_REF: ${{ github.ref }}
+      ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Check out the exact tagged publication candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: ${{ inputs.promotion_tag }}
+          path: publication
+      - name: Check out exact least-privilege release controls
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: chris-page-gov/okf-explorer
+          ref: ${{ inputs.assurance_ref }}
+          path: assurance
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - run: python3 -m pip install -r site/requirements-okf.txt
-      - name: Require two annotated tags at the exact same candidate commit
+      - run: python3 -m pip install -r assurance/requirements-okf.txt
+      - name: Separate candidate identity from assurance workflow provenance
         run: |
-          test "$GITHUB_REF" = "refs/tags/$PROMOTION_TAG"
-          test "$(git cat-file -t "$CANDIDATE_TAG")" = tag
-          test "$(git cat-file -t "$PROMOTION_TAG")" = tag
-          test "$(git rev-parse "${CANDIDATE_TAG}^{commit}")" = "$(git rev-parse "${PROMOTION_TAG}^{commit}")"
-          test "$(git rev-parse "${PROMOTION_TAG}^{commit}")" = "$(git rev-parse HEAD)"
-      - name: Query immutable capability and both published release identities
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$ATTESTATION_SOURCE_REF" = "$GITHUB_REF"
+          test "$ATTESTATION_WORKFLOW_COMMIT" = "$GITHUB_SHA"
+          test "$ATTESTATION_SOURCE_COMMIT" = "$GITHUB_SHA"
+          test "$ATTESTATION_WORKFLOW_REF" = "$GITHUB_REPOSITORY/.github/workflows/promotion-release.yml@$ATTESTATION_SOURCE_REF"
+          printf '%s\n' "$ATTESTATION_SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$'
+          printf '%s\n' "$ATTESTATION_WORKFLOW_COMMIT" | grep -Eq '^[0-9a-f]{40}$'
+          printf '%s\n' "$ASSURANCE_REF" | grep -Eq '^[0-9a-f]{40}$'
+          test "$(git -C assurance rev-parse 'HEAD^{commit}')" = "$ASSURANCE_REF"
+          test "$(git -C publication cat-file -t "$CANDIDATE_TAG")" = tag
+          test "$(git -C publication cat-file -t "$PROMOTION_TAG")" = tag
+          candidate_commit="$(git -C publication rev-parse "${CANDIDATE_TAG}^{commit}")"
+          promotion_commit="$(git -C publication rev-parse "${PROMOTION_TAG}^{commit}")"
+          test "$candidate_commit" = "$promotion_commit"
+          test "$promotion_commit" = "$(git -C publication rev-parse HEAD)"
+      - name: Query both published release identities
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api --header "X-GitHub-Api-Version: 2026-03-10" \
-            "repos/$GITHUB_REPOSITORY/immutable-releases" \
-            > "$RUNNER_TEMP/immutable-releases.json"
           gh api --header "X-GitHub-Api-Version: 2026-03-10" \
             "repos/$GITHUB_REPOSITORY/releases/tags/$CANDIDATE_TAG" \
             > "$RUNNER_TEMP/candidate-release.json"
@@ -71,7 +91,7 @@ jobs:
           gh api --header "X-GitHub-Api-Version: 2026-03-10" \
             "repos/$GITHUB_REPOSITORY/actions/runs/$TERMINAL_RUN_ID/artifacts?per_page=100" \
             > "$RUNNER_TEMP/terminal-artifacts.json"
-          candidate_commit="$(git rev-parse "${CANDIDATE_TAG}^{commit}")"
+          candidate_commit="$(git -C publication rev-parse "${CANDIDATE_TAG}^{commit}")"
           workflow_id="$(jq -r .id "$RUNNER_TEMP/terminal-workflow.json")"
           jq -e \
             --arg repository "$GITHUB_REPOSITORY" \
@@ -144,17 +164,26 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          expected="$(jq -r .archive.sha256 "$RUNNER_TEMP/promotion-workspace/candidate-release-receipt.json")"
+          receipt="$RUNNER_TEMP/promotion-workspace/candidate-release-receipt.json"
+          expected="$(jq -er .archive.sha256 "$receipt")"
           observed="$(sha256sum "$RUNNER_TEMP/candidate-assets/heritage-coventry-warwickshire.tar.gz" | cut -d' ' -f1)"
           test "$expected" = "$observed"
+          candidate_workflow_ref="$(jq -er .archive.attestation_workflow_ref "$receipt")"
+          candidate_workflow_commit="$(jq -er .archive.attestation_workflow_commit "$receipt")"
+          candidate_source_ref="$(jq -er .archive.attestation_source_ref "$receipt")"
+          candidate_source_commit="$(jq -er .archive.attestation_source_commit "$receipt")"
           gh release verify "$CANDIDATE_TAG" --repo "$GITHUB_REPOSITORY" --format json \
             > "$RUNNER_TEMP/candidate-release-attestation.json"
-          python3 site/scripts/check_release_policy.py \
+          python3 assurance/scripts/check_release_policy.py \
             --phase candidate \
             --tag "$CANDIDATE_TAG" \
-            --immutable-settings "$RUNNER_TEMP/immutable-releases.json" \
             --attested-archive "$RUNNER_TEMP/candidate-assets/heritage-coventry-warwickshire.tar.gz" \
             --repository "$GITHUB_REPOSITORY" \
+            --source-repository-root publication \
+            --attestation-workflow-ref "$candidate_workflow_ref" \
+            --attestation-workflow-commit "$candidate_workflow_commit" \
+            --attestation-source-ref "$candidate_source_ref" \
+            --attestation-source-commit "$candidate_source_commit" \
             --release-json "$RUNNER_TEMP/candidate-release.json" \
             --release-attestation-json "$RUNNER_TEMP/candidate-release-attestation.json" \
             --release-asset "heritage-coventry-warwickshire.tar.gz=$RUNNER_TEMP/candidate-assets/heritage-coventry-warwickshire.tar.gz" \
@@ -164,9 +193,9 @@ jobs:
             --release-asset "candidate-release-receipt.json=$RUNNER_TEMP/candidate-assets/candidate-release-receipt.json"
       - name: Materialize the terminal envelope outside Git and Site
         run: >-
-          python3 site/scripts/materialize_promotion_envelope.py
-          --template release-assurance/promotion-envelope.template.json
-          --publication-root site
+          python3 assurance/scripts/materialize_promotion_envelope.py
+          --template assurance/publication-units/heritage-coventry-warwickshire/repository-template/promotion-envelope.template.json
+          --publication-root publication/site
           --repository-root "$RUNNER_TEMP/promotion-workspace"
           --candidate-release-receipt "$RUNNER_TEMP/promotion-workspace/candidate-release-receipt.json"
           --validation-receipt "$RUNNER_TEMP/promotion-workspace/evidence/publication-validation-receipt.json"
@@ -176,12 +205,12 @@ jobs:
           --promotion-tag "$PROMOTION_TAG"
           --promoted-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           --output "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
-      - name: Validate semantic receipt closure before release mutation
+      - name: Validate R1-compatible R2 with trusted exact controls
         run: >-
-          python3 site/scripts/check_promotion_envelope.py
+          python3 assurance/scripts/check_promotion_envelope.py
           "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
           --repository-root "$RUNNER_TEMP/promotion-workspace"
-          --publication-root site
+          --publication-root publication/site
           --require-promoted
       - name: Attest the exact terminal promotion envelope
         id: envelope-attestation
@@ -197,34 +226,42 @@ jobs:
             --arg promotion_tag "$PROMOTION_TAG" \
             --arg envelope_sha256 "$envelope_sha" \
             --arg attestation_url "${{ steps.envelope-attestation.outputs.attestation-url }}" \
-            '{schema:"okf-promotion-envelope-attestation-sidecar.v1",status:"verified",observed_at:$observed_at,repository:$repository,promotion_tag:$promotion_tag,envelope_sha256:$envelope_sha256,attestation_url:$attestation_url}' \
+            --arg workflow_ref "$ATTESTATION_WORKFLOW_REF" \
+            --arg workflow_commit "$ATTESTATION_WORKFLOW_COMMIT" \
+            --arg source_ref "$ATTESTATION_SOURCE_REF" \
+            --arg source_commit "$ATTESTATION_SOURCE_COMMIT" \
+            '{schema:"okf-promotion-envelope-attestation-sidecar.v1",status:"verified",observed_at:$observed_at,repository:$repository,promotion_tag:$promotion_tag,envelope_sha256:$envelope_sha256,attestation_url:$attestation_url,workflow_ref:$workflow_ref,workflow_commit:$workflow_commit,source_ref:$source_ref,source_commit:$source_commit}' \
             > "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.attestation.json"
       - name: Enforce same-commit tags and exact envelope attestation
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          python3 site/scripts/check_release_policy.py
+          python3 assurance/scripts/check_release_policy.py
           --phase promotion
           --tag "$PROMOTION_TAG"
           --candidate-tag "$CANDIDATE_TAG"
-          --immutable-settings "$RUNNER_TEMP/immutable-releases.json"
           --attested-envelope "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
           --repository "$GITHUB_REPOSITORY"
+          --source-repository-root publication
           --repository-root "$RUNNER_TEMP/promotion-workspace"
-          --publication-root site
+          --publication-root publication/site
+          --attestation-workflow-ref "$ATTESTATION_WORKFLOW_REF"
+          --attestation-workflow-commit "$ATTESTATION_WORKFLOW_COMMIT"
+          --attestation-source-ref "$ATTESTATION_SOURCE_REF"
+          --attestation-source-commit "$ATTESTATION_SOURCE_COMMIT"
       - name: Draft, attach the complete receipt closure, then publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$PROMOTION_TAG" --verify-tag --draft \
+          gh release create "$PROMOTION_TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --draft \
             --title "Coventry and Warwickshire Heritage Evaluation Exemplar — Promotion" \
             --notes "Immutable promotion R2 for candidate $CANDIDATE_TAG. The envelope binds the already immutable R1 and post-R1 terminal assurance."
-          gh release upload "$PROMOTION_TAG" \
+          gh release upload "$PROMOTION_TAG" --repo "$GITHUB_REPOSITORY" \
             "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json" \
             "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.attestation.json" \
             "$RUNNER_TEMP/promotion-workspace/candidate-release-receipt.json" \
             "$RUNNER_TEMP/promotion-workspace/evidence/"*.json
-          gh release edit "$PROMOTION_TAG" --draft=false
+          gh release edit "$PROMOTION_TAG" --repo "$GITHUB_REPOSITORY" --draft=false
       - name: Verify R2 platform immutability without feeding back into its envelope
         env:
           GH_TOKEN: ${{ github.token }}
@@ -242,15 +279,19 @@ jobs:
             test "$attempt" = 6 || sleep 5
           done
           test "$release_verified" = true
-          python3 site/scripts/check_release_policy.py \
+          python3 assurance/scripts/check_release_policy.py \
             --phase promotion \
             --tag "$PROMOTION_TAG" \
             --candidate-tag "$CANDIDATE_TAG" \
-            --immutable-settings "$RUNNER_TEMP/immutable-releases.json" \
             --attested-envelope "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json" \
             --repository "$GITHUB_REPOSITORY" \
+            --source-repository-root publication \
             --repository-root "$RUNNER_TEMP/promotion-workspace" \
-            --publication-root site \
+            --publication-root publication/site \
+            --attestation-workflow-ref "$ATTESTATION_WORKFLOW_REF" \
+            --attestation-workflow-commit "$ATTESTATION_WORKFLOW_COMMIT" \
+            --attestation-source-ref "$ATTESTATION_SOURCE_REF" \
+            --attestation-source-commit "$ATTESTATION_SOURCE_COMMIT" \
             --release-json "$RUNNER_TEMP/promotion-release.json" \
             --release-attestation-json "$RUNNER_TEMP/release-attestation.json" \
             --release-asset "heritage-publication-envelope.json=$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json" \

@@ -252,27 +252,52 @@ class CiPublicationTopologyTests(unittest.TestCase):
             "publication-units/heritage-coventry-warwickshire/"
             "repository-template/pages.yml"
         )
+        candidate_document = YAML(typ="safe").load(candidate)
+        promotion_document = YAML(typ="safe").load(promotion)
+        pages_document = YAML(typ="safe").load(pages)
         policy = self.text("release-assurance/release-policy.json")
         link_policy = json.loads(
             self.text("release-assurance/link-observation-policy.json")
         )
         publication = self.text("PUBLICATION.md")
-        self.assertIn(
-            'tags: ["heritage-coventry-warwickshire-*"]', candidate
-        )
-        self.assertNotIn("????????", candidate)
-        self.assertIn("immutable-releases", candidate)
+        self.assertIn("workflow_dispatch:", candidate)
+        self.assertEqual({"workflow_dispatch"}, set(candidate_document["on"]))
+        self.assertNotIn("  push:", candidate)
+        self.assertNotIn("immutable-releases", candidate)
+        self.assertNotIn("--immutable-settings", candidate)
+        self.assertNotIn("secrets.", candidate)
+        self.assertIn("GH_TOKEN: ${{ github.token }}", candidate)
         self.assertIn("--phase candidate", candidate)
         self.assertIn("actions/attest@", candidate)
-        self.assertIn("check_publication_unit_manifest.py site", candidate)
+        self.assertIn(
+            "check_publication_unit_manifest.py publication/site", candidate
+        )
+        self.assertIn("repository: chris-page-gov/okf-explorer", candidate)
+        self.assertIn("ref: ${{ inputs.assurance_ref }}", candidate)
+        self.assertIn("pip install -r assurance/requirements-okf.txt", candidate)
+        self.assertNotIn("publication/site/requirements-okf.txt", candidate)
+        self.assertNotIn("python3 publication/site/", candidate)
+        self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", candidate)
+        self.assertIn("ATTESTATION_WORKFLOW_COMMIT: ${{ github.workflow_sha }}", candidate)
+        self.assertIn("ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}", candidate)
+        self.assertIn("--source-repository-root publication", candidate)
+        self.assertIn("--attestation-workflow-ref", candidate)
+        self.assertIn("--attestation-workflow-commit", candidate)
+        self.assertIn("--attestation-source-ref", candidate)
+        self.assertIn("--attestation-source-commit", candidate)
         self.assertIn("heritage-coventry-warwickshire.tar.gz", candidate)
         self.assertIn("cd \"$RUNNER_TEMP\"", candidate)
         self.assertIn("--draft", candidate)
         self.assertIn("--draft=false", candidate)
-        self.assertIn('test "$GITHUB_REF" = "refs/tags/$TAG"', candidate)
+        self.assertIn('test "$GITHUB_REF" = refs/heads/main', candidate)
         self.assertIn('test "$action_url" = "$expected_release_url"', candidate)
         self.assertIn('gh release verify "$TAG"', candidate)
         self.assertIn("--release-attestation-json", candidate)
+        promotion_post_publish = promotion[
+            promotion.index(
+                "- name: Verify R2 platform immutability without feeding back"
+            ):
+        ]
         for asset in (
             "heritage-coventry-warwickshire.tar.gz",
             "SHA256SUMS",
@@ -281,6 +306,11 @@ class CiPublicationTopologyTests(unittest.TestCase):
             "candidate-release-receipt.json",
         ):
             self.assertIn(f'--release-asset "{asset}=', candidate)
+            self.assertEqual(
+                1,
+                candidate.count(f'--release-asset "{asset}='),
+                f"candidate release asset must occur exactly once: {asset}",
+            )
         self.assertIn("--all-shards", terminal)
         self.assertIn("--fail-on-error", terminal)
         self.assertIn("--browser-engine \"$engine\"", terminal)
@@ -340,9 +370,29 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("promotion-container-observation.json", promotion)
         self.assertIn("--draft", promotion)
         self.assertIn("--draft=false", promotion)
+        self.assertIn('test "$GITHUB_REF" = refs/heads/main', promotion)
+        self.assertEqual({"workflow_dispatch"}, set(promotion_document["on"]))
+        self.assertNotIn("immutable-releases", promotion)
+        self.assertNotIn("--immutable-settings", promotion)
+        self.assertNotIn("secrets.", promotion)
+        self.assertIn("GH_TOKEN: ${{ github.token }}", promotion)
+        self.assertIn("repository: chris-page-gov/okf-explorer", promotion)
+        self.assertIn("pip install -r assurance/requirements-okf.txt", promotion)
+        self.assertNotIn("publication/site/requirements-okf.txt", promotion)
+        self.assertNotIn("python3 publication/site/", promotion)
         self.assertIn(
-            'test "$GITHUB_REF" = "refs/tags/$PROMOTION_TAG"', promotion
+            "--template assurance/publication-units/heritage-coventry-warwickshire/"
+            "repository-template/promotion-envelope.template.json",
+            promotion,
         )
+        self.assertIn(
+            "python3 assurance/scripts/check_promotion_envelope.py",
+            promotion,
+        )
+        self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", promotion)
+        self.assertIn("ATTESTATION_WORKFLOW_COMMIT: ${{ github.workflow_sha }}", promotion)
+        self.assertIn("ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}", promotion)
+        self.assertIn("--source-repository-root publication", promotion)
         self.assertIn("terminal-run.json", promotion)
         self.assertIn("terminal-assurance.yml", promotion)
         self.assertIn("assurance_ref:", promotion)
@@ -368,18 +418,43 @@ class CiPublicationTopologyTests(unittest.TestCase):
             "journey-webkit-results.json",
         ):
             self.assertIn(f'--release-asset "{asset}=', promotion)
+            self.assertEqual(
+                1,
+                promotion_post_publish.count(f'--release-asset "{asset}='),
+                f"promotion release asset must occur exactly once: {asset}",
+            )
         self.assertIn("path: site", pages)
+        self.assertIn('      - "site/**"', pages)
+        self.assertEqual(["site/**"], pages_document["on"]["push"]["paths"])
         self.assertIn("check_publication_unit_manifest.py site", pages)
+        self.assertNotIn("pip install", pages)
+        self.assertNotIn("requirements-okf.txt", pages)
+        self.assertNotIn("permissions", pages_document)
+        self.assertEqual(
+            {"contents": "read", "pages": "read"},
+            pages_document["jobs"]["build"]["permissions"],
+        )
+        self.assertEqual(
+            {"pages": "write", "id-token": "write"},
+            pages_document["jobs"]["deploy"]["permissions"],
+        )
         self.assertIn("PYTHONDONTWRITEBYTECODE", pages)
         self.assertNotIn("check_promotion_envelope.py", pages)
         self.assertIn('"live_browser_actions": 21', policy)
         self.assertIn('"receipt_backed_actions": 11', policy)
+        self.assertIn('"administration_read_required": false', policy)
+        self.assertIn(
+            '"immutable_release_evidence": "post-publication-release-json-and-gh-release-verify"',
+            policy,
+        )
         self.assertIn(
             '"template_path": "release-assurance/promotion-envelope.template.json"',
             policy,
         )
         self.assertIn("install the five workflows", publication)
-        self.assertIn("Dispatch `promotion-release.yml` at the R2 tag", publication)
+        self.assertIn(
+            "Dispatch `promotion-release.yml` from updated `main`", publication
+        )
         self.assertIn("verified release attestation", publication)
 
 

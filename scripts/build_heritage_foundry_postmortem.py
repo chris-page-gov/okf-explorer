@@ -41,6 +41,9 @@ EXCHANGES_ROOT = PUBLIC_ROOT / "exchanges"
 READERS_ROOT = PUBLIC_ROOT / "readers"
 SOURCES_ROOT = PUBLIC_ROOT / "sources"
 PRIVATE_ROOT = ROOT / "postmortem" / "evidence"
+CURRENT_PUBLICATION_EVIDENCE_PATH = (
+    ROOT / "release-assurance" / "heritage-postmortem-publication-evidence.json"
+)
 SESSION_ID = "019fc471-90ec-7633-abde-8e72fcdd5280"
 IMPLEMENTATION_TURN_ID = "019fc48a-bbbf-7630-9aad-3fa7f925a707"
 BASE_URL = (
@@ -48,6 +51,149 @@ BASE_URL = (
     "docs/postmortems/heritage-foundry-2026"
 )
 CAPTURED_AT = "2026-08-04T05:00:00Z"
+
+CURRENT_PUBLICATION_EVIDENCE_SPECS = (
+    {
+        "id": "PUBEV-001",
+        "kind": "central-pull-request",
+        "identity_keys": (
+            "repository",
+            "number",
+            "head_commit",
+            "merge_commit",
+            "ci_run_id",
+        ),
+        "verified_identity_keys": ("repository", "number", "head_commit", "ci_run_id"),
+        "required_claims": (
+            "pull-request-head-observed",
+            "required-checks-passed",
+        ),
+    },
+    {
+        "id": "PUBEV-002",
+        "kind": "external-candidate",
+        "identity_keys": (
+            "repository",
+            "source_commit",
+            "publication_manifest_sha256",
+            "site_tree_sha256",
+        ),
+        "verified_identity_keys": (
+            "repository",
+            "source_commit",
+            "publication_manifest_sha256",
+            "site_tree_sha256",
+        ),
+        "required_claims": (
+            "candidate-commit-pushed",
+            "publication-manifest-verified",
+        ),
+    },
+    {
+        "id": "PUBEV-003",
+        "kind": "external-pages",
+        "identity_keys": (
+            "repository",
+            "source_commit",
+            "pages_run_id",
+            "publication_manifest_sha256",
+            "site_tree_sha256",
+            "browser_receipt_sha256",
+        ),
+        "verified_identity_keys": (
+            "repository",
+            "source_commit",
+            "pages_run_id",
+            "publication_manifest_sha256",
+            "site_tree_sha256",
+            "browser_receipt_sha256",
+        ),
+        "required_claims": (
+            "pages-deployment-succeeded",
+            "real-browser-identity-journey-passed",
+        ),
+    },
+    {
+        "id": "PUBEV-004",
+        "kind": "candidate-release-r1",
+        "identity_keys": (
+            "repository",
+            "source_commit",
+            "tag",
+            "release_id",
+            "archive_sha256",
+            "attestation_digest",
+        ),
+        "verified_identity_keys": (
+            "repository",
+            "source_commit",
+            "tag",
+            "release_id",
+            "archive_sha256",
+            "attestation_digest",
+        ),
+        "required_claims": (
+            "annotated-tag-verified",
+            "archive-attestation-verified",
+            "candidate-release-immutable",
+            "exact-candidate-asset-closure-verified",
+        ),
+    },
+    {
+        "id": "PUBEV-005",
+        "kind": "terminal-assurance",
+        "identity_keys": (
+            "repository",
+            "source_commit",
+            "candidate_tag",
+            "workflow_run_id",
+            "artifact_digest",
+            "assurance_source_commit",
+        ),
+        "verified_identity_keys": (
+            "repository",
+            "source_commit",
+            "candidate_tag",
+            "workflow_run_id",
+            "artifact_digest",
+            "assurance_source_commit",
+        ),
+        "required_claims": (
+            "exact-link-closure-passed",
+            "protected-link-receipt-passed",
+            "three-engine-journey-passed",
+            "workflow-run-succeeded",
+        ),
+    },
+    {
+        "id": "PUBEV-006",
+        "kind": "promotion-release-r2",
+        "identity_keys": (
+            "repository",
+            "source_commit",
+            "candidate_tag",
+            "promotion_tag",
+            "release_id",
+            "envelope_sha256",
+            "attestation_digest",
+        ),
+        "verified_identity_keys": (
+            "repository",
+            "source_commit",
+            "candidate_tag",
+            "promotion_tag",
+            "release_id",
+            "envelope_sha256",
+            "attestation_digest",
+        ),
+        "required_claims": (
+            "exact-promotion-asset-closure-verified",
+            "promotion-envelope-attested",
+            "promotion-release-immutable",
+            "same-commit-promotion-tag-verified",
+        ),
+    },
+)
 
 PR_PHASES = {
     67: {
@@ -547,6 +693,306 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def valid_public_evidence_url(value: Any) -> bool:
+    if not isinstance(value, str) or not value or value != value.strip():
+        return False
+    try:
+        parsed = urlsplit(value)
+        _ = parsed.port
+    except ValueError:
+        return False
+    return bool(
+        parsed.scheme == "https"
+        and parsed.hostname
+        and parsed.username is None
+        and parsed.password is None
+    )
+
+
+def normalize_current_publication_evidence(value: Any) -> dict[str, Any]:
+    """Validate and canonicalize the current rollout without inferring success."""
+
+    if not isinstance(value, dict) or set(value) != {"schema", "records"}:
+        raise ValueError("current publication evidence must contain schema and records")
+    if value.get("schema") != "okf-heritage-foundry-publication-evidence.v1":
+        raise ValueError("current publication evidence has an unsupported schema")
+    records = value.get("records")
+    if not isinstance(records, list):
+        raise ValueError("current publication evidence records must be an array")
+    by_id: dict[str, dict[str, Any]] = {}
+    required_record_keys = {
+        "id",
+        "kind",
+        "status",
+        "subject_url",
+        "observed_at",
+        "identities",
+        "evidence_urls",
+        "claims",
+        "note",
+    }
+    for index, record in enumerate(records):
+        if not isinstance(record, dict) or set(record) != required_record_keys:
+            raise ValueError(f"current publication evidence record {index} has an invalid shape")
+        record_id = record.get("id")
+        if not isinstance(record_id, str) or record_id in by_id:
+            raise ValueError(f"current publication evidence record {index} has a duplicate ID")
+        by_id[record_id] = record
+
+    normalized_records: list[dict[str, Any]] = []
+    for spec in CURRENT_PUBLICATION_EVIDENCE_SPECS:
+        record = by_id.pop(spec["id"], None)
+        if record is None or record.get("kind") != spec["kind"]:
+            raise ValueError(
+                f"current publication evidence is missing {spec['id']} {spec['kind']}"
+            )
+        status = record.get("status")
+        if status not in {"pending", "verified"}:
+            raise ValueError(f"{spec['id']} has an invalid status")
+        subject_url = record.get("subject_url")
+        if subject_url is not None and not valid_public_evidence_url(subject_url):
+            raise ValueError(f"{spec['id']} has an invalid subject URL")
+        observed_at = record.get("observed_at")
+        if observed_at is not None:
+            if not isinstance(observed_at, str) or not observed_at.endswith("Z"):
+                raise ValueError(f"{spec['id']} has an invalid observed_at")
+            try:
+                parse_timestamp(observed_at)
+            except ValueError as error:
+                raise ValueError(f"{spec['id']} has an invalid observed_at") from error
+        identities = record.get("identities")
+        if not isinstance(identities, dict) or set(identities) != set(spec["identity_keys"]):
+            raise ValueError(f"{spec['id']} identities differ from the normalized contract")
+        for key, identity in identities.items():
+            if identity is None:
+                continue
+            if key in {"number", "ci_run_id", "pages_run_id", "release_id", "workflow_run_id"}:
+                if isinstance(identity, bool) or not isinstance(identity, int) or identity < 1:
+                    raise ValueError(f"{spec['id']} identity {key} is invalid")
+            elif not isinstance(identity, str) or not identity or identity != identity.strip():
+                raise ValueError(f"{spec['id']} identity {key} is invalid")
+            if key in {"head_commit", "merge_commit", "source_commit", "assurance_source_commit"}:
+                if not re.fullmatch(r"[0-9a-f]{40}", str(identity)):
+                    raise ValueError(f"{spec['id']} identity {key} is not exact 40-hex")
+            if key.endswith("_sha256") and not re.fullmatch(r"[0-9a-f]{64}", str(identity)):
+                raise ValueError(f"{spec['id']} identity {key} is not exact SHA-256")
+            if key in {"attestation_digest", "artifact_digest"} and not re.fullmatch(
+                r"(?:sha256:)?[0-9a-f]{64}", str(identity)
+            ):
+                raise ValueError(f"{spec['id']} identity {key} is not an exact digest")
+            if key == "repository" and not re.fullmatch(
+                r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(identity)
+            ):
+                raise ValueError(f"{spec['id']} repository identity is invalid")
+        evidence_urls = record.get("evidence_urls")
+        if (
+            not isinstance(evidence_urls, list)
+            or any(not valid_public_evidence_url(url) for url in evidence_urls)
+            or len(set(evidence_urls)) != len(evidence_urls)
+        ):
+            raise ValueError(f"{spec['id']} evidence URLs are invalid or duplicated")
+        claims = record.get("claims")
+        required_claims = set(spec["required_claims"])
+        if (
+            not isinstance(claims, list)
+            or any(not isinstance(claim, str) for claim in claims)
+            or len(set(claims)) != len(claims)
+            or not set(claims) <= required_claims
+        ):
+            raise ValueError(f"{spec['id']} claims are invalid, duplicated or unrecognized")
+        note = record.get("note")
+        if not isinstance(note, str) or not note.strip() or note != note.strip():
+            raise ValueError(f"{spec['id']} must contain a bounded note")
+        if status == "verified":
+            missing_identities = [
+                key for key in spec["verified_identity_keys"] if identities.get(key) is None
+            ]
+            if (
+                subject_url is None
+                or observed_at is None
+                or not evidence_urls
+                or set(claims) != required_claims
+                or missing_identities
+            ):
+                raise ValueError(
+                    f"{spec['id']} cannot be verified without its exact identities, "
+                    "claims, timestamp and public evidence URLs"
+                )
+        normalized_records.append(
+            {
+                "id": spec["id"],
+                "kind": spec["kind"],
+                "status": status,
+                "subject_url": subject_url,
+                "observed_at": observed_at,
+                "identities": {
+                    key: identities[key] for key in spec["identity_keys"]
+                },
+                "evidence_urls": sorted(evidence_urls),
+                "claims": sorted(claims),
+                "required_claims": sorted(required_claims),
+                "note": note,
+            }
+        )
+    if by_id:
+        raise ValueError(
+            "current publication evidence has unexpected records: "
+            + ", ".join(sorted(by_id))
+        )
+    normalized_by_id = {record["id"]: record for record in normalized_records}
+    if normalized_by_id["PUBEV-001"]["identities"]["repository"] != (
+        "chris-page-gov/okf-explorer"
+    ) or any(
+        record["identities"]["repository"]
+        != "chris-page-gov/okf-heritage-coventry-warwickshire"
+        for record in normalized_records[1:]
+    ):
+        raise ValueError("current publication evidence names an unexpected repository")
+    expected_subjects = {
+        "PUBEV-001": "https://github.com/chris-page-gov/okf-explorer/pull/70",
+        "PUBEV-002": (
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire"
+        ),
+        "PUBEV-003": (
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
+        ),
+    }
+    for record_id, expected_subject in expected_subjects.items():
+        subject = normalized_by_id[record_id]["subject_url"]
+        if subject is not None and subject != expected_subject:
+            raise ValueError(f"{record_id} subject URL differs from its governed identity")
+    r1 = normalized_by_id["PUBEV-004"]
+    terminal = normalized_by_id["PUBEV-005"]
+    r2 = normalized_by_id["PUBEV-006"]
+    bound_subjects = (
+        (
+            r1,
+            r1["identities"]["tag"],
+            lambda identity: (
+                "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+                f"releases/tag/{identity}"
+            ),
+        ),
+        (
+            terminal,
+            terminal["identities"]["workflow_run_id"],
+            lambda identity: (
+                "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+                f"actions/runs/{identity}"
+            ),
+        ),
+        (
+            r2,
+            r2["identities"]["promotion_tag"],
+            lambda identity: (
+                "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+                f"releases/tag/{identity}"
+            ),
+        ),
+    )
+    for record, identity, expected_url in bound_subjects:
+        if identity is not None and record["subject_url"] not in {
+            None,
+            expected_url(identity),
+        }:
+            raise ValueError(
+                f"{record['id']} subject URL does not bind its exact release/run identity"
+            )
+    source_commits = {
+        record["identities"]["source_commit"]
+        for record in normalized_records[1:]
+        if record["identities"].get("source_commit") is not None
+    }
+    if len(source_commits) > 1:
+        raise ValueError("external publication evidence names inconsistent source commits")
+    candidate_tags = {
+        value
+        for value in (
+            r1["identities"]["tag"],
+            terminal["identities"]["candidate_tag"],
+            r2["identities"]["candidate_tag"],
+        )
+        if value is not None
+    }
+    if len(candidate_tags) > 1:
+        raise ValueError("R1, terminal and R2 evidence name inconsistent candidate tags")
+    if (
+        r2["identities"]["candidate_tag"] is not None
+        and r2["identities"]["candidate_tag"] == r2["identities"]["promotion_tag"]
+    ):
+        raise ValueError("R2 promotion tag must differ from its R1 candidate tag")
+    pr_head = normalized_by_id["PUBEV-001"]["identities"]["head_commit"]
+    assurance_source = terminal["identities"]["assurance_source_commit"]
+    if pr_head is not None and assurance_source is not None and pr_head != assurance_source:
+        raise ValueError("terminal assurance source commit differs from the PR #70 head")
+    return {
+        "schema": "okf-heritage-foundry-publication-evidence-register.v1",
+        "status": (
+            "verified"
+            if all(record["status"] == "verified" for record in normalized_records)
+            else "pending"
+        ),
+        "source_path": CURRENT_PUBLICATION_EVIDENCE_PATH.relative_to(ROOT).as_posix(),
+        "records": normalized_records,
+    }
+
+
+def load_current_publication_evidence() -> dict[str, Any]:
+    normalized = normalize_current_publication_evidence(
+        load_json(CURRENT_PUBLICATION_EVIDENCE_PATH)
+    )
+    normalized["source_sha256"] = sha256_file(CURRENT_PUBLICATION_EVIDENCE_PATH)
+    return normalized
+
+
+def current_evidence_record(
+    publication_evidence: dict[str, Any], record_id: str
+) -> dict[str, Any]:
+    matches = [
+        record
+        for record in publication_evidence["records"]
+        if record.get("id") == record_id
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"current publication evidence has no unique {record_id}")
+    return matches[0]
+
+
+def current_evidence_verified(
+    publication_evidence: dict[str, Any], *record_ids: str
+) -> bool:
+    return all(
+        current_evidence_record(publication_evidence, record_id)["status"] == "verified"
+        for record_id in record_ids
+    )
+
+
+def public_current_evidence_records(
+    publication_evidence: dict[str, Any], start_index: int
+) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for offset, record in enumerate(publication_evidence["records"], start=1):
+        records.append(
+            {
+                "evidence_id": f"EV-{start_index + offset:03d}",
+                "kind": record["kind"],
+                "source": record["subject_url"] or "pending-public-subject",
+                "status": record["status"],
+                "observed_at": record["observed_at"],
+                "identities": record["identities"],
+                "evidence_urls": record["evidence_urls"],
+                "claims": record["claims"],
+                "required_claims": record["required_claims"],
+                "normalized_input_sha256": publication_evidence.get("source_sha256"),
+                "publication_treatment": (
+                    "Normalized public rollout evidence; pending is retained until "
+                    "all policy-required identities, claims and URLs are supplied."
+                ),
+            }
+        )
+    return records
+
+
 def normalize_github_runs() -> list[dict[str, Any]]:
     phase_by_run: dict[int, tuple[int, str]] = {}
     for number, phase in PR_PHASES.items():
@@ -1009,7 +1455,10 @@ def report_metrics(
         "ci_workflow_wall_seconds": sum(item["duration_seconds"] for item in ci_runs),
         "pages_workflow_wall_seconds": sum(item["duration_seconds"] for item in pages_runs),
         "all_workflow_wall_seconds": sum(item["duration_seconds"] for item in runs),
-        "private_evidence_records": len(evidence),
+        "private_evidence_records": sum("status" not in item for item in evidence),
+        "normalized_current_evidence_records": sum(
+            "status" in item for item in evidence
+        ),
         "late_findings": len(LATE_FINDINGS),
         "final_site_files": SITE_IDENTITIES[30819232224]["site_files"],
         "final_site_bytes": SITE_IDENTITIES[30819232224]["site_bytes"],
@@ -1077,6 +1526,7 @@ def render_index(metrics: dict[str, Any], exchanges: list[Exchange]) -> tuple[Pa
             "- [GitHub run register](data/github-run-register.json)\n",
             "- [Rebuild-cycle register](data/rebuild-cycle-register.json)\n",
             "- [Evidence register](data/evidence-register.json)\n",
+            "- [Current PR/publication/release evidence](data/current-publication-evidence.json)\n",
             "- [Report metrics](data/report-metrics.json)\n",
             "- [Implementation and acceptance register](data/implementation-acceptance-register.json)\n",
             "- [Architecture and release decisions](data/architecture-decisions.json)\n",
@@ -1118,14 +1568,19 @@ def render_methodology(metadata: dict[str, Any], metrics: dict[str, Any]) -> tup
         The primary performance reconstruction ends at the terminal 3 August release.
         The 4 August postmortem publication is reported separately as a controlled
         documentation-only invalidation exercise; it is not added to the three historical
-        PR totals or six GitHub workflow totals.
+        PR totals or six GitHub workflow totals. Current PR #70 and the replacement
+        external publication are recorded through the normalized
+        [publication-evidence register](data/current-publication-evidence.json); pending
+        records do not change historical timing metrics or imply success.
 
         The prior
         [hackathon postmortem pattern](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026/tree/8418bce78496e36598b10d4562b1fb275ad610bb/postmortem-public)
         was reused: one exchange begins with a visible user prompt and contains every
         visible assistant commentary/final message until the next prompt. System and
         developer instructions, private reasoning, tool arguments and tool outputs are
-        not part of a prompt-response trace.
+        not part of a prompt-response trace. Publication-evidence records are never
+        converted into conversation messages, so the same rollout bytes always produce
+        the same full trace regardless of rollout milestone status.
 
         ## Metric Definitions
 
@@ -1271,8 +1726,40 @@ def render_timeline(cycles: list[dict[str, Any]], runs: list[dict[str, Any]]) ->
     return path, text
 
 
-def render_architecture() -> tuple[Path, str]:
+def render_architecture(
+    publication_evidence: dict[str, Any],
+) -> tuple[Path, str]:
     path = PUBLIC_ROOT / "architecture.md"
+    pending_kinds = [
+        record["kind"]
+        for record in publication_evidence["records"]
+        if record["status"] != "verified"
+    ]
+    publication_state = (
+        "The normalized current-publication register binds verified PR #70, external "
+        "candidate, Pages, R1, terminal and R2 evidence. All terminal publication gates "
+        "are independently recorded as verified."
+        if not pending_kinds
+        else (
+            "The normalized current-publication register records PR #70 and every external "
+            "candidate/Pages/R1/terminal/R2 milestone without inferring success. The stages "
+            "still pending exact public evidence are: "
+            + ", ".join(f"`{kind}`" for kind in pending_kinds)
+            + "."
+        )
+    )
+    release_state = (
+        "The normalized evidence supplies exact public URLs, identities and required claims "
+        "for both immutable releases and terminal assurance."
+        if current_evidence_verified(
+            publication_evidence, "PUBEV-004", "PUBEV-005", "PUBEV-006"
+        )
+        else (
+            "This report does not claim the replacement release gates passed: a stage remains "
+            "pending until its exact URL, identities, timestamp and complete required-claim "
+            "set are present in the normalized evidence input."
+        )
+    )
     text = frontmatter(
         "TechArticle",
         "Implemented selective-rerun architecture for the Evaluation Foundry",
@@ -1433,9 +1920,9 @@ def render_architecture() -> tuple[Path, str]:
         [`okf-heritage-coventry-warwickshire` publication unit](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)
         owns corpus/data/readers and release assets; the main repository retains the
         Explorer runtime, common schemas, registry and documentation shell. Export and
-        local validation are implemented. Remote repository creation, exact Pages
-        identity journeys, registry activation and terminal promotion remain pending
-        until their real deployed URLs and bytes can be checked.
+        local validation are implemented.
+
+        CURRENT_PUBLICATION_STATE
 
         Terminal policy requires an annotated tag bound to the exact commit, a GitHub
         artifact attestation, platform immutable releases, draft-first attachment of all
@@ -1443,8 +1930,9 @@ def render_architecture() -> tuple[Path, str]:
         [policy](../../../release-assurance/release-policy.json),
         [validator](../../../scripts/check_release_policy.py) and
         [external promotion workflow template](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)
-        implement those gates; this report does not claim they have passed for a public
-        external release yet.
+        implement those gates.
+
+        CURRENT_RELEASE_STATE
 
         ## Acceptance Boundary
 
@@ -1453,13 +1941,21 @@ def render_architecture() -> tuple[Path, str]:
         promotion envelope and platform immutable release can change the external unit
         from pending to promoted. See the
         [implementation register](data/implementation-acceptance-register.json) and
-        [decision register](data/architecture-decisions.json) for that state split.
+        [decision register](data/architecture-decisions.json) and
+        [current publication evidence](data/current-publication-evidence.json) for that
+        state split.
         """
+    ).replace("CURRENT_PUBLICATION_STATE", publication_state).replace(
+        "CURRENT_RELEASE_STATE", release_state
     )
     return path, text
 
 
-def render_evidence(evidence: list[dict[str, Any]], runs: list[dict[str, Any]]) -> tuple[Path, str]:
+def render_evidence(
+    evidence: list[dict[str, Any]],
+    runs: list[dict[str, Any]],
+    publication_evidence: dict[str, Any],
+) -> tuple[Path, str]:
     path = PUBLIC_ROOT / "evidence.md"
     page_archives = [item for item in evidence if item["kind"] == "preserved-pages-deployment-archive"]
     archive_rows = []
@@ -1473,6 +1969,42 @@ def render_evidence(evidence: list[dict[str, Any]], runs: list[dict[str, Any]]) 
                 f"`{item['decompressed_tar_sha256']}`",
             )
         )
+    current_rows = []
+    for record in publication_evidence["records"]:
+        subject = (
+            f"[subject]({record['subject_url']})"
+            if record["subject_url"]
+            else "not supplied"
+        )
+        evidence_links = (
+            "<br>".join(
+                f"[evidence {index}]({url})"
+                for index, url in enumerate(record["evidence_urls"], start=1)
+            )
+            or "none supplied"
+        )
+        current_rows.append(
+            (
+                record["id"],
+                record["kind"],
+                record["status"],
+                subject,
+                f"{len(record['claims'])}/{len(record['required_claims'])}",
+                evidence_links,
+            )
+        )
+    release_qualification = (
+        "The normalized current-publication evidence records exact verified R1, terminal "
+        "and R2 identities, claims and public evidence URLs."
+        if current_evidence_verified(
+            publication_evidence, "PUBEV-004", "PUBEV-005", "PUBEV-006"
+        )
+        else (
+            "Those controls remain **terminally unverified for the new external unit**. "
+            "A pending record may name its intended public subject, but it cannot become "
+            "verified until every required identity, claim, timestamp and evidence URL is supplied."
+        )
+    )
     text = frontmatter(
         "Report",
         "Heritage Foundry postmortem evidence",
@@ -1490,6 +2022,16 @@ def render_evidence(evidence: list[dict[str, Any]], runs: list[dict[str, Any]]) 
         deployment archives captured before their one-day retention expired. The public
         [evidence register](data/evidence-register.json) publishes source URLs, byte
         counts, hashes and treatment decisions without publishing raw logs or local paths.
+
+        The current rollout is a separate
+        [normalized input](../../../release-assurance/heritage-postmortem-publication-evidence.json).
+        It records PR #70, the external candidate and Pages deployment, R1, terminal
+        assurance and R2. Its generated
+        [current-publication register](data/current-publication-evidence.json) and the
+        appended public records in the [evidence register](data/evidence-register.json)
+        retain `pending` rather than deriving success from local implementation.
+
+        {markdown_table(current_rows, ('ID', 'Milestone', 'State', 'Subject', 'Claims', 'Public evidence'))}
 
         ## Preserved Deployment Archives
 
@@ -1523,8 +2065,9 @@ def render_evidence(evidence: list[dict[str, Any]], runs: list[dict[str, Any]]) 
         [external promotion workflow template](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml).
         It requires an annotated tag, GitHub artifact attestation, immutable releases,
         draft-first asset attachment and a deterministic archive retained as a release
-        asset. Those controls remain **terminally unverified for the new external unit**
-        until its real tag, attestation and published immutable release exist.
+        asset.
+
+        {release_qualification}
 
         ## Publication Boundary
 
@@ -1588,7 +2131,9 @@ def find_step_seconds(runs: list[dict[str, Any]], run_id: int, name: str) -> int
     )
 
 
-def implementation_acceptance_register() -> list[dict[str, Any]]:
+def implementation_acceptance_register(
+    publication_evidence: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     """Return the reviewable state of every original recommended next step.
 
     ``implemented-local`` means the implementation and its deterministic test
@@ -1596,7 +2141,8 @@ def implementation_acceptance_register() -> list[dict[str, Any]]:
     that an external deployment or terminal release has been promoted.
     """
 
-    return [
+    publication_evidence = publication_evidence or load_current_publication_evidence()
+    items = [
         {
             "id": "IMP-001",
             "priority": "P0",
@@ -1724,6 +2270,7 @@ def implementation_acceptance_register() -> list[dict[str, Any]]:
                 "publication-units/heritage-coventry-warwickshire/publication-unit.json",
                 "scripts/export_publication_unit.py",
                 "publication-units/heritage-coventry-warwickshire/repository-template/pages.yml",
+                "release-assurance/heritage-postmortem-publication-evidence.json",
             ],
             "acceptance_tests": ["tests/test_publication_units.py"],
             "remaining_gate": "Create, publish and identity-check the external repository and exact Pages deployment before registry activation.",
@@ -1737,6 +2284,7 @@ def implementation_acceptance_register() -> list[dict[str, Any]]:
                 "release-assurance/release-policy.json",
                 "scripts/check_release_policy.py",
                 "publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml",
+                "release-assurance/heritage-postmortem-publication-evidence.json",
             ],
             "acceptance_tests": [
                 "tests/test_release_policy.py",
@@ -1745,12 +2293,51 @@ def implementation_acceptance_register() -> list[dict[str, Any]]:
             "remaining_gate": "Create and verify the annotated tag, attested envelope, immutable release and retained archive for the promoted external candidate.",
         },
     ]
+    by_id = {item["id"]: item for item in items}
+    if current_evidence_verified(publication_evidence, "PUBEV-001"):
+        for item_id in ("IMP-005", "IMP-006"):
+            by_id[item_id]["status"] = "implemented-and-pr-70-verified"
+            by_id[item_id]["remaining_gate"] = (
+                "Nightly shadow evidence remains independent of the verified pull-request gate."
+            )
+    if current_evidence_verified(publication_evidence, "PUBEV-002"):
+        for item_id in ("IMP-001", "IMP-004"):
+            by_id[item_id]["status"] = "implemented-and-external-candidate-verified"
+            by_id[item_id]["remaining_gate"] = "Terminal public assurance remains required."
+    if current_evidence_verified(publication_evidence, "PUBEV-002", "PUBEV-003"):
+        by_id["IMP-007"]["status"] = "implemented-and-external-pages-verified"
+        by_id["IMP-007"]["remaining_gate"] = (
+            "Retain terminal release evidence for the exact published closure."
+        )
+        by_id["IMP-009"]["status"] = "implemented-external-pages-verified-promotion-pending"
+        by_id["IMP-009"]["remaining_gate"] = (
+            "Complete R1, terminal assurance and R2 before registry activation."
+        )
+    if current_evidence_verified(publication_evidence, "PUBEV-005"):
+        by_id["IMP-008"]["status"] = "implemented-and-terminal-link-closure-verified"
+        by_id["IMP-008"]["remaining_gate"] = (
+            "Scheduled freshness observations continue independently after promotion."
+        )
+    if current_evidence_verified(publication_evidence, "PUBEV-006"):
+        by_id["IMP-003"]["status"] = "implemented-and-terminal-envelope-verified"
+        by_id["IMP-003"]["remaining_gate"] = "No terminal promotion gate remains."
+    if current_evidence_verified(
+        publication_evidence, "PUBEV-002", "PUBEV-003", "PUBEV-004", "PUBEV-005", "PUBEV-006"
+    ):
+        by_id["IMP-009"]["status"] = "implemented-and-external-promotion-verified"
+        by_id["IMP-009"]["remaining_gate"] = "No terminal publication gate remains."
+        by_id["IMP-010"]["status"] = "implemented-and-terminal-release-verified"
+        by_id["IMP-010"]["remaining_gate"] = "No terminal release-integrity gate remains."
+    return items
 
 
-def architecture_decisions() -> list[dict[str, Any]]:
+def architecture_decisions(
+    publication_evidence: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     """Resolve the earlier Further Questions with the implemented policy."""
 
-    return [
+    publication_evidence = publication_evidence or load_current_publication_evidence()
+    items = [
         {
             "id": "ADR-001",
             "question": "Where should promotion/status metadata live?",
@@ -1825,6 +2412,7 @@ def architecture_decisions() -> list[dict[str, Any]]:
             "evidence": [
                 "publication-units/heritage-coventry-warwickshire/publication-unit.json",
                 "scripts/export_publication_unit.py",
+                "release-assurance/heritage-postmortem-publication-evidence.json",
             ],
         },
         {
@@ -1841,9 +2429,27 @@ def architecture_decisions() -> list[dict[str, Any]]:
                 "release-assurance/release-policy.json",
                 "scripts/check_release_policy.py",
                 "publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml",
+                "release-assurance/heritage-postmortem-publication-evidence.json",
             ],
         },
     ]
+    by_id = {item["id"]: item for item in items}
+    if current_evidence_verified(publication_evidence, "PUBEV-001"):
+        by_id["ADR-002"]["status"] = "implemented; PR #70 workflow evidence verified"
+    if current_evidence_verified(publication_evidence, "PUBEV-005"):
+        by_id["ADR-004"]["status"] = "implemented; terminal link closure verified"
+    if current_evidence_verified(publication_evidence, "PUBEV-002", "PUBEV-003"):
+        by_id["ADR-005"]["status"] = (
+            "implemented; external repository and Pages identity verified; promotion pending"
+        )
+    if current_evidence_verified(publication_evidence, "PUBEV-006"):
+        by_id["ADR-001"]["status"] = "implemented; terminal envelope verified"
+    if current_evidence_verified(
+        publication_evidence, "PUBEV-004", "PUBEV-005", "PUBEV-006"
+    ):
+        by_id["ADR-005"]["status"] = "implemented; external publication promoted"
+        by_id["ADR-006"]["status"] = "policy implemented; terminal releases verified"
+    return items
 
 
 def render_postmortem(
@@ -1851,6 +2457,7 @@ def render_postmortem(
     command_events: list[dict[str, Any]],
     runs: list[dict[str, Any]],
     cycles: list[dict[str, Any]],
+    publication_evidence: dict[str, Any],
 ) -> tuple[Path, str]:
     path = PUBLIC_ROOT / "postmortem.md"
     ci_runs = [item for item in runs if item["phase"] == "pull-request-ci"]
@@ -1879,7 +2486,7 @@ def render_postmortem(
         for category, count in sorted(command_counts.items(), key=lambda item: (-item[1], item[0]))
     ]
     acceptance_rows = []
-    for item in implementation_acceptance_register():
+    for item in implementation_acceptance_register(publication_evidence):
         artifacts = "<br>".join(
             f"[`{artifact}`](../../../{artifact})" for artifact in item["artifacts"]
         )
@@ -1898,7 +2505,7 @@ def render_postmortem(
             )
         )
     decision_rows = []
-    for item in architecture_decisions():
+    for item in architecture_decisions(publication_evidence):
         evidence_links = "<br>".join(
             f"[`{artifact}`](../../../{artifact})" for artifact in item["evidence"]
         )
@@ -2235,6 +2842,15 @@ def publication_decisions() -> list[dict[str, str]]:
             "status": "applied",
             "rationale": "The earlier open questions now control executable profile, CI, publication and release behavior.",
         },
+        {
+            "id": "PUB-009",
+            "decision": "Derive current rollout status only from normalized exact public evidence.",
+            "status": "applied",
+            "rationale": (
+                "PR #70, external Pages, R1, terminal and R2 remain pending until each "
+                "record contains all required identities, claims, timestamps and URLs."
+            ),
+        },
     ]
 
 
@@ -2261,6 +2877,7 @@ def write_public_package(
     runs: list[dict[str, Any]],
     cycles: list[dict[str, Any]],
     evidence: list[dict[str, Any]],
+    publication_evidence: dict[str, Any],
 ) -> list[Path]:
     metrics = report_metrics(exchanges, command_events, runs, cycles, evidence)
     expected: list[Path] = []
@@ -2300,9 +2917,12 @@ def write_public_package(
         "github-run-register.json": runs,
         "rebuild-cycle-register.json": cycles,
         "evidence-register.json": evidence,
+        "current-publication-evidence.json": publication_evidence,
         "report-metrics.json": metrics,
-        "implementation-acceptance-register.json": implementation_acceptance_register(),
-        "architecture-decisions.json": architecture_decisions(),
+        "implementation-acceptance-register.json": implementation_acceptance_register(
+            publication_evidence
+        ),
+        "architecture-decisions.json": architecture_decisions(publication_evidence),
         "publication-decisions.json": publication_decisions(),
     }
     for filename, value in data_values.items():
@@ -2312,10 +2932,10 @@ def write_public_package(
 
     pages = [
         render_index(metrics, exchanges),
-        render_postmortem(metrics, command_events, runs, cycles),
+        render_postmortem(metrics, command_events, runs, cycles, publication_evidence),
         render_timeline(cycles, runs),
-        render_architecture(),
-        render_evidence(evidence, runs),
+        render_architecture(publication_evidence),
+        render_evidence(evidence, runs, publication_evidence),
         render_methodology(metadata, metrics),
         render_conversation_summary(exchanges),
         render_reader(exchanges),
@@ -2392,6 +3012,17 @@ def validate_public_package(expected: list[Path] | None = None) -> dict[str, Any
         for label, pattern in FORBIDDEN_PUBLIC_PATTERNS.items():
             if pattern.search(text):
                 forbidden_hits.append(f"{public_path.relative_to(ROOT)}: {label}")
+
+    current_register_path = DATA_ROOT / "current-publication-evidence.json"
+    try:
+        expected_current = load_current_publication_evidence()
+        observed_current = load_json(current_register_path)
+        if observed_current != expected_current:
+            json_errors.append(
+                "data/current-publication-evidence.json differs from its normalized input"
+            )
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        json_errors.append(f"current publication evidence is invalid: {error}")
 
     manifest_path = DATA_ROOT / "generated-file-manifest.json"
     if manifest_path.exists():
@@ -2471,7 +3102,9 @@ def main() -> int:
     append_current_final(exchanges, args.current_final_response)
     runs = normalize_github_runs()
     cycles = build_rebuild_cycles()
+    publication_evidence = load_current_publication_evidence()
     evidence = private_evidence_register()
+    evidence.extend(public_current_evidence_records(publication_evidence, len(evidence)))
 
     if args.phase == "collect":
         print(
@@ -2480,7 +3113,15 @@ def main() -> int:
         )
         return 0
 
-    expected = write_public_package(exchanges, command_events, metadata, runs, cycles, evidence)
+    expected = write_public_package(
+        exchanges,
+        command_events,
+        metadata,
+        runs,
+        cycles,
+        evidence,
+        publication_evidence,
+    )
     # The generated-file manifest deliberately declares its own lint result.  Seed
     # that file before validating so a clean first build has the same closure as
     # every subsequent content-addressed rebuild.

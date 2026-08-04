@@ -29,6 +29,21 @@ def run_git(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def run_git_in(repository_root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    """Run Git against the candidate checkout, which may be separate from tooling."""
+
+    resolved = repository_root.resolve()
+    if resolved == ROOT:
+        return run_git(*args)
+    return subprocess.run(
+        ["git", *args],
+        cwd=resolved,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
 def run_gh(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["gh", *args],
@@ -44,6 +59,7 @@ def verify_attested_envelope(
     repository: str,
     *,
     signer_workflow: str,
+    signer_digest: str,
     source_ref: str,
     source_digest: str,
     repository_root: Path = ROOT,
@@ -74,6 +90,8 @@ def verify_attested_envelope(
         repository,
         "--signer-workflow",
         signer_workflow,
+        "--signer-digest",
+        signer_digest,
         "--source-ref",
         source_ref,
         "--source-digest",
@@ -100,6 +118,7 @@ def verify_attested_asset(
     repository: str,
     *,
     signer_workflow: str,
+    signer_digest: str,
     source_ref: str,
     source_digest: str,
 ) -> str:
@@ -111,6 +130,8 @@ def verify_attested_asset(
         repository,
         "--signer-workflow",
         signer_workflow,
+        "--signer-digest",
+        signer_digest,
         "--source-ref",
         source_ref,
         "--source-digest",
@@ -127,35 +148,82 @@ def verify_attested_asset(
 def validate_annotated_tag(
     tag: str,
     *,
-    attested_envelope: bool,
+    attestation_fallback: str | None,
+    repository_root: Path = ROOT,
 ) -> dict[str, str]:
-    object_type = run_git("cat-file", "-t", tag)
+    allowed_fallbacks = {
+        None,
+        "verified-archive-attestation",
+        "attested-promotion-envelope",
+    }
+    if attestation_fallback not in allowed_fallbacks:
+        raise RuntimeError("unsupported annotated-tag attestation fallback")
+    object_type = run_git_in(repository_root, "cat-file", "-t", tag)
     if object_type.returncode != 0:
         raise RuntimeError(f"release tag does not exist locally: {tag}")
     if object_type.stdout.strip() != "tag":
         raise RuntimeError(f"release tag must be annotated, not lightweight: {tag}")
-    signature = run_git("verify-tag", "--raw", tag)
-    signature_status = "verified"
-    if signature.returncode != 0 and not attested_envelope:
+    signature = run_git_in(repository_root, "verify-tag", "--raw", tag)
+    authentication = "verified-signature"
+    if signature.returncode != 0 and attestation_fallback is None:
         details = signature.stderr.strip() or signature.stdout.strip()
         raise RuntimeError(
-            "release tag signature is not verified and no validated attested "
-            f"promotion envelope was supplied: {tag}: {details}"
+            "release tag signature is not verified and no explicit validated "
+            f"attestation fallback was supplied: {tag}: {details}"
         )
     if signature.returncode != 0:
-        signature_status = "attested-promotion-envelope"
-    commit = run_git("rev-list", "-n", "1", tag)
+        authentication = str(attestation_fallback)
+    commit = run_git_in(repository_root, "rev-list", "-n", "1", tag)
     if commit.returncode != 0 or len(commit.stdout.strip()) < 40:
         raise RuntimeError(f"cannot resolve release tag commit: {tag}")
-    return {"tag": tag, "commit": commit.stdout.strip(), "signature": signature_status}
+    return {
+        "tag": tag,
+        "commit": commit.stdout.strip(),
+        "authentication": authentication,
+    }
 
 
 def validate_immutable_settings(settings: dict[str, object]) -> None:
+    """Validate optional operator-side capability evidence.
+
+    Release workflows deliberately do not call this administration endpoint: the
+    least-privilege GITHUB_TOKEN cannot read it.  Published release identity is
+    established by ``validate_release_json`` and verified release attestations.
+    """
+
     if settings.get("enabled") is not True:
         raise RuntimeError("GitHub immutable releases are not enabled")
     enforced = settings.get("enforced_by_owner")
     if not isinstance(enforced, bool):
         raise RuntimeError("GitHub immutable-release capability response is invalid")
+
+
+def validate_attestation_provenance(
+    *,
+    repository: str,
+    workflow: str,
+    workflow_ref: str,
+    workflow_commit: str,
+    source_ref: str,
+    source_commit: str,
+) -> None:
+    """Keep assurance-workflow provenance distinct from candidate provenance."""
+
+    for label, value in (
+        ("workflow", workflow_commit),
+        ("source", source_commit),
+    ):
+        if not re.fullmatch(r"[0-9a-f]{40}", value):
+            raise RuntimeError(
+                f"attestation assurance {label} commit is not a 40-hex SHA"
+            )
+    if not source_ref.startswith("refs/"):
+        raise RuntimeError("attestation assurance source ref is not a full Git ref")
+    expected = f"{repository}/.github/workflows/{workflow}@{source_ref}"
+    if workflow_ref != expected:
+        raise RuntimeError(
+            "attestation workflow ref differs from exact assurance workflow provenance"
+        )
 
 
 def sha256_file(path: Path) -> str:
@@ -282,6 +350,19 @@ def validate_release_attestation_json(
 def validate_policy_shape(policy: dict[str, object]) -> None:
     if policy.get("schema") != "okf-release-policy.v2":
         raise RuntimeError("unsupported local release policy")
+    github = policy.get("github")
+    if not isinstance(github, dict) or {
+        "immutable_releases_required": github.get("immutable_releases_required"),
+        "immutable_release_evidence": github.get("immutable_release_evidence"),
+        "administration_read_required": github.get("administration_read_required"),
+    } != {
+        "immutable_releases_required": True,
+        "immutable_release_evidence": (
+            "post-publication-release-json-and-gh-release-verify"
+        ),
+        "administration_read_required": False,
+    }:
+        raise RuntimeError("release policy does not enforce least-privilege immutability")
     closure = policy.get("closure")
     if not isinstance(closure, dict) or closure != {
         "envelope_subject": "candidate-release",
@@ -306,7 +387,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--phase", choices=("candidate", "promotion"), default="promotion")
     parser.add_argument("--tag", required=True)
     parser.add_argument("--candidate-tag")
-    parser.add_argument("--immutable-settings", type=Path, required=True)
+    parser.add_argument(
+        "--immutable-settings",
+        type=Path,
+        help=(
+            "optional operator-supplied immutable-release capability response; "
+            "workflow authority comes from post-publication release JSON"
+        ),
+    )
     parser.add_argument(
         "--attested-envelope",
         type=Path,
@@ -319,8 +407,18 @@ def main(argv: list[str] | None = None) -> int:
         help="OWNER/REPO attestation source",
     )
     parser.add_argument("--repository-root", type=Path, default=ROOT)
+    parser.add_argument(
+        "--source-repository-root",
+        type=Path,
+        default=ROOT,
+        help="Git checkout containing the annotated candidate and promotion tags",
+    )
     parser.add_argument("--publication-root", type=Path)
     parser.add_argument("--attested-archive", type=Path)
+    parser.add_argument("--attestation-workflow-ref", required=True)
+    parser.add_argument("--attestation-workflow-commit", required=True)
+    parser.add_argument("--attestation-source-ref", required=True)
+    parser.add_argument("--attestation-source-commit", required=True)
     parser.add_argument("--release-json", type=Path)
     parser.add_argument(
         "--release-attestation-json",
@@ -338,8 +436,9 @@ def main(argv: list[str] | None = None) -> int:
     policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
     validate_policy_shape(policy)
     validate_tag_pattern(policy, args.phase, args.tag)
-    settings = json.loads(args.immutable_settings.read_text(encoding="utf-8"))
-    validate_immutable_settings(settings)
+    if args.immutable_settings is not None:
+        settings = json.loads(args.immutable_settings.read_text(encoding="utf-8"))
+        validate_immutable_settings(settings)
     if bool(args.release_json) != bool(args.release_attestation_json):
         raise RuntimeError(
             "post-publication verification requires both --release-json and "
@@ -366,23 +465,45 @@ def main(argv: list[str] | None = None) -> int:
     elif release_assets:
         raise RuntimeError("--release-asset is only valid for post-publication verification")
 
+    workflow_name = (
+        "candidate-release.yml" if args.phase == "candidate" else "promotion-release.yml"
+    )
+    validate_attestation_provenance(
+        repository=args.repository,
+        workflow=workflow_name,
+        workflow_ref=args.attestation_workflow_ref,
+        workflow_commit=args.attestation_workflow_commit,
+        source_ref=args.attestation_source_ref,
+        source_commit=args.attestation_source_commit,
+    )
+    immutability = (
+        "verified-post-publication" if args.release_json else "deferred-post-publication"
+    )
+
     if args.phase == "candidate":
         if args.attested_archive is None:
             raise RuntimeError("candidate phase requires --attested-archive")
-        identity = validate_annotated_tag(args.tag, attested_envelope=True)
+        identity = validate_annotated_tag(
+            args.tag,
+            attestation_fallback="verified-archive-attestation",
+            repository_root=args.source_repository_root,
+        )
         archive_sha256 = verify_attested_asset(
             args.attested_archive,
             args.repository,
             signer_workflow=(
                 f"github.com/{args.repository}/.github/workflows/candidate-release.yml"
             ),
-            source_ref=f"refs/tags/{args.tag}",
-            source_digest=identity["commit"],
+            signer_digest=args.attestation_workflow_commit,
+            source_ref=args.attestation_source_ref,
+            source_digest=args.attestation_source_commit,
         )
         print(
             "candidate release policy passed: "
             f"tag={identity['tag']} commit={identity['commit']} "
-            f"signature={identity['signature']} immutable_releases=enabled "
+            f"tag_authentication={identity['authentication']} "
+            f"immutability={immutability} "
+            f"attestation_workflow_commit={args.attestation_workflow_commit} "
             f"archive_sha256={archive_sha256}"
         )
         return 0
@@ -398,17 +519,24 @@ def main(argv: list[str] | None = None) -> int:
     )
     validate_tag_pattern(policy, "candidate", args.candidate_tag)
     candidate_identity = validate_annotated_tag(
-        args.candidate_tag, attested_envelope=True
+        args.candidate_tag,
+        attestation_fallback="attested-promotion-envelope",
+        repository_root=args.source_repository_root,
     )
-    promotion_identity = validate_annotated_tag(args.tag, attested_envelope=True)
+    promotion_identity = validate_annotated_tag(
+        args.tag,
+        attestation_fallback="attested-promotion-envelope",
+        repository_root=args.source_repository_root,
+    )
     attestation = verify_attested_envelope(
         args.attested_envelope,
         args.repository,
         signer_workflow=(
             f"github.com/{args.repository}/.github/workflows/promotion-release.yml"
         ),
-        source_ref=f"refs/tags/{args.tag}",
-        source_digest=promotion_identity["commit"],
+        signer_digest=args.attestation_workflow_commit,
+        source_ref=args.attestation_source_ref,
+        source_digest=args.attestation_source_commit,
         repository_root=args.repository_root.resolve(),
         publication_root=args.publication_root.resolve(),
     )
@@ -423,7 +551,9 @@ def main(argv: list[str] | None = None) -> int:
     print(
         "promotion release policy passed: "
         f"candidate_tag={candidate_identity['tag']} promotion_tag={promotion_identity['tag']} "
-        f"commit={candidate_identity['commit']} immutable_releases=enabled "
+        f"commit={candidate_identity['commit']} immutability={immutability} "
+        f"tag_authentication={promotion_identity['authentication']} "
+        f"attestation_workflow_commit={args.attestation_workflow_commit} "
         f"envelope_sha256={attestation['envelope_sha256']}"
     )
     return 0

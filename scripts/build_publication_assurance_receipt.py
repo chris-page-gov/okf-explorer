@@ -215,6 +215,28 @@ def build_release(args: argparse.Namespace) -> dict[str, Any]:
         or not isinstance(subject, dict)
     ):
         raise RuntimeError("candidate release requires a passed validation receipt")
+    for label, value in (
+        ("attestation workflow ref", args.attestation_workflow_ref),
+        ("attestation source ref", args.attestation_source_ref),
+    ):
+        if not isinstance(value, str) or not value:
+            raise RuntimeError(f"candidate release requires {label}")
+    expected_workflow_ref = (
+        f"{subject['repository']}/.github/workflows/candidate-release.yml@"
+        f"{args.attestation_source_ref}"
+    )
+    if args.attestation_workflow_ref != expected_workflow_ref:
+        raise RuntimeError("candidate release attestation workflow ref differs")
+    for label, value in (
+        ("workflow", args.attestation_workflow_commit),
+        ("source", args.attestation_source_commit),
+    ):
+        if (
+            not isinstance(value, str)
+            or len(value) != 40
+            or any(character not in "0123456789abcdef" for character in value)
+        ):
+            raise RuntimeError(f"attestation {label} commit must be a 40-hex Git SHA")
     archive = args.archive.resolve()
     return {
         "schema": "okf-candidate-release-receipt.v1",
@@ -231,6 +253,10 @@ def build_release(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": sha256_file(archive),
             "attestation_url": args.attestation_url,
             "attestation_issuer": args.attestation_issuer,
+            "attestation_workflow_ref": args.attestation_workflow_ref,
+            "attestation_workflow_commit": args.attestation_workflow_commit,
+            "attestation_source_ref": args.attestation_source_ref,
+            "attestation_source_commit": args.attestation_source_commit,
         },
     }
 
@@ -259,6 +285,10 @@ def parser() -> argparse.ArgumentParser:
     release.add_argument("--archive", type=Path, required=True)
     release.add_argument("--attestation-url", required=True)
     release.add_argument("--attestation-issuer", required=True)
+    release.add_argument("--attestation-workflow-ref", required=True)
+    release.add_argument("--attestation-workflow-commit", required=True)
+    release.add_argument("--attestation-source-ref", required=True)
+    release.add_argument("--attestation-source-commit", required=True)
     release.add_argument("--observed-at")
     release.add_argument("--output", type=Path, required=True)
     return root

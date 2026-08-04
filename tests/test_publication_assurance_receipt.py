@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import build_publication_assurance_receipt as assurance  # noqa: E402
+import check_promotion_envelope as r1_promotion_validator  # noqa: E402
 import materialize_promotion_envelope as materialize  # noqa: E402
 
 
@@ -111,6 +112,50 @@ class PublicationAssuranceReceiptTests(unittest.TestCase):
                 )
                 self.assertEqual(sha256(retained), row["result_sha256"])
 
+    def test_candidate_release_separates_subject_and_workflow_commits(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            validation = root / "validation.json"
+            archive = root / "candidate.tar.gz"
+            validation.write_text(
+                json.dumps(
+                    {
+                        "schema": "okf-publication-validation-receipt.v1",
+                        "status": "passed",
+                        "subject": {
+                            "repository": "owner/repository",
+                            "candidate_tag": "candidate-tag",
+                            "source_commit": "a" * 40,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            archive.write_bytes(b"candidate")
+            receipt = assurance.build_release(
+                argparse.Namespace(
+                    validation_receipt=validation,
+                    archive=archive,
+                    attestation_url="https://example.test/attestation",
+                    attestation_issuer="https://example.test/issuer",
+                    attestation_workflow_ref=(
+                        "owner/repository/.github/workflows/"
+                        "candidate-release.yml@refs/heads/main"
+                    ),
+                    attestation_workflow_commit="b" * 40,
+                    attestation_source_ref="refs/heads/main",
+                    attestation_source_commit="b" * 40,
+                    observed_at="2026-08-04T10:01:00Z",
+                )
+            )
+            self.assertEqual("a" * 40, receipt["subject"]["source_commit"])
+            self.assertEqual(
+                "b" * 40, receipt["archive"]["attestation_workflow_commit"]
+            )
+            self.assertEqual(
+                "b" * 40, receipt["archive"]["attestation_source_commit"]
+            )
+
     def test_materializer_binds_manifest_and_resolves_every_raw_result(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             repository = Path(directory)
@@ -174,6 +219,13 @@ class PublicationAssuranceReceiptTests(unittest.TestCase):
                             "sha256": "9" * 64,
                             "attestation_url": "https://example.test/attestation",
                             "attestation_issuer": "https://example.test/issuer",
+                            "attestation_workflow_ref": (
+                                "owner/repository/.github/workflows/"
+                                "candidate-release.yml@refs/heads/main"
+                            ),
+                            "attestation_workflow_commit": "b" * 40,
+                            "attestation_source_ref": "refs/heads/main",
+                            "attestation_source_commit": "b" * 40,
                         },
                     }
                 ),
@@ -284,6 +336,39 @@ class PublicationAssuranceReceiptTests(unittest.TestCase):
             self.assertEqual(
                 sha256(publication_manifest),
                 envelope["subject"]["site_artifact"]["manifest_sha256"],
+            )
+            r1_schema_path = (
+                ROOT
+                / "evaluation-foundry/schemas/"
+                "okf-evaluation-promotion-envelope.v1.schema.json"
+            )
+            r1_validator_path = ROOT / "scripts/check_promotion_envelope.py"
+            self.assertEqual(
+                "9536391add07e0c165a344476368e8563090330f7b77b0c33c6c852fb7e07fc6",
+                sha256(r1_schema_path),
+                "the versioned v1 schema must remain the exact R1 candidate schema",
+            )
+            self.assertEqual(
+                "bd1bad9fc4617d1b4e82899341362f56292868f385072ff356eddf660eed0075",
+                sha256(r1_validator_path),
+                "the regression must use the validator shipped by exact R1",
+            )
+            r1_schema = json.loads(r1_schema_path.read_text(encoding="utf-8"))
+            r1_promotion_validator.Draft202012Validator.check_schema(r1_schema)
+            validator = r1_promotion_validator.Draft202012Validator(
+                r1_schema,
+                format_checker=r1_promotion_validator.FormatChecker(),
+            )
+            self.assertEqual(
+                [],
+                r1_promotion_validator.rendered_schema_errors(
+                    "R2 envelope under exact R1 v1 schema", envelope, validator
+                ),
+            )
+            self.assertEqual(
+                {"kind", "asset", "url", "subject_digest", "issuer"},
+                set(envelope["attestations"][0]),
+                "workflow provenance belongs in the detached receipt/sidecar, not v1",
             )
 
             (evidence / "journey-webkit-results.json").unlink()
