@@ -81,6 +81,10 @@ APIs exemplar, and related large-corpus OKF packs.
 - [Coventry and Warwickshire heritage evaluation report](heritage-evaluation-report.md)
   records the source scope, feature evidence, limitations, link checks,
   consumer journeys and the extra value provided by the YAML-LD extension.
+- [Heritage Evaluation Foundry engineering postmortem](postmortems/heritage-foundry-2026/index.md)
+  reconstructs the complete prompt-response, local-build, pull-request,
+  deployment and release process; it identifies late-discovery amplification
+  and proposes a dependency-planned, selective-rerun architecture.
 - [UK Legislation architecture](uk-legislation-okf.md) documents the complete work catalogue, legal ontology, progressive provision resolver, official access methods and barrister-oriented AI evaluation contract.
 - [OKF pack parity](okf-pack-parity.md) keeps the UK Government APIs and GOV.UK
   CKAN packs aligned as paired exemplars.

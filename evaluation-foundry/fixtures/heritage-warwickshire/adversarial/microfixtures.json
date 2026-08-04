@@ -1,0 +1,143 @@
+{
+  "$schema": "../../../schemas/heritage-adversarial-microfixtures.v1.schema.json",
+  "schema": "okf-heritage-adversarial-microfixtures.v1",
+  "profile_id": "heritage-coventry-warwickshire",
+  "stage": "preflight-before-tiny-and-full",
+  "description": "Tiny, deterministic counterexamples reconstructed from every late finding in the 2026 Heritage Evaluation Foundry implementation.",
+  "cases": [
+    {
+      "id": "LF01-har-route-and-annual-continuity",
+      "late_finding": "HAR resource routes and same-year event sheets could produce invalid links.",
+      "validator": "har_continuity",
+      "planes": ["resource", "relationship"],
+      "test_tags": ["heritage", "microfixture", "continuity"],
+      "input": {"years": [2024, 2025, 2025]},
+      "expected": {"revision_edges": 1, "strictly_newer_source": true}
+    },
+    {
+      "id": "LF02-source-native-record-route",
+      "late_finding": "The selected-record loader assumed every route started with dataset/.",
+      "validator": "source_native_route",
+      "planes": ["app", "data"],
+      "test_tags": ["heritage", "microfixture", "routing"],
+      "input": {"route": "asset/1342941"},
+      "expected": {"locator_authoritative": true, "dataset_prefix_required": false}
+    },
+    {
+      "id": "LF03-yaml-ld-and-presentation-coverage",
+      "late_finding": "YAML-LD keyword quoting and executable Links/Narrative coverage were incomplete.",
+      "validator": "yaml_ld_presentation",
+      "planes": ["semantic", "presentation", "evaluation-control"],
+      "test_tags": ["heritage", "microfixture", "yaml-ld", "journey"],
+      "input": {"required_keywords": ["@context", "@id", "@type"], "required_views": ["Links", "Narrative"]},
+      "expected": {"keywords_round_trip": true, "views_exercised": true}
+    },
+    {
+      "id": "LF04-publication-capacity-boundary",
+      "late_finding": "The assembled Site was close to the one-billion-byte Pages limit.",
+      "validator": "publication_capacity",
+      "planes": ["site-data", "promotion"],
+      "test_tags": ["heritage", "microfixture", "capacity"],
+      "input": {"shell_bytes": 988193432, "new_pack_bytes": 15000000, "limit_bytes": 1000000000},
+      "expected": {"inline_allowed": false, "external_pack_required": true}
+    },
+    {
+      "id": "LF05-ephemeral-evidence-exclusion",
+      "late_finding": "Ignored evaluator results were copied into the Site.",
+      "validator": "ephemeral_exclusion",
+      "planes": ["evidence", "site-reading"],
+      "test_tags": ["heritage", "microfixture", "site-inputs"],
+      "input": {
+        "excluded": [
+          "evaluation/heritage/results/results.json",
+          "evaluation-foundry/fixtures/heritage-warwickshire/results/results.md"
+        ],
+        "included": [
+          "evaluation/heritage/data/manifest.json",
+          "evaluation-foundry/fixtures/heritage-warwickshire/profile.md"
+        ]
+      },
+      "expected": {"ephemeral_is_public_input": false}
+    },
+    {
+      "id": "LF06-crs-provenance-mismatch",
+      "late_finding": "WGS84 source geometry was incorrectly labelled EPSG:27700.",
+      "validator": "crs_provenance",
+      "planes": ["data", "semantic"],
+      "test_tags": ["heritage", "microfixture", "provenance", "map"],
+      "input": {"declared_crs": "EPSG:27700", "arcgis_out_sr": "4326"},
+      "expected": {"accepted": false, "error_contains": "conflicts"}
+    },
+    {
+      "id": "LF07-authority-only-geographic-scope",
+      "late_finding": "Cumbria rows matched only because Warwick Bridge contained Warwick.",
+      "validator": "authority_scope",
+      "planes": ["data", "search", "semantic"],
+      "test_tags": ["heritage", "microfixture", "scope"],
+      "input": {
+        "row": {
+          "Locality": "Warwick Bridge",
+          "Civil Parish": "Wetheral",
+          "County": "Cumbria",
+          "Local Planning Authority": "Carlisle City Council"
+        }
+      },
+      "expected": {"scope_memberships": 0}
+    },
+    {
+      "id": "LF08-bounded-public-search-boot",
+      "late_finding": "The first deployed candidate did not expose Search within the action bound.",
+      "validator": "public_search_bound",
+      "planes": ["app", "presentation", "promotion"],
+      "test_tags": ["heritage", "microfixture", "boot", "journey"],
+      "journey_groups": ["terminal-release"],
+      "input": {"journey_id": "journey-faithful", "action": "search", "maximum_sequence": 1},
+      "expected": {"within_bound": true}
+    },
+    {
+      "id": "LF09-project-root-routing",
+      "late_finding": "Reading links, slashless Pages roots and the 404 shell assumed account-root paths.",
+      "validator": "project_root",
+      "planes": ["app", "site-reading"],
+      "test_tags": ["heritage", "microfixture", "project-base"],
+      "input": {"project_path": "/okf-explorer", "slashless_path": "/okf-explorer", "not_found_target": "./"},
+      "expected": {"project_relative": true}
+    },
+    {
+      "id": "LF10-descriptor-closure-binding",
+      "late_finding": "A stable descriptor could hide a changed executable closure.",
+      "validator": "closure_binding",
+      "planes": ["promotion", "site-data"],
+      "test_tags": ["heritage", "microfixture", "identity"],
+      "input": {"descriptor_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "expected_release_root": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "observed_release_root": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+      "expected": {"accepted": false}
+    },
+    {
+      "id": "LF11-evidence-outside-candidate",
+      "late_finding": "Putting terminal evidence in the Site created an observation-to-candidate hash loop.",
+      "validator": "evidence_separation",
+      "planes": ["evidence", "promotion"],
+      "test_tags": ["heritage", "microfixture", "candidate-root"],
+      "input": {"candidate": {"release_root_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}, "observations": [{"observed_at": "2026-08-03T12:00:00Z"}, {"observed_at": "2026-08-04T12:00:00Z"}]},
+      "expected": {"candidate_root_changes": false}
+    },
+    {
+      "id": "LF12-registry-projection-lockstep",
+      "late_finding": "The YAML-LD registry entry required synchronized generated projections.",
+      "validator": "registry_lockstep",
+      "planes": ["semantic", "app", "site-data"],
+      "test_tags": ["heritage", "microfixture", "registry"],
+      "input": {"required_projections": ["okf-registry.json", "apps/okf-explorer/static/okf-registry.json", "okf-registry.jsonld"]},
+      "expected": {"synchronized": true}
+    },
+    {
+      "id": "LF13-release-asset-basename-collision",
+      "late_finding": "Generic results.json and results.md basenames collided during release upload.",
+      "validator": "release_asset_names",
+      "planes": ["evidence", "promotion"],
+      "test_tags": ["heritage", "microfixture", "release"],
+      "input": {"paths": ["faithful/results.json", "tiny/results.json", "synthetic/results.md"]},
+      "expected": {"raw_basenames_unique": false, "planned_names_unique": true}
+    }
+  ]
+}

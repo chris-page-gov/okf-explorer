@@ -1,0 +1,62 @@
+{
+  "schema": "okf-evaluation-promotion-envelope.v1",
+  "envelope_id": "heritage-coventry-warwickshire-publication",
+  "state": "draft-local",
+  "subject": {
+    "publication_unit": "heritage-coventry-warwickshire",
+    "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+    "source_commit": "pending",
+    "tag": "heritage-coventry-warwickshire-20260804",
+    "release_url": "pending",
+    "descriptor": {"path": "okf-explorer.json", "sha256": "pending"},
+    "bundles": [
+      {"path": "okf-bundle.jsonld", "sha256": "pending"},
+      {"path": "okf-bundle.yamlld", "sha256": "pending"}
+    ],
+    "plane_roots": {
+      "path": "assurance/plane-roots.json",
+      "sha256": "pending",
+      "release_root_sha256": "pending"
+    },
+    "build_manifest": {
+      "path": "assurance/build-manifest.json",
+      "sha256": "pending"
+    },
+    "site_artifact": {
+      "manifest_path": "publication-unit-manifest.json",
+      "manifest_sha256": "pending",
+      "tree_sha256": "pending",
+      "file_count": "pending"
+    }
+  },
+  "promotion_container": {
+    "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+    "tag": "pending",
+    "release_url": "pending",
+    "envelope_asset": "heritage-publication-envelope.json",
+    "attestation_sidecar_asset": "heritage-publication-envelope.attestation.json",
+    "status_claim": "identity-only",
+    "verification_after_publish": true
+  },
+  "receipts": {
+    "validation": {"ref": "pending", "sha256": "pending", "observed_at": "pending"},
+    "journey": {"ref": "pending", "sha256": "pending", "observed_at": "pending"},
+    "link_observations": [
+      {"ref": "pending", "sha256": "pending", "observed_at": "pending"}
+    ]
+  },
+  "attestations": [
+    {
+      "kind": "github-artifact-attestation",
+      "asset": "pending",
+      "url": "pending",
+      "subject_digest": "pending",
+      "issuer": "pending"
+    }
+  ],
+  "signature": {
+    "mechanism": "pending",
+    "identity": "pending",
+    "reference": "pending"
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "PUB-001",
+    "decision": "Keep raw Codex, GitHub and deployment evidence out of Git.",
+    "status": "applied",
+    "rationale": "Raw logs contain local paths and high-volume operational detail; public hashes preserve auditability."
+  },
+  {
+    "id": "PUB-002",
+    "decision": "Publish all visible user prompts and assistant commentary/final responses.",
+    "status": "applied",
+    "rationale": "This is the requested contribution and process trace; hidden reasoning and tool payloads are not conversation output."
+  },
+  {
+    "id": "PUB-003",
+    "decision": "Retain public GitHub PR, run, release and source URLs.",
+    "status": "applied",
+    "rationale": "They are the strongest independently inspectable timeline evidence."
+  },
+  {
+    "id": "PUB-004",
+    "decision": "Correct the release description from immutable to digest-bound/frozen-by-policy.",
+    "status": "applied",
+    "rationale": "GitHub reports isImmutable=false and the tag is lightweight."
+  },
+  {
+    "id": "PUB-005",
+    "decision": "Preserve exact deployment archives privately and publish two hashes for each.",
+    "status": "applied",
+    "rationale": "The one-day GitHub retention expired shortly after collection; gzip is lossless and the payload hash proves recovery."
+  },
+  {
+    "id": "PUB-006",
+    "decision": "Use repository Markdown/YAML-LD as the canonical postmortem source.",
+    "status": "applied",
+    "rationale": "It follows repository source-of-truth rules and is rendered by the existing Site pipeline."
+  },
+  {
+    "id": "PUB-007",
+    "decision": "Distinguish local implementation acceptance from public promotion.",
+    "status": "applied",
+    "rationale": "Unverified external URLs, observations, attestations and release metrics must not be inferred from local success."
+  },
+  {
+    "id": "PUB-008",
+    "decision": "Record the five architecture resolutions and release policy as machine-readable decisions.",
+    "status": "applied",
+    "rationale": "The earlier open questions now control executable profile, CI, publication and release behavior."
+  }
+]

@@ -17,6 +17,7 @@ other public HTTPS URL. These hosted examples open without installation:
 
 | Example | What it demonstrates | Open |
 |---|---|---|
+| Coventry and Warwickshire heritage | Complete source-backed regional coverage, typo-tolerant search, YAML-LD/JSON-LD graph semantics, tiny assurance and an isolated synthetic supplement | [Open Explorer][heritage-example] · [External publication unit][heritage-pack] |
 | UK Whole-Law OKF | Overview-first federation with explicit child authority, coverage, freshness and recovery routes | [Open Explorer][whole-law-example] · [Federation contract][federation-docs] |
 | ONS data discovery OKF | Metadata-only ONS discovery across 5,097 records, with compact facets, static search, standards evidence and explicit coverage | [Open Explorer][ons-example] · [Source pack][ons-pack] |
 | UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalization and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
@@ -62,6 +63,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Use the OKF Foundry prompts to research a domain, then build and publish its
   bundle][authoring-prompt-kit]
 - [Use the Evaluation Foundry and YAML-LD heritage exemplar][evaluation-foundry-guide]
+- [Review the evidence-backed Heritage Foundry engineering postmortem][heritage-postmortem]
 
 The ONS example is the primary no-install demonstration: the Explorer is hosted
 by this repository, while the bundle descriptor, search indexes and generated
@@ -132,9 +134,12 @@ The repository contains:
 - `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
 - `evaluation-foundry/` - schemas, reversible mappings, coverage evidence,
   journeys and question suites for functionality evaluations.
-- `evaluation/heritage/` - the faithful Coventry and Warwickshire heritage
-  evaluation corpus, its tiny assurance fixture and its isolated synthetic
-  capability supplement.
+- `evaluation/heritage/` - the canonical source copy of the faithful Coventry
+  and Warwickshire heritage evaluation corpus, its tiny assurance fixture and
+  its isolated synthetic supplement; its public bytes are owned by the
+  independent heritage publication unit rather than the Explorer Site.
+- `publication-units/` - independently rooted data-publication descriptors,
+  deterministic export rules and reviewed repository workflow templates.
 - `docs/heritage-evaluation-report.md` - the beginner-readable exemplar report,
   including the additive YAML-LD design and publication boundary.
 - `docs/uk-legislation/` - maintained UK Legislation documentation spine with getting-started guidance, personas, user journeys, an illustrated manual, agent research rules, evaluation and refresh instructions.
@@ -279,13 +284,12 @@ python3 scripts/build_uk_government_api_okf.py --check
 python3 scripts/check_legislation_okf.py
 python3 scripts/build_legislation_evaluation.py
 python3 scripts/check_evaluation_foundry.py
-python3 scripts/build_heritage_evaluation.py --check
-python3 scripts/build_heritage_evaluation.py --check \
-  --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json \
-  --output evaluation/heritage/tiny
-python3 scripts/build_heritage_evaluation.py --check \
-  --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json \
-  --output evaluation/heritage/synthetic
+python3 scripts/check_heritage_adversarial.py
+python3 scripts/retarget_heritage_source_snapshots.py --check
+python3 scripts/build_heritage_evaluation.py --fixture all --check
+python3 scripts/export_publication_unit.py \
+  --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
+  --check
 python3 scripts/build_okf_registry.py --check
 python3 scripts/check_documentation_lockstep.py
 python3 scripts/build_okf_bundle.py --check
@@ -300,15 +304,17 @@ The build writes a GitHub Pages-ready static site to `_site/`. The site uses a
 root redirect into the Svelte Explorer, publishes the Svelte Explorer under
 `next/`, publishes the compatibility Explorer under `legacy/`, preserves
 `viewer.html` and `view.html`, publishes the UK Government APIs large-corpus
-descriptor, and copies the public OKF Markdown corpus beside it.
-The legislation work catalogue, ontology documentation, legal-answer evaluation
-suite and all three deliberately separated heritage evaluation corpora are also
-published.
+descriptor, and copies the public OKF Markdown corpus beside it. The legislation
+work catalogue, ontology documentation and legal-answer evaluation suite are
+also published. The large heritage corpus is excluded: the main Site emits only
+small compatibility pages that point to its independently rooted publication.
 
 To regenerate the heritage evaluation from its frozen, network-independent
-source snapshots, run the same three `build_heritage_evaluation.py` commands
-without `--check`. Live source acquisition is a separate, reviewable step; CI
-never refreshes mutable upstream data.
+source snapshots, run `python3 scripts/build_heritage_evaluation.py --fixture
+all`. Plane and path selectors permit bounded rebuilds; unchanged files are not
+rewritten. Live source acquisition and scheduled link observation are separate,
+reviewable steps, so CI never refreshes mutable upstream data inside candidate
+bytes.
 
 To regenerate the explorer bundle after Markdown changes:
 
@@ -349,6 +355,8 @@ The included workflow publishes the static site from `_site/` when pushed to
 Pages to use **GitHub Actions** as the source.
 
 [ckan-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview
+[heritage-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json&view=reader#overview
+[heritage-pack]: https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire
 [ons-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&view=reader#overview
 [ons-pack]: https://github.com/chris-page-gov/okf-ons
 [uk-government-apis-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&view=reader#overview
@@ -372,3 +380,4 @@ Pages to use **GitHub Actions** as the source.
 [bundle-authoring]: https://chris-page-gov.github.io/okf-explorer/docs/okf-bundle-authoring.html
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html
 [evaluation-foundry-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html
+[heritage-postmortem]: https://chris-page-gov.github.io/okf-explorer/docs/postmortems/heritage-foundry-2026/

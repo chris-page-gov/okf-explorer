@@ -8,123 +8,318 @@ permissions:
   contents: read
 
 jobs:
-  okf-explorer-ci:
+  impact-plan:
     runs-on: ubuntu-latest
+    outputs:
+      python: ${{ steps.plan.outputs.python || 'true' }}
+      app: ${{ steps.plan.outputs.app || 'true' }}
+      browser_targeted: ${{ steps.plan.outputs.browser_targeted || 'true' }}
+      browser_full: ${{ steps.plan.outputs.browser_full || 'true' }}
+      foundry: ${{ steps.plan.outputs.foundry || 'true' }}
+      site: ${{ steps.plan.outputs.site || 'true' }}
+      docs: ${{ steps.plan.outputs.docs || 'true' }}
+      release: ${{ steps.plan.outputs.release || 'true' }}
+      fixtures: ${{ steps.plan.outputs.fixtures || '["adversarial","tiny","faithful","synthetic"]' }}
+      builder_fixtures: ${{ steps.plan.outputs.builder_fixtures || '["tiny","faithful","synthetic"]' }}
+      builder_planes: ${{ steps.plan.outputs.builder_planes || '["control","data","search","semantic","presentation"]' }}
+      test_tags: ${{ steps.plan.outputs.test_tags || '[]' }}
+      journey_groups: ${{ steps.plan.outputs.journey_groups || '[]' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
-        with:
-          version: 10
-
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
-
-      - name: Install OKF Explorer dependencies
-        working-directory: apps/okf-explorer
-        run: pnpm install --frozen-lockfile
-
-      - name: Validate Svelte OKF Explorer
-        working-directory: apps/okf-explorer
-        run: pnpm check
-
-      - name: Run OKF Explorer tests
-        working-directory: apps/okf-explorer
-        run: pnpm test
-
-      - name: Check CycloneDX dependency inventory
-        working-directory: apps/okf-explorer
-        run: pnpm sbom:check
-
-      - name: Prove deterministic Svelte OKF Explorer build
-        working-directory: apps/okf-explorer
-        run: pnpm build:determinism
-
-      - name: Install Firefox and WebKit browser dependencies
-        working-directory: apps/okf-explorer
-        run: pnpm exec playwright install --with-deps firefox webkit
-
-      - name: Run Chrome, Firefox and WebKit browser tests
-        working-directory: apps/okf-explorer
-        run: pnpm test:e2e
-
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
+      - name: Install impact-planner dependency
+        run: python3 -m pip install "ruamel.yaml>=0.19,<0.20"
+      - name: Build fail-closed impact plan
+        id: plan
+        run: >-
+          python3 scripts/plan_evaluation_foundry_impact.py
+          --changed-from "origin/${{ github.event.pull_request.base.ref || 'main' }}"
+          --output impact-plan.json
+          --github-output "$GITHUB_OUTPUT"
+          --explain
+      - name: Upload impact plan
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: impact-plan
+          path: impact-plan.json
 
+  adversarial-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Install microfixture dependencies
+        run: python3 -m pip install -r requirements-okf.txt
+      - name: Reject all reconstructed late-finding classes
+        run: >-
+          python3 scripts/check_heritage_adversarial.py
+          --output "$RUNNER_TEMP/adversarial-results.json"
+      - name: Upload deterministic adversarial receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: adversarial-gate-results
+          path: ${{ runner.temp }}/adversarial-results.json
+
+  python-contracts:
+    needs: [impact-plan, adversarial-gate]
+    if: needs.impact-plan.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
       - name: Install semantic OKF dependencies
         run: python3 -m pip install -r requirements-okf.txt
-
-      - name: Validate Evaluation Foundry fixtures
-        run: python3 scripts/check_evaluation_foundry.py
-
-      - name: Validate generated heritage evaluation corpora
-        run: |
-          python3 scripts/build_heritage_evaluation.py --check
-          python3 scripts/build_heritage_evaluation.py --check \
-            --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json \
-            --output evaluation/heritage/tiny
-          python3 scripts/build_heritage_evaluation.py --check \
-            --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json \
-            --output evaluation/heritage/synthetic
-
-      - name: Run OKF generator tests
+      - name: Run deterministic Python contracts
         run: python3 -m unittest discover -s tests
-
-      - name: Validate YAML-LD registry and constraint ledger
+      - name: Validate YAML-LD registry and constraints
         run: |
           python3 scripts/build_okf_registry.py --check
           python3 scripts/check_source_constraints.py
+      - name: Validate impacted candidate planes
+        env:
+          IMPACT_BUILDER_FIXTURES: ${{ needs.impact-plan.outputs.builder_fixtures }}
+          IMPACT_BUILDER_PLANES: ${{ needs.impact-plan.outputs.builder_planes }}
+        run: >-
+          python3 scripts/check_impacted_heritage_evaluation.py
+          --fixtures-json "$IMPACT_BUILDER_FIXTURES"
+          --planes-json "$IMPACT_BUILDER_PLANES"
 
-      - name: Generate UK Government API corpus from fixtures
-        run: |
-          python3 scripts/build_uk_government_api_okf.py \
-            --source tests/fixtures/uk_government_api_okf/api_catalogue.csv \
-            --ckan-fixture tests/fixtures/uk_government_api_okf/ckan_package_search.json \
-            --os-fixture tests/fixtures/uk_government_api_okf/os_api_tree.json \
-            --ons-fixture tests/fixtures/uk_government_api_okf/ons_payload.json \
-            --output "$RUNNER_TEMP/uk-government-apis-ci"
-
-      - name: Generate legislation corpus from fixtures
-        run: |
-          python3 scripts/build_legislation_okf.py \
-            --fixture tests/fixtures/legislation_okf/sample.feed.xml \
-            --output "$RUNNER_TEMP/legislation-ci" \
-            --generated-at "2026-07-10T00:00:00Z"
-
-      - name: Regenerate legislation answer evaluation
-        run: |
-          python3 scripts/build_legislation_evaluation.py
-          git diff --exit-code -- evaluation/legislation/questions.json
-
-      - name: Validate published legislation corpus
-        run: python3 scripts/check_legislation_okf.py
-
-      - name: Check documentation lockstep
-        if: github.event_name == 'pull_request'
-        run: python3 scripts/check_documentation_lockstep.py --base "origin/${{ github.base_ref }}...HEAD"
-
-      - name: Validate OKF bundle
-        run: python3 scripts/build_okf_bundle.py --check
-
-      - name: Validate legacy OKF viewer
-        run: python3 scripts/update_viewer.py --check
-
-      - name: Check OKF conformance
-        run: python3 scripts/check_okf.py
-
-      - name: Build static site
-        run: python3 scripts/build_site.py
-
-      - name: Test Foundry Pages in Chrome, Firefox and WebKit
+  app:
+    needs: [impact-plan, adversarial-gate]
+    if: >-
+      needs.impact-plan.outputs.app == 'true' ||
+      needs.impact-plan.outputs.site == 'true' ||
+      needs.impact-plan.outputs.browser_targeted == 'true' ||
+      needs.impact-plan.outputs.browser_full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+        with:
+          version: 10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+      - name: Install OKF Explorer dependencies
         working-directory: apps/okf-explorer
-        run: pnpm test:e2e:foundry
+        run: pnpm install --frozen-lockfile
+      - name: Validate Svelte OKF Explorer
+        working-directory: apps/okf-explorer
+        run: pnpm check
+      - name: Run OKF Explorer tests
+        working-directory: apps/okf-explorer
+        run: pnpm test
+      - name: Check CycloneDX dependency inventory
+        working-directory: apps/okf-explorer
+        run: pnpm sbom:check
+      - name: Prove deterministic Svelte OKF Explorer build
+        working-directory: apps/okf-explorer
+        run: pnpm build:determinism
+      - name: Upload exact app build for Site assembly
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
+
+  browser-targeted:
+    needs: [impact-plan, adversarial-gate, app]
+    if: needs.impact-plan.outputs.browser_targeted == 'true' && needs.impact-plan.outputs.browser_full != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+        with:
+          version: 10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+      - name: Select impacted browser suites
+        id: browser-plan
+        working-directory: apps/okf-explorer
+        env:
+          IMPACT_TEST_TAGS: ${{ needs.impact-plan.outputs.test_tags }}
+          IMPACT_JOURNEY_GROUPS: ${{ needs.impact-plan.outputs.journey_groups }}
+        run: >-
+          node scripts/run_impacted_browser_tests.mjs
+          --plan
+          --github-output "$GITHUB_OUTPUT"
+      - working-directory: apps/okf-explorer
+        run: pnpm install --frozen-lockfile
+      - if: steps.browser-plan.outputs.requires_site == 'true'
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Install Site dependencies when selected
+        if: steps.browser-plan.outputs.requires_site == 'true'
+        run: python3 -m pip install -r requirements-okf.txt
+      - name: Download exact app build for selected Foundry pages
+        if: steps.browser-plan.outputs.requires_site == 'true'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
+      - name: Assemble Site only when a rendered-page suite is selected
+        if: steps.browser-plan.outputs.requires_site == 'true'
+        run: python3 scripts/build_site.py
+      - name: Run selector-bounded Chromium assurance
+        working-directory: apps/okf-explorer
+        env:
+          IMPACT_TEST_TAGS: ${{ needs.impact-plan.outputs.test_tags }}
+          IMPACT_JOURNEY_GROUPS: ${{ needs.impact-plan.outputs.journey_groups }}
+        run: pnpm test:e2e:impacted
+
+  browser-full:
+    needs: [impact-plan, adversarial-gate, app]
+    if: needs.impact-plan.outputs.browser_full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+        with:
+          version: 10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - working-directory: apps/okf-explorer
+        run: pnpm install --frozen-lockfile
+      - name: Install Site dependencies
+        run: python3 -m pip install -r requirements-okf.txt
+      - name: Download exact app build for Foundry browser assurance
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
+      - name: Assemble Site for the Foundry browser suite
+        run: python3 scripts/build_site.py
+      - name: Install Firefox and WebKit browser dependencies
+        working-directory: apps/okf-explorer
+        run: pnpm exec playwright install --with-deps firefox webkit
+      - name: Run terminal-equivalent Chrome, Firefox and WebKit assurance
+        working-directory: apps/okf-explorer
+        run: pnpm test:e2e:terminal
+
+  foundry:
+    needs: [impact-plan, adversarial-gate]
+    if: needs.impact-plan.outputs.foundry == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Validate Evaluation Foundry fixtures
+        run: python3 scripts/check_evaluation_foundry.py
+      - name: Verify persisted public bases before the ordinary check
+        run: python3 scripts/retarget_heritage_source_snapshots.py --check
+      - name: Validate separate publication unit and rooted digests
+        run: >-
+          python3 scripts/export_publication_unit.py
+          --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json
+          --check
+
+  documentation:
+    needs: [impact-plan, adversarial-gate]
+    if: needs.impact-plan.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Check documentation lockstep
+        run: python3 scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
+      - name: Validate bundle, viewer and OKF conformance
+        run: |
+          python3 scripts/build_okf_bundle.py --check
+          python3 scripts/update_viewer.py --check
+          python3 scripts/check_okf.py
+
+  site:
+    needs: [impact-plan, adversarial-gate, app]
+    if: always() && needs.impact-plan.result == 'success' && needs.adversarial-gate.result == 'success' && needs.impact-plan.outputs.site == 'true' && needs.app.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Download exact app build
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
+      - name: Restore content-addressed Site components
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .site-components
+          # One key per immutable source revision ensures newly materialized
+          # components are saved; restore the previous content-addressed cache.
+          key: site-components-v3-${{ runner.os }}-${{ github.sha }}
+          restore-keys: site-components-v3-${{ runner.os }}-
+      - name: Build componentized static Site
+        run: python3 scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
+      - name: Upload candidate identity outside Site bytes
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: site-candidate-receipt
+          path: ${{ runner.temp }}/site-candidate-receipt.json
+
+  release-policy:
+    needs: [impact-plan, adversarial-gate]
+    if: needs.impact-plan.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Validate draft promotion envelope contract
+        run: python3 scripts/check_promotion_envelope.py release-assurance/heritage-publication-envelope.json
+
+  okf-explorer-ci:
+    if: always()
+    needs:
+      - impact-plan
+      - adversarial-gate
+      - python-contracts
+      - app
+      - browser-targeted
+      - browser-full
+      - foundry
+      - documentation
+      - site
+      - release-policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preserve required-check compatibility
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'

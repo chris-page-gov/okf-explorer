@@ -1,0 +1,148 @@
+name: Run terminal public assurance
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_tag:
+        description: Published immutable candidate tag (R1)
+        required: true
+      assurance_ref:
+        description: Exact okf-explorer commit containing the assurance tools
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  terminal-assurance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      CANDIDATE_TAG: ${{ inputs.candidate_tag }}
+      ASSURANCE_REF: ${{ inputs.assurance_ref }}
+      PUBLICATION_ROOT_URL: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/
+      EXPLORER_URL: https://chris-page-gov.github.io/okf-explorer/
+      PLAYWRIGHT_PACKAGE: ${{ github.workspace }}/assurance/apps/okf-explorer/node_modules/@playwright/test
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out exact external candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.candidate_tag }}
+          path: publication
+      - name: Check out exact assurance implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: chris-page-gov/okf-explorer
+          ref: ${{ inputs.assurance_ref }}
+          path: assurance
+      - name: Resolve and require the exact 40-hex assurance commit
+        run: |
+          assurance_commit="$(git -C assurance rev-parse 'HEAD^{commit}')"
+          printf '%s\n' "$assurance_commit" | grep -Eq '^[0-9a-f]{40}$'
+          test "$assurance_commit" = "$ASSURANCE_REF"
+          echo "ASSURANCE_COMMIT=$assurance_commit" >> "$GITHUB_ENV"
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+        with:
+          version: 10
+          package_json_file: assurance/apps/okf-explorer/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: assurance/apps/okf-explorer/pnpm-lock.yaml
+      - name: Install pinned assurance dependencies and all terminal engines
+        working-directory: assurance/apps/okf-explorer
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium firefox webkit
+      - name: Require R1 to exist before observing it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$GITHUB_REF" = "refs/tags/$CANDIDATE_TAG"
+          gh release view "$CANDIDATE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,tagName,url \
+            > "$RUNNER_TEMP/candidate-release.json"
+          test "$(jq -r .isDraft "$RUNNER_TEMP/candidate-release.json")" = false
+          test "$(jq -r .tagName "$RUNNER_TEMP/candidate-release.json")" = "$CANDIDATE_TAG"
+          expected_release_url="https://github.com/$GITHUB_REPOSITORY/releases/tag/$CANDIDATE_TAG"
+          action_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url")] | length' publication/site/journeys.json)"
+          action_url="$(jq -r '.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url") | .value' publication/site/journeys.json)"
+          live_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel != "genuine-browser-receipt")] | length' publication/site/journeys.json)"
+          receipt_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel == "genuine-browser-receipt")] | length' publication/site/journeys.json)"
+          test "$action_count" = 1
+          test "$action_url" = "$expected_release_url"
+          test "$live_count" = 21
+          test "$receipt_count" = 11
+      - name: Validate the deployed candidate identity
+        run: |
+          mkdir -p "$RUNNER_TEMP/terminal-evidence"
+          python3 publication/site/scripts/build_publication_assurance_receipt.py validation \
+            --publication-root publication/site \
+            --repository "$GITHUB_REPOSITORY" \
+            --source-commit "$(git -C publication rev-parse HEAD)" \
+            --candidate-tag "$CANDIDATE_TAG" \
+            --output "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json"
+      - name: Observe every rendered anchor and all three intent universes
+        run: >-
+          timeout --signal=TERM 75m
+          python3 assurance/scripts/observe_link_intents.py
+          --publication-root "$GITHUB_WORKSPACE/publication/site"
+          --policy "$GITHUB_WORKSPACE/publication/site/release-assurance/link-observation-policy.json"
+          --all-shards
+          --fail-on-error
+          --output "$RUNNER_TEMP/terminal-evidence/link-observation-receipt.json"
+      - name: Verify genuine Google Chrome and virtual display
+        run: |
+          command -v google-chrome
+          google-chrome --version
+          command -v xvfb-run
+      - name: Observe every explicitly protected rich page in genuine Chrome
+        working-directory: assurance/apps/okf-explorer
+        run: >-
+          xvfb-run --auto-servernum --server-args="-screen 0 1365x900x24"
+          node scripts/observe_protected_links.mjs
+          ../../../publication/site/journeys.json
+          "$RUNNER_TEMP/terminal-evidence/protected-link-browser-receipt.json"
+          --chrome google-chrome
+      - name: Prepare immutable journey inputs outside the candidate
+        run: |
+          mkdir -p "$RUNNER_TEMP/public-journey/evidence"
+          cp publication/site/journeys.json "$RUNNER_TEMP/public-journey/journeys.json"
+          cp publication/site/questions.json "$RUNNER_TEMP/public-journey/questions.json"
+          cp "$RUNNER_TEMP/terminal-evidence/protected-link-browser-receipt.json" \
+            "$RUNNER_TEMP/public-journey/evidence/protected-source-link-receipt.json"
+      - name: Run 21 live and 11 receipt-backed actions in all three engines
+        run: |
+          for engine in chromium firefox webkit; do
+            node assurance/scripts/evaluate_okf_explorer.mjs \
+              --base-url "$EXPLORER_URL" \
+              --bundle-root "$PUBLICATION_ROOT_URL" \
+              --candidate-bundle "${PUBLICATION_ROOT_URL}okf-explorer.json" \
+              --candidate-receipt "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json" \
+              --journeys "$RUNNER_TEMP/public-journey/journeys.json" \
+              --journey-id journey-publication \
+              --journeys-only \
+              --browser-engine "$engine" \
+              --out "$RUNNER_TEMP/journey-$engine"
+          done
+      - name: Bind the complete three-engine journey receipt
+        run: >-
+          python3 publication/site/scripts/build_publication_assurance_receipt.py journeys
+          --validation-receipt "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json"
+          --result "chromium=$RUNNER_TEMP/journey-chromium/results.json"
+          --result "firefox=$RUNNER_TEMP/journey-firefox/results.json"
+          --result "webkit=$RUNNER_TEMP/journey-webkit/results.json"
+          --expected-actions 32
+          --assurance-source-commit "$ASSURANCE_COMMIT"
+          --output "$RUNNER_TEMP/terminal-evidence/publication-journey-receipt.json"
+      - name: Upload the timestamped closure outside candidate and Site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: terminal-assurance-${{ env.CANDIDATE_TAG }}
+          path: |
+            ${{ runner.temp }}/terminal-evidence/*.json

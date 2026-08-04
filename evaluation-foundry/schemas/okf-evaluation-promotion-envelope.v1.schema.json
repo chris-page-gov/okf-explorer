@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json",
+  "title": "OKF Evaluation Foundry promotion envelope v1",
+  "description": "Observed publication and promotion evidence kept outside immutable candidate roots.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "envelope_id", "state", "subject", "promotion_container", "receipts", "attestations", "signature"],
+  "properties": {
+    "schema": {"const": "okf-evaluation-promotion-envelope.v1"},
+    "envelope_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "state": {"enum": ["draft-local", "promoted"]},
+    "promoted_at": {"$ref": "#/$defs/timestampOrPending"},
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publication_unit", "repository", "source_commit", "tag", "release_url", "descriptor", "bundles", "plane_roots", "build_manifest", "site_artifact"],
+      "properties": {
+        "publication_unit": {"type": "string", "minLength": 1},
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "source_commit": {"$ref": "#/$defs/digestOrPending"},
+        "tag": {"$ref": "#/$defs/referenceOrPending"},
+        "release_url": {"$ref": "#/$defs/referenceOrPending"},
+        "descriptor": {"$ref": "#/$defs/digestBinding"},
+        "bundles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/digestBinding"}
+        },
+        "plane_roots": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "release_root_sha256"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "sha256": {"$ref": "#/$defs/digestOrPending"},
+            "release_root_sha256": {"$ref": "#/$defs/digestOrPending"}
+          }
+        },
+        "build_manifest": {"$ref": "#/$defs/digestBinding"},
+        "site_artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["manifest_path", "manifest_sha256", "tree_sha256", "file_count"],
+          "properties": {
+            "manifest_path": {"const": "publication-unit-manifest.json"},
+            "manifest_sha256": {"$ref": "#/$defs/digestOrPending"},
+            "tree_sha256": {"$ref": "#/$defs/digestOrPending"},
+            "file_count": {
+              "oneOf": [
+                {"type": "integer", "minimum": 1},
+                {"const": "pending"}
+              ]
+            }
+          }
+        }
+      }
+    },
+    "promotion_container": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "tag", "release_url", "envelope_asset", "attestation_sidecar_asset", "status_claim", "verification_after_publish"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "tag": {"$ref": "#/$defs/referenceOrPending"},
+        "release_url": {"$ref": "#/$defs/referenceOrPending"},
+        "envelope_asset": {"const": "heritage-publication-envelope.json"},
+        "attestation_sidecar_asset": {"const": "heritage-publication-envelope.attestation.json"},
+        "status_claim": {"const": "identity-only"},
+        "verification_after_publish": {"const": true}
+      }
+    },
+    "receipts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validation", "journey", "link_observations"],
+      "properties": {
+        "validation": {"$ref": "#/$defs/observedReceipt"},
+        "journey": {"$ref": "#/$defs/observedReceipt"},
+        "link_observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/observedReceipt"}
+        }
+      }
+    },
+    "attestations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "asset", "url", "subject_digest", "issuer"],
+        "properties": {
+          "kind": {"type": "string", "minLength": 1},
+          "asset": {"$ref": "#/$defs/referenceOrPending"},
+          "url": {"$ref": "#/$defs/referenceOrPending"},
+          "subject_digest": {"$ref": "#/$defs/digestOrPending"},
+          "issuer": {"$ref": "#/$defs/referenceOrPending"}
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism", "identity", "reference"],
+      "properties": {
+        "mechanism": {"$ref": "#/$defs/referenceOrPending"},
+        "identity": {"$ref": "#/$defs/referenceOrPending"},
+        "reference": {"$ref": "#/$defs/referenceOrPending"}
+      }
+    }
+  },
+  "$defs": {
+    "digestOrPending": {
+      "oneOf": [
+        {"type": "string", "pattern": "^[a-f0-9]{40}$|^[a-f0-9]{64}$"},
+        {"const": "pending"}
+      ]
+    },
+    "referenceOrPending": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestampOrPending": {
+      "anyOf": [
+        {"type": "string", "format": "date-time"},
+        {"const": "pending"}
+      ]
+    },
+    "digestBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digestOrPending"}
+      }
+    },
+    "observedReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256", "observed_at"],
+      "properties": {
+        "ref": {"$ref": "#/$defs/referenceOrPending"},
+        "sha256": {"$ref": "#/$defs/digestOrPending"},
+        "observed_at": {"$ref": "#/$defs/timestampOrPending"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "promoted"}}, "required": ["state"]},
+      "then": {"required": ["promoted_at"]}
+    }
+  ]
+}

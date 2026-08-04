@@ -26,6 +26,10 @@ apps/*/playwright-report/
 .playwright-cli/
 .playwright-mcp/
 .pnpm-store/
+.site-components/
 
 evaluation/*/results/
 evaluation-foundry/fixtures/*/results/
+
+# Local-only raw evidence for generated public postmortems.
+postmortem/

@@ -6,6 +6,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -134,6 +135,17 @@ def tiny_snapshot() -> dict:
 
 
 class HeritageEvaluationBuilderTest(unittest.TestCase):
+    def test_published_profile_retargets_authoring_relative_references(self) -> None:
+        profile = heritage.published_evaluation_profile()
+        self.assertNotIn("../../../evaluation/heritage/", profile)
+        self.assertIn("faithful: okf-explorer.json", profile)
+        self.assertIn("tiny: tiny/okf-explorer.json", profile)
+        self.assertIn(
+            "https://github.com/chris-page-gov/okf-explorer/blob/main/"
+            "scripts/build_heritage_evaluation.py",
+            profile,
+        )
+
     def test_esri_rings_preserve_disjoint_exteriors_and_contained_holes(self) -> None:
         first_exterior = [[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]
         first_hole = [[1, 1], [3, 1], [3, 3], [1, 3], [1, 1]]
@@ -197,6 +209,14 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         )
         self.assertFalse(corpus["descriptor"]["default_loaded"])
         self.assertTrue(corpus["descriptor"]["include_in_counts"])
+        self.assertEqual(
+            heritage.EVALUATION_PROFILE_SCHEMA_URL,
+            corpus["descriptor"]["profile"],
+        )
+        self.assertEqual(
+            {"@id": heritage.EVALUATION_PROFILE_SCHEMA_URL},
+            corpus["semantic"]["document"]["profile"],
+        )
         self.assertEqual(
             {"assesses", "located in"},
             {relationship["kind"] for relationship in corpus["relationships"]},
@@ -331,6 +351,59 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             len(corpus["relationships"]),
             semantic["validation_report"]["counts"]["assertions"],
         )
+        authored = okf_semantic.load_yaml_ld_text(
+            semantic["yaml_ld"], source="generated:tiny:okf-bundle.yamlld"
+        )
+        materialized = json.loads(semantic["json_ld"])
+        self.assertEqual(authored, semantic["document"])
+        self.assertEqual(authored, materialized)
+        self.assertFalse(semantic["yaml_ld"].lstrip().startswith("{"))
+        self.assertEqual(
+            semantic["normalized_graph"]["sha256"],
+            okf_semantic.semantic_graph_identity(materialized)["sha256"],
+        )
+
+    def test_semantic_plane_root_uses_graph_identity_not_yaml_formatting(self) -> None:
+        document = {
+            "@context": okf_semantic.CONTEXT_URL,
+            "@id": "https://example.test/heritage/coventry-cathedral",
+            "@type": "https://schema.org/LandmarksOrHistoricalBuildings",
+            "title": "Coventry Cathedral",
+        }
+        yaml_ld = okf_semantic.render_yaml_ld(document)
+        json_ld = okf_semantic.canonical_json_bytes(document).decode("utf-8")
+        first = heritage.heritage_build_io.plane_roots_receipt(
+            {
+                Path("okf-bundle.yamlld"): yaml_ld,
+                Path("okf-bundle.jsonld"): json_ld,
+            }
+        )
+        second = heritage.heritage_build_io.plane_roots_receipt(
+            {
+                Path("okf-bundle.yamlld"): "# formatting-only comment\n" + yaml_ld,
+                Path("okf-bundle.jsonld"): json_ld,
+            }
+        )
+
+        first_semantic = first["planes"]["semantic"]
+        second_semantic = second["planes"]["semantic"]
+        self.assertEqual(first_semantic["root_sha256"], second_semantic["root_sha256"])
+        self.assertNotEqual(
+            first_semantic["artifact_root_sha256"],
+            second_semantic["artifact_root_sha256"],
+        )
+        yaml_entry = next(
+            row
+            for row in first_semantic["entries"]
+            if row["path"] == "okf-bundle.yamlld"
+        )
+        json_entry = next(
+            row
+            for row in first_semantic["entries"]
+            if row["path"] == "okf-bundle.jsonld"
+        )
+        self.assertEqual(yaml_entry["semantic_sha256"], json_entry["semantic_sha256"])
+        self.assertEqual("URDNA2015", yaml_entry["semantic_algorithm"])
 
     def test_annual_continuity_never_links_same_year_event_sheets(self) -> None:
         snapshot = tiny_snapshot()
@@ -394,7 +467,7 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         self.assertNotIn(Path("evaluation-profile.yaml"), files)
         self.assertNotIn(Path("journeys.json"), files)
 
-    def test_faithful_publication_copies_an_executable_journey_closure(self) -> None:
+    def test_faithful_publication_copies_stable_journey_inputs_not_observations(self) -> None:
         snapshot = tiny_snapshot()
         snapshot["publication"]["role"] = "faithful"
         files = heritage.output_files(
@@ -404,16 +477,13 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         for source, target in (
             (heritage.JOURNEYS_PATH, Path("journeys.json")),
             (heritage.QUESTIONS_PATH, Path("questions.json")),
-            (
-                heritage.PROTECTED_SOURCE_RECEIPT_PATH,
-                Path("evidence/protected-source-link-receipt.json"),
-            ),
         ):
             with self.subTest(target=target):
                 self.assertEqual(source.read_text(encoding="utf-8"), files[target])
 
-        receipt = json.loads(files[Path("evidence/protected-source-link-receipt.json")])
-        self.assertEqual("okf-genuine-browser-link-receipt.v1", receipt["schema"])
+        self.assertFalse(any("evidence" in path.parts for path in files))
+        validation = json.loads(files[Path("data/link-validation.json")])
+        self.assertFalse(validation["observations"]["included"])
 
     def test_fixed_timestamp_build_is_byte_deterministic(self) -> None:
         snapshot = tiny_snapshot()
@@ -441,6 +511,263 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             first_tree["tree_sha256"],
             heritage.output_tree_receipt(changed)["tree_sha256"],
         )
+
+    def test_semantic_and_link_outputs_are_stably_sharded(self) -> None:
+        snapshot = tiny_snapshot()
+        corpus = heritage.build_corpus(copy.deepcopy(snapshot), GENERATED_AT)
+        files = heritage.output_files(corpus, snapshot)
+
+        self.assertNotIn(Path("data/semantic/assertions.jsonld"), files)
+        semantic_manifest = json.loads(files[Path("data/semantic/manifest.json")])
+        self.assertEqual("okf-semantic-shard-manifest.v1", semantic_manifest["schema"])
+        self.assertEqual(
+            corpus["semantic"]["normalized_graph"],
+            semantic_manifest["semantic_identity"],
+        )
+        self.assertEqual(
+            okf_semantic.load_yaml_ld_text(
+                str(files[Path("okf-bundle.yamlld")]),
+                source="generated:okf-bundle.yamlld",
+            ),
+            json.loads(str(files[Path("okf-bundle.jsonld")])),
+        )
+        roots = json.loads(files[Path("assurance/plane-roots.json")])
+        representation_entries = [
+            row
+            for row in roots["planes"]["semantic"]["entries"]
+            if row["path"].endswith((".yamlld", ".jsonld"))
+        ]
+        self.assertEqual(2, len(representation_entries))
+        self.assertEqual(
+            {corpus["semantic"]["normalized_graph"]["sha256"]},
+            {row["semantic_sha256"] for row in representation_entries},
+        )
+        self.assertEqual(
+            {corpus["semantic"]["normalized_graph"]["source_data_model_sha256"]},
+            {
+                row["semantic_source_data_model_sha256"]
+                for row in representation_entries
+            },
+        )
+        with patch.object(
+            okf_semantic,
+            "semantic_graph_identity",
+            side_effect=AssertionError("receipt construction repeated normalization"),
+        ):
+            rebound = heritage.heritage_build_io.plane_roots_receipt(files)
+        self.assertEqual(
+            roots["planes"]["semantic"]["root_sha256"],
+            rebound["planes"]["semantic"]["root_sha256"],
+        )
+
+        tampered = dict(files)
+        changed_authoring = okf_semantic.load_yaml_ld_text(
+            str(tampered[Path("okf-bundle.yamlld")]), source="tampered.yamlld"
+        )
+        assert isinstance(changed_authoring, dict)
+        changed_authoring["title"] = "Semantically changed title"
+        tampered[Path("okf-bundle.yamlld")] = okf_semantic.render_yaml_ld(
+            changed_authoring
+        )
+        with self.assertRaisesRegex(
+            ValueError, "does not match the manifest data model"
+        ):
+            heritage.heritage_build_io.plane_roots_receipt(tampered)
+        self.assertGreater(semantic_manifest["nodes"]["shards"], [])
+        self.assertGreater(semantic_manifest["assertions"]["shards"], [])
+        link_summary = json.loads(files[Path("data/link-validation.json")])
+        self.assertFalse(link_summary["checks_materialized_inline"])
+        self.assertNotIn("checks", link_summary)
+        link_manifest = json.loads(files[Path("data/link-validation/manifest.json")])
+        self.assertEqual(
+            "heritage-evaluation-link-validation-shards.v1",
+            link_manifest["schema"],
+        )
+        self.assertTrue(
+            all(path.suffix == ".gz" for path in files if "shards" in path.parts)
+        )
+
+    def test_plane_classifier_assigns_semantic_before_generic_data(self) -> None:
+        self.assertEqual(
+            "control",
+            heritage.heritage_build_io.classify_output_plane(
+                Path("evaluation-profile.yaml")
+            ),
+        )
+        self.assertEqual(
+            "control",
+            heritage.heritage_build_io.classify_output_plane(Path("journeys.json")),
+        )
+        self.assertEqual(
+            "semantic",
+            heritage.heritage_build_io.classify_output_plane(
+                Path("data/semantic/validation-report.json")
+            ),
+        )
+        self.assertEqual(
+            "search",
+            heritage.heritage_build_io.classify_output_plane(
+                Path("data/search/manifest.json")
+            ),
+        )
+
+    def test_stable_shards_change_only_the_affected_bucket(self) -> None:
+        rows = [
+            {"@id": f"https://example.test/{index}", "title": f"Row {index}"}
+            for index in range(20)
+        ]
+        first_manifest, first_files = heritage._sharded_rows(
+            rows,
+            identity=lambda row: row["@id"],
+            root=Path("data/semantic/nodes"),
+            kind="semantic-nodes",
+            buckets=8,
+        )
+        changed_rows = copy.deepcopy(rows)
+        changed_rows[7]["title"] = "Changed title"
+        second_manifest, second_files = heritage._sharded_rows(
+            changed_rows,
+            identity=lambda row: row["@id"],
+            root=Path("data/semantic/nodes"),
+            kind="semantic-nodes",
+            buckets=8,
+        )
+
+        self.assertEqual(set(first_files), set(second_files))
+        changed_paths = {
+            path for path in first_files if first_files[path] != second_files[path]
+        }
+        self.assertEqual(1, len(changed_paths))
+        self.assertNotEqual(first_manifest["root_sha256"], second_manifest["root_sha256"])
+
+    def test_managed_writer_is_noop_stable_and_never_removes_unowned_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output = Path(temp_dir)
+            first = heritage.heritage_build_io.finalize_full_candidate(
+                {
+                    Path("index.md"): "stable\n",
+                    Path("data/obsolete.json"): "owned\n",
+                }
+            )
+            initial = heritage.heritage_build_io.write_managed_files(output, first)
+            self.assertEqual(len(first), initial["changed"])
+            stable = output / "index.md"
+            stable_mtime = stable.stat().st_mtime_ns
+            unowned = output / "notes.txt"
+            unowned.write_text("user-owned\n", encoding="utf-8")
+
+            noop = heritage.heritage_build_io.write_managed_files(output, first)
+            self.assertEqual(0, noop["changed"])
+            self.assertEqual(stable_mtime, stable.stat().st_mtime_ns)
+
+            second = heritage.heritage_build_io.finalize_full_candidate(
+                {Path("index.md"): "stable\n", Path("data/current.json"): "new\n"}
+            )
+            update = heritage.heritage_build_io.write_managed_files(output, second)
+            self.assertEqual(1, update["removed"])
+            self.assertFalse((output / "data/obsolete.json").exists())
+            self.assertTrue((output / "data/current.json").is_file())
+            self.assertEqual("user-owned\n", unowned.read_text(encoding="utf-8"))
+            self.assertEqual(stable_mtime, stable.stat().st_mtime_ns)
+
+    def test_managed_cleanup_rejects_manifest_path_traversal(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            output = root / "candidate"
+            (output / "assurance").mkdir(parents=True)
+            victim = root / "victim.txt"
+            victim.write_text("keep\n", encoding="utf-8")
+            (output / heritage.heritage_build_io.BUILD_MANIFEST).write_text(
+                json.dumps(
+                    {
+                        "schema": "okf-evaluation-build-manifest.v2",
+                        "entries": [{"path": "../victim.txt", "plane": "data"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            candidate = heritage.heritage_build_io.finalize_full_candidate(
+                {Path("index.md"): "safe\n"}
+            )
+
+            with self.assertRaisesRegex(ValueError, "unsafe builder-owned"):
+                heritage.heritage_build_io.write_managed_files(output, candidate)
+            self.assertEqual("keep\n", victim.read_text(encoding="utf-8"))
+
+    def test_managed_cleanup_refuses_to_delete_locally_modified_owned_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output = Path(temp_dir)
+            first = heritage.heritage_build_io.finalize_full_candidate(
+                {Path("data/obsolete.json"): "generated\n"}
+            )
+            heritage.heritage_build_io.write_managed_files(output, first)
+            obsolete = output / "data/obsolete.json"
+            obsolete.write_text("locally edited\n", encoding="utf-8")
+            second = heritage.heritage_build_io.finalize_full_candidate(
+                {Path("data/current.json"): "replacement\n"}
+            )
+
+            with self.assertRaisesRegex(ValueError, "refusing to remove modified"):
+                heritage.heritage_build_io.write_managed_files(output, second)
+            self.assertEqual("locally edited\n", obsolete.read_text(encoding="utf-8"))
+            self.assertFalse((output / "data/current.json").exists())
+
+    def test_candidate_root_ignores_timestamped_link_observations(self) -> None:
+        first_snapshot = tiny_snapshot()
+        first_snapshot["link_validation"]["live_receipts"] = [
+            {"observed_at": "2026-08-02T01:00:00Z", "status": 200}
+        ]
+        second_snapshot = copy.deepcopy(first_snapshot)
+        second_snapshot["link_validation"]["live_receipts"][0]["observed_at"] = (
+            "2026-08-04T01:00:00Z"
+        )
+        first = heritage.output_files(
+            heritage.build_corpus(first_snapshot, GENERATED_AT), first_snapshot
+        )
+        second = heritage.output_files(
+            heritage.build_corpus(second_snapshot, GENERATED_AT), second_snapshot
+        )
+
+        self.assertEqual(first, second)
+        first_roots = json.loads(first[Path("assurance/plane-roots.json")])
+        second_roots = json.loads(second[Path("assurance/plane-roots.json")])
+        self.assertEqual(
+            first_roots["release_root_sha256"], second_roots["release_root_sha256"]
+        )
+
+    def test_publication_family_can_be_retargeted_without_generated_edits(self) -> None:
+        snapshot = heritage.retarget_publication(
+            tiny_snapshot(),
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
+            fixture="tiny",
+        )
+        publication = heritage.publication_config(snapshot)
+        self.assertEqual(
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/",
+            publication["public_base"],
+        )
+        self.assertEqual(
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
+            publication["family_public_base"],
+        )
+        corpus = heritage.build_corpus(snapshot, GENERATED_AT)
+        self.assertEqual(
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
+            corpus["descriptor"]["entrypoints"]["faithful_corpus"],
+        )
+        self.assertTrue(
+            all(
+                "okf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer.json"
+                in record["@id"]
+                for record in corpus["records"]
+                if record["route"].startswith("risk/")
+            )
+        )
+
+        with self.assertRaisesRegex(ValueError, "absolute HTTPS"):
+            heritage.retarget_publication(
+                tiny_snapshot(), "http://user:secret@example.test/data", fixture="tiny"
+            )
 
     def test_generated_markdown_uses_valid_quoted_yaml_ld_keywords(self) -> None:
         snapshot = tiny_snapshot()

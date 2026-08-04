@@ -3,7 +3,7 @@
   "profile_id": "heritage-coventry-warwickshire-v1",
   "title": "Coventry and Warwickshire heritage evaluation journeys",
   "description": "Executable consumer journeys derived from the target conversation: discover, narrow, compare representations, inspect a record and its trust evidence, preserve state, and verify publication.",
-  "target_bundle": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json",
+  "target_bundle": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
   "question_suite": "questions.json",
   "personas": [
     {"id":"persona-curious-beginner","name":"Curious beginner","need":"Understand what exists locally and why the answer can be trusted."},
@@ -47,7 +47,7 @@
       "persona_ids": ["persona-implementer"],
       "story_ids": ["story-assurance"],
       "start": {
-        "bundle": "/evaluation/heritage/tiny/okf-explorer.json",
+        "bundle": "/tiny/okf-explorer.json",
         "query": "Coventry Cathedral"
       },
       "actions": [
@@ -61,7 +61,7 @@
         {"sequence":8,"action":"history_round_trip","alternate_query":"Warwick Castle","intent":"Prove Back and Forward restore the tiny fixture state.","capability_ids":["durable-state","publication"]}
       ],
       "assertions": [
-        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/tiny/okf-explorer.json"},
+        {"assertion":"url_param_includes","name":"bundle","value":"/tiny/okf-explorer.json"},
         {"assertion":"search_value","value":"Coventtry Cathedral"},
         {"assertion":"result_count_min","value":1},
         {"assertion":"disclosure_defaults_observed"},
@@ -77,7 +77,7 @@
       "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer", "persona-implementer"],
       "story_ids": ["story-discovery", "story-inspection", "story-projections"],
       "start": {
-        "bundle": "/evaluation/heritage/okf-explorer.json",
+        "bundle": "/okf-explorer.json",
         "query": "Coventry Cathedral"
       },
       "actions": [
@@ -110,7 +110,7 @@
         {"sequence":27,"action":"history_round_trip","alternate_query":"Warwick Castle","intent":"Use Back and Forward and restore query, facet and view state.","capability_ids":["durable-state","publication"]}
       ],
       "assertions": [
-        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/okf-explorer.json"},
+        {"assertion":"url_param_includes","name":"bundle","value":"/okf-explorer.json"},
         {"assertion":"url_param_includes","name":"filter.local_authority","value":"Coventry"},
         {"assertion":"search_value","value":"NHLE 1342941"},
         {"assertion":"sort_value","value":"title"},
@@ -133,7 +133,7 @@
       "persona_ids": ["persona-domain-reviewer", "persona-implementer"],
       "story_ids": ["story-assurance", "story-projections"],
       "start": {
-        "bundle": "/evaluation/heritage/synthetic/okf-explorer.json",
+        "bundle": "/synthetic/okf-explorer.json",
         "query": "SYN-PLACE-001"
       },
       "actions": [
@@ -144,7 +144,7 @@
         {"sequence":5,"action":"select_graph_edge","key_includes":":possibly designed by","expected_text":["Invented Evaluation Foundry assertion","model-derived","synthetic-fixture","Relationship evidence and provenance"],"intent":"Inspect a visibly synthetic model-derived relationship and its assertion scope.","capability_ids":["graph","provenance"],"mapping_ids":["map-reified-relationship"]}
       ],
       "assertions": [
-        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/synthetic/okf-explorer.json"},
+        {"assertion":"url_param_includes","name":"bundle","value":"/synthetic/okf-explorer.json"},
         {"assertion":"graph_edge_selected"},
         {"assertion":"visible_text","value":"synthetic"}
       ]
@@ -155,19 +155,19 @@
       "persona_ids": ["persona-curious-beginner", "persona-domain-reviewer"],
       "story_ids": ["story-assurance"],
       "start": {
-        "bundle": "/evaluation/heritage/okf-explorer.json"
+        "bundle": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json"
       },
       "actions": [
-        {"sequence":1,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json","expected_text":"Coventry and Warwickshire","intent":"Open the exact deployed Explorer URL and verify bundle identity.","capability_ids":["publication"]},
-        {"sequence":2,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/index.html","expected_text":"Coventry and Warwickshire Heritage Evaluation","intent":"Verify the generated corpus start page is published as HTML.","capability_ids":["publication","accessibility"]},
-        {"sequence":3,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/methodology.html","expected_text":"Coventry and Warwickshire Heritage Evaluation methodology","intent":"Verify the methodology Markdown renders as HTML.","capability_ids":["publication","provenance"]},
-        {"sequence":4,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/index.html","expected_text":"Tiny source-backed heritage assurance fixture","intent":"Verify the tiny assurance landing page renders as HTML.","capability_ids":["publication","accessibility"]},
-        {"sequence":5,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/methodology.html","expected_text":"Tiny source-backed heritage assurance fixture methodology","intent":"Verify the tiny methodology renders as HTML.","capability_ids":["publication","provenance"]},
-        {"sequence":6,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/index.html","expected_text":"Synthetic heritage capability supplement","intent":"Verify the synthetic supplement landing page renders separately as HTML.","capability_ids":["publication","accessibility"]},
-        {"sequence":7,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/methodology.html","expected_text":"Synthetic heritage capability supplement methodology","intent":"Verify the synthetic methodology renders as HTML.","capability_ids":["publication","provenance"]},
-        {"sequence":8,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html","expected_text":"Heritage Evaluation Profile","intent":"Verify the beginner-readable profile page.","capability_ids":["publication","accessibility"]},
-        {"sequence":9,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html","expected_text":"Evaluation Foundry","intent":"Verify the beginner process renders as HTML.","capability_ids":["publication","accessibility"]},
-        {"sequence":10,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html","expected_text":"Coventry and Warwickshire","intent":"Verify the exemplar report renders as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":1,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json","expected_text":"Coventry and Warwickshire","intent":"Open the reusable Explorer runtime with the exact external faithful descriptor and verify bundle identity.","capability_ids":["publication"]},
+        {"sequence":2,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html","expected_text":"Coventry and Warwickshire Heritage Evaluation","intent":"Verify the external corpus start page is published as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":3,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/methodology.html","expected_text":"Coventry and Warwickshire Heritage Evaluation methodology","intent":"Verify the external methodology Markdown renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":4,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html","expected_text":"Tiny source-backed heritage assurance fixture","intent":"Verify the external tiny assurance landing page renders as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":5,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/methodology.html","expected_text":"Tiny source-backed heritage assurance fixture methodology","intent":"Verify the external tiny methodology renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":6,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html","expected_text":"Synthetic heritage capability supplement","intent":"Verify the external synthetic supplement landing page renders separately as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":7,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/methodology.html","expected_text":"Synthetic heritage capability supplement methodology","intent":"Verify the external synthetic methodology renders as HTML.","capability_ids":["publication","provenance"]},
+        {"sequence":8,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/evaluation-foundry/fixtures/heritage-warwickshire/profile.html","expected_text":"Heritage Evaluation Profile","intent":"Verify the beginner-readable profile page in the external publication unit.","capability_ids":["publication","accessibility"]},
+        {"sequence":9,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/beginners/22-evaluation-foundry-and-yaml-ld.html","expected_text":"Evaluation Foundry","intent":"Verify the beginner process in the external publication unit renders as HTML.","capability_ids":["publication","accessibility"]},
+        {"sequence":10,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/heritage-evaluation-report.html","expected_text":"Coventry and Warwickshire","intent":"Verify the exemplar report in the external publication unit renders as HTML.","capability_ids":["publication","accessibility"]},
         {"sequence":11,"action":"verify_url","value":"https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer","expected_text":"National_Heritage_List_for_England_NHLE_v02_VIEW","intent":"Verify the report's exact NHLE acquisition service identity in a real browser.","capability_ids":["publication","resources","provenance"]},
         {"sequence":12,"action":"verify_url","value":"https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Local_Authority_Districts_DEC_2025_Boundaries_UK_BFC/FeatureServer/0","expected_text":"LAD_DEC_2025_UK_BFC","intent":"Verify the report's exact authoritative boundary-layer identity in a real browser.","capability_ids":["publication","resources","provenance"]},
         {"sequence":13,"action":"verify_url","value":"https://historicengland.org.uk/listing/heritage-at-risk/search-register/annual-heritage-at-risk-registers-and-maps/","expected_text":"Annual Heritage at Risk Registers and Maps","verification_channel":"genuine-browser-receipt","receipt":"evidence/protected-source-link-receipt.json","intent":"Verify the report's annual HAR source page with an identity-bound genuine-browser receipt.","capability_ids":["publication","resources","provenance"]},
@@ -184,15 +184,15 @@
         {"sequence":24,"action":"verify_url","value":"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/","expected_text":"Open Government Licence","intent":"Verify the report's licence reference in a real browser.","capability_ids":["publication","provenance"]},
         {"sequence":25,"action":"verify_url","value":"https://historicengland.org.uk/listing/the-list/","expected_text":"Search the List","verification_channel":"genuine-browser-receipt","receipt":"evidence/protected-source-link-receipt.json","intent":"Verify the report's National Heritage List authority page with an identity-bound genuine-browser receipt.","capability_ids":["publication","resources","provenance"]},
         {"sequence":26,"action":"verify_url","value":"https://historicengland.org.uk/advice/heritage-at-risk/","expected_text":"Heritage at Risk","expected_final_url":"https://historicengland.org.uk/listing/heritage-at-risk/","verification_channel":"genuine-browser-receipt","receipt":"evidence/protected-source-link-receipt.json","intent":"Verify the current Heritage at Risk authority page and its canonical redirect with an identity-bound genuine-browser receipt.","capability_ids":["publication","resources","provenance"]},
-        {"sequence":27,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json#record:cmlzay8yMDE0L2FkZGl0aW9uLzQzZGJiMjQyNWM3MTlkYzUzNTU2","expected_text":"Coventry City Walls","expected_final_hash":"#risk/2014/addition/43dbb2425c719dc53556","intent":"Dereference a YAML-LD risk-record IRI and verify that Explorer selects and canonicalizes the intended governed route.","capability_ids":["publication","graph","links","durable-state"]},
-        {"sequence":28,"action":"verify_url","value":"https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803","expected_text":"Coventry and Warwickshire Heritage Evaluation Exemplar","intent":"Verify the immutable exemplar release page and its published identity.","capability_ids":["publication","provenance"]},
-        {"sequence":29,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Ftiny%2Fokf-explorer.json","expected_text":"Tiny source-backed heritage assurance fixture","intent":"Verify the exact public Explorer entry URL authored by the tiny fixture landing page.","capability_ids":["publication","accessibility"]},
-        {"sequence":30,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json","expected_text":"Synthetic heritage capability supplement","intent":"Verify the exact public Explorer entry URL authored by the isolated synthetic landing page.","capability_ids":["publication","accessibility"]},
-        {"sequence":31,"action":"verify_url","value":"https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357","expected_text":"Complete heritage Evaluation Foundry exemplar","intent":"Verify the cited successful first-candidate GitHub Pages run identity.","capability_ids":["publication","provenance"]},
-        {"sequence":32,"action":"verify_url","value":"https://github.com/chris-page-gov/okf-explorer/commit/c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2","expected_text":"Complete heritage Evaluation Foundry exemplar","intent":"Verify the cited immutable first-candidate implementation commit identity.","capability_ids":["publication","provenance"]}
+        {"sequence":27,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json#record:cmlzay8yMDE0L2FkZGl0aW9uLzQzZGJiMjQyNWM3MTlkYzUzNTU2","expected_text":"Coventry City Walls","expected_final_hash":"#risk/2014/addition/43dbb2425c719dc53556","intent":"Dereference a YAML-LD risk-record IRI from the external corpus and verify that Explorer selects and canonicalizes the intended governed route.","capability_ids":["publication","graph","links","durable-state"]},
+        {"sequence":28,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json","expected_text":"heritage-coventry-warwickshire-20260803-v2","intent":"Verify the external faithful descriptor identity directly, independently of the Explorer shell.","capability_ids":["publication","provenance"]},
+        {"sequence":29,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer.json","expected_text":"Tiny source-backed heritage assurance fixture","intent":"Verify the reusable Explorer runtime with the exact external tiny descriptor.","capability_ids":["publication","accessibility"]},
+        {"sequence":30,"action":"verify_url","value":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json","expected_text":"Synthetic heritage capability supplement","intent":"Verify the reusable Explorer runtime with the isolated external synthetic descriptor.","capability_ids":["publication","accessibility"]},
+        {"sequence":31,"action":"verify_url","value":"https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire","expected_text":"Coventry and Warwickshire","intent":"Verify the repository identity that owns the external corpus and its review history.","capability_ids":["publication","provenance"]},
+        {"sequence":32,"action":"verify_url","value":"https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804","expected_text":"Coventry and Warwickshire Heritage Evaluation Exemplar","intent":"Verify the planned external release page after it has been published and made platform-immutable.","capability_ids":["publication","provenance"]}
       ],
       "assertions": [
-        {"assertion":"url_param_includes","name":"bundle","value":"/evaluation/heritage/okf-explorer.json"},
+        {"assertion":"url_param_includes","name":"bundle","value":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json"},
         {"assertion":"visible_text","value":"Coventry and Warwickshire"}
       ]
     }

@@ -1,0 +1,269 @@
+[
+  {
+    "evidence_id": "EV-001",
+    "kind": "codex-session-manifest",
+    "source": "[CODEX_SESSION_JSONL]",
+    "private_copy_sha256": "cb4a7b83bf6a9ddd436356c27c5786a35b89fb30102ed7f7a73a367a609fbd32",
+    "private_copy_bytes": 409,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-002",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "46faabbe0db9d93eb77790c41e7b9bf9ebe835f1757ed77c10f7b15af1f80202",
+    "private_copy_bytes": 797,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-003",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "c07f8506f65f375af2e524069ce51ba0696917c6f5af4bdb1e22188632d71c11",
+    "private_copy_bytes": 686,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-004",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "2c2c3cec55a0839647dcbe288cfdef603fdfea2fe8afca5a4002748630dab0b4",
+    "private_copy_bytes": 202732,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-005",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "f3bbdf146ce7f652c516b301ea4174f2a2fee7dd4bb7c596fcaa6bb37e05840f",
+    "private_copy_bytes": 32076,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-006",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "7c8345bdf88c17e040aa4ad8fd572d0ccbf73d72ccf6474bf195001fa3ceb035",
+    "private_copy_bytes": 387,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-007",
+    "kind": "git-command-output",
+    "source": "local repository evidence",
+    "private_copy_sha256": "6c6a6acba5e3e220f9a9e42a4da4427f4512ea5e6b72c92350398ffbbe4647b5",
+    "private_copy_bytes": 141,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-008",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30799819042",
+    "private_copy_sha256": "a6566fd13c1066d25edbf24db68788dfed9a9cfc488521661714e7cd238d2481",
+    "private_copy_bytes": 9198,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-009",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30799819042",
+    "private_copy_sha256": "40aac8bc54494833e6e86662ac5f020bef9ab1e657b5bff79da7a23354a5540e",
+    "private_copy_bytes": 52967,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-010",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30800609874",
+    "private_copy_sha256": "b60acad00f2dba83b0e8c1bbd3e322fb1c4804376d6f03f091662844b159cb10",
+    "private_copy_bytes": 7783,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-011",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30800609874",
+    "private_copy_sha256": "c40f2d6818608e0e19d4f3a68ef0c2292ad1bd97863db4563990858b2e89fa7a",
+    "private_copy_bytes": 196252,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-012",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30812594912",
+    "private_copy_sha256": "6bec3aa2d77128bc8f6b1611a6d175c02d665eda5ca6ee4208dba93cb158a3d2",
+    "private_copy_bytes": 9201,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-013",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30812594912",
+    "private_copy_sha256": "9e765a0b8fb5cc2f7577fb86b9507f5ad6cb2bde03ccdf948592999cd45c259a",
+    "private_copy_bytes": 53025,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-014",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
+    "private_copy_sha256": "f037a27b84166ebb5b6cfb379704f0bd488016b72fc1c48db8067e6b6900b1ed",
+    "private_copy_bytes": 7786,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-015",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
+    "private_copy_sha256": "649b53f33f29f0dcd27f7c78f86bdca43608939d9393f8c91266cada16ec4a19",
+    "private_copy_bytes": 196072,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-016",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30818372899",
+    "private_copy_sha256": "70a965226cb17d015c31a052224a28b684857139703f8c9fd5d94d24995dba7d",
+    "private_copy_bytes": 9193,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-017",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30818372899",
+    "private_copy_sha256": "66675e209b85b4d27d662149dffd92cbf94fe42c35d2d45a0726a215b3fd6c7c",
+    "private_copy_bytes": 53147,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-018",
+    "kind": "github-actions-run",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30819232224",
+    "private_copy_sha256": "2e7692617cd086361a8f946ecc37e406ed047f50cc1f89b02576e6d2a54ef56e",
+    "private_copy_bytes": 7794,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-019",
+    "kind": "github-actions-log",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30819232224",
+    "private_copy_sha256": "ea9219511b6f2b6ffba9d268b452b9a8f904bc61f8446432e69eb09e3979fe46",
+    "private_copy_bytes": 196134,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-020",
+    "kind": "pages-archive-manifest",
+    "source": "local repository evidence",
+    "private_copy_sha256": "86c03fadd65938b1e5ca80953228a8252ffa44fb91ebaa4c0b12c5ccd5edf89b",
+    "private_copy_bytes": 933,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-021",
+    "kind": "github-pull-request",
+    "source": "https://github.com/chris-page-gov/okf-explorer/pull/67",
+    "private_copy_sha256": "95113885abe068457db8396498d9c23991c04d8778931345dafda75455b62a9f",
+    "private_copy_bytes": 18941,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-022",
+    "kind": "github-pull-request",
+    "source": "https://github.com/chris-page-gov/okf-explorer/pull/68",
+    "private_copy_sha256": "31a1761bac11065eb91aee169386f4f2f430d09539ede0d757ea03242f431252",
+    "private_copy_bytes": 19013,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-023",
+    "kind": "github-pull-request",
+    "source": "https://github.com/chris-page-gov/okf-explorer/pull/69",
+    "private_copy_sha256": "5263472976730b6f9acc707b7f3e030abdae9ee0eeb322172aea9e3aba2d10b4",
+    "private_copy_bytes": 7841,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-024",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/initial-candidate-publication-results.json",
+    "private_copy_sha256": "36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4",
+    "private_copy_bytes": 40355,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-025",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/initial-candidate-publication-results.md",
+    "private_copy_sha256": "d9dbf06e02bcd94a24c4b64099ffda0c9703ef37162cf6b6a8b31cb8ba7b53f4",
+    "private_copy_bytes": 2210,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-026",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/local-candidate-receipt.json",
+    "private_copy_sha256": "2173bfcbadd4b6cecbc4165b70ec1974ba5fb99420495df374df136ab865c3ab",
+    "private_copy_bytes": 4257,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-027",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/protected-source-link-receipt.json",
+    "private_copy_sha256": "32c5ad4b1465c136f0955a12001011e3116eed8b9e2e801bee82ad37bcdaa786",
+    "private_copy_bytes": 8449,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-028",
+    "kind": "github-release",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803",
+    "private_copy_sha256": "d9d7d6f116add206a0a9a63086a285a3747ccf8e227096efcef898fbf4421cb4",
+    "private_copy_bytes": 6503,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-029",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/terminal-publication-results.json",
+    "private_copy_sha256": "9083035ceb13cfda74d7134d77b424704c6c14a0982d756b34700a04d06661a6",
+    "private_copy_bytes": 44907,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-030",
+    "kind": "github-release-asset",
+    "source": "https://github.com/chris-page-gov/okf-explorer/releases/download/heritage-coventry-warwickshire-20260803/terminal-publication-results.md",
+    "private_copy_sha256": "3553613d57730a4fb8417b4c05615d8f4ce07f9f612a744df9cf56a6646bf8cb",
+    "private_copy_bytes": 2210,
+    "publication_treatment": "Raw/private; only this normalized metadata and bounded findings are public."
+  },
+  {
+    "evidence_id": "EV-031",
+    "kind": "preserved-pages-deployment-archive",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30800609874",
+    "private_copy_sha256": "5ebbada97a2e6652400311951af7b3d93eacd617c6c4ff80481a0e550f80fea5",
+    "private_copy_bytes": 209566482,
+    "decompressed_tar_sha256": "ab7fea01c0298a849eb0a049de0f6011823960eef096f9ed28412f44b377c071",
+    "publication_treatment": "Ignored private archive; hash and byte count published before expiry."
+  },
+  {
+    "evidence_id": "EV-032",
+    "kind": "preserved-pages-deployment-archive",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
+    "private_copy_sha256": "5d54136cbe8628f582706ffefd74616cc2cb9e1ac408863a4fa09bf4e7d9eeae",
+    "private_copy_bytes": 209599179,
+    "decompressed_tar_sha256": "341391ab234c8a34a372e01e3b971561601ed0f4e3ab6b5a6bf15e195601b976",
+    "publication_treatment": "Ignored private archive; hash and byte count published before expiry."
+  },
+  {
+    "evidence_id": "EV-033",
+    "kind": "preserved-pages-deployment-archive",
+    "source": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30819232224",
+    "private_copy_sha256": "03fd9186911bcb4707cf730df4ddf9565de31cf63f0e0b2db6f7dd722a421e71",
+    "private_copy_bytes": 209594113,
+    "decompressed_tar_sha256": "dfd9472a78bf1fd0378abe9ede5b4980b44b77d4342c03a350b01c88df259be3",
+    "publication_treatment": "Ignored private archive; hash and byte count published before expiry."
+  }
+]

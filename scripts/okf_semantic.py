@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import math
 import re
@@ -48,6 +49,17 @@ class SemanticError(ValueError):
 class MarkdownDocument:
     metadata: dict[str, Any]
     body: str
+
+
+@dataclass(frozen=True)
+class SemanticMaterialization:
+    """One parsed YAML-LD source and its deterministic interchange identity."""
+
+    document: dict[str, Any]
+    json_ld: str
+    source_data_model_sha256: str
+    normalized_graph_sha256: str
+    normalized_statements: int
 
 
 def yaml_parser() -> YAML:
@@ -109,6 +121,26 @@ def load_yaml_ld(path: Path, *, allow_stream: bool = False) -> dict[str, Any] | 
     except UnicodeDecodeError as exc:
         raise SemanticError(f"{path}: YAML-LD must be UTF-8") from exc
     return load_yaml_ld_text(text, source=path.as_posix(), allow_stream=allow_stream)
+
+
+def render_yaml_ld(document: dict[str, Any]) -> str:
+    """Render deterministic, human-readable YAML-LD authoring text.
+
+    The renderer emits only the same JSON-compatible representation accepted by
+    :func:`load_yaml_ld_text`.  It deliberately has no custom Python tags and
+    disables aliases so the generated authoring source remains portable YAML.
+    """
+
+    _validate_representation(document)
+    serializer = YAML(typ="safe", pure=True)
+    serializer.default_flow_style = False
+    serializer.allow_unicode = True
+    serializer.sort_base_mapping_type_on_output = True
+    serializer.width = 4096
+    serializer.representer.ignore_aliases = lambda _value: True
+    stream = io.StringIO()
+    serializer.dump(document, stream)
+    return stream.getvalue()
 
 
 def parse_markdown(path: Path) -> MarkdownDocument:
@@ -478,6 +510,84 @@ def expand(
         )
     except Exception as exc:
         raise SemanticError(f"JSON-LD expansion failed: {exc}") from exc
+
+
+def normalize_json_ld(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> bytes:
+    """Return the canonical RDF dataset for a JSON-LD document.
+
+    URDNA2015 canonical N-Quads makes the result independent of YAML/JSON
+    whitespace, mapping order, scalar quoting and JSON-LD blank-node labels.
+    Remote contexts remain disabled; only repository-reviewed pinned contexts
+    can participate in semantic identity.
+    """
+
+    try:
+        normalized = jsonld.normalize(
+            document,
+            options={
+                "algorithm": "URDNA2015",
+                "format": "application/n-quads",
+                "documentLoader": pinned_document_loader(extra_contexts),
+            },
+        )
+    except Exception as exc:
+        raise SemanticError(f"JSON-LD normalization failed: {exc}") from exc
+    if not isinstance(normalized, str):
+        raise SemanticError("JSON-LD normalization did not return canonical N-Quads")
+    return normalized.encode("utf-8")
+
+
+def semantic_graph_identity(
+    document: dict[str, Any],
+    *,
+    extra_contexts: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Describe graph meaning independently of its YAML-LD/JSON-LD syntax."""
+
+    normalized = normalize_json_ld(document, extra_contexts=extra_contexts)
+    return {
+        "algorithm": "URDNA2015",
+        "media_type": "application/n-quads",
+        "sha256": sha256_hex(normalized),
+        "statements": sum(bool(line.strip()) for line in normalized.splitlines()),
+    }
+
+
+def materialize_yaml_ld(
+    text: str,
+    *,
+    source: str = "<yaml-ld-authoring>",
+    extra_contexts: dict[str, Any] | None = None,
+) -> SemanticMaterialization:
+    """Parse authored YAML-LD and deterministically materialize JSON-LD.
+
+    JSON-LD is emitted from the parsed YAML data model, never from a parallel
+    hand-maintained object.  Semantic equality is separately bound to the
+    normalized RDF dataset so presentation formatting is not graph identity.
+    """
+
+    document = load_yaml_ld_text(text, source=source)
+    if not isinstance(document, dict):  # Defensive: streams are disabled above.
+        raise SemanticError(f"{source}: YAML-LD authoring source must be a mapping")
+    identity = semantic_graph_identity(document, extra_contexts=extra_contexts)
+    canonical_data_model = canonical_json_bytes(document)
+    json_ld = canonical_data_model.decode("utf-8")
+    projected = json.loads(json_ld)
+    if projected != document:
+        raise SemanticError(
+            f"{source}: generated JSON-LD is not semantically equivalent to YAML-LD"
+        )
+    return SemanticMaterialization(
+        document=document,
+        json_ld=json_ld,
+        source_data_model_sha256=sha256_hex(canonical_data_model),
+        normalized_graph_sha256=identity["sha256"],
+        normalized_statements=identity["statements"],
+    )
 
 
 def compact(

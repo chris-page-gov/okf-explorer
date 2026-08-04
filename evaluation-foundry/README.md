@@ -12,8 +12,8 @@ Graph, Timeline, Map and the selected-record card:
 
 ```text
 source snapshot -> transparent profile -> reversible mappings
-                -> faithful evaluation bundle -> real Explorer journeys
-                -> feature report and publication boundary
+                -> impact plan -> affected candidate planes
+                -> real Explorer journeys -> signed promotion envelope
 ```
 
 It does not turn automated profiling into semantic or legal authority. Every
@@ -24,16 +24,20 @@ bundle and never contributes to source counts or conclusions.
 ## Control Artifacts
 
 - [Evaluation profile schema](schemas/okf-evaluation-profile.v1.schema.json)
+- [Evaluation profile v2 schema](schemas/okf-evaluation-profile.v2.schema.json)
 - [Mapping proposal schema](schemas/mapping-proposal.v1.schema.json)
 - [Feature coverage schema](schemas/feature-coverage.v1.schema.json)
 - [Coventry and Warwickshire heritage exemplar](fixtures/heritage-warwickshire/README.md)
 - [Beginner process](../docs/beginners/22-evaluation-foundry-and-yaml-ld.md)
 - [Exemplar report](../docs/heritage-evaluation-report.md)
 
-The exemplar publishes a [faithful source-backed descriptor](../evaluation/heritage/okf-explorer.json),
-a [tiny assurance descriptor](../evaluation/heritage/tiny/okf-explorer.json)
-and a deliberately separate, default-off
-[synthetic capability descriptor](../evaluation/heritage/synthetic/okf-explorer.json).
+The exemplar's external publication unit owns the
+[faithful source-backed descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json),
+[tiny assurance descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json)
+and deliberately separate, default-off
+[synthetic capability descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-explorer.json).
+[OKF Explorer](https://chris-page-gov.github.io/okf-explorer/) remains the
+reusable runtime rather than becoming the owner of this large corpus.
 
 ## Required Stages
 
@@ -46,10 +50,44 @@ and a deliberately separate, default-off
 5. Run the real Explorer against those exact fixture bytes.
 6. Build the faithful full corpus; publish unsupported features as gaps.
 7. Build an optional synthetic supplement in a separate namespace.
-8. Validate schemas, semantic projections, local links, source links,
-   accessibility, durable state and selected-record journeys.
+8. Use the impact planner and plane roots to validate the smallest fail-closed
+   dependency closure: schemas, semantic projections, local links, source-link
+   intents, accessibility, durable state and selected-record journeys.
 9. Freeze and publish the tested bytes; verify the exact deployed URLs in a
-   real browser.
+   real browser, then record the decision in a signed promotion envelope.
+
+## Candidate Bytes And Observations Are Different Things
+
+A candidate contains only stable, content-addressed material: source-backed
+records, mappings, generated indexes, graph materializations, journeys and
+plane roots. It must not contain a current deployment status, workflow run ID,
+observation timestamp, live-link result or promotion decision. Otherwise the
+act of testing a candidate changes the candidate that was tested.
+
+Time-sensitive results are separate evidence. A link-freshness job consumes the
+candidate's canonical-URL intent shards and emits timestamped receipts outside
+the candidate. A signed promotion envelope then binds an exact candidate digest
+to those receipts, the deployed descriptor, browser results and release
+identity. Expiring or refreshing an observation does not rebuild the corpus.
+
+## YAML-LD, Semantic Identity And JSON-LD
+
+YAML-LD is the canonical authoring representation because it keeps ordinary
+Markdown and readable YAML front matter as the source of truth. For this large
+exemplar, the normalized source rows drive an explicit deterministic YAML-LD
+authoring stage: the builder writes YAML, immediately reparses it with the safe
+YAML 1.2 loader, and uses only that parsed document for semantic shards and
+JSON-LD. The graph is normalized as URDNA2015 canonical N-Quads; its SHA-256
+digest defines semantic identity independently of whitespace, key order or
+scalar quoting. JSON-LD is a deterministic interchange materialization, not a
+second hand-edited source. Plane receipts retain a separate exact-byte artifact
+root so a formatting change is still visible without being called a graph
+change.
+
+Link intents follow the same modular rule. Their stable shards are selected by
+`SHA-256(canonical URL)`, so a corrected URL invalidates its shard and dependent
+checks without forcing unrelated data, search or presentation planes to be
+rebuilt. Live availability has a separate freshness schedule.
 
 ## Publication Boundary
 

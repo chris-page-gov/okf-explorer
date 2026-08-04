@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -12,9 +13,10 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import parse_qsl, unquote, urlsplit
+from urllib.parse import parse_qs, parse_qsl, unquote, urljoin, urlsplit
 
 from jsonschema import Draft202012Validator, FormatChecker
+from referencing import Registry, Resource
 from ruamel.yaml import YAML
 from ruamel.yaml.tokens import AliasToken, AnchorToken, TagToken
 
@@ -43,9 +45,21 @@ REQUIRED_ARTIFACTS = {
 }
 SCHEMA_FILES = {
     "profile": "okf-evaluation-profile.v1.schema.json",
+    "profile_v2": "okf-evaluation-profile.v2.schema.json",
     "mappings": "mapping-proposal.v1.schema.json",
     "coverage": "feature-coverage.v1.schema.json",
 }
+PROFILE_SCHEMA_VALIDATORS = {
+    "okf-evaluation-profile.v1": "profile",
+    "okf-evaluation-profile.v2": "profile_v2",
+}
+DOMAIN_PROFILE_SCHEMA = (
+    ROOT / "profiles" / "authoring" / "v1" / "domain-profile.schema.json"
+)
+DOMAIN_PROFILE_LOCAL_REF_URI = (
+    "https://chris-page-gov.github.io/okf-explorer/"
+    "profiles/authoring/v1/domain-profile.schema.json"
+)
 LOCAL_FILE_SUFFIXES = {
     ".csv",
     ".gz",
@@ -207,13 +221,30 @@ def load_document(path: Path) -> dict[str, Any]:
 
 
 def schema_validators() -> dict[str, Draft202012Validator]:
-    validators: dict[str, Draft202012Validator] = {}
-    for key, filename in SCHEMA_FILES.items():
-        schema = json.loads((SCHEMA_ROOT / filename).read_text(encoding="utf-8"))
+    schemas = {
+        key: json.loads((SCHEMA_ROOT / filename).read_text(encoding="utf-8"))
+        for key, filename in SCHEMA_FILES.items()
+    }
+    domain_schema = json.loads(DOMAIN_PROFILE_SCHEMA.read_text(encoding="utf-8"))
+    resources = [*schemas.values(), domain_schema]
+    registry = Registry()
+    for schema in resources:
         Draft202012Validator.check_schema(schema)
+        identifier = schema.get("$id")
+        if not isinstance(identifier, str) or not identifier:
+            raise ValueError("every Evaluation Foundry schema resource must have an $id")
+        registry = registry.with_resource(identifier, Resource.from_contents(schema))
+    registry = registry.with_resource(
+        DOMAIN_PROFILE_LOCAL_REF_URI,
+        Resource.from_contents(domain_schema),
+    )
+
+    validators: dict[str, Draft202012Validator] = {}
+    for key, schema in schemas.items():
         validators[key] = Draft202012Validator(
             schema,
             format_checker=FormatChecker(),
+            registry=registry,
         )
     return validators
 
@@ -315,6 +346,27 @@ def reference_values(value: Any, keys: set[str]) -> list[tuple[str, str]]:
     return found
 
 
+def referenced_values(value: Any, key: str) -> set[str]:
+    """Return string members of every array named *key* in a document."""
+
+    result: set[str] = set()
+    for _location, child in walk(value):
+        if not isinstance(child, dict) or not isinstance(child.get(key), list):
+            continue
+        result.update(item for item in child[key] if isinstance(item, str))
+    return result
+
+
+def referenced_scalars(value: Any, key: str) -> set[str]:
+    """Return every scalar string named *key* in a document."""
+
+    return {
+        child[key]
+        for _location, child in walk(value)
+        if isinstance(child, dict) and isinstance(child.get(key), str)
+    }
+
+
 def profile_reference_errors(
     profile: dict[str, Any],
     mappings: dict[str, Any],
@@ -389,6 +441,365 @@ def profile_reference_errors(
     for location, identifier in reference_values(journeys, MAPPING_REF_KEYS):
         if identifier not in proposal_ids:
             errors.append(f"journeys:{location} references unknown mapping {identifier!r}")
+    return errors
+
+
+def evaluation_v2_contract_errors(
+    profile: dict[str, Any],
+    profile_path: Path,
+    fixture_dir: Path,
+    repository_root: Path,
+) -> list[str]:
+    """Apply the shared Foundry contract's semantic invariants to v2 profiles."""
+
+    if profile.get("schema") != "okf-evaluation-profile.v2":
+        return []
+    errors: list[str] = []
+    contract = profile.get("consumer_contract")
+    if not isinstance(contract, dict):
+        return errors
+
+    inventory = contract.get("inventory", [])
+    consumer_ids = {
+        item["id"]
+        for item in inventory
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    validation_ids = object_ids(profile, "validation")
+    planes = contract.get("planes", [])
+    plane_ids = {
+        item["id"]
+        for item in planes
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    graph = contract.get("dependency_graph", {})
+    nodes = graph.get("nodes", []) if isinstance(graph, dict) else []
+    node_ids = {
+        item["id"]
+        for item in nodes
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+
+    lock = contract.get("lock", {})
+    locked_consumers = (
+        set(lock.get("consumer_ids", [])) if isinstance(lock, dict) else set()
+    )
+    if locked_consumers != consumer_ids:
+        errors.append(
+            "consumer_contract.lock.consumer_ids must exactly match the consumer inventory"
+        )
+    if isinstance(lock, dict):
+        lock_reference = lock.get("path")
+        lock_digest = lock.get("sha256")
+        if isinstance(lock_reference, str):
+            lock_path = resolve_local_reference(
+                lock_reference,
+                profile_path,
+                fixture_dir,
+                repository_root,
+            )
+            if lock_path is not None and isinstance(lock_digest, str):
+                observed = hashlib.sha256(lock_path.read_bytes()).hexdigest()
+                if observed != lock_digest:
+                    errors.append(
+                        "consumer_contract.lock.sha256 does not match "
+                        f"{lock_reference!r}: expected {lock_digest}, observed {observed}"
+                    )
+        if lock_digest == "unknown":
+            errors.append("a v2 candidate profile must pin the consumer lock SHA-256")
+
+    for consumer in inventory:
+        if not isinstance(consumer, dict):
+            continue
+        version = str(consumer.get("version_or_digest", ""))
+        if "latest" in version.casefold():
+            errors.append(
+                f"consumer {consumer.get('id', '<unknown>')!r} uses an unpinned "
+                "version_or_digest containing 'latest'"
+            )
+
+    connected: set[str] = set()
+    referenced_validation_ids: set[str] = set()
+    edges = graph.get("edges", []) if isinstance(graph, dict) else []
+    for edge in edges:
+        if not isinstance(edge, dict):
+            continue
+        for field in ("from_node", "to_node"):
+            identifier = edge.get(field)
+            if identifier not in node_ids:
+                errors.append(
+                    f"dependency edge {edge.get('id', '<unknown>')!r} references "
+                    f"unknown {field} {identifier!r}"
+                )
+            elif isinstance(identifier, str):
+                connected.add(identifier)
+        referenced_validation_ids.update(
+            item for item in edge.get("validation_refs", []) if isinstance(item, str)
+        )
+    for identifier in sorted(node_ids - connected):
+        errors.append(f"dependency graph node {identifier!r} is not connected to an edge")
+
+    graph_consumers = {
+        item.get("consumer_ref")
+        for item in nodes
+        if isinstance(item, dict) and item.get("kind") == "consumer"
+    }
+    for identifier in sorted(consumer_ids - graph_consumers):
+        errors.append(f"dependency graph has no consumer node for {identifier!r}")
+    graph_planes = {
+        item.get("plane_ref")
+        for item in nodes
+        if isinstance(item, dict) and item.get("kind") == "plane"
+    }
+    for identifier in sorted(plane_ids - graph_planes):
+        errors.append(f"dependency graph has no plane node for {identifier!r}")
+
+    unknown_consumers = sorted(
+        (
+            set(referenced_values(contract, "consumer_refs"))
+            | set(referenced_scalars(contract, "consumer_ref"))
+        )
+        - consumer_ids
+    )
+    errors.extend(
+        f"consumer reference points to unknown consumer {identifier!r}"
+        for identifier in unknown_consumers
+    )
+    unknown_planes = sorted(
+        (
+            set(referenced_values(contract, "affected_plane_refs"))
+            | set(referenced_values(contract, "digest_plane_refs"))
+            | set(referenced_scalars(contract, "plane_ref"))
+        )
+        - plane_ids
+    )
+    errors.extend(
+        f"plane reference points to unknown plane {identifier!r}"
+        for identifier in unknown_planes
+    )
+    referenced_validation_ids.update(referenced_values(contract, "validation_refs"))
+    for identifier in sorted(referenced_validation_ids - validation_ids):
+        errors.append(f"validation reference points to unknown validator {identifier!r}")
+    for identifier in sorted(validation_ids - referenced_validation_ids):
+        errors.append(f"validator {identifier!r} is not referenced by the consumer contract")
+
+    fixture = contract.get("fixture_protocol", {})
+    consumer_stage = fixture.get("consumer_stage", {}) if isinstance(fixture, dict) else {}
+    executed_consumers = (
+        set(consumer_stage.get("consumer_refs", []))
+        if isinstance(consumer_stage, dict)
+        else set()
+    )
+    required_consumers = {
+        item["id"]
+        for item in inventory
+        if isinstance(item, dict) and item.get("required_for_release") is True
+    }
+    for identifier in sorted(required_consumers - executed_consumers):
+        errors.append(
+            f"consumer fixture stage does not execute required consumer {identifier!r}"
+        )
+
+    compatibility = contract.get("compatibility", {})
+    directions = {
+        item.get("direction")
+        for item in compatibility.get("cases", [])
+        if isinstance(compatibility, dict) and isinstance(item, dict)
+    }
+    required_directions = {
+        "backward-new-producer-old-consumer",
+        "forward-old-producer-new-consumer",
+    }
+    if not required_directions <= directions:
+        errors.append(
+            "consumer compatibility cases must cover both producer/consumer directions"
+        )
+
+    window = (
+        compatibility.get("window_decision", {})
+        if isinstance(compatibility, dict)
+        else {}
+    )
+    supported_contracts = {
+        item
+        for item in window.get("supported_producer_contracts", [])
+        if isinstance(item, str)
+    }
+    declared_contract_sources: list[tuple[str, str]] = []
+    impact_policy = profile.get("impact_policy", {})
+    root_receipts = (
+        impact_policy.get("root_receipts", [])
+        if isinstance(impact_policy, dict)
+        else []
+    )
+    for reference in root_receipts:
+        if not isinstance(reference, str):
+            continue
+        resolved = resolve_local_reference(
+            reference,
+            profile_path,
+            fixture_dir,
+            repository_root,
+        )
+        if resolved is None:
+            continue
+        try:
+            receipt = load_document(resolved)
+        except ValueError as error:
+            errors.append(str(error))
+            continue
+        schema = receipt.get("schema") if isinstance(receipt, dict) else None
+        if isinstance(schema, str):
+            declared_contract_sources.append((reference, schema))
+    cases = compatibility.get("cases", []) if isinstance(compatibility, dict) else []
+    for case in cases:
+        if not isinstance(case, dict):
+            continue
+        reference = case.get("producer_fixture")
+        if not isinstance(reference, str):
+            continue
+        resolved = resolve_local_reference(
+            reference,
+            profile_path,
+            fixture_dir,
+            repository_root,
+        )
+        if resolved is None:
+            continue
+        try:
+            producer = load_document(resolved)
+        except ValueError as error:
+            errors.append(str(error))
+            continue
+        schema = producer.get("schema") if isinstance(producer, dict) else None
+        if isinstance(schema, str):
+            declared_contract_sources.append((reference, schema))
+    for reference, schema in sorted(set(declared_contract_sources)):
+        if schema not in supported_contracts:
+            errors.append(
+                "compatibility.window_decision.supported_producer_contracts "
+                f"does not declare {schema!r} used by {reference!r}"
+            )
+
+    deep_link_consumers = {
+        item.get("consumer_ref")
+        for item in contract.get("post_deploy_deep_links", [])
+        if isinstance(item, dict)
+    }
+    required_deep_links = {
+        item["id"]
+        for item in inventory
+        if isinstance(item, dict) and item.get("deep_link_required") is True
+    }
+    for identifier in sorted(required_deep_links - deep_link_consumers):
+        errors.append(f"post-deploy checks do not cover consumer {identifier!r}")
+
+    public_candidate_roots = {
+        item.get("consumer_ref"): item.get("location")
+        for item in nodes
+        if isinstance(item, dict)
+        and item.get("kind") == "public-route"
+        and isinstance(item.get("consumer_ref"), str)
+        and isinstance(item.get("location"), str)
+    }
+    for link in contract.get("post_deploy_deep_links", []):
+        if not isinstance(link, dict):
+            continue
+        consumer_ref = link.get("consumer_ref")
+        candidate_root = public_candidate_roots.get(consumer_ref)
+        url_template = link.get("url_template")
+        if not isinstance(candidate_root, str) or not isinstance(url_template, str):
+            continue
+        try:
+            candidate_parts = urlsplit(candidate_root)
+            link_parts = urlsplit(url_template)
+            bundle_values = parse_qs(link_parts.query, keep_blank_values=True).get(
+                "bundle", []
+            )
+            expected_bundle = urljoin(
+                candidate_root if candidate_root.endswith("/") else candidate_root + "/",
+                "okf-explorer.json",
+            )
+        except ValueError:
+            errors.append(
+                f"post-deploy deep link {link.get('id', '<unknown>')!r} has an invalid URL"
+            )
+            continue
+        if candidate_parts.scheme not in {"http", "https"}:
+            errors.append(
+                f"public-route for {consumer_ref!r} must be an HTTP(S) candidate root"
+            )
+        if bundle_values != [expected_bundle]:
+            errors.append(
+                f"post-deploy deep link {link.get('id', '<unknown>')!r} must bind "
+                f"the exact external candidate descriptor {expected_bundle!r}"
+            )
+
+    root = repository_root.resolve()
+    for node in nodes:
+        if not isinstance(node, dict) or node.get("kind") != "validator":
+            continue
+        for repository_path in node.get("repository_paths", []):
+            if not isinstance(repository_path, str):
+                continue
+            try:
+                resolved = (root / repository_path).resolve()
+            except (OSError, ValueError):
+                resolved = Path("/")
+            if not resolved.is_relative_to(root):
+                errors.append(
+                    f"validator node {node.get('id', '<unknown>')!r} has unsafe "
+                    f"repository path {repository_path!r}"
+                )
+            elif not resolved.is_file():
+                errors.append(
+                    f"validator node {node.get('id', '<unknown>')!r} references "
+                    f"absent repository path {repository_path!r}"
+                )
+
+    impact_policy = profile.get("impact_policy", {})
+    rules = impact_policy.get("path_rules", []) if isinstance(impact_policy, dict) else []
+    rule_ids: set[str] = set()
+    for index, rule in enumerate(rules):
+        if not isinstance(rule, dict):
+            continue
+        identifier = rule.get("id")
+        if isinstance(identifier, str):
+            if identifier in rule_ids:
+                errors.append(f"impact policy rule id {identifier!r} is not unique")
+            rule_ids.add(identifier)
+        for node_ref in rule.get("node_refs", []):
+            if isinstance(node_ref, str) and node_ref not in node_ids:
+                errors.append(
+                    f"impact policy rule {identifier or index!r} references unknown "
+                    f"node {node_ref!r}"
+                )
+        for plane_ref in rule.get("plane_refs", []):
+            if isinstance(plane_ref, str) and plane_ref not in plane_ids:
+                errors.append(
+                    f"impact policy rule {identifier or index!r} references unknown "
+                    f"plane {plane_ref!r}"
+                )
+        for validation_ref in rule.get("validation_refs", []):
+            if isinstance(validation_ref, str) and validation_ref not in validation_ids:
+                errors.append(
+                    f"impact policy rule {identifier or index!r} references unknown "
+                    f"validator {validation_ref!r}"
+                )
+        for pattern in rule.get("patterns", []):
+            if not isinstance(pattern, str):
+                continue
+            parts = pattern.replace("\\", "/").split("/")
+            if (
+                pattern != pattern.strip()
+                or pattern.startswith(("/", "~"))
+                or "\\" in pattern
+                or ".." in parts
+            ):
+                errors.append(
+                    f"impact policy rule {identifier or index!r} has unsafe pattern "
+                    f"{pattern!r}"
+                )
     return errors
 
 
@@ -958,6 +1369,10 @@ def local_references(
         for location, child in walk(document):
             if not isinstance(child, str):
                 continue
+            if ".impact_policy.path_rules[" in location and ".patterns[" in location:
+                # These are repository glob expressions interpreted by the
+                # impact planner, not resources to resolve while validating.
+                continue
             field = location.rsplit(".", 1)[-1]
             if field in NON_LOCAL_REFERENCE_FIELDS:
                 continue
@@ -972,12 +1387,21 @@ def resolve_local_reference(
     source_path: Path,
     fixture_dir: Path,
     repository_root: Path,
+    additional_roots: Iterable[Path] = (),
 ) -> Path | None:
     raw = Path(reference)
     candidates = (
-        [repository_root / reference.lstrip("/")]
+        [
+            repository_root / reference.lstrip("/"),
+            *(base / reference.lstrip("/") for base in additional_roots),
+        ]
         if raw.is_absolute()
-        else [source_path.parent / raw, fixture_dir / raw, repository_root / raw]
+        else [
+            source_path.parent / raw,
+            fixture_dir / raw,
+            *(base / raw for base in additional_roots),
+            repository_root / raw,
+        ]
     )
     root = repository_root.resolve()
     for candidate in candidates:
@@ -999,12 +1423,56 @@ def local_reference_errors(
 ) -> list[str]:
     errors: list[str] = []
     seen: set[tuple[str, str]] = set()
+    candidate_roots: list[Path] = []
+    profile_document = documents.get("profile")
+    if profile_document is not None:
+        profile_path, profile = profile_document
+        fixture_reference = profile.get("fixtures", {}).get("faithful")
+        if isinstance(fixture_reference, str):
+            descriptor = resolve_local_reference(
+                fixture_reference,
+                profile_path,
+                fixture_dir,
+                repository_root,
+            )
+            if descriptor is not None:
+                candidate_roots.append(descriptor.parent)
+    coverage_document = documents.get("coverage")
+    if coverage_document is not None:
+        coverage_path, coverage = coverage_document
+        bundle_reference = coverage.get("bundle")
+        if isinstance(bundle_reference, str):
+            descriptor = resolve_local_reference(
+                bundle_reference,
+                coverage_path,
+                fixture_dir,
+                repository_root,
+            )
+            if descriptor is not None:
+                candidate_roots.append(descriptor.parent)
     for location, source_path, reference in local_references(documents):
         key = (str(source_path), reference)
         if key in seen:
             continue
         seen.add(key)
-        if resolve_local_reference(reference, source_path, fixture_dir, repository_root) is None:
+        additional_roots = (
+            candidate_roots
+            if (
+                location.startswith("coverage:$.candidate_evidence.")
+                or (
+                    location.startswith("journeys:$.journeys[")
+                    and location.endswith(".start.bundle")
+                )
+            )
+            else []
+        )
+        if resolve_local_reference(
+            reference,
+            source_path,
+            fixture_dir,
+            repository_root,
+            additional_roots,
+        ) is None:
             errors.append(f"{location}: local referenced file does not exist: {reference!r}")
     return errors
 
@@ -1152,12 +1620,28 @@ def validate_fixture_family(
         return errors
 
     active_validators = validators or schema_validators()
+    profile_validator_key = PROFILE_SCHEMA_VALIDATORS.get(
+        str(documents["profile"].get("schema", ""))
+    )
+    if profile_validator_key is None:
+        errors.append(
+            "evaluation-profile.yaml:schema: unsupported Evaluation Foundry "
+            f"profile schema {documents['profile'].get('schema')!r}"
+        )
+    schema_keys = {
+        "profile": profile_validator_key,
+        "mappings": "mappings",
+        "coverage": "coverage",
+    }
     for key in ("profile", "mappings", "coverage"):
+        validator_key = schema_keys[key]
+        if validator_key is None:
+            continue
         errors.extend(
             rendered_schema_errors(
                 paths[key].name,
                 documents[key],
-                active_validators[key],
+                active_validators[validator_key],
             )
         )
     for key, document in documents.items():
@@ -1199,6 +1683,14 @@ def validate_fixture_family(
             documents["mappings"],
             documents["coverage"],
             documents["journeys"],
+        )
+    )
+    errors.extend(
+        evaluation_v2_contract_errors(
+            documents["profile"],
+            paths["profile"],
+            fixture_dir,
+            repository_root,
         )
     )
     artifact_documents = {

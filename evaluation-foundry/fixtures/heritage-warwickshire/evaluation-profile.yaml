@@ -1,58 +1,27 @@
-schema: okf-evaluation-profile.v1
+schema: okf-evaluation-profile.v2
 profile_id: heritage-coventry-warwickshire-v1
-version: 1.0.0
-status: evaluated
+version: 2.0.0
 title: Coventry and Warwickshire heritage functionality evaluation
 description: >-
   A reproducible Evaluation Foundry profile for testing every OKF Explorer
   presentation plane against complete, source-defined heritage populations,
   a tiny assurance fixture, and a visibly separate synthetic supplement.
-prepared_at: "2026-08-03T10:29:12Z"
-evaluated_at: "2026-08-03T12:29:08.274Z"
-publication_assurance:
-  status: passed
-  local_build:
-    status: passed
-    reading_pages: 239
-    internal_page_references: 4157
-    github_pages_size_gate: passed-under-1000000000-bytes
-  explorer_presentation_views:
-    status: passed-locally
-    count: 8
-    names:
-      - Reader
-      - Graph
-      - Links
-      - Timeline
-      - Type
-      - Resources
-      - Map
-      - Narrative
-  public_verification:
-    status: passed
-    demonstrated: true
-    journey: journey-publication
-    observed_at: "2026-08-03T12:29:08.274Z"
-    deployment:
-      commit: c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2
-      pages_run: 30813485357
-      pages_run_url: https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357
-      site: https://chris-page-gov.github.io/okf-explorer/
-    candidate:
-      descriptor_sha256: 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149
-      release_root_sha256: aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb
-    outcome:
-      journeys_passed: 1
-      journeys_total: 1
-      actions_passed: 27
-      actions_total: 27
-      assertions_passed: 2
-      assertions_total: 2
-    result_sha256: 36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4
-    immutable_evidence:
-      release: https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803
-      final_promotion_gate: action-28-release-page-validation
-      attachment_policy: exact terminal results are attached to the tagged promoted commit without mutating the verified Site bytes
+promotion:
+  envelope_schema: okf-evaluation-promotion-envelope.v1
+  envelope_path: release-assurance/heritage-publication-envelope.json
+  envelope_reference: >-
+    A separately signed or attested release attachment named
+    heritage-coventry-warwickshire-promotion-envelope.json.
+  creation_gate: after-deployment-observation
+  envelope_excluded_from_roots: true
+  candidate_content: >-
+    Candidate bytes contain only immutable self-facts, declared promotion
+    policy and the stable envelope reference; no observed run or deployment
+    result is folded back into the candidate.
+  observation_boundary: >-
+    Status, timestamps, run identifiers, public observations and result counts
+    belong exclusively to timestamped run receipts and the signed promotion
+    envelope outside the candidate root.
 scope:
   record_definition: >-
     One unique current NHLE ListEntry intersecting at least one pinned scope
@@ -181,20 +150,722 @@ fixtures:
   faithful: ../../../evaluation/heritage/okf-explorer.json
   synthetic: ../../../evaluation/heritage/synthetic/okf-explorer.json
 consumer_contract:
-  consumer: OKF Explorer static PWA and browser-compatible generated Site
-  journeys: ./journeys.json
-  deterministic_builds: 2
+  inventory:
+    - id: CONSUMER-OKF-EXPLORER
+      title: OKF Explorer static PWA and browser-compatible generated Site
+      kind: viewer
+      version_or_digest: "@okf/explorer@0.5.7 (commit 0b5d748dc13ed83134592fc0873a2ff25d83eada)"
+      source: https://github.com/chris-page-gov/okf-explorer/tree/0b5d748dc13ed83134592fc0873a2ff25d83eada/apps/okf-explorer
+      interfaces:
+        - okf-explorer descriptor and sharded data entrypoints
+        - YAML-LD and JSON-LD semantic representations
+        - browser-compatible generated Site and durable URL state
+      execution: >-
+        Build the pinned app deterministically and run its external-bundle
+        acceptance contract and declared browser journeys against the selected
+        fixture bytes.
+      required_for_release: true
+      deep_link_required: true
+      evidence_refs:
+        - urn:okf-evidence:heritage-candidate-plane-roots
+      executable_identity:
+        package: "@okf/explorer"
+        version: 0.5.7
+        commit: 0b5d748dc13ed83134592fc0873a2ff25d83eada
+        lock_sha256: 25eb2cd4f1dd2f93ce89e3884e3d9293d490371bd55d4469bba0263ee083ffc1
+        command: pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+  lock:
+    path: consumer-lock.json
+    sha256: 3857b873709af12cba66d5adecf79caef18762d9076c2183f17c4e35802af430
+    consumer_ids:
+      - CONSUMER-OKF-EXPLORER
+    update_policy: >-
+      Change the pinned Explorer only through review of consumer-lock.json,
+      followed by its dependency-graph closure, both compatibility directions,
+      and the applicable browser assurance tier.
+  dependency_graph:
+    nodes:
+      - id: NODE-SOURCE
+        kind: source
+        label: Pinned heritage source snapshots
+        location: source-snapshot.json.gz
+      - id: NODE-PRODUCER
+        kind: producer
+        label: Heritage normalized-core builder and plane emitters
+        location: ../../../scripts/build_heritage_evaluation.py
+      - id: NODE-CONTROL
+        kind: plane
+        label: Descriptor and control plane
+        location: ../../../evaluation/heritage/okf-explorer.json
+        plane_ref: PLANE-CONTROL
+      - id: NODE-DATA
+        kind: plane
+        label: Normalized record and relationship data plane
+        location: ../../../evaluation/heritage/data/manifest.json
+        plane_ref: PLANE-DATA
+      - id: NODE-SEARCH
+        kind: plane
+        label: Search, alias and misspelling-tolerance plane
+        location: ../../../evaluation/heritage/data/search/manifest.json
+        plane_ref: PLANE-SEARCH
+      - id: NODE-SEMANTIC
+        kind: plane
+        label: YAML-LD, JSON-LD and normalized graph plane
+        location: ../../../evaluation/heritage/data/semantic/validation-report.json
+        plane_ref: PLANE-SEMANTIC
+      - id: NODE-PRESENTATION
+        kind: plane
+        label: Markdown, rich reader and public route plane
+        location: ../../../evaluation/heritage/index.md
+        plane_ref: PLANE-PRESENTATION
+      - id: NODE-RELEASE
+        kind: plane
+        label: Candidate and release envelope plane
+        location: ../../../evaluation/heritage/assurance/plane-roots.json
+        plane_ref: PLANE-RELEASE
+      - id: NODE-CONSUMER
+        kind: consumer
+        label: Pinned OKF Explorer
+        location: consumer-lock.json#CONSUMER-OKF-EXPLORER
+        consumer_ref: CONSUMER-OKF-EXPLORER
+      - id: NODE-VALIDATOR-PROFILE
+        kind: validator
+        label: Evaluation profile and impact-contract validator
+        location: ../../../scripts/check_evaluation_foundry.py
+        repository_paths:
+          - scripts/check_evaluation_foundry.py
+          - evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json
+      - id: NODE-VALIDATOR-CORPUS
+        kind: validator
+        label: Heritage corpus invariant validator
+        location: ../../../scripts/build_heritage_evaluation.py
+        repository_paths:
+          - scripts/build_heritage_evaluation.py
+          - scripts/check_heritage_adversarial.py
+      - id: NODE-VALIDATOR-BROWSER
+        kind: validator
+        label: Question and browser journey evaluator
+        location: ../../../scripts/evaluate_okf_explorer.mjs
+        repository_paths:
+          - scripts/evaluate_okf_explorer.mjs
+          - apps/okf-explorer/playwright.foundry.config.ts
+      - id: NODE-VALIDATOR-SITE
+        kind: validator
+        label: Generated Site assembler and link audit
+        location: ../../../scripts/build_site.py
+        repository_paths:
+          - scripts/build_site.py
+      - id: NODE-PUBLIC-ROUTE
+        kind: public-route
+        label: Published Explorer and heritage reading pages
+        location: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/
+        consumer_ref: CONSUMER-OKF-EXPLORER
+      - id: NODE-FINALIZER
+        kind: finalizer
+        label: Signed terminal release and promotion envelope
+        location: urn:okf-promotion:heritage-coventry-warwickshire
+    edges:
+      - id: EDGE-SOURCE-PRODUCER
+        from_node: NODE-SOURCE
+        to_node: NODE-PRODUCER
+        contract: Source snapshot changes invalidate the normalized core before any plane is emitted.
+        change_impacts:
+          - Rebuild the selected fixture core and every derived data plane.
+        affected_plane_refs: [PLANE-CONTROL, PLANE-DATA, PLANE-SEARCH, PLANE-SEMANTIC, PLANE-PRESENTATION, PLANE-RELEASE]
+        validation_refs: [VAL-PROFILE, VAL-CORPUS, VAL-CONSUMER, VAL-BROWSER, VAL-SITE]
+      - id: EDGE-PRODUCER-CONTROL
+        from_node: NODE-PRODUCER
+        to_node: NODE-CONTROL
+        contract: The normalized core binds the descriptor and immutable entrypoints.
+        change_impacts: [Re-emit descriptor and control receipts.]
+        affected_plane_refs: [PLANE-CONTROL]
+        validation_refs: [VAL-PROFILE, VAL-CORPUS, VAL-CONSUMER]
+      - id: EDGE-PRODUCER-DATA
+        from_node: NODE-PRODUCER
+        to_node: NODE-DATA
+        contract: The normalized core emits record, resource, relationship and adjacency shards.
+        change_impacts: [Re-emit only affected stable-hash data shards.]
+        affected_plane_refs: [PLANE-DATA]
+        validation_refs: [VAL-CORPUS, VAL-CONSUMER]
+      - id: EDGE-PRODUCER-SEARCH
+        from_node: NODE-PRODUCER
+        to_node: NODE-SEARCH
+        contract: Search projection derives aliases, prefixes, postings and typo forms from normalized records.
+        change_impacts: [Re-emit affected search shards and question tags.]
+        affected_plane_refs: [PLANE-SEARCH]
+        validation_refs: [VAL-CORPUS, VAL-BROWSER]
+      - id: EDGE-PRODUCER-SEMANTIC
+        from_node: NODE-PRODUCER
+        to_node: NODE-SEMANTIC
+        contract: The semantic projection derives graph assertions and YAML-LD or JSON-LD interchange.
+        change_impacts: [Re-emit affected semantic shards and graph validation.]
+        affected_plane_refs: [PLANE-SEMANTIC]
+        validation_refs: [VAL-CORPUS, VAL-CONSUMER]
+      - id: EDGE-PRODUCER-PRESENTATION
+        from_node: NODE-PRODUCER
+        to_node: NODE-PRESENTATION
+        contract: Human pages and public routes are projections of normalized identities.
+        change_impacts: [Re-render affected Markdown and reader routes.]
+        affected_plane_refs: [PLANE-PRESENTATION]
+        validation_refs: [VAL-CONSUMER, VAL-BROWSER, VAL-SITE]
+      - id: EDGE-CONTROL-CONSUMER
+        from_node: NODE-CONTROL
+        to_node: NODE-CONSUMER
+        contract: The pinned Explorer resolves declared entrypoints without guessing.
+        change_impacts: [Run the external-bundle consumer contract.]
+        affected_plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
+        validation_refs: [VAL-CONSUMER]
+      - id: EDGE-DATA-CORPUS-VALIDATOR
+        from_node: NODE-DATA
+        to_node: NODE-VALIDATOR-CORPUS
+        contract: Data shards satisfy corpus identity, provenance and manifest invariants.
+        change_impacts: [Run corpus invariants for selected fixtures.]
+        affected_plane_refs: [PLANE-DATA]
+        validation_refs: [VAL-CORPUS]
+      - id: EDGE-SEARCH-BROWSER-VALIDATOR
+        from_node: NODE-SEARCH
+        to_node: NODE-VALIDATOR-BROWSER
+        contract: Search shards answer declared question tags and journey groups.
+        change_impacts: [Run tagged question and targeted browser journeys.]
+        affected_plane_refs: [PLANE-SEARCH, PLANE-PRESENTATION]
+        validation_refs: [VAL-BROWSER]
+      - id: EDGE-SEMANTIC-CONSUMER
+        from_node: NODE-SEMANTIC
+        to_node: NODE-CONSUMER
+        contract: The Explorer presents graph, provenance and linked-data views from the semantic projection.
+        change_impacts: [Run graph and linked-data consumer journeys.]
+        affected_plane_refs: [PLANE-SEMANTIC, PLANE-PRESENTATION]
+        validation_refs: [VAL-CONSUMER, VAL-BROWSER]
+      - id: EDGE-PRESENTATION-SITE
+        from_node: NODE-PRESENTATION
+        to_node: NODE-VALIDATOR-SITE
+        contract: The Site assembler renders Markdown and resolves every internal HTML route.
+        change_impacts: [Assemble affected Site components and validate links.]
+        affected_plane_refs: [PLANE-PRESENTATION]
+        validation_refs: [VAL-SITE]
+      - id: EDGE-PROFILE-PROFILE-VALIDATOR
+        from_node: NODE-CONTROL
+        to_node: NODE-VALIDATOR-PROFILE
+        contract: Control changes validate against the shared Foundry contract and semantic references.
+        change_impacts: [Validate schema and impact graph before expensive work.]
+        affected_plane_refs: [PLANE-CONTROL]
+        validation_refs: [VAL-PROFILE]
+      - id: EDGE-CONSUMER-PUBLIC
+        from_node: NODE-CONSUMER
+        to_node: NODE-PUBLIC-ROUTE
+        contract: Durable Explorer state restores the declared candidate identity and selected view.
+        change_impacts: [Run affected browser journeys and exact URL verification.]
+        affected_plane_refs: [PLANE-PRESENTATION, PLANE-RELEASE]
+        validation_refs: [VAL-BROWSER, VAL-SITE]
+      - id: EDGE-SITE-RELEASE
+        from_node: NODE-VALIDATOR-SITE
+        to_node: NODE-RELEASE
+        contract: A link-clean component Site is eligible for a separately signed promotion envelope.
+        change_impacts: [Recompute release-plane receipts without mutating candidate bytes.]
+        affected_plane_refs: [PLANE-RELEASE]
+        validation_refs: [VAL-SITE, VAL-RELEASE]
+      - id: EDGE-RELEASE-FINALIZER
+        from_node: NODE-RELEASE
+        to_node: NODE-FINALIZER
+        contract: The finalizer signs or attests the annotated tag and immutable release envelope.
+        change_impacts: [Run terminal release provenance and immutability gates.]
+        affected_plane_refs: [PLANE-RELEASE]
+        validation_refs: [VAL-RELEASE]
+      - id: EDGE-FINALIZER-PUBLIC
+        from_node: NODE-FINALIZER
+        to_node: NODE-PUBLIC-ROUTE
+        contract: Promotion exposes only the exact candidate covered by the release envelope.
+        change_impacts: [Verify public identity and release attachment links.]
+        affected_plane_refs: [PLANE-RELEASE]
+        validation_refs: [VAL-RELEASE, VAL-BROWSER]
+  fixture_protocol:
+    max_seconds: 600
+    producer_stage:
+      id: FIXTURE-STAGE-PRODUCER
+      purpose: Build adversarial microfixtures and the tiny fixture twice before any faithful-corpus work.
+      commands:
+        - python3 scripts/build_heritage_evaluation.py --fixture tiny
+        - python3 scripts/build_heritage_evaluation.py --check
+        - python3 scripts/check_heritage_adversarial.py
+      cases:
+        - Unsafe or redirected rich link
+        - Misspelled familiar name and alternative place name
+        - YAML-LD identity collision and orphan graph reference
+        - Late publication-route and Markdown rendering failure
+        - Candidate receipt contaminated with mutable status metadata
+      expected_outcomes:
+        - Both builds are byte-identical and changed-only writes leave unaffected shards untouched.
+        - Every adversarial case fails closed before the faithful build.
+        - The tiny fixture exercises each selected plane through the actual consumer.
+      consumer_refs: []
+      validation_refs: [VAL-PROFILE, VAL-CORPUS]
+    consumer_stage:
+      id: FIXTURE-STAGE-CONSUMER
+      purpose: Execute the pinned Explorer against selected tiny, faithful and synthetic fixture projections.
+      commands:
+        - pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+      cases:
+        - Reader, graph, links, timeline, type, resources, map and narrative views
+        - Search alternatives and misspellings
+        - Durable query, facet, record and view state
+        - Synthetic isolation and default-off loading
+        - Public reading-page and release deep links
+      expected_outcomes:
+        - The actual consumer loads declared entrypoints and never guesses a path.
+        - Selected journey groups restore identity and state with no browser errors.
+        - Unsupported or corrupt inputs degrade explicitly or fail closed.
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-CONSUMER, VAL-BROWSER]
+  planes:
+    - id: PLANE-CONTROL
+      title: Descriptor, profile and manifest control plane
+      role: control
+      digest_algorithm: sha256
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Profile, schema, descriptor, entrypoint, snapshot binding or consumer-lock changes]
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-PROFILE, VAL-CORPUS, VAL-CONSUMER]
+    - id: PLANE-DATA
+      title: Normalized record, resource, relationship and provenance plane
+      role: data
+      digest_algorithm: sha256
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Source snapshot, normalization, identity, geometry, provenance or relationship changes]
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-CORPUS, VAL-CONSUMER]
+    - id: PLANE-SEARCH
+      title: Search, alias, prefix, postings and typo-tolerance plane
+      role: search
+      digest_algorithm: sha256
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Search normalization, labels, aliases, alternative names, tokenization or typo policy changes]
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-CORPUS, VAL-BROWSER]
+    - id: PLANE-SEMANTIC
+      title: Normalized graph and YAML-LD or JSON-LD interchange plane
+      role: semantic
+      digest_algorithm: mixed-declared
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Context, IRI, predicate, assertion, graph route or canonicalization changes]
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-CORPUS, VAL-CONSUMER, VAL-BROWSER]
+    - id: PLANE-PRESENTATION
+      title: Markdown, rich reader and durable browser state plane
+      role: presentation
+      digest_algorithm: sha256
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Markdown, reader, route, graph, map, CSS, accessibility or hosting-base changes]
+      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      validation_refs: [VAL-CONSUMER, VAL-BROWSER, VAL-SITE]
+    - id: PLANE-RELEASE
+      title: Candidate identity, publication evidence and signed promotion envelope
+      role: release
+      digest_algorithm: sha256
+      digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
+      root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
+      invalidated_by: [Candidate root, Site component, public identity, tag, attestation or promotion-policy changes]
+      consumer_refs: []
+      validation_refs: [VAL-SITE, VAL-RELEASE]
   compatibility:
-    - Existing OKF Markdown without YAML-LD remains valid and renders as before.
-    - YAML-LD is additive; unknown extension fields are preserved or ignored without breaking legacy views.
-    - One canonical query and facet state drives Reader, Graph, Links, Timeline, Type, Resources, Map and Narrative projections.
+    support_policy: >-
+      Test the current producer with the pinned 0.5.7 Explorer and test the
+      current Explorer with the retained tiny producer fixture; undeclared
+      contracts fail closed.
+    window_decision:
+      supported_producer_contracts:
+        - okf-explorer-large-corpus.v1
+        - okf-evaluation-plane-roots.v2
+      supported_consumer_versions:
+        - "@okf/explorer@0.5.7"
+      unsupported_behavior: fail-closed
+      decision_refs: []
+    cases:
+      - id: COMPAT-BACKWARD-CURRENT-PRODUCER
+        direction: backward-new-producer-old-consumer
+        producer_fixture: ../../../evaluation/heritage/okf-explorer.json
+        consumer_ref: CONSUMER-OKF-EXPLORER
+        expected_result: accept
+        validation_refs: [VAL-CONSUMER]
+      - id: COMPAT-FORWARD-RETAINED-PRODUCER
+        direction: forward-old-producer-new-consumer
+        producer_fixture: ../../../evaluation/heritage/tiny/okf-explorer.json
+        consumer_ref: CONSUMER-OKF-EXPLORER
+        expected_result: accept
+        validation_refs: [VAL-CONSUMER]
+  post_deploy_deep_links:
+    - id: DEEP-LINK-HERITAGE-EXPLORER
+      consumer_ref: CONSUMER-OKF-EXPLORER
+      url_template: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json&view=graph
+      state: Exact faithful descriptor with graph view, query, selected record and relationship state restored by the journey.
+      expected_identity: Coventry and Warwickshire heritage functionality evaluation
+      expected_content:
+        - Reader
+        - Graph
+        - Coventry and Warwickshire
+      digest_plane_refs: [PLANE-CONTROL, PLANE-SEMANTIC, PLANE-PRESENTATION, PLANE-RELEASE]
+      validation_refs: [VAL-BROWSER, VAL-RELEASE]
+      tool_first_budget_seconds: 60
+      share_policy: withhold-until-exact-url-browser-verified
+validation:
+  - id: VAL-PROFILE
+    target: Evaluation Profile v2 schema, cross-file references and impact graph
+    method: Validate offline against the shared Foundry schema registry and reject unresolved IDs, paths, selectors or graph edges.
+    validator: scripts/check_evaluation_foundry.py
+    severity: error
+    release_gate: true
+    receipt: urn:okf-evidence:heritage-candidate-plane-roots
+  - id: VAL-CORPUS
+    target: Selected heritage fixture and generated planes
+    method: Validate manifests, identities, provenance, synthetic isolation, graph integrity and deterministic plane roots.
+    validator: scripts/build_heritage_evaluation.py
+    severity: error
+    release_gate: true
+    receipt: urn:okf-evidence:heritage-candidate-plane-roots
+  - id: VAL-CONSUMER
+    target: Pinned actual OKF Explorer consumer
+    method: Run the external-bundle acceptance contract for both compatibility directions and selected fixtures.
+    validator: apps/okf-explorer/scripts/run_external_bundle_acceptance.mjs
+    severity: error
+    release_gate: true
+    receipt: urn:okf-run-evidence:heritage-consumer-acceptance
+  - id: VAL-BROWSER
+    target: Tagged question suite, browser journeys and exact public deep links
+    method: Run the affected targeted browser journeys on pull requests and the complete three-engine matrix nightly and at terminal release.
+    validator: scripts/evaluate_okf_explorer.mjs
+    severity: error
+    release_gate: true
+    receipt: urn:okf-run-evidence:heritage-browser-results
+  - id: VAL-SITE
+    target: Content-addressed Site components, rendered Markdown and internal or external links
+    method: Assemble changed components, render every Markdown page, audit links and check the Pages size limit.
+    validator: scripts/build_site.py
+    severity: error
+    release_gate: true
+    receipt: urn:okf-run-evidence:heritage-site-audit
+  - id: VAL-RELEASE
+    target: Candidate identity and signed or attested immutable promotion envelope
+    method: Verify the annotated tag, provenance attestation, release immutability setting, attachments and exact deployed identity.
+    validator: scripts/check_promotion_envelope.py plus signed-tag, attestation and immutable-release policy gates
+    severity: error
+    release_gate: true
+    receipt: urn:okf-promotion:heritage-coventry-warwickshire
+impact_policy:
+  unknown_paths: fail-closed
+  root_receipts:
+    - evaluation/heritage/assurance/plane-roots.json
+    - evaluation/heritage/tiny/assurance/plane-roots.json
+    - evaluation/heritage/synthetic/assurance/plane-roots.json
+  full_shadow:
+    enabled: true
+    cadence: [nightly, terminal-release]
+  path_rules:
+    - id: IMPACT-PROFILE-CONTROL
+      patterns:
+        - evaluation-foundry/schemas/**
+        - evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml
+        - evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json
+        - evaluation-foundry/fixtures/heritage-warwickshire/history/**
+        - scripts/check_evaluation_foundry.py
+        - scripts/plan_evaluation_foundry_impact.py
+      node_refs: [NODE-CONTROL, NODE-VALIDATOR-PROFILE]
+      plane_refs: [PLANE-CONTROL]
+      validation_refs: [VAL-PROFILE]
+      fixtures: [adversarial, tiny]
+      test_tags: [profile, contract, impact]
+      journey_groups: [control]
+      jobs: [python, foundry]
+      reason: Profile contracts must fail before expensive producer or browser work.
+    - id: IMPACT-SOURCES
+      patterns:
+        - evaluation-foundry/fixtures/heritage-warwickshire/source-snapshot.json.gz
+        - evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json
+        - evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json
+        - scripts/acquire_heritage_evaluation_sources.py
+        - scripts/retarget_heritage_source_snapshots.py
+      node_refs: [NODE-SOURCE]
+      fixtures: [adversarial, tiny, faithful, synthetic]
+      test_tags: [source, provenance, denominator]
+      journey_groups: [reader, graph, links, timeline, map, search]
+      jobs: [python, app, browser_targeted, foundry, site]
+      reason: Source bytes feed the normalized core and every derived plane.
+    - id: IMPACT-PRODUCER
+      patterns:
+        - scripts/build_heritage_evaluation.py
+        - scripts/heritage_evaluation/**
+        - scripts/heritage_build_io.py
+        - tests/test_build_heritage_evaluation.py
+      node_refs: [NODE-PRODUCER]
+      fixtures: [adversarial, tiny, faithful, synthetic]
+      test_tags: [producer, determinism]
+      journey_groups: [reader, graph, links, timeline, map, search]
+      jobs: [python, app, browser_targeted, foundry, site]
+      reason: Normalized-core or emitter changes propagate through their graph closure.
+    - id: IMPACT-ADVERSARIAL
+      patterns:
+        - scripts/check_heritage_adversarial.py
+        - evaluation-foundry/fixtures/heritage-warwickshire/adversarial/**
+      node_refs: [NODE-VALIDATOR-CORPUS, NODE-VALIDATOR-BROWSER]
+      plane_refs: [PLANE-CONTROL, PLANE-DATA, PLANE-SEARCH, PLANE-SEMANTIC, PLANE-PRESENTATION]
+      validation_refs: [VAL-PROFILE, VAL-CORPUS, VAL-BROWSER]
+      fixtures: [adversarial, tiny]
+      test_tags: [adversarial, link, markdown, misspelling, provenance, release, route, yaml-ld]
+      journey_groups: [control, reader, graph, links, search, publication]
+      jobs: [python, browser_targeted, foundry]
+      reason: Every reconstructed late-finding class is exercised before tiny or faithful corpus work.
+    - id: IMPACT-GENERATED-CONTROL
+      patterns:
+        - evaluation/heritage/okf-explorer.json
+        - evaluation/heritage/**/okf-explorer.json
+      node_refs: [NODE-CONTROL]
+      plane_refs: [PLANE-CONTROL]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [descriptor, manifest]
+      journey_groups: [control, reader]
+      jobs: [python, app, browser_targeted, foundry, site]
+      reason: Descriptor or receipt changes affect consumer identity and publication.
+    - id: IMPACT-PLANE-RECEIPTS
+      patterns:
+        - evaluation/heritage/assurance/plane-roots.json
+        - evaluation/heritage/**/assurance/plane-roots.json
+        - evaluation/heritage/assurance/build-manifest.json
+        - evaluation/heritage/**/assurance/build-manifest.json
+      node_refs: [NODE-PRODUCER]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [digest, manifest]
+      journey_groups: []
+      jobs: [python, foundry]
+      root_narrowable: true
+      narrowed_jobs: [python]
+      reason: Plane receipts are narrowed only by comparing every old and new root; missing evidence expands to the full matrix.
+    - id: IMPACT-GENERATED-DATA
+      patterns:
+        - evaluation/heritage/data/records/**
+        - evaluation/heritage/data/records-*.json.gz
+        - evaluation/heritage/data/resources-*.json.gz
+        - evaluation/heritage/data/relationships-*.json.gz
+        - evaluation/heritage/data/adjacency/**
+        - evaluation/heritage/data/analysis/**
+        - evaluation/heritage/data/source-provenance.json
+        - evaluation/heritage/data/manifest.json
+        - evaluation/heritage/data/overview.json
+        - evaluation/heritage/data/facets.json
+        - evaluation/heritage/data/link-validation.json
+        - evaluation/heritage/data/link-validation/**
+        - evaluation/heritage/**/data/records/**
+        - evaluation/heritage/**/data/records-*.json.gz
+        - evaluation/heritage/**/data/resources-*.json.gz
+        - evaluation/heritage/**/data/relationships-*.json.gz
+        - evaluation/heritage/**/data/adjacency/**
+        - evaluation/heritage/**/data/analysis/**
+        - evaluation/heritage/**/data/source-provenance.json
+        - evaluation/heritage/**/data/manifest.json
+        - evaluation/heritage/**/data/overview.json
+        - evaluation/heritage/**/data/facets.json
+        - evaluation/heritage/**/data/link-validation.json
+        - evaluation/heritage/**/data/link-validation/**
+      node_refs: [NODE-DATA]
+      plane_refs: [PLANE-DATA]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [data, provenance, relationship]
+      journey_groups: [reader, links, timeline, map]
+      jobs: [python, app, browser_targeted, foundry]
+      reason: Stable data shards rerun only data consumers and their journeys.
+    - id: IMPACT-GENERATED-SEARCH
+      patterns:
+        - evaluation/heritage/data/search/**
+        - evaluation/heritage/**/data/search/**
+      node_refs: [NODE-SEARCH]
+      plane_refs: [PLANE-SEARCH]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [search, alias, misspelling]
+      journey_groups: [search]
+      jobs: [python, app, browser_targeted, foundry]
+      reason: Search shards select question tags and search journeys without rebuilding unrelated graph bytes.
+    - id: IMPACT-GENERATED-SEMANTIC
+      patterns:
+        - evaluation/heritage/data/semantic/**
+        - evaluation/heritage/okf-bundle.yamlld
+        - evaluation/heritage/okf-bundle.jsonld
+        - evaluation/heritage/**/data/semantic/**
+        - evaluation/heritage/**/okf-bundle.yamlld
+        - evaluation/heritage/**/okf-bundle.jsonld
+      node_refs: [NODE-SEMANTIC]
+      plane_refs: [PLANE-SEMANTIC]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [yaml-ld, json-ld, graph]
+      journey_groups: [graph, links]
+      jobs: [python, app, browser_targeted, foundry]
+      reason: Semantic changes rebuild graph interchange and graph-specific consumer assurance.
+    - id: IMPACT-CANDIDATE-CONTROL
+      patterns:
+        - evaluation/heritage/evaluation-profile.yaml
+        - evaluation/heritage/feature-coverage.json
+        - evaluation/heritage/journeys.json
+        - evaluation/heritage/mapping-proposals.yaml
+        - evaluation/heritage/questions.json
+      node_refs: [NODE-CONTROL, NODE-PRESENTATION]
+      plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
+      fixtures: [tiny, faithful, synthetic]
+      test_tags: [profile, question, journey, mapping]
+      journey_groups: [control, reader, publication]
+      jobs: [python, app, browser_targeted, foundry, site]
+      reason: Candidate control documents change consumer identity or presentation without invalidating normalized corpus planes.
+    - id: IMPACT-REGISTRY
+      patterns:
+        - okf-registry.json
+        - okf-registry.jsonld
+        - registry/**
+        - apps/okf-explorer/static/okf-registry.json
+      node_refs: [NODE-CONTROL, NODE-PRESENTATION]
+      plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
+      fixtures: [tiny]
+      test_tags: [registry, descriptor, route]
+      journey_groups: [control, publication]
+      jobs: [python, app, browser_targeted, site]
+      reason: Registry data uses targeted consumer and publication checks when the loading contract is unchanged.
+    - id: IMPACT-RUN-EVIDENCE
+      patterns:
+        - evaluation-foundry/fixtures/heritage-warwickshire/evidence/**
+        - evaluation/heritage/evidence/**
+        - evaluation/heritage/**/evidence/**
+        - postmortem/**
+      node_refs: [NODE-FINALIZER]
+      plane_refs: [PLANE-RELEASE]
+      fixtures: [tiny]
+      test_tags: [evidence, release, provenance]
+      journey_groups: [publication]
+      jobs: [python, release]
+      reason: Timestamped run evidence is validated outside the candidate and cannot invalidate candidate corpus roots.
+    - id: IMPACT-EXPLORER-RUNTIME
+      patterns:
+        - apps/okf-explorer/src/**
+        - apps/okf-explorer/static/404.html
+        - apps/okf-explorer/static/favicon.svg
+        - apps/okf-explorer/svelte.config.js
+        - apps/okf-explorer/vite.config.ts
+        - apps/okf-explorer/package.json
+        - apps/okf-explorer/pnpm-lock.yaml
+      node_refs: [NODE-CONSUMER]
+      plane_refs: [PLANE-PRESENTATION]
+      fixtures: [adversarial, tiny, faithful, synthetic]
+      test_tags: [consumer, runtime, accessibility]
+      journey_groups: [reader, graph, links, timeline, map, search, publication]
+      jobs: [app, browser_targeted, browser_full, foundry, site]
+      reason: Runtime, routing, state, worker or dependency changes require three-engine pull-request assurance.
+    - id: IMPACT-EXPLORER-TESTS
+      patterns:
+        - apps/okf-explorer/tests/**
+        - apps/okf-explorer/scripts/**
+        - apps/okf-explorer/playwright*.ts
+      node_refs: [NODE-VALIDATOR-BROWSER]
+      plane_refs: [PLANE-PRESENTATION]
+      fixtures: [adversarial, tiny, faithful, synthetic]
+      test_tags: [consumer, browser]
+      journey_groups: [reader, graph, links, timeline, map, search, publication]
+      jobs: [app, browser_targeted, browser_full, foundry]
+      reason: Browser runner and consumer-contract changes require full browser assurance.
+    - id: IMPACT-FOUNDRY-JOURNEYS
+      patterns:
+        - evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+        - evaluation-foundry/fixtures/heritage-warwickshire/questions.json
+        - evaluation-foundry/fixtures/heritage-warwickshire/feature-coverage.json
+        - evaluation-foundry/fixtures/heritage-warwickshire/mapping-proposals.yaml
+        - scripts/evaluate_okf_explorer.mjs
+      node_refs: [NODE-VALIDATOR-BROWSER]
+      plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
+      fixtures: [adversarial, tiny, faithful, synthetic]
+      test_tags: [question, journey]
+      journey_groups: [reader, graph, links, timeline, map, search, publication]
+      jobs: [python, app, browser_targeted, foundry]
+      reason: Journey controls select only declared tags and journey groups on pull requests.
+    - id: IMPACT-PRESENTATION
+      patterns:
+        - evaluation/heritage/index.md
+        - evaluation/heritage/methodology.md
+        - evaluation/heritage/log.md
+        - evaluation/heritage/**/index.md
+        - evaluation/heritage/**/methodology.md
+        - evaluation/heritage/**/log.md
+        - evaluation-foundry/fixtures/heritage-warwickshire/*.md
+        - evaluation-foundry/README.md
+        - docs/**
+        - CHANGELOG.md
+        - PUBLICATION.md
+        - scripts/build_heritage_foundry_postmortem.py
+        - scripts/collect_heritage_postmortem_evidence.py
+      node_refs: [NODE-PRESENTATION]
+      plane_refs: [PLANE-PRESENTATION]
+      fixtures: [tiny]
+      test_tags: [presentation, markdown, link]
+      journey_groups: [reader, publication]
+      jobs: [python, browser_targeted, site, docs]
+      reason: Markdown and report changes rerender affected pages and validate their routes and links.
+    - id: IMPACT-SITE
+      patterns:
+        - scripts/build_site.py
+        - scripts/site_components/**
+        - scripts/site_component_cache.py
+        - tests/test_build_site.py
+        - tests/test_site_component_cache.py
+      node_refs: [NODE-VALIDATOR-SITE]
+      plane_refs: [PLANE-PRESENTATION, PLANE-RELEASE]
+      fixtures: [tiny]
+      test_tags: [site, markdown, link]
+      journey_groups: [publication]
+      jobs: [python, browser_targeted, site]
+      reason: Site assembly changes rebuild affected components and verify public route identities.
+    - id: IMPACT-PYTHON-CHECKS
+      patterns:
+        - scripts/check_*.py
+        - tests/test_*.py
+      node_refs: [NODE-VALIDATOR-CORPUS]
+      fixtures: [adversarial, tiny]
+      test_tags: [python, validator]
+      journey_groups: []
+      jobs: [python, foundry]
+      reason: Deterministic validator changes run focused Python and Foundry contracts.
+    - id: IMPACT-REPOSITORY-POLICY
+      patterns:
+        - .gitignore
+        - .gitattributes
+        - AGENTS.md
+        - README.md
+      node_refs: [NODE-FINALIZER]
+      plane_refs: [PLANE-RELEASE]
+      fixtures: [tiny]
+      test_tags: [repository, release, provenance]
+      journey_groups: []
+      jobs: [python, release]
+      reason: Repository policy can change publication contents or provenance but not normalized corpus bytes.
+    - id: IMPACT-WORKFLOW-RELEASE
+      patterns:
+        - .github/workflows/**
+        - release-assurance/**
+        - publication-units/**
+        - scripts/check_promotion_envelope.py
+        - scripts/check_release_policy.py
+        - scripts/check_publication_unit_manifest.py
+        - scripts/export_publication_unit.py
+        - scripts/observe_link_intents.py
+        - scripts/check_release_provenance.py
+        - scripts/publish_heritage_exemplar.py
+      node_refs: [NODE-FINALIZER]
+      plane_refs: [PLANE-RELEASE]
+      fixtures: [tiny]
+      test_tags: [workflow, release, provenance]
+      journey_groups: [publication]
+      jobs: [python, app, browser_targeted, browser_full, foundry, site, docs, release]
+      reason: Workflow or release-policy changes fail closed through the terminal gate.
 publication_boundary: >-
   This is a functionality evaluation and evidence-bound projection, not an
   assured heritage register, legal designation search, condition survey or
-  replacement for Historic England. Public verification demonstrates the
-  exact recorded deployment only: commit c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2,
-  Pages run 30813485357 and the candidate digests recorded above, observed at
-  2026-08-03T12:29:08.274Z. It does not make mutable Pages or source URLs
-  permanently current. Synthetic records are separately named, default-off
-  and excluded from faithful counts and search. The final promotion journey
-  additionally validates the immutable release page as action 28.
+  replacement for Historic England. A separately signed promotion envelope
+  can demonstrate one exact deployment without making mutable Pages or source
+  URLs permanently current. Synthetic records are separately named,
+  default-off and excluded from faithful counts and search. Timestamped run,
+  deployment and link observations remain outside the candidate root.

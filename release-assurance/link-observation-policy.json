@@ -1,0 +1,31 @@
+{
+  "schema": "okf-link-observation-policy.v1",
+  "shards_per_nightly_run": 4,
+  "maximum_bulk_cycle_days": 64,
+  "concurrent_requests": 48,
+  "request_timeout_seconds": 6,
+  "terminal_bounds": {
+    "maximum_canonical_urls": 14000,
+    "maximum_attempts_per_url": 2,
+    "bulk_step_timeout_minutes": 75,
+    "job_timeout_minutes": 180,
+    "reserved_non_bulk_minutes": 105
+  },
+  "user_agent": "OKF-Explorer-Link-Assurance/1.0 (+https://github.com/chris-page-gov/okf-explorer)",
+  "freshness_days": {
+    "protected-rich-page": 1,
+    "official-record": 64,
+    "official-resource": 64,
+    "other": 64
+  },
+  "accepted_protected_responses": [
+    {
+      "host": "historicengland.org.uk",
+      "risks": ["official-record", "official-resource"],
+      "http_status": 403,
+      "validation_basis": "candidate-identifier-binding-plus-protected-origin-http-403"
+    }
+  ],
+  "protected_browser_channel": "genuine-google-chrome-cdp",
+  "receipt_location": "workflow-or-release-evidence-only"
+}

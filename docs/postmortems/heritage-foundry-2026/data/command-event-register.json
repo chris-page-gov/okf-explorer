@@ -1,0 +1,3642 @@
+[
+  {
+    "event_id": "CMD-0001",
+    "timestamp": "2026-08-02T22:37:09.886Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/geospatial/geospatial.test.ts",
+    "call_id_sha256": "b54c8caab1236517bc0749688f0049b4e2841e927211479b1239eb3cf161a392",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0002",
+    "timestamp": "2026-08-02T23:07:40.704Z",
+    "category": "heritage-build",
+    "command": "python3 -m py_compile scripts/build_heritage_evaluation.py && python3 scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-02T00:00:00Z",
+    "call_id_sha256": "5dc461f97260b69331346b45b37990c16937e43d0fcb6862eb613c5490090563",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0003",
+    "timestamp": "2026-08-02T23:07:56.291Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python -m py_compile scripts/build_heritage_evaluation.py && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-02T00:00:00Z",
+    "call_id_sha256": "f557dd0bbcd1ad82a1c75bbf8afeb458ee56e05d6670084b049a2a1be7135063",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0004",
+    "timestamp": "2026-08-02T23:08:02.073Z",
+    "category": "heritage-build",
+    "command": "python3 -m json.tool evaluation/heritage/synthetic/okf-explorer.json | sed -n '1,260p'; python3 -m json.tool evaluation/heritage/synthetic/data/semantic/validation-report.json; du -sh evaluation/heritage/synthetic; find evaluation/heritage/synthetic -type f | wc -l; .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --check",
+    "call_id_sha256": "d92a2c0720e00383c2f6b1aac4f21d683b743837dc83c33a1fdef60713ad3878",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0005",
+    "timestamp": "2026-08-02T23:10:32.726Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python -m py_compile scripts/build_heritage_evaluation.py && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-02T00:00:00Z && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --check && python3 -m json.tool evaluation/heritage/synthetic/okf-explorer.json | rg -n \"synthetic_records|risk_records|entrypoints|faithful_corpus|tiny_fixture|feature_coverage\" -C 2",
+    "call_id_sha256": "71af52f72a8c3524e386dfa7f356a362567c02946473da50c4d321bc9b6cca06",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0006",
+    "timestamp": "2026-08-02T23:16:16.142Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/viewer/heritagePresentation.test.ts src/lib/geospatial/geospatial.test.ts src/lib/search/typoTolerance.test.ts && pnpm exec svelte-check --tsconfig ./tsconfig.json",
+    "call_id_sha256": "f35d93f81122bad0f8a7d3649148620b4f560ee733c0290b2beb55a53ce0211a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0007",
+    "timestamp": "2026-08-02T23:18:49.715Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation",
+    "call_id_sha256": "924f56e9204632bf3021fde2251a620de4287c1ad71ade0aadb1e33aaec93618",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0008",
+    "timestamp": "2026-08-02T23:19:23.606Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation && .venv/bin/python -m py_compile scripts/build_heritage_evaluation.py && git diff --check",
+    "call_id_sha256": "cf74828702ff02f38b3fee3633f5b1773fa521203382c3a8ce02ffb420a45d6b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0009",
+    "timestamp": "2026-08-03T04:41:32.732Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "cf5e2573d14194cf8371169223b8b2c520084bb90dd9043582847b8ccc002fc9",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0010",
+    "timestamp": "2026-08-03T04:46:41.337Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation -v",
+    "call_id_sha256": "e70ba9da8a7d7c5a1bf8bd6c7edb0191f46c3335b7bbba630e1b207f09ddff90",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0011",
+    "timestamp": "2026-08-03T04:46:57.726Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "de43d335c28ff660f9a14fcb05697e7b01b8c48839dfba5bd2f2e1527508b1e8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0012",
+    "timestamp": "2026-08-03T04:48:09.488Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "b60bb612fef5a68f79c1d2b06ae7ee22241fc877abffb57fd38499e7c0ff4529",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0013",
+    "timestamp": "2026-08-03T04:48:14.222Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check",
+    "call_id_sha256": "3628418e381766a91f95b12cb4644e183058b17f40f539a35bbbbb22a292c1be",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0014",
+    "timestamp": "2026-08-03T04:50:36.826Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_tiny_snapshot -v",
+    "call_id_sha256": "7e491527424b2cb4bedb75298fdbeb054c7901b277808882d4911373b1d1945c",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.4,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0015",
+    "timestamp": "2026-08-03T04:50:43.188Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "6cc1aca752348c87f88a6dc71869cea1b7b7d1d49affa908cf0c43e2cafea6f6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0016",
+    "timestamp": "2026-08-03T04:50:54.006Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "6862976dadd5389fca2fed4765bc4822ef18c9e22fa247c95c4c34aa66f613d1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0017",
+    "timestamp": "2026-08-03T04:51:09.323Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check",
+    "call_id_sha256": "5769aa812675714606464e68462a7b1539a455f15981e154e9c6d9598a41d4d4",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0018",
+    "timestamp": "2026-08-03T04:51:09.323Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny",
+    "call_id_sha256": "5769aa812675714606464e68462a7b1539a455f15981e154e9c6d9598a41d4d4",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0019",
+    "timestamp": "2026-08-03T04:51:09.323Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "5769aa812675714606464e68462a7b1539a455f15981e154e9c6d9598a41d4d4",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0020",
+    "timestamp": "2026-08-03T04:51:09.323Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "5769aa812675714606464e68462a7b1539a455f15981e154e9c6d9598a41d4d4",
+    "command_index_in_call": 4,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0021",
+    "timestamp": "2026-08-03T04:51:29.455Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "7fa27822c43611a6c05f8f8c73e463423608ce7a5497637048e584f2765ad72a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0022",
+    "timestamp": "2026-08-03T04:55:52.569Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation -v",
+    "call_id_sha256": "4425135a13074edeef266bc3d32650a4f42a15df1f164cb3696141c2d771c971",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0023",
+    "timestamp": "2026-08-03T04:56:04.295Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "95aa1dcb545be0933f39e428c83b10bf3f7eaf591cfe747178fc09324d1ec554",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0024",
+    "timestamp": "2026-08-03T04:56:25.711Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "2e59f413c85a9b6122b9c34e98e6883a822beb2eba2abb77476bf7b72a74b52d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0025",
+    "timestamp": "2026-08-03T04:56:25.711Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "2e59f413c85a9b6122b9c34e98e6883a822beb2eba2abb77476bf7b72a74b52d",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0026",
+    "timestamp": "2026-08-03T04:56:40.878Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "02b3ddb125f9e167cdc821b6c0bc7c57ecd2f6fa08978c53f221ec9cef07e3bc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0027",
+    "timestamp": "2026-08-03T05:04:43.742Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/workers/largeSearch.worker.test.ts src/lib/search/typoTolerance.test.ts src/lib/search/largeSearchContract.test.ts",
+    "call_id_sha256": "f8dbdbf69ee430f4ee7a719fec6b78b8a5880e44a9a7ac00506f32fa552cfbcc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0028",
+    "timestamp": "2026-08-03T05:04:43.742Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "f8dbdbf69ee430f4ee7a719fec6b78b8a5880e44a9a7ac00506f32fa552cfbcc",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 4.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0029",
+    "timestamp": "2026-08-03T05:04:43.742Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation -v",
+    "call_id_sha256": "f8dbdbf69ee430f4ee7a719fec6b78b8a5880e44a9a7ac00506f32fa552cfbcc",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 4.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0030",
+    "timestamp": "2026-08-03T05:04:55.954Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "8a17a8ef913927b82a9d766ac026fc94a6ebbb37b06b13336f6202e786b1c6a0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0031",
+    "timestamp": "2026-08-03T05:04:55.954Z",
+    "category": "app-build",
+    "command": "pnpm build",
+    "call_id_sha256": "8a17a8ef913927b82a9d766ac026fc94a6ebbb37b06b13336f6202e786b1c6a0",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0032",
+    "timestamp": "2026-08-03T05:05:18.769Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "214f2931a9c1f63168225673bc6155863131f8eac51cbd3296eae642f20fba1d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0033",
+    "timestamp": "2026-08-03T05:05:18.769Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "214f2931a9c1f63168225673bc6155863131f8eac51cbd3296eae642f20fba1d",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0034",
+    "timestamp": "2026-08-03T05:05:23.053Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "e55f2907376dc3e663bc119d8f2f02944ea792c5881da8244339421f96a950a4",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0035",
+    "timestamp": "2026-08-03T05:05:33.414Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "c27b557ca894df333f6c90bf145cfcef9192bb0c39221f57d4b1a256029822cf",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0036",
+    "timestamp": "2026-08-03T05:05:44.063Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "2fdacf52b6786662b097d04ab0cb472e6317851083fe292073241787470009e3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0037",
+    "timestamp": "2026-08-03T05:06:38.558Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "0df7ebb6b05cd442b3c2c5681b639368ac16265633144eb96e90f9b22956984f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0038",
+    "timestamp": "2026-08-03T05:06:59.893Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "05ea549590ca376c5f71333168f80119ef1a78220570ddb54bdb242be1ba6858",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0039",
+    "timestamp": "2026-08-03T05:06:59.893Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "05ea549590ca376c5f71333168f80119ef1a78220570ddb54bdb242be1ba6858",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0040",
+    "timestamp": "2026-08-03T05:07:03.237Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "02453436596458e73de486e80275cd6dd36e36408a29df9e484decb7bd5c5045",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0041",
+    "timestamp": "2026-08-03T05:07:55.053Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "86c10efebf6083a129eb70a26b64f7d293ba75381eabe66f33a90bc850c0d63e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0042",
+    "timestamp": "2026-08-03T05:08:17.824Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "9e4857bebd67c36a79ec46cfb373c0fe36a43b927f490ed5c0846d5106647022",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0043",
+    "timestamp": "2026-08-03T05:08:17.824Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T00:00:00Z",
+    "call_id_sha256": "9e4857bebd67c36a79ec46cfb373c0fe36a43b927f490ed5c0846d5106647022",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0044",
+    "timestamp": "2026-08-03T05:08:22.129Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "fb964995de5e4e0befad552d624f516de27b42395934d677dbb2ff3ce9c587c5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0045",
+    "timestamp": "2026-08-03T05:21:05.429Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation",
+    "call_id_sha256": "5903196c9aa1db80dec25622130eb1e5b41ad7b04af5a6e7ad5cfaa2543f7034",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 2.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0046",
+    "timestamp": "2026-08-03T05:21:15.686Z",
+    "category": "heritage-build",
+    "command": "python3 scripts/build_heritage_evaluation.py --help && python3 scripts/build_heritage_tiny_snapshot.py --help",
+    "call_id_sha256": "8e964510bb7384a83fa40350429e9e4a4648df0b7ace4faa53c43b9141c2a0ec",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0047",
+    "timestamp": "2026-08-03T05:21:19.157Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help\n.venv/bin/python scripts/build_heritage_tiny_snapshot.py --help",
+    "call_id_sha256": "789d6a2524eb7edaecf14c509e5341969105c9331df45bef770810f06650a357",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0048",
+    "timestamp": "2026-08-03T05:21:29.817Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_tiny_snapshot.py && .venv/bin/python scripts/build_heritage_evaluation.py && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "b708adad7b49a5d55ed4bb691f525b2027c2ce62e8a5cd486a30fbf3c1e8858a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0049",
+    "timestamp": "2026-08-03T05:22:14.567Z",
+    "category": "site-build",
+    "command": "python3 scripts/build_site.py",
+    "call_id_sha256": "767163df987d3fa0c09005bc1fb5fb6d1e113b229bdbb3d10603998fa47a8522",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0050",
+    "timestamp": "2026-08-03T05:22:17.848Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "84f4081bca84fec5ab9205ddd34a8cb3166f8e12983f00a0ddb6486ef8525ac7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0051",
+    "timestamp": "2026-08-03T05:25:00.855Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "4ac883b071fe52fd3d2378e733e8ddd2c9b59714f63c4155cacc05756ebfa6cd",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0052",
+    "timestamp": "2026-08-03T05:25:48.468Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "2b20f1a2f23ec6c153089a9a76df85cb5b0f8479ae8cfacc75cc9dc8a09ca318",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0053",
+    "timestamp": "2026-08-03T05:26:01.306Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "6f5413f98edbe67928756c063d4f3ca9a98bdc6f4b67579dd18aff587291e42e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0054",
+    "timestamp": "2026-08-03T05:36:14.606Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "ca539783ea7e0dec2f9dcec02c7e76732801e04b4f05b109e90360af89ae6715",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0055",
+    "timestamp": "2026-08-03T05:36:14.606Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/viewer/heritagePresentation.test.ts src/workers/largeSearch.worker.test.ts",
+    "call_id_sha256": "ca539783ea7e0dec2f9dcec02c7e76732801e04b4f05b109e90360af89ae6715",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 5.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0056",
+    "timestamp": "2026-08-03T05:36:23.196Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "d0ba2b13f67610d6c82d63890ffe792a8c6f4d8538414309dbdaee454245e24e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0057",
+    "timestamp": "2026-08-03T05:37:42.545Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "c0e55013f57fe86a955e545a0d117ffc77597b570d695f44394c4c219f298111",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0058",
+    "timestamp": "2026-08-03T05:52:00.801Z",
+    "category": "app-build",
+    "command": "pnpm exec vitest run src/lib/viewer/leftPanelSource.test.ts && pnpm build",
+    "call_id_sha256": "3e5aa3105e92d6106962da3b34bbe478514eea4418681c8115208636801dc0d7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0059",
+    "timestamp": "2026-08-03T05:52:00.801Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/viewer/leftPanelSource.test.ts && pnpm build",
+    "call_id_sha256": "3e5aa3105e92d6106962da3b34bbe478514eea4418681c8115208636801dc0d7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0060",
+    "timestamp": "2026-08-03T05:52:08.284Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "f03e60fcc79049aa5578e06105b934a51beeecf69871220c563cddd4f56f4d02",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0061",
+    "timestamp": "2026-08-03T05:52:19.938Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "843bec912cc8c5da99d6f94ea35bf5f8d07680b4a4cde28fabb359b9f5391251",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0062",
+    "timestamp": "2026-08-03T05:52:33.267Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "f3db5aa2f26b32798b482ad515a828b5db583c9c4444df460301a6391b74b8f1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0063",
+    "timestamp": "2026-08-03T05:56:35.556Z",
+    "category": "app-build",
+    "command": "pnpm exec vitest run src/lib/viewer/heritagePresentation.test.ts src/lib/viewer/leftPanelSource.test.ts && pnpm build:determinism",
+    "call_id_sha256": "5f93c46cb20424605466440d869ef14100b06ac7c45f19debe7289eefa8b40ef",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0064",
+    "timestamp": "2026-08-03T05:56:35.556Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/viewer/heritagePresentation.test.ts src/lib/viewer/leftPanelSource.test.ts && pnpm build:determinism",
+    "call_id_sha256": "5f93c46cb20424605466440d869ef14100b06ac7c45f19debe7289eefa8b40ef",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0065",
+    "timestamp": "2026-08-03T05:56:47.388Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "819c796354ebc8842390ce9bd199f9c506e9af4fa051dc3c1b38e016117479c0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0066",
+    "timestamp": "2026-08-03T06:02:51.624Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "41b97066d418f9a2581608da04963961c4a5f38b59b8b4acb53b2aa5831b6f54",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0067",
+    "timestamp": "2026-08-03T06:02:51.624Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "41b97066d418f9a2581608da04963961c4a5f38b59b8b4acb53b2aa5831b6f54",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0068",
+    "timestamp": "2026-08-03T06:09:57.397Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "2ac7c00ce5cf5bc7d1775120bf57d0ec1a2c301048948041da50b9551f4dbdcc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0069",
+    "timestamp": "2026-08-03T06:09:57.397Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "2ac7c00ce5cf5bc7d1775120bf57d0ec1a2c301048948041da50b9551f4dbdcc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0070",
+    "timestamp": "2026-08-03T06:17:32.414Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator",
+    "call_id_sha256": "9fa267b62fc7b2f567d1468b8560b738678dc77b76ea2d986c92e8613a5be698",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0071",
+    "timestamp": "2026-08-03T06:17:32.414Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python -m unittest tests.test_okf_explorer_evaluation tests.test_evaluation_foundry_validator",
+    "call_id_sha256": "9fa267b62fc7b2f567d1468b8560b738678dc77b76ea2d986c92e8613a5be698",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0072",
+    "timestamp": "2026-08-03T06:21:02.207Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "e790976961f0a40ae4e94b76d74d0173a42aa51447eead5d19b8682b2eedee0b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0073",
+    "timestamp": "2026-08-03T06:22:28.461Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "660ae9820376677a30c7e4e9a8cbe91bda7996665c2bb2c0364e78d0cb216257",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0074",
+    "timestamp": "2026-08-03T06:22:51.806Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny",
+    "call_id_sha256": "c3d2785e02fe346e4dab67cf80d6dbe9c3edeb41f1e6da89ee79461780a5bb66",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0075",
+    "timestamp": "2026-08-03T06:22:56.093Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "06275067c1d61463f5bd6712fe705d71dd28c27a5ca89e9a8d62af2b165bd045",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0076",
+    "timestamp": "2026-08-03T06:23:37.216Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "924c38cc068890dd993fb6c533a00c71db436385ce0cd5e68c895cc5e6a757e7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0077",
+    "timestamp": "2026-08-03T06:36:14.975Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "24152dabb33ade3e1148696094b6e46dead53a78e3ee4749aefac7d3853185c1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0078",
+    "timestamp": "2026-08-03T06:36:42.140Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_semantic.OkfSemanticTest.test_registry_has_one_semantic_source_and_two_deterministic_outputs",
+    "call_id_sha256": "e6d514a0506c641196db955f8251401847c79180e338a1c464f21a625e3e73d1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0079",
+    "timestamp": "2026-08-03T06:36:51.998Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --help || true; jq '.journeys | map({id,title,fixture,steps:(.steps|length)})' evaluation-foundry/fixtures/heritage-warwickshire/journeys.json | sed -n '1,220p'",
+    "call_id_sha256": "35815d20693eed92e34fa075853e38b53f5587b7a81da251e2c2fc0b9a348c28",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0080",
+    "timestamp": "2026-08-03T06:40:52.139Z",
+    "category": "heritage-build",
+    "command": "python3 scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "824542923ee07063def2e1c56b8eb45ce20e322390d3ba21eb47f2d81e5256cb",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0081",
+    "timestamp": "2026-08-03T06:41:01.050Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "72fcd88e6cff608c296b03f020af5237e76e02560581066ac4d02f2a6d5caad7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0082",
+    "timestamp": "2026-08-03T06:41:09.842Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "8b7eaa0ca258f59c651f1cd52e3127e10989e6a370db84139cd2b604c40d8c8c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0083",
+    "timestamp": "2026-08-03T06:41:34.899Z",
+    "category": "app-build",
+    "command": "pnpm test && pnpm check && pnpm build:determinism",
+    "call_id_sha256": "964c9ac0efd265efacad6ba9b8f870365d21dd4984efed1cb2ed2dcfaa517de8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0084",
+    "timestamp": "2026-08-03T06:41:34.899Z",
+    "category": "app-check",
+    "command": "pnpm test && pnpm check && pnpm build:determinism",
+    "call_id_sha256": "964c9ac0efd265efacad6ba9b8f870365d21dd4984efed1cb2ed2dcfaa517de8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0085",
+    "timestamp": "2026-08-03T06:42:00.294Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "e8558374e28aaea31d3ee6cb70dd4c09a828df68f917d572f555d9f595ddc0ab",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0086",
+    "timestamp": "2026-08-03T06:42:00.294Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "e8558374e28aaea31d3ee6cb70dd4c09a828df68f917d572f555d9f595ddc0ab",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0087",
+    "timestamp": "2026-08-03T06:43:49.413Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "c76361d3617aac41725f05f2b2c7b535e0fcc559c3734768f28f2dcfad5080d3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0088",
+    "timestamp": "2026-08-03T06:44:15.965Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic",
+    "call_id_sha256": "fd2bb3e9485ea4ba39ef85cbeb7010e2eb8d3f5d164d99975535d2f2dc9eb587",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0089",
+    "timestamp": "2026-08-03T06:45:28.557Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "d64f4ae744184cfd336b03fcab58341e5266478e6a4891bf4a323adab27df011",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0090",
+    "timestamp": "2026-08-03T06:46:09.079Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/ --bundle /evaluation/heritage/okf-explorer.json --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json --visual evaluation-foundry/fixtures/heritage-warwickshire/visual-regressions.json --limit 100 --out [TEMP_PATH]",
+    "call_id_sha256": "d1447942e5fef78e5003a50ff2627fa4aa13f7c1aac6ac6d290f7243aa042351",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0091",
+    "timestamp": "2026-08-03T06:51:47.269Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_live_evaluation_waits_for_cold_search_and_uses_accessible_edge_selection",
+    "call_id_sha256": "7509a61424beb1c5334e57afb4deba594c97bf51c46c24edb45b3ba9ef3f6bcd",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0092",
+    "timestamp": "2026-08-03T06:52:51.177Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH]",
+    "call_id_sha256": "2ba08ee8b58c96897b7dd37b10ce8a46602da7e535fe1bc9e93334ca7d4e0822",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0093",
+    "timestamp": "2026-08-03T06:52:51.177Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH]",
+    "call_id_sha256": "2ba08ee8b58c96897b7dd37b10ce8a46602da7e535fe1bc9e93334ca7d4e0822",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0094",
+    "timestamp": "2026-08-03T06:55:31.000Z",
+    "category": "foundry-check",
+    "command": "jq -e '.journeys | map(.id)' evaluation-foundry/fixtures/heritage-warwickshire/journeys.json && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "c82ee3231ff188fc57a0d30b99380626931eb2666a1aed05babdd7cce156bbbf",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0095",
+    "timestamp": "2026-08-03T06:59:48.913Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_local_candidate_receipt_binds_its_executed_results",
+    "call_id_sha256": "4dcd61498319c69ae3fa58efc8f425f908a552a32bd636232295a39578f8eeb2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0096",
+    "timestamp": "2026-08-03T07:00:38.042Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "5a6b1cfa36543ee52d757c1b331b49752341bec83e9237d94f929ff8c5425a99",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0097",
+    "timestamp": "2026-08-03T07:01:11.151Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "813c02acac8a2dfedce7aef494c3b39bac74635d9a907f4e174014051d3cd1a9",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0098",
+    "timestamp": "2026-08-03T07:02:15.937Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH]",
+    "call_id_sha256": "58e3abf9284444ccd8d7ec7e2bc38bff9072be07807c48e6c3ecc212148a5435",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0099",
+    "timestamp": "2026-08-03T07:02:15.937Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH]",
+    "call_id_sha256": "58e3abf9284444ccd8d7ec7e2bc38bff9072be07807c48e6c3ecc212148a5435",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0100",
+    "timestamp": "2026-08-03T07:03:01.418Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py && .venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "ba66e63512c2a590c9f91efa90e27c2ec48928cf10de16ab74bc88b67fb49db6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0101",
+    "timestamp": "2026-08-03T07:03:15.287Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "429e71ae66385e42c05250082e47f0958b06d43d970b8eeec70d1ea243bf0974",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0102",
+    "timestamp": "2026-08-03T07:03:31.676Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic && .venv/bin/python scripts/build_okf_registry.py --check && .venv/bin/python scripts/check_source_constraints.py && .venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py && git diff --check",
+    "call_id_sha256": "2217ad7b6a7d5d94eded1263ea92c59349ab3dea77eb3cfe3a4ded36181cece8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0103",
+    "timestamp": "2026-08-03T07:03:31.676Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic && .venv/bin/python scripts/build_okf_registry.py --check && .venv/bin/python scripts/check_source_constraints.py && .venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py && git diff --check",
+    "call_id_sha256": "2217ad7b6a7d5d94eded1263ea92c59349ab3dea77eb3cfe3a4ded36181cece8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0104",
+    "timestamp": "2026-08-03T07:03:31.676Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic && .venv/bin/python scripts/build_okf_registry.py --check && .venv/bin/python scripts/check_source_constraints.py && .venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py && git diff --check",
+    "call_id_sha256": "2217ad7b6a7d5d94eded1263ea92c59349ab3dea77eb3cfe3a4ded36181cece8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0105",
+    "timestamp": "2026-08-03T07:03:31.676Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/check_evaluation_foundry.py && .venv/bin/python scripts/build_heritage_evaluation.py --check && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny && .venv/bin/python scripts/build_heritage_evaluation.py --check --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic && .venv/bin/python scripts/build_okf_registry.py --check && .venv/bin/python scripts/check_source_constraints.py && .venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py && git diff --check",
+    "call_id_sha256": "2217ad7b6a7d5d94eded1263ea92c59349ab3dea77eb3cfe3a4ded36181cece8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0106",
+    "timestamp": "2026-08-03T07:09:16.541Z",
+    "category": "playwright",
+    "command": "pnpm exec playwright test tests/ui/targeted-large-corpus.spec.ts -g \"official search selection hydrates\" --project=chrome",
+    "call_id_sha256": "abf8fec65b0b8e12e18bb53ad91b1bce4cade72b9873ace7ee4937d3c42471e6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0107",
+    "timestamp": "2026-08-03T07:16:40.407Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_site",
+    "call_id_sha256": "7f56baf2e4fa1aadc0504f40e4ccfe1a98d3415f423e19b7594f4258309c32b0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0108",
+    "timestamp": "2026-08-03T07:16:45.246Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "970c4d63d9920c692158c138adbc05e51b0c489542c5de81cf70d3b44beccaf7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0109",
+    "timestamp": "2026-08-03T07:18:10.537Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "2a9ed91573459b47f8c48cb71ab6e2a065df029447b36f1fe0dea1ebdecc737a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0110",
+    "timestamp": "2026-08-03T07:18:30.866Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "de7bd3aeb1f7efea58b44703f2db7ebcb840e19d1faa0b834950235f0e23e645",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0111",
+    "timestamp": "2026-08-03T07:21:13.033Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "40752ed2898efa7ed71672c3aaf415c96dac05d80caaedc1e6c2967a314cc11f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0112",
+    "timestamp": "2026-08-03T07:21:35.419Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "3f2d0225f9c6e4dc48a41cbbbf60b998e4a013e9123baef0a1091b06a44b4e04",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0113",
+    "timestamp": "2026-08-03T07:22:47.030Z",
+    "category": "site-build",
+    "command": ".venv/bin/python -m unittest tests.test_build_site && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "a299d7bae121ec940706f67f4660599fe10b222ba2d672400617972ecf4d1c14",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0114",
+    "timestamp": "2026-08-03T07:22:47.030Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_site && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "a299d7bae121ec940706f67f4660599fe10b222ba2d672400617972ecf4d1c14",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0115",
+    "timestamp": "2026-08-03T07:23:18.885Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "5560ba0aaa8921755bdf886f4fa595f04d423bbc46095ea5712998d16b0ad542",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0116",
+    "timestamp": "2026-08-03T07:23:39.990Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/next/ --bundle /evaluation/heritage/okf-explorer.json --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json --visual evaluation-foundry/fixtures/heritage-warwickshire/visual-regressions.json --limit 100 --out [TEMP_PATH]",
+    "call_id_sha256": "875156e42f0efe1a87967b3cd05cc71745ae34419e5753c33c56a2cfd18a9b1f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0117",
+    "timestamp": "2026-08-03T07:29:33.498Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check",
+    "call_id_sha256": "5fa6ae32210e38020afdcc5d96254f588d7b7ae66081961ad0244751d9776423",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0118",
+    "timestamp": "2026-08-03T07:30:25.983Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation",
+    "call_id_sha256": "9c1b81b6dc5d49c7c005c7182b015bf9136e50ba16ec2ea0f1943215f3ea554c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0119",
+    "timestamp": "2026-08-03T07:30:32.037Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "4b42f4741181e1ef30fd46521cfac3b11a7b40c1e931913d5a7f7d6670b7c039",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0120",
+    "timestamp": "2026-08-03T07:32:33.959Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_local_candidate_receipt_binds_its_executed_results",
+    "call_id_sha256": "d9b9afbedd10ce7384499e3275558dfb421a598e8162013ab07786402fcceda1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0121",
+    "timestamp": "2026-08-03T07:32:39.018Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "bdda387ce06d81f9489f642a8be2059d62a84b0ecdbfcfdcc7d683ca7e7cdc70",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0122",
+    "timestamp": "2026-08-03T07:32:39.018Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "bdda387ce06d81f9489f642a8be2059d62a84b0ecdbfcfdcc7d683ca7e7cdc70",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0123",
+    "timestamp": "2026-08-03T07:32:45.408Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "1a717c11308e008fbc9c4a5d079ec5860cc1dbb31d2de057422af3fa599dd997",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0124",
+    "timestamp": "2026-08-03T07:37:15.233Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "bbff5e04fdb60dbcaed17fbe46fbd6d853f25015cdb3c30293d09d8ccda93299",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0125",
+    "timestamp": "2026-08-03T07:37:15.233Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "bbff5e04fdb60dbcaed17fbe46fbd6d853f25015cdb3c30293d09d8ccda93299",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0126",
+    "timestamp": "2026-08-03T07:37:19.026Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "51c9c54e3779075c7f9449c711a7eb9bcb262bd6c1ba59eb368f178263e9f1ff",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0127",
+    "timestamp": "2026-08-03T07:38:25.095Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "eb08ba808d468792fb973623078aceadad9998a9fbf2a130f52820ea9ef16a87",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0128",
+    "timestamp": "2026-08-03T07:38:25.095Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "eb08ba808d468792fb973623078aceadad9998a9fbf2a130f52820ea9ef16a87",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 5.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0129",
+    "timestamp": "2026-08-03T07:38:36.560Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "022901344c10207ac139337fc9462cc2cc16f4bcb4f84166ef7aaece156e8cb0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0130",
+    "timestamp": "2026-08-03T07:39:52.645Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "f2ad110c4075da2deccbd9a539ef46e9ade4c2abd4ec7973f64c52a4077cd71c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0131",
+    "timestamp": "2026-08-03T08:03:02.077Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m pytest tests/test_build_heritage_evaluation.py tests/test_acquire_heritage_evaluation_sources.py tests/test_build_heritage_tiny_snapshot.py -q",
+    "call_id_sha256": "f4ebce779fe5221c20bd5ed7736bb3e53335514004389d24a8bf8544fb1aebe3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0132",
+    "timestamp": "2026-08-03T08:03:23.709Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_acquire_heritage_evaluation_sources tests.test_build_heritage_tiny_snapshot",
+    "call_id_sha256": "bf5402b7a00eaafe6e82482b1145e83175c3859338ee7be135644880cb1442d6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0133",
+    "timestamp": "2026-08-03T08:11:17.193Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_acquire_heritage_evaluation_sources tests.test_build_heritage_tiny_snapshot",
+    "call_id_sha256": "4c1699bb77d5a032cdf9e2fd6366960b6f8b2cb81278e6c6c17a8a2e66457e39",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0134",
+    "timestamp": "2026-08-03T08:11:35.344Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_acquire_heritage_evaluation_sources tests.test_build_heritage_tiny_snapshot",
+    "call_id_sha256": "1e11aba0777bf93371f8fa16e554d30d942e213147badded5b934a7ebc61deb5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0135",
+    "timestamp": "2026-08-03T08:12:05.456Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_acquire_heritage_evaluation_sources tests.test_build_heritage_tiny_snapshot",
+    "call_id_sha256": "c587caeeb5d45474a8e66a914b1ea0ae08ecd6d01ce886861a54ca3a58541b70",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0136",
+    "timestamp": "2026-08-03T08:12:16.467Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_acquire_heritage_evaluation_sources tests.test_build_heritage_tiny_snapshot",
+    "call_id_sha256": "c53badbd6c50857fa0b4ce3b0f7a2b4c35a34d378efb074bfe870b1cc24c547b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0137",
+    "timestamp": "2026-08-03T08:12:33.538Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T08:12:27Z",
+    "call_id_sha256": "bc1b86056d12a3b52aebf91b594885de280bdd8cf44d801010cab2f136dea734",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0138",
+    "timestamp": "2026-08-03T08:12:56.719Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T08:12:27Z\n.venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T08:12:27Z",
+    "call_id_sha256": "76637aada00a4f566a98a770fffeaec4273d04b6b125fdd01401f516a00ca3da",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0139",
+    "timestamp": "2026-08-03T08:13:28.765Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --check\n.venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --check\n.venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --check",
+    "call_id_sha256": "439e41c87436594d306f1dfdb8e55dfdb84ac7d9174defc76c341b19e736daa2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0140",
+    "timestamp": "2026-08-03T08:20:15.625Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "590e08bd6e30e89de9b93fb09197e5b8a7e27447186378df7ac41ad10ab7e07d",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0141",
+    "timestamp": "2026-08-03T08:20:15.625Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "590e08bd6e30e89de9b93fb09197e5b8a7e27447186378df7ac41ad10ab7e07d",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0142",
+    "timestamp": "2026-08-03T08:22:13.408Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py",
+    "call_id_sha256": "5ba7f588d4da3bffff7b7dac6bc8d902cd98da34b22932775ffa8870e9a5f9ef",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0143",
+    "timestamp": "2026-08-03T08:23:09.730Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "b9d12e233a40db6796ed6f8ab8625ee31a2cb041db94110af704ba5a89c8b4c3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0144",
+    "timestamp": "2026-08-03T08:23:09.730Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "b9d12e233a40db6796ed6f8ab8625ee31a2cb041db94110af704ba5a89c8b4c3",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0145",
+    "timestamp": "2026-08-03T08:24:27.372Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "2a47cfceed829f54c706f81b1bb43e0ba5eb77a28c97853a0cbbad4aac2315ed",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0146",
+    "timestamp": "2026-08-03T08:30:15.770Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "53af3ebf240b0d0fe42b28bd2f92bbfe5577ffd2b18ec1e3035fca65656f4b3d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.4,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0147",
+    "timestamp": "2026-08-03T08:30:15.770Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "53af3ebf240b0d0fe42b28bd2f92bbfe5577ffd2b18ec1e3035fca65656f4b3d",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 9.4,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0148",
+    "timestamp": "2026-08-03T08:30:15.770Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "53af3ebf240b0d0fe42b28bd2f92bbfe5577ffd2b18ec1e3035fca65656f4b3d",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 9.4,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0149",
+    "timestamp": "2026-08-03T08:30:44.485Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "e5f8578036b67eee74b8b67336150ec5836809291f54520f5a392de65f32886a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0150",
+    "timestamp": "2026-08-03T08:30:44.485Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "e5f8578036b67eee74b8b67336150ec5836809291f54520f5a392de65f32886a",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 8.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0151",
+    "timestamp": "2026-08-03T08:31:01.776Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "58e1ef94d8a09e895ef46e842e9eaf08dbc76038a32b03f68547e1bb06844d19",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0152",
+    "timestamp": "2026-08-03T08:32:02.236Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "1fb76be1e3b249ec3087e793e35d5c902275beffacb34066a735e34aca228bda",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0153",
+    "timestamp": "2026-08-03T08:39:12.833Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T08:22:13Z",
+    "call_id_sha256": "ac5c219de37309ca07fa5ad4c041d33e750ecc1b76a92bcd01e574b5be502461",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0154",
+    "timestamp": "2026-08-03T08:39:12.833Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T08:12:27Z",
+    "call_id_sha256": "ac5c219de37309ca07fa5ad4c041d33e750ecc1b76a92bcd01e574b5be502461",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0155",
+    "timestamp": "2026-08-03T08:39:12.833Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T08:12:27Z",
+    "call_id_sha256": "ac5c219de37309ca07fa5ad4c041d33e750ecc1b76a92bcd01e574b5be502461",
+    "command_index_in_call": 4,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0156",
+    "timestamp": "2026-08-03T08:40:22.408Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "06b36f5fcdaa0b9fa807f8cf33986a2f99e22b4388f8a05d08a85c0fc8c434ef",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 10.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0157",
+    "timestamp": "2026-08-03T08:40:47.051Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "358df6df98bbd43d494a573d63d535218a39035cb8e5df107683724f9d743797",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0158",
+    "timestamp": "2026-08-03T08:40:47.051Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "358df6df98bbd43d494a573d63d535218a39035cb8e5df107683724f9d743797",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 8.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0159",
+    "timestamp": "2026-08-03T08:40:47.051Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "358df6df98bbd43d494a573d63d535218a39035cb8e5df107683724f9d743797",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 8.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0160",
+    "timestamp": "2026-08-03T08:42:16.579Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "659c0140cbf48fa00b0b6099d489f49d1451405433ad89b7463a9141ba259021",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0161",
+    "timestamp": "2026-08-03T08:42:16.579Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "659c0140cbf48fa00b0b6099d489f49d1451405433ad89b7463a9141ba259021",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 8.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0162",
+    "timestamp": "2026-08-03T08:42:16.579Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "659c0140cbf48fa00b0b6099d489f49d1451405433ad89b7463a9141ba259021",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 8.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0163",
+    "timestamp": "2026-08-03T08:42:31.645Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "9f46700cb86742543fb4c18aa82ea82b04ad0ed1f08c9195b07ebbc7d55e40c2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0164",
+    "timestamp": "2026-08-03T08:46:22.513Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "5042757ff8d2b1e5b8b295af0c8fd7d297d84281d5b897e6753cd5c5a43266f3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0165",
+    "timestamp": "2026-08-03T08:46:36.257Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "7c45c5812a2f6d3ddff48c11c477b1105fa50bec3d9f584b9c3cb2f84b646c84",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0166",
+    "timestamp": "2026-08-03T08:46:52.511Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "0f805115515409c3628e4364ab2e9f193310e39885919649be49e67da26b3fd8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0167",
+    "timestamp": "2026-08-03T08:55:31.461Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "896618900dbb6ce6a8831feedbb4be1e7fc14175e26bba1828afa77a05479cd8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0168",
+    "timestamp": "2026-08-03T08:55:31.461Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "896618900dbb6ce6a8831feedbb4be1e7fc14175e26bba1828afa77a05479cd8",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0169",
+    "timestamp": "2026-08-03T08:55:31.461Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "896618900dbb6ce6a8831feedbb4be1e7fc14175e26bba1828afa77a05479cd8",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0170",
+    "timestamp": "2026-08-03T08:55:42.297Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "ab9cbe1a8b04ffe53a88ac7ec47cccff6dafdb81b473dac9e2ee150d4bbb24ae",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0171",
+    "timestamp": "2026-08-03T08:56:03.224Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "9e1f6f0233cd393c4838bf04adf35b42f1bbc0cb29627bd846dfc63d90eb1702",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0172",
+    "timestamp": "2026-08-03T08:56:18.653Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "b30c3c971773c2ab3b8a5c259a4559b76c73d85d5d38f96e810c439acb5c4155",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0173",
+    "timestamp": "2026-08-03T08:57:36.607Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "71d96637a432617dadd4486bb2e2c04f419033dc8601dd0fa434d0ade59dab42",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0174",
+    "timestamp": "2026-08-03T08:57:36.607Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "71d96637a432617dadd4486bb2e2c04f419033dc8601dd0fa434d0ade59dab42",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 9.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0175",
+    "timestamp": "2026-08-03T08:57:36.607Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "71d96637a432617dadd4486bb2e2c04f419033dc8601dd0fa434d0ade59dab42",
+    "command_index_in_call": 3,
+    "outer_call_duration_seconds": 9.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0176",
+    "timestamp": "2026-08-03T08:57:55.817Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "744827c76fa6b1830abd279f5178cd9ce19b6138af1b64e2300cb839db103513",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0177",
+    "timestamp": "2026-08-03T08:59:36.861Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "bbdb1d2e42793aff38fdd69587acee4a98789d2a5a755a3a12547f0f452d48b5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0178",
+    "timestamp": "2026-08-03T09:02:38.068Z",
+    "category": "git-commit",
+    "command": "git commit -m \"Build heritage Evaluation Foundry exemplar\"",
+    "call_id_sha256": "08d4deeedc919610a8b1a9986302f43bcacd41073f28bfdd76784dc8834d64f5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0179",
+    "timestamp": "2026-08-03T09:02:56.344Z",
+    "category": "git-push",
+    "command": "git push -u origin codex/evaluation-foundry-heritage",
+    "call_id_sha256": "96987d4d9639f5eadc783039bb4f0c259f7bf3fea9e83e53805f22828ce152ba",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0180",
+    "timestamp": "2026-08-03T09:03:45.428Z",
+    "category": "github-pr",
+    "command": "gh pr create --base main --head codex/evaluation-foundry-heritage --title \"Build Coventry and Warwickshire heritage Evaluation Foundry\" --body '## Summary\n\n- add a production-scale Evaluation Foundry exemplar covering the supported NHLE and Heritage at Risk sources intersecting Coventry and Warwickshire\n- add a separate three-record assurance fixture and an isolated, default-off synthetic capability supplement\n- extend OKF Markdown front matter to backward-compatible YAML-LD and use it for graph, provenance, rich links, deep links, and heritage detail in OKF Explorer\n- add alternative-name and explainable edit-distance-one search, source/rich-link contracts, deterministic receipts, beginner guidance, and a detailed evaluation report\n\n## Scope\n\nThe faithful corpus contains 7,640 records, 22,200 resources, and 9,566 relationship assertions. Its source snapshot is frozen and provenance-bound. The Site build contains 14,007 files and remains 12,575,372 bytes below the enforced 1 GB publication limit.\n\n## Publication protocol\n\nThis is the deliberately unadvertised candidate phase. Public bundle calls-to-action, registry discovery, and copy-ready URLs remain withheld until the exact merged Pages deployment passes real-browser identity, link, Markdown, deep-link, and journey checks. A follow-up promotion PR will add a separate public deployment receipt and expose only the verified URLs.\n\n## Validation\n\n- 176 Python tests on Python 3.14 and 3.12\n- 276 Vitest tests plus 24 Node tests\n- 153 Explorer browser tests and 63 Foundry Site browser tests across Chromium, Firefox, and WebKit\n- 100/100 evaluation questions, average score 92.7\n- faithful, tiny, and synthetic consumer journeys all pass\n- deterministic corpus, app, receipt, link, semantic, bundle, viewer, registry, documentation-lockstep, and Pages-size gates all pass'",
+    "call_id_sha256": "bd3ca94dd3e7e2255a1e72ba738c24256665008721b0b325c31a63e58693c062",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 2.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0181",
+    "timestamp": "2026-08-03T09:04:02.123Z",
+    "category": "github-pr",
+    "command": "gh pr view 67 --json number,url,state,isDraft,mergeable,mergeStateStatus,headRefOid,statusCheckRollup,reviewDecision",
+    "call_id_sha256": "76f79af41eb541a0b2ba55e460ed03c4d9f1a3c334d54c9273bd96e9fe15b452",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0182",
+    "timestamp": "2026-08-03T09:04:31.309Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "c15ad5703a854bce7c9a14ac279464f712b3bb3fd3fed8c0bbc4282c33039755",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0183",
+    "timestamp": "2026-08-03T09:04:46.643Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,createdAt,updatedAt,jobs,url",
+    "call_id_sha256": "5f4705f20224ca097b91d687da9b7e6d4b2bd0a8c79d1de0872835b57c004f35",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0184",
+    "timestamp": "2026-08-03T09:05:48.862Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length)}'",
+    "call_id_sha256": "f0595aba563dfc97b401057c21591246c37e0f53e951110db527b45fc8e04142",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0185",
+    "timestamp": "2026-08-03T09:05:57.271Z",
+    "category": "github-pr",
+    "command": "gh pr merge 67 --auto --squash",
+    "call_id_sha256": "75b8b39bc9876b7ea419ef684bc22cf62e36c28cb9af55d7cdeeeae44386202d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0186",
+    "timestamp": "2026-08-03T09:06:38.560Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], completed: [.steps[] | select(.status==\"completed\") | {name,conclusion}]}'",
+    "call_id_sha256": "8644ceeecfb286d2f0c070dc76267fd26bd94fd3cc2be53d59bd7906f1e625c0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0187",
+    "timestamp": "2026-08-03T09:07:51.755Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length)}'",
+    "call_id_sha256": "794438cd2cc7716f798542dbe8a1b6ffd8b25c4b62de17fcd12d150e3bbef467",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0188",
+    "timestamp": "2026-08-03T09:09:07.290Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length), failed: [.steps[] | select(.status==\"completed\" and .conclusion!=\"success\" and .conclusion!=\"skipped\") | {name,conclusion}]}'",
+    "call_id_sha256": "aa5332751eb6afd8f07c1c241c3aae5cbe879c179f7c6906df99dd6e6a7a0c3b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0189",
+    "timestamp": "2026-08-03T09:10:18.414Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length)}'",
+    "call_id_sha256": "7f82637a8a2bb2d702be2dde3558d9c7fecd6fea933e0d148748facac0a7a424",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0190",
+    "timestamp": "2026-08-03T09:11:08.085Z",
+    "category": "github-run",
+    "command": "date -u +%Y-%m-%dT%H:%M:%SZ && gh run view 30799819042 --json jobs --jq '.jobs[0].steps[] | select(.name==\"Run Chrome, Firefox and WebKit browser tests\") | {startedAt,status,conclusion}'",
+    "call_id_sha256": "5640e3974e7180d96b25c857e7c2aca5357b404001583ba78b5f77e009f3c19b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0191",
+    "timestamp": "2026-08-03T09:12:24.086Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length), failed: [.steps[] | select(.status==\"completed\" and .conclusion!=\"success\" and .conclusion!=\"skipped\") | {name,conclusion}]}'",
+    "call_id_sha256": "da4097b9589348299c1288b5a6a64979e8ba7eca246a0af7878e9a319e9153a1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0192",
+    "timestamp": "2026-08-03T09:12:40.040Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length)}'",
+    "call_id_sha256": "c3058bc1ee054a5f8a6f1c020f5c988975d2b17584013dfd98e2aea1436f894c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0193",
+    "timestamp": "2026-08-03T09:15:02.601Z",
+    "category": "github-run",
+    "command": "gh run view 30799819042 --json status,conclusion,jobs --jq '.jobs[0] | {status,conclusion,active: [.steps[] | select(.status==\"in_progress\") | .name], done: ([.steps[] | select(.status==\"completed\" and .conclusion==\"success\")] | length), failed: [.steps[] | select(.status==\"completed\" and .conclusion!=\"success\" and .conclusion!=\"skipped\") | {name,conclusion}]}'",
+    "call_id_sha256": "1c381dae923b5ce852d0b50961cbb6d11604a98f342b37ca925e157bc48b2dae",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0194",
+    "timestamp": "2026-08-03T09:15:17.163Z",
+    "category": "github-pr",
+    "command": "gh pr merge 67 --squash",
+    "call_id_sha256": "71c8849c287713705a4be48a1e0d5c7ba3fa62564de51171086081308ad3c580",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0195",
+    "timestamp": "2026-08-03T09:15:26.875Z",
+    "category": "github-pr",
+    "command": "gh pr view 67 --json state,mergedAt,mergeCommit,url,headRefOid,baseRefOid",
+    "call_id_sha256": "2aeb18408a4dffb3d7aabe8506826658aac75f26d1233cf6af8e43096b8f468e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0196",
+    "timestamp": "2026-08-03T09:15:31.594Z",
+    "category": "github-run",
+    "command": "gh run list --workflow pages.yml --branch main --limit 5 --json databaseId,headSha,status,conclusion,createdAt,url,displayTitle,event",
+    "call_id_sha256": "27579ef264a9e9ec3284988c5cd305c7df59f1637e9b15008242bb3f32e9edbb",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0197",
+    "timestamp": "2026-08-03T09:16:47.239Z",
+    "category": "github-run",
+    "command": "gh run view 30800609874 --json status,conclusion,jobs --jq '{status,conclusion,jobs:[.jobs[]|{name,status,conclusion,active:[.steps[]?|select(.status==\"in_progress\")|.name],done:([.steps[]?|select(.status==\"completed\" and .conclusion==\"success\")]|length)}]}'",
+    "call_id_sha256": "ecce0f9c4cf4db18ceefae17e121ac7fbb0ef7a826615a7929381da7a4a3e493",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0198",
+    "timestamp": "2026-08-03T09:25:20.961Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_explicit_bundle_overrides_the_journey_manifest_for_candidate_validation",
+    "call_id_sha256": "09e873ebf38a3ce1c2ce14987caf6852facb91a08b388065d18179c2c108b44d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0199",
+    "timestamp": "2026-08-03T09:26:09.097Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_explicit_bundle_overrides_the_journey_manifest_for_candidate_validation tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_bundle_root_preserves_per_journey_bundle_below_a_pages_project_path",
+    "call_id_sha256": "33b10a5e8e71ff3343bc31f88ced2bb37887a4c16fabc4fb5519cf415e7c6d20",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0200",
+    "timestamp": "2026-08-03T09:27:51.572Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_explicit_bundle_overrides_the_journey_manifest_for_candidate_validation tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_bundle_root_preserves_per_journey_bundle_below_a_pages_project_path tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_journey_id_runs_only_the_requested_terminal_gate",
+    "call_id_sha256": "b4b34a5732974347c5d7f5570d43610d1f4e1bcd69d2077a12b218a6fa7ddd74",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0201",
+    "timestamp": "2026-08-03T09:37:42.010Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation.HeritageEvaluationBuilderTest.test_build_corpus_preserves_source_truth_and_yaml_ld_semantics 2>/dev/null || .venv/bin/python -m unittest tests.test_build_heritage_evaluation",
+    "call_id_sha256": "37a43d8c6b2d52ea2fbc132bfe7fc275a8b07019dcd8b7f4d70619eec8031d9f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0202",
+    "timestamp": "2026-08-03T09:42:27.132Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_okf_explorer_evaluation",
+    "call_id_sha256": "4475c25a1216e8f6bd335df9da2c4e8e9d29335beaf8427fef7aeaa063012886",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0203",
+    "timestamp": "2026-08-03T09:44:31.937Z",
+    "category": "bundle-check",
+    "command": "python3 scripts/build_okf_bundle.py",
+    "call_id_sha256": "9e93c4b1925fcc6f0c2c39c6b8b98ac1c261051dc8cdd3642096c87b397f8b79",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0204",
+    "timestamp": "2026-08-03T09:44:31.937Z",
+    "category": "bundle-check",
+    "command": "python3 scripts/update_viewer.py",
+    "call_id_sha256": "9e93c4b1925fcc6f0c2c39c6b8b98ac1c261051dc8cdd3642096c87b397f8b79",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0205",
+    "timestamp": "2026-08-03T09:44:36.967Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "99ea02d6aefd67b1d9462ed3799648ac389c91827a89510f776d54f88a279f71",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0206",
+    "timestamp": "2026-08-03T09:44:36.967Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "99ea02d6aefd67b1d9462ed3799648ac389c91827a89510f776d54f88a279f71",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0207",
+    "timestamp": "2026-08-03T09:44:45.951Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "8acb0e574900c53e37ee70cd8a9f11d47b7c08fc144404250cce6edaf92603b5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0208",
+    "timestamp": "2026-08-03T09:44:55.191Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "fd5aa84c98ed734272a98140b28543d940ca7465cafb9cff44f3825383b3d7a7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0209",
+    "timestamp": "2026-08-03T09:51:48.005Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_site.BuildSiteTests.test_project_root_href_is_directory_canonical tests.test_build_site.BuildSiteTests.test_every_generated_reading_page_uses_html_navigation tests.test_okf_explorer_evaluation.OkfExplorerEvaluationTests.test_bundle_root_preserves_per_journey_bundle_below_a_pages_project_path",
+    "call_id_sha256": "5ead03b27abebb666fd8c18853f4662ec17d961fa83e98265fbd6bb7b5639f2b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0210",
+    "timestamp": "2026-08-03T09:51:52.264Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_bundle_root_preserves_per_journey_bundle_below_a_pages_project_path",
+    "call_id_sha256": "12f5406a61dcdb9b2aeb6a0ee0f49e90af9f4ad0b07627553401de3538e35d3d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0211",
+    "timestamp": "2026-08-03T09:53:13.502Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_site tests.test_okf_explorer_evaluation tests.test_build_heritage_evaluation",
+    "call_id_sha256": "c8f328f9103aee3f583db040d543e7c60af8e4bc1e4f5dd544d4973b3dc98167",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0212",
+    "timestamp": "2026-08-03T09:53:52.317Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_local_candidate_receipt_binds_its_executed_results",
+    "call_id_sha256": "5568ba0097b87bc9b23494d1c5fbce9006a641c938af9b0a5a30436da6c1e060",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0213",
+    "timestamp": "2026-08-03T09:54:56.112Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "20cdf370998d23facc6eb08193fa4ef7f0edd6f8dc2bbc2be4ee52d76dbf6f7b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0214",
+    "timestamp": "2026-08-03T09:55:13.892Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "788145e69203c48f8532aebb7bf034ca45d3a2fb82ad999d16f66c6edd0703d8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0215",
+    "timestamp": "2026-08-03T09:55:30.747Z",
+    "category": "python-tests",
+    "command": "rg -l 'href=\"(?:\\.\\./)+index\\.html\"[^>]*>OKF Explorer<' _site --glob '*.html' | wc -l; rg -l '/okf-explorer/index\\.html\\?bundle=' _site | wc -l; rg -n '(?:href|src)=\"/(?!okf-explorer(?:/|\"))' _site/404.html --pcre2 || true; rg -n 'href=\"/okf-explorer/(?:favicon\\.svg)?\"|href=\"/okf-explorer/\"' _site/404.html; .venv/bin/python -m unittest tests.test_build_site tests.test_okf_explorer_evaluation tests.test_build_heritage_evaluation",
+    "call_id_sha256": "d92f7e4c837dc0ff3f596346da8d81db83d65ebf10777100a5159d53ed52cc2b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 2.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0216",
+    "timestamp": "2026-08-03T09:59:34.717Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "db40320339426b732f58b77ff3c2589ce84ac57a8218af44f60dea17ff77cc57",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0217",
+    "timestamp": "2026-08-03T09:59:52.960Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "e895563077dedc37c763984648b0919c39ec5fb51f11703e0e1f7d413235ffc2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0218",
+    "timestamp": "2026-08-03T10:00:24.513Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help | sed -n '1,240p'; sed -n '1,140p' CHANGELOG.md",
+    "call_id_sha256": "e050b832e43111cde0d2c6eba8f887009130aaabc5337965a70267a34e81d573",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0219",
+    "timestamp": "2026-08-03T10:00:36.647Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py; .venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "85a15f13572151c6a94a1467c1b040991ba0eecb56d9aa3ce1cc59d31d558c54",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0220",
+    "timestamp": "2026-08-03T10:00:43.450Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "a7cd0fe5b951f6a6d7763177c1db05d43cdaa021b090de53dcbf9ee768307d93",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0221",
+    "timestamp": "2026-08-03T10:01:47.290Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "7ceeb463f693eb8a1cf48166e628fb802cbc435ce8c5dd6498063eb6a0876cb0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.5,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0222",
+    "timestamp": "2026-08-03T10:02:01.568Z",
+    "category": "app-build",
+    "command": "pnpm check && pnpm test && pnpm build:determinism",
+    "call_id_sha256": "0b677f70ff081b8d4369b2673ab6b3ee212861884f0054f49652b2354d4434f0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0223",
+    "timestamp": "2026-08-03T10:02:01.568Z",
+    "category": "app-check",
+    "command": "pnpm check && pnpm test && pnpm build:determinism",
+    "call_id_sha256": "0b677f70ff081b8d4369b2673ab6b3ee212861884f0054f49652b2354d4434f0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0224",
+    "timestamp": "2026-08-03T10:05:37.687Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "800ca599e76c9c16b48ff5ca745e7da5a045d7a3ca2b30b5c72614466aa2059e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 10.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0225",
+    "timestamp": "2026-08-03T10:05:37.687Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py --check && .venv/bin/python scripts/update_viewer.py --check && .venv/bin/python scripts/check_okf.py && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "800ca599e76c9c16b48ff5ca745e7da5a045d7a3ca2b30b5c72614466aa2059e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 10.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0226",
+    "timestamp": "2026-08-03T10:10:56.321Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T08:22:13Z",
+    "call_id_sha256": "472cf460b2695856bb295ab100849e5d4990afc04520867337226f91c0842b63",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0227",
+    "timestamp": "2026-08-03T10:17:41.153Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation tests.test_okf_explorer_evaluation",
+    "call_id_sha256": "d17e6bcd5fd0d3aa18239ed901676e0fdec7af261c8fb39c3c8cea104fc13ee1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0228",
+    "timestamp": "2026-08-03T10:17:41.153Z",
+    "category": "vitest",
+    "command": "pnpm exec vitest run src/lib/viewer/heritagePresentation.test.ts",
+    "call_id_sha256": "d17e6bcd5fd0d3aa18239ed901676e0fdec7af261c8fb39c3c8cea104fc13ee1",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0229",
+    "timestamp": "2026-08-03T10:17:54.452Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T08:22:13Z && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/tiny/source-snapshot.json --output evaluation/heritage/tiny --generated-at 2026-08-03T08:12:27Z && .venv/bin/python scripts/build_heritage_evaluation.py --snapshot evaluation-foundry/fixtures/heritage-warwickshire/synthetic/source-snapshot.json --output evaluation/heritage/synthetic --generated-at 2026-08-03T08:12:27Z",
+    "call_id_sha256": "d1bf2e88245a2df16fe13779312410e7c35a51802e2d8bfaac81cc1c8c5ce98f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0230",
+    "timestamp": "2026-08-03T10:26:34.225Z",
+    "category": "heritage-build",
+    "command": "python3 scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "33998c609b55488548e93f379e80c0c005d78e415aa243dcddd53511ebabf9cd",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0231",
+    "timestamp": "2026-08-03T10:28:30.836Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m pytest -q tests/test_build_heritage_evaluation.py tests/test_okf_explorer_evaluation.py tests/test_evaluation_foundry_validator.py tests/test_build_site.py",
+    "call_id_sha256": "da7233daf3b705cf5a0911e0f7e38294aae3008f6f0a86f9202f9a312d0bba5e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0232",
+    "timestamp": "2026-08-03T10:30:46.225Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "2b1b2ca8a1f24fdc1a14572f9cd399e6caf888b3903da9689bc5e7e53ad09bac",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0233",
+    "timestamp": "2026-08-03T10:43:03.354Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "ab9338f13f91b41ff9af2bbde1a7f715f6e98559fd1ca40747d3d4de6d2aab95",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0234",
+    "timestamp": "2026-08-03T10:51:54.234Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "0ced9aa357a17366e85a714f5c9c7fd1930ac05d1640229a0257ae2cb0246592",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0235",
+    "timestamp": "2026-08-03T10:55:20.794Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "8cd469156bc7f92940bb6bae993dd5f1b41e249bf054b6d1602b49cc97d897a8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0236",
+    "timestamp": "2026-08-03T11:17:12.391Z",
+    "category": "foundry-check",
+    "command": ".venv/bin/python -m unittest tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "a37564d63004584bf85332bd9ceb66d3523055b612200a3703094ee58948c78c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0237",
+    "timestamp": "2026-08-03T11:17:12.391Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_evaluation_foundry_validator && .venv/bin/python scripts/check_evaluation_foundry.py",
+    "call_id_sha256": "a37564d63004584bf85332bd9ceb66d3523055b612200a3703094ee58948c78c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0238",
+    "timestamp": "2026-08-03T11:17:47.894Z",
+    "category": "heritage-build",
+    "command": "python3 scripts/build_heritage_evaluation.py --help | sed -n '1,220p'\nrg -n 'build_heritage_evaluation.py' docs evaluation-foundry README.md .github tests | head -80",
+    "call_id_sha256": "d55cbaf74d901abd0ed1021fa0149d3007fd40fc7ee20a5b7f96b89d4e1ba00a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0239",
+    "timestamp": "2026-08-03T11:17:51.829Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help | sed -n '1,240p'\nsed -n '270,330p' README.md",
+    "call_id_sha256": "a2678e340c126b67a06fd0a6add68da507b576d7d58bfe975b337458fe1787dd",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0240",
+    "timestamp": "2026-08-03T11:18:33.576Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "58905db9c432fe9f399421a4b035c7d6812456ad78b0d5120aade28b6d40cfe2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0241",
+    "timestamp": "2026-08-03T11:18:33.576Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "58905db9c432fe9f399421a4b035c7d6812456ad78b0d5120aade28b6d40cfe2",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0242",
+    "timestamp": "2026-08-03T11:18:43.424Z",
+    "category": "app-build",
+    "command": "pnpm build",
+    "call_id_sha256": "5177babb9bc977e40c9f336001aa254c9ceab318ad52388ceddfd3cc3e0ac87b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0243",
+    "timestamp": "2026-08-03T11:18:55.284Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "23882857992e7754a8c02c2bad1f646b4c385c2a8d6c68ee4b3c8a3b4f7b270b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0244",
+    "timestamp": "2026-08-03T11:19:13.873Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "45b2bebb231ef22df6d5f281305cf01466191a9e0db3b9f1c9ca081838ebde5b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0245",
+    "timestamp": "2026-08-03T11:19:24.719Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "8d0595907eac0e1e66e27065e04c82d17aa560ea1b9dc0ad8ebf14368b5d1326",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0246",
+    "timestamp": "2026-08-03T11:20:45.306Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "d683afac0f8e2ce35c6a858e0ea93f4a318652b6806ab8721e4a7b8b65f6c54b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0247",
+    "timestamp": "2026-08-03T11:20:45.306Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "d683afac0f8e2ce35c6a858e0ea93f4a318652b6806ab8721e4a7b8b65f6c54b",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0248",
+    "timestamp": "2026-08-03T11:22:29.407Z",
+    "category": "explorer-evaluation",
+    "command": "test -d node_modules/playwright && echo root-playwright || true\ntest -d apps/okf-explorer/node_modules/playwright && echo app-playwright || true\nnode scripts/evaluate_okf_explorer.mjs --no-browser --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json --journeys-only --journey-id journey-publication --bundle-root https://chris-page-gov.github.io/okf-explorer --candidate-bundle /evaluation/heritage/okf-explorer.json --out [TEMP_PATH]",
+    "call_id_sha256": "45db3c43cea6952167af1fd85563f6db11934be6df1b99d6cee0f4b6e49f4aab",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0249",
+    "timestamp": "2026-08-03T11:27:25.209Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "a0078a85aa19aebe47d405916bb8735f0b7ea54b2e6bb15125c65016594f1024",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0250",
+    "timestamp": "2026-08-03T11:27:25.209Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "a0078a85aa19aebe47d405916bb8735f0b7ea54b2e6bb15125c65016594f1024",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0251",
+    "timestamp": "2026-08-03T11:27:30.193Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "9e929184318095252c4a720a2023200a6cef1195fd80cdd6e8981faa07e502b4",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0252",
+    "timestamp": "2026-08-03T11:28:47.499Z",
+    "category": "site-build",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_local_candidate_receipt_binds_its_executed_results tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_receipt_binds_exact_explorer_build_identity && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "d84a10986be56524ab70279020b35901e7ce71e587274c82cc430e975b12d49a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0253",
+    "timestamp": "2026-08-03T11:28:47.499Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_local_candidate_receipt_binds_its_executed_results tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_heritage_receipt_binds_exact_explorer_build_identity && .venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "d84a10986be56524ab70279020b35901e7ce71e587274c82cc430e975b12d49a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0254",
+    "timestamp": "2026-08-03T11:29:54.791Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "8922a2132ea0938dd9c455b67924690854a99fc019012cbab3d79785e32213d3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0255",
+    "timestamp": "2026-08-03T11:29:54.791Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "8922a2132ea0938dd9c455b67924690854a99fc019012cbab3d79785e32213d3",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 6.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0256",
+    "timestamp": "2026-08-03T11:33:58.394Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "82593cd8245d29ad7daec58b2e2e0bbc92ddf2ef9178f8b7b4c875cb948ffced",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0257",
+    "timestamp": "2026-08-03T11:34:11.230Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "d6c82750a3053124a7060d3d001b2895b1ac17daa8cc2309c515770eb931a72f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0258",
+    "timestamp": "2026-08-03T11:38:11.538Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "2c5cca03c7d8df70c7a4ebc01781c2c9f932f5a7db5813d9bf516cf178c96b8b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0259",
+    "timestamp": "2026-08-03T11:38:11.538Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "2c5cca03c7d8df70c7a4ebc01781c2c9f932f5a7db5813d9bf516cf178c96b8b",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0260",
+    "timestamp": "2026-08-03T11:38:39.770Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "610de0ca450832a3bc15ea128e6f02b45712028760803325c820c3528c6e4dc1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0261",
+    "timestamp": "2026-08-03T11:38:39.770Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "610de0ca450832a3bc15ea128e6f02b45712028760803325c820c3528c6e4dc1",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0262",
+    "timestamp": "2026-08-03T11:38:49.518Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "f9e8b6735422840e8c72bfa7c74fda1ebd6d072f0bcbbdf06a85a999a6a547bc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0263",
+    "timestamp": "2026-08-03T11:48:51.739Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "fdfc183be65051342d8d6adb1aca6607041c67d413ece606924d33458f7795eb",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0264",
+    "timestamp": "2026-08-03T11:51:21.935Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_build_heritage_evaluation.HeritageEvaluationBuilderTest.test_faithful_publication_copies_an_executable_journey_closure",
+    "call_id_sha256": "347af2f491a4f26d8b0d453d9e2ee9d834bc1a0772916643029861b4dd304a8e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0265",
+    "timestamp": "2026-08-03T11:52:23.949Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "a5bc676535fa87d512fb255c45c8500e7e04a39d5784a4df5472da278077843e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0266",
+    "timestamp": "2026-08-03T11:52:23.949Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "a5bc676535fa87d512fb255c45c8500e7e04a39d5784a4df5472da278077843e",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0267",
+    "timestamp": "2026-08-03T11:52:29.995Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "63cfea6425b3c1e250c5a470f52f22e9ef989e4097d543440480da49c6f06ff2",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0268",
+    "timestamp": "2026-08-03T11:55:00.585Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "47d6d6c4cc922dbf857c7eb415597783e1cbd348b6e021fb3db39e48091bd9de",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0269",
+    "timestamp": "2026-08-03T11:55:22.632Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "552985a415e84dc4a9152bec108b63f61a18c0069a327d9f8c875d5b7a0eaa21",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0270",
+    "timestamp": "2026-08-03T11:57:19.234Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/ --bundle /evaluation/heritage/okf-explorer.json --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json --limit 100 --out [TEMP_PATH]",
+    "call_id_sha256": "89e45b924af8fcbffa8b8a9e85160ac3258b0bfbca0744cd6c46f5c676a39738",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0271",
+    "timestamp": "2026-08-03T11:57:19.234Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/ --candidate-bundle /evaluation/heritage/okf-explorer.json --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json --journey-id journey-tiny --journey-id journey-faithful --journey-id journey-synthetic-isolation --journeys-only --out [TEMP_PATH]",
+    "call_id_sha256": "89e45b924af8fcbffa8b8a9e85160ac3258b0bfbca0744cd6c46f5c676a39738",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 4.6,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0272",
+    "timestamp": "2026-08-03T12:00:56.655Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation",
+    "call_id_sha256": "ea2b14cf78d516a59b48f8b7f8879315c49fe6722b51bba3fbe041b98b28dd2c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0273",
+    "timestamp": "2026-08-03T12:03:10.738Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation",
+    "call_id_sha256": "14ae10a2345cb48f3f206a4bc7c8509a84c30e28831ffc4294c370db612b577b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0274",
+    "timestamp": "2026-08-03T12:03:26.682Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "45efb5a444e94dca965e68be3496073ba5a853cfb0f303171ada73a0a7413723",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0275",
+    "timestamp": "2026-08-03T12:03:53.809Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "0293a8aca4a5cffa0e55ec852d52eb818f3c12b8a2017d2bcfa12ed347fecfcc",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0276",
+    "timestamp": "2026-08-03T12:04:50.051Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "3d561017b5017fb6d14eefc19245063870c43bbe1fc4b17ef63546b2b2ae7702",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0277",
+    "timestamp": "2026-08-03T12:04:58.548Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "b6541cc8518ce00515f2e058387c83e7bd263595aa65f6052d4aed18d9a7992d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0278",
+    "timestamp": "2026-08-03T12:05:03.166Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "e7d89fa4cc6ef3a25f2c22fb39a465bb4c220400938e2c6563c3ae285f853c9c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0279",
+    "timestamp": "2026-08-03T12:05:28.405Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "7a30e052515fb62ab9a770e8c8ab15e08d9cb0d9f29bbdfd163ded765907a901",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0280",
+    "timestamp": "2026-08-03T12:10:58.961Z",
+    "category": "git-commit",
+    "command": "git commit -m \"Complete heritage Evaluation Foundry exemplar\"",
+    "call_id_sha256": "fa3b727911f4cb936b8e85ffcb583fc13d5d38d64ae652e048886fd88b9287a5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0281",
+    "timestamp": "2026-08-03T12:11:22.224Z",
+    "category": "git-push",
+    "command": "git push -u origin codex/publish-heritage-evaluation",
+    "call_id_sha256": "7cf2522d3cca3e4fc5f9fec95866ddfb145d72a2b76b229909e59181723ca83d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0282",
+    "timestamp": "2026-08-03T12:11:55.501Z",
+    "category": "github-pr",
+    "command": "gh pr create --base main --head codex/publish-heritage-evaluation --title \"Complete Coventry and Warwickshire heritage Evaluation Foundry\" --body '## Summary\n\n- publishes the complete 6,556-record NHLE spatial intersection and 1,084 annual Heritage at Risk observations for the pinned Coventry and Warwickshire scope\n- adds a separate three-record real assurance fixture and an isolated three-record synthetic capability supplement\n- demonstrates additive YAML-LD identity, governed predicates, assertion evidence, and linked Graph, Type, Links, Resources, Map, Timeline, Reader, and Narrative behavior\n- adds extensive aliases and bounded one-edit misspelling tolerance, a 100-question evaluation, executable journeys, beginner guidance, and an evidence-bounded report\n- validates identifier-bound rich pages, rendered Markdown HTML, project-root-safe Pages fallback behavior, and candidate descriptor plus release-root publication binding\n\n## Local release gates\n\n- 209 Python tests passed\n- 276 Vitest plus 25 Node tests passed\n- 153 Chrome, Firefox, and WebKit UI tests passed\n- 63 Chrome, Firefox, and WebKit Foundry and rendered-Markdown tests passed\n- all 100 evaluation questions scored, average 92.7, all at least 80\n- all three local fixture journeys passed\n- deterministic Explorer build: 16 files, tree 0cb83c1035ebd369a5bc13ce35fa532fa839ffcf4548e2e786807be43007c925\n- deterministic faithful corpus: two independent 2,940-file builds, zero differences, tree 5edff8fe897166e73c9a9e5dc9b50ede047451c0519220a20073f28f77398d9f\n- assembled Site: 987,299,117 bytes, 12,700,883 bytes headroom, 239 reading pages, 4,135 internal references\n- Evaluation Foundry, OKF, semantic registry, source constraints, SBOM, legislation, link, Markdown, bundle, viewer, and Site checks passed\n\n## Publication rule\n\nThe public URL remains unverified until this exact commit is merged, the Pages deployment completes, and journey-publication passes against the deployed descriptor SHA and release-root digest.'",
+    "call_id_sha256": "6038f00076b90477b0c45ec89e91f6b042648adf3c2187d82321b239a4f7b8be",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 3.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0283",
+    "timestamp": "2026-08-03T12:12:07.606Z",
+    "category": "github-pr",
+    "command": "gh pr view 68 --json number,title,state,isDraft,mergeable,mergeStateStatus,reviewDecision,statusCheckRollup,url,headRefOid,baseRefOid",
+    "call_id_sha256": "ee2c799d272e240c8a04b273ba76db399cf7496559f425806c09018b7fae5033",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0284",
+    "timestamp": "2026-08-03T12:12:17.618Z",
+    "category": "github-pr",
+    "command": "gh pr checks 68 --watch --interval 10",
+    "call_id_sha256": "5fcdff2065434886c2288a856418859875fae2ff54c9c6c5a24cfefda298ee2c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0285",
+    "timestamp": "2026-08-03T12:14:08.540Z",
+    "category": "github-run",
+    "command": "gh run view 30812594912 --json status,conclusion,jobs",
+    "call_id_sha256": "c1dd60693f9681056903b95623e42217fd01514053fc3c89fe60fe4bf21a1c56",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0286",
+    "timestamp": "2026-08-03T12:16:39.921Z",
+    "category": "github-run",
+    "command": "gh run view 30812594912 --json jobs --jq '.jobs[0].steps[] | select(.status==\"in_progress\" or .conclusion==\"failure\") | [.number,.name,.status,.conclusion] | @tsv'",
+    "call_id_sha256": "a7bec2a8fcdc52afd0f3f10a67d41ab9a89f17f34f64d11cca76b63404c8f60c",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0287",
+    "timestamp": "2026-08-03T12:21:04.715Z",
+    "category": "github-run",
+    "command": "gh run view 30812594912 --json jobs --jq '.jobs[0].steps[] | select(.status==\"in_progress\" or .conclusion==\"failure\") | [.number,.name,.status,.conclusion] | @tsv'",
+    "call_id_sha256": "b64073bdf60b90da08998f628c9fe00aa759ddb9a5f536e3e8972b67d84b58cb",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0288",
+    "timestamp": "2026-08-03T12:22:24.123Z",
+    "category": "github-run",
+    "command": "gh run view 30812594912 --json jobs --jq '.jobs[0].steps[] | select(.status==\"in_progress\" or .conclusion==\"failure\") | [.number,.name,.status,.conclusion] | @tsv'",
+    "call_id_sha256": "f53f14e768f41ab0c30e901cc50f1175c339219a4003ec20ae426c4a599ac029",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0289",
+    "timestamp": "2026-08-03T12:22:57.254Z",
+    "category": "github-pr",
+    "command": "gh pr view 67 --json mergeCommit,mergedAt,title,url && gh pr view 68 --json mergeable,mergeStateStatus,statusCheckRollup",
+    "call_id_sha256": "2c7940c14e3c1adb97ccdc5a7f87894aba7135afc4c870aa05d8b6c136748fb9",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0290",
+    "timestamp": "2026-08-03T12:24:48.129Z",
+    "category": "github-pr",
+    "command": "gh pr view 68 --json number,state,isDraft,mergeable,mergeStateStatus,headRefName,baseRefName,statusCheckRollup,url,title",
+    "call_id_sha256": "dc25bdfbe582f88cf3a26ff8f40950b98e79434ec410544d1bfb758d3b1e12f6",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0291",
+    "timestamp": "2026-08-03T12:24:56.496Z",
+    "category": "github-pr",
+    "command": "gh pr merge 68 --squash",
+    "call_id_sha256": "58fd3736c28d7795748e6681b4b1fcdd3b984d1b2cfe7bd1c3171136d51c4917",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0292",
+    "timestamp": "2026-08-03T12:25:07.864Z",
+    "category": "github-pr",
+    "command": "gh pr view 68 --json state,mergedAt,mergeCommit,url,title",
+    "call_id_sha256": "e2fdc8738392e7d6c6c4ac50aa6d1c8370c8f6ef79b1855e46aa7b626de169c4",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 3.8,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0293",
+    "timestamp": "2026-08-03T12:25:07.864Z",
+    "category": "github-run",
+    "command": "gh run list --branch main --limit 10 --json databaseId,workflowName,status,conclusion,headSha,event,createdAt,updatedAt,url,displayTitle",
+    "call_id_sha256": "e2fdc8738392e7d6c6c4ac50aa6d1c8370c8f6ef79b1855e46aa7b626de169c4",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 3.8,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0294",
+    "timestamp": "2026-08-03T12:25:18.220Z",
+    "category": "github-run",
+    "command": "gh run watch 30813485357 --exit-status",
+    "call_id_sha256": "3890c125c35fc56128aef1db7f97b182264be041f8de99dee2d7f59471ff49bb",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0295",
+    "timestamp": "2026-08-03T12:29:16.534Z",
+    "category": "github-run",
+    "command": "gh run view 30813485357 --json databaseId,workflowName,status,conclusion,headSha,createdAt,updatedAt,url,jobs",
+    "call_id_sha256": "55979e97fae6bea0c93251f9d6c7d0fe2d4ca935bd6a1cf936c731640ca9dff2",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 1.3,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0296",
+    "timestamp": "2026-08-03T12:36:46.228Z",
+    "category": "heritage-build",
+    "command": "python3 scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "a52cc740d9c525b99fda450a0bc23194d8ee76cd84042323211e4895e7a3fe95",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0297",
+    "timestamp": "2026-08-03T12:36:55.710Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help",
+    "call_id_sha256": "2f5d0d3b5cb9a0355bd3a0a5ae0dfd28d87681afddfb6b1658533d40375e11b8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0298",
+    "timestamp": "2026-08-03T12:43:04.078Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "fba81f46548f877e63953f95c8e6d81427d54973d88f0f863f896621e912faed",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0299",
+    "timestamp": "2026-08-03T12:43:42.593Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "316a6cfe1b39de04647a6641edd275dd0bcd9309294ed4b16a970457410fc5ad",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0300",
+    "timestamp": "2026-08-03T12:43:42.593Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "316a6cfe1b39de04647a6641edd275dd0bcd9309294ed4b16a970457410fc5ad",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0301",
+    "timestamp": "2026-08-03T12:46:50.188Z",
+    "category": "bundle-check",
+    "command": "python3 scripts/build_okf_bundle.py",
+    "call_id_sha256": "6dc5a24a94369a5b796920d820d98a3030ff28e03edfade8b700171e9d08b295",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0302",
+    "timestamp": "2026-08-03T12:46:54.438Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "7afc11e644be0548717ca829a7b6eea4c2ee0999dd481290f942c46febb5787a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0303",
+    "timestamp": "2026-08-03T12:47:01.964Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "42f7ba5144eb26963fb119e1b69bafa48f693996c806c339413a6d3cbf5642e2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0304",
+    "timestamp": "2026-08-03T12:47:08.300Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "9b58787259096b4cfb726d06eb2d932f3b2e50d3f8a38c9c50903fafe8424eb7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0305",
+    "timestamp": "2026-08-03T12:47:32.353Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "4d03d3ffa77c03cd01b1b3f4001a34e13bbb9b62f116be429a6b6ad4946cfb6a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0306",
+    "timestamp": "2026-08-03T12:48:05.436Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m pytest",
+    "call_id_sha256": "24492b1475a733994979fe66bd6da0eac82aaf3a0fc22a54772810df3e841678",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.9,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0307",
+    "timestamp": "2026-08-03T12:48:35.050Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "d91e724451d30aa47f35cb3be3e929f5b3e1986546aea3a696994c9426a3faab",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0308",
+    "timestamp": "2026-08-03T12:48:50.104Z",
+    "category": "app-check",
+    "command": "pnpm check",
+    "call_id_sha256": "82094213aa621cb7cbc6bebb3b72eb8f9ce5221b5478c731b2d1c1884328a8c3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.7,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0309",
+    "timestamp": "2026-08-03T12:48:59.065Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "c48a8937c0dccc3f7a380e3060776f2bf888855e77f3b2ee43d36a5da708b944",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0310",
+    "timestamp": "2026-08-03T12:53:20.304Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "e287f687a06f4a3fbbbe90cbdfe6336231f5215559564b0546b9b970ccc0ecef",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0311",
+    "timestamp": "2026-08-03T12:53:41.989Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "861a235f9db643ffc66a6afba3753915631ca34fbe4a684131c3832225107448",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0312",
+    "timestamp": "2026-08-03T12:54:02.416Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "6ade3e8fc18cf1dd3476da84a0cd7d3645aa4d9b3123364ffdde526184d33bf1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0313",
+    "timestamp": "2026-08-03T12:54:30.043Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "1cd4389a1bd1539053cbb00b2a5334f4660561402ce0804d11dc78343e2b09c2",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.2,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0314",
+    "timestamp": "2026-08-03T12:55:15.632Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/build_okf_bundle.py",
+    "call_id_sha256": "4954fdd4d6261fa46fcedb52a6e61f542ebaf308e8e567b421487ba157dec300",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0315",
+    "timestamp": "2026-08-03T12:55:20.650Z",
+    "category": "bundle-check",
+    "command": ".venv/bin/python scripts/update_viewer.py",
+    "call_id_sha256": "2dd9fdd4c9f7b9ae1c3cf9f0a4c6b973fb825c1b474d83724ca5bd8329e02cea",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0316",
+    "timestamp": "2026-08-03T12:55:27.588Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "93868c246e119fcf132cc258165e88c9849282d9a31e0a01b131928132500b11",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 10.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0317",
+    "timestamp": "2026-08-03T12:56:22.677Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "1404387dff41dbcba8a83795c628edbd93e6e1de5d599ecc7df659c846a68ab9",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0318",
+    "timestamp": "2026-08-03T12:56:45.215Z",
+    "category": "explorer-evaluation",
+    "command": "node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "5314cb82a22705ae5f20a0259f3398c484b1ea4db921ba45ab36fd83bfc22129",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0319",
+    "timestamp": "2026-08-03T13:01:53.692Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "fcb10c5d169883aeb1789b5ebe733a678fb99d5a25bde4a9582cc7bddf7da01a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0320",
+    "timestamp": "2026-08-03T13:02:13.902Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "7519aa9a83944b0ab8039ac83785daa7a2f5fa5469422c20f5d93993541904e5",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0321",
+    "timestamp": "2026-08-03T13:02:30.910Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "2700aa4d6676235f66c852da368393e8320153af47a9aad4ca1d0de785fd6559",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0322",
+    "timestamp": "2026-08-03T13:07:30.525Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "f7acd37ba2246af9aa66981d5b2b06dd631e577f629a4da1f0a3ecde827b7250",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0323",
+    "timestamp": "2026-08-03T13:07:50.051Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "47bed75099d8bc82ddfc3cc60e329db45698e123c25f83dd8e63035daa11f85f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0324",
+    "timestamp": "2026-08-03T13:08:02.728Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "5e39fd769ad673c171403e4b36b2894f63e0c310a9f6ba9ca0ae9ad8884e227a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0325",
+    "timestamp": "2026-08-03T13:08:30.526Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "19e2e8f11a1f301f1288d3843fe9e4556539cf1a69804105fa235f3845af36e3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0326",
+    "timestamp": "2026-08-03T13:08:53.644Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "call_id_sha256": "2071daa1b4145751aa6c431bf2b01a2de2d2d6be21e44904641704b65c0a267a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.6,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0327",
+    "timestamp": "2026-08-03T13:13:21.582Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "3405afee7f16e9e30183539e445909abf81de8421610b5cbddf11c6c8d7c09f1",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0328",
+    "timestamp": "2026-08-03T13:17:17.986Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "d5a908f111bfe5a1b2cc757ca4bf8f60d05604720ad728b5d8260122d8335c4d",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0329",
+    "timestamp": "2026-08-03T13:17:43.643Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --help && shasum -a 256 evaluation/heritage/okf-explorer.json evaluation/heritage/assurance/plane-roots.json && sed -n '1,220p' evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+    "call_id_sha256": "01fb8291dff93bc572eea0d4fd5a53ffb12274f4990514618e08b6e691dda6c7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0330",
+    "timestamp": "2026-08-03T13:18:00.159Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "5c1b183720254ae8a772165b58c71805db9fc5872cbeab96a627cd8b121175ac",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0331",
+    "timestamp": "2026-08-03T13:18:00.159Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "5c1b183720254ae8a772165b58c71805db9fc5872cbeab96a627cd8b121175ac",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0332",
+    "timestamp": "2026-08-03T13:18:33.068Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "bd41ecd4d33f6c36deb5d6f34dadd3be72f340e8b832dd86f4217e1dfe7e081e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0333",
+    "timestamp": "2026-08-03T13:18:51.867Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "6cada1935d429684a12984f77df0c4feb37efbc96ccb071a8b575c40396c4b4e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0334",
+    "timestamp": "2026-08-03T13:19:39.776Z",
+    "category": "github-run",
+    "command": "gh run view 30813485357 --repo chris-page-gov/okf-explorer --json name,displayTitle,conclusion,headSha,url",
+    "call_id_sha256": "3c3d269e059e445f5a09ceb88edc88c882b56a926f85189085aa65bdb9a07271",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 2.4,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0335",
+    "timestamp": "2026-08-03T13:20:31.255Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "fd2fb90a398ee748708e37aeae0e3c9da5b6184308e5e22940dcb4705b8c7651",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0336",
+    "timestamp": "2026-08-03T13:20:55.470Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "8cb9bd60f808ffbeaed3efe35640ab469f1aa8c6d93cbf3871f0279811f75518",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0337",
+    "timestamp": "2026-08-03T13:20:55.470Z",
+    "category": "heritage-build",
+    "command": ".venv/bin/python scripts/build_heritage_evaluation.py --output [TEMP_PATH] --generated-at 2026-08-03T10:29:12Z",
+    "call_id_sha256": "8cb9bd60f808ffbeaed3efe35640ab469f1aa8c6d93cbf3871f0279811f75518",
+    "command_index_in_call": 2,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "shared-orchestrator-call"
+  },
+  {
+    "event_id": "CMD-0338",
+    "timestamp": "2026-08-03T13:21:32.746Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "1889e565a5e8d7466604be47143bebabdde302ec3c47d579e0892f2a625ff1b3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0339",
+    "timestamp": "2026-08-03T13:21:51.667Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py && node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "75191e98432b2333ddde07108c925946f2c1bd8023c552757153981f378595a6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0340",
+    "timestamp": "2026-08-03T13:21:51.667Z",
+    "category": "explorer-evaluation",
+    "command": ".venv/bin/python scripts/build_site.py && node scripts/evaluate_okf_explorer.mjs --help",
+    "call_id_sha256": "75191e98432b2333ddde07108c925946f2c1bd8023c552757153981f378595a6",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 6.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0341",
+    "timestamp": "2026-08-03T13:26:46.969Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "b618c5af60d4c4c92334d013b2da9fb49a6c66689922d8d877876e7d66d0cc8b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0342",
+    "timestamp": "2026-08-03T13:27:06.258Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "959fe38aeea8cb98927ec8c6a39e96d843b45de4570d43f2170139f65d368574",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 8.3,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0343",
+    "timestamp": "2026-08-03T13:28:45.575Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_publication_candidate_cannot_decouple_from_start_or_public_url",
+    "call_id_sha256": "469bc214ed47ad2a34280bd0360e3cc5442945738b4b0170e0ded6a3ad81fae8",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0344",
+    "timestamp": "2026-08-03T13:29:00.508Z",
+    "category": "python-tests",
+    "command": ".venv/bin/python -m unittest tests.test_okf_explorer_evaluation.OkfExplorerEvaluationSuiteTest.test_publication_candidate_cannot_decouple_from_start_or_public_url",
+    "call_id_sha256": "982b9986cc2ac89bd8d1b9cfa1247d4cd9abe40bbc99cf45c9844a98ddc30ab0",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0345",
+    "timestamp": "2026-08-03T13:29:33.655Z",
+    "category": "app-build",
+    "command": "pnpm build:determinism",
+    "call_id_sha256": "69668bf0f0d6acecdcbbace5a550f3b8ef0b03361145d13ab9733da001d532c9",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 7.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0346",
+    "timestamp": "2026-08-03T13:30:46.080Z",
+    "category": "site-build",
+    "command": ".venv/bin/python scripts/build_site.py",
+    "call_id_sha256": "495b45447d6272c82fe6356f34bc5d2282395ff657ffbb974d626e7fa21f7761",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 9.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0347",
+    "timestamp": "2026-08-03T13:31:13.649Z",
+    "category": "git-commit",
+    "command": "git commit -m \"Promote heritage exemplar after public verification\"",
+    "call_id_sha256": "b8e58c05c70cb857f9a97cf89f626d63f2c98c1cf3a9a743fc5d8984091bad9f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0348",
+    "timestamp": "2026-08-03T13:31:29.321Z",
+    "category": "git-push",
+    "command": "git push -u origin codex/promote-heritage-publication",
+    "call_id_sha256": "24f20b414064548985b8b75e4e40f97c900f66bda6f2bd5bbf4952ff6daff830",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0349",
+    "timestamp": "2026-08-03T13:31:44.140Z",
+    "category": "github-pr",
+    "command": "gh pr create --repo chris-page-gov/okf-explorer --base main --head codex/promote-heritage-publication --title \"Promote verified heritage Evaluation Foundry exemplar\" --body \"## Summary\n\n- promote the Coventry and Warwickshire heritage exemplar from candidate to evaluated/public status after the exact first deployment passed its 27-action browser journey\n- publish faithful, tiny, and isolated synthetic Explorer/HTML entry points and register the YAML-LD bundle\n- bind the current promotion candidate to deterministic corpus, app, Site, question-suite, and local journey receipts\n- extend the final public journey to 32 actions covering every authored report link, tiny/synthetic Explorer entries, the immutable release page, cited Pages run, and implementation commit\n- exclude ephemeral evaluator output from Git and Site assembly and retain only deterministic evidence receipts\n\n## Validation\n\n- 209 Python tests\n- 276 Vitest tests and 25 Node build-contract tests\n- Svelte check: 0 errors, 0 warnings\n- deterministic Explorer build and 136-component SBOM\n- faithful 7,640-record corpus plus 3-record tiny and 3-record synthetic synchronization\n- 100/100 browser-scored questions at or above 80; average 92.7\n- 3/3 local interaction journeys\n- 63/63 Foundry Pages tests across Chrome, Firefox, and WebKit\n- OKF, registry, source-constraint, legislation, documentation-lockstep, link/render, and 1 GB Site gates\n\n## Post-merge publication gate\n\nAfter this exact commit is deployed, create the immutable heritage-coventry-warwickshire-20260803 release at the promoted merge commit, run journey-publication against the deployed descriptor and release root, require 32/32 actions and 2/2 assertions, then attach both the initial and terminal browser receipts to the release.\"",
+    "call_id_sha256": "7569a2037f7a8edba302557846bb2841f5b4797b09e062c0571434e07ca5431a",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 2.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0350",
+    "timestamp": "2026-08-03T13:31:52.233Z",
+    "category": "github-pr",
+    "command": "gh pr checks 69 --repo chris-page-gov/okf-explorer --watch --interval 10",
+    "call_id_sha256": "4ac69e769e60f9a7ae21bbd9180c43544ae552e5e45c78bfc5c7cad3730e8299",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0351",
+    "timestamp": "2026-08-03T13:34:28.185Z",
+    "category": "github-run",
+    "command": "gh run view 30818372899 --repo chris-page-gov/okf-explorer --json status,conclusion,jobs,url",
+    "call_id_sha256": "fbc42cdd33079841b93ae87f7dd3e6c168324f5dc1504fe355374c9a1e83622f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0352",
+    "timestamp": "2026-08-03T13:36:48.879Z",
+    "category": "github-run",
+    "command": "gh run view 30818372899 --repo chris-page-gov/okf-explorer --json jobs --jq '.jobs[0].steps[] | select(.status != \"pending\") | [.number,.name,.status,.conclusion] | @tsv'",
+    "call_id_sha256": "d74e1d2b610ab36b7ba96be47df78113e619de69432f77ff0cf44d53d0c1bbb7",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0353",
+    "timestamp": "2026-08-03T13:39:14.276Z",
+    "category": "github-run",
+    "command": "gh run view 30818372899 --repo chris-page-gov/okf-explorer --json jobs --jq '.jobs[0].steps[] | select(.status != \"pending\") | [.number,.name,.status,.conclusion,.startedAt,.completedAt] | @tsv'",
+    "call_id_sha256": "d65db6949ddd0cebc953b1c3595bf19157370f5dec981e3ea3a31490626003fe",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0354",
+    "timestamp": "2026-08-03T13:42:44.117Z",
+    "category": "github-pr",
+    "command": "gh pr view 69 --repo chris-page-gov/okf-explorer --json state,mergeable,reviewDecision,statusCheckRollup,headRefOid,url",
+    "call_id_sha256": "c49de014f9a837a065cf845e79c46013b2c9f6cff771c386aabafd429affd27e",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.8,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0355",
+    "timestamp": "2026-08-03T13:42:50.118Z",
+    "category": "github-pr",
+    "command": "gh pr merge 69 --repo chris-page-gov/okf-explorer --squash --subject \"Promote verified heritage Evaluation Foundry exemplar (#69)\" --body \"Publishes the evaluated Coventry and Warwickshire faithful corpus, tiny assurance fixture, isolated synthetic supplement, YAML-LD registry entry, deterministic evidence, and exhaustive 32-action terminal publication journey.\"",
+    "call_id_sha256": "3a92eecc796f445b734cf54a17792da5386392c6ede21873cc6cf64cda49a524",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 3.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0356",
+    "timestamp": "2026-08-03T13:42:58.917Z",
+    "category": "github-pr",
+    "command": "gh pr view 69 --repo chris-page-gov/okf-explorer --json state,mergedAt,mergeCommit,url",
+    "call_id_sha256": "f2eb77cc6bb4fd4008ed36e6a308aa7d9e81ba4c874c409528a003313851b481",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0357",
+    "timestamp": "2026-08-03T13:43:06.547Z",
+    "category": "github-run",
+    "command": "gh run list --repo chris-page-gov/okf-explorer --workflow pages.yml --branch main --limit 5 --json databaseId,headSha,status,conclusion,createdAt,url",
+    "call_id_sha256": "9a5da68c3715d689a275f477f2e11a16b63f9d37a8833f26aa733aea1918084b",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 4.7,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0358",
+    "timestamp": "2026-08-03T13:43:17.290Z",
+    "category": "github-run",
+    "command": "gh run watch 30819232224 --repo chris-page-gov/okf-explorer --exit-status --interval 10",
+    "call_id_sha256": "a14fa1342c80fa5dec217ff62abf85c0610f9889f76b57b853323ef4ba74a8c3",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 11.0,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0359",
+    "timestamp": "2026-08-03T13:46:53.664Z",
+    "category": "github-release",
+    "command": "gh release create heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer --target 0b5d748dc13ed83134592fc0873a2ff25d83eada --title \"Coventry and Warwickshire Heritage Evaluation Exemplar\" --notes \"Immutable publication home for the Coventry and Warwickshire OKF Explorer Evaluation Foundry exemplar.\n\nPromoted commit: 0b5d748dc13ed83134592fc0873a2ff25d83eada\nGitHub Pages run: 30819232224\nFaithful corpus: 7,640 records (6,556 NHLE and 1,084 Heritage at Risk), 22,200 resources, 9,566 relations\nDescriptor SHA-256: 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149\nRelease root SHA-256: 83b6be80cc009a23142ca946b2bad515fa14c149ea4222b4b2bf1035a3ea2e7e\n\nThe initial 27-action candidate receipt and final 32-action terminal publication receipt are attached after the deployed release identity gate completes.\"",
+    "call_id_sha256": "9afdbc8856b801e6d6c85747e67e4d99b7af92235590ef4e30afe258a6b47c3f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0360",
+    "timestamp": "2026-08-03T13:48:17.084Z",
+    "category": "github-release",
+    "command": "gh release upload heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer \"[TEMP_PATH] \"[TEMP_PATH] \"[TEMP_PATH] \"[TEMP_PATH] \"evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json#local-candidate-receipt.json\" \"evaluation-foundry/fixtures/heritage-warwickshire/evidence/protected-source-link-receipt.json#protected-source-link-receipt.json\"",
+    "call_id_sha256": "491ac76da1811459dc36ffee0b930b7bdeea7afbb2d58ad5d17acafe7ee9fb7f",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.1,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0361",
+    "timestamp": "2026-08-03T13:48:32.183Z",
+    "category": "github-release",
+    "command": "gh release view heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer --json id,tagName,targetCommitish,name,url,assets",
+    "call_id_sha256": "e1ae16d8d812cfc0aa965cf2c9473f7cfe41fae8a90eb7c1c57f712b44120c83",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.4,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0362",
+    "timestamp": "2026-08-03T13:49:20.295Z",
+    "category": "github-release",
+    "command": "gh release upload heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer [TEMP_PATH] [TEMP_PATH] [TEMP_PATH] [TEMP_PATH] evaluation-foundry/fixtures/heritage-warwickshire/evidence/protected-source-link-receipt.json",
+    "call_id_sha256": "1ac94d75e4fa2b33c79e589c5b63707fb7624d37208af579aeb78bf1cb5454ad",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 1.2,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0363",
+    "timestamp": "2026-08-03T13:49:31.815Z",
+    "category": "github-release",
+    "command": "jq '[.interaction_journeys.records[0].actions[].evidence.verificationChannel] | group_by(.) | map({channel:.[0], count:length})' [TEMP_PATH] && gh release view heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer --json assets --jq '.assets[] | [.name,.digest,.size,.url] | @tsv'",
+    "call_id_sha256": "abcc289715ed2035ec0876dbc7d0a70d12528737a72807589ae627ab12bc81a4",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 5.5,
+    "duration_scope": "command-call"
+  },
+  {
+    "event_id": "CMD-0364",
+    "timestamp": "2026-08-03T13:51:51.134Z",
+    "category": "github-release",
+    "command": "gh api repos/chris-page-gov/okf-explorer/git/ref/tags/heritage-coventry-warwickshire-20260803 --jq '{ref,sha:.object.sha,type:.object.type}' && gh release view heritage-coventry-warwickshire-20260803 --repo chris-page-gov/okf-explorer --json isDraft,isPrerelease,publishedAt,targetCommitish,tagName,name,url,assets --jq '{name,tagName,targetCommitish,isDraft,isPrerelease,publishedAt,url,asset_count:(.assets|length),assets:[.assets[]|{name,digest,size,url}]}'",
+    "call_id_sha256": "1c349b1abaa05231bd530f63f826a7166df5e3addf039496568f9761f0a08580",
+    "command_index_in_call": 1,
+    "outer_call_duration_seconds": 0.9,
+    "duration_scope": "command-call"
+  }
+]

@@ -38,6 +38,58 @@ class OkfSemanticTest(unittest.TestCase):
         self.assertEqual([], okf_semantic.schema_errors(bundle, "bundle.schema.json"))
         self.assertTrue(okf_semantic.expand(bundle))
 
+    def test_yaml_ld_materialization_and_graph_identity_ignore_formatting(self) -> None:
+        compact_source = f'''\
+'@context': {okf_semantic.CONTEXT_URL}
+'@id': https://example.test/heritage/coventry-cathedral
+'@type': https://schema.org/LandmarksOrHistoricalBuildings
+title: Coventry Cathedral
+description: A semantic identity fixture.
+'''
+        reformatted_source = f'''\
+# Mapping order, indentation and scalar quoting are presentation only.
+description: "A semantic identity fixture."
+title: 'Coventry Cathedral'
+'@type': "https://schema.org/LandmarksOrHistoricalBuildings"
+'@id': https://example.test/heritage/coventry-cathedral
+'@context':
+  {okf_semantic.CONTEXT_URL}
+'''
+
+        compact = okf_semantic.materialize_yaml_ld(
+            compact_source, source="compact.yamlld"
+        )
+        reformatted = okf_semantic.materialize_yaml_ld(
+            reformatted_source, source="reformatted.yamlld"
+        )
+
+        self.assertEqual(compact.document, reformatted.document)
+        self.assertEqual(
+            compact.normalized_graph_sha256,
+            reformatted.normalized_graph_sha256,
+        )
+        self.assertEqual(compact.normalized_statements, reformatted.normalized_statements)
+        json_ld = json.loads(compact.json_ld)
+        self.assertEqual(compact.document, json_ld)
+        self.assertEqual(
+            compact.normalized_graph_sha256,
+            okf_semantic.semantic_graph_identity(json_ld)["sha256"],
+        )
+
+    def test_deterministic_yaml_ld_renderer_round_trips_json_data_model(self) -> None:
+        document = okf_semantic.load_yaml_ld(self.fixture_root / "bundle.yamlld")
+        assert isinstance(document, dict)
+
+        rendered = okf_semantic.render_yaml_ld(document)
+
+        self.assertFalse(rendered.lstrip().startswith("{"))
+        self.assertIn("'@context':", rendered)
+        self.assertEqual(
+            document,
+            okf_semantic.load_yaml_ld_text(rendered, source="generated.yamlld"),
+        )
+        self.assertEqual(rendered, okf_semantic.render_yaml_ld(document))
+
     def test_semantic_assertion_reconciles_direct_triple_and_compiles_routes(self) -> None:
         page = okf_semantic.parse_markdown(
             self.fixture_root / "semantic_concept.md"
@@ -625,26 +677,17 @@ class OkfSemanticTest(unittest.TestCase):
             "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
             {bundle["url"] for bundle in legacy["bundles"]},
         )
-        heritage_url = (
+        retired_heritage_url = (
             "https://chris-page-gov.github.io/okf-explorer/"
             "evaluation/heritage/okf-explorer.json"
         )
-        heritage_coverage = json.loads(
-            (
-                ROOT
-                / "evaluation-foundry"
-                / "fixtures"
-                / "heritage-warwickshire"
-                / "feature-coverage.json"
-            ).read_text(encoding="utf-8")
+        external_heritage_url = (
+            "https://chris-page-gov.github.io/"
+            "okf-heritage-coventry-warwickshire/okf-explorer.json"
         )
         registered_urls = {bundle["url"] for bundle in legacy["bundles"]}
-        if heritage_coverage["local_evidence"]["public_verification"][
-            "demonstrated"
-        ]:
-            self.assertIn(heritage_url, registered_urls)
-        else:
-            self.assertNotIn(heritage_url, registered_urls)
+        self.assertIn(external_heritage_url, registered_urls)
+        self.assertNotIn(retired_heritage_url, registered_urls)
         self.assertEqual("registry/okf-registry.yamlld", legacy["semantic_source"])
         whole_law = next(
             bundle
