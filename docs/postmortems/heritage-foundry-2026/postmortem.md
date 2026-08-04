@@ -24,9 +24,10 @@ tags:
 
 The heritage exemplar achieved its functional and publication objective, but the
 process was inefficient in exactly the way the user observed: late findings caused
-broad regeneration and complete green test cycles. GitHub itself did not fail—all
-six relevant runs succeeded on attempt 1. The inefficiency was **three serial full
-assurances around discoveries made by local audits and public browser gates**.
+broad regeneration and complete green test cycles. The original six PR/Pages runs
+all succeeded on attempt 1; the later cycle-free R1/terminal/R2 closure then failed
+closed four times while exposing contracts that had not been exercised early enough.
+Crucially, those four corrections did **not** rebuild the candidate or Site.
 
 The principal root cause is not simply that the corpus is large. The parent Foundry
 already documents a producer→plane→consumer dependency graph and selective
@@ -49,9 +50,7 @@ That response is now implemented in the repository candidate: Evaluation Profile
 v2 shares the parent Foundry dependency contract; a deterministic impact planner
 selects separately owned plane emitters and assurance jobs; writes and Site
 components are content-addressed; and mutable evidence is outside the candidate
-hash closure. This is **local implementation acceptance**, not a public promotion
-claim. The external Pages identity, terminal journeys, attested envelope and
-immutable release remain gates that must use their eventual real URLs and bytes.
+hash closure. Public closure is now complete: the independently rooted Pages deployment, immutable R1, final terminal observations, attested promotion envelope and immutable R2 all bind candidate commit `51881ccc0ce1b77346b9cd8d4462c320bf203114`.
 
 ## Key Findings With Evidence
 
@@ -153,20 +152,19 @@ The correction used an explicit `documentation-only` shell rebind instead of a
 heritage rebuild. It reused the unchanged faithful, tiny, synthetic and Explorer
 roots; reran postmortem lint, bundle/viewer synchronization, OKF conformance,
 documentation links, Site inventory, capacity and tree identity; and did not
-rerun the 100-question suite or either browser matrix. The resulting local Site
-contains 10,272 files and retains the unchanged
+rerun the 100-question suite or either browser matrix. That intermediate local Site
+contained 10,272 files and retained the unchanged
 Explorer root
-`0047c04cbb4948f12c548eb08c824c5a5fe43353fe7e86f4048020bcb71dce56`. Its
-[machine-readable receipt](../../../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
-names both rerun and reused gates and holds the exact Site-tree and capacity values.
-Those self-describing Site values are intentionally not copied into this page,
-because embedding a closure hash inside the closure would recreate the observer
-loop diagnosed above.
+`0047c04cbb4948f12c548eb08c824c5a5fe43353fe7e86f4048020bcb71dce56`. The command trace recorded the
+explicit rerun and reuse sets at the time. Later full-candidate work superseded the
+tracked [local-candidate receipt](../../../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json),
+so this report does not mislabel that current receipt as the historical rebind.
+Self-describing Site closure values remain outside the closure they identify.
 
-This is not yet the proposed general impact planner: the change class was reviewed
-manually. It is a concrete proof that recording unchanged roots plus an affected
-gate set can avoid a full corpus/evaluation/browser cycle without weakening the
-Site publication gate.
+This documentation-only rebind preceded the general impact planner and its change
+class was reviewed manually. The now-implemented planner generalizes the same proof:
+unchanged roots plus an affected gate set can avoid a full corpus/evaluation/browser
+cycle without weakening the Site publication gate.
 
 ### 6. Late checks were valuable, but many belonged earlier
 
@@ -196,6 +194,51 @@ The classifier checks generic `data/` paths before semantic suffixes, so
 assigned to Control. The target graph needs explicit Data, Resource, Relationship,
 Search, Semantic, Presentation, Evaluation-Control, Evidence, App, Site-Reading,
 Site-Data and Promotion ownership rather than path-order heuristics.
+
+### 8. The final closure proves that late errors can be corrected without rebuilding data
+
+The independently rooted candidate was fixed at commit
+`51881ccc0ce1b77346b9cd8d4462c320bf203114` before R1. Nine subsequent workflow
+attempts exercised candidate release, complete-link observation, genuine Chrome,
+three browser engines, envelope validation, attestation and immutable promotion.
+Four attempts failed closed; each correction was confined to assurance or release
+controls, and every row below records `no / no` for candidate and Site rebuild.
+
+| Attempt | Stage | Run | Result | Failed/passed boundary | Bounded correction or outcome | Candidate / Site rebuilt |
+|---|---|---|---|---|---|---|
+| RELATT-001 | candidate-release-r1 | [30903522306](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903522306) | success | all declared gates | No correction was required. | no / no |
+| RELATT-002 | terminal-assurance | [30903729068](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903729068) | failure | Observe every rendered anchor and all three intent universes | Add one bounded retry for network, 429 and 5xx outcomes, a 0.25-second backoff, HTTP 304 reachability, attempt counts and failure-artifact retention. | no / no |
+| RELATT-003 | terminal-assurance | [30905570025](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30905570025) | failure | Observe every explicitly protected rich page in genuine Chrome | Treat signal exit as completion, wait after forced termination, retry profile removal, preserve the primary error and test the cleanup failure paths. | no / no |
+| RELATT-004 | terminal-assurance | [30907144661](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30907144661) | success | all declared gates | Validate the terminal artifact through the exact promotion contract before release and align receipt size, timestamp and browser-channel semantics. | no / no |
+| RELATT-005 | promotion-release-r2 | [30907485088](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30907485088) | failure | Validate R1-compatible R2 with trusted exact controls | Scope the larger bound to the exact link receipt, emit six-digit timestamps and use the policy channel genuine-google-chrome-cdp. No release was created. | no / no |
+| RELATT-006 | terminal-assurance | [30908113699](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908113699) | success | all declared gates | The subsequent release-policy phase revealed that its older loader independently reapplied the generic 2 MiB limit. | no / no |
+| RELATT-007 | promotion-release-r2 | [30908527197](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908527197) | failure | Enforce same-commit tags and exact envelope attestation | Route promotion release-policy validation through the same narrowly scoped terminal loader while retaining the 2 MiB default for every other control file. No release was created. | no / no |
+| RELATT-008 | terminal-assurance | [30908844005](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005) | success | all declared gates | No further terminal correction was required. | no / no |
+| RELATT-009 | promotion-release-r2 | [30909191165](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30909191165) | success | all declared gates | No further correction was required; the immutable release and its post-publication verification are the terminal state. | no / no |
+
+
+The failures reveal where the refactored process should move checks earlier:
+
+- execute network retry/304 microfixtures before a 13,548-URL observation;
+- exercise Chrome signal-exit and profile-cleanup paths without a public run;
+- validate terminal artifacts with the exact downstream promotion loader before
+  uploading them;
+- share the large-receipt loader between semantic and release-policy phases;
+- retain failed artifacts with `if: always()` so cleanup errors cannot erase the
+  primary diagnostic.
+
+The final terminal artifact covers all 13,548 canonical URLs. Two transient ArcGIS
+calls succeeded on the single bounded retry; 6,685 protected-origin responses were
+accepted only under the exact identifier-binding policy; all 11 delegated pages
+passed in genuine Google Chrome; and Chromium, Firefox and WebKit each passed 32
+actions plus two assertions. R2 then bound all ten release assets in a GitHub
+Releases attestation and became platform-immutable.
+
+One human-readable ambiguity remains visible by design: the annotated promotion
+tag message names earlier successful terminal run `30907144661`, while the final
+attested envelope unambiguously binds run `30908844005`. Both target the same
+candidate. Moving the published tag would weaken provenance, so the report records
+the discrepancy and treats the envelope, not tag prose, as authoritative status.
 
 ## Local Build And Test Activity
 
@@ -229,9 +272,10 @@ commands, timestamps and hashed call identities.
 
 ## Scope, Data And Metric Definitions
 
-The scope is the single Codex task, repository history from `f5d38674` to
-`0b5d748d`, PRs #67–#69, their three CI and three Pages runs, the deployment
-archives, the final release and local/public journey receipts. Definitions for
+The scope is the single Codex task, repository history from `f5d38674` through
+PR #70's assured implementation head, PRs #67–#69, their three CI and three Pages
+runs, PR #70 CI, the independent Pages deployment, all nine R1/terminal/R2
+attempts, both immutable releases and their retained receipts. Definitions for
 workflow time, file touches, amplification, late findings, dependency cones and
 outcome projections are in [Methodology](methodology.md).
 
@@ -243,23 +287,24 @@ impact plan**.
 ## Implementation And Acceptance Register
 
 Every item from the earlier **Recommended Next Steps** list now has a concrete
-repository implementation and an executable acceptance contract. `implemented-local`
-means those candidate artifacts exist; it does not silently promote an unverified
-external Site or release. The same register is available as
+repository implementation and an executable acceptance contract. Status is derived
+from exact normalized PR, Pages, R1, terminal and R2 evidence; ongoing nightly or
+freshness checks remain regression controls rather than unclosed implementation.
+The same register is available as
 [machine-readable JSON](data/implementation-acceptance-register.json).
 
 | ID | Priority | Implemented change | State | Artifacts | Acceptance tests | Remaining terminal gate |
 |---|---|---|---|---|---|---|
-| IMP-001 | P0 | Publish Evaluation Profile v2 using the parent Foundry dependency contract. | implemented-local | [`evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml`](../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json)<br>[`scripts/check_evaluation_foundry.py`](../../../scripts/check_evaluation_foundry.py) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | Integrated candidate validation and terminal promotion. |
-| IMP-002 | P0 | Add a deterministic, explainable, fail-closed impact planner. | implemented-local | [`scripts/plan_evaluation_foundry_impact.py`](../../../scripts/plan_evaluation_foundry_impact.py)<br>[`evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/history/impact-shadow-cases.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/history/impact-shadow-cases.json) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | Run the complete shadow and mutation suite in integrated CI. |
-| IMP-003 | P0 | Keep mutable observations and promotion status outside candidate roots. | implemented-local | [`evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json)<br>[`release-assurance/heritage-publication-envelope.json`](../../../release-assurance/heritage-publication-envelope.json)<br>[`scripts/check_promotion_envelope.py`](../../../scripts/check_promotion_envelope.py) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | Populate, attest and verify the envelope only after exact public observation. |
-| IMP-004 | P1 | Split normalized-core and plane emitters with changed-only atomic writes. | implemented-local | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/heritage_build_io.py`](../../../scripts/heritage_build_io.py) | [`tests/test_build_heritage_evaluation.py`](../../../tests/test_build_heritage_evaluation.py) | Complete integrated deterministic regeneration of faithful, tiny and synthetic products. |
-| IMP-005 | P1 | Run one adversarial microfixture per reconstructed late-finding class before large builds. | implemented-local | [`evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json)<br>[`evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json`](../../../evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json)<br>[`scripts/check_heritage_adversarial.py`](../../../scripts/check_heritage_adversarial.py)<br>[`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/pages.yml`](../../../.github/workflows/pages.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) | [`tests/test_heritage_adversarial.py`](../../../tests/test_heritage_adversarial.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | Observe the first prerequisite receipt in pull-request, Pages and scheduled workflows. |
-| IMP-006 | P1 | Drive conditional parallel CI from the impact plan and retain a full shadow audit. | implemented-local | [`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | Observe the first pull-request and scheduled workflow executions. |
-| IMP-007 | P1 | Assemble the Site from content-addressed components. | implemented-local | [`scripts/site_component_cache.py`](../../../scripts/site_component_cache.py)<br>[`scripts/build_site.py`](../../../scripts/build_site.py)<br>[`.github/workflows/pages.yml`](../../../.github/workflows/pages.yml) | [`tests/test_site_component_cache.py`](../../../tests/test_site_component_cache.py)<br>[`tests/test_build_site.py`](../../../tests/test_build_site.py) | Measure changed-component reuse and the final published closure. |
-| IMP-008 | P2 | Hash-shard semantic and link-intent outputs and remove the duplicate graph materialization. | implemented-local | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/observe_link_intents.py`](../../../scripts/observe_link_intents.py)<br>[`.github/workflows/link-observation.yml`](../../../.github/workflows/link-observation.yml) | [`tests/test_build_heritage_evaluation.py`](../../../tests/test_build_heritage_evaluation.py)<br>[`tests/test_observe_link_intents.py`](../../../tests/test_observe_link_intents.py) | Observe the first scheduled freshness receipt outside candidate and Site bytes. |
-| IMP-009 | P2 | Move the large heritage pack to an independently rooted publication unit. | implemented-local-public-promotion-pending | [`publication-units/heritage-coventry-warwickshire/publication-unit.json`](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)<br>[`scripts/export_publication_unit.py`](../../../scripts/export_publication_unit.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/pages.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/pages.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) | [`tests/test_publication_units.py`](../../../tests/test_publication_units.py) | Create, publish and identity-check the external repository and exact Pages deployment before registry activation. |
-| IMP-010 | P2 | Require annotated tags, attestation, immutable releases and retained deterministic archives. | implemented-policy-terminal-release-pending | [`release-assurance/release-policy.json`](../../../release-assurance/release-policy.json)<br>[`scripts/check_release_policy.py`](../../../scripts/check_release_policy.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) | [`tests/test_release_policy.py`](../../../tests/test_release_policy.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | Create and verify the annotated tag, attested envelope, immutable release and retained archive for the promoted external candidate. |
+| IMP-001 | P0 | Publish Evaluation Profile v2 using the parent Foundry dependency contract. | implemented-and-terminal-publication-verified | [`evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml`](../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json)<br>[`scripts/check_evaluation_foundry.py`](../../../scripts/check_evaluation_foundry.py) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | No terminal acceptance gate remains. |
+| IMP-002 | P0 | Add a deterministic, explainable, fail-closed impact planner. | implemented-and-pr-70-verified | [`scripts/plan_evaluation_foundry_impact.py`](../../../scripts/plan_evaluation_foundry_impact.py)<br>[`evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json)<br>[`evaluation-foundry/fixtures/heritage-warwickshire/history/impact-shadow-cases.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/history/impact-shadow-cases.json) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | No implementation gate remains; the scheduled mutation shadow is an ongoing regression control. |
+| IMP-003 | P0 | Keep mutable observations and promotion status outside candidate roots. | implemented-and-terminal-envelope-verified | [`evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json)<br>[`release-assurance/heritage-publication-envelope.json`](../../../release-assurance/heritage-publication-envelope.json)<br>[`scripts/check_promotion_envelope.py`](../../../scripts/check_promotion_envelope.py) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py) | No terminal promotion gate remains. |
+| IMP-004 | P1 | Split normalized-core and plane emitters with changed-only atomic writes. | implemented-and-terminal-publication-verified | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/heritage_build_io.py`](../../../scripts/heritage_build_io.py) | [`tests/test_build_heritage_evaluation.py`](../../../tests/test_build_heritage_evaluation.py) | No terminal acceptance gate remains. |
+| IMP-005 | P1 | Run one adversarial microfixture per reconstructed late-finding class before large builds. | implemented-and-pr-70-verified | [`evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json`](../../../evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json)<br>[`evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json`](../../../evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json)<br>[`scripts/check_heritage_adversarial.py`](../../../scripts/check_heritage_adversarial.py)<br>[`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/pages.yml`](../../../.github/workflows/pages.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) | [`tests/test_heritage_adversarial.py`](../../../tests/test_heritage_adversarial.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | Nightly shadow evidence remains independent of the verified pull-request gate. |
+| IMP-006 | P1 | Drive conditional parallel CI from the impact plan and retain a full shadow audit. | implemented-and-pr-70-verified | [`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) | [`tests/test_evaluation_foundry_impact.py`](../../../tests/test_evaluation_foundry_impact.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | Nightly shadow evidence remains independent of the verified pull-request gate. |
+| IMP-007 | P1 | Assemble the Site from content-addressed components. | implemented-and-terminal-publication-verified | [`scripts/site_component_cache.py`](../../../scripts/site_component_cache.py)<br>[`scripts/build_site.py`](../../../scripts/build_site.py)<br>[`.github/workflows/pages.yml`](../../../.github/workflows/pages.yml) | [`tests/test_site_component_cache.py`](../../../tests/test_site_component_cache.py)<br>[`tests/test_build_site.py`](../../../tests/test_build_site.py) | No terminal acceptance gate remains. |
+| IMP-008 | P2 | Hash-shard semantic and link-intent outputs and remove the duplicate graph materialization. | implemented-and-terminal-link-closure-verified | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/observe_link_intents.py`](../../../scripts/observe_link_intents.py)<br>[`.github/workflows/link-observation.yml`](../../../.github/workflows/link-observation.yml) | [`tests/test_build_heritage_evaluation.py`](../../../tests/test_build_heritage_evaluation.py)<br>[`tests/test_observe_link_intents.py`](../../../tests/test_observe_link_intents.py) | Scheduled freshness observations continue independently after promotion. |
+| IMP-009 | P2 | Move the large heritage pack to an independently rooted publication unit. | implemented-and-external-promotion-verified | [`publication-units/heritage-coventry-warwickshire/publication-unit.json`](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)<br>[`scripts/export_publication_unit.py`](../../../scripts/export_publication_unit.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/pages.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/pages.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) | [`tests/test_publication_units.py`](../../../tests/test_publication_units.py) | No terminal publication gate remains. |
+| IMP-010 | P2 | Require annotated tags, attestation, immutable releases and retained deterministic archives. | implemented-and-terminal-release-verified | [`release-assurance/release-policy.json`](../../../release-assurance/release-policy.json)<br>[`scripts/check_release_policy.py`](../../../scripts/check_release_policy.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) | [`tests/test_release_policy.py`](../../../tests/test_release_policy.py)<br>[`tests/test_ci_publication_topology.py`](../../../tests/test_ci_publication_topology.py) | No terminal release-integrity gate remains. |
 
 
 The [architecture page](architecture.md) describes the implemented graph and
@@ -273,14 +318,18 @@ classified, while nightly and terminal full audits protect against planner error
   change classes.
 - GitHub timestamps are exact to their reported resolution; local nested-command
   durations are not available individually.
-- The additive 43m 41s workflow total is not end-user elapsed latency if runs or
-  jobs overlap.
+- The additive 43m 41s historical PR/Pages workflow total is not end-user elapsed
+  latency if runs or jobs overlap; the nine release-closure runs are reported
+  separately because their failures are part of the analysis rather than the
+  original repeated-green baseline.
 - The stable question/journey projections prove identical recorded outcomes for
   PR #68 versus #69; they do not prove every invisible browser state was identical.
 - Selective reruns introduce under-invalidation risk. A periodic full audit,
   promotion full matrix and shadow comparison are mandatory safeguards.
 - The public prompt trace is complete for visible messages only and intentionally
   excludes hidden reasoning and tool payloads.
+- The promotion tag is annotated but unsigned. Policy requires an annotated tag
+  plus an attested promotion envelope; it does not claim a signed Git tag.
 
 ## Resolved Architecture And Release Questions
 
@@ -291,9 +340,9 @@ promotion are deliberately separate states. The records are also published as
 
 | Decision | Question | Resolution | State | Implementation evidence |
 |---|---|---|---|---|
-| ADR-001 | Where should promotion/status metadata live? | Only immutable candidate self-facts and the stable promotion-policy reference belong in the candidate. Status, timestamps, runs and observations belong exclusively in a signed or GitHub-attested promotion envelope outside its roots. | implemented-local; terminal envelope pending | [`evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json)<br>[`evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json)<br>[`scripts/check_promotion_envelope.py`](../../../scripts/check_promotion_envelope.py) |
-| ADR-002 | Which browser changes require three engines on a pull request? | Runtime, routing, workers, storage, graph, map, CSS/accessibility, browser dependencies, journey-runner and unknown changes require Chrome, Firefox and WebKit on the pull request. Contract-preserving data, search, semantic, registry and presentation changes use targeted Chromium on the pull request; the full three-engine matrix remains nightly and mandatory at terminal release. | implemented-local; first workflow observations pending | [`evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml`](../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml)<br>[`scripts/plan_evaluation_foundry_impact.py`](../../../scripts/plan_evaluation_foundry_impact.py)<br>[`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) |
+| ADR-001 | Where should promotion/status metadata live? | Only immutable candidate self-facts and the stable promotion-policy reference belong in the candidate. Status, timestamps, runs and observations belong exclusively in a signed or GitHub-attested promotion envelope outside its roots. | implemented; terminal envelope verified | [`evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json)<br>[`evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json`](../../../evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json)<br>[`scripts/check_promotion_envelope.py`](../../../scripts/check_promotion_envelope.py) |
+| ADR-002 | Which browser changes require three engines on a pull request? | Runtime, routing, workers, storage, graph, map, CSS/accessibility, browser dependencies, journey-runner and unknown changes require Chrome, Firefox and WebKit on the pull request. Contract-preserving data, search, semantic, registry and presentation changes use targeted Chromium on the pull request; the full three-engine matrix remains nightly and mandatory at terminal release. | implemented; PR #70 workflow evidence verified | [`evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml`](../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml)<br>[`scripts/plan_evaluation_foundry_impact.py`](../../../scripts/plan_evaluation_foundry_impact.py)<br>[`.github/workflows/okf-explorer-ci.yml`](../../../.github/workflows/okf-explorer-ci.yml)<br>[`.github/workflows/foundry-full-shadow.yml`](../../../.github/workflows/foundry-full-shadow.yml) |
 | ADR-003 | Should YAML-LD or JSON-LD be canonical? | YAML-LD is the human-maintained authoring form; the normalized graph and its semantic plane root define semantic equality; JSON-LD is generated interchange whenever the semantic plane changes and again at release. | implemented-local | [`docs/beginners/22-evaluation-foundry-and-yaml-ld.md`](../../../docs/beginners/22-evaluation-foundry-and-yaml-ld.md)<br>[`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py) |
-| ADR-004 | How should link validation be sharded and refreshed? | Stable link intents are sharded by SHA-256 of the canonical URL. Timestamped network and protected-page observations run on their own freshness schedule and are uploaded outside candidate and Site bytes. | implemented-local; first scheduled receipt pending | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/observe_link_intents.py`](../../../scripts/observe_link_intents.py)<br>[`.github/workflows/link-observation.yml`](../../../.github/workflows/link-observation.yml) |
-| ADR-005 | Which publication unit should own future exemplars? | The dedicated chris-page-gov/okf-heritage-coventry-warwickshire unit owns the heritage corpus, tiny fixture, synthetic supplement, data readers and releases. OKF Explorer continues to own the runtime, shared schemas, registry and docs shell. | implemented-local; external repository and public activation pending | [`publication-units/heritage-coventry-warwickshire/publication-unit.json`](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)<br>[`scripts/export_publication_unit.py`](../../../scripts/export_publication_unit.py)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) |
-| ADR-006 | What release-integrity policy should apply? | Use an annotated tag bound to the exact source commit, a GitHub artifact attestation for the external promotion envelope and archive, platform immutable releases, draft-first asset attachment, and a deterministic release archive retained as a release asset. | policy implemented; terminal external release pending | [`release-assurance/release-policy.json`](../../../release-assurance/release-policy.json)<br>[`scripts/check_release_policy.py`](../../../scripts/check_release_policy.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) |
+| ADR-004 | How should link validation be sharded and refreshed? | Stable link intents are sharded by SHA-256 of the canonical URL. Timestamped network and protected-page observations run on their own freshness schedule and are uploaded outside candidate and Site bytes. | implemented; terminal link closure verified | [`scripts/build_heritage_evaluation.py`](../../../scripts/build_heritage_evaluation.py)<br>[`scripts/observe_link_intents.py`](../../../scripts/observe_link_intents.py)<br>[`.github/workflows/link-observation.yml`](../../../.github/workflows/link-observation.yml) |
+| ADR-005 | Which publication unit should own future exemplars? | The dedicated chris-page-gov/okf-heritage-coventry-warwickshire unit owns the heritage corpus, tiny fixture, synthetic supplement, data readers and releases. OKF Explorer continues to own the runtime, shared schemas, registry and docs shell. | implemented; external publication promoted | [`publication-units/heritage-coventry-warwickshire/publication-unit.json`](../../../publication-units/heritage-coventry-warwickshire/publication-unit.json)<br>[`scripts/export_publication_unit.py`](../../../scripts/export_publication_unit.py)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) |
+| ADR-006 | What release-integrity policy should apply? | Use an annotated tag bound to the exact source commit, a GitHub artifact attestation for the external promotion envelope and archive, platform immutable releases, draft-first asset attachment, and a deterministic release archive retained as a release asset. | policy implemented; terminal releases verified | [`release-assurance/release-policy.json`](../../../release-assurance/release-policy.json)<br>[`scripts/check_release_policy.py`](../../../scripts/check_release_policy.py)<br>[`publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml`](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)<br>[`release-assurance/heritage-postmortem-publication-evidence.json`](../../../release-assurance/heritage-postmortem-publication-evidence.json) |

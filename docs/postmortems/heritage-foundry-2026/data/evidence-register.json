@@ -270,142 +270,193 @@
     "evidence_id": "EV-034",
     "kind": "central-pull-request",
     "source": "https://github.com/chris-page-gov/okf-explorer/pull/70",
-    "status": "pending",
-    "observed_at": null,
+    "status": "verified",
+    "observed_at": "2026-08-04T12:30:46Z",
     "identities": {
       "repository": "chris-page-gov/okf-explorer",
       "number": 70,
-      "head_commit": null,
+      "head_commit": "b0b78b8772341ec2b99ddd588389e4635eebe9e9",
       "merge_commit": null,
-      "ci_run_id": null
+      "ci_run_id": 30908799442
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://github.com/chris-page-gov/okf-explorer/actions/runs/30908799442",
+      "https://github.com/chris-page-gov/okf-explorer/commit/b0b78b8772341ec2b99ddd588389e4635eebe9e9",
+      "https://github.com/chris-page-gov/okf-explorer/pull/70"
+    ],
+    "claims": [
+      "pull-request-head-observed",
+      "required-checks-passed"
+    ],
     "required_claims": [
       "pull-request-head-observed",
       "required-checks-passed"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
     "evidence_id": "EV-035",
     "kind": "external-candidate",
     "source": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
-    "status": "pending",
-    "observed_at": null,
+    "status": "verified",
+    "observed_at": "2026-08-04T12:28:52Z",
     "identities": {
       "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
-      "source_commit": null,
-      "publication_manifest_sha256": null,
-      "site_tree_sha256": null
+      "source_commit": "51881ccc0ce1b77346b9cd8d4462c320bf203114",
+      "publication_manifest_sha256": "b5dea75e9c4e5552e08613eee09f9dac1de2e5713665813d4c45c6603ad5ecee",
+      "site_tree_sha256": "d31cc794838643fc5e651840a14ee7e9f3b9b84361f8a19c03f8bfcccdc78c67"
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/publication-unit-manifest.json",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/commit/51881ccc0ce1b77346b9cd8d4462c320bf203114"
+    ],
+    "claims": [
+      "candidate-commit-pushed",
+      "publication-manifest-verified"
+    ],
     "required_claims": [
       "candidate-commit-pushed",
       "publication-manifest-verified"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
     "evidence_id": "EV-036",
     "kind": "external-pages",
     "source": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
-    "status": "pending",
-    "observed_at": null,
+    "status": "verified",
+    "observed_at": "2026-08-04T12:27:08.037000Z",
     "identities": {
       "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
-      "source_commit": null,
-      "pages_run_id": null,
-      "publication_manifest_sha256": null,
-      "site_tree_sha256": null,
-      "browser_receipt_sha256": null
+      "source_commit": "51881ccc0ce1b77346b9cd8d4462c320bf203114",
+      "pages_run_id": 30900729931,
+      "publication_manifest_sha256": "b5dea75e9c4e5552e08613eee09f9dac1de2e5713665813d4c45c6603ad5ecee",
+      "site_tree_sha256": "d31cc794838643fc5e651840a14ee7e9f3b9b84361f8a19c03f8bfcccdc78c67",
+      "browser_receipt_sha256": "adb26227ba4d7ac78641b8f57f5c5af0f5d0ab21ac14e28d0c88c566cb37cc6f"
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30900729931",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/publication-journey-receipt.json"
+    ],
+    "claims": [
+      "pages-deployment-succeeded",
+      "real-browser-identity-journey-passed"
+    ],
     "required_claims": [
       "pages-deployment-succeeded",
       "real-browser-identity-journey-passed"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
     "evidence_id": "EV-037",
     "kind": "candidate-release-r1",
-    "source": "pending-public-subject",
-    "status": "pending",
-    "observed_at": null,
+    "source": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804",
+    "status": "verified",
+    "observed_at": "2026-08-04T11:09:00Z",
     "identities": {
       "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
-      "source_commit": null,
-      "tag": null,
-      "release_id": null,
-      "archive_sha256": null,
-      "attestation_digest": null
+      "source_commit": "51881ccc0ce1b77346b9cd8d4462c320bf203114",
+      "tag": "heritage-coventry-warwickshire-20260804",
+      "release_id": 364807792,
+      "archive_sha256": "8e7e1e0934de304ff720f6d7726b9f404ecf204ccf1414e0e3469c04a781b39a",
+      "attestation_digest": "0f61e520fa32d61c66530783596bc03d14cead4efc99e0f84fd3f73e49caacea"
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903522306",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/attestations/38772918",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804"
+    ],
+    "claims": [
+      "annotated-tag-verified",
+      "archive-attestation-verified",
+      "candidate-release-immutable",
+      "exact-candidate-asset-closure-verified"
+    ],
     "required_claims": [
       "annotated-tag-verified",
       "archive-attestation-verified",
       "candidate-release-immutable",
       "exact-candidate-asset-closure-verified"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
     "evidence_id": "EV-038",
     "kind": "terminal-assurance",
-    "source": "pending-public-subject",
-    "status": "pending",
-    "observed_at": null,
+    "source": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005",
+    "status": "verified",
+    "observed_at": "2026-08-04T12:27:11Z",
     "identities": {
       "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
-      "source_commit": null,
-      "candidate_tag": null,
-      "workflow_run_id": null,
-      "artifact_digest": null,
-      "assurance_source_commit": null
+      "source_commit": "51881ccc0ce1b77346b9cd8d4462c320bf203114",
+      "candidate_tag": "heritage-coventry-warwickshire-20260804",
+      "workflow_run_id": 30908844005,
+      "artifact_digest": "sha256:2f9e5544a06bd143ab4f069c6cf65a4edf6f1c54a9fd88c0a7bfc74322f1447c",
+      "assurance_source_commit": "b0b78b8772341ec2b99ddd588389e4635eebe9e9"
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://github.com/chris-page-gov/okf-explorer/commit/b0b78b8772341ec2b99ddd588389e4635eebe9e9",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/link-observation-receipt.json",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/protected-link-browser-receipt.json",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/publication-journey-receipt.json"
+    ],
+    "claims": [
+      "exact-link-closure-passed",
+      "protected-link-receipt-passed",
+      "three-engine-journey-passed",
+      "workflow-run-succeeded"
+    ],
     "required_claims": [
       "exact-link-closure-passed",
       "protected-link-receipt-passed",
       "three-engine-journey-passed",
       "workflow-run-succeeded"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   },
   {
     "evidence_id": "EV-039",
     "kind": "promotion-release-r2",
-    "source": "pending-public-subject",
-    "status": "pending",
-    "observed_at": null,
+    "source": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804-promotion.1",
+    "status": "verified",
+    "observed_at": "2026-08-04T12:28:55Z",
     "identities": {
       "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
-      "source_commit": null,
-      "candidate_tag": null,
-      "promotion_tag": null,
-      "release_id": null,
-      "envelope_sha256": null,
-      "attestation_digest": null
+      "source_commit": "51881ccc0ce1b77346b9cd8d4462c320bf203114",
+      "candidate_tag": "heritage-coventry-warwickshire-20260804",
+      "promotion_tag": "heritage-coventry-warwickshire-20260804-promotion.1",
+      "release_id": 364854828,
+      "envelope_sha256": "ec8a6529b250ef6d418a657942e0f602c0555fc851b6856ad6b38c7b175ce57c",
+      "attestation_digest": "9b2498de4f0971449ad2e941b621666f4c878b73d61e0ff6a60adee0d2b1e4a3"
     },
-    "evidence_urls": [],
-    "claims": [],
+    "evidence_urls": [
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30909191165",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/attestations/38789095",
+      "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804-promotion.1"
+    ],
+    "claims": [
+      "exact-promotion-asset-closure-verified",
+      "promotion-envelope-attested",
+      "promotion-release-immutable",
+      "same-commit-promotion-tag-verified"
+    ],
     "required_claims": [
       "exact-promotion-asset-closure-verified",
       "promotion-envelope-attested",
       "promotion-release-immutable",
       "same-commit-promotion-tag-verified"
     ],
-    "normalized_input_sha256": "b332ab86bde09ec6cbb8527005591d70dd484d8c1dace2fbcbd7288933d05605",
+    "normalized_input_sha256": "188728e66b5121ebe10423dcf6bb90e755951a68c2ba23722e6da197c4a7cb60",
     "publication_treatment": "Normalized public rollout evidence; pending is retained until all policy-required identities, claims and URLs are supplied."
   }
 ]

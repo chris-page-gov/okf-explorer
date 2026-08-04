@@ -172,7 +172,7 @@ owns corpus/data/readers and release assets; the main repository retains the
 Explorer runtime, common schemas, registry and documentation shell. Export and
 local validation are implemented.
 
-The normalized current-publication register records PR #70 and every external candidate/Pages/R1/terminal/R2 milestone without inferring success. The stages still pending exact public evidence are: `central-pull-request`, `external-candidate`, `external-pages`, `candidate-release-r1`, `terminal-assurance`, `promotion-release-r2`.
+The normalized current-publication register binds verified PR #70, external candidate, Pages, R1, terminal and R2 evidence. All terminal publication gates are independently recorded as verified.
 
 Terminal policy requires an annotated tag bound to the exact commit, a GitHub
 artifact attestation, platform immutable releases, draft-first attachment of all
@@ -182,7 +182,7 @@ assets and a deterministic archive retained as an immutable release asset. The
 [external promotion workflow template](../../../publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml)
 implement those gates.
 
-This report does not claim the replacement release gates passed: a stage remains pending until its exact URL, identities, timestamp and complete required-claim set are present in the normalized evidence input.
+The normalized evidence supplies exact public URLs, identities and required claims for both immutable releases and terminal assurance.
 
 ## Acceptance Boundary
 

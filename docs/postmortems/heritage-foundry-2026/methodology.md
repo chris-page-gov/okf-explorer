@@ -76,10 +76,10 @@ the same full trace regardless of rollout milestone status.
 
 ## Conversation Extraction
 
-The curated source has SHA-256 `db415b12079338b37583e12b719b5e08bab9abd982bd53df6bf98f900785b29b` and contained
-`53,611,624` bytes at extraction. The public trace contains
+The curated source has SHA-256 `747b638f5a2ba42333eebdd5c1c506ff160d2db2555120eb075934b439a5c8ce` and contained
+`57,596,313` bytes at extraction. The public trace contains
 `8` user exchanges and
-`262` visible Codex messages at extraction.
+`302` visible Codex messages at extraction.
 Local paths and token-shaped strings are redacted. The public lint rejects local
 user paths, Codex rollout paths, private evidence paths and common token forms.
 
@@ -101,8 +101,9 @@ timestamp resolution. Raw command output stays private.
   file/byte amplification rather than money.
 - The release is digest-bound and frozen by policy, but GitHub reports
   `isImmutable: false`; this statement describes the historical 3 August
-  release. The replacement annotated-tag/attestation/immutable-release policy is
-  implemented locally but is not counted as terminally passed before a new
-  external release is independently verified.
+  release. The replacement policy is evaluated separately: the independently
+  rooted 4 August R1 and R2 are counted as terminally passed only because the
+  normalized evidence register supplies their exact immutable release identities,
+  attestation URLs, asset digests and workflow runs.
 - The current final response is included through the handoff capture mechanism;
   rerunning after the task completes can verify it against the finalized rollout.

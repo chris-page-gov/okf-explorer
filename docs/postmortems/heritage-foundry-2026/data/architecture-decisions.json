@@ -3,7 +3,7 @@
     "id": "ADR-001",
     "question": "Where should promotion/status metadata live?",
     "decision": "Only immutable candidate self-facts and the stable promotion-policy reference belong in the candidate. Status, timestamps, runs and observations belong exclusively in a signed or GitHub-attested promotion envelope outside its roots.",
-    "status": "implemented-local; terminal envelope pending",
+    "status": "implemented; terminal envelope verified",
     "evidence": [
       "evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json",
       "evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json",
@@ -14,7 +14,7 @@
     "id": "ADR-002",
     "question": "Which browser changes require three engines on a pull request?",
     "decision": "Runtime, routing, workers, storage, graph, map, CSS/accessibility, browser dependencies, journey-runner and unknown changes require Chrome, Firefox and WebKit on the pull request. Contract-preserving data, search, semantic, registry and presentation changes use targeted Chromium on the pull request; the full three-engine matrix remains nightly and mandatory at terminal release.",
-    "status": "implemented-local; first workflow observations pending",
+    "status": "implemented; PR #70 workflow evidence verified",
     "evidence": [
       "evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml",
       "scripts/plan_evaluation_foundry_impact.py",
@@ -36,7 +36,7 @@
     "id": "ADR-004",
     "question": "How should link validation be sharded and refreshed?",
     "decision": "Stable link intents are sharded by SHA-256 of the canonical URL. Timestamped network and protected-page observations run on their own freshness schedule and are uploaded outside candidate and Site bytes.",
-    "status": "implemented-local; first scheduled receipt pending",
+    "status": "implemented; terminal link closure verified",
     "evidence": [
       "scripts/build_heritage_evaluation.py",
       "scripts/observe_link_intents.py",
@@ -47,7 +47,7 @@
     "id": "ADR-005",
     "question": "Which publication unit should own future exemplars?",
     "decision": "The dedicated chris-page-gov/okf-heritage-coventry-warwickshire unit owns the heritage corpus, tiny fixture, synthetic supplement, data readers and releases. OKF Explorer continues to own the runtime, shared schemas, registry and docs shell.",
-    "status": "implemented-local; external repository and public activation pending",
+    "status": "implemented; external publication promoted",
     "evidence": [
       "publication-units/heritage-coventry-warwickshire/publication-unit.json",
       "scripts/export_publication_unit.py",
@@ -58,7 +58,7 @@
     "id": "ADR-006",
     "question": "What release-integrity policy should apply?",
     "decision": "Use an annotated tag bound to the exact source commit, a GitHub artifact attestation for the external promotion envelope and archive, platform immutable releases, draft-first asset attachment, and a deterministic release archive retained as a release asset.",
-    "status": "policy implemented; terminal external release pending",
+    "status": "policy implemented; terminal releases verified",
     "evidence": [
       "release-assurance/release-policy.json",
       "scripts/check_release_policy.py",

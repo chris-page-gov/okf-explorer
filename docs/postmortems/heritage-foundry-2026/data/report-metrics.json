@@ -1,6 +1,6 @@
 {
   "conversation_exchanges": 8,
-  "visible_assistant_messages": 262,
+  "visible_assistant_messages": 302,
   "relevant_local_command_events": 364,
   "local_command_counts": {
     "app-build": 21,
@@ -25,6 +25,9 @@
   "ci_runs": 3,
   "pages_runs": 3,
   "failed_or_rerun_relevant_github_runs": 0,
+  "release_closure_attempts": 9,
+  "release_closure_successes": 5,
+  "release_closure_failures": 4,
   "ci_workflow_wall_seconds": 1941,
   "pages_workflow_wall_seconds": 680,
   "all_workflow_wall_seconds": 2621,
