@@ -33,16 +33,22 @@ It records PR #70, the external candidate and Pages deployment, R1, terminal
 assurance and R2. Its generated
 [current-publication register](data/current-publication-evidence.json) and the
 appended public records in the [evidence register](data/evidence-register.json)
-retain `pending` rather than deriving success from local implementation.
+apply that fail-closed contract. All six milestones are verified from exact public identities, timestamps, claims and URLs; no success state is inferred from local implementation.
+
+The separate [R1/terminal/R2 attempt register](data/publication-attempt-register.json)
+reconstructs all nine closure runs from their public workflow logs. It records the
+failed step, bounded correction, control commit and retained artifact digest where
+present. All nine records explicitly prove that neither candidate nor Site bytes
+changed during closure.
 
 | ID | Milestone | State | Subject | Claims | Public evidence |
 |---|---|---|---|---|---|
-| PUBEV-001 | central-pull-request | pending | [subject](https://github.com/chris-page-gov/okf-explorer/pull/70) | 0/2 | none supplied |
-| PUBEV-002 | external-candidate | pending | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire) | 0/2 | none supplied |
-| PUBEV-003 | external-pages | pending | [subject](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | 0/2 | none supplied |
-| PUBEV-004 | candidate-release-r1 | pending | not supplied | 0/4 | none supplied |
-| PUBEV-005 | terminal-assurance | pending | not supplied | 0/4 | none supplied |
-| PUBEV-006 | promotion-release-r2 | pending | not supplied | 0/4 | none supplied |
+| PUBEV-001 | central-pull-request | verified | [subject](https://github.com/chris-page-gov/okf-explorer/pull/70) | 2/2 | [evidence 1](https://github.com/chris-page-gov/okf-explorer/actions/runs/30908799442)<br>[evidence 2](https://github.com/chris-page-gov/okf-explorer/commit/b0b78b8772341ec2b99ddd588389e4635eebe9e9)<br>[evidence 3](https://github.com/chris-page-gov/okf-explorer/pull/70) |
+| PUBEV-002 | external-candidate | verified | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire) | 2/2 | [evidence 1](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/publication-unit-manifest.json)<br>[evidence 2](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire)<br>[evidence 3](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/commit/51881ccc0ce1b77346b9cd8d4462c320bf203114) |
+| PUBEV-003 | external-pages | verified | [subject](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | 2/2 | [evidence 1](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/)<br>[evidence 2](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30900729931)<br>[evidence 3](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005)<br>[evidence 4](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/publication-journey-receipt.json) |
+| PUBEV-004 | candidate-release-r1 | verified | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804) | 4/4 | [evidence 1](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903522306)<br>[evidence 2](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/attestations/38772918)<br>[evidence 3](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804) |
+| PUBEV-005 | terminal-assurance | verified | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005) | 4/4 | [evidence 1](https://github.com/chris-page-gov/okf-explorer/commit/b0b78b8772341ec2b99ddd588389e4635eebe9e9)<br>[evidence 2](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005)<br>[evidence 3](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/link-observation-receipt.json)<br>[evidence 4](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/protected-link-browser-receipt.json)<br>[evidence 5](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/download/heritage-coventry-warwickshire-20260804-promotion.1/publication-journey-receipt.json) |
+| PUBEV-006 | promotion-release-r2 | verified | [subject](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804-promotion.1) | 4/4 | [evidence 1](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30909191165)<br>[evidence 2](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/attestations/38789095)<br>[evidence 3](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804-promotion.1) |
 
 
 ## Preserved Deployment Archives
@@ -68,6 +74,10 @@ decompression reproduces the original downloaded tar bytes.
 - The three Pages logs bind app, corpus, Site-tree and uploaded-artifact hashes.
 - The terminal release contains six uniquely named receipt assets with reported
   SHA-256 digests.
+- The independent R1 is immutable and retains five exact candidate assets; R2 is
+  immutable and its GitHub Releases attestation binds all ten promotion assets.
+- The final terminal artifact is independently hashed as
+  `sha256:2f9e5544a06bd143ab4f069c6cf65a4edf6f1c54a9fd88c0a7bfc74322f1447c`.
 
 ## Release Qualification
 
@@ -84,7 +94,7 @@ It requires an annotated tag, GitHub artifact attestation, immutable releases,
 draft-first asset attachment and a deterministic archive retained as a release
 asset.
 
-Those controls remain **terminally unverified for the new external unit**. A pending record may name its intended public subject, but it cannot become verified until every required identity, claim, timestamp and evidence URL is supplied.
+The normalized current-publication evidence records exact verified R1, terminal and R2 identities, claims and public evidence URLs.
 
 ## Publication Boundary
 

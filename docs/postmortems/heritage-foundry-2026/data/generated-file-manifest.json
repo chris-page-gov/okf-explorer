@@ -12,6 +12,7 @@
     "data/generated-file-manifest.json",
     "data/github-run-register.json",
     "data/implementation-acceptance-register.json",
+    "data/publication-attempt-register.json",
     "data/publication-decisions.json",
     "data/publication-lint-report.json",
     "data/rebuild-cycle-register.json",

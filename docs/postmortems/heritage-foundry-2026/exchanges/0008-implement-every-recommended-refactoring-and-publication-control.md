@@ -420,9 +420,329 @@ The release redesign is converging on a clean separation: the tagged commit rema
 The first live dependency correction is now proven: Python contracts consumed the uploaded app artifact and all 297 tests passed. The three-engine browser job also passed its newly explicit SvelteKit materialization step and is still executing the terminal-equivalent journeys.
 ````
 
+### Response 49 (commentary)
+
+- Timestamp: `2026-08-04T10:51:18.017Z`
+
+````text
+The control-plane review found and fixed one schema boundary before deployment: the immutable candidate carried the old promotion template, so promotion now sources its template from the exact pinned Explorer assurance commit. Candidate bytes and the proven Pages deployment remain untouched.
+````
+
+### Response 50 (commentary)
+
+- Timestamp: `2026-08-04T10:56:16.537Z`
+
+````text
+All 302 local contracts and mandatory publication gates are green. One intentional consequence is visible in the hashes: the control/report code changed the repository’s *prospective* export root, while the frozen public candidate stayed byte-identical. I’m auditing that boundary now to ensure mutable assurance controls are not accidentally treated as candidate data.
+````
+
+### Response 51 (commentary)
+
+- Timestamp: `2026-08-04T11:04:33.137Z`
+
+````text
+The independent audit is clean after three release-safety corrections: R2 stays compatible with the candidate’s original v1 schema, privileged jobs install only trusted assurance dependencies, and Pages separates read-only build authority from deploy/OIDC authority. The complete 302-test gate has passed again.
+````
+
+### Response 52 (commentary)
+
+- Timestamp: `2026-08-04T11:07:42.106Z`
+
+````text
+The control-only external commit passed candidate validation, created no Pages run, and the public deployment remains bound to `51881ccc…`. I’m now retrying R1 from `main` with the frozen tag as subject and `e7a34cc5…` as the distinct, exact assurance implementation.
+````
+
+### Response 53 (commentary)
+
+- Timestamp: `2026-08-04T11:11:17.113Z`
+
+````text
+R1 is now immutable and independently verified: release ID `364807792`, archive SHA-256 `8e7e1e09…`, exact five-asset closure, and signed release attestation. Terminal assurance run `30903729068` has started against the same `51881ccc…` candidate and `e7a34cc5…` assurance commit.
+````
+
+### Response 54 (commentary)
+
+- Timestamp: `2026-08-04T11:13:15.888Z`
+
+````text
+Terminal setup, R1 existence, and deployed-candidate identity all passed. The run is now observing the full 13,548-URL closure across rendered anchors plus faithful, tiny, and synthetic intent universes; this is the longest bounded stage.
+````
+
+### Response 55 (commentary)
+
+- Timestamp: `2026-08-04T11:15:52.611Z`
+
+````text
+The final PR head has now passed its full Chrome/Firefox/WebKit suite as well as all Python, Foundry, documentation, release-policy, Site, impact, and adversarial gates. Only the two-second aggregate check is closing; external terminal assurance remains in the all-links phase.
+````
+
+### Response 56 (commentary)
+
+- Timestamp: `2026-08-04T11:17:34.475Z`
+
+````text
+Terminal assurance has just failed inside the all-links stage. I’m inspecting the exact URL/result class now; R1 and Pages remain immutable and unaffected, and no R2 action will occur until the closure failure is resolved.
+````
+
+### Response 57 (commentary)
+
+- Timestamp: `2026-08-04T11:19:58.685Z`
+
+````text
+The failed workflow omitted its diagnostic receipt because artifact upload was success-only—another early-diagnostics gap. A local exact-candidate reproduction is running now and will retain the URL-level receipt; I’ll also make terminal failure artifacts upload unconditionally so future failures are immediately actionable.
+````
+
+### Response 58 (commentary)
+
+- Timestamp: `2026-08-04T11:26:02.478Z`
+
+````text
+The three failures were a bounded-observer defect, not broken publication content: policy and timing calculations promised two attempts, but the implementation made only one. Local diagnostics show transient Historic England timeouts and a transient ArcGIS 304/200 cache response. I’m adding the missing second attempt, explicit 304 reachability handling, and always-retained failure receipts before rerunning the same immutable R1.
+````
+
+### Response 59 (commentary)
+
+- Timestamp: `2026-08-04T11:30:44.450Z`
+
+````text
+I’m continuing from the first terminal-assurance failure: the content itself was intact; the bounded link observer was missing its declared retry and mishandled HTTP 304. I’m finishing that correction first, then I’ll rerun the immutable candidate’s terminal gates, issue the promotion release, record the evidence, refresh the postmortem, and close the PR only after the public browser journey is verified.
+````
+
+### Response 60 (commentary)
+
+- Timestamp: `2026-08-04T11:32:39.932Z`
+
+````text
+The diagnostic change now has regression coverage for four edge cases: one-and-only-one transient retry, no third attempt, no retry of an accepted protected-origin 403, and explicit 304 reachability evidence. I’m also preserving failure receipts with an always-run upload step so a future terminal failure remains diagnosable without a rebuild.
+````
+
+### Response 61 (commentary)
+
+- Timestamp: `2026-08-04T11:35:19.647Z`
+
+````text
+The correction is now bounded and candidate-neutral: the worst-case retry backoff adds about 73 seconds within the existing 75-minute link budget, and the immutable R1 Site bytes and pinned validator hash remain unchanged. I’m running the complete local gate set before publishing the new assurance commit.
+````
+
+### Response 62 (commentary)
+
+- Timestamp: `2026-08-04T11:36:50.222Z`
+
+````text
+The complete local gate set is green—306 tests, Foundry validation, bundle/viewer synchronization, OKF checks, publication export, postmortem validation, and the 10,273-file Site build. The exact assurance commit is now `e90bcc65ef325609ef78525dbfe87f39c810b0eb`; next I’m installing only the future diagnostic workflow on the external control branch, with an explicit check that the frozen candidate Site does not change.
+````
+
+### Response 63 (commentary)
+
+- Timestamp: `2026-08-04T11:37:46.738Z`
+
+````text
+Terminal run [30905570025](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30905570025) is running on the immutable candidate commit `51881ccc…` and the exact assurance commit `e90bcc65…`. The external control-only push left `site/**` unchanged; I’ll now watch the full link closure and all three browser engines rather than rebuilding the candidate.
+````
+
+### Response 64 (commentary)
+
+- Timestamp: `2026-08-04T11:40:40.700Z`
+
+````text
+The rerun has passed both exact checkouts, the 40-hex assurance pin, and runtime setup; it is currently installing the pinned three-engine test environment. No candidate or Pages rebuild has been triggered—the assurance workflow is consuming the existing immutable R1 and public Site.
+````
+
+### Response 65 (commentary)
+
+- Timestamp: `2026-08-04T11:44:05.604Z`
+
+````text
+The exact deployed identity check passed. The run is now traversing the complete 13,537-URL closure; this is the formerly failing gate, so I’m letting its bounded retry policy complete before moving to protected Chrome and the Chromium/Firefox/WebKit journeys.
+````
+
+### Response 66 (commentary)
+
+- Timestamp: `2026-08-04T11:45:56.342Z`
+
+````text
+The 13,537-URL closure has now passed—the retry correction fixed the original failure. A different, later gate has exposed a protected-page Chrome failure before the three-engine journeys; I’m collecting its exact browser diagnostics now and will constrain any correction to that gate rather than rebuilding the candidate or repeating the link closure unnecessarily.
+````
+
+### Response 67 (commentary)
+
+- Timestamp: `2026-08-04T11:49:50.515Z`
+
+````text
+The protected-page failure is a teardown race, not yet evidence of a content failure: the observer’s `finally` block could let a profile-directory `ENOTEMPTY` replace the real observation result. I’m correcting teardown so Chrome is asked to close gracefully, forced termination is awaited, profile deletion is bounded/retried, and any primary observation error remains the error reported.
+````
+
+### Response 68 (commentary)
+
+- Timestamp: `2026-08-04T11:56:31.928Z`
+
+````text
+The cleanup fix exposed the hidden primary condition: Historic England now leaves the requested `q=1184627` page in place instead of redirecting it to the declared default-size URL. I’ve made the evidence stronger and transparent: genuine Chrome verifies the identity at both the requested URL and the declared canonical URL, records both final URLs plus the reprobe basis, and still satisfies the immutable R1 promotion contract. All 11 live protected pages now pass locally in genuine Chrome.
+````
+
+### Response 69 (commentary)
+
+- Timestamp: `2026-08-04T11:59:36.328Z`
+
+````text
+The exact protected-browser assurance commit is now `ffc756f27c7391f9d2b8693557e7ad0e81500080`. It passed 306 Python tests, 276 app tests, 39 Node contract tests, Svelte diagnostics, unchanged publication export, unchanged runtime app identity, and all 11 protected pages in real Chrome. I’m rerunning the immutable terminal workflow with only that assurance pin changed.
+````
+
+### Response 70 (commentary)
+
+- Timestamp: `2026-08-04T12:02:05.461Z`
+
+````text
+The rerun has again passed exact candidate identity and is in the full link-closure stage. Because the app and Site hashes are unchanged and the local genuine-Chrome journey already passes, this run is now checking that the same evidence holds in the Linux/Xvfb release environment before the three-engine matrix.
+````
+
+### Response 71 (commentary)
+
+- Timestamp: `2026-08-04T12:02:57.657Z`
+
+````text
+Terminal assurance is fully green in 2m49s: exact candidate identity, all 13,537 canonical URLs, 11 protected Historic England pages in genuine Chrome, and all 32 publication actions in Chromium, Firefox, and WebKit. I’m now downloading and independently checking the four receipts before creating the detached promotion tag/release.
+````
+
+### Response 72 (commentary)
+
+- Timestamp: `2026-08-04T12:04:30.105Z`
+
+````text
+The detached annotated tag `heritage-coventry-warwickshire-20260804-promotion.1` now resolves exactly to candidate commit `51881ccc…`. Promotion run [30907485088](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30907485088) is binding the immutable R1 assets, terminal artifact digest, four assurance receipts, and exact control commit into R2.
+````
+
+### Response 73 (commentary)
+
+- Timestamp: `2026-08-04T12:05:35.852Z`
+
+````text
+The promotion workflow correctly failed closed before any R2 release was created. R1 revalidation and envelope materialization passed; the trusted semantic validator rejected the new receipt at the next gate. I’m retrieving that exact error now—no tag target, candidate, Pages deployment, or release asset has been altered.
+````
+
+### Response 74 (commentary)
+
+- Timestamp: `2026-08-04T12:08:16.317Z`
+
+````text
+The validator exposed three shift-left contract gaps, all before release publication: the 11.5 MB complete link receipt exceeded a generic 2 MB control-file limit; JavaScript’s millisecond timestamp and Python’s equivalent microsecond rendering were compared as strings; and the observer’s channel label differed from the policy label. I’m fixing these at their producers and adding a narrowly scoped terminal wrapper that raises the size bound only for the exact link-closure receipt, while leaving the immutable R1 validator byte-for-byte unchanged.
+````
+
+### Response 75 (commentary)
+
+- Timestamp: `2026-08-04T12:12:58.347Z`
+
+````text
+The contract fixes are now pinned at `b030c618b833f2790ddd3642a96b11b3eda670ce`, with the original R1 validator still exactly `bd1bad9f…0075`. The external update changed only the promotion workflow; `site/**` remains identical to candidate `51881ccc…`. I’m generating one fresh terminal artifact so its channel and timestamps are natively correct rather than rewriting evidence after the fact.
+````
+
+### Response 76 (commentary)
+
+- Timestamp: `2026-08-04T12:14:53.093Z`
+
+````text
+The fresh terminal run has passed exact deployed identity and is traversing the same bounded closure. The new evidence producers are active: Chrome will emit the policy’s exact channel, and each engine result will use the same six-digit UTC representation that the signed journey receipt records.
+````
+
+### Response 77 (commentary)
+
+- Timestamp: `2026-08-04T12:18:29.565Z`
+
+````text
+The fresh artifact is internally consistent: channel `genuine-google-chrome-cdp`; all three raw engine timestamps exactly match their receipt rows; terminal artifact digest `sha256:09e3be84…d2b47`; assurance source `b030c618…`. The failed attempt created no release, so I’m safely reusing the same annotated promotion tag with this corrected evidence.
+````
+
+### Response 78 (commentary)
+
+- Timestamp: `2026-08-04T12:19:49.518Z`
+
+````text
+Semantic validation now passes completely, including the 11.5 MB exact link closure. The workflow also created the envelope attestation, then failed closed in the provenance cross-check before drafting a release. I’m inspecting that specific tag/attestation binding; again, no R2 release exists yet.
+````
+
+### Response 79 (commentary)
+
+- Timestamp: `2026-08-04T12:22:52.581Z`
+
+````text
+The attestation itself was valid; the old release-policy checker simply re-ran the same semantic validator without the terminal-only size scope. That is now wrapped separately—candidate-phase policy remains untouched, promotion-phase policy gets the exact 16 MB link-receipt allowance, and all 309 Python tests pass. The final assurance pin is `b0b78b8772341ec2b99ddd588389e4635eebe9e9`.
+````
+
+### Response 80 (commentary)
+
+- Timestamp: `2026-08-04T12:24:50.355Z`
+
+````text
+This final terminal run is still in its expected bounded observation phase. The repeated work is now limited to the external assurance plane—no corpus generation, candidate archive, Site assembly, or Pages deployment is being repeated—and the postmortem will record these newly exposed dependency boundaries explicitly.
+````
+
+### Response 81 (commentary)
+
+- Timestamp: `2026-08-04T12:27:46.276Z`
+
+````text
+Final terminal run [30908844005](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005) is green, pinned to `b0b78b87…`, with artifact digest `sha256:2f9e5544…f1447c`. R2 run [30909191165](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30909191165) is now executing the complete semantic, cryptographic, asset-closure, and immutability sequence.
+````
+
+### Response 82 (commentary)
+
+- Timestamp: `2026-08-04T12:29:49.177Z`
+
+````text
+The final promotion attempt is already in flight. I’m checking that immutable R2 release first; then I’ll seal the evidence ledger, regenerate the complete process trace/postmortem, run the exact-head gates, and merge only if every publication and browser assurance is green.
+````
+
+### Response 83 (commentary)
+
+- Timestamp: `2026-08-04T12:30:02.441Z`
+
+````text
+R2 has succeeded: GitHub completed validation, attestation, publication, and post-publication immutability checks. I’m now independently reconciling its tag, assets, hashes, terminal artifact, and the report/evidence schema in parallel before treating that success badge as closure.
+````
+
+### Response 84 (commentary)
+
+- Timestamp: `2026-08-04T12:30:15.949Z`
+
+````text
+I’m using the analytical report skill for the closure write-up because the deliverable is an evidence-backed postmortem, not merely prose. It requires the final report to separate observed facts, derived claims, caveats, and source lineage, which is exactly the discipline needed here.
+````
+
+### Response 85 (commentary)
+
+- Timestamp: `2026-08-04T12:33:42.333Z`
+
+````text
+The terminal audit is exact and clean. It exercised 13,548 canonical URLs, used one bounded retry for only two transient ArcGIS calls, verified all 11 protected pages in genuine Chrome, and passed 32 actions plus 2 assertions in each of Chromium, Firefox, and WebKit. No failed URL remained, and every receipt hash cross-binds to the same immutable candidate.
+````
+
+### Response 86 (commentary)
+
+- Timestamp: `2026-08-04T12:37:48.730Z`
+
+````text
+The promotion audit also passed independently: the R2 release is immutable, all ten assets match their release-attested digests, and both tags peel to the same candidate. I found one provenance-label wrinkle—the annotated tag’s human message names an earlier successful terminal run, while the attested R2 envelope correctly binds the later final run. I’m preserving that fact in the postmortem rather than rewriting an already-published tag.
+````
+
+### Response 87 (commentary)
+
+- Timestamp: `2026-08-04T12:45:05.300Z`
+
+````text
+The portable report contains quantitative charts, so I’m also applying the visualization QA skill to the existing artifact. I’m preserving its chart families and reading order, updating only the closure evidence and resolved-status views, then using the packaged renderer’s own browser verifier.
+````
+
+### Response 88 (commentary)
+
+- Timestamp: `2026-08-04T12:51:01.339Z`
+
+````text
+The refreshed portable report now validates and passes its packaged Chromium QA at 1440px and 390px, including the source dialog and keyboard interaction. It now shows the recommendations as implemented, the architecture questions as decisions, and the full nine-attempt closure—including the four bounded failures that caused zero candidate or Site rebuilds.
+````
+
 ## Contribution Reading
 
 - User contribution: Authorized implementation of every postmortem recommendation, including the release-integrity and external-publication controls.
-- Codex contribution: Implemented the v2 profile, planner, modular outputs, early fixtures, conditional assurance, external unit and release policy, with public promotion kept pending until terminal verification.
+- Codex contribution: Implemented the v2 profile, planner, modular outputs, early fixtures, conditional assurance, external unit and release policy, then completed the public promotion through terminal verification.
 
 [EX-0007](0007-resolve-the-postmortem-architecture-questions.md) | [start-to-finish reader](../readers/conv-001-heritage-evaluation-foundry.md)

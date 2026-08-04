@@ -44,6 +44,9 @@ PRIVATE_ROOT = ROOT / "postmortem" / "evidence"
 CURRENT_PUBLICATION_EVIDENCE_PATH = (
     ROOT / "release-assurance" / "heritage-postmortem-publication-evidence.json"
 )
+RELEASE_ATTEMPTS_PATH = (
+    ROOT / "release-assurance" / "heritage-postmortem-release-attempts.json"
+)
 SESSION_ID = "019fc471-90ec-7633-abde-8e72fcdd5280"
 IMPLEMENTATION_TURN_ID = "019fc48a-bbbf-7630-9aad-3fa7f925a707"
 BASE_URL = (
@@ -924,7 +927,10 @@ def normalize_current_publication_evidence(value: Any) -> dict[str, Any]:
     pr_head = normalized_by_id["PUBEV-001"]["identities"]["head_commit"]
     assurance_source = terminal["identities"]["assurance_source_commit"]
     if pr_head is not None and assurance_source is not None and pr_head != assurance_source:
-        raise ValueError("terminal assurance source commit differs from the PR #70 head")
+        raise ValueError(
+            "terminal assurance source commit differs from the assured PR #70 "
+            "implementation-head snapshot"
+        )
     return {
         "schema": "okf-heritage-foundry-publication-evidence-register.v1",
         "status": (
@@ -942,6 +948,116 @@ def load_current_publication_evidence() -> dict[str, Any]:
         load_json(CURRENT_PUBLICATION_EVIDENCE_PATH)
     )
     normalized["source_sha256"] = sha256_file(CURRENT_PUBLICATION_EVIDENCE_PATH)
+    return normalized
+
+
+def load_release_attempt_register() -> dict[str, Any]:
+    """Validate the bounded R1/terminal/R2 attempt history without live inference."""
+
+    value = load_json(RELEASE_ATTEMPTS_PATH)
+    expected_top = {
+        "schema",
+        "repository",
+        "candidate_source_commit",
+        "candidate_tag",
+        "promotion_tag",
+        "attempts",
+    }
+    if not isinstance(value, dict) or set(value) != expected_top:
+        raise ValueError("release attempt register has an invalid top-level shape")
+    if value["schema"] != "okf-heritage-foundry-release-attempt-register.v1":
+        raise ValueError("release attempt register has an unsupported schema")
+    if value["repository"] != "chris-page-gov/okf-heritage-coventry-warwickshire":
+        raise ValueError("release attempt register names an unexpected repository")
+    if not re.fullmatch(r"[0-9a-f]{40}", str(value["candidate_source_commit"])):
+        raise ValueError("release attempt candidate commit is not exact 40-hex")
+    if value["candidate_tag"] == value["promotion_tag"]:
+        raise ValueError("release attempt tags must be distinct")
+    attempts = value["attempts"]
+    if not isinstance(attempts, list) or not attempts:
+        raise ValueError("release attempt register must contain attempts")
+    expected_attempt_keys = {
+        "id",
+        "stage",
+        "run_id",
+        "run_url",
+        "started_at",
+        "completed_at",
+        "conclusion",
+        "control_commit",
+        "terminal_run_id",
+        "artifact_id",
+        "artifact_digest",
+        "release_id",
+        "failure_step",
+        "finding",
+        "correction",
+        "candidate_bytes_changed",
+        "site_bytes_changed",
+    }
+    seen_runs: set[int] = set()
+    previous_started: datetime | None = None
+    for index, attempt in enumerate(attempts, start=1):
+        if not isinstance(attempt, dict) or set(attempt) != expected_attempt_keys:
+            raise ValueError(f"release attempt {index} has an invalid shape")
+        expected_id = f"RELATT-{index:03d}"
+        if attempt["id"] != expected_id:
+            raise ValueError(f"release attempt {index} must be {expected_id}")
+        if attempt["stage"] not in {
+            "candidate-release-r1",
+            "terminal-assurance",
+            "promotion-release-r2",
+        }:
+            raise ValueError(f"{expected_id} has an invalid stage")
+        run_id = attempt["run_id"]
+        if isinstance(run_id, bool) or not isinstance(run_id, int) or run_id < 1:
+            raise ValueError(f"{expected_id} has an invalid run ID")
+        if run_id in seen_runs:
+            raise ValueError(f"{expected_id} duplicates a run ID")
+        seen_runs.add(run_id)
+        expected_url = (
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+            f"actions/runs/{run_id}"
+        )
+        if attempt["run_url"] != expected_url:
+            raise ValueError(f"{expected_id} run URL differs from its identity")
+        try:
+            started = parse_timestamp(attempt["started_at"])
+            completed = parse_timestamp(attempt["completed_at"])
+        except (TypeError, ValueError) as error:
+            raise ValueError(f"{expected_id} has an invalid timestamp") from error
+        if completed < started or (previous_started and started < previous_started):
+            raise ValueError(f"{expected_id} has a non-monotonic timestamp")
+        previous_started = started
+        if attempt["conclusion"] not in {"success", "failure"}:
+            raise ValueError(f"{expected_id} has an invalid conclusion")
+        if not re.fullmatch(r"[0-9a-f]{40}", str(attempt["control_commit"])):
+            raise ValueError(f"{expected_id} control commit is not exact 40-hex")
+        for key in ("terminal_run_id", "artifact_id", "release_id"):
+            identity = attempt[key]
+            if identity is not None and (
+                isinstance(identity, bool) or not isinstance(identity, int) or identity < 1
+            ):
+                raise ValueError(f"{expected_id} has an invalid {key}")
+        digest = attempt["artifact_digest"]
+        if digest is not None and not re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
+            raise ValueError(f"{expected_id} has an invalid artifact digest")
+        if (attempt["artifact_id"] is None) != (digest is None):
+            raise ValueError(f"{expected_id} artifact ID and digest must be paired")
+        if attempt["conclusion"] == "failure" and not attempt["failure_step"]:
+            raise ValueError(f"{expected_id} failure is missing its failed step")
+        if attempt["conclusion"] == "success" and attempt["failure_step"] is not None:
+            raise ValueError(f"{expected_id} success cannot name a failed step")
+        for key in ("finding", "correction"):
+            if not isinstance(attempt[key], str) or not attempt[key].strip():
+                raise ValueError(f"{expected_id} is missing {key}")
+        if attempt["candidate_bytes_changed"] is not False:
+            raise ValueError(f"{expected_id} changed immutable candidate bytes")
+        if attempt["site_bytes_changed"] is not False:
+            raise ValueError(f"{expected_id} changed immutable Site bytes")
+    normalized = dict(value)
+    normalized["source_path"] = RELEASE_ATTEMPTS_PATH.relative_to(ROOT).as_posix()
+    normalized["source_sha256"] = sha256_file(RELEASE_ATTEMPTS_PATH)
     return normalized
 
 
@@ -1243,8 +1359,8 @@ def contribution_summary(exchange: Exchange) -> tuple[str, str]:
     elif "recommended next steps" in prompt:
         codex = (
             "Implemented the v2 profile, planner, modular outputs, early fixtures, "
-            "conditional assurance, external unit and release policy, with public "
-            "promotion kept pending until terminal verification."
+            "conditional assurance, external unit and release policy, then completed the "
+            "public promotion through terminal verification."
         )
     elif "repository state" in responses or "main` is clean" in responses:
         codex = "Inspected repository, source, browser and geospatial evidence and bounded the unknowns."
@@ -1437,6 +1553,7 @@ def report_metrics(
         / "local-candidate-receipt.json"
     )
     current_candidate = current_receipt["candidate"]
+    release_attempts = load_release_attempt_register()["attempts"]
     return {
         "conversation_exchanges": len(exchanges),
         "visible_assistant_messages": sum(len(item.responses) for item in exchanges),
@@ -1451,6 +1568,13 @@ def report_metrics(
         "pages_runs": len(pages_runs),
         "failed_or_rerun_relevant_github_runs": sum(
             1 for item in runs if item["conclusion"] != "success" or item["attempt"] != 1
+        ),
+        "release_closure_attempts": len(release_attempts),
+        "release_closure_successes": sum(
+            item["conclusion"] == "success" for item in release_attempts
+        ),
+        "release_closure_failures": sum(
+            item["conclusion"] == "failure" for item in release_attempts
         ),
         "ci_workflow_wall_seconds": sum(item["duration_seconds"] for item in ci_runs),
         "pages_workflow_wall_seconds": sum(item["duration_seconds"] for item in pages_runs),
@@ -1487,7 +1611,8 @@ def render_index(metrics: dict[str, Any], exchanges: list[Exchange]) -> tuple[Pa
         "# Heritage Evaluation Foundry Engineering Postmortem\n\n",
         "This package reconstructs the Coventry and Warwickshire heritage exemplar from "
         "the task conversation, local Git history, three pull requests, six GitHub Actions "
-        "runs, three retained Pages artifacts and the terminal release receipts.\n\n",
+        "baseline runs, three retained Pages artifacts, nine R1/terminal/R2 closure runs "
+        "and both immutable release closures.\n\n",
         "## Start Here\n\n",
         "- [Technical postmortem](postmortem.md)\n",
         "- [End-to-end process timeline](process-timeline.md)\n",
@@ -1499,7 +1624,13 @@ def render_index(metrics: dict[str, Any], exchanges: list[Exchange]) -> tuple[Pa
         "## Headline Measures\n\n",
         markdown_table(
             [
-                ("Relevant GitHub runs", "6", "All successful, all attempt 1"),
+                ("Original PR/Pages runs", "6", "All successful, all attempt 1"),
+                (
+                    "R1/terminal/R2 attempts",
+                    metrics["release_closure_attempts"],
+                    f"{metrics['release_closure_successes']} passed; "
+                    f"{metrics['release_closure_failures']} fail-closed findings",
+                ),
                 ("GitHub workflow wall time", format_duration(metrics["all_workflow_wall_seconds"]), "Three CI plus three Pages runs"),
                 ("PR file touches", f"{metrics['file_touches_across_prs']:,}", "Includes repeated generated files"),
                 ("Late findings reconstructed", metrics["late_findings"], "Local audits and public gates"),
@@ -1524,6 +1655,7 @@ def render_index(metrics: dict[str, Any], exchanges: list[Exchange]) -> tuple[Pa
             "- [Exchange register](data/exchange-register.json)\n",
             "- [Relevant local command events](data/command-event-register.json)\n",
             "- [GitHub run register](data/github-run-register.json)\n",
+            "- [R1/terminal/R2 attempt register](data/publication-attempt-register.json)\n",
             "- [Rebuild-cycle register](data/rebuild-cycle-register.json)\n",
             "- [Evidence register](data/evidence-register.json)\n",
             "- [Current PR/publication/release evidence](data/current-publication-evidence.json)\n",
@@ -1631,9 +1763,10 @@ def render_methodology(metadata: dict[str, Any], metrics: dict[str, Any]) -> tup
           file/byte amplification rather than money.
         - The release is digest-bound and frozen by policy, but GitHub reports
           `isImmutable: false`; this statement describes the historical 3 August
-          release. The replacement annotated-tag/attestation/immutable-release policy is
-          implemented locally but is not counted as terminally passed before a new
-          external release is independently verified.
+          release. The replacement policy is evaluated separately: the independently
+          rooted 4 August R1 and R2 are counted as terminally passed only because the
+          normalized evidence register supplies their exact immutable release identities,
+          attestation URLs, asset digests and workflow runs.
         - The current final response is included through the handoff capture mechanism;
           rerunning after the task completes can verify it against the finalized rollout.
         """
@@ -1658,6 +1791,21 @@ def render_timeline(cycles: list[dict[str, Any]], runs: list[dict[str, Any]]) ->
         (timestamp, category, finding, cone)
         for timestamp, category, finding, cone in LATE_FINDINGS
     ]
+    release_attempt_rows = []
+    for attempt in load_release_attempt_register()["attempts"]:
+        started = parse_timestamp(attempt["started_at"])
+        completed = parse_timestamp(attempt["completed_at"])
+        release_attempt_rows.append(
+            (
+                attempt["started_at"],
+                attempt["stage"],
+                f"[{attempt['run_id']}]({attempt['run_url']})",
+                format_duration(int((completed - started).total_seconds())),
+                attempt["conclusion"],
+                attempt["failure_step"] or attempt["finding"],
+                "no / no",
+            )
+        )
     text = frontmatter(
         "Report",
         "Heritage Foundry end-to-end process timeline",
@@ -1676,8 +1824,10 @@ def render_timeline(cycles: list[dict[str, Any]], runs: list[dict[str, Any]]) ->
         `2026-08-03T13:49:21Z`: 4h 46m 43s of publicly evidenced commit-to-release
         activity inside a much longer research/build task.
 
-        No relevant GitHub run failed. The broad repeats were triggered by findings
-        made in local audits and real-browser/publication gates before each green PR.
+        The six original PR and Pages runs did not fail. The later cycle-free release
+        closure deliberately failed closed four times while exercising previously
+        untested link, genuine-Chrome and R2 contracts. Every correction changed only
+        assurance/release controls: the candidate and deployed Site were never rebuilt.
 
         ## Late-Finding Chronology
 
@@ -1703,6 +1853,20 @@ def render_timeline(cycles: list[dict[str, Any]], runs: list[dict[str, Any]]) ->
 
         {markdown_table(github_rows, ('Start (UTC)', 'Phase', 'Run', 'Wall time', 'Result'))}
 
+        ## R1, Terminal Assurance And R2 Closure
+
+        {markdown_table(
+            release_attempt_rows,
+            ('Start (UTC)', 'Stage', 'Run', 'Wall time', 'Result', 'Finding or passed scope', 'Candidate / Site rebuilt'),
+        )}
+
+        The first two terminal failures exposed missing network retry semantics and a
+        Chrome-process cleanup race. The next two promotion failures proved that a
+        downstream semantic/release validator was not being exercised early enough.
+        Those failures are the strongest direct evidence for the recommended shift-left
+        microfixtures and shared contracts: the final candidate commit remained
+        `51881ccc0ce1b77346b9cd8d4462c320bf203114` throughout all nine attempts.
+
         ## Publication Gates
 
         - `2026-08-03T11:45:45Z–11:47:43Z`: authenticated browser evidence was
@@ -1716,6 +1880,13 @@ def render_timeline(cycles: list[dict[str, Any]], runs: list[dict[str, Any]]) ->
         - `2026-08-03T13:47:21Z`: the terminal public journey passed 32/32 actions.
         - `2026-08-03T13:48:17Z–13:49:21Z`: uniquely named release receipts were
           uploaded after basename collisions were corrected.
+        - `2026-08-04T10:28:29Z`: the independently rooted heritage Pages deployment
+          completed from the immutable candidate commit.
+        - `2026-08-04T11:08:48Z`: immutable candidate release R1 was published.
+        - `2026-08-04T12:27:11Z`: final terminal assurance completed with 13,548/13,548
+          link identities, 11/11 protected pages and three 32-action browser journeys.
+        - `2026-08-04T12:28:42Z`: immutable promotion release R2 was published; its
+          ten-asset release attestation verified at `2026-08-04T12:28:43Z`.
 
         The 27-action candidate observation remains valid historical evidence, but the
         machine profile still names action 28 as the final gate while the terminal
@@ -2005,6 +2176,15 @@ def render_evidence(
             "verified until every required identity, claim, timestamp and evidence URL is supplied."
         )
     )
+    rollout_qualification = (
+        "All six milestones are verified from exact public identities, timestamps, "
+        "claims and URLs; no success state is inferred from local implementation."
+        if publication_evidence["status"] == "verified"
+        else (
+            "Pending milestones remain pending rather than being derived from local "
+            "implementation; each requires its complete public identity and claim set."
+        )
+    )
     text = frontmatter(
         "Report",
         "Heritage Foundry postmortem evidence",
@@ -2029,7 +2209,13 @@ def render_evidence(
         assurance and R2. Its generated
         [current-publication register](data/current-publication-evidence.json) and the
         appended public records in the [evidence register](data/evidence-register.json)
-        retain `pending` rather than deriving success from local implementation.
+        apply that fail-closed contract. {rollout_qualification}
+
+        The separate [R1/terminal/R2 attempt register](data/publication-attempt-register.json)
+        reconstructs all nine closure runs from their public workflow logs. It records the
+        failed step, bounded correction, control commit and retained artifact digest where
+        present. All nine records explicitly prove that neither candidate nor Site bytes
+        changed during closure.
 
         {markdown_table(current_rows, ('ID', 'Milestone', 'State', 'Subject', 'Claims', 'Public evidence'))}
 
@@ -2051,6 +2237,10 @@ def render_evidence(
         - The three Pages logs bind app, corpus, Site-tree and uploaded-artifact hashes.
         - The terminal release contains six uniquely named receipt assets with reported
           SHA-256 digests.
+        - The independent R1 is immutable and retains five exact candidate assets; R2 is
+          immutable and its GitHub Releases attestation binds all ten promotion assets.
+        - The final terminal artifact is independently hashed as
+          `sha256:2f9e5544a06bd143ab4f069c6cf65a4edf6f1c54a9fd88c0a7bfc74322f1447c`.
 
         ## Release Qualification
 
@@ -2295,6 +2485,10 @@ def implementation_acceptance_register(
     ]
     by_id = {item["id"]: item for item in items}
     if current_evidence_verified(publication_evidence, "PUBEV-001"):
+        by_id["IMP-002"]["status"] = "implemented-and-pr-70-verified"
+        by_id["IMP-002"]["remaining_gate"] = (
+            "No implementation gate remains; the scheduled mutation shadow is an ongoing regression control."
+        )
         for item_id in ("IMP-005", "IMP-006"):
             by_id[item_id]["status"] = "implemented-and-pr-70-verified"
             by_id[item_id]["remaining_gate"] = (
@@ -2324,6 +2518,9 @@ def implementation_acceptance_register(
     if current_evidence_verified(
         publication_evidence, "PUBEV-002", "PUBEV-003", "PUBEV-004", "PUBEV-005", "PUBEV-006"
     ):
+        for item_id in ("IMP-001", "IMP-004", "IMP-007"):
+            by_id[item_id]["status"] = "implemented-and-terminal-publication-verified"
+            by_id[item_id]["remaining_gate"] = "No terminal acceptance gate remains."
         by_id["IMP-009"]["status"] = "implemented-and-external-promotion-verified"
         by_id["IMP-009"]["remaining_gate"] = "No terminal publication gate remains."
         by_id["IMP-010"]["status"] = "implemented-and-terminal-release-verified"
@@ -2518,6 +2715,31 @@ def render_postmortem(
                 evidence_links,
             )
         )
+    release_attempts = load_release_attempt_register()["attempts"]
+    release_attempt_rows = [
+        (
+            item["id"],
+            item["stage"],
+            f"[{item['run_id']}]({item['run_url']})",
+            item["conclusion"],
+            item["failure_step"] or "all declared gates",
+            item["correction"],
+            "no / no",
+        )
+        for item in release_attempts
+    ]
+    rollout_state = (
+        "Public closure is now complete: the independently rooted Pages deployment, "
+        "immutable R1, final terminal observations, attested promotion envelope and "
+        "immutable R2 all bind candidate commit "
+        "`51881ccc0ce1b77346b9cd8d4462c320bf203114`."
+        if publication_evidence["status"] == "verified"
+        else (
+            "This remains local implementation acceptance rather than a public promotion "
+            "claim; exact Pages, terminal, attestation and immutable-release evidence is "
+            "still required."
+        )
+    )
     explorer_browser_seconds = sum(
         find_step_seconds(runs, item["run_id"], "Run Chrome, Firefox and WebKit browser tests")
         for item in ci_runs
@@ -2551,9 +2773,10 @@ def render_postmortem(
 
         The heritage exemplar achieved its functional and publication objective, but the
         process was inefficient in exactly the way the user observed: late findings caused
-        broad regeneration and complete green test cycles. GitHub itself did not fail—all
-        six relevant runs succeeded on attempt 1. The inefficiency was **three serial full
-        assurances around discoveries made by local audits and public browser gates**.
+        broad regeneration and complete green test cycles. The original six PR/Pages runs
+        all succeeded on attempt 1; the later cycle-free R1/terminal/R2 closure then failed
+        closed four times while exposing contracts that had not been exercised early enough.
+        Crucially, those four corrections did **not** rebuild the candidate or Site.
 
         The principal root cause is not simply that the corpus is large. The parent Foundry
         already documents a producer→plane→consumer dependency graph and selective
@@ -2576,9 +2799,7 @@ def render_postmortem(
         v2 shares the parent Foundry dependency contract; a deterministic impact planner
         selects separately owned plane emitters and assurance jobs; writes and Site
         components are content-addressed; and mutable evidence is outside the candidate
-        hash closure. This is **local implementation acceptance**, not a public promotion
-        claim. The external Pages identity, terminal journeys, attested envelope and
-        immutable release remain gates that must use their eventual real URLs and bytes.
+        hash closure. {rollout_state}
 
         ## Key Findings With Evidence
 
@@ -2673,20 +2894,19 @@ def render_postmortem(
         heritage rebuild. It reused the unchanged faithful, tiny, synthetic and Explorer
         roots; reran postmortem lint, bundle/viewer synchronization, OKF conformance,
         documentation links, Site inventory, capacity and tree identity; and did not
-        rerun the 100-question suite or either browser matrix. The resulting local Site
-        contains {metrics['postmortem_site_files']:,} files and retains the unchanged
+        rerun the 100-question suite or either browser matrix. That intermediate local Site
+        contained {metrics['postmortem_site_files']:,} files and retained the unchanged
         Explorer root
-        `{metrics['postmortem_explorer_tree_sha256']}`. Its
-        [machine-readable receipt](../../../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
-        names both rerun and reused gates and holds the exact Site-tree and capacity values.
-        Those self-describing Site values are intentionally not copied into this page,
-        because embedding a closure hash inside the closure would recreate the observer
-        loop diagnosed above.
+        `{metrics['postmortem_explorer_tree_sha256']}`. The command trace recorded the
+        explicit rerun and reuse sets at the time. Later full-candidate work superseded the
+        tracked [local-candidate receipt](../../../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json),
+        so this report does not mislabel that current receipt as the historical rebind.
+        Self-describing Site closure values remain outside the closure they identify.
 
-        This is not yet the proposed general impact planner: the change class was reviewed
-        manually. It is a concrete proof that recording unchanged roots plus an affected
-        gate set can avoid a full corpus/evaluation/browser cycle without weakening the
-        Site publication gate.
+        This documentation-only rebind preceded the general impact planner and its change
+        class was reviewed manually. The now-implemented planner generalizes the same proof:
+        unchanged roots plus an affected gate set can avoid a full corpus/evaluation/browser
+        cycle without weakening the Site publication gate.
 
         ### 6. Late checks were valuable, but many belonged earlier
 
@@ -2717,6 +2937,43 @@ def render_postmortem(
         Search, Semantic, Presentation, Evaluation-Control, Evidence, App, Site-Reading,
         Site-Data and Promotion ownership rather than path-order heuristics.
 
+        ### 8. The final closure proves that late errors can be corrected without rebuilding data
+
+        The independently rooted candidate was fixed at commit
+        `51881ccc0ce1b77346b9cd8d4462c320bf203114` before R1. Nine subsequent workflow
+        attempts exercised candidate release, complete-link observation, genuine Chrome,
+        three browser engines, envelope validation, attestation and immutable promotion.
+        Four attempts failed closed; each correction was confined to assurance or release
+        controls, and every row below records `no / no` for candidate and Site rebuild.
+
+        {markdown_table(
+            release_attempt_rows,
+            ('Attempt', 'Stage', 'Run', 'Result', 'Failed/passed boundary', 'Bounded correction or outcome', 'Candidate / Site rebuilt'),
+        )}
+
+        The failures reveal where the refactored process should move checks earlier:
+
+        - execute network retry/304 microfixtures before a 13,548-URL observation;
+        - exercise Chrome signal-exit and profile-cleanup paths without a public run;
+        - validate terminal artifacts with the exact downstream promotion loader before
+          uploading them;
+        - share the large-receipt loader between semantic and release-policy phases;
+        - retain failed artifacts with `if: always()` so cleanup errors cannot erase the
+          primary diagnostic.
+
+        The final terminal artifact covers all 13,548 canonical URLs. Two transient ArcGIS
+        calls succeeded on the single bounded retry; 6,685 protected-origin responses were
+        accepted only under the exact identifier-binding policy; all 11 delegated pages
+        passed in genuine Google Chrome; and Chromium, Firefox and WebKit each passed 32
+        actions plus two assertions. R2 then bound all ten release assets in a GitHub
+        Releases attestation and became platform-immutable.
+
+        One human-readable ambiguity remains visible by design: the annotated promotion
+        tag message names earlier successful terminal run `30907144661`, while the final
+        attested envelope unambiguously binds run `30908844005`. Both target the same
+        candidate. Moving the published tag would weaken provenance, so the report records
+        the discrepancy and treats the envelope, not tag prose, as authoritative status.
+
         ## Local Build And Test Activity
 
         The curated task log yields the following recognized local invocation counts. A
@@ -2732,9 +2989,10 @@ def render_postmortem(
 
         ## Scope, Data And Metric Definitions
 
-        The scope is the single Codex task, repository history from `f5d38674` to
-        `0b5d748d`, PRs #67–#69, their three CI and three Pages runs, the deployment
-        archives, the final release and local/public journey receipts. Definitions for
+        The scope is the single Codex task, repository history from `f5d38674` through
+        PR #70's assured implementation head, PRs #67–#69, their three CI and three Pages
+        runs, PR #70 CI, the independent Pages deployment, all nine R1/terminal/R2
+        attempts, both immutable releases and their retained receipts. Definitions for
         workflow time, file touches, amplification, late findings, dependency cones and
         outcome projections are in [Methodology](methodology.md).
 
@@ -2746,9 +3004,10 @@ def render_postmortem(
         ## Implementation And Acceptance Register
 
         Every item from the earlier **Recommended Next Steps** list now has a concrete
-        repository implementation and an executable acceptance contract. `implemented-local`
-        means those candidate artifacts exist; it does not silently promote an unverified
-        external Site or release. The same register is available as
+        repository implementation and an executable acceptance contract. Status is derived
+        from exact normalized PR, Pages, R1, terminal and R2 evidence; ongoing nightly or
+        freshness checks remain regression controls rather than unclosed implementation.
+        The same register is available as
         [machine-readable JSON](data/implementation-acceptance-register.json).
 
         {markdown_table(
@@ -2767,14 +3026,18 @@ def render_postmortem(
           change classes.
         - GitHub timestamps are exact to their reported resolution; local nested-command
           durations are not available individually.
-        - The additive 43m 41s workflow total is not end-user elapsed latency if runs or
-          jobs overlap.
+        - The additive 43m 41s historical PR/Pages workflow total is not end-user elapsed
+          latency if runs or jobs overlap; the nine release-closure runs are reported
+          separately because their failures are part of the analysis rather than the
+          original repeated-green baseline.
         - The stable question/journey projections prove identical recorded outcomes for
           PR #68 versus #69; they do not prove every invisible browser state was identical.
         - Selective reruns introduce under-invalidation risk. A periodic full audit,
           promotion full matrix and shadow comparison are mandatory safeguards.
         - The public prompt trace is complete for visible messages only and intentionally
           excludes hidden reasoning and tool payloads.
+        - The promotion tag is annotated but unsigned. Policy requires an annotated tag
+          plus an attested promotion envelope; it does not claim a signed Git tag.
 
         ## Resolved Architecture And Release Questions
 
@@ -2880,6 +3143,7 @@ def write_public_package(
     publication_evidence: dict[str, Any],
 ) -> list[Path]:
     metrics = report_metrics(exchanges, command_events, runs, cycles, evidence)
+    release_attempts = load_release_attempt_register()
     expected: list[Path] = []
 
     session_record = {
@@ -2915,6 +3179,7 @@ def write_public_package(
         "exchange-register.json": exchange_records,
         "command-event-register.json": command_events,
         "github-run-register.json": runs,
+        "publication-attempt-register.json": release_attempts,
         "rebuild-cycle-register.json": cycles,
         "evidence-register.json": evidence,
         "current-publication-evidence.json": publication_evidence,

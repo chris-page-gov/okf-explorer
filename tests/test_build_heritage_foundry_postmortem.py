@@ -15,6 +15,27 @@ import build_heritage_foundry_postmortem as postmortem  # noqa: E402
 
 
 class HeritageFoundryPostmortemTests(unittest.TestCase):
+    def pending_publication_evidence_input(self) -> dict:
+        value = copy.deepcopy(
+            json.loads(
+                postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH.read_text(
+                    encoding="utf-8"
+                )
+            )
+        )
+        required_fixed = {"repository", "number"}
+        for record in value["records"]:
+            record["status"] = "pending"
+            record["observed_at"] = None
+            record["evidence_urls"] = []
+            record["claims"] = []
+            for key in record["identities"]:
+                if key not in required_fixed:
+                    record["identities"][key] = None
+            if record["id"] in {"PUBEV-004", "PUBEV-005", "PUBEV-006"}:
+                record["subject_url"] = None
+        return value
+
     def verified_publication_evidence_input(self) -> dict:
         value = copy.deepcopy(
             json.loads(
@@ -79,7 +100,7 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
         )
         by_id["PUBEV-005"]["subject_url"] = (
             "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
-            "actions/runs/1"
+            f"actions/runs/{by_id['PUBEV-005']['identities']['workflow_run_id']}"
         )
         by_id["PUBEV-006"]["subject_url"] = (
             "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
@@ -161,12 +182,15 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
         )
         user, codex = postmortem.contribution_summary(exchange)
         self.assertIn("every postmortem recommendation", user)
-        self.assertIn("public promotion kept pending", codex)
+        self.assertIn("completed the public promotion", codex)
 
     def test_implementation_and_decision_registers_keep_terminal_state_explicit(
         self,
     ) -> None:
-        implementations = postmortem.implementation_acceptance_register()
+        pending = postmortem.normalize_current_publication_evidence(
+            self.pending_publication_evidence_input()
+        )
+        implementations = postmortem.implementation_acceptance_register(pending)
         self.assertEqual(
             {f"IMP-{number:03d}" for number in range(1, 11)},
             {item["id"] for item in implementations},
@@ -177,7 +201,7 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
         publication = next(item for item in implementations if item["id"] == "IMP-009")
         self.assertIn("promotion-pending", publication["status"])
 
-        decisions = postmortem.architecture_decisions()
+        decisions = postmortem.architecture_decisions(pending)
         self.assertEqual(
             {f"ADR-{number:03d}" for number in range(1, 7)},
             {item["id"] for item in decisions},
@@ -188,11 +212,11 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
             next(item for item in decisions if item["id"] == "ADR-006")["status"],
         )
 
-    def test_current_publication_evidence_is_pending_until_exact_urls_are_supplied(
+    def test_current_publication_evidence_is_verified_from_exact_public_facts(
         self,
     ) -> None:
         evidence = postmortem.load_current_publication_evidence()
-        self.assertEqual("pending", evidence["status"])
+        self.assertEqual("verified", evidence["status"])
         self.assertEqual(
             postmortem.sha256_file(postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH),
             evidence["source_sha256"],
@@ -207,7 +231,7 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
             "https://github.com/chris-page-gov/okf-explorer/pull/70",
             pr["subject_url"],
         )
-        self.assertTrue(all(record["status"] == "pending" for record in evidence["records"]))
+        self.assertTrue(all(record["status"] == "verified" for record in evidence["records"]))
         public_records = postmortem.public_current_evidence_records(evidence, 33)
         self.assertTrue(
             all(
@@ -216,16 +240,33 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
             )
         )
 
-        invented = copy.deepcopy(
-            json.loads(
-                postmortem.CURRENT_PUBLICATION_EVIDENCE_PATH.read_text(
-                    encoding="utf-8"
-                )
-            )
-        )
+        invented = self.pending_publication_evidence_input()
         invented["records"][0]["status"] = "verified"
         with self.assertRaisesRegex(ValueError, "cannot be verified"):
             postmortem.normalize_current_publication_evidence(invented)
+
+    def test_release_attempt_register_is_exact_and_candidate_neutral(self) -> None:
+        register = postmortem.load_release_attempt_register()
+        self.assertEqual(
+            "okf-heritage-foundry-release-attempt-register.v1",
+            register["schema"],
+        )
+        self.assertEqual(9, len(register["attempts"]))
+        self.assertEqual(
+            ["success", "failure", "failure", "success", "failure", "success", "failure", "success", "success"],
+            [item["conclusion"] for item in register["attempts"]],
+        )
+        self.assertTrue(
+            all(
+                item["candidate_bytes_changed"] is False
+                and item["site_bytes_changed"] is False
+                for item in register["attempts"]
+            )
+        )
+        self.assertEqual(
+            postmortem.sha256_file(postmortem.RELEASE_ATTEMPTS_PATH),
+            register["source_sha256"],
+        )
 
     def test_verified_publication_evidence_drives_terminal_register_states(self) -> None:
         evidence_input = self.verified_publication_evidence_input()
@@ -248,6 +289,14 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
         self.assertEqual(
             "implemented-and-terminal-release-verified",
             implementations["IMP-010"]["status"],
+        )
+        self.assertEqual(
+            "implemented-and-terminal-publication-verified",
+            implementations["IMP-001"]["status"],
+        )
+        self.assertEqual(
+            "implemented-and-pr-70-verified",
+            implementations["IMP-002"]["status"],
         )
         decisions = {
             item["id"]: item

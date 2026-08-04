@@ -27,8 +27,10 @@ unattended implementation ran from the first feature commit at
 `2026-08-03T13:49:21Z`: 4h 46m 43s of publicly evidenced commit-to-release
 activity inside a much longer research/build task.
 
-No relevant GitHub run failed. The broad repeats were triggered by findings
-made in local audits and real-browser/publication gates before each green PR.
+The six original PR and Pages runs did not fail. The later cycle-free release
+closure deliberately failed closed four times while exercising previously
+untested link, genuine-Chrome and R2 contracts. Every correction changed only
+assurance/release controls: the candidate and deployed Site were never rebuilt.
 
 ## Late-Finding Chronology
 
@@ -70,6 +72,28 @@ made in local audits and real-browser/publication gates before each green PR.
 | 2026-08-03T13:42:56Z | PR #69 post-merge-pages | [30819232224](https://github.com/chris-page-gov/okf-explorer/actions/runs/30819232224) | 3m 32s | success, attempt 1 |
 
 
+## R1, Terminal Assurance And R2 Closure
+
+| Start (UTC) | Stage | Run | Wall time | Result | Finding or passed scope | Candidate / Site rebuilt |
+|---|---|---|---|---|---|---|
+| 2026-08-04T11:07:47Z | candidate-release-r1 | [30903522306](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903522306) | 1m 14s | success | The candidate tag, deterministic archive, archive attestation, complete asset set and platform immutability all passed on the first release attempt. | no / no |
+| 2026-08-04T11:10:44Z | terminal-assurance | [30903729068](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30903729068) | 5m 49s | failure | Observe every rendered anchor and all three intent universes | no / no |
+| 2026-08-04T11:37:24Z | terminal-assurance | [30905570025](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30905570025) | 8m 17s | failure | Observe every explicitly protected rich page in genuine Chrome | no / no |
+| 2026-08-04T11:59:41Z | terminal-assurance | [30907144661](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30907144661) | 2m 56s | success | The complete link closure, genuine-Chrome protected-page observations and three-engine journey passed, but the later promotion validator exposed receipt-contract mismatches that terminal generation had not checked. | no / no |
+| 2026-08-04T12:04:20Z | promotion-release-r2 | [30907485088](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30907485088) | 1m 00s | failure | Validate R1-compatible R2 with trusted exact controls | no / no |
+| 2026-08-04T12:13:03Z | terminal-assurance | [30908113699](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908113699) | 4m 38s | success | Terminal generation and semantic promotion validation passed with aligned timestamps, channel and receipt size handling. | no / no |
+| 2026-08-04T12:18:37Z | promotion-release-r2 | [30908527197](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908527197) | 1m 00s | failure | Enforce same-commit tags and exact envelope attestation | no / no |
+| 2026-08-04T12:22:57Z | terminal-assurance | [30908844005](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30908844005) | 4m 14s | success | All 13,548 canonical URLs, 11 protected pages and the 32-action three-engine journey passed with exact receipt cross-binding. | no / no |
+| 2026-08-04T12:27:41Z | promotion-release-r2 | [30909191165](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/actions/runs/30909191165) | 1m 15s | success | R1 revalidation, terminal-envelope validation, envelope attestation, ten-asset closure, publication and platform immutability all passed. | no / no |
+
+
+The first two terminal failures exposed missing network retry semantics and a
+Chrome-process cleanup race. The next two promotion failures proved that a
+downstream semantic/release validator was not being exercised early enough.
+Those failures are the strongest direct evidence for the recommended shift-left
+microfixtures and shared contracts: the final candidate commit remained
+`51881ccc0ce1b77346b9cd8d4462c320bf203114` throughout all nine attempts.
+
 ## Publication Gates
 
 - `2026-08-03T11:45:45Z–11:47:43Z`: authenticated browser evidence was
@@ -83,6 +107,13 @@ made in local audits and real-browser/publication gates before each green PR.
 - `2026-08-03T13:47:21Z`: the terminal public journey passed 32/32 actions.
 - `2026-08-03T13:48:17Z–13:49:21Z`: uniquely named release receipts were
   uploaded after basename collisions were corrected.
+- `2026-08-04T10:28:29Z`: the independently rooted heritage Pages deployment
+  completed from the immutable candidate commit.
+- `2026-08-04T11:08:48Z`: immutable candidate release R1 was published.
+- `2026-08-04T12:27:11Z`: final terminal assurance completed with 13,548/13,548
+  link identities, 11/11 protected pages and three 32-action browser journeys.
+- `2026-08-04T12:28:42Z`: immutable promotion release R2 was published; its
+  ten-asset release attestation verified at `2026-08-04T12:28:43Z`.
 
 The 27-action candidate observation remains valid historical evidence, but the
 machine profile still names action 28 as the final gate while the terminal

@@ -22,11 +22,11 @@ tags:
 ## Source Identity
 
 - Source: one curated local Codex rollout JSONL.
-- SHA-256 at extraction: `db415b12079338b37583e12b719b5e08bab9abd982bd53df6bf98f900785b29b`.
-- Source bytes at extraction: `53611624`.
+- SHA-256 at extraction: `747b638f5a2ba42333eebdd5c1c506ff160d2db2555120eb075934b439a5c8ce`.
+- Source bytes at extraction: `57596313`.
 - Visible exchanges: `8`.
 - Visible user messages: `8`.
-- Visible assistant messages: `262`.
+- Visible assistant messages: `302`.
 - Raw path: retained only in the ignored private evidence plane.
 
 ## Reading Routes

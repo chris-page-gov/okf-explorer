@@ -19,7 +19,7 @@ tags:
 ---
 # Heritage Evaluation Foundry Engineering Postmortem
 
-This package reconstructs the Coventry and Warwickshire heritage exemplar from the task conversation, local Git history, three pull requests, six GitHub Actions runs, three retained Pages artifacts and the terminal release receipts.
+This package reconstructs the Coventry and Warwickshire heritage exemplar from the task conversation, local Git history, three pull requests, six GitHub Actions baseline runs, three retained Pages artifacts, nine R1/terminal/R2 closure runs and both immutable release closures.
 
 ## Start Here
 
@@ -35,12 +35,13 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 
 | Measure | Value | Definition |
 |---|---|---|
-| Relevant GitHub runs | 6 | All successful, all attempt 1 |
+| Original PR/Pages runs | 6 | All successful, all attempt 1 |
+| R1/terminal/R2 attempts | 9 | 5 passed; 4 fail-closed findings |
 | GitHub workflow wall time | 43m 41s | Three CI plus three Pages runs |
 | PR file touches | 4,280 | Includes repeated generated files |
 | Late findings reconstructed | 13 | Local audits and public gates |
 | Final Site | 14,010 files | 987,329,754 bytes |
-| Visible prompt-response exchanges | 8 | 262 Codex responses at extraction |
+| Visible prompt-response exchanges | 8 | 302 Codex responses at extraction |
 
 ## Prompt-Response Exchanges
 
@@ -53,7 +54,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 | [EX-0005](exchanges/0005-confirm-graph-browsing-cannot-mutate-the-bundle.md) | Confirm graph browsing cannot mutate the bundle | 54 |
 | [EX-0006](exchanges/0006-create-the-end-to-end-engineering-postmortem.md) | Create the end-to-end engineering postmortem | 16 |
 | [EX-0007](exchanges/0007-resolve-the-postmortem-architecture-questions.md) | Resolve the postmortem architecture questions | 1 |
-| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 48 |
+| [EX-0008](exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md) | Implement every recommended refactoring and publication control | 88 |
 
 ## Machine-Readable Registers
 
@@ -61,6 +62,7 @@ This package reconstructs the Coventry and Warwickshire heritage exemplar from t
 - [Exchange register](data/exchange-register.json)
 - [Relevant local command events](data/command-event-register.json)
 - [GitHub run register](data/github-run-register.json)
+- [R1/terminal/R2 attempt register](data/publication-attempt-register.json)
 - [Rebuild-cycle register](data/rebuild-cycle-register.json)
 - [Evidence register](data/evidence-register.json)
 - [Current PR/publication/release evidence](data/current-publication-evidence.json)
