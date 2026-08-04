@@ -1,56 +1,38 @@
 {
   "schema": "okf-evaluation-feature-coverage.v1",
   "profile_id": "heritage-coventry-warwickshire-v1",
-  "bundle": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json",
-  "generated_at": "2026-08-03T10:29:12Z",
+  "bundle": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
   "suitability": "strong",
-  "assessment_stage": "evaluated-public-verification-passed",
-  "publication_status": "passed",
-  "demonstrated_definition": "True means the capability has source support plus generated-artifact, automated-test or real-browser evidence. Publication is demonstrated for the exact deployment and candidate digests observed at 2026-08-03T12:29:08.274Z; mutable Pages and source URLs require a new observation after change.",
-  "local_evidence": {
-    "corpus_descriptor": {"receipt":"evaluation/heritage/okf-explorer.json","snapshot":"heritage-coventry-warwickshire-20260803-v2","generated_at":"2026-08-03T10:29:12Z","records":7640,"heritage_assets":6556,"risk_records":1084,"resources":22200,"relationships":9566},
-    "search": {"receipt":"evaluation/heritage/data/search/manifest.json","documents":7640,"tokens":22040,"postings":626287,"max_edit_distance":1},
-    "semantics": {"receipt":"evaluation/heritage/data/semantic/validation-report.json","valid":true,"registered_iris":7646,"assertions":9566,"predicates":3},
-    "links": {"receipt":"evaluation/heritage/data/link-validation.json","failures":0,"record_links":7640,"resource_links":22200,"internal_resource_references":22200,"identifier_bound_rich_links":15280,"relationship_ui_links":65878,"live_external_receipts":0},
-    "release_artifact_planes": {"receipt":"evaluation/heritage/assurance/plane-roots.json","count":5,"names":["control","data","presentation","search","semantic"]},
-    "explorer_presentation_views": {"journey":"journey-faithful","status":"passed-locally","count":8,"names":["Reader","Graph","Links","Timeline","Type","Resources","Map","Narrative"]},
-    "site_build": {"command":".venv/bin/python scripts/build_site.py","status":"passed-locally","reading_pages":239,"internal_page_references":4157,"github_pages_size_gate":"passed-under-1000000000-bytes"},
-    "public_verification": {
-      "journey": "journey-publication",
-      "status": "passed",
-      "demonstrated": true,
-      "observed_at": "2026-08-03T12:29:08.274Z",
-      "deployment_commit": "c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2",
-      "pages_run": 30813485357,
-      "pages_run_url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
-      "descriptor_sha256": "2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149",
-      "release_root_sha256": "aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb",
-      "journeys": {"passed":1,"total":1},
-      "actions": {"passed":27,"total":27},
-      "assertions": {"passed":2,"total":2},
-      "result_sha256": "36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4",
-      "immutable_evidence": {
-        "release": "https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803",
-        "final_promotion_gate": "action-28-release-page-validation",
-        "attachment_policy": "Exact terminal results are attached to the tagged promoted commit without mutating the verified Site bytes"
-      }
-    }
+  "demonstrated_definition": "True means the immutable candidate contains the stated source support, generated artifact and executable check. It is not a claim that a deployment or external URL currently passes. Run identifiers, timestamps, results and promotion status belong only in an independently signed promotion envelope or freshness receipt outside the candidate.",
+  "candidate_evidence": {
+    "corpus_descriptor": {"receipt":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json","snapshot":"heritage-coventry-warwickshire-20260803-v2","records":7640,"heritage_assets":6556,"risk_records":1084,"resources":22200,"relationships":9566},
+    "search": {"receipt":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/search/manifest.json","documents":7640,"tokens":22040,"postings":626287,"max_edit_distance":1},
+    "semantics": {"receipt":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/validation-report.json","valid":true,"registered_iris":7646,"assertions":9566,"predicates":3,"authoring":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld","interchange":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.jsonld"},
+    "links": {"receipt":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/link-validation.json","shards":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/link-validation/manifest.json","record_links":7640,"resource_links":22200,"internal_resource_references":22200,"identifier_bound_rich_links":15280,"relationship_ui_links":65878,"shard_key":"sha256(canonical_url)","external_freshness_receipts":"outside-candidate"},
+    "artifact_planes": {"receipt":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/assurance/plane-roots.json","build_manifest":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/assurance/build-manifest.json","count":5,"names":["control","data","presentation","search","semantic"]},
+    "browser_contract": {"journey":"journey-faithful","views":["Reader","Graph","Links","Timeline","Type","Resources","Map","Narrative"],"promotion_evidence":"outside-candidate"},
+    "publication_unit": {"repository":"https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire","pages_base":"https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/","runtime":"https://chris-page-gov.github.io/okf-explorer/"}
+  },
+  "promotion_boundary": {
+    "candidate_contains": ["source-backed records and resources","stable mappings and feature claims","executable journeys","content digests and plane roots","canonical-URL link-intent shards"],
+    "candidate_excludes": ["deployment status","observation timestamps","workflow run identifiers","mutable link-health results","promotion decisions"],
+    "required_envelope": "okf-evaluation-promotion-envelope.v1"
   },
   "capabilities": [
-    {"id":"search","source_support":"strong","demonstrated":true,"evidence":["Weighted names, identifiers, alternatives and bounded typo correction with explanations"],"journey":"journey-faithful","limitations":["One-edit correction is intentionally conservative"],"synthetic_demonstration":false},
+    {"id":"search","source_support":"strong","demonstrated":true,"evidence":["Weighted preferred names, identifiers, alternatives and bounded typo correction with explanations","Search shards are independently digest-bound so a vocabulary-only correction need not rebuild unrelated data"],"journey":"journey-faithful","limitations":["One-edit correction is intentionally conservative"],"synthetic_demonstration":false},
     {"id":"facets","source_support":"strong","demonstrated":true,"evidence":["Exact precomputed distributions for designation, grade, geography, date, source and risk fields"],"journey":"journey-faithful","limitations":["Not every field applies to every category or year"],"synthetic_demonstration":false},
     {"id":"types","source_support":"strong","demonstrated":true,"evidence":["Source layers and annual event types project to explicit record and heritage types"],"journey":"journey-faithful","limitations":[],"synthetic_demonstration":false},
     {"id":"resources","source_support":"strong","demonstrated":true,"evidence":["Official NHLE rich page, exact HAR register search, source feature, annual workbook and frozen geometry resources"],"journey":"journey-faithful","limitations":["Rich narrative remains at source","A HAR annual row binds its List Entry Number to the official search endpoint and does not invent the live register's opaque item ID"],"synthetic_demonstration":false},
-    {"id":"graph","source_support":"strong","demonstrated":true,"evidence":["Boundary membership, HAR-to-NHLE and annual-continuity assertions carry predicates, evidence and authority"],"journey":"journey-faithful","limitations":["Annual continuity is visibly normalized, not source-declared"],"synthetic_demonstration":true},
-    {"id":"links","source_support":"strong","demonstrated":true,"evidence":["The Links plane projects governed relationship types and source/target routes from the same filtered record set"],"journey":"journey-faithful","limitations":["A link is not evidence of legal effect unless its assertion metadata says so"],"synthetic_demonstration":true},
+    {"id":"graph","source_support":"strong","demonstrated":true,"evidence":["Boundary membership, HAR-to-NHLE and annual-continuity assertions carry predicates, evidence and authority","YAML-LD is the authoring representation; the normalized semantic graph and its semantic plane root define graph identity"],"journey":"journey-faithful","limitations":["Annual continuity is visibly normalized, not source-declared"],"synthetic_demonstration":true},
+    {"id":"links","source_support":"strong","demonstrated":true,"evidence":["The Links plane projects governed relationship types and source/target routes from the same filtered record set","Stable intents are sharded by the SHA-256 of each canonical URL; changing a link touches only its shard and dependent checks"],"journey":"journey-faithful","limitations":["A link is not evidence of legal effect unless its assertion metadata says so","External availability is a time-bounded observation recorded outside the candidate"],"synthetic_demonstration":true},
     {"id":"timeline","source_support":"strong","demonstrated":true,"evidence":["Designation, amendment and annual register dates drive the same filtered result set"],"journey":"journey-faithful","limitations":["Different categories use different statutory date meanings"],"synthetic_demonstration":false},
     {"id":"map","source_support":"strong","demonstrated":true,"evidence":["Source geometry shards, exact scope memberships and labelled polygon representative points"],"journey":"journey-faithful","limitations":["Representative points are schematic"],"synthetic_demonstration":false},
     {"id":"narrative","source_support":"strong","demonstrated":true,"evidence":["The Narrative plane explains how every view remains a projection of one evidence-bound query and facet state"],"journey":"journey-faithful","limitations":["Generated narrative explains the evaluation and does not reproduce Historic England rich-page prose"],"synthetic_demonstration":false},
     {"id":"data-card","source_support":"strong","demonstrated":true,"evidence":["Selected record exposes source values, normalization, identifiers, geometry, quality and links"],"journey":"journey-faithful","limitations":[],"synthetic_demonstration":false},
     {"id":"provenance","source_support":"strong","demonstrated":true,"evidence":["Snapshot, request, source object or workbook row, relationship evidence and assertion labels"],"journey":"journey-faithful","limitations":["Source provenance is not an independent factual audit"],"synthetic_demonstration":false},
-    {"id":"durable-state","source_support":"strong","demonstrated":true,"evidence":["The local real-browser faithful journey preserves one query and facet state through view changes, Back, Forward and reload"],"journey":"journey-faithful","limitations":[],"synthetic_demonstration":false},
-    {"id":"accessibility","source_support":"partial","demonstrated":true,"evidence":["Keyboard-reachable controls, semantic labels, live result summaries, reduced-motion behavior and HVR001/HVR002 viewport evidence"],"journey":"journey-tiny","limitations":["Automated checks complement but do not replace assistive-technology user testing"],"synthetic_demonstration":false},
-    {"id":"publication","source_support":"strong","demonstrated":true,"evidence":["The current promotion-candidate Site build rendered 239 reading pages, resolved 4,157 internal page references and passed the 1 GB GitHub Pages size gate","Five release artifact planes have rooted digests, and all eight Explorer presentation views passed the local faithful journey","The exact GitHub Pages candidate at commit c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2 passed journey-publication: 1/1 journey, 27/27 actions and 2/2 assertions","The deployed descriptor SHA-256 was 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149 and release root was aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb","The promoted journey validates the immutable release page as action 28, and exact terminal results are attached to that tagged commit"],"journey":"journey-publication","limitations":["The pass is an observation of Pages run 30813485357 at 2026-08-03T12:29:08.274Z; mutable Pages and external source URLs can change","Publication success does not turn this evaluation into a legal register or make Historic England source claims independently assured"],"synthetic_demonstration":false}
+    {"id":"durable-state","source_support":"strong","demonstrated":true,"evidence":["The faithful journey requires one query and facet state to survive view changes, Back, Forward and reload"],"journey":"journey-faithful","limitations":[],"synthetic_demonstration":false},
+    {"id":"accessibility","source_support":"partial","demonstrated":true,"evidence":["The tiny journey and visual contracts require keyboard-reachable controls, semantic labels, live result summaries, reduced-motion behavior and HVR001/HVR002 viewport coverage"],"journey":"journey-tiny","limitations":["Automated checks complement but do not replace assistive-technology user testing"],"synthetic_demonstration":false},
+    {"id":"publication","source_support":"strong","demonstrated":true,"evidence":["A separate publication unit owns the rooted faithful, tiny and synthetic corpus while OKF Explorer remains the reusable runtime","The candidate carries per-plane roots, a manifest-owned file inventory, HTML-reading-page requirements and an executable publication journey","Promotion requires an independently signed envelope binding the exact candidate, deployed descriptor, plane roots, browser results and release identity"],"journey":"journey-publication","limitations":["Candidate capability does not assert that Pages or an external source URL currently works","Live-link freshness receipts and deployment observations expire independently and remain outside the candidate","Publication success does not turn this evaluation into a legal register or make Historic England source claims independently assured"],"synthetic_demonstration":false}
   ],
-  "publication_boundary": "The faithful corpus is an evaluation projection, not a legal register; the synthetic bundle is separately identified, default-off and excluded from faithful counts and search."
+  "publication_boundary": "The faithful corpus is an evaluation projection, not a legal register; the synthetic bundle is separately identified, default-off and excluded from faithful counts and search. Promotion and link-freshness observations are independent evidence and do not mutate the candidate."
 }

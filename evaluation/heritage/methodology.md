@@ -1,10 +1,10 @@
 ---
 "@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
-"@id": https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/methodology.html
+"@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/methodology.html
 type: Methodology
 title: Coventry and Warwickshire Heritage Evaluation methodology
 description: Scope, acquisition, normalization, link and completeness rules for the exemplar.
-resource: https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/data/source-provenance.json
+resource: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder
   at: "2026-08-03T10:29:12Z"

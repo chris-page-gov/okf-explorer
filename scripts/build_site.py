@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import html
 import json
@@ -10,12 +11,15 @@ import posixpath
 import re
 import shutil
 import subprocess
+from contextlib import contextmanager
 from functools import lru_cache
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import Callable, Iterator
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
 import build_okf_bundle
+import site_component_cache
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +77,10 @@ HERITAGE_LOCAL_CANDIDATE_RECEIPT = Path(
     "evidence",
     "local-candidate-receipt.json",
 )
+PROMOTION_ENVELOPE = Path(
+    "release-assurance",
+    "heritage-publication-envelope.json",
+)
 ASSEMBLED_SITE_VERIFIER = (
     ROOT
     / "apps"
@@ -116,12 +124,58 @@ PUBLIC_DIRS = [
     "profiles",
     "registry",
     "constraints",
+    "publication-units",
 ]
 MARKDOWN_DISCOVERY_ROOTS = ("docs", "profiles", "evaluation-foundry", "evaluation")
 MARKDOWN_DISCOVERY_EXCLUDED_DIRS = {"uk-government-apis"}
 GITHUB_REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
 FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
+SITE_COMPONENTS = ("data", "shell", "docs", "app")
+DEFAULT_SITE_COMPONENT_CACHE = ROOT / ".site-components"
+SITE_COMPONENT_OVERRIDE_OWNERS = {
+    "404.html": "app",
+    "okf-registry.json": "app",
+}
+PUBLICATION_UNIT_DESCRIPTOR = (
+    ROOT
+    / "publication-units"
+    / "heritage-coventry-warwickshire"
+    / "publication-unit.json"
+)
+
+
+@lru_cache(maxsize=1)
+def externalized_publication_mappings() -> tuple[dict[str, str], ...]:
+    """Return immutable source-to-public mappings for external data units."""
+
+    descriptor = json.loads(PUBLICATION_UNIT_DESCRIPTOR.read_text(encoding="utf-8"))
+    base_url = descriptor["publication"]["pages_base_url"]
+    mappings = []
+    for material in descriptor["materials"]:
+        if material["role"] not in {"corpus", "fixture"}:
+            continue
+        mappings.append(
+            {
+                "source": material["source"].rstrip("/"),
+                "target": material["target"].rstrip("/"),
+                "base_url": base_url,
+            }
+        )
+    return tuple(mappings)
+
+
+def externalized_publication_target(relative: Path) -> str | None:
+    value = relative.as_posix()
+    for mapping in externalized_publication_mappings():
+        source = mapping["source"]
+        if value != source and not value.startswith(f"{source}/"):
+            continue
+        suffix = value.removeprefix(source).lstrip("/")
+        target = mapping["target"]
+        path = posixpath.join(target, suffix) if target not in {"", "."} else suffix
+        return f"{mapping['base_url']}{path}"
+    return None
 
 
 def beginner_sources() -> list[Path]:
@@ -325,23 +379,65 @@ def rewrite_published_href(
     href: str,
     source: Path,
     output_route: Path,
+    *,
+    repository_asset: bool = False,
 ) -> str:
     parts = urlsplit(href)
     if parts.scheme or parts.netloc or not parts.path or parts.path.startswith("/"):
         return href
     candidate = (source.parent / unquote(parts.path)).resolve()
     target_route = published_source_routes().get(candidate)
-    if target_route is None:
-        return href
-    return urlunsplit(
-        (
-            "",
-            "",
-            relative_site_href(output_route, target_route),
-            parts.query,
-            parts.fragment,
+    if target_route is not None:
+        return urlunsplit(
+            (
+                "",
+                "",
+                relative_site_href(output_route, target_route),
+                parts.query,
+                parts.fragment,
+            )
         )
-    )
+    try:
+        relative = candidate.relative_to(ROOT.resolve())
+    except ValueError:
+        return href
+    external = externalized_publication_target(relative)
+    if external is not None:
+        external_parts = urlsplit(external)
+        external_path = external_parts.path
+        if candidate.suffix.lower() == ".md":
+            external_path = str(Path(external_path).with_suffix(".html"))
+        return urlunsplit(
+            (
+                external_parts.scheme,
+                external_parts.netloc,
+                external_path,
+                parts.query,
+                parts.fragment,
+            )
+        )
+    if candidate.is_file() and not repository_source_is_copied_to_site(relative):
+        repository_url = (
+            github_raw_url(candidate)
+            if repository_asset
+            else github_source_url(candidate)
+        )
+        return urlunsplit(
+            (*urlsplit(repository_url)[:3], parts.query, parts.fragment)
+        )
+    return href
+
+
+def repository_source_is_copied_to_site(relative: Path) -> bool:
+    """Return whether a repository path is materialized at its Site path."""
+
+    if not is_component_source_allowed(relative):
+        return False
+    if externalized_publication_target(relative) is not None:
+        return False
+    if len(relative.parts) == 1:
+        return relative.as_posix() in PUBLIC_ROOT_FILES
+    return relative.parts[0] in PUBLIC_DIRS
 
 
 def rewrite_beginner_href(href: str, source: Path) -> str:
@@ -369,20 +465,43 @@ def published_markdown_renderer() -> MarkdownIt:
         {"html": False, "breaks": False, "typographer": False},
     ).enable(["table", "strikethrough"])
 
-    def render_link_open(tokens, index, options, env):
+    def rewrite_attribute(
+        tokens,
+        index,
+        env,
+        attribute,
+        *,
+        repository_asset=False,
+    ):
         source = env.get("source")
         output_route = env.get("output_route")
-        href = tokens[index].attrGet("href")
+        href = tokens[index].attrGet(attribute)
         if source and output_route and href:
             tokens[index].attrSet(
-                "href",
+                attribute,
                 rewrite_published_href(
                     href,
                     Path(source),
                     Path(output_route),
+                    repository_asset=repository_asset,
                 ),
             )
+
+    def render_link_open(tokens, index, options, env):
+        rewrite_attribute(tokens, index, env, "href")
         return renderer.renderer.renderToken(tokens, index, options, env)
+
+    default_image_renderer = renderer.renderer.rules["image"]
+
+    def render_image(tokens, index, options, env):
+        rewrite_attribute(
+            tokens,
+            index,
+            env,
+            "src",
+            repository_asset=True,
+        )
+        return default_image_renderer(tokens, index, options, env)
 
     def render_heading_open(tokens, index, options, env):
         inline = tokens[index + 1] if index + 1 < len(tokens) else None
@@ -402,6 +521,7 @@ def published_markdown_renderer() -> MarkdownIt:
         return "</table></div>\n"
 
     renderer.renderer.rules["link_open"] = render_link_open
+    renderer.renderer.rules["image"] = render_image
     renderer.renderer.rules["heading_open"] = render_heading_open
     renderer.renderer.rules["table_open"] = render_table_open
     renderer.renderer.rules["table_close"] = render_table_close
@@ -470,6 +590,10 @@ def render_beginner_page(
         relative_site_href(output_route, source.relative_to(ROOT)),
         quote=True,
     )
+    favicon_href = html.escape(
+        relative_site_href(output_route, Path("favicon.svg")),
+        quote=True,
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -480,6 +604,7 @@ def render_beginner_page(
 <link rel="canonical" href="{html.escape(canonical_page_url(output_route), quote=True)}">
 <link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
   title="Markdown source">
+<link rel="icon" type="image/svg+xml" href="{favicon_href}">
 <link rel="stylesheet" href="guide.css">
 </head>
 <body>
@@ -579,6 +704,14 @@ def github_source_url(source: Path) -> str:
     return f"{GITHUB_REPOSITORY}/blob/main/{quote(relative, safe='/')}"
 
 
+def github_raw_url(source: Path) -> str:
+    relative = source.resolve().relative_to(ROOT.resolve()).as_posix()
+    return (
+        "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/"
+        f"main/{quote(relative, safe='/')}"
+    )
+
+
 def split_frontmatter(markdown: str) -> tuple[str | None, str]:
     if not markdown.startswith("---\n"):
         return None, markdown
@@ -642,6 +775,10 @@ def render_generic_page(source: Path, target: Path) -> str:
         relative_site_href(target, Path("docs/foundry.css")),
         quote=True,
     )
+    favicon_href = html.escape(
+        relative_site_href(target, Path("favicon.svg")),
+        quote=True,
+    )
     explorer_href = html.escape(
         relative_site_directory_href(target, Path(".")),
         quote=True,
@@ -667,6 +804,7 @@ def render_generic_page(source: Path, target: Path) -> str:
 <link rel="canonical" href="{html.escape(canonical_page_url(target), quote=True)}">
 <link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
   title="Markdown source">
+<link rel="icon" type="image/svg+xml" href="{favicon_href}">
 <link rel="stylesheet" href="{stylesheet_href}">
 <link rel="stylesheet" href="{navigation_stylesheet_href}">
 </head>
@@ -772,6 +910,10 @@ def render_foundry_page(
         relative_site_href(target, Path("docs/foundry.js")),
         quote=True,
     )
+    favicon_href = html.escape(
+        relative_site_href(target, Path("favicon.svg")),
+        quote=True,
+    )
     explorer_href = html.escape(
         relative_site_directory_href(target, Path(".")),
         quote=True,
@@ -793,6 +935,7 @@ def render_foundry_page(
 <link rel="canonical" href="{html.escape(canonical_foundry_url(target), quote=True)}">
 <link rel="alternate" type="text/markdown" href="{markdown_alternate_href}"
   title="Markdown source">
+<link rel="icon" type="image/svg+xml" href="{favicon_href}">
 <link rel="stylesheet" href="{stylesheet_href}">
 <link rel="stylesheet" href="{foundry_stylesheet_href}">
 <script src="{script_href}" defer></script>
@@ -857,6 +1000,58 @@ def write_foundry_pages() -> None:
     copy_file(canonical_profile, compatibility_profile)
 
 
+def render_external_publication_compatibility(
+    source: Path,
+    target: Path,
+) -> tuple[str, str]:
+    relative = source.resolve().relative_to(ROOT.resolve())
+    external_source = externalized_publication_target(relative)
+    if external_source is None:
+        raise ValueError(f"source is not externally published: {relative}")
+    # pathlib preserves the https:/ spelling poorly, so only transform the URL path.
+    parts = urlsplit(external_source)
+    external_html = urlunsplit(
+        (
+            parts.scheme,
+            parts.netloc,
+            str(Path(parts.path).with_suffix(".html")),
+            parts.query,
+            parts.fragment,
+        )
+    )
+    title = markdown_title(source)
+    favicon_href = html.escape(
+        relative_site_href(target, Path("favicon.svg")),
+        quote=True,
+    )
+    page = f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(title)} · external OKF publication</title>
+<link rel="canonical" href="{html.escape(external_html, quote=True)}">
+<link rel="alternate" type="text/markdown" href="{html.escape(external_source, quote=True)}">
+<link rel="icon" type="image/svg+xml" href="{favicon_href}">
+<meta http-equiv="refresh" content="0; url={html.escape(external_html, quote=True)}">
+</head>
+<body>
+<main id="main-content">
+<h1>{html.escape(title)}</h1>
+<p>This large exemplar now has its own publication unit.</p>
+<p><a href="{html.escape(external_html, quote=True)}">Open the external reading page</a>.</p>
+</main>
+</body>
+</html>
+"""
+    markdown = (
+        f"# {title}\n\n"
+        "This large exemplar now has its own publication unit.\n\n"
+        f"[Open the external reading page]({external_html}).\n"
+    )
+    return page, markdown
+
+
 def write_generic_reading_pages() -> None:
     specialised = {source.resolve() for source in beginner_sources()}
     specialised.update(
@@ -873,11 +1068,21 @@ def write_generic_reading_pages() -> None:
             raise RuntimeError(
                 f"rendered documentation would overwrite {target}"
             )
-        output.write_text(
-            render_generic_page(source, target),
-            encoding="utf-8",
-        )
         relative = source.relative_to(ROOT.resolve())
+        if externalized_publication_target(relative) is not None:
+            rendered, markdown = render_external_publication_compatibility(
+                source,
+                target,
+            )
+            output.write_text(rendered, encoding="utf-8")
+            raw_output = OUT / relative
+            raw_output.parent.mkdir(parents=True, exist_ok=True)
+            raw_output.write_text(markdown, encoding="utf-8")
+        else:
+            output.write_text(
+                render_generic_page(source, target),
+                encoding="utf-8",
+            )
         if relative.parts and relative.parts[0] == "profiles":
             compatibility = OUT / relative.with_suffix(".html")
             if compatibility.exists():
@@ -935,9 +1140,17 @@ def copy_file(source: Path, target: Path) -> None:
     shutil.copy2(source, target)
 
 
-def copy_public_tree(source_dir: Path, target_dir: Path) -> None:
+def copy_public_tree(
+    source_dir: Path,
+    target_dir: Path,
+    *,
+    include: Callable[[Path], bool] | None = None,
+) -> None:
     for source in source_dir.rglob("*"):
         if source.is_dir():
+            continue
+        relative_to_source = source.relative_to(source_dir)
+        if include is not None and not include(relative_to_source):
             continue
         try:
             relative_to_root = source.resolve().relative_to(ROOT.resolve())
@@ -949,7 +1162,7 @@ def copy_public_tree(source_dir: Path, target_dir: Path) -> None:
             continue
         if source.suffix.lower() in FORBIDDEN_SUFFIXES:
             continue
-        copy_file(source, target_dir / source.relative_to(source_dir))
+        copy_file(source, target_dir / relative_to_source)
 
 
 def assert_no_forbidden_files() -> None:
@@ -962,6 +1175,14 @@ def assert_no_forbidden_files() -> None:
             errors.append(rel)
         if path.suffix.lower() in FORBIDDEN_SUFFIXES:
             errors.append(rel)
+        if path.relative_to(OUT) == PROMOTION_ENVELOPE:
+            errors.append(
+                f"{rel} (promotion observations must remain outside Site bytes)"
+            )
+        if is_mutable_evaluation_evidence(path.relative_to(OUT)):
+            errors.append(
+                f"{rel} (mutable evaluation evidence must remain outside Site bytes)"
+            )
     if errors:
         joined = "\n".join(f"- {error}" for error in errors)
         raise RuntimeError(f"forbidden files in site build:\n{joined}")
@@ -1168,6 +1389,57 @@ def assert_local_candidate_receipt_matches_built_site(
     return site_tree
 
 
+def site_candidate_receipt(
+    *,
+    reading_pages: int,
+    internal_references: int,
+    site_bytes: int,
+    remaining_bytes: int,
+) -> dict[str, object]:
+    """Compute pre-deploy identity without placing observations in the Site."""
+
+    explorer_tree, explorer_manifest = assembled_explorer_identity()
+    site_tree = published_site_tree_receipt()
+    return {
+        "schema": "okf-site-candidate-receipt.v1",
+        "algorithm": "deterministic-pre-deploy-identity-without-observations-v1",
+        "explorer": {
+            "tree_sha256": explorer_tree,
+            "manifest_sha256": explorer_manifest,
+        },
+        "site": {
+            "reading_pages": reading_pages,
+            "internal_references": internal_references,
+            "file_count": site_tree["file_count"],
+            "tree_algorithm": site_tree["algorithm"],
+            "tree_sha256": site_tree["tree_sha256"],
+            "size_gate": {
+                "status": "passed",
+                "limit_bytes": GITHUB_PAGES_SITE_LIMIT_BYTES,
+                "site_bytes": site_bytes,
+                "headroom_bytes": remaining_bytes,
+            },
+        },
+    }
+
+
+def write_site_candidate_receipt(path: Path, receipt: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    temporary = path.with_name(f".{path.name}.tmp")
+    temporary.write_text(payload, encoding="utf-8")
+    temporary.replace(path)
+
+
+def require_receipt_outside_site(path: Path) -> Path:
+    resolved = path.resolve()
+    if resolved.is_relative_to(OUT.resolve()):
+        raise RuntimeError(
+            "the pre-deploy candidate receipt must remain outside Site bytes"
+        )
+    return resolved
+
+
 def remove_platform_metadata() -> None:
     for path in OUT.rglob("*"):
         if path.is_file() and path.name in FORBIDDEN_NAMES:
@@ -1359,52 +1631,258 @@ def assert_readable_document_links() -> tuple[int, int]:
     return len(routes), internal_references
 
 
-def main() -> int:
-    if OUT.exists():
-        for _attempt in range(3):
-            shutil.rmtree(OUT, ignore_errors=True)
-            if not OUT.exists():
-                break
-        if OUT.exists():
-            raise RuntimeError(f"could not clear {OUT}; close Finder windows using the generated site and retry")
-    OUT.mkdir(parents=True)
+def is_mutable_evaluation_evidence(relative: Path) -> bool:
+    parts = relative.parts
+    return bool(
+        parts
+        and parts[0] in {"evaluation", "evaluation-foundry"}
+        and "evidence" in parts
+    )
 
+
+def is_component_source_allowed(relative: Path) -> bool:
+    return not (
+        relative.name in FORBIDDEN_NAMES
+        or relative.name.startswith("~$")
+        or relative.suffix.lower() in FORBIDDEN_SUFFIXES
+        or is_ephemeral_evaluation_result(relative)
+        or is_mutable_evaluation_evidence(relative)
+        or relative == PROMOTION_ENVELOPE
+    )
+
+
+def component_source_fingerprint(
+    component: str,
+) -> tuple[str, list[dict[str, object]]]:
+    """Return the exact source identity controlling one Site component."""
+
+    common = [
+        ROOT / "scripts" / "build_site.py",
+        ROOT / "scripts" / "site_component_cache.py",
+        PUBLICATION_UNIT_DESCRIPTOR,
+    ]
+    if component == "app":
+        sources = [*common, SVELTE_EXPLORER_BUILD]
+
+        def include(relative: Path) -> bool:
+            return is_component_source_allowed(relative)
+
+    elif component == "docs":
+        sources = [
+            *common,
+            ROOT / "scripts" / "build_okf_bundle.py",
+            ROOT / "scripts" / "update_viewer.py",
+            ROOT / "requirements-okf.txt",
+            ROOT / "okf.config.json",
+            *(ROOT / name for name in PUBLIC_ROOT_FILES),
+            *(ROOT / name for name in PUBLIC_DIRS),
+        ]
+
+        def include(relative: Path) -> bool:
+            if not is_component_source_allowed(relative):
+                return False
+            if relative.parts and relative.parts[0] in {"scripts", "docs"}:
+                return True
+            return (
+                relative.suffix.lower() == ".md"
+                or relative.as_posix()
+                in {
+                    "requirements-okf.txt",
+                    "okf.config.json",
+                    PUBLICATION_UNIT_DESCRIPTOR.relative_to(ROOT).as_posix(),
+                }
+            )
+
+    elif component == "data":
+        sources = [
+            *common,
+            *(ROOT / name for name in PUBLIC_ROOT_FILES),
+            *(ROOT / name for name in PUBLIC_DIRS if name not in {"docs", "explorer"}),
+        ]
+
+        def include(relative: Path) -> bool:
+            return (
+                is_component_source_allowed(relative)
+                and relative.suffix.lower() != ".md"
+                and relative.as_posix() not in {"view.html"}
+                and externalized_publication_target(relative) is None
+            )
+
+    elif component == "shell":
+        sources = [
+            *common,
+            ROOT / "viewer.html",
+            ROOT / "explorer",
+        ]
+
+        def include(relative: Path) -> bool:
+            return is_component_source_allowed(relative)
+
+    else:
+        raise ValueError(f"unknown Site component: {component}")
+    return site_component_cache.source_fingerprint(
+        ROOT,
+        sources,
+        include=include,
+    )
+
+
+@contextmanager
+def component_output(target: Path) -> Iterator[None]:
+    """Temporarily direct the existing deterministic renderers to a component."""
+
+    global OUT
+    previous = OUT
+    OUT = target
+    try:
+        yield
+    finally:
+        OUT = previous
+
+
+def build_site_component(component: str, target: Path) -> None:
+    """Build one non-overlapping Site plane into a fresh component directory."""
+
+    with component_output(target):
+        if component == "app":
+            if SVELTE_EXPLORER_BUILD.exists():
+                assert_app_does_not_replace_reading_pages()
+                copy_public_tree(SVELTE_EXPLORER_BUILD, OUT)
+            return
+
+        if component == "docs":
+            bundle, bundle_errors = build_okf_bundle.build_bundle()
+            if bundle_errors:
+                joined = "\n".join(f"- {error}" for error in bundle_errors)
+                raise RuntimeError(f"OKF bundle build failed:\n{joined}")
+            (OUT / "okf-bundle.json").write_text(
+                build_okf_bundle.render_bundle(bundle),
+                encoding="utf-8",
+            )
+            for name in PUBLIC_ROOT_FILES:
+                source = ROOT / name
+                if source.exists() and source.suffix.lower() == ".md":
+                    copy_file(source, OUT / name)
+            for dirname in PUBLIC_DIRS:
+                source_dir = ROOT / dirname
+                if dirname == "docs":
+                    copy_public_tree(source_dir, OUT / dirname)
+                elif dirname != "explorer":
+                    copy_public_tree(
+                        source_dir,
+                        OUT / dirname,
+                        include=lambda relative, root=dirname: (
+                            is_component_source_allowed(Path(root) / relative)
+                            and
+                            relative.suffix.lower() == ".md"
+                            and externalized_publication_target(
+                                Path(root) / relative
+                            )
+                            is None
+                        ),
+                    )
+            copy_public_tree(
+                ROOT / "profiles",
+                OUT / "profile",
+                include=lambda relative: relative.suffix.lower() == ".md",
+            )
+            write_generic_reading_pages()
+            write_beginner_guide()
+            write_foundry_pages()
+            return
+
+        if component == "data":
+            for name in PUBLIC_ROOT_FILES:
+                source = ROOT / name
+                if (
+                    source.exists()
+                    and source.suffix.lower() != ".md"
+                    and name != "view.html"
+                ):
+                    copy_file(source, OUT / name)
+            for dirname in PUBLIC_DIRS:
+                if dirname in {"docs", "explorer"}:
+                    continue
+                copy_public_tree(
+                    ROOT / dirname,
+                    OUT / dirname,
+                    include=lambda relative, root=dirname: (
+                        is_component_source_allowed(Path(root) / relative)
+                        and relative.suffix.lower() != ".md"
+                        and externalized_publication_target(
+                            Path(root) / relative
+                        )
+                        is None
+                    ),
+                )
+            copy_public_tree(
+                ROOT / "profiles",
+                OUT / "profile",
+                include=lambda relative: relative.suffix.lower() != ".md",
+            )
+            return
+
+        if component == "shell":
+            (OUT / "service-worker.js").write_text(
+                render_retiring_service_worker(),
+                encoding="utf-8",
+            )
+            copy_file(ROOT / "viewer.html", OUT / "view.html")
+            copy_public_tree(ROOT / "explorer", OUT / "legacy")
+            (OUT / "next").mkdir(parents=True, exist_ok=True)
+            (OUT / "next" / "index.html").write_text(
+                render_next_redirect(),
+                encoding="utf-8",
+            )
+            (OUT / ".nojekyll").write_text("", encoding="utf-8")
+            write_legacy_404_if_absent()
+            return
+    raise ValueError(f"unknown Site component: {component}")
+
+
+def build_or_load_components(
+    cache_root: Path,
+    selected: set[str],
+) -> list[site_component_cache.ComponentArtifact]:
+    artifacts: list[site_component_cache.ComponentArtifact] = []
+    for component in SITE_COMPONENTS:
+        fingerprint, materials = component_source_fingerprint(component)
+        component_root = cache_root / component / fingerprint
+        if component in selected:
+            artifact, reused = site_component_cache.materialize_component(
+                cache_root,
+                component,
+                fingerprint,
+                materials,
+                lambda target, name=component: build_site_component(name, target),
+            )
+            print(
+                f"Site component {component}: "
+                f"{'reused' if reused else 'built'} {fingerprint}"
+            )
+        else:
+            if not (component_root / "component-manifest.json").is_file():
+                raise RuntimeError(
+                    f"required Site component {component} is not cached for "
+                    f"input {fingerprint}"
+                )
+            artifact = site_component_cache.verify_component(component_root)
+        artifacts.append(artifact)
+    return artifacts
+
+
+def audit_assembled_site(
+    assembly: dict[str, object],
+    *,
+    candidate_receipt_path: Path,
+) -> None:
     bundle, bundle_errors = build_okf_bundle.build_bundle()
     if bundle_errors:
         joined = "\n".join(f"- {error}" for error in bundle_errors)
         raise RuntimeError(f"OKF bundle build failed:\n{joined}")
-    (OUT / "okf-bundle.json").write_text(build_okf_bundle.render_bundle(bundle), encoding="utf-8")
-
-    for name in PUBLIC_ROOT_FILES:
-        source = ROOT / name
-        if source.exists():
-            copy_file(source, OUT / name)
-
-    (OUT / "service-worker.js").write_text(render_retiring_service_worker(), encoding="utf-8")
-
-    copy_file(ROOT / "viewer.html", OUT / "view.html")
-
-    for dirname in PUBLIC_DIRS:
-        copy_public_tree(ROOT / dirname, OUT / dirname)
-
-    # Schema $id values use the stable singular profile URI; keep the browsable
-    # plural source tree as well as this publication alias.
-    copy_public_tree(ROOT / "profiles", OUT / "profile")
-    write_generic_reading_pages()
-    write_beginner_guide()
-    write_foundry_pages()
-
-    copy_public_tree(ROOT / "explorer", OUT / "legacy")
-
-    if SVELTE_EXPLORER_BUILD.exists():
-        assert_app_does_not_replace_reading_pages()
-        copy_public_tree(SVELTE_EXPLORER_BUILD, OUT)
-
-    (OUT / "next").mkdir(parents=True, exist_ok=True)
-    (OUT / "next" / "index.html").write_text(render_next_redirect(), encoding="utf-8")
-
-    (OUT / ".nojekyll").write_text("", encoding="utf-8")
-    write_legacy_404_if_absent()
+    expected_bundle = build_okf_bundle.render_bundle(bundle)
+    if (OUT / "okf-bundle.json").read_text(encoding="utf-8") != expected_bundle:
+        raise RuntimeError("assembled documentation component has a stale OKF bundle")
 
     remove_platform_metadata()
     assert_no_forbidden_files()
@@ -1419,17 +1897,74 @@ def main() -> int:
     site_bytes, remaining_bytes = assert_site_size_within_github_pages_limit(
         site_bytes
     )
-    site_tree = assert_local_candidate_receipt_matches_built_site(
+    receipt = site_candidate_receipt(
         reading_pages=reading_pages,
         internal_references=internal_references,
         site_bytes=site_bytes,
         remaining_bytes=remaining_bytes,
     )
+    write_site_candidate_receipt(candidate_receipt_path, receipt)
+    site_tree = receipt["site"]
+    assert isinstance(site_tree, dict)
     print(
         f"built {OUT.relative_to(ROOT)} with {file_count} files; "
         f"bytes={site_bytes} pages_limit_remaining={remaining_bytes}; "
+        f"changed={assembly['changed_files']} reused={assembly['reused_files']} "
+        f"removed={assembly['removed_files']}; "
+        f"candidate_receipt={candidate_receipt_path} "
         f"receipt_tree_files={site_tree['file_count']} "
         f"receipt_tree_sha256={site_tree['tree_sha256']}"
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--component",
+        action="append",
+        choices=SITE_COMPONENTS,
+        help="build only this component (repeatable; defaults to all)",
+    )
+    parser.add_argument(
+        "--components-only",
+        action="store_true",
+        help="materialize selected components without assembling the Site",
+    )
+    parser.add_argument(
+        "--component-cache",
+        type=Path,
+        default=DEFAULT_SITE_COMPONENT_CACHE,
+    )
+    parser.add_argument(
+        "--candidate-receipt",
+        type=Path,
+        help="write deterministic pre-deploy identity outside the Site",
+    )
+    args = parser.parse_args(argv)
+    cache_root = args.component_cache
+    if not cache_root.is_absolute():
+        cache_root = ROOT / cache_root
+    selected = set(args.component or SITE_COMPONENTS)
+    artifacts = build_or_load_components(cache_root, selected)
+    if args.components_only:
+        return 0
+    assembly = site_component_cache.assemble_components(
+        artifacts,
+        OUT,
+        cache_root / "assembly" / "site-assembly-manifest.json",
+        allowed_overrides=SITE_COMPONENT_OVERRIDE_OWNERS,
+    )
+    candidate_receipt = args.candidate_receipt
+    if candidate_receipt is None:
+        candidate_receipt = (
+            cache_root / "assembly" / "site-candidate-receipt.json"
+        )
+    elif not candidate_receipt.is_absolute():
+        candidate_receipt = ROOT / candidate_receipt
+    candidate_receipt = require_receipt_outside_site(candidate_receipt)
+    audit_assembled_site(
+        assembly,
+        candidate_receipt_path=candidate_receipt,
     )
     return 0
 

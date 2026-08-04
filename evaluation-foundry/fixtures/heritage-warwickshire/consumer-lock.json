@@ -1,0 +1,16 @@
+{
+  "schema": "okf-evaluation-consumer-lock.v1",
+  "consumers": [
+    {
+      "id": "CONSUMER-OKF-EXPLORER",
+      "package": "@okf/explorer",
+      "version": "0.5.7",
+      "commit": "0b5d748dc13ed83134592fc0873a2ff25d83eada",
+      "package_manifest": "apps/okf-explorer/package.json",
+      "package_manifest_sha256": "8aad105cca6e8c3a13032b8e720a0da38155e1f730d1c9557fc4a7be43a3534c",
+      "lockfile": "apps/okf-explorer/pnpm-lock.yaml",
+      "lockfile_sha256": "25eb2cd4f1dd2f93ce89e3884e3d9293d490371bd55d4469bba0263ee083ffc1",
+      "acceptance_command": "pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json"
+    }
+  ]
+}

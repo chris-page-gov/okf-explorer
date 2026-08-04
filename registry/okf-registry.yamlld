@@ -133,24 +133,22 @@ bundles:
   - "@id": https://chris-page-gov.github.io/okf-explorer/bundles/heritage-coventry-warwickshire
     "@type": okf:Bundle
     title: Coventry and Warwickshire Heritage Evaluation
-    description: Publicly verified Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement.
+    description: Independently published Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement; promotion evidence is carried by its signed release envelope.
     version: 1.0.0
-    status: evaluated
     descriptor:
-      "@id": https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json
+      "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json
     semanticDescriptor:
-      "@id": https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-bundle.yamlld
+      "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld
     home:
-      "@id": https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/
+      "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/
     profile:
-      "@id": https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html
+      "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/evaluation-foundry/fixtures/heritage-warwickshire/profile.html
     repository:
-      "@id": https://github.com/chris-page-gov/okf-explorer
+      "@id": https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire
     documentation:
-      "@id": https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html
-    rawSubpath: evaluation/heritage
+      "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/heritage-evaluation-report.html
     releaseArchive:
-      "@id": https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803
+      "@id": https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804
     publisher:
       "@id": https://github.com/chris-page-gov
     license:

@@ -379,7 +379,8 @@ def build_tiny_snapshot(
                 "producer and real-consumer assurance."
             ),
             "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-            "public_base": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/",
+            "public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/",
+            "family_public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
             "publisher": "https://historicengland.org.uk/",
             "publisher_title": "Historic England",
             "role": "tiny",

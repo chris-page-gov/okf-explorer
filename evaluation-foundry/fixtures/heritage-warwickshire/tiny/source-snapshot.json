@@ -637,8 +637,9 @@
   "observed_at": "2026-08-03T00:00:00Z",
   "publication": {
     "description": "Three exact Historic England source records for fast, deterministic producer and real-consumer assurance.",
+    "family_public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
     "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-    "public_base": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/",
+    "public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/",
     "publisher": "https://historicengland.org.uk/",
     "publisher_title": "Historic England",
     "role": "tiny",
@@ -1005,11 +1006,11 @@
     },
     "network_access": "none",
     "parent": {
-      "compressed_file_sha256": "32e459722e3c05995674cde0256957e8e5fa8c4b25ea254d1147694f647e5208",
+      "compressed_file_sha256": "0ded7d2b0bee0a3339f8db7c4acb6989e3010ec025f5246c3c37bc95d051e5ed",
       "observed_at": "2026-08-03T00:00:00Z",
       "snapshot_id": "heritage-coventry-warwickshire-20260803-v2",
       "source_path": "evaluation-foundry/fixtures/heritage-warwickshire/source-snapshot.json.gz",
-      "uncompressed_json_sha256": "afb8d98add113474dd395cdf4f61d50533c447253d27aa3e02be46f80fcb69ac"
+      "uncompressed_json_sha256": "0e1cd66daa40bcd477c3d0cc1fb3bec65b765de4ba768bc8d3a11953e8dd8d8a"
     },
     "schema": "heritage-evaluation-subset-receipt.v1",
     "selection": [

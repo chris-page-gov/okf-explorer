@@ -3,6 +3,9 @@
 
 The builder consumes a frozen, normalized source snapshot. Network acquisition
 is deliberately separate so ``--check`` never depends on a mutable live source.
+Publication bases are source configuration. ``--public-base`` is a migration
+preview/one-off override; persist the accepted base in each frozen snapshot so
+subsequent default ``--check`` runs require no implicit environment setting.
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ from typing import Any, Iterable
 from urllib.parse import parse_qsl, quote, unquote, urlencode, urlparse
 
 import build_uk_government_api_okf as large_corpus
+import heritage_build_io
 import okf_semantic
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,8 +40,17 @@ DEFAULT_SNAPSHOT = (
     / "source-snapshot.json.gz"
 )
 DEFAULT_OUTPUT = ROOT / "evaluation" / "heritage"
-PUBLIC_BASE = "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/"
+PUBLIC_BASE = (
+    "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
+)
 EXPLORER_BASE = "https://chris-page-gov.github.io/okf-explorer/"
+EXPLORER_REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
+PUBLICATION_REPOSITORY = (
+    "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire"
+)
+EVALUATION_PROFILE_SCHEMA_URL = (
+    f"{EXPLORER_BASE}evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json"
+)
 OGL = "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
 NHLE_SERVICE = (
     "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/"
@@ -70,6 +83,8 @@ FEATURE_COVERAGE_PATH = PROFILE_PATH.with_name("feature-coverage.json")
 PROTECTED_SOURCE_RECEIPT_PATH = (
     PROFILE_PATH.parent / "evidence" / "protected-source-link-receipt.json"
 )
+TINY_SNAPSHOT = PROFILE_PATH.parent / "tiny" / "source-snapshot.json"
+SYNTHETIC_SNAPSHOT = PROFILE_PATH.parent / "synthetic" / "source-snapshot.json"
 
 LAYER_TYPES = {
     0: ("Listed Building", "listed-building"),
@@ -159,9 +174,19 @@ def publication_config(snapshot: dict[str, Any]) -> dict[str, str]:
     declared = snapshot.get("publication") if isinstance(snapshot.get("publication"), dict) else {}
     base = safe_http_url(declared.get("public_base")) or PUBLIC_BASE
     base = f"{base.rstrip('/')}/"
+    role = clean_text(declared.get("role")) or "faithful"
+    family_base = safe_http_url(declared.get("family_public_base"))
+    if not family_base:
+        family_base = (
+            base.removesuffix(f"{role}/")
+            if role in {"tiny", "synthetic"} and base.endswith(f"/{role}/")
+            else base
+        )
+    family_base = f"{family_base.rstrip('/')}/"
     return {
         "public_base": base,
-        "role": clean_text(declared.get("role")) or "faithful",
+        "family_public_base": family_base,
+        "role": role,
         "title": clean_text(declared.get("title")) or "Coventry and Warwickshire Heritage Evaluation",
         "description": clean_text(declared.get("description"))
         or (
@@ -174,6 +199,41 @@ def publication_config(snapshot: dict[str, Any]) -> dict[str, str]:
         "publisher": safe_http_url(declared.get("publisher")) or "https://historicengland.org.uk/",
         "publisher_title": clean_text(declared.get("publisher_title")) or "Historic England",
     }
+
+
+def retarget_publication(
+    snapshot: dict[str, Any], family_public_base: str, *, fixture: str
+) -> dict[str, Any]:
+    """Return a snapshot copy retargeted to one safe publication family base."""
+
+    parsed = urlparse(clean_text(family_public_base))
+    if (
+        parsed.scheme != "https"
+        or not parsed.netloc
+        or parsed.username
+        or parsed.password
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise ValueError("--public-base must be an absolute HTTPS URL without credentials, query or fragment")
+    family_base = f"{family_public_base.rstrip('/')}/"
+    role = publication_config(snapshot)["role"]
+    suffix = role if role in {"tiny", "synthetic"} else fixture
+    public_base = (
+        f"{family_base}{suffix}/"
+        if suffix in {"tiny", "synthetic"}
+        and not family_base.rstrip("/").endswith(f"/{suffix}")
+        else family_base
+    )
+    result = copy.deepcopy(snapshot)
+    publication = result.setdefault("publication", {})
+    publication["public_base"] = public_base
+    publication["family_public_base"] = (
+        family_base.removesuffix(f"{suffix}/")
+        if suffix in {"tiny", "synthetic"} and family_base.endswith(f"/{suffix}/")
+        else family_base
+    )
+    return result
 
 
 def now_utc() -> str:
@@ -2019,7 +2079,13 @@ def semantic_artifacts(
     snapshot: dict[str, Any],
     generated_at: str,
 ) -> dict[str, Any]:
-    """Build governed IRIs, predicates, direct triples and reified assertions."""
+    """Author YAML-LD, then derive governed semantic artifacts from its parse.
+
+    The normalized source snapshot is too large for a hand-maintained graph, so
+    this is an explicit deterministic authoring stage.  ``draft_document`` is
+    rendered as YAML-LD and immediately reparsed by the safe YAML 1.2 loader;
+    every downstream semantic file consumes that parsed authoring source.
+    """
     publication = publication_config(snapshot)
     public_base = publication["public_base"]
     nodes: dict[str, dict[str, Any]] = {}
@@ -2091,16 +2157,7 @@ def semantic_artifacts(
             if relationship.get(key):
                 assertion[key] = relationship[key]
         assertions.append(assertion)
-    registry_input = {node["route"]: node for node in nodes.values()}
-    iri_registry = okf_semantic.build_iri_route_registry(
-        registry_input, snapshot=snapshot.get("snapshot_id", "")
-    )
-    predicate_registry = okf_semantic.predicate_registry_from_relationships(
-        relationships,
-        snapshot=snapshot.get("snapshot_id", ""),
-        generated_at_value=generated_at,
-    )
-    document = {
+    draft_document = {
         "@context": [okf_semantic.CONTEXT_URL, okf_semantic.SEMANTIC_CONTEXT_URL],
         "@id": public_base,
         "@type": "okf:Bundle",
@@ -2108,7 +2165,7 @@ def semantic_artifacts(
         "description": publication["description"],
         "version": "1.0.0",
         "status": publication["status"],
-        "profile": {"@id": f"{EXPLORER_BASE}evaluation-foundry/schemas/okf-evaluation-profile.v1.schema.json"},
+        "profile": {"@id": EVALUATION_PROFILE_SCHEMA_URL},
         "descriptor": {"@id": f"{public_base}okf-explorer.json"},
         "publisher": {"@id": publication["publisher"]},
         "license": {"@id": publication["license"]},
@@ -2118,9 +2175,28 @@ def semantic_artifacts(
         "@graph": sorted(nodes.values(), key=lambda node: node["@id"]),
         "assertions": sorted(assertions, key=lambda assertion: assertion["@id"]),
     }
+    yaml_ld = okf_semantic.render_yaml_ld(draft_document)
+    materialization = okf_semantic.materialize_yaml_ld(
+        yaml_ld,
+        source=f"generated:{snapshot.get('snapshot_id', '')}:okf-bundle.yamlld",
+    )
+    document = materialization.document
     semantic_errors = okf_semantic.validate_semantic_assertions(document)
     if semantic_errors:
         raise ValueError("invalid direct/reified YAML-LD assertions:\n- " + "\n- ".join(semantic_errors))
+    registry_input = {
+        node["route"]: node
+        for node in document.get("@graph", [])
+        if isinstance(node, dict) and node.get("route")
+    }
+    iri_registry = okf_semantic.build_iri_route_registry(
+        registry_input, snapshot=snapshot.get("snapshot_id", "")
+    )
+    predicate_registry = okf_semantic.predicate_registry_from_relationships(
+        relationships,
+        snapshot=snapshot.get("snapshot_id", ""),
+        generated_at_value=generated_at,
+    )
     registry_text = large_corpus.render_json(iri_registry)
     predicate_text = large_corpus.render_json(predicate_registry)
     extension = {
@@ -2147,6 +2223,15 @@ def semantic_artifacts(
         raise ValueError("invalid semantic-model extension:\n- " + "\n- ".join(extension_errors))
     return {
         "document": document,
+        "yaml_ld": yaml_ld,
+        "json_ld": materialization.json_ld,
+        "normalized_graph": {
+            "algorithm": "URDNA2015",
+            "media_type": "application/n-quads",
+            "sha256": materialization.normalized_graph_sha256,
+            "statements": materialization.normalized_statements,
+            "source_data_model_sha256": materialization.source_data_model_sha256,
+        },
         "iri_registry": iri_registry,
         "predicate_registry": predicate_registry,
         "extension": extension,
@@ -2156,6 +2241,13 @@ def semantic_artifacts(
             "snapshot": snapshot.get("snapshot_id", ""),
             "valid": True,
             "errors": [],
+            "normalized_graph": {
+                "algorithm": "URDNA2015",
+                "media_type": "application/n-quads",
+                "sha256": materialization.normalized_graph_sha256,
+                "statements": materialization.normalized_statements,
+                "source_data_model_sha256": materialization.source_data_model_sha256,
+            },
             "counts": {
                 "nodes": len(nodes),
                 "assertions": len(assertions),
@@ -2163,6 +2255,9 @@ def semantic_artifacts(
                 "registered_iris": iri_registry["counts"]["entries"],
             },
             "checks": [
+                "deterministic YAML-LD authoring source parsed with safe YAML 1.2",
+                "JSON-LD materialized from the parsed YAML-LD data model",
+                "YAML-LD and JSON-LD share one URDNA2015 normalized graph identity",
                 "semantic extension schema",
                 "IRI-route registry schema and root digest",
                 "predicate registry schema and root digest",
@@ -2179,6 +2274,7 @@ def semantic_descriptor(corpus: dict[str, Any], _snapshot: dict[str, Any]) -> di
 def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str]:
     publication = publication_config(snapshot)
     public_base = publication["public_base"]
+    family_public_base = publication["family_public_base"]
     role = publication["role"]
     generated_at = corpus["descriptor"]["generated_at"]
     counts = corpus["descriptor"]["counts"]
@@ -2206,17 +2302,17 @@ def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Pat
     ]
     if role != "faithful":
         entry_links.append(
-            f"- [Return to the faithful evaluation corpus]({PUBLIC_BASE}index.html)"
+            f"- [Return to the faithful evaluation corpus]({family_public_base}index.html)"
         )
     entry_links.extend(
         [
             "- [Read the evaluation profile as HTML]"
-            f"({EXPLORER_BASE}evaluation-foundry/fixtures/heritage-warwickshire/profile.html)",
+            f"({family_public_base}evaluation-foundry/fixtures/heritage-warwickshire/profile.html)",
             "- [Read the full evaluation report as HTML]"
-            f"({EXPLORER_BASE}docs/heritage-evaluation-report.html)",
+            f"({family_public_base}docs/heritage-evaluation-report.html)",
             "- [Inspect the immutable exemplar release]"
-            "(https://github.com/chris-page-gov/okf-explorer/releases/tag/"
-            "heritage-coventry-warwickshire-20260803)",
+            "(https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
+            "releases/tag/heritage-coventry-warwickshire-20260804)",
         ]
     )
     published_entry_points = "\n".join(entry_links)
@@ -2377,7 +2473,14 @@ assertion_scope: {snapshot.get('scope', {}).get('assertion_scope', 'real-world')
     return {Path("index.md"): index, Path("methodology.md"): methodology, Path("log.md"): log}
 
 
-def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
+def build_normalized_core(
+    snapshot: dict[str, Any],
+    generated_at: str,
+    *,
+    planes: set[str] | None = None,
+) -> dict[str, Any]:
+    """Normalize one frozen source snapshot independently of output planes."""
+    selected_planes = planes or set(heritage_build_io.PLANES)
     publication = publication_config(snapshot)
     public_base = publication["public_base"]
     records = source_records(snapshot)
@@ -2389,6 +2492,21 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
     enrich_relationship_search_aliases(records, relationships)
     facets = facet_rows(records)
     publishers = publisher_rows(records, resources, snapshot)
+    common = {
+        "records": records,
+        "resources": resources,
+        "publishers": publishers,
+        "relationships": relationships,
+        "facets": facets,
+        "geo_files": geo_files,
+    }
+    if selected_planes == {"semantic"}:
+        return {
+            **common,
+            "semantic": semantic_artifacts(
+                records, relationships, snapshot, generated_at
+            ),
+        }
     search = large_corpus.build_search(
         records,
         max_postings_per_token=10_000,
@@ -2421,6 +2539,8 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
                 "utf-8"
             )
         )
+    if selected_planes == {"search"}:
+        return {**common, "search": search}
     chunk_size = 500
     raw_record_chunks = large_corpus.chunk_paths("records", records, chunk_size=chunk_size)
     record_chunks = [(path.with_suffix(".json.gz"), rows) for path, rows in raw_record_chunks]
@@ -2433,7 +2553,14 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
     adjacency_buckets = [(path.with_suffix(".json.gz"), routes) for path, routes in adjacency_buckets]
     locator, locator_buckets = record_locator(records, chunk_size, [path for path, _ in record_chunks], snapshot.get("snapshot_id", ""))
     graph, analysis = graph_and_analysis(records, resources, relationships, facets, generated_at, snapshot)
-    semantic = semantic_artifacts(records, relationships, snapshot, generated_at)
+    needs_semantic = bool(
+        selected_planes & {"semantic", "control", "presentation"}
+    )
+    semantic = (
+        semantic_artifacts(records, relationships, snapshot, generated_at)
+        if needs_semantic
+        else {"extension": {}}
+    )
     counts = {
         "records": len(records),
         "datasets": len(records),
@@ -2481,6 +2608,8 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
             "record_locator": "data/records/manifest.json",
             "source_provenance": "data/source-provenance.json",
             "link_validation": "data/link-validation.json",
+            "link_validation_shards": "data/link-validation/manifest.json",
+            "semantic_shards": "data/semantic/manifest.json",
             "plane_roots": "assurance/plane-roots.json",
         },
         "chunks": {
@@ -2508,10 +2637,21 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
         "record_locator": "data/records/manifest.json",
         "markdown_index": "index.md",
         "notes": "methodology.md",
-        "evaluation_profile": f"{EXPLORER_BASE}evaluation-foundry/fixtures/heritage-warwickshire/profile.html",
-        "evaluation_report": f"{EXPLORER_BASE}docs/heritage-evaluation-report.html",
-        "feature_coverage": f"{EXPLORER_BASE}evaluation-foundry/fixtures/heritage-warwickshire/feature-coverage.json",
-        "journeys": f"{EXPLORER_BASE}evaluation-foundry/fixtures/heritage-warwickshire/journeys.json",
+        "evaluation_profile": (
+            f"{publication['family_public_base']}evaluation-foundry/fixtures/"
+            "heritage-warwickshire/profile.html"
+        ),
+        "evaluation_report": (
+            f"{publication['family_public_base']}docs/heritage-evaluation-report.html"
+        ),
+        "feature_coverage": (
+            f"{publication['family_public_base']}evaluation-foundry/fixtures/"
+            "heritage-warwickshire/feature-coverage.json"
+        ),
+        "journeys": (
+            f"{publication['family_public_base']}evaluation-foundry/fixtures/"
+            "heritage-warwickshire/journeys.json"
+        ),
         "plane_roots": "assurance/plane-roots.json",
     }
     if publication["role"] == "faithful":
@@ -2522,7 +2662,9 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
             }
         )
     else:
-        entrypoints["faithful_corpus"] = f"{PUBLIC_BASE}okf-explorer.json"
+        entrypoints["faithful_corpus"] = (
+            f"{publication['family_public_base']}okf-explorer.json"
+        )
     descriptor = {
         "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
         "@id": f"{public_base}okf-explorer.json",
@@ -2539,8 +2681,8 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
         "default_loaded": publication["role"] == "faithful",
         "include_in_counts": publication["role"] != "synthetic",
         "include_in_search": publication["role"] != "synthetic",
-        "profile": f"{EXPLORER_BASE}evaluation-foundry/schemas/okf-evaluation-profile.v1.schema.json",
-        "publisher": "https://github.com/chris-page-gov/okf-explorer",
+        "profile": EVALUATION_PROFILE_SCHEMA_URL,
+        "publisher": PUBLICATION_REPOSITORY,
         "license": publication["license"],
         "semantic_descriptor": f"{public_base}okf-bundle.yamlld",
         "generated_at": generated_at,
@@ -2614,6 +2756,12 @@ def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
         "geo_files": geo_files,
         "semantic": semantic,
     }
+
+
+def build_corpus(snapshot: dict[str, Any], generated_at: str) -> dict[str, Any]:
+    """Compatibility alias for callers written before the modular emitters."""
+
+    return build_normalized_core(snapshot, generated_at)
 
 
 def source_provenance(snapshot: dict[str, Any]) -> dict[str, Any]:
@@ -2901,9 +3049,8 @@ def link_validation(
     if failures:
         raise ValueError("link validation failed: " + "; ".join(failures[:20]))
     internal_references = sum(len(record.get("resource_ids", [])) for record in records)
-    live_receipts = snapshot.get("link_validation", {}).get("live_receipts", [])
     return {
-        "schema": "heritage-evaluation-link-validation.v1",
+        "schema": "heritage-evaluation-link-validation.v2",
         "snapshot": snapshot.get("snapshot_id", ""),
         "checked_at": snapshot.get("observed_at", ""),
         "method": "Every record, resource and relationship-panel URL is parsed with credentials rejected and checked against an explicit source or generated-origin policy. Internal routes resolve; official NHLE rich pages and FeatureServer queries bind the frozen ListEntry; HAR register searches bind the exact q=ListEntry parameter; annual sources bind their register year; semantic endpoint IRIs bind registered Explorer routes or official pages. Individual external HTML pages are not represented as bulk live-HTTP checks.",
@@ -2913,8 +3060,15 @@ def link_validation(
             "relationship_ui_links": relationship_ui_links,
             "internal_resource_references": internal_references,
             "identifier_bound_rich_links": rich_bindings,
-            "live_external_receipts": len(live_receipts),
+            "live_external_receipts": 0,
             "failures": 0,
+        },
+        "observations": {
+            "included": False,
+            "policy": (
+                "Timestamped network and browser observations belong to an independent "
+                "promotion/evidence envelope which references this candidate root."
+            ),
         },
         "validation_levels": {
             "all_record_urls": "structural-origin-and-source-identity",
@@ -2927,7 +3081,6 @@ def link_validation(
         "checks": [*record_checks, *resource_checks],
         "record_checks": record_checks,
         "resource_checks": resource_checks,
-        "live_receipts": live_receipts,
         "limitations": [
             "The source site rate limits and challenges bulk HTML requests; identifier and corpus binding is complete, while every unique external destination authored into the evaluation report is checked in a real browser without bulk-requesting all generated occurrences.",
             "A successful link does not expand the licence or authorize bulk reproduction of rich-page narrative.",
@@ -2935,12 +3088,71 @@ def link_validation(
     }
 
 
-def output_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
-    semantic = semantic_descriptor(corpus, snapshot)
+def _sharded_rows(
+    rows: list[dict[str, Any]],
+    *,
+    identity,
+    order_identity=None,
+    root: Path,
+    kind: str,
+    buckets: int = 64,
+) -> tuple[dict[str, Any], dict[Path, bytes]]:
+    """Return deterministic gzip shards keyed by stable identity hashes."""
+
+    ordering = order_identity or identity
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        grouped[heritage_build_io.stable_bucket(str(identity(row)), buckets=buckets)].append(row)
+    files: dict[Path, bytes] = {}
+    entries: list[dict[str, Any]] = []
+    for bucket, values in sorted(grouped.items()):
+        ordered = sorted(values, key=lambda value: str(ordering(value)))
+        path = root / f"{bucket}.json.gz"
+        content = gzip_json(ordered)
+        files[path] = content
+        entries.append(
+            {
+                "bucket": bucket,
+                "path": path.as_posix(),
+                "items": len(ordered),
+                "bytes": len(content),
+                "sha256": sha256_bytes(content),
+            }
+        )
+    root_basis = [
+        {"bucket": row["bucket"], "sha256": row["sha256"]} for row in entries
+    ]
+    manifest = {
+        "kind": kind,
+        "algorithm": "sha256(identity)-mod-64-gzip-canonical-json-v1",
+        "buckets": buckets,
+        "items": len(rows),
+        "shards": entries,
+        "root_sha256": sha256_bytes(large_corpus.render_json(root_basis).encode("utf-8")),
+    }
+    return manifest, files
+
+
+def emit_control_plane(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
     files: dict[Path, str | bytes] = {
-        Path("okf-explorer.json"): large_corpus.render_json(corpus["descriptor"]),
-        Path("okf-bundle.yamlld"): json.dumps(semantic, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        Path("okf-bundle.jsonld"): large_corpus.render_json(semantic),
+        Path("okf-explorer.json"): large_corpus.render_json(corpus["descriptor"])
+    }
+    if publication_config(snapshot)["role"] == "faithful":
+        for source, target in (
+            (MAPPING_PATH, Path("mapping-proposals.yaml")),
+            (JOURNEYS_PATH, Path("journeys.json")),
+            (QUESTIONS_PATH, Path("questions.json")),
+            (FEATURE_COVERAGE_PATH, Path("feature-coverage.json")),
+        ):
+            if source.is_file():
+                files[target] = source.read_text(encoding="utf-8")
+        if PROFILE_PATH.is_file():
+            files[Path("evaluation-profile.yaml")] = published_evaluation_profile()
+    return files
+
+
+def emit_data_plane(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
+    files: dict[Path, str | bytes] = {
         Path("data/manifest.json"): large_corpus.render_json(corpus["manifest"]),
         Path("data/overview.json"): large_corpus.render_json(corpus["overview"]),
         Path("data/analysis/overview.json"): large_corpus.render_json(corpus["analysis"]),
@@ -2949,20 +3161,36 @@ def output_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path,
         Path("data/adjacency/manifest.json"): large_corpus.render_json(corpus["relationship_adjacency"]),
         Path("data/records/manifest.json"): large_corpus.render_json(corpus["record_locator"]),
         Path("data/source-provenance.json"): large_corpus.render_json(source_provenance(snapshot)),
-        Path("data/link-validation.json"): large_corpus.render_json(
-            link_validation(
-                corpus["records"],
-                corpus["resources"],
-                snapshot,
-                corpus["relationships"],
-            )
-        ),
-        Path("data/search/manifest.json"): large_corpus.render_json(corpus["search"]["manifest"]),
-        Path("data/semantic/iri-route-registry.json"): large_corpus.render_json(corpus["semantic"]["iri_registry"]),
-        Path("data/semantic/predicate-registry.json"): large_corpus.render_json(corpus["semantic"]["predicate_registry"]),
-        Path("data/semantic/assertions.jsonld"): large_corpus.render_json(semantic),
-        Path("data/semantic/validation-report.json"): large_corpus.render_json(corpus["semantic"]["validation_report"]),
     }
+    validation = link_validation(
+        corpus["records"], corpus["resources"], snapshot, corpus["relationships"]
+    )
+    checks = validation.pop("checks")
+    validation.pop("record_checks")
+    validation.pop("resource_checks")
+    link_manifest, link_files = _sharded_rows(
+        checks,
+        identity=lambda row: clean_text(row.get("url")),
+        order_identity=lambda row: "|".join(
+            clean_text(row.get(key)) for key in ("url", "kind", "route", "record_route")
+        ),
+        root=Path("data/link-validation/shards"),
+        kind="link-intents",
+    )
+    link_manifest.update(
+        {
+            "schema": "heritage-evaluation-link-validation-shards.v1",
+            "snapshot": snapshot.get("snapshot_id", ""),
+            "shard_key": "canonical URL",
+            "occurrence_order": "URL, kind, route, record route",
+            "observations_included": False,
+        }
+    )
+    validation["shard_manifest"] = "data/link-validation/manifest.json"
+    validation["checks_materialized_inline"] = False
+    files[Path("data/link-validation.json")] = large_corpus.render_json(validation)
+    files[Path("data/link-validation/manifest.json")] = large_corpus.render_json(link_manifest)
+    files.update(link_files)
     for key in ("record_chunks", "resource_chunks", "publisher_chunks", "relationship_chunks"):
         for path, rows in corpus[key]:
             files[path] = gzip_json(rows) if path.suffix == ".gz" else large_corpus.render_json(rows)
@@ -2970,124 +3198,404 @@ def output_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path,
         files[path] = gzip_json(routes)
     for path, routes in corpus["record_locator_buckets"]:
         files[path] = large_corpus.render_json(routes)
-    files.update(large_corpus.rendered_search_data_files(corpus["search"]))
-    if corpus["search"].get("shard_metadata"):
-        files[Path("data/search/shards.json")] = large_corpus.render_json(corpus["search"]["shard_metadata"])
     files.update(corpus["geo_files"])
-    files.update(markdown_files(corpus, snapshot))
-    if publication_config(snapshot)["role"] == "faithful":
-        for source, target in (
-            (PROFILE_PATH, Path("evaluation-profile.yaml")),
-            (MAPPING_PATH, Path("mapping-proposals.yaml")),
-            (JOURNEYS_PATH, Path("journeys.json")),
-            (QUESTIONS_PATH, Path("questions.json")),
-            (FEATURE_COVERAGE_PATH, Path("feature-coverage.json")),
-            (
-                PROTECTED_SOURCE_RECEIPT_PATH,
-                Path("evidence/protected-source-link-receipt.json"),
-            ),
-        ):
-            if source.is_file():
-                files[target] = source.read_text(encoding="utf-8")
-    return bind_plane_roots(files)
-
-
-def bind_plane_roots(files: dict[Path, str | bytes]) -> dict[Path, str | bytes]:
-    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for path, content in sorted(files.items(), key=lambda item: item[0].as_posix()):
-        raw = content if isinstance(content, bytes) else content.encode("utf-8")
-        value = path.as_posix()
-        if value.startswith("data/search/"):
-            plane = "search"
-        elif value.startswith("data/"):
-            plane = "data"
-        elif value.endswith((".yamlld", ".jsonld")):
-            plane = "semantic"
-        elif value.endswith((".md", ".html")) or value in {"evaluation-profile.yaml", "mapping-proposals.yaml", "feature-coverage.json", "journeys.json"}:
-            plane = "presentation"
-        else:
-            plane = "control"
-        groups[plane].append({"path": value, "bytes": len(raw), "sha256": sha256_bytes(raw)})
-    planes: dict[str, Any] = {}
-    for plane, entries in sorted(groups.items()):
-        canonical = large_corpus.render_json(entries).encode("utf-8")
-        planes[plane] = {"files": len(entries), "bytes": sum(row["bytes"] for row in entries), "root_sha256": sha256_bytes(canonical), "entries": entries}
-    release_basis = [{"plane": plane, "root_sha256": value["root_sha256"]} for plane, value in sorted(planes.items())]
-    receipt = {
-        "schema": "okf-evaluation-plane-roots.v1",
-        "algorithm": "sha256-over-canonical-ordered-entry-manifests",
-        "planes": planes,
-        "release_root_sha256": sha256_bytes(large_corpus.render_json(release_basis).encode("utf-8")),
-    }
-    files[Path("assurance/plane-roots.json")] = large_corpus.render_json(receipt)
     return files
 
 
-def existing_generated_at(output: Path) -> str:
+def emit_search_plane(corpus: dict[str, Any], _snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
+    files: dict[Path, str | bytes] = {
+        Path("data/search/manifest.json"): large_corpus.render_json(corpus["search"]["manifest"])
+    }
+    files.update(large_corpus.rendered_search_data_files(corpus["search"]))
+    if corpus["search"].get("shard_metadata"):
+        files[Path("data/search/shards.json")] = large_corpus.render_json(
+            corpus["search"]["shard_metadata"]
+        )
+    return files
+
+
+def emit_semantic_plane(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
+    semantic = semantic_descriptor(corpus, snapshot)
+    normalized_graph = corpus["semantic"]["normalized_graph"]
+    node_manifest, node_files = _sharded_rows(
+        semantic.get("@graph", []),
+        identity=lambda row: row.get("@id", ""),
+        root=Path("data/semantic/nodes"),
+        kind="semantic-nodes",
+    )
+    assertion_manifest, assertion_files = _sharded_rows(
+        semantic.get("assertions", []),
+        identity=lambda row: row.get("@id", ""),
+        root=Path("data/semantic/assertions"),
+        kind="reified-assertions",
+    )
+    shard_manifest = {
+        "schema": "okf-semantic-shard-manifest.v1",
+        "snapshot": snapshot.get("snapshot_id", ""),
+        "canonical_authoring": "okf-bundle.yamlld",
+        "json_ld_projection": "okf-bundle.jsonld",
+        "materialization": "JSON-LD is deterministically emitted from the parsed YAML-LD data model.",
+        "semantic_identity": normalized_graph,
+        "legacy_duplicate_removed": "data/semantic/assertions.jsonld",
+        "nodes": node_manifest,
+        "assertions": assertion_manifest,
+    }
+    files: dict[Path, str | bytes] = {
+        Path("okf-bundle.yamlld"): corpus["semantic"]["yaml_ld"],
+        Path("okf-bundle.jsonld"): corpus["semantic"]["json_ld"],
+        Path("data/semantic/manifest.json"): large_corpus.render_json(shard_manifest),
+        Path("data/semantic/iri-route-registry.json"): large_corpus.render_json(
+            corpus["semantic"]["iri_registry"]
+        ),
+        Path("data/semantic/predicate-registry.json"): large_corpus.render_json(
+            corpus["semantic"]["predicate_registry"]
+        ),
+        Path("data/semantic/validation-report.json"): large_corpus.render_json(
+            corpus["semantic"]["validation_report"]
+        ),
+    }
+    files.update(node_files)
+    files.update(assertion_files)
+    return files
+
+
+def published_evaluation_profile() -> str:
+    """Materialize fixture-relative profile references for the corpus root.
+
+    The authoring profile lives three directories below the repository root,
+    whereas its published copy lives at the faithful corpus root. Keeping the
+    authoring-relative traversal in that copy made every candidate and plane
+    reference escape the independent publication unit. This deterministic
+    presentation transform preserves the authoring source while making the
+    published profile self-consistent and linking producer-only tools back to
+    their owning repository.
+    """
+
+    value = PROFILE_PATH.read_text(encoding="utf-8")
+    value = value.replace("../../../evaluation/heritage/", "")
+    value = value.replace(
+        "../../../scripts/",
+        f"{EXPLORER_REPOSITORY}/blob/main/scripts/",
+    )
+    return value
+
+
+def emit_presentation_plane(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
+    return dict(markdown_files(corpus, snapshot))
+
+
+PLANE_EMITTERS = {
+    "control": emit_control_plane,
+    "data": emit_data_plane,
+    "search": emit_search_plane,
+    "semantic": emit_semantic_plane,
+    "presentation": emit_presentation_plane,
+}
+
+
+def emit_output_planes(
+    corpus: dict[str, Any],
+    snapshot: dict[str, Any],
+    *,
+    planes: set[str] | None = None,
+    selectors: tuple[str, ...] = (),
+) -> dict[Path, str | bytes]:
+    selected = planes or set(PLANE_EMITTERS)
+    unknown = selected - set(PLANE_EMITTERS)
+    if unknown:
+        raise ValueError(f"unknown output planes: {', '.join(sorted(unknown))}")
+    files: dict[Path, str | bytes] = {}
+    for plane in heritage_build_io.PLANES:
+        if plane in selected:
+            files.update(PLANE_EMITTERS[plane](corpus, snapshot))
+    if selectors:
+        files = {
+            path: content
+            for path, content in files.items()
+            if heritage_build_io.matches_selectors(path, selectors)
+        }
+    return files
+
+
+def output_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
+    """Render and integrity-bind every candidate plane."""
+
+    return heritage_build_io.finalize_full_candidate(
+        emit_output_planes(corpus, snapshot)
+    )
+
+
+def bind_plane_roots(files: dict[Path, str | bytes]) -> dict[Path, str | bytes]:
+    """Compatibility wrapper for the former in-place plane binder."""
+
+    return heritage_build_io.finalize_full_candidate(files)
+
+
+def existing_generated_at(output: Path, *, snapshot_id: str = "") -> str:
     descriptor = output / "okf-explorer.json"
     if not descriptor.is_file():
         return ""
     try:
-        return clean_text(json.loads(descriptor.read_text(encoding="utf-8")).get("generated_at"))
+        payload = json.loads(descriptor.read_text(encoding="utf-8"))
+        if snapshot_id and clean_text(payload.get("snapshot")) != snapshot_id:
+            return ""
+        return clean_text(payload.get("generated_at"))
     except (OSError, json.JSONDecodeError):
         return ""
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--snapshot", type=Path, default=DEFAULT_SNAPSHOT)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--generated-at")
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args(argv)
-    snapshot_path = args.snapshot if args.snapshot.is_absolute() else ROOT / args.snapshot
-    output = args.output if args.output.is_absolute() else ROOT / args.output
+def existing_presentation_core(
+    output: Path, *, snapshot_id: str
+) -> tuple[dict[str, Any], int]:
+    """Load immutable descriptor facts for a presentation-only rebuild."""
+
+    descriptor_path = output / "okf-explorer.json"
+    try:
+        descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(
+            "presentation-only build requires an existing valid candidate descriptor"
+        ) from exc
+    if clean_text(descriptor.get("snapshot")) != snapshot_id:
+        raise ValueError(
+            "presentation-only build candidate snapshot does not match the source snapshot"
+        )
+    records = descriptor.get("counts", {}).get("records")
+    if not isinstance(records, int) or records < 0:
+        raise ValueError("candidate descriptor has no valid record count")
+    return {"descriptor": descriptor}, records
+
+
+def fixture_targets(name: str) -> list[tuple[str, Path, Path]]:
+    targets = {
+        "faithful": (DEFAULT_SNAPSHOT, DEFAULT_OUTPUT),
+        "tiny": (TINY_SNAPSHOT, DEFAULT_OUTPUT / "tiny"),
+        "synthetic": (SYNTHETIC_SNAPSHOT, DEFAULT_OUTPUT / "synthetic"),
+    }
+    names = tuple(targets) if name == "all" else (name,)
+    return [(fixture, *targets[fixture]) for fixture in names]
+
+
+def _candidate_observation(
+    output: Path,
+    snapshot: dict[str, Any],
+    *,
+    records: int,
+) -> dict[str, Any]:
+    descriptor = (output / "okf-explorer.json").read_bytes()
+    plane_roots = json.loads((output / heritage_build_io.PLANE_ROOTS).read_text(encoding="utf-8"))
+    return {
+        "schema": "okf-evaluation-candidate-observation.v1",
+        "observed_at": now_utc(),
+        "candidate": {
+            "descriptor_sha256": sha256_bytes(descriptor),
+            "release_root_sha256": plane_roots["release_root_sha256"],
+            "snapshot": snapshot.get("snapshot_id", ""),
+            "records": records,
+        },
+        "boundary": (
+            "This timestamped run observation references the immutable candidate and is "
+            "not included in its build manifest or release root."
+        ),
+    }
+
+
+def build_target(
+    *,
+    label: str,
+    snapshot_path: Path,
+    output: Path,
+    generated_at_value: str | None,
+    planes: set[str],
+    selectors: tuple[str, ...],
+    check: bool,
+    observation_output: Path | None,
+    public_base_override: str | None,
+) -> int:
     if not snapshot_path.is_file():
         print(f"missing frozen source snapshot: {snapshot_path}", file=sys.stderr)
         return 1
     try:
         snapshot = read_snapshot(snapshot_path)
-        generated_at = args.generated_at or (existing_generated_at(output) if args.check else "") or now_utc()
-        corpus = build_corpus(snapshot, generated_at)
-        files = output_files(corpus, snapshot)
-        tree_receipt = output_tree_receipt(files)
-    except (OSError, ValueError, json.JSONDecodeError) as exc:
-        print(f"heritage evaluation build failed: {exc}", file=sys.stderr)
-        return 1
-    preserve_prefixes = (
-        (Path("tiny"), Path("synthetic"))
-        if publication_config(snapshot)["role"] == "faithful"
-        and output.resolve() == DEFAULT_OUTPUT.resolve()
-        else ()
-    )
-    if args.check:
-        errors = large_corpus.check_files(
-            output,
-            files,
-            preserve_prefixes=preserve_prefixes,
+        if public_base_override:
+            snapshot = retarget_publication(
+                snapshot, public_base_override, fixture=label
+            )
+        # Build identity is a candidate self-fact.  Reuse it when present and
+        # otherwise derive it from the frozen snapshot, never from wall-clock
+        # run time.  Wall-clock observations go in the external envelope.
+        generated_at = (
+            generated_at_value
+            or existing_generated_at(
+                output, snapshot_id=clean_text(snapshot.get("snapshot_id"))
+            )
+            or clean_text(snapshot.get("observed_at"))
         )
+        if not generated_at:
+            raise ValueError("snapshot must provide observed_at or --generated-at")
+        selective = bool(planes or selectors)
+        selected_planes = planes or set(PLANE_EMITTERS)
+        if selective and selected_planes == {"presentation"}:
+            corpus, record_count = existing_presentation_core(
+                output, snapshot_id=clean_text(snapshot.get("snapshot_id"))
+            )
+        else:
+            corpus = build_normalized_core(
+                snapshot, generated_at, planes=selected_planes
+            )
+            record_count = len(corpus["records"])
+        emitted = emit_output_planes(
+            corpus,
+            snapshot,
+            planes=selected_planes,
+            selectors=selectors,
+        )
+        if selectors and not emitted:
+            raise ValueError("--select-path patterns matched no generated outputs")
+        files = (
+            heritage_build_io.finalize_selected_candidate(
+                output,
+                emitted,
+                replaced_planes=selected_planes,
+                selectors=selectors,
+            )
+            if selective
+            else heritage_build_io.finalize_full_candidate(emitted)
+        )
+        roots = json.loads(
+            heritage_build_io.content_bytes(files[heritage_build_io.PLANE_ROOTS]).decode("utf-8")
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"heritage evaluation build failed ({label}): {exc}", file=sys.stderr)
+        return 1
+
+    if check:
+        errors = heritage_build_io.check_managed_files(output, files)
         if errors:
-            print("Heritage evaluation check failed:", file=sys.stderr)
+            print(f"Heritage evaluation check failed ({label}):", file=sys.stderr)
             for error in errors[:80]:
                 print(f"- {error}", file=sys.stderr)
             return 1
         print(
-            f"Heritage evaluation is synchronized with {len(corpus['records']):,} "
-            f"records; files={tree_receipt['files']} "
-            f"tree_sha256={tree_receipt['tree_sha256']}"
+            f"Heritage evaluation {label} is synchronized with {record_count:,} "
+            f"records; selected_files={len(files)} "
+            f"release_root_sha256={roots['release_root_sha256']}"
         )
         return 0
-    large_corpus.write_files(
-        output,
-        files,
-        preserve_prefixes=preserve_prefixes,
-    )
-    label = output.relative_to(ROOT) if output.is_relative_to(ROOT) else output
+
+    try:
+        if (
+            observation_output is not None
+            and observation_output.resolve().is_relative_to(output.resolve())
+        ):
+            raise ValueError("observation output must be outside the candidate directory")
+        stats = heritage_build_io.write_managed_files(output, files)
+        if observation_output is not None:
+            destination = observation_output
+            heritage_build_io.atomic_write_if_changed(
+                destination,
+                large_corpus.render_json(
+                    _candidate_observation(
+                        output, snapshot, records=record_count
+                    )
+                ),
+            )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"heritage evaluation write failed ({label}): {exc}", file=sys.stderr)
+        return 1
+    display = output.relative_to(ROOT) if output.is_relative_to(ROOT) else output
     print(
-        f"wrote {len(files):,} files for {len(corpus['records']):,} heritage "
-        f"records to {label}; tree_sha256={tree_receipt['tree_sha256']}"
+        f"wrote {stats['changed']:,} changed, retained {stats['unchanged']:,} unchanged "
+        f"and removed {stats['removed']:,} stale owned files for {record_count:,} "
+        f"heritage records to {display}; release_root_sha256={roots['release_root_sha256']}"
     )
     return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "After a publication cutover, persist the accepted public_base and "
+            "family_public_base in the frozen source snapshots. This keeps ordinary "
+            "--check invocations deterministic without an implicit override."
+        ),
+    )
+    parser.add_argument("--snapshot", type=Path, default=DEFAULT_SNAPSHOT)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--generated-at")
+    parser.add_argument(
+        "--public-base",
+        help=(
+            "Retarget the publication family to an absolute HTTPS base. Named tiny "
+            "and synthetic fixtures are placed below tiny/ and synthetic/."
+        ),
+    )
+    parser.add_argument(
+        "--fixture",
+        choices=("faithful", "tiny", "synthetic", "all"),
+        help="Select a named fixture family; overrides --snapshot and --output.",
+    )
+    parser.add_argument(
+        "--plane",
+        action="append",
+        choices=heritage_build_io.PLANES,
+        default=[],
+        help="Rebuild/check one output plane; repeat for multiple planes.",
+    )
+    parser.add_argument(
+        "--select-path",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="Within selected planes, rebuild/check only matching generated paths.",
+    )
+    parser.add_argument(
+        "--observation-output",
+        type=Path,
+        help="Write a timestamped observation envelope outside the candidate root.",
+    )
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args(argv)
+    if args.check and args.observation_output:
+        parser.error("--observation-output cannot be combined with --check")
+
+    if args.fixture:
+        targets = fixture_targets(args.fixture)
+    else:
+        snapshot_path = args.snapshot if args.snapshot.is_absolute() else ROOT / args.snapshot
+        output = args.output if args.output.is_absolute() else ROOT / args.output
+        label = (
+            "faithful"
+            if snapshot_path.resolve() == DEFAULT_SNAPSHOT.resolve()
+            and output.resolve() == DEFAULT_OUTPUT.resolve()
+            else "custom"
+        )
+        targets = [(label, snapshot_path, output)]
+
+    observation = args.observation_output
+    if observation is not None and not observation.is_absolute():
+        observation = ROOT / observation
+    status = 0
+    for label, snapshot_path, output in targets:
+        target_observation = observation
+        if target_observation is not None and len(targets) > 1:
+            target_observation = target_observation / f"{label}.json"
+        status = max(
+            status,
+            build_target(
+                label=label,
+                snapshot_path=snapshot_path,
+                output=output,
+                generated_at_value=args.generated_at,
+                planes=set(args.plane),
+                selectors=tuple(args.select_path),
+                check=args.check,
+                observation_output=target_observation,
+                public_base_override=args.public_base,
+            ),
+        )
+    return status
 
 
 if __name__ == "__main__":

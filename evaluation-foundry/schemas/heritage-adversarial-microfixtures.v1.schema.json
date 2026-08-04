@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json",
+  "title": "Heritage Evaluation Foundry adversarial microfixtures",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "profile_id", "stage", "description", "cases"],
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1},
+    "schema": {"const": "okf-heritage-adversarial-microfixtures.v1"},
+    "profile_id": {"const": "heritage-coventry-warwickshire"},
+    "stage": {"const": "preflight-before-tiny-and-full"},
+    "description": {"type": "string", "minLength": 1},
+    "cases": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "late_finding",
+        "validator",
+        "planes",
+        "test_tags",
+        "input",
+        "expected"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^LF(?:0[1-9]|1[0-3])-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "late_finding": {"type": "string", "minLength": 1},
+        "validator": {
+          "enum": [
+            "har_continuity",
+            "source_native_route",
+            "yaml_ld_presentation",
+            "publication_capacity",
+            "ephemeral_exclusion",
+            "crs_provenance",
+            "authority_scope",
+            "public_search_bound",
+            "project_root",
+            "closure_binding",
+            "evidence_separation",
+            "registry_lockstep",
+            "release_asset_names"
+          ]
+        },
+        "planes": {"$ref": "#/$defs/stringArray"},
+        "test_tags": {"$ref": "#/$defs/stringArray"},
+        "journey_groups": {"$ref": "#/$defs/stringArray"},
+        "input": {"type": "object"},
+        "expected": {"type": "object"}
+      }
+    }
+  }
+}

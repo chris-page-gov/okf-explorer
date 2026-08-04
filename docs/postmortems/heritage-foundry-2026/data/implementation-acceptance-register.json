@@ -1,0 +1,159 @@
+[
+  {
+    "id": "IMP-001",
+    "priority": "P0",
+    "change": "Publish Evaluation Profile v2 using the parent Foundry dependency contract.",
+    "status": "implemented-local",
+    "artifacts": [
+      "evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json",
+      "evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml",
+      "evaluation-foundry/fixtures/heritage-warwickshire/consumer-lock.json",
+      "scripts/check_evaluation_foundry.py"
+    ],
+    "acceptance_tests": [
+      "tests/test_evaluation_foundry_impact.py"
+    ],
+    "remaining_gate": "Integrated candidate validation and terminal promotion."
+  },
+  {
+    "id": "IMP-002",
+    "priority": "P0",
+    "change": "Add a deterministic, explainable, fail-closed impact planner.",
+    "status": "implemented-local",
+    "artifacts": [
+      "scripts/plan_evaluation_foundry_impact.py",
+      "evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json",
+      "evaluation-foundry/fixtures/heritage-warwickshire/history/impact-shadow-cases.json"
+    ],
+    "acceptance_tests": [
+      "tests/test_evaluation_foundry_impact.py"
+    ],
+    "remaining_gate": "Run the complete shadow and mutation suite in integrated CI."
+  },
+  {
+    "id": "IMP-003",
+    "priority": "P0",
+    "change": "Keep mutable observations and promotion status outside candidate roots.",
+    "status": "implemented-local",
+    "artifacts": [
+      "evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json",
+      "release-assurance/heritage-publication-envelope.json",
+      "scripts/check_promotion_envelope.py"
+    ],
+    "acceptance_tests": [
+      "tests/test_evaluation_foundry_impact.py"
+    ],
+    "remaining_gate": "Populate, attest and verify the envelope only after exact public observation."
+  },
+  {
+    "id": "IMP-004",
+    "priority": "P1",
+    "change": "Split normalized-core and plane emitters with changed-only atomic writes.",
+    "status": "implemented-local",
+    "artifacts": [
+      "scripts/build_heritage_evaluation.py",
+      "scripts/heritage_build_io.py"
+    ],
+    "acceptance_tests": [
+      "tests/test_build_heritage_evaluation.py"
+    ],
+    "remaining_gate": "Complete integrated deterministic regeneration of faithful, tiny and synthetic products."
+  },
+  {
+    "id": "IMP-005",
+    "priority": "P1",
+    "change": "Run one adversarial microfixture per reconstructed late-finding class before large builds.",
+    "status": "implemented-local",
+    "artifacts": [
+      "evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json",
+      "evaluation-foundry/schemas/heritage-adversarial-microfixtures.v1.schema.json",
+      "scripts/check_heritage_adversarial.py",
+      ".github/workflows/okf-explorer-ci.yml",
+      ".github/workflows/pages.yml",
+      ".github/workflows/foundry-full-shadow.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_heritage_adversarial.py",
+      "tests/test_ci_publication_topology.py"
+    ],
+    "remaining_gate": "Observe the first prerequisite receipt in pull-request, Pages and scheduled workflows."
+  },
+  {
+    "id": "IMP-006",
+    "priority": "P1",
+    "change": "Drive conditional parallel CI from the impact plan and retain a full shadow audit.",
+    "status": "implemented-local",
+    "artifacts": [
+      ".github/workflows/okf-explorer-ci.yml",
+      ".github/workflows/foundry-full-shadow.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_evaluation_foundry_impact.py",
+      "tests/test_ci_publication_topology.py"
+    ],
+    "remaining_gate": "Observe the first pull-request and scheduled workflow executions."
+  },
+  {
+    "id": "IMP-007",
+    "priority": "P1",
+    "change": "Assemble the Site from content-addressed components.",
+    "status": "implemented-local",
+    "artifacts": [
+      "scripts/site_component_cache.py",
+      "scripts/build_site.py",
+      ".github/workflows/pages.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_site_component_cache.py",
+      "tests/test_build_site.py"
+    ],
+    "remaining_gate": "Measure changed-component reuse and the final published closure."
+  },
+  {
+    "id": "IMP-008",
+    "priority": "P2",
+    "change": "Hash-shard semantic and link-intent outputs and remove the duplicate graph materialization.",
+    "status": "implemented-local",
+    "artifacts": [
+      "scripts/build_heritage_evaluation.py",
+      "scripts/observe_link_intents.py",
+      ".github/workflows/link-observation.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_build_heritage_evaluation.py",
+      "tests/test_observe_link_intents.py"
+    ],
+    "remaining_gate": "Observe the first scheduled freshness receipt outside candidate and Site bytes."
+  },
+  {
+    "id": "IMP-009",
+    "priority": "P2",
+    "change": "Move the large heritage pack to an independently rooted publication unit.",
+    "status": "implemented-local-public-promotion-pending",
+    "artifacts": [
+      "publication-units/heritage-coventry-warwickshire/publication-unit.json",
+      "scripts/export_publication_unit.py",
+      "publication-units/heritage-coventry-warwickshire/repository-template/pages.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_publication_units.py"
+    ],
+    "remaining_gate": "Create, publish and identity-check the external repository and exact Pages deployment before registry activation."
+  },
+  {
+    "id": "IMP-010",
+    "priority": "P2",
+    "change": "Require annotated tags, attestation, immutable releases and retained deterministic archives.",
+    "status": "implemented-policy-terminal-release-pending",
+    "artifacts": [
+      "release-assurance/release-policy.json",
+      "scripts/check_release_policy.py",
+      "publication-units/heritage-coventry-warwickshire/repository-template/promotion-release.yml"
+    ],
+    "acceptance_tests": [
+      "tests/test_release_policy.py",
+      "tests/test_ci_publication_topology.py"
+    ],
+    "remaining_gate": "Create and verify the annotated tag, attested envelope, immutable release and retained archive for the promoted external candidate."
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "schema": "okf-release-policy.v2",
+  "github": {
+    "api_version": "2026-03-10",
+    "immutable_releases_required": true,
+    "draft_assets_before_publish": true,
+    "artifact_attestation_required": true
+  },
+  "candidate_release": {
+    "tag_pattern": "^heritage-coventry-warwickshire-[0-9]{8}$",
+    "object_type": "annotated",
+    "signature_policy": "signed-tag-or-verified-archive-attestation",
+    "immutable": true,
+    "archive_attestation": true,
+    "contains_promotion_envelope": false,
+    "asset_names": [
+      "heritage-coventry-warwickshire.tar.gz",
+      "SHA256SUMS",
+      "publication-unit-manifest.json",
+      "publication-validation-receipt.json",
+      "candidate-release-receipt.json"
+    ],
+    "title": "Coventry and Warwickshire Heritage Evaluation Exemplar"
+  },
+  "terminal_assurance": {
+    "after_candidate_release": true,
+    "publication_journey_actions": 32,
+    "live_browser_actions": 21,
+    "receipt_backed_actions": 11,
+    "browser_engines": ["chromium", "firefox", "webkit"],
+    "complete_link_manifest": true,
+    "protected_pages_genuine_browser": true
+  },
+  "promotion_release": {
+    "tag_pattern": "^heritage-coventry-warwickshire-[0-9]{8}-promotion\\.[0-9]+$",
+    "object_type": "annotated",
+    "same_source_commit_as_candidate": true,
+    "immutable": true,
+    "envelope_attestation": true,
+    "asset_names": [
+      "heritage-publication-envelope.json",
+      "heritage-publication-envelope.attestation.json",
+      "candidate-release-receipt.json",
+      "publication-validation-receipt.json",
+      "publication-journey-receipt.json",
+      "link-observation-receipt.json",
+      "protected-link-browser-receipt.json",
+      "journey-chromium-results.json",
+      "journey-firefox-results.json",
+      "journey-webkit-results.json"
+    ],
+    "title": "Coventry and Warwickshire Heritage Evaluation Exemplar — Promotion"
+  },
+  "closure": {
+    "envelope_subject": "candidate-release",
+    "container_status": "verified-after-publish",
+    "self_binding_forbidden": true,
+    "final_container_observation_outside_envelope": true
+  },
+  "promotion_envelope": {
+    "schema": "okf-evaluation-promotion-envelope.v1",
+    "template_path": "release-assurance/promotion-envelope.template.json",
+    "runtime_asset": "heritage-publication-envelope.json",
+    "attestation_sidecar_asset": "heritage-publication-envelope.attestation.json",
+    "included_in_candidate": false,
+    "included_in_site": false
+  }
+}

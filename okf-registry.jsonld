@@ -244,22 +244,22 @@
           "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/heritage-coventry-warwickshire",
           "@type": "okf:Bundle",
           "conformsTo": [
-            "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html"
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/evaluation-foundry/fixtures/heritage-warwickshire/profile.html"
           ],
           "description": [
-            "Publicly verified Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement."
+            "Independently published Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement; promotion evidence is carried by its signed release envelope."
           ],
           "descriptor": [
-            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json"
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json"
           ],
           "descriptorAlternates": [
-            "https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803"
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804"
           ],
           "documentation": [
-            "https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html"
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/heritage-evaluation-report.html"
           ],
           "home": [
-            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/"
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
           ],
           "license": [
             "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
@@ -267,20 +267,14 @@
           "publisher": [
             "https://github.com/chris-page-gov"
           ],
-          "rawSubpath": [
-            "evaluation/heritage"
-          ],
           "recordTypeLabel": [
             "large-corpus"
           ],
           "repository": [
-            "https://github.com/chris-page-gov/okf-explorer"
+            "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire"
           ],
           "semanticDescriptor": [
-            "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-bundle.yamlld"
-          ],
-          "status": [
-            "evaluated"
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld"
           ],
           "title": [
             "Coventry and Warwickshire Heritage Evaluation"

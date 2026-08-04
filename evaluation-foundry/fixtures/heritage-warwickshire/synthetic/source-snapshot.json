@@ -3,14 +3,15 @@
   "snapshot_id": "heritage-warwickshire-synthetic-capability-v1",
   "observed_at": "2026-08-02T00:00:00Z",
   "publication": {
-    "public_base": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
+    "public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
     "role": "synthetic",
     "title": "Synthetic Heritage Capability Supplement",
     "description": "Three invented records used only to demonstrate typed people, proposed future events, uncertainty and richly qualified graph assertions.",
     "status": "synthetic-default-off",
     "license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "publisher": "https://github.com/chris-page-gov/okf-explorer",
-    "publisher_title": "OKF Explorer Evaluation Foundry"
+    "publisher_title": "OKF Explorer Evaluation Foundry",
+    "family_public_base": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
   },
   "scope": {
     "assertion_scope": "synthetic-fixture",
@@ -19,13 +20,13 @@
     "boundaries": []
   },
   "source_title": "Invented Evaluation Foundry capability scenario",
-  "source_url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
-  "source_data_url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/data/source-provenance.json",
+  "source_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
+  "source_data_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/data/source-provenance.json",
   "sources": [
     {
       "id": "synthetic-scenario",
       "title": "Synthetic Heritage Capability Supplement",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
       "authority": "invented",
       "rights": "CC0 1.0",
       "warning": "No person, place, event or relationship in this source is a real-world claim."
@@ -45,7 +46,9 @@
     "This supplement must never be merged into faithful records, counts, search indexes or default loading.",
     "Names, identifiers, coordinates, dates and relationships are deliberately invented."
   ],
-  "link_validation": {"live_receipts": []},
+  "link_validation": {
+    "live_receipts": []
+  },
   "normalized_publishers": [
     {
       "id": "okf-explorer-evaluation-foundry",
@@ -55,8 +58,12 @@
       "route": "publisher/okf-explorer-evaluation-foundry",
       "dataset_count": 3,
       "resource_count": 3,
-      "formats": ["HTML"],
-      "topics": ["Synthetic capability testing"],
+      "formats": [
+        "HTML"
+      ],
+      "topics": [
+        "Synthetic capability testing"
+      ],
       "url": "https://github.com/chris-page-gov/okf-explorer"
     }
   ],
@@ -69,11 +76,14 @@
       "format": "HTML",
       "source_format": "Generated Markdown",
       "route": "resource/synthetic/meridian-note",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
       "host": "chris-page-gov.github.io",
       "resource_type": "synthetic-scenario-note",
       "position": 0,
-      "provenance": {"assertion_status": "model-derived", "assertion_scope": "synthetic-fixture"}
+      "provenance": {
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture"
+      }
     },
     {
       "id": "synthetic-asha-note",
@@ -83,11 +93,14 @@
       "format": "HTML",
       "source_format": "Generated Markdown",
       "route": "resource/synthetic/asha-note",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
       "host": "chris-page-gov.github.io",
       "resource_type": "synthetic-scenario-note",
       "position": 0,
-      "provenance": {"assertion_status": "model-derived", "assertion_scope": "synthetic-fixture"}
+      "provenance": {
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture"
+      }
     },
     {
       "id": "synthetic-flood-note",
@@ -97,16 +110,19 @@
       "format": "HTML",
       "source_format": "Generated Markdown",
       "route": "resource/synthetic/flood-note",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
       "host": "chris-page-gov.github.io",
       "resource_type": "synthetic-scenario-note",
       "position": 0,
-      "provenance": {"assertion_status": "model-derived", "assertion_scope": "synthetic-fixture"}
+      "provenance": {
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture"
+      }
     }
   ],
   "normalized_records": [
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
       "@type": "https://schema.org/LandmarksOrHistoricalBuildings",
       "id": "synthetic:place:meridian-dye-works",
       "record_id": "synthetic:place:meridian-dye-works",
@@ -115,14 +131,31 @@
       "title": "Meridian Dye Works (synthetic)",
       "notes": "Invented industrial heritage place for interface testing only.",
       "context_note": "Synthetic place · uncertain person attribution · Coventry test coordinate",
-      "search_aliases": ["Meridien Dye Works", "Meridian Dyeworks", "SYN-PLACE-001", "The Meridian Works"],
+      "search_aliases": [
+        "Meridien Dye Works",
+        "Meridian Dyeworks",
+        "SYN-PLACE-001",
+        "The Meridian Works"
+      ],
       "publisher": "okf-explorer-evaluation-foundry",
       "publisher_title": "OKF Explorer Evaluation Foundry",
       "resource_count": 1,
-      "resource_ids": ["resource/synthetic/meridian-note"],
-      "formats": ["HTML", "GeoJSON"],
-      "tags": ["synthetic", "industrial-heritage", "uncertain-attribution"],
-      "topics": ["Synthetic capability testing", "Industrial heritage"],
+      "resource_ids": [
+        "resource/synthetic/meridian-note"
+      ],
+      "formats": [
+        "HTML",
+        "GeoJSON"
+      ],
+      "tags": [
+        "synthetic",
+        "industrial-heritage",
+        "uncertain-attribution"
+      ],
+      "topics": [
+        "Synthetic capability testing",
+        "Industrial heritage"
+      ],
       "timestamp": "1894-01-01",
       "metadata_created": "1894-01-01",
       "metadata_modified": "",
@@ -134,8 +167,8 @@
       "license_basis": "fixture-declared",
       "route": "synthetic/place/meridian-dye-works",
       "concept_id": "synthetic:place:meridian-dye-works",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
-      "documentation": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/methodology.html",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
+      "documentation": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/methodology.html",
       "record_type": "Synthetic Heritage Place",
       "type": "Illustrative Industrial Place",
       "heritage_category": "Invented capability example",
@@ -143,8 +176,12 @@
       "designation_year": "",
       "amendment_year": "",
       "geometry_type": "Point",
-      "local_authority": ["Coventry (illustrative coordinate only)"],
-      "geography_code": ["SYN-COV"],
+      "local_authority": [
+        "Coventry (illustrative coordinate only)"
+      ],
+      "geography_code": [
+        "SYN-COV"
+      ],
       "county": "Synthetic Coventry and Warwickshire scenario",
       "source_tier": "synthetic-fixture",
       "source_adapter": "evaluation-foundry-synthetic",
@@ -152,20 +189,50 @@
       "confidence": "invented",
       "assertion_status": "model-derived",
       "assertion_scope": "synthetic-fixture",
-      "protocol": ["HTTPS"],
+      "protocol": [
+        "HTTPS"
+      ],
       "isopen": true,
       "private": false,
-      "area_served": ["Synthetic scenario"],
-      "spatial": {"crs":"EPSG:4326","geometry_type":"Point","derivation":"invented test coordinate"},
-      "geometry": {"type":"Point","coordinates":[-1.506,52.408]},
+      "area_served": [
+        "Synthetic scenario"
+      ],
+      "spatial": {
+        "crs": "EPSG:4326",
+        "geometry_type": "Point",
+        "derivation": "invented test coordinate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.506,
+          52.408
+        ]
+      },
       "latitude": 52.408,
       "longitude": -1.506,
-      "quality": {"overall":1.0,"metrics":{"fixture_completeness":1.0},"notes":["Completeness describes the test fixture, not factual accuracy."]},
-      "provenance": {"source":"Synthetic Heritage Capability Supplement","assertion_status":"model-derived","assertion_scope":"synthetic-fixture","warning":"invented"},
-      "extras": {"synthetic":true,"uncertainty":"person attribution intentionally uncertain"}
+      "quality": {
+        "overall": 1.0,
+        "metrics": {
+          "fixture_completeness": 1.0
+        },
+        "notes": [
+          "Completeness describes the test fixture, not factual accuracy."
+        ]
+      },
+      "provenance": {
+        "source": "Synthetic Heritage Capability Supplement",
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture",
+        "warning": "invented"
+      },
+      "extras": {
+        "synthetic": true,
+        "uncertainty": "person attribution intentionally uncertain"
+      }
     },
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
       "@type": "https://schema.org/Person",
       "id": "synthetic:person:asha-bennett",
       "record_id": "synthetic:person:asha-bennett",
@@ -174,14 +241,29 @@
       "title": "Asha Bennett (synthetic person)",
       "notes": "Invented designer identity used to demonstrate a qualified, uncertain person-to-place assertion.",
       "context_note": "Synthetic person · attributed designer · confidence 0.62",
-      "search_aliases": ["A. Bennett", "Asha Bennet", "SYN-PERSON-001"],
+      "search_aliases": [
+        "A. Bennett",
+        "Asha Bennet",
+        "SYN-PERSON-001"
+      ],
       "publisher": "okf-explorer-evaluation-foundry",
       "publisher_title": "OKF Explorer Evaluation Foundry",
       "resource_count": 1,
-      "resource_ids": ["resource/synthetic/asha-note"],
-      "formats": ["HTML"],
-      "tags": ["synthetic", "person", "uncertain-attribution"],
-      "topics": ["Synthetic capability testing", "People and heritage"],
+      "resource_ids": [
+        "resource/synthetic/asha-note"
+      ],
+      "formats": [
+        "HTML"
+      ],
+      "tags": [
+        "synthetic",
+        "person",
+        "uncertain-attribution"
+      ],
+      "topics": [
+        "Synthetic capability testing",
+        "People and heritage"
+      ],
       "timestamp": "1862-01-01",
       "metadata_created": "2026-08-02",
       "metadata_modified": "",
@@ -193,8 +275,8 @@
       "license_basis": "fixture-declared",
       "route": "synthetic/person/asha-bennett",
       "concept_id": "synthetic:person:asha-bennett",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
-      "documentation": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/methodology.html",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
+      "documentation": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/methodology.html",
       "record_type": "Synthetic Person",
       "type": "Illustrative Person",
       "heritage_category": "Invented capability example",
@@ -211,17 +293,40 @@
       "confidence": "invented",
       "assertion_status": "model-derived",
       "assertion_scope": "synthetic-fixture",
-      "protocol": ["HTTPS"],
+      "protocol": [
+        "HTTPS"
+      ],
       "isopen": true,
       "private": false,
-      "area_served": ["Synthetic scenario"],
-      "spatial": {"crs":"EPSG:4326","derivation":"no geometry: invented person entity"},
-      "quality": {"overall":1.0,"metrics":{"fixture_completeness":1.0},"notes":["Completeness describes the test fixture, not factual accuracy."]},
-      "provenance": {"source":"Synthetic Heritage Capability Supplement","assertion_status":"model-derived","assertion_scope":"synthetic-fixture","warning":"invented"},
-      "extras": {"synthetic":true,"birth_year":"1862 (invented)"}
+      "area_served": [
+        "Synthetic scenario"
+      ],
+      "spatial": {
+        "crs": "EPSG:4326",
+        "derivation": "no geometry: invented person entity"
+      },
+      "quality": {
+        "overall": 1.0,
+        "metrics": {
+          "fixture_completeness": 1.0
+        },
+        "notes": [
+          "Completeness describes the test fixture, not factual accuracy."
+        ]
+      },
+      "provenance": {
+        "source": "Synthetic Heritage Capability Supplement",
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture",
+        "warning": "invented"
+      },
+      "extras": {
+        "synthetic": true,
+        "birth_year": "1862 (invented)"
+      }
     },
     {
-      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
+      "@id": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
       "@type": "https://schema.org/Event",
       "id": "synthetic:event:flood-resilience-2031",
       "record_id": "synthetic:event:flood-resilience-2031",
@@ -230,14 +335,30 @@
       "title": "Meridian flood-resilience intervention, 2031 (synthetic proposal)",
       "notes": "Invented future intervention used to demonstrate proposed-event time, uncertainty and impact relationships.",
       "context_note": "Synthetic proposed event · 2031 · scenario confidence 0.45",
-      "search_aliases": ["2031 Meridian flood scheme", "Flood resilence intervention", "SYN-EVENT-001"],
+      "search_aliases": [
+        "2031 Meridian flood scheme",
+        "Flood resilence intervention",
+        "SYN-EVENT-001"
+      ],
       "publisher": "okf-explorer-evaluation-foundry",
       "publisher_title": "OKF Explorer Evaluation Foundry",
       "resource_count": 1,
-      "resource_ids": ["resource/synthetic/flood-note"],
-      "formats": ["HTML", "GeoJSON"],
-      "tags": ["synthetic", "future-event", "climate-resilience"],
-      "topics": ["Synthetic capability testing", "Heritage adaptation"],
+      "resource_ids": [
+        "resource/synthetic/flood-note"
+      ],
+      "formats": [
+        "HTML",
+        "GeoJSON"
+      ],
+      "tags": [
+        "synthetic",
+        "future-event",
+        "climate-resilience"
+      ],
+      "topics": [
+        "Synthetic capability testing",
+        "Heritage adaptation"
+      ],
       "timestamp": "2031-04-01",
       "metadata_created": "2026-08-02",
       "metadata_modified": "",
@@ -249,8 +370,8 @@
       "license_basis": "fixture-declared",
       "route": "synthetic/event/flood-resilience-2031",
       "concept_id": "synthetic:event:flood-resilience-2031",
-      "url": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/",
-      "documentation": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/methodology.html",
+      "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/",
+      "documentation": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/methodology.html",
       "record_type": "Synthetic Proposed Event",
       "type": "Illustrative Intervention",
       "heritage_category": "Invented capability example",
@@ -258,8 +379,12 @@
       "designation_year": "",
       "amendment_year": "",
       "geometry_type": "Point",
-      "local_authority": ["Coventry (illustrative coordinate only)"],
-      "geography_code": ["SYN-COV"],
+      "local_authority": [
+        "Coventry (illustrative coordinate only)"
+      ],
+      "geography_code": [
+        "SYN-COV"
+      ],
       "county": "Synthetic Coventry and Warwickshire scenario",
       "source_tier": "synthetic-fixture",
       "source_adapter": "evaluation-foundry-synthetic",
@@ -267,59 +392,102 @@
       "confidence": "invented",
       "assertion_status": "model-derived",
       "assertion_scope": "synthetic-fixture",
-      "protocol": ["HTTPS"],
+      "protocol": [
+        "HTTPS"
+      ],
       "isopen": true,
       "private": false,
-      "area_served": ["Synthetic scenario"],
-      "spatial": {"crs":"EPSG:4326","geometry_type":"Point","derivation":"invented test coordinate"},
-      "geometry": {"type":"Point","coordinates":[-1.507,52.409]},
+      "area_served": [
+        "Synthetic scenario"
+      ],
+      "spatial": {
+        "crs": "EPSG:4326",
+        "geometry_type": "Point",
+        "derivation": "invented test coordinate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.507,
+          52.409
+        ]
+      },
       "latitude": 52.409,
       "longitude": -1.507,
-      "quality": {"overall":1.0,"metrics":{"fixture_completeness":1.0},"notes":["Completeness describes the test fixture, not factual accuracy."]},
-      "provenance": {"source":"Synthetic Heritage Capability Supplement","assertion_status":"model-derived","assertion_scope":"synthetic-fixture","warning":"invented"},
-      "extras": {"synthetic":true,"event_status":"proposed (invented)","scenario_confidence":0.45}
+      "quality": {
+        "overall": 1.0,
+        "metrics": {
+          "fixture_completeness": 1.0
+        },
+        "notes": [
+          "Completeness describes the test fixture, not factual accuracy."
+        ]
+      },
+      "provenance": {
+        "source": "Synthetic Heritage Capability Supplement",
+        "assertion_status": "model-derived",
+        "assertion_scope": "synthetic-fixture",
+        "warning": "invented"
+      },
+      "extras": {
+        "synthetic": true,
+        "event_status": "proposed (invented)",
+        "scenario_confidence": 0.45
+      }
     }
   ],
   "normalized_relationships": [
     {
-      "schema":"okf-relationship-assertion.v2",
-      "id":"relationship/synthetic-designed-by",
-      "source":"synthetic/place/meridian-dye-works",
-      "target":"synthetic/person/asha-bennett",
-      "source_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
-      "target_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
-      "kind":"possibly designed by",
-      "label":"possibly designed by",
-      "inverse_label":"possibly designed",
-      "predicate":"https://schema.org/architect",
-      "authority":{"class":"synthetic","label":"Invented Evaluation Foundry assertion","source":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/"},
-      "derivation":"Hand-authored invented relationship used to demonstrate uncertainty metadata.",
-      "confidence":0.62,
-      "observed_at":"2026-08-02T00:00:00Z",
-      "freshness":"unknown",
-      "evidence":["https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/"],
-      "assertion_status":"model-derived",
-      "assertion_scope":"synthetic-fixture"
+      "schema": "okf-relationship-assertion.v2",
+      "id": "relationship/synthetic-designed-by",
+      "source": "synthetic/place/meridian-dye-works",
+      "target": "synthetic/person/asha-bennett",
+      "source_iri": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "target_iri": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ",
+      "kind": "possibly designed by",
+      "label": "possibly designed by",
+      "inverse_label": "possibly designed",
+      "predicate": "https://schema.org/architect",
+      "authority": {
+        "class": "synthetic",
+        "label": "Invented Evaluation Foundry assertion",
+        "source": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/"
+      },
+      "derivation": "Hand-authored invented relationship used to demonstrate uncertainty metadata.",
+      "confidence": 0.62,
+      "observed_at": "2026-08-02T00:00:00Z",
+      "freshness": "unknown",
+      "evidence": [
+        "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/"
+      ],
+      "assertion_status": "model-derived",
+      "assertion_scope": "synthetic-fixture"
     },
     {
-      "schema":"okf-relationship-assertion.v2",
-      "id":"relationship/synthetic-protects",
-      "source":"synthetic/event/flood-resilience-2031",
-      "target":"synthetic/place/meridian-dye-works",
-      "source_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
-      "target_iri":"https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
-      "kind":"proposes protection for",
-      "label":"proposes protection for",
-      "inverse_label":"would be protected by",
-      "predicate":"https://schema.org/about",
-      "authority":{"class":"synthetic","label":"Invented Evaluation Foundry assertion","source":"https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/"},
-      "derivation":"Hand-authored invented future-scenario relationship.",
-      "confidence":0.45,
-      "observed_at":"2026-08-02T00:00:00Z",
-      "freshness":"unknown",
-      "evidence":["https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/"],
-      "assertion_status":"model-derived",
-      "assertion_scope":"synthetic-fixture"
+      "schema": "okf-relationship-assertion.v2",
+      "id": "relationship/synthetic-protects",
+      "source": "synthetic/event/flood-resilience-2031",
+      "target": "synthetic/place/meridian-dye-works",
+      "source_iri": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL2V2ZW50L2Zsb29kLXJlc2lsaWVuY2UtMjAzMQ",
+      "target_iri": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw",
+      "kind": "proposes protection for",
+      "label": "proposes protection for",
+      "inverse_label": "would be protected by",
+      "predicate": "https://schema.org/about",
+      "authority": {
+        "class": "synthetic",
+        "label": "Invented Evaluation Foundry assertion",
+        "source": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/"
+      },
+      "derivation": "Hand-authored invented future-scenario relationship.",
+      "confidence": 0.45,
+      "observed_at": "2026-08-02T00:00:00Z",
+      "freshness": "unknown",
+      "evidence": [
+        "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/"
+      ],
+      "assertion_status": "model-derived",
+      "assertion_scope": "synthetic-fixture"
     }
   ]
 }

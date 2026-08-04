@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/okf-evaluation-impact-plan.v1.schema.json",
+  "title": "OKF Evaluation Foundry impact plan v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "profile_id",
+    "profile_schema",
+    "profile_sha256",
+    "changed_from",
+    "changed_to",
+    "changed_paths",
+    "fail_closed",
+    "unknown_paths",
+    "matched_rule_ids",
+    "root_delta",
+    "impact",
+    "selectors",
+    "full_shadow",
+    "explanations"
+  ],
+  "properties": {
+    "schema": {"const": "okf-evaluation-impact-plan.v1"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "profile_schema": {"const": "okf-evaluation-profile.v2"},
+    "profile_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "changed_from": {"type": ["string", "null"]},
+    "changed_to": {"type": ["string", "null"]},
+    "changed_paths": {"$ref": "#/$defs/stringArray"},
+    "fail_closed": {"type": "boolean"},
+    "unknown_paths": {"$ref": "#/$defs/stringArray"},
+    "matched_rule_ids": {"$ref": "#/$defs/stringArray"},
+    "root_delta": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/rootDelta"}
+      ]
+    },
+    "impact": {
+      "type": "object",
+      "required": ["node_ids", "validation_ids"],
+      "properties": {
+        "node_ids": {"$ref": "#/$defs/stringArray"},
+        "validation_ids": {"$ref": "#/$defs/stringArray"}
+      },
+      "additionalProperties": false
+    },
+    "selectors": {
+      "type": "object",
+      "required": ["planes", "plane_roles", "builder_planes", "fixtures", "builder_fixtures", "test_tags", "journey_groups", "jobs"],
+      "properties": {
+        "planes": {"$ref": "#/$defs/stringArray"},
+        "plane_roles": {"$ref": "#/$defs/stringArray"},
+        "builder_planes": {"$ref": "#/$defs/stringArray"},
+        "fixtures": {"$ref": "#/$defs/stringArray"},
+        "builder_fixtures": {"$ref": "#/$defs/stringArray"},
+        "test_tags": {"$ref": "#/$defs/stringArray"},
+        "journey_groups": {"$ref": "#/$defs/stringArray"},
+        "jobs": {
+          "type": "object",
+          "required": ["python", "app", "browser_targeted", "browser_full", "foundry", "site", "docs", "release"],
+          "properties": {
+            "python": {"type": "boolean"},
+            "app": {"type": "boolean"},
+            "browser_targeted": {"type": "boolean"},
+            "browser_full": {"type": "boolean"},
+            "foundry": {"type": "boolean"},
+            "site": {"type": "boolean"},
+            "docs": {"type": "boolean"},
+            "release": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "full_shadow": {
+      "type": "object",
+      "required": ["enabled", "cadence"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "cadence": {"$ref": "#/$defs/stringArray"}
+      },
+      "additionalProperties": false
+    },
+    "explanations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "rule_ids", "reason"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "rule_ids": {"$ref": "#/$defs/stringArray"},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "rootDelta": {
+      "type": "object",
+      "required": [
+        "trusted",
+        "changed_from",
+        "changed_to",
+        "changed_roles",
+        "unchanged_roles",
+        "release_root_changed",
+        "receipts",
+        "errors"
+      ],
+      "properties": {
+        "trusted": {"type": "boolean"},
+        "changed_from": {"type": "string", "minLength": 1},
+        "changed_to": {"type": "string", "minLength": 1},
+        "changed_roles": {"$ref": "#/$defs/stringArray"},
+        "unchanged_roles": {"$ref": "#/$defs/stringArray"},
+        "release_root_changed": {"type": "boolean"},
+        "errors": {"$ref": "#/$defs/stringArray"},
+        "receipts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "old_schema", "new_schema", "changed_roles", "release_root_changed"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "old_schema": {"enum": ["okf-evaluation-plane-roots.v1", "okf-evaluation-plane-roots.v2"]},
+              "new_schema": {"enum": ["okf-evaluation-plane-roots.v1", "okf-evaluation-plane-roots.v2"]},
+              "changed_roles": {"$ref": "#/$defs/stringArray"},
+              "release_root_changed": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

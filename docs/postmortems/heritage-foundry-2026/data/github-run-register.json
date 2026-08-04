@@ -1,0 +1,1298 @@
+[
+  {
+    "run_id": 30799819042,
+    "pr_number": 67,
+    "phase": "pull-request-ci",
+    "workflow": "OKF Explorer CI",
+    "event": "pull_request",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "a9b36fab8ef11ddc469a2c75385da72379461a79",
+    "head_branch": "codex/evaluation-foundry-heritage",
+    "started_at": "2026-08-03T09:03:51Z",
+    "completed_at": "2026-08-03T09:14:49Z",
+    "duration_seconds": 658,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30799819042",
+    "jobs": [
+      {
+        "database_id": 91641579681,
+        "name": "okf-explorer-ci",
+        "conclusion": "success",
+        "started_at": "2026-08-03T09:03:53Z",
+        "completed_at": "2026-08-03T09:14:48Z",
+        "duration_seconds": 655,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 88
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 4
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 11
+          },
+          {
+            "number": 7,
+            "name": "Run OKF Explorer tests",
+            "conclusion": "success",
+            "duration_seconds": 6
+          },
+          {
+            "number": 8,
+            "name": "Check CycloneDX dependency inventory",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 9,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 18
+          },
+          {
+            "number": 10,
+            "name": "Install Firefox and WebKit browser dependencies",
+            "conclusion": "success",
+            "duration_seconds": 31
+          },
+          {
+            "number": 11,
+            "name": "Run Chrome, Firefox and WebKit browser tests",
+            "conclusion": "success",
+            "duration_seconds": 350
+          },
+          {
+            "number": 12,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 13,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 9
+          },
+          {
+            "number": 14,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 15,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 45
+          },
+          {
+            "number": 16,
+            "name": "Run OKF generator tests",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 17,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 18,
+            "name": "Generate UK Government API corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 19,
+            "name": "Generate legislation corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 20,
+            "name": "Regenerate legislation answer evaluation",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 21,
+            "name": "Validate published legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 22,
+            "name": "Check documentation lockstep",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 23,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 24,
+            "name": "Validate legacy OKF viewer",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 25,
+            "name": "Check OKF conformance",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 26,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 14
+          },
+          {
+            "number": 27,
+            "name": "Test Foundry Pages in Chrome, Firefox and WebKit",
+            "conclusion": "success",
+            "duration_seconds": 44
+          },
+          {
+            "number": 51,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 52,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 53,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 54,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 55,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "test_counts": {
+      "python": 176,
+      "vitest": 276,
+      "node": 24,
+      "explorer_browser": 153,
+      "foundry_browser": 63
+    }
+  },
+  {
+    "run_id": 30800609874,
+    "pr_number": 67,
+    "phase": "post-merge-pages",
+    "workflow": "Publish GitHub Pages",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "65e22ac68f007ca2aa75b6ab195c949f2939b210",
+    "head_branch": "main",
+    "started_at": "2026-08-03T09:15:21Z",
+    "completed_at": "2026-08-03T09:19:29Z",
+    "duration_seconds": 248,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30800609874",
+    "jobs": [
+      {
+        "database_id": 91644062846,
+        "name": "build",
+        "conclusion": "success",
+        "started_at": "2026-08-03T09:15:30Z",
+        "completed_at": "2026-08-03T09:18:56Z",
+        "duration_seconds": 206,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 72
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 7,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 18
+          },
+          {
+            "number": 8,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 9,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 8
+          },
+          {
+            "number": 10,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 11,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 42
+          },
+          {
+            "number": 12,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 13,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 14,
+            "name": "Validate OKF Explorer bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 15,
+            "name": "Validate legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 16,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 17,
+            "name": "Configure Pages",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 18,
+            "name": "Upload Pages artifact",
+            "conclusion": "success",
+            "duration_seconds": 16
+          },
+          {
+            "number": 33,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 34,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 35,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 36,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 37,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      },
+      {
+        "database_id": 91644853463,
+        "name": "deploy",
+        "conclusion": "success",
+        "started_at": "2026-08-03T09:19:00Z",
+        "completed_at": "2026-08-03T09:19:29Z",
+        "duration_seconds": 29,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 2,
+            "name": "Deploy to GitHub Pages",
+            "conclusion": "success",
+            "duration_seconds": 26
+          },
+          {
+            "number": 3,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "site_identity": {
+      "site_files": 14007,
+      "site_bytes": 987424628,
+      "receipt_tree_sha256": "c7bc739c",
+      "explorer_tree_sha256": "bdbcbf7c",
+      "heritage_files": 2938,
+      "heritage_tree_sha256": "18977e67",
+      "artifact_id": 8850720016,
+      "artifact_bytes": 209721634,
+      "artifact_sha256": "86fbfd2b"
+    }
+  },
+  {
+    "run_id": 30812594912,
+    "pr_number": 68,
+    "phase": "pull-request-ci",
+    "workflow": "OKF Explorer CI",
+    "event": "pull_request",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "0a0653bfd4b07767cf2ca35ede8133ef6a159076",
+    "head_branch": "codex/publish-heritage-evaluation",
+    "started_at": "2026-08-03T12:12:01Z",
+    "completed_at": "2026-08-03T12:22:44Z",
+    "duration_seconds": 643,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30812594912",
+    "jobs": [
+      {
+        "database_id": 91682588605,
+        "name": "okf-explorer-ci",
+        "conclusion": "success",
+        "started_at": "2026-08-03T12:12:03Z",
+        "completed_at": "2026-08-03T12:22:44Z",
+        "duration_seconds": 641,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 14
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 5
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 7,
+            "name": "Run OKF Explorer tests",
+            "conclusion": "success",
+            "duration_seconds": 14
+          },
+          {
+            "number": 8,
+            "name": "Check CycloneDX dependency inventory",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 9,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 17
+          },
+          {
+            "number": 10,
+            "name": "Install Firefox and WebKit browser dependencies",
+            "conclusion": "success",
+            "duration_seconds": 35
+          },
+          {
+            "number": 11,
+            "name": "Run Chrome, Firefox and WebKit browser tests",
+            "conclusion": "success",
+            "duration_seconds": 375
+          },
+          {
+            "number": 12,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 13,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 11
+          },
+          {
+            "number": 14,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 15,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 49
+          },
+          {
+            "number": 16,
+            "name": "Run OKF generator tests",
+            "conclusion": "success",
+            "duration_seconds": 16
+          },
+          {
+            "number": 17,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 18,
+            "name": "Generate UK Government API corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 19,
+            "name": "Generate legislation corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 20,
+            "name": "Regenerate legislation answer evaluation",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 21,
+            "name": "Validate published legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 22,
+            "name": "Check documentation lockstep",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 23,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 24,
+            "name": "Validate legacy OKF viewer",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 25,
+            "name": "Check OKF conformance",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 26,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 27,
+            "name": "Test Foundry Pages in Chrome, Firefox and WebKit",
+            "conclusion": "success",
+            "duration_seconds": 48
+          },
+          {
+            "number": 51,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 52,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 53,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 54,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 55,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "test_counts": {
+      "python": 209,
+      "vitest": 276,
+      "node": 25,
+      "explorer_browser": 153,
+      "foundry_browser": 63
+    }
+  },
+  {
+    "run_id": 30813485357,
+    "pr_number": 68,
+    "phase": "post-merge-pages",
+    "workflow": "Publish GitHub Pages",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2",
+    "head_branch": "main",
+    "started_at": "2026-08-03T12:25:01Z",
+    "completed_at": "2026-08-03T12:28:41Z",
+    "duration_seconds": 220,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357",
+    "jobs": [
+      {
+        "database_id": 91685502580,
+        "name": "build",
+        "conclusion": "success",
+        "started_at": "2026-08-03T12:25:04Z",
+        "completed_at": "2026-08-03T12:27:52Z",
+        "duration_seconds": 168,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 25
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 5
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 7,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 18
+          },
+          {
+            "number": 8,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 9,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 8
+          },
+          {
+            "number": 10,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 11,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 43
+          },
+          {
+            "number": 12,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 13,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 14,
+            "name": "Validate OKF Explorer bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 15,
+            "name": "Validate legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 16,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 17,
+            "name": "Configure Pages",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 18,
+            "name": "Upload Pages artifact",
+            "conclusion": "success",
+            "duration_seconds": 16
+          },
+          {
+            "number": 33,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 34,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 35,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 36,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 37,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      },
+      {
+        "database_id": 91686130826,
+        "name": "deploy",
+        "conclusion": "success",
+        "started_at": "2026-08-03T12:28:13Z",
+        "completed_at": "2026-08-03T12:28:40Z",
+        "duration_seconds": 27,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 2,
+            "name": "Deploy to GitHub Pages",
+            "conclusion": "success",
+            "duration_seconds": 23
+          },
+          {
+            "number": 3,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "site_identity": {
+      "site_files": 14010,
+      "site_bytes": 987299117,
+      "receipt_tree_sha256": "f43d0b52",
+      "explorer_tree_sha256": "0cb83c10",
+      "heritage_files": 2940,
+      "heritage_tree_sha256": "5edff8fe",
+      "artifact_id": 8855797237,
+      "artifact_bytes": 209736536,
+      "artifact_sha256": "f4ef8f29"
+    }
+  },
+  {
+    "run_id": 30818372899,
+    "pr_number": 69,
+    "phase": "pull-request-ci",
+    "workflow": "OKF Explorer CI",
+    "event": "pull_request",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "0d377c917493460d7264eaecb9563a0ba0e91523",
+    "head_branch": "codex/promote-heritage-publication",
+    "started_at": "2026-08-03T13:31:49Z",
+    "completed_at": "2026-08-03T13:42:29Z",
+    "duration_seconds": 640,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30818372899",
+    "jobs": [
+      {
+        "database_id": 91701720456,
+        "name": "okf-explorer-ci",
+        "conclusion": "success",
+        "started_at": "2026-08-03T13:31:58Z",
+        "completed_at": "2026-08-03T13:42:28Z",
+        "duration_seconds": 630,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 7,
+            "name": "Run OKF Explorer tests",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 8,
+            "name": "Check CycloneDX dependency inventory",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 9,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 17
+          },
+          {
+            "number": 10,
+            "name": "Install Firefox and WebKit browser dependencies",
+            "conclusion": "success",
+            "duration_seconds": 74
+          },
+          {
+            "number": 11,
+            "name": "Run Chrome, Firefox and WebKit browser tests",
+            "conclusion": "success",
+            "duration_seconds": 343
+          },
+          {
+            "number": 12,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 13,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 8
+          },
+          {
+            "number": 14,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 15,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 44
+          },
+          {
+            "number": 16,
+            "name": "Run OKF generator tests",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 17,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 18,
+            "name": "Generate UK Government API corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 19,
+            "name": "Generate legislation corpus from fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 20,
+            "name": "Regenerate legislation answer evaluation",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 21,
+            "name": "Validate published legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 13
+          },
+          {
+            "number": 22,
+            "name": "Check documentation lockstep",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 23,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 24,
+            "name": "Validate legacy OKF viewer",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 25,
+            "name": "Check OKF conformance",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 26,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 15
+          },
+          {
+            "number": 27,
+            "name": "Test Foundry Pages in Chrome, Firefox and WebKit",
+            "conclusion": "success",
+            "duration_seconds": 41
+          },
+          {
+            "number": 51,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 52,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 53,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 54,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 55,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "test_counts": {
+      "python": 209,
+      "vitest": 276,
+      "node": 25,
+      "explorer_browser": 153,
+      "foundry_browser": 63
+    }
+  },
+  {
+    "run_id": 30819232224,
+    "pr_number": 69,
+    "phase": "post-merge-pages",
+    "workflow": "Publish GitHub Pages",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "0b5d748dc13ed83134592fc0873a2ff25d83eada",
+    "head_branch": "main",
+    "started_at": "2026-08-03T13:42:56Z",
+    "completed_at": "2026-08-03T13:46:28Z",
+    "duration_seconds": 212,
+    "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/30819232224",
+    "jobs": [
+      {
+        "database_id": 91704612357,
+        "name": "build",
+        "conclusion": "success",
+        "started_at": "2026-08-03T13:43:05Z",
+        "completed_at": "2026-08-03T13:45:55Z",
+        "duration_seconds": 170,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 3
+          },
+          {
+            "number": 2,
+            "name": "Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 26
+          },
+          {
+            "number": 3,
+            "name": "Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 5
+          },
+          {
+            "number": 4,
+            "name": "Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 2
+          },
+          {
+            "number": 5,
+            "name": "Install OKF Explorer dependencies",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 6,
+            "name": "Validate Svelte OKF Explorer",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 7,
+            "name": "Prove deterministic Svelte OKF Explorer build",
+            "conclusion": "success",
+            "duration_seconds": 18
+          },
+          {
+            "number": 8,
+            "name": "Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 9,
+            "name": "Install semantic OKF dependencies",
+            "conclusion": "success",
+            "duration_seconds": 9
+          },
+          {
+            "number": 10,
+            "name": "Validate Evaluation Foundry fixtures",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 11,
+            "name": "Validate generated heritage evaluation corpora",
+            "conclusion": "success",
+            "duration_seconds": 45
+          },
+          {
+            "number": 12,
+            "name": "Validate YAML-LD registry and constraint ledger",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 13,
+            "name": "Validate OKF bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 14,
+            "name": "Validate OKF Explorer bundle",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 15,
+            "name": "Validate legislation corpus",
+            "conclusion": "success",
+            "duration_seconds": 12
+          },
+          {
+            "number": 16,
+            "name": "Build static site",
+            "conclusion": "success",
+            "duration_seconds": 14
+          },
+          {
+            "number": 17,
+            "name": "Configure Pages",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 18,
+            "name": "Upload Pages artifact",
+            "conclusion": "success",
+            "duration_seconds": 16
+          },
+          {
+            "number": 33,
+            "name": "Post Set up Python",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 34,
+            "name": "Post Set up Node.js",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 35,
+            "name": "Post Set up pnpm",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 36,
+            "name": "Post Check out repository",
+            "conclusion": "success",
+            "duration_seconds": 0
+          },
+          {
+            "number": 37,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      },
+      {
+        "database_id": 91705398216,
+        "name": "deploy",
+        "conclusion": "success",
+        "started_at": "2026-08-03T13:45:59Z",
+        "completed_at": "2026-08-03T13:46:27Z",
+        "duration_seconds": 28,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "conclusion": "success",
+            "duration_seconds": 1
+          },
+          {
+            "number": 2,
+            "name": "Deploy to GitHub Pages",
+            "conclusion": "success",
+            "duration_seconds": 26
+          },
+          {
+            "number": 3,
+            "name": "Complete job",
+            "conclusion": "success",
+            "duration_seconds": 0
+          }
+        ]
+      }
+    ],
+    "site_identity": {
+      "site_files": 14010,
+      "site_bytes": 987329754,
+      "receipt_tree_sha256": "f6dee63c",
+      "explorer_tree_sha256": "cfb3c2d1",
+      "heritage_files": 2940,
+      "heritage_tree_sha256": "2d11e52a",
+      "artifact_id": 8858174199,
+      "artifact_bytes": 209759834,
+      "artifact_sha256": "c0bcf4b4"
+    }
+  }
+]

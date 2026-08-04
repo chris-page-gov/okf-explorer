@@ -1,0 +1,55 @@
+name: Heritage link freshness observations
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  due-hash-shards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Observe due stable link-intent shards
+        run: >-
+          python3 scripts/observe_link_intents.py
+          --manifest evaluation/heritage/data/link-validation/manifest.json
+          --output "$RUNNER_TEMP/link-observation-receipt.json"
+      - name: Upload timestamped receipt outside candidate and Site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: link-observation-${{ github.run_id }}
+          path: ${{ runner.temp }}/link-observation-receipt.json
+
+  protected-rich-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Verify genuine Google Chrome and virtual display
+        run: |
+          command -v google-chrome
+          google-chrome --version
+          command -v xvfb-run
+      - name: Observe protected rich pages over raw Chrome CDP
+        working-directory: apps/okf-explorer
+        run: >-
+          xvfb-run --auto-servernum --server-args="-screen 0 1365x900x24"
+          node scripts/observe_protected_links.mjs
+          ../../evaluation/heritage/journeys.json
+          "$RUNNER_TEMP/protected-link-browser-receipt.json"
+          --chrome google-chrome
+      - name: Upload protected-page browser receipt outside candidate and Site
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: protected-link-browser-${{ github.run_id }}
+          path: ${{ runner.temp }}/protected-link-browser-receipt.json

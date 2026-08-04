@@ -1,0 +1,83 @@
+{
+  "schema": "okf-evaluation-promotion-envelope.v1",
+  "envelope_id": "heritage-coventry-warwickshire-publication",
+  "state": "draft-local",
+  "subject": {
+    "publication_unit": "heritage-coventry-warwickshire",
+    "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+    "source_commit": "pending",
+    "tag": "heritage-coventry-warwickshire-20260804",
+    "release_url": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804",
+    "descriptor": {
+      "path": "okf-explorer.json",
+      "sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da"
+    },
+    "bundles": [
+      {
+        "path": "okf-bundle.jsonld",
+        "sha256": "7f5e5db41c4d6ebcb6b7d408ade95a5fc718759b586a5c1cff74d867b911131f"
+      },
+      {
+        "path": "okf-bundle.yamlld",
+        "sha256": "260ac115ec5764f506de28b8bf2a27e92f018bc49bb9736c0dd8dd2f9aab5fe3"
+      }
+    ],
+    "plane_roots": {
+      "path": "assurance/plane-roots.json",
+      "sha256": "85d76ccea55dbd901abb0bce7103854468a10c865f697e29f36a0c1eff260aa1",
+      "release_root_sha256": "c593716510711e5cf6c77932e98337ab0e188c1b12d7817e95f9917c77fd6edf"
+    },
+    "build_manifest": {
+      "path": "assurance/build-manifest.json",
+      "sha256": "937c517a0ba82d32503fdbbd3113157d44a09fce3111d663016bd680bbd62b5c"
+    },
+    "site_artifact": {
+      "manifest_path": "publication-unit-manifest.json",
+      "manifest_sha256": "b5dea75e9c4e5552e08613eee09f9dac1de2e5713665813d4c45c6603ad5ecee",
+      "tree_sha256": "d31cc794838643fc5e651840a14ee7e9f3b9b84361f8a19c03f8bfcccdc78c67",
+      "file_count": 4050
+    }
+  },
+  "promotion_container": {
+    "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+    "tag": "heritage-coventry-warwickshire-20260804-promotion.1",
+    "release_url": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804-promotion.1",
+    "envelope_asset": "heritage-publication-envelope.json",
+    "attestation_sidecar_asset": "heritage-publication-envelope.attestation.json",
+    "status_claim": "identity-only",
+    "verification_after_publish": true
+  },
+  "receipts": {
+    "validation": {
+      "ref": "pending",
+      "sha256": "pending",
+      "observed_at": "pending"
+    },
+    "journey": {
+      "ref": "pending",
+      "sha256": "pending",
+      "observed_at": "pending"
+    },
+    "link_observations": [
+      {
+        "ref": "pending",
+        "sha256": "pending",
+        "observed_at": "pending"
+      }
+    ]
+  },
+  "attestations": [
+    {
+      "kind": "github-artifact-attestation",
+      "asset": "heritage-coventry-warwickshire.tar.gz",
+      "url": "pending",
+      "subject_digest": "pending",
+      "issuer": "pending"
+    }
+  ],
+  "signature": {
+    "mechanism": "pending",
+    "identity": "pending",
+    "reference": "pending"
+  }
+}

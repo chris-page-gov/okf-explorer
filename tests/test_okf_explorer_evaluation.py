@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,6 +86,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 "observed_at",
                 "scope",
                 "candidate",
+                "publication_shell_rebind",
                 "determinism",
                 "question_suite",
                 "local_journeys",
@@ -113,6 +114,30 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             },
             set(receipt["candidate"]),
         )
+        self.assertEqual(
+            {
+                "status",
+                "change_class",
+                "reused_unchanged_roots",
+                "rerun_gates",
+                "reused_gates",
+                "rationale",
+            },
+            set(receipt["publication_shell_rebind"]),
+        )
+        self.assertEqual("passed", receipt["publication_shell_rebind"]["status"])
+        self.assertEqual(
+            "full-candidate-rebuild",
+            receipt["publication_shell_rebind"]["change_class"],
+        )
+        self.assertEqual(
+            [], receipt["publication_shell_rebind"]["reused_unchanged_roots"]
+        )
+        self.assertEqual([], receipt["publication_shell_rebind"]["reused_gates"])
+        for root_name in receipt["publication_shell_rebind"][
+            "reused_unchanged_roots"
+        ]:
+            self.assertRegex(receipt["candidate"][root_name], r"^[0-9a-f]{64}$")
         self.assertEqual(
             {
                 "status",
@@ -167,7 +192,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             set(receipt["local_journeys"]),
         )
         self.assertEqual("passed", receipt["determinism"]["status"])
-        self.assertEqual(2, receipt["determinism"]["builds"])
+        self.assertEqual(1, receipt["determinism"]["builds"])
         self.assertEqual(0, receipt["determinism"]["differences"])
         self.assertEqual(
             "sha256-over-canonical-json-path-bytes-digest-list-v1",
@@ -221,7 +246,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             ).encode("utf-8")
             observed_tree = hashlib.sha256(canonical_tree).hexdigest()
             determinism = receipt["determinism"]["corpora"][name]
-            self.assertEqual(2, determinism["builds"])
+            self.assertEqual(1, determinism["builds"])
             self.assertEqual(0, determinism["differences"])
             self.assertEqual(len(tree_entries), determinism["files_per_build"])
             self.assertEqual(observed_tree, determinism["comparison_tree_sha256"])
@@ -263,10 +288,12 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             result = json.loads(raw)
             self.assertEqual("okf-explorer-evaluation-results.v1", result["schema"])
             self.assertEqual(section["base_url"], result["base_url"])
-            expected_candidate_bundle_url = (
-                "http://127.0.0.1:8002/evaluation/heritage/okf-explorer.json"
-                if key == "question_suite"
-                else json.loads(source.read_text(encoding="utf-8"))["target_bundle"]
+            expected_candidate_bundle_url = urljoin(
+                section["base_url"], "publication/okf-explorer.json"
+            )
+            self.assertEqual(
+                expected_candidate_bundle_url,
+                result["metadata"]["candidate_bundle_url"],
             )
             self.assertEqual(
                 {
@@ -304,7 +331,11 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 summary = result["interaction_journeys"]["summary"]
                 self.assertEqual(section["manifest"], result["interaction_journeys"]["manifest"])
                 journey_manifest = json.loads(source.read_text(encoding="utf-8"))
-                self.assertEqual(journey_manifest["target_bundle"], result["bundle"])
+                self.assertEqual(
+                    "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
+                    journey_manifest["target_bundle"],
+                )
+                self.assertEqual("/okf-explorer.json", result["bundle"])
                 self.assertEqual(result["bundle"], result["interaction_journeys"]["target_bundle"])
                 records_by_id = {
                     record["id"]: record
@@ -460,6 +491,96 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("interaction_journeys", script)
         self.assertIn("function receiptUrl(value)", script)
         self.assertIn("receiptUrl(popup.url())", script)
+
+    def test_browser_engine_selection_is_parsed_used_and_recorded(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ parseArgs, selectPlaywrightBrowser }} from {json.dumps(module_url)};
+            const calls = [];
+            const playwright = Object.fromEntries(
+              ['chromium', 'firefox', 'webkit'].map((name) => [
+                name,
+                {{ launch: () => calls.push(name) }}
+              ])
+            );
+            const selected = {{}};
+            for (const engine of ['chromium', 'firefox', 'webkit']) {{
+              const options = parseArgs(['--no-browser', '--browser-engine', engine]);
+              selected[engine] = options.browserEngine;
+              selectPlaywrightBrowser(playwright, options.browserEngine).launch();
+            }}
+            console.log(JSON.stringify({{
+              defaultEngine: parseArgs(['--no-browser']).browserEngine,
+              selected,
+              calls
+            }}));
+        """
+        helper = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        parsed = json.loads(helper.stdout)
+        self.assertEqual("chromium", parsed["defaultEngine"])
+        self.assertEqual(
+            {
+                "chromium": "chromium",
+                "firefox": "firefox",
+                "webkit": "webkit",
+            },
+            parsed["selected"],
+        )
+        self.assertEqual(["chromium", "firefox", "webkit"], parsed["calls"])
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "results"
+            subprocess.run(
+                [
+                    "node",
+                    str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                    "--no-browser",
+                    "--browser-engine",
+                    "firefox",
+                    "--limit",
+                    "1",
+                    "--out",
+                    str(output),
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            receipt = json.loads(
+                (output / "results.json").read_text(encoding="utf-8")
+            )
+        self.assertEqual("firefox", receipt["metadata"]["browser_engine"])
+        self.assertEqual("not-run", receipt["metadata"]["browser"])
+
+        invalid = subprocess.run(
+            [
+                "node",
+                str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
+                "--no-browser",
+                "--browser-engine",
+                "safari",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(0, invalid.returncode)
+        self.assertIn("chromium, firefox or webkit", invalid.stderr)
+
+        script = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(
+            2,
+            script.count("const browser = await launchSelectedBrowser(options);"),
+        )
 
     def test_heritage_suite_uses_exact_zero_bounds_and_source_grounded_positive_minimums(self):
         suite = json.loads((HERITAGE_EVALUATION / "questions.json").read_text(encoding="utf-8"))
@@ -782,14 +903,11 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 ]
                 self.assertEqual(
                     parse_qs(urlparse(start_url).query)["bundle"],
-                    [
-                        f"{canonical_root}evaluation/heritage/tiny/"
-                        "okf-explorer.json"
-                    ],
+                    [f"{canonical_root}tiny/okf-explorer.json"],
                 )
 
     def test_candidate_bundle_binds_receipt_without_overriding_per_journey_starts(self):
-        candidate = "/evaluation/heritage/okf-explorer.json"
+        candidate = "/okf-explorer.json"
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory)
             subprocess.run(
@@ -803,7 +921,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                     "--candidate-bundle",
                     candidate,
                     "--bundle-root",
-                    "http://127.0.0.1:8002",
+                    "http://127.0.0.1:8002/evaluation/heritage/",
                     "--journey-limit",
                     "3",
                     "--out",
@@ -932,6 +1050,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                     "node",
                     str(ROOT / "scripts" / "evaluate_okf_explorer.mjs"),
                     "--no-browser",
+                    "--defer-browser-receipts",
                     "--journeys-only",
                     "--journeys",
                     str(generated / "journeys.json"),
@@ -1194,6 +1313,250 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             payload["staleReleaseMessage"],
         )
 
+    def test_publication_candidate_binds_exact_site_manifest_tree_and_materials(self):
+        descriptor = {
+            "schema": "heritage-evaluation-large-corpus.v1",
+            "snapshot": "snapshot-publication",
+            "generated_at": "2026-08-04T09:00:00Z",
+            "entrypoints": {"plane_roots": "assurance/plane-roots.json"},
+        }
+        descriptor_bytes = (
+            json.dumps(descriptor, separators=(",", ":")) + "\n"
+        ).encode()
+        descriptor_sha256 = hashlib.sha256(descriptor_bytes).hexdigest()
+        release_root_sha256 = "b" * 64
+        plane_roots = {"release_root_sha256": release_root_sha256}
+        plane_roots_bytes = (
+            json.dumps(plane_roots, separators=(",", ":")) + "\n"
+        ).encode()
+        plane_roots_sha256 = hashlib.sha256(plane_roots_bytes).hexdigest()
+
+        def canonical_json(value: object) -> bytes:
+            return (
+                json.dumps(
+                    value,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                )
+                + "\n"
+            ).encode()
+
+        def publication_manifest(materials: list[dict]) -> tuple[dict, bytes]:
+            manifest = {
+                "schema": "okf-publication-unit-manifest.v1",
+                "algorithm": "sha256-canonical-json-materials-v1",
+                "file_count": len(materials),
+                "tree_sha256": hashlib.sha256(canonical_json(materials)).hexdigest(),
+                "materials": materials,
+            }
+            raw = (
+                json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)
+                + "\n"
+            ).encode()
+            return manifest, raw
+
+        materials = [
+            {
+                "path": "assurance/plane-roots.json",
+                "bytes": len(plane_roots_bytes),
+                "sha256": plane_roots_sha256,
+            },
+            {
+                "path": "okf-explorer.json",
+                "bytes": len(descriptor_bytes),
+                "sha256": descriptor_sha256,
+            },
+        ]
+        manifest, manifest_bytes = publication_manifest(materials)
+        manifest_sha256 = hashlib.sha256(manifest_bytes).hexdigest()
+
+        def material_tamper(path: str, field: str, value: object) -> tuple[dict, bytes]:
+            changed = json.loads(json.dumps(materials))
+            next(item for item in changed if item["path"] == path)[field] = value
+            return publication_manifest(changed)
+
+        descriptor_sha_manifest, descriptor_sha_bytes = material_tamper(
+            "okf-explorer.json", "sha256", "0" * 64
+        )
+        descriptor_size_manifest, descriptor_size_bytes = material_tamper(
+            "okf-explorer.json", "bytes", len(descriptor_bytes) + 1
+        )
+        roots_sha_manifest, roots_sha_bytes = material_tamper(
+            "assurance/plane-roots.json", "sha256", "0" * 64
+        )
+        roots_size_manifest, roots_size_bytes = material_tamper(
+            "assurance/plane-roots.json", "bytes", len(plane_roots_bytes) + 1
+        )
+        corrupt_tree = json.loads(json.dumps(manifest))
+        corrupt_tree["tree_sha256"] = "0" * 64
+        corrupt_tree_bytes = (
+            json.dumps(corrupt_tree, ensure_ascii=False, indent=2, sort_keys=True)
+            + "\n"
+        ).encode()
+
+        def case(
+            raw: bytes,
+            declared_manifest: dict,
+            *,
+            overrides: dict | None = None,
+            mode: str = "normal",
+        ) -> dict:
+            return {
+                "manifest": raw.decode(),
+                "mode": mode,
+                "overrides": {
+                    "expected_publication_manifest_sha256": hashlib.sha256(
+                        raw
+                    ).hexdigest(),
+                    "expected_site_tree_sha256": declared_manifest["tree_sha256"],
+                    "expected_site_file_count": declared_manifest["file_count"],
+                    **(overrides or {}),
+                },
+            }
+
+        cases = {
+            "raw_receipt": case(
+                manifest_bytes,
+                manifest,
+                overrides={"expected_publication_manifest_sha256": "0" * 64},
+            ),
+            "tree_receipt": case(
+                manifest_bytes,
+                manifest,
+                overrides={"expected_site_tree_sha256": "0" * 64},
+            ),
+            "count_receipt": case(
+                manifest_bytes,
+                manifest,
+                overrides={"expected_site_file_count": len(materials) + 1},
+            ),
+            "tree_recomputed": case(corrupt_tree_bytes, corrupt_tree),
+            "descriptor_sha": case(descriptor_sha_bytes, descriptor_sha_manifest),
+            "descriptor_bytes": case(descriptor_size_bytes, descriptor_size_manifest),
+            "plane_sha": case(roots_sha_bytes, roots_sha_manifest),
+            "plane_bytes": case(roots_size_bytes, roots_size_manifest),
+            "redirect": case(manifest_bytes, manifest, mode="redirect"),
+            "origin": case(manifest_bytes, manifest, mode="origin"),
+            "credentials": case(manifest_bytes, manifest, mode="credentials"),
+            "fragment": case(manifest_bytes, manifest, mode="fragment"),
+        }
+        receipt = {
+            "schema": "okf-publication-validation-receipt.v1",
+            "status": "passed",
+            "observed_at": "2026-08-04T09:01:00Z",
+            "subject": {
+                "publication_manifest_sha256": manifest_sha256,
+                "site_tree_sha256": manifest["tree_sha256"],
+                "site_file_count": manifest["file_count"],
+            },
+            "candidate": {
+                "heritage_descriptor_sha256": descriptor_sha256,
+                "heritage_release_root_sha256": release_root_sha256,
+            },
+        }
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            receipt_path = Path(temporary_directory) / "publication-receipt.json"
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+            program = f"""
+                import {{ inspectCandidate, loadCandidateReceipt }} from {json.dumps(module_url)};
+                const descriptor = Buffer.from({json.dumps(descriptor_bytes.decode())}, 'utf8');
+                const planeRoots = Buffer.from({json.dumps(plane_roots_bytes.decode())}, 'utf8');
+                const manifest = Buffer.from({json.dumps(manifest_bytes.decode())}, 'utf8');
+                const cases = {json.dumps(cases)};
+                const candidateUrl = 'https://pages.example.test/publication/okf-explorer.json';
+                const planeRootsUrl = 'https://pages.example.test/publication/assurance/plane-roots.json';
+                const manifestUrl = 'https://pages.example.test/publication/publication-unit-manifest.json';
+                let active = {{ manifest: manifest.toString('utf8'), mode: 'normal', overrides: {{}} }};
+                const redirectModes = [];
+                globalThis.fetch = async (url, options) => {{
+                  const requested = url.toString();
+                  if (requested === candidateUrl) {{
+                    return {{ ok: true, status: 200, url: requested, arrayBuffer: async () => descriptor }};
+                  }}
+                  if (requested === planeRootsUrl) {{
+                    return {{ ok: true, status: 200, url: requested, arrayBuffer: async () => planeRoots }};
+                  }}
+                  if (requested !== manifestUrl) throw new Error(`unexpected URL ${{requested}}`);
+                  redirectModes.push(options?.redirect || '');
+                  if (active.mode === 'redirect') {{
+                    return {{ ok: false, status: 302, url: requested, arrayBuffer: async () => Buffer.alloc(0) }};
+                  }}
+                  const finalUrl = active.mode === 'origin'
+                    ? 'https://other.example.test/publication/publication-unit-manifest.json'
+                    : active.mode === 'credentials'
+                      ? 'https://user:secret@pages.example.test/publication/publication-unit-manifest.json'
+                      : active.mode === 'fragment'
+                        ? `${{requested}}#not-exact`
+                      : requested;
+                  return {{
+                    ok: true,
+                    status: 200,
+                    url: finalUrl,
+                    arrayBuffer: async () => Buffer.from(active.manifest, 'utf8')
+                  }};
+                }};
+                const options = {{
+                  bundle: candidateUrl,
+                  bundleRoot: 'https://pages.example.test/publication/',
+                  baseUrl: 'https://pages.example.test/explorer/'
+                }};
+                const receipt = loadCandidateReceipt({json.dumps(str(receipt_path))});
+                const exact = await inspectCandidate(options, receipt);
+                const messages = {{}};
+                for (const [name, definition] of Object.entries(cases)) {{
+                  active = definition;
+                  try {{
+                    await inspectCandidate(options, {{ ...receipt, ...definition.overrides }});
+                  }} catch (error) {{
+                    messages[name] = error.message;
+                  }}
+                  if (!messages[name]) throw new Error(`tampering case was accepted: ${{name}}`);
+                }}
+                if (redirectModes.some((mode) => mode !== 'manual')) {{
+                  throw new Error('publication manifest redirects were not disabled');
+                }}
+                console.log(JSON.stringify({{ exact, messages }}));
+            """
+            result = subprocess.run(
+                ["node", "--input-type=module", "--eval", program],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        payload = json.loads(result.stdout)
+        site = payload["exact"]["site_artifact"]
+
+        self.assertEqual(manifest_sha256, site["publication_manifest_sha256"])
+        self.assertEqual(manifest["tree_sha256"], site["tree_sha256"])
+        self.assertEqual(len(materials), site["file_count"])
+        self.assertEqual("okf-explorer.json", site["materials"]["descriptor"]["path"])
+        self.assertEqual(
+            "assurance/plane-roots.json",
+            site["materials"]["plane_roots"]["path"],
+        )
+        self.assertEqual(
+            manifest_sha256,
+            payload["exact"]["candidate_receipt"][
+                "expected_publication_manifest_sha256"
+            ],
+        )
+        messages = payload["messages"]
+        self.assertIn("manifest SHA-256 differs", messages["raw_receipt"])
+        self.assertIn("Site tree differs", messages["tree_receipt"])
+        self.assertIn("Site file count differs", messages["count_receipt"])
+        self.assertIn("tree digest differs", messages["tree_recomputed"])
+        self.assertIn("descriptor material SHA-256 differs", messages["descriptor_sha"])
+        self.assertIn("descriptor material byte count differs", messages["descriptor_bytes"])
+        self.assertIn("plane-roots material SHA-256 differs", messages["plane_sha"])
+        self.assertIn("plane-roots material byte count differs", messages["plane_bytes"])
+        self.assertIn("redirected with HTTP 302", messages["redirect"])
+        self.assertIn("unexpected origin", messages["origin"])
+        self.assertIn("must not contain credentials", messages["credentials"])
+        self.assertIn("must not contain a fragment", messages["fragment"])
+
     def test_publication_candidate_cannot_decouple_from_start_or_public_url(self):
         journeys = json.loads(
             (HERITAGE_EVALUATION / "journeys.json").read_text(encoding="utf-8")
@@ -1203,8 +1566,8 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             "expected_descriptor_sha256": "a" * 64,
         }
         options = {
-            "bundle": "/evaluation/heritage/okf-explorer.json",
-            "bundleRoot": "https://chris-page-gov.github.io/okf-explorer/",
+            "bundle": journeys["target_bundle"],
+            "bundleRoot": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
             "baseUrl": "https://chris-page-gov.github.io/okf-explorer/",
             "bundleExplicit": False,
             "journeyIds": ["journey-publication"],
@@ -1237,7 +1600,11 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             if (!rogueAuxiliaryMessage) throw new Error('publication accepted an undeclared auxiliary bundle');
             const failures = [];
             for (const changed of [
-              {{ ...exact, bundleRoot: 'https://pages.example.test/other-project/' }},
+              {{
+                ...exact,
+                bundle: '/okf-explorer.json',
+                bundleRoot: 'https://pages.example.test/other-project/'
+              }},
               {{
                 ...exact,
                 bundle: 'https://assets.example.test/releases/other.json'
@@ -1313,6 +1680,56 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                     },
                 },
                 "candidate.heritage_release_root_sha256",
+            ),
+            (
+                {
+                    "schema": "okf-publication-validation-receipt.v1",
+                    "status": "passed",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "a" * 64,
+                        "heritage_release_root_sha256": "b" * 64,
+                    },
+                    "subject": {
+                        "site_tree_sha256": "c" * 64,
+                        "site_file_count": 2,
+                    },
+                },
+                "subject.publication_manifest_sha256",
+            ),
+            (
+                {
+                    "schema": "okf-publication-validation-receipt.v1",
+                    "status": "passed",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "a" * 64,
+                        "heritage_release_root_sha256": "b" * 64,
+                    },
+                    "subject": {
+                        "publication_manifest_sha256": "c" * 64,
+                        "site_tree_sha256": "not-a-digest",
+                        "site_file_count": 2,
+                    },
+                },
+                "subject.site_tree_sha256",
+            ),
+            (
+                {
+                    "schema": "okf-publication-validation-receipt.v1",
+                    "status": "passed",
+                    "observed_at": "2026-08-03T12:00:00Z",
+                    "candidate": {
+                        "heritage_descriptor_sha256": "a" * 64,
+                        "heritage_release_root_sha256": "b" * 64,
+                    },
+                    "subject": {
+                        "publication_manifest_sha256": "c" * 64,
+                        "site_tree_sha256": "d" * 64,
+                        "site_file_count": 0,
+                    },
+                },
+                "positive integer subject.site_file_count",
             ),
         )
         for receipt, expected_error in invalid_receipts:

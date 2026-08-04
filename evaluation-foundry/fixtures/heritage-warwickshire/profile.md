@@ -1,19 +1,9 @@
 ---
 "@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
-"@id": https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/fixtures/heritage-warwickshire/profile.html
+"@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/evaluation-foundry/fixtures/heritage-warwickshire/profile.html
 type: Evaluation Profile
 title: Coventry and Warwickshire heritage evaluation profile
 description: Beginner-readable entry point to the source scope, mappings, fixtures, questions, journeys and publication boundary.
-generated:
-  by: process:heritage-evaluation-profile-authoring
-  at: "2026-08-03T10:29:12Z"
-evaluated:
-  status: passed
-  at: "2026-08-03T12:29:08.274Z"
-  deployment_commit: c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2
-  pages_run: 30813485357
-  descriptor_sha256: 2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149
-  release_root_sha256: aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -50,33 +40,41 @@ intersection claim; locality-only matches are excluded.
   sparse capabilities. It has its own namespace and never enters faithful
   counts or search.
 
-## Current Assurance Status
+## Assurance Without Changing The Candidate
 
-This profile is **evaluated**, and public verification passed for the exact
-candidate observed at **2026-08-03 12:29:08.274 UTC**. A clean local site build
-rendered 239 reading pages, resolved 4,135 internal page references and passed
-the 1 GB GitHub Pages published-site limit with more than 12 MB of headroom.
-The local faithful journey also exercised all eight Explorer presentation
-views while preserving one query and facet state.
+This file describes what a candidate must contain; it does not contain a live
+deployment status. That distinction matters because the candidate should keep
+the same digest when a later browser run succeeds, an external link becomes
+stale or a reviewer makes a promotion decision.
 
-The terminal `journey-publication` then passed against
+The stable candidate contains the source-backed records, reversible mappings,
+executable journeys, canonical-URL link-intent shards and separate roots for
+the control, data, search, semantic and presentation planes. Time-sensitive
+evidence belongs outside it:
+
+- a candidate receipt records the bytes that passed local checks;
+- a link-freshness receipt records which external URLs were seen and when; and
+- a signed promotion envelope binds those receipts to the deployed descriptor,
+  plane roots, browser journey and release identity.
+
+The planned public corpus lives at
+[the external Coventry and Warwickshire publication unit](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/).
+[OKF Explorer](https://chris-page-gov.github.io/okf-explorer/) remains the
+reusable browser runtime and loads the external descriptor. The publication
+journey must pass against those exact URLs before a signed envelope can call a
+candidate promoted.
+
+### Earlier Observation Is Historical, Not Promotion Metadata
+
+The earlier
 [Pages run 30813485357](https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357)
-at commit
-[`c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2`](https://github.com/chris-page-gov/okf-explorer/commit/c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2):
-**1/1 journey, 27/27 actions and 2/2 assertions** passed. The observed
-descriptor SHA-256 was
-`2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149`,
-the release root was
-`aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb`,
-and the journey-result SHA-256 was
-`36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4`.
-Publication is therefore **demonstrated for that exact observation**.
-
-The publication-evidence home is the immutable
-[heritage-coventry-warwickshire-20260803 release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803).
-The promoted journey validates that release page as action 28; its exact
-terminal results are attached to the tagged commit without changing the
-verified Site bytes.
+and
+[`heritage-coventry-warwickshire-20260803` release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803)
+remain useful historical observations of the first implementation. They are
+not embedded as current status in this candidate. That release was mutable at
+the GitHub platform level and used a lightweight tag, so it must not be called
+an immutable release. The replacement release gate uses the external
+publication unit, an annotated tag and GitHub immutable releases.
 
 ## Controlling Evidence
 
@@ -86,8 +84,8 @@ verified Site bytes.
 - [Executable Explorer journeys](journeys.json)
 - [Evaluation questions](questions.json)
 - [Fixture-family notes](README.md)
-- [Observed Pages workflow run](https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357)
-- [Immutable release evidence](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803)
+- [External publication unit](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire)
+- [Planned immutable release](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804)
 - [Beginner process and YAML-LD explanation](../../../docs/beginners/22-evaluation-foundry-and-yaml-ld.md)
 - [Full evaluation report](../../../docs/heritage-evaluation-report.md)
 
@@ -96,7 +94,7 @@ verified Site bytes.
 Official source status, mechanical normalization and successful interface
 testing do not turn this evaluation into an assured heritage register.
 Historic England remains authoritative for designation and Heritage at Risk
-information. The public pass binds only the recorded commit, Pages run,
-candidate digests and observation time; mutable Pages and external source URLs
+information. A signed promotion envelope can bind an exact commit, candidate
+digest, deployed URL and observation time, but Pages and external source URLs
 can subsequently change. Any synthetic record or relationship is visibly
 invented and isolated.

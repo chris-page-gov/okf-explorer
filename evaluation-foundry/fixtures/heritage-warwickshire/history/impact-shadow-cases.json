@@ -1,0 +1,56 @@
+{
+  "schema": "okf-evaluation-impact-shadow-cases.v1",
+  "cases": [
+    {
+      "id": "pull-request-68",
+      "base_commit": "65e22ac6",
+      "head_commit": "c8e8fac3",
+      "description": "Late source, producer, Explorer runtime, protected-link and publication changes from the completion pull request.",
+      "representative_changed_paths": [
+        "evaluation-foundry/fixtures/heritage-warwickshire/source-snapshot.json.gz",
+        "scripts/build_heritage_evaluation.py",
+        "apps/okf-explorer/src/lib/viewer/heritagePresentation.ts",
+        "docs/heritage-evaluation-report.md"
+      ],
+      "expected": {
+        "planes": [
+          "PLANE-CONTROL",
+          "PLANE-DATA",
+          "PLANE-PRESENTATION",
+          "PLANE-RELEASE",
+          "PLANE-SEARCH",
+          "PLANE-SEMANTIC"
+        ],
+        "browser_full": true,
+        "full_shadow_enabled": true
+      }
+    },
+    {
+      "id": "pull-request-69",
+      "base_commit": "c8e8fac3",
+      "head_commit": "0b5d748d",
+      "description": "Promotion documentation, registry and Site publication changes that also changed the producer; unchanged historical roots must not narrow a producer change.",
+      "representative_changed_paths": [
+        "docs/heritage-evaluation-report.md",
+        "docs/index.md",
+        "scripts/build_site.py",
+        "CHANGELOG.md"
+      ],
+      "expected": {
+        "planes": [
+          "PLANE-CONTROL",
+          "PLANE-DATA",
+          "PLANE-PRESENTATION",
+          "PLANE-RELEASE",
+          "PLANE-SEARCH",
+          "PLANE-SEMANTIC"
+        ],
+        "app": true,
+        "browser_full": false,
+        "site": true,
+        "release": true,
+        "full_shadow_enabled": true
+      }
+    }
+  ]
+}

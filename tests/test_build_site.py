@@ -648,6 +648,13 @@ class BuildSiteTests(unittest.TestCase):
                     ),
                     f"{route}: missing exact-build Markdown alternate",
                 )
+                self.assertTrue(
+                    any(
+                        kind == "link[href]" and href.endswith("favicon.svg")
+                        for kind, href in parser.references
+                    ),
+                    f"{route}: missing project-relative favicon",
+                )
                 for href in parser.hrefs:
                     parts = urlsplit(href)
                     if parts.scheme or parts.netloc:
@@ -852,6 +859,44 @@ class BuildSiteTests(unittest.TestCase):
                 "#local-section",
                 source,
                 output,
+            ),
+        )
+        self.assertEqual(
+            "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
+            "evaluation-foundry/fixtures/heritage-warwickshire/"
+            "evaluation-profile.yaml#contract",
+            build_site.rewrite_published_href(
+                "../evaluation-foundry/fixtures/heritage-warwickshire/"
+                "evaluation-profile.yaml#contract",
+                build_site.ROOT / "docs" / "heritage-evaluation-report.md",
+                Path("docs/heritage-evaluation-report.html"),
+            ),
+        )
+        self.assertEqual(
+            "https://github.com/chris-page-gov/okf-explorer/blob/main/"
+            "scripts/plan_evaluation_foundry_impact.py#entrypoint",
+            build_site.rewrite_published_href(
+                "../../../scripts/plan_evaluation_foundry_impact.py#entrypoint",
+                build_site.ROOT
+                / "docs"
+                / "postmortems"
+                / "heritage-foundry-2026"
+                / "architecture.md",
+                Path(
+                    "docs/postmortems/heritage-foundry-2026/architecture.html"
+                ),
+            ),
+        )
+        self.assertEqual(
+            "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/"
+            "main/evaluation/okf-explorer/evidence/"
+            "graph-layering-overlap-2026-07-08.png",
+            build_site.rewrite_published_href(
+                "../evaluation/okf-explorer/evidence/"
+                "graph-layering-overlap-2026-07-08.png",
+                build_site.ROOT / "docs" / "okf-explorer-evaluation.md",
+                Path("docs/okf-explorer-evaluation.html"),
+                repository_asset=True,
             ),
         )
 

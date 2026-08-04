@@ -1,0 +1,83 @@
+[
+  {
+    "pr_number": 67,
+    "label": "Initial implementation",
+    "before_commit": "f5d38674",
+    "after_commit": "65e22ac6",
+    "feature_commit": "a9b36fab8ef11ddc469a2c75385da72379461a79",
+    "merge_commit": "65e22ac68f007ca2aa75b6ab195c949f2939b210",
+    "tree_sha256": "1f2d66d97e22236e500c08b2aa2f440c2ccabd6a",
+    "files_changed": 3868,
+    "insertions": 580091,
+    "deletions": 188,
+    "top_level_file_counts": {
+      ".github": 2,
+      "CHANGELOG.md": 1,
+      "README.md": 1,
+      "apps": 26,
+      "docs": 5,
+      "evaluation": 3785,
+      "evaluation-foundry": 20,
+      "okf-registry.jsonld": 1,
+      "profiles": 6,
+      "registry": 1,
+      "scripts": 10,
+      "tests": 10
+    },
+    "url": "https://github.com/chris-page-gov/okf-explorer/pull/67",
+    "interpretation": "Initial complete producer, app, evaluation and publication implementation."
+  },
+  {
+    "pr_number": 68,
+    "label": "Late correction and completion",
+    "before_commit": "65e22ac6",
+    "after_commit": "c8e8fac3",
+    "feature_commit": "0a0653bfd4b07767cf2ca35ede8133ef6a159076",
+    "merge_commit": "c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2",
+    "tree_sha256": "2298fba8404924c83ccc02612e44194ce2ea47fa",
+    "files_changed": 382,
+    "insertions": 12842,
+    "deletions": 9251,
+    "top_level_file_counts": {
+      "CHANGELOG.md": 1,
+      "apps": 6,
+      "docs": 2,
+      "evaluation": 354,
+      "evaluation-foundry": 11,
+      "scripts": 4,
+      "tests": 4
+    },
+    "url": "https://github.com/chris-page-gov/okf-explorer/pull/68",
+    "interpretation": "Late source, provenance, topology, routing and publication corrections; 354 of 382 touched files were generated heritage outputs.",
+    "generated_heritage_files": 354,
+    "generated_binary_files": 273
+  },
+  {
+    "pr_number": 69,
+    "label": "Promotion and terminal publication",
+    "before_commit": "c8e8fac3",
+    "after_commit": "0b5d748d",
+    "feature_commit": "0d377c917493460d7264eaecb9563a0ba0e91523",
+    "merge_commit": "0b5d748dc13ed83134592fc0873a2ff25d83eada",
+    "tree_sha256": "a5275f99343f939450272141319e4cf4bc933b12",
+    "files_changed": 30,
+    "insertions": 582,
+    "deletions": 132,
+    "top_level_file_counts": {
+      ".gitignore": 1,
+      "CHANGELOG.md": 1,
+      "apps": 1,
+      "docs": 2,
+      "evaluation": 9,
+      "evaluation-foundry": 8,
+      "okf-registry.json": 1,
+      "okf-registry.jsonld": 1,
+      "registry": 1,
+      "scripts": 3,
+      "tests": 2
+    },
+    "url": "https://github.com/chris-page-gov/okf-explorer/pull/69",
+    "interpretation": "Status, registry, evidence and terminal-publication promotion; only one app file changed and no app source/test changed, but the whole CI matrix reran.",
+    "generated_heritage_files": 9
+  }
+]

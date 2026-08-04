@@ -19,9 +19,9 @@ The exemplar publishes three bundles because they prove different things.
 
 | Product | Purpose | Real-world claims? | Loaded by default? | Included in faithful counts? |
 |---|---|---:|---:|---:|
-| [Tiny assurance fixture](../../evaluation/heritage/tiny/index.md) | Prove the producer and real Explorer journey cheaply | Yes, copied from the frozen source | No | No |
-| [Source-backed faithful corpus](../../evaluation/heritage/index.md) | Evaluate the complete, explicitly bounded source population | Yes, with visible normalization | Yes | Yes |
-| [Synthetic supplement](../../evaluation/heritage/synthetic/index.md) | Demonstrate features the source cannot evidence | No; every item is invented | No | No |
+| [Tiny assurance fixture](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html) | Prove the producer and real Explorer journey cheaply | Yes, copied from the frozen source | No | No |
+| [Source-backed faithful corpus](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html) | Evaluate the complete, explicitly bounded source population | Yes, with visible normalization | Yes | Yes |
+| [Synthetic supplement](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html) | Demonstrate features the source cannot evidence | No; every item is invented | No | No |
 
 This separation prevents an attractive demonstration from quietly becoming a
 false statement about a real person, place or event.
@@ -150,6 +150,12 @@ population. The large bundle uses lazy record chunks, sharded search, exact
 facet postings, a route locator, relationship adjacency, bounded GeoJSON and
 separate control, data, search, semantic and presentation roots.
 
+Those roots form a dependency map. A changed mapping or source path is first
+turned into an impact plan. The producer then writes only the affected planes
+and stable hash shards; unchanged files retain exactly the same bytes. Unknown
+paths fail closed to the full check set. This makes a late spelling correction
+cheap without pretending that a semantic or data change has a small impact.
+
 The build report reconciles its output with the source denominator. A mismatch
 is a failed build or a visible limitation, never a number to explain away.
 
@@ -200,7 +206,9 @@ Validation has several layers:
    their declared digests.
 2. The build-time URL contract checks every record and resource URL for a safe
    scheme and identifier binding, and resolves every internal resource
-   reference. This is structural validation, not a live request to every
+   reference. Stable external intents are grouped by
+   `SHA-256(canonical URL)`, so one changed URL invalidates one shard instead of
+   the whole corpus. This is structural validation, not a live request to every
    external page.
 3. Every in-scope Markdown document in the bounded public reading closure
    renders to an HTML Site page and its rewritten links still resolve. Files
@@ -208,20 +216,22 @@ Validation has several layers:
 4. The assembled Site audit checks the rewritten HTML routes and internal
    references in the reading closure.
 5. Representative protected source pages are opened in a genuine interactive
-   browser. A small receipt records when each page was seen, its requested and
-   final URL, status, title and expected identity text. The evaluator rejects a
-   challenge page, failed status, unexpected redirect or mismatched identity;
-   the receipt is evidence, not a waiver.
+   browser on an independent freshness schedule. A small receipt outside the
+   candidate records when each page was seen, its requested and final URL,
+   status, title and expected identity text. The evaluator rejects a challenge
+   page, failed status, unexpected redirect or mismatched identity; the receipt
+   is evidence, not a waiver.
 6. The exact deployed Explorer, report, methodology, profile, tiny and
    synthetic URLs are checked by identity and content—not only HTTP status.
 7. Controls are keyboard reachable, status changes are named, focus remains
    usable and reduced-motion preferences are respected.
 
-The current generated contract can have zero failures while recording zero
-live external receipts. That means every URL is well formed and bound to the
-right record; it does not mean every external server responded. Live source
-availability is sampled in the browser, and public success is claimed only
-after the exact deployed candidate passes its terminal journey.
+The generated candidate can have zero structural failures while carrying no
+live external receipt at all. That means every URL is well formed and bound to
+the right record; it does not mean every external server responded. Live source
+availability is sampled in the browser, and public success is claimed only in
+a signed promotion envelope after the exact deployed candidate passes its
+terminal journey.
 
 The repository keeps ordinary, browser-compatible Markdown as its source of
 truth. It uses normal Markdown links rather than editor-specific wikilinks.
@@ -234,10 +244,35 @@ exposing a filesystem path or relying on a Markdown renderer.
 
 ### E9 — Publish The Bytes That Passed
 
-The release candidate records a digest root for each plane. GitHub Pages must
-serve the same candidate that passed the checks. If a post-deploy check fails,
-rerun only the affected dependency closure, create a new candidate and repeat
-the affected gates. Do not rebuild silently and call it the same release.
+The release candidate records a digest root for each plane. The large heritage
+corpus, its reading pages and release assets are exported as the separate
+[Coventry and Warwickshire publication unit](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire).
+The reusable [OKF Explorer runtime](https://chris-page-gov.github.io/okf-explorer/)
+loads its external descriptor.
+
+GitHub Pages must serve the same candidate that passed the checks. If a
+post-deploy check fails, rerun only the affected dependency closure, create a
+new candidate and repeat the affected gates. Do not rebuild silently and call
+it the same release.
+
+### E10 — Promote With A Separate Signed Envelope
+
+The candidate answers “what are these bytes?” The promotion envelope answers
+“which exact deployment did an independent run accept?” Keeping them separate
+prevents a circular build in which writing the success timestamp changes the
+candidate that supposedly passed.
+
+The signed envelope binds:
+
+- the repository commit and candidate descriptor digest;
+- the control, data, search, semantic and presentation roots;
+- the deployed descriptor URL and observed digest;
+- browser-journey and link-freshness receipt digests;
+- the annotated release tag and immutable-release identity; and
+- the decision, signer and observation time.
+
+Refreshing an expired source-link receipt creates new evidence and, if needed,
+a new envelope. It does not rewrite the corpus.
 
 ## From YAML Front Matter To YAML-LD
 
@@ -260,14 +295,37 @@ local labels until a shared semantic meaning and stable identity are declared.
 ### The Additive YAML-LD Proposal
 
 The exemplar uses **YAML-LD** as a local name for this suggested extension. It
-is not a W3C-defined YAML syntax or media type. The safe path is deliberately
-simple:
+is not a W3C-defined YAML syntax or media type. YAML-LD is the canonical
+authoring form: people edit Markdown and its readable front matter, not two
+parallel graph files. The safe path is deliberately simple:
 
 1. accept only JSON-compatible YAML—string-keyed maps, lists and scalar
    values, UTF-8 text and finite numbers, with no executable tags, cycles or
    duplicate keys;
-2. parse that YAML into the ordinary JSON data model; and
-3. process the result as JSON-LD using pinned contexts.
+2. parse that YAML into the ordinary JSON data model;
+3. process the result as JSON-LD using pinned contexts;
+4. normalize the graph and bind its semantic identity with the semantic plane
+   root; and
+5. generate JSON-LD as an interchange materialization whenever that semantic
+   plane changes and again for a release.
+
+In short: **YAML-LD is what authors maintain, the normalized graph is what
+semantic equality means, and JSON-LD is what interoperable tools receive.** A
+generated JSON-LD file is never a competing hand-edited source of truth.
+
+The full heritage graph is generated from thousands of frozen source rows, so
+no person sensibly types that root file by hand. Here “authoring form” means a
+named deterministic build stage: the builder emits real YAML, reparses those
+exact YAML-LD bytes through the same safe loader used for hand-authored front
+matter, and derives the semantic shards and JSON-LD only from that parsed data
+model. This prevents a Python object from being serialized twice and merely
+labelled “YAML-LD canonical.”
+
+For equality, the parsed graph is normalized with the URDNA2015 algorithm into
+canonical N-Quads and hashed. Comments, indentation, mapping order and scalar
+quoting therefore do not change the semantic plane root. The receipt also
+records an exact-byte artifact root, so reviewers can still see and verify a
+formatting-only file change.
 
 JSON-LD keywords beginning with `@` are quoted because not every YAML parser
 accepts them unquoted. The resulting front matter looks like this:
@@ -371,13 +429,17 @@ official source name.
 
 The descriptor pins local copies and SHA-256 digests for its JSON-LD contexts,
 IRI-route registry and predicate registry. A changed meaning or route therefore
-changes the semantic plane root and invalidates the appropriate checks.
+changes the URDNA2015 graph digest and semantic plane root, invalidating the
+appropriate checks. The JSON-LD interchange file is regenerated from parsed
+YAML-LD on that same semantic change; a presentation-only edit does not
+rematerialize it.
 
 The exemplar publishes its
-[YAML-LD graph](../../evaluation/heritage/okf-bundle.yamlld),
-[semantic validation report](../../evaluation/heritage/data/semantic/validation-report.json),
-[IRI-to-route registry](../../evaluation/heritage/data/semantic/iri-route-registry.json)
-and [predicate registry](../../evaluation/heritage/data/semantic/predicate-registry.json)
+[YAML-LD graph](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld),
+[generated JSON-LD interchange](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.jsonld),
+[semantic validation report](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/validation-report.json),
+[IRI-to-route registry](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/iri-route-registry.json)
+and [predicate registry](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/predicate-registry.json)
 for direct inspection.
 
 ### Better Links In The Interface
@@ -427,9 +489,10 @@ journeys and human review.
 
 ## Inspect The Exemplar
 
-- [Faithful corpus landing page](../../evaluation/heritage/index.md)
-- [Tiny assurance landing page](../../evaluation/heritage/tiny/index.md)
-- [Synthetic supplement landing page](../../evaluation/heritage/synthetic/index.md)
+- [Faithful corpus landing page](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html)
+- [Tiny assurance landing page](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html)
+- [Synthetic supplement landing page](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html)
+- [Open the faithful corpus in OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json)
 - [Human-readable evaluation profile](../../evaluation-foundry/fixtures/heritage-warwickshire/profile.md)
 - [Machine-readable profile](../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml)
 - [Mapping proposals](../../evaluation-foundry/fixtures/heritage-warwickshire/mapping-proposals.yaml)

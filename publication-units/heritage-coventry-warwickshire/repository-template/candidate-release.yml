@@ -1,0 +1,143 @@
+name: Publish immutable candidate release
+
+on:
+  push:
+    tags: ["heritage-coventry-warwickshire-????????"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing annotated candidate tag
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  candidate-release:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_type == 'tag' && github.ref_name || inputs.tag }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install -r site/requirements-okf.txt
+      - name: Require the exact annotated candidate tag
+        run: |
+          test "$GITHUB_REF" = "refs/tags/$TAG"
+          test "$(git cat-file -t "$TAG")" = tag
+          test "$(git rev-parse "${TAG}^{commit}")" = "$(git rev-parse HEAD)"
+          expected_release_url="https://github.com/$GITHUB_REPOSITORY/releases/tag/$TAG"
+          action_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url")] | length' site/journeys.json)"
+          action_url="$(jq -r '.journeys[] | select(.id == "journey-publication") | .actions[] | select(.sequence == 32 and .action == "verify_url") | .value' site/journeys.json)"
+          live_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel != "genuine-browser-receipt")] | length' site/journeys.json)"
+          receipt_count="$(jq '[.journeys[] | select(.id == "journey-publication") | .actions[] | select(.verification_channel == "genuine-browser-receipt")] | length' site/journeys.json)"
+          test "$action_count" = 1
+          test "$action_url" = "$expected_release_url"
+          test "$live_count" = 21
+          test "$receipt_count" = 11
+      - name: Query immutable-release capability
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --header "X-GitHub-Api-Version: 2026-03-10"
+          "repos/$GITHUB_REPOSITORY/immutable-releases"
+          > "$RUNNER_TEMP/immutable-releases.json"
+      - name: Validate exact candidate and issue a bound receipt
+        run: |
+          python3 site/scripts/check_publication_unit_manifest.py site
+          python3 site/scripts/build_publication_assurance_receipt.py validation \
+            --publication-root site \
+            --repository "$GITHUB_REPOSITORY" \
+            --source-commit "$(git rev-parse HEAD)" \
+            --candidate-tag "$TAG" \
+            --output "$RUNNER_TEMP/publication-validation-receipt.json"
+      - name: Build deterministic portable archive and checksum
+        run: |
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+            -cf "$RUNNER_TEMP/heritage-coventry-warwickshire.tar" -C site .
+          gzip -n "$RUNNER_TEMP/heritage-coventry-warwickshire.tar"
+          cd "$RUNNER_TEMP"
+          sha256sum heritage-coventry-warwickshire.tar.gz > SHA256SUMS
+      - name: Attest exact candidate archive
+        id: archive-attestation
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4
+        with:
+          subject-path: ${{ runner.temp }}/heritage-coventry-warwickshire.tar.gz
+      - name: Build candidate-release identity receipt
+        run: >-
+          python3 site/scripts/build_publication_assurance_receipt.py release
+          --validation-receipt "$RUNNER_TEMP/publication-validation-receipt.json"
+          --archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
+          --attestation-url "${{ steps.archive-attestation.outputs.attestation-url }}"
+          --attestation-issuer "https://github.com/$GITHUB_REPOSITORY/.github/workflows/candidate-release.yml"
+          --output "$RUNNER_TEMP/candidate-release-receipt.json"
+      - name: Enforce candidate tag, archive attestation and immutable capability
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python3 site/scripts/check_release_policy.py
+          --phase candidate
+          --tag "$TAG"
+          --immutable-settings "$RUNNER_TEMP/immutable-releases.json"
+          --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
+          --repository "$GITHUB_REPOSITORY"
+      - name: Draft, attach the complete candidate closure, then publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" --verify-tag --draft \
+            --title "Coventry and Warwickshire Heritage Evaluation Exemplar" \
+            --notes "Immutable candidate R1. Promotion status is intentionally absent until terminal public assurance passes."
+          gh release upload "$TAG" \
+            "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
+            "$RUNNER_TEMP/SHA256SUMS" \
+            site/publication-unit-manifest.json \
+            "$RUNNER_TEMP/publication-validation-receipt.json" \
+            "$RUNNER_TEMP/candidate-release-receipt.json"
+          gh release edit "$TAG" --draft=false
+      - name: Verify the published candidate is platform immutable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --header "X-GitHub-Api-Version: 2026-03-10" \
+            "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" \
+            > "$RUNNER_TEMP/release.json"
+          release_verified=false
+          for attempt in 1 2 3 4 5 6; do
+            if gh release verify "$TAG" --repo "$GITHUB_REPOSITORY" --format json \
+              > "$RUNNER_TEMP/release-attestation.json"; then
+              release_verified=true
+              break
+            fi
+            test "$attempt" = 6 || sleep 5
+          done
+          test "$release_verified" = true
+          python3 site/scripts/check_release_policy.py \
+            --phase candidate \
+            --tag "$TAG" \
+            --immutable-settings "$RUNNER_TEMP/immutable-releases.json" \
+            --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
+            --repository "$GITHUB_REPOSITORY" \
+            --release-json "$RUNNER_TEMP/release.json" \
+            --release-attestation-json "$RUNNER_TEMP/release-attestation.json" \
+            --release-asset "heritage-coventry-warwickshire.tar.gz=$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \
+            --release-asset "SHA256SUMS=$RUNNER_TEMP/SHA256SUMS" \
+            --release-asset "publication-unit-manifest.json=site/publication-unit-manifest.json" \
+            --release-asset "publication-validation-receipt.json=$RUNNER_TEMP/publication-validation-receipt.json" \
+            --release-asset "candidate-release-receipt.json=$RUNNER_TEMP/candidate-release-receipt.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: candidate-release-${{ env.TAG }}
+          path: |
+            ${{ runner.temp }}/publication-validation-receipt.json
+            ${{ runner.temp }}/candidate-release-receipt.json
+            ${{ runner.temp }}/release.json
+            ${{ runner.temp }}/release-attestation.json

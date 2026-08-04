@@ -1,0 +1,13 @@
+[
+  {
+    "source_id": "CONV-001",
+    "title": "Draft Foundry evaluation process",
+    "start_timestamp": "2026-08-02T21:46:44.880Z",
+    "private_evidence_sha256": "5e14241c6cc19bb0d5c683d55f920a043204af057d3a3fe501fc34ce8dccafac",
+    "private_evidence_bytes": 52425297,
+    "user_message_count": 8,
+    "assistant_message_count": 250,
+    "public_source_path": "../sources/conv-001-heritage-evaluation-foundry.md",
+    "public_reader_path": "../readers/conv-001-heritage-evaluation-foundry.md"
+  }
+]

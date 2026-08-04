@@ -2,7 +2,7 @@
   "schema": "okf-explorer-evaluation-suite.v1",
   "title": "Coventry and Warwickshire heritage evaluation questions",
   "description": "One hundred beginner-readable questions that test place, designation, risk, time, people, source-backed associations, tolerant search, provenance, YAML-LD, fixture isolation and publication boundaries against the Coventry and Warwickshire heritage exemplar.",
-  "target_bundle": "https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/okf-explorer.json",
+  "target_bundle": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
   "rubric": {
     "retrieval": {
       "points": 35,
@@ -133,10 +133,10 @@
     {"id":"HQ093","query":"E08000026","intent":"Use Coventry's official geography code and inspect the pinned boundary vintage.","expected_terms":["E08000026","Coventry"],"tags":["provenance","boundary","identifier"]},
     {"id":"HQ094","query":"source geometry","intent":"Inspect source geometry, the declared CRS and any labelled representative-point derivation.","expected_terms":["geometry","source"],"expected_min_results":1,"tags":["provenance","map","derivation"]},
     {"id":"HQ095","query":"Open Government Licence","intent":"Confirm licence and attribution are visible without broadening the rights of linked rich-page text.","expected_terms":["Open Government Licence","Licence"],"tags":["provenance","licence","rights"]},
-    {"id":"HQ096","query":"YAML-LD @id","intent":"Explain how stable identifiers and JSON-LD-compatible context add graph meaning while legacy Markdown remains usable.","expected_terms":["YAML-LD","identifier"],"expected_min_results":1,"tags":["yaml-ld","identity","beginner"]},
+    {"id":"HQ096","query":"YAML-LD @id","intent":"Explain why YAML-LD is the authoring form, the normalized graph defines semantic identity and JSON-LD is a generated interchange form, while legacy Markdown remains usable.","expected_terms":["YAML-LD","identifier"],"expected_min_results":1,"tags":["yaml-ld","identity","beginner"]},
     {"id":"HQ097","query":"assertion status official","intent":"Distinguish an official source field from a normalized or model-derived assertion.","expected_terms":["official","assertion"],"expected_min_results":1,"tags":["provenance","assertion-status","authority"]},
     {"id":"HQ098","query":"assertion scope real-world","intent":"Confirm that faithful statements are marked real-world independently of their authority status.","expected_terms":["real-world","assertion"],"expected_min_results":1,"tags":["provenance","assertion-scope","faithful"]},
     {"id":"HQ099","query":"synthetic fixture","intent":"Verify that the synthetic supplement has a separate identity, is default-off and contributes to no faithful count or search result.","expected_terms":["synthetic","default-off"],"expected_min_results":0,"expected_max_results":0,"tags":["publication","synthetic","isolation"]},
-    {"id":"HQ100","query":"publication boundary","intent":"State plainly that this is a functionality evaluation, not a legal register or replacement for Historic England.","expected_terms":["evaluation","Historic England"],"expected_min_results":0,"tags":["publication","boundary","beginner"]}
+    {"id":"HQ100","query":"publication boundary","intent":"State plainly that this is a functionality evaluation, not a legal register or replacement for Historic England, and that deployment status belongs in a signed envelope outside the candidate.","expected_terms":["evaluation","Historic England"],"expected_min_results":0,"tags":["publication","boundary","beginner"]}
   ]
 }

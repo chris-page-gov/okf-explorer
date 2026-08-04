@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/evaluation-foundry/schemas/okf-evaluation-profile.v2.schema.json",
+  "title": "OKF Explorer evaluation profile v2",
+  "description": "Evaluation control profile with the same consumer, dependency, digest-plane, compatibility, validator and post-deploy contracts as an OKF Foundry domain profile.",
+  "type": "object",
+  "required": [
+    "schema",
+    "profile_id",
+    "title",
+    "scope",
+    "sources",
+    "assertion_policy",
+    "mapping_proposals",
+    "capabilities",
+    "fixtures",
+    "consumer_contract",
+    "validation",
+    "impact_policy",
+    "promotion",
+    "publication_boundary"
+  ],
+  "properties": {
+    "schema": {"const": "okf-evaluation-profile.v2"},
+    "profile_id": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/profile_id"
+    },
+    "version": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/version"
+    },
+    "title": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/title"
+    },
+    "description": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/description"
+    },
+    "scope": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/scope"
+    },
+    "sources": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/sources"
+    },
+    "assertion_policy": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/assertion_policy"
+    },
+    "mapping_proposals": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/mapping_proposals"
+    },
+    "capabilities": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/capabilities"
+    },
+    "fixtures": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/fixtures"
+    },
+    "consumer_contract": {
+      "$ref": "../../profiles/authoring/v1/domain-profile.schema.json#/$defs/consumerContract"
+    },
+    "validation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "../../profiles/authoring/v1/domain-profile.schema.json#/$defs/validationCheck"
+      }
+    },
+    "impact_policy": {"$ref": "#/$defs/impactPolicy"},
+    "promotion": {"$ref": "#/$defs/promotionPolicy"},
+    "publication_boundary": {
+      "$ref": "okf-evaluation-profile.v1.schema.json#/properties/publication_boundary"
+    }
+  },
+  "$defs": {
+    "idArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "nonEmptyIdArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "impactPolicy": {
+      "type": "object",
+      "required": ["unknown_paths", "root_receipts", "path_rules", "full_shadow"],
+      "properties": {
+        "unknown_paths": {"const": "fail-closed"},
+        "root_receipts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "path_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/impactRule"}
+        },
+        "full_shadow": {
+          "type": "object",
+          "required": ["enabled", "cadence"],
+          "properties": {
+            "enabled": {"const": true},
+            "cadence": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "enum": ["pull-request-shadow", "nightly", "terminal-release"]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "impactRule": {
+      "type": "object",
+      "required": ["id", "patterns", "node_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "patterns": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "node_refs": {"$ref": "#/$defs/nonEmptyIdArray"},
+        "plane_refs": {"$ref": "#/$defs/idArray"},
+        "validation_refs": {"$ref": "#/$defs/idArray"},
+        "fixtures": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["adversarial", "tiny", "faithful", "synthetic"]}
+        },
+        "test_tags": {"$ref": "#/$defs/idArray"},
+        "journey_groups": {"$ref": "#/$defs/idArray"},
+        "jobs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "python",
+              "app",
+              "browser_targeted",
+              "browser_full",
+              "foundry",
+              "site",
+              "docs",
+              "release"
+            ]
+          }
+        },
+        "root_narrowable": {"type": "boolean"},
+        "narrowed_jobs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "python",
+              "app",
+              "browser_targeted",
+              "browser_full",
+              "foundry",
+              "site",
+              "docs",
+              "release"
+            ]
+          }
+        },
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "promotionPolicy": {
+      "type": "object",
+      "required": [
+        "envelope_schema",
+        "envelope_path",
+        "envelope_reference",
+        "creation_gate",
+        "envelope_excluded_from_roots",
+        "candidate_content",
+        "observation_boundary"
+      ],
+      "properties": {
+        "envelope_schema": {"const": "okf-evaluation-promotion-envelope.v1"},
+        "envelope_path": {"type": "string", "minLength": 1},
+        "envelope_reference": {"type": "string", "minLength": 1},
+        "creation_gate": {"const": "after-deployment-observation"},
+        "envelope_excluded_from_roots": {"const": true},
+        "candidate_content": {"type": "string", "minLength": 1},
+        "observation_boundary": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

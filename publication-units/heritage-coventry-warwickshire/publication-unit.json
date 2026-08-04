@@ -1,0 +1,117 @@
+{
+  "$schema": "../publication-unit.v1.schema.json",
+  "schema": "okf-publication-unit.v1",
+  "id": "heritage-coventry-warwickshire",
+  "title": "Coventry and Warwickshire heritage Evaluation Foundry exemplar",
+  "owner_repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+  "publication": {
+    "repository_url": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+    "pages_base_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
+    "release_asset_prefix": "heritage-coventry-warwickshire"
+  },
+  "runtime_dependency": {
+    "repository": "chris-page-gov/okf-explorer",
+    "contract": "okf-explorer-large-corpus.v1",
+    "public_url": "https://chris-page-gov.github.io/okf-explorer/"
+  },
+  "retarget": {
+    "from_base_url": "https://chris-page-gov.github.io/okf-explorer/",
+    "to_base_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
+  },
+  "activation": {
+    "requires_remote_identity_journey": true,
+    "redirects_after_activation": true
+  },
+  "materials": [
+    {
+      "source": "evaluation/heritage",
+      "target": ".",
+      "role": "corpus"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire",
+      "target": "evaluation-foundry/fixtures/heritage-warwickshire",
+      "role": "fixture"
+    },
+    {
+      "source": "docs/heritage-evaluation-report.md",
+      "target": "docs/heritage-evaluation-report.md",
+      "role": "documentation"
+    },
+    {
+      "source": "docs/beginners/22-evaluation-foundry-and-yaml-ld.md",
+      "target": "docs/beginners/22-evaluation-foundry-and-yaml-ld.md",
+      "role": "documentation"
+    },
+    {
+      "source": "LICENSE.md",
+      "target": "LICENSE.md",
+      "role": "licence"
+    },
+    {
+      "source": "LICENSE-CODE.md",
+      "target": "LICENSE-CODE.md",
+      "role": "licence"
+    },
+    {
+      "source": "scripts/check_promotion_envelope.py",
+      "target": "scripts/check_promotion_envelope.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/check_publication_unit_manifest.py",
+      "target": "scripts/check_publication_unit_manifest.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/plane_root_validation.py",
+      "target": "scripts/plane_root_validation.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/check_release_policy.py",
+      "target": "scripts/check_release_policy.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/build_publication_assurance_receipt.py",
+      "target": "scripts/build_publication_assurance_receipt.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/materialize_promotion_envelope.py",
+      "target": "scripts/materialize_promotion_envelope.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/observe_link_intents.py",
+      "target": "scripts/observe_link_intents.py",
+      "role": "policy"
+    },
+    {
+      "source": "scripts/check_evaluation_foundry.py",
+      "target": "scripts/check_evaluation_foundry.py",
+      "role": "policy"
+    },
+    {
+      "source": "evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json",
+      "target": "evaluation-foundry/schemas/okf-evaluation-promotion-envelope.v1.schema.json",
+      "role": "policy"
+    },
+    {
+      "source": "release-assurance/release-policy.json",
+      "target": "release-assurance/release-policy.json",
+      "role": "policy"
+    },
+    {
+      "source": "release-assurance/link-observation-policy.json",
+      "target": "release-assurance/link-observation-policy.json",
+      "role": "policy"
+    },
+    {
+      "source": "requirements-okf.txt",
+      "target": "requirements-okf.txt",
+      "role": "policy"
+    }
+  ]
+}

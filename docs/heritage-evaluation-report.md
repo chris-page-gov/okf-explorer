@@ -2,14 +2,11 @@
 "@context":
   - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
   - https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-context.jsonld
-"@id": https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html
+"@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/heritage-evaluation-report.html
 "@type": https://schema.org/Report
 type: Evaluation Report
 title: Coventry and Warwickshire heritage functionality evaluation
 description: A beginner-readable, evidence-bounded report on the Heritage Evaluation Foundry exemplar, its source coverage, Explorer capabilities and additive YAML-LD proposal.
-generated:
-  by: process:heritage-evaluation-report-authoring
-  at: "2026-08-03T12:36:40Z"
 assertion_status: normalized
 assertion_scope: real-world
 tags:
@@ -22,18 +19,17 @@ tags:
 
 # Coventry And Warwickshire Heritage Functionality Evaluation
 
-## Report Status And Headline
+## Report Purpose And Headline
 
 This is an exemplar evaluation of what OKF Explorer can do with a complete,
 explicitly bounded set of heritage sources. It is not a legal register, a
 condition survey or a replacement for Historic England.
 
-Publication is complete for the stated functionality-evaluation boundary. At
-`2026-08-03T12:29:08.274Z`, GitHub Pages run `30813485357` served and passed
-the exact candidate from commit
-`c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2`. The terminal journey bound the
-deployed descriptor and release root to the locally assured candidate before
-checking the interface, Site pages and external destinations.
+This report describes stable candidate content and the gates required to
+promote it. It deliberately does not carry a current deployment status,
+workflow run identifier or observation timestamp. Those time-sensitive facts
+belong in an independently signed promotion envelope, so observing a candidate
+does not change the candidate that was observed.
 
 The source-defined NHLE denominator is **6,556 unique current List entries**:
 every record in the supported, non-duplicate National Heritage List for
@@ -63,12 +59,14 @@ the process before this report applies it.
 
 ## Public Entry Points
 
-- [Open the faithful corpus in OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fevaluation%2Fheritage%2Fokf-explorer.json)
-- [Read this report as HTML](https://chris-page-gov.github.io/okf-explorer/docs/heritage-evaluation-report.html)
-- [Open the faithful corpus landing page](https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/index.html)
-- [Open the tiny assurance fixture](https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/tiny/index.html)
-- [Open the isolated synthetic supplement](https://chris-page-gov.github.io/okf-explorer/evaluation/heritage/synthetic/index.html)
-- [Inspect the immutable heritage exemplar release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803)
+These are the canonical targets exercised by the publication journey:
+
+- [Open the external faithful corpus in OKF Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fokf-explorer.json)
+- [Read this report as HTML](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/docs/heritage-evaluation-report.html)
+- [Open the faithful corpus landing page](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html)
+- [Open the tiny assurance fixture](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html)
+- [Open the isolated synthetic supplement](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html)
+- [Inspect the planned immutable release](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/releases/tag/heritage-coventry-warwickshire-20260804)
 
 ## What Was Evaluated
 
@@ -82,9 +80,9 @@ It produces three deliberately separate products.
 
 | Product | What it proves | Real-world claims | Default | Effect on faithful totals |
 |---|---|---:|---:|---:|
-| [Tiny assurance fixture](../evaluation/heritage/tiny/index.md) | The producer, validator and real Explorer can complete the critical path cheaply | Source-backed only | Not the main corpus | None |
-| [Faithful corpus](../evaluation/heritage/index.md) | The defined Historic England and ONS source population can support the evaluation | Yes, with visible normalization | Loaded for the exemplar | Included |
-| [Synthetic supplement](../evaluation/heritage/synthetic/index.md) | Sparse graph and event capabilities can be illustrated safely | No; every item is invented | Off | Excluded from counts and search |
+| [Tiny assurance fixture](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html) | The producer, validator and real Explorer can complete the critical path cheaply | Source-backed only | Not the main corpus | None |
+| [Faithful corpus](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html) | The defined Historic England and ONS source population can support the evaluation | Yes, with visible normalization | Loaded for the exemplar | Included |
+| [Synthetic supplement](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html) | Sparse graph and event capabilities can be illustrated safely | No; every item is invented | Off | Excluded from counts and search |
 
 An attractive demonstration is not allowed to fill a missing source field.
 Unknown remains unknown. An association remembered from prior knowledge is a
@@ -245,12 +243,12 @@ acquisition prefilter: 1,109 rows. The structured `scope_reconciliation` then
 records the 25 locality-only false positives removed by the authoritative
 geography rule, leaving the 1,084 emitted observations above.
 
-## Generated Results Handoff
+## Candidate Results Handoff
 
-The table combines values in the generated artifacts with the completed local
-and deployed release gates. The receipts remain separate: generated counts do
-not stand in for deterministic execution, and local execution does not stand
-in for the exact GitHub Pages observation.
+The table contains properties of the candidate itself. Deterministic execution,
+deployment observations, live-link freshness and promotion decisions are
+separate receipts; they do not become front matter or feature status inside the
+candidate.
 
 | Result | Value | Authoritative evidence |
 |---|---:|---|
@@ -268,23 +266,21 @@ in for the exact GitHub Pages observation.
 | Identifier-bound official-link occurrences | **15,280** NHLE direct pages or HAR exact register searches across record-primary and resource representations | [link validation](../evaluation/heritage/data/link-validation.json) → `counts.identifier_bound_rich_links` (retained field name) |
 | Relationship-panel links checked | **65,878** | link validation → `counts.relationship_ui_links` |
 | Build-time link-contract failures | **0** | [link validation](../evaluation/heritage/data/link-validation.json) → `counts.failures` |
-| Determinism release gate | **0 differences across two independent 2,940-file builds** | Local candidate receipt → `determinism` |
-| Question-suite result | **100/100 scored; average 92.7; all 100 at least 80; none below 60** | local candidate receipt → `question_suite` |
-| Local tiny/faithful/synthetic journeys | **3/3 passed; 0 failures or errors** | local candidate receipt → `local_journeys` |
-| Public GitHub Pages journey | **Passed: 1/1 journey, 27/27 candidate actions and 2/2 assertions; final promoted journey 32/32 including the release page and complete authored-link closure** | Pages run `30813485357` and [immutable final release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803) |
 
 Source and transformation evidence is in the
 [source-provenance receipt](../evaluation/heritage/data/source-provenance.json);
 the [plane-root receipt](../evaluation/heritage/assurance/plane-roots.json)
 binds the control, data, search, semantic and presentation planes separately.
-The deployed observation matched descriptor SHA-256
-`2b06dc70e8d1943e18617d4edcb09bd5041ff8f7b7611828d1c9d24070b37149`
-and release root
-`aa8f3367b7fb0e5de46a5c33ac4ef1906507defae114317e7bec88ee72fa7aeb`.
-Its 27-action candidate result has SHA-256
-`36bcc3f2e31a7dcc73c793d4a44a12492a717d321f30926685341e45ea3ee1f4`;
-the release above carries the final result that additionally validates the
-immutable release page as action 28.
+
+The earlier
+[Pages run 30813485357](https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357)
+and
+[`heritage-coventry-warwickshire-20260803` release](https://github.com/chris-page-gov/okf-explorer/releases/tag/heritage-coventry-warwickshire-20260803)
+remain historical observations of the first implementation. They are not
+current promotion metadata. The old release was mutable at the GitHub platform
+level and used a lightweight tag, so it is not described as immutable. The new
+external publication gate requires an annotated tag, GitHub immutable releases
+and a separately signed envelope.
 
 ## Capability Findings
 
@@ -448,12 +444,21 @@ across interface areas and explain why a graph edge exists. No reader has to
 understand RDF merely to display the Markdown.
 
 The exemplar uses **YAML-LD** as a local name for an additive extension; it is
-not a W3C-defined YAML syntax or media type. A safe YAML parser first accepts a
-JSON-compatible subset—string-keyed maps, lists and scalar values, UTF-8 text
-and finite numbers, with no executable tags, cycles or duplicate keys. That is
-converted to the JSON data model and then processed as JSON-LD against pinned
-contexts. JSON-LD keywords beginning with `@` are quoted because plain YAML
-does not accept them as unquoted keys in every parser.
+not a W3C-defined YAML syntax or media type. YAML-LD is the canonical authoring
+form. A safe YAML parser first accepts a JSON-compatible subset—string-keyed
+maps, lists and scalar values, UTF-8 text and finite numbers, with no executable
+tags, cycles or duplicate keys. That is converted to the JSON data model and
+processed against pinned JSON-LD contexts. The normalized graph and its
+semantic plane root define semantic identity. In this large generated corpus,
+the builder first emits deterministic YAML, reparses those exact bytes through
+the safe YAML 1.2 loader, and derives the semantic shards and JSON-LD from that
+parsed document. The graph is normalized as URDNA2015 canonical N-Quads, so
+comments, indentation, key order and scalar quoting do not alter its semantic
+digest. A separate artifact root continues to bind exact bytes. JSON-LD is then
+generated as an interchange materialization whenever that semantic plane
+changes and again for a release; it is not a second hand-edited source. JSON-LD keywords
+beginning with `@` are quoted because plain YAML does not accept them as
+unquoted keys in every parser.
 
 The ordinary fields stay in place, while semantic consumers can additionally
 read `@context`, `@id`, `@type` and governed relationship assertions:
@@ -560,14 +565,17 @@ graph:
 ### 7. Machine-Checkable Meaning
 
 Local copies of the contexts, predicate registry and IRI-route registry are
-pinned by digest. A change to a term or route changes the semantic plane root
-and reruns only the checks that depend on it. This makes semantic drift visible
-in the same way that a changed search shard or data chunk is visible.
+pinned by digest. A change to a term or route changes the URDNA2015 normalized
+graph digest and semantic plane root, then reruns only the checks that depend on
+it. Formatting-only YAML-LD changes leave that semantic root stable while the
+exact-byte artifact root changes. This separates semantic drift from editorial
+diffs without hiding either one.
 
-The generated [YAML-LD graph](../evaluation/heritage/okf-bundle.yamlld),
-[semantic validation report](../evaluation/heritage/data/semantic/validation-report.json),
-[IRI-to-route registry](../evaluation/heritage/data/semantic/iri-route-registry.json)
-and [predicate registry](../evaluation/heritage/data/semantic/predicate-registry.json)
+The generated [YAML-LD graph](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld),
+[JSON-LD interchange](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.jsonld),
+[semantic validation report](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/validation-report.json),
+[IRI-to-route registry](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/iri-route-registry.json)
+and [predicate registry](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/semantic/predicate-registry.json)
 make those claims inspectable rather than leaving the proposal only in prose.
 
 YAML-LD does **not** make a claim true, choose the right ontology, grant rights
@@ -609,42 +617,54 @@ Link assurance has five distinct gates:
 | Gate | What it checks |
 |---|---|
 | Corpus manifest and digest integrity | Descriptor, chunk, shard, registry and context paths stay within their publication root and match their declared digests |
-| Build-time URL contract | All 7,640 record links and 22,200 resource links have safe schemes and no credentials; 15,280 official-link occurrences across record-primary and resource representations bind either an NHLE direct-page identifier or an exact HAR `q=ListEntry` search; all 22,200 internal resource references resolve; and 65,878 relationship-panel link occurrences pass the same route/origin policy. Each count remains separate, and the generated report records zero failures |
+| Build-time URL contract | All 7,640 record links and 22,200 resource links have safe schemes and no credentials; 15,280 official-link occurrences across record-primary and resource representations bind either an NHLE direct-page identifier or an exact HAR `q=ListEntry` search; all 22,200 internal resource references resolve; and 65,878 relationship-panel link occurrences pass the same route/origin policy. Stable intents are sharded by `SHA-256(canonical URL)`, so one correction invalidates only its shard and dependants |
 | Repository Markdown check | Relative links in the bounded public reading closure resolve and each in-scope Markdown document can be rendered; this is not a claim about every Markdown file in the repository |
-| Assembled Site audit | The candidate published from commit `c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2` renders 239 reading pages, resolves 4,135 internal link or asset references in the bounded public reading closure and passes the 1 GB Pages size gate. The local candidate receipt binds the exact non-receipt Site file tree, byte inventory and headroom; corpus descriptors and data paths are validated by the separate manifest gate |
-| Real-browser deployment journey | The exact deployed Explorer, report, profile, methodology, tiny fixture and synthetic fixture showed the expected identity/content; every unique external source or specification hyperlink authored into this report was identity-checked as a terminal action, using live navigation for ordinary pages and an auditable genuine-browser receipt for protected Historic England pages. The promoted journey also validated the immutable release page |
+| Assembled Site audit | Component manifests assemble only changed shell, docs, app or data closures, then verify every emitted file, rewritten HTML route, internal reference and the Pages size limit |
+| Real-browser deployment journey | The reusable Explorer runtime loads the exact external descriptor; faithful, tiny and synthetic pages show their expected identities; protected-source observations are supplied as freshness receipts outside the candidate; and the release page is checked only after GitHub reports it immutable |
 
 A live URL can change after the observation time. Cloudflare can also make a
 generic unattended HTTP client a poor proxy for a user browser. Identifier
-binding is therefore exhaustive, while all 16 unique external source and
-specification destinations authored into this report and all
-publication-critical local routes were checked through browser evidence.
-Ordinary pages were navigated live by the terminal
-journey. Historic England pages that challenge fresh automated contexts are
-opened in a genuine interactive browser and recorded with requested and final
-URLs, HTTP status, page title, a bounded excerpt captured from
-`document.body.innerText`, expected identity text and per-page observation
-time. The evaluator checks that excerpt case-insensitively and records the
-receipt's SHA-256 in terminal evidence. The
-thousands of generated corpus URL occurrences are not
-bulk-requested from the source service: their identifier/origin/query contracts
-are checked structurally, and the report's selected pages exercise every link
-class without creating abusive traffic. The generated receipt deliberately
-records **zero live external receipts**: zero structural failures is not evidence
-that every external page was live. The separate deployed terminal receipt
-records the completed browser checks: 16 live-browser actions, 11 protected
-genuine-browser actions and 2 passing assertions for the exact candidate. The
-final promoted journey passed 32/32 actions after adding the immutable release
-page, the tiny and synthetic Explorer entry URLs, and the cited Pages run and
-implementation commit.
-The protected-page receipt is executable evidence, not an exemption. The
-evaluator accepts it only when it declares a non-WebDriver interactive Chrome
-session, matches the journey's exact requested URL and expected text, records a
-successful response, preserves the expected final origin/path/query and reports
-that the identity text was present. The
-[protected-source browser receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/protected-source-link-receipt.json)
-is published for inspection. A challenge page, HTTP 403, unexpected redirect or
-missing identity remains a failed action.
+binding is therefore exhaustive, while external availability is refreshed on
+its own schedule. Historic England pages that challenge fresh automated
+contexts are opened in a genuine interactive browser. The resulting receipt
+records requested and final URLs, HTTP status, title, bounded identity text and
+observation time **outside the candidate**. Its digest can be included in a
+signed promotion envelope. A challenge page, HTTP 403, unexpected redirect or
+missing identity remains a failed **genuine-browser** observation.
+
+The bulk channel deduplicates the generated occurrences into canonical URL
+intents and refreshes them on a bounded hash-shard schedule. Terminal assurance
+uses the publication manifest to read every rendered HTML page, extracts every
+external anchor, then unions those URLs with the independently verified
+faithful, tiny and synthetic link-intent manifests. The receipt binds the
+publication-manifest digest, all three intent-manifest digests and roots, the
+rendered-anchor root, the protected journey and the final canonical-URL root.
+At promotion the checker reconstructs that same union from R1 bytes: an omitted
+anchor, omitted fixture universe, extra receipt URL or changed source root fails
+closed. In beginner terms, there is no hand-written list that can quietly fall
+behind the Site; the list to check is derived from everything actually
+published.
+
+The present closure is below a reviewed 14,000-URL ceiling. Forty-eight bounded
+workers, a six-second request timeout and at most two attempts per URL give a
+nominal worst-case network budget below 59 minutes. A 75-minute outer timeout
+leaves 105 minutes of the 180-minute job for genuine Chrome and the
+three-engine journey. Crossing the URL ceiling or either timeout fails the
+terminal gate and requires an explicit policy review; it cannot silently
+publish partial evidence. Historic England returns HTTP 403 for
+many identifier-bound official record and resource URLs even when their exact
+host and identifier contracts have already passed. The versioned policy may
+classify only that exact combination—host `historicengland.org.uk`, risk
+`official-record` or `official-resource`, and status 403—as
+`protected-origin`, with the named validation basis
+`candidate-identifier-binding-plus-protected-origin-http-403`. This records an
+origin-protection outcome, not live page availability or identity. A different
+host, subdomain, risk, status, missing basis, or unexpected final host still
+fails, as do unpublished Site resources returning 404. Representative rich
+pages continue through the genuine-browser gate above. Because intents are
+hash-sharded, an expired or changed URL refreshes its observation and affected
+shard without rebuilding unrelated data, search, semantic or presentation
+planes.
 A successful link check does not expand the page’s licence or authorize copying
 its text. The machine-readable data attribution remains subject to the source
 terms and the
@@ -652,7 +672,7 @@ terms and the
 
 ## Deterministic Assurance
 
-The [tiny fixture](../evaluation/heritage/tiny/index.md) is exactly three
+The [tiny fixture](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html) is exactly three
 source-backed records selected from the frozen full snapshot: two NHLE assets
 and one 2025 HAR observation. It is a fast gate for the same producer, never
 the denominator or main population. Boundary geometry was used during source
@@ -669,7 +689,8 @@ For a fixed snapshot and generation timestamp, assurance requires:
 3. unique record, resource, route and assertion identities;
 4. every manifest path confined to its publication root;
 5. content digests for chunks, search shards, contexts and registries;
-6. separate roots for control, data, search, semantic and presentation planes;
+6. separate roots for control, data, search, semantic and presentation planes,
+   with a fail-closed impact plan selecting the affected closure;
 7. exact denominator reconciliation;
 8. negative fixtures that reject duplicate IDs, unsafe paths or URLs, bad
    digests, unmatched semantic assertions and synthetic leakage;
@@ -682,18 +703,17 @@ and Narrative. It applies a Map filter, selects an edge and map record, hydrates
 a full record, opens an official link in a new tab, then proves Back, Forward
 and reload preserve the intended state.
 
-The completed publication journey separately checked the generated index,
-methodology, profile, beginner chapter and this report as HTML pages. The bytes
-published to GitHub Pages were the bytes that passed. Before the journey
-started, the evaluator compared both the deployed descriptor SHA-256 and the
-deployed plane-root release digest with the local candidate receipt; a stable
-descriptor cannot disguise an older executable closure. A failed deployed URL
-is reported as unverified; it is not silently converted into a rebuild with
-the same release identity.
+The publication journey separately checks the generated index, methodology,
+profile, beginner chapter and this report as HTML pages. Before it starts, the
+evaluator compares both the deployed descriptor SHA-256 and deployed plane-root
+digest with the candidate receipt; a stable descriptor cannot disguise an
+older executable closure. A failed deployed URL is reported as unverified. It
+is not silently converted into a rebuild with the same release identity, and a
+success is written to the signed envelope rather than back into the candidate.
 
 ## Synthetic Capability Supplement
 
-The [synthetic supplement](../evaluation/heritage/synthetic/index.md) contains
+The [synthetic supplement](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html) contains
 an invented place, person and proposed future event so the interface can show
 typed people, uncertainty and proposed relationships that the faithful source
 cannot establish. Its descriptor and front matter declare:
@@ -749,29 +769,32 @@ faithful coverage score or answer a real-world question.
   functionality over its stated inputs; it does not create a new assured
   heritage register.
 
-## Release Decision
+## Promotion Decision Gate
 
-All of the completion conditions are now met:
+A candidate is eligible for promotion only when all of these conditions are
+met for its exact digests:
 
 - the emitted NHLE asset count reconciles exactly to 6,556;
 - the 2013–2025 HAR ledger reports every workbook/sheet input, in-scope output,
   unknown and unmatched identifier without hidden loss;
-- every generated-results value above is evidence-backed and every terminal
-  release receipt has been attached;
+- every candidate-results value above is evidence-backed and every required
+  observation receipt exists outside the candidate;
 - the tiny, faithful and synthetic descriptors validate and remain isolated;
-- all deterministic, schema, semantic, search, geospatial and assembled-site
-  checks pass;
+- all deterministic, schema, semantic, search, geospatial and component Site
+  checks pass for the impact-plan closure;
 - all 100 questions have a result, a bounded empty state or an explicit source
   gap rather than an invented answer;
 - the real Explorer journey passes with one coherent query/facet state; and
-- the exact GitHub Pages HTML and bundle URLs pass real-browser identity,
-  rendering and link checks.
+- the exact external GitHub Pages HTML and bundle URLs pass real-browser
+  identity, rendering and link checks;
+- the annotated release tag resolves to the intended commit and GitHub reports
+  the release immutable; and
+- a signed promotion envelope binds the candidate, observations, deployment
+  and release identity without modifying any candidate byte.
 
-The exemplar is therefore complete within its stated functionality-evaluation
-boundary. The immutable release above attaches the final 28-action publication
-receipt, while commit `c8e8fac3ef2beddae7bdc99988ae9c5aac2431f2`, descriptor
-digest and plane-root digest preserve the exact deployed candidate identity.
-This decision does not turn the evaluation into a legal register, condition
-survey or certification. Historic England remains the authority for the
+Only the signed envelope may state the resulting promotion status. This report
+does not pre-announce that decision. Even a successful promotion does not turn
+the evaluation into a legal register, condition survey or certification.
+Historic England remains the authority for the
 [National Heritage List for England](https://historicengland.org.uk/listing/the-list/)
 and [Heritage at Risk](https://historicengland.org.uk/advice/heritage-at-risk/).

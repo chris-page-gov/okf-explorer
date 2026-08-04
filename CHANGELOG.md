@@ -2,6 +2,24 @@
 
 ## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
+- Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
+  complete public-safe prompt-response trace, machine-readable process
+  registers and a modular content-addressed report builder. The analysis
+  reconstructs all three pull requests and six green workflows, identifies
+  late-discovery amplification, and specifies an Evaluation Profile v2 impact
+  planner and selective-rerun architecture. Rendered reading pages now declare
+  the project-relative SVG favicon so direct documentation journeys do not
+  create a spurious `/favicon.ico` browser error.
+- Implemented every postmortem recommendation: Evaluation Profile v2 and its
+  consumer lock; a fail-closed, explainable impact planner; promotion evidence
+  outside candidate roots; normalized-core and per-plane emitters with
+  manifest-owned changed-only writes; 13 adversarial late-finding
+  microfixtures; conditional parallel CI plus nightly three-engine shadow
+  assurance; content-addressed Site components; hash-sharded semantic and link
+  intents; an independently rooted heritage publication unit; and an annotated,
+  attested, immutable-release policy. The faithful, tiny and synthetic
+  candidates now share one explicit external URL family while remaining
+  identity- and count-isolated.
 - Made the public verification harness resolve GitHub Pages project-root
   bundle paths, wait for client-rendered identity, select a single terminal
   journey and return a failing exit status when any browser journey fails.
@@ -39,10 +57,11 @@
   after its exact GitHub Pages descriptor and release root passed the terminal
   browser journey; published copy-ready faithful, tiny and synthetic entry
   points and registered the exemplar in the YAML-LD bundle registry.
-- Added a final release-page journey action and an immutable tagged-release
-  evidence handoff, while excluding accidental Foundry evaluator output from
-  both Git and Site assembly so post-deployment receipts cannot alter the
-  verified publication closure.
+- Added a final release-page journey action and a digest-bound, policy-frozen
+  tagged-release evidence handoff, while excluding accidental Foundry
+  evaluator output from both Git and Site assembly so post-deployment receipts
+  cannot alter the verified publication closure. GitHub currently reports the
+  release itself as mutable, which the postmortem records as remaining work.
 
 ## v0.5.7 - 2026-07-29 - Fail-closed descriptor identity
 

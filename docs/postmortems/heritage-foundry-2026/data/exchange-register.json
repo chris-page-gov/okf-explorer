@@ -1,0 +1,90 @@
+[
+  {
+    "exchange_id": "EX-0001",
+    "global_sequence": 1,
+    "session_source_id": "CONV-001",
+    "title": "Assess access and define the heritage Evaluation Foundry",
+    "user_timestamp": "2026-08-02T21:46:49.261Z",
+    "assistant_message_count": 6,
+    "public_path": "../exchanges/0001-assess-access-and-define-the-heritage-evaluation-foundry.md",
+    "user_contribution": "Set the evaluation goal, regional scope, source family and search-quality bar.",
+    "codex_contribution": "Inspected repository, source, browser and geospatial evidence and bounded the unknowns."
+  },
+  {
+    "exchange_id": "EX-0002",
+    "global_sequence": 2,
+    "session_source_id": "CONV-001",
+    "title": "Explain the separate tiny assurance fixture",
+    "user_timestamp": "2026-08-02T22:02:21.764Z",
+    "assistant_message_count": 1,
+    "public_path": "../exchanges/0002-explain-the-separate-tiny-assurance-fixture.md",
+    "user_contribution": "Asked for the assurance fixture to be explained as a separate product.",
+    "codex_contribution": "Separated producer/consumer correctness evidence from regional completeness and synthetic illustration."
+  },
+  {
+    "exchange_id": "EX-0003",
+    "global_sequence": 3,
+    "session_source_id": "CONV-001",
+    "title": "Implement and publish the complete heritage exemplar",
+    "user_timestamp": "2026-08-02T22:14:14.264Z",
+    "assistant_message_count": 5,
+    "public_path": "../exchanges/0003-implement-and-publish-the-complete-heritage-exemplar.md",
+    "user_contribution": "Authorized the full unattended build, YAML-LD extension, Site publication and Explorer changes.",
+    "codex_contribution": "Collected evidence and produced the engineering postmortem and selective-rerun design."
+  },
+  {
+    "exchange_id": "EX-0004",
+    "global_sequence": 4,
+    "session_source_id": "CONV-001",
+    "title": "Correct the GitHub authentication diagnosis",
+    "user_timestamp": "2026-08-02T22:24:30.160Z",
+    "assistant_message_count": 131,
+    "public_path": "../exchanges/0004-correct-the-github-authentication-diagnosis.md",
+    "user_contribution": "Corrected a sandbox-specific authentication diagnosis before it became a false blocker.",
+    "codex_contribution": "Separated producer/consumer correctness evidence from regional completeness and synthetic illustration."
+  },
+  {
+    "exchange_id": "EX-0005",
+    "global_sequence": 5,
+    "session_source_id": "CONV-001",
+    "title": "Confirm graph browsing cannot mutate the bundle",
+    "user_timestamp": "2026-08-03T12:03:35.949Z",
+    "assistant_message_count": 54,
+    "public_path": "../exchanges/0005-confirm-graph-browsing-cannot-mutate-the-bundle.md",
+    "user_contribution": "Raised a data-integrity concern after interacting with the public graph.",
+    "codex_contribution": "Separated producer/consumer correctness evidence from regional completeness and synthetic illustration."
+  },
+  {
+    "exchange_id": "EX-0006",
+    "global_sequence": 6,
+    "session_source_id": "CONV-001",
+    "title": "Create the end-to-end engineering postmortem",
+    "user_timestamp": "2026-08-04T03:48:15.405Z",
+    "assistant_message_count": 16,
+    "public_path": "../exchanges/0006-create-the-end-to-end-engineering-postmortem.md",
+    "user_contribution": "Requested evidence collection, process analysis, refactoring options and a complete trace.",
+    "codex_contribution": "Collected evidence and produced the engineering postmortem and selective-rerun design."
+  },
+  {
+    "exchange_id": "EX-0007",
+    "global_sequence": 7,
+    "session_source_id": "CONV-001",
+    "title": "Resolve the postmortem architecture questions",
+    "user_timestamp": "2026-08-04T07:14:19.203Z",
+    "assistant_message_count": 1,
+    "public_path": "../exchanges/0007-resolve-the-postmortem-architecture-questions.md",
+    "user_contribution": "Asked for explicit decisions on candidate status, browser tiers, semantic canonicalization, link freshness and exemplar ownership.",
+    "codex_contribution": "Resolved the five architecture questions as one coherent candidate, assurance and publication model."
+  },
+  {
+    "exchange_id": "EX-0008",
+    "global_sequence": 8,
+    "session_source_id": "CONV-001",
+    "title": "Implement every recommended refactoring and publication control",
+    "user_timestamp": "2026-08-04T07:21:33.342Z",
+    "assistant_message_count": 36,
+    "public_path": "../exchanges/0008-implement-every-recommended-refactoring-and-publication-control.md",
+    "user_contribution": "Authorized implementation of every postmortem recommendation, including the release-integrity and external-publication controls.",
+    "codex_contribution": "Implemented the v2 profile, planner, modular outputs, early fixtures, conditional assurance, external unit and release policy, with public promotion kept pending until terminal verification."
+  }
+]

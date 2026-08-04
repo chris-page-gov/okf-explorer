@@ -16,12 +16,14 @@ const DEFAULT_BASE_URL = 'http://127.0.0.1:8002/next/';
 const DEFAULT_BUNDLE = '/uk-government-apis/okf-explorer.json';
 const CANDIDATE_FETCH_TIMEOUT_MS = 30_000;
 const HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA = 'okf-heritage-local-candidate-receipt.v1';
+const PUBLICATION_VALIDATION_RECEIPT_SCHEMA = 'okf-publication-validation-receipt.v1';
 const GENUINE_BROWSER_VERIFICATION_CHANNEL = 'genuine-browser-receipt';
 const GENUINE_BROWSER_RECEIPT_SCHEMA = 'okf-genuine-browser-link-receipt.v1';
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 const CREDENTIAL_QUERY_KEY = /^(?:api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|password|passwd|bearer|token)$/i;
 const SECRET_PATTERN = /\b(api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|password|passwd|bearer)\s*[=:]\s*[^&\s]+/i;
 const RAW_GAP_PATTERN = /\b(None|null|undefined)\b/;
+const BROWSER_ENGINES = new Set(['chromium', 'firefox', 'webkit']);
 
 function parseArgs(argv) {
   const options = {
@@ -35,11 +37,13 @@ function parseArgs(argv) {
     limit: 100,
     noBrowser: false,
     headed: false,
+    browserEngine: 'chromium',
     journeys: null,
     journeyLimit: Number.POSITIVE_INFINITY,
     journeyIds: [],
     verificationDelayMs: 0,
     journeysOnly: false,
+    deferBrowserReceipts: false,
     bundleExplicit: false,
     bundleRoot: null,
     outExplicit: false,
@@ -69,7 +73,9 @@ function parseArgs(argv) {
     else if (arg === '--journey-limit') options.journeyLimit = Number(argv[++index]);
     else if (arg === '--journey-id') options.journeyIds.push(argv[++index]);
     else if (arg === '--verification-delay-ms') options.verificationDelayMs = Number(argv[++index]);
+    else if (arg === '--browser-engine') options.browserEngine = argv[++index];
     else if (arg === '--journeys-only') options.journeysOnly = true;
+    else if (arg === '--defer-browser-receipts') options.deferBrowserReceipts = true;
     else if (arg === '--no-browser') options.noBrowser = true;
     else if (arg === '--headed') options.headed = true;
     else if (arg === '--help' || arg === '-h') {
@@ -88,9 +94,16 @@ function parseArgs(argv) {
   if (options.bundleRoot && !options.journeys) throw new Error('--bundle-root requires --journeys.');
   if (options.candidateBundle && !options.journeys) throw new Error('--candidate-bundle requires --journeys.');
   if (options.candidateReceipt && !options.journeys) throw new Error('--candidate-receipt requires --journeys.');
+  if (options.deferBrowserReceipts && !options.journeys) throw new Error('--defer-browser-receipts requires --journeys.');
+  if (options.deferBrowserReceipts && !options.noBrowser) throw new Error('--defer-browser-receipts requires --no-browser.');
   if (options.verificationDelayMs && !options.journeys) throw new Error('--verification-delay-ms requires --journeys.');
   if (!Number.isInteger(options.verificationDelayMs) || options.verificationDelayMs < 0 || options.verificationDelayMs > 10000) {
     throw new Error('--verification-delay-ms must be an integer from 0 to 10000.');
+  }
+  if (!BROWSER_ENGINES.has(options.browserEngine)) {
+    throw new Error(
+      '--browser-engine must be one of chromium, firefox or webkit.'
+    );
   }
   options.suite = resolveRepoPath(options.suite);
   options.visual = resolveRepoPath(options.visual);
@@ -130,8 +143,10 @@ Options:
   --journey-limit <n> Number of interaction journeys to run
   --journey-id <id>  Run only this journey (repeatable)
   --verification-delay-ms <n> Pause before each verify_url action (0–10000 ms)
+  --browser-engine <name> Playwright engine: chromium, firefox or webkit (default chromium)
   --journeys-only    Skip the 100 retrieval questions and run only --journeys
   --no-browser       Validate suite/manifests without launching Playwright
+  --defer-browser-receipts Validate immutable candidate journeys without loading mutable browser receipts
   --headed           Run browser headed
 `);
 }
@@ -188,6 +203,21 @@ function sha256(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
 }
 
+function canonicalJsonBytes(value) {
+  function ordered(item) {
+    if (Array.isArray(item)) return item.map(ordered);
+    if (item && typeof item === 'object') {
+      return Object.fromEntries(
+        Object.keys(item)
+          .sort()
+          .map((key) => [key, ordered(item[key])])
+      );
+    }
+    return item;
+  }
+  return Buffer.from(`${JSON.stringify(ordered(value))}\n`, 'utf8');
+}
+
 function loadCandidateReceipt(receiptPath) {
   let raw;
   try {
@@ -201,10 +231,13 @@ function loadCandidateReceipt(receiptPath) {
   } catch (error) {
     throw new Error(`Candidate receipt is not valid JSON: ${receiptPath} (${error.message})`);
   }
-  if (receipt?.schema !== HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA) {
+  if (![HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA, PUBLICATION_VALIDATION_RECEIPT_SCHEMA].includes(receipt?.schema)) {
     throw new Error(
-      `Candidate receipt schema must be ${HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA}: ${receiptPath}`
+      `Candidate receipt schema must be ${HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA} or ${PUBLICATION_VALIDATION_RECEIPT_SCHEMA}: ${receiptPath}`
     );
+  }
+  if (receipt.schema === PUBLICATION_VALIDATION_RECEIPT_SCHEMA && receipt.status !== 'passed') {
+    throw new Error(`Publication validation receipt status must be passed: ${receiptPath}`);
   }
   const expectedDescriptorSha256 = receipt?.candidate?.heritage_descriptor_sha256;
   if (typeof expectedDescriptorSha256 !== 'string' || !SHA256_PATTERN.test(expectedDescriptorSha256)) {
@@ -213,6 +246,38 @@ function loadCandidateReceipt(receiptPath) {
   const expectedReleaseRootSha256 = receipt?.candidate?.heritage_release_root_sha256;
   if (typeof expectedReleaseRootSha256 !== 'string' || !SHA256_PATTERN.test(expectedReleaseRootSha256)) {
     throw new Error(`Candidate receipt must declare candidate.heritage_release_root_sha256: ${receiptPath}`);
+  }
+  let publicationIdentity = null;
+  if (receipt.schema === PUBLICATION_VALIDATION_RECEIPT_SCHEMA) {
+    const expectedPublicationManifestSha256 = receipt?.subject?.publication_manifest_sha256;
+    if (
+      typeof expectedPublicationManifestSha256 !== 'string' ||
+      !SHA256_PATTERN.test(expectedPublicationManifestSha256)
+    ) {
+      throw new Error(
+        `Publication validation receipt must declare subject.publication_manifest_sha256: ${receiptPath}`
+      );
+    }
+    const expectedSiteTreeSha256 = receipt?.subject?.site_tree_sha256;
+    if (
+      typeof expectedSiteTreeSha256 !== 'string' ||
+      !SHA256_PATTERN.test(expectedSiteTreeSha256)
+    ) {
+      throw new Error(
+        `Publication validation receipt must declare subject.site_tree_sha256: ${receiptPath}`
+      );
+    }
+    const expectedSiteFileCount = receipt?.subject?.site_file_count;
+    if (!Number.isInteger(expectedSiteFileCount) || expectedSiteFileCount < 1) {
+      throw new Error(
+        `Publication validation receipt must declare a positive integer subject.site_file_count: ${receiptPath}`
+      );
+    }
+    publicationIdentity = {
+      expected_publication_manifest_sha256: expectedPublicationManifestSha256,
+      expected_site_tree_sha256: expectedSiteTreeSha256,
+      expected_site_file_count: expectedSiteFileCount
+    };
   }
   if (typeof receipt.observed_at !== 'string' || !Number.isFinite(Date.parse(receipt.observed_at))) {
     throw new Error(`Candidate receipt must declare a valid observed_at timestamp: ${receiptPath}`);
@@ -226,7 +291,8 @@ function loadCandidateReceipt(receiptPath) {
     raw_sha256: sha256(raw),
     observed_at: receipt.observed_at,
     expected_descriptor_sha256: expectedDescriptorSha256,
-    expected_release_root_sha256: expectedReleaseRootSha256
+    expected_release_root_sha256: expectedReleaseRootSha256,
+    ...(publicationIdentity || {})
   };
 }
 
@@ -273,16 +339,256 @@ function candidateBundleUrl(options) {
   return bundleUrl;
 }
 
-function candidateRequestFailure(error, bundleUrl) {
+function candidateRequestFailure(error, bundleUrl, label = 'Candidate bundle') {
   if (
     error?.name === 'TimeoutError' ||
     error?.name === 'AbortError' ||
     error?.cause?.name === 'TimeoutError' ||
     error?.cause?.name === 'AbortError'
   ) {
-    return new Error(`Candidate bundle request timed out after ${CANDIDATE_FETCH_TIMEOUT_MS} ms: ${bundleUrl}`);
+    return new Error(`${label} request timed out after ${CANDIDATE_FETCH_TIMEOUT_MS} ms: ${bundleUrl}`);
   }
-  return new Error(`Candidate bundle request failed: ${bundleUrl} (${error.message})`);
+  return new Error(`${label} request failed: ${bundleUrl} (${error.message})`);
+}
+
+function siteMaterialPath(siteRootValue, targetValue, label) {
+  const siteRoot = credentialFreeHttpUrl(String(siteRootValue), 'Publication Site root', {
+    allowHash: false
+  });
+  const target = credentialFreeHttpUrl(String(targetValue), label, { allowHash: false });
+  if (siteRoot.search || target.search) {
+    throw new Error(`${label} must not contain a query.`);
+  }
+  if (!siteRoot.pathname.endsWith('/')) {
+    throw new Error(`Publication Site root must end in a slash: ${siteRoot}`);
+  }
+  if (target.origin !== siteRoot.origin || !target.pathname.startsWith(siteRoot.pathname)) {
+    throw new Error(`${label} must stay inside the deployed Publication Site root: ${target}`);
+  }
+  const encodedRelative = target.pathname.slice(siteRoot.pathname.length);
+  if (/%(?:2f|5c|00)/i.test(encodedRelative)) {
+    throw new Error(`${label} has an unsafe encoded path: ${target}`);
+  }
+  let relative;
+  try {
+    relative = decodeURIComponent(encodedRelative);
+  } catch (error) {
+    throw new Error(`${label} has an invalid encoded path: ${target} (${error.message})`);
+  }
+  if (
+    !relative ||
+    relative.includes('\\') ||
+    relative.includes('\u0000') ||
+    relative.startsWith('/') ||
+    relative.split('/').some((part) => !part || part === '.' || part === '..') ||
+    path.posix.normalize(relative) !== relative
+  ) {
+    throw new Error(`${label} has an unsafe Publication Site material path: ${target}`);
+  }
+  return relative;
+}
+
+function publicationMaterial(materials, materialPath, bytes, label) {
+  const matches = materials.filter((item) => item.path === materialPath);
+  if (matches.length !== 1) {
+    throw new Error(
+      `Publication manifest must bind exactly one ${label} material at ${materialPath}; found ${matches.length}.`
+    );
+  }
+  const material = matches[0];
+  const observedSha256 = sha256(bytes);
+  if (material.bytes !== bytes.length) {
+    throw new Error(
+      `Publication manifest ${label} material byte count differs from exact fetched bytes: ` +
+      `expected ${material.bytes}, got ${bytes.length} (${materialPath})`
+    );
+  }
+  if (material.sha256 !== observedSha256) {
+    throw new Error(
+      `Publication manifest ${label} material SHA-256 differs from exact fetched bytes: ` +
+      `expected ${material.sha256}, got ${observedSha256} (${materialPath})`
+    );
+  }
+  return {
+    path: materialPath,
+    bytes: material.bytes,
+    sha256: material.sha256
+  };
+}
+
+async function inspectPublicationSiteArtifact({
+  siteRootValue,
+  bundleUrl,
+  descriptorBytes,
+  planeRootsUrl,
+  planeBytes,
+  candidateReceipt
+}) {
+  const siteRootUrl = credentialFreeHttpUrl(
+    String(siteRootValue),
+    'Publication Site root',
+    { allowHash: false }
+  );
+  if (!siteRootUrl.pathname.endsWith('/') || siteRootUrl.search) {
+    throw new Error(`Publication Site root must end in a slash and have no query: ${siteRootUrl}`);
+  }
+  const descriptorPath = siteMaterialPath(siteRootUrl, bundleUrl, 'Candidate descriptor URL');
+  const planeRootsPath = siteMaterialPath(
+    siteRootUrl,
+    planeRootsUrl,
+    'Candidate plane-roots URL'
+  );
+  const manifestUrl = new URL('publication-unit-manifest.json', siteRootUrl);
+  siteMaterialPath(siteRootUrl, manifestUrl, 'Publication manifest URL');
+  let manifestResponse;
+  try {
+    manifestResponse = await fetch(manifestUrl, {
+      redirect: 'manual',
+      signal: AbortSignal.timeout(CANDIDATE_FETCH_TIMEOUT_MS)
+    });
+  } catch (error) {
+    throw candidateRequestFailure(error, manifestUrl, 'Candidate publication manifest');
+  }
+  if (manifestResponse.status >= 300 && manifestResponse.status < 400) {
+    throw new Error(
+      `Candidate publication manifest redirected with HTTP ${manifestResponse.status}; ` +
+      `the exact deployed URL must return its own bytes: ${manifestUrl}`
+    );
+  }
+  if (!manifestResponse.ok) {
+    throw new Error(
+      `Candidate publication manifest returned HTTP ${manifestResponse.status}: ${manifestUrl}`
+    );
+  }
+  if (manifestResponse.url) {
+    credentialFreeHttpUrl(
+      manifestResponse.url,
+      'Candidate publication-manifest URL',
+      { allowHash: false }
+    );
+    assertFinalLocation(
+      manifestResponse.url,
+      manifestUrl.toString(),
+      'Candidate publication-manifest URL'
+    );
+  }
+  let manifestBytes;
+  try {
+    manifestBytes = Buffer.from(await manifestResponse.arrayBuffer());
+  } catch (error) {
+    throw candidateRequestFailure(error, manifestUrl, 'Candidate publication manifest');
+  }
+  const manifestSha256 = sha256(manifestBytes);
+  if (manifestSha256 !== candidateReceipt.expected_publication_manifest_sha256) {
+    throw new Error(
+      'Deployed publication manifest SHA-256 differs from the publication validation receipt; ' +
+      `expected ${candidateReceipt.expected_publication_manifest_sha256}, got ${manifestSha256}: ${manifestUrl}`
+    );
+  }
+  let manifest;
+  try {
+    manifest = JSON.parse(manifestBytes.toString('utf8'));
+  } catch (error) {
+    throw new Error(
+      `Candidate publication manifest is not valid JSON: ${manifestUrl} (${error.message})`
+    );
+  }
+  if (manifest?.schema !== 'okf-publication-unit-manifest.v1') {
+    throw new Error(
+      `Candidate publication manifest schema must be okf-publication-unit-manifest.v1: ${manifestUrl}`
+    );
+  }
+  if (manifest.algorithm !== 'sha256-canonical-json-materials-v1') {
+    throw new Error(
+      `Candidate publication manifest algorithm must be sha256-canonical-json-materials-v1: ${manifestUrl}`
+    );
+  }
+  if (!Array.isArray(manifest.materials) || !manifest.materials.length) {
+    throw new Error(`Candidate publication manifest must contain materials: ${manifestUrl}`);
+  }
+  if (!Number.isInteger(manifest.file_count) || manifest.file_count !== manifest.materials.length) {
+    throw new Error(`Candidate publication manifest file count differs from its materials: ${manifestUrl}`);
+  }
+  const materialPaths = [];
+  const seenPaths = new Set();
+  for (const [index, material] of manifest.materials.entries()) {
+    const prefix = `Candidate publication manifest material ${index + 1}`;
+    if (!material || typeof material !== 'object' || Array.isArray(material)) {
+      throw new Error(`${prefix} must be an object.`);
+    }
+    const materialPath = material.path;
+    if (
+      typeof materialPath !== 'string' ||
+      !materialPath ||
+      materialPath.includes('\\') ||
+      materialPath.includes('\u0000') ||
+      materialPath.startsWith('/') ||
+      materialPath.split('/').some((part) => !part || part === '.' || part === '..') ||
+      path.posix.normalize(materialPath) !== materialPath
+    ) {
+      throw new Error(`${prefix} has an unsafe path: ${String(materialPath)}`);
+    }
+    if (seenPaths.has(materialPath)) {
+      throw new Error(`Candidate publication manifest duplicates material path: ${materialPath}`);
+    }
+    if (!Number.isInteger(material.bytes) || material.bytes < 0) {
+      throw new Error(`${prefix} must declare a non-negative integer byte count.`);
+    }
+    if (typeof material.sha256 !== 'string' || !SHA256_PATTERN.test(material.sha256)) {
+      throw new Error(`${prefix} must declare a SHA-256 digest.`);
+    }
+    seenPaths.add(materialPath);
+    materialPaths.push(materialPath);
+  }
+  const orderedPaths = [...materialPaths].sort();
+  if (materialPaths.some((item, index) => item !== orderedPaths[index])) {
+    throw new Error(`Candidate publication manifest materials are not path ordered: ${manifestUrl}`);
+  }
+  const observedTreeSha256 = sha256(canonicalJsonBytes(manifest.materials));
+  if (
+    typeof manifest.tree_sha256 !== 'string' ||
+    !SHA256_PATTERN.test(manifest.tree_sha256) ||
+    manifest.tree_sha256 !== observedTreeSha256
+  ) {
+    throw new Error(
+      `Candidate publication manifest tree digest differs; ` +
+      `declared ${String(manifest.tree_sha256)}, recomputed ${observedTreeSha256}: ${manifestUrl}`
+    );
+  }
+  if (manifest.tree_sha256 !== candidateReceipt.expected_site_tree_sha256) {
+    throw new Error(
+      'Deployed publication Site tree differs from the publication validation receipt; ' +
+      `expected ${candidateReceipt.expected_site_tree_sha256}, got ${manifest.tree_sha256}: ${manifestUrl}`
+    );
+  }
+  if (manifest.file_count !== candidateReceipt.expected_site_file_count) {
+    throw new Error(
+      'Deployed publication Site file count differs from the publication validation receipt; ' +
+      `expected ${candidateReceipt.expected_site_file_count}, got ${manifest.file_count}: ${manifestUrl}`
+    );
+  }
+  const descriptorMaterial = publicationMaterial(
+    manifest.materials,
+    descriptorPath,
+    descriptorBytes,
+    'descriptor'
+  );
+  const planeRootsMaterial = publicationMaterial(
+    manifest.materials,
+    planeRootsPath,
+    planeBytes,
+    'plane-roots'
+  );
+  return {
+    manifest_url: manifestUrl.toString(),
+    publication_manifest_sha256: manifestSha256,
+    tree_sha256: manifest.tree_sha256,
+    file_count: manifest.file_count,
+    materials: {
+      descriptor: descriptorMaterial,
+      plane_roots: planeRootsMaterial
+    }
+  };
 }
 
 async function inspectCandidate(options, candidateReceipt = null) {
@@ -333,6 +639,7 @@ async function inspectCandidate(options, candidateReceipt = null) {
     );
   }
   let releaseRoot = null;
+  let siteArtifact = null;
   if (candidateReceipt) {
     const declaredPlaneRoots = descriptor?.entrypoints?.plane_roots;
     if (typeof declaredPlaneRoots !== 'string' || !declaredPlaneRoots.trim()) {
@@ -399,6 +706,16 @@ async function inspectCandidate(options, candidateReceipt = null) {
       plane_roots_sha256: sha256(planeBytes),
       release_root_sha256: observedReleaseRoot
     };
+    if (candidateReceipt.schema === PUBLICATION_VALIDATION_RECEIPT_SCHEMA) {
+      siteArtifact = await inspectPublicationSiteArtifact({
+        siteRootValue: options.bundleRoot || new URL('.', bundleUrl),
+        bundleUrl,
+        descriptorBytes: bytes,
+        planeRootsUrl,
+        planeBytes,
+        candidateReceipt
+      });
+    }
   }
   return {
     bundle_url: bundleUrl.toString(),
@@ -407,6 +724,7 @@ async function inspectCandidate(options, candidateReceipt = null) {
     snapshot: descriptor.snapshot || null,
     generated_at: descriptor.generated_at || null,
     ...(releaseRoot ? { release_root: releaseRoot } : {}),
+    ...(siteArtifact ? { site_artifact: siteArtifact } : {}),
     ...(candidateReceipt ? { candidate_receipt: candidateReceipt } : {})
   };
 }
@@ -449,7 +767,7 @@ function validateVisuals(visuals, visualPath) {
   }
 }
 
-function fixtureRelativeReceiptPath(journeysPath, receiptReference) {
+function fixtureRelativeReceiptReference(journeysPath, receiptReference) {
   if (typeof receiptReference !== 'string' || !receiptReference.trim()) {
     throw new Error('genuine-browser-receipt verification needs a nonempty receipt path.');
   }
@@ -468,6 +786,14 @@ function fixtureRelativeReceiptPath(journeysPath, receiptReference) {
   if (!lexicalRelative || lexicalRelative.startsWith(`..${path.sep}`) || path.isAbsolute(lexicalRelative)) {
     throw new Error(`genuine-browser-receipt path must name a file inside the journey fixture: ${receiptReference}`);
   }
+  return { fixtureDirectory, resolved };
+}
+
+function fixtureRelativeReceiptPath(journeysPath, receiptReference) {
+  const { fixtureDirectory, resolved } = fixtureRelativeReceiptReference(
+    journeysPath,
+    receiptReference
+  );
   if (!fs.existsSync(resolved)) {
     throw new Error(`genuine-browser-receipt file is missing: ${resolved}`);
   }
@@ -635,7 +961,11 @@ function genuineBrowserReceiptEvidence(action, journeysPath) {
   };
 }
 
-function validateJourneys(journeys, journeysPath) {
+function validateJourneys(
+  journeys,
+  journeysPath,
+  { requireReceiptEvidence = true } = {}
+) {
   if (journeys.schema !== 'okf-explorer-interaction-suite.v1') {
     throw new Error(`Unexpected interaction journey schema: ${journeys.schema}`);
   }
@@ -768,7 +1098,15 @@ function validateJourneys(journeys, journeysPath) {
           );
         }
         if (action.verification_channel === GENUINE_BROWSER_VERIFICATION_CHANNEL) {
-          genuineBrowserReceiptEvidence(action, journeysPath);
+          if (requireReceiptEvidence) {
+            genuineBrowserReceiptEvidence(action, journeysPath);
+          } else {
+            // A publication candidate is deliberately immutable and therefore
+            // excludes time-varying browser receipts. Validation-only runs
+            // still fail closed on the receipt reference shape; terminal
+            // assurance loads and verifies the materialized receipt.
+            fixtureRelativeReceiptReference(journeysPath, action.receipt);
+          }
         } else if (action.receipt !== undefined) {
           throw new Error(
             `Journey ${journey.id} receipt requires verification_channel ${GENUINE_BROWSER_VERIFICATION_CHANNEL}.`
@@ -791,6 +1129,33 @@ function loadPlaywright() {
   } catch (error) {
     throw new Error(`Playwright is not available as "${moduleName}". Install it or set PLAYWRIGHT_PACKAGE to an installed playwright module path. Original error: ${error.message}`);
   }
+}
+
+function selectPlaywrightBrowser(playwright, browserEngine) {
+  if (!BROWSER_ENGINES.has(browserEngine)) {
+    throw new Error(
+      `Unsupported Playwright browser engine: ${browserEngine}.`
+    );
+  }
+  const browserType = playwright?.[browserEngine];
+  if (!browserType || typeof browserType.launch !== 'function') {
+    throw new Error(
+      `Playwright does not provide the selected ${browserEngine} browser engine.`
+    );
+  }
+  return browserType;
+}
+
+async function launchSelectedBrowser(options) {
+  const browserType = selectPlaywrightBrowser(
+    loadPlaywright(),
+    options.browserEngine
+  );
+  const launchOptions = { headless: !options.headed };
+  if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) {
+    launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
+  }
+  return browserType.launch(launchOptions);
 }
 
 function buildUrl(baseUrl, bundle, query) {
@@ -1639,7 +2004,14 @@ function buildValidationOnlyJourneyRecords(options, journeys) {
     ),
     status: 'validation-only',
     elapsed_ms: 0,
-    actions: journey.actions.map((action) => ({ action: action.action, passed: null })),
+    actions: journey.actions.map((action) => ({
+      action: action.action,
+      passed: null,
+      ...(options.deferBrowserReceipts &&
+      action.verification_channel === GENUINE_BROWSER_VERIFICATION_CHANNEL
+        ? { receipt_evidence: 'deferred-to-terminal-assurance' }
+        : {})
+    })),
     assertions: journey.assertions.map((assertion) => ({ assertion: assertion.assertion, passed: null }))
   }));
 }
@@ -1655,10 +2027,7 @@ function summariseJourneys(records) {
 }
 
 async function runBrowserEvaluation(options, suite) {
-  const { chromium } = loadPlaywright();
-  const launchOptions = { headless: !options.headed };
-  if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
-  const browser = await chromium.launch(launchOptions);
+  const browser = await launchSelectedBrowser(options);
   const browserContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await browserContext.newPage();
   const questions = suite.questions.slice(0, options.limit);
@@ -1718,10 +2087,7 @@ async function runBrowserEvaluation(options, suite) {
 }
 
 async function runBrowserJourneys(options, journeys) {
-  const { chromium } = loadPlaywright();
-  const launchOptions = { headless: !options.headed };
-  if (process.env.PLAYWRIGHT_EXECUTABLE_PATH) launchOptions.executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
-  const browser = await chromium.launch(launchOptions);
+  const browser = await launchSelectedBrowser(options);
   const browserContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   try {
     return await runInteractionJourneys(browserContext, options, journeys);
@@ -1916,7 +2282,9 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   const journeys = options.journeys ? readJson(options.journeys) : null;
   if (journeys) {
-    validateJourneys(journeys, options.journeys);
+    validateJourneys(journeys, options.journeys, {
+      requireReceiptEvidence: !options.deferBrowserReceipts
+    });
   }
   let suite;
   let visuals;
@@ -1951,6 +2319,7 @@ async function main() {
   }
   const metadata = {
     browser: options.noBrowser ? 'not-run' : 'playwright',
+    browser_engine: options.browserEngine,
     mode: options.noBrowser ? 'validation-only' : 'browser-scored',
     limit: options.limit,
     candidate_bundle_url: candidateBundleUrl(options).toString()
@@ -1996,5 +2365,7 @@ export {
   genuineBrowserReceiptEvidence,
   inspectCandidate,
   loadCandidateReceipt,
+  parseArgs,
+  selectPlaywrightBrowser,
   validateJourneys
 };
