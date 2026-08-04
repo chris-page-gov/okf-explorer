@@ -208,6 +208,10 @@ class CiPublicationTopologyTests(unittest.TestCase):
             self.text("release-assurance/link-observation-policy.json")
         )
         publication = self.text("PUBLICATION.md")
+        self.assertIn(
+            'tags: ["heritage-coventry-warwickshire-*"]', candidate
+        )
+        self.assertNotIn("????????", candidate)
         self.assertIn("immutable-releases", candidate)
         self.assertIn("--phase candidate", candidate)
         self.assertIn("actions/attest@", candidate)

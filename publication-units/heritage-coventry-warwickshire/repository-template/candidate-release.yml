@@ -2,7 +2,7 @@ name: Publish immutable candidate release
 
 on:
   push:
-    tags: ["heritage-coventry-warwickshire-????????"]
+    tags: ["heritage-coventry-warwickshire-*"]
   workflow_dispatch:
     inputs:
       tag:
