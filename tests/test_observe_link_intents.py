@@ -7,6 +7,7 @@ import io
 import json
 import tempfile
 import unittest
+import urllib.error
 from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -410,6 +411,119 @@ class ObserveLinkIntentsTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "exactly one"):
             observe_link_intents.validated_protected_response_rules(extra_rule)
 
+    def test_non_redirect_http_304_is_explicit_reachability_evidence(self) -> None:
+        url = "https://services.example.test/arcgis/rest/services/record/1381873"
+        response = urllib.error.HTTPError(
+            url,
+            304,
+            "Not Modified",
+            {"ETag": '"fixture"'},
+            None,
+        )
+        with mock.patch.object(
+            observe_link_intents.urllib.request,
+            "urlopen",
+            side_effect=response,
+        ):
+            observed = observe_link_intents.observe(
+                url,
+                timeout=1,
+                user_agent="fixture",
+            )
+        self.assertEqual("reachable", observed["status"])
+        self.assertEqual(304, observed["http_status"])
+        self.assertEqual(url, observed["final_url"])
+        self.assertEqual(
+            "http-304-not-modified-resource-exists",
+            observed["reachability_basis"],
+        )
+        response.close()
+
+    def test_transient_observation_gets_exactly_one_bounded_retry(self) -> None:
+        policy = self.protected_policy()
+        rules = observe_link_intents.validated_protected_response_rules(policy)
+        url = "https://example.test/transient"
+        with (
+            mock.patch.object(
+                observe_link_intents,
+                "observe",
+                side_effect=[
+                    {"status": "network-error", "error": "timed out"},
+                    {"status": "reachable", "http_status": 200, "final_url": url},
+                ],
+            ) as observer,
+            mock.patch.object(observe_link_intents.time, "sleep") as sleep,
+        ):
+            observed = observe_link_intents.observe_with_retries(
+                url,
+                risk="other",
+                timeout=1,
+                user_agent="fixture",
+                maximum_attempts=2,
+                policy=policy,
+                validated_rules=rules,
+            )
+        self.assertEqual("reachable", observed["status"])
+        self.assertEqual(2, observed["attempt_count"])
+        self.assertEqual(2, observer.call_count)
+        sleep.assert_called_once_with(observe_link_intents.RETRY_BACKOFF_SECONDS)
+
+    def test_second_transient_failure_is_retained_without_a_third_attempt(self) -> None:
+        policy = self.protected_policy()
+        rules = observe_link_intents.validated_protected_response_rules(policy)
+        url = "https://example.test/still-unavailable"
+        with (
+            mock.patch.object(
+                observe_link_intents,
+                "observe",
+                side_effect=[
+                    {"status": "http-error", "http_status": 503, "final_url": url},
+                    {"status": "network-error", "error": "read timed out"},
+                ],
+            ) as observer,
+            mock.patch.object(observe_link_intents.time, "sleep") as sleep,
+        ):
+            observed = observe_link_intents.observe_with_retries(
+                url,
+                risk="other",
+                timeout=1,
+                user_agent="fixture",
+                maximum_attempts=2,
+                policy=policy,
+                validated_rules=rules,
+            )
+        self.assertEqual("network-error", observed["status"])
+        self.assertEqual("read timed out", observed["error"])
+        self.assertEqual(2, observed["attempt_count"])
+        self.assertEqual(2, observer.call_count)
+        sleep.assert_called_once_with(observe_link_intents.RETRY_BACKOFF_SECONDS)
+
+    def test_accepted_protected_403_is_not_retried(self) -> None:
+        policy = self.protected_policy()
+        rules = observe_link_intents.validated_protected_response_rules(policy)
+        url = "https://historicengland.org.uk/listing/the-list/2"
+        with mock.patch.object(
+            observe_link_intents,
+            "observe",
+            return_value={
+                "status": "http-error",
+                "http_status": 403,
+                "final_url": url,
+            },
+        ) as observer:
+            observed = observe_link_intents.observe_with_retries(
+                url,
+                risk="official-record",
+                timeout=1,
+                user_agent="fixture",
+                maximum_attempts=2,
+                policy=policy,
+                validated_rules=rules,
+            )
+        self.assertEqual("protected-origin", observed["status"])
+        self.assertEqual(1, observed["attempt_count"])
+        observer.assert_called_once()
+
     def test_fail_on_error_accepts_exact_protected_origin_but_not_pages_404(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -537,6 +651,7 @@ class ObserveLinkIntentsTests(unittest.TestCase):
             self.assertEqual(5, receipt["coverage"]["canonical_url_count"])
             self.assertEqual(1, len(receipt["delegated"]))
             self.assertEqual(4, len(receipt["records"]))
+            self.assertEqual({1}, {row["attempt_count"] for row in receipt["records"]})
 
             policy["terminal_bounds"]["maximum_canonical_urls"] = 4
             policy_path.write_text(json.dumps(policy), encoding="utf-8")

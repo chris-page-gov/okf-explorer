@@ -140,9 +140,11 @@ jobs:
           --expected-actions 32
           --assurance-source-commit "$ASSURANCE_COMMIT"
           --output "$RUNNER_TEMP/terminal-evidence/publication-journey-receipt.json"
-      - name: Upload the timestamped closure outside candidate and Site
+      - name: Upload the timestamped closure or failure diagnostics outside candidate and Site
+        if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: terminal-assurance-${{ env.CANDIDATE_TAG }}
           path: |
             ${{ runner.temp }}/terminal-evidence/*.json
+          if-no-files-found: warn

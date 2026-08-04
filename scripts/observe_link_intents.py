@@ -10,6 +10,7 @@ import hashlib
 import json
 import math
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -34,6 +35,9 @@ PROTECTED_RESPONSE_STATUS = 403
 PROTECTED_RESPONSE_VALIDATION_BASIS = (
     "candidate-identifier-binding-plus-protected-origin-http-403"
 )
+NOT_MODIFIED_STATUS = 304
+NOT_MODIFIED_REACHABILITY_BASIS = "http-304-not-modified-resource-exists"
+RETRY_BACKOFF_SECONDS = 0.25
 PUBLICATION_LINK_MANIFESTS = (
     "data/link-validation/manifest.json",
     "tiny/data/link-validation/manifest.json",
@@ -548,6 +552,51 @@ def observation_passes(record: dict[str, object]) -> bool:
     return record.get("status") in {"reachable", "protected-origin"}
 
 
+def observation_is_retryable(record: dict[str, object]) -> bool:
+    """Return whether one bounded retry can distinguish a transient failure."""
+
+    if record.get("status") == "network-error":
+        return True
+    status = record.get("http_status")
+    return (
+        record.get("status") == "http-error"
+        and not isinstance(status, bool)
+        and isinstance(status, int)
+        and (status == 429 or 500 <= status <= 599)
+    )
+
+
+def observe_with_retries(
+    url: str,
+    *,
+    risk: str,
+    timeout: int,
+    user_agent: str,
+    maximum_attempts: int,
+    policy: dict,
+    validated_rules: list[dict],
+) -> dict[str, object]:
+    """Observe once, retry only transient failures, and expose the exact count."""
+
+    if maximum_attempts not in {1, 2}:
+        raise RuntimeError("link observation supports only one or two attempts")
+    result: dict[str, object] = {}
+    for attempt in range(1, maximum_attempts + 1):
+        result = apply_protected_response_policy(
+            observe(url, timeout=timeout, user_agent=user_agent),
+            url=url,
+            risk=risk,
+            policy=policy,
+            validated_rules=validated_rules,
+        )
+        result["attempt_count"] = attempt
+        if observation_passes(result) or not observation_is_retryable(result):
+            break
+        if attempt < maximum_attempts:
+            time.sleep(RETRY_BACKOFF_SECONDS)
+    return result
+
+
 def row_order_key(row: dict) -> str:
     """Mirror the occurrence ordering used by the deterministic corpus build."""
 
@@ -745,7 +794,19 @@ def observe(url: str, *, timeout: int, user_agent: str) -> dict[str, object]:
                 "last_modified": response.headers.get("Last-Modified"),
             }
     except urllib.error.HTTPError as error:
-        if error.code not in {403, 405}:
+        if (
+            error.code == NOT_MODIFIED_STATUS
+            and canonical_url(error.geturl()) == canonical_url(url)
+        ):
+            return {
+                "status": "reachable",
+                "http_status": error.code,
+                "final_url": error.geturl(),
+                "etag": error.headers.get("ETag"),
+                "last_modified": error.headers.get("Last-Modified"),
+                "reachability_basis": NOT_MODIFIED_REACHABILITY_BASIS,
+            }
+        if error.code != 405:
             return {
                 "status": "http-error",
                 "http_status": error.code,
@@ -768,6 +829,18 @@ def observe(url: str, *, timeout: int, user_agent: str) -> dict[str, object]:
                 "last_modified": response.headers.get("Last-Modified"),
             }
     except urllib.error.HTTPError as error:
+        if (
+            error.code == NOT_MODIFIED_STATUS
+            and canonical_url(error.geturl()) == canonical_url(url)
+        ):
+            return {
+                "status": "reachable",
+                "http_status": error.code,
+                "final_url": error.geturl(),
+                "etag": error.headers.get("ETag"),
+                "last_modified": error.headers.get("Last-Modified"),
+                "reachability_basis": NOT_MODIFIED_REACHABILITY_BASIS,
+            }
         return {
             "status": "http-error",
             "http_status": error.code,
@@ -889,8 +962,12 @@ def main(argv: list[str] | None = None) -> int:
                 terminal_bounds["maximum_canonical_urls"]
                 / policy["concurrent_requests"]
             )
-            * policy["request_timeout_seconds"]
-            * terminal_bounds["maximum_attempts_per_url"]
+            * (
+                policy["request_timeout_seconds"]
+                * terminal_bounds["maximum_attempts_per_url"]
+                + RETRY_BACKOFF_SECONDS
+                * (terminal_bounds["maximum_attempts_per_url"] - 1)
+            )
         )
         if theoretical_seconds >= terminal_bounds["bulk_step_timeout_minutes"] * 60:
             raise RuntimeError("terminal link policy has no bounded bulk-observation margin")
@@ -921,16 +998,20 @@ def main(argv: list[str] | None = None) -> int:
             continue
         bulk.append((url, projection, risk))
 
+    maximum_attempts = (
+        int(terminal_bounds["maximum_attempts_per_url"])
+        if publication_root is not None
+        else 1
+    )
+
     def observe_one(item: tuple[str, dict, str]) -> dict[str, object]:
         url, projection, risk = item
-        observation = apply_protected_response_policy(
-            observe(
-                url,
-                timeout=policy["request_timeout_seconds"],
-                user_agent=policy["user_agent"],
-            ),
-            url=url,
+        observation = observe_with_retries(
+            url,
             risk=risk,
+            timeout=policy["request_timeout_seconds"],
+            user_agent=policy["user_agent"],
+            maximum_attempts=maximum_attempts,
             policy=policy,
             validated_rules=protected_response_rules,
         )
