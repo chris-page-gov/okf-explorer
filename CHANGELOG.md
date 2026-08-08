@@ -2,6 +2,14 @@
 
 ## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
+- Made focused-graph navigation explicit and reversible: Graph actions now
+  recenter the inspected record, preserve the prior focus in the URL, reset
+  the viewport and let browser Back restore the previous focus and inspector.
+  Bounded focus graphs enter the established ordered relationship regions at
+  four relationships rather than falling back to an unstructured radial view.
+- Clarified the large-corpus facet controls as `Clear filters` and `Reset facet
+  layout`, grouped them together with Guidance, and kept the compact bundle
+  loader beside the Explorer title at tablet widths.
 - Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
   complete public-safe prompt-response trace, machine-readable process
   registers and a modular content-addressed report builder. The analysis

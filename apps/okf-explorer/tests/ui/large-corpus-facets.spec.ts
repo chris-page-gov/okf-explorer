@@ -189,8 +189,13 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(page.getByLabel('Facet visibility').getByRole('button')).toHaveText(['Suggested', 'All']);
     await expect(page.getByRole('button', { name: 'Suggested', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('button', { name: 'Guidance', exact: true })).toHaveAttribute('aria-pressed', 'false');
-    await expect(page.getByRole('button', { name: 'Reset', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Clear', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Reset facet layout', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Clear filters', exact: true })).toBeDisabled();
+    await expect(page.locator('.facet-toolbar-actions').getByRole('button')).toHaveText([
+      'Guidance',
+      'Clear filters',
+      'Reset facet layout'
+    ]);
     await expect(page.locator('.facet-inventory')).toHaveText('6 of 7 facets shown');
 
     expect(await displayedFacetOrder(page)).toEqual([...suggestedFacetKeys]);
@@ -313,7 +318,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await waitForFilter(page, 'geography_level', ['region']);
     await expect(page.locator('.active-filter-chips')).toContainText(/geography level: region/i);
     await expect(facetSection(page, 'geography_level').locator('.facet-toggle small')).toHaveText('1 selected');
-    await page.getByRole('button', { name: 'Clear', exact: true }).click();
+    await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
     await waitForFilter(page, 'geography_level', []);
 
     await facetToggle(page, 'state').click();
@@ -414,7 +419,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await facetValue(page, 'population_type', 'Population group 20').press('Enter');
     await waitForFilter(page, 'population_type', ['Population group 20']);
 
-    await page.getByRole('button', { name: 'Clear', exact: true }).click();
+    await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
     await page.getByPlaceholder('Search ONS products, concepts and geographies').fill('no matching fixture term');
     await expect.poll(() => requests.includes('/search/filter-population_type.json')).toBe(true);
     expect(requests).not.toContain('/search/filter-derivation_mode.json');
@@ -496,7 +501,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(facetSection(page, 'source_surface')).toHaveCount(0);
     await expect(facetSection(page, 'state')).toHaveCount(0);
 
-    await page.getByRole('button', { name: 'Reset', exact: true }).click();
+    await page.getByRole('button', { name: 'Reset facet layout', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Suggested', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('button', { name: 'Guidance', exact: true })).toHaveAttribute('aria-pressed', 'false');
     await expect(page.getByText('What makes a useful facet?')).toHaveCount(0);
@@ -978,5 +983,61 @@ test.describe('large-corpus facet interaction contract', () => {
     }));
     expect(railWidths.left).toBeCloseTo(44, 0);
     expect(railWidths.right).toBeCloseTo(44, 0);
+  });
+
+  test('FACET-E2E-13 recentres inspected graph records and restores the prior graph with Back', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    const originalCenterRoute = `dataset/${ELS_RECORD_NAME}`;
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#${originalCenterRoute}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    const publisherNode = graph.locator('.graph-node[data-type="publisher"]').first();
+    await expect(publisherNode).toBeVisible();
+    const inspectedRoute = await publisherNode.getAttribute('data-route');
+    expect(inspectedRoute).toBeTruthy();
+    await graph.locator(`.graph-node-label[data-label-route="${inspectedRoute}"]`).click();
+
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.center')).toBe(originalCenterRoute);
+    await expect.poll(() => decodeURIComponent(new URL(page.url()).hash.slice(1))).toBe(inspectedRoute);
+    await page.locator('.right-panel').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.center')).toBeNull();
+    await expect.poll(() => decodeURIComponent(new URL(page.url()).hash.slice(1))).toBe(inspectedRoute);
+    const graphBox = await graph.boundingBox();
+    const focusBox = await graph
+      .locator(`.graph-node[data-route="${inspectedRoute}"] .node-symbol`)
+      .boundingBox();
+    expect(graphBox).not.toBeNull();
+    expect(focusBox).not.toBeNull();
+    expect(focusBox!.x + focusBox!.width / 2).toBeCloseTo(graphBox!.x + graphBox!.width / 2, 0);
+    expect(focusBox!.y + focusBox!.height / 2).toBeCloseTo(graphBox!.y + graphBox!.height * 0.53, -1);
+
+    await page.goBack();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.center')).toBe(originalCenterRoute);
+    await expect.poll(() => decodeURIComponent(new URL(page.url()).hash.slice(1))).toBe(inspectedRoute);
+    await expect(page.locator('.right-panel').getByRole('button', { name: 'Graph', exact: true })).toBeVisible();
+  });
+
+  test('FACET-E2E-14 keeps the compact bundle loader beside the title and groups facet actions', async ({ page }) => {
+    await page.setViewportSize({ width: 907, height: 705 });
+    await openOnsFacetFixture(page);
+
+    const title = await page.locator('.title-block').boundingBox();
+    const loader = await page.locator('.bundle-form').boundingBox();
+    expect(title).not.toBeNull();
+    expect(loader).not.toBeNull();
+    expect(Math.abs((title!.y + title!.height / 2) - (loader!.y + loader!.height / 2))).toBeLessThan(12);
+    expect(loader!.width).toBeLessThanOrEqual(420);
+
+    const actions = page.locator('.facet-toolbar-actions');
+    await expect(actions.getByRole('button')).toHaveText(['Guidance', 'Clear filters', 'Reset facet layout']);
+    const clear = await actions.getByRole('button', { name: 'Clear filters', exact: true }).boundingBox();
+    const reset = await actions.getByRole('button', { name: 'Reset facet layout', exact: true }).boundingBox();
+    expect(clear).not.toBeNull();
+    expect(reset).not.toBeNull();
+    expect(Math.abs(clear!.y - reset!.y)).toBeLessThan(4);
+    expect(reset!.x - (clear!.x + clear!.width)).toBeLessThanOrEqual(6);
   });
 });

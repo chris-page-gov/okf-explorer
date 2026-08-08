@@ -10,6 +10,7 @@ import {
   planGraphLabelLayers,
   planRelationshipGroupPositions,
   quadraticEdgeGeometry,
+  shouldUseRelationshipLayout,
   type GraphBox,
   type GraphLabelItem
 } from './graphPresentation';
@@ -25,6 +26,14 @@ function choice(x: number, y: number, text: string) {
 }
 
 describe('graph presentation', () => {
+  it('uses semantic regions for bounded focused graphs without forcing sparse graphs', () => {
+    expect(shouldUseRelationshipLayout('', 3, 8)).toBe(false);
+    expect(shouldUseRelationshipLayout('focus', 0, 8)).toBe(false);
+    expect(shouldUseRelationshipLayout('focus', 3, 3)).toBe(false);
+    expect(shouldUseRelationshipLayout('focus', 3, 4)).toBe(true);
+    expect(shouldUseRelationshipLayout('focus', 1, 1, true)).toBe(true);
+  });
+
   it('cycles every conflicting label without changing persistent labels', () => {
     const items: GraphLabelItem[] = [
       { id: 'selected', priority: 0, always: true, choices: [choice(10, 20, 'Selected')] },

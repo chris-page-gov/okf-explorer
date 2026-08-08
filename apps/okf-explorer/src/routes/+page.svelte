@@ -84,6 +84,7 @@
     planGraphLabelLayers,
     planRelationshipGroupPositions,
     quadraticEdgeGeometry,
+    shouldUseRelationshipLayout,
     type GraphBox,
     type GraphEdgeGeometry,
     type GraphLabelPlacement,
@@ -185,8 +186,8 @@
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
   const GRAPH_STACK_THRESHOLD = 18;
   const GRAPH_EXPANDED_GROUP_LIMIT = 72;
-  const GRAPH_RELATIONSHIP_LAYOUT_THRESHOLD = 12;
   const GRAPH_LAYOUT_PARAM = 'graph.layout';
+  const GRAPH_CENTER_PARAM = 'graph.center';
   const GRAPH_GROUP_PARAM = 'graph.group';
   const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
   const GRAPH_HIDDEN_EDGE_PARAM = 'graph.hideEdge';
@@ -670,9 +671,10 @@
     graphHighlightedRelationshipGroup = params.get(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM)?.slice(0, 512) || '';
   }
 
-  function writeGraphState(params: URLSearchParams) {
+  function writeGraphState(params: URLSearchParams, route = '') {
     for (const key of [
       GRAPH_LAYOUT_PARAM,
+      GRAPH_CENTER_PARAM,
       GRAPH_GROUP_PARAM,
       GRAPH_HIDDEN_GROUP_PARAM,
       GRAPH_HIDDEN_EDGE_PARAM,
@@ -685,6 +687,14 @@
       params.delete(key);
     }
     if (graphLayoutMode === 'relationships') params.set(GRAPH_LAYOUT_PARAM, graphLayoutMode);
+    if (
+      source?.kind === 'large'
+      && activeView === 'graph'
+      && largeGraphCenterRoute
+      && largeGraphCenterRoute !== route
+    ) {
+      params.set(GRAPH_CENTER_PARAM, largeGraphCenterRoute);
+    }
     if (graphKeyMode === 'relationships') params.set(GRAPH_KEY_MODE_PARAM, graphKeyMode);
     if (graphLabelsPaused) params.set(GRAPH_LABELS_PARAM, 'off');
     graphRelationshipOrder.forEach((key) => params.append(GRAPH_GROUP_PARAM, key));
@@ -713,7 +723,7 @@
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
     writeRetrievalState(next.searchParams, currentRetrievalState());
-    writeGraphState(next.searchParams);
+    writeGraphState(next.searchParams, route);
     if (geospatialFilter) next.searchParams.set('geo', geospatialFilter);
     else next.searchParams.delete('geo');
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
@@ -834,6 +844,7 @@
       largeFacetFilters = state.filters;
       const filtersChanged = previousFilters !== JSON.stringify(largeFacetFilters);
       applyLargeBrowserRoute(hash, hasSerializedFilters(params));
+      applySerializedGraphCenter(params, hash);
       if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
         void hydrateForView(activeView);
       }
@@ -892,6 +903,15 @@
     largeSelectedRoute = route;
     largeHighlightedRoute = route;
     largeGraphCenterRoute = route;
+  }
+
+  function applySerializedGraphCenter(params: URLSearchParams, inspectedRoute: string) {
+    const centerRoute = (params.get(GRAPH_CENTER_PARAM) || '').trim().slice(0, 512);
+    if (activeView !== 'graph' || !centerRoute || !inspectedRoute || centerRoute === inspectedRoute) return;
+    largeSelectedRoute = centerRoute;
+    largeInspectedRoute = inspectedRoute;
+    largeHighlightedRoute = inspectedRoute;
+    largeGraphCenterRoute = centerRoute;
   }
 
   async function loadSource(
@@ -1073,6 +1093,7 @@
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
+          applySerializedGraphCenter(params, hash);
           rightCollapsed = false;
           if (largeHasRecordLocator()) {
             void ensureLargeDataset(hash);
@@ -1779,10 +1800,12 @@
       activeView = 'graph';
       return;
     }
-    const facetRoute = metadataFacetForRoute(route);
+    const routeIsRecord = ['dataset', 'publisher', 'resource'].includes(routeKind(route));
+    const facetRoute = routeIsRecord ? null : metadataFacetForRoute(route);
     if (facetRoute) {
       activeView = 'graph';
       graphLabelPhase = 0;
+      resetGraphView();
       applyAnalysisFacet(facetRoute.key, facetRoute.value);
       return;
     }
@@ -1801,6 +1824,7 @@
     largeExpandedGraphGroup = '';
     clearLargeApiPanel();
     activeView = 'graph';
+    resetGraphView();
     void hydrateForView('graph');
     syncExplorerUrl(true);
   }
@@ -4817,7 +4841,7 @@
     const positions = new Map<string, GraphPoint>();
     if (model.center && center) {
       const centerType = routeKind(center);
-      const cx = centerType === 'publisher' ? graphCanvasWidth * 0.27 : graphCanvasWidth * 0.5;
+      const cx = graphCanvasWidth * 0.5;
       const cy = GRAPH_HEIGHT * 0.54;
       positions.set(center, { x: cx, y: cy });
       const groups: Record<string, LargeGraphNode[]> = {
@@ -4997,13 +5021,12 @@
     model: LargeGraphModel,
     groups: GraphRelationshipGroup[]
   ): boolean {
-    if (!model.center || !groups.length) return false;
-    const centerKind = routeKind(model.center);
-    const metadataFanout = !['dataset', 'publisher', 'resource'].includes(centerKind)
-      && model.relationships.length >= 4;
-    return graphLayoutMode === 'relationships'
-      || metadataFanout
-      || (groups.length >= 2 && model.relationships.length >= GRAPH_RELATIONSHIP_LAYOUT_THRESHOLD);
+    return shouldUseRelationshipLayout(
+      model.center,
+      groups.length,
+      model.relationships.length,
+      graphLayoutMode === 'relationships'
+    );
   }
 
   function graphDocumentAnchoredPlan(
@@ -6079,7 +6102,6 @@
             <div id="left-panel-facets" class="facet-preview panel-tab-content" role="tabpanel" aria-labelledby="left-tab-facets">
               <div class="filter-heading">
                 <span>Filter results {activeLargeFilterCount ? `(${activeLargeFilterCount})` : ''}</span>
-                <button type="button" onclick={clearLargeFilters}>Clear</button>
               </div>
               {#if activeLargeFilterCount}
                 <div class="active-filter-chips" aria-label="Active filters">
@@ -6098,8 +6120,20 @@
                 <span class="facet-inventory" aria-live="polite">
                   {presentedLargeFacetKeys().length.toLocaleString()} of {providerOrderedLargeFacetKeys().length.toLocaleString()} facets shown
                 </span>
-                <button type="button" aria-pressed={facetPreferences.density === 'explained'} onclick={toggleFacetExplanations}>Guidance</button>
-                <button type="button" onclick={resetFacetPreferences}>Reset</button>
+                <div class="facet-toolbar-actions">
+                  <button type="button" aria-pressed={facetPreferences.density === 'explained'} onclick={toggleFacetExplanations}>Guidance</button>
+                  <button
+                    type="button"
+                    title="Remove every active facet and map filter"
+                    disabled={!activeLargeFilterCount}
+                    onclick={clearLargeFilters}
+                  >Clear filters</button>
+                  <button
+                    type="button"
+                    title="Restore the provider's facet order, visibility and guidance defaults; active filters are unchanged"
+                    onclick={resetFacetPreferences}
+                  >Reset facet layout</button>
+                </div>
               </div>
               {#if facetPreferences.density === 'explained'}
                 <aside class="facet-guide">
@@ -8082,7 +8116,7 @@
                 />
               {/each}
               <div class="detail-actions">
-                <button type="button" onclick={() => void selectView('graph')}>Graph</button>
+                <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
                 {#if isUrl(largeDetail.dataset.source_api_url)}
@@ -8436,7 +8470,7 @@
               <h2>{largeDetail.publisher.title}</h2>
               <p>{stripHtml(largeDetail.publisher.description || '')}</p>
               <div class="detail-actions">
-                <button type="button" onclick={() => void selectView('graph')}>Graph</button>
+                <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
               </div>

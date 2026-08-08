@@ -249,6 +249,9 @@ parity contract also covers complete non-overlapping node-and-relationship
 graph-label layers, reciprocal directed edges, safe Markdown tables and
 Mermaid-lite diagrams, conversation-aware Narrative and Timeline rendering,
 folded context rails, and touch-scrollable evidence panels.
+Focused Graph actions preserve the previous graph centre separately from the
+inspected route so browser Back restores the exact prior context; the chosen
+record is recentred and the graph viewport is reset for the new focus.
 Dense focus graphs automatically group nodes into ordered relationship regions
 and encode line width only from an explicit varying relationship metric. The
 node type key reflects only the nodes currently displayed. Controlled regions keep
