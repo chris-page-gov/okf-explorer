@@ -253,8 +253,10 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('function isRecordTypeStackRoute(route: string)');
     expect(pageSource).toContain("route.startsWith('relationship-stack/')");
     expect(pageSource).toContain("route.startsWith('facet-stack/')");
-    expect(pageSource).toContain('if (isRecordTypeStackRoute(route))');
+    expect(pageSource).toContain("const GRAPH_EXPANDED_STACK_PARAM = 'graph.stack'");
+    expect(pageSource).toContain('function toggleLargeGraphStack(route: string)');
     expect(pageSource).toContain('if (isGraphStackRoute(route))');
+    expect(pageSource).toContain('toggleLargeGraphStack(route);');
     expect(pageSource).toContain('onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}');
   });
 

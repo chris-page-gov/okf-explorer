@@ -196,6 +196,28 @@ describe('graph presentation', () => {
     expect(Math.abs(plan.positions.get('d')!.y - plan.positions.get('e')!.y)).toBeGreaterThan(100);
   });
 
+  it('splits one dense relationship group into paired outside-labelled columns', () => {
+    const groups = groupGraphRelationships(
+      Array.from({ length: 14 }, (_unused, index) => ({
+        id: `edge-${index}`,
+        source: `record-${index}`,
+        target: 'focus',
+        label: 'matches life-course domain'
+      })),
+      'focus'
+    );
+    const plan = planRelationshipGroupPositions('focus', groups, 900, 620);
+    const left = Array.from({ length: 7 }, (_unused, index) => plan.positions.get(`record-${index * 2}`)!);
+    const right = Array.from({ length: 7 }, (_unused, index) => plan.positions.get(`record-${index * 2 + 1}`)!);
+
+    expect(groups).toHaveLength(1);
+    expect(left.every((point) => point.x < 450)).toBe(true);
+    expect(right.every((point) => point.x > 450)).toBe(true);
+    expect(left.map((point) => point.y)).toEqual(right.map((point) => point.y));
+    expect(plan.nodeSlots.get('record-0')).toEqual({ side: 'left', lane: 0 });
+    expect(plan.nodeSlots.get('record-1')).toEqual({ side: 'right', lane: 0 });
+  });
+
   it('uses edge width only for a meaningful varying metric', () => {
     const inactive = planGraphEdgeWeights([
       { id: 'a', metrics: { confidence: 0.8 } },

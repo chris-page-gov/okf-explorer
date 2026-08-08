@@ -257,12 +257,15 @@ and encode line width only from an explicit varying relationship metric. A
 single aggregate covering the current result is labelled `All matching …`; if
 only a bounded subset is loaded, the label states both loaded and total counts.
 Opening a large aggregate always yields semantic subgroups or deterministic
-title bands/ranges rather than dozens of individual records. The node type key
-reflects only the nodes currently displayed. Controlled regions keep all node
-labels visible inline on the outside of compact lists and use the available
-left/right width around staircases; conflicting edge labels alone continue to
-cycle. Icons and labels have separate tight pointer targets, so the empty span
-between them cannot select a neighbouring node. Graph controls stay available
+title bands/ranges rather than dozens of individual records. Subgroups remain
+openable until a bounded record set is reached, and the URL records each depth
+so browser Back closes one level at a time. The node type key reflects only the
+nodes currently displayed. Controlled regions keep all node labels visible
+inline on the outside of compact lists; one dense relationship family uses
+paired left/right columns with two icons per row, while staircases use the
+available left/right width. Conflicting edge labels alone continue to cycle.
+Icons and labels have separate tight pointer targets, so the empty span between
+them cannot select a neighbouring node. Graph controls stay available
 while the centre panel scrolls, and wheel zoom requires Ctrl/Command. The
 two-line toolbar switches its filtered key between counted node types and
 counted relationship types: node chips hide or restore a type, relationship

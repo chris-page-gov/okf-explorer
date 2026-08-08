@@ -17,7 +17,12 @@
 - Labelled single record-type stacks as `All matching …`, distinguishing a
   bounded loaded subset from the full match count. Opening a large stack now
   always produces semantic subgroups, with deterministic title bands/ranges as
-  the fallback, instead of fanning out as many as 72 individual records.
+  the fallback, instead of fanning out as many as 72 individual records. Each
+  subgroup can be opened again, and every open/close step is URL-backed so
+  browser Back restores the preceding stack depth.
+- Split a single dense relationship family into paired left/right columns,
+  placing two icons per row and keeping both label columns outside the focus.
+  Smaller lists retain the established single-column relationship region.
 - Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
   complete public-safe prompt-response trace, machine-readable process
   registers and a modular content-addressed report builder. The analysis

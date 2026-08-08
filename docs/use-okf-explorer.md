@@ -58,9 +58,11 @@ flowchart LR
 3. Searching for `IAPT` reduces the Reader and Graph views to relevant datasets.
 4. Graph shows a bounded context, zoom controls, relationship labels and a
    node-type key filtered to what is present. Dense focus graphs expose ordered
-   relationship regions automatically from four relationships. Lists keep names
-   inline with icons on their outside edge; staircases use the available
-   left/right width before placing a label above or below. Each icon and visible
+   relationship regions automatically from four relationships. A single dense
+   relationship family becomes two paired columns, with two icons per row and
+   both label columns facing away from the focus. Smaller lists keep one outside-
+   labelled column; staircases use the available left/right width before placing
+   a label above or below. Each icon and visible
    label has its own tight pointer target, so selecting a name cannot select a
    different node in the empty space between them. Only conflicting relationship
    labels cycle. `Labels (a/n)` shows the active
@@ -84,7 +86,9 @@ flowchart LR
    When only a bounded subset has been loaded, it states the loaded and total
    counts instead. Opening a large stack produces semantic subgroups; if no
    suitable facet divides it, deterministic title bands or ranges keep the
-   graph bounded rather than drawing dozens of individual records.
+   graph bounded rather than drawing dozens of individual records. Open any
+   subgroup to divide it again; the open path is recorded in the URL, so
+   browser Back closes exactly one stack level at a time.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.

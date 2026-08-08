@@ -1089,5 +1089,70 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(0);
     await expect(graph.locator('.graph-node[data-type="facet-stack"]')).toHaveCount(8);
     await expect(page.locator('.graph-caption')).toContainText('Grouped by derivation mode');
+    await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
+      .toEqual([aggregateRoute]);
+
+    const subgroup = graph.locator('.graph-node[data-type="facet-stack"]').first();
+    const subgroupRoute = await subgroup.getAttribute('data-route');
+    expect(subgroupRoute).toBeTruthy();
+    await subgroup.click();
+    await expect(page.locator('.graph-caption')).toContainText('Grouped by frequency');
+    await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(0);
+    await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
+      .toEqual([aggregateRoute, subgroupRoute]);
+
+    await page.goBack();
+    await expect(page.locator('.graph-caption')).toContainText('Grouped by derivation mode');
+    await expect(graph.locator('.graph-node[data-type="facet-stack"]')).toHaveCount(8);
+    await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
+      .toEqual([aggregateRoute]);
+
+    await page.goBack();
+    await expect(graph.locator('.graph-node[data-type="record-type-stack"]')).toHaveCount(1);
+    await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
+      .toEqual([]);
+  });
+
+  test('FACET-E2E-16 pairs one dense relationship list across the focus', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await facetSegment(page, 'geography_level', 'local authority').dblclick();
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(12);
+    const geometry = await graph.evaluate((svg) => {
+      const rows = [...svg.querySelectorAll('.graph-node[data-type="dataset"]')].flatMap((group) => {
+        const route = group.getAttribute('data-route');
+        const side = group.getAttribute('data-relationship-side');
+        const symbol = group.querySelector(':scope > .dataset-card') as SVGGraphicsElement | null;
+        const label = svg.querySelector(`.graph-node-label[data-label-route="${CSS.escape(route || '')}"] > text`) as SVGGraphicsElement | null;
+        if (!route || !side || !symbol || !label) return [];
+        const symbolBox = symbol.getBBox();
+        const labelBox = label.getBBox();
+        return [{
+          side,
+          x: symbolBox.x + symbolBox.width / 2,
+          y: symbolBox.y + symbolBox.height / 2,
+          symbolLeft: symbolBox.x,
+          symbolRight: symbolBox.x + symbolBox.width,
+          labelLeft: labelBox.x,
+          labelRight: labelBox.x + labelBox.width
+        }];
+      });
+      return { width: (svg as SVGSVGElement).viewBox.baseVal.width, rows };
+    });
+    const left = geometry.rows.filter((row) => row.side === 'left').sort((a, b) => a.y - b.y);
+    const right = geometry.rows.filter((row) => row.side === 'right').sort((a, b) => a.y - b.y);
+    expect(left).toHaveLength(6);
+    expect(right).toHaveLength(6);
+    expect(
+      left.every((row) => row.x < geometry.width / 2 && row.labelRight <= row.symbolLeft + 1),
+      JSON.stringify(left)
+    ).toBe(true);
+    expect(
+      right.every((row) => row.x > geometry.width / 2 && row.labelLeft >= row.symbolRight - 1),
+      JSON.stringify(right)
+    ).toBe(true);
+    expect(left.map((row) => Math.round(row.y))).toEqual(right.map((row) => Math.round(row.y)));
   });
 });

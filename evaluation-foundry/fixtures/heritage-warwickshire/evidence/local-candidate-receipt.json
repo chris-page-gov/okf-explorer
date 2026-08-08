@@ -1,7 +1,7 @@
 {
   "candidate": {
-    "explorer_manifest_sha256": "2f793293c851f0446207f166548d0d68e37bc65e1e5e15b22a4c362c5a2c9e05",
-    "explorer_tree_sha256": "8e475af7e4635d96ad550ba5697d25f06e6be026a39185a1bc396dc7494fa244",
+    "explorer_manifest_sha256": "397120589ec2f41c6e6554ebf74642fe1b4ded77a5543f50b4e1f8d7da3d7aab",
+    "explorer_tree_sha256": "808c5682c22869427b64f6c8f948ee9fa998a1067635c23ee8d69e51f57f8ed5",
     "generated_at": "2026-08-03T10:29:12Z",
     "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
     "heritage_release_root_sha256": "c593716510711e5cf6c77932e98337ab0e188c1b12d7817e95f9917c77fd6edf",
@@ -9,13 +9,13 @@
     "site_internal_references": 4568,
     "site_reading_pages": 256,
     "site_size_gate": {
-      "headroom_bytes": 190110938,
+      "headroom_bytes": 190109318,
       "limit_bytes": 1000000000,
-      "site_bytes": 809889062,
+      "site_bytes": 809890682,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "53826a7128094745377857115907e8e0c935d876307d494374504a0102a2f4ee",
+    "site_tree_sha256": "31efb9c8eb60383cff5afba9e236d646757632eb2baddc13c1cf89d2e012bb7a",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "e14c423844c1de382a8b9d799323b2a86a14b46c44bd869d8284a56427f6241f",
     "tiny_release_root_sha256": "1e00cca07700a0f1ba07878914e702e54947fc8a973f6ad06d43c5dd53a13efb"
@@ -62,8 +62,8 @@
     "manifest_sha256": "f3b3426db62c6ac97180534e7f9d6faec95606f7087805d87634be880173d0de",
     "passed": 3,
     "result": "evidence/receipts/local-journey-results.json.gz",
-    "result_gzip_sha256": "3de5906f1b04b66eea4d9d8f2773ce0437965dcd5c07f625dcb81fa505978fec",
-    "result_json_sha256": "2519f318c597e1e5762d9ff234f42fb2b8bc2a86f52e4927a9b861a8460932e0",
+    "result_gzip_sha256": "14e775eaaeb55063e206d984dc8234adbe405cebeaed592a5a3c27597b4d85b9",
+    "result_json_sha256": "1cfff13d0b37a9d674c3ae99674d0b9b866906cf36b347404b041f80df8814e8",
     "start_bundles": [
       "/publication/tiny/okf-explorer.json",
       "/publication/okf-explorer.json",
@@ -72,7 +72,7 @@
     "status": "passed",
     "validation_only": 0
   },
-  "observed_at": "2026-08-08T09:47:59Z",
+  "observed_at": "2026-08-08T10:36:51Z",
   "publication_shell_rebind": {
     "change_class": "full-candidate-rebuild",
     "rationale": "This receipt was materialized from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
@@ -99,8 +99,8 @@
     "questions_run": 100,
     "questions_scored": 100,
     "result": "evidence/receipts/question-suite-results.json.gz",
-    "result_gzip_sha256": "52de7c1dd3221ffe81eccf1af6343c1d28ff06b6a4d2efe010f3a6a3838dfda2",
-    "result_json_sha256": "e4dba4c133addcdec61ef0730fb9f4c5dbdf21a76d8f110337ec5a49683d430f",
+    "result_gzip_sha256": "46764eb3b2d42cece162fda427ec3a70931d3d6121efdfcc02ef5c668fbe4ad4",
+    "result_json_sha256": "fd249d9a07409cba2b712c6cbc0e577281d15c862942c0908d12ea12c96f4db3",
     "scores_at_least_80": 100,
     "scores_below_60": 0,
     "status": "passed",
