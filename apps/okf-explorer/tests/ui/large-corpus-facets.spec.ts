@@ -1089,21 +1089,36 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(0);
     await expect(graph.locator('.graph-node[data-type="facet-stack"]')).toHaveCount(8);
     await expect(page.locator('.graph-caption')).toContainText('Grouped by derivation mode');
+    const hierarchy = page.getByRole('navigation', { name: 'Open graph hierarchy' });
+    await expect(hierarchy).toBeVisible();
+    await expect(hierarchy).toContainText(`All matching ONS metadata records (${ONS_REGION_COUNT})`);
+    await expect(hierarchy.locator('[data-hierarchy-dimension="derivation_mode"]')).toContainText('Shown in the graph below');
+    await expect(hierarchy.locator('[aria-current="step"]')).toHaveCount(0);
     await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
       .toEqual([aggregateRoute]);
 
     const subgroup = graph.locator('.graph-node[data-type="facet-stack"]').first();
     const subgroupRoute = await subgroup.getAttribute('data-route');
+    const siblingRoute = await graph.locator('.graph-node[data-type="facet-stack"]').nth(1).getAttribute('data-route');
     expect(subgroupRoute).toBeTruthy();
+    expect(siblingRoute).toBeTruthy();
     await subgroup.click();
     await expect(page.locator('.graph-caption')).toContainText('Grouped by frequency');
     await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(0);
+    await expect(hierarchy.locator(`[data-stack-route="${subgroupRoute}"]`)).toHaveAttribute('aria-current', 'step');
+    await expect(hierarchy.locator(`[data-stack-route="${subgroupRoute}"]`)).toContainText('Open below');
+    await expect(hierarchy.locator('[data-hierarchy-dimension="frequency"]')).toContainText('Shown in the graph below');
+    await expect(graph.locator(`.graph-node[data-route="${siblingRoute}"]`)).toHaveCount(0);
+    await expect(hierarchy.locator(`[data-stack-route="${siblingRoute}"]`)).toBeVisible();
+    await expect(page.locator('.relationship-rows')).not.toContainText('facet-stack%2F');
     await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
       .toEqual([aggregateRoute, subgroupRoute]);
 
     await page.goBack();
     await expect(page.locator('.graph-caption')).toContainText('Grouped by derivation mode');
     await expect(graph.locator('.graph-node[data-type="facet-stack"]')).toHaveCount(8);
+    await expect(hierarchy.locator('[data-hierarchy-dimension="derivation_mode"]')).toContainText('Shown in the graph below');
+    await expect(hierarchy.locator('[aria-current="step"]')).toHaveCount(0);
     await expect.poll(() => page.evaluate(() => new URL(location.href).searchParams.getAll('graph.stack')))
       .toEqual([aggregateRoute]);
 

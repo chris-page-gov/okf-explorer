@@ -88,7 +88,11 @@ flowchart LR
    suitable facet divides it, deterministic title bands or ranges keep the
    graph bounded rather than drawing dozens of individual records. Open any
    subgroup to divide it again; the open path is recorded in the URL, so
-   browser Back closes exactly one stack level at a time.
+   browser Back closes exactly one stack level at a time. The hierarchy strip
+   above the canvas shows each traversed level as a row of sibling choices.
+   The selected sibling is marked **Open below**, while the final row names the
+   level represented by the graph underneath. Inactive parent siblings remain
+   in the strip instead of being mixed into the active branch's child graph.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
