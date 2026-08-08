@@ -802,16 +802,18 @@ test.describe('large-corpus facet interaction contract', () => {
         return [{
           route,
           labelLeft: labelBox.x,
-          labelBottom: labelBox.y + labelBox.height,
+          labelRight: labelBox.x + labelBox.width,
+          labelCenterY: labelBox.y + labelBox.height / 2,
           nodeLeft: symbolBox.x,
-          nodeTop: symbolBox.y
+          nodeCenterY: symbolBox.y + symbolBox.height / 2
         }];
       })
     );
     expect(leftLabelPlacements).toHaveLength(8);
     const preferredLeftPlacements = leftLabelPlacements.filter((placement) => (
       placement.labelLeft < placement.nodeLeft
-      && placement.labelBottom <= placement.nodeTop + 1
+      && placement.labelRight <= placement.nodeLeft + 1
+      && Math.abs(placement.labelCenterY - placement.nodeCenterY) <= 7
     ));
     expect(preferredLeftPlacements).toHaveLength(leftLabelPlacements.length);
 
@@ -832,7 +834,9 @@ test.describe('large-corpus facet interaction contract', () => {
             symbolY: symbolBox.y + symbolBox.height / 2,
             symbolTop: symbolBox.y,
             symbolBottom: symbolBox.y + symbolBox.height,
-            labelBottom: labelBox.y + labelBox.height
+            labelLeft: labelBox.x,
+            labelRight: labelBox.x + labelBox.width,
+            labelCenterY: labelBox.y + labelBox.height / 2
           }];
         });
       return {
@@ -852,7 +856,10 @@ test.describe('large-corpus facet interaction contract', () => {
     const leftRows = relationshipGeometry.left.map((item) => item.symbolY).sort((a, b) => a - b);
     expect(Math.max(...leftRows.slice(1).map((value, index) => value - leftRows[index]))).toBeLessThanOrEqual(50);
     expect(relationshipGeometry.top).toHaveLength(8);
-    expect(relationshipGeometry.top.every((item) => item.labelBottom <= item.symbolTop + 1)).toBe(true);
+    expect(relationshipGeometry.top.filter((item) => !(
+      Math.abs(item.labelCenterY - item.symbolY) <= 7
+      && (item.labelRight <= item.symbolLeft + 1 || item.labelLeft >= item.symbolRight - 1)
+    ))).toEqual([]);
     expect(Math.max(...relationshipGeometry.top.map((item) => item.symbolX))
       - Math.min(...relationshipGeometry.top.map((item) => item.symbolX))).toBeGreaterThan(relationshipGeometry.viewBoxWidth * 0.42);
     const centre = relationshipGeometry.documentAnchors.find((item) => item.type === 'dataset')!;
@@ -1039,5 +1046,48 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(reset).not.toBeNull();
     expect(Math.abs(clear!.y - reset!.y)).toBeLessThan(4);
     expect(reset!.x - (clear!.x + clear!.width)).toBeLessThanOrEqual(6);
+  });
+
+  test('FACET-E2E-15 keeps graph targets tight and subgroups a full-match stack', async ({ page }) => {
+    await openOnsFacetFixture(page);
+    await facetSegment(page, 'geography_level', 'region').dblclick();
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    const stack = graph.locator('.graph-node[data-type="record-type-stack"]');
+    await expect(stack).toHaveCount(1);
+    const stackRoute = await stack.getAttribute('data-route');
+    expect(stackRoute).toBeTruthy();
+    await expect(stack).toHaveAttribute(
+      'aria-label',
+      `All loaded matches (200 of ${ONS_REGION_COUNT} ONS metadata records)`
+    );
+    await expect(graph.locator(`.graph-node-label[data-label-route="${stackRoute}"]`))
+      .toContainText(`All loaded matches (200 of ${ONS_REGION_COUNT}`);
+
+    await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
+    await waitForFixtureReady(page);
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+    const tagNode = graph.locator('.graph-node[data-type="tag"]').first();
+    const tagRoute = await tagNode.getAttribute('data-route');
+    expect(tagRoute).toBeTruthy();
+    const hitBox = await tagNode.locator('.node-hit').boundingBox();
+    expect(hitBox).not.toBeNull();
+    expect(hitBox!.width).toBeLessThanOrEqual(56);
+    expect(hitBox!.height).toBeLessThanOrEqual(56);
+    await expect(graph.locator('.cluster-hit')).toHaveCount(0);
+    expect(await graph.locator(`.graph-node-label[data-label-route="${tagRoute}"]`).evaluate((label) => (
+      getComputedStyle(label).pointerEvents
+    ))).toBe('all');
+
+    await facetSegment(page, 'geography_level', 'region').dblclick();
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+    const aggregate = graph.locator('.graph-node[data-type="record-type-stack"]');
+    const aggregateRoute = await aggregate.getAttribute('data-route');
+    expect(aggregateRoute).toBeTruthy();
+    await graph.locator(`.graph-node-label[data-label-route="${aggregateRoute}"]`).click();
+    await expect(graph.locator('.graph-node[data-type="dataset"]')).toHaveCount(0);
+    await expect(graph.locator('.graph-node[data-type="facet-stack"]')).toHaveCount(8);
+    await expect(page.locator('.graph-caption')).toContainText('Grouped by derivation mode');
   });
 });

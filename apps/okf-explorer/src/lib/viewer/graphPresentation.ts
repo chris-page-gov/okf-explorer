@@ -461,7 +461,7 @@ export function planRelationshipGroupPositions(
       const groupOffset = (sideIndex - (sideGroups.length - 1) / 2) * width * 0.12;
       const startX = width * (0.38 + lane * 0.025) + groupOffset;
       const endX = width * (0.84 - lane * 0.035) + groupOffset;
-      const stepRise = Math.min(30, height * 0.048);
+      const stepRise = Math.min(36, height * 0.058);
       const baseY = side === 'top'
         ? height * (0.12 + lane * 0.16)
         : height * (0.84 - lane * 0.16);

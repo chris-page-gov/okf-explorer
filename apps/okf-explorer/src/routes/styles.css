@@ -2811,6 +2811,7 @@ input:focus {
 
 .graph .graph-node-label {
   cursor: pointer;
+  pointer-events: all;
 }
 
 .stack-card-back {
