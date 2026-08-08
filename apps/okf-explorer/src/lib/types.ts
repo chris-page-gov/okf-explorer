@@ -1082,6 +1082,32 @@ export type LargeOperationalMetadataIndex = {
   records: Record<string, LargeDatasetOperationalMetadata>;
 };
 
+export type LargeRouteLink = {
+  route: string;
+  label?: string;
+  description?: string;
+};
+
+export type LargeRecordNarrative = {
+  title?: string;
+  /** Repository-authored Markdown rendered through Explorer's safe Markdown renderer. */
+  body: string;
+  process?: LargeRouteLink;
+  previous?: LargeRouteLink[];
+  next?: LargeRouteLink[];
+  variants?: LargeRouteLink[];
+  related?: LargeRouteLink[];
+};
+
+export type LargeSourceDisplayMode = 'link' | 'json' | 'xml' | 'text';
+
+export type LargeSourceAccess = {
+  url: string;
+  label: string;
+  media_type: string;
+  display_mode: LargeSourceDisplayMode;
+};
+
 export type LargeDataset = {
   id?: string;
   name: string;
@@ -1111,6 +1137,7 @@ export type LargeDataset = {
   resource_hosts?: string[];
   govuk_content_paths?: string[];
   source_api_url?: string;
+  narrative?: LargeRecordNarrative;
   concept_id?: string;
   route?: string;
   publisher_concept_id?: string;
@@ -1201,6 +1228,8 @@ export type LargeResource = {
   provenance?: Record<string, unknown>;
   host?: string;
   url?: string;
+  /** Typed browser access contract. Link mode never fetches the response in Explorer. */
+  source_access?: LargeSourceAccess;
   resource_type?: string;
   position?: number;
   created?: string;

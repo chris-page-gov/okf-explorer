@@ -1,5 +1,5 @@
 import { isMap, isScalar, isSeq, parseDocument } from 'yaml';
-import type { FederationAccessRoute, LargeResourceReference } from '$lib/types';
+import type { FederationAccessRoute, LargeResourceReference, LargeSourceDisplayMode } from '$lib/types';
 import {
   type PreparedReleaseDataPlane,
   releaseDataRequest,
@@ -14,6 +14,18 @@ const RETRYABLE_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 export interface SourceJsonResponse {
   json: unknown;
+  bytes: number;
+  contentType: string;
+  retrievedAt: string;
+  responseUrl: string;
+}
+
+export type InlineSourceDisplayMode = Exclude<LargeSourceDisplayMode, 'link'>;
+
+export interface SourceResponse {
+  data: unknown;
+  text: string;
+  displayMode: InlineSourceDisplayMode;
   bytes: number;
   contentType: string;
   retrievedAt: string;
@@ -476,11 +488,36 @@ export async function fetchSourceJson(
   attempts = 2,
   retryDelayMs = 250
 ): Promise<SourceJsonResponse> {
+  const response = await fetchSourceResponse(url, 'json', 'application/json', timeoutMs, attempts, retryDelayMs);
+  return {
+    json: response.data,
+    bytes: response.bytes,
+    contentType: response.contentType,
+    retrievedAt: response.retrievedAt,
+    responseUrl: response.responseUrl
+  };
+}
+
+export async function fetchSourceResponse(
+  url: string,
+  displayMode: InlineSourceDisplayMode,
+  mediaType = '',
+  timeoutMs = 15000,
+  attempts = 2,
+  retryDelayMs = 250
+): Promise<SourceResponse> {
   let lastError: unknown;
-  const candidates = sourceJsonCandidates(url);
+  const candidates = displayMode === 'json' ? sourceJsonCandidates(url) : [url];
   for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
     try {
-      return await fetchSourceJsonCandidate(candidates[candidateIndex], timeoutMs, attempts, retryDelayMs);
+      return await fetchSourceResponseCandidate(
+        candidates[candidateIndex],
+        displayMode,
+        mediaType,
+        timeoutMs,
+        attempts,
+        retryDelayMs
+      );
     } catch (error) {
       lastError = error;
       if (candidateIndex === candidates.length - 1) throw error;
@@ -505,19 +542,33 @@ export function sourceJsonCandidates(url: string): string[] {
   return [url];
 }
 
-async function fetchSourceJsonCandidate(
+function sourceAcceptHeader(displayMode: InlineSourceDisplayMode, mediaType: string): string {
+  const declared = mediaType.trim();
+  const defaults: Record<InlineSourceDisplayMode, string> = {
+    json: 'application/json, application/*+json;q=0.9',
+    xml: 'application/xml, text/xml;q=0.9, application/*+xml;q=0.8',
+    text: 'text/plain, text/*;q=0.9'
+  };
+  return declared && !defaults[displayMode].startsWith(declared)
+    ? `${declared}, ${defaults[displayMode]}`
+    : defaults[displayMode];
+}
+
+async function fetchSourceResponseCandidate(
   url: string,
+  displayMode: InlineSourceDisplayMode,
+  mediaType: string,
   timeoutMs: number,
   attempts: number,
   retryDelayMs: number
-): Promise<SourceJsonResponse> {
+): Promise<SourceResponse> {
   let lastError: unknown;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     const signal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal ? AbortSignal.timeout(timeoutMs) : undefined;
     try {
       const response = await fetch(url, {
         cache: 'default',
-        headers: { Accept: 'application/json, application/*+json;q=0.9' },
+        headers: { Accept: sourceAcceptHeader(displayMode, mediaType) },
         signal
       });
       if (!response.ok) {
@@ -535,9 +586,11 @@ async function fetchSourceJsonCandidate(
       }
       const text = await readResponseText(response, url, MAX_SOURCE_JSON_BYTES);
       return {
-        json: JSON.parse(text) as unknown,
+        data: displayMode === 'json' ? JSON.parse(text) as unknown : null,
+        text,
+        displayMode,
         bytes: new TextEncoder().encode(text).byteLength,
-        contentType: response.headers.get('content-type') || 'application/json',
+        contentType: response.headers.get('content-type') || mediaType || (displayMode === 'xml' ? 'application/xml' : displayMode === 'text' ? 'text/plain' : 'application/json'),
         retrievedAt: new Date().toISOString(),
         responseUrl: response.url || url
       };

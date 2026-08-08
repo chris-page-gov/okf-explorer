@@ -3322,6 +3322,30 @@ input:focus {
   margin: 0 0 10px;
 }
 
+.record-narrative-body {
+  max-width: 76ch;
+  line-height: 1.55;
+}
+
+.record-narrative-routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.record-narrative-routes section {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  border-left: 3px solid var(--accent);
+  padding-left: 9px;
+}
+
+.record-narrative-routes a {
+  font-weight: 700;
+}
+
 .conversation-narrative,
 .conversation-timeline {
   display: grid;

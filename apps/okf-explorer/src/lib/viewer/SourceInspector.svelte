@@ -13,6 +13,8 @@
 
   interface Props {
     data: unknown;
+    text: string;
+    displayMode: 'json' | 'xml' | 'text';
     url: string;
     loading: boolean;
     error: string;
@@ -20,17 +22,20 @@
     contentType: string;
     retrievedAt: string;
     recordLabel: string;
+    sourceLabel: string;
     onclose: () => void;
   }
 
-  let { data, url, loading, error, bytes, contentType, retrievedAt, recordLabel, onclose }: Props = $props();
+  let { data, text, displayMode, url, loading, error, bytes, contentType, retrievedAt, recordLabel, sourceLabel, onclose }: Props = $props();
   let mode = $state<'summary' | 'tree' | 'raw'>('summary');
   let query = $state('');
   let wrapRaw = $state(true);
   let copied = $state('');
 
   const summary = $derived(sourceSummary(data, recordLabel));
-  const rawText = $derived(data === null || data === undefined ? '' : JSON.stringify(data, null, 2));
+  const rawText = $derived(displayMode === 'json' ? (data === null || data === undefined ? '' : JSON.stringify(data, null, 2)) : text);
+  const sourceTypeLabel = $derived(displayMode.toUpperCase());
+  const openSourceLabel = $derived(displayMode === 'json' ? 'Open raw JSON ↗' : `Open source ${sourceTypeLabel} ↗`);
 
   async function copyText(value: string, label: string) {
     if (!navigator.clipboard) return;
@@ -73,10 +78,11 @@
       <p class="eyebrow">External source response</p>
       <h2 id="source-inspector-title">Source data</h2>
       <p class="record-label">{recordLabel}</p>
+      {#if sourceLabel}<p class="source-label">{sourceLabel}</p>{/if}
     </div>
     <div class="source-actions">
       <button type="button" onclick={onclose}>← Back to record</button>
-      <a class="button" href={url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>
+      <a class="button" href={url} target="_blank" rel="noopener noreferrer">{openSourceLabel}</a>
     </div>
   </header>
 
@@ -89,9 +95,9 @@
       <h3>Explorer could not display this source response</h3>
       <p>{error}</p>
       <p>The endpoint may block browser requests, be unavailable, or exceed Explorer’s 10 MB display limit.</p>
-      <a class="button" href={url} target="_blank" rel="noopener noreferrer">Open raw JSON in a new tab ↗</a>
+      <a class="button" href={url} target="_blank" rel="noopener noreferrer">{displayMode === 'json' ? 'Open raw JSON in a new tab ↗' : 'Open official source in a new tab ↗'}</a>
     </div>
-  {:else if data !== null && data !== undefined}
+  {:else if retrievedAt}
     <dl class="response-meta">
       <div><dt>Host</dt><dd>{sourceHostname(url)}</dd></div>
       <div><dt>Response</dt><dd>{contentType || 'application/json'}</dd></div>
@@ -99,15 +105,26 @@
       <div><dt>Retrieved</dt><dd>{retrievedAt ? new Date(retrievedAt).toLocaleString() : 'Just now'}</dd></div>
     </dl>
 
-    <nav class="source-tabs" aria-label="Source data view">
-      <button type="button" class:active={mode === 'summary'} aria-pressed={mode === 'summary'} onclick={() => (mode = 'summary')}>Summary</button>
-      <button type="button" class:active={mode === 'tree'} aria-pressed={mode === 'tree'} onclick={() => (mode = 'tree')}>JSON tree</button>
-      <button type="button" class:active={mode === 'raw'} aria-pressed={mode === 'raw'} onclick={() => (mode = 'raw')}>Raw JSON</button>
-    </nav>
+    {#if displayMode === 'json'}
+      <nav class="source-tabs" aria-label="Source data view">
+        <button type="button" class:active={mode === 'summary'} aria-pressed={mode === 'summary'} onclick={() => (mode = 'summary')}>Summary</button>
+        <button type="button" class:active={mode === 'tree'} aria-pressed={mode === 'tree'} onclick={() => (mode = 'tree')}>JSON tree</button>
+        <button type="button" class:active={mode === 'raw'} aria-pressed={mode === 'raw'} onclick={() => (mode = 'raw')}>Raw JSON</button>
+      </nav>
+    {/if}
 
     {#if copied}<p class="copy-status" role="status">{copied}</p>{/if}
 
-    {#if mode === 'summary'}
+    {#if displayMode !== 'json'}
+      <section class="raw-panel" aria-label={`Raw ${sourceTypeLabel} source`}>
+        <div class="raw-tools">
+          <span>Displayed as inert text; Explorer does not execute source markup.</span>
+          <button type="button" aria-pressed={wrapRaw} onclick={() => (wrapRaw = !wrapRaw)}>{wrapRaw ? 'Disable line wrapping' : 'Wrap long lines'}</button>
+          <button type="button" onclick={() => void copyText(rawText, `${sourceTypeLabel} copied`)}>Copy source text</button>
+        </div>
+        <pre class:wrap={wrapRaw}>{rawText}</pre>
+      </section>
+    {:else if mode === 'summary'}
       <article class="source-summary">
         <h3>{summary.title}</h3>
         {#if summary.description}<p>{summary.description}</p>{/if}
@@ -153,7 +170,8 @@
   .source-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
   .source-header h2 { margin: 0; font-size: 1.65rem; }
   .eyebrow { margin: 0 0 .25rem; color: #52667c; font-size: .75rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
-  .record-label { margin: .3rem 0 0; color: #52667c; }
+  .record-label, .source-label { margin: .3rem 0 0; color: #52667c; }
+  .source-label { font-size: .9rem; }
   .source-actions, .tree-tools, .raw-tools { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
   button, .button { border: 1px solid #aebdce; border-radius: .5rem; background: #fff; color: #17212e; padding: .55rem .75rem; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
   button:hover, .button:hover { border-color: #1473d2; }

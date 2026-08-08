@@ -244,15 +244,26 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain('>Load full record</button>');
   });
 
-  it('opens source API responses inside Explorer without replacing the current window', () => {
+  it('renders only typed browser-readable source responses inside Explorer', () => {
     expect(pageSource).toContain("import SourceInspector from '$lib/viewer/SourceInspector.svelte'");
     expect(pageSource).toContain('let largeSourceInspectorOpen = $state(false)');
-    expect(pageSource).toContain("'View source data'");
-    expect(pageSource).toContain('Open raw JSON ↗');
+    expect(pageSource).toContain('sourceAccesses(largeDetail.dataset, largeDetail.resources)');
+    expect(pageSource).toContain('canDisplaySourceInline(access)');
+    expect(pageSource).toContain('sourceOpenLabel(access)');
     expect(pageSource).toContain('target="_blank" rel="noopener noreferrer"');
-    expect(pageSource).toContain('fetchSourceJson(url)');
+    expect(pageSource).toContain('fetchSourceResponse(url, displayMode, access.media_type)');
     expect(pageSource).not.toContain('<summary>Source API JSON</summary>');
     expect(pageSource).not.toContain('>Open API</a>');
+  });
+
+  it('uses an authored per-record narrative before the generic reduction summary', () => {
+    const recordNarrativePosition = pageSource.indexOf('recordNarrative(largeDetail.dataset)');
+    const genericSummaryPosition = pageSource.indexOf('The active context contains', recordNarrativePosition);
+    expect(recordNarrativePosition).toBeGreaterThan(0);
+    expect(genericSummaryPosition).toBeGreaterThan(recordNarrativePosition);
+    expect(pageSource).toContain('record-narrative-body');
+    expect(pageSource).toContain('Enclosing process');
+    expect(pageSource).toContain('narrativeRouteGroups(selectedNarrative)');
   });
 
   it('keeps synthetic graph stacks from becoming navigable graph centres', () => {

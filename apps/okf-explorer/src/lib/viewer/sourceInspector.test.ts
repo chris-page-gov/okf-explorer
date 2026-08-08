@@ -51,10 +51,10 @@ describe('source inspector helpers', () => {
 });
 
 describe('SourceInspector UI harness', () => {
-  it('keeps the in-app view primary and raw JSON explicitly in a new tab', () => {
+  it('keeps the in-app view primary and offers the typed source in a new tab', () => {
     expect(componentSource).toContain('Source data');
     expect(componentSource).toContain('← Back to record');
-    expect(componentSource).toContain('Open raw JSON ↗');
+    expect(componentSource).toContain("displayMode === 'json' ? 'Open raw JSON ↗'");
     expect(componentSource).toContain('target="_blank" rel="noopener noreferrer"');
   });
 
@@ -65,6 +65,13 @@ describe('SourceInspector UI harness', () => {
     expect(componentSource).toContain('Find a field or value');
     expect(componentSource).toContain('Copy value');
     expect(componentSource).toContain('Copy path');
+    expect(componentSource).not.toContain('{@html');
+  });
+
+  it('renders XML and text as inert escaped text rather than executing source markup', () => {
+    expect(componentSource).toContain("displayMode !== 'json'");
+    expect(componentSource).toContain('Explorer does not execute source markup.');
+    expect(componentSource).toContain('<pre class:wrap={wrapRaw}>{rawText}</pre>');
     expect(componentSource).not.toContain('{@html');
   });
 });
