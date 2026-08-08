@@ -189,6 +189,7 @@
   const GRAPH_SUBGROUP_MAX_COUNT = 12;
   const GRAPH_LAYOUT_PARAM = 'graph.layout';
   const GRAPH_CENTER_PARAM = 'graph.center';
+  const GRAPH_EXPANDED_STACK_PARAM = 'graph.stack';
   const GRAPH_GROUP_PARAM = 'graph.group';
   const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
   const GRAPH_HIDDEN_EDGE_PARAM = 'graph.hideEdge';
@@ -383,7 +384,7 @@
   let largeHighlightedEdge = $state('');
   let largeInspectedEdge = $state<LargeGraphEdge | null>(null);
   let largeExpandedStackRoute = $state('');
-  let largeExpandedGraphGroup = $state('');
+  let largeExpandedGraphGroups = $state<string[]>([]);
   let largeFacetIndex = $state<Record<string, LargeFacetRow[]>>({});
   let largeFacetIndexLoaded = $state(false);
   let largeFacetIndexLoading = $state(false);
@@ -658,6 +659,7 @@
     graphLayoutMode = params.get(GRAPH_LAYOUT_PARAM) === 'relationships' ? 'relationships' : 'auto';
     graphKeyMode = params.get(GRAPH_KEY_MODE_PARAM) === 'relationships' ? 'relationships' : 'nodes';
     graphLabelsPaused = params.get(GRAPH_LABELS_PARAM) === 'off';
+    largeExpandedGraphGroups = boundedGraphParams(params, GRAPH_EXPANDED_STACK_PARAM, 12);
     graphRelationshipOrder = boundedGraphParams(params, GRAPH_GROUP_PARAM, 32);
     graphHiddenRelationshipGroups = boundedGraphParams(params, GRAPH_HIDDEN_GROUP_PARAM, 32);
     graphHiddenRelationshipEdges = boundedGraphParams(params, GRAPH_HIDDEN_EDGE_PARAM, 160);
@@ -676,6 +678,7 @@
     for (const key of [
       GRAPH_LAYOUT_PARAM,
       GRAPH_CENTER_PARAM,
+      GRAPH_EXPANDED_STACK_PARAM,
       GRAPH_GROUP_PARAM,
       GRAPH_HIDDEN_GROUP_PARAM,
       GRAPH_HIDDEN_EDGE_PARAM,
@@ -698,6 +701,7 @@
     }
     if (graphKeyMode === 'relationships') params.set(GRAPH_KEY_MODE_PARAM, graphKeyMode);
     if (graphLabelsPaused) params.set(GRAPH_LABELS_PARAM, 'off');
+    largeExpandedGraphGroups.forEach((route) => params.append(GRAPH_EXPANDED_STACK_PARAM, route));
     graphRelationshipOrder.forEach((key) => params.append(GRAPH_GROUP_PARAM, key));
     graphHiddenRelationshipGroups.forEach((key) => params.append(GRAPH_HIDDEN_GROUP_PARAM, key));
     graphHiddenRelationshipEdges.forEach((key) => params.append(GRAPH_HIDDEN_EDGE_PARAM, key));
@@ -829,12 +833,6 @@
     const hash = safeDecodeHash();
     const browserParams = new URLSearchParams(location.search);
     geospatialFilter = geospatialFilterFromParams(browserParams);
-    applyGraphState(browserParams);
-    if (graphHighlightedRelationshipGroup) {
-      void tick().then(restoreGraphRelationshipInspection);
-    } else if (!largeHighlightedEdge) {
-      largeInspectedEdge = null;
-    }
     if (source?.kind === 'large') {
       const params = browserParams;
       const state = parseRetrievalState(params, largeSourceFacetKeys(source));
@@ -873,6 +871,12 @@
         if (!nextView) activeView = conversationPresentation(smallCorpus.nodes[hash]) ? 'narrative' : 'reader';
       }
     }
+    applyGraphState(browserParams);
+    if (graphHighlightedRelationshipGroup) {
+      void tick().then(restoreGraphRelationshipInspection);
+    } else if (!largeHighlightedEdge) {
+      largeInspectedEdge = null;
+    }
   }
 
   function applyLargeBrowserRoute(hash: string, preserveSerializedFilters = false) {
@@ -885,7 +889,7 @@
     largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
-    largeExpandedGraphGroup = '';
+    largeExpandedGraphGroups = [];
     clearLargeApiPanel();
     if (!route) {
       if (!preserveSerializedFilters) largeFacetFilters = {};
@@ -940,7 +944,7 @@
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
     largeExpandedStackRoute = '';
-    largeExpandedGraphGroup = '';
+    largeExpandedGraphGroups = [];
     clearLargeApiPanel();
     largeAppliedQuery = '';
     largeResults = [];
@@ -1756,7 +1760,7 @@
     largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
-    largeExpandedGraphGroup = '';
+    largeExpandedGraphGroups = [];
     graphLabelPhase = 0;
     clearLargeApiPanel();
     rightCollapsed = false;
@@ -1784,21 +1788,8 @@
 
   function recenterLargeRoute(route: string) {
     clearLargeFacetPreviewContext();
-    if (isRecordTypeStackRoute(route)) {
-      largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
-      largeHighlightedRoute = route;
-      largeForwardRoute = '';
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
-      activeView = 'graph';
-      return;
-    }
     if (isGraphStackRoute(route)) {
-      largeHighlightedRoute = route;
-      largeForwardRoute = '';
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
-      activeView = 'graph';
+      toggleLargeGraphStack(route);
       return;
     }
     const routeIsRecord = ['dataset', 'publisher', 'resource'].includes(routeKind(route));
@@ -1822,7 +1813,7 @@
     largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
-    largeExpandedGraphGroup = '';
+    largeExpandedGraphGroups = [];
     clearLargeApiPanel();
     activeView = 'graph';
     resetGraphView();
@@ -1856,7 +1847,7 @@
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
       graphHighlightedRelationshipGroup = '';
-      largeExpandedGraphGroup = '';
+      largeExpandedGraphGroups = [];
       clearLargeApiPanel();
     } else {
       inspectedId = '';
@@ -2183,7 +2174,7 @@
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
     }
-    largeExpandedGraphGroup = '';
+    largeExpandedGraphGroups = [];
     reconcileLargeSelection();
     syncExplorerUrl(true);
     void runLargeSearch(largeQuery, { preserveSelection: true });
@@ -2368,7 +2359,7 @@
         largeForwardRoute = '';
         largeHighlightedEdge = '';
         largeInspectedEdge = null;
-        largeExpandedGraphGroup = '';
+        largeExpandedGraphGroups = [];
         clearLargeApiPanel();
       }
       largeSearching = false;
@@ -2398,7 +2389,7 @@
       largeForwardRoute = '';
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
-      largeExpandedGraphGroup = '';
+      largeExpandedGraphGroups = [];
       clearLargeApiPanel();
     }
     largeSearching = true;
@@ -4093,6 +4084,35 @@
     return type === 'resource-stack' || type === 'relationship-stack' || type === 'record-type-stack' || type === 'facet-stack';
   }
 
+  function graphStackParentRoute(route: string): string {
+    if (!route.startsWith('facet-stack/')) return '';
+    try {
+      return decodeURIComponent(route.split('/')[1] || '');
+    } catch {
+      return '';
+    }
+  }
+
+  function toggleLargeGraphStack(route: string) {
+    const openIndex = largeExpandedGraphGroups.indexOf(route);
+    if (openIndex >= 0) {
+      largeExpandedGraphGroups = largeExpandedGraphGroups.slice(0, openIndex);
+    } else {
+      const parent = graphStackParentRoute(route);
+      const parentIndex = parent ? largeExpandedGraphGroups.indexOf(parent) : -1;
+      largeExpandedGraphGroups = parentIndex >= 0
+        ? [...largeExpandedGraphGroups.slice(0, parentIndex + 1), route]
+        : [route];
+    }
+    largeHighlightedRoute = route;
+    largeForwardRoute = '';
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    activeView = 'graph';
+    graphLabelPhase = 0;
+    syncExplorerUrl(true);
+  }
+
   function largeLabelForRoute(route: string): string {
     if (!route) return 'Overview';
     const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
@@ -4580,9 +4600,11 @@
         })
       };
     };
-    const bestStackSubgroups = (rows: LargeDataset[]) => {
+    const bestStackSubgroups = (rows: LargeDataset[], excludedDimensions: string[] = []) => {
+      const excluded = new Set(excludedDimensions);
       if (largeIndex) {
         for (const dimension of stackSubgroupCandidates) {
+          if (excluded.has(dimension)) continue;
           const groups = new Map<string, LargeDataset[]>();
           for (const dataset of rows) {
             const values = largeDatasetFacetValues(dataset, dimension);
@@ -4609,20 +4631,43 @@
       target: string,
       label: string,
       direction: 'to-target' | 'from-target',
-      relationshipMetadata?: Record<string, unknown>
+      relationshipMetadata?: Record<string, unknown>,
+      excludedDimensions: string[] = [],
+      expandedLabel = `${largeLabelForRoute(stackId)} opened`
     ) => {
       if (rows.length <= GRAPH_STACK_THRESHOLD) return false;
-      const subgroup = bestStackSubgroups(rows);
+      const subgroup = bestStackSubgroups(rows, excludedDimensions);
       grouping = {
         dimension: subgroup.dimension,
         label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
-        expandedLabel: `${largeLabelForRoute(stackId)} opened`
+        expandedLabel
       };
       for (const group of subgroup.rows) {
-        const subgroupId = `facet-stack/${routeSlug(stackId)}/${routeSlug(subgroup.dimension)}/${routeSlug(group.value)}`;
-        addNode(subgroupId, 'facet-stack', `${facetValueDisplay(subgroup.dimension, group.value)} (${group.rows.length})`, group.rows.length, stackId);
-        if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length, relationshipMetadata);
-        else addCountedEdge(target, subgroupId, label, group.rows.length, relationshipMetadata);
+        const groupLabel = facetValueDisplay(subgroup.dimension, group.value);
+        const subgroupId = `facet-stack/${encodeURIComponent(stackId)}/${encodeURIComponent(subgroup.dimension)}/${encodeURIComponent(group.value)}`;
+        if (largeExpandedGraphGroups.includes(subgroupId)) {
+          const openedNestedGroup = addOpenedStackSubgroups(
+            group.rows,
+            subgroupId,
+            target,
+            label,
+            direction,
+            relationshipMetadata,
+            [...excludedDimensions, subgroup.dimension],
+            `${groupLabel} opened`
+          );
+          if (!openedNestedGroup) {
+            for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
+              addDatasetNode(dataset);
+              if (direction === 'to-target') addEdge(datasetRoute(dataset), target, label, relationshipMetadata);
+              else addEdge(target, datasetRoute(dataset), label, relationshipMetadata);
+            }
+          }
+        } else {
+          addNode(subgroupId, 'facet-stack', `${groupLabel} (${group.rows.length})`, group.rows.length, stackId);
+          if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length, relationshipMetadata);
+          else addCountedEdge(target, subgroupId, label, group.rows.length, relationshipMetadata);
+        }
       }
       return true;
     };
@@ -4645,7 +4690,7 @@
       const recordGroups = groupedRows(rows);
       for (const group of recordGroups) {
         const stackId = recordTypeStackRoute(contextKey, group.recordType);
-        const expanded = largeExpandedGraphGroup === stackId;
+        const expanded = largeExpandedGraphGroups.includes(stackId);
         noteRecordTypeGrouping(
           expanded && group.rows.length > GRAPH_EXPANDED_GROUP_LIMIT
             ? `${group.recordType} (first ${GRAPH_EXPANDED_GROUP_LIMIT.toLocaleString()} of ${group.rows.length.toLocaleString()})`
@@ -4689,7 +4734,7 @@
       const recordGroups = groupedRows(rows);
       for (const group of recordGroups) {
         const stackId = recordTypeStackRoute(contextKey, group.recordType);
-        const expanded = largeExpandedGraphGroup === stackId;
+        const expanded = largeExpandedGraphGroups.includes(stackId);
         noteRecordTypeGrouping(
           expanded && group.rows.length > GRAPH_EXPANDED_GROUP_LIMIT
             ? `${group.recordType} (first ${GRAPH_EXPANDED_GROUP_LIMIT.toLocaleString()} of ${group.rows.length.toLocaleString()})`
@@ -5423,7 +5468,7 @@
     // SVG text metrics vary by browser and zoom. Deliberately overestimate the
     // collision box so a layer that is non-overlapping in the planner remains
     // non-overlapping when rendered.
-    const w = Math.min(280, text.length * 7.4 + 20);
+    const w = Math.min(260, text.length * 7.4 + 20);
     const h = 22;
     const left = anchor === 'end' ? x - w : anchor === 'middle' ? x - w / 2 : x;
     return { x: left, y: y - 17, w, h };
@@ -5900,21 +5945,16 @@
       graphSuppressClick = false;
       return;
     }
-    if (largeHighlightedRoute === route || event?.ctrlKey || event?.metaKey) {
+    if (event?.ctrlKey || event?.metaKey) {
       clearGraphNodeHighlight(route);
       return;
     }
-    if (isRecordTypeStackRoute(route)) {
-      largeExpandedGraphGroup = largeExpandedGraphGroup === route ? '' : route;
-      largeHighlightedRoute = route;
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
+    if (isGraphStackRoute(route)) {
+      toggleLargeGraphStack(route);
       return;
     }
-    if (isGraphStackRoute(route)) {
-      largeHighlightedRoute = route;
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
+    if (largeHighlightedRoute === route) {
+      clearGraphNodeHighlight(route);
       return;
     }
     largeHighlightedEdge = '';

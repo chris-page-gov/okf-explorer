@@ -424,6 +424,25 @@ export function planRelationshipGroupPositions(
     return { group, slot, members };
   });
 
+  const densePair = plannedGroups.length === 1 && plannedGroups[0].members.length >= 10
+    ? plannedGroups[0]
+    : null;
+  if (densePair) {
+    const rowCount = Math.ceil(densePair.members.length / 2);
+    const rowGap = Math.min(48, (height * 0.68) / Math.max(1, rowCount - 1));
+    const startY = centerPoint.y - ((rowCount - 1) * rowGap) / 2;
+    densePair.members.forEach((id, index) => {
+      const side: GraphRelationshipSide = index % 2 === 0 ? 'left' : 'right';
+      const row = Math.floor(index / 2);
+      positions.set(id, {
+        x: width * (side === 'left' ? 0.43 : 0.57),
+        y: startY + row * rowGap
+      });
+      nodeSlots.set(id, { side, lane: 0 });
+    });
+    return { positions, slots, nodeSlots };
+  }
+
   for (const side of ['left', 'right'] as const) {
     const sideGroups = plannedGroups.filter((item) => item.slot.side === side && item.members.length);
     if (!sideGroups.length) continue;
