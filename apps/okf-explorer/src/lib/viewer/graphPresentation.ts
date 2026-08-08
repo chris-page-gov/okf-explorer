@@ -80,6 +80,16 @@ export type GraphRelationshipLayoutPlan = {
   nodeSlots: Map<string, GraphRelationshipSlot>;
 };
 
+export function shouldUseRelationshipLayout(
+  center: string,
+  groupCount: number,
+  relationshipCount: number,
+  forced = false
+): boolean {
+  if (!center || groupCount < 1) return false;
+  return forced || relationshipCount >= 4;
+}
+
 export type GraphEdgeWeightInput = {
   id: string;
   metrics: Record<string, number | undefined>;

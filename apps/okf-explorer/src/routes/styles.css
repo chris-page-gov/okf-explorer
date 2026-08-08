@@ -67,7 +67,8 @@ input:focus {
 
 .topbar {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto minmax(320px, 560px);
+  grid-template-areas: "title tabs bundle";
+  grid-template-columns: minmax(180px, 1fr) auto minmax(260px, 420px);
   gap: 12px;
   align-items: center;
   padding: 10px 14px;
@@ -76,6 +77,7 @@ input:focus {
 }
 
 .title-block {
+  grid-area: title;
   min-width: 0;
 }
 
@@ -93,6 +95,7 @@ input:focus {
 }
 
 .tabs {
+  grid-area: tabs;
   display: flex;
   gap: 6px;
 }
@@ -145,6 +148,7 @@ input:focus {
 }
 
 .bundle-form {
+  grid-area: bundle;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 6px;
@@ -725,11 +729,19 @@ input:focus {
 }
 
 .facet-toolbar > button,
+.facet-toolbar-actions button,
 .facet-scope-switch button {
   min-height: 28px;
   padding: 0 8px;
   font-size: 11px;
   font-weight: 750;
+}
+
+.facet-toolbar-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
 }
 
 .facet-scope-switch {
@@ -3715,7 +3727,10 @@ button.chip:focus {
   }
 
   .topbar {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title bundle"
+      "tabs tabs";
+    grid-template-columns: minmax(160px, 1fr) minmax(280px, 420px);
   }
 
   .tabs {

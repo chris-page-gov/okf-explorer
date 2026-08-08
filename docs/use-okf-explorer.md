@@ -58,7 +58,7 @@ flowchart LR
 3. Searching for `IAPT` reduces the Reader and Graph views to relevant datasets.
 4. Graph shows a bounded context, zoom controls, relationship labels and a
    node-type key filtered to what is present. Dense focus graphs expose ordered
-   relationship regions automatically. Lists use compact
+   relationship regions automatically from four relationships. Lists use compact
    rows and staircases reserve an outside-facing label for every node; only
    conflicting relationship labels cycle. `Labels (a/n)` shows the active
    non-overlapping label set and pauses or resumes that cycle. `Nodes` exposes
@@ -73,6 +73,10 @@ flowchart LR
    below. Focus graphs repeat the focused node name as a title inside the SVG;
    publisher and licence nodes occupy the lower-left and lower-right anchors so
    a graph screenshot retains a document-like identity and final line.
+   Selecting a related node opens its data card without moving the graph. Its
+   **Graph** action recentres that record and records both the previous focus
+   and the inspected route in the URL, so browser Back restores the exact graph
+   and detail context from before the action.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
@@ -86,6 +90,13 @@ flowchart LR
 8. Map classifies the current search/facet reduction from declared coverage,
    coordinates, UK place names, ArcGIS/OGC services and spatial file formats.
    Its place/evidence chips add a `geo=` reduction to the public URL.
+
+The facet toolbar separates two deliberately different actions. **Clear
+filters** removes the current facet and map reduction, while **Reset facet
+layout** restores the provider's facet order, visibility and Guidance defaults
+without changing active filters. They are grouped together so the distinction
+is visible at the point of use. At tablet widths the bounded bundle loader stays
+on the title row, with the view tabs on their own scrollable row.
 
 ## Use The Map Canvas
 
