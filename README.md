@@ -253,10 +253,16 @@ Focused Graph actions preserve the previous graph centre separately from the
 inspected route so browser Back restores the exact prior context; the chosen
 record is recentred and the graph viewport is reset for the new focus.
 Dense focus graphs automatically group nodes into ordered relationship regions
-and encode line width only from an explicit varying relationship metric. The
-node type key reflects only the nodes currently displayed. Controlled regions keep
-all node labels visible in compact lists and outside-labelled staircases;
-conflicting edge labels alone continue to cycle. Graph controls stay available
+and encode line width only from an explicit varying relationship metric. A
+single aggregate covering the current result is labelled `All matching …`; if
+only a bounded subset is loaded, the label states both loaded and total counts.
+Opening a large aggregate always yields semantic subgroups or deterministic
+title bands/ranges rather than dozens of individual records. The node type key
+reflects only the nodes currently displayed. Controlled regions keep all node
+labels visible inline on the outside of compact lists and use the available
+left/right width around staircases; conflicting edge labels alone continue to
+cycle. Icons and labels have separate tight pointer targets, so the empty span
+between them cannot select a neighbouring node. Graph controls stay available
 while the centre panel scrolls, and wheel zoom requires Ctrl/Command. The
 two-line toolbar switches its filtered key between counted node types and
 counted relationship types: node chips hide or restore a type, relationship

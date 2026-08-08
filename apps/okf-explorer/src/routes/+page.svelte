@@ -186,6 +186,7 @@
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
   const GRAPH_STACK_THRESHOLD = 18;
   const GRAPH_EXPANDED_GROUP_LIMIT = 72;
+  const GRAPH_SUBGROUP_MAX_COUNT = 12;
   const GRAPH_LAYOUT_PARAM = 'graph.layout';
   const GRAPH_CENTER_PARAM = 'graph.center';
   const GRAPH_GROUP_PARAM = 'graph.group';
@@ -4524,28 +4525,83 @@
         .map(([recordType, rows]) => ({ recordType, rows }))
         .sort((left, right) => right.rows.length - left.rows.length || left.recordType.localeCompare(right.recordType));
     };
-    const stackSubgroupCandidates = ['format', 'topic', 'license', 'access_model', 'contract_status', 'source_adapter', 'update_year'];
-    const bestStackSubgroups = (rows: LargeDataset[]) => {
-      if (!largeIndex) return null;
-      for (const dimension of stackSubgroupCandidates) {
-        const groups = new Map<string, LargeDataset[]>();
-        for (const dataset of rows) {
-          const values = largeDatasetFacetValues(dataset, dimension);
-          const value = values[0] || 'not recorded';
-          const group = groups.get(value) || [];
-          group.push(dataset);
-          groups.set(value, group);
-        }
-        if (groups.size >= 2 && groups.size <= 10) {
+    const stackSubgroupCandidates = [...new Set([
+      ...(largePresentation()?.facets || []).map((facet) => facet.key),
+      'life_course_domain',
+      'acquisition_wave',
+      'delivery_scope',
+      'jurisdiction_research',
+      'implementation_status',
+      'format',
+      'topic',
+      'license',
+      'access_model',
+      'contract_status',
+      'source_adapter',
+      'update_year'
+    ])];
+    const fallbackStackSubgroups = (rows: LargeDataset[]) => {
+      const titleBands = new Map<string, LargeDataset[]>();
+      const titleBand = (title: string) => {
+        const initial = title.trim().slice(0, 1).toUpperCase();
+        if (/^[A-D]$/.test(initial)) return 'A–D';
+        if (/^[E-H]$/.test(initial)) return 'E–H';
+        if (/^[I-L]$/.test(initial)) return 'I–L';
+        if (/^[M-P]$/.test(initial)) return 'M–P';
+        if (/^[Q-T]$/.test(initial)) return 'Q–T';
+        if (/^[U-Z]$/.test(initial)) return 'U–Z';
+        return 'Number or symbol';
+      };
+      for (const dataset of rows) {
+        const value = titleBand(dataset.title || dataset.name || '');
+        const group = titleBands.get(value) || [];
+        group.push(dataset);
+        titleBands.set(value, group);
+      }
+      if (titleBands.size >= 2) {
+        return {
+          dimension: 'title_band',
+          rows: [...titleBands.entries()]
+            .map(([value, groupRows]) => ({ value, rows: groupRows }))
+            .sort((left, right) => left.value.localeCompare(right.value))
+        };
+      }
+      const ordered = [...rows].sort((left, right) => left.title.localeCompare(right.title));
+      const chunkSize = Math.max(1, Math.ceil(ordered.length / GRAPH_SUBGROUP_MAX_COUNT));
+      return {
+        dimension: 'title_range',
+        rows: Array.from({ length: Math.ceil(ordered.length / chunkSize) }, (_unused, index) => {
+          const start = index * chunkSize;
+          const groupRows = ordered.slice(start, start + chunkSize);
           return {
-            dimension,
-            rows: [...groups.entries()]
-              .map(([value, groupRows]) => ({ value, rows: groupRows }))
-              .sort((left, right) => right.rows.length - left.rows.length || left.value.localeCompare(right.value))
+            value: `${recordPlural()} ${start + 1}–${start + groupRows.length}`,
+            rows: groupRows
           };
+        })
+      };
+    };
+    const bestStackSubgroups = (rows: LargeDataset[]) => {
+      if (largeIndex) {
+        for (const dimension of stackSubgroupCandidates) {
+          const groups = new Map<string, LargeDataset[]>();
+          for (const dataset of rows) {
+            const values = largeDatasetFacetValues(dataset, dimension);
+            const value = values[0] || 'not recorded';
+            const group = groups.get(value) || [];
+            group.push(dataset);
+            groups.set(value, group);
+          }
+          if (groups.size >= 2 && groups.size <= GRAPH_SUBGROUP_MAX_COUNT) {
+            return {
+              dimension,
+              rows: [...groups.entries()]
+                .map(([value, groupRows]) => ({ value, rows: groupRows }))
+                .sort((left, right) => right.rows.length - left.rows.length || left.value.localeCompare(right.value))
+            };
+          }
         }
       }
-      return null;
+      return fallbackStackSubgroups(rows);
     };
     const addOpenedStackSubgroups = (
       rows: LargeDataset[],
@@ -4555,8 +4611,8 @@
       direction: 'to-target' | 'from-target',
       relationshipMetadata?: Record<string, unknown>
     ) => {
+      if (rows.length <= GRAPH_STACK_THRESHOLD) return false;
       const subgroup = bestStackSubgroups(rows);
-      if (!subgroup || rows.length <= GRAPH_STACK_THRESHOLD) return false;
       grouping = {
         dimension: subgroup.dimension,
         label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
@@ -4586,7 +4642,8 @@
         }
         return;
       }
-      for (const group of groupedRows(rows)) {
+      const recordGroups = groupedRows(rows);
+      for (const group of recordGroups) {
         const stackId = recordTypeStackRoute(contextKey, group.recordType);
         const expanded = largeExpandedGraphGroup === stackId;
         noteRecordTypeGrouping(
@@ -4605,7 +4662,15 @@
             }
           }
         } else {
-          addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, center || contextKey);
+          const totalMatches = metadataFacetForRoute(target)
+            ? datasetCountForMetadataRoute(target)
+            : rows.length;
+          const stackLabel = recordGroups.length === 1 && group.rows.length === rows.length
+            ? totalMatches > rows.length
+              ? `All loaded matches (${rows.length} of ${totalMatches} ${recordPlural()})`
+              : `All matching ${recordPlural()} (${group.rows.length})`
+            : `${facetValueDisplay('record_type', group.recordType)} (${group.rows.length})`;
+          addNode(stackId, 'record-type-stack', stackLabel, group.rows.length, center || contextKey);
           if (direction === 'to-target') addCountedEdge(stackId, target, label, group.rows.length, relationshipMetadata);
           else addCountedEdge(target, stackId, label, group.rows.length, relationshipMetadata);
         }
@@ -4621,7 +4686,8 @@
         }
         return;
       }
-      for (const group of groupedRows(rows)) {
+      const recordGroups = groupedRows(rows);
+      for (const group of recordGroups) {
         const stackId = recordTypeStackRoute(contextKey, group.recordType);
         const expanded = largeExpandedGraphGroup === stackId;
         noteRecordTypeGrouping(
@@ -4638,7 +4704,10 @@
             if (dataset.publisher) addEdge(datasetId, publisherRoute(dataset.publisher), 'published by');
           }
         } else {
-          addNode(stackId, 'record-type-stack', `${group.recordType} (${group.rows.length})`, group.rows.length, contextKey);
+          const stackLabel = recordGroups.length === 1 && group.rows.length === rows.length
+            ? `All matching ${recordPlural()} (${group.rows.length})`
+            : `${facetValueDisplay('record_type', group.recordType)} (${group.rows.length})`;
+          addNode(stackId, 'record-type-stack', stackLabel, group.rows.length, contextKey);
           const publishers = new Map<string, number>();
           for (const dataset of group.rows) {
             if (dataset.publisher) publishers.set(dataset.publisher, (publishers.get(dataset.publisher) || 0) + 1);
@@ -5339,7 +5408,7 @@
     if (isGraphStackNodeType(node.type)) return { x: point.x - 34, y: point.y - 26, w: 68, h: 52 };
     if (node.type === 'resource') return { x: point.x - 30, y: point.y - 24, w: 60, h: 48 };
     if (node.type === 'dataset') return { x: point.x - 31, y: point.y - 25, w: 62, h: 50 };
-    return { x: point.x - 28, y: point.y - 28, w: 56, h: 56 };
+    return { x: point.x - 24, y: point.y - 24, w: 48, h: 48 };
   }
 
   function graphNodeEdgePad(node: LargeGraphNode | undefined): number {
@@ -5348,16 +5417,6 @@
     if (node.type === 'dataset') return 34;
     if (node.type === 'resource') return 32;
     return 24;
-  }
-
-  function graphCombinedHitBox(node: LargeGraphNode, point: GraphPoint, label: GraphLabel): GraphBox | null {
-    const nodeBox = graphNodeBox(node, point);
-    if (!nodeBox) return label.box;
-    const x = Math.min(nodeBox.x, label.box.x) - 3;
-    const y = Math.min(nodeBox.y, label.box.y) - 3;
-    const right = Math.max(nodeBox.x + nodeBox.w, label.box.x + label.box.w) + 3;
-    const bottom = Math.max(nodeBox.y + nodeBox.h, label.box.y + label.box.h) + 3;
-    return { x, y, w: right - x, h: bottom - y };
   }
 
   function graphLabelBox(text: string, x: number, y: number, anchor: GraphLabel['anchor']): GraphBox {
@@ -5383,7 +5442,7 @@
     const gap = node.type === 'resource' || node.type === 'dataset' || isGraphStackNodeType(node.type) ? 36 : 30;
     const right = { x: point.x + gap, y: point.y + 5, anchor: 'start' as const };
     const left = { x: point.x - gap, y: point.y + 5, anchor: 'end' as const };
-    const lateral = point.x > graphCanvasWidth * 0.66 ? [left, right] : [right, left];
+    const lateral = point.x > graphCanvasWidth * 0.5 ? [right, left] : [left, right];
     const above = { x: point.x, y: point.y - gap, anchor: 'middle' as const };
     const below = { x: point.x, y: point.y + gap + 12, anchor: 'middle' as const };
     const aboveLeft = { x: point.x - gap, y: point.y - gap, anchor: 'end' as const };
@@ -5391,13 +5450,13 @@
     const belowLeft = { x: point.x - gap, y: point.y + gap + 12, anchor: 'end' as const };
     const belowRight = { x: point.x + gap, y: point.y + gap + 12, anchor: 'start' as const };
     const candidates = relationshipSide === 'left'
-      ? [aboveLeft, above, left]
+      ? [left, aboveLeft, belowLeft, right]
       : relationshipSide === 'right'
-        ? [above, aboveRight, right, left]
+        ? [right, aboveRight, belowRight, left]
         : relationshipSide === 'top'
-          ? [above, aboveLeft, aboveRight]
+          ? [...lateral, above, aboveLeft, aboveRight]
           : relationshipSide === 'bottom'
-            ? [below, belowLeft, belowRight]
+            ? [...lateral, below, belowLeft, belowRight]
             : [...lateral, above, below];
     const labels = candidates.map((candidate) => ({
       ...candidate,
@@ -5463,38 +5522,38 @@
       const box = graphNodeBox(node, positions.get(node.id));
       return box ? [{ id: graphNodeLabelKey(node.id), box }] : [];
     });
-    const preferredLeftLabels = new Map(nodes.flatMap((node) => {
+    const preferredSideLabels = new Map(nodes.flatMap((node) => {
       const point = positions.get(node.id);
-      if (!point || relationshipSlots.get(node.id)?.side !== 'left') return [];
-      const preferred = graphLabelCandidates(node, point, 'left').find((candidate) => (
-        candidate.anchor === 'end'
-        && candidate.x < point.x
-        && candidate.y < point.y
+      const side = relationshipSlots.get(node.id)?.side;
+      if (!point || (side !== 'left' && side !== 'right')) return [];
+      const preferred = graphLabelCandidates(node, point, side).find((candidate) => (
+        candidate.anchor === (side === 'left' ? 'end' : 'start')
+        && Math.abs(candidate.y - (point.y + 5)) <= 1
       ));
       return preferred ? [[graphNodeLabelKey(node.id), preferred] as const] : [];
     }));
-    const preferredLeftEntries = [...preferredLeftLabels.entries()];
-    const leftColumnFits = preferredLeftEntries.length <= 12
-      && preferredLeftEntries.every(([id, label], index) => (
+    const preferredSideEntries = [...preferredSideLabels.entries()];
+    const sideColumnsFit = preferredSideEntries.length <= 24
+      && preferredSideEntries.every(([id, label], index) => (
         !obstacles.some((obstacle) => obstacle.id !== id && boxesOverlap(label.box, obstacle.box))
-        && !preferredLeftEntries.slice(index + 1).some(([, other]) => boxesOverlap(label.box, other.box))
+        && !preferredSideEntries.slice(index + 1).some(([, other]) => boxesOverlap(label.box, other.box))
       ));
-    const persistentLeftIds = leftColumnFits
-      ? new Set(preferredLeftLabels.keys())
+    const persistentSideIds = sideColumnsFit
+      ? new Set(preferredSideLabels.keys())
       : new Set<string>();
     const nodeItems = nodes.flatMap((node) => {
       const point = positions.get(node.id);
       const relationshipSide = relationshipSlots.get(node.id)?.side || null;
       const id = graphNodeLabelKey(node.id);
-      const preferredLeftLabel = persistentLeftIds.has(id) ? preferredLeftLabels.get(id) : null;
-      const alwaysVisible = persistentLayout || node.id === alwaysNodeId || Boolean(preferredLeftLabel);
+      const preferredSideLabel = persistentSideIds.has(id) ? preferredSideLabels.get(id) : null;
+      const alwaysVisible = persistentLayout || node.id === alwaysNodeId || Boolean(preferredSideLabel);
       return point
         ? [{
             id,
             priority: graphLabelPriority(node, alwaysNodeId, relationshipSide),
             always: alwaysVisible,
-            choices: preferredLeftLabel
-              ? [preferredLeftLabel]
+            choices: preferredSideLabel
+              ? [preferredSideLabel]
               : graphLabelCandidates(node, point, relationshipSide)
           }]
         : [];
@@ -7001,7 +7060,6 @@
                   {@const pos = positions.get(node.id) || { x: graphCanvasWidth / 2, y: GRAPH_HEIGHT / 2 }}
                   {@const label = labels.get(graphNodeLabelKey(node.id))}
                   {@const relationshipRole = graphRelationshipNodeRole(node.id, model)}
-                  {@const combinedHit = label && !['dataset', 'resource', 'resource-stack', 'relationship-stack', 'record-type-stack', 'facet-stack'].includes(node.type) ? graphCombinedHitBox(node, pos, label) : null}
                   <g
                     class="graph-node"
                     class:active={node.id === largeSelectedRoute || node.id === largeInspectedRoute || node.id === largeHighlightedRoute}
@@ -7019,9 +7077,6 @@
                     onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}
                   >
                     <title>{node.label}</title>
-                    {#if combinedHit}
-                      <rect class="node-hit cluster-hit" x={combinedHit.x} y={combinedHit.y} width={combinedHit.w} height={combinedHit.h} rx="6"></rect>
-                    {/if}
                     {#if isGraphStackNodeType(node.type)}
                       <rect class="node-hit" x={pos.x - 32} y={pos.y - 25} width="64" height="50" rx="6"></rect>
                       <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>

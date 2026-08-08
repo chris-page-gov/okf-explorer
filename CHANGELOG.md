@@ -10,6 +10,14 @@
 - Clarified the large-corpus facet controls as `Clear filters` and `Reset facet
   layout`, grouped them together with Guidance, and kept the compact bundle
   loader beside the Explorer title at tablet widths.
+- Tightened graph pointer targets so an icon no longer owns the empty span to
+  its label or overlaps another node. List labels now sit inline on their
+  outside edge, staircase labels prefer the available left/right width, and
+  each visible label retains its own exact clickable target.
+- Labelled single record-type stacks as `All matching …`, distinguishing a
+  bounded loaded subset from the full match count. Opening a large stack now
+  always produces semantic subgroups, with deterministic title bands/ranges as
+  the fallback, instead of fanning out as many as 72 individual records.
 - Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
   complete public-safe prompt-response trace, machine-readable process
   registers and a modular content-addressed report builder. The analysis
