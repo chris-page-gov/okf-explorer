@@ -110,6 +110,14 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain('function preloadLargeFacetDistributions');
   });
 
+  it('keeps graph context and facet summaries dense without removing their semantic controls', () => {
+    expect(pageSource).toContain('class="graph-context-rail"');
+    expect(pageSource).toContain('class="graph-key-strip"');
+    expect(pageSource).toContain('class="graph-authority-filters"');
+    expect(pageSource).toContain('family.rows.slice(0, 3)');
+    expect(pageSource).toContain('family.valueCount - Math.min(3, family.rows.length)');
+  });
+
   it('uses SeeLinks-style preview, commit, pin-open and drag interactions without legacy Adjust', () => {
     expect(pageSource).toContain('function previewLargeFacetValue');
     expect(pageSource).toContain('async function commitFacetHighlights');

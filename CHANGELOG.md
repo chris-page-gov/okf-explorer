@@ -29,6 +29,11 @@
   siblings out of the child canvas. Switching branches or using browser Back
   therefore produces a visible structural change as well as different counts;
   relationship rows use those groups' human labels rather than encoded routes.
+- Compressed the graph chrome without flattening its visual hierarchy: node or
+  relationship keys now share one horizontally scrollable rail with authority,
+  hierarchy levels use slimmer breadcrumb-like rows, and facet cards use tighter
+  headers, value rows and three-value summary samples so more of the corpus and
+  graph remain visible at laptop and tablet heights.
 - Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
   complete public-safe prompt-response trace, machine-readable process
   registers and a modular content-addressed report builder. The analysis

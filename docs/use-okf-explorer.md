@@ -93,6 +93,11 @@ flowchart LR
    The selected sibling is marked **Open below**, while the final row names the
    level represented by the graph underneath. Inactive parent siblings remain
    in the strip instead of being mixed into the active branch's child graph.
+   These rows are intentionally compact and horizontally scroll their sibling
+   choices. The graph's node or relationship key and authority controls share
+   one compact rail; facet cards use shorter headers and values plus a bounded
+   three-value summary sample, preserving relative emphasis while leaving more
+   of the graph and facet list visible.
 5. Links opens relationship summaries first. Selecting a relationship summary
    opens the right-hand data card with direction, source, target, count, and
    JSON detail.
