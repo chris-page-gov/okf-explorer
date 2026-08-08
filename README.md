@@ -298,7 +298,9 @@ pnpm build
 matches the exact lockfile dependency versions and integrity hashes. It is an
 inventory and reproducibility check, not a vulnerability scan; use
 `pnpm audit --audit-level=moderate` and review GitHub Dependabot alerts before
-accepting dependency updates.
+accepting dependency updates. For Playwright updates, run the affected Chrome
+journeys locally; the terminal-equivalent CI assurance then repeats the
+browser contract across Chrome, Firefox and WebKit.
 
 When `apps/okf-explorer/build/` exists, `python3 scripts/build_site.py` copies
 it to `_site/next/`. The root `index.html` redirects to `next/` and preserves
