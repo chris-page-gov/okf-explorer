@@ -1170,4 +1170,54 @@ test.describe('large-corpus facet interaction contract', () => {
     ).toBe(true);
     expect(left.map((row) => Math.round(row.y))).toEqual(right.map((row) => Math.round(row.y)));
   });
+
+  test('FACET-E2E-17 keeps facets, graph context and nested hierarchy compact', async ({ page }) => {
+    await page.setViewportSize({ width: 907, height: 705 });
+    await openOnsFacetFixture(page);
+
+    const firstFacetHeader = await page.locator('.facet-section-header').first().boundingBox();
+    expect(firstFacetHeader).not.toBeNull();
+    expect(firstFacetHeader!.height).toBeLessThanOrEqual(36);
+
+    await facetToggle(page, 'derivation_mode').click();
+    const firstFacetValue = await facetSection(page, 'derivation_mode')
+      .locator('.facet-values [data-facet-value]')
+      .first()
+      .boundingBox();
+    expect(firstFacetValue).not.toBeNull();
+    expect(firstFacetValue!.height).toBeLessThanOrEqual(36);
+
+    await facetSegment(page, 'geography_level', 'region').dblclick();
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+
+    const contextRail = page.locator('.graph-context-rail');
+    const nodeKey = page.getByLabel('Node type key');
+    const authority = page.getByLabel('Relationship authority filters');
+    await expect(contextRail).toBeVisible();
+    await expect(authority).toBeVisible();
+    const [railBox, keyBox, authorityBox] = await Promise.all([
+      contextRail.boundingBox(),
+      nodeKey.boundingBox(),
+      authority.boundingBox()
+    ]);
+    expect(railBox).not.toBeNull();
+    expect(keyBox).not.toBeNull();
+    expect(authorityBox).not.toBeNull();
+    expect(railBox!.height).toBeLessThanOrEqual(38);
+    expect(Math.abs(keyBox!.y - authorityBox!.y)).toBeLessThanOrEqual(2);
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    const aggregate = graph.locator('.graph-node[data-type="record-type-stack"]');
+    const aggregateRoute = await aggregate.getAttribute('data-route');
+    expect(aggregateRoute).toBeTruthy();
+    await graph.locator(`.graph-node-label[data-label-route="${aggregateRoute}"]`).click();
+
+    const subgroup = graph.locator('.graph-node[data-type="facet-stack"]').first();
+    await subgroup.click();
+    const hierarchy = page.getByRole('navigation', { name: 'Open graph hierarchy' });
+    await expect(hierarchy.locator('.graph-hierarchy-level')).toHaveCount(1);
+    const hierarchyBox = await hierarchy.boundingBox();
+    expect(hierarchyBox).not.toBeNull();
+    expect(hierarchyBox!.height).toBeLessThanOrEqual(78);
+  });
 });

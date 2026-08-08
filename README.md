@@ -263,8 +263,12 @@ so browser Back closes one level at a time. An open hierarchy strip keeps the
 sibling choices for every traversed level together above the canvas, marks the
 active choice as `Open below`, and names the level currently drawn in the graph.
 Inactive parent-level siblings stay in that strip instead of mixing with the
-opened branch's children. The node type key reflects only the nodes currently
-displayed. Controlled regions keep all node labels visible
+opened branch's children. The hierarchy uses compact breadcrumb-like rows,
+while the node or relationship key and relationship authority share one
+scrollable context rail. Left-panel facet cards retain their relative emphasis
+but use shorter controls and bounded three-value samples to expose more facets
+at once. The node type key reflects only the nodes currently displayed.
+Controlled regions keep all node labels visible
 inline on the outside of compact lists; one dense relationship family uses
 paired left/right columns with two icons per row, while staircases use the
 available left/right width. Conflicting edge labels alone continue to cycle.

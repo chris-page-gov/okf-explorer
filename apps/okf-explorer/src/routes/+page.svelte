@@ -6478,7 +6478,7 @@
                                 <div>
                                   <strong>{family.label}:</strong>
                                   <span>
-                                    {#each family.rows as row, index}
+                                    {#each family.rows.slice(0, 3) as row, index}
                                       {#if index}<b aria-hidden="true">|</b>{/if}
                                       <button
                                         class:active={selectedFacetValues.includes(row.value)}
@@ -6492,8 +6492,8 @@
                                         onkeydown={(event) => facetValueKeydown(key, row.value, event)}
                                       >{facetValueDisplay(key, row.value)}</button>
                                     {/each}
-                                    {#if family.valueCount > family.rows.length}
-                                      <em>+{(family.valueCount - family.rows.length).toLocaleString()}</em>
+                                    {#if family.valueCount > Math.min(3, family.rows.length)}
+                                      <em>+{(family.valueCount - Math.min(3, family.rows.length)).toLocaleString()}</em>
                                     {/if}
                                   </span>
                                 </div>
@@ -6938,57 +6938,59 @@
                     {/if}
                   </div>
                 </div>
-                <div class="graph-key-strip" aria-label={graphKeyMode === 'nodes' ? 'Node type key' : 'Relationship type key'}>
-                  {#if graphKeyMode === 'nodes'}
-                    {#each graphLegendItems(nodeKeyNodes) as [type, label]}
-                      {@const typeCount = nodeKeyNodes.filter((node) => graphLegendTypeMatches(node.type, type)).length}
-                      {@const canHideType = graphNodeTypeCanHide(type, fullModel)}
-                      <button
-                        type="button"
-                        class:active={!canHideType || graphNodeTypeEnabled(type)}
-                        class:locked={!canHideType}
-                        aria-pressed={!canHideType || graphNodeTypeEnabled(type)}
-                        aria-disabled={!canHideType}
-                        title={!canHideType ? 'The focus node type remains visible' : `Show or hide ${label}`}
-                        onclick={() => toggleGraphNodeType(type, fullModel)}
-                      >
-                        <i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>
-                        {label} <small>{typeCount}{!canHideType ? ' · focus' : ''}</small>
-                      </button>
-                    {/each}
-                  {:else}
-                    {#each relationshipGroups as group}
-                      <button
-                        type="button"
-                        class:active={graphHighlightedRelationshipGroup === group.key}
-                        aria-pressed={graphHighlightedRelationshipGroup === group.key}
-                        onclick={(event) => inspectLargeRelationshipGroup(group, fullModel, event)}
-                      >
-                        {group.label} <small>{graphGroupDirectionLabel(group.direction)} · {group.edgeIds.length}</small>
-                      </button>
-                    {/each}
+                <div class="graph-context-rail">
+                  <div class="graph-key-strip" aria-label={graphKeyMode === 'nodes' ? 'Node type key' : 'Relationship type key'}>
+                    {#if graphKeyMode === 'nodes'}
+                      {#each graphLegendItems(nodeKeyNodes) as [type, label]}
+                        {@const typeCount = nodeKeyNodes.filter((node) => graphLegendTypeMatches(node.type, type)).length}
+                        {@const canHideType = graphNodeTypeCanHide(type, fullModel)}
+                        <button
+                          type="button"
+                          class:active={!canHideType || graphNodeTypeEnabled(type)}
+                          class:locked={!canHideType}
+                          aria-pressed={!canHideType || graphNodeTypeEnabled(type)}
+                          aria-disabled={!canHideType}
+                          title={!canHideType ? 'The focus node type remains visible' : `Show or hide ${label}`}
+                          onclick={() => toggleGraphNodeType(type, fullModel)}
+                        >
+                          <i class={`legend-shape legend-${type}`} style={`background:${largeTypeColor(type)}`}></i>
+                          {label} <small>{typeCount}{!canHideType ? ' · focus' : ''}</small>
+                        </button>
+                      {/each}
+                    {:else}
+                      {#each relationshipGroups as group}
+                        <button
+                          type="button"
+                          class:active={graphHighlightedRelationshipGroup === group.key}
+                          aria-pressed={graphHighlightedRelationshipGroup === group.key}
+                          onclick={(event) => inspectLargeRelationshipGroup(group, fullModel, event)}
+                        >
+                          {group.label} <small>{graphGroupDirectionLabel(group.direction)} · {group.edgeIds.length}</small>
+                        </button>
+                      {/each}
+                    {/if}
+                  </div>
+                  {#if graphRelationshipAuthorities(fullModel).length}
+                    <div class="graph-authority-filters" aria-label="Relationship authority filters">
+                      <span>Authority</span>
+                      {#each graphRelationshipAuthorities(fullModel) as authority}
+                        <button
+                          type="button"
+                          class:active={graphRelationshipAuthorityEnabled(authority)}
+                          data-relationship-authority-filter={authority}
+                          data-authority={authority}
+                          aria-pressed={graphRelationshipAuthorityEnabled(authority)}
+                          aria-label={`${graphRelationshipAuthorityLabel(authority)} relationships`}
+                          onclick={() => toggleGraphRelationshipAuthority(authority)}
+                        >
+                          <i aria-hidden="true"></i>
+                          {graphRelationshipAuthorityLabel(authority)}
+                          <small>{graphRelationshipAuthorityCount(fullModel, authority)}</small>
+                        </button>
+                      {/each}
+                    </div>
                   {/if}
                 </div>
-                {#if graphRelationshipAuthorities(fullModel).length}
-                  <div class="graph-authority-filters" aria-label="Relationship authority filters">
-                    <span>Authority</span>
-                    {#each graphRelationshipAuthorities(fullModel) as authority}
-                      <button
-                        type="button"
-                        class:active={graphRelationshipAuthorityEnabled(authority)}
-                        data-relationship-authority-filter={authority}
-                        data-authority={authority}
-                        aria-pressed={graphRelationshipAuthorityEnabled(authority)}
-                        aria-label={`${graphRelationshipAuthorityLabel(authority)} relationships`}
-                        onclick={() => toggleGraphRelationshipAuthority(authority)}
-                      >
-                        <i aria-hidden="true"></i>
-                        {graphRelationshipAuthorityLabel(authority)}
-                        <small>{graphRelationshipAuthorityCount(fullModel, authority)}</small>
-                      </button>
-                    {/each}
-                  </div>
-                {/if}
                 {#if fullModel.center && relationshipGroups.length && graphLayoutControlsOpen}
                   <section class="relationship-layout-controls" aria-label="Relationship layout">
                     <header>
@@ -7102,7 +7104,7 @@
                   {@const hierarchy = model.hierarchy}
                   <nav class="graph-hierarchy" aria-label="Open graph hierarchy">
                   <div class="graph-hierarchy-root">
-                    <span>Open hierarchy</span>
+                    <span>Hierarchy</span>
                     <button
                       type="button"
                       aria-expanded="true"
@@ -7122,7 +7124,7 @@
                       data-hierarchy-dimension={level.dimension}
                     >
                       <span class="graph-hierarchy-level-label">
-                        <small>Level {levelIndex + 1}</small>
+                        <small>L{levelIndex + 1}</small>
                         <strong>{level.label}</strong>
                       </span>
                       {#if level.activeRoute}
