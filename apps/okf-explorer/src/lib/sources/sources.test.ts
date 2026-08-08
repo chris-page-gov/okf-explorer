@@ -4,6 +4,7 @@ import {
   declaredDescriptorCandidates,
   fetchJson,
   fetchSourceJson,
+  fetchSourceResponse,
   fetchStructuredDocument,
   fetchStructuredDocumentWithFallback,
   MAX_JSON_BYTES,
@@ -442,6 +443,34 @@ describe('fetch helpers', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       'https://example.test/api/record',
       expect.objectContaining({ headers: { Accept: 'application/json, application/*+json;q=0.9' } })
+    );
+  });
+
+  it('requests and returns XML as escaped display text without JSON parsing', async () => {
+    const xml = '<service><title>Official route</title></service>';
+    const fetchMock = vi.fn(async () => new Response(xml, { headers: { 'content-type': 'application/xml' } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = await fetchSourceResponse('https://example.test/route.xml', 'xml', 'application/xml', 15000, 1, 0);
+    expect(response.data).toBeNull();
+    expect(response.text).toBe(xml);
+    expect(response.displayMode).toBe('xml');
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://example.test/route.xml',
+      expect.objectContaining({ headers: { Accept: 'application/xml, text/xml;q=0.9, application/*+xml;q=0.8' } })
+    );
+  });
+
+  it('requests plain text without applying the JSON endpoint fallback', async () => {
+    const fetchMock = vi.fn(async () => new Response('Current official guidance', { headers: { 'content-type': 'text/plain' } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = await fetchSourceResponse('https://data.gov.uk/api/action/example', 'text', 'text/plain', 15000, 1, 0);
+    expect(response.text).toBe('Current official guidance');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://data.gov.uk/api/action/example',
+      expect.objectContaining({ headers: { Accept: 'text/plain, text/*;q=0.9' } })
     );
   });
 

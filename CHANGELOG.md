@@ -2,6 +2,15 @@
 
 ## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
+- Added an additive large-record contract for repository-authored Narrative
+  Markdown, enclosing-process context, previous/next steps, variants and
+  related routes. A selected record now uses this content instead of the
+  generic reduced-corpus narrative when the producer supplies it.
+- Added typed resource source access with `link`, `json`, `xml` and `text`
+  display modes. Explorer fetches only explicitly browser-readable JSON, XML
+  and text, renders XML/text as inert escaped content, retains
+  `source_api_url` as JSON-only compatibility behaviour and always preserves a
+  direct official-source link. No response is persisted or redistributed.
 - Made focused-graph navigation explicit and reversible: Graph actions now
   recenter the inspected record, preserve the prior focus in the URL, reset
   the viewport and let browser Back restore the previous focus and inspector.

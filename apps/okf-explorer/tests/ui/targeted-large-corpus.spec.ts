@@ -83,6 +83,15 @@ async function installTargetedFixture(
     legislation_id_uri: 'https://www.legislation.gov.uk/id/ukpga/1998/42',
     document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
+    narrative: {
+      title: 'Target Act within its enclosing process',
+      body: 'This authored narrative explains **what comes before**, what happens here, and what may follow without replacing official guidance.',
+      process: { route: 'process/target-legislation', label: 'Target legislation process' },
+      previous: [{ route: 'episode/prepare-target-act', label: 'Prepare the route' }],
+      next: [{ route: 'episode/follow-target-act', label: 'Follow the outcome' }],
+      variants: [{ route: 'variant/scotland', label: 'Scotland variant' }],
+      related: [{ route: 'dataset/related-target-act', label: 'Related route' }]
+    },
     open: RECORD_ROUTE
   };
   const resource = {
@@ -93,7 +102,13 @@ async function installTargetedFixture(
     format: 'HTML',
     host: 'www.legislation.gov.uk',
     position: 0,
-    url: record.url
+    url: record.url,
+    source_access: {
+      url: `${ORIGIN}/official/target-act.xml`,
+      label: 'Official XML source',
+      media_type: 'application/xml',
+      display_mode: 'xml'
+    }
   };
   const relationships = [
     {
@@ -510,6 +525,14 @@ async function installTargetedFixture(
         body: atom
       });
     }
+    if (url.pathname === '/official/target-act.xml') {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/xml',
+        headers: { 'access-control-allow-origin': '*' },
+        body: '<official-source><title>Target Act source response</title></official-source>'
+      });
+    }
     if (url.pathname === '/okf-explorer.json') return json(route, descriptor);
     if (url.pathname === '/data/manifest.json') return json(route, manifest);
     if (url.pathname === '/data/overview.json') {
@@ -654,6 +677,30 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(page.getByText('1 manifestations shown from current reduction')).toBeVisible();
     await expect(page.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
     expect(requests).toContain('/data/resources.json');
+  });
+
+  test('record Narrative uses authored process context and typed XML source access', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${RECORD_ROUTE}`);
+    await expect(page.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+
+    await page.getByLabel('Views').getByRole('button', { name: 'Narrative', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Target Act within its enclosing process' })).toBeVisible();
+    await expect(page.locator('.record-narrative-body')).toContainText('what comes before');
+    await expect(page.getByRole('navigation', { name: 'Enclosing process and related routes' })).toContainText('Target legislation process');
+    await expect(page.getByRole('navigation', { name: 'Enclosing process and related routes' })).toContainText('Follow the outcome');
+
+    await page.locator('.right-panel').getByRole('button', { name: 'View source data', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Source data' })).toBeVisible();
+    await expect(page.getByText('Displayed as inert text; Explorer does not execute source markup.')).toBeVisible();
+    await expect(page.locator('.raw-panel pre')).toContainText('<official-source><title>Target Act source response</title></official-source>');
+    await expect(page.locator('.source-inspector').getByRole('link', { name: 'Open source XML ↗' })).toHaveAttribute('target', '_blank');
+    expect(requests).toContain('/official/target-act.xml');
   });
 
   test('Reader does not bypass the relationship memory guard when adjacency is absent', async ({

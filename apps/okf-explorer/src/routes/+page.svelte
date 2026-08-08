@@ -19,6 +19,7 @@
     LargeRelationship,
     LargeResourceReference,
     LargeResource,
+    LargeSourceDisplayMode,
     LargeSearchResponse,
     LoadedSource,
     NormalizedCorpus,
@@ -68,6 +69,14 @@
   import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
+    canDisplaySourceInline,
+    narrativeRouteGroups,
+    recordNarrative,
+    sourceAccesses,
+    sourceOpenLabel,
+    type ResolvedLargeSourceAccess
+  } from '$lib/viewer/largeRecordContracts';
+  import {
     renderSafeMarkdown,
     smallNodeLinks,
     smallNodeMetadataRows,
@@ -111,7 +120,7 @@
   } from '$lib/viewer/facetPresentation';
   import { providerDatapacksForRecord } from '$lib/viewer/providerDatapack';
   import {
-    fetchSourceJson,
+    fetchSourceResponse,
     fetchStructuredDocumentWithFallback,
     movedBundleTarget,
     parseStructuredDocumentText
@@ -454,6 +463,9 @@
   let largeApiRoute = $state('');
   let largeApiUrl = $state('');
   let largeApiJson = $state<unknown>(null);
+  let largeApiText = $state('');
+  let largeApiDisplayMode = $state<Exclude<LargeSourceDisplayMode, 'link'>>('json');
+  let largeApiSourceLabel = $state('');
   let largeApiLoading = $state(false);
   let largeApiError = $state('');
   let largeApiBytes = $state(0);
@@ -1881,6 +1893,9 @@
     largeApiRoute = '';
     largeApiUrl = '';
     largeApiJson = null;
+    largeApiText = '';
+    largeApiDisplayMode = 'json';
+    largeApiSourceLabel = '';
     largeApiError = '';
     largeApiBytes = 0;
     largeApiContentType = '';
@@ -1894,13 +1909,18 @@
     largeSourceInspectorOpen = false;
   }
 
-  async function loadLargeApiJson(route: string, url: unknown) {
-    if (!route || !isUrl(url)) return;
+  async function loadLargeSource(route: string, access: ResolvedLargeSourceAccess) {
+    if (!route || !isUrl(access.url) || !canDisplaySourceInline(access)) return;
+    const displayMode = access.display_mode as Exclude<LargeSourceDisplayMode, 'link'>;
+    const url = access.url;
     const requestId = largeApiRequest + 1;
     largeApiRequest = requestId;
     largeApiRoute = route;
     largeApiUrl = url;
     largeApiJson = null;
+    largeApiText = '';
+    largeApiDisplayMode = displayMode;
+    largeApiSourceLabel = access.label;
     largeApiError = '';
     largeApiBytes = 0;
     largeApiContentType = '';
@@ -1909,9 +1929,10 @@
     largeApiLoading = true;
     largeSourceInspectorOpen = true;
     try {
-      const response = await fetchSourceJson(url);
+      const response = await fetchSourceResponse(url, displayMode, access.media_type);
       if (requestId !== largeApiRequest || largeApiRoute !== route || largeApiUrl !== url) return;
-      largeApiJson = response.json;
+      largeApiJson = response.data;
+      largeApiText = response.text;
       largeApiBytes = response.bytes;
       largeApiContentType = response.contentType;
       largeApiRetrievedAt = response.retrievedAt;
@@ -6716,6 +6737,8 @@
       {#if source?.kind === 'large' && largeSourceInspectorOpen}
         <SourceInspector
           data={largeApiJson}
+          text={largeApiText}
+          displayMode={largeApiDisplayMode}
           url={largeApiResponseUrl || largeApiUrl}
           loading={largeApiLoading}
           error={largeApiError}
@@ -6723,6 +6746,7 @@
           contentType={largeApiContentType}
           retrievedAt={largeApiRetrievedAt}
           recordLabel={largeLabelForRoute(largeApiRoute || largeSelectedRoute || largeInspectedRoute)}
+          sourceLabel={largeApiSourceLabel}
           onclose={closeSourceInspector}
         />
       {:else if source?.kind === 'large'}
@@ -7633,22 +7657,50 @@
             />
           {:else if activeView === 'narrative'}
             {@const analysis = largeAnalysis()}
+            {@const selectedNarrative = largeDetail?.kind === 'dataset' ? recordNarrative(largeDetail.dataset) : null}
             <div class="view-heading">
               <h2>{currentLargeContextLabel()}</h2>
               <span>narrative context</span>
             </div>
             <section class="narrative-view">
               <article>
-                <h3>{analysis?.narrative?.title || analysis?.summary?.title || source.descriptor.title}</h3>
-                <p>
-                  {#if largeIsOverviewContext() && analysis?.narrative?.body}
+                <h3>{selectedNarrative?.title || analysis?.narrative?.title || analysis?.summary?.title || source.descriptor.title}</h3>
+                {#if selectedNarrative}
+                  <div class="markdown-body record-narrative-body">{@html renderSafeMarkdown(selectedNarrative.body, source.url)}</div>
+                  <nav class="record-narrative-routes" aria-label="Enclosing process and related routes">
+                    {#if selectedNarrative.process}
+                      <section>
+                        <strong>Enclosing process</strong>
+                        <a href={buildExplorerUrl(selectedNarrative.process.route)} onclick={(event) => followExplorerRoute(event, selectedNarrative.process?.route || '')}>
+                          {selectedNarrative.process.label || largeLabelForRoute(selectedNarrative.process.route)}
+                        </a>
+                        {#if selectedNarrative.process.description}<small>{selectedNarrative.process.description}</small>{/if}
+                      </section>
+                    {/if}
+                    {#each narrativeRouteGroups(selectedNarrative) as group}
+                      <section>
+                        <strong>{group.label}</strong>
+                        <div class="chips">
+                          {#each group.links as link}
+                            <a class="chip" href={buildExplorerUrl(link.route)} title={link.description || link.label || link.route} onclick={(event) => followExplorerRoute(event, link.route)}>
+                              {link.label || largeLabelForRoute(link.route)}
+                            </a>
+                          {/each}
+                        </div>
+                      </section>
+                    {/each}
+                  </nav>
+                {:else}
+                  <p>
+                    {#if largeIsOverviewContext() && analysis?.narrative?.body}
                     {analysis.narrative.body}
-                  {:else if largeIndex}
-                    The active context contains {largeVisibleDatasets.length.toLocaleString()} {recordPlural()} and {largeVisibleResources.length.toLocaleString()} visible {resourcePlural()} after the current search and facet reduction. Use the graph, links, timeline, resources, and map views to inspect the same reduced context from different angles.
-                  {:else}
-                    {analysis?.summary?.description || source.descriptor.description || 'This OKF Explorer view is using the lightweight overview payload until a search, filter, or deep link requires full-record hydration.'}
-                  {/if}
-                </p>
+                    {:else if largeIndex}
+                      The active context contains {largeVisibleDatasets.length.toLocaleString()} {recordPlural()} and {largeVisibleResources.length.toLocaleString()} visible {resourcePlural()} after the current search and facet reduction. Use the graph, links, timeline, resources, and map views to inspect the same reduced context from different angles.
+                    {:else}
+                      {analysis?.summary?.description || source.descriptor.description || 'This OKF Explorer view is using the lightweight overview payload until a search, filter, or deep link requires full-record hydration.'}
+                    {/if}
+                  </p>
+                {/if}
                 {#if selectedLargeFilterLabels().length}
                   <div class="chips">
                     {#each selectedLargeFilterLabels() as filter}
@@ -8256,6 +8308,7 @@
               {@const displaySeries = datasetDisplaySeries(largeDetail.dataset)}
               {@const seriesPeers = relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               {@const distinctAlternatives = distinctDatasetAlternatives(largeDetail.dataset)}
+              {@const sourceAccessRows = sourceAccesses(largeDetail.dataset, largeDetail.resources)}
               <span class="badge">{capitalise(recordSingular())}</span>
               <h2>{largeDetail.dataset.title}</h2>
               {#if datasetMatchReason(largeDetail.dataset)}
@@ -8336,12 +8389,14 @@
                 <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
                 <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
-                {#if isUrl(largeDetail.dataset.source_api_url)}
-                  <button class="primary-action" type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>
-                    {largeApiRoute === largeDetail.route && largeApiLoading ? 'Loading source data…' : 'View source data'}
-                  </button>
-                  <a class="button" href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>
-                {/if}
+                {#each sourceAccessRows as access}
+                  {#if canDisplaySourceInline(access)}
+                    <button class="primary-action" type="button" title={access.label} onclick={() => void loadLargeSource(largeDetail.route, access)}>
+                      {largeApiRoute === largeDetail.route && largeApiUrl === access.url && largeApiLoading ? 'Loading source data…' : 'View source data'}
+                    </button>
+                  {/if}
+                  <a class="button" href={access.url} target="_blank" rel="noopener noreferrer">{sourceOpenLabel(access)}</a>
+                {/each}
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>{largeSelectedRoute ? 'Back to selected card' : 'Clear inspection'}</button>{/if}
               </div>
               <div class="detail-tabs" role="tablist" aria-label="Data card sections">
@@ -8479,7 +8534,14 @@
                 <dt>Area served</dt><dd>{displayValue(largeDetail.dataset.area_served || largeDetail.dataset.areaServed)}</dd>
                 <dt>{primaryUrlLabel()}</dt><dd>{#if isUrl(largeDetail.dataset.url)}<a href={largeDetail.dataset.url} target="_blank" rel="noopener">{largeDetail.dataset.url}</a>{:else}{displayValue(largeDetail.dataset.url)}{/if}</dd>
                 <dt>Documentation</dt><dd>{#if isUrl(largeDetail.dataset.documentation)}<a href={largeDetail.dataset.documentation} target="_blank" rel="noopener">{largeDetail.dataset.documentation}</a>{:else}{displayValue(largeDetail.dataset.documentation)}{/if}</dd>
-                {#if largeDetail.dataset.source_api_url}<dt>Source API</dt><dd>{#if isUrl(largeDetail.dataset.source_api_url)}<button type="button" onclick={() => void loadLargeApiJson(largeDetail.route, largeDetail.dataset.source_api_url)}>View source data</button> <a href={largeDetail.dataset.source_api_url} target="_blank" rel="noopener noreferrer">Open raw JSON ↗</a>{:else}{displayValue(largeDetail.dataset.source_api_url)}{/if}</dd>{/if}
+                {#each sourceAccessRows as access}
+                  <dt>{access.label}</dt>
+                  <dd>
+                    {#if canDisplaySourceInline(access)}<button type="button" onclick={() => void loadLargeSource(largeDetail.route, access)}>View source data</button>{/if}
+                    <a href={access.url} target="_blank" rel="noopener noreferrer">{sourceOpenLabel(access)}</a>
+                    <small>{access.media_type} · {access.display_mode}{access.legacy ? ' · legacy source_api_url' : ''}</small>
+                  </dd>
+                {/each}
                 </dl>
               </details>
               {#if detailPanelTab === 'overview'}<LegislationDetail record={largeDetail.dataset} />{/if}

@@ -60,6 +60,7 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
+- [Add per-record narratives and typed source access][large-record-contract]
 - [Use the OKF Foundry prompts to research a domain, then build and publish its
   bundle][authoring-prompt-kit]
 - [Use the Evaluation Foundry and YAML-LD heritage exemplar][evaluation-foundry-guide]
@@ -408,6 +409,7 @@ Pages to use **GitHub Actions** as the source.
 [whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 [ai-okf-usage]: https://chris-page-gov.github.io/okf-explorer/docs/ai-okf-usage.html
 [bundle-authoring]: https://chris-page-gov.github.io/okf-explorer/docs/okf-bundle-authoring.html
+[large-record-contract]: docs/large-record-narrative-source-contract.md
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html
 [evaluation-foundry-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html
 [heritage-postmortem]: https://chris-page-gov.github.io/okf-explorer/docs/postmortems/heritage-foundry-2026/
