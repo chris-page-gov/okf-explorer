@@ -23,6 +23,12 @@
 - Split a single dense relationship family into paired left/right columns,
   placing two icons per row and keeping both label columns outside the focus.
   Smaller lists retain the established single-column relationship region.
+- Added an explicit open-stack hierarchy above the graph canvas. Every opened
+  level keeps its sibling choices together across the row, marks the active
+  branch as `Open below`, names the level shown in the graph, and moves inactive
+  siblings out of the child canvas. Switching branches or using browser Back
+  therefore produces a visible structural change as well as different counts;
+  relationship rows use those groups' human labels rather than encoded routes.
 - Added an evidence-backed Heritage Evaluation Foundry engineering postmortem,
   complete public-safe prompt-response trace, machine-readable process
   registers and a modular content-addressed report builder. The analysis

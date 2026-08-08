@@ -318,11 +318,32 @@
     expandedLabel?: string;
   };
 
+  type LargeGraphHierarchyChoice = {
+    route: string;
+    label: string;
+    count: number;
+  };
+
+  type LargeGraphHierarchyLevel = {
+    dimension: string;
+    label: string;
+    activeRoute?: string;
+    choices: LargeGraphHierarchyChoice[];
+  };
+
+  type LargeGraphHierarchy = {
+    rootRoute: string;
+    rootLabel: string;
+    rootCount: number;
+    levels: LargeGraphHierarchyLevel[];
+  };
+
   type LargeGraphModel = {
     center: string;
     nodes: LargeGraphNode[];
     relationships: LargeGraphEdge[];
     grouping?: LargeGraphGrouping;
+    hierarchy?: LargeGraphHierarchy;
   };
 
   type GraphLabel = GraphLabelPlacement;
@@ -4084,13 +4105,17 @@
     return type === 'resource-stack' || type === 'relationship-stack' || type === 'record-type-stack' || type === 'facet-stack';
   }
 
+  function decodedGraphStackPart(value: string): string {
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  }
+
   function graphStackParentRoute(route: string): string {
     if (!route.startsWith('facet-stack/')) return '';
-    try {
-      return decodeURIComponent(route.split('/')[1] || '');
-    } catch {
-      return '';
-    }
+    return decodedGraphStackPart(route.split('/')[1] || '');
   }
 
   function toggleLargeGraphStack(route: string) {
@@ -4115,10 +4140,19 @@
 
   function largeLabelForRoute(route: string): string {
     if (!route) return 'Overview';
-    const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
-    if (analysisLabel) return analysisLabel;
     const kind = routeKind(route);
     const value = routeValue(route);
+    if (kind === 'record-type-stack') {
+      return value.split('/').slice(1).join('/') || 'Record type group';
+    }
+    if (kind === 'facet-stack') {
+      const parts = route.split('/');
+      const dimension = decodedGraphStackPart(parts.at(-2) || 'group');
+      const facetValue = decodedGraphStackPart(parts.at(-1) || 'group');
+      return `${facetValueDisplay(dimension, facetValue)} group`;
+    }
+    const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
+    if (analysisLabel) return analysisLabel;
     const routedDataset = largeIndex?.datasetByRoute.get(route);
     if (routedDataset) return routedDataset.title;
     const routedResult = largeResults.find((result) => datasetRoute(result) === route);
@@ -4132,9 +4166,6 @@
       const datasetName = value.replace(/^dataset\//, '');
       const dataset = largeIndex?.datasetByName.get(datasetName);
       return `${resourceStackLabel()}: ${dataset?.title || datasetName}`;
-    }
-    if (kind === 'record-type-stack') {
-      return value.split('/').slice(1).join('/') || 'Record type group';
     }
     return value || route;
   }
@@ -4495,6 +4526,8 @@
     const edges: LargeGraphEdge[] = [];
     const edgeKeys = new Set<string>();
     let grouping: LargeGraphGrouping | undefined;
+    let hierarchyRoot: Omit<LargeGraphHierarchy, 'levels'> | undefined;
+    const hierarchyLevels: LargeGraphHierarchyLevel[] = [];
 
     const addNode = (id: string, type = routeKind(id), label = largeLabelForRoute(id), count?: number, stackFor?: string) => {
       if (!id) return;
@@ -4637,6 +4670,18 @@
     ) => {
       if (rows.length <= GRAPH_STACK_THRESHOLD) return false;
       const subgroup = bestStackSubgroups(rows, excludedDimensions);
+      const choices = subgroup.rows.map((group) => ({
+        route: `facet-stack/${encodeURIComponent(stackId)}/${encodeURIComponent(subgroup.dimension)}/${encodeURIComponent(group.value)}`,
+        label: facetValueDisplay(subgroup.dimension, group.value),
+        count: group.rows.length
+      }));
+      const activeRoute = choices.find((choice) => largeExpandedGraphGroups.includes(choice.route))?.route;
+      hierarchyLevels.push({
+        dimension: subgroup.dimension,
+        label: facetLabel(subgroup.dimension),
+        activeRoute,
+        choices
+      });
       grouping = {
         dimension: subgroup.dimension,
         label: `Grouped by ${facetLabel(subgroup.dimension).toLowerCase()}`,
@@ -4663,7 +4708,7 @@
               else addEdge(target, datasetRoute(dataset), label, relationshipMetadata);
             }
           }
-        } else {
+        } else if (!activeRoute) {
           addNode(subgroupId, 'facet-stack', `${groupLabel} (${group.rows.length})`, group.rows.length, stackId);
           if (direction === 'to-target') addCountedEdge(subgroupId, target, label, group.rows.length, relationshipMetadata);
           else addCountedEdge(target, subgroupId, label, group.rows.length, relationshipMetadata);
@@ -4699,6 +4744,18 @@
               : undefined
         );
         if (expanded) {
+          const totalMatches = metadataFacetForRoute(target)
+            ? datasetCountForMetadataRoute(target)
+            : rows.length;
+          hierarchyRoot ||= {
+            rootRoute: stackId,
+            rootLabel: recordGroups.length === 1 && group.rows.length === rows.length
+              ? totalMatches > rows.length
+                ? `All loaded matches (${rows.length} of ${totalMatches} ${recordPlural()})`
+                : `All matching ${recordPlural()} (${group.rows.length})`
+              : `${facetValueDisplay('record_type', group.recordType)} (${group.rows.length})`,
+            rootCount: group.rows.length
+          };
           if (!addOpenedStackSubgroups(group.rows, stackId, target, label, direction, relationshipMetadata)) {
             for (const dataset of group.rows.slice(0, GRAPH_EXPANDED_GROUP_LIMIT)) {
               addDatasetNode(dataset);
@@ -4876,7 +4933,15 @@
       addGroupedPublisherEdges(largeVisibleDatasets);
     }
 
-    return { center, nodes: [...nodeMap.values()].slice(0, 110), relationships: edges.slice(0, 120), grouping };
+    return {
+      center,
+      nodes: [...nodeMap.values()].slice(0, 110),
+      relationships: edges.slice(0, 120),
+      grouping,
+      hierarchy: hierarchyRoot
+        ? { ...hierarchyRoot, levels: hierarchyLevels }
+        : undefined
+    };
   }
 
   function placeArc(positions: Map<string, GraphPoint>, nodes: LargeGraphNode[], cx: number, cy: number, radius: number, start: number, end: number) {
@@ -7030,6 +7095,61 @@
                       {/each}
                     </div>
                   </section>
+                {/if}
+              </div>
+              <div class="graph-hierarchy-slot">
+                {#if model.hierarchy}
+                  {@const hierarchy = model.hierarchy}
+                  <nav class="graph-hierarchy" aria-label="Open graph hierarchy">
+                  <div class="graph-hierarchy-root">
+                    <span>Open hierarchy</span>
+                    <button
+                      type="button"
+                      aria-expanded="true"
+                      aria-label={`Close ${hierarchy.rootLabel}`}
+                      data-stack-route={hierarchy.rootRoute}
+                      onclick={() => toggleLargeGraphStack(hierarchy.rootRoute)}
+                    >
+                      <strong>{hierarchy.rootLabel}</strong>
+                      <small>Open</small>
+                    </button>
+                  </div>
+                  {#each hierarchy.levels as level, levelIndex}
+                    <div
+                      class="graph-hierarchy-level"
+                      class:open={Boolean(level.activeRoute)}
+                      class:current={!level.activeRoute}
+                      data-hierarchy-dimension={level.dimension}
+                    >
+                      <span class="graph-hierarchy-level-label">
+                        <small>Level {levelIndex + 1}</small>
+                        <strong>{level.label}</strong>
+                      </span>
+                      {#if level.activeRoute}
+                        <div class="graph-hierarchy-choices" aria-label={`${level.label} choices`}>
+                          {#each level.choices as choice}
+                            <button
+                              type="button"
+                              class:active={level.activeRoute === choice.route}
+                              aria-current={level.activeRoute === choice.route ? 'step' : undefined}
+                              aria-expanded={level.activeRoute === choice.route}
+                              data-stack-route={choice.route}
+                              onclick={() => toggleLargeGraphStack(choice.route)}
+                            >
+                              <span>{choice.label}</span>
+                              <small>{choice.count.toLocaleString()}</small>
+                              {#if level.activeRoute === choice.route}
+                                <em>Open below ↓</em>
+                              {/if}
+                            </button>
+                          {/each}
+                        </div>
+                      {:else}
+                        <span class="graph-hierarchy-current">Shown in the graph below ↓</span>
+                      {/if}
+                    </div>
+                  {/each}
+                  </nav>
                 {/if}
               </div>
               <svg

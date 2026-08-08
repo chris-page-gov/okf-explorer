@@ -2141,8 +2141,143 @@ input:focus {
   min-width: 0;
   min-height: 640px;
   display: grid;
-  grid-template-rows: auto minmax(520px, 1fr) auto auto;
+  grid-template-rows: auto auto minmax(520px, 1fr) auto auto;
   gap: 8px;
+}
+
+.graph-hierarchy-slot:empty {
+  display: none;
+}
+
+.graph-hierarchy {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .97);
+}
+
+.graph-hierarchy-root,
+.graph-hierarchy-level {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.graph-hierarchy-root > span,
+.graph-hierarchy-level-label small {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.graph-hierarchy-root > button {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+  min-height: 34px;
+  padding: 5px 9px;
+  border-color: #8ab8df;
+  background: #e8f2fb;
+  text-align: left;
+}
+
+.graph-hierarchy-root > button strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.graph-hierarchy-root > button small {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.graph-hierarchy-level {
+  position: relative;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+.graph-hierarchy-level.open::before {
+  position: absolute;
+  top: -7px;
+  left: 54px;
+  width: 2px;
+  height: 12px;
+  background: var(--accent);
+  content: '';
+}
+
+.graph-hierarchy-level-label {
+  display: grid;
+  gap: 1px;
+  line-height: 1.15;
+}
+
+.graph-hierarchy-level-label strong {
+  font-size: 12px;
+}
+
+.graph-hierarchy-choices {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scrollbar-width: thin;
+}
+
+.graph-hierarchy-choices button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  align-items: center;
+  min-height: 36px;
+  padding: 5px 9px;
+  background: var(--surface);
+}
+
+.graph-hierarchy-choices button > small {
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.graph-hierarchy-choices button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(29, 112, 184, .16);
+}
+
+.graph-hierarchy-choices button.active > small,
+.graph-hierarchy-choices button.active > em {
+  color: #fff;
+}
+
+.graph-hierarchy-choices button > em {
+  padding-left: 6px;
+  border-left: 1px solid currentColor;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 850;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.graph-hierarchy-current {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 750;
 }
 
 .graph-toolbar {

@@ -255,6 +255,11 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain("route.startsWith('facet-stack/')");
     expect(pageSource).toContain("const GRAPH_EXPANDED_STACK_PARAM = 'graph.stack'");
     expect(pageSource).toContain('function toggleLargeGraphStack(route: string)');
+    expect(pageSource).toContain('type LargeGraphHierarchyLevel');
+    expect(pageSource).toContain("if (kind === 'facet-stack')");
+    expect(pageSource).toContain('aria-label="Open graph hierarchy"');
+    expect(pageSource).toContain('Open below ↓');
+    expect(pageSource).toContain('Shown in the graph below ↓');
     expect(pageSource).toContain('if (isGraphStackRoute(route))');
     expect(pageSource).toContain('toggleLargeGraphStack(route);');
     expect(pageSource).toContain('onkeydown={(event) => keyboardActivate(event, () => graphNodeClick(node.id))}');
