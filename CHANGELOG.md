@@ -166,6 +166,10 @@
   retaining the compatible TypeScript 6 toolchain, and limited the Dependabot
   Explorer stack group to minor and patch releases so future major migrations
   receive isolated pull requests and validation.
+- Updated SvelteKit to 2.70.2 and Vite to 8.2.0, refreshed and checked the
+  CycloneDX dependency inventory, and verified the resolved dependency set
+  with a clean moderate-or-higher registry audit. The update resolves the
+  repository's transitive PostCSS advisory with PostCSS 8.5.25.
 - Added a 20-chapter, zero-background learning path covering the complete OKF
   Explorer foundation: browser and static-app concepts, Markdown and bundle
   publication, large-corpus loading, deterministic retrieval, graph and

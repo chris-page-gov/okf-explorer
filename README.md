@@ -286,11 +286,19 @@ the selected source, predicate and target on separate tabs.
 ```sh
 cd apps/okf-explorer
 pnpm install
+pnpm audit --audit-level=moderate
+pnpm sbom:check
 pnpm check
 pnpm test
 pnpm test:e2e
 pnpm build
 ```
+
+`pnpm sbom:check` verifies that the committed CycloneDX inventory still
+matches the exact lockfile dependency versions and integrity hashes. It is an
+inventory and reproducibility check, not a vulnerability scan; use
+`pnpm audit --audit-level=moderate` and review GitHub Dependabot alerts before
+accepting dependency updates.
 
 When `apps/okf-explorer/build/` exists, `python3 scripts/build_site.py` copies
 it to `_site/next/`. The root `index.html` redirects to `next/` and preserves
