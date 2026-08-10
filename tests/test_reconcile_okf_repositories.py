@@ -3,10 +3,13 @@ from __future__ import annotations
 import copy
 import gzip
 import importlib.util
+import io
 import json
+import shutil
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
@@ -165,6 +168,14 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
         self.assertNotIn("followed by every local command", guidance)
         self.assertIn("Never pass an unreviewed declaration to a shell", skill)
         self.assertIn(guidance, (ROOT / "AGENTS.md").read_text(encoding="utf-8"))
+        plugin_versions = {
+            json.loads(path.read_text(encoding="utf-8"))["version"]
+            for path in (
+                ROOT / "plugins/okf-repositories/plugin.json",
+                ROOT / "plugins/okf-repositories/.codex-plugin/plugin.json",
+            )
+        }
+        self.assertEqual({"0.1.1"}, plugin_versions)
 
     def test_contract_paths_are_safe_relative_and_contained(self) -> None:
         schema = json.loads(
@@ -452,6 +463,12 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
         for name, preset in reconcile.PRESETS.items():
             contract = reconcile.contract_for(name, preset)
             self.assertEqual([], reconcile.contract_errors(contract), name)
+            for source in reconcile.PROFILE_SOURCE_INPUTS:
+                self.assertIn(
+                    source,
+                    contract["semantic_layer"]["authoritative_inputs"],
+                    name,
+                )
             self.assertEqual(
                 [],
                 [error.message for error in validator.iter_errors(contract)],
@@ -489,6 +506,30 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
         ):
             self.assertTrue(any(fragment in error for error in errors), fragment)
 
+    def test_audit_malformed_contract_sections_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "fixture"
+            repo.mkdir()
+            malformed = reconcile.contract_for(
+                "okf-testing", reconcile.PRESETS["okf-testing"]
+            )
+            malformed["repository"] = []
+            malformed["semantic_layer"] = []
+            malformed["relationship_contract"] = []
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(malformed), encoding="utf-8"
+            )
+
+            result = reconcile.audit_repo(repo)
+
+            self.assertEqual("non-conformant", result["status"])
+            for section in (
+                "repository must be an object",
+                "semantic_layer must be an object",
+                "relationship_contract must be an object",
+            ):
+                self.assertIn(section, result["errors"])
+
     def test_testing_contract_declares_the_executable_fixture_corpus(self) -> None:
         contract = reconcile.contract_for(
             "okf-testing", reconcile.PRESETS["okf-testing"]
@@ -512,11 +553,489 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
         self.assertFalse(outputs["fixtures/expectations.json"]["generated"])
         self.assertTrue(outputs["reports/fixture-validation.json"]["generated"])
 
+    def test_reference_vendor_lock_binds_all_sixteen_profile_files(self) -> None:
+        reference = reconcile._reference_profile()
+        files = reference.files
+        lock_bytes = reference.lock_bytes
+
+        self.assertEqual(16, len(files))
+        self.assertEqual(16, len(reference.contents))
+        self.assertEqual(
+            sorted(item.path for item in files),
+            [item.path for item in files],
+        )
+        self.assertEqual(
+            reconcile.PROFILE_VENDOR_LOCK_SHA256,
+            reconcile.sha256_bytes(lock_bytes),
+        )
+        lock = json.loads(lock_bytes)
+        self.assertEqual(16, lock["file_count"])
+        self.assertEqual("v0.6.0", lock["release"]["tag"])
+        self.assertEqual(
+            "d256a74419c2593c2bf2f3f5749c606fad5daf9d",
+            lock["release"]["tag_object"],
+        )
+        self.assertEqual(
+            "854d1853b71ec8bda3424924f0f0985fe24aa7bca4c180d15f359fe259ef4c7e",
+            reconcile.profile_identity_sha256(files),
+        )
+        self.assertEqual([], reconcile.profile_mirror_errors(ROOT))
+        audit = reconcile.audit_repo(ROOT)
+        self.assertFalse(
+            any(
+                "neither the exact canonical profile mirror" in error
+                for error in audit["errors"]
+            ),
+            audit["errors"],
+        )
+
+    def test_profile_sync_repairs_missing_and_requires_replace_for_drift_or_extra(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "producer"
+            repo.mkdir()
+
+            reconcile.sync_profile(repo)
+            self.assertEqual([], reconcile.profile_mirror_errors(repo))
+
+            missing = repo / reconcile.PROFILE_MIRROR / "concept.schema.json"
+            missing.unlink()
+            self.assertTrue(
+                any("missing a file" in error for error in reconcile.profile_mirror_errors(repo))
+            )
+            reconcile.sync_profile(repo)
+            self.assertEqual([], reconcile.profile_mirror_errors(repo))
+
+            drifted = repo / reconcile.PROFILE_MIRROR / "semantic-assertion.schema.json"
+            drifted.write_bytes(drifted.read_bytes() + b" ")
+            with self.assertRaisesRegex(ValueError, "--replace-profile"):
+                reconcile.sync_profile(repo)
+            reconcile.sync_profile(repo, replace=True)
+            self.assertEqual([], reconcile.profile_mirror_errors(repo))
+
+            extra = repo / reconcile.PROFILE_MIRROR / "local-extension.schema.json"
+            extra.write_text('{}\n', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "extra profiles/bundle-wiki/v1"):
+                reconcile.sync_profile(repo)
+            reconcile.sync_profile(repo, replace=True)
+            self.assertFalse(extra.exists())
+            self.assertEqual([], reconcile.profile_mirror_errors(repo))
+
+            lock_path = repo / reconcile.PROFILE_VENDOR_LOCK
+            lock_path.write_bytes(lock_path.read_bytes() + b" ")
+            self.assertTrue(
+                any("vendor lock differs" in error for error in reconcile.profile_mirror_errors(repo))
+            )
+            with self.assertRaisesRegex(ValueError, "divergent profiles/bundle-wiki/v1.vendor-lock.json"):
+                reconcile.sync_profile(repo)
+            reconcile.sync_profile(repo, replace=True)
+            self.assertEqual([], reconcile.profile_mirror_errors(repo))
+
+    def test_profile_sync_never_follows_an_outward_symlink(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = Path(directory)
+            repo = parent / "producer"
+            outside = parent / "outside"
+            (repo / "profiles" / "bundle-wiki").mkdir(parents=True)
+            outside.mkdir()
+            (repo / reconcile.PROFILE_MIRROR).symlink_to(
+                outside, target_is_directory=True
+            )
+
+            with self.assertRaisesRegex(ValueError, "destination symlink"):
+                reconcile.sync_profile(repo, replace=True)
+
+            self.assertEqual([], list(outside.iterdir()))
+
+    def test_dirty_reference_profile_causes_zero_target_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = Path(directory)
+            reference = parent / "reference"
+            target = parent / "target"
+            (reference / reconcile.PROFILE_MIRROR.parent).mkdir(parents=True)
+            shutil.copytree(
+                ROOT / reconcile.PROFILE_MIRROR,
+                reference / reconcile.PROFILE_MIRROR,
+            )
+            shutil.copy2(
+                ROOT / reconcile.PROFILE_VENDOR_LOCK,
+                reference / reconcile.PROFILE_VENDOR_LOCK,
+            )
+            target.mkdir()
+            source_file = reference / reconcile.PROFILE_MIRROR / "index.md"
+            source_file.write_bytes(source_file.read_bytes() + b"\n")
+
+            with patch.object(reconcile, "ROOT", reference):
+                with self.assertRaisesRegex(ValueError, "reference file drifted"):
+                    reconcile.sync_profile(target, replace=True)
+
+            self.assertEqual([], list(target.rglob("*")))
+
+            source_file.write_bytes(
+                (ROOT / reconcile.PROFILE_MIRROR / "index.md").read_bytes()
+            )
+            second_target = parent / "second-target"
+            second_target.mkdir()
+            original_loader = reconcile._reference_profile
+            snapshots: list[reconcile.ProfileReference] = []
+
+            def load_then_mutate() -> reconcile.ProfileReference:
+                snapshot = original_loader()
+                snapshots.append(snapshot)
+                source_file.write_bytes(source_file.read_bytes() + b"\n")
+                return snapshot
+
+            with (
+                patch.object(reconcile, "ROOT", reference),
+                patch.object(
+                    reconcile,
+                    "_reference_profile",
+                    side_effect=load_then_mutate,
+                ),
+            ):
+                reconcile.sync_profile(second_target)
+
+            self.assertEqual(1, len(snapshots))
+            self.assertEqual(
+                snapshots[0].content_by_path()["index.md"],
+                (second_target / reconcile.PROFILE_MIRROR / "index.md").read_bytes(),
+            )
+            self.assertEqual(
+                [],
+                reconcile.profile_mirror_errors(
+                    second_target,
+                    reference=snapshots[0],
+                ),
+            )
+
+    def test_custom_schema_id_is_exempt_but_cannot_satisfy_canonical_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "fixture"
+            repo.mkdir()
+            (repo / "index.md").write_text(
+                '---\nokf_version: "0.2"\n---\n\n# Fixture\n',
+                encoding="utf-8",
+            )
+            schema_path = repo / "custom.schema.json"
+            schema_path.write_text(
+                json.dumps(
+                    {
+                        "$schema": "https://json-schema.org/draft/2020-12/schema",
+                        "$id": "https://example.test/profile/custom/assertion.schema.json",
+                        "type": "object",
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual([], reconcile.relationship_schema_errors(schema_path))
+
+            contract = reconcile.contract_for(
+                "okf-testing", reconcile.PRESETS["okf-testing"]
+            )
+            contract["repository"]["name"] = repo.name
+            contract["repository"]["root_index"] = "index.md"
+            contract["semantic_layer"]["profile"] = (
+                "https://example.test/profile/custom/"
+            )
+            contract["semantic_layer"]["authoritative_inputs"] = ["index.md"]
+            contract["semantic_layer"]["outputs"] = [
+                {
+                    "path": schema_path.name,
+                    "role": "relationship-schema",
+                    "generated": False,
+                    "required": True,
+                }
+            ]
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+
+            contract["relationship_contract"]["schema"] = (
+                "https://example.test/profile/custom/assertion.schema.json"
+            )
+            contract["semantic_layer"]["profile"] = reconcile.PROFILE_URL
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+            missing_mirror = reconcile.audit_repo(repo)
+            self.assertTrue(
+                any(
+                    "missing canonical profile mirror directory" in error
+                    for error in missing_mirror["errors"]
+                ),
+                missing_mirror["errors"],
+            )
+
+            contract["semantic_layer"]["profile"] = (
+                "https://example.test/profile/custom/"
+            )
+            contract["relationship_contract"]["schema"] = reconcile.ASSERTION_SCHEMA_URL
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+
+            canonical_claim = reconcile.audit_repo(repo)
+            self.assertEqual("non-conformant", canonical_claim["status"])
+            self.assertTrue(
+                any(
+                    "no exact declared relationship-schema output" in error
+                    for error in canonical_claim["errors"]
+                ),
+                canonical_claim["errors"],
+            )
+
+            contract["relationship_contract"]["schema"] = (
+                "https://example.test/profile/custom/other.schema.json"
+            )
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+            mismatched_claim = reconcile.audit_repo(repo)
+            self.assertEqual("non-conformant", mismatched_claim["status"])
+            self.assertTrue(
+                any(
+                    "no exact declared relationship-schema output" in error
+                    for error in mismatched_claim["errors"]
+                ),
+                mismatched_claim["errors"],
+            )
+
+            contract["relationship_contract"]["schema"] = (
+                "https://example.test/profile/custom/assertion.schema.json"
+            )
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+            custom_claim = reconcile.audit_repo(repo)
+            self.assertEqual("conformant", custom_claim["status"], custom_claim)
+
+    def test_every_relationship_schema_output_is_checked_after_the_third(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "fixture"
+            repo.mkdir()
+            (repo / "index.md").write_text(
+                '---\nokf_version: "0.2"\n---\n\n# Fixture\n',
+                encoding="utf-8",
+            )
+            canonical = (
+                ROOT
+                / reconcile.PROFILE_MIRROR
+                / "semantic-assertion.schema.json"
+            ).read_bytes()
+            outputs = []
+            for index in range(4):
+                path = repo / f"assertion-{index}.schema.json"
+                path.write_bytes(canonical + (b" " if index == 3 else b""))
+                outputs.append(
+                    {
+                        "path": path.name,
+                        "role": "relationship-schema",
+                        "generated": True,
+                        "required": True,
+                    }
+                )
+            contract = reconcile.contract_for(
+                "okf-testing", reconcile.PRESETS["okf-testing"]
+            )
+            contract["repository"]["name"] = repo.name
+            contract["repository"]["root_index"] = "index.md"
+            contract["semantic_layer"]["profile"] = (
+                "https://example.test/profile/custom/"
+            )
+            contract["semantic_layer"]["authoritative_inputs"] = ["index.md"]
+            contract["semantic_layer"]["outputs"] = outputs
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+
+            result = reconcile.audit_repo(repo)
+
+            self.assertEqual(4, result["relationship_schemas_checked"])
+            self.assertTrue(
+                any(
+                    "assertion-3.schema.json claims canonical $id" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+    def test_duplicate_custom_schema_id_requires_identical_bytes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "fixture"
+            repo.mkdir()
+            (repo / "index.md").write_text(
+                '---\nokf_version: "0.2"\n---\n\n# Fixture\n',
+                encoding="utf-8",
+            )
+            schema_id = "https://example.test/profile/assertion.schema.json"
+            first = repo / "first.schema.json"
+            second = repo / "second.schema.json"
+            first_schema = {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$id": schema_id,
+                "type": "object",
+            }
+            second_schema = {**first_schema, "required": ["@id"]}
+            first.write_text(json.dumps(first_schema), encoding="utf-8")
+            second.write_text(json.dumps(second_schema), encoding="utf-8")
+
+            contract = reconcile.contract_for(
+                "okf-testing", reconcile.PRESETS["okf-testing"]
+            )
+            contract["repository"]["name"] = repo.name
+            contract["repository"]["root_index"] = "index.md"
+            contract["semantic_layer"]["profile"] = (
+                "https://example.test/profile/"
+            )
+            contract["semantic_layer"]["authoritative_inputs"] = ["index.md"]
+            contract["semantic_layer"]["outputs"] = [
+                {
+                    "path": path.name,
+                    "role": "relationship-schema",
+                    "generated": False,
+                    "required": True,
+                }
+                for path in (first, second)
+            ]
+            contract["relationship_contract"]["schema"] = schema_id
+            (repo / "okf.semantic.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+
+            ambiguous = reconcile.audit_repo(repo, strict=True)
+            self.assertEqual("non-conformant", ambiguous["status"])
+            self.assertTrue(
+                any("one ambiguous $id" in error for error in ambiguous["errors"]),
+                ambiguous["errors"],
+            )
+
+            second.write_bytes(first.read_bytes())
+            identical = reconcile.audit_repo(repo, strict=True)
+            self.assertEqual("conformant", identical["status"], identical)
+
     def test_install_refuses_to_invent_a_missing_repository(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             repo = Path(directory) / "okf-testing"
             with self.assertRaisesRegex(ValueError, "repository does not exist"):
                 reconcile.install(repo)
+
+            first = Path(directory) / "okf-explorer"
+            unknown = Path(directory) / "unknown"
+            first.mkdir()
+            unknown.mkdir()
+            stderr = io.StringIO()
+            with (
+                patch.object(
+                    reconcile,
+                    "selected_repositories",
+                    return_value=iter((first, unknown)),
+                ),
+                redirect_stderr(stderr),
+            ):
+                self.assertEqual(2, reconcile.main(["--install"]))
+            self.assertIn("reconciliation failed:", stderr.getvalue())
+            self.assertNotIn("Traceback", stderr.getvalue())
+            self.assertFalse((first / reconcile.CONTRACT_NAME).exists())
+            self.assertFalse((first / "AGENTS.md").exists())
+
+            reference = Path(directory) / "reference"
+            (reference / reconcile.PROFILE_MIRROR.parent).mkdir(parents=True)
+            shutil.copytree(
+                ROOT / reconcile.PROFILE_MIRROR,
+                reference / reconcile.PROFILE_MIRROR,
+            )
+            shutil.copy2(
+                ROOT / reconcile.PROFILE_VENDOR_LOCK,
+                reference / reconcile.PROFILE_VENDOR_LOCK,
+            )
+            source_file = reference / reconcile.PROFILE_MIRROR / "index.md"
+            source_file.write_bytes(source_file.read_bytes() + b"\n")
+            target = Path(directory) / "okf-ai-infrastructure"
+            target.mkdir()
+            stderr = io.StringIO()
+            with patch.object(reconcile, "ROOT", reference), redirect_stderr(stderr):
+                self.assertEqual(
+                    2,
+                    reconcile.main(
+                        [
+                            "--repo",
+                            str(target),
+                            "--install",
+                            "--sync-profile",
+                        ]
+                    ),
+                )
+            self.assertIn("reconciliation failed:", stderr.getvalue())
+            self.assertNotIn("Traceback", stderr.getvalue())
+            self.assertFalse((target / reconcile.CONTRACT_NAME).exists())
+            self.assertFalse((target / "AGENTS.md").exists())
+            self.assertFalse((target / reconcile.PROFILE_MIRROR).exists())
+
+    def test_install_preflights_non_regular_destinations_across_repositories(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            first = Path(directory) / "okf-explorer"
+            second = Path(directory) / "okf-ai-infrastructure"
+            first.mkdir()
+            second.mkdir()
+            (second / "AGENTS.md").mkdir()
+            stderr = io.StringIO()
+
+            with (
+                patch.object(
+                    reconcile,
+                    "selected_repositories",
+                    return_value=iter((first, second)),
+                ),
+                redirect_stderr(stderr),
+            ):
+                self.assertEqual(2, reconcile.main(["--install"]))
+
+            self.assertIn("install destination is not a regular file", stderr.getvalue())
+            self.assertNotIn("Traceback", stderr.getvalue())
+            self.assertFalse((first / reconcile.CONTRACT_NAME).exists())
+            self.assertFalse((first / "AGENTS.md").exists())
+
+    def test_report_destination_is_preflighted_before_repository_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-explorer"
+            repo.mkdir()
+            stderr = io.StringIO()
+
+            with redirect_stderr(stderr):
+                self.assertEqual(
+                    2,
+                    reconcile.main(
+                        [
+                            "--repo",
+                            str(repo),
+                            "--install",
+                            "--report",
+                            str(repo / reconcile.CONTRACT_NAME),
+                        ]
+                    ),
+                )
+
+            self.assertIn(
+                "report destination must be outside every audited repository",
+                stderr.getvalue(),
+            )
+            self.assertNotIn("Traceback", stderr.getvalue())
+            self.assertFalse((repo / reconcile.CONTRACT_NAME).exists())
+            self.assertFalse((repo / "AGENTS.md").exists())
+
+            report = Path(directory) / "reconciliation.json"
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(
+                    1,
+                    reconcile.main(
+                        ["--repo", str(repo), "--report", str(report)]
+                    ),
+                )
+            self.assertEqual(
+                "okf-repository-reconciliation-report.v1",
+                json.loads(report.read_text(encoding="utf-8"))["schema"],
+            )
 
     def test_strict_mode_promotes_relationship_migration_gaps(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -562,8 +1081,12 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
             (repo / "bundle" / "data" / "explorer" / "relationships-000.json").write_text(
                 '[{"source":"https://example.test/a","target":"b","predicate":"related_to"}]\n', encoding="utf-8"
             )
+            contract = reconcile.contract_for(repo.name, reconcile.PRESETS[repo.name])
+            contract["semantic_layer"]["profile"] = (
+                "https://example.test/profile/bundle-wiki/v1/"
+            )
             (repo / "okf.semantic.json").write_text(
-                json.dumps(reconcile.contract_for(repo.name, reconcile.PRESETS[repo.name])),
+                json.dumps(contract),
                 encoding="utf-8",
             )
 

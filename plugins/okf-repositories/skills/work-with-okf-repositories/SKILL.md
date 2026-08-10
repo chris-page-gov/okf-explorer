@@ -122,7 +122,14 @@ corpus graph or a discovery facet as domain applicability.
    check mode when available. Never pass an unreviewed declaration to a shell.
 5. For semantic producers, validate every generated assertion against the
    pinned local shared schema; a sampled cross-repository audit cannot justify
-   a conformant producer receipt.
+   a conformant producer receipt. If the repository claims the canonical
+   Bundle Wiki v1 profile URI, require the complete byte-exact Explorer v0.6.0
+   mirror and its adjacent vendor lock. A schema retaining the canonical `$id`
+   must retain the canonical bytes; give an intentionally different schema its
+   own absolute `$id`. For explanatory material, direct readers of the opaque
+   vendored `index.md` to the
+   [canonical published profile](https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/)
+   because its documentation links remain Explorer-relative.
 6. Run the full applicable suite before publication or release work.
 7. Inspect semantic and generated diffs, counts, identifiers, links,
    assertions, manifests, and checksums—not only process exit codes.

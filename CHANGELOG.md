@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Pin the canonical Bundle Wiki v1 profile to the complete, byte-exact
+  Explorer v0.6.0 16-file tree and an adjacent machine-readable vendor lock.
+  Reconciliation now fails closed on a missing, extra or drifted canonical
+  mirror, checks every declared relationship schema, and offers an explicit
+  symlink-safe profile sync with opt-in replacement of divergent files.
+
 ## v0.6.0 - 2026-08-10 - OKF 0.2 semantic contracts and governed YAML-LD
 
 - Completed the local nine-repository OKF 0.2/YAML-LD migration: every

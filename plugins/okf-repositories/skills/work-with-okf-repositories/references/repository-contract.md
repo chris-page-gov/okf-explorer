@@ -188,6 +188,18 @@ Validate every generated assertion against the pinned local shared Draft
 central audit may sample shards to detect family-wide regressions, but sample
 success is not evidence that the unsampled population conforms.
 
+Claiming the canonical Bundle Wiki v1 profile URI also claims its complete
+byte identity. Vendor all 16 Explorer v0.6.0 files unchanged and retain the
+adjacent `profiles/bundle-wiki/v1.vendor-lock.json`; do not publish a partial
+or locally customised mirror under that URI. The reconciliation tool audits
+missing, extra and drifted files and validates every declared
+`relationship-schema` output. A schema with the canonical `$id` must be
+byte-identical to the canonical assertion schema. A deliberately extended or
+specialised schema is permitted only with its own absolute `$id`. The vendored
+`index.md` is an opaque canonical byte whose documentation links remain
+Explorer-relative, so direct readers needing explanation should use the
+[canonical published profile](https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/).
+
 For a very large rich relationship plane, advertise one digest-bound
 `relationship_runtime` control manifest instead of making the Reader scan the
 semantic graph. The manifest names active/default and historical planes,

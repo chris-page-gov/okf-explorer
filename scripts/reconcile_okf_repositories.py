@@ -3,17 +3,22 @@
 
 The tool never edits generated bundle data. ``--install`` writes only the
 repository-local ``okf.semantic.json`` control file and a bounded AGENTS.md
-guidance block in existing repositories. The default action is read-only and
-emits a reconciliation report.
+guidance block in existing repositories. ``--sync-profile`` installs the
+separately locked, byte-exact canonical profile mirror. The default action is
+read-only and emits a reconciliation report.
 """
 
 from __future__ import annotations
 
 import argparse
 import gzip
+import hashlib
 import json
+import os
 import re
+import stat
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -25,6 +30,20 @@ CONTRACT_NAME = "okf.semantic.json"
 PROFILE_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
 CONTRACT_SCHEMA_URL = PROFILE_URL + "repository-contract.schema.json"
 ASSERTION_SCHEMA_URL = PROFILE_URL + "semantic-assertion.schema.json"
+PROFILE_MIRROR = Path("profiles/bundle-wiki/v1")
+PROFILE_VENDOR_LOCK = Path("profiles/bundle-wiki/v1.vendor-lock.json")
+PROFILE_SOURCE_INPUTS = (
+    "profiles/bundle-wiki/v1/",
+    "profiles/bundle-wiki/v1.vendor-lock.json",
+)
+PROFILE_VENDOR_LOCK_SHA256 = (
+    "979af714974abb093ac9d4b1b7e289597c61d33c24bb6959d9914c2f74dc6a09"
+)
+PROFILE_RELEASE_VERSION = "0.6.0"
+PROFILE_RELEASE_TAG = "v0.6.0"
+PROFILE_RELEASE_TAG_OBJECT = "d256a74419c2593c2bf2f3f5749c606fad5daf9d"
+PROFILE_RELEASE_COMMIT = "4bb7b92a64b7ba69bde9b1e86786217338cd166d"
+PROFILE_RELEASE_TREE = "d26ae9a818041ff74c469e653ec714632ddbfc2a"
 OKF_SPEC_URL = (
     "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
 )
@@ -133,6 +152,47 @@ MAX_AUDIT_GLOB_MATCHES = 10_000
 
 class ArtifactReadError(ValueError):
     """Raised when an audited artefact cannot be read safely and completely."""
+
+
+@dataclass(frozen=True)
+class ProfileFile:
+    """One byte-exact file in the canonical Bundle Wiki v1 profile."""
+
+    path: str
+    bytes: int
+    sha256: str
+
+
+@dataclass(frozen=True)
+class ProfileReference:
+    """One fully verified, immutable in-memory profile snapshot."""
+
+    files: tuple[ProfileFile, ...]
+    lock_bytes: bytes
+    contents: tuple[tuple[str, bytes], ...]
+
+    def content_by_path(self) -> dict[str, bytes]:
+        return dict(self.contents)
+
+
+@dataclass(frozen=True)
+class ProfileSyncPlan:
+    """A preflighted set of bounded profile mutations for one repository."""
+
+    repo: Path
+    reference: ProfileReference
+    replace: bool
+    removals: tuple[str, ...]
+    writes: tuple[tuple[str, bytes], ...]
+
+
+@dataclass(frozen=True)
+class InstallPlan:
+    """Pre-rendered repository contract and agent guidance for one install."""
+
+    repo: Path
+    contract_text: str
+    agent_text: str
 
 
 @dataclass(frozen=True)
@@ -331,6 +391,10 @@ def output(
 
 
 def contract_for(name: str, preset: Preset) -> dict[str, Any]:
+    authoritative_inputs = list(preset.inputs)
+    authoritative_inputs.extend(
+        path for path in PROFILE_SOURCE_INPUTS if path not in authoritative_inputs
+    )
     return {
         "schema": "okf-repository-semantic-contract.v1",
         "repository": {"name": name, "role": preset.role, "root_index": preset.root_index},
@@ -338,7 +402,7 @@ def contract_for(name: str, preset: Preset) -> dict[str, Any]:
         "semantic_layer": {
             "profile": PROFILE_URL,
             "state": preset.state,
-            "authoritative_inputs": list(preset.inputs),
+            "authoritative_inputs": authoritative_inputs,
             "outputs": [output(*item) for item in preset.outputs],
             "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
             "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
@@ -394,6 +458,7 @@ def agent_block() -> str:
 - Every new material directed relationship must retain a stable assertion ID, validated local runtime `source` and `target`, absolute `source_iri` and `target_iri`, an absolute predicate IRI, a governed relationship kind, preferred and inverse labels, assertion status and scope, authority, derivation, observation time, evidence and rights. Semantic reification maps the same identities to RDF subject and object. Confidence never upgrades authority.
 - Keep the direct semantic triple and its evidence-bearing `okf:RelationshipAssertion` synchronised, or generate both deterministically from one assertion source. Do not infer domain predicates from Markdown links.
 - Validate every generated semantic assertion—not merely a sample—against the pinned local shared Draft 2020-12 schema before writing a conformant receipt. Cross-repository sampling is a regression signal, not a substitute for producer validation.
+- A repository that claims the canonical Bundle Wiki v1 profile URI must vendor all 16 Explorer v0.6.0 profile files byte for byte with the adjacent `profiles/bundle-wiki/v1.vendor-lock.json`. Never edit that mirror locally. Use `python3 ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --sync-profile` to install missing canonical files; add `--replace-profile` only after reviewing the divergent or extra files it reports. A relationship schema that retains the canonical `$id` must have the canonical bytes; a deliberately different schema must use its own absolute `$id`. Direct readers to the canonical published profile at `{PROFILE_URL}` for explanatory material because the opaque vendored `index.md` retains Explorer-relative documentation links.
 - Canonicalise authority sources, evidence resource URLs and rights source links as credential-free HTTP(S) URLs. Percent-encode query values and reject missing hosts, literal whitespace, quotes, malformed escapes, credentials, unsafe delimiters, non-web schemes and ports outside 1–65535 before generating projections.
 - For a large sharded rich graph, publish a digest-bound `relationship_runtime` manifest and SHA-256 route locator. Each route must commit per plane to its exact incident assertion count and sorted assertion-ID digest; keep historical/rejected planes out of `default_planes` and obey the Reader's aggregate chunk, row, compressed-byte and retained-text ceilings.
 - Resolve only pinned local contexts during builds. The Reader parses bounded YAML-LD safely but does not fetch or reason over arbitrary remote contexts; it consumes explicit route-bearing nodes and assertion rows.
@@ -403,19 +468,522 @@ def agent_block() -> str:
 """
 
 
-def install_agent_guidance(path: Path) -> None:
+def render_agent_guidance(path: Path) -> str:
     existing = path.read_text(encoding="utf-8") if path.is_file() else "# Repository instructions\n"
     block = agent_block()
     pattern = re.compile(re.escape(AGENT_START) + r".*?" + re.escape(AGENT_END) + r"\n?", re.S)
     if pattern.search(existing):
-        updated = pattern.sub(block, existing)
-    else:
-        updated = existing.rstrip() + "\n\n" + block
-    path.write_text(updated, encoding="utf-8")
+        return pattern.sub(block, existing)
+    return existing.rstrip() + "\n\n" + block
+
+
+def install_agent_guidance(path: Path) -> None:
+    path.write_text(render_agent_guidance(path), encoding="utf-8")
 
 
 def read_json(path: Path) -> Any:
     return json.loads(read_bounded_text(path))
+
+
+def read_bounded_bytes(path: Path) -> bytes:
+    """Read exact bytes without allowing an artefact to exceed the audit ceiling."""
+    try:
+        size = path.stat().st_size
+        if size > MAX_AUDIT_FILE_BYTES:
+            raise ArtifactReadError(
+                f"file is {size} bytes; audit limit is {MAX_AUDIT_FILE_BYTES} bytes"
+            )
+        data = path.read_bytes()
+    except ArtifactReadError:
+        raise
+    except OSError as exc:
+        raise ArtifactReadError(str(exc)) from exc
+    if len(data) != size:
+        raise ArtifactReadError(
+            f"file changed while it was read: expected {size} bytes, read {len(data)}"
+        )
+    return data
+
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def profile_identity_sha256(files: Iterable[ProfileFile]) -> str:
+    """Return the aggregate profile identity defined by profile-lock-lines-v1."""
+    payload = "".join(
+        f"{item.path}\t{item.bytes}\t{item.sha256}\n"
+        for item in sorted(files, key=lambda item: item.path)
+    ).encode("utf-8")
+    return sha256_bytes(payload)
+
+
+def _reference_profile() -> ProfileReference:
+    """Load and independently verify the immutable Explorer v0.6.0 profile lock."""
+    for relative in (PROFILE_MIRROR, PROFILE_VENDOR_LOCK):
+        linked = _symlink_component(ROOT, relative)
+        if linked:
+            raise ValueError(
+                f"canonical profile reference contains or traverses a symlink: {linked}"
+            )
+    lock_path = ROOT / PROFILE_VENDOR_LOCK
+    try:
+        lock_bytes = read_bounded_bytes(lock_path)
+    except ArtifactReadError as exc:
+        raise ValueError(f"cannot read canonical profile vendor lock: {exc}") from exc
+    lock_digest = sha256_bytes(lock_bytes)
+    if lock_digest != PROFILE_VENDOR_LOCK_SHA256:
+        raise ValueError(
+            "canonical profile vendor lock differs from the reviewed reference "
+            f"digest: {lock_digest}"
+        )
+    try:
+        lock = json.loads(lock_bytes)
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"canonical profile vendor lock is invalid JSON: {exc}") from exc
+    if not isinstance(lock, dict):
+        raise ValueError("canonical profile vendor lock root is not an object")
+    expected_header = {
+        "schema": "okf-profile-vendor-lock.v1",
+        "profile": PROFILE_URL,
+    }
+    for field, expected in expected_header.items():
+        if lock.get(field) != expected:
+            raise ValueError(
+                f"canonical profile vendor lock {field} differs from {expected}"
+            )
+    release = lock.get("release")
+    if not isinstance(release, dict) or release != {
+        "repository": "https://github.com/chris-page-gov/okf-explorer",
+        "version": PROFILE_RELEASE_VERSION,
+        "tag": PROFILE_RELEASE_TAG,
+        "tag_object": PROFILE_RELEASE_TAG_OBJECT,
+        "commit": PROFILE_RELEASE_COMMIT,
+        "git_tree": PROFILE_RELEASE_TREE,
+    }:
+        raise ValueError("canonical profile vendor lock has an unexpected release identity")
+    raw_files = lock.get("files")
+    if not isinstance(raw_files, list) or not raw_files:
+        raise ValueError("canonical profile vendor lock has no file inventory")
+    if lock.get("file_count") != len(raw_files):
+        raise ValueError("canonical profile vendor lock file_count is inconsistent")
+    files: list[ProfileFile] = []
+    for index, item in enumerate(raw_files):
+        if not isinstance(item, dict) or set(item) != {"path", "bytes", "sha256"}:
+            raise ValueError(
+                f"canonical profile vendor lock files[{index}] is malformed"
+            )
+        path = item.get("path")
+        size = item.get("bytes")
+        digest = item.get("sha256")
+        if (
+            not isinstance(path, str)
+            or not safe_repository_path(path)
+            or "/" in path
+            or not isinstance(size, int)
+            or isinstance(size, bool)
+            or size < 0
+            or not isinstance(digest, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", digest)
+        ):
+            raise ValueError(
+                f"canonical profile vendor lock files[{index}] is malformed"
+            )
+        files.append(ProfileFile(path, size, digest))
+    paths = [item.path for item in files]
+    if paths != sorted(paths) or len(paths) != len(set(paths)):
+        raise ValueError(
+            "canonical profile vendor lock file inventory is not unique lexical order"
+        )
+    identity = lock.get("identity")
+    actual_identity = profile_identity_sha256(files)
+    if not isinstance(identity, dict) or (
+        identity.get("algorithm") != "sha256"
+        or identity.get("canonicalisation")
+        != "profile-lock-lines-v1: UTF-8 lines in lexical path order: "
+        "<path> TAB <bytes> TAB <sha256> LF"
+        or identity.get("sha256") != actual_identity
+    ):
+        raise ValueError(
+            "canonical profile vendor lock aggregate identity is malformed or inconsistent"
+        )
+    mirror = ROOT / PROFILE_MIRROR
+    if not mirror.is_dir():
+        raise ValueError(f"canonical profile reference directory is missing: {mirror}")
+    expected = {item.path: item for item in files}
+    contents: list[tuple[str, bytes]] = []
+    try:
+        entries = sorted(mirror.iterdir(), key=lambda path: path.name)
+    except OSError as exc:
+        raise ValueError(f"cannot inspect canonical profile reference: {exc}") from exc
+    actual_names: set[str] = set()
+    for path in entries:
+        if path.is_symlink() or not path.is_file():
+            raise ValueError(
+                "canonical profile reference contains a non-regular entry: "
+                f"{path.name}"
+            )
+        actual_names.add(path.name)
+        expected_file = expected.get(path.name)
+        if expected_file is None:
+            raise ValueError(
+                f"canonical profile reference contains an extra file: {path.name}"
+            )
+        try:
+            data = read_bounded_bytes(path)
+        except ArtifactReadError as exc:
+            raise ValueError(
+                f"cannot read canonical profile reference file {path.name}: {exc}"
+            ) from exc
+        digest = sha256_bytes(data)
+        if len(data) != expected_file.bytes or digest != expected_file.sha256:
+            raise ValueError(
+                f"canonical profile reference file drifted: {path.name} "
+                f"(bytes {len(data)}, sha256 {digest})"
+            )
+        contents.append((path.name, data))
+    missing = sorted(set(expected) - actual_names)
+    if missing:
+        raise ValueError(
+            "canonical profile reference is missing files: " + ", ".join(missing)
+        )
+    return ProfileReference(tuple(files), lock_bytes, tuple(contents))
+
+
+def _symlink_component(repo: Path, relative: Path) -> str:
+    """Return the first symlink component without resolving or following it."""
+    current = repo
+    for part in relative.parts:
+        current /= part
+        try:
+            mode = current.lstat().st_mode
+        except FileNotFoundError:
+            return ""
+        except OSError as exc:
+            raise ValueError(f"cannot inspect repository path {relative}: {exc}") from exc
+        if stat.S_ISLNK(mode):
+            return current.relative_to(repo).as_posix()
+    return ""
+
+
+def profile_mirror_errors(
+    repo: Path,
+    *,
+    reference: ProfileReference | None = None,
+) -> list[str]:
+    """Check a local canonical profile mirror against the immutable vendor lock."""
+    errors: list[str] = []
+    if reference is None:
+        try:
+            reference = _reference_profile()
+        except ValueError as exc:
+            return [f"canonical profile reference is invalid: {exc}"]
+    files = reference.files
+    reference_lock_bytes = reference.lock_bytes
+
+    for relative in (PROFILE_MIRROR, PROFILE_VENDOR_LOCK):
+        try:
+            linked = _symlink_component(repo, relative)
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        if linked:
+            errors.append(
+                f"canonical profile mirror must not contain or traverse a symlink: {linked}"
+            )
+    if errors:
+        return sorted(set(errors))
+
+    mirror = repo / PROFILE_MIRROR
+    lock_path = repo / PROFILE_VENDOR_LOCK
+    if not mirror.is_dir():
+        errors.append(f"missing canonical profile mirror directory: {PROFILE_MIRROR}")
+    if not lock_path.is_file():
+        errors.append(f"missing canonical profile vendor lock: {PROFILE_VENDOR_LOCK}")
+    else:
+        try:
+            local_lock_bytes = read_bounded_bytes(lock_path)
+        except ArtifactReadError as exc:
+            errors.append(f"invalid canonical profile vendor lock: {exc}")
+        else:
+            if local_lock_bytes != reference_lock_bytes:
+                errors.append(
+                    "canonical profile vendor lock differs from the reviewed "
+                    f"Explorer v{PROFILE_RELEASE_VERSION} reference"
+                )
+    if not mirror.is_dir():
+        return sorted(set(errors))
+
+    expected = {item.path: item for item in files}
+    actual_names: set[str] = set()
+    try:
+        entries = sorted(mirror.iterdir(), key=lambda path: path.name)
+    except OSError as exc:
+        errors.append(f"cannot inspect canonical profile mirror: {exc}")
+        return sorted(set(errors))
+    for path in entries:
+        relative = (PROFILE_MIRROR / path.name).as_posix()
+        if path.is_symlink():
+            errors.append(f"canonical profile mirror entry is a symlink: {relative}")
+            continue
+        if not path.is_file():
+            errors.append(f"canonical profile mirror has a non-file entry: {relative}")
+            continue
+        actual_names.add(path.name)
+        expected_file = expected.get(path.name)
+        if expected_file is None:
+            errors.append(f"canonical profile mirror has an extra file: {relative}")
+            continue
+        try:
+            data = read_bounded_bytes(path)
+        except ArtifactReadError as exc:
+            errors.append(f"cannot read canonical profile file {relative}: {exc}")
+            continue
+        digest = sha256_bytes(data)
+        if len(data) != expected_file.bytes or digest != expected_file.sha256:
+            errors.append(
+                f"canonical profile file drifted: {relative} "
+                f"(bytes {len(data)}, sha256 {digest})"
+            )
+    for name in sorted(set(expected) - actual_names):
+        errors.append(
+            f"canonical profile mirror is missing a file: "
+            f"{(PROFILE_MIRROR / name).as_posix()}"
+        )
+    return sorted(set(errors))
+
+
+def _atomic_write_bytes(path: Path, data: bytes) -> None:
+    """Replace one regular file atomically without following a destination symlink."""
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        temporary.chmod(0o644)
+        os.replace(temporary, path)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def preflight_report_destination(
+    value: str,
+    repositories: Iterable[Path],
+) -> Path:
+    """Validate a report target before repository mutations can begin."""
+    candidate = Path(value).expanduser()
+    if candidate.is_symlink():
+        raise ValueError("refusing to follow a report destination symlink")
+    destination = candidate.resolve()
+    if destination.exists() and not destination.is_file():
+        raise ValueError(f"report destination is not a regular file: {destination}")
+    if not destination.parent.is_dir():
+        raise ValueError(
+            f"report destination parent does not exist: {destination.parent}"
+        )
+    for repository in repositories:
+        try:
+            destination.relative_to(repository.resolve())
+        except ValueError:
+            continue
+        raise ValueError(
+            "report destination must be outside every audited repository: "
+            f"{destination}"
+        )
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=".okf-reconciliation-report-preflight.",
+        suffix=".tmp",
+        dir=destination.parent,
+    )
+    os.close(descriptor)
+    Path(temporary_name).unlink()
+    return destination
+
+
+def preflight_sync_profile(
+    repo: Path,
+    *,
+    replace: bool = False,
+    reference: ProfileReference | None = None,
+) -> ProfileSyncPlan:
+    """Validate and stage one profile sync without changing the repository."""
+    if not repo.is_dir():
+        raise ValueError(f"repository does not exist: {repo}")
+    reference = reference or _reference_profile()
+    files = reference.files
+    reference_lock_bytes = reference.lock_bytes
+    reference_contents = reference.content_by_path()
+
+    for relative in (PROFILE_MIRROR, PROFILE_VENDOR_LOCK):
+        linked = _symlink_component(repo, relative)
+        if linked:
+            raise ValueError(
+                f"refusing to follow a profile destination symlink: {linked}"
+            )
+    mirror = repo / PROFILE_MIRROR
+    if mirror.exists() and not mirror.is_dir():
+        raise ValueError(f"profile destination is not a directory: {PROFILE_MIRROR}")
+
+    expected = {item.path: item for item in files}
+    divergent: list[str] = []
+    extra: list[str] = []
+    entries = (
+        sorted(mirror.iterdir(), key=lambda item: item.name)
+        if mirror.is_dir()
+        else []
+    )
+    for path in entries:
+        relative = (PROFILE_MIRROR / path.name).as_posix()
+        if path.is_symlink():
+            raise ValueError(f"refusing to follow a profile destination symlink: {relative}")
+        if not path.is_file():
+            raise ValueError(f"profile destination contains a non-file entry: {relative}")
+        expected_file = expected.get(path.name)
+        if expected_file is None:
+            extra.append(relative)
+            continue
+        data = read_bounded_bytes(path)
+        if len(data) != expected_file.bytes or sha256_bytes(data) != expected_file.sha256:
+            divergent.append(relative)
+
+    lock_path = repo / PROFILE_VENDOR_LOCK
+    if lock_path.exists():
+        if lock_path.is_symlink() or not lock_path.is_file():
+            raise ValueError(
+                f"profile vendor lock is not a regular file: {PROFILE_VENDOR_LOCK}"
+            )
+        if read_bounded_bytes(lock_path) != reference_lock_bytes:
+            divergent.append(PROFILE_VENDOR_LOCK.as_posix())
+
+    if (divergent or extra) and not replace:
+        details = [
+            *(f"divergent {path}" for path in divergent),
+            *(f"extra {path}" for path in extra),
+        ]
+        raise ValueError(
+            "profile sync refuses existing divergent or extra files without "
+            f"--replace-profile: {', '.join(details)}"
+        )
+    writes: list[tuple[str, bytes]] = []
+    for item in files:
+        destination = mirror / item.path
+        source_bytes = reference_contents[item.path]
+        if (
+            not destination.is_file()
+            or destination.is_symlink()
+            or read_bounded_bytes(destination) != source_bytes
+        ):
+            if destination.is_symlink():
+                raise ValueError(
+                    "refusing to follow a profile destination symlink: "
+                    f"{destination.relative_to(repo)}"
+                )
+            writes.append(
+                ((PROFILE_MIRROR / item.path).as_posix(), source_bytes)
+            )
+    if not lock_path.is_file() or read_bounded_bytes(lock_path) != reference_lock_bytes:
+        writes.append((PROFILE_VENDOR_LOCK.as_posix(), reference_lock_bytes))
+    return ProfileSyncPlan(
+        repo=repo,
+        reference=reference,
+        replace=replace,
+        removals=tuple(extra),
+        writes=tuple(writes),
+    )
+
+
+def apply_profile_sync(plan: ProfileSyncPlan) -> None:
+    """Apply one fully preflighted profile plan using its verified byte snapshot."""
+    repo = plan.repo
+    for relative in (PROFILE_MIRROR, PROFILE_VENDOR_LOCK):
+        linked = _symlink_component(repo, relative)
+        if linked:
+            raise ValueError(
+                f"refusing to follow a profile destination symlink: {linked}"
+            )
+    mirror = repo / PROFILE_MIRROR
+    mirror.mkdir(parents=True, exist_ok=True)
+    for relative in plan.removals:
+        path = repo / relative
+        if path.is_symlink() or not path.is_file():
+            raise ValueError(
+                f"profile destination changed after preflight: {relative}"
+            )
+        path.unlink()
+    for relative, data in plan.writes:
+        path = repo / relative
+        linked = _symlink_component(repo, Path(relative).parent)
+        if linked or path.is_symlink():
+            raise ValueError(
+                "refusing to follow a profile destination symlink: "
+                f"{linked or relative}"
+            )
+        _atomic_write_bytes(path, data)
+    remaining = profile_mirror_errors(repo, reference=plan.reference)
+    if remaining:
+        raise ValueError("profile sync did not establish the canonical mirror: " + "; ".join(remaining))
+
+
+def sync_profile(repo: Path, *, replace: bool = False) -> None:
+    """Install one exact canonical mirror after a complete read-only preflight."""
+    reference = _reference_profile()
+    apply_profile_sync(
+        preflight_sync_profile(repo, replace=replace, reference=reference)
+    )
+
+
+def inspect_relationship_schema(
+    path: Path,
+    label: str | None = None,
+) -> tuple[str, str, list[str]]:
+    """Validate a declared schema and bind the canonical $id to canonical bytes."""
+    label = label or path.name
+    try:
+        data = read_bounded_bytes(path)
+        value = json.loads(data)
+    except ArtifactReadError as exc:
+        return "", "", [f"invalid relationship schema {label}: {exc}"]
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        return "", "", [f"invalid relationship schema {label}: {exc}"]
+    if not isinstance(value, dict):
+        return "", "", [
+            f"invalid relationship schema {label}: JSON root must be an object"
+        ]
+    schema_id = value.get("$id")
+    if not contract_uri(schema_id):
+        return "", "", [
+            f"invalid relationship schema {label}: $id must be an absolute URI"
+        ]
+    digest = sha256_bytes(data)
+    if schema_id != ASSERTION_SCHEMA_URL:
+        return str(schema_id), digest, []
+    try:
+        reference = _reference_profile()
+        expected = next(
+            item
+            for item in reference.files
+            if item.path == "semantic-assertion.schema.json"
+        )
+    except (ValueError, StopIteration) as exc:
+        return "", "", [
+            f"canonical relationship schema reference is invalid: {exc}"
+        ]
+    if len(data) != expected.bytes or digest != expected.sha256:
+        return "", "", [
+            f"relationship schema {label} claims canonical $id but differs from "
+            f"Explorer v{PROFILE_RELEASE_VERSION} bytes (bytes {len(data)}, sha256 {digest})"
+        ]
+    return str(schema_id), digest, []
+
+
+def relationship_schema_errors(path: Path, label: str | None = None) -> list[str]:
+    """Return identity and canonical-byte validation errors for one schema."""
+    return inspect_relationship_schema(path, label)[2]
 
 
 def contract_uri(value: Any) -> bool:
@@ -1061,9 +1629,22 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
             "warnings": [],
         }
     errors.extend(contract_errors(contract))
-    authoritative_inputs = contract.get("semantic_layer", {}).get(
-        "authoritative_inputs", []
-    )
+    semantic_layer = contract.get("semantic_layer")
+    if not isinstance(semantic_layer, dict):
+        semantic_layer = {}
+    repository_contract = contract.get("repository")
+    if not isinstance(repository_contract, dict):
+        repository_contract = {}
+    relationship_contract = contract.get("relationship_contract")
+    if not isinstance(relationship_contract, dict):
+        relationship_contract = {}
+
+    claimed_profile = semantic_layer.get("profile")
+    profile_errors: list[str] = []
+    if claimed_profile == PROFILE_URL:
+        profile_errors = profile_mirror_errors(repo)
+        errors.extend(profile_errors)
+    authoritative_inputs = semantic_layer.get("authoritative_inputs", [])
     if isinstance(authoritative_inputs, list):
         for declaration in authoritative_inputs:
             if not isinstance(declaration, str):
@@ -1078,9 +1659,7 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
                 errors.append(
                     f"invalid declared authoritative input path {declaration}: {exc}"
                 )
-    root_index_value = str(
-        contract.get("repository", {}).get("root_index") or "index.md"
-    )
+    root_index_value = str(repository_contract.get("root_index") or "index.md")
     if safe_repository_path(root_index_value):
         try:
             root_index = contained_repository_path(repo, root_index_value)
@@ -1107,9 +1686,11 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
     sampled_semantic_assertions = 0
     relation_files = 0
     semantic_files = 0
+    relationship_schemas = 0
+    declared_relationship_schemas: dict[str, tuple[str, str]] = {}
     semantic_assertion_paths_checked: set[Path] = set()
-    outputs = contract.get("semantic_layer", {}).get("outputs", [])
-    semantic_state = str(contract.get("semantic_layer", {}).get("state") or "unknown")
+    outputs = semantic_layer.get("outputs", [])
+    semantic_state = str(semantic_layer.get("state") or "unknown")
     if semantic_state in {"descriptor-yaml-ld", "migration"}:
         warnings.append(
             f"semantic state {semantic_state} has not reached a relationship-authoritative YAML-LD graph"
@@ -1181,6 +1762,28 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
                 version = descriptor.get("okf_version")
                 if version is not None and str(version) != "0.2":
                     errors.append(f"{path.relative_to(repo)} declares OKF {version}, expected 0.2")
+        if role == "relationship-schema":
+            for path in paths:
+                relationship_schemas += 1
+                schema_id, schema_digest, schema_errors = inspect_relationship_schema(
+                    path, path.relative_to(repo).as_posix()
+                )
+                errors.extend(schema_errors)
+                if schema_id and not schema_errors:
+                    relative_path = path.relative_to(repo).as_posix()
+                    previous = declared_relationship_schemas.get(schema_id)
+                    if previous is not None and previous[0] != schema_digest:
+                        errors.append(
+                            "relationship-schema outputs claim one ambiguous $id "
+                            f"with differing bytes: {schema_id} "
+                            f"({previous[1]} sha256 {previous[0]}; "
+                            f"{relative_path} sha256 {schema_digest})"
+                        )
+                    else:
+                        declared_relationship_schemas.setdefault(
+                            schema_id,
+                            (schema_digest, relative_path),
+                        )
         if role == "relationship-runtime":
             relation_files += len(paths)
             for path in paths[:3]:
@@ -1213,6 +1816,17 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
                         value = str(row.get(field) or "")
                         if value and not ABSOLUTE_IRI.fullmatch(value):
                             warnings.append(f"{path.relative_to(repo)} {field} is not an absolute IRI: {value}")
+    contract_schema = relationship_contract.get("schema")
+    schema_is_available = contract_schema in declared_relationship_schemas or (
+        contract_schema == ASSERTION_SCHEMA_URL
+        and claimed_profile == PROFILE_URL
+        and not profile_errors
+    )
+    if contract_uri(contract_schema) and not schema_is_available:
+        errors.append(
+            "relationship_contract.schema has no exact declared relationship-schema "
+            f"output or qualifying canonical profile mirror: {contract_schema}"
+        )
     warning_total = len(set(warnings))
     warnings = sorted(set(warnings))
     if len(warnings) > 100:
@@ -1230,6 +1844,7 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
         "status": status,
         "semantic_state": semantic_state,
         "semantic_documents_checked": semantic_files,
+        "relationship_schemas_checked": relationship_schemas,
         "relationship_files_declared": relation_files,
         "relationship_rows_sampled": sampled_relationships,
         "semantic_assertions_sampled": sampled_semantic_assertions,
@@ -1249,7 +1864,8 @@ def selected_repositories(args: argparse.Namespace) -> Iterable[Path]:
         yield root / name
 
 
-def install(repo: Path) -> None:
+def preflight_install(repo: Path) -> InstallPlan:
+    """Render and validate one contract install without writing any files."""
     preset = PRESETS.get(repo.name)
     if preset is None:
         raise ValueError(f"no reviewed reconciliation preset for {repo.name}")
@@ -1263,11 +1879,48 @@ def install(repo: Path) -> None:
         raise ValueError(
             "okf-testing is not initialised with the executable fixture corpus"
         )
-    (repo / CONTRACT_NAME).write_text(
-        json.dumps(contract_for(repo.name, preset), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
+    for relative in (Path(CONTRACT_NAME), Path("AGENTS.md")):
+        linked = _symlink_component(repo, relative)
+        if linked:
+            raise ValueError(f"refusing to follow an install destination symlink: {linked}")
+        destination = repo / relative
+        if destination.exists() and not destination.is_file():
+            raise ValueError(
+                f"install destination is not a regular file: {relative}"
+            )
+    contract_text = (
+        json.dumps(
+            contract_for(repo.name, preset),
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
     )
-    install_agent_guidance(repo / "AGENTS.md")
+    return InstallPlan(
+        repo=repo,
+        contract_text=contract_text,
+        agent_text=render_agent_guidance(repo / "AGENTS.md"),
+    )
+
+
+def apply_install(plan: InstallPlan) -> None:
+    """Write one fully rendered install plan after rechecking fixed destinations."""
+    for relative, text in (
+        (Path(CONTRACT_NAME), plan.contract_text),
+        (Path("AGENTS.md"), plan.agent_text),
+    ):
+        linked = _symlink_component(plan.repo, relative)
+        if linked:
+            raise ValueError(
+                f"refusing to follow an install destination symlink: {linked}"
+            )
+        _atomic_write_bytes(plan.repo / relative, text.encode("utf-8"))
+
+
+def install(repo: Path) -> None:
+    """Install one reviewed contract after a complete read-only preflight."""
+    apply_install(preflight_install(repo))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1275,30 +1928,81 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo", help="audit one repository instead of the reviewed okf-* set")
     parser.add_argument("--repos-root", default=str(Path.home() / "repos"))
     parser.add_argument("--install", action="store_true", help="write reviewed contracts and bounded AGENTS.md blocks")
+    parser.add_argument(
+        "--sync-profile",
+        action="store_true",
+        help="install the byte-exact canonical profile mirror and adjacent vendor lock",
+    )
+    parser.add_argument(
+        "--replace-profile",
+        action="store_true",
+        help="with --sync-profile, replace divergent or extra regular profile files",
+    )
     parser.add_argument("--strict", action="store_true", help="treat migration warnings as failures")
-    parser.add_argument("--report", help="write the JSON report to this path")
+    parser.add_argument(
+        "--report",
+        help="write the JSON report atomically outside every audited repository",
+    )
     args = parser.parse_args(argv)
+    if args.replace_profile and not args.sync_profile:
+        parser.error("--replace-profile requires --sync-profile")
 
     repositories = list(selected_repositories(args))
-    if args.install:
-        for repo in repositories:
-            install(repo)
-    results = [audit_repo(repo, strict=args.strict) for repo in repositories]
-    report = {
-        "schema": "okf-repository-reconciliation-report.v1",
-        "profile": PROFILE_URL,
-        "contract_schema": CONTRACT_SCHEMA_URL,
-        "repositories": results,
-        "summary": {
-            "repositories": len(results),
-            "conformant": sum(item["status"] == "conformant" for item in results),
-            "migration": sum(item["status"] == "migration" for item in results),
-            "non_conformant": sum(item["status"] == "non-conformant" for item in results),
-        },
-    }
-    rendered = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    if args.report:
-        Path(args.report).expanduser().resolve().write_text(rendered, encoding="utf-8")
+    try:
+        report_path = (
+            preflight_report_destination(args.report, repositories)
+            if args.report
+            else None
+        )
+        reference = _reference_profile() if args.sync_profile else None
+        install_plans = (
+            tuple(preflight_install(repo) for repo in repositories)
+            if args.install
+            else ()
+        )
+        sync_plans = (
+            tuple(
+                preflight_sync_profile(
+                    repo,
+                    replace=args.replace_profile,
+                    reference=reference,
+                )
+                for repo in repositories
+            )
+            if args.sync_profile
+            else ()
+        )
+        for plan in install_plans:
+            apply_install(plan)
+        for plan in sync_plans:
+            apply_profile_sync(plan)
+        results = [audit_repo(repo, strict=args.strict) for repo in repositories]
+        report = {
+            "schema": "okf-repository-reconciliation-report.v1",
+            "profile": PROFILE_URL,
+            "contract_schema": CONTRACT_SCHEMA_URL,
+            "repositories": results,
+            "summary": {
+                "repositories": len(results),
+                "conformant": sum(item["status"] == "conformant" for item in results),
+                "migration": sum(item["status"] == "migration" for item in results),
+                "non_conformant": sum(
+                    item["status"] == "non-conformant" for item in results
+                ),
+            },
+        }
+        rendered = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        if report_path is not None:
+            if report_path.is_symlink() or (
+                report_path.exists() and not report_path.is_file()
+            ):
+                raise ValueError(
+                    f"report destination changed after preflight: {report_path}"
+                )
+            _atomic_write_bytes(report_path, rendered.encode("utf-8"))
+    except (ArtifactReadError, OSError, UnicodeError, ValueError) as exc:
+        print(f"reconciliation failed: {exc}", file=sys.stderr)
+        return 2
     print(rendered, end="")
     return 1 if report["summary"]["non_conformant"] else 0
 
