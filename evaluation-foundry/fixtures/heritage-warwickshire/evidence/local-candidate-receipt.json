@@ -9,13 +9,13 @@
     "site_internal_references": 4647,
     "site_reading_pages": 261,
     "site_size_gate": {
-      "headroom_bytes": 185824090,
+      "headroom_bytes": 185823743,
       "limit_bytes": 1000000000,
-      "site_bytes": 814175910,
+      "site_bytes": 814176257,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "fdb4fcbeba6b66be6018bfcb1dcce7fd40217831cb3400bbd179b5912b83c471",
+    "site_tree_sha256": "6eaeb8522369a539b85ce479c433602e5e48573bf2ac5e4aa65687aa525bdae8",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
     "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
@@ -72,7 +72,7 @@
     "status": "passed",
     "validation_only": 0
   },
-  "observed_at": "2026-08-10T09:39:06.844882Z",
+  "observed_at": "2026-08-10T09:46:39.097730Z",
   "publication_shell_rebind": {
     "change_class": "full-candidate-rebuild",
     "rationale": "This receipt was materialized from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
