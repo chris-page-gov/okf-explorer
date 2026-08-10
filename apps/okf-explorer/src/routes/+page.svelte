@@ -127,7 +127,11 @@
   } from '$lib/sources/fetch';
   import { isLargeCorpusDescriptor } from '$lib/sources/descriptor';
   import { isFederationDescriptor, loadFederationOverview } from '$lib/sources/federation';
-  import { loadLargeCorpus, MAX_RELATIONSHIP_ROWS } from '$lib/sources/largeCorpus';
+  import {
+    loadLargeCorpus,
+    MAX_RELATIONSHIP_ROWS,
+    prefersTargetedRelationshipHydration
+  } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
   import {
@@ -1344,13 +1348,18 @@
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
     const selectedRoute = largeSelectedRoute || largeInspectedRoute;
+    const targetedRelationships = Boolean(
+      selectedRoute && largeHasTargetedRelationships(selectedRoute) && view !== 'resources'
+    );
+    // Start the route-bounded semantic load before consulting the independent
+    // record locator. Aggregate/topic routes need not be record-addressable,
+    // and must never fall through to whole-plane relationship hydration.
+    const targetedRelationshipPromise = targetedRelationships
+      ? ensureLargeRouteRelationships(selectedRoute)
+      : null;
+    let selectedDataset: LargeDataset | null | undefined;
     if (selectedRoute && largeHasRecordLocator()) {
-      const selectedDataset = await ensureLargeDataset(selectedRoute);
-      if (!selectedDataset) {
-        if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
-        if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
-        return;
-      }
+      selectedDataset = await ensureLargeDataset(selectedRoute);
       // A record locator hydrates only the selected dataset. The resource
       // stack is assembled from the corpus-wide resource index, so it must
       // load that index before rendering even when a targeted dataset is
@@ -1359,8 +1368,15 @@
         await ensureLargeFullIndex();
         return;
       }
-      if (largeHasRelationshipAdjacency()) {
-        await ensureLargeRouteRelationships(selectedRoute);
+    }
+    if (targetedRelationshipPromise) {
+      await targetedRelationshipPromise;
+      return;
+    }
+    if (selectedRoute && largeHasRecordLocator()) {
+      if (!selectedDataset) {
+        if (FULL_INDEX_VIEWS.has(view) || RELATIONSHIP_VIEWS.has(view)) await ensureLargeFullIndex();
+        if (RELATIONSHIP_VIEWS.has(view)) await ensureLargeRelationships();
       } else if (RELATIONSHIP_VIEWS.has(view)) {
         await ensureLargeRelationships();
       }
@@ -1458,13 +1474,11 @@
     );
   }
 
-  function largeHasRelationshipAdjacency(): boolean {
+  function largeHasTargetedRelationships(
+    route = largeSelectedRoute || largeInspectedRoute
+  ): boolean {
     return Boolean(
-      source?.kind === 'large' &&
-      (
-        source.descriptor.entrypoints.relationship_adjacency ||
-        source.manifest.indexes.relationship_adjacency
-      )
+      source?.kind === 'large' && prefersTargetedRelationshipHydration(source, route)
     );
   }
 
@@ -1798,7 +1812,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute);
-    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(route);
+    if (largeHasTargetedRelationships()) void ensureLargeRouteRelationships(route);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -1814,7 +1828,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(route);
-    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(route);
+    if (largeHasTargetedRelationships()) void ensureLargeRouteRelationships(route);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -2596,7 +2610,7 @@
     clearLargeApiPanel();
     rightCollapsed = false;
     if (largeHasRecordLocator()) void ensureLargeDataset(largeSelectedRoute, result);
-    if (largeHasRelationshipAdjacency()) void ensureLargeRouteRelationships(largeSelectedRoute);
+    if (largeHasTargetedRelationships()) void ensureLargeRouteRelationships(largeSelectedRoute);
     if (FULL_INDEX_VIEWS.has(activeView)) void hydrateForView(activeView);
     syncExplorerUrl(true);
   }
@@ -8167,7 +8181,7 @@
                     <dt>{selectedRelationship.weightMetric || 'Strength'}</dt><dd>{graphWeightValue(selectedRelationship.weightValue)}</dd>
                   {/if}
                   <dt>Authority</dt><dd>{selectedRelationshipPresentation.authorityLabel}</dd>
-                  {#if selectedRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.authoritySource}</a></dd>{/if}
+                  {#if selectedRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd>{#if isUrl(selectedRelationshipPresentation.authoritySource)}<a href={selectedRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.authoritySource}</a>{:else}{selectedRelationshipPresentation.authoritySource}{/if}</dd>{/if}
                   {#if selectedRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{#if isUrl(selectedRelationshipPresentation.derivation)}<a href={selectedRelationshipPresentation.derivation} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.derivation}</a>{:else}{selectedRelationshipPresentation.derivation}{/if}</dd>{/if}
                   {#if selectedRelationshipPresentation.derivationActivity}<dt>Derivation activity</dt><dd>{#if isUrl(selectedRelationshipPresentation.derivationActivity)}<a href={selectedRelationshipPresentation.derivationActivity} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.derivationActivity}</a>{:else}{selectedRelationshipPresentation.derivationActivity}{/if}</dd>{/if}
                   {#if selectedRelationshipPresentation.rule}<dt>Rule</dt><dd>{#if isUrl(selectedRelationshipPresentation.rule)}<a href={selectedRelationshipPresentation.rule} target="_blank" rel="noopener noreferrer">{selectedRelationshipPresentation.rule}</a>{:else}{selectedRelationshipPresentation.rule}{/if}</dd>{/if}
@@ -9005,7 +9019,7 @@
             {#if selectedSmallRelationshipPresentation.assertionStatus !== 'unclassified'}<dt>Assertion status</dt><dd>{selectedSmallRelationshipPresentation.assertionStatus}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.assertionScope !== 'unclassified'}<dt>Assertion scope</dt><dd>{selectedSmallRelationshipPresentation.assertionScope}</dd>{/if}
             <dt>Authority</dt><dd>{selectedSmallRelationshipPresentation.authorityLabel}</dd>
-            {#if selectedSmallRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd><a href={selectedSmallRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.authoritySource}</a></dd>{/if}
+            {#if selectedSmallRelationshipPresentation.authoritySource}<dt>Authority source</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.authoritySource)}<a href={selectedSmallRelationshipPresentation.authoritySource} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.authoritySource}</a>{:else}{selectedSmallRelationshipPresentation.authoritySource}{/if}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivation)}<a href={selectedSmallRelationshipPresentation.derivation} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivation}</a>{:else}{selectedSmallRelationshipPresentation.derivation}{/if}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.derivationActivity}<dt>Derivation activity</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivationActivity)}<a href={selectedSmallRelationshipPresentation.derivationActivity} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivationActivity}</a>{:else}{selectedSmallRelationshipPresentation.derivationActivity}{/if}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.rule}<dt>Rule</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.rule)}<a href={selectedSmallRelationshipPresentation.rule} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.rule}</a>{:else}{selectedSmallRelationshipPresentation.rule}{/if}</dd>{/if}

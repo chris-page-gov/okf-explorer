@@ -294,10 +294,12 @@ local labels until a shared semantic meaning and stable identity are declared.
 
 ### The Additive YAML-LD Proposal
 
-The exemplar uses **YAML-LD** as a local name for this suggested extension. It
-is not a W3C-defined YAML syntax or media type. YAML-LD is the canonical
-authoring form: people edit Markdown and its readable front matter, not two
-parallel graph files. The safe path is deliberately simple:
+The exemplar uses **YAML-LD** as the canonical authoring form for this additive
+extension. [YAML-LD 1.0](https://www.w3.org/TR/yaml-ld-10/) is now a W3C
+Working Draft, not a W3C Recommendation, and may still change. This project
+therefore pins and validates a deliberately constrained subset: people edit
+Markdown and its readable front matter, not two parallel graph files. The safe
+path is deliberately simple:
 
 1. accept only JSON-compatible YAML—string-keyed maps, lists and scalar
    values, UTF-8 text and finite numbers, with no executable tags, cycles or

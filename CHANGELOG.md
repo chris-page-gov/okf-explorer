@@ -2,6 +2,49 @@
 
 ## Unreleased - Heritage Evaluation Foundry and YAML-LD
 
+- Completed the local nine-repository OKF 0.2/YAML-LD migration: every
+  reviewed `okf-*` repository now declares one machine-readable semantic
+  contract, absolute semantic identities plus safe local routes, synchronized
+  direct and reified assertions, deterministic runtime projections and exact
+  setup/build/check guidance. Added positive, negative and compatibility
+  fixtures; shared-schema sampling to the cross-repository auditor; compact
+  digest-bound semantic shards for large graphs; and a bounded rich-runtime
+  Reader path with lifecycle-separated planes, SHA-256 route locators and
+  per-plane incident assertion commitments. These are local working-tree
+  migrations only—no repository was committed, released, deployed or publicly
+  verified by this work.
+- Closed the independent cross-layer review findings before declaring local
+  completion. The shared assertion schema now requires preferred labels and
+  canonical credential-free HTTP(S) authority/evidence/rights sources; every
+  pinning producer validates its complete population against the exact shared
+  bytes. Explicit YAML-LD graphs now fail closed on missing, duplicate, unsafe
+  or inconsistent routes and incomplete assertions instead of deriving routes
+  from IRIs. The portable contract auditor validates the complete contract
+  shape. The older heritage-corpus producer now propagates the preferred label
+  into every reified assertion too, so tightening the shared schema does not
+  leave a second Explorer-owned generator behind. Rich route hydration now
+  takes priority independently of record
+  locators, decodes shards sequentially, drops undeclared row properties and
+  enforces aggregate compressed-byte, retained-text, evidence and supporting-
+  assertion ceilings in addition to its existing row/chunk bounds.
+- Hardened the portable contract and plugin review boundary: declared paths and
+  globs must stay repository-relative and contained—including authoritative
+  inputs and symlinked prefixes—and glob expansion has an explicit match-count
+  ceiling. Tooling strings remain untrusted declarations until reviewed against
+  trusted guidance, and sampled plain/gzip artifacts are read under explicit
+  on-disk and decoded-byte limits. Malformed relationship, semantic or runtime
+  JSON now fails the audit instead of disappearing as an empty sample or
+  aborting reconciliation, and the shared assertion schema uses the same
+  whitespace-free RFC-style IRI rule as the reconciler and Reader.
+- Completed the Explorer repository's own OKF 0.2 semantic migration. The
+  Markdown graph now deterministically emits `okf-bundle.yamlld`,
+  `okf-bundle.jsonld` and a compatibility runtime bundle from one normalized
+  source. Its 579 directed Markdown links are represented conservatively as
+  evidence-bearing `dcterms:references` assertions with absolute identities,
+  suffix-free semantic routes, direct triples, reified assertion nodes,
+  provenance and rights; section placement is not promoted into an invented
+  domain predicate. Site assembly verifies and publishes both semantic
+  representations alongside the runtime projection.
 - Added an additive large-record contract for repository-authored Narrative
   Markdown, enclosing-process context, previous/next steps, variants and
   related routes. A selected record now uses this content instead of the

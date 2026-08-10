@@ -1,0 +1,123 @@
+{
+  "okf_core": {
+    "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md",
+    "status": "conformant",
+    "version": "0.2"
+  },
+  "reader": {
+    "consumer": "https://chris-page-gov.github.io/okf-explorer/",
+    "delivery": "json-small-bundle-projection",
+    "preserves": [
+      "direction",
+      "semantic-identities",
+      "local-routes",
+      "predicate",
+      "relationship-kind",
+      "preferred-and-inverse-labels",
+      "assertion-status-and-scope",
+      "authority",
+      "derivation",
+      "supporting-assertions",
+      "confidence",
+      "review-status",
+      "evidence",
+      "rights",
+      "freshness",
+      "lifecycle"
+    ]
+  },
+  "relationship_contract": {
+    "authoring": "generated-yaml-ld-assertion-graph",
+    "direct_triple_policy": "generated-from-one-assertion-source",
+    "predicate_policy": "absolute-iri",
+    "required_fields": [
+      "id",
+      "source",
+      "target",
+      "source_iri",
+      "target_iri",
+      "predicate",
+      "kind",
+      "label",
+      "inverse_label",
+      "assertion_status",
+      "assertion_scope",
+      "authority",
+      "derivation",
+      "observed_at",
+      "evidence",
+      "rights"
+    ],
+    "schema": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-assertion.schema.json"
+  },
+  "repository": {
+    "name": "okf-explorer",
+    "role": "profile-and-consumer",
+    "root_index": "index.md"
+  },
+  "schema": "okf-repository-semantic-contract.v1",
+  "semantic_layer": {
+    "authoritative_inputs": [
+      "index.md",
+      "document/",
+      "federated/",
+      "frameworks/",
+      "glossary/",
+      "organisations/",
+      "research/",
+      "stack/",
+      "standards/",
+      "uk-government/",
+      "profiles/bundle-wiki/v1/"
+    ],
+    "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
+    "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
+    "limitations": [
+      "Markdown links are projected as derived dcterms:references assertions; no domain predicate is inferred from link text or section placement.",
+      "The frozen heritage browser receipt binds the pre-migration Explorer tree and intentionally remains stale until a new candidate and genuine-browser journey are authorized; the focused semantic/Reader checks are the local migration gate."
+    ],
+    "outputs": [
+      {
+        "generated": true,
+        "path": "okf-bundle.json",
+        "required": true,
+        "role": "explorer-runtime"
+      },
+      {
+        "generated": true,
+        "path": "okf-bundle.yamlld",
+        "required": true,
+        "role": "semantic-yaml-ld"
+      },
+      {
+        "generated": true,
+        "path": "okf-bundle.jsonld",
+        "required": true,
+        "role": "semantic-json-ld"
+      }
+    ],
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+    "state": "generated-yaml-ld-graph"
+  },
+  "tooling": {
+    "build": [
+      ".venv/bin/python scripts/build_okf_bundle.py",
+      ".venv/bin/python scripts/update_viewer.py",
+      "pnpm --dir apps/okf-explorer build",
+      ".venv/bin/python scripts/build_site.py"
+    ],
+    "check": [
+      ".venv/bin/python scripts/build_okf_bundle.py --check",
+      ".venv/bin/python scripts/update_viewer.py --check",
+      ".venv/bin/python scripts/check_okf.py",
+      ".venv/bin/python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",
+      "pnpm --dir apps/okf-explorer test",
+      "pnpm --dir apps/okf-explorer check"
+    ],
+    "setup": [
+      "python3 -m venv .venv",
+      ".venv/bin/python -m pip install --requirement requirements-okf.txt",
+      "pnpm --dir apps/okf-explorer install --frozen-lockfile"
+    ]
+  }
+}

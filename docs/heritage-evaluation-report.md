@@ -443,9 +443,11 @@ fields, while a semantic-aware reader can connect the same identified thing
 across interface areas and explain why a graph edge exists. No reader has to
 understand RDF merely to display the Markdown.
 
-The exemplar uses **YAML-LD** as a local name for an additive extension; it is
-not a W3C-defined YAML syntax or media type. YAML-LD is the canonical authoring
-form. A safe YAML parser first accepts a JSON-compatible subset—string-keyed
+When this evaluation was designed, the project used **YAML-LD** as a local
+name for its additive extension. [YAML-LD 1.0](https://www.w3.org/TR/yaml-ld-10/)
+is now a W3C Working Draft, not a W3C Recommendation, and may still change.
+The project retains YAML-LD as its canonical authoring form while pinning and
+validating a deliberately constrained, JSON-compatible subset: string-keyed
 maps, lists and scalar values, UTF-8 text and finite numbers, with no executable
 tags, cycles or duplicate keys. That is converted to the JSON data model and
 processed against pinned JSON-LD contexts. The normalized graph and its

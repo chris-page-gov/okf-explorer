@@ -4,6 +4,7 @@ import type {
   RelationshipAssertionStatus,
   RelationshipAuthorityClass
 } from '$lib/types';
+import { isHttpUrl } from './helpers';
 
 export type RelationshipPresentation = {
   id: string;
@@ -83,15 +84,9 @@ function normalizedAuthority(value: string): RelationshipAuthorityClass {
 }
 
 function evidenceUrl(value: unknown): string {
-  const candidate = stringValue(recordValue(value)?.url || recordValue(value)?.resource || recordValue(value)?.['@id'] || value);
-  try {
-    const url = new URL(candidate);
-    return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password
-      ? url.toString()
-      : '';
-  } catch {
-    return '';
-  }
+  const record = recordValue(value);
+  const candidate = record?.url || record?.resource || record?.['@id'] || value;
+  return isHttpUrl(candidate) ? candidate : '';
 }
 
 function evidencePresentation(value: unknown): RelationshipEvidencePresentation {

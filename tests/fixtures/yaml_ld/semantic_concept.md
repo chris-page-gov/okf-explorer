@@ -36,6 +36,7 @@ assertions:
     predicate: heritage:hasDesignation
     target: https://example.test/heritage/records/example.html#designation
     kind: has designation
+    label: has designation
     inverse_label: designation of
     assertion_status: normalized
     assertion_scope: real-world

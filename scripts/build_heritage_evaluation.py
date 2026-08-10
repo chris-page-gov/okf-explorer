@@ -2137,6 +2137,7 @@ def semantic_artifacts(
             "predicate": predicate,
             "target": target_iri,
             "kind": relationship["kind"],
+            "label": relationship["label"],
             "inverse_label": relationship["inverse_label"],
             "assertion_status": relationship["assertion_status"],
             "assertion_scope": relationship["assertion_scope"],

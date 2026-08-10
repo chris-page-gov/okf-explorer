@@ -464,7 +464,25 @@ export function formatPercent(value: number | undefined): string {
 }
 
 export function isHttpUrl(value: unknown): value is string {
-  return typeof value === 'string' && /^https?:\/\//i.test(value);
+  if (typeof value !== 'string' || !value || value.trim() !== value) return false;
+  if (
+    /[^\x21-\x7e]/.test(value) ||
+    /[\s"'<>\\^`{|}]/.test(value) ||
+    /%(?![0-9A-Fa-f]{2})/.test(value)
+  ) return false;
+  if (!/^https?:\/\/(?:\[[0-9A-Fa-f:.]+\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)/i.test(value)) {
+    return false;
+  }
+  try {
+    const url = new URL(value);
+    return (
+      ['http:', 'https:'].includes(url.protocol) &&
+      !url.username &&
+      !url.password
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function routeForAnalysisNode(id: string): { key: string; value: string } | null {
