@@ -1,7 +1,7 @@
 # OKF implementation review rubric
 
 Report findings before general observations. Give each finding a priority,
-exact path or public artifact, evidence, consequence, and safe correction.
+exact path or public artefact, evidence, consequence, and safe correction.
 
 ## Priority
 
@@ -21,10 +21,10 @@ limitations from contradictions.
 ### 1. Core and profile conformance
 
 - Does the root declare the intended OKF version?
-- Are reserved indexes/logs and concept frontmatter valid?
+- Are reserved indexes/logs and concept front matter valid?
 - Are optional Explorer, semantic, federation, or domain fields clearly
   identified as profiles rather than OKF core?
-- Are exact standard versions, applicability decisions, artifacts, and
+- Are exact standard versions, applicability decisions, artefacts, and
   validators recorded for conformance claims?
 - Does a producer validate the complete assertion population against the
   pinned shared schema before reporting conformance, rather than validating a
@@ -33,11 +33,11 @@ limitations from contradictions.
 ### 2. Identity and assertions
 
 - Are identifiers stable, source-native where possible, and collision-checked?
-- Do labels, aliases, canonicalization, and equivalence remain distinct?
+- Do labels, aliases, canonicalisation, and equivalence remain distinct?
 - Does each relationship preserve source, target, predicate, authority,
   derivation, evidence, time, jurisdiction, confidence, and limitations as
   applicable?
-- Are official, normalized, inferred, model-assisted, historical, rejected,
+- Are official, normalised, inferred, model-assisted, historical, rejected,
   and editorial-example assertions visibly separate?
 
 ### 3. Scope and coverage
@@ -53,14 +53,14 @@ limitations from contradictions.
 - Are source authority, rights evidence, allowed operations, observation time,
   access constraints, retention, and redistribution explicit?
 - Are source bodies, personal data, secrets, signed URLs, credentials, and
-  caches kept outside the public tree unless explicitly authorized?
+  caches kept outside the public tree unless explicitly authorised?
 - Is public access correctly kept separate from licence or operational
   assurance?
 
 ### 5. Authored/generated architecture
 
 - Is every output traceable to an authored input and deterministic generator?
-- Do checks fail on hand-edited generated artifacts and drift?
+- Do checks fail on hand-edited generated artefacts and drift?
 - Are live acquisition, offline compilation, evaluation, release assembly,
   and publication separate?
 - Are digest roots and dependency/change-impact edges sufficient to select
@@ -86,7 +86,7 @@ limitations from contradictions.
 
 ### 8. Release integrity
 
-- Is one exact candidate frozen, reproduced, assured, authorized, and promoted
+- Is one exact candidate frozen, reproduced, assured, authorised, and promoted
   without rebuild?
 - Are release receipts and decisions digest-bound?
 - Are public routes verified in a real browser against expected identity,
@@ -108,9 +108,9 @@ limitations from contradictions.
 
 - Is the working tree understood before edits?
 - Are caches, virtual environments, `.DS_Store`, editor state, lock files,
-  `_site/` where disallowed, and temporary artifacts excluded?
+  `_site/` where disallowed, and temporary artefacts excluded?
 - Are planning, tracking, status, decisions, changelog, and generated evidence
-  synchronized when local policy requires it?
+  synchronised when local policy requires it?
 - Is an empty, planned, or abandoned path described accurately rather than
   counted as implementation?
 

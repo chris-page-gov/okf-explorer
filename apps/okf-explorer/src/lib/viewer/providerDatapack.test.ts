@@ -151,7 +151,7 @@ function providerManifest() {
 }
 
 describe('provider datapack contract', () => {
-  it('normalizes and binds a reviewed live reference to the governed snapshot', () => {
+  it('normalises and binds a reviewed live reference to the governed snapshot', () => {
     const manifest = normalizeProviderDatapackManifest(providerManifest());
     const pack = normalizeProviderDatapack(providerPack());
     const collection = validateProviderDatapackCollection(manifest, [pack], snapshotId);

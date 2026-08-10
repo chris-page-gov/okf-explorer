@@ -42,7 +42,7 @@ freezes:
 - per-plane digest roots, invalidation triggers and selective-rerun closure;
 - backward and forward producer/consumer compatibility expectations;
 - the explicit producer/consumer compatibility window and unsupported-input
-  behavior;
+  behaviour;
 - post-deploy deep links whose bundle identity and restored state must be
   checked;
 - validation, evaluation, unresolved gaps and owner decisions; and

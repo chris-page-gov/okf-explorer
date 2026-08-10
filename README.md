@@ -20,7 +20,7 @@ other public HTTPS URL. These hosted examples open without installation:
 | Coventry and Warwickshire heritage | Complete source-backed regional coverage, typo-tolerant search, YAML-LD/JSON-LD graph semantics, tiny assurance and an isolated synthetic supplement | [Open Explorer][heritage-example] · [External publication unit][heritage-pack] |
 | UK Whole-Law OKF | Overview-first federation with explicit child authority, coverage, freshness and recovery routes | [Open Explorer][whole-law-example] · [Federation contract][federation-docs] |
 | ONS data discovery OKF | Metadata-only ONS discovery across 5,097 records, with compact facets, static search, standards evidence and explicit coverage | [Open Explorer][ons-example] · [Source pack][ons-pack] |
-| UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalization and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
+| UK Legislation OKF | Complete legislation.gov.uk work catalogue with ELI/Schema.org normalisation and live CLML provision discovery | [Open Explorer][legislation-example] · [Documentation spine][legislation-docs] |
 | UK Government APIs OKF | Multi-source API/data catalogue with standards and provenance metadata | [Open Explorer][uk-government-apis-example] |
 | GOV.UK CKAN | Large external CKAN corpus loaded by the same hosted Explorer | [Open Explorer][ckan-example] |
 
@@ -136,7 +136,7 @@ The repository contains:
 - `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
   GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API
   metadata.
-- `legislation/` - generated complete work-level catalogue for legislation.gov.uk, normalized with ELI, Schema.org Legislation and CLML and equipped with live provision-level progressive discovery.
+- `legislation/` - generated complete work-level catalogue for legislation.gov.uk, normalised with ELI, Schema.org Legislation and CLML and equipped with live provision-level progressive discovery.
 - `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
 - `evaluation-foundry/` - schemas, reversible mappings, coverage evidence,
   journeys and question suites for functionality evaluations.
@@ -221,7 +221,7 @@ The Explorer product/data-contract direction is documented in
 defines the generated overview context expected by Reader, Graph, Links,
 Timeline, Type, Resources, Map, and Narrative views, including how small
 bundles can embed analysis inline while large bundles reference chunked
-analysis artifacts. [Geospatial Map exploration](docs/geospatial-map-exploration.md)
+analysis artefacts. [Geospatial Map exploration](docs/geospatial-map-exploration.md)
 defines the Map evidence levels and progressive recovery model.
 
 ## Relationship To The CKAN Fixture
@@ -232,7 +232,7 @@ the AI infrastructure sample bundle. The GOV.UK CKAN large-corpus fixture lives
 in
 [`ai-engineering-lab-hackathon-london-2026`](https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026)
 because that repository preserves the historical path from the original dark
-data challenge to the generalized OKF large-corpus builder. The CKAN descriptor
+data challenge to the generalised OKF large-corpus builder. The CKAN descriptor
 is listed in `okf-registry.json` so this Explorer can load and validate that
 external bundle without copying its generated corpus here.
 

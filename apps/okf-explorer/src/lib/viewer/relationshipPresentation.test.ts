@@ -181,7 +181,7 @@ describe('relationship presentation', () => {
     );
   });
 
-  it('summarizes the loaded relationship rows by predicate, authority and freshness', () => {
+  it('summarises the loaded relationship rows by predicate, authority and freshness', () => {
     const summary = summarizeRelationships([
       {
         predicate: 'amends',

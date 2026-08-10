@@ -74,7 +74,7 @@ const candidateBundleTree = valueArgument(
   process.env.OKF_LEGISLATION_BUNDLE_TREE_SHA256 || null
 );
 const explorerCommit = valueArgument('--explorer-commit', process.env.OKF_EXPLORER_COMMIT || null);
-const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.5.7');
+const explorerTag = valueArgument('--explorer-tag', process.env.OKF_EXPLORER_TAG || 'v0.6.0');
 if (path.basename(outputPath) !== OUTPUT_BASENAME) {
   throw new Error(`--output must use the canonical basename ${OUTPUT_BASENAME}`);
 }
@@ -585,7 +585,7 @@ async function modelRelationshipEvidence(page, result) {
   invariant(derivedWhileHidden > 0, 'Hiding model-assisted relationships also removed derived relationships');
   invariant(
     new URL(page.url()).searchParams.getAll('graph.hideAuthority').includes('model-assisted'),
-    'Model-assisted filter state was not serialized into the Explorer URL'
+    'Model-assisted filter state was not serialised into the Explorer URL'
   );
   await modelFilter.click();
   await page.waitForFunction(() =>

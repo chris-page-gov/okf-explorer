@@ -91,7 +91,7 @@ describe('graph presentation', () => {
     expect(boxesOverlap(plan.visible.get('focus')!.box, plan.visible.get('edge-node')!.box)).toBe(false);
   });
 
-  it('deduplicates equal reciprocal labels and offsets distinct ones toward their sources', () => {
+  it('deduplicates equal reciprocal labels and offsets distinct ones towards their sources', () => {
     const same = planDirectedEdges([
       { id: 'a-b', source: 'a', target: 'b', label: 'related source' },
       { id: 'b-a', source: 'b', target: 'a', label: 'related source' }

@@ -221,7 +221,7 @@
   const HELP_TEXT: Record<string, string> = {
     'api-evidence': 'Evidence resources linked to this record, such as endpoint, documentation, contract, or source metadata rows. Zero means no separate evidence resource was generated for this record.',
     'metadata-quality': 'A deterministic completeness score from catalogue metadata. It is not assurance, certification, uptime, security, or API quality.',
-    'record-type': 'The normalized OKF concept type, including API records and legislation works. A legal work progressively resolves its official CLML subdivisions on demand.',
+    'record-type': 'The normalised OKF concept type, including API records and legislation works. A legal work progressively resolves its official CLML subdivisions on demand.',
     source: 'The adapter that harvested this record, such as GOV.UK API Catalogue, data.gov.uk CKAN, Ordnance Survey, or ONS.',
     confidence: 'How strongly the public source supports the record: observed, declared, or assured.',
     licence: 'The licence attached to the record. When inferred, the basis and source URL are shown below.',
@@ -8228,8 +8228,8 @@
                             <p>{evidence.sourceValue.slice(0, 600)}{evidence.sourceValue.length > 600 ? '…' : ''}</p>
                           {/if}
                           {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
-                          {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
-                          {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                          {#if evidence.sourceArtifact}<small>Artefact {evidence.sourceArtifact}</small>{/if}
+                          {#if evidence.sourceSha256}<small>Artefact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
                           {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
                           {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
                           {#if evidence.normalization}<small>{evidence.normalization}</small>{/if}
@@ -8249,8 +8249,8 @@
                     {#each selectedRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
                       <article data-evidence-index={evidenceIndex} data-evidence-source-field={evidence.sourceField || 'unspecified'}>
                         <strong>{evidence.sourceField || `Evidence ${evidenceIndex + 1}`}</strong>
-                        {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
-                        {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                        {#if evidence.sourceArtifact}<small>Artefact {evidence.sourceArtifact}</small>{/if}
+                        {#if evidence.sourceSha256}<small>Artefact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
                         {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
                         {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
                         {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}
@@ -8585,7 +8585,7 @@
                 {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
               </div>
               <details class="metadata-section disclosure-section" id="detail-panel-data" hidden={detailPanelTab !== 'data'}>
-                <summary>Normalized record fields</summary>
+                <summary>Normalised record fields</summary>
                 <dl>
                   <dt>Record name</dt><dd>{largeDetail.dataset.name}</dd>
                   <dt>Record ID</dt><dd>{displayValue(largeDetail.dataset.id)}</dd>
@@ -8692,7 +8692,7 @@
                 </details>
               {/if}
               <details class="json-panel" hidden={detailPanelTab !== 'data'}>
-                <summary>Local normalized {recordSingular()} JSON</summary>
+                <summary>Local normalised {recordSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.dataset)}</pre>
               </details>
               </div>
@@ -8755,7 +8755,7 @@
                 </details>
               {/if}
               <details class="json-panel">
-                <summary>Local normalized {resourceSingular()} JSON</summary>
+                <summary>Local normalised {resourceSingular()} JSON</summary>
                 <pre>{jsonText(largeDetail.resource)}</pre>
               </details>
             {:else if largeDetail.kind === 'publisher'}
@@ -8799,7 +8799,7 @@
                 </div>
               </details>
               <details class="json-panel">
-                <summary>Local normalized publisher JSON</summary>
+                <summary>Local normalised publisher JSON</summary>
                 <pre>{jsonText(largeDetail.publisher)}</pre>
               </details>
             {:else if largeDetail.kind === 'search'}
@@ -8973,7 +8973,7 @@
               {#if source.termValidation}<dt>Term validation</dt><dd>{source.termValidation.status}</dd>{/if}
               <dt>Generated</dt><dd>{source.descriptor.generated_at || source.manifest.generated_at}</dd>
               <dt>Search index</dt>
-              <dd title="Unique normalized terms available to local browser search; no AI or paid token usage">
+              <dd title="Unique normalised terms available to local browser search; no AI or paid token usage">
                 {source.manifest.search?.tokens?.toLocaleString() || 'Unknown'} distinct indexed terms
               </dd>
               <dt>Hydration</dt><dd>{largeIndex ? 'records loaded' : 'overview only'}</dd>
@@ -9037,8 +9037,8 @@
               {#each selectedSmallRelationshipPresentation.evidenceItems as evidence, evidenceIndex}
                 <article data-evidence-index={evidenceIndex} data-evidence-source-field={evidence.sourceField || 'unspecified'}>
                   <strong>{evidence.sourceField || `Evidence ${evidenceIndex + 1}`}</strong>
-                  {#if evidence.sourceArtifact}<small>Artifact {evidence.sourceArtifact}</small>{/if}
-                  {#if evidence.sourceSha256}<small>Artifact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
+                  {#if evidence.sourceArtifact}<small>Artefact {evidence.sourceArtifact}</small>{/if}
+                  {#if evidence.sourceSha256}<small>Artefact SHA-256 <code>{evidence.sourceSha256}</code></small>{/if}
                   {#if evidence.locator}<small>Locator <code>{evidence.locator}</code></small>{/if}
                   {#if evidence.retrievedAt}<small>Retrieved {evidence.retrievedAt}</small>{/if}
                   {#if evidence.fieldProvenance}<small>{evidence.fieldProvenance}</small>{/if}

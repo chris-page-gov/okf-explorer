@@ -30,7 +30,7 @@ extensions as universal OKF requirements.
 ### `okf-ai-infrastructure`
 
 Use as the clearest compact Markdown/YAML-LD bundle example. It demonstrates a
-human-readable authored tree, structured frontmatter, generated semantic and
+human-readable authored tree, structured front matter, generated semantic and
 Explorer projections, and a short validation loop.
 
 ### `okf-uk-government-apis`
@@ -50,8 +50,8 @@ replacement cohorts, and byte-bounded Explorer hydration.
 
 Use for high-assurance acquisition and large content-pipeline controls. It is
 strongest on requirements/traceability lockstep, immutable attempts,
-content-addressed artifacts, resumability, source-body boundaries,
-model-assisted artifact ledgers, complete-corpus reconciliation, and release
+content-addressed artefacts, resumability, source-body boundaries,
+model-assisted artefact ledgers, complete-corpus reconciliation, and release
 questions.
 
 ### `okf-uk-legislation`
@@ -59,14 +59,14 @@ questions.
 Use for very large corpora, independently governed relationship planes,
 federation, legal authority boundaries, immutable acquisition evidence,
 model-assisted audit, restart recovery, cost disclosure, and ordered release
-reproduction. Never generalize legal-domain constraints into other domains,
+reproduction. Never generalise legal-domain constraints into other domains,
 but retain its evidence-state separation.
 
 ### `okf-LandRegistry`
 
 Use as the strongest bounded Foundry and exact-digest release-assurance
 example. It demonstrates a reviewed domain profile, consumer lock, explicit
-artifact dependency graph, two-stage fixtures, source/publication plane
+artefact dependency graph, two-stage fixtures, source/publication plane
 digests, change-impact closure, independent release roles, and exact deployed
 journeys.
 
@@ -91,7 +91,7 @@ most general release-assurance pattern.
 Treat the populated non-Git workspace as an executable conformance-fixture
 corpus, not as a publication repository. Its digest-bound expectations include
 positive rich semantics, precise negative cases and one explicitly scoped
-sparse Reader-compatibility case. An empty or uninitialized directory would
+sparse Reader-compatibility case. An empty or uninitialised directory would
 still be no implementation evidence; confirm `fixtures/expectations.json` and
 the declared checks rather than inferring a test contract from the name.
 
@@ -123,4 +123,4 @@ the declared checks rather than inferring a test contract from the name.
    generated relationship, consumer display, evaluation, and release receipt.
 4. Test ordinary, exception, missing-evidence, stale, and unsupported cases.
 5. Compare status claims with machine-readable candidate and publication
-   artifacts.
+   artefacts.

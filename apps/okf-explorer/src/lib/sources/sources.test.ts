@@ -506,8 +506,8 @@ describe('fetch helpers', () => {
   });
 });
 
-describe('small bundle normalization', () => {
-  it('normalizes explicit YAML-LD graph nodes and rich directed assertions without remote context expansion', () => {
+describe('small bundle normalisation', () => {
+  it('normalises explicit YAML-LD graph nodes and rich directed assertions without remote context expansion', () => {
     const corpus = normalizeSmallBundle({
       '@context': 'https://example.test/pinned-context.jsonld',
       '@id': 'https://example.test/bundle',
@@ -662,7 +662,7 @@ describe('small bundle normalization', () => {
     } as unknown as OkfBundle)).toThrow('must declare RelationshipAssertion type');
   });
 
-  it('normalizes top-level bundle nodes and relationships', () => {
+  it('normalises top-level bundle nodes and relationships', () => {
     const corpus = normalizeSmallBundle({
       meta: { title: 'Bundle title', description: 'Bundle description' },
       nodes: {
@@ -809,7 +809,7 @@ describe('small bundle normalization', () => {
     expect(Object.keys(corpus.nodes)).toEqual(['official']);
   });
 
-  it('normalizes an empty small bundle to safe defaults', () => {
+  it('normalises an empty small bundle to safe defaults', () => {
     const corpus = normalizeSmallBundle({} as OkfBundle);
 
     expect(corpus.id).toBe('default');

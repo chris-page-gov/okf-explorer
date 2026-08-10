@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { provisionOfficialUrl, provisionPathFromId, provisionType } from './structure';
 
-describe('legislation provision normalization', () => {
-  it('normalizes nested official IDs into passage paths', () => {
+describe('legislation provision normalisation', () => {
+  it('normalises nested official IDs into passage paths', () => {
     expect(provisionPathFromId('schedule-1-paragraph-3')).toBe('/schedule/1/paragraph/3');
     expect(provisionPathFromId('section-6')).toBe('/section/6');
   });

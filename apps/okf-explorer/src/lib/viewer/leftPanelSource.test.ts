@@ -240,7 +240,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('!displaySeries.label');
     expect(pageSource.match(/<details class="metadata-section disclosure-section" open>/g)?.length).toBeGreaterThanOrEqual(3);
     expect(pageSource).toContain('id="detail-panel-data" hidden={detailPanelTab !== \'data\'}');
-    expect(pageSource).toContain('<summary>Normalized record fields</summary>');
+    expect(pageSource).toContain('<summary>Normalised record fields</summary>');
     expect(pageSource).not.toContain('>Load full record</button>');
   });
 

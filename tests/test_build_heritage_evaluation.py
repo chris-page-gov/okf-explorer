@@ -563,7 +563,7 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
         with patch.object(
             okf_semantic,
             "semantic_graph_identity",
-            side_effect=AssertionError("receipt construction repeated normalization"),
+            side_effect=AssertionError("receipt construction repeated normalisation"),
         ):
             rebound = heritage.heritage_build_io.plane_roots_receipt(files)
         self.assertEqual(

@@ -167,7 +167,7 @@ describe('governed model-enrichment v3 contract', () => {
     );
   });
 
-  it('canonicalizes historical regnal legislation identifiers to record routes', async () => {
+  it('canonicalises historical regnal legislation identifiers to record routes', async () => {
     const row = await acceptedRow(
       'https://www.legislation.gov.uk/id/aep/WillandMar/5-6/20'
     );
@@ -178,7 +178,7 @@ describe('governed model-enrichment v3 contract', () => {
     ]);
   });
 
-  it('rejects reordered evidence profiles and undeclared normalization', async () => {
+  it('rejects reordered evidence profiles and undeclared normalisation', async () => {
     const row = await acceptedRow();
     row.support_profile = 'notes-only';
     row.evidence[0].normalization = 'raw-text';

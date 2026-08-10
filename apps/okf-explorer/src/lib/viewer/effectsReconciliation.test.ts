@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { normalizeEffectsReconciliation } from './effectsReconciliation';
 
 describe('official-effects reconciliation presentation', () => {
-  it('normalizes the published receipt and always exposes all four UI states', () => {
+  it('normalises the published receipt and always exposes all four UI states', () => {
     const result = normalizeEffectsReconciliation({
       schema: 'okf-official-effects-reconciliation.v1',
       snapshot_id: 'legislation-effects-2026-07-25',

@@ -28,7 +28,7 @@ const defaults: FacetPreferences = {
 };
 
 describe('facet presentation', () => {
-  it('normalizes bundle-scoped user preferences without retaining unknown facets', () => {
+  it('normalises bundle-scoped user preferences without retaining unknown facets', () => {
     expect(
       normalizeFacetPreferences(
         {
@@ -71,7 +71,7 @@ describe('facet presentation', () => {
     expect(preferences.hidden).toEqual(['year']);
   });
 
-  it('normalizes provider profiles and rejects the wrong schema', () => {
+  it('normalises provider profiles and rejects the wrong schema', () => {
     expect(normalizeExplorerPresentation({ schema: 'something-else', facets: [] })).toBeUndefined();
     expect(
       normalizeExplorerPresentation({
@@ -146,7 +146,7 @@ describe('facet presentation', () => {
     expect(moveFacetKeyToTargetWithinPinGroup(unchanged, ['p1', 'p2'], 'b', 'p1')).toBe(unchanged);
   });
 
-  it('defensively normalizes legacy analysis display hints', () => {
+  it('defensively normalises legacy analysis display hints', () => {
     expect(
       normalizeExplorerDisplay({
         facets: {
