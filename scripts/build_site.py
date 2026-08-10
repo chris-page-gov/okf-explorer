@@ -95,6 +95,8 @@ PUBLIC_ROOT_FILES = [
     "sources-index.md",
     "log.md",
     "okf.config.json",
+    "okf-bundle.yamlld",
+    "okf-bundle.jsonld",
     "okf-registry.json",
     "okf-registry.jsonld",
     "README.md",
@@ -1883,6 +1885,17 @@ def audit_assembled_site(
     expected_bundle = build_okf_bundle.render_bundle(bundle)
     if (OUT / "okf-bundle.json").read_text(encoding="utf-8") != expected_bundle:
         raise RuntimeError("assembled documentation component has a stale OKF bundle")
+    semantic, semantic_errors = build_okf_bundle.build_semantic_document(bundle)
+    if semantic_errors:
+        joined = "\n".join(f"- {error}" for error in semantic_errors)
+        raise RuntimeError(f"OKF semantic build failed:\n{joined}")
+    expected_yaml_ld, expected_json_ld = build_okf_bundle.render_semantic_outputs(
+        semantic
+    )
+    if (OUT / "okf-bundle.yamlld").read_text(encoding="utf-8") != expected_yaml_ld:
+        raise RuntimeError("assembled data component has stale OKF YAML-LD")
+    if (OUT / "okf-bundle.jsonld").read_text(encoding="utf-8") != expected_json_ld:
+        raise RuntimeError("assembled data component has stale OKF JSON-LD")
 
     remove_platform_metadata()
     assert_no_forbidden_files()

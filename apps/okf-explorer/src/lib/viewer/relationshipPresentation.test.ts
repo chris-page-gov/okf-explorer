@@ -82,6 +82,23 @@ describe('relationship presentation', () => {
     expect(result.evidenceUrls).toEqual(['https://example.test/evidence']);
   });
 
+  it('rejects evidence URLs that a browser URL parser would silently repair', () => {
+    const result = relationshipPresentation({
+      evidence: [
+        ' https://example.test/leading-space',
+        'https://example.test/?q=raw "query"',
+        'https://example.test/%broken',
+        'https://user:secret@example.test/private',
+        'https://example.test/?q=encoded%20query'
+      ]
+    });
+
+    expect(result.evidenceUrls).toEqual([
+      'https://example.test/?q=encoded%20query'
+    ]);
+    expect(result.evidenceItems.slice(0, 4).every(({ url }) => url === '')).toBe(true);
+  });
+
   it('preserves governed title then notes evidence and its support profile', () => {
     const result = relationshipPresentation({
       authority: { class: 'model-assisted' },

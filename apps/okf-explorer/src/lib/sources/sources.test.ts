@@ -507,6 +507,161 @@ describe('fetch helpers', () => {
 });
 
 describe('small bundle normalization', () => {
+  it('normalizes explicit YAML-LD graph nodes and rich directed assertions without remote context expansion', () => {
+    const corpus = normalizeSmallBundle({
+      '@context': 'https://example.test/pinned-context.jsonld',
+      '@id': 'https://example.test/bundle',
+      '@type': 'okf:Bundle',
+      okf_version: '0.2',
+      title: 'Semantic journey',
+      '@graph': [
+        {
+          '@id': 'https://example.test/service/birth-registration',
+          '@type': 'https://example.test/ns#Service',
+          route: 'service/birth-registration',
+          title: 'Register a birth'
+        },
+        {
+          '@id': 'https://example.test/organisation/register-office',
+          '@type': 'https://example.test/ns#Organisation',
+          route: 'organisation/register-office',
+          title: 'Register office'
+        },
+        {
+          '@id': 'https://example.test/assertion/birth-registration-provider',
+          '@type': ['rdf:Statement', 'okf:RelationshipAssertion'],
+          source: { '@id': 'https://example.test/service/birth-registration' },
+          predicate: { '@id': 'https://example.test/ns#providedBy' },
+          target: { '@id': 'https://example.test/organisation/register-office' },
+          kind: 'provided by',
+          label: 'provided by',
+          inverse_label: 'provides',
+          assertion_status: 'normalized',
+          assertion_scope: 'real-world',
+          authority: {
+            class: 'derived',
+            label: 'Deterministic projection',
+            source: 'https://example.test/source/services'
+          },
+          derivation: 'https://example.test/rules/provider-copy-v1',
+          observed_at: '2026-08-09T00:00:00Z',
+          evidence: [{
+            '@id': 'https://example.test/evidence/birth-registration-provider',
+            type: 'source-record',
+            url: 'https://example.test/source/services/birth-registration',
+            source_artifact: 'source/services.yaml',
+            source_field: 'provider',
+            source_value_sha256: 'a'.repeat(64),
+            retrieved_at: '2026-08-09T00:00:00Z'
+          }],
+          rights: {
+            source: 'https://example.test/terms',
+            assertion: 'Example terms apply.'
+          }
+        }
+      ]
+    } as unknown as OkfBundle);
+
+    expect(corpus.nodes['service/birth-registration']).toEqual(expect.objectContaining({
+      title: 'Register a birth',
+      semantic_id: 'https://example.test/service/birth-registration'
+    }));
+    expect(corpus.relationships).toEqual([
+      expect.objectContaining({
+        id: 'https://example.test/assertion/birth-registration-provider',
+        source: 'service/birth-registration',
+        target: 'organisation/register-office',
+        source_iri: 'https://example.test/service/birth-registration',
+        target_iri: 'https://example.test/organisation/register-office',
+        predicate: 'https://example.test/ns#providedBy',
+        kind: 'provided by',
+        inverse_label: 'provides',
+        assertion_status: 'normalized',
+        assertion_scope: 'real-world'
+      })
+    ]);
+    expect(corpus.meta?.semantic_source).toBe(true);
+  });
+
+  it('does not invent local routes from semantic IRIs or accept unsafe declared routes', () => {
+    expect(() => normalizeSmallBundle({
+      '@context': 'https://example.test/pinned-context.jsonld',
+      '@id': 'https://example.test/bundle',
+      '@graph': [
+        {
+          '@id': 'https://example.test/service/no-route',
+          '@type': 'https://example.test/ns#Service',
+          title: 'Missing route'
+        },
+        {
+          '@id': 'https://example.test/organisation/unsafe-route',
+          '@type': 'https://example.test/ns#Organisation',
+          route: 'https://example.test/not-local',
+          title: 'Unsafe route'
+        },
+        {
+          '@id': 'https://example.test/assertion/without-routes',
+          '@type': 'okf:RelationshipAssertion',
+          source: { '@id': 'https://example.test/service/no-route' },
+          source_route: '../service/no-route',
+          predicate: { '@id': 'https://example.test/ns#providedBy' },
+          target: { '@id': 'https://example.test/organisation/unsafe-route' },
+          label: 'provided by'
+        }
+      ]
+    } as unknown as OkfBundle)).toThrow('requires an explicit safe local route');
+  });
+
+  it('fails closed when an explicit semantic assertion omits governed evidence fields', () => {
+    expect(() => normalizeSmallBundle({
+      '@context': 'https://example.test/pinned-context.jsonld',
+      '@id': 'https://example.test/bundle',
+      '@graph': [
+        {
+          '@id': 'https://example.test/source/one',
+          route: 'source/one',
+          title: 'Source one'
+        },
+        {
+          '@id': 'https://example.test/target/one',
+          route: 'target/one',
+          title: 'Target one'
+        },
+        {
+          '@id': 'https://example.test/assertion/incomplete',
+          '@type': 'okf:RelationshipAssertion',
+          source: 'https://example.test/source/one',
+          predicate: 'https://example.test/predicate/related',
+          target: 'https://example.test/target/one',
+          label: 'related to'
+        }
+      ]
+    } as unknown as OkfBundle)).toThrow('requires kind');
+  });
+
+  it('rejects relationship-shaped graph rows that omit RelationshipAssertion type', () => {
+    expect(() => normalizeSmallBundle({
+      '@context': 'https://example.test/pinned-context.jsonld',
+      '@id': 'https://example.test/bundle',
+      '@graph': [
+        {
+          '@id': 'https://example.test/source/one',
+          route: 'source/one'
+        },
+        {
+          '@id': 'https://example.test/target/one',
+          route: 'target/one'
+        },
+        {
+          '@id': 'https://example.test/assertion/missing-type',
+          source: 'https://example.test/source/one',
+          predicate: 'https://example.test/predicate/related',
+          target: 'https://example.test/target/one'
+        }
+      ]
+    } as unknown as OkfBundle)).toThrow('must declare RelationshipAssertion type');
+  });
+
   it('normalizes top-level bundle nodes and relationships', () => {
     const corpus = normalizeSmallBundle({
       meta: { title: 'Bundle title', description: 'Bundle description' },

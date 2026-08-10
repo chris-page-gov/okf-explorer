@@ -181,6 +181,60 @@ title: 'Coventry Cathedral'
             object_relationships[0]["supporting_assertions"],
         )
 
+    def test_shared_assertion_schema_requires_labels_and_canonical_web_sources(self) -> None:
+        page = okf_semantic.parse_markdown(
+            self.fixture_root / "semantic_concept.md"
+        )
+        assertion = page.metadata["assertions"][0]
+        self.assertEqual(
+            [],
+            okf_semantic.schema_errors(assertion, "semantic-assertion.schema.json"),
+        )
+
+        without_label = copy.deepcopy(assertion)
+        without_label.pop("label")
+        self.assertTrue(
+            any(
+                "label" in error
+                for error in okf_semantic.schema_errors(
+                    without_label, "semantic-assertion.schema.json"
+                )
+            )
+        )
+
+        for invalid_url in (
+            "javascript:alert(1)",
+            "https://user:secret@example.test/source",
+            'https://example.test/?q=raw "query"',
+            "https://example.test/%broken",
+            "https:///missing-host",
+            "https://?q=missing-host",
+            "https://example.test:65536/source",
+        ):
+            for path in (("authority", "source"), ("evidence", 0, "url"), ("rights", "source")):
+                invalid = copy.deepcopy(assertion)
+                target = invalid
+                for part in path[:-1]:
+                    target = target[part]
+                target[path[-1]] = invalid_url
+                self.assertTrue(
+                    okf_semantic.schema_errors(
+                        invalid, "semantic-assertion.schema.json"
+                    ),
+                    f"schema accepted {invalid_url!r} at {path}",
+                )
+
+        for field in ("source", "predicate", "target", "derivation"):
+            invalid = copy.deepcopy(assertion)
+            invalid[field] = "1:not-an-absolute-iri"
+            self.assertTrue(
+                okf_semantic.schema_errors(
+                    invalid,
+                    "semantic-assertion.schema.json",
+                ),
+                f"schema accepted a non-RFC IRI scheme in {field}",
+            )
+
     def test_explorer_graph_projects_semantic_routes_and_runtime_assertions(self) -> None:
         fixture = self.fixture_root / "semantic_concept.md"
         reference = self.fixture_root / "semantic_reference.md"
@@ -287,6 +341,68 @@ title: 'Coventry Cathedral'
         self.assertEqual(
             "okf-semantic-model.v1",
             bundle["extensions"]["okf-semantic-model.v1"]["schema"],
+        )
+
+    def test_root_bundle_materializes_rich_yaml_ld_graph_from_markdown_links(self) -> None:
+        bundle, errors = build_okf_bundle.build_bundle()
+
+        self.assertEqual([], errors)
+        corpus = next(iter(bundle["corpora"].values()))
+        self.assertEqual(len(corpus["edges"]), len(corpus["relationships"]))
+        self.assertGreater(len(corpus["relationships"]), 500)
+        required = {
+            "id",
+            "source",
+            "target",
+            "source_iri",
+            "target_iri",
+            "predicate",
+            "label",
+            "inverse_label",
+            "assertion_status",
+            "assertion_scope",
+            "authority",
+            "derivation",
+            "observed_at",
+            "evidence",
+            "rights",
+        }
+        self.assertTrue(
+            all(required <= set(relationship) for relationship in corpus["relationships"])
+        )
+        self.assertEqual(
+            {okf_semantic.DCTERMS_REFERENCES},
+            {relationship["predicate"] for relationship in corpus["relationships"]},
+        )
+
+        semantic, semantic_errors = build_okf_bundle.build_semantic_document(bundle)
+        self.assertEqual([], semantic_errors)
+        assertions = [
+            item
+            for item in semantic["@graph"]
+            if "RelationshipAssertion" in item.get("@type", [])
+        ]
+        entities = [item for item in semantic["@graph"] if item not in assertions]
+        self.assertEqual(len(corpus["nodes"]), len(entities))
+        self.assertEqual(len(corpus["relationships"]), len(assertions))
+        self.assertTrue(all(not item["route"].endswith(".md") for item in entities))
+        first = assertions[0]
+        source = next(item for item in entities if item["@id"] == first["source"]["@id"])
+        self.assertIn(first["predicate"]["@id"], source)
+        direct_values = source[first["predicate"]["@id"]]
+        if not isinstance(direct_values, list):
+            direct_values = [direct_values]
+        self.assertIn(first["target"], direct_values)
+
+        yaml_ld, json_ld = build_okf_bundle.render_semantic_outputs(semantic)
+        self.assertEqual(
+            semantic,
+            okf_semantic.load_yaml_ld_text(yaml_ld, source="generated.yamlld"),
+        )
+        self.assertEqual(semantic, json.loads(json_ld))
+        self.assertEqual(
+            okf_semantic.semantic_graph_identity(semantic)["sha256"],
+            okf_semantic.semantic_graph_identity(json.loads(json_ld))["sha256"],
         )
 
     def test_semantic_assertions_fail_closed_on_projection_or_integrity_drift(self) -> None:

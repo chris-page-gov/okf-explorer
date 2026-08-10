@@ -86,6 +86,10 @@ export type NormalizedCorpus = {
 };
 
 export type OkfBundle = {
+  '@context'?: unknown;
+  '@id'?: string;
+  '@type'?: string | string[];
+  '@graph'?: Array<Record<string, unknown>>;
   okf_version?: string;
   version?: string;
   title?: string;
@@ -370,6 +374,7 @@ export type LargeCorpusDescriptor = {
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
+    relationship_runtime?: LargeResourceReference;
     model_enrichment_v3?: LargeResourceReference;
     model_enrichment_v3_accepted_manifest?: LargeResourceReference;
     model_enrichment_v3_coverage?: LargeResourceReference;
@@ -425,6 +430,7 @@ export type LargeDataManifest = {
     graph?: string;
     govuk_content?: string;
     relationship_adjacency?: string;
+    relationship_runtime?: LargeResourceReference;
     model_enrichment_v3?: LargeResourceReference;
     model_enrichment_v2?: LargeResourceReference;
     official_effects?: LargeResourceReference;
@@ -1288,6 +1294,99 @@ export type LargeRelationship = {
   evidence?: Array<string | Record<string, unknown>>;
   rights?: string | Record<string, unknown>;
   [key: string]: unknown;
+};
+
+export type LargeRichRelationshipRuntimeChunk = {
+  path: string;
+  id: string;
+  media_type: 'application/json' | string;
+  content_encoding: 'gzip' | string;
+  bytes: number;
+  sha256: string;
+  count: number;
+  records?: number;
+};
+
+export type LargeRichRelationshipRuntimePlane = {
+  id: string;
+  name: string;
+  active: boolean;
+  lifecycle: 'active' | 'historical' | 'rejected' | string;
+  authority_classes: string[];
+  assertions: number;
+  chunks: LargeRichRelationshipRuntimeChunk[];
+};
+
+export type LargeRichRelationshipRuntimeManifest = {
+  '@id': string;
+  schema: 'okf-rich-relationship-runtime-manifest.v1' | string;
+  snapshot: string;
+  generated_at: string;
+  semantic_manifest: string;
+  assertion_contract: string;
+  row_contract: string;
+  default_planes: string[];
+  route_locator: {
+    path: string;
+    id: string;
+    routes: number;
+    buckets: number;
+    sha256: string;
+  };
+  planes: LargeRichRelationshipRuntimePlane[];
+  totals: {
+    active_assertions: number;
+    historical_assertions: number;
+    rejected_assertions: number;
+    all_assertions: number;
+    chunks: number;
+    [key: string]: number;
+  };
+  loading_policy: string;
+};
+
+export type LargeRichRelationshipRouteLocatorBucketMetadata = {
+  bucket: string;
+  path: string;
+  bytes: number;
+  sha256: string;
+  content_encoding: 'gzip' | string;
+  routes: number;
+  chunk_references: number;
+};
+
+export type LargeRichRelationshipRouteLocator = {
+  schema: 'okf-rich-relationship-route-locator.v1' | string;
+  generated_at: string;
+  hash_algorithm: 'sha256-utf8-first-byte-hex' | string;
+  bucket_path_template: string;
+  buckets: LargeRichRelationshipRouteLocatorBucketMetadata[];
+  counts: {
+    routes: number;
+    buckets: number;
+    chunk_references: number;
+  };
+};
+
+export type LargeRichRelationshipRouteLocatorBucket = {
+  schema: 'okf-rich-relationship-route-locator-bucket.v1' | string;
+  generated_at: string;
+  hash_algorithm: 'sha256-utf8-first-byte-hex' | string;
+  bucket: string;
+  routes: Array<{
+    route: string;
+    chunks: string[];
+    planes: Array<{
+      name: string;
+      assertions: number;
+      assertion_ids_sha256: string;
+      chunks: string[];
+    }>;
+  }>;
+  counts: {
+    routes: number;
+    chunk_references: number;
+  };
 };
 
 export type GovernedTermUsage = {

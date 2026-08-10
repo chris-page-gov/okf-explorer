@@ -351,6 +351,17 @@ class HeritageEvaluationBuilderTest(unittest.TestCase):
             len(corpus["relationships"]),
             semantic["validation_report"]["counts"]["assertions"],
         )
+        labels_by_id = {
+            relationship["id"]: relationship["label"]
+            for relationship in corpus["relationships"]
+        }
+        self.assertEqual(
+            labels_by_id,
+            {
+                assertion["@id"]: assertion["label"]
+                for assertion in semantic["document"]["assertions"]
+            },
+        )
         authored = okf_semantic.load_yaml_ld_text(
             semantic["yaml_ld"], source="generated:tiny:okf-bundle.yamlld"
         )

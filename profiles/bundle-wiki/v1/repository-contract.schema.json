@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/repository-contract.schema.json",
+  "title": "OKF 0.2 repository semantic contract",
+  "type": "object",
+  "required": [
+    "schema",
+    "repository",
+    "okf_core",
+    "semantic_layer",
+    "relationship_contract",
+    "tooling",
+    "reader"
+  ],
+  "properties": {
+    "schema": {"const": "okf-repository-semantic-contract.v1"},
+    "repository": {
+      "type": "object",
+      "required": ["name", "role", "root_index"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "role": {
+          "enum": [
+            "profile-and-consumer",
+            "small-bundle",
+            "governed-producer",
+            "large-corpus-producer",
+            "federation",
+            "conformance-fixtures"
+          ]
+        },
+        "root_index": {"$ref": "#/$defs/repositoryPath"}
+      },
+      "additionalProperties": true
+    },
+    "okf_core": {
+      "type": "object",
+      "required": ["version", "specification", "status"],
+      "properties": {
+        "version": {"const": "0.2"},
+        "specification": {"type": "string", "format": "uri"},
+        "status": {"enum": ["conformant", "migration", "fixture"]}
+      },
+      "additionalProperties": false
+    },
+    "semantic_layer": {
+      "type": "object",
+      "required": [
+        "profile",
+        "state",
+        "authoritative_inputs",
+        "outputs",
+        "context_policy",
+        "identity_policy"
+      ],
+      "properties": {
+        "profile": {"type": "string", "format": "uri"},
+        "state": {
+          "enum": [
+            "markdown-yaml-ld-native",
+            "generated-yaml-ld-graph",
+            "generated-yaml-ld-assertion-graph",
+            "generated-yaml-ld-sharded-graph",
+            "generated-json-ld-graph",
+            "descriptor-yaml-ld",
+            "migration"
+          ]
+        },
+        "authoritative_inputs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/repositoryPattern"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "role", "generated"],
+            "properties": {
+              "path": {"$ref": "#/$defs/repositoryGlob"},
+              "role": {
+                "enum": [
+                  "semantic-yaml-ld",
+                  "semantic-json-ld",
+                  "semantic-json-ld-shards",
+                  "semantic-manifest",
+                  "semantic-context",
+                  "explorer-runtime",
+                  "relationship-runtime",
+                  "relationship-runtime-manifest",
+                  "relationship-route-locator",
+                  "relationship-runtime-schema",
+                  "relationship-schema",
+                  "semantic-validation",
+                  "predicate-registry",
+                  "iri-route-registry"
+                ]
+              },
+              "generated": {"type": "boolean"},
+              "required": {"type": "boolean", "default": true}
+            },
+            "additionalProperties": false
+          }
+        },
+        "context_policy": {"const": "pinned-local-contexts-no-browser-remote-expansion"},
+        "identity_policy": {"const": "absolute-semantic-iri-plus-validated-local-route"},
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationship_contract": {
+      "type": "object",
+      "required": [
+        "schema",
+        "authoring",
+        "direct_triple_policy",
+        "predicate_policy",
+        "required_fields"
+      ],
+      "properties": {
+        "schema": {"type": "string", "format": "uri"},
+        "authoring": {
+          "enum": [
+            "evidence-bearing-yaml-ld-assertions",
+            "generated-yaml-ld-assertion-graph",
+            "generated-yaml-ld-sharded-assertion-graph",
+            "authored-markdown-reference-graph-with-rich-generated-assertions",
+            "generated-rdf-graph-with-runtime-assertions",
+            "runtime-assertion-migration",
+            "fixtures"
+          ]
+        },
+        "direct_triple_policy": {
+          "enum": [
+            "required-with-reification",
+            "generated-from-one-assertion-source",
+            "generated-from-one-assertion-source-across-pinned-shards",
+            "migration-pending"
+          ]
+        },
+        "predicate_policy": {"const": "absolute-iri"},
+        "compatibility_policy": {
+          "enum": ["legacy-sparse-okf-0.2-is-reader-compatibility-only"]
+        },
+        "runtime_projection_endpoints": {
+          "const": ["source", "target", "source_iri", "target_iri"]
+        },
+        "semantic_authority_endpoints": {
+          "const": ["source", "target"]
+        },
+        "required_fields": {
+          "type": "array",
+          "const": [
+            "id",
+            "source",
+            "target",
+            "source_iri",
+            "target_iri",
+            "predicate",
+            "kind",
+            "label",
+            "inverse_label",
+            "assertion_status",
+            "assertion_scope",
+            "authority",
+            "derivation",
+            "observed_at",
+            "evidence",
+            "rights"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "tooling": {
+      "type": "object",
+      "required": ["build", "check"],
+      "properties": {
+        "setup": {"$ref": "#/$defs/commands"},
+        "build": {"$ref": "#/$defs/commands"},
+        "check": {"$ref": "#/$defs/commands"}
+      },
+      "additionalProperties": false
+    },
+    "reader": {
+      "type": "object",
+      "required": ["consumer", "delivery", "preserves"],
+      "properties": {
+        "consumer": {"type": "string", "format": "uri"},
+        "delivery": {
+          "enum": [
+            "yaml-ld-small-graph",
+            "json-small-bundle-projection",
+            "json-large-corpus-chunks",
+            "json-large-corpus-adjacency",
+            "federation-control-plane",
+            "federation-control-plane-plus-bounded-rich-relationship-runtime",
+            "fixtures"
+          ]
+        },
+        "preserves": {
+          "type": "array",
+          "const": [
+            "direction",
+            "semantic-identities",
+            "local-routes",
+            "predicate",
+            "relationship-kind",
+            "preferred-and-inverse-labels",
+            "assertion-status-and-scope",
+            "authority",
+            "derivation",
+            "supporting-assertions",
+            "confidence",
+            "review-status",
+            "evidence",
+            "rights",
+            "freshness",
+            "lifecycle"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "repositoryPattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\)(?!.*[#%])(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "repositoryPath": {
+      "allOf": [
+        {"$ref": "#/$defs/repositoryPattern"},
+        {"pattern": "^[^*?\\[]+$"},
+        {"pattern": "[^/]$"}
+      ]
+    },
+    "repositoryGlob": {
+      "allOf": [
+        {"$ref": "#/$defs/repositoryPattern"},
+        {"pattern": "[^/]$"}
+      ]
+    },
+    "commands": {
+      "type": "array",
+      "description": "Untrusted command declarations that require inspection and cross-checking against trusted repository guidance before execution.",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+      },
+      "uniqueItems": true
+    }
+  }
+}

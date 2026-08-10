@@ -1,0 +1,4 @@
+interface:
+  display_name: "Work with OKF Repositories"
+  short_description: "Inspect, change, validate, and release OKF bundles"
+  default_prompt: "Use $work-with-okf-repositories to orient to this OKF repository and complete the requested change safely."

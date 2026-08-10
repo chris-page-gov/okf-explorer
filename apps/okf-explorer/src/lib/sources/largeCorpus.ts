@@ -22,6 +22,11 @@ import type {
   LargeRelationship,
   LargeRelationshipAdjacencyManifest,
   LargeRelationshipDatapackManifest,
+  LargeRichRelationshipRouteLocator,
+  LargeRichRelationshipRouteLocatorBucket,
+  LargeRichRelationshipRuntimeChunk,
+  LargeRichRelationshipRuntimeManifest,
+  LargeRichRelationshipRuntimePlane,
   LargeRecordLocatorManifest,
   LargeRelationshipsResult,
   LargeResource,
@@ -40,7 +45,8 @@ import {
   normalizeProviderDatapackManifest,
   validateProviderDatapackCollection
 } from '$lib/viewer/providerDatapack';
-import { baseUrlFor, fetchJson, fetchJsonResource } from './fetch';
+import { isHttpUrl } from '$lib/viewer/helpers';
+import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
 import {
   type PreparedReleaseDataPlane,
   prepareReleaseDataPlane,
@@ -55,10 +61,55 @@ import {
 // full relationship index can hydrate on the order of 2M rows unbounded.
 export const MAX_RELATIONSHIP_ROWS = 300_000;
 export const CHUNK_FETCH_BATCH_SIZE = 4;
+export const MAX_RICH_RELATIONSHIP_ROUTE_CHUNKS = 64;
+export const MAX_RICH_RELATIONSHIP_ROUTE_ROWS = 100_000;
+export const MAX_RICH_RELATIONSHIP_CHUNK_ROWS = 50_000;
+export const MAX_RICH_RELATIONSHIP_CHUNK_BYTES = 8 * 1024 * 1024;
+// Rich chunks are decoded one at a time. fetchJsonResource enforces this raw
+// decoded-byte ceiling before JSON parsing, while the projection limits below
+// bound what survives after parsing and across the complete hydration.
+export const MAX_RICH_RELATIONSHIP_DECODED_CHUNK_BYTES = MAX_JSON_BYTES;
+export const MAX_RICH_RELATIONSHIP_HYDRATION_COMPRESSED_BYTES = 64 * 1024 * 1024;
+export const MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS = 32 * 1024 * 1024;
+export const MAX_RICH_RELATIONSHIP_ROW_TEXT_UNITS = 32 * 1024;
+export const MAX_RICH_RELATIONSHIP_EVIDENCE_ITEMS = 16;
+export const MAX_RICH_RELATIONSHIP_SUPPORTING_ASSERTIONS = 128;
+export const MAX_RICH_RELATIONSHIP_CACHED_CHUNKS = 16;
+export const MAX_RICH_RELATIONSHIP_PLANES = 16;
+export const MAX_RICH_RELATIONSHIP_CHUNKS = 10_000;
 export const MAX_MODEL_ENRICHMENT_CHUNKS = 10_000;
 export const MAX_MODEL_ENRICHMENT_CHUNK_BYTES = 8 * 1024 * 1024;
 export const MAX_MODEL_ENRICHMENT_CHUNK_ROWS = 50_000;
 const SHA256 = /^[0-9a-f]{64}$/;
+const ABSOLUTE_IRI = /^[A-Za-z][A-Za-z0-9+.-]*:[^\s]+$/;
+const LOCAL_RELATIONSHIP_ROUTE = /^[a-z][a-z0-9-]*(?:\/[A-Za-z0-9._~-]+)+$/;
+const RICH_RELATIONSHIP_RUNTIME_SCHEMA = 'okf-rich-relationship-runtime-manifest.v1';
+const RICH_RELATIONSHIP_ROW_SCHEMA = 'okf-relationship-runtime-row.v1';
+const RICH_RELATIONSHIP_LOCATOR_SCHEMA = 'okf-rich-relationship-route-locator.v1';
+const RICH_RELATIONSHIP_LOCATOR_BUCKET_SCHEMA = 'okf-rich-relationship-route-locator-bucket.v1';
+const RICH_RELATIONSHIP_LOCATOR_ALGORITHM = 'sha256-utf8-first-byte-hex';
+const RICH_RELATIONSHIP_AUTHORITY_CLASSES = new Set([
+  'official',
+  'derived',
+  'model-assisted',
+  'synthetic',
+  'unclassified'
+]);
+const RICH_RELATIONSHIP_ASSERTION_STATUSES = new Set([
+  'official',
+  'normalized',
+  'inferred',
+  'model-derived'
+]);
+const RICH_RELATIONSHIP_ASSERTION_SCOPES = new Set([
+  'real-world',
+  'synthetic-fixture'
+]);
+const RICH_RELATIONSHIP_PLANE_LIFECYCLES = new Set([
+  'active',
+  'historical',
+  'rejected'
+]);
 const MODEL_ENRICHMENT_V3_PREDICATES = {
   topic: 'classified as',
   concept: 'has discovery concept',
@@ -1211,6 +1262,29 @@ export function relationshipBucket(route: string): string {
   return ((hash >>> 24) & 0xff).toString(16).padStart(2, '0');
 }
 
+export function hasTargetedRelationshipDelivery(
+  source: Pick<LargeCorpusSource, 'descriptor' | 'manifest'>
+): boolean {
+  return Boolean(
+    source.descriptor.entrypoints.relationship_adjacency ||
+    source.manifest.indexes.relationship_adjacency ||
+    source.descriptor.entrypoints.relationship_runtime ||
+    source.manifest.indexes.relationship_runtime
+  );
+}
+
+/**
+ * Select route-bounded relationship hydration before any record/full-plane
+ * fallback. Record locators are deliberately not part of this decision: rich
+ * runtime and adjacency locators can resolve aggregate routes independently.
+ */
+export function prefersTargetedRelationshipHydration(
+  source: Pick<LargeCorpusSource, 'descriptor' | 'manifest'>,
+  route: string
+): boolean {
+  return Boolean(route && hasTargetedRelationshipDelivery(source));
+}
+
 async function loadChunks<T>(
   fetchResource: ResourceFetcher,
   paths: LargeResourceReference[] = [],
@@ -1268,6 +1342,848 @@ async function loadRelationshipChunks(
   }
 
   return { relationships, truncated };
+}
+
+function richRuntimeObject(value: unknown, label: string): Record<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`${label} must be a JSON object`);
+  }
+  return value as Record<string, unknown>;
+}
+
+function richRuntimeString(value: unknown, label: string): string {
+  if (typeof value !== 'string' || !value || value.trim() !== value) {
+    throw new Error(`${label} must be a non-empty string`);
+  }
+  return value;
+}
+
+function richRuntimeIri(value: unknown, label: string): string {
+  const iri = richRuntimeString(value, label);
+  if (!ABSOLUTE_IRI.test(iri)) throw new Error(`${label} must be an absolute IRI`);
+  return iri;
+}
+
+function richRuntimeHttpUrl(value: unknown, label: string): string {
+  if (!isHttpUrl(value)) {
+    throw new Error(`${label} must be a canonical credential-free HTTP(S) URL`);
+  }
+  return value;
+}
+
+function richRuntimeRoute(value: unknown, label: string): string {
+  const route = richRuntimeString(value, label);
+  if (!LOCAL_RELATIONSHIP_ROUTE.test(route)) {
+    throw new Error(`${label} must be a safe local route`);
+  }
+  return route;
+}
+
+function richRuntimeInteger(value: unknown, label: string, minimum = 0): number {
+  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < minimum) {
+    throw new Error(`${label} must be an integer greater than or equal to ${minimum}`);
+  }
+  return value;
+}
+
+function richRuntimeUnitNumber(value: unknown, label: string): number {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) {
+    throw new Error(`${label} must be a finite number from 0 to 1`);
+  }
+  return value;
+}
+
+function richRuntimeHash(value: unknown, label: string): string {
+  const hash = richRuntimeString(value, label).toLowerCase();
+  if (!SHA256.test(hash)) throw new Error(`${label} must be a SHA-256 digest`);
+  return hash;
+}
+
+function richRuntimePath(value: unknown, label: string): string {
+  return safeRelativeResourcePath(richRuntimeString(value, label), label);
+}
+
+function normalizeRichRelationshipRuntimeChunk(
+  value: unknown,
+  label: string
+): LargeRichRelationshipRuntimeChunk {
+  const row = richRuntimeObject(value, label);
+  const path = richRuntimePath(row.path, `${label} path`);
+  const id = richRuntimeIri(row.id, `${label} id`);
+  const mediaType = richRuntimeString(row.media_type, `${label} media type`);
+  const contentEncoding = richRuntimeString(
+    row.content_encoding,
+    `${label} content encoding`
+  );
+  if (mediaType !== 'application/json' || contentEncoding !== 'gzip') {
+    throw new Error(`${label} must advertise gzip-compressed JSON`);
+  }
+  const count = richRuntimeInteger(row.count, `${label} count`);
+  if (count > MAX_RICH_RELATIONSHIP_CHUNK_ROWS) {
+    throw new Error(`${label} exceeds the rich relationship row ceiling`);
+  }
+  const records = row.records === undefined
+    ? undefined
+    : richRuntimeInteger(row.records, `${label} records`);
+  if (records !== undefined && records !== count) {
+    throw new Error(`${label} count and records differ`);
+  }
+  const bytes = richRuntimeInteger(row.bytes, `${label} bytes`, 1);
+  if (bytes > MAX_RICH_RELATIONSHIP_CHUNK_BYTES) {
+    throw new Error(`${label} exceeds the rich relationship compressed-byte ceiling`);
+  }
+  return {
+    path,
+    id,
+    media_type: mediaType,
+    content_encoding: contentEncoding,
+    bytes,
+    sha256: richRuntimeHash(row.sha256, `${label} SHA-256`),
+    count,
+    ...(records === undefined ? {} : { records })
+  };
+}
+
+export function normalizeRichRelationshipRuntimeManifest(
+  value: unknown
+): LargeRichRelationshipRuntimeManifest {
+  const document = richRuntimeObject(value, 'Rich relationship runtime manifest');
+  if (document.schema !== RICH_RELATIONSHIP_RUNTIME_SCHEMA) {
+    throw new Error('Rich relationship runtime manifest schema is unsupported');
+  }
+  if (
+    !Array.isArray(document.default_planes) ||
+    !document.default_planes.length ||
+    document.default_planes.length > MAX_RICH_RELATIONSHIP_PLANES
+  ) {
+    throw new Error('Rich relationship runtime manifest has no default planes');
+  }
+  const defaultPlanes = document.default_planes.map((name, index) =>
+    richRuntimeString(name, `Rich relationship default plane ${index}`)
+  );
+  if (new Set(defaultPlanes).size !== defaultPlanes.length) {
+    throw new Error('Rich relationship runtime default planes are duplicated');
+  }
+  if (
+    !Array.isArray(document.planes) ||
+    !document.planes.length ||
+    document.planes.length > MAX_RICH_RELATIONSHIP_PLANES
+  ) {
+    throw new Error('Rich relationship runtime manifest has no planes');
+  }
+
+  const chunkPaths = new Set<string>();
+  const chunkIds = new Set<string>();
+  const planeNames = new Set<string>();
+  const planeIds = new Set<string>();
+  const planes: LargeRichRelationshipRuntimePlane[] = document.planes.map(
+    (value, planeIndex) => {
+      const plane = richRuntimeObject(value, `Rich relationship plane ${planeIndex}`);
+      const name = richRuntimeString(plane.name, `Rich relationship plane ${planeIndex} name`);
+      const id = richRuntimeIri(plane.id, `Rich relationship plane ${name} id`);
+      if (planeNames.has(name) || planeIds.has(id)) {
+        throw new Error('Rich relationship runtime planes have duplicate identities');
+      }
+      planeNames.add(name);
+      planeIds.add(id);
+      if (typeof plane.active !== 'boolean') {
+        throw new Error(`Rich relationship plane ${name} active flag is malformed`);
+      }
+      const lifecycle = richRuntimeString(
+        plane.lifecycle,
+        `Rich relationship plane ${name} lifecycle`
+      );
+      if (
+        !RICH_RELATIONSHIP_PLANE_LIFECYCLES.has(lifecycle) ||
+        plane.active !== (lifecycle === 'active')
+      ) {
+        throw new Error(`Rich relationship plane ${name} lifecycle conflicts with its active flag`);
+      }
+      if (!Array.isArray(plane.authority_classes) || !plane.authority_classes.length) {
+        throw new Error(`Rich relationship plane ${name} has no authority classes`);
+      }
+      const authorityClasses = plane.authority_classes.map((authority, index) => {
+        const authorityClass = richRuntimeString(
+          authority,
+          `Rich relationship plane ${name} authority class ${index}`
+        );
+        if (!RICH_RELATIONSHIP_AUTHORITY_CLASSES.has(authorityClass)) {
+          throw new Error(`Rich relationship plane ${name} has an unsupported authority class`);
+        }
+        return authorityClass;
+      });
+      if (new Set(authorityClasses).size !== authorityClasses.length) {
+        throw new Error(`Rich relationship plane ${name} has duplicate authority classes`);
+      }
+      if (!Array.isArray(plane.chunks)) {
+        throw new Error(`Rich relationship plane ${name} has no chunk list`);
+      }
+      const chunks = plane.chunks.map((chunk, chunkIndex) => {
+        const normalized = normalizeRichRelationshipRuntimeChunk(
+          chunk,
+          `Rich relationship plane ${name} chunk ${chunkIndex}`
+        );
+        if (chunkPaths.has(normalized.path) || chunkIds.has(normalized.id)) {
+          throw new Error('Rich relationship runtime chunks have duplicate identities');
+        }
+        chunkPaths.add(normalized.path);
+        chunkIds.add(normalized.id);
+        return normalized;
+      });
+      const assertions = richRuntimeInteger(
+        plane.assertions,
+        `Rich relationship plane ${name} assertion count`
+      );
+      if (chunks.reduce((total, chunk) => total + chunk.count, 0) !== assertions) {
+        throw new Error(`Rich relationship plane ${name} chunk counts do not reconcile`);
+      }
+      return {
+        id,
+        name,
+        active: plane.active,
+        lifecycle,
+        authority_classes: authorityClasses,
+        assertions,
+        chunks
+      };
+    }
+  );
+
+  const activeNames = planes.filter((plane) => plane.active).map((plane) => plane.name);
+  if (
+    defaultPlanes.length !== activeNames.length ||
+    defaultPlanes.some((name, index) => name !== activeNames[index])
+  ) {
+    throw new Error('Rich relationship runtime defaults must exactly match active planes');
+  }
+
+  const locator = richRuntimeObject(
+    document.route_locator,
+    'Rich relationship runtime route locator'
+  );
+  const totals = richRuntimeObject(document.totals, 'Rich relationship runtime totals');
+  const normalizedTotals = {
+    active_assertions: richRuntimeInteger(
+      totals.active_assertions,
+      'Rich relationship active assertion total'
+    ),
+    historical_assertions: richRuntimeInteger(
+      totals.historical_assertions,
+      'Rich relationship historical assertion total'
+    ),
+    rejected_assertions: richRuntimeInteger(
+      totals.rejected_assertions,
+      'Rich relationship rejected assertion total'
+    ),
+    all_assertions: richRuntimeInteger(
+      totals.all_assertions,
+      'Rich relationship all-assertion total'
+    ),
+    chunks: richRuntimeInteger(totals.chunks, 'Rich relationship chunk total')
+  };
+  const planeAssertionTotal = planes.reduce((total, plane) => total + plane.assertions, 0);
+  const activeAssertionTotal = planes
+    .filter((plane) => plane.active)
+    .reduce((total, plane) => total + plane.assertions, 0);
+  const chunkTotal = planes.reduce((total, plane) => total + plane.chunks.length, 0);
+  if (chunkTotal > MAX_RICH_RELATIONSHIP_CHUNKS) {
+    throw new Error('Rich relationship runtime exceeds the chunk-count ceiling');
+  }
+  const historicalAssertionTotal = planes
+    .filter((plane) => plane.lifecycle === 'historical')
+    .reduce((total, plane) => total + plane.assertions, 0);
+  const rejectedAssertionTotal = planes
+    .filter((plane) => plane.lifecycle === 'rejected')
+    .reduce((total, plane) => total + plane.assertions, 0);
+  if (
+    normalizedTotals.active_assertions !== activeAssertionTotal ||
+    normalizedTotals.historical_assertions !== historicalAssertionTotal ||
+    normalizedTotals.rejected_assertions !== rejectedAssertionTotal ||
+    normalizedTotals.all_assertions !== planeAssertionTotal ||
+    normalizedTotals.active_assertions +
+      normalizedTotals.historical_assertions +
+      normalizedTotals.rejected_assertions !==
+      normalizedTotals.all_assertions ||
+    normalizedTotals.chunks !== chunkTotal
+  ) {
+    throw new Error('Rich relationship runtime totals do not reconcile with its planes');
+  }
+
+  return {
+    '@id': richRuntimeIri(document['@id'], 'Rich relationship runtime manifest id'),
+    schema: RICH_RELATIONSHIP_RUNTIME_SCHEMA,
+    snapshot: richRuntimeString(document.snapshot, 'Rich relationship runtime snapshot'),
+    generated_at: richRuntimeString(
+      document.generated_at,
+      'Rich relationship runtime generation time'
+    ),
+    semantic_manifest: richRuntimePath(
+      document.semantic_manifest,
+      'Rich relationship semantic manifest path'
+    ),
+    assertion_contract: richRuntimePath(
+      document.assertion_contract,
+      'Rich relationship assertion contract path'
+    ),
+    row_contract: richRuntimePath(
+      document.row_contract,
+      'Rich relationship row contract path'
+    ),
+    default_planes: defaultPlanes,
+    route_locator: {
+      path: richRuntimePath(locator.path, 'Rich relationship route locator path'),
+      id: richRuntimeIri(locator.id, 'Rich relationship route locator id'),
+      routes: richRuntimeInteger(locator.routes, 'Rich relationship route count', 1),
+      buckets: richRuntimeInteger(locator.buckets, 'Rich relationship route bucket count', 1),
+      sha256: richRuntimeHash(locator.sha256, 'Rich relationship route locator SHA-256')
+    },
+    planes,
+    totals: normalizedTotals,
+    loading_policy: richRuntimeString(
+      document.loading_policy,
+      'Rich relationship loading policy'
+    )
+  };
+}
+
+function normalizeRichRelationshipRouteLocator(
+  value: unknown,
+  runtime: LargeRichRelationshipRuntimeManifest
+): LargeRichRelationshipRouteLocator {
+  const document = richRuntimeObject(value, 'Rich relationship route locator');
+  if (
+    document.schema !== RICH_RELATIONSHIP_LOCATOR_SCHEMA ||
+    document.hash_algorithm !== RICH_RELATIONSHIP_LOCATOR_ALGORITHM
+  ) {
+    throw new Error('Rich relationship route locator schema or algorithm is unsupported');
+  }
+  const template = richRuntimePath(
+    document.bucket_path_template,
+    'Rich relationship route locator bucket template'
+  );
+  if (!template.includes('{prefix}')) {
+    throw new Error('Rich relationship route locator bucket template has no prefix token');
+  }
+  if (!Array.isArray(document.buckets)) {
+    throw new Error('Rich relationship route locator has no bucket metadata');
+  }
+  const prefixes = new Set<string>();
+  const paths = new Set<string>();
+  const buckets = document.buckets.map((value, index) => {
+    const row = richRuntimeObject(value, `Rich relationship route bucket ${index}`);
+    const bucket = richRuntimeString(row.bucket, `Rich relationship route bucket ${index} prefix`);
+    if (!/^[0-9a-f]{2}$/.test(bucket) || prefixes.has(bucket)) {
+      throw new Error('Rich relationship route locator bucket prefixes are malformed or duplicated');
+    }
+    prefixes.add(bucket);
+    const path = richRuntimePath(row.path, `Rich relationship route bucket ${bucket} path`);
+    if (path !== template.replace('{prefix}', bucket) || paths.has(path)) {
+      throw new Error('Rich relationship route locator bucket paths are malformed or duplicated');
+    }
+    paths.add(path);
+    const contentEncoding = richRuntimeString(
+      row.content_encoding,
+      `Rich relationship route bucket ${bucket} content encoding`
+    );
+    if (contentEncoding !== 'gzip') {
+      throw new Error('Rich relationship route locator buckets must be gzip-compressed');
+    }
+    const bytes = richRuntimeInteger(
+      row.bytes,
+      `Rich relationship route bucket ${bucket} bytes`,
+      1
+    );
+    if (bytes > MAX_RICH_RELATIONSHIP_CHUNK_BYTES) {
+      throw new Error(`Rich relationship route bucket ${bucket} exceeds the compressed-byte ceiling`);
+    }
+    return {
+      bucket,
+      path,
+      bytes,
+      sha256: richRuntimeHash(row.sha256, `Rich relationship route bucket ${bucket} SHA-256`),
+      content_encoding: contentEncoding,
+      routes: richRuntimeInteger(row.routes, `Rich relationship route bucket ${bucket} routes`),
+      chunk_references: richRuntimeInteger(
+        row.chunk_references,
+        `Rich relationship route bucket ${bucket} chunk references`
+      )
+    };
+  });
+  const counts = richRuntimeObject(document.counts, 'Rich relationship route locator counts');
+  const normalizedCounts = {
+    routes: richRuntimeInteger(counts.routes, 'Rich relationship route locator route count'),
+    buckets: richRuntimeInteger(counts.buckets, 'Rich relationship route locator bucket count'),
+    chunk_references: richRuntimeInteger(
+      counts.chunk_references,
+      'Rich relationship route locator chunk-reference count'
+    )
+  };
+  if (
+    normalizedCounts.routes !== buckets.reduce((total, row) => total + row.routes, 0) ||
+    normalizedCounts.buckets !== buckets.length ||
+    normalizedCounts.buckets > 256 ||
+    normalizedCounts.chunk_references !==
+      buckets.reduce((total, row) => total + row.chunk_references, 0) ||
+    runtime.route_locator.routes !== normalizedCounts.routes ||
+    runtime.route_locator.buckets !== normalizedCounts.buckets
+  ) {
+    throw new Error('Rich relationship route locator counts do not reconcile');
+  }
+  return {
+    schema: RICH_RELATIONSHIP_LOCATOR_SCHEMA,
+    generated_at: richRuntimeString(
+      document.generated_at,
+      'Rich relationship route locator generation time'
+    ),
+    hash_algorithm: RICH_RELATIONSHIP_LOCATOR_ALGORITHM,
+    bucket_path_template: template,
+    buckets,
+    counts: normalizedCounts
+  };
+}
+
+async function normalizeRichRelationshipRouteLocatorBucket(
+  value: unknown,
+  prefix: string,
+  expectedRoutes: number,
+  expectedReferences: number,
+  knownChunks: Map<string, string>
+): Promise<LargeRichRelationshipRouteLocatorBucket> {
+  const document = richRuntimeObject(value, `Rich relationship route bucket ${prefix}`);
+  if (
+    document.schema !== RICH_RELATIONSHIP_LOCATOR_BUCKET_SCHEMA ||
+    document.hash_algorithm !== RICH_RELATIONSHIP_LOCATOR_ALGORITHM ||
+    document.bucket !== prefix
+  ) {
+    throw new Error(`Rich relationship route bucket ${prefix} schema, algorithm or prefix differs`);
+  }
+  if (!Array.isArray(document.routes)) {
+    throw new Error(`Rich relationship route bucket ${prefix} has no routes`);
+  }
+  const seenRoutes = new Set<string>();
+  const routes = await Promise.all(document.routes.map(async (value, index) => {
+    const row = richRuntimeObject(value, `Rich relationship route bucket ${prefix} row ${index}`);
+    const route = richRuntimeRoute(row.route, `Rich relationship route bucket ${prefix} route ${index}`);
+    if (seenRoutes.has(route)) {
+      throw new Error(`Rich relationship route bucket ${prefix} has a duplicate or misplaced route`);
+    }
+    seenRoutes.add(route);
+    if ((await sha256Hex(route)).slice(0, 2) !== prefix) {
+      throw new Error(`Rich relationship route bucket ${prefix} has a duplicate or misplaced route`);
+    }
+    if (!Array.isArray(row.chunks) || !row.chunks.length) {
+      throw new Error(`Rich relationship route bucket ${prefix} route ${route} has no chunks`);
+    }
+    const chunks = row.chunks.map((path, chunkIndex) => {
+      const normalizedPath = richRuntimePath(
+        path,
+        `Rich relationship route bucket ${prefix} route ${route} chunk ${chunkIndex}`
+      );
+      if (!knownChunks.has(normalizedPath)) {
+        throw new Error(`Rich relationship route bucket ${prefix} names an unknown chunk`);
+      }
+      return normalizedPath;
+    });
+    if (new Set(chunks).size !== chunks.length) {
+      throw new Error(`Rich relationship route bucket ${prefix} route ${route} repeats a chunk`);
+    }
+    if (!Array.isArray(row.planes) || !row.planes.length) {
+      throw new Error(`Rich relationship route bucket ${prefix} route ${route} has no plane commitments`);
+    }
+    const planeNames = new Set<string>();
+    const planes = row.planes.map((value, planeIndex) => {
+      const plane = richRuntimeObject(
+        value,
+        `Rich relationship route bucket ${prefix} route ${route} plane ${planeIndex}`
+      );
+      const name = richRuntimeString(
+        plane.name,
+        `Rich relationship route bucket ${prefix} route ${route} plane ${planeIndex} name`
+      );
+      if (planeNames.has(name)) {
+        throw new Error(`Rich relationship route bucket ${prefix} route ${route} repeats a plane`);
+      }
+      planeNames.add(name);
+      if (!Array.isArray(plane.chunks) || !plane.chunks.length) {
+        throw new Error(
+          `Rich relationship route bucket ${prefix} route ${route} plane ${name} has no chunks`
+        );
+      }
+      const planeChunks = plane.chunks.map((path, chunkIndex) => {
+        const normalizedPath = richRuntimePath(
+          path,
+          `Rich relationship route bucket ${prefix} route ${route} plane ${name} chunk ${chunkIndex}`
+        );
+        if (knownChunks.get(normalizedPath) !== name) {
+          throw new Error(
+            `Rich relationship route bucket ${prefix} route ${route} plane ${name} names an unknown or cross-plane chunk`
+          );
+        }
+        return normalizedPath;
+      });
+      if (new Set(planeChunks).size !== planeChunks.length) {
+        throw new Error(
+          `Rich relationship route bucket ${prefix} route ${route} plane ${name} repeats a chunk`
+        );
+      }
+      return {
+        name,
+        assertions: richRuntimeInteger(
+          plane.assertions,
+          `Rich relationship route bucket ${prefix} route ${route} plane ${name} assertions`,
+          1
+        ),
+        assertion_ids_sha256: richRuntimeHash(
+          plane.assertion_ids_sha256,
+          `Rich relationship route bucket ${prefix} route ${route} plane ${name} assertion digest`
+        ),
+        chunks: planeChunks
+      };
+    });
+    const committedChunks = new Set(planes.flatMap((plane) => plane.chunks));
+    if (
+      committedChunks.size !== chunks.length ||
+      chunks.some((path) => !committedChunks.has(path))
+    ) {
+      throw new Error(`Rich relationship route bucket ${prefix} route ${route} plane commitments differ from its chunks`);
+    }
+    return { route, chunks, planes };
+  }));
+  const counts = richRuntimeObject(
+    document.counts,
+    `Rich relationship route bucket ${prefix} counts`
+  );
+  const normalizedCounts = {
+    routes: richRuntimeInteger(counts.routes, `Rich relationship route bucket ${prefix} route count`),
+    chunk_references: richRuntimeInteger(
+      counts.chunk_references,
+      `Rich relationship route bucket ${prefix} chunk-reference count`
+    )
+  };
+  if (
+    normalizedCounts.routes !== routes.length ||
+    normalizedCounts.chunk_references !== routes.reduce((total, row) => total + row.chunks.length, 0) ||
+    normalizedCounts.routes !== expectedRoutes ||
+    normalizedCounts.chunk_references !== expectedReferences
+  ) {
+    throw new Error(`Rich relationship route bucket ${prefix} counts do not reconcile`);
+  }
+  return {
+    schema: RICH_RELATIONSHIP_LOCATOR_BUCKET_SCHEMA,
+    generated_at: richRuntimeString(
+      document.generated_at,
+      `Rich relationship route bucket ${prefix} generation time`
+    ),
+    hash_algorithm: RICH_RELATIONSHIP_LOCATOR_ALGORITHM,
+    bucket: prefix,
+    routes,
+    counts: normalizedCounts
+  };
+}
+
+type RichRelationshipChunkProjection = {
+  relationships: LargeRelationship[];
+  retainedTextUnits: number;
+};
+
+function richRuntimeOptionalText(
+  source: Record<string, unknown>,
+  field: string,
+  label: string
+): string | undefined {
+  const value = source[field];
+  if (value === undefined) return undefined;
+  if (typeof value !== 'string') throw new Error(`${label} must be a string`);
+  return value;
+}
+
+function retainedTextUnits(value: unknown): number {
+  if (typeof value === 'string') return value.length;
+  if (Array.isArray(value)) {
+    return value.reduce((total, item) => total + retainedTextUnits(item), 0);
+  }
+  if (value && typeof value === 'object') {
+    return Object.values(value as Record<string, unknown>)
+      .reduce<number>((total, item) => total + retainedTextUnits(item), 0);
+  }
+  return 0;
+}
+
+function projectRichRelationshipEvidence(
+  value: unknown,
+  label: string
+): Record<string, unknown> {
+  const evidence = richRuntimeObject(value, label);
+  const projected: Record<string, unknown> = {
+    '@id': richRuntimeIri(evidence['@id'], `${label} id`),
+    type: richRuntimeString(evidence.type, `${label} type`),
+    url: richRuntimeHttpUrl(evidence.url, `${label} URL`),
+    source_field: richRuntimeString(evidence.source_field, `${label} source field`),
+    source_value_sha256: richRuntimeHash(
+      evidence.source_value_sha256,
+      `${label} source-value SHA-256`
+    ),
+    retrieved_at: richRuntimeString(evidence.retrieved_at, `${label} retrieval time`)
+  };
+  if (evidence.resource !== undefined) {
+    projected.resource = richRuntimeHttpUrl(evidence.resource, `${label} resource`);
+  }
+  for (const field of ['normalization', 'rule_id'] as const) {
+    if (evidence[field] !== undefined) {
+      projected[field] = richRuntimeIri(evidence[field], `${label} ${field}`);
+    }
+  }
+  for (const field of ['source_sha256', 'literal_sha256'] as const) {
+    if (evidence[field] !== undefined) {
+      projected[field] = richRuntimeHash(evidence[field], `${label} ${field}`);
+    }
+  }
+  for (const field of [
+    'source_artifact',
+    'field_provenance',
+    'source_value',
+    'source_value_hash_canonicalization',
+    'value',
+    'rationale',
+    'locator',
+    'source_locator'
+  ] as const) {
+    const text = richRuntimeOptionalText(evidence, field, `${label} ${field}`);
+    if (text !== undefined) projected[field] = text;
+  }
+  return projected;
+}
+
+function normalizeRichRelationshipRows(
+  value: unknown,
+  chunk: LargeRichRelationshipRuntimeChunk,
+  plane: LargeRichRelationshipRuntimePlane
+): RichRelationshipChunkProjection {
+  if (!Array.isArray(value) || value.length !== chunk.count) {
+    throw new Error(`Rich relationship chunk ${chunk.path} row count differs from its manifest`);
+  }
+  const identifiers = new Set<string>();
+  const relationships: LargeRelationship[] = [];
+  let chunkRetainedTextUnits = 0;
+  value.forEach((value, index) => {
+    const label = `Rich relationship chunk ${chunk.path} row ${index}`;
+    const row = richRuntimeObject(value, label);
+    if (row.schema !== RICH_RELATIONSHIP_ROW_SCHEMA) {
+      throw new Error(`${label} schema is unsupported`);
+    }
+    const id = richRuntimeIri(row.id, `${label} id`);
+    const assertionId = richRuntimeIri(row.assertion_id, `${label} assertion id`);
+    if (id !== assertionId || identifiers.has(id)) {
+      throw new Error(`${label} has a mismatched or duplicate assertion identity`);
+    }
+    identifiers.add(id);
+    const source = richRuntimeRoute(row.source, `${label} source`);
+    const target = richRuntimeRoute(row.target, `${label} target`);
+    if (
+      (row.source_route !== undefined && richRuntimeRoute(row.source_route, `${label} source route`) !== source) ||
+      (row.target_route !== undefined && richRuntimeRoute(row.target_route, `${label} target route`) !== target)
+    ) {
+      throw new Error(`${label} route aliases differ`);
+    }
+    const predicate = richRuntimeIri(row.predicate, `${label} predicate`);
+    if (richRuntimeIri(row.predicate_iri, `${label} predicate IRI`) !== predicate) {
+      throw new Error(`${label} predicate aliases differ`);
+    }
+    if (
+      row.direction !== 'source-to-target' ||
+      row.active !== plane.active ||
+      richRuntimeIri(row.plane, `${label} plane`) !== plane.id
+    ) {
+      throw new Error(`${label} direction or plane binding differs`);
+    }
+    const assertionStatus = richRuntimeString(
+      row.assertion_status,
+      `${label} assertion status`
+    );
+    const assertionScope = richRuntimeString(
+      row.assertion_scope,
+      `${label} assertion scope`
+    );
+    if (!RICH_RELATIONSHIP_ASSERTION_STATUSES.has(assertionStatus)) {
+      throw new Error(`${label} assertion status is outside the governed contract`);
+    }
+    if (!RICH_RELATIONSHIP_ASSERTION_SCOPES.has(assertionScope)) {
+      throw new Error(`${label} assertion scope is outside the governed contract`);
+    }
+    const authority = richRuntimeObject(row.authority, `${label} authority`);
+    const authorityClass = richRuntimeString(authority.class, `${label} authority class`);
+    if (
+      !RICH_RELATIONSHIP_AUTHORITY_CLASSES.has(authorityClass) ||
+      !plane.authority_classes.includes(authorityClass)
+    ) {
+      throw new Error(`${label} authority is outside its declared plane`);
+    }
+    const authorityLabel = richRuntimeString(authority.label, `${label} authority label`);
+    const authoritySource = richRuntimeHttpUrl(authority.source, `${label} authority source`);
+    const expectedAuthorityClass = assertionScope === 'synthetic-fixture'
+      ? 'synthetic'
+      : {
+          official: 'official',
+          normalized: 'derived',
+          inferred: 'derived',
+          'model-derived': 'model-assisted'
+        }[assertionStatus];
+    if (authorityClass !== expectedAuthorityClass) {
+      throw new Error(`${label} authority conflicts with its assertion status and scope`);
+    }
+    if (!Array.isArray(row.evidence) || !row.evidence.length) {
+      throw new Error(`${label} has no evidence`);
+    }
+    if (row.evidence.length > MAX_RICH_RELATIONSHIP_EVIDENCE_ITEMS) {
+      throw new Error(
+        `${label} exceeds the ${MAX_RICH_RELATIONSHIP_EVIDENCE_ITEMS}-item evidence ceiling`
+      );
+    }
+    const evidenceIds = new Set<string>();
+    const projectedEvidence = row.evidence.map((value, evidenceIndex) => {
+      const evidenceLabel = `${label} evidence ${evidenceIndex}`;
+      const evidence = projectRichRelationshipEvidence(value, evidenceLabel);
+      const evidenceId = String(evidence['@id']);
+      if (evidenceIds.has(evidenceId)) {
+        throw new Error(`${label} repeats an evidence identity`);
+      }
+      evidenceIds.add(evidenceId);
+      return evidence;
+    });
+    const rights = richRuntimeObject(row.rights, `${label} rights`);
+    const rightsSource = richRuntimeHttpUrl(rights.source, `${label} rights source`);
+    const rightsAssertion = richRuntimeString(rights.assertion, `${label} rights assertion`);
+    const derivation = richRuntimeIri(row.derivation, `${label} derivation`);
+    const observedAt = richRuntimeString(row.observed_at, `${label} observation time`);
+    const kind = richRuntimeString(row.kind, `${label} kind`);
+    const relationshipLabel = richRuntimeString(row.label, `${label} label`);
+    const inverseLabel = richRuntimeString(row.inverse_label, `${label} inverse label`);
+    let rule: string | undefined;
+    let derivationActivity: string | undefined;
+    let confidenceScore: number | undefined;
+    let supportingAssertions: string[] | undefined;
+    let reviewStatus: string | undefined;
+    if (assertionStatus === 'inferred') {
+      rule = richRuntimeIri(row.rule, `${label} inference rule`);
+      derivationActivity = richRuntimeIri(
+        row.derivation_activity,
+        `${label} derivation activity`
+      );
+      confidenceScore = richRuntimeUnitNumber(
+        row.confidence_score,
+        `${label} confidence score`
+      );
+      if (!Array.isArray(row.supporting_assertions) || !row.supporting_assertions.length) {
+        throw new Error(`${label} inferred assertion has no supporting assertions`);
+      }
+      if (row.supporting_assertions.length > MAX_RICH_RELATIONSHIP_SUPPORTING_ASSERTIONS) {
+        throw new Error(
+          `${label} exceeds the ` +
+          `${MAX_RICH_RELATIONSHIP_SUPPORTING_ASSERTIONS}-item supporting-assertion ceiling`
+        );
+      }
+      supportingAssertions = row.supporting_assertions.map((value, supportIndex) =>
+        richRuntimeIri(value, `${label} supporting assertion ${supportIndex}`)
+      );
+    }
+    if (assertionStatus === 'model-derived') {
+      derivationActivity = richRuntimeIri(
+        row.derivation_activity,
+        `${label} derivation activity`
+      );
+      confidenceScore = richRuntimeUnitNumber(
+        row.confidence_score,
+        `${label} confidence score`
+      );
+      reviewStatus = richRuntimeString(row.review_status, `${label} review status`);
+    }
+
+    const sourceIri = richRuntimeIri(row.source_iri, `${label} source IRI`);
+    const targetIri = richRuntimeIri(row.target_iri, `${label} target IRI`);
+    const projected: LargeRelationship = {
+      schema: RICH_RELATIONSHIP_ROW_SCHEMA,
+      id,
+      assertion_id: assertionId,
+      source,
+      target,
+      source_route: source,
+      target_route: target,
+      source_iri: sourceIri,
+      target_iri: targetIri,
+      predicate,
+      predicate_iri: predicate,
+      kind,
+      label: relationshipLabel,
+      inverse_label: inverseLabel,
+      direction: 'source-to-target',
+      assertion_status: assertionStatus,
+      assertion_scope: assertionScope,
+      authority: {
+        class: authorityClass,
+        label: authorityLabel,
+        source: authoritySource
+      },
+      derivation,
+      observed_at: observedAt,
+      evidence: projectedEvidence,
+      rights: {
+        source: rightsSource,
+        assertion: rightsAssertion
+      },
+      plane: plane.id,
+      lifecycle: plane.lifecycle,
+      active: plane.active,
+      ...(rule ? { rule } : {}),
+      ...(derivationActivity ? { derivation_activity: derivationActivity } : {}),
+      ...(confidenceScore === undefined ? {} : { confidence_score: confidenceScore }),
+      ...(supportingAssertions ? { supporting_assertions: supportingAssertions } : {}),
+      ...(reviewStatus ? { review_status: reviewStatus } : {})
+    };
+    for (const field of ['stale_after', 'freshness', 'support_profile'] as const) {
+      const text = richRuntimeOptionalText(row, field, `${label} ${field}`);
+      if (text !== undefined) projected[field] = text;
+    }
+    if (row.confidence !== undefined) {
+      if (
+        !(
+          typeof row.confidence === 'string' ||
+          (typeof row.confidence === 'number' && Number.isFinite(row.confidence))
+        )
+      ) {
+        throw new Error(`${label} confidence must be a string or finite number`);
+      }
+      projected.confidence = row.confidence;
+    }
+    for (const field of ['strength', 'count'] as const) {
+      if (row[field] !== undefined) {
+        if (typeof row[field] !== 'number' || !Number.isFinite(row[field])) {
+          throw new Error(`${label} ${field} must be a finite number`);
+        }
+        projected[field] = row[field];
+      }
+    }
+    if (row.official_legal_classification !== undefined) {
+      if (typeof row.official_legal_classification !== 'boolean') {
+        throw new Error(`${label} official legal classification must be boolean`);
+      }
+      projected.official_legal_classification = row.official_legal_classification;
+    }
+
+    const rowRetainedTextUnits = retainedTextUnits(projected);
+    if (rowRetainedTextUnits > MAX_RICH_RELATIONSHIP_ROW_TEXT_UNITS) {
+      throw new Error(
+        `${label} exceeds the ${MAX_RICH_RELATIONSHIP_ROW_TEXT_UNITS}-unit retained-text ceiling`
+      );
+    }
+    chunkRetainedTextUnits += rowRetainedTextUnits;
+    if (chunkRetainedTextUnits > MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS) {
+      throw new Error(
+        `Rich relationship chunk ${chunk.path} exceeds the aggregate retained-text ceiling`
+      );
+    }
+    relationships.push(projected);
+  });
+  return { relationships, retainedTextUnits: chunkRetainedTextUnits };
 }
 
 function indexResourcesByDataset(resources: LargeResource[]): Map<string, LargeResource[]> {
@@ -1704,11 +2620,54 @@ export async function loadLargeCorpus(
     throw new Error('Descriptor and data manifest record-locator paths differ');
   }
   const recordLocatorReference = descriptorRecordLocator || manifestRecordLocator;
+  const descriptorRelationshipRuntime = descriptorEntrypoint(
+    descriptor,
+    'relationship_runtime'
+  );
+  const manifestRelationshipRuntime = manifest.indexes.relationship_runtime;
+  if (
+    descriptorRelationshipRuntime &&
+    manifestRelationshipRuntime &&
+    resourcePath(descriptorRelationshipRuntime) !== resourcePath(manifestRelationshipRuntime)
+  ) {
+    throw new Error('Descriptor and data manifest rich relationship runtime paths differ');
+  }
+  const descriptorRelationshipRuntimeHash = resourceHash(descriptorRelationshipRuntime);
+  const manifestRelationshipRuntimeHash = resourceHash(manifestRelationshipRuntime);
+  if (
+    descriptorRelationshipRuntimeHash &&
+    manifestRelationshipRuntimeHash &&
+    descriptorRelationshipRuntimeHash !== manifestRelationshipRuntimeHash
+  ) {
+    throw new Error('Descriptor and data manifest rich relationship runtime SHA-256 values differ');
+  }
+  const relationshipRuntimeReference = descriptorRelationshipRuntimeHash
+    ? descriptorRelationshipRuntime
+    : manifestRelationshipRuntimeHash
+      ? manifestRelationshipRuntime
+      : descriptorRelationshipRuntime || manifestRelationshipRuntime;
+  if (relationshipRuntimeReference && !resourceHash(relationshipRuntimeReference)) {
+    throw new Error(
+      'Advertised rich relationship runtime requires a descriptor or data-manifest SHA-256 binding'
+    );
+  }
   let facetIndexPromise: Promise<Record<string, LargeFacetRow[]>> | null = null;
   let fullIndexPromise: Promise<LargeFullIndex> | null = null;
   let relationshipsPromise: Promise<LargeRelationshipsResult> | null = null;
   let adjacencyManifestPromise: Promise<LargeRelationshipAdjacencyManifest> | null = null;
   const adjacencyBucketPromises = new Map<string, Promise<Record<string, LargeRelationship[]>>>();
+  let richRelationshipRuntimePromise: Promise<LargeRichRelationshipRuntimeManifest> | null = null;
+  let richRelationshipLocatorPromise: Promise<LargeRichRelationshipRouteLocator> | null = null;
+  const richRelationshipLocatorBucketPromises = new Map<
+    string,
+    Promise<LargeRichRelationshipRouteLocatorBucket>
+  >();
+  const richRelationshipChunkPromises = new Map<
+    string,
+    Promise<RichRelationshipChunkProjection>
+  >();
+  const richRelationshipChunkRetainedTextUnits = new Map<string, number>();
+  let richRelationshipCachedTextUnits = 0;
   let recordLocatorPromise: Promise<LargeRecordLocatorManifest> | null = null;
   const recordLocatorBucketPromises = new Map<string, Promise<Record<string, [number, number]>>>();
   const recordChunkPromises = new Map<number, Promise<LargeDataset[]>>();
@@ -2012,6 +2971,302 @@ export async function loadLargeCorpus(
     }
   }
 
+  async function richRelationshipRuntime(): Promise<LargeRichRelationshipRuntimeManifest | null> {
+    if (!relationshipRuntimeReference) return null;
+    if (!richRelationshipRuntimePromise) {
+      richRelationshipRuntimePromise = fetchResource<unknown>(relationshipRuntimeReference, true)
+        .then((value) => {
+          const runtime = normalizeRichRelationshipRuntimeManifest(value);
+          if (!snapshot || runtime.snapshot !== snapshot) {
+            throw new Error(
+              'Rich relationship runtime snapshot differs from the loaded bundle snapshot'
+            );
+          }
+          return runtime;
+        })
+        .catch((error) => {
+          richRelationshipRuntimePromise = null;
+          throw error;
+        });
+    }
+    return richRelationshipRuntimePromise;
+  }
+
+  function richRelationshipChunksByPath(
+    runtime: LargeRichRelationshipRuntimeManifest
+  ): Map<string, { chunk: LargeRichRelationshipRuntimeChunk; plane: LargeRichRelationshipRuntimePlane }> {
+    return new Map(
+      runtime.planes.flatMap((plane) =>
+        plane.chunks.map((chunk) => [chunk.path, { chunk, plane }] as const)
+      )
+    );
+  }
+
+  async function richRelationshipLocator(
+    runtime: LargeRichRelationshipRuntimeManifest
+  ): Promise<LargeRichRelationshipRouteLocator> {
+    if (!richRelationshipLocatorPromise) {
+      const reference = bundleResourceReference(
+        {
+          path: runtime.route_locator.path,
+          sha256: runtime.route_locator.sha256,
+          compression: 'identity'
+        },
+        baseUrl,
+        'Rich relationship route locator manifest'
+      );
+      richRelationshipLocatorPromise = fetchResource<unknown>(reference, true)
+        .then((value) => normalizeRichRelationshipRouteLocator(value, runtime))
+        .catch((error) => {
+          richRelationshipLocatorPromise = null;
+          throw error;
+        });
+    }
+    return richRelationshipLocatorPromise;
+  }
+
+  async function richRelationshipChunk(
+    chunk: LargeRichRelationshipRuntimeChunk,
+    plane: LargeRichRelationshipRuntimePlane
+  ): Promise<RichRelationshipChunkProjection> {
+    const evict = (path: string) => {
+      richRelationshipChunkPromises.delete(path);
+      const retained = richRelationshipChunkRetainedTextUnits.get(path) || 0;
+      richRelationshipChunkRetainedTextUnits.delete(path);
+      richRelationshipCachedTextUnits -= retained;
+    };
+    let promise = richRelationshipChunkPromises.get(chunk.path);
+    if (promise) {
+      richRelationshipChunkPromises.delete(chunk.path);
+      richRelationshipChunkPromises.set(chunk.path, promise);
+    }
+    if (!promise) {
+      const reference = bundleResourceReference(
+        {
+          path: chunk.path,
+          sha256: chunk.sha256,
+          bytes: chunk.bytes,
+          compression: 'gzip'
+        },
+        baseUrl,
+        `Rich relationship chunk ${chunk.path}`
+      );
+      promise = fetchResource<unknown>(reference, true)
+        .then((value) => normalizeRichRelationshipRows(value, chunk, plane))
+        .then((projection) => {
+          if (richRelationshipChunkPromises.get(chunk.path) === promise) {
+            richRelationshipChunkRetainedTextUnits.set(
+              chunk.path,
+              projection.retainedTextUnits
+            );
+            richRelationshipCachedTextUnits += projection.retainedTextUnits;
+            while (
+              richRelationshipChunkPromises.size > MAX_RICH_RELATIONSHIP_CACHED_CHUNKS ||
+              richRelationshipCachedTextUnits > MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS
+            ) {
+              const oldest = richRelationshipChunkPromises.keys().next().value;
+              if (typeof oldest !== 'string' || oldest === chunk.path) break;
+              evict(oldest);
+            }
+          }
+          return projection;
+        })
+        .catch((error) => {
+          if (richRelationshipChunkPromises.get(chunk.path) === promise) evict(chunk.path);
+          throw error;
+        });
+      while (richRelationshipChunkPromises.size >= MAX_RICH_RELATIONSHIP_CACHED_CHUNKS) {
+        const oldest = richRelationshipChunkPromises.keys().next().value;
+        if (typeof oldest !== 'string') break;
+        evict(oldest);
+      }
+      richRelationshipChunkPromises.set(chunk.path, promise);
+    }
+    return promise;
+  }
+
+  async function loadRichRelationshipRuntime(
+    maxRows: number
+  ): Promise<LargeRelationshipsResult> {
+    if (!Number.isSafeInteger(maxRows) || maxRows < 0 || maxRows > MAX_RELATIONSHIP_ROWS) {
+      throw new Error(
+        `Rich relationship row limit must be an integer from 0 to ${MAX_RELATIONSHIP_ROWS}`
+      );
+    }
+    const runtime = await richRelationshipRuntime();
+    if (!runtime) return { relationships: [], truncated: false };
+    const defaultNames = new Set(runtime.default_planes);
+    const planes = runtime.planes.filter((plane) => defaultNames.has(plane.name));
+    const chunks = planes.flatMap((plane) => plane.chunks.map((chunk) => ({ chunk, plane })));
+    const expectedRows = planes.reduce((total, plane) => total + plane.assertions, 0);
+    const selectedChunks: typeof chunks = [];
+    let selectedDeclaredRows = 0;
+    for (const item of chunks) {
+      if (selectedDeclaredRows >= maxRows) break;
+      selectedChunks.push(item);
+      selectedDeclaredRows += item.chunk.count;
+    }
+    const selectedCompressedBytes = selectedChunks.reduce(
+      (total, { chunk }) => total + chunk.bytes,
+      0
+    );
+    if (selectedCompressedBytes > MAX_RICH_RELATIONSHIP_HYDRATION_COMPRESSED_BYTES) {
+      throw new Error(
+        `Rich relationship hydration requires ${selectedCompressedBytes} compressed bytes; ` +
+        `it exceeds the ${MAX_RICH_RELATIONSHIP_HYDRATION_COMPRESSED_BYTES}-byte aggregate ceiling`
+      );
+    }
+    const relationships: LargeRelationship[] = [];
+    const identifiers = new Set<string>();
+    let hydrationRetainedTextUnits = 0;
+    for (const { chunk, plane } of selectedChunks) {
+      const projection = await richRelationshipChunk(chunk, plane);
+      hydrationRetainedTextUnits += projection.retainedTextUnits;
+      if (hydrationRetainedTextUnits > MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS) {
+        throw new Error(
+          `Rich relationship hydration exceeds the ` +
+          `${MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS}-unit retained-text ceiling`
+        );
+      }
+      for (const row of projection.relationships) {
+        if (relationships.length >= maxRows) break;
+        const identifier = String(row.id || '');
+        if (identifiers.has(identifier)) {
+          throw new Error(`Rich relationship assertion identity is duplicated: ${identifier}`);
+        }
+        identifiers.add(identifier);
+        relationships.push(row);
+      }
+    }
+    return { relationships, truncated: relationships.length < expectedRows };
+  }
+
+  async function richRelationshipsForRoute(
+    route: string
+  ): Promise<LargeRelationship[]> {
+    const runtime = await richRelationshipRuntime();
+    if (!runtime) return [];
+    const locator = await richRelationshipLocator(runtime);
+    const prefix = (await sha256Hex(route)).slice(0, 2);
+    const metadata = locator.buckets.find((row) => row.bucket === prefix);
+    if (!metadata) return [];
+    let bucketPromise = richRelationshipLocatorBucketPromises.get(prefix);
+    if (!bucketPromise) {
+      const knownChunks = new Map(
+        [...richRelationshipChunksByPath(runtime)].map(([path, { plane }]) => [path, plane.name])
+      );
+      const reference = bundleResourceReference(
+        {
+          path: metadata.path,
+          sha256: metadata.sha256,
+          bytes: metadata.bytes,
+          compression: 'gzip'
+        },
+        baseUrl,
+        `Rich relationship route bucket ${prefix}`
+      );
+      bucketPromise = fetchResource<unknown>(reference, true)
+        .then((value) =>
+          normalizeRichRelationshipRouteLocatorBucket(
+            value,
+            prefix,
+            metadata.routes,
+            metadata.chunk_references,
+            knownChunks
+          )
+        )
+        .catch((error) => {
+          richRelationshipLocatorBucketPromises.delete(prefix);
+          throw error;
+        });
+      richRelationshipLocatorBucketPromises.set(prefix, bucketPromise);
+    }
+    const bucket = await bucketPromise;
+    const located = bucket.routes.find((row) => row.route === route);
+    if (!located) return [];
+
+    const chunkIndex = richRelationshipChunksByPath(runtime);
+    const activeNames = new Set(runtime.default_planes);
+    const selected = located.chunks
+      .map((path) => chunkIndex.get(path)!)
+      .filter(({ plane }) => activeNames.has(plane.name));
+    const selectedRows = selected.reduce((total, { chunk }) => total + chunk.count, 0);
+    const activeCommitments = located.planes.filter((plane) => activeNames.has(plane.name));
+    const expectedIncidentRows = activeCommitments.reduce(
+      (total, plane) => total + plane.assertions,
+      0
+    );
+    const selectedCompressedBytes = selected.reduce(
+      (total, { chunk }) => total + chunk.bytes,
+      0
+    );
+    if (
+      selected.length > MAX_RICH_RELATIONSHIP_ROUTE_CHUNKS ||
+      selectedRows > MAX_RICH_RELATIONSHIP_ROUTE_ROWS ||
+      expectedIncidentRows > MAX_RICH_RELATIONSHIP_ROUTE_ROWS ||
+      selectedCompressedBytes > MAX_RICH_RELATIONSHIP_HYDRATION_COMPRESSED_BYTES
+    ) {
+      throw new Error(
+        `Rich relationship route ${route} requires ${selected.length} active chunks, ` +
+        `${selectedRows} declared shard rows, ${expectedIncidentRows} incident assertions and ` +
+        `${selectedCompressedBytes} compressed bytes; ` +
+        `it exceeds the bounded browser hydration ceiling ` +
+        `(${MAX_RICH_RELATIONSHIP_ROUTE_CHUNKS} chunks and ` +
+        `${MAX_RICH_RELATIONSHIP_ROUTE_ROWS} rows or ` +
+        `${MAX_RICH_RELATIONSHIP_HYDRATION_COMPRESSED_BYTES} compressed bytes). ` +
+        `The semantic graph remains available ` +
+        `through its digest-bound shards; use a narrower record route or an offline query ` +
+        `for this high-degree hub.`
+      );
+    }
+    const relationships: LargeRelationship[] = [];
+    let hydrationRetainedTextUnits = 0;
+    for (const { chunk, plane } of selected) {
+      const projection = await richRelationshipChunk(chunk, plane);
+      hydrationRetainedTextUnits += projection.retainedTextUnits;
+      if (hydrationRetainedTextUnits > MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS) {
+        throw new Error(
+          `Rich relationship route ${route} exceeds the ` +
+          `${MAX_RICH_RELATIONSHIP_RETAINED_TEXT_UNITS}-unit retained-text ceiling`
+        );
+      }
+      relationships.push(
+        ...projection.relationships.filter((row) => row.source === route || row.target === route)
+      );
+    }
+    if (selected.length && !relationships.length) {
+      throw new Error(`Rich relationship route locator resolved ${route} to unrelated chunks`);
+    }
+    const identifiers = new Set<string>();
+    for (const relationship of relationships) {
+      const identifier = String(relationship.id || '');
+      if (identifiers.has(identifier)) {
+        throw new Error(`Rich relationship assertion identity is duplicated: ${identifier}`);
+      }
+      identifiers.add(identifier);
+    }
+    const planesByName = new Map(runtime.planes.map((plane) => [plane.name, plane]));
+    for (const commitment of activeCommitments) {
+      const plane = planesByName.get(commitment.name)!;
+      const assertionIds = relationships
+        .filter((row) => row.plane === plane.id)
+        .map((row) => String(row.id || ''))
+        .sort();
+      if (
+        assertionIds.length !== commitment.assertions ||
+        await sha256Hex(JSON.stringify(assertionIds)) !== commitment.assertion_ids_sha256
+      ) {
+        throw new Error(
+          `Rich relationship route ${route} does not match its ${commitment.name} assertion commitment`
+        );
+      }
+    }
+    if (relationships.length !== expectedIncidentRows) {
+      throw new Error(`Rich relationship route ${route} incident assertion totals do not reconcile`);
+    }
+    return relationships;
+  }
+
   async function recordLocator(): Promise<LargeRecordLocatorManifest | null> {
     if (!recordLocatorReference) return null;
     if (!recordLocatorPromise) {
@@ -2230,19 +3485,29 @@ export async function loadLargeCorpus(
       return fullIndexPromise;
     },
     loadRelationships(maxRows: number = MAX_RELATIONSHIP_ROWS) {
-      if (!relationshipsPromise) {
-        relationshipsPromise = loadRelationshipChunks(
-          fetchResource,
-          manifest.chunks.relationships || [],
-          manifest.shards?.relationships,
-          maxRows
+      if (!Number.isSafeInteger(maxRows) || maxRows < 0 || maxRows > MAX_RELATIONSHIP_ROWS) {
+        return Promise.reject(
+          new Error(`Relationship row limit must be an integer from 0 to ${MAX_RELATIONSHIP_ROWS}`)
         );
+      }
+      if (!relationshipsPromise) {
+        relationshipsPromise = relationshipRuntimeReference
+          ? loadRichRelationshipRuntime(maxRows)
+          : loadRelationshipChunks(
+              fetchResource,
+              manifest.chunks.relationships || [],
+              manifest.shards?.relationships,
+              maxRows
+            );
       }
       return relationshipsPromise;
     },
     async loadRelationshipsForRoute(route: string) {
       const locator = await recordLocator();
       const relationshipRoute = locator?.route_aliases?.[route] || route;
+      if (relationshipRuntimeReference) {
+        return richRelationshipsForRoute(relationshipRoute);
+      }
       const adjacencyPath = descriptorEntrypoint(descriptor, 'relationship_adjacency') || manifest.indexes.relationship_adjacency;
       let baseRelationships: LargeRelationship[];
       if (!adjacencyPath) {

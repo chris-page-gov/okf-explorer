@@ -98,6 +98,16 @@ describe('viewer helpers', () => {
     expect(isHttpUrl('https://example.test')).toBe(true);
     expect(isHttpUrl('HTTP://example.test')).toBe(true);
     expect(isHttpUrl('javascript:alert(1)')).toBe(false);
+    expect(isHttpUrl('https://user:secret@example.test')).toBe(false);
+    expect(isHttpUrl(' https://example.test')).toBe(false);
+    expect(isHttpUrl('https://example.test/?q=rows:100 "api"')).toBe(false);
+    expect(isHttpUrl('https://example.test/?q=rows%3A100%20%22api%22')).toBe(true);
+    expect(isHttpUrl('https:///missing-host')).toBe(false);
+    expect(isHttpUrl('https://?q=missing-host')).toBe(false);
+    expect(isHttpUrl('https://example.test:0/source')).toBe(false);
+    expect(isHttpUrl('https://example.test:65536/source')).toBe(false);
+    expect(isHttpUrl('https://example.test:65535/source')).toBe(true);
+    expect(isHttpUrl('https://[2001:db8::1]:443/source')).toBe(true);
     expect(isHttpUrl(42)).toBe(false);
   });
 

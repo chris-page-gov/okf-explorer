@@ -125,6 +125,11 @@ The repository contains:
   definitive OKF Explorer implementation.
 - `okf.config.json` - local corpus configuration.
 - `okf-bundle.json` - generated bundle consumed by the explorer.
+- `okf-bundle.yamlld` - canonical generated semantic graph for the bundled
+  sample, with explicit route-bearing entities, direct triples and rich
+  directed relationship assertions.
+- `okf-bundle.jsonld` - deterministic JSON-LD representation of the same
+  YAML-LD data model and graph identity.
 - `registry/okf-registry.yamlld` - canonical semantic source for the curated
   bundle registry; `okf-registry.json`, `okf-registry.jsonld` and the Explorer
   static copy are generated projections.
@@ -141,6 +146,9 @@ The repository contains:
   independent heritage publication unit rather than the Explorer Site.
 - `publication-units/` - independently rooted data-publication descriptors,
   deterministic export rules and reviewed repository workflow templates.
+- `plugins/okf-repositories/` - validated new-format Agent Plugin and reusable
+  skill for orienting to, changing, validating and handing off OKF repositories
+  without crossing authored/generated or migration/release boundaries.
 - `docs/heritage-evaluation-report.md` - the beginner-readable exemplar report,
   including the additive YAML-LD design and publication boundary.
 - `docs/uk-legislation/` - maintained UK Legislation documentation spine with getting-started guidance, personas, user journeys, an illustrated manual, agent research rules, evaluation and refresh instructions.

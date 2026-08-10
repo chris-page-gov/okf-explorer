@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "okf-repositories",
+  "version": "0.1.0",
+  "description": "Orient to, query, maintain, validate, review, and publish Open Knowledge Format repositories safely.",
+  "author": {
+    "name": "Chris Page",
+    "url": "https://github.com/chris-page-gov"
+  },
+  "homepage": "https://github.com/chris-page-gov/okf-explorer",
+  "repository": "https://github.com/chris-page-gov/okf-explorer",
+  "license": "MIT",
+  "keywords": [
+    "okf",
+    "open-knowledge-format",
+    "knowledge-graphs",
+    "ontology",
+    "provenance"
+  ]
+}

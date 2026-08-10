@@ -64,6 +64,20 @@ APIs exemplar, and related large-corpus OKF packs.
   separates RDF instances, RDFS/SKOS vocabularies, bounded OWL inference,
   SHACL validation, PROV/DCAT evidence and Explorer presentation, and records
   the predicate-aware graph delivery roadmap.
+- [YAML-LD relationship assertion mapping](yaml-ld-relationship-assertion-mapping.md)
+  records how evidence-bearing semantic assertions project into the current
+  Explorer relationship runtime and federation control-plane rows.
+- [YAML-LD default semantic layer implementation plan](yaml-ld-default-semantic-layer-implementation-plan.md)
+  stages the move from semantic authoring to runtime-default loading without
+  breaking existing JSON publication contracts.
+- [OKF 0.2 and YAML-LD semantic authoring](okf-0.2-yaml-ld-semantic-authoring.md)
+  is the executable cross-repository contract: one semantic source, rich
+  directed assertions, generated projections, safe routes and Reader
+  behaviour.
+- [OKF repository agent-guidance review](okf-agent-guidance-review-2026-08-09.md)
+  explains the portable guidance design and the complementary roles of the
+  nine reviewed repositories; the validated plugin source is under
+  `plugins/okf-repositories/`.
 - [Source constraint ledger](source-constraint-ledger.md) records fair-use,
   access-control, licensing and context-loading concerns for internal
   escalation without silently reducing prototype functionality.

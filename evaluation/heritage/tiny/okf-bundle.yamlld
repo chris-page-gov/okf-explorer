@@ -84,6 +84,7 @@ assertions:
     url: https://historicengland.org.uk/listing/heritage-at-risk/search-register/results?q=1184627
   inverse_label: is assessed by
   kind: assesses
+  label: assesses
   observed_at: '2026-08-03T00:00:00Z'
   predicate: https://www.w3.org/ns/prov#specializationOf
   rights:
@@ -123,6 +124,7 @@ assertions:
     url: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/0/query?where=ListEntry%3D%271342941%27&outFields=%2A&returnGeometry=true&outSR=4326&f=json
   inverse_label: contains
   kind: located in
+  label: located in
   observed_at: '2026-08-03T00:00:00Z'
   predicate: https://schema.org/containedInPlace
   rights:
@@ -156,6 +158,7 @@ assertions:
     url: https://historicengland.org.uk/content/docs/har/har-2025-entries-additions-removals/
   inverse_label: contains
   kind: located in
+  label: located in
   observed_at: '2026-08-03T00:00:00Z'
   predicate: https://schema.org/containedInPlace
   rights:
@@ -195,6 +198,7 @@ assertions:
     url: https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/0/query?where=ListEntry%3D%271184627%27&outFields=%2A&returnGeometry=true&outSR=4326&f=json
   inverse_label: contains
   kind: located in
+  label: located in
   observed_at: '2026-08-03T00:00:00Z'
   predicate: https://schema.org/containedInPlace
   rights:

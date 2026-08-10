@@ -9,6 +9,10 @@ Explorer's ordinary Site rebuild and release closure.
 
 - Repository: canonical OKF Explorer source, sample OKF Markdown corpus,
   provenance, issues, pull requests, and review history.
+- Root sample data: `okf-bundle.json` is the compatibility runtime projection;
+  `okf-bundle.yamlld` and `okf-bundle.jsonld` are synchronized semantic
+  representations generated from the same normalized Markdown graph. Site
+  assembly rejects any drift among them.
 - Main GitHub Pages: Explorer runtime, small examples, documentation, and
   lightweight compatibility pages for the external heritage exemplar. It does
   not copy the heritage corpus or faithful fixture into `_site/`.
