@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Govern selective CPSV-AP 3.2.0 adoption across the OKF producer portfolio,
+  preserving DCAT/DCAT-AP, ELI and statistical-model boundaries while
+  requiring pinned standards assets, evidence-bearing mappings and honest
+  subset-validation claims.
 - Pin the canonical Bundle Wiki v1 profile to the complete, byte-exact
   Explorer v0.6.0 16-file tree and an adjacent machine-readable vendor lock.
   Reconciliation now fails closed on a missing, extra or drifted canonical

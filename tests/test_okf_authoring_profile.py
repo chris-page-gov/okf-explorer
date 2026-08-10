@@ -330,6 +330,35 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         ):
             self.assertIn(required, examples)
 
+    def test_shared_guide_governs_selective_cpsv_ap_adoption(self) -> None:
+        guide = (DOCS / "okf-0.2-yaml-ld-semantic-authoring.md").read_text()
+        for required in (
+            "## Selective CPSV-AP 3.2.0 adoption",
+            "https://semiceu.github.io/CPSV-AP/releases/3.2.0/",
+            "https://www.w3.org/TR/vocab-dcat-3/",
+            "https://semiceu.github.io/DCAT-AP/",
+            "https://op.europa.eu/en/web/eu-vocabularies/model/-/resource/dataset/eli",
+            "https://sdmx.org/standards-2/",
+            "subset validation, not full CPSV-AP conformance",
+            "does not imply endorsement",
+            "version lock",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, guide)
+
+        for repository in (
+            "okf-LandRegistry",
+            "okf-govuk-content",
+            "okf-ons",
+            "okf-uk-government-apis",
+            "okf-uk-legislation",
+            "okf-uk-living",
+            "okf-ai-infrastructure",
+            "okf-testing",
+        ):
+            with self.subTest(repository=repository):
+                self.assertIn(f"`{repository}`", guide)
+
 
 if __name__ == "__main__":
     unittest.main()
