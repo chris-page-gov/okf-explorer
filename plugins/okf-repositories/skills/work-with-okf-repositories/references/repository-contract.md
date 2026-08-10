@@ -8,13 +8,13 @@ publication.
 
 The portable OKF v0.2 Markdown floor is intentionally small:
 
-- Encode concepts as UTF-8 Markdown with parseable YAML frontmatter and a
+- Encode concepts as UTF-8 Markdown with parseable YAML front matter and a
   non-empty `type`.
 - Declare `okf_version: "0.2"` at the bundle-root `index.md`.
 - Keep nested `index.md` files as ordinary navigation without concept
-  frontmatter.
+  front matter.
 - Keep `log.md` as a reserved log, normally using newest-first dated headings.
-- Preserve unknown types and frontmatter fields for forward compatibility.
+- Preserve unknown types and front matter fields for forward compatibility.
 - Use structured `generated`, `status`, `sources`, and `verified` records with
   their defined meanings. Do not treat authorship as verification.
 
@@ -32,7 +32,7 @@ Record which files are authoritative inputs. Common authored planes include:
 - domain profiles, denominators, policies, rights decisions, controlled terms,
   predicate registries, schemas, shapes, fixtures, questions, and decisions;
 - generator, validator, and evaluation code; and
-- frozen-candidate or publication authorization records when deliberately
+- frozen-candidate or publication authorisation records when deliberately
   authored.
 
 Common generated planes include:
@@ -62,15 +62,15 @@ Do not overload one status or score. Track independently:
 
 | Axis | Typical distinctions |
 |---|---|
-| Source/assertion authority | official, external reference, normalized, inferred, model-assisted, editorial |
-| Derivation | source-native, deterministic normalization, rule-derived, expert-asserted, model-assisted |
+| Source/assertion authority | official, external reference, `normalized`, inferred, model-assisted, editorial |
+| Derivation | source-native, deterministic `normalization`, rule-derived, expert-asserted, model-assisted |
 | Verification trust | unverified, machine-confirmed, human-reviewed, named review event |
 | Observation/freshness | observed time, source-native dates, stale threshold, current/unknown |
 | Availability/access | public, restricted, authenticated, unavailable, not tested |
 | Rights/privacy | licence basis, allowed operation, retention, redistribution, sensitivity |
 | Coverage | named denominator, included, excluded, failed, unexplained omission |
 | Concept lifecycle | draft, stable, deprecated, superseded |
-| Release lifecycle | local, candidate, assured, authorized, deployed, verified, promoted |
+| Release lifecycle | local, candidate, assured, `authorized`, deployed, verified, promoted |
 
 Confidence cannot upgrade authority. Public access cannot establish licence.
 An official source can be stale. A population-complete discovery record can
@@ -81,12 +81,12 @@ still require specialist review and remain below release grade.
 - Retain source-native identifiers, versions, editions, routes, jurisdictions,
   language, temporal scope, and source roles.
 - Treat labels and similarity as discovery aids, not identity evidence.
-- Record mappings and canonicalizations as assertions with method and evidence.
+- Record mappings and canonicalisations as assertions with method and evidence.
 - Keep UK-wide, England, Scotland, Wales, Northern Ireland, local, overseas,
   and private-dependency routes distinct when the source distinguishes them.
 - Never convert a navigation facet, catalogue membership, or website route
   into domain applicability without supporting evidence.
-- Do not turn an educational or discovery bundle into a personalized legal,
+- Do not turn an educational or discovery bundle into a personalised legal,
   medical, eligibility, ownership, security, or operational decision engine.
 
 ## 5. Choose the smallest justified product
@@ -122,10 +122,10 @@ For new or materially changed domains:
 2. Record the result in a machine-valid domain profile with evidence and an
    exact digest.
 3. Pin all release-relevant consumers and generators in one consumer lock.
-4. Map producer inputs through artifact planes and consumers to public routes
+4. Map producer inputs through artefact planes and consumers to public routes
    in a dependency/change-impact graph.
 5. Resolve only decisions that genuinely block the smallest safe build.
-6. Prove positive, negative, and degraded behavior with a tiny producer
+6. Prove positive, negative, and degraded behaviour with a tiny producer
    fixture, then run the actual pinned consumer against the same bytes.
 7. Build the full collection only after these contracts pass.
 
@@ -141,9 +141,9 @@ The profile, not a chat transcript, is the durable research-to-build handoff.
   for every selected item, including failures.
 - Keep live/raw caches outside the publication tree unless a reviewed contract
   explicitly freezes a bounded envelope.
-- Use immutable attempts or content-addressed artifacts. Never rewrite a
+- Use immutable attempts or content-addressed artefacts. Never rewrite a
   completed acquisition to make it look successful.
-- Separate discovery, acquisition, normalization, compilation, evaluation,
+- Separate discovery, acquisition, normalisation, compilation, evaluation,
   and publication commands.
 - Do not reinterpret an old cache under new schema or semantic rules without a
   versioned adapter and validation.
@@ -170,7 +170,7 @@ put local identities in `source` and `target` and preserve the absolute
 identities in `source_iri` and `target_iri`; semantic assertion nodes map
 those IRIs to RDF subject and
 object. Keep the direct semantic triple and its
-evidence-bearing `okf:RelationshipAssertion` synchronized, or generate both
+evidence-bearing `okf:RelationshipAssertion` synchronised, or generate both
 from one governed assertion source. Explorer adjacency is a generated delivery
 projection, never an independent semantic authority.
 

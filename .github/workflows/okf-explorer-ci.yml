@@ -167,7 +167,7 @@ jobs:
           --github-output "$GITHUB_OUTPUT"
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
-      - name: Materialize SvelteKit TypeScript configuration
+      - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
       - if: steps.browser-plan.outputs.requires_site == 'true'
@@ -212,7 +212,7 @@ jobs:
           python-version: "3.12"
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
-      - name: Materialize SvelteKit TypeScript configuration
+      - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
       - name: Install Site dependencies
@@ -290,11 +290,11 @@ jobs:
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: .site-components
-          # One key per immutable source revision ensures newly materialized
+          # One key per immutable source revision ensures newly materialised
           # components are saved; restore the previous content-addressed cache.
           key: site-components-v3-${{ runner.os }}-${{ github.sha }}
           restore-keys: site-components-v3-${{ runner.os }}-
-      - name: Build componentized static Site
+      - name: Build componentised static Site
         run: python3 scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
       - name: Upload candidate identity outside Site bytes
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

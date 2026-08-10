@@ -53,7 +53,7 @@ test('rejects duplicate journey ids', () => {
   assert.throws(() => validateJourneyManifest(duplicate), /duplicate journey id/);
 });
 
-test('normalizes common descriptor identity fields without inventing them', () => {
+test('normalises common descriptor identity fields without inventing them', () => {
   assert.deepEqual(
     descriptorIdentity({
       schema: 'okf-explorer-large-corpus.v1',

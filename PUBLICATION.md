@@ -10,8 +10,8 @@ Explorer's ordinary Site rebuild and release closure.
 - Repository: canonical OKF Explorer source, sample OKF Markdown corpus,
   provenance, issues, pull requests, and review history.
 - Root sample data: `okf-bundle.json` is the compatibility runtime projection;
-  `okf-bundle.yamlld` and `okf-bundle.jsonld` are synchronized semantic
-  representations generated from the same normalized Markdown graph. Site
+  `okf-bundle.yamlld` and `okf-bundle.jsonld` are synchronised semantic
+  representations generated from the same normalised Markdown graph. Site
   assembly rejects any drift among them.
 - Main GitHub Pages: Explorer runtime, small examples, documentation, and
   lightweight compatibility pages for the external heritage exemplar. It does
@@ -45,7 +45,7 @@ Explorer's ordinary Site rebuild and release closure.
 - Optional DOI: connect the public repository to Zenodo after the first release
   if a persistent scholarly citation is required.
 
-## Componentized Site Assembly
+## Componentised Site Assembly
 
 `scripts/build_site.py` builds four independently content-addressed components:
 `data`, `shell`, `docs`, and `app`. Components are verified before reuse and
@@ -68,7 +68,7 @@ the candidate identity.
 
 ## Heritage Publication Unit
 
-To bootstrap or refresh the external repository, materialize the deterministic
+To bootstrap or refresh the external repository, materialise the deterministic
 candidate into its `site/` directory, copy all five repository workflows to
 `.github/workflows/`, copy the publication-unit README to repository root, and
 install the promotion-envelope template outside the candidate root:
@@ -103,7 +103,7 @@ links may be structurally retargeted during export.
 
 Only the immutable promotion-envelope template is committed at repository root
 under `release-assurance/`, outside `site/`. The runtime promotion envelope is
-materialized in workflow temporary storage and published only as attested R2
+materialised in workflow temporary storage and published only as attested R2
 release evidence; it is never committed or copied into `site/`. Ordinary Pages
 publication validates only the exact candidate manifest. Terminal release
 validation additionally requires that promoted envelope to bind the candidate
@@ -143,7 +143,7 @@ and its assurance receipts.
    successful terminal workflow run ID, and the same exact 40-hex OKF Explorer
    assurance commit. It verifies the run repository,
    workflow, result, commit, timing and artifact identity; rechecks R1;
-   materializes and attests the promotion envelope; and publishes the complete
+   materialises and attests the promotion envelope; and publishes the complete
    closure from a draft.
 7. Each post-publication gate requires `release.immutable == true`, GitHub's
    verified release attestation

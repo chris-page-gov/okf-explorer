@@ -29,7 +29,7 @@
       const response = await fetch(structureUrl, { headers: { Accept: 'application/xml, text/xml;q=0.9' } });
       if (!response.ok) throw new Error(`Official CLML request failed (${response.status})`);
       provisions = parseClml(await response.text(), documentUri);
-      if (!provisions.length) throw new Error('No normalized structural elements were found in the official CLML response.');
+      if (!provisions.length) throw new Error('No normalised structural elements were found in the official CLML response.');
     } catch (err) {
       error = err instanceof Error ? err.message : String(err);
     } finally {
@@ -87,7 +87,7 @@
     {#if provisions.length}
       <div class="structure-tools">
         <label>Find within this instrument <input bind:value={filter} type="search" placeholder="section, phrase, article…" /></label>
-        <span>{visibleProvisions.length.toLocaleString()} of {provisions.length.toLocaleString()} normalized concepts shown</span>
+        <span>{visibleProvisions.length.toLocaleString()} of {provisions.length.toLocaleString()} normalised concepts shown</span>
       </div>
       <ol class="provision-tree">
         {#each visibleProvisions as item}

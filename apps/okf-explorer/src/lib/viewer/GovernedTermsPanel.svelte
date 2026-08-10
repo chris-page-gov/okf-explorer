@@ -160,7 +160,7 @@
                     {/each}
                   </ul>
                 {:else}
-                  UI explanation; no serialized metadata occurrence is expected.
+                  UI explanation; no serialised metadata occurrence is expected.
                 {/if}
               </dd>
             </dl>

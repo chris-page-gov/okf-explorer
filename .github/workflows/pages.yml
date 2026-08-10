@@ -115,7 +115,7 @@ jobs:
       - name: Verify persisted public bases before the ordinary check
         if: needs.impact.outputs.foundry == 'true'
         run: python3 scripts/retarget_heritage_source_snapshots.py --check
-      - name: Validate externalized heritage candidate family
+      - name: Validate externalised heritage candidate family
         if: needs.impact.outputs.foundry == 'true'
         env:
           IMPACT_BUILDER_FIXTURES: ${{ needs.impact.outputs.builder_fixtures }}
@@ -140,7 +140,7 @@ jobs:
           python3 scripts/update_viewer.py --check
           python3 scripts/check_okf.py
           python3 scripts/check_legislation_okf.py
-      - name: Build componentized static Site
+      - name: Build componentised static Site
         run: python3 scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6

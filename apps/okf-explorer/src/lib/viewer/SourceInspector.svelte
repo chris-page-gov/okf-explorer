@@ -86,7 +86,7 @@
     </div>
   </header>
 
-  <p class="source-note">This response is loaded directly from <strong>{sourceHostname(url)}</strong>. Explorer renders it as text and does not alter the bundle’s normalized record.</p>
+  <p class="source-note">This response is loaded directly from <strong>{sourceHostname(url)}</strong>. Explorer renders it as text and does not alter the bundle’s normalised record.</p>
 
   {#if loading}
     <div class="source-status" role="status"><span class="spinner" aria-hidden="true"></span>Loading source data…</div>

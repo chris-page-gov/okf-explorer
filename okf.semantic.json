@@ -74,7 +74,7 @@
     "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
     "limitations": [
       "Markdown links are projected as derived dcterms:references assertions; no domain predicate is inferred from link text or section placement.",
-      "The frozen heritage browser receipt binds the pre-migration Explorer tree and intentionally remains stale until a new candidate and genuine-browser journey are authorized; the focused semantic/Reader checks are the local migration gate."
+      "The refreshed local heritage candidate receipt binds the v0.6.0 Explorer tree, deterministic Site identity, 100-question browser-scored evaluation and three Playwright Chromium local interaction journeys; it does not claim a public deployment, which remains subject to exact Pages identity and a final journey in Google Chrome."
     ],
     "outputs": [
       {

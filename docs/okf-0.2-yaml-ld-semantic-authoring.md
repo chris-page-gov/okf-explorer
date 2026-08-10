@@ -1,6 +1,6 @@
 # OKF 0.2 and YAML-LD semantic authoring
 
-Status: implemented interoperability contract, 9 August 2026.
+Status: Explorer contract merged; v0.6.0 release in progress, 10 August 2026.
 
 This document is the common authoring, generation and Reader contract for the
 `okf-*` repositories. It explains the two layers that must remain distinct:
@@ -17,11 +17,39 @@ Semantic requirements in this document are profile requirements, not claims
 about the upstream OKF core specification. The upstream specification allows
 unknown fields and deliberately defers a general semantic-layer template.
 
+## Rollout progress
+
+This is the live dependency-ordered implementation ledger. **Current state**
+records what has already happened; **next action** records work still to do.
+`Local migration present` never means committed, released, deployed or
+publicly verified.
+
+| Repository or gate | Current state | Next action |
+| --- | --- | --- |
+| `okf-explorer` contract and plugin | Complete. [PR #75](https://github.com/chris-page-gov/okf-explorer/pull/75) was squash-merged as `596deb28` after every required CI gate passed, including the full Chrome, Firefox and WebKit suite. | Preserve this merged contract as the dependency baseline for every producer. |
+| `okf-explorer` v0.6.0 | Release candidate committed on [PR #78](https://github.com/chris-page-gov/okf-explorer/pull/78). Version, citation, changelog, runtime binding, generated semantic bundle, SBOM, 329 Python tests, 348 application/contract tests, 100 browser-scored questions and three Chromium journeys are synchronised and passing. The browser evidence was rerun after the visible British English corrections and binds the exact rebuilt app and Site identities. | Complete the required PR checks and review, merge, then verify the exact GitHub Pages commit and final journey in Google Chrome before tagging v0.6.0. |
+| British English editorial gate | Global and repository guidance now require British English, `en-GB` conventions and GOV.UK plain English style, with compatibility exceptions for exact identifiers, quotations and official titles. Authored release pages, semantic profiles, plugin guidance, CI labels and visible Explorer copy have passed a contextual review. The separate beginner documentation draft has also passed all-page editorial, fragment, history-navigation and accessibility checks and is available for user review; it remains uncommitted. | Incorporate review feedback, commit the beginner documentation independently, retain its repeatable editorial check and apply the same rule to every producer repository as it is migrated. |
+| External source representations | Tracked separately as [issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76); it is deliberately outside the v0.6.0 contract release. | After v0.6.0, route typed CLML/XML resources to format-aware inspection and make the linked producer correction independently. |
+| Semantic roadmap review | Scheduled in [issue #77](https://github.com/chris-page-gov/okf-explorer/issues/77). | Reconcile issues #49–#54 after the contract release, recording completed foundations, remaining acceptance criteria and explicit dependencies. |
+| `okf-ai-infrastructure` | Local migration present; not yet committed or released. | Review first producer against the released Explorer contract, validate, commit and release independently. |
+| `okf-LandRegistry` | Local migration present; not yet committed or released. Existing v0.2 evidence must be preserved. | Review, validate and publish independently after the preceding producer. |
+| `okf-govuk-content` | Local migration present on work that must be moved onto current `origin/main`; not yet committed or released. Its sample remains explicitly not publication-ready. | Rebuild a clean branch, validate without promoting the sample's readiness, then open an independent PR. |
+| `okf-ons` | Earlier baseline work is merged; additional local semantic hardening is not yet committed or released. | Review only the new hardening, exclude unrelated local files, validate and publish independently. |
+| `okf-uk-government-apis` | Earlier baseline work is merged; the larger local semantic migration is not yet committed or released. | Review generated-artefact scope and size, validate, then publish independently. |
+| `okf-uk-legislation` | Local migration present; not yet committed or released. The external-source producer correction is a related but separable change. | Rebase the semantic migration onto current `origin/main`, validate and publish it; deliver the issue #76 producer correction in its own linked change. |
+| `okf-uk-living` | Local migration present; not yet committed or released. The current `release_grade: false` assessment and warnings remain authoritative. | Review and validate without overstating readiness, then create the candidate, freeze and publication sequence independently. |
+| `okf-testing` | Local conformance workspace; intentionally not a Git repository or release unit. | Update the repository copy of the shared schema and use it for cross-repository conformance only. |
+
+The producer order above is deliberately serial at the publication boundary:
+each repository gets its own review history, checks, commit, release decision
+and public verification. Analysis and bounded validation may run in parallel,
+but one producer's local success is never evidence that another was released.
+
 ## The one-source model
 
 ```mermaid
 flowchart LR
-  A["Authored Markdown YAML-LD, source registers and domain assertions"] --> B["Pinned-context semantic normalization"]
+  A["Authored Markdown YAML-LD, source registers and domain assertions"] --> B["Pinned-context semantic normalisation"]
   B --> C["Canonical YAML-LD graph"]
   B --> D["Deterministic JSON-LD projection"]
   B --> E["Explorer nodes and relationship rows"]
@@ -163,15 +191,15 @@ For a governed semantic bundle the normal build order is:
    aliases, non-string mapping keys or non-finite numbers;
 2. resolve only the pinned, reviewed local context set;
 3. validate OKF 0.2 concept metadata and profile requirements separately;
-4. expand/normalize semantic identity and reconcile direct triples with
+4. expand/normalise semantic identity and reconcile direct triples with
    assertion nodes;
 5. validate evidence, authority/status compatibility and predicate policy;
 6. build the IRI-to-route and predicate registries;
-7. emit deterministic YAML-LD and JSON-LD from the same normalized graph;
+7. emit deterministic YAML-LD and JSON-LD from the same normalised graph;
 8. compile `okf-relationship-assertion.v2` rows with local routes and retained
    IRIs;
 9. produce small-bundle JSON or large-corpus adjacency, search and locator
-   artifacts; and
+   artefacts; and
 10. bind the release snapshot, counts and output digests before publication.
 
 The schema gate covers the complete generated assertion population before a
@@ -261,20 +289,20 @@ silently treated as complete.
 ## Local implementation and release ledger
 
 **Completed locally** means the authored controls, generators, generated
-working-tree artifacts and stated deterministic checks implement the migration.
+working-tree artefacts and stated deterministic checks implement the migration.
 It does **not** mean the changes are committed, tagged, released, deployed or
 verified at a public URL. Those are deliberately separate columns and gates.
 
 | Repository | Local implementation state | Semantic/runtime result | Remaining non-migration gate |
 | --- | --- | --- | --- |
-| `okf-explorer` | Completed locally | 155 entities and 579 conservative `dcterms:references` assertions in synchronized YAML-LD, JSON-LD and compatibility runtime projections; bounded small-graph and rich-sharded Reader paths | Commit/review, release construction, deployment and exact public-browser verification |
+| `okf-explorer` | Contract merged; v0.6.0 candidate complete locally | 155 entities and 579 conservative `dcterms:references` assertions in synchronised YAML-LD, JSON-LD and compatibility runtime projections; bounded small-graph and rich-sharded Reader paths | Release PR review, exact Pages deployment verification, final journey in Google Chrome, annotated tag and GitHub Release |
 | `okf-ai-infrastructure` | Completed locally | 155 entities, including 142 production concepts, and 579 direct/reified/runtime relationships validated exhaustively against the exact shared schema; a deterministic receipt binds schema, identity, payload and triple digests, and the reproducible Python 3.12 environment is lock-file governed | Existing preview review and release gates |
 | `okf-LandRegistry` | Completed locally | 2,203 records with one governed Welsh-to-English `schema:translationOfWork` assertion in exact direct/reified/runtime parity; both assertion projections pass the exact shared schema and the generated receipt binds their identity and triple digests | Freeze a new candidate and replace the intentionally unchanged prior-release receipt |
 | `okf-govuk-content` | Completed locally | 1,106 nodes and 392 direct/reified/runtime relationships exhaustively validated against the exact shared schema in digest-bound compressed shards | Full-corpus hydration, closing reconciliation and release promotion beyond the governed demonstrator |
-| `okf-ons` | Completed locally | 5,097 entities and 19,735 exact-schema-valid assertions: 19,452 inferred discovery relationships and 283 normalized cross-source representations, delivered through compact roots and digest-bound deterministic-gzip shards | Review and deploy the new r6 candidate; no statistical equivalence or certification is implied |
-| `okf-uk-government-apis` | Completed locally | 81,181 route-bearing entities and 277,449 exact-schema-valid assertions across 73 semantic shards; unsafe provenance URLs were canonicalized while legacy protocol labels remain only as aliases of 18 canonical routes | Assign a fresh candidate version/time, run the existing release gates and deploy exact bytes |
+| `okf-ons` | Completed locally | 5,097 entities and 19,735 exact-schema-valid assertions: 19,452 inferred discovery relationships and 283 `normalized` cross-source representations, delivered through compact roots and digest-bound deterministic-gzip shards | Review and deploy the new r6 candidate; no statistical equivalence or certification is implied |
+| `okf-uk-government-apis` | Completed locally | 81,181 route-bearing entities and 277,449 exact-schema-valid assertions across 73 semantic shards; unsafe provenance URLs were canonicalised while legacy protocol labels remain only as aliases of 18 canonical routes | Assign a fresh candidate version/time, run the existing release gates and deploy exact bytes |
 | `okf-uk-legislation` | Completed locally | 929,053 exact-schema-valid rich assertions across separately governed active and historical lifecycle planes; 906,754 are active and 22,299 historical, with direct/reified/runtime parity. Ordinary record routes hydrate through committed bounded shards; aggregate hubs that exceed the browser ceiling fail closed and remain available to offline/paginated query tooling | Freeze and assure a new candidate; the immutable published v0.3.0 predates this projection |
-| `okf-uk-living` | Completed locally | 9,757 life-course concepts and 15,810 rich directed assertions in YAML-LD, JSON-LD and Explorer runtime projections; all semantic and runtime assertions pass the pinned shared schema exhaustively | Specialist review, release authorization, deployment and public journey verification |
+| `okf-uk-living` | Completed locally | 9,757 life-course concepts and 15,810 rich directed assertions in YAML-LD, JSON-LD and Explorer runtime projections; all semantic and runtime assertions pass the pinned shared schema exhaustively | Specialist review, release authorisation, deployment and public journey verification |
 | `okf-testing` | Completed locally | Eleven digest-bound expectations: a rich semantic/runtime parity pair, one explicitly scoped sparse-OKF Reader compatibility case, and eight isolated negative cases; its dependency-free validator executes every keyword used by the exact shared schema | No publication target; extend fixtures when the shared contract gains a new governed feature |
 
 ## Standards status

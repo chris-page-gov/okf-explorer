@@ -20,7 +20,7 @@ The profile URI is:
 - `okf-explorer.json` — current Explorer runtime descriptor.
 - `data/manifest.json` — counts, indexes, chunks and performance contract.
 - `context/okf-bundle-v1.jsonld` — pinned context copy.
-- `checksums.json` — generated artifact integrity metadata.
+- `checksums.json` — generated artefact integrity metadata.
 
 When a complete semantic graph would make either root representation exceed a
 host or review boundary, the root YAML-LD and JSON-LD files are compact control
@@ -51,10 +51,10 @@ Repository contracts declare these surfaces with the
 `relationship-runtime-manifest`, `relationship-route-locator`,
 `relationship-runtime-schema` and `relationship-runtime` roles.
 
-Every repository adopting or migrating toward this profile should also keep a
+Every repository adopting or migrating towards this profile should also keep a
 root `okf.semantic.json` control file conforming to
 [`repository-contract.schema.json`](repository-contract.schema.json). This is
-an authoring/build contract, not a generated semantic serialization. It makes
+an authoring/build contract, not a generated semantic serialisation. It makes
 the source boundary, current migration state, optional environment setup,
 exact build/check tooling and Reader delivery plane discoverable without
 pretending that descriptor-only YAML-LD is already a complete assertion graph.
@@ -62,8 +62,8 @@ All contract paths and globs are repository-relative and must remain contained
 after symlink resolution. Tooling strings are untrusted declarations, not shell
 instructions: an agent or operator inspects and cross-checks them against
 trusted repository guidance or a reviewed preset before executing an approved
-command exactly. Cross-repository artifact inspection applies explicit on-disk
-and decoded-byte ceilings and reports malformed or unreadable sampled artifacts
+command exactly. Cross-repository artefact inspection applies explicit on-disk
+and decoded-byte ceilings and reports malformed or unreadable sampled artefacts
 as errors rather than treating them as empty data.
 
 An optional `okf-explorer-presentation.v1` profile supplies provider-authored
@@ -130,7 +130,7 @@ conformance contradictions before presenting the registry.
 Every generated or inferred statement must be distinguishable as one of:
 
 - official — directly published by the authoritative source;
-- normalized — deterministic projection/canonicalization of official data;
+- normalized — deterministic projection/canonicalisation of official data;
 - inferred — rule-derived and accompanied by evidence/confidence;
 - model-derived — produced with model assistance and accompanied by passage
   evidence, model/method version, confidence and evaluation status.
@@ -138,23 +138,23 @@ Every generated or inferred statement must be distinguishable as one of:
 ## Compatibility
 
 `okf-explorer-bundle.v0` and `okf-explorer-large-corpus.v1` remain supported
-runtime projections. They are generated artifacts rather than the semantic
+runtime projections. They are generated artefacts rather than the semantic
 authority.
 
 An Attested Computation contract is metadata. Neither the profile nor Explorer
-authorizes or automatically invokes computation, executor or attester
+authorises or automatically invokes computation, executor or attester
 resources.
 
 ## Validation
 
 Release checks cover Markdown, YAML-LD representation constraints, JSON Schema,
-JSON-LD expansion using pinned contexts, compiled artifact reconciliation,
+JSON-LD expansion using pinned contexts, compiled artefact reconciliation,
 search/adjacency integrity and live publication headers/deep links.
 
 The complete authoring and Reader explanation is
 [OKF 0.2 and YAML-LD semantic authoring](../../../docs/okf-0.2-yaml-ld-semantic-authoring.md).
 
-The normative upstream serialization work is the
+The normative upstream serialisation work is the
 [YAML-LD 1.0 Working Draft](https://www.w3.org/TR/yaml-ld-10/). This profile is
 an OKF application profile, not a claim that YAML-LD is already a W3C
 Recommendation.

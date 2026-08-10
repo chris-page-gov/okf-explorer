@@ -1,18 +1,19 @@
 # Changelog
 
-## Unreleased - Heritage Evaluation Foundry and YAML-LD
+## v0.6.0 - 2026-08-10 - OKF 0.2 semantic contracts and governed YAML-LD
 
 - Completed the local nine-repository OKF 0.2/YAML-LD migration: every
   reviewed `okf-*` repository now declares one machine-readable semantic
-  contract, absolute semantic identities plus safe local routes, synchronized
+  contract, absolute semantic identities plus safe local routes, synchronised
   direct and reified assertions, deterministic runtime projections and exact
   setup/build/check guidance. Added positive, negative and compatibility
   fixtures; shared-schema sampling to the cross-repository auditor; compact
   digest-bound semantic shards for large graphs; and a bounded rich-runtime
   Reader path with lifecycle-separated planes, SHA-256 route locators and
-  per-plane incident assertion commitments. These are local working-tree
-  migrations only—no repository was committed, released, deployed or publicly
-  verified by this work.
+  per-plane incident assertion commitments. This release commits the Explorer
+  contract, plugin and Explorer-owned migration as v0.6.0. The remaining
+  producer migrations are independent working-tree changes and are not claimed
+  here as committed, released, deployed or publicly verified.
 - Closed the independent cross-layer review findings before declaring local
   completion. The shared assertion schema now requires preferred labels and
   canonical credential-free HTTP(S) authority/evidence/rights sources; every
@@ -31,14 +32,14 @@
   globs must stay repository-relative and contained—including authoritative
   inputs and symlinked prefixes—and glob expansion has an explicit match-count
   ceiling. Tooling strings remain untrusted declarations until reviewed against
-  trusted guidance, and sampled plain/gzip artifacts are read under explicit
+  trusted guidance, and sampled plain/gzip artefacts are read under explicit
   on-disk and decoded-byte limits. Malformed relationship, semantic or runtime
   JSON now fails the audit instead of disappearing as an empty sample or
   aborting reconciliation, and the shared assertion schema uses the same
   whitespace-free RFC-style IRI rule as the reconciler and Reader.
 - Completed the Explorer repository's own OKF 0.2 semantic migration. The
   Markdown graph now deterministically emits `okf-bundle.yamlld`,
-  `okf-bundle.jsonld` and a compatibility runtime bundle from one normalized
+  `okf-bundle.jsonld` and a compatibility runtime bundle from one normalised
   source. Its 579 directed Markdown links are represented conservatively as
   evidence-bearing `dcterms:references` assertions with absolute identities,
   suffix-free semantic routes, direct triples, reified assertion nodes,
@@ -54,8 +55,13 @@
   and text, renders XML/text as inert escaped content, retains
   `source_api_url` as JSON-only compatibility behaviour and always preserves a
   direct official-source link. No response is persisted or redistributed.
+- Standardised authored release pages, semantic profiles, CI labels, plugin
+  guidance and visible Explorer copy on British English and GOV.UK plain
+  English conventions. Repository and generated producer-agent guidance now
+  preserves exact schema values, identifiers, official titles and upstream
+  product terminology where localisation would be incorrect or incompatible.
 - Made focused-graph navigation explicit and reversible: Graph actions now
-  recenter the inspected record, preserve the prior focus in the URL, reset
+  recentre the inspected record, preserve the prior focus in the URL, reset
   the viewport and let browser Back restore the previous focus and inspector.
   Bounded focus graphs enter the established ordered relationship regions at
   four relationships rather than falling back to an unstructured radial view.
@@ -96,7 +102,7 @@
   create a spurious `/favicon.ico` browser error.
 - Implemented every postmortem recommendation: Evaluation Profile v2 and its
   consumer lock; a fail-closed, explainable impact planner; promotion evidence
-  outside candidate roots; normalized-core and per-plane emitters with
+  outside candidate roots; `normalized-core` and per-plane emitters with
   manifest-owned changed-only writes; 13 adversarial late-finding
   microfixtures; conditional parallel CI plus nightly three-engine shadow
   assurance; content-addressed Site components; hash-sharded semantic and link
@@ -151,7 +157,7 @@
 
 - Fail closed when a document declares a large-corpus schema without the
   matching `okf-large-corpus` kind, or declares the large-corpus kind without
-  the supported schema, instead of silently normalizing it as an empty small
+  the supported schema, instead of silently normalising it as an empty small
   bundle.
 - Added unit and real-browser malformed/degraded descriptor coverage for
   producer compatibility gates.
@@ -212,9 +218,9 @@
   beginner learning path, with accessible chapter navigation, responsive
   tables, safe Markdown handling and links back to the source files.
 - Updated Playwright to 1.62.0 and `svelte-check` to 4.7.4 in one
-  release-assured maintenance change, including the synchronized lockfile and
+  release-assured maintenance change, including the synchronised lockfile and
   CycloneDX dependency inventory.
-- Updated Playwright to 1.62.1, synchronized the CycloneDX inventory, and
+- Updated Playwright to 1.62.1, synchronised the CycloneDX inventory, and
   verified the patch with the affected Chrome journeys before the full
   Chrome, Firefox and WebKit assurance matrix.
 - Updated SvelteKit to 2.70.1, Svelte to 5.56.8 and Vite to 8.1.5 while
@@ -246,7 +252,7 @@
   cross-references and byte-independent JSON/YAML data equivalence.
 - Made the handoff carry an explicit collection profile, material claim
   register, calibrated-confidence rules, source format/identity/version
-  behavior, identifier schemes, task risks and standards conflicts so the
+  behaviour, identifier schemes, task risks and standards conflicts so the
   machine contract can represent every fact required by the warm-up prompt.
 - Encoded source-native identity, orthogonal authority/evidence axes,
   standards applicability, tiny-fixture preflight, immutable acquisition,
@@ -267,7 +273,7 @@
 
 ## v0.5.3 - 2026-07-27 - Reproducible production builds
 
-- Bound SvelteKit's application-version seed to the synchronized package
+- Bound SvelteKit's application-version seed to the synchronised package
   version, removing its timestamp default from application-version metadata
   and client chunk generation.
 - Added a fail-closed two-build regression that cleans generated state before
@@ -373,7 +379,7 @@ source-of-truth changes.
   to the bundle-wiki profile. Explorer now provides searchable bundle-wide and
   record-scoped term definitions, provenance and validation evidence; bundle
   UI terms can also supply existing `(i)` help text. Semantic-resource labels
-  are derived from their actual YAML-LD or JSON-LD serialization.
+  are derived from their actual YAML-LD or JSON-LD serialisation.
 - Added a reproducible production-build acceptance runner and evidence receipt
   for the final local Whole-Law/Legislation publication. Chrome, Firefox and
   WebKit now prove federation-child completion, sub-1 MiB compressed startup,
@@ -381,7 +387,7 @@ source-of-truth changes.
   keyboard operation and release-blocking axe results.
 - Bounded histogram segment counts by the provider presentation contract so
   24-pixel keyboard targets no longer overflow the navigation panel, and
-  normalized source-native `derived-non-official` authority to the distinct
+  normalised source-native `derived-non-official` authority to the distinct
   derived graph style without losing its provenance label.
 - Added the additive `okf-explorer-federation.v1` control plane and
   `okf-relationship-assertion.v2` contract. Federations load only their
@@ -591,7 +597,7 @@ source-of-truth changes.
   silent or crashed workers, malformed facet values, metadata-gap filters and
   approximate capped-posting totals. Dynamic facets and result summaries now
   remain explicit about fallback and truncation semantics, and legacy small
-  bundles normalize scalar alias/tag fields before client-side searching.
+  bundles normalise scalar alias/tag fields before client-side searching.
 - Added persona, user-story and question traceability for every hosted README
   exemplar, plus opt-in browser journeys for retrieval URL state, facets,
   sorting, graph relationships, drawer resizing, folded full-record sections
@@ -622,7 +628,7 @@ source-of-truth changes.
   canonical source, authoritative publisher, update frequency, current release,
   full/delta distributions, API access, technical specification and licence.
 - Added a complete work-level UK legislation OKF pack generated from every year facet in the official legislation.gov.uk Atom catalogue, including primary, secondary, draft, devolved, retained-EU and historical document types.
-- Added ELI 1.5 / ELI-I, Schema.org `Legislation`, legislation.gov.uk FRBR/CLML and Akoma Ntoso crosswalks, normalized legal categories and title-derived topic navigation with explicit non-authoritative classification warnings.
+- Added ELI 1.5 / ELI-I, Schema.org `Legislation`, legislation.gov.uk FRBR/CLML and Akoma Ntoso crosswalks, normalised legal categories and title-derived topic navigation with explicit non-authoritative classification warnings.
 - Added progressive official CLML discovery in the Svelte Explorer. A selected work can resolve every Part, Chapter, section, article, regulation, rule, schedule, paragraph and nested P1-P7 structure with official passage links and copyable provenance citations.
 - Added combined static-title and official remote full-text search, legislation-specific facets, complete access-method documentation and disclosure of the currently authenticated research bulk/SPARQL surfaces.
 - Added a 100-question barrister-oriented AI-answer evaluation suite, 100-point legal/provenance rubric, answer JSON Schema and deterministic evaluator with a hard cap for missing official or proposition-level provenance.

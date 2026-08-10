@@ -120,7 +120,7 @@ class HeritageTinySnapshotTest(unittest.TestCase):
         self.assertEqual(
             first,
             tiny_builder.DEFAULT_OUTPUT.read_bytes(),
-            "committed tiny fixture must be synchronized with its frozen parent",
+            "committed tiny fixture must be synchronised with its frozen parent",
         )
 
         with tempfile.TemporaryDirectory() as temporary:

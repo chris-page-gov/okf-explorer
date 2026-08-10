@@ -132,7 +132,7 @@ MAX_AUDIT_GLOB_MATCHES = 10_000
 
 
 class ArtifactReadError(ValueError):
-    """Raised when an audited artifact cannot be read safely and completely."""
+    """Raised when an audited artefact cannot be read safely and completely."""
 
 
 @dataclass(frozen=True)
@@ -180,7 +180,7 @@ PRESETS: dict[str, Preset] = {
         ),
         (
             "Markdown links are projected as derived dcterms:references assertions; no domain predicate is inferred from link text or section placement.",
-            "The frozen heritage browser receipt binds the pre-migration Explorer tree and intentionally remains stale until a new candidate and genuine-browser journey are authorized; the focused semantic/Reader checks are the local migration gate.",
+            "The refreshed local heritage candidate receipt binds the v0.6.0 Explorer tree, deterministic Site identity, 100-question browser-scored evaluation and three Playwright Chromium local interaction journeys; it does not claim a public deployment, which remains subject to exact Pages identity and a final journey in Google Chrome.",
         ),
         setup=(
             "python3 -m venv .venv",
@@ -202,7 +202,7 @@ PRESETS: dict[str, Preset] = {
         "authored-markdown-reference-graph-with-rich-generated-assertions", "generated-from-one-assertion-source", "json-small-bundle-projection",
         (".venv/bin/python scripts/build_okf_bundle.py", ".venv/bin/python scripts/build_publication.py"),
         (".venv/bin/python scripts/migrate_okf_v02.py --check", ".venv/bin/python scripts/build_okf_bundle.py --check", ".venv/bin/python scripts/update_viewer.py --check", ".venv/bin/python scripts/check_publication.py", ".venv/bin/python -m unittest discover -s tests -v", ".venv/bin/python ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict"),
-        ("Authored local Markdown links are conservatively normalized as dcterms:references; domain-specific predicates require separately authored evidence and are not inferred from link placement or prose.", "The generated publication remains a preview until the repository's existing review and release gates are completed."),
+        ("Authored local Markdown links are conservatively normalised as dcterms:references; domain-specific predicates require separately authored evidence and are not inferred from link placement or prose.", "The generated publication remains a preview until the repository's existing review and release gates are completed."),
         setup=("python3 -m venv .venv", ".venv/bin/python -m pip install --requirement requirements-okf.lock"),
     ),
     "okf-LandRegistry": Preset(
@@ -220,7 +220,7 @@ PRESETS: dict[str, Preset] = {
         "generated-yaml-ld-assertion-graph", "generated-from-one-assertion-source", "json-large-corpus-adjacency",
         (".venv/bin/python scripts/build.py --replace",),
         (".venv/bin/python scripts/check_okf.py", ".venv/bin/python -m unittest tests.test_build_semantics tests.test_explorer_contract tests.test_jsonld tests.test_okf -v"),
-        ("The semantic projection remains metadata-only and carries no property-level records; any publication of changed bytes requires fresh exact-digest release assurance and owner approval.", "The full release-assurance suite intentionally retains a prior-release receipt mismatch until a new candidate is authorized; the declared semantic checks exclude that expected release gate without weakening it."),
+        ("The semantic projection remains metadata-only and carries no property-level records; any publication of changed bytes requires fresh exact-digest release assurance and owner approval.", "The full release-assurance suite intentionally retains a prior-release receipt mismatch until a new candidate is authorised; the declared semantic checks exclude that expected release gate without weakening it."),
         setup=("python3 -m venv .venv", ".venv/bin/python -m pip install --require-hashes --requirement requirements-lock.txt"),
     ),
     "okf-govuk-content": Preset(
@@ -252,7 +252,7 @@ PRESETS: dict[str, Preset] = {
         "generated-yaml-ld-sharded-assertion-graph", "generated-from-one-assertion-source-across-pinned-shards", "json-large-corpus-chunks",
         (".venv/bin/python scripts/build_bundle.py --snapshot-dir source/demo-snapshot --output bundle",),
         (".venv/bin/python scripts/build_bundle.py --snapshot-dir source/demo-snapshot --output bundle --check", ".venv/bin/python scripts/check_okf_v02.py bundle", ".venv/bin/python -m pytest -q", ".venv/bin/python -m ruff check .", ".venv/bin/python ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict"),
-        ("Source-specific evidence semantics remain authoritative; semantic vocabulary alignment is not statistical certification.", "Similarity assertions are inferred discovery aids and never assert statistical identity or equivalence.", "Cross-source representation assertions normalize shared declared table-code evidence without asserting statistical equivalence.", "Rights remain mixed at record level; records whose source rights have not been evaluated remain explicitly not-evaluated.", "The root YAML-LD and JSON-LD documents are compact semantic descriptors; the complete graph is carried by digest-bound gzip JSON-LD entity and assertion shards."),
+        ("Source-specific evidence semantics remain authoritative; semantic vocabulary alignment is not statistical certification.", "Similarity assertions are inferred discovery aids and never assert statistical identity or equivalence.", "Cross-source representation assertions normalise shared declared table-code evidence without asserting statistical equivalence.", "Rights remain mixed at record level; records whose source rights have not been evaluated remain explicitly not-evaluated.", "The root YAML-LD and JSON-LD documents are compact semantic descriptors; the complete graph is carried by digest-bound gzip JSON-LD entity and assertion shards."),
         setup=("uv sync --locked --extra test",),
     ),
     "okf-uk-government-apis": Preset(
@@ -308,7 +308,7 @@ PRESETS: dict[str, Preset] = {
         "fixtures", "required-with-reification", "fixtures",
         ("python3 scripts/check_fixtures.py --write-report reports/fixture-validation.json",),
         ("python3 scripts/check_fixtures.py --check-report reports/fixture-validation.json", "python3 -m unittest discover -s tests -v", "python3 ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict"),
-        ("This directory is a local conformance-fixture workspace and is not initialized as a Git repository or publication target.", "All fixtures are synthetic and contain no real personal data.", "The sparse OKF 0.2 runtime fixture is accepted only by the explicitly scoped Reader compatibility validator; it is not rich semantic conformance."),
+        ("This directory is a local conformance-fixture workspace and is not initialised as a Git repository or publication target.", "All fixtures are synthetic and contain no real personal data.", "The sparse OKF 0.2 runtime fixture is accepted only by the explicitly scoped Reader compatibility validator; it is not rich semantic conformance."),
         "legacy-sparse-okf-0.2-is-reader-compatibility-only",
         ("source", "target", "source_iri", "target_iri"),
         ("source", "target"),
@@ -387,13 +387,14 @@ def agent_block() -> str:
     return f"""{AGENT_START}
 ## OKF 0.2 and semantic relationship contract
 
+- Use British English for human-readable material and follow GOV.UK guidance on plain English and style for UK government content. Preserve exact code and schema identifiers, URLs, quotations and official titles where localisation would be incorrect or incompatible.
 - Read `okf.semantic.json` before changing Markdown, ontology, semantic, relationship, bundle, or Reader-facing files. It records this repository's authored inputs, generated outputs, exact build/check commands, delivery mode, and current migration limitations.
 - Keep the intentionally small OKF 0.2 Markdown core separate from the additive Bundle Wiki YAML-LD profile. Unknown OKF fields remain forward-compatible; profile requirements must never be described as universal OKF core.
-- Treat the declared YAML-LD/JSON-LD graph or authored Markdown YAML-LD frontmatter as semantic authority. Explorer JSON, shards, adjacency, registries, checksums and sites are generated projections and must not be hand-edited.
+- Treat the declared YAML-LD/JSON-LD graph or authored Markdown YAML-LD front matter as semantic authority. Explorer JSON, shards, adjacency, registries, checksums and sites are generated projections and must not be hand-edited.
 - Every new material directed relationship must retain a stable assertion ID, validated local runtime `source` and `target`, absolute `source_iri` and `target_iri`, an absolute predicate IRI, a governed relationship kind, preferred and inverse labels, assertion status and scope, authority, derivation, observation time, evidence and rights. Semantic reification maps the same identities to RDF subject and object. Confidence never upgrades authority.
-- Keep the direct semantic triple and its evidence-bearing `okf:RelationshipAssertion` synchronized, or generate both deterministically from one assertion source. Do not infer domain predicates from Markdown links.
+- Keep the direct semantic triple and its evidence-bearing `okf:RelationshipAssertion` synchronised, or generate both deterministically from one assertion source. Do not infer domain predicates from Markdown links.
 - Validate every generated semantic assertion—not merely a sample—against the pinned local shared Draft 2020-12 schema before writing a conformant receipt. Cross-repository sampling is a regression signal, not a substitute for producer validation.
-- Canonicalize authority, evidence/resource and rights source links as credential-free HTTP(S) URLs. Percent-encode query values and reject missing hosts, literal whitespace, quotes, malformed escapes, credentials, unsafe delimiters, non-web schemes and ports outside 1–65535 before generating projections.
+- Canonicalise authority sources, evidence resource URLs and rights source links as credential-free HTTP(S) URLs. Percent-encode query values and reject missing hosts, literal whitespace, quotes, malformed escapes, credentials, unsafe delimiters, non-web schemes and ports outside 1–65535 before generating projections.
 - For a large sharded rich graph, publish a digest-bound `relationship_runtime` manifest and SHA-256 route locator. Each route must commit per plane to its exact incident assertion count and sorted assertion-ID digest; keep historical/rejected planes out of `default_planes` and obey the Reader's aggregate chunk, row, compressed-byte and retained-text ceilings.
 - Resolve only pinned local contexts during builds. The Reader parses bounded YAML-LD safely but does not fetch or reason over arbitrary remote contexts; it consumes explicit route-bearing nodes and assertion rows.
 - Preserve official, normalized, inferred, model-derived, synthetic and historical planes. Never collapse presentation grouping, similarity or route adjacency into semantic identity.
@@ -1254,13 +1255,13 @@ def install(repo: Path) -> None:
         raise ValueError(f"no reviewed reconciliation preset for {repo.name}")
     if not repo.is_dir():
         raise ValueError(
-            f"repository does not exist: {repo}; initialize it before installing a contract"
+            f"repository does not exist: {repo}; initialise it before installing a contract"
         )
     if repo.name == "okf-testing" and not (
         repo / "fixtures" / "expectations.json"
     ).is_file():
         raise ValueError(
-            "okf-testing is not initialized with the executable fixture corpus"
+            "okf-testing is not initialised with the executable fixture corpus"
         )
     (repo / CONTRACT_NAME).write_text(
         json.dumps(contract_for(repo.name, preset), ensure_ascii=False, indent=2, sort_keys=True) + "\n",

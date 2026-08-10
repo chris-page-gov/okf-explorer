@@ -1,20 +1,20 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "OKF Explorer"
-version: "0.5.7"
+version: "0.6.0"
 authors:
   - family-names: "Page"
     given-names: "Chris"
-date-released: "2026-07-29"
+date-released: "2026-08-10"
 license: "MIT"
 repository-code: "https://github.com/chris-page-gov/okf-explorer"
 url: "https://chris-page-gov.github.io/okf-explorer/"
 preferred-citation:
   type: software
   title: "OKF Explorer"
-  version: "0.5.7"
+  version: "0.6.0"
   authors:
     - family-names: "Page"
       given-names: "Chris"
-  date-released: "2026-07-29"
+  date-released: "2026-08-10"
   license: "MIT"

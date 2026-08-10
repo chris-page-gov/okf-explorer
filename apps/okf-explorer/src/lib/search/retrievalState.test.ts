@@ -69,12 +69,12 @@ describe('retrieval URL state', () => {
     expect(parseRetrievalState(new URLSearchParams('filter.type=Concept')).sort).toBe('newest');
   });
 
-  it('detects serialized filters independently of their validity', () => {
+  it('detects serialised filters independently of their validity', () => {
     expect(hasSerializedFilters(new URLSearchParams('filter.type=Concept'))).toBe(true);
     expect(hasSerializedFilters(new URLSearchParams('q=concept'))).toBe(false);
   });
 
-  it('removes stale retrieval parameters before serializing replacement state', () => {
+  it('removes stale retrieval parameters before serialising replacement state', () => {
     const params = new URLSearchParams('q=old&sort=title&filter.type=Old&unrelated=kept');
     writeRetrievalState(params, {
       schema: RETRIEVAL_STATE_SCHEMA,

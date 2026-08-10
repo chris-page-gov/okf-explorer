@@ -136,7 +136,7 @@ function validationFixture() {
 }
 
 describe('governed metadata terms', () => {
-  it('normalizes a provenance-bound term registry and validation report', () => {
+  it('normalises a provenance-bound term registry and validation report', () => {
     const registry = normalizeGovernedTermRegistry(registryFixture());
     const validation = normalizeGovernedTermValidation(validationFixture());
 
@@ -201,7 +201,7 @@ describe('semantic descriptor labels', () => {
     expect(semanticResourceLabel(path)).toBe(label);
   });
 
-  it('deduplicates the canonical resource while retaining alternate serializations', () => {
+  it('deduplicates the canonical resource while retaining alternate serialisations', () => {
     expect(
       semanticResources({
         schema: 'okf-explorer-large-corpus.v1',

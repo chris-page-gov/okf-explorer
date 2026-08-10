@@ -66,7 +66,7 @@ describe('OKF v0.2 compatibility', () => {
     expect(conceptGenerated(node as never)).toEqual({ by: '', at: '', basis: 'okf-v0.2' });
   });
 
-  it('normalizes one or many verification events and derives the normative tier', () => {
+  it('normalises one or many verification events and derives the normative tier', () => {
     const machine = normalizeVerified({ by: 'process:nightly', at: '2026-07-25T01:00:00Z' });
     const mixed = normalizeVerified([
       { by: 'process:nightly', at: '2026-07-25T01:00:00Z' },

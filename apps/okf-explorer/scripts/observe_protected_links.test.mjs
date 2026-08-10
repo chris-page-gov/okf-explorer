@@ -65,7 +65,7 @@ test('sorts the protected publication actions by declared sequence', () => {
   );
 });
 
-test('materializes the exact genuine-browser receipt contract', () => {
+test('materialises the exact genuine-browser receipt contract', () => {
   const actions = [
     action(13, 'https://example.test/one', 'One'),
     action(14, 'https://example.test/two', 'Two')
