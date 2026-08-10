@@ -1,0 +1,100 @@
+{
+  "schema": "okf-profile-vendor-lock.v1",
+  "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+  "release": {
+    "repository": "https://github.com/chris-page-gov/okf-explorer",
+    "version": "0.6.0",
+    "tag": "v0.6.0",
+    "tag_object": "d256a74419c2593c2bf2f3f5749c606fad5daf9d",
+    "commit": "4bb7b92a64b7ba69bde9b1e86786217338cd166d",
+    "git_tree": "d26ae9a818041ff74c469e653ec714632ddbfc2a"
+  },
+  "file_count": 16,
+  "identity": {
+    "algorithm": "sha256",
+    "canonicalisation": "profile-lock-lines-v1: UTF-8 lines in lexical path order: <path> TAB <bytes> TAB <sha256> LF",
+    "sha256": "854d1853b71ec8bda3424924f0f0985fe24aa7bca4c180d15f359fe259ef4c7e"
+  },
+  "files": [
+    {
+      "path": "bundle.schema.json",
+      "bytes": 1449,
+      "sha256": "34cc6181bbdcbdc5a2b98aa3fd6f93dee9af525d2c6623383954b4ec2d644221"
+    },
+    {
+      "path": "concept.schema.json",
+      "bytes": 4526,
+      "sha256": "5c048c9294f4f1118929de0f89ea5a9b60906f4231acc34d68deecd81dbecd41"
+    },
+    {
+      "path": "context.jsonld",
+      "bytes": 4686,
+      "sha256": "810d4f97f63ac04b030ee39a0e199ec2401de3112bb63de8e177413da69ca928"
+    },
+    {
+      "path": "governed-term-validation.schema.json",
+      "bytes": 3985,
+      "sha256": "93c7b2fb7037ba2ec1cac3357825f4c9a41fa8f75d3da6800ca65fce6fad85f4"
+    },
+    {
+      "path": "governed-terms.schema.json",
+      "bytes": 8162,
+      "sha256": "52e7858c73657a04ed3b76423c1966e4f530f2ed3bb4db0de6611495c549eb82"
+    },
+    {
+      "path": "index.md",
+      "bytes": 8826,
+      "sha256": "7dcd555d6627e305d321cc7256c495f72c844753d428e6c60f2ec030d043aeeb"
+    },
+    {
+      "path": "iri-route-registry.schema.json",
+      "bytes": 1781,
+      "sha256": "a5ac291743eb40c1ee5a756adcce1a6273e1d976de92b5d4b2fbee18cf161836"
+    },
+    {
+      "path": "predicate-registry.schema.json",
+      "bytes": 3665,
+      "sha256": "dfd674cd7a773af8681a28b9ac6cafbd335b7ea46c1252a527847796036c39d6"
+    },
+    {
+      "path": "presentation.schema.json",
+      "bytes": 4147,
+      "sha256": "321dd26a0964b427a5636909f7ac001efdc0c6c5c843afbcdcd25ea356661089"
+    },
+    {
+      "path": "provider-datapack-manifest.schema.json",
+      "bytes": 2476,
+      "sha256": "5f80e87a9f65d281d8b3d4c993d853deeec5d3f95008d7f6d19ee17a232ea08b"
+    },
+    {
+      "path": "provider-datapack.schema.json",
+      "bytes": 10410,
+      "sha256": "a177500c16ee521a950dd559714bf7dde5dc9ff73296da05f631d10660508fc1"
+    },
+    {
+      "path": "repository-contract.schema.json",
+      "bytes": 7924,
+      "sha256": "783f81c5c785b3a13cfdedce3a89dd1e5c3f64a007cfe370bc82e37e2caa5ba8"
+    },
+    {
+      "path": "semantic-assertion.schema.json",
+      "bytes": 7308,
+      "sha256": "f69480328db4b64d678d9c50b6534d808000f7fb50a30e8cc9e3bf2facbcb8bc"
+    },
+    {
+      "path": "semantic-context.jsonld",
+      "bytes": 5047,
+      "sha256": "4529e4ffe6acc53bff2746282525ef20eebfddbd205172d8a2a5f398fc1cc25b"
+    },
+    {
+      "path": "semantic-model.schema.json",
+      "bytes": 8563,
+      "sha256": "caef744be9ca38486e8b4dc27a7393e4fdec11683cbac7124bc62d9553d2c45e"
+    },
+    {
+      "path": "shapes.ttl",
+      "bytes": 939,
+      "sha256": "bffe0611abae937683d30e7ecb76d81b6b49c20cc87a70e709f83aa6569b074c"
+    }
+  ]
+}

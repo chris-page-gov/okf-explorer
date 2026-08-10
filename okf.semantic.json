@@ -68,7 +68,8 @@
       "stack/",
       "standards/",
       "uk-government/",
-      "profiles/bundle-wiki/v1/"
+      "profiles/bundle-wiki/v1/",
+      "profiles/bundle-wiki/v1.vendor-lock.json"
     ],
     "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
     "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
