@@ -54,6 +54,7 @@ assertions:
     url: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/
   inverse_label: possibly designed
   kind: possibly designed by
+  label: possibly designed by
   observed_at: '2026-08-02T00:00:00Z'
   predicate: https://schema.org/architect
   review_status: unreviewed synthetic fixture
@@ -84,6 +85,7 @@ assertions:
     url: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/
   inverse_label: would be protected by
   kind: proposes protection for
+  label: proposes protection for
   observed_at: '2026-08-02T00:00:00Z'
   predicate: https://schema.org/about
   review_status: unreviewed synthetic fixture

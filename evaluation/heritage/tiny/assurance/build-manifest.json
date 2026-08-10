@@ -1,6 +1,6 @@
 {
   "counts": {
-    "bytes": 420676,
+    "bytes": 420851,
     "files": 514,
     "planes": {
       "control": 2,
@@ -15,7 +15,7 @@
       "bytes": 95118,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "b58a4ef8f5825a3c9ba6858cf1a5d39aa685d3b190e2b33ff982a5aa36a02920"
+      "sha256": "dcfe3d761c674bc7a1f0c17d8bbc1a7a8f70efbfef91c08e4ae23f4988fbe42e"
     },
     {
       "bytes": 1371,
@@ -2976,28 +2976,28 @@
       "sha256": "ef1d93307f176fa3a39002c25e484eac03b649aa54709bfaa31be5740f64a50e"
     },
     {
-      "bytes": 1053,
+      "bytes": 1057,
       "path": "data/semantic/assertions/06.json.gz",
       "plane": "semantic",
-      "sha256": "91c03690c17a236c6fa222649cf0dae1716d61cdc86e4139ef80d97e3ecdd81e"
+      "sha256": "a4c4cb0233c7c32850fd90f02387f35b9ae7aa0381057a8eca11dd134ccefac0"
     },
     {
-      "bytes": 957,
+      "bytes": 960,
       "path": "data/semantic/assertions/07.json.gz",
       "plane": "semantic",
-      "sha256": "52612ad60cc8d561098268e5ae0c49caae699706a5df28f217108ad188dbddb6"
+      "sha256": "c053529273978385e89861762dc4d1085c813ad0212502362b57731b45e2f3df"
     },
     {
-      "bytes": 1047,
+      "bytes": 1051,
       "path": "data/semantic/assertions/2a.json.gz",
       "plane": "semantic",
-      "sha256": "871998edd40a4caf07d48b2bc300592c8e1ba064c33c7803c9d3d92c523a192d"
+      "sha256": "1311a89eff1d3e288f84335a9a345632fc2e6a918a48faa6f4c0920c4f2b969b"
     },
     {
-      "bytes": 899,
+      "bytes": 903,
       "path": "data/semantic/assertions/2e.json.gz",
       "plane": "semantic",
-      "sha256": "921d8be1c36b6d541c98d245bdc8e4a5d6bcd0f2a8a9e6c4f676d3df0708023f"
+      "sha256": "e66bb40498b34a67dde0f7d716798d6221059e58b0daa1503b07e98408f6e8f8"
     },
     {
       "bytes": 1305,
@@ -3009,7 +3009,7 @@
       "bytes": 2450,
       "path": "data/semantic/manifest.json",
       "plane": "semantic",
-      "sha256": "2831e351fcac86bc9452f39de59fc09a71bc3c3a3bc9eea9d0e9029df1a15ff5"
+      "sha256": "11ab18e2f9d91064450f513bc192988c59ff3418fceef478b920537ef08f2e7d"
     },
     {
       "bytes": 199,
@@ -3051,7 +3051,7 @@
       "bytes": 895,
       "path": "data/semantic/validation-report.json",
       "plane": "semantic",
-      "sha256": "927eb7b133f38fa3688020e6d0cc01a63d5556c4aab2750cd2520240ef8b3bb1"
+      "sha256": "33be8f3da584a2b69b6528f49eae1b0c713402ad88726dbff46c31be2244ada8"
     },
     {
       "bytes": 13361,
@@ -3078,16 +3078,16 @@
       "sha256": "e8008a03cb4b742cfe408b3c77fb9aad965af1590e5f9f99cd7fbded766392fa"
     },
     {
-      "bytes": 13726,
+      "bytes": 13808,
       "path": "okf-bundle.jsonld",
       "plane": "semantic",
-      "sha256": "a5ce2c3d948d7cda15c1e0a4e48e4adde2059294cfc593b1ae6adb29ff4114ba"
+      "sha256": "877be56eafcaa8216754fed20494d8c893aeb2f48cd02ff798df4c3d8857a25f"
     },
     {
-      "bytes": 13737,
+      "bytes": 13815,
       "path": "okf-bundle.yamlld",
       "plane": "semantic",
-      "sha256": "ca3949a00b0e34d08213c32179d7bc469e11ffa01d8ebe135db2cf218b8fa15a"
+      "sha256": "96c95431faef698b81ef0d349c18e4bd749c2874a2419e2ac2bada51eb291844"
     },
     {
       "bytes": 6109,

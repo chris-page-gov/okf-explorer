@@ -1,6 +1,6 @@
 {
   "counts": {
-    "bytes": 285814,
+    "bytes": 285950,
     "files": 355,
     "planes": {
       "control": 2,
@@ -15,7 +15,7 @@
       "bytes": 66370,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "59022cae1b258dfbcf200fcb2257b057e8243f4f1197e68bc898961751038fe3"
+      "sha256": "0a76d6c54cfa32d183aa6d0ed4895a81b45c22335aa4b95a51811f335d3f4da9"
     },
     {
       "bytes": 1065,
@@ -2046,16 +2046,16 @@
       "sha256": "db67b7959b9e3a0ed4223f599b6263d2229defece90f3fd9947f257aa1f8c655"
     },
     {
-      "bytes": 755,
+      "bytes": 760,
       "path": "data/semantic/assertions/06.json.gz",
       "plane": "semantic",
-      "sha256": "8e699340604475964d8febfd583fde02accf40da9226c3ecfce8d1ad95058b27"
+      "sha256": "41832df6444a9d234617cb7c359a6ea75493e7e40081b14a8c7ae7ef043b5f6a"
     },
     {
-      "bytes": 778,
+      "bytes": 781,
       "path": "data/semantic/assertions/18.json.gz",
       "plane": "semantic",
-      "sha256": "e832f6c2dc02209ff59d95a47fac04eaac4a67fe0eb923c14f50aea95032d214"
+      "sha256": "d77b7a9559f40c849615afbfc057123e5e4febb038e65a3495c72e50e423b12f"
     },
     {
       "bytes": 1473,
@@ -2067,7 +2067,7 @@
       "bytes": 1816,
       "path": "data/semantic/manifest.json",
       "plane": "semantic",
-      "sha256": "07af025393b789231194bb29a52e8bfe443f84ad8c4a18966cc6a529c04cbbd2"
+      "sha256": "453ff9cdcbab00982c2b0bd91c926310e0822f50591986cad0a31cf0efe7aadb"
     },
     {
       "bytes": 293,
@@ -2097,7 +2097,7 @@
       "bytes": 889,
       "path": "data/semantic/validation-report.json",
       "plane": "semantic",
-      "sha256": "569a6769905bc88014ec16cbd7ae0ae2796deb36acbf7a829d18e018c33edc52"
+      "sha256": "3ae3ac1b5066fc54d010ce406d0245696992b70ebbde7fa50559ac9389f57496"
     },
     {
       "bytes": 1145,
@@ -2124,16 +2124,16 @@
       "sha256": "0310ea74f8f9fe65b684e4dd6a65362eff40d23690a835552dda7992f56c469f"
     },
     {
-      "bytes": 7060,
+      "bytes": 7125,
       "path": "okf-bundle.jsonld",
       "plane": "semantic",
-      "sha256": "61e9d5cfcea52fb9c0a67255c7dd67359e72dfd0a87d9b79bd3af872b7b226b2"
+      "sha256": "9458f3528710d1bfbe96b82bbac89a73c34f7a624477fcacfbac5e4b95f337db"
     },
     {
-      "bytes": 7023,
+      "bytes": 7086,
       "path": "okf-bundle.yamlld",
       "plane": "semantic",
-      "sha256": "e2f1bd39f237e3ea0234d8801a0fd5ee305ba3d694c4707ca450929da33e9f4b"
+      "sha256": "7ab19ce1154af8b1f109bf8ce908ba3f5e7fd4c391a2c6ea7b72f783bcac3d51"
     },
     {
       "bytes": 5670,
