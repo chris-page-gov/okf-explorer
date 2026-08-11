@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { LargeSearchManifest } from '$lib/types';
 import { canonicalJson, sha256Hex } from '$lib/sources/releaseDataPlane';
+import { QUERY_POLICY_SCHEMA, QUERY_POLICY_TOKENISER } from '$lib/search/queryPolicy';
 import { TYPO_TOLERANCE_CONTRACT } from '$lib/search/typoTolerance';
 import { makeRangePackFixture, rangeResponse } from '../test/rangePackFixture';
 
@@ -38,6 +39,55 @@ const typoManifest = (): LargeSearchManifest => {
   manifest.counts.typo_deletion_shards = 1;
   return manifest;
 };
+
+const queryPolicyManifest = (): LargeSearchManifest => {
+  const manifest = baseManifest();
+  manifest.result_limit = 4;
+  manifest.counts = { documents: 4, tokens: 9, max_postings_per_token: 100 };
+  manifest.query_policy = {
+    schema: QUERY_POLICY_SCHEMA,
+    tokeniser: QUERY_POLICY_TOKENISER,
+    stopwords: ['and', 'does', 'for', 'what'],
+    minimum_should_match: {
+      apply_from_query_tokens: 3,
+      minimum_matches: 2,
+      ratio_numerator: 3,
+      ratio_denominator: 10
+    }
+  };
+  manifest.entrypoints.lexicon = Object.fromEntries(
+    ['al', 'be', 'de', 'ds', 'ga', 'in', 'mi', 'pu', 'sc', 'te', 'un'].map(
+      (shard) => [shard, 'policy-lexicon.json']
+    )
+  );
+  manifest.entrypoints.postings = ['policy-postings.json'];
+  return manifest;
+};
+
+const queryPolicyPayloads: Array<[string, unknown]> = [
+  ['https://example.test/policy-lexicon.json', [
+    { token: 'alpha', df: 2, postings: 'policy-postings.json' },
+    { token: 'beta', df: 2, postings: 'policy-postings.json' },
+    { token: 'department', df: 2, postings: 'policy-postings.json' },
+    { token: 'delta', df: 1, postings: 'policy-postings.json' },
+    { token: 'dsit', df: 1, postings: 'policy-postings.json' },
+    { token: 'gamma', df: 1, postings: 'policy-postings.json' },
+    { token: 'innovation', df: 2, postings: 'policy-postings.json' },
+    { token: 'science', df: 2, postings: 'policy-postings.json' },
+    { token: 'technology', df: 2, postings: 'policy-postings.json' }
+  ]],
+  ['https://example.test/policy-postings.json', { tokens: {
+    alpha: [[0, 20, 1], [1, 16, 1]],
+    beta: [[0, 16, 1], [2, 12, 1]],
+    department: [[1, 16, 1], [3, 12, 1]],
+    delta: [[3, 8, 1]],
+    dsit: [[2, 16, 1]],
+    gamma: [[2, 8, 1]],
+    innovation: [[1, 16, 1], [3, 12, 1]],
+    science: [[1, 16, 1], [3, 12, 1]],
+    technology: [[1, 16, 1], [3, 12, 1]]
+  } }]
+];
 
 async function harness(manifest = baseManifest(), payloadOverrides: Array<[string, unknown]> = []) {
   const workerSelf: WorkerHarness = { postMessage: vi.fn() };
@@ -232,6 +282,224 @@ describe('large static search worker', () => {
     expect(response.total).toBe(0);
     expect(response.results).toEqual([]);
     expect(response.unresolved_tokens).toEqual(['world']);
+  });
+
+  it('applies a declared producer minimum-should-match policy to distinct token groups', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'What alpha beta gamma delta missing',
+        filters: {},
+        sort: 'relevance'
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([0, 2]);
+    expect(response.total).toBe(2);
+    expect(response.unresolved_tokens).toEqual(['missing']);
+    expect(response.query_policy).toEqual({
+      schema: 'okf-search-query-policy-result.v1',
+      mode: 'minimum-should-match',
+      tokeniser: QUERY_POLICY_TOKENISER,
+      query_token_count: 5,
+      resolved_token_group_count: 4,
+      required_token_group_count: 2,
+      unresolved_token_group_count: 1
+    });
+  });
+
+  it('counts unresolved groups as unmatched instead of reducing the policy denominator', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'alpha missing unknown', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(0);
+    expect(response.results).toEqual([]);
+    expect(response.unresolved_tokens).toEqual(['missing', 'unknown']);
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 3,
+      resolved_token_group_count: 1,
+      required_token_group_count: 2,
+      unresolved_token_group_count: 2
+    });
+  });
+
+  it('preserves an exact governed entity alias as one resolved semantic group', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'DSIT', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([1, 3]);
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Department for Science Innovation and Technology',
+      matched_alias: 'DSIT'
+    });
+    expect(response.unresolved_tokens).toBeUndefined();
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 1,
+      resolved_token_group_count: 1,
+      required_token_group_count: 1,
+      unresolved_token_group_count: 0
+    });
+  });
+
+  it('falls back to truthful lexical grouping when an exact entity alias has no ordinal source', async () => {
+    const manifest = queryPolicyManifest();
+    manifest.entrypoints.entities = 'policy-entities.json';
+    const worker = await harness(manifest, [
+      ...queryPolicyPayloads,
+      ['https://example.test/policy-entities.json', {
+        schema: 'okf-static-search-entities.v1',
+        entities: [{
+          id: 'organisation/dsit',
+          label: 'Department for Science Innovation and Technology',
+          kind: 'organisation',
+          filter_key: 'organisation',
+          filter_value: 'dsit',
+          aliases: ['DSIT']
+        }]
+      }]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'DSIT', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([2]);
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Department for Science Innovation and Technology',
+      matched_alias: 'DSIT'
+    });
+    expect(response.unresolved_tokens).toBeUndefined();
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 1,
+      resolved_token_group_count: 1,
+      required_token_group_count: 1,
+      unresolved_token_group_count: 0
+    });
+  });
+
+  it('retains component counts for an exact multi-token governed entity label', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'Department for Science Innovation and Technology',
+        filters: {},
+        sort: 'relevance'
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([1, 3]);
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 4,
+      resolved_token_group_count: 4,
+      required_token_group_count: 2,
+      unresolved_token_group_count: 0
+    });
+  });
+
+  it('accounts for every raw policy token in embedded entity prose before intersecting the entity', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'What does Department for Science Innovation and Technology publish missing',
+        filters: {},
+        sort: 'relevance'
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([1, 3]);
+    expect(response.unresolved_tokens).toEqual(['publish', 'missing']);
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 6,
+      resolved_token_group_count: 4,
+      required_token_group_count: 2,
+      unresolved_token_group_count: 2
+    });
+  });
+
+  it('keeps the declared below-threshold OR bounded by distinct query groups', async () => {
+    const worker = await harness(queryPolicyManifest(), queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'alpha.delta', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(3);
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([0, 1, 3]);
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 2,
+      required_token_group_count: 1,
+      unresolved_token_group_count: 0
+    });
+  });
+
+  it('composes policy grouping with bounded typo correction without leaking legacy strict-AND anchoring', async () => {
+    const manifest = queryPolicyManifest();
+    manifest.typo_tolerance = { ...TYPO_TOLERANCE_CONTRACT };
+    manifest.entrypoints.typo_deletions = { _: 'policy-typos.json' };
+    manifest.counts.typo_deletion_shards = 1;
+    const worker = await harness(manifest, [
+      ...queryPolicyPayloads,
+      ['https://example.test/policy-typos.json', {
+        schema: 'okf-search-typo-deletions.v1',
+        keys: { beeta: [{ token: 'beta', df: 2 }] }
+      }]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'alpha delta beeta', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.results.map((row: { ordinal: number }) => row.ordinal)).toEqual([0]);
+    expect(response.query_corrections).toEqual([
+      expect.objectContaining({ query_token: 'beeta', matched_token: 'beta' })
+    ]);
+    expect(response.query_policy).toMatchObject({
+      query_token_count: 3,
+      resolved_token_group_count: 3,
+      required_token_group_count: 2,
+      unresolved_token_group_count: 0
+    });
+  });
+
+  it('preserves strict AND for a producer that does not opt in to query_policy', async () => {
+    const manifest = queryPolicyManifest();
+    delete manifest.query_policy;
+    const worker = await harness(manifest, queryPolicyPayloads);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'alpha beta', filters: {}, sort: 'relevance' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(1);
+    expect(response.results[0].ordinal).toBe(0);
+    expect(response.query_policy).toBeUndefined();
   });
 
   it('recovers a manifest-declared one-edit misspelling and explains each contributing match', async () => {

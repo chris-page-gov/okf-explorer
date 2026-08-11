@@ -25,6 +25,35 @@ HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-rec
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
     @staticmethod
+    def _evaluator_identity() -> dict[str, object]:
+        relative = "scripts/evaluate_okf_explorer.mjs"
+        raw = (ROOT / relative).read_bytes()
+        return {
+            "path": relative,
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+
+    @staticmethod
+    def _explorer_build_identity(base_url: str) -> dict[str, object]:
+        manifest_path = (
+            ROOT
+            / "apps"
+            / "okf-explorer"
+            / "build"
+            / "okf-explorer-build-manifest.json"
+        )
+        raw = manifest_path.read_bytes()
+        manifest = json.loads(raw)
+        return {
+            "manifest_url": urljoin(base_url, manifest_path.name),
+            "manifest_sha256": hashlib.sha256(raw).hexdigest(),
+            "schema": manifest["schema"],
+            "algorithm": manifest["algorithm"],
+            "file_count": manifest["file_count"],
+            "tree_sha256": manifest["tree_sha256"],
+        }
+
+    @staticmethod
     def _producer_materials() -> dict[str, object]:
         paths = (
             "requirements-okf.txt",
@@ -335,12 +364,19 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 result["metadata"]["candidate_bundle_url"],
             )
             self.assertEqual(
+                self._evaluator_identity(),
+                result["metadata"]["evaluator"],
+            )
+            self.assertEqual(
                 {
                     "bundle_url": expected_candidate_bundle_url,
                     "descriptor_sha256": receipt["candidate"]["heritage_descriptor_sha256"],
                     "schema": faithful_descriptor["schema"],
                     "snapshot": receipt["candidate"]["snapshot"],
                     "generated_at": receipt["candidate"]["generated_at"],
+                    "explorer_build": self._explorer_build_identity(
+                        section["base_url"]
+                    ),
                 },
                 result["candidate"],
             )
@@ -1266,6 +1302,79 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
 
         self.assertIn("redirected with HTTP 302", result.stdout)
         self.assertIn("exact deployed URL", result.stdout)
+
+    def test_explorer_build_identity_binds_exact_served_manifest(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        manifest_path = (
+            ROOT
+            / "apps"
+            / "okf-explorer"
+            / "build"
+            / "okf-explorer-build-manifest.json"
+        )
+        manifest_raw = manifest_path.read_text(encoding="utf-8")
+        manifest = json.loads(manifest_raw)
+        drifted = copy.deepcopy(manifest)
+        drifted["tree_sha256"] = "0" * 64
+        program = f"""
+            import {{ inspectExplorerBuild }} from {json.dumps(module_url)};
+            const manifestUrl = 'https://explorer.example.test/next/okf-explorer-build-manifest.json';
+            let raw = Buffer.from({json.dumps(manifest_raw)}, 'utf8');
+            globalThis.fetch = async (url, options) => ({{
+              ok: true,
+              status: 200,
+              url: url.toString(),
+              arrayBuffer: async () => raw
+            }});
+            const options = {{ baseUrl: 'https://explorer.example.test/next/' }};
+            const exact = await inspectExplorerBuild(options);
+            let bodyRead = false;
+            globalThis.fetch = async (url) => ({{
+              ok: true,
+              status: 200,
+              url: url.toString(),
+              headers: {{ get: () => String(1024 * 1024 + 1) }},
+              arrayBuffer: async () => {{ bodyRead = true; return raw; }}
+            }});
+            let boundMessage = '';
+            try {{
+              await inspectExplorerBuild(options);
+            }} catch (error) {{
+              boundMessage = error.message;
+            }}
+            if (!boundMessage || bodyRead) throw new Error('oversized manifest was not rejected before reading');
+            raw = Buffer.from({json.dumps(json.dumps(drifted) + chr(10))}, 'utf8');
+            globalThis.fetch = async (url) => ({{
+              ok: true,
+              status: 200,
+              url: url.toString(),
+              arrayBuffer: async () => raw
+            }});
+            let driftMessage = '';
+            try {{
+              await inspectExplorerBuild(options);
+            }} catch (error) {{
+              driftMessage = error.message;
+            }}
+            if (!driftMessage) throw new Error('drifted Explorer tree was accepted');
+            console.log(JSON.stringify({{ exact, boundMessage, driftMessage, manifestUrl }}));
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["manifestUrl"], payload["exact"]["manifest_url"])
+        self.assertEqual(
+            hashlib.sha256(manifest_raw.encode()).hexdigest(),
+            payload["exact"]["manifest_sha256"],
+        )
+        self.assertEqual(manifest["tree_sha256"], payload["exact"]["tree_sha256"])
+        self.assertIn("Content-Length is outside", payload["boundMessage"])
+        self.assertIn("tree SHA-256 differs", payload["driftMessage"])
 
     def test_candidate_receipt_accepts_exact_descriptor_and_rejects_stale_bytes(self):
         descriptor = {

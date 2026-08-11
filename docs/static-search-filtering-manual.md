@@ -94,6 +94,40 @@ its delta-encoded postings, so this recognition does not require full-corpus
 hydration. Explicit aliases supplied by a bundle take precedence over inferred
 initialisms.
 
+### How a v2 producer can govern multi-word queries
+
+A producer may opt an `okf-static-search.v2` manifest into the exact
+`okf-search-query-policy.v1` contract. The declaration supplies:
+
+- the fixed `nfkd-lowercase-ascii-alphanumeric-component-v1` tokeniser;
+- a sorted, unique and bounded list of producer stopwords; and
+- integer minimum-should-match parameters: an application threshold, a fixed
+  minimum and a ratio numerator and denominator.
+
+Explorer normalises each query with NFKD, removes combining marks, lowercases
+it, splits it into ASCII letter-or-number components, applies the manifest's
+existing minimum token length, removes the declared stopwords and keeps the
+first occurrence of each remaining token. If there are fewer tokens than the
+application threshold, one resolved group is required. At or above the
+threshold, the required group count is the larger of the fixed minimum and
+the rounded-up integer ratio, capped at the query-token count. Unresolved
+tokens remain in that denominator; they do not silently make the query easier.
+
+The worker response includes bounded `query_policy` counts and ordered
+`unresolved_tokens`, so producer and evaluation tooling can inspect how many
+distinct groups were supplied, resolved and required. These internal counts
+are not currently rendered as an Explorer interface explanation. Recognised
+entities and bounded typo correction still use the same group accounting. An
+exact one-component entity alias is a resolved semantic group only when its
+governed ordinal postings are available; otherwise Explorer uses ordinary
+lexical resolution and reports the actual outcome.
+
+This behaviour is opt-in. A v2 manifest without `query_policy` and every
+existing v1 manifest retain their previous strict-AND/tokeniser behaviour.
+Small bundles retain their existing in-memory, lower-case substring search.
+The exact producer schema, bounds and formula are recorded in the [static
+search and filtering design](search-filtering-design.md#producer-declared-query-policy-v062).
+
 ## 3. Add And Remove Filters
 
 Open a facet and select a value. A normal click replaces the current value in
@@ -178,7 +212,7 @@ Small OKF bundles use the same `q` and `sort` parameters plus repeated
 
 | Corpus | Search and filter behaviour |
 | --- | --- |
-| `okf-static-search.v2` | Lazily loads ordinal filter postings, applies filters before limiting results, calculates dynamic facet counts and returns structured match evidence. |
+| `okf-static-search.v2` | Lazily loads ordinal filter postings, applies filters before limiting results, calculates dynamic facet counts and returns structured match evidence. A producer may opt into the exact bounded `query_policy`; without it, strict-AND search remains unchanged. |
 | Existing v1 manifest | Continues lexical worker search, reuses legacy publisher postings for recognised organisations and uses the existing full-index filtering path when other filter postings are unavailable. URLs and visible semantics remain the same. |
 | Small bundle | Uses in-memory lexical matching, type filters and the shared URL/sort contract. |
 

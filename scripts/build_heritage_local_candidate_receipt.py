@@ -38,6 +38,8 @@ CORPUS_ROOTS = {
 }
 APP_BUILD_ROOT = ROOT / "apps" / "okf-explorer" / "build"
 APP_MANIFEST_PATH = APP_BUILD_ROOT / "okf-explorer-build-manifest.json"
+EVALUATOR_PATH = ROOT / "scripts" / "evaluate_okf_explorer.mjs"
+EVALUATOR_REFERENCE = "scripts/evaluate_okf_explorer.mjs"
 QUESTION_RESULT_RELATIVE = Path("evidence/receipts/question-suite-results.json.gz")
 JOURNEY_RESULT_RELATIVE = Path("evidence/receipts/local-journey-results.json.gz")
 RECEIPT_RELATIVE = Path("evidence/local-candidate-receipt.json")
@@ -404,9 +406,13 @@ def app_identity() -> dict[str, str]:
     )
     if manifest.get("schema") != "okf-explorer-app-build-manifest.v1":
         raise RuntimeError("Explorer build manifest has an unsupported schema")
+    if manifest.get("algorithm") != "sha256-canonical-json-materials-v1":
+        raise RuntimeError("Explorer build manifest has an unsupported algorithm")
     materials = manifest.get("materials")
     if not isinstance(materials, list) or not materials:
         raise RuntimeError("Explorer build manifest must contain materials")
+    if manifest.get("file_count") != len(materials):
+        raise RuntimeError("Explorer build manifest file count differs")
     observed: list[dict[str, object]] = []
     paths: list[str] = []
     for entry in materials:
@@ -435,6 +441,32 @@ def app_identity() -> dict[str, str]:
     return {
         "tree_sha256": tree_sha256,
         "manifest_sha256": digest(manifest_raw),
+    }
+
+
+def evaluator_identity() -> dict[str, str]:
+    try:
+        raw = EVALUATOR_PATH.read_bytes()
+    except OSError as error:
+        raise RuntimeError(f"cannot read evaluator executable: {error}") from error
+    if not raw:
+        raise RuntimeError("evaluator executable is empty")
+    return {"path": EVALUATOR_REFERENCE, "sha256": digest(raw)}
+
+
+def result_explorer_build_identity(
+    base_url: str, current_app: dict[str, str]
+) -> dict[str, object]:
+    manifest, _manifest_raw = load_json_bytes(
+        APP_MANIFEST_PATH, "Explorer build manifest"
+    )
+    return {
+        "manifest_url": urljoin(base_url, APP_MANIFEST_PATH.name),
+        "manifest_sha256": current_app["manifest_sha256"],
+        "schema": manifest["schema"],
+        "algorithm": manifest["algorithm"],
+        "file_count": manifest["file_count"],
+        "tree_sha256": current_app["tree_sha256"],
     }
 
 
@@ -500,14 +532,20 @@ def validated_site_identity(
 
 
 def expected_result_candidate(
-    descriptor: dict[str, Any], descriptor_sha256: str, bundle_url: str
-) -> dict[str, str]:
+    descriptor: dict[str, Any],
+    descriptor_sha256: str,
+    bundle_url: str,
+    *,
+    base_url: str,
+    current_app: dict[str, str],
+) -> dict[str, Any]:
     return {
         "bundle_url": bundle_url,
         "descriptor_sha256": descriptor_sha256,
         "schema": descriptor["schema"],
         "snapshot": descriptor["snapshot"],
         "generated_at": descriptor["generated_at"],
+        "explorer_build": result_explorer_build_identity(base_url, current_app),
     }
 
 
@@ -550,6 +588,8 @@ def require_browser_result(result: dict[str, Any], label: str) -> datetime:
         or metadata.get("browser_engine") not in {"chromium", "firefox", "webkit"}
     ):
         raise RuntimeError(f"{label} is not genuine browser-scored evaluator output")
+    if metadata.get("evaluator") != evaluator_identity():
+        raise RuntimeError(f"{label} evaluator executable identity differs")
     return generated_at
 
 
@@ -572,6 +612,7 @@ def validate_question_result(
     *,
     descriptor: dict[str, Any],
     descriptor_sha256: str,
+    current_app: dict[str, str],
 ) -> tuple[dict[str, Any], datetime]:
     generated_at = require_browser_result(result, "question-suite result")
     base_url = validated_local_base_url(
@@ -587,9 +628,19 @@ def validate_question_result(
     if result.get("metadata", {}).get("candidate_bundle_url") != candidate_url:
         raise RuntimeError("question-suite result metadata candidate URL differs")
     expected_candidate = expected_result_candidate(
-        descriptor, descriptor_sha256, candidate_url
+        descriptor,
+        descriptor_sha256,
+        candidate_url,
+        base_url=base_url,
+        current_app=current_app,
     )
-    if result.get("candidate") != expected_candidate:
+    candidate = result.get("candidate")
+    if (
+        not isinstance(candidate, dict)
+        or candidate.get("explorer_build") != expected_candidate["explorer_build"]
+    ):
+        raise RuntimeError("question-suite result Explorer build identity differs")
+    if candidate != expected_candidate:
         raise RuntimeError("question-suite result candidate identity differs")
 
     suite, suite_raw = load_json_bytes(QUESTION_SUITE_PATH, "question suite")
@@ -793,6 +844,7 @@ def validate_journey_result(
     *,
     descriptor: dict[str, Any],
     descriptor_sha256: str,
+    current_app: dict[str, str],
 ) -> tuple[dict[str, Any], datetime]:
     generated_at = require_browser_result(result, "local-journey result")
     base_url = validated_local_base_url(
@@ -835,9 +887,20 @@ def validate_journey_result(
         or metadata.get("candidate_bundle_url") != candidate_url
     ):
         raise RuntimeError("local-journey result metadata candidate URL differs")
-    if result.get("candidate") != expected_result_candidate(
-        descriptor, descriptor_sha256, candidate_url
+    expected_candidate = expected_result_candidate(
+        descriptor,
+        descriptor_sha256,
+        candidate_url,
+        base_url=base_url,
+        current_app=current_app,
+    )
+    candidate = result.get("candidate")
+    if (
+        not isinstance(candidate, dict)
+        or candidate.get("explorer_build") != expected_candidate["explorer_build"]
     ):
+        raise RuntimeError("local-journey result Explorer build identity differs")
+    if candidate != expected_candidate:
         raise RuntimeError("local-journey result candidate identity differs")
     expected_top_summary = {
         "questions_run": 0,
@@ -983,15 +1046,18 @@ def build_receipt(
     candidate_generated = parse_timestamp(
         descriptor["generated_at"], "faithful descriptor generated_at"
     )
+    current_app = app_identity()
     question_section, question_time = validate_question_result(
         question_result,
         descriptor=descriptor,
         descriptor_sha256=descriptor_sha256,
+        current_app=current_app,
     )
     journey_section, journey_time = validate_journey_result(
         journey_result,
         descriptor=descriptor,
         descriptor_sha256=descriptor_sha256,
+        current_app=current_app,
     )
     if question_section["base_url"] != journey_section["base_url"]:
         raise RuntimeError(
@@ -1006,7 +1072,6 @@ def build_receipt(
         if observed < result_time:
             raise RuntimeError(f"--observed-at predates the {label}")
 
-    current_app = app_identity()
     site = validated_site_identity(site_candidate, current_app)
     corpora = {
         name: corpus_identity(name, root) for name, root in CORPUS_ROOTS.items()

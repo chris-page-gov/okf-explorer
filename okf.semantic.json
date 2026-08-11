@@ -75,7 +75,7 @@
     "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
     "limitations": [
       "Markdown links are projected as derived dcterms:references assertions; no domain predicate is inferred from link text or section placement.",
-      "The refreshed local heritage candidate receipt binds the v0.6.0 Explorer tree, deterministic Site identity, 100-question browser-scored evaluation and three Playwright Chromium local interaction journeys; it does not claim a public deployment, which remains subject to exact Pages identity and a final journey in Google Chrome."
+      "The refreshed local heritage candidate receipt binds the exact Explorer application manifest and tree recorded in that receipt, deterministic Site identity, 100-question browser-scored evaluation and three Playwright Chromium local interaction journeys; it does not claim a public deployment, which remains subject to exact Pages identity and a final journey in Google Chrome."
     ],
     "outputs": [
       {

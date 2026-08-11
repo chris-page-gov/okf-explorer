@@ -1,4 +1,5 @@
 import type { LargeSearchManifest } from '$lib/types';
+import { validateQueryPolicy } from '$lib/search/queryPolicy';
 import { TYPO_TOLERANCE_CONTRACT } from '$lib/search/typoTolerance';
 
 export const SEARCH_MANIFEST_LIMITS = Object.freeze({
@@ -74,7 +75,7 @@ function exactContract(value: unknown, expected: Record<string, unknown>, label:
 }
 
 /**
- * Validate and normalize both legacy Explorer manifests and the versioned,
+ * Validate and normalise both legacy Explorer manifests and the versioned,
  * partitioned GOV.UK search contract before the worker trusts any shard path.
  */
 export function validateLargeSearchManifest(value: unknown, expectedSnapshot = ''): LargeSearchManifest {
@@ -117,6 +118,16 @@ export function validateLargeSearchManifest(value: unknown, expectedSnapshot = '
     ) {
       throw new Error('Search manifest typo_deletions entrypoints exceed the supported limit');
     }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(document, 'query_policy')) {
+    if (document.schema !== 'okf-static-search.v2') {
+      throw new Error('Search manifest query_policy is supported only by okf-static-search.v2');
+    }
+    document.query_policy = validateQueryPolicy(
+      document.query_policy,
+      SEARCH_MANIFEST_LIMITS.maxQueryTokens
+    );
   }
 
   if (Object.prototype.hasOwnProperty.call(document, 'postings_partitioning')) {

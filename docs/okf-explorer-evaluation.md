@@ -299,14 +299,14 @@ after it closes; a merely present or previously generated `build/` directory
 cannot satisfy the gate.
 
 Journey actions may use a bounded `capture_attributes` step. For ranked search
-evidence, capture the stable canonical URL attribute exposed by Explorer before
-opening a result:
+evidence, first wait for the expected canonical result and then capture the
+stable canonical URL attributes exposed by Explorer:
 
 ```json
 [
   {
-    "type": "wait_for",
-    "selector": "[data-okf-ranked-results=\"primary\"][data-okf-query=\"HM Land Registry\"][data-okf-search-state=\"settled\"]"
+    "type": "wait_for_ranked_result",
+    "canonical_url": "https://www.gov.uk/government/organisations/land-registry"
   },
   {
     "type": "capture_attributes",
@@ -319,11 +319,20 @@ opening a result:
 ]
 ```
 
-The settled marker is deliberately a strict, unique readiness condition. The
-capture then reads count, order and attributes in one browser evaluation so a
-rerender cannot mix two result states. Every retained ranked row in the bounded
-capture must provide a non-empty, credential-free absolute HTTP(S) canonical
-URL; an absent or unsafe URL fails the journey instead of shifting later ranks.
+`wait_for_ranked_result` derives the expected query from the current non-empty
+`q` URL parameter. It waits until the primary result list reports both that
+exact query and `data-okf-search-state="settled"`, then requires exactly one
+visible row with the declared credential-free absolute HTTP(S) canonical URL.
+A genuinely loading search retains the 90-second journey ceiling. A settled
+empty or wrong result fails immediately instead of waiting for an absent title
+selector. The same exact object can be used as a terminal assertion by changing
+its type to `ranked_result`.
+
+The capture then reads count, order and attributes in one browser evaluation
+so a rerender cannot mix two result states. Every retained ranked row in the
+bounded capture must provide a non-empty, credential-free absolute HTTP(S)
+canonical URL; an absent or unsafe URL fails the journey instead of shifting
+later ranks.
 
 The receipt retains the values in rendered order, together with the selector,
 attribute, bound and total number of matching elements. The manifest contract

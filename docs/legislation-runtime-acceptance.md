@@ -43,9 +43,9 @@ heap measure. Firefox and WebKit do not expose that Chromium-only memory
 metric; the receipt records those measurements as unavailable rather than
 passing them.
 
-The v0.6.1 release-bound canonical destination is
+The v0.6.2 release-bound canonical destination is
 `release-assurance/explorer-runtime-acceptance.json`. It is intentionally
-absent until the clean Explorer commit, annotated v0.6.1 tag and exact
+absent until the clean Explorer commit, annotated v0.6.2 tag and exact
 legislation candidate can be bound by the v2 release gate. The byte-preserved
 [26 July v1 receipt](../release-assurance/archive/explorer-runtime-acceptance-v1-2026-07-26.json)
 is retained only as historical evidence under the
@@ -59,8 +59,8 @@ arguments plus a fresh external `--output` path whose basename must be
 `explorer-runtime-acceptance.json`; that run emits
 `okf-explorer-runtime-acceptance.v2`.
 
-Release evidence is pinned to Explorer v0.6.1. The runner reads the package
-version, derives the Explorer `HEAD`, tree and v0.6.1 tag object from Git, and
+Release evidence is pinned to Explorer v0.6.2. The runner reads the package
+version, derives the Explorer `HEAD`, tree and v0.6.2 tag object from Git, and
 requires an annotated tag that resolves to that `HEAD`. It independently derives the
 legislation candidate `HEAD`, tree and the complete bundle inventory digest.
 Both checkouts must be clean. The supplied revision arguments are expectations,

@@ -5,6 +5,7 @@ import {
   POSTINGS_PARTITIONING_CONTRACT,
   validateLargeSearchManifest
 } from './largeSearchContract';
+import { QUERY_POLICY_SCHEMA, QUERY_POLICY_TOKENISER } from './queryPolicy';
 import { TYPO_TOLERANCE_CONTRACT } from './typoTolerance';
 
 function manifest(): LargeSearchManifest {
@@ -109,5 +110,36 @@ describe('large search manifest contract', () => {
     miscounted.entrypoints.typo_deletions = { co: 'data/search/typos/co.json' };
     miscounted.counts.typo_deletion_shards = 2;
     expect(() => validateLargeSearchManifest(miscounted)).toThrow('count differs');
+  });
+
+  it('accepts the exact bounded query policy only on a v2 manifest', () => {
+    const value = manifest();
+    value.schema = 'okf-static-search.v2';
+    value.query_policy = {
+      schema: QUERY_POLICY_SCHEMA,
+      tokeniser: QUERY_POLICY_TOKENISER,
+      stopwords: ['a', 'the'],
+      minimum_should_match: {
+        apply_from_query_tokens: 3,
+        minimum_matches: 2,
+        ratio_numerator: 3,
+        ratio_denominator: 10
+      }
+    };
+    expect(validateLargeSearchManifest(value).query_policy).toEqual(value.query_policy);
+
+    const legacy = structuredClone(value);
+    legacy.schema = 'okf-static-search.v1';
+    expect(() => validateLargeSearchManifest(legacy)).toThrow('supported only by okf-static-search.v2');
+
+    const floatingRatio = structuredClone(value);
+    floatingRatio.query_policy!.minimum_should_match.ratio_numerator = 0.3;
+    expect(() => validateLargeSearchManifest(floatingRatio)).toThrow('outside the supported range');
+
+    const undeclaredFallback = structuredClone(value) as LargeSearchManifest & {
+      query_policy: NonNullable<LargeSearchManifest['query_policy']> & { fallback?: string };
+    };
+    undeclaredFallback.query_policy.fallback = 'or';
+    expect(() => validateLargeSearchManifest(undeclaredFallback)).toThrow('unsupported or has drifted');
   });
 });

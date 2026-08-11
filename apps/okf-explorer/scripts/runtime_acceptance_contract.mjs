@@ -27,7 +27,7 @@ const EXPLORER_BUILD_ROOT = 'explorer-build';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
 const EXPLORER_BUILD_MANIFEST_PATH =
   `explorer-build/${BUILD_MANIFEST_FILENAME}`;
-export const EXPLORER_RELEASE_VERSION = '0.6.1';
+export const EXPLORER_RELEASE_VERSION = '0.6.2';
 export const EXPLORER_RELEASE_TAG = `v${EXPLORER_RELEASE_VERSION}`;
 export const LEGISLATION_BUNDLE_TREE_ALGORITHM =
   'sha256-canonical-json-inventory-v1';

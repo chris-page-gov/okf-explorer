@@ -20,7 +20,8 @@ import {
   safeRelativePath,
   validateJourneyManifest,
   verifySafeOutputParent,
-  waitForLocator
+  waitForLocator,
+  waitForRankedResult
 } from './external_bundle_acceptance_contract.mjs';
 
 const execFileAsync = promisify(execFile);
@@ -91,6 +92,47 @@ test('rejects unsafe or unbounded attribute captures', () => {
   const duplicate = structuredClone(valid);
   duplicate.journeys[0].actions.push(structuredClone(duplicate.journeys[0].actions[3]));
   assert.throws(() => validateJourneyManifest(duplicate), /duplicate observation id/);
+});
+
+test('accepts only exact canonical ranked-result actions and assertions', () => {
+  const governed = structuredClone(valid);
+  governed.journeys[0].actions.push({
+    type: 'wait_for_ranked_result',
+    canonical_url: 'https://example.test/result'
+  });
+  governed.journeys[0].assertions.push({
+    type: 'ranked_result',
+    canonical_url: 'https://example.test/result'
+  });
+  assert.equal(validateJourneyManifest(governed), governed);
+
+  for (const canonicalUrl of [
+    undefined,
+    '/relative',
+    'https://user:secret@example.test/result',
+    'https://example.test/result?api_key=secret',
+    'https://example.test/result?access-token=secret',
+    'https://example.test/result?client_secret=secret',
+    'https://example.test/result?password=secret'
+  ]) {
+    const malformed = structuredClone(valid);
+    malformed.journeys[0].actions.push({
+      type: 'wait_for_ranked_result',
+      ...(canonicalUrl === undefined ? {} : { canonical_url: canonicalUrl })
+    });
+    assert.throws(
+      () => validateJourneyManifest(malformed),
+      /fields are unsupported or have drifted|canonical_url must be a string|credential-free absolute HTTP\(S\) URL/
+    );
+  }
+
+  const drifted = structuredClone(valid);
+  drifted.journeys[0].assertions.push({
+    type: 'ranked_result',
+    canonical_url: 'https://example.test/result',
+    selector: 'strong:first'
+  });
+  assert.throws(() => validateJourneyManifest(drifted), /fields are unsupported or have drifted/);
 });
 
 test('rejects aggregate and string inputs outside the explicit contract bounds', () => {
@@ -238,6 +280,10 @@ test('rejects missing, relative and credential-bearing canonical result URLs', a
     '',
     '/relative',
     'https://user:secret@example.test/result',
+    'https://example.test/result?api_key=secret',
+    'https://example.test/result?token=secret',
+    'https://example.test/result?client-secret=secret',
+    'https://example.test/result?passwd=secret',
     'javascript:alert(1)',
     'https://./result',
     'https://example.test:0/result',
@@ -259,6 +305,10 @@ test('rejects missing, relative and credential-bearing canonical result URLs', a
   }
   assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result'), true);
   assert.equal(isCredentialFreeAbsoluteHttpUrl('http://example.test/result'), true);
+  assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result?api_key=secret'), false);
+  assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result?access_token=secret'), false);
+  assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result?client_secret=secret'), false);
+  assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result?password=secret'), false);
 });
 
 test('captures one coherent rank snapshot while a real page repeatedly rerenders', { timeout: 20_000 }, async () => {
@@ -304,6 +354,102 @@ test('keeps declarative wait_for strict instead of weakening it to the first mat
   };
   await waitForLocator(locator, 'attached');
   assert.deepEqual(calls, [{ state: 'attached' }]);
+});
+
+test('waits for the exact query to settle and selects a ranked result by canonical URL', { timeout: 20_000 }, async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.route('https://explorer.test/**', (route) => route.fulfill({
+      contentType: 'text/html',
+      body: '<main data-okf-ranked-results="primary" data-okf-query="title plan" data-okf-search-state="searching"></main>'
+    }));
+    await page.goto('https://explorer.test/?q=title%20plan');
+    await page.evaluate(() => {
+      setTimeout(() => {
+        const results = document.querySelector('[data-okf-ranked-results="primary"]');
+        results.setAttribute('data-okf-search-state', 'settled');
+        results.innerHTML = '<button data-okf-ranked-result data-result-canonical-url="https://example.test/expected">Expected</button>';
+      }, 50);
+    });
+
+    assert.deepEqual(await waitForRankedResult(page, 'https://example.test/expected'), {
+      query: 'title plan',
+      canonical_url: 'https://example.test/expected',
+      ranked_result_count: 1,
+      matching_result_count: 1
+    });
+  } finally {
+    await browser.close();
+  }
+});
+
+test('retains one atomic settled result observation across an immediate rerender', { timeout: 20_000 }, async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.route('https://explorer.test/**', (route) => route.fulfill({
+      contentType: 'text/html',
+      body: `
+        <main data-okf-ranked-results="primary" data-okf-query="atomic" data-okf-search-state="settled">
+          <button data-okf-ranked-result data-result-canonical-url="https://example.test/expected">Expected</button>
+        </main>
+        <script>
+          const originalGetAttribute = Element.prototype.getAttribute;
+          let rerenderScheduled = false;
+          Element.prototype.getAttribute = function (name) {
+            const value = originalGetAttribute.call(this, name);
+            if (
+              !rerenderScheduled &&
+              name === 'data-result-canonical-url' &&
+              value === 'https://example.test/expected'
+            ) {
+              rerenderScheduled = true;
+              queueMicrotask(() => {
+                document.querySelector('[data-okf-ranked-results="primary"]').innerHTML =
+                  '<button hidden data-okf-ranked-result data-result-canonical-url="https://example.test/replacement">Replacement</button>';
+              });
+            }
+            return value;
+          };
+        </script>
+      `
+    }));
+    await page.goto('https://explorer.test/?q=atomic');
+
+    assert.deepEqual(await waitForRankedResult(page, 'https://example.test/expected'), {
+      query: 'atomic',
+      canonical_url: 'https://example.test/expected',
+      ranked_result_count: 1,
+      matching_result_count: 1
+    });
+    await page.waitForFunction(() =>
+      document.querySelector('[data-okf-ranked-result]')?.getAttribute('data-result-canonical-url') ===
+        'https://example.test/replacement'
+    );
+  } finally {
+    await browser.close();
+  }
+});
+
+test('fails promptly when a query has settled without its canonical ranked result', { timeout: 20_000 }, async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.route('https://explorer.test/**', (route) => route.fulfill({
+      contentType: 'text/html',
+      body: '<main data-okf-ranked-results="primary" data-okf-query="missing" data-okf-search-state="settled"></main>'
+    }));
+    await page.goto('https://explorer.test/?q=missing');
+    const started = Date.now();
+    await assert.rejects(
+      waitForRankedResult(page, 'https://example.test/expected'),
+      /contained 0 ranked results/
+    );
+    assert.ok(Date.now() - started < 1_000, 'settled absence should not consume the journey timeout');
+  } finally {
+    await browser.close();
+  }
 });
 
 test('refuses direct runner invocation without a live wrapper-owned lock', async () => {

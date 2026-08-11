@@ -472,6 +472,8 @@ export type LargeSearchManifest = {
   doc_map_partitioning?: Record<string, unknown>;
   /** Optional, bounded one-edit correction contract for v2 static indexes. */
   typo_tolerance?: LargeSearchTypoTolerance;
+  /** Optional, exact v2 contract for producer-aligned query token grouping. */
+  query_policy?: LargeSearchQueryPolicy;
   entrypoints: {
     lexicon: Record<string, string>;
     prefixes: Record<string, string>;
@@ -482,8 +484,20 @@ export type LargeSearchManifest = {
     filter_postings?: Record<string, string>;
     sort_values?: string;
     entities?: string;
-    /** Symmetric-delete key shards, addressed by their normalized key prefix. */
+    /** Symmetric-delete key shards, addressed by their normalised key prefix. */
     typo_deletions?: Record<string, string>;
+  };
+};
+
+export type LargeSearchQueryPolicy = {
+  schema: 'okf-search-query-policy.v1';
+  tokeniser: 'nfkd-lowercase-ascii-alphanumeric-component-v1';
+  stopwords: string[];
+  minimum_should_match: {
+    apply_from_query_tokens: number;
+    minimum_matches: number;
+    ratio_numerator: number;
+    ratio_denominator: number;
   };
 };
 
@@ -585,6 +599,16 @@ export type LargeSearchResponse = {
   query_corrections?: SearchTokenCorrection[];
   /** Meaningful query tokens that had no exact, prefix, entity or accepted one-edit match. */
   unresolved_tokens?: string[];
+  /** Deterministic explanation of an explicitly declared query-policy decision. */
+  query_policy?: {
+    schema: 'okf-search-query-policy-result.v1';
+    mode: 'minimum-should-match';
+    tokeniser: 'nfkd-lowercase-ascii-alphanumeric-component-v1';
+    query_token_count: number;
+    resolved_token_group_count: number;
+    required_token_group_count: number;
+    unresolved_token_group_count: number;
+  };
   /** Correction stopped at the declared per-query token or shard budget. */
   correction_truncated?: boolean;
 };
