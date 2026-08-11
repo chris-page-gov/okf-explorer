@@ -59,6 +59,7 @@ async function installTargetedFixture(
   options: {
     modelChunkFailures?: number;
     omitAdjacency?: boolean;
+    omitAnalysisRecordCount?: boolean;
     resourceHydrationSafe?: boolean;
   } = {}
 ) {
@@ -550,7 +551,9 @@ async function installTargetedFixture(
         generated_at: '2026-07-25T00:00:00Z',
         summary: {
           title: descriptor.title,
-          record_count: descriptor.counts.records,
+          ...(options.omitAnalysisRecordCount
+            ? {}
+            : { record_count: descriptor.counts.records }),
           relationship_count: descriptor.counts.relationships
         }
       });
@@ -637,6 +640,20 @@ function expectNoFullHydration(requests: string[]) {
 test.describe('targeted large-corpus relationship hydration', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => localStorage.clear());
+  });
+
+  test('overview uses the declared record count rather than the dataset grouping count', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      omitAnalysisRecordCount: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
+
+    const recordMetric = page.locator('[data-metric="legal-works"]');
+    await expect(recordMetric.locator('strong')).toHaveText('365,786');
+    await expect(recordMetric.locator('span')).toHaveText('legal works');
   });
 
   test('deep-linked Graph loads bounded adjacency without hydrating the full corpus', async ({ page }) => {

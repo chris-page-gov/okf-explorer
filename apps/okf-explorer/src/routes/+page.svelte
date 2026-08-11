@@ -4021,9 +4021,9 @@
       ];
     }
     return [
-      { label: recordPlural(), value: summary?.record_count || counts.datasets || 0 },
-      { label: resourcePlural(), value: summary?.resource_count || counts.resources || 0 },
-      { label: 'relationships', value: summary?.relationship_count || counts.relationships || 0 },
+      { label: recordPlural(), value: summary?.record_count ?? counts.records ?? counts.datasets ?? 0 },
+      { label: resourcePlural(), value: summary?.resource_count ?? counts.resources ?? 0 },
+      { label: 'relationships', value: summary?.relationship_count ?? counts.relationships ?? 0 },
       { label: 'active filters', value: activeLargeFilterCount }
     ];
   }
