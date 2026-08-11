@@ -260,6 +260,49 @@ test('rejects symbolic links, hard links and a missing index', async (context) =
   );
 });
 
+test('enforces inspection ceilings before reading an unbounded build', async (context) => {
+  const entryBound = await fixture(context);
+  await assert.rejects(
+    writeCanonicalBuildManifest(entryBound, {
+      limits: { max_entries: 4 }
+    }),
+    /entry-count bound/
+  );
+
+  const fileBound = await fixture(context);
+  await assert.rejects(
+    writeCanonicalBuildManifest(fileBound, {
+      limits: { max_file_bytes: 4 }
+    }),
+    /byte bound/
+  );
+
+  const aggregateBound = await fixture(context);
+  await assert.rejects(
+    writeCanonicalBuildManifest(aggregateBound, {
+      limits: { max_bytes: 20 }
+    }),
+    /aggregate byte bound/
+  );
+
+  const manifestBound = await fixture(context);
+  await writeCanonicalBuildManifest(manifestBound);
+  await assert.rejects(
+    inspectCanonicalBuildRoot(manifestBound, {
+      limits: { max_manifest_bytes: 10 }
+    }),
+    /byte bound/
+  );
+
+  const expired = await fixture(context);
+  await assert.rejects(
+    writeCanonicalBuildManifest(expired, {
+      deadline: Date.now() - 1
+    }),
+    /inspection deadline/
+  );
+});
+
 test('captures the manifest and every described file into strict evidence', async (context) => {
   const root = await fixture(context);
   const inspection = await writeCanonicalBuildManifest(root);

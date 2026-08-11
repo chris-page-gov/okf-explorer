@@ -24306,4 +24306,4 @@ semanticDescriptor:
   '@id': https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld
 status: experimental
 title: AI Infrastructure OKF Wiki
-version: 0.6.0
+version: 0.6.1

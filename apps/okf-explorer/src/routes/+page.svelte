@@ -4105,6 +4105,10 @@
     return typeof open === 'string' && open ? open : `dataset/${dataset.name}`;
   }
 
+  function rankedResultCanonicalUrl(dataset: LargeDataset | SearchResultDoc): string {
+    return isUrl(dataset.url) ? dataset.url : '';
+  }
+
   function resourceRoute(resource: LargeResource): string {
     return `resource/${resource.id}`;
   }
@@ -6652,9 +6656,9 @@
                 <section class="left-results">
                   <h2>{recordPlural()} in current reduction</h2>
                   <p>{largeVisibleDatasets.length.toLocaleString()} records match the active search and filters.</p>
-                  <div class="node-list">
+                  <div class="node-list" data-okf-ranked-results="navigation">
                     {#each largeVisibleDatasets.slice(0, 80) as dataset}
-                      <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
+                      <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                         <strong>{dataset.title}</strong>
                         <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
                       </button>
@@ -6665,9 +6669,9 @@
                 <section class="left-results">
                   <h2>Search matches</h2>
                   <p>{largeResults.length.toLocaleString()} retrieved records.</p>
-                  <div class="node-list">
+                  <div class="node-list" data-okf-ranked-results="navigation">
                     {#each largeResults.slice(0, 80) as result}
-                      <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
+                      <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                         <strong>{result.title}</strong>
                         <span>{result.publisher_title || result.publisher || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
                       </button>
@@ -6794,10 +6798,15 @@
                 <h2>{largeQuery ? 'Search Results' : 'Filtered Results'}</h2>
                 <span>{largeSearching ? 'Searching static index...' : searchResultSummary()}</span>
               </div>
-              <div class="result-list">
+              <div
+                class="result-list"
+                data-okf-ranked-results="primary"
+                data-okf-query={largeAppliedQuery}
+                data-okf-search-state={largeSearching ? 'searching' : 'settled'}
+              >
                 {#if largeIndex && largeSearchResponse && !largeSearchResponse.filters_applied}
                   {#each largeVisibleDatasets.slice(0, 160) as dataset}
-                    <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
+                    <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                       <strong>{dataset.title}</strong>
                       <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
                       {#if datasetMatchReason(dataset)}<small class="result-match">Why this matched: {datasetMatchReason(dataset)}</small>{/if}
@@ -6810,7 +6819,7 @@
                   {/each}
                 {:else}
                   {#each largeResults as result}
-                    <button class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
+                    <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                       <strong>{result.title}</strong>
                       <span>{result.publisher_title || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
                       <small class="result-match">Why this matched: {searchMatchReason(result)}</small>

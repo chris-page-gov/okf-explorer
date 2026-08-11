@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import gzip
 import hashlib
 import json
@@ -23,6 +24,38 @@ HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-rec
 
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
+    @staticmethod
+    def _producer_materials() -> dict[str, object]:
+        paths = (
+            "requirements-okf.txt",
+            "scripts/build_heritage_evaluation.py",
+            "scripts/build_uk_government_api_okf.py",
+            "scripts/heritage_build_io.py",
+            "scripts/okf_semantic.py",
+        )
+        materials = []
+        for relative in paths:
+            raw = (ROOT / relative).read_bytes()
+            materials.append(
+                {
+                    "path": relative,
+                    "bytes": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            )
+        canonical = (
+            json.dumps(materials, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+            + "\n"
+        ).encode("utf-8")
+        return {
+            "schema": "okf-heritage-producer-materials.v1",
+            "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
+            "file_count": len(materials),
+            "bytes": sum(material["bytes"] for material in materials),
+            "root_sha256": hashlib.sha256(canonical).hexdigest(),
+            "materials": materials,
+        }
+
     def _write_validation_journey(
         self,
         temporary: Path,
@@ -85,6 +118,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 "schema",
                 "observed_at",
                 "scope",
+                "producer_materials",
                 "candidate",
                 "publication_shell_rebind",
                 "determinism",
@@ -95,6 +129,11 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             set(receipt),
         )
         self.assertEqual("okf-heritage-local-candidate-receipt.v1", receipt["schema"])
+        producer_materials = receipt["producer_materials"]
+        self.assertEqual(
+            self._producer_materials(),
+            producer_materials,
+        )
         self.assertEqual(
             {
                 "snapshot",
@@ -1245,6 +1284,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         receipt = {
             "schema": "okf-heritage-local-candidate-receipt.v1",
             "observed_at": "2026-08-03T12:01:00Z",
+            "producer_materials": self._producer_materials(),
             "candidate": {
                 "heritage_descriptor_sha256": descriptor_sha256,
                 "heritage_release_root_sha256": release_root_sha256,
@@ -1771,6 +1811,110 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                         text=True,
                     )
                 self.assertIn(expected_error, result.stdout)
+
+    def test_candidate_receipt_rejects_bounded_producer_material_failures(self):
+        producer_materials = self._producer_materials()
+        receipt = {
+            "schema": "okf-heritage-local-candidate-receipt.v1",
+            "observed_at": "2026-08-03T12:00:00Z",
+            "candidate": {
+                "heritage_descriptor_sha256": "a" * 64,
+                "heritage_release_root_sha256": "b" * 64,
+            },
+            "producer_materials": producer_materials,
+        }
+        cases = {}
+
+        too_many = copy.deepcopy(receipt)
+        too_many["producer_materials"]["materials"] = [
+            {
+                "path": f"scripts/material-{index:03d}.py",
+                "bytes": 1,
+                "sha256": "c" * 64,
+            }
+            for index in range(65)
+        ]
+        cases["max"] = too_many
+
+        missing = copy.deepcopy(receipt)
+        missing["producer_materials"]["materials"] = missing[
+            "producer_materials"
+        ]["materials"][1:]
+        cases["missing"] = missing
+
+        extra = copy.deepcopy(receipt)
+        extra["producer_materials"]["materials"].append(
+            {"path": "scripts/unexpected.py", "bytes": 1, "sha256": "d" * 64}
+        )
+        extra["producer_materials"]["materials"].sort(
+            key=lambda material: material["path"]
+        )
+        cases["extra"] = extra
+
+        drift = copy.deepcopy(receipt)
+        drift["producer_materials"]["root_sha256"] = "e" * 64
+        cases["drift"] = drift
+
+        current_bytes = copy.deepcopy(receipt)
+        current_bytes["producer_materials"]["materials"][0]["sha256"] = "0" * 64
+        current_materials = current_bytes["producer_materials"]["materials"]
+        current_canonical = (
+            json.dumps(
+                current_materials,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            + "\n"
+        ).encode("utf-8")
+        current_bytes["producer_materials"]["root_sha256"] = hashlib.sha256(
+            current_canonical
+        ).hexdigest()
+        cases["current_bytes"] = current_bytes
+
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary = Path(temporary_directory)
+            paths = {}
+            for name, value in {"exact": receipt, **cases}.items():
+                candidate_path = temporary / f"{name}.json"
+                candidate_path.write_text(json.dumps(value), encoding="utf-8")
+                paths[name] = str(candidate_path)
+            program = f"""
+                import {{ loadCandidateReceipt }} from {json.dumps(module_url)};
+                const paths = {json.dumps(paths)};
+                const exact = loadCandidateReceipt(paths.exact);
+                const messages = {{}};
+                for (const name of ['max', 'missing', 'extra', 'drift', 'current_bytes']) {{
+                  try {{
+                    loadCandidateReceipt(paths[name]);
+                  }} catch (error) {{
+                    messages[name] = error.message;
+                  }}
+                  if (!messages[name]) throw new Error(`invalid producer materials accepted: ${{name}}`);
+                }}
+                console.log(JSON.stringify({{ exact, messages }}));
+            """
+            result = subprocess.run(
+                ["node", "--input-type=module", "--eval", program],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        payload = json.loads(result.stdout)
+        self.assertEqual(
+            producer_materials["root_sha256"],
+            payload["exact"]["producer_materials_root_sha256"],
+        )
+        self.assertIn("material-count bound", payload["messages"]["max"])
+        self.assertIn("missing required path", payload["messages"]["missing"])
+        self.assertIn("unexpected path", payload["messages"]["extra"])
+        self.assertIn("does not bind canonical materials", payload["messages"]["drift"])
+        self.assertIn(
+            "differs from exact current bytes",
+            payload["messages"]["current_bytes"],
+        )
 
     def test_final_url_location_assertion_ignores_hash_but_rejects_redirect_drift(self):
         module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()

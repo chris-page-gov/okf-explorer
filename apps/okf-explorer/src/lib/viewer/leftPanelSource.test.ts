@@ -66,6 +66,17 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain('score {result.score}');
   });
 
+  it('exposes every ranked row and a query-specific settled marker for atomic evidence capture', () => {
+    expect(pageSource).toContain('function rankedResultCanonicalUrl');
+    expect(pageSource.match(/data-okf-ranked-result data-result-canonical-url=\{rankedResultCanonicalUrl/g)).toHaveLength(4);
+    expect(pageSource.match(/data-okf-ranked-results="primary"/g)).toHaveLength(1);
+    expect(pageSource.match(/data-okf-ranked-results="navigation"/g)).toHaveLength(2);
+    expect(pageSource).toContain('data-okf-query={largeAppliedQuery}');
+    expect(pageSource).toContain("data-okf-search-state={largeSearching ? 'searching' : 'settled'}");
+    expect(pageSource).not.toContain('data-result-canonical-url={dataset.url || undefined}');
+    expect(pageSource).not.toContain('data-result-canonical-url={result.url || undefined}');
+  });
+
   it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {
     expect(pageSource).toContain('class="left-results"');
     expect(pageSource).toContain('records match the active search and filters');

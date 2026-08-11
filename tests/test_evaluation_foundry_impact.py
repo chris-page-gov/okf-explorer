@@ -26,6 +26,7 @@ PROFILE_PATH = (
     / "heritage-warwickshire"
     / "evaluation-profile.yaml"
 )
+PUBLISHED_PROFILE_PATH = ROOT / "evaluation" / "heritage" / "evaluation-profile.yaml"
 PLAN_SCHEMA_PATH = (
     ROOT
     / "evaluation-foundry"
@@ -56,6 +57,30 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
     def assert_valid_plan(self, plan: dict[str, object]) -> None:
         errors = list(self.plan_validator.iter_errors(plan))
         self.assertEqual([], errors, [error.message for error in errors])
+
+    def test_producer_impact_rule_covers_exact_local_producer_materials_in_both_profiles(
+        self,
+    ) -> None:
+        expected = {
+            "requirements-okf.txt",
+            "scripts/build_heritage_evaluation.py",
+            "scripts/build_uk_government_api_okf.py",
+            "scripts/heritage_build_io.py",
+            "scripts/okf_semantic.py",
+        }
+        for profile_path in (PROFILE_PATH, PUBLISHED_PROFILE_PATH):
+            with self.subTest(profile=str(profile_path)):
+                profile = check_evaluation_foundry.load_document(profile_path)
+                producer = next(
+                    rule
+                    for rule in profile["impact_policy"]["path_rules"]
+                    if rule["id"] == "IMPACT-PRODUCER"
+                )
+                self.assertTrue(expected.issubset(producer["patterns"]))
+                for changed_path in sorted(expected):
+                    plan = impact.build_impact_plan(profile, [changed_path])
+                    self.assertFalse(plan["fail_closed"])
+                    self.assertIn("IMPACT-PRODUCER", plan["matched_rule_ids"])
 
     def test_v2_schema_reuses_foundry_contract_definitions(self) -> None:
         schema = json.loads(

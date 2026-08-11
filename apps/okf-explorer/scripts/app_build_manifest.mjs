@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
+import { constants as fileConstants } from 'node:fs';
 import {
   lstat,
-  readFile,
-  readdir,
+  open,
+  opendir,
   writeFile
 } from 'node:fs/promises';
 import path from 'node:path';
@@ -23,6 +24,16 @@ const MANIFEST_KEYS = [
   'tree_sha256',
   'materials'
 ];
+
+export const BUILD_INSPECTION_LIMITS = Object.freeze({
+  max_duration_ms: 5 * 60 * 1000,
+  max_entries: 2_000,
+  max_files: 1_000,
+  max_bytes: 128 * 1024 * 1024,
+  max_file_bytes: 128 * 1024 * 1024,
+  max_manifest_bytes: 16 * 1024 * 1024,
+  max_depth: 32
+});
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -208,6 +219,7 @@ function stableFileIdentity(value) {
   return [
     value.dev,
     value.ino,
+    value.mode,
     value.size,
     value.mtimeMs,
     value.ctimeMs,
@@ -215,43 +227,203 @@ function stableFileIdentity(value) {
   ];
 }
 
-async function readStableRegularFile(absolute, relative) {
+function inspectionContext(options = {}) {
+  const supplied = options.limits || {};
+  const limits = {};
+  for (const [name, maximum] of Object.entries(BUILD_INSPECTION_LIMITS)) {
+    const value = supplied[name] ?? maximum;
+    invariant(
+      Number.isSafeInteger(value) && value > 0 && value <= maximum,
+      `Build inspection limit ${name} must be a positive integer no greater than ${maximum}`
+    );
+    limits[name] = value;
+  }
+  const requestedDeadline = options.deadline ??
+    Date.now() + limits.max_duration_ms;
+  invariant(
+    Number.isFinite(requestedDeadline),
+    'Build inspection deadline must be finite'
+  );
+  return {
+    limits,
+    deadline: Math.min(
+      requestedDeadline,
+      Date.now() + limits.max_duration_ms
+    ),
+    entries: 0,
+    files: 0,
+    bytes: 0
+  };
+}
+
+function inspectBeforeWork(context, label) {
+  invariant(
+    Date.now() < context.deadline,
+    `${label} exceeded the build inspection deadline`
+  );
+}
+
+async function readExactBoundedHandle(
+  handle,
+  size,
+  label,
+  context = null
+) {
+  invariant(
+    Number.isSafeInteger(size) && size > 0,
+    `${label} has an invalid bounded byte count`
+  );
+  if (context) inspectBeforeWork(context, label);
+  const bytes = Buffer.allocUnsafe(size);
+  let offset = 0;
+  while (offset < size) {
+    if (context) inspectBeforeWork(context, label);
+    const { bytesRead } = await handle.read(
+      bytes,
+      offset,
+      Math.min(1024 * 1024, size - offset),
+      offset
+    );
+    if (context) inspectBeforeWork(context, label);
+    invariant(bytesRead > 0, `${label} was truncated while it was read`);
+    offset += bytesRead;
+  }
+  if (context) inspectBeforeWork(context, label);
+  const probe = Buffer.allocUnsafe(1);
+  const { bytesRead: extraBytes } = await handle.read(probe, 0, 1, size);
+  if (context) inspectBeforeWork(context, label);
+  invariant(extraBytes === 0, `${label} grew while it was read`);
+  return bytes;
+}
+
+async function readStableRegularFile(
+  absolute,
+  relative,
+  { context = null, maxBytes = null, countMaterial = false } = {}
+) {
+  if (context) inspectBeforeWork(context, `Build material ${relative}`);
   const before = await lstat(absolute);
+  if (context) inspectBeforeWork(context, `Build material ${relative}`);
   invariant(
     before.isFile() &&
       !before.isSymbolicLink() &&
       before.nlink === 1,
     `Build material is not an independent regular file: ${relative}`
   );
-  const bytes = await readFile(absolute);
-  const after = await lstat(absolute);
+  const byteLimit = maxBytes ?? context?.limits.max_file_bytes ??
+    BUILD_INSPECTION_LIMITS.max_file_bytes;
+  invariant(
+    before.size > 0 && before.size <= byteLimit,
+    `Build material exceeds its byte bound: ${relative}`
+  );
+  if (context && countMaterial) {
+    invariant(
+      context.files < context.limits.max_files,
+      'Build tree exceeds its file-count bound'
+    );
+    invariant(
+      context.bytes + before.size <= context.limits.max_bytes,
+      'Build tree exceeds its aggregate byte bound'
+    );
+    context.files += 1;
+    context.bytes += before.size;
+  }
+  if (context) inspectBeforeWork(context, `Build material ${relative}`);
+  const handle = await open(
+    absolute,
+    fileConstants.O_RDONLY | (fileConstants.O_NOFOLLOW || 0)
+  );
+  try {
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    const opened = await handle.stat();
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    invariant(
+      opened.isFile() && opened.nlink === 1 &&
+        opened.dev === before.dev && opened.ino === before.ino &&
+        opened.size === before.size && opened.size <= byteLimit,
+      `Build material changed before it was opened: ${relative}`
+    );
+    const bytes = await readExactBoundedHandle(
+      handle,
+      opened.size,
+      `Build material ${relative}`,
+      context
+    );
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    const after = await handle.stat();
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    const pathAfter = await lstat(absolute);
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    invariant(
+      bytes.length === opened.size &&
+        JSON.stringify(stableFileIdentity(opened)) ===
+          JSON.stringify(stableFileIdentity(after)) &&
+        JSON.stringify(stableFileIdentity(before)) ===
+          JSON.stringify(stableFileIdentity(pathAfter)),
+      `Build material changed while it was read: ${relative}`
+    );
+    if (context) inspectBeforeWork(context, `Build material ${relative}`);
+    return bytes;
+  } finally {
+    await handle.close();
+  }
+}
+
+async function boundedChildren(
+  absoluteDirectory,
+  directory,
+  context,
+  label
+) {
+  inspectBeforeWork(context, label);
+  const before = await lstat(absoluteDirectory);
+  inspectBeforeWork(context, label);
+  invariant(
+    before.isDirectory() && !before.isSymbolicLink(),
+    `${label} is not a real directory: ${directory || '.'}`
+  );
+  inspectBeforeWork(context, label);
+  const handle = await opendir(absoluteDirectory);
+  const children = [];
+  try {
+    while (true) {
+      inspectBeforeWork(context, label);
+      const child = await handle.read();
+      if (child === null) break;
+      invariant(
+        context.entries < context.limits.max_entries,
+        `${label} exceeds its entry-count bound`
+      );
+      context.entries += 1;
+      children.push(child);
+    }
+  } finally {
+    await handle.close();
+  }
+  inspectBeforeWork(context, label);
+  const after = await lstat(absoluteDirectory);
+  inspectBeforeWork(context, label);
   invariant(
     JSON.stringify(stableFileIdentity(before)) ===
       JSON.stringify(stableFileIdentity(after)),
-    `Build material changed while it was read: ${relative}`
+    `${label} directory changed while it was enumerated: ${directory || '.'}`
   );
-  invariant(
-    bytes.length > 0 && bytes.length === after.size,
-    `Build material is empty or changed size: ${relative}`
+  children.sort((left, right) =>
+    compareBuildPath(left.name, right.name)
   );
-  return bytes;
+  return children;
 }
 
-async function collectSourceFiles(root, directory = '') {
+async function collectSourceFiles(root, context, directory = '') {
+  inspectBeforeWork(context, 'Build tree traversal');
   const absoluteDirectory = directory
     ? path.join(root, ...directory.split('/'))
     : root;
-  const directoryMetadata = await lstat(absoluteDirectory);
-  invariant(
-    directoryMetadata.isDirectory() &&
-      !directoryMetadata.isSymbolicLink(),
-    `Build path is not a real directory: ${directory || '.'}`
-  );
-  const children = await readdir(absoluteDirectory, {
-    withFileTypes: true
-  });
-  children.sort((left, right) =>
-    compareBuildPath(left.name, right.name)
+  const children = await boundedChildren(
+    absoluteDirectory,
+    directory,
+    context,
+    'Build path'
   );
   const files = [];
   for (const child of children) {
@@ -260,21 +432,32 @@ async function collectSourceFiles(root, directory = '') {
       : child.name;
     if (!directory && relative === BUILD_MANIFEST_FILENAME) continue;
     const safe = safeBuildPath(relative);
+    invariant(
+      safe.split('/').length <= context.limits.max_depth,
+      'Build tree exceeds its depth bound'
+    );
     const absolute = path.join(root, ...safe.split('/'));
+    inspectBeforeWork(context, `Build path ${safe}`);
     const metadata = await lstat(absolute);
+    inspectBeforeWork(context, `Build path ${safe}`);
     invariant(
       !metadata.isSymbolicLink(),
       `Build tree contains a symbolic link: ${safe}`
     );
     if (metadata.isDirectory()) {
-      files.push(...await collectSourceFiles(root, safe));
+      for (const nested of await collectSourceFiles(root, context, safe)) {
+        files.push(nested);
+      }
       continue;
     }
     invariant(
       metadata.isFile(),
       `Build tree contains a non-regular entry: ${safe}`
     );
-    const bytes = await readStableRegularFile(absolute, safe);
+    const bytes = await readStableRegularFile(absolute, safe, {
+      context,
+      countMaterial: true
+    });
     files.push({
       material: {
         path: safe,
@@ -287,45 +470,57 @@ async function collectSourceFiles(root, directory = '') {
   return files;
 }
 
-async function collectAppNamespaceFiles(root, directory = '_app') {
+async function collectAppNamespaceFiles(
+  root,
+  context,
+  directory = '_app'
+) {
+  inspectBeforeWork(context, 'Assembled app namespace traversal');
   const absoluteDirectory = path.join(
     root,
     ...directory.split('/')
   );
-  const directoryMetadata = await lstat(absoluteDirectory);
-  invariant(
-    directoryMetadata.isDirectory() &&
-      !directoryMetadata.isSymbolicLink(),
-    `Assembled app namespace is not a real directory: ${directory}`
-  );
-  const children = await readdir(absoluteDirectory, {
-    withFileTypes: true
-  });
-  children.sort((left, right) =>
-    compareBuildPath(left.name, right.name)
+  const children = await boundedChildren(
+    absoluteDirectory,
+    directory,
+    context,
+    'Assembled app namespace'
   );
   const materials = [];
   for (const child of children) {
     const relative = safeBuildPath(
       path.posix.join(directory, child.name)
     );
+    invariant(
+      relative.split('/').length <= context.limits.max_depth,
+      'Assembled app namespace exceeds its depth bound'
+    );
     const absolute = path.join(root, ...relative.split('/'));
+    inspectBeforeWork(context, `Assembled app namespace ${relative}`);
     const metadata = await lstat(absolute);
+    inspectBeforeWork(context, `Assembled app namespace ${relative}`);
     invariant(
       !metadata.isSymbolicLink(),
       `Assembled app namespace contains a symbolic link: ${relative}`
     );
     if (metadata.isDirectory()) {
-      materials.push(
-        ...await collectAppNamespaceFiles(root, relative)
-      );
+      for (const nested of await collectAppNamespaceFiles(
+        root,
+        context,
+        relative
+      )) {
+        materials.push(nested);
+      }
       continue;
     }
     invariant(
       metadata.isFile(),
       `Assembled app namespace contains a non-regular entry: ${relative}`
     );
-    const bytes = await readStableRegularFile(absolute, relative);
+    const bytes = await readStableRegularFile(absolute, relative, {
+      context,
+      countMaterial: true
+    });
     materials.push({
       path: relative,
       bytes: bytes.length,
@@ -335,15 +530,19 @@ async function collectAppNamespaceFiles(root, directory = '_app') {
   return materials;
 }
 
-export async function inspectBuildSourceTree(root) {
+export async function inspectBuildSourceTree(root, options = {}) {
   const absoluteRoot = path.resolve(root);
-  const files = await collectSourceFiles(absoluteRoot);
+  const context = inspectionContext(options);
+  const files = await collectSourceFiles(absoluteRoot, context);
+  inspectBeforeWork(context, 'Build manifest material ordering');
   files.sort((left, right) =>
     compareBuildPath(left.material.path, right.material.path)
   );
+  inspectBeforeWork(context, 'Build manifest material validation');
   const materials = validateCanonicalMaterials(
     files.map((value) => value.material)
   );
+  inspectBeforeWork(context, 'Build manifest serialisation');
   const manifest = canonicalBuildManifest({
     schema: BUILD_MANIFEST_SCHEMA,
     algorithm: BUILD_TREE_ALGORITHM,
@@ -351,25 +550,42 @@ export async function inspectBuildSourceTree(root) {
     tree_sha256: sha256(canonicalBuildTreeBytes(materials)),
     materials
   });
+  inspectBeforeWork(context, 'Build manifest serialisation');
+  const manifestBytes = renderBuildManifest(manifest);
+  inspectBeforeWork(context, 'Build manifest serialisation');
   return {
     files,
     manifest,
-    manifestBytes: renderBuildManifest(manifest)
+    manifestBytes
   };
 }
 
-export async function inspectCanonicalBuildRoot(root) {
+export async function inspectCanonicalBuildRoot(root, options = {}) {
   const absoluteRoot = path.resolve(root);
+  const context = inspectionContext(options);
   const manifestPath = path.join(
     absoluteRoot,
     BUILD_MANIFEST_FILENAME
   );
   const manifestBytes = await readStableRegularFile(
     manifestPath,
-    BUILD_MANIFEST_FILENAME
+    BUILD_MANIFEST_FILENAME,
+    {
+      context,
+      maxBytes: context.limits.max_manifest_bytes
+    }
   );
+  inspectBeforeWork(context, 'Canonical build manifest parsing');
   const manifest = parseCanonicalBuildManifest(manifestBytes);
-  const source = await inspectBuildSourceTree(absoluteRoot);
+  inspectBeforeWork(context, 'Canonical build manifest parsing');
+  invariant(
+    manifest.file_count <= context.limits.max_files,
+    'Build manifest exceeds its file-count bound'
+  );
+  const source = await inspectBuildSourceTree(absoluteRoot, {
+    limits: context.limits,
+    deadline: context.deadline
+  });
   invariant(
     manifestBytes.equals(source.manifestBytes),
     'Build manifest does not describe the exact app-build source tree'
@@ -388,17 +604,23 @@ export async function inspectCanonicalBuildRoot(root) {
 
 export async function verifyAssembledAppBuild(
   siteRoot,
-  appBuildRoot
+  appBuildRoot,
+  options = {}
 ) {
   const absoluteSiteRoot = path.resolve(siteRoot);
-  const source = await inspectCanonicalBuildRoot(appBuildRoot);
+  const source = await inspectCanonicalBuildRoot(appBuildRoot, options);
+  const assembledContext = inspectionContext(options);
   const assembledManifestPath = path.join(
     absoluteSiteRoot,
     BUILD_MANIFEST_FILENAME
   );
   const assembledManifestBytes = await readStableRegularFile(
     assembledManifestPath,
-    BUILD_MANIFEST_FILENAME
+    BUILD_MANIFEST_FILENAME,
+    {
+      context: assembledContext,
+      maxBytes: assembledContext.limits.max_manifest_bytes
+    }
   );
   const assembledManifest = parseCanonicalBuildManifest(
     assembledManifestBytes
@@ -415,7 +637,11 @@ export async function verifyAssembledAppBuild(
     );
     const bytes = await readStableRegularFile(
       absolute,
-      material.path
+      material.path,
+      {
+        context: assembledContext,
+        countMaterial: true
+      }
     );
     invariant(
       bytes.length === material.bytes &&
@@ -431,7 +657,11 @@ export async function verifyAssembledAppBuild(
     'Canonical app build declares no _app namespace materials'
   );
   const assembledAppNamespace = await collectAppNamespaceFiles(
-    absoluteSiteRoot
+    absoluteSiteRoot,
+    inspectionContext({
+      limits: assembledContext.limits,
+      deadline: assembledContext.deadline
+    })
   );
   assembledAppNamespace.sort((left, right) =>
     compareBuildPath(left.path, right.path)
@@ -455,9 +685,9 @@ export async function verifyAssembledAppBuild(
   };
 }
 
-export async function writeCanonicalBuildManifest(root) {
+export async function writeCanonicalBuildManifest(root, options = {}) {
   const absoluteRoot = path.resolve(root);
-  const source = await inspectBuildSourceTree(absoluteRoot);
+  const source = await inspectBuildSourceTree(absoluteRoot, options);
   const manifestPath = path.join(
     absoluteRoot,
     BUILD_MANIFEST_FILENAME
@@ -466,7 +696,7 @@ export async function writeCanonicalBuildManifest(root) {
     flag: 'wx',
     mode: 0o644
   });
-  return inspectCanonicalBuildRoot(absoluteRoot);
+  return inspectCanonicalBuildRoot(absoluteRoot, options);
 }
 
 function exactCapturedMaterial(value, expected) {

@@ -140,6 +140,27 @@ describe('large static search worker', () => {
     expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/docs.json');
   });
 
+  it('does not claim an exact count-only result from capped postings', async () => {
+    const manifest = baseManifest();
+    manifest.counts.max_postings_per_token = 2;
+    const worker = await harness(manifest, [[
+      'https://example.test/postings.json',
+      { tokens: { flood: [[0, 20, 1], [1, 16, 1]] } }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: { query: 'flood', filters: {}, sort: 'relevance', include_results: false }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(2);
+    expect(response.total_relation).toBe('gte');
+    expect(response.truncated).toBe(true);
+    expect(response.truncations).toEqual([{ reason: 'capped-postings' }]);
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/docs.json');
+  });
+
   it('ignores invalid indexed values while retaining valid selections', async () => {
     const worker = await harness();
     await worker.onmessage?.({ data: {
@@ -603,6 +624,126 @@ describe('large static search worker', () => {
     expect(response.total).toBe(2);
     expect(response.results[0].match.matched_fields).toContain('publisher');
     expect(response.results[0].match.score_components.entity).toBeGreaterThan(0);
+  });
+
+  it('recognises one unambiguous organisation embedded in a natural-language question', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query',
+      id: 2,
+      request: {
+        query: 'What does Home Office cover?',
+        filters: {},
+        sort: 'relevance',
+        ranking: 'weighted'
+      }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toMatchObject({
+      label: 'Home Office',
+      kind: 'organisation',
+      filter_value: 'home-office'
+    });
+    expect(response.total).toBe(2);
+    expect(response.results[0].match.matched_fields).toContain('publisher');
+  });
+
+  it('intersects an embedded organisation with a known residual topic', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'Home Office flood', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity.label).toBe('Home Office');
+    expect(response.total).toBe(2);
+    expect(response.results[0].match.query_tokens).toEqual(['home', 'office', 'flood']);
+  });
+
+  it('retains capped-posting uncertainty when an entity narrows one residual group', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    manifest.result_limit = 4;
+    manifest.counts.max_postings_per_token = 2;
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest, [[
+      'https://example.test/postings.json',
+      { tokens: { flood: [[0, 20, 1]] } }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'Home Office flood', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity.label).toBe('Home Office');
+    expect(response.total).toBe(1);
+    expect(response.total_relation).toBe('gte');
+    expect(response.truncations).toContainEqual({ reason: 'capped-postings' });
+  });
+
+  it('reports unknown totals for an entity plus mixed complete and capped residual groups', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    manifest.result_limit = 4;
+    manifest.counts.max_postings_per_token = 2;
+    manifest.entrypoints.lexicon = { fl: 'lexicon.json', ri: 'risk-lexicon.json' };
+    manifest.entrypoints.postings = ['postings.json', 'risk-postings.json'];
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest, [
+      ['https://example.test/postings.json', { tokens: { flood: [[0, 20, 1]] } }],
+      ['https://example.test/risk-lexicon.json', [{ token: 'risk', df: 2, postings: 'risk-postings.json' }]],
+      ['https://example.test/risk-postings.json', { tokens: { risk: [[0, 12, 1], [2, 10, 1]] } }]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'Home Office flood risk', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity.label).toBe('Home Office');
+    expect(response.total).toBe(2);
+    expect(response.total_relation).toBe('unknown');
+    expect(response.truncations).toContainEqual({ reason: 'capped-postings' });
+  });
+
+  it('returns no results for an embedded organisation with an unresolved residual topic', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    delete manifest.entrypoints.sort_values;
+    const worker = await harness(manifest);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'Home Office passports', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity.label).toBe('Home Office');
+    expect(response.total).toBe(0);
+    expect(response.unresolved_tokens).toEqual(['passports']);
+  });
+
+  it('does not recognise a short inferred alias embedded in stop-word prose', async () => {
+    const worker = await harness(baseManifest(), [[
+      'https://example.test/facets.json',
+      { publisher: { 'information-technology': [0, 2] } }
+    ]]);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'what is it', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.interpreted_entity).toBeUndefined();
+    expect(response.total).toBe(0);
   });
 
   it('resolves an unambiguous organisation initialism without a lexical token', async () => {

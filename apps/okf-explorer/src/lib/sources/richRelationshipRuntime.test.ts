@@ -38,6 +38,7 @@ async function runtimeFixture(options: {
   declaredChunkBytes?: number;
   oversizedLabel?: boolean;
   unknownRowProperty?: boolean;
+  invalidReviewStatus?: boolean;
 } = {}) {
   const base = 'https://example.test/rich/';
   const snapshot = 'snapshot-rich-one';
@@ -67,11 +68,12 @@ async function runtimeFixture(options: {
     assertion_scope: options.invalidContract ? 'snapshot-bounded' : 'real-world',
     authority: {
       class: 'derived',
-      label: 'Normalized source metadata',
+      label: 'Normalised source metadata',
       source: options.unsafeAuthority ? 'javascript:alert(1)' : 'https://example.test/source/'
     },
     derivation: 'urn:okf:process:source-projection',
     observed_at: '2026-08-09T00:00:00Z',
+    review_status: options.invalidReviewStatus ? ' ' : 'candidate-reviewed',
     evidence: [{
       '@id': 'urn:okf:evidence:core-one',
       type: 'source-record',
@@ -315,7 +317,8 @@ describe('rich relationship runtime source', () => {
       id: 'urn:okf:assertion:core-one',
       source: fixture.route,
       source_iri: 'https://example.test/id/work-one',
-      predicate: 'https://example.test/vocabulary/has-category'
+      predicate: 'https://example.test/vocabulary/has-category',
+      review_status: 'candidate-reviewed'
     }));
     await expect(source.loadRelationships()).resolves.toEqual({
       relationships: routed,
@@ -471,6 +474,24 @@ describe('rich relationship runtime source', () => {
       source: fixture.route,
       label: 'has category'
     }));
+  });
+
+  it('rejects an invalid optional review status on a normalised assertion', async () => {
+    const fixture = await runtimeFixture({ invalidReviewStatus: true });
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      const binary = fixture.binaries.get(url);
+      if (binary) return new Response(binary.slice());
+      const value = fixture.payloads.get(url);
+      return value === undefined
+        ? new Response('', { status: 404, statusText: 'Not Found' })
+        : jsonResponse(value);
+    }));
+
+    const source = await loadLargeCorpus(fixture.descriptorUrl);
+    await expect(source.loadRelationshipsForRoute(fixture.route)).rejects.toThrow(
+      'review status must be a non-empty string'
+    );
   });
 
   it('rejects script-scheme authority links in digest-valid runtime rows', async () => {

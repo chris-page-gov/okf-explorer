@@ -27,6 +27,22 @@ CONTEXT_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki
 SEMANTIC_CONTEXT_PATH = PROFILE_ROOT / "semantic-context.jsonld"
 SEMANTIC_CONTEXT_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-context.jsonld"
 PROFILE_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+PREDICATE_REGISTRY_V2_PROFILE_URL = (
+    "https://chris-page-gov.github.io/okf-explorer/profile/predicate-registry/v2/"
+)
+PREDICATE_REGISTRY_V2_SCHEMA = (
+    "predicate-registry/v2/predicate-registry.schema.json"
+)
+PREDICATE_IMPLEMENTATION_STATES = frozenset(
+    {"active-emitted", "authorised-zero-evidence"}
+)
+PREDICATE_REGISTRY_V2_MAX_BYTES = 16 * 1024 * 1024
+PREDICATE_REGISTRY_V2_MAX_PREDICATES = 4096
+PREDICATE_REGISTRY_V2_MAX_IRI_ARRAY_ITEMS = 256
+PREDICATE_REGISTRY_V2_MAX_EVIDENCE_FIELDS = 64
+PREDICATE_REGISTRY_V2_MAX_STRING_LENGTH = 4096
+PREDICATE_REGISTRY_V2_MAX_IRI_LENGTH = 4096
+PREDICATE_REGISTRY_V2_MAX_ASSERTIONS = 100_000_000
 
 RDF_TYPE = "@type"
 RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
@@ -1024,7 +1040,8 @@ def validate_iri_route_registry(registry: dict[str, Any]) -> list[str]:
     return errors
 
 
-def validate_predicate_registry(registry: dict[str, Any]) -> list[str]:
+def validate_predicate_registry_v1(registry: dict[str, Any]) -> list[str]:
+    """Validate the frozen Bundle Wiki v1 predicate-registry contract."""
     errors = schema_errors(registry, "predicate-registry.schema.json")
     predicates = registry.get("predicates")
     if not isinstance(predicates, list):
@@ -1044,6 +1061,176 @@ def validate_predicate_registry(registry: dict[str, Any]) -> list[str]:
     if registry.get("root_sha256") != expected_root:
         errors.append("root_sha256 does not bind the canonical predicate registry")
     return errors
+
+
+def _emitted_predicate_counts(
+    relationships: list[dict[str, Any]],
+) -> tuple[Counter[str], list[str]]:
+    counts: Counter[str] = Counter()
+    errors: list[str] = []
+    for index, relationship in enumerate(relationships):
+        if not isinstance(relationship, dict):
+            errors.append(f"relationships[{index}] must be an object")
+            continue
+        predicate = str(relationship.get("predicate") or "").strip()
+        if not predicate:
+            errors.append(f"relationships[{index}].predicate is required")
+            continue
+        counts[predicate] += 1
+    return counts, errors
+
+
+def validate_predicate_registry_v2(
+    registry: dict[str, Any],
+    *,
+    relationships: list[dict[str, Any]] | None = None,
+) -> list[str]:
+    """Validate the additive capability/state registry and optional emissions."""
+    errors = schema_errors(registry, PREDICATE_REGISTRY_V2_SCHEMA)
+    canonical_size = len(canonical_json_bytes(registry))
+    if canonical_size > PREDICATE_REGISTRY_V2_MAX_BYTES:
+        errors.append(
+            "predicate registry canonical JSON exceeds the "
+            f"{PREDICATE_REGISTRY_V2_MAX_BYTES}-byte safety ceiling"
+        )
+    predicates = registry.get("predicates")
+    if not isinstance(predicates, list):
+        return errors
+
+    iris: list[str] = []
+    state_counts: Counter[str] = Counter()
+    assertion_total = 0
+    declared_counts: dict[str, int] = {}
+    for index, predicate in enumerate(predicates):
+        if not isinstance(predicate, dict):
+            continue
+        iri = str(predicate.get("iri") or "")
+        if iri in iris:
+            errors.append(f"predicates[{index}].iri is duplicated: {iri}")
+        iris.append(iri)
+        implementation = predicate.get("implementation")
+        if not isinstance(implementation, dict):
+            continue
+        state = str(implementation.get("state") or "")
+        emitted = implementation.get("assertions_emitted")
+        if predicate.get("status") == "deprecated" and (
+            state != "authorised-zero-evidence" or emitted != 0
+        ):
+            errors.append(
+                f"predicates[{index}] is deprecated and must use "
+                "authorised-zero-evidence with zero emitted assertions"
+            )
+        if state in PREDICATE_IMPLEMENTATION_STATES:
+            state_counts[state] += 1
+        if isinstance(emitted, int) and not isinstance(emitted, bool) and emitted >= 0:
+            assertion_total += emitted
+            declared_counts[iri] = emitted
+
+    if iris != sorted(iris):
+        errors.append("predicates must be sorted by canonical IRI")
+
+    counts = registry.get("counts")
+    if isinstance(counts, dict):
+        expected_counts = {
+            "predicates": len(predicates),
+            "active_emitted": state_counts["active-emitted"],
+            "authorised_zero_evidence": state_counts[
+                "authorised-zero-evidence"
+            ],
+            "assertions_emitted": assertion_total,
+        }
+        for name, expected in expected_counts.items():
+            if counts.get(name) != expected:
+                errors.append(
+                    f"counts.{name} differs from the governed predicate material"
+                )
+
+    material = {key: value for key, value in registry.items() if key != "root_sha256"}
+    expected_root = sha256_hex(canonical_json_bytes(material))
+    if registry.get("root_sha256") != expected_root:
+        errors.append("root_sha256 does not bind the canonical predicate registry")
+
+    if relationships is not None:
+        observed_counts, relationship_errors = _emitted_predicate_counts(
+            relationships
+        )
+        errors.extend(relationship_errors)
+        declared = set(iris)
+        for iri in sorted(set(observed_counts).difference(declared)):
+            errors.append(f"emitted predicate is not a declared capability: {iri}")
+        for iri in sorted(declared):
+            observed = observed_counts[iri]
+            declared_count = declared_counts.get(iri)
+            if declared_count is not None and observed != declared_count:
+                errors.append(
+                    f"predicate {iri} declares {declared_count} emitted assertions "
+                    f"but {observed} were supplied"
+                )
+    return errors
+
+
+def load_predicate_registry_v2_bytes(
+    data: bytes,
+    *,
+    source: str = "<predicate-registry-v2>",
+    relationships: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Parse bounded v2 JSON and validate it before Reader consumption."""
+    if not isinstance(data, bytes):
+        raise SemanticError(f"{source}: predicate registry input must be bytes")
+    if len(data) > PREDICATE_REGISTRY_V2_MAX_BYTES:
+        raise SemanticError(
+            f"{source}: predicate registry exceeds the "
+            f"{PREDICATE_REGISTRY_V2_MAX_BYTES}-byte safety ceiling"
+        )
+    try:
+        text = data.decode("utf-8", errors="strict")
+    except UnicodeDecodeError as exc:
+        raise SemanticError(f"{source}: predicate registry must be UTF-8") from exc
+
+    def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        document: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in document:
+                raise SemanticError(
+                    f"{source}: predicate registry contains duplicate key {key!r}"
+                )
+            document[key] = value
+        return document
+
+    try:
+        document = json.loads(text, object_pairs_hook=reject_duplicate_keys)
+    except SemanticError:
+        raise
+    except (json.JSONDecodeError, ValueError, RecursionError) as exc:
+        raise SemanticError(f"{source}: predicate registry is invalid JSON: {exc}") from exc
+    if not isinstance(document, dict):
+        raise SemanticError(f"{source}: predicate registry root must be an object")
+    errors = validate_predicate_registry_v2(
+        document,
+        relationships=relationships,
+    )
+    if errors:
+        raise SemanticError(
+            f"{source}: invalid predicate capability registry:\n- "
+            + "\n- ".join(errors)
+        )
+    return document
+
+
+def validate_predicate_registry(
+    registry: dict[str, Any],
+    *,
+    relationships: list[dict[str, Any]] | None = None,
+) -> list[str]:
+    """Validate either supported predicate-registry wire contract."""
+    schema = registry.get("schema")
+    if schema == "okf-predicate-registry.v2":
+        return validate_predicate_registry_v2(
+            registry,
+            relationships=relationships,
+        )
+    return validate_predicate_registry_v1(registry)
 
 
 def build_predicate_registry(
@@ -1070,6 +1257,94 @@ def build_predicate_registry(
     if errors:
         raise SemanticError(
             "invalid predicate registry:\n- " + "\n- ".join(errors)
+        )
+    return registry
+
+
+def build_predicate_registry_v2(
+    capabilities: list[dict[str, Any]],
+    relationships: list[dict[str, Any]],
+    *,
+    snapshot: str,
+    generated_at_value: str,
+) -> dict[str, Any]:
+    """Build a complete capability registry with evidence-derived states.
+
+    ``capabilities`` is the producer-authorised set.  Every emitted relationship
+    must use one of those exact predicate IRIs.  The generated implementation
+    state is therefore auditable rather than a free-text producer claim.
+    """
+    emitted_counts, relationship_errors = _emitted_predicate_counts(relationships)
+    if relationship_errors:
+        raise SemanticError(
+            "invalid predicate capability emissions:\n- "
+            + "\n- ".join(relationship_errors)
+        )
+
+    capability_iris = {
+        str(capability.get("iri") or "").strip()
+        for capability in capabilities
+        if isinstance(capability, dict)
+    }
+    undeclared = sorted(set(emitted_counts).difference(capability_iris))
+    if undeclared:
+        raise SemanticError(
+            "emitted predicates are absent from the authorised capability set:\n- "
+            + "\n- ".join(undeclared)
+        )
+
+    predicates: list[dict[str, Any]] = []
+    for capability in capabilities:
+        if not isinstance(capability, dict):
+            predicates.append(capability)
+            continue
+        item = dict(capability)
+        iri = str(item.get("iri") or "").strip()
+        emitted = emitted_counts[iri]
+        item["implementation"] = {
+            "state": (
+                "active-emitted" if emitted else "authorised-zero-evidence"
+            ),
+            "assertions_emitted": emitted,
+        }
+        predicates.append(item)
+
+    state_counts = Counter(
+        predicate.get("implementation", {}).get("state")
+        for predicate in predicates
+        if isinstance(predicate, dict)
+    )
+    material = {
+        "schema": "okf-predicate-registry.v2",
+        "profile": PREDICATE_REGISTRY_V2_PROFILE_URL,
+        "snapshot": snapshot,
+        "generated_at": generated_at_value,
+        "predicates": sorted(
+            predicates,
+            key=lambda item: str(item.get("iri") or "")
+            if isinstance(item, dict)
+            else "",
+        ),
+        "counts": {
+            "predicates": len(predicates),
+            "active_emitted": state_counts["active-emitted"],
+            "authorised_zero_evidence": state_counts[
+                "authorised-zero-evidence"
+            ],
+            "assertions_emitted": sum(emitted_counts.values()),
+        },
+    }
+    registry = {
+        **material,
+        "root_sha256": sha256_hex(canonical_json_bytes(material)),
+    }
+    errors = validate_predicate_registry_v2(
+        registry,
+        relationships=relationships,
+    )
+    if errors:
+        raise SemanticError(
+            "invalid predicate capability registry:\n- " + "\n- ".join(errors)
         )
     return registry
 
@@ -1148,7 +1423,10 @@ def semantic_model_extension(
     errors: list[str] = []
     if iri_route_registry.get("schema") == "okf-iri-route-registry.v1":
         errors.extend(validate_iri_route_registry(iri_route_registry))
-    if predicate_registry.get("schema") == "okf-predicate-registry.v1":
+    if predicate_registry.get("schema") in {
+        "okf-predicate-registry.v1",
+        "okf-predicate-registry.v2",
+    }:
         errors.extend(validate_predicate_registry(predicate_registry))
     contexts = [
         context_reference(url)
@@ -1186,7 +1464,15 @@ def compile_semantic_relationships(
     errors.extend(validate_iri_route_registry(iri_route_registry))
     predicate_lookup: dict[str, dict[str, Any]] = {}
     if predicate_registry is not None:
-        errors.extend(validate_predicate_registry(predicate_registry))
+        errors.extend(
+            validate_predicate_registry(
+                predicate_registry,
+                relationships=[
+                    {"predicate": str(row.get("predicate") or "")}
+                    for row in rows
+                ],
+            )
+        )
         predicate_lookup = {
             str(item.get("iri") or ""): item
             for item in predicate_registry.get("predicates", [])

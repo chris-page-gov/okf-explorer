@@ -19,6 +19,16 @@ import build_heritage_local_candidate_receipt as materializer  # noqa: E402
 
 
 class HeritageLocalCandidateReceiptTests(unittest.TestCase):
+    @staticmethod
+    def rebind_producer_materials(value: dict[str, object]) -> None:
+        materials = value["materials"]
+        assert isinstance(materials, list)
+        value["file_count"] = len(materials)
+        value["bytes"] = sum(material["bytes"] for material in materials)
+        value["root_sha256"] = materializer.digest(
+            materializer.canonical_json(materials)
+        )
+
     def fixture_inputs(self, root: Path) -> dict[str, object]:
         descriptor, descriptor_raw = materializer.descriptor_identity()
         descriptor_sha256 = materializer.digest(descriptor_raw)
@@ -305,8 +315,73 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 materializer.app_identity()["tree_sha256"],
                 receipt["candidate"]["explorer_tree_sha256"],
             )
+            producer_materials = receipt["producer_materials"]
+            self.assertEqual(
+                "okf-heritage-producer-materials.v1",
+                producer_materials["schema"],
+            )
+            self.assertEqual(
+                "sha256-over-canonical-json-path-bytes-digest-list-v1",
+                producer_materials["algorithm"],
+            )
+            self.assertEqual(
+                list(materializer.PRODUCER_MATERIAL_PATHS),
+                [material["path"] for material in producer_materials["materials"]],
+            )
+            self.assertEqual(5, producer_materials["file_count"])
+            self.assertEqual(
+                sum(material["bytes"] for material in producer_materials["materials"]),
+                producer_materials["bytes"],
+            )
+            self.assertEqual(
+                materializer.digest(
+                    materializer.canonical_json(producer_materials["materials"])
+                ),
+                producer_materials["root_sha256"],
+            )
+            for material in producer_materials["materials"]:
+                raw = (ROOT / material["path"]).read_bytes()
+                self.assertEqual(len(raw), material["bytes"])
+                self.assertEqual(materializer.digest(raw), material["sha256"])
             self.assertEqual(56, receipt["candidate"]["site_file_count"])
             self.assertEqual("pending", receipt["terminal_publication_gate"]["status"])
+
+    def test_producer_materials_reject_max_missing_extra_and_drift(self) -> None:
+        exact = materializer.producer_materials_identity()
+
+        too_many = copy.deepcopy(exact)
+        too_many["materials"] = [
+            {
+                "path": f"scripts/material-{index:03d}.py",
+                "bytes": 1,
+                "sha256": "a" * 64,
+            }
+            for index in range(materializer.MAX_PRODUCER_MATERIALS + 1)
+        ]
+        self.rebind_producer_materials(too_many)
+        with self.assertRaisesRegex(RuntimeError, "material-count bound"):
+            materializer.validate_producer_materials(too_many)
+
+        missing = copy.deepcopy(exact)
+        missing["materials"] = missing["materials"][1:]
+        self.rebind_producer_materials(missing)
+        with self.assertRaisesRegex(RuntimeError, "missing required path"):
+            materializer.validate_producer_materials(missing)
+
+        extra = copy.deepcopy(exact)
+        extra["materials"].append(
+            {"path": "scripts/unexpected.py", "bytes": 1, "sha256": "b" * 64}
+        )
+        extra["materials"].sort(key=lambda material: material["path"])
+        self.rebind_producer_materials(extra)
+        with self.assertRaisesRegex(RuntimeError, "unexpected path"):
+            materializer.validate_producer_materials(extra)
+
+        drift = copy.deepcopy(exact)
+        drift["materials"][0]["sha256"] = "c" * 64
+        self.rebind_producer_materials(drift)
+        with self.assertRaisesRegex(RuntimeError, "differs from exact current bytes"):
+            materializer.validate_producer_materials(drift)
 
     def test_rejects_stale_timestamps_tampered_identity_and_nonpassing_evidence(
         self,

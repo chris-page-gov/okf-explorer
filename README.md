@@ -39,6 +39,9 @@ resizing, Map reductions, folded record sections, full-record loading and
 source-data/new-tab behaviour. A normal 100-question harness run remains
 unchanged. Acceptance fixtures wait for bundle-specific hydrated content rather
 than using an application-shell selector as their readiness signal.
+External producer gates can also capture bounded, ordered canonical result URLs
+in the browser receipt; the [evaluation guide](docs/okf-explorer-evaluation.md#external-bundle-runtime-evidence)
+defines the single-writer command and receipt contract.
 
 The focused geospatial suite runs 18 Playwright scenarios against deterministic
 small- and large-bundle fixtures. It covers every Map control and visible
@@ -54,6 +57,8 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Review the facet presentation experiment][facet-presentation-experiment]
 - [Review the viewer capability parity and conflict register][viewer-parity]
 - [Review the ontology and semantic graph architecture][semantic-graph-architecture]
+- [Declare implemented and authorised relationship predicates with Predicate
+  Registry v2](profiles/predicate-registry/v2/index.md)
 - [Distinguish governed snapshots from reviewed provider references][provider-datapacks]
 - [Publish and consume an overview-first federation][federation-docs]
 - [Reproduce the UK Legislation runtime acceptance gate](https://chris-page-gov.github.io/okf-explorer/docs/legislation-runtime-acceptance.html)
@@ -149,6 +154,11 @@ The repository contains:
 - `plugins/okf-repositories/` - validated new-format Agent Plugin and reusable
   skill for orienting to, changing, validating and handing off OKF repositories
   without crossing authored/generated or migration/release boundaries.
+- `profiles/predicate-registry/v2/` - additive, bounded schema and authoring
+  contract for evidence-derived `active-emitted` and
+  `authorised-zero-evidence` relationship-predicate capabilities, protected by
+  an adjacent integrity lock without changing the frozen Bundle Wiki v1
+  profile.
 - `docs/heritage-evaluation-report.md` - the beginner-readable exemplar report,
   including the additive YAML-LD design and publication boundary.
 - `docs/uk-legislation/` - maintained UK Legislation documentation spine with getting-started guidance, personas, user journeys, an illustrated manual, agent research rules, evaluation and refresh instructions.
