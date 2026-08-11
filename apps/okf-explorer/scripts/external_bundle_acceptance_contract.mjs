@@ -36,6 +36,7 @@ export const ACTION_TYPES = new Set([
   'click',
   'fill',
   'press',
+  'wait_for_ranked_result',
   'wait_for'
 ]);
 export const ASSERTION_TYPES = new Set([
@@ -45,12 +46,14 @@ export const ASSERTION_TYPES = new Set([
   'hidden',
   'not_requested',
   'not_text',
+  'ranked_result',
   'requested',
   'text',
   'url_hash',
   'url_param',
   'visible'
 ]);
+const CREDENTIAL_QUERY_KEY = /^(?:api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|password|passwd|bearer|token)$/i;
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -203,8 +206,19 @@ function validateAction(action, label) {
         `${label}.params contains too much text`
       );
     }
-  } else {
+  } else if (action.type !== 'wait_for_ranked_result') {
     selectorStep(action, label);
+  }
+  if (action.type === 'wait_for_ranked_result') {
+    invariant(
+      Object.keys(action).sort().join('\u0000') === ['canonical_url', 'type'].join('\u0000'),
+      `${label} wait_for_ranked_result fields are unsupported or have drifted`
+    );
+    boundedString(action.canonical_url, `${label}.canonical_url`, ACCEPTANCE_LIMITS.captured_value_chars);
+    invariant(
+      isCredentialFreeAbsoluteHttpUrl(action.canonical_url),
+      `${label}.canonical_url must be a credential-free absolute HTTP(S) URL`
+    );
   }
   if (action.type === 'capture_attributes') {
     invariant(
@@ -239,8 +253,19 @@ function validateAction(action, label) {
 function validateAssertion(assertion, label) {
   invariant(assertion && typeof assertion === 'object' && !Array.isArray(assertion), `${label} must be an object`);
   invariant(ASSERTION_TYPES.has(assertion.type), `${label}.type is unsupported: ${assertion.type}`);
-  if (!['console_clean', 'not_requested', 'requested', 'url_hash', 'url_param'].includes(assertion.type)) {
+  if (!['console_clean', 'not_requested', 'ranked_result', 'requested', 'url_hash', 'url_param'].includes(assertion.type)) {
     selectorStep(assertion, label);
+  }
+  if (assertion.type === 'ranked_result') {
+    invariant(
+      Object.keys(assertion).sort().join('\u0000') === ['canonical_url', 'type'].join('\u0000'),
+      `${label} ranked_result fields are unsupported or have drifted`
+    );
+    boundedString(assertion.canonical_url, `${label}.canonical_url`, ACCEPTANCE_LIMITS.captured_value_chars);
+    invariant(
+      isCredentialFreeAbsoluteHttpUrl(assertion.canonical_url),
+      `${label}.canonical_url must be a credential-free absolute HTTP(S) URL`
+    );
   }
   if (['not_text', 'text'].includes(assertion.type)) {
     boundedString(assertion.includes, `${label}.includes`, ACCEPTANCE_LIMITS.general_string_chars, { empty: true });
@@ -383,7 +408,8 @@ export function isCredentialFreeAbsoluteHttpUrl(value) {
       (parsed.protocol === 'http:' || parsed.protocol === 'https:') &&
       Boolean(parsed.hostname) &&
       parsed.username === '' &&
-      parsed.password === ''
+      parsed.password === '' &&
+      ![...parsed.searchParams.keys()].some((key) => CREDENTIAL_QUERY_KEY.test(key))
     );
   } catch {
     return false;
@@ -392,6 +418,70 @@ export function isCredentialFreeAbsoluteHttpUrl(value) {
 
 export async function waitForLocator(locator, state = 'visible') {
   await locator.waitFor({ state });
+}
+
+export async function waitForRankedResult(page, canonicalUrl) {
+  invariant(
+    isCredentialFreeAbsoluteHttpUrl(canonicalUrl),
+    'ranked-result canonical_url must be a credential-free absolute HTTP(S) URL'
+  );
+  const query = new URL(page.url()).searchParams.get('q');
+  invariant(query !== null && query.length > 0, 'wait_for_ranked_result requires a non-empty q URL parameter');
+  const containerSelector = '[data-okf-ranked-results="primary"]';
+  const observationHandle = await page.waitForFunction(
+    ({ selector, expectedQuery, canonicalUrl }) => {
+      const container = document.querySelector(selector);
+      const observedQuery = container?.getAttribute('data-okf-query') ?? null;
+      const searchState = container?.getAttribute('data-okf-search-state') ?? null;
+      if (observedQuery !== expectedQuery || searchState !== 'settled') return false;
+
+      // Read the settled state, ordered row identities and visibility in one
+      // browser task. A rerender cannot make visibility refer to a different
+      // row from the canonical URL whose identity was observed.
+      const rows = [...container.querySelectorAll('[data-okf-ranked-result]')];
+      const canonicalUrls = rows.map((element) => element.getAttribute('data-result-canonical-url'));
+      const matchingRows = rows.filter(
+        (element) => element.getAttribute('data-result-canonical-url') === canonicalUrl
+      );
+      const visibleMatchingRows = matchingRows.filter((element) => {
+        const style = getComputedStyle(element);
+        const bounds = element.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && bounds.width > 0 && bounds.height > 0;
+      });
+      return {
+        query: observedQuery,
+        search_state: searchState,
+        canonical_urls: canonicalUrls,
+        matching_result_count: matchingRows.length,
+        visible_matching_result_count: visibleMatchingRows.length
+      };
+    },
+    { selector: containerSelector, expectedQuery: query, canonicalUrl }
+  );
+  let observation;
+  try {
+    observation = await observationHandle.jsonValue();
+  } finally {
+    await observationHandle.dispose();
+  }
+  invariant(
+    observation?.query === query && observation?.search_state === 'settled',
+    'ranked-result settlement observation is inconsistent'
+  );
+  invariant(
+    observation.matching_result_count === 1,
+    `settled search for ${JSON.stringify(query)} contained ${observation.matching_result_count} ranked results for the expected canonical URL`
+  );
+  invariant(
+    observation.visible_matching_result_count === 1,
+    'the expected canonical ranked result is not visible'
+  );
+  return {
+    query,
+    canonical_url: canonicalUrl,
+    ranked_result_count: observation.canonical_urls.length,
+    matching_result_count: observation.matching_result_count
+  };
 }
 
 export function descriptorIdentity(descriptor) {

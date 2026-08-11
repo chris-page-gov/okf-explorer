@@ -15,6 +15,12 @@ const DEFAULT_OUT = 'evaluation/okf-explorer/results/latest';
 const DEFAULT_BASE_URL = 'http://127.0.0.1:8002/next/';
 const DEFAULT_BUNDLE = '/uk-government-apis/okf-explorer.json';
 const CANDIDATE_FETCH_TIMEOUT_MS = 30_000;
+const EXPLORER_BUILD_MANIFEST_NAME = 'okf-explorer-build-manifest.json';
+const EXPLORER_BUILD_MANIFEST_SCHEMA = 'okf-explorer-app-build-manifest.v1';
+const EXPLORER_BUILD_MANIFEST_ALGORITHM = 'sha256-canonical-json-materials-v1';
+const EXPLORER_BUILD_MANIFEST_MAX_BYTES = 1024 * 1024;
+const EXPLORER_BUILD_MANIFEST_MAX_FILES = 4096;
+const EVALUATOR_RELATIVE_PATH = 'scripts/evaluate_okf_explorer.mjs';
 const HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA = 'okf-heritage-local-candidate-receipt.v1';
 const HERITAGE_PRODUCER_MATERIALS_SCHEMA = 'okf-heritage-producer-materials.v1';
 const HERITAGE_PRODUCER_MATERIALS_ALGORITHM = 'sha256-over-canonical-json-path-bytes-digest-list-v1';
@@ -228,6 +234,17 @@ function canonicalJsonBytes(value) {
     return item;
   }
   return Buffer.from(`${JSON.stringify(ordered(value))}\n`, 'utf8');
+}
+
+function evaluatorIdentity() {
+  const expectedPath = path.join(repoRoot, ...EVALUATOR_RELATIVE_PATH.split('/'));
+  if (path.resolve(__filename) !== path.resolve(expectedPath)) {
+    throw new Error(`Evaluator executable path differs from ${EVALUATOR_RELATIVE_PATH}.`);
+  }
+  return {
+    path: EVALUATOR_RELATIVE_PATH,
+    sha256: sha256(fs.readFileSync(expectedPath))
+  };
 }
 
 function producerMaterialFileIdentity(value) {
@@ -514,6 +531,43 @@ function candidateRequestFailure(error, bundleUrl, label = 'Candidate bundle') {
   return new Error(`${label} request failed: ${bundleUrl} (${error.message})`);
 }
 
+async function boundedResponseBytes(response, maximumBytes, label, url) {
+  const declaredLength = response.headers?.get?.('content-length');
+  if (declaredLength !== undefined && declaredLength !== null) {
+    const parsedLength = Number(declaredLength);
+    if (!Number.isSafeInteger(parsedLength) || parsedLength < 1 || parsedLength > maximumBytes) {
+      throw new Error(`${label} Content-Length is outside the 1-${maximumBytes} byte bound: ${url}`);
+    }
+  }
+  if (response.body?.getReader) {
+    const reader = response.body.getReader();
+    const chunks = [];
+    let total = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = Buffer.from(value);
+        total += chunk.length;
+        if (total > maximumBytes) {
+          await reader.cancel().catch(() => {});
+          throw new Error(`${label} exceeds the ${maximumBytes} byte bound: ${url}`);
+        }
+        chunks.push(chunk);
+      }
+    } finally {
+      reader.releaseLock();
+    }
+    if (!total) throw new Error(`${label} is empty: ${url}`);
+    return Buffer.concat(chunks, total);
+  }
+  const raw = Buffer.from(await response.arrayBuffer());
+  if (!raw.length || raw.length > maximumBytes) {
+    throw new Error(`${label} is outside the 1-${maximumBytes} byte bound: ${url}`);
+  }
+  return raw;
+}
+
 function siteMaterialPath(siteRootValue, targetValue, label) {
   const siteRoot = credentialFreeHttpUrl(String(siteRootValue), 'Publication Site root', {
     allowHash: false
@@ -707,7 +761,12 @@ async function inspectPublicationSiteArtifact({
   if (materialPaths.some((item, index) => item !== orderedPaths[index])) {
     throw new Error(`Candidate publication manifest materials are not path ordered: ${manifestUrl}`);
   }
-  const observedTreeSha256 = sha256(canonicalJsonBytes(manifest.materials));
+  const treeMaterials = manifest.materials.map((material) => ({
+    path: material.path,
+    bytes: material.bytes,
+    sha256: material.sha256
+  }));
+  const observedTreeSha256 = sha256(canonicalJsonBytes(treeMaterials));
   if (
     typeof manifest.tree_sha256 !== 'string' ||
     !SHA256_PATTERN.test(manifest.tree_sha256) ||
@@ -889,6 +948,134 @@ async function inspectCandidate(options, candidateReceipt = null) {
     ...(releaseRoot ? { release_root: releaseRoot } : {}),
     ...(siteArtifact ? { site_artifact: siteArtifact } : {}),
     ...(candidateReceipt ? { candidate_receipt: candidateReceipt } : {})
+  };
+}
+
+function validateExplorerBuildManifest(manifest, manifestUrl) {
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
+    throw new Error(`Explorer build manifest must be an object: ${manifestUrl}`);
+  }
+  const keys = Object.keys(manifest).sort();
+  const expectedKeys = ['algorithm', 'file_count', 'materials', 'schema', 'tree_sha256'].sort();
+  if (keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index])) {
+    throw new Error(`Explorer build manifest fields are unsupported or have drifted: ${manifestUrl}`);
+  }
+  if (manifest.schema !== EXPLORER_BUILD_MANIFEST_SCHEMA) {
+    throw new Error(`Explorer build manifest schema is unsupported: ${manifestUrl}`);
+  }
+  if (manifest.algorithm !== EXPLORER_BUILD_MANIFEST_ALGORITHM) {
+    throw new Error(`Explorer build manifest algorithm is unsupported: ${manifestUrl}`);
+  }
+  if (
+    !Number.isSafeInteger(manifest.file_count) ||
+    manifest.file_count < 1 ||
+    manifest.file_count > EXPLORER_BUILD_MANIFEST_MAX_FILES ||
+    !Array.isArray(manifest.materials) ||
+    manifest.materials.length !== manifest.file_count
+  ) {
+    throw new Error(`Explorer build manifest file count is invalid: ${manifestUrl}`);
+  }
+  const paths = [];
+  for (const [index, material] of manifest.materials.entries()) {
+    if (!material || typeof material !== 'object' || Array.isArray(material)) {
+      throw new Error(`Explorer build manifest material ${index} is malformed: ${manifestUrl}`);
+    }
+    const materialKeys = Object.keys(material).sort();
+    const expectedMaterialKeys = ['bytes', 'path', 'sha256'];
+    if (
+      materialKeys.length !== expectedMaterialKeys.length ||
+      materialKeys.some((key, keyIndex) => key !== expectedMaterialKeys[keyIndex])
+    ) {
+      throw new Error(`Explorer build manifest material ${index} fields have drifted: ${manifestUrl}`);
+    }
+    if (
+      typeof material.path !== 'string' ||
+      !material.path ||
+      material.path.length > 1024 ||
+      material.path.includes('\\') ||
+      material.path.includes('\u0000') ||
+      path.posix.isAbsolute(material.path) ||
+      path.posix.normalize(material.path) !== material.path ||
+      material.path.split('/').some((part) => !part || part === '.' || part === '..')
+    ) {
+      throw new Error(`Explorer build manifest material ${index} path is unsafe: ${manifestUrl}`);
+    }
+    if (!Number.isSafeInteger(material.bytes) || material.bytes < 0 || !SHA256_PATTERN.test(material.sha256)) {
+      throw new Error(`Explorer build manifest material ${index} identity is invalid: ${manifestUrl}`);
+    }
+    paths.push(material.path);
+  }
+  if (new Set(paths).size !== paths.length || paths.some((value, index) => index > 0 && paths[index - 1] >= value)) {
+    throw new Error(`Explorer build manifest material paths are duplicated or unordered: ${manifestUrl}`);
+  }
+  const treeMaterials = manifest.materials.map((material) => ({
+    path: material.path,
+    bytes: material.bytes,
+    sha256: material.sha256
+  }));
+  const observedTreeSha256 = sha256(Buffer.from(`${JSON.stringify(treeMaterials)}\n`, 'utf8'));
+  if (!SHA256_PATTERN.test(manifest.tree_sha256) || manifest.tree_sha256 !== observedTreeSha256) {
+    throw new Error(
+      `Explorer build manifest tree SHA-256 differs from its exact materials; ` +
+      `declared ${String(manifest.tree_sha256)}, recomputed ${observedTreeSha256}: ${manifestUrl}`
+    );
+  }
+  return manifest;
+}
+
+async function inspectExplorerBuild(options) {
+  const baseUrl = credentialFreeHttpUrl(String(options.baseUrl || ''), 'Explorer base URL', {
+    allowHash: false
+  });
+  if (baseUrl.search) throw new Error('Explorer base URL must not contain a query.');
+  const manifestUrl = new URL(EXPLORER_BUILD_MANIFEST_NAME, baseUrl);
+  let response;
+  try {
+    response = await fetch(manifestUrl, {
+      redirect: 'manual',
+      signal: AbortSignal.timeout(CANDIDATE_FETCH_TIMEOUT_MS)
+    });
+  } catch (error) {
+    throw candidateRequestFailure(error, manifestUrl, 'Explorer build manifest');
+  }
+  if (response.status >= 300 && response.status < 400) {
+    throw new Error(
+      `Explorer build manifest redirected with HTTP ${response.status}; the exact URL must return its own bytes: ${manifestUrl}`
+    );
+  }
+  if (!response.ok) {
+    throw new Error(`Explorer build manifest returned HTTP ${response.status}: ${manifestUrl}`);
+  }
+  const finalUrl = response.url || manifestUrl.toString();
+  assertFinalLocation(finalUrl, manifestUrl.toString(), 'Explorer build manifest URL');
+  let raw;
+  try {
+    raw = await boundedResponseBytes(
+      response,
+      EXPLORER_BUILD_MANIFEST_MAX_BYTES,
+      'Explorer build manifest',
+      manifestUrl
+    );
+  } catch (error) {
+    if (/byte bound|Content-Length| is empty:/.test(error.message)) throw error;
+    throw candidateRequestFailure(error, manifestUrl, 'Explorer build manifest');
+  }
+  let manifest;
+  try {
+    manifest = JSON.parse(raw.toString('utf8'));
+  } catch (error) {
+    throw new Error(`Explorer build manifest is not valid JSON: ${manifestUrl} (${error.message})`);
+  }
+  validateExplorerBuildManifest(manifest, manifestUrl);
+  return {
+    manifest_url: credentialFreeHttpUrl(finalUrl, 'Explorer build manifest final URL', {
+      allowHash: false
+    }).toString(),
+    manifest_sha256: sha256(raw),
+    schema: manifest.schema,
+    algorithm: manifest.algorithm,
+    file_count: manifest.file_count,
+    tree_sha256: manifest.tree_sha256
   };
 }
 
@@ -2490,11 +2677,18 @@ async function main() {
     browser_engine: options.browserEngine,
     mode: options.noBrowser ? 'validation-only' : 'browser-scored',
     limit: options.limit,
-    candidate_bundle_url: candidateBundleUrl(options).toString()
+    candidate_bundle_url: candidateBundleUrl(options).toString(),
+    evaluator: evaluatorIdentity()
   };
   const candidate = options.noBrowser
     ? null
-    : await inspectCandidate(options, candidateReceipt);
+    : await Promise.all([
+        inspectCandidate(options, candidateReceipt),
+        inspectExplorerBuild(options)
+      ]).then(([identity, explorerBuild]) => ({
+        ...identity,
+        explorer_build: explorerBuild
+      }));
   const records = options.journeysOnly
     ? []
     : options.noBrowser
@@ -2532,6 +2726,7 @@ export {
   candidateBundleUrl,
   genuineBrowserReceiptEvidence,
   inspectCandidate,
+  inspectExplorerBuild,
   loadCandidateReceipt,
   parseArgs,
   resultTimestamp,

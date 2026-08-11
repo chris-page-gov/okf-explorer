@@ -22,7 +22,8 @@ import {
   safeRelativePath,
   validateJourneyManifest,
   verifySafeOutputParent,
-  waitForLocator
+  waitForLocator,
+  waitForRankedResult
 } from './external_bundle_acceptance_contract.mjs';
 import { verifyAcceptanceInvocationLock } from './acceptance_invocation_lock.mjs';
 import { inspectCanonicalBuildRoot } from './app_build_manifest.mjs';
@@ -567,6 +568,10 @@ async function applyAction(page, action, defaultDescriptor, observations, teleme
     await page.goto(url.toString(), { waitUntil: 'domcontentloaded' });
     return;
   }
+  if (action.type === 'wait_for_ranked_result') {
+    await waitForRankedResult(page, action.canonical_url);
+    return;
+  }
   const locator = page.locator(action.selector);
   if (action.type === 'capture_attributes') {
     const observation = await captureAttributeObservation(locator, action);
@@ -610,6 +615,10 @@ async function applyAssertion(page, assertion, requests, consoleEvents, pageErro
   if (assertion.type === 'url_param') {
     const actual = new URL(page.url()).searchParams.get(assertion.name);
     if (actual !== assertion.equals) throw new Error(`URL parameter ${assertion.name} was ${actual}, expected ${assertion.equals}`);
+    return;
+  }
+  if (assertion.type === 'ranked_result') {
+    await waitForRankedResult(page, assertion.canonical_url);
     return;
   }
   const locator = page.locator(assertion.selector);

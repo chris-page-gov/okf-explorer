@@ -850,6 +850,61 @@ Extend the static search manifest with optional, lazy filter postings. Apply
 filters before the result limit when those postings exist; retain the current
 v1 loading and filtering path when they do not.
 
+#### Producer-declared query policy (v0.6.2)
+
+`okf-static-search.v2` may also opt in to a producer-aligned query-combination
+policy. The extension is exact and versioned:
+
+```json
+{
+  "query_policy": {
+    "schema": "okf-search-query-policy.v1",
+    "tokeniser": "nfkd-lowercase-ascii-alphanumeric-component-v1",
+    "stopwords": ["a", "and", "the"],
+    "minimum_should_match": {
+      "apply_from_query_tokens": 3,
+      "minimum_matches": 2,
+      "ratio_numerator": 3,
+      "ratio_denominator": 10
+    }
+  }
+}
+```
+
+The tokeniser performs NFKD normalisation, removes combining marks from
+U+0300–U+036F, converts to lower case and extracts `[a-z0-9]+` components. It
+then applies the manifest's existing top-level `token_min_length`, removes the
+declared stopwords and de-duplicates components in query order. Stopwords must
+be sorted, unique, lower-case components; at most 256 can be declared. A query
+remains subject to Explorer's 24-component limit.
+
+For `n` distinct meaningful query components, the v1 policy requires one
+matching group below `apply_from_query_tokens`. At or above the threshold it
+requires:
+
+```text
+k = min(n, max(minimum_matches, ceil(n × ratio_numerator / ratio_denominator)))
+```
+
+Unresolved components remain in `n` and count as unmatched. Each result must
+therefore occur in at least `k` distinct resolved token groups; alternatives
+inside one bounded prefix or typo group cannot inflate that count. A
+single-component exact governed entity alias is one resolved semantic group
+when its governed ordinal postings are available; otherwise it follows the
+same lexical resolution and truthful resolved/unresolved accounting as any
+other component.
+Multi-component entity labels and entity names embedded in prose retain their
+component count, and their lexical result is intersected with the governed
+entity's ordinals. When typo tolerance is also declared, its co-occurrence
+anchor is the bounded union of resolved policy groups; the final `k`-group
+decision still controls admission.
+
+The response exposes `query_policy` with the exact tokeniser, meaningful,
+resolved, required and unresolved group counts, alongside the ordered
+`unresolved_tokens`. If `query_policy` is absent, Explorer retains its existing
+strict-AND behaviour. It does not invent a broad OR fallback for another
+producer.
+
 Treat named organisations and other bundle concepts as deterministic search
 entities rather than bags of everyday words. A bundle may publish a compact
 entity index containing its canonical label, declared aliases or standard

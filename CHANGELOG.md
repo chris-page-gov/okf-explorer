@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## v0.6.2 - 2026-08-11 - Bounded producer search policy
+
+- Added an exact, opt-in `okf-static-search.v2` query policy so a producer can
+  declare its component tokeniser, bounded stopwords and integer-rational
+  minimum-should-match rule. Manifests without the extension keep strict AND;
+  declared policies count unresolved tokens as unmatched, require the stated
+  number of distinct token groups and expose the deterministic decision in the
+  worker response.
+- Added `wait_for_ranked_result` and `ranked_result` to external bundle
+  journeys. Both bind a result by its credential-free canonical URL, wait for
+  the exact URL query to reach Explorer's settled marker and fail immediately
+  when the settled result is absent, while genuine loading retains the bounded
+  90-second journey ceiling.
+- Covered policy compatibility across strict-AND producers, entity aliases,
+  embedded entity prose, typo tolerance, capped query bounds and malformed
+  contracts. Added real-browser acceptance tests for delayed settlement and
+  prompt settled-empty failure.
+
 ## v0.6.1 - 2026-08-11 - Governed runtime evidence
 
 - Added bounded, declarative capture of ordered DOM attributes to external

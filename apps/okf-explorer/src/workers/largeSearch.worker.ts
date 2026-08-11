@@ -24,6 +24,11 @@ import {
 } from '$lib/search/staticSearch';
 import { SEARCH_MANIFEST_LIMITS, validateLargeSearchManifest } from '$lib/search/largeSearchContract';
 import {
+  QUERY_POLICY_RESULT_SCHEMA,
+  requiredQueryTokenGroups,
+  tokeniseWithQueryPolicy
+} from '$lib/search/queryPolicy';
+import {
   TYPO_TOLERANCE_CONTRACT,
   correctionFor,
   symmetricDeleteKeys,
@@ -173,6 +178,9 @@ async function loadShardIntegrity(expectedSnapshot: string): Promise<Map<string,
 }
 
 function tokenize(value: string): string[] {
+  if (manifest?.query_policy) {
+    return tokeniseWithQueryPolicy(value, manifest.query_policy, manifest.token_min_length || 2);
+  }
   const text = value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const tokens: string[] = [];
   const seen = new Set<string>();
@@ -183,6 +191,19 @@ function tokenize(value: string): string[] {
     seen.add(token);
   }
   return tokens;
+}
+
+function minimumShouldMatchOrdinals(groupSets: Set<number>[], requiredGroups: number): Set<number> {
+  if (requiredGroups <= 0 || groupSets.length < requiredGroups) return new Set<number>();
+  const groupCounts = new Map<number, number>();
+  for (const set of groupSets) {
+    for (const ordinal of set) groupCounts.set(ordinal, (groupCounts.get(ordinal) || 0) + 1);
+  }
+  return new Set(
+    [...groupCounts]
+      .filter(([, count]) => count >= requiredGroups)
+      .map(([ordinal]) => ordinal)
+  );
 }
 
 function shardFor(value: string): string {
@@ -645,12 +666,26 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     throw new Error('Search query exceeds the supported token limit');
   }
   const entityRecognition = await recognizedEntity(query);
-  const entityTokens = entityRecognition ? tokenize(entityRecognition.phrase) : [];
-  const residualTokens = entityRecognition ? tokenize(entityRecognition.residualQuery) : rawTokens;
-  const residualTokenSet = new Set(residualTokens);
-  const tokens = [...new Set([...entityTokens, ...residualTokens])];
   const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
-  const resolvedGroups = await Promise.all(tokens.map(lexicalEntriesForToken));
+  const exactPolicyEntity = Boolean(
+    manifest.query_policy &&
+      entityRecognition &&
+      recognizedOrdinals !== null &&
+      rawTokens.length === 1 &&
+      normalizePhrase(query) === entityRecognition.phrase
+  );
+  const entityTokens = !manifest.query_policy && entityRecognition ? tokenize(entityRecognition.phrase) : [];
+  const residualTokens = !manifest.query_policy && entityRecognition
+    ? tokenize(entityRecognition.residualQuery)
+    : rawTokens;
+  const residualTokenSet = new Set(residualTokens);
+  // An explicit producer query policy governs every meaningful query token.
+  // Legacy manifests retain the established entity-plus-residual behaviour.
+  const requiredTokenSet = manifest.query_policy ? new Set(rawTokens) : residualTokenSet;
+  const tokens = manifest.query_policy ? rawTokens : [...new Set([...entityTokens, ...residualTokens])];
+  const resolvedGroups = exactPolicyEntity
+    ? []
+    : await Promise.all(tokens.map(lexicalEntriesForToken));
   const lexicalAnchorGroups = resolvedGroups.filter((group) => group.entries.length);
   let lexicalAnchorOrdinals: Set<number> | null = null;
   const maximumPostings = manifest.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER;
@@ -661,42 +696,49 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     const anchorSets = await Promise.all(
       completeAnchorGroups.map((group) => ordinalSetForEntries(group.entries))
     );
-    lexicalAnchorOrdinals = anchorSets[0] || new Set<number>();
-    for (const set of anchorSets.slice(1)) {
-      lexicalAnchorOrdinals = intersectOrdinals(lexicalAnchorOrdinals, set);
+    if (manifest.query_policy) {
+      lexicalAnchorOrdinals = new Set<number>();
+      for (const set of anchorSets) {
+        for (const ordinal of set) lexicalAnchorOrdinals.add(ordinal);
+      }
+    } else {
+      lexicalAnchorOrdinals = anchorSets[0] || new Set<number>();
+      for (const set of anchorSets.slice(1)) {
+        lexicalAnchorOrdinals = intersectOrdinals(lexicalAnchorOrdinals, set);
+      }
     }
   }
   const typoBudget: TypoQueryBudget = { tokensConsidered: 0, shardPaths: new Set(), truncated: false };
   for (const [index, group] of resolvedGroups.entries()) {
-    if (!residualTokenSet.has(group.queryToken)) continue;
-      if (group.entries.length) continue;
-      let corrected = await typoEntriesForToken(group.queryToken, typoBudget);
-      if (corrected.entries.length && lexicalAnchorOrdinals) {
-        const acceptedEntries: SearchEntry[] = [];
-        for (const entry of corrected.entries) {
-          const candidateOrdinals = await ordinalSetForEntries([entry]);
-          if (setsOverlap(candidateOrdinals, lexicalAnchorOrdinals)) acceptedEntries.push(entry);
-        }
-        const acceptedTokens = new Set(acceptedEntries.map((entry) => entry.token));
-        corrected = {
-          ...corrected,
-          entries: acceptedEntries,
-          corrections: new Map(
-            [...corrected.corrections].filter(([token]) => acceptedTokens.has(token))
-          )
-        };
+    if (!requiredTokenSet.has(group.queryToken)) continue;
+    if (group.entries.length) continue;
+    let corrected = await typoEntriesForToken(group.queryToken, typoBudget);
+    if (corrected.entries.length && lexicalAnchorOrdinals) {
+      const acceptedEntries: SearchEntry[] = [];
+      for (const entry of corrected.entries) {
+        const candidateOrdinals = await ordinalSetForEntries([entry]);
+        if (setsOverlap(candidateOrdinals, lexicalAnchorOrdinals)) acceptedEntries.push(entry);
       }
-      resolvedGroups[index] = corrected.entries.length
-        ? corrected
-        : {
-            ...group,
-            entries: manifest.typo_tolerance ? [] : group.fallbackEntries,
-            fallbackEntries: []
-          };
+      const acceptedTokens = new Set(acceptedEntries.map((entry) => entry.token));
+      corrected = {
+        ...corrected,
+        entries: acceptedEntries,
+        corrections: new Map(
+          [...corrected.corrections].filter(([token]) => acceptedTokens.has(token))
+        )
+      };
+    }
+    resolvedGroups[index] = corrected.entries.length
+      ? corrected
+      : {
+          ...group,
+          entries: manifest.typo_tolerance ? [] : group.fallbackEntries,
+          fallbackEntries: []
+        };
   }
   const queryCorrections = resolvedGroups.flatMap((group) => [...group.corrections.values()]);
   const unresolvedTokens = resolvedGroups
-    .filter((group) => residualTokenSet.has(group.queryToken) && !group.entries.length)
+    .filter((group) => requiredTokenSet.has(group.queryToken) && !group.entries.length)
     .map((group) => group.queryToken);
   const entryGroups = resolvedGroups.filter((group) => group.entries.length);
   entryGroups.sort(
@@ -732,7 +774,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
         }
       }
     }
-    if (residualTokenSet.has(group.queryToken)) {
+    if (requiredTokenSet.has(group.queryToken)) {
       requiredSets.push(set);
       if (group.entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
         completeRequiredSets.push(set);
@@ -742,14 +784,40 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     }
   }
 
-  // A capped high-frequency token is useful for scoring but cannot safely be
-  // required for intersection: the matching document may have been omitted
-  // from that token's bounded posting list. Intersect complete lists only.
+  // Legacy strict AND excludes capped groups from intersection because their
+  // omitted postings are unknown. An explicit minimum-should-match policy
+  // counts all loaded groups and returns only records with at least k observed
+  // distinct groups; its total relation records any capped uncertainty.
   const intersectionSets = completeRequiredSets.length
     ? completeRequiredSets
     : requiredSets.slice(0, 1);
+  const policyQueryTokenCount = exactPolicyEntity ? 1 : requiredTokenSet.size;
+  const policyResolvedGroupCount = exactPolicyEntity ? 1 : requiredSets.length;
+  const requiredTokenGroupCount = manifest.query_policy
+    ? requiredQueryTokenGroups(manifest.query_policy, policyQueryTokenCount)
+    : requiredTokenSet.size;
+  const queryPolicyResult = manifest.query_policy
+    ? {
+        schema: QUERY_POLICY_RESULT_SCHEMA,
+        mode: 'minimum-should-match' as const,
+        tokeniser: manifest.query_policy.tokeniser,
+        query_token_count: policyQueryTokenCount,
+        resolved_token_group_count: policyResolvedGroupCount,
+        required_token_group_count: requiredTokenGroupCount,
+        unresolved_token_group_count: unresolvedTokens.length
+      }
+    : null;
   let matches: Set<number>;
-  if (recognizedOrdinals) {
+  if (exactPolicyEntity) {
+    matches = recognizedOrdinals ? new Set(recognizedOrdinals) : new Set<number>();
+  } else if (manifest.query_policy) {
+    matches = query && requiredTokenSet.size
+      ? minimumShouldMatchOrdinals(requiredSets, requiredTokenGroupCount)
+      : query
+        ? new Set<number>()
+        : allOrdinals();
+    if (recognizedOrdinals) matches = intersectOrdinals(matches, recognizedOrdinals);
+  } else if (recognizedOrdinals) {
     matches = new Set(recognizedOrdinals);
     if (unresolvedTokens.length) {
       matches = new Set<number>();
@@ -817,6 +885,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {}),
       ...(queryCorrections.length ? { query_corrections: queryCorrections } : {}),
       ...(unresolvedTokens.length ? { unresolved_tokens: unresolvedTokens } : {}),
+      ...(queryPolicyResult ? { query_policy: queryPolicyResult } : {}),
       ...(typoBudget.truncated ? { correction_truncated: true } : {})
     };
   }
@@ -935,6 +1004,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     ...(entityRecognition ? { interpreted_entity: entityRecognition.match } : {}),
     ...(queryCorrections.length ? { query_corrections: queryCorrections } : {}),
     ...(unresolvedTokens.length ? { unresolved_tokens: unresolvedTokens } : {}),
+    ...(queryPolicyResult ? { query_policy: queryPolicyResult } : {}),
     ...(typoBudget.truncated ? { correction_truncated: true } : {})
   };
 }

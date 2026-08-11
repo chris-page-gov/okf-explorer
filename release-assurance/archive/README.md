@@ -12,7 +12,7 @@ It predates the release-bound v2 contract, so its overall `passed` value records
 the behaviour of that historical runner and does not approve Explorer v0.6.1
 or any later candidate.
 
-The canonical v0.6.1 receipt must be generated afresh at
+The canonical v0.6.2 receipt must be generated afresh at
 `release-assurance/explorer-runtime-acceptance.json` by the clean-commit,
 annotated-tag and exact-candidate v2 release gate. An unbound v1 run is
 diagnostic and deliberately has overall status `failed`, even when its

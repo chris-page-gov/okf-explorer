@@ -32,6 +32,8 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
     def fixture_inputs(self, root: Path) -> dict[str, object]:
         descriptor, descriptor_raw = materializer.descriptor_identity()
         descriptor_sha256 = materializer.digest(descriptor_raw)
+        current_app = materializer.app_identity()
+        evaluator = materializer.evaluator_identity()
         questions = json.loads(
             materializer.QUESTION_SUITE_PATH.read_text(encoding="utf-8")
         )
@@ -67,9 +69,14 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 "browser_engine": "chromium",
                 "mode": "browser-scored",
                 "candidate_bundle_url": question_candidate_url,
+                "evaluator": evaluator,
             },
             "candidate": materializer.expected_result_candidate(
-                descriptor, descriptor_sha256, question_candidate_url
+                descriptor,
+                descriptor_sha256,
+                question_candidate_url,
+                base_url=materializer.LOCAL_BASE_URL,
+                current_app=current_app,
             ),
             "summary": {
                 "questions_run": 100,
@@ -148,9 +155,14 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 "browser_engine": "chromium",
                 "mode": "browser-scored",
                 "candidate_bundle_url": local_candidate_url,
+                "evaluator": evaluator,
             },
             "candidate": materializer.expected_result_candidate(
-                descriptor, descriptor_sha256, local_candidate_url
+                descriptor,
+                descriptor_sha256,
+                local_candidate_url,
+                base_url=materializer.LOCAL_BASE_URL,
+                current_app=current_app,
             ),
             "summary": {
                 "questions_run": 0,
@@ -177,7 +189,6 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 "records": journey_records,
             },
         }
-        current_app = materializer.app_identity()
         site_candidate = {
             "schema": "okf-site-candidate-receipt.v1",
             "algorithm": "deterministic-pre-deploy-identity-without-observations-v1",
@@ -396,6 +407,22 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 "question-suite result candidate identity differs",
             ),
             (
+                "question Explorer build",
+                "question",
+                lambda value: value["candidate"]["explorer_build"].update(
+                    tree_sha256="0" * 64
+                ),
+                "question-suite result Explorer build identity differs",
+            ),
+            (
+                "question evaluator executable",
+                "question",
+                lambda value: value["metadata"]["evaluator"].update(
+                    sha256="0" * 64
+                ),
+                "question-suite result evaluator executable identity differs",
+            ),
+            (
                 "question suite identity",
                 "question",
                 lambda value: value["records"][0].update(query="changed"),
@@ -420,6 +447,20 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 "journey",
                 lambda value: value.update(bundle="https://example.test/bundle.json"),
                 "does not target the local faithful bundle",
+            ),
+            (
+                "journey Explorer build",
+                "journey",
+                lambda value: value["candidate"]["explorer_build"].update(
+                    manifest_sha256="0" * 64
+                ),
+                "local-journey result Explorer build identity differs",
+            ),
+            (
+                "journey evaluator executable",
+                "journey",
+                lambda value: value["metadata"].pop("evaluator"),
+                "local-journey result evaluator executable identity differs",
             ),
             (
                 "journey start bundle",
