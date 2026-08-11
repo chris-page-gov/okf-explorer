@@ -46,6 +46,9 @@ jobs:
           python-version: "3.12"
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
+      - name: Install Chromium for the browser-backed contract test
+        working-directory: apps/okf-explorer
+        run: pnpm exec playwright install --with-deps chromium
       - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
