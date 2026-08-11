@@ -16,6 +16,18 @@ const DEFAULT_BASE_URL = 'http://127.0.0.1:8002/next/';
 const DEFAULT_BUNDLE = '/uk-government-apis/okf-explorer.json';
 const CANDIDATE_FETCH_TIMEOUT_MS = 30_000;
 const HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA = 'okf-heritage-local-candidate-receipt.v1';
+const HERITAGE_PRODUCER_MATERIALS_SCHEMA = 'okf-heritage-producer-materials.v1';
+const HERITAGE_PRODUCER_MATERIALS_ALGORITHM = 'sha256-over-canonical-json-path-bytes-digest-list-v1';
+const HERITAGE_PRODUCER_MATERIAL_PATHS = [
+  'requirements-okf.txt',
+  'scripts/build_heritage_evaluation.py',
+  'scripts/build_uk_government_api_okf.py',
+  'scripts/heritage_build_io.py',
+  'scripts/okf_semantic.py'
+];
+const MAX_HERITAGE_PRODUCER_MATERIALS = 64;
+const MAX_HERITAGE_PRODUCER_MATERIAL_BYTES = 8 * 1024 * 1024;
+const MAX_HERITAGE_PRODUCER_MATERIALS_BYTES = 32 * 1024 * 1024;
 const PUBLICATION_VALIDATION_RECEIPT_SCHEMA = 'okf-publication-validation-receipt.v1';
 const GENUINE_BROWSER_VERIFICATION_CHANNEL = 'genuine-browser-receipt';
 const GENUINE_BROWSER_RECEIPT_SCHEMA = 'okf-genuine-browser-link-receipt.v1';
@@ -218,6 +230,151 @@ function canonicalJsonBytes(value) {
   return Buffer.from(`${JSON.stringify(ordered(value))}\n`, 'utf8');
 }
 
+function producerMaterialFileIdentity(value) {
+  return [
+    value.dev,
+    value.ino,
+    value.mode,
+    value.nlink,
+    value.size,
+    value.mtimeNs,
+    value.ctimeNs
+  ].map(String).join(':');
+}
+
+function readHeritageProducerMaterial(relative) {
+  const materialPath = path.join(repoRoot, ...relative.split('/'));
+  let before;
+  try {
+    before = fs.lstatSync(materialPath, { bigint: true });
+  } catch (error) {
+    throw new Error(`Cannot stat heritage producer material ${relative}: ${error.message}`);
+  }
+  if (
+    !before.isFile() ||
+    before.isSymbolicLink() ||
+    before.nlink !== 1n ||
+    before.size < 1n ||
+    before.size > BigInt(MAX_HERITAGE_PRODUCER_MATERIAL_BYTES)
+  ) {
+    throw new Error(`Heritage producer material is not a bounded independent regular file: ${relative}`);
+  }
+  const flags = fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW ?? 0);
+  let descriptor;
+  try {
+    descriptor = fs.openSync(materialPath, flags);
+  } catch (error) {
+    throw new Error(`Cannot open heritage producer material ${relative}: ${error.message}`);
+  }
+  try {
+    const opened = fs.fstatSync(descriptor, { bigint: true });
+    if (
+      producerMaterialFileIdentity(before) !== producerMaterialFileIdentity(opened) ||
+      opened.size > BigInt(MAX_HERITAGE_PRODUCER_MATERIAL_BYTES)
+    ) {
+      throw new Error(`Heritage producer material changed before it was opened: ${relative}`);
+    }
+    const chunks = [];
+    let remaining = Number(opened.size);
+    while (remaining > 0) {
+      const buffer = Buffer.allocUnsafe(Math.min(1024 * 1024, remaining));
+      const bytesRead = fs.readSync(descriptor, buffer, 0, buffer.length, null);
+      if (bytesRead < 1) {
+        throw new Error(`Heritage producer material was truncated while it was read: ${relative}`);
+      }
+      chunks.push(bytesRead === buffer.length ? buffer : buffer.subarray(0, bytesRead));
+      remaining -= bytesRead;
+    }
+    const overflow = Buffer.allocUnsafe(1);
+    if (fs.readSync(descriptor, overflow, 0, 1, null) !== 0) {
+      throw new Error(`Heritage producer material grew while it was read: ${relative}`);
+    }
+    const after = fs.fstatSync(descriptor, { bigint: true });
+    const pathAfter = fs.lstatSync(materialPath, { bigint: true });
+    if (
+      producerMaterialFileIdentity(opened) !== producerMaterialFileIdentity(after) ||
+      producerMaterialFileIdentity(before) !== producerMaterialFileIdentity(pathAfter)
+    ) {
+      throw new Error(`Heritage producer material changed while it was read: ${relative}`);
+    }
+    return Buffer.concat(chunks, Number(opened.size));
+  } finally {
+    fs.closeSync(descriptor);
+  }
+}
+
+function validateHeritageProducerMaterials(value, receiptPath) {
+  const expectedKeys = ['algorithm', 'bytes', 'file_count', 'materials', 'root_sha256', 'schema'];
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`Heritage candidate receipt must declare producer_materials: ${receiptPath}`);
+  }
+  if (JSON.stringify(Object.keys(value).sort()) !== JSON.stringify(expectedKeys)) {
+    throw new Error(`Heritage candidate receipt producer_materials has an unexpected key set: ${receiptPath}`);
+  }
+  if (value.schema !== HERITAGE_PRODUCER_MATERIALS_SCHEMA) {
+    throw new Error(`Heritage candidate receipt producer_materials has an unsupported schema: ${receiptPath}`);
+  }
+  if (value.algorithm !== HERITAGE_PRODUCER_MATERIALS_ALGORITHM) {
+    throw new Error(`Heritage candidate receipt producer_materials has an unsupported root algorithm: ${receiptPath}`);
+  }
+  if (!Array.isArray(value.materials) || value.materials.length < 1) {
+    throw new Error(`Heritage candidate receipt producer_materials.materials must be non-empty: ${receiptPath}`);
+  }
+  if (value.materials.length > MAX_HERITAGE_PRODUCER_MATERIALS) {
+    throw new Error(`Heritage candidate receipt producer_materials exceeds its material-count bound: ${receiptPath}`);
+  }
+  const materials = value.materials.map((material, index) => {
+    if (
+      !material ||
+      typeof material !== 'object' ||
+      Array.isArray(material) ||
+      JSON.stringify(Object.keys(material).sort()) !== JSON.stringify(['bytes', 'path', 'sha256'])
+    ) {
+      throw new Error(`Heritage candidate receipt producer_materials.materials[${index}] has an unexpected shape: ${receiptPath}`);
+    }
+    if (
+      typeof material.path !== 'string' ||
+      !Number.isSafeInteger(material.bytes) ||
+      material.bytes < 1 ||
+      material.bytes > MAX_HERITAGE_PRODUCER_MATERIAL_BYTES ||
+      typeof material.sha256 !== 'string' ||
+      !SHA256_PATTERN.test(material.sha256)
+    ) {
+      throw new Error(`Heritage candidate receipt producer material is invalid at index ${index}: ${receiptPath}`);
+    }
+    return { path: material.path, bytes: material.bytes, sha256: material.sha256 };
+  });
+  const materialPaths = materials.map((material) => material.path);
+  if (JSON.stringify(materialPaths) !== JSON.stringify(HERITAGE_PRODUCER_MATERIAL_PATHS)) {
+    const missing = HERITAGE_PRODUCER_MATERIAL_PATHS.filter((materialPath) => !materialPaths.includes(materialPath));
+    const extra = materialPaths.filter((materialPath) => !HERITAGE_PRODUCER_MATERIAL_PATHS.includes(materialPath));
+    const reason = missing.length
+      ? `missing required path(s): ${missing.join(', ')}`
+      : extra.length
+        ? `contains unexpected path(s): ${extra.join(', ')}`
+        : 'paths must be unique and sorted lexically';
+    throw new Error(`Heritage candidate receipt producer_materials ${reason}: ${receiptPath}`);
+  }
+  const totalBytes = materials.reduce((total, material) => total + material.bytes, 0);
+  if (totalBytes > MAX_HERITAGE_PRODUCER_MATERIALS_BYTES) {
+    throw new Error(`Heritage candidate receipt producer_materials exceeds its aggregate byte bound: ${receiptPath}`);
+  }
+  if (value.file_count !== materials.length || value.bytes !== totalBytes) {
+    throw new Error(`Heritage candidate receipt producer_materials aggregate fields differ from materials: ${receiptPath}`);
+  }
+  const expectedRootSha256 = sha256(canonicalJsonBytes(materials));
+  if (value.root_sha256 !== expectedRootSha256) {
+    throw new Error(`Heritage candidate receipt producer_materials.root_sha256 does not bind canonical materials: ${receiptPath}`);
+  }
+  for (const material of materials) {
+    const raw = readHeritageProducerMaterial(material.path);
+    if (raw.length !== material.bytes || sha256(raw) !== material.sha256) {
+      throw new Error(`Heritage producer material differs from exact current bytes: ${material.path}`);
+    }
+  }
+  return expectedRootSha256;
+}
+
 function loadCandidateReceipt(receiptPath) {
   let raw;
   try {
@@ -247,6 +404,9 @@ function loadCandidateReceipt(receiptPath) {
   if (typeof expectedReleaseRootSha256 !== 'string' || !SHA256_PATTERN.test(expectedReleaseRootSha256)) {
     throw new Error(`Candidate receipt must declare candidate.heritage_release_root_sha256: ${receiptPath}`);
   }
+  const producerMaterialsRootSha256 = receipt.schema === HERITAGE_LOCAL_CANDIDATE_RECEIPT_SCHEMA
+    ? validateHeritageProducerMaterials(receipt.producer_materials, receiptPath)
+    : null;
   let publicationIdentity = null;
   if (receipt.schema === PUBLICATION_VALIDATION_RECEIPT_SCHEMA) {
     const expectedPublicationManifestSha256 = receipt?.subject?.publication_manifest_sha256;
@@ -292,6 +452,9 @@ function loadCandidateReceipt(receiptPath) {
     observed_at: receipt.observed_at,
     expected_descriptor_sha256: expectedDescriptorSha256,
     expected_release_root_sha256: expectedReleaseRootSha256,
+    ...(producerMaterialsRootSha256
+      ? { producer_materials_root_sha256: producerMaterialsRootSha256 }
+      : {}),
     ...(publicationIdentity || {})
   };
 }

@@ -123,6 +123,9 @@ jobs:
       - name: Install OKF Explorer dependencies
         working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
+      - name: Install Chromium for the browser-backed contract test
+        working-directory: apps/okf-explorer
+        run: pnpm exec playwright install --with-deps chromium
       - name: Validate Svelte OKF Explorer
         working-directory: apps/okf-explorer
         run: pnpm check

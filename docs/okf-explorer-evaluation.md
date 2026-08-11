@@ -270,6 +270,87 @@ substituting `evaluation/legislation/journeys.json`. Its legal-answer questions
 continue to be scored by `scripts/evaluate_legislation_answers.py`; the browser
 journeys test the Explorer discovery stage, not legal correctness.
 
+## External bundle runtime evidence
+
+An external producer can run a declarative journey manifest against its frozen
+bundle with:
+
+```sh
+pnpm acceptance:bundle -- \
+  --bundle-root /absolute/path/to/bundle \
+  --journeys /absolute/path/to/journeys.json \
+  --bundle-label bundle \
+  --journey-label evaluation/journeys.json \
+  --output /absolute/path/to/runtime-receipt.json
+```
+
+The command acquires one checkout-scoped single-writer lock before it performs
+the deterministic Explorer build. A concurrent invocation is refused before it
+can alter the build directory, launch Chromium or create a receipt. The inner
+runner verifies the live lock, its wrapper purpose and its parent process before
+reading an input. On POSIX systems the wrapper retains the process-group
+identity, terminates descendants and releases the lock only after it verifies
+that the group has gone. A left-over lock is not silently broken: inspect it
+and confirm that no acceptance process is active before removing it.
+After the deterministic build succeeds, the wrapper durably adds the exact
+command, build script and canonical build-manifest identity to the live lock.
+The inner runner recomputes that attestation before Chromium starts and again
+after it closes; a merely present or previously generated `build/` directory
+cannot satisfy the gate.
+
+Journey actions may use a bounded `capture_attributes` step. For ranked search
+evidence, capture the stable canonical URL attribute exposed by Explorer before
+opening a result:
+
+```json
+[
+  {
+    "type": "wait_for",
+    "selector": "[data-okf-ranked-results=\"primary\"][data-okf-query=\"HM Land Registry\"][data-okf-search-state=\"settled\"]"
+  },
+  {
+    "type": "capture_attributes",
+    "id": "ranked-result-urls",
+    "selector": "[data-okf-ranked-results=\"primary\"] [data-okf-ranked-result]",
+    "name": "data-result-canonical-url",
+    "min_items": 1,
+    "max_items": 10
+  }
+]
+```
+
+The settled marker is deliberately a strict, unique readiness condition. The
+capture then reads count, order and attributes in one browser evaluation so a
+rerender cannot mix two result states. Every retained ranked row in the bounded
+capture must provide a non-empty, credential-free absolute HTTP(S) canonical
+URL; an absent or unsafe URL fails the journey instead of shifting later ranks.
+
+The receipt retains the values in rendered order, together with the selector,
+attribute, bound and total number of matching elements. The manifest contract
+bounds bytes, journeys, actions, assertions, observations, selectors and text;
+runtime retention also bounds requests, console events, page errors and final
+receipt bytes. It accepts only `href` or `data-*` captures, a maximum of 100
+values and unique observation identifiers within each journey. Explorer stages
+the bundle and app build into private independent snapshots, serves only those
+declared bytes through no-follow file descriptors, and rejects a source tree,
+private snapshot, journey manifest or executable material whose final identity
+no longer matches its initial value. Global entry, file, byte, telemetry,
+journey-time and run-time limits are enforced before retained evidence is
+published. Request assertions use only the current journey and are evaluated
+after its browser context closes, so a late request, console error or page error
+cannot evade the terminal result. Retained browser-request URLs reject
+credentials and omit query strings and fragments.
+
+The final receipt is written as a complete same-directory temporary file,
+flushed, linked into its previously absent destination without replacement,
+and followed by a directory flush and independent byte verification. The
+output parent is physically resolved outside both input trees and its directory
+identity is rechecked before and after publication.
+A producer's evaluator should bind the receipt to the exact bundle tree,
+manifest and Explorer consumer, then derive rank-sensitive metrics from this
+observation. A separate search model may remain diagnostic, but must not
+substitute for the product observation in a product acceptance gate.
+
 ## Corpus Boundary Note
 
 Question `Q071` checks the user's Rugby search concern. In the current UK

@@ -2,11 +2,57 @@
 
 ## Unreleased
 
-- Govern selective CPSV-AP 3.2.0 adoption across the OKF producer portfolio,
+## v0.6.1 - 2026-08-11 - Governed runtime evidence
+
+- Added bounded, declarative capture of ordered DOM attributes to external
+  bundle journeys. Producers can now place the Explorer's actual ranked
+  canonical result URLs in the digest-bound browser receipt, allowing release
+  evaluation to calculate retrieval and forbidden-result metrics from the
+  rendered product rather than from a separate lexical approximation.
+- Extended governed entity recognition to unambiguous organisation names
+  embedded in natural-language questions, while keeping residual subject terms
+  as required lexical constraints. Corrected count-only and entity-filtered
+  result totals so capped postings are reported as lower bounds or unknown,
+  rather than as exact counts.
+- Made Explorer acceptance commands checkout-scoped single writers. A second
+  invocation fails before deterministic build output, Chromium or receipt
+  creation; inner runners reject direct invocation, bind the receipt to the
+  exact wrapper and lock-module bytes, and verify their live parent-owned lock.
+  POSIX process groups are terminated and verified before release; an
+  unverifiable descendant deliberately leaves the lock in place.
+- Made external runtime input immutable for the browser run by copying the
+  bundle and Explorer build into independent private snapshots, serving only
+  those copies and rechecking the source trees afterwards. Added aggregate
+  manifest, telemetry and receipt limits, strict readiness selectors, atomic
+  ranked-row capture and fail-closed credential-free canonical URL checks.
+- Preserved an optional non-empty `review_status` on every governed rich
+  relationship assertion while continuing to require it for model-derived
+  assertions. Normalised producer review state is therefore available to the
+  Reader instead of being silently discarded.
+- Added Predicate Registry v2 as an additive, integrity-locked profile. Its
+  bounded schema derives exact `active-emitted` and
+  `authorised-zero-evidence` states from the complete relationship set, binds
+  the whole registry rather than only its predicate rows, and leaves the
+  frozen Bundle Wiki v1 profile byte-identical.
+- Closed the Heritage Foundry producer-provenance boundary by including the
+  shared semantic module in both impact profiles and binding every declared
+  producer input into a sorted, exact-byte `producer_materials` root in the
+  candidate receipt. Python generation and JavaScript evaluation enforce the
+  same limits and digest rules.
+- Strengthened the legislation runtime gate with exact candidate and Explorer
+  Git identities, immutable bundle and application snapshots, write-once
+  evidence publication, aggregate resource ceilings and a fail-closed
+  diagnostic mode. Release evidence now binds the completed deterministic build
+  and all executable acceptance material before and after the browser journeys.
+- Archived the byte-preserved 26 July v1 runtime receipt as historical evidence
+  instead of presenting its legacy `passed` field as current authority. The
+  canonical path is populated only by the clean-commit, annotated-tag and
+  exact-candidate v2 release gate.
+- Governed selective CPSV-AP 3.2.0 adoption across the OKF producer portfolio,
   preserving DCAT/DCAT-AP, ELI and statistical-model boundaries while
   requiring pinned standards assets, evidence-bearing mappings and honest
   subset-validation claims.
-- Pin the canonical Bundle Wiki v1 profile to the complete, byte-exact
+- Pinned the canonical Bundle Wiki v1 profile to the complete, byte-exact
   Explorer v0.6.0 16-file tree and an adjacent machine-readable vendor lock.
   Reconciliation now fails closed on a missing, extra or drifted canonical
   mirror, checks every declared relationship schema, and offers an explicit

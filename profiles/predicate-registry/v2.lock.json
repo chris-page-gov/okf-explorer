@@ -1,0 +1,22 @@
+{
+  "schema": "okf-profile-extension-lock.v1",
+  "profile": "https://chris-page-gov.github.io/okf-explorer/profile/predicate-registry/v2/",
+  "file_count": 2,
+  "identity": {
+    "algorithm": "sha256",
+    "canonicalisation": "profile-extension-lock-lines-v1: UTF-8 lines in lexical path order: <path> TAB <bytes> TAB <sha256> LF",
+    "sha256": "75e444a35fdfe28fc111b6f0490cb8a0d569d20c1e4b62410174ead2608d86c6"
+  },
+  "files": [
+    {
+      "path": "index.md",
+      "bytes": 4841,
+      "sha256": "c65a17f0f3e8e17009394a21bf48a5f74dc6c326f5a6f73aa074027f5ad2caba"
+    },
+    {
+      "path": "predicate-registry.schema.json",
+      "bytes": 7551,
+      "sha256": "037151379a1ec0cbfe0666d41592585a891a63929f1fcf2845d1eb3de8dd5069"
+    }
+  ]
+}

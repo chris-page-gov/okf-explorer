@@ -1,21 +1,21 @@
 {
   "candidate": {
-    "explorer_manifest_sha256": "9b874fd8fd25ebfe41e7df455f6007fb71734ac584f95d7ad24e3e2bb103ffd3",
-    "explorer_tree_sha256": "5aa87b22c2d533dd9551cadb9ce03b625f4d72f62dc3fddf5d68e39da2b84313",
+    "explorer_manifest_sha256": "a479394534288239b98fd64423cc20a146828aeccd3284ab84984f15c57b91c7",
+    "explorer_tree_sha256": "8f73184a1021f5c5654d81d0804cfafd57b35ab761979c75d9c19dce58389fa1",
     "generated_at": "2026-08-03T10:29:12Z",
     "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
-    "heritage_release_root_sha256": "7bb0a914a07f24210e48eecdfafbd70ea0255a360c87271074ec19fa983539e5",
-    "site_file_count": 10289,
-    "site_internal_references": 4647,
-    "site_reading_pages": 261,
+    "heritage_release_root_sha256": "55609afca3621996bda438d7ff4db928245a947355163adbbe5bbd02e0126dbd",
+    "site_file_count": 10301,
+    "site_internal_references": 4691,
+    "site_reading_pages": 264,
     "site_size_gate": {
-      "headroom_bytes": 185822629,
+      "headroom_bytes": 185718021,
       "limit_bytes": 1000000000,
-      "site_bytes": 814177371,
+      "site_bytes": 814281979,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "0382fbe6c9456fc23247c83ec8f1a49c7504be713087a408e80cc1f8b672bd25",
+    "site_tree_sha256": "cc6ce3a0ba6374018f99681f316987d67bc8f84b2bf5b248d9314a60390dedc7",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
     "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
@@ -23,11 +23,11 @@
   "determinism": {
     "builds": 1,
     "comparison_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
-    "comparison_tree_sha256": "55d22a755405e37f8b059ee729bf32bb4c10394eeaa66d7c9f260a29e80a78de",
+    "comparison_tree_sha256": "f18da435b6358d708332e8fc8e450f5725e69ed3407b7cfdf884c2666b4b7e2d",
     "corpora": {
       "faithful": {
         "builds": 1,
-        "comparison_tree_sha256": "55d22a755405e37f8b059ee729bf32bb4c10394eeaa66d7c9f260a29e80a78de",
+        "comparison_tree_sha256": "f18da435b6358d708332e8fc8e450f5725e69ed3407b7cfdf884c2666b4b7e2d",
         "differences": 0,
         "files_per_build": 3131
       },
@@ -73,6 +73,40 @@
     "validation_only": 0
   },
   "observed_at": "2026-08-10T10:18:48Z",
+  "producer_materials": {
+    "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
+    "bytes": 400721,
+    "file_count": 5,
+    "materials": [
+      {
+        "bytes": 114,
+        "path": "requirements-okf.txt",
+        "sha256": "20ccd9cc40f53fcc3215136fd1f01a1ddf10412437ff73bdb5f8139bc7dab540"
+      },
+      {
+        "bytes": 161378,
+        "path": "scripts/build_heritage_evaluation.py",
+        "sha256": "33880f7334994c5b171ad914153ddc3605a46b350f914c2e6c192423c0bfc9f9"
+      },
+      {
+        "bytes": 159127,
+        "path": "scripts/build_uk_government_api_okf.py",
+        "sha256": "0efd88256ce84ab91a33e8554f8e91206127f3e70619655d1d671d250c6021c3"
+      },
+      {
+        "bytes": 20224,
+        "path": "scripts/heritage_build_io.py",
+        "sha256": "5ce235df82926726c3deb2d47c3f2666f364a3e5e6095bcb62e7a067b062e973"
+      },
+      {
+        "bytes": 59878,
+        "path": "scripts/okf_semantic.py",
+        "sha256": "de4a070c78d468c5aaebbf8c5d55d50eebfa5a0a14797c381a469aa4a75a4ced"
+      }
+    ],
+    "root_sha256": "6c675bd907409a8f5510c34f3690b2f7df2147ef4380de6ce7847b200df834c5",
+    "schema": "okf-heritage-producer-materials.v1"
+  },
   "publication_shell_rebind": {
     "change_class": "full-candidate-rebuild",
     "rationale": "This receipt was materialized from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
@@ -82,6 +116,7 @@
       "100-question functionality evaluation",
       "faithful/tiny/synthetic local browser journeys",
       "Explorer build-manifest identity",
+      "Exact heritage producer material identity",
       "Site inventory, capacity and tree identity"
     ],
     "reused_gates": [],

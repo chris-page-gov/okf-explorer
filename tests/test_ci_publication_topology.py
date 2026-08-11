@@ -102,6 +102,28 @@ class CiPublicationTopologyTests(unittest.TestCase):
             workflow.index("  app:") : workflow.index("\n  browser-targeted:")
         ]
         self.assertIn("needs.impact-plan.outputs.python == 'true'", app_job)
+        app_steps = jobs["app"]["steps"]
+        chromium_install_steps = [
+            (index, step)
+            for index, step in enumerate(app_steps)
+            if step.get("run")
+            == "pnpm exec playwright install --with-deps chromium"
+        ]
+        app_test_steps = [
+            index
+            for index, step in enumerate(app_steps)
+            if step.get("run") == "pnpm test"
+        ]
+        self.assertEqual(1, len(chromium_install_steps))
+        self.assertEqual(1, len(app_test_steps))
+        chromium_install_index, chromium_install_step = chromium_install_steps[0]
+        self.assertEqual(
+            "apps/okf-explorer", chromium_install_step.get("working-directory")
+        )
+        self.assertLess(
+            chromium_install_index,
+            app_test_steps[0],
+        )
 
         targeted = workflow[
             workflow.index("  browser-targeted:") : workflow.index("\n  browser-full:")
@@ -200,6 +222,29 @@ class CiPublicationTopologyTests(unittest.TestCase):
                 "\n  foundry-full-family:"
             )
         ]
+        shadow_steps = shadow_jobs["browser-three-engine"]["steps"]
+        shadow_chromium_steps = [
+            (index, step)
+            for index, step in enumerate(shadow_steps)
+            if step.get("run")
+            == "pnpm exec playwright install --with-deps chromium"
+        ]
+        shadow_validation_steps = [
+            index
+            for index, step in enumerate(shadow_steps)
+            if step.get("name") == "Validate and deterministically build Explorer"
+            and "pnpm test" in step.get("run", "")
+        ]
+        self.assertEqual(1, len(shadow_chromium_steps))
+        self.assertEqual(1, len(shadow_validation_steps))
+        shadow_chromium_index, shadow_chromium_step = shadow_chromium_steps[0]
+        self.assertEqual(
+            "apps/okf-explorer", shadow_chromium_step.get("working-directory")
+        )
+        self.assertLess(
+            shadow_chromium_index,
+            shadow_validation_steps[0],
+        )
         self.assertLess(
             shadow_browser.index("pnpm install --frozen-lockfile"),
             shadow_browser.index("pnpm exec svelte-kit sync"),

@@ -529,7 +529,7 @@ validation:
   - id: VAL-CONSUMER
     target: Pinned actual OKF Explorer consumer
     method: Run the external-bundle acceptance contract for both compatibility directions and selected fixtures.
-    validator: apps/okf-explorer/scripts/run_external_bundle_acceptance.mjs
+    validator: apps/okf-explorer/scripts/run_acceptance_invocation.mjs bundle
     severity: error
     release_gate: true
     receipt: urn:okf-run-evidence:heritage-consumer-acceptance
@@ -596,8 +596,11 @@ impact_policy:
     - id: IMPACT-PRODUCER
       patterns:
         - scripts/build_heritage_evaluation.py
+        - scripts/build_uk_government_api_okf.py
         - scripts/heritage_evaluation/**
         - scripts/heritage_build_io.py
+        - scripts/okf_semantic.py
+        - requirements-okf.txt
         - tests/test_build_heritage_evaluation.py
       node_refs: [NODE-PRODUCER]
       fixtures: [adversarial, tiny, faithful, synthetic]

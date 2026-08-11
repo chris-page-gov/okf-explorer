@@ -2062,7 +2062,9 @@ function normalizeRichRelationshipRows(
     let derivationActivity: string | undefined;
     let confidenceScore: number | undefined;
     let supportingAssertions: string[] | undefined;
-    let reviewStatus: string | undefined;
+    const reviewStatus = row.review_status === undefined
+      ? undefined
+      : richRuntimeString(row.review_status, `${label} review status`);
     if (assertionStatus === 'inferred') {
       rule = richRuntimeIri(row.rule, `${label} inference rule`);
       derivationActivity = richRuntimeIri(
@@ -2095,7 +2097,9 @@ function normalizeRichRelationshipRows(
         row.confidence_score,
         `${label} confidence score`
       );
-      reviewStatus = richRuntimeString(row.review_status, `${label} review status`);
+      if (!reviewStatus) {
+        throw new Error(`${label} model-derived assertion requires review status`);
+      }
     }
 
     const sourceIri = richRuntimeIri(row.source_iri, `${label} source IRI`);

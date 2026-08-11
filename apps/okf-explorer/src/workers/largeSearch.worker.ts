@@ -305,15 +305,56 @@ function entitySearchValues(entity: SearchEntity): string[] {
   return [...new Set([entity.label, entity.filter_value, ...(entity.aliases || [])].map(normalizePhrase).filter(Boolean))];
 }
 
-async function recognizedEntity(query: string): Promise<{ entity: SearchEntity; match: SearchEntityMatch } | null> {
+type RecognizedEntity = {
+  entity: SearchEntity;
+  match: SearchEntityMatch;
+  phrase: string;
+  residualQuery: string;
+};
+
+function removeWholePhrase(value: string, phrase: string): string {
+  const paddedValue = ` ${value} `;
+  const paddedPhrase = ` ${phrase} `;
+  const start = paddedValue.indexOf(paddedPhrase);
+  if (start < 0) return value;
+  return normalizePhrase(`${paddedValue.slice(0, start)} ${paddedValue.slice(start + paddedPhrase.length)}`);
+}
+
+async function recognizedEntity(query: string): Promise<RecognizedEntity | null> {
   const normalized = normalizePhrase(query);
   if (!normalized) return null;
-  const matches = (await searchEntities()).filter((entity) => entitySearchValues(entity).includes(normalized));
-  if (matches.length !== 1) return null;
-  const entity = matches[0];
-  const matchedAlias = (entity.aliases || []).find((alias) => normalizePhrase(alias) === normalized);
+  const entities = await searchEntities();
+  const exactMatches = entities.filter((entity) => entitySearchValues(entity).includes(normalized));
+  if (exactMatches.length > 1) return null;
+  let entity: SearchEntity;
+  let phrase: string;
+  let matchedAlias: string | undefined;
+  let residualQuery = '';
+  if (exactMatches.length === 1) {
+    entity = exactMatches[0];
+    phrase = normalized;
+    matchedAlias = (entity.aliases || []).find((alias) => normalizePhrase(alias) === normalized);
+  } else {
+    // Only full governed labels or filter values may be embedded in prose.
+    // Inferred short aliases remain exact-query conveniences so ordinary words
+    // such as "it" cannot silently become an organisation filter.
+    const spanMatches = entities.flatMap((candidate) => {
+      const phrases = [...new Set([candidate.label, candidate.filter_value].map(normalizePhrase).filter(Boolean))]
+        .filter((value) => ` ${normalized} `.includes(` ${value} `))
+        .sort((left, right) => right.length - left.length || left.localeCompare(right));
+      return phrases.length ? [{ entity: candidate, phrase: phrases[0] }] : [];
+    });
+    if (spanMatches.length !== 1) return null;
+    ({ entity, phrase } = spanMatches[0]);
+    residualQuery = removeWholePhrase(normalized, phrase);
+    // Conversational scaffolding is removed only through this exact bounded
+    // form. Any other residual term remains a required lexical constraint.
+    if (normalized === `what does ${phrase} cover`) residualQuery = '';
+  }
   return {
     entity,
+    phrase,
+    residualQuery,
     match: {
       id: entity.id,
       label: entity.label,
@@ -599,11 +640,15 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   const started = performance.now();
   if (!manifest) throw new Error('Search worker is not initialised');
   const query = request.query.trim();
-  const tokens = tokenize(query);
-  if (tokens.length > SEARCH_MANIFEST_LIMITS.maxQueryTokens) {
+  const rawTokens = tokenize(query);
+  if (rawTokens.length > SEARCH_MANIFEST_LIMITS.maxQueryTokens) {
     throw new Error('Search query exceeds the supported token limit');
   }
   const entityRecognition = await recognizedEntity(query);
+  const entityTokens = entityRecognition ? tokenize(entityRecognition.phrase) : [];
+  const residualTokens = entityRecognition ? tokenize(entityRecognition.residualQuery) : rawTokens;
+  const residualTokenSet = new Set(residualTokens);
+  const tokens = [...new Set([...entityTokens, ...residualTokens])];
   const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
   const resolvedGroups = await Promise.all(tokens.map(lexicalEntriesForToken));
   const lexicalAnchorGroups = resolvedGroups.filter((group) => group.entries.length);
@@ -622,8 +667,8 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     }
   }
   const typoBudget: TypoQueryBudget = { tokensConsidered: 0, shardPaths: new Set(), truncated: false };
-  if (!entityRecognition) {
-    for (const [index, group] of resolvedGroups.entries()) {
+  for (const [index, group] of resolvedGroups.entries()) {
+    if (!residualTokenSet.has(group.queryToken)) continue;
       if (group.entries.length) continue;
       let corrected = await typoEntriesForToken(group.queryToken, typoBudget);
       if (corrected.entries.length && lexicalAnchorOrdinals) {
@@ -648,11 +693,10 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
             entries: manifest.typo_tolerance ? [] : group.fallbackEntries,
             fallbackEntries: []
           };
-    }
   }
   const queryCorrections = resolvedGroups.flatMap((group) => [...group.corrections.values()]);
   const unresolvedTokens = resolvedGroups
-    .filter((group) => !group.entries.length)
+    .filter((group) => residualTokenSet.has(group.queryToken) && !group.entries.length)
     .map((group) => group.queryToken);
   const entryGroups = resolvedGroups.filter((group) => group.entries.length);
   entryGroups.sort(
@@ -663,8 +707,8 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
 
   const scores: OrdinalScores = new Map();
   const correctionsByOrdinal = new Map<number, Map<string, SearchTokenCorrection>>();
-  const sets: Set<number>[] = [];
-  const completeSets: Set<number>[] = [];
+  const requiredSets: Set<number>[] = [];
+  const completeRequiredSets: Set<number>[] = [];
   let cappedCandidates = false;
   for (const group of entryGroups) {
     const set = new Set<number>();
@@ -688,21 +732,30 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
         }
       }
     }
-    sets.push(set);
-    if (group.entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
-      completeSets.push(set);
-    } else {
-      cappedCandidates = true;
+    if (residualTokenSet.has(group.queryToken)) {
+      requiredSets.push(set);
+      if (group.entries.every((entry) => entry.df <= (manifest?.counts.max_postings_per_token || Number.MAX_SAFE_INTEGER))) {
+        completeRequiredSets.push(set);
+      } else {
+        cappedCandidates = true;
+      }
     }
   }
 
   // A capped high-frequency token is useful for scoring but cannot safely be
   // required for intersection: the matching document may have been omitted
   // from that token's bounded posting list. Intersect complete lists only.
-  const intersectionSets = completeSets.length ? completeSets : sets.slice(0, 1);
+  const intersectionSets = completeRequiredSets.length
+    ? completeRequiredSets
+    : requiredSets.slice(0, 1);
   let matches: Set<number>;
   if (recognizedOrdinals) {
     matches = new Set(recognizedOrdinals);
+    if (unresolvedTokens.length) {
+      matches = new Set<number>();
+    } else {
+      for (const set of intersectionSets) matches = intersectOrdinals(matches, set);
+    }
   } else if (query && (!tokens.length || !entryGroups.length || unresolvedTokens.length)) {
     // A non-empty stop-word-only query, or a query with no indexed lexical
     // term, is not filter-only browsing. Keep its query universe empty while
@@ -733,13 +786,29 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     }
   }
 
+  const postingsTruncated = cappedCandidates;
+  // A single capped residual group yields a genuine lower bound because every
+  // loaded posting is a match and additional postings may have been omitted.
+  // With multiple residual groups, capped groups are intentionally excluded
+  // from strict intersection, so the candidate count can contain false
+  // positives as well as omit matches. Entity recognition narrows the same
+  // candidate universe and must not hide that uncertainty.
+  const totalRelation: LargeSearchResponse['total_relation'] = postingsTruncated
+    ? requiredSets.length === 1
+      ? 'gte'
+      : 'unknown'
+    : 'eq';
+
   if (request.include_results === false) {
+    const truncations: NonNullable<LargeSearchResponse['truncation']>[] =
+      postingsTruncated ? [{ reason: 'capped-postings' }] : [];
     return {
       results: [],
       total: filtered.ordinals.size,
-      total_relation: 'eq',
-      truncated: false,
-      truncations: [],
+      total_relation: totalRelation,
+      truncated: Boolean(truncations.length),
+      truncations,
+      ...(truncations[0] ? { truncation: truncations[0] } : {}),
       filters_applied: filtered.applied,
       ignored_filters: filtered.ignoredFilters,
       facets,
@@ -840,18 +909,6 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       }
     });
   }
-  const postingsTruncated = !recognizedOrdinals && cappedCandidates;
-  // A single capped token yields a genuine lower bound because every loaded
-  // posting is a match and additional postings may have been omitted. With
-  // multiple lexical token groups, capped groups are intentionally excluded
-  // from strict intersection, so the candidate count can contain false
-  // positives as well as omit matches. Do not mislabel that count as a lower
-  // bound.
-  const totalRelation: LargeSearchResponse['total_relation'] = postingsTruncated
-    ? entryGroups.length === 1
-      ? 'gte'
-      : 'unknown'
-    : 'eq';
   const resultLimitReached = filtered.ordinals.size > limit;
   const truncations: NonNullable<LargeSearchResponse['truncation']>[] = [];
   if (resultChunkBudgetReached) {

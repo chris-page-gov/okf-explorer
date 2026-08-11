@@ -65,6 +65,20 @@ COMPARISON_TREE_ALGORITHM = (
 SITE_TREE_ALGORITHM = (
     "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1"
 )
+PRODUCER_MATERIALS_SCHEMA = "okf-heritage-producer-materials.v1"
+PRODUCER_MATERIALS_ALGORITHM = (
+    "sha256-over-canonical-json-path-bytes-digest-list-v1"
+)
+PRODUCER_MATERIAL_PATHS = (
+    "requirements-okf.txt",
+    "scripts/build_heritage_evaluation.py",
+    "scripts/build_uk_government_api_okf.py",
+    "scripts/heritage_build_io.py",
+    "scripts/okf_semantic.py",
+)
+MAX_PRODUCER_MATERIALS = 64
+MAX_PRODUCER_MATERIAL_BYTES = 8 * 1024 * 1024
+MAX_PRODUCER_MATERIALS_BYTES = 32 * 1024 * 1024
 
 
 def digest(raw: bytes) -> str:
@@ -125,6 +139,212 @@ def safe_relative_path(value: object, label: str) -> str:
     if relative.is_absolute() or relative.as_posix() != value or ".." in relative.parts:
         raise RuntimeError(f"unsafe {label} path: {value!r}")
     return value
+
+
+def _producer_file_identity(value: os.stat_result) -> tuple[int, ...]:
+    return (
+        value.st_dev,
+        value.st_ino,
+        value.st_mode,
+        value.st_nlink,
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+    )
+
+
+def read_producer_material(
+    relative: str,
+    *,
+    root: Path = ROOT,
+) -> bytes:
+    """Read one bounded, stable producer input without following a link."""
+
+    safe = safe_relative_path(relative, "producer material")
+    path = root.joinpath(*PurePosixPath(safe).parts)
+    try:
+        before = path.lstat()
+    except OSError as error:
+        raise RuntimeError(f"cannot stat producer material {safe}: {error}") from error
+    if (
+        not path.is_file()
+        or path.is_symlink()
+        or before.st_nlink != 1
+        or before.st_size < 1
+        or before.st_size > MAX_PRODUCER_MATERIAL_BYTES
+    ):
+        raise RuntimeError(
+            f"producer material is not a bounded independent regular file: {safe}"
+        )
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as error:
+        raise RuntimeError(f"cannot open producer material {safe}: {error}") from error
+    try:
+        opened = os.fstat(descriptor)
+        if (
+            _producer_file_identity(before) != _producer_file_identity(opened)
+            or opened.st_size > MAX_PRODUCER_MATERIAL_BYTES
+        ):
+            raise RuntimeError(
+                f"producer material changed before it was opened: {safe}"
+            )
+        chunks: list[bytes] = []
+        remaining = opened.st_size
+        while remaining:
+            chunk = os.read(descriptor, min(1024 * 1024, remaining))
+            if not chunk:
+                raise RuntimeError(
+                    f"producer material was truncated while it was read: {safe}"
+                )
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        if os.read(descriptor, 1):
+            raise RuntimeError(f"producer material grew while it was read: {safe}")
+        after = os.fstat(descriptor)
+        path_after = path.lstat()
+        if (
+            _producer_file_identity(opened) != _producer_file_identity(after)
+            or _producer_file_identity(before)
+            != _producer_file_identity(path_after)
+        ):
+            raise RuntimeError(
+                f"producer material changed while it was read: {safe}"
+            )
+        return b"".join(chunks)
+    finally:
+        os.close(descriptor)
+
+
+def validate_producer_materials(
+    value: object,
+    *,
+    root: Path = ROOT,
+) -> dict[str, Any]:
+    """Validate the exact, bounded producer dependency closure and its root."""
+
+    if not isinstance(value, dict):
+        raise RuntimeError("producer_materials must be an object")
+    expected_keys = {
+        "schema",
+        "algorithm",
+        "file_count",
+        "bytes",
+        "root_sha256",
+        "materials",
+    }
+    if set(value) != expected_keys:
+        raise RuntimeError("producer_materials has an unexpected key set")
+    if value.get("schema") != PRODUCER_MATERIALS_SCHEMA:
+        raise RuntimeError("producer_materials has an unsupported schema")
+    if value.get("algorithm") != PRODUCER_MATERIALS_ALGORITHM:
+        raise RuntimeError("producer_materials has an unsupported root algorithm")
+    materials = value.get("materials")
+    if not isinstance(materials, list) or not materials:
+        raise RuntimeError("producer_materials.materials must be a non-empty list")
+    if len(materials) > MAX_PRODUCER_MATERIALS:
+        raise RuntimeError("producer_materials exceeds its material-count bound")
+
+    normalized: list[dict[str, Any]] = []
+    for index, material in enumerate(materials):
+        if not isinstance(material, dict) or set(material) != {
+            "path",
+            "bytes",
+            "sha256",
+        }:
+            raise RuntimeError(
+                f"producer_materials.materials[{index}] has an unexpected shape"
+            )
+        relative = safe_relative_path(
+            material.get("path"),
+            f"producer_materials.materials[{index}]",
+        )
+        byte_count = material.get("bytes")
+        if (
+            not isinstance(byte_count, int)
+            or isinstance(byte_count, bool)
+            or byte_count < 1
+            or byte_count > MAX_PRODUCER_MATERIAL_BYTES
+        ):
+            raise RuntimeError(
+                f"producer material has an invalid byte count: {relative}"
+            )
+        sha256 = material.get("sha256")
+        if not is_sha256(sha256):
+            raise RuntimeError(
+                f"producer material has an invalid SHA-256: {relative}"
+            )
+        normalized.append(
+            {"path": relative, "bytes": byte_count, "sha256": sha256}
+        )
+
+    paths = [material["path"] for material in normalized]
+    if paths != sorted(paths) or len(paths) != len(set(paths)):
+        raise RuntimeError(
+            "producer_materials paths must be unique and sorted lexically"
+        )
+    expected_paths = list(PRODUCER_MATERIAL_PATHS)
+    missing = sorted(set(expected_paths).difference(paths))
+    if missing:
+        raise RuntimeError(
+            "producer_materials is missing required path(s): "
+            + ", ".join(missing)
+        )
+    extra = sorted(set(paths).difference(expected_paths))
+    if extra:
+        raise RuntimeError(
+            "producer_materials contains unexpected path(s): "
+            + ", ".join(extra)
+        )
+    total_bytes = sum(material["bytes"] for material in normalized)
+    if total_bytes > MAX_PRODUCER_MATERIALS_BYTES:
+        raise RuntimeError("producer_materials exceeds its aggregate byte bound")
+    if value.get("file_count") != len(normalized):
+        raise RuntimeError("producer_materials.file_count differs from materials")
+    if value.get("bytes") != total_bytes:
+        raise RuntimeError("producer_materials.bytes differs from materials")
+    expected_root = digest(canonical_json(normalized))
+    if value.get("root_sha256") != expected_root:
+        raise RuntimeError(
+            "producer_materials.root_sha256 does not bind canonical materials"
+        )
+
+    for material in normalized:
+        raw = read_producer_material(material["path"], root=root)
+        if len(raw) != material["bytes"] or digest(raw) != material["sha256"]:
+            raise RuntimeError(
+                "producer material differs from exact current bytes: "
+                f"{material['path']}"
+            )
+    return {
+        "schema": PRODUCER_MATERIALS_SCHEMA,
+        "algorithm": PRODUCER_MATERIALS_ALGORITHM,
+        "file_count": len(normalized),
+        "bytes": total_bytes,
+        "root_sha256": expected_root,
+        "materials": normalized,
+    }
+
+
+def producer_materials_identity(*, root: Path = ROOT) -> dict[str, Any]:
+    """Build the exact-byte inventory for every direct heritage producer input."""
+
+    materials = []
+    for relative in PRODUCER_MATERIAL_PATHS:
+        raw = read_producer_material(relative, root=root)
+        materials.append(
+            {"path": relative, "bytes": len(raw), "sha256": digest(raw)}
+        )
+    value = {
+        "schema": PRODUCER_MATERIALS_SCHEMA,
+        "algorithm": PRODUCER_MATERIALS_ALGORITHM,
+        "file_count": len(materials),
+        "bytes": sum(material["bytes"] for material in materials),
+        "root_sha256": digest(canonical_json(materials)),
+        "materials": materials,
+    }
+    return validate_producer_materials(value, root=root)
 
 
 def corpus_identity(name: str, corpus_root: Path) -> dict[str, Any]:
@@ -799,6 +1019,7 @@ def build_receipt(
     )
     journey_section = with_result_hashes(journey_section, journey_raw, journey_gzip)
     faithful = corpora["faithful"]
+    producer_materials = producer_materials_identity()
     receipt = {
         "schema": "okf-heritage-local-candidate-receipt.v1",
         "observed_at": format_timestamp(observed),
@@ -808,6 +1029,7 @@ def build_receipt(
             "candidate identity and exact supplied browser-result bytes. This "
             "receipt does not claim that GitHub Pages is deployed."
         ),
+        "producer_materials": producer_materials,
         "candidate": {
             "snapshot": descriptor["snapshot"],
             "generated_at": descriptor["generated_at"],
@@ -831,6 +1053,7 @@ def build_receipt(
                 "100-question functionality evaluation",
                 "faithful/tiny/synthetic local browser journeys",
                 "Explorer build-manifest identity",
+                "Exact heritage producer material identity",
                 "Site inventory, capacity and tree identity",
             ],
             "reused_gates": [],

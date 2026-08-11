@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/predicate-registry/v2/predicate-registry.schema.json",
+  "title": "OKF governed relationship-predicate capability registry",
+  "description": "An additive predicate-registry contract which records the evidence-derived implementation state of every producer-authorised predicate capability.",
+  "type": "object",
+  "required": [
+    "schema",
+    "profile",
+    "snapshot",
+    "generated_at",
+    "predicates",
+    "counts",
+    "root_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-predicate-registry.v2"
+    },
+    "profile": {
+      "const": "https://chris-page-gov.github.io/okf-explorer/profile/predicate-registry/v2/"
+    },
+    "snapshot": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "generated_at": {
+      "type": "string",
+      "maxLength": 64,
+      "format": "date-time"
+    },
+    "predicates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/predicate"
+      },
+      "minItems": 1,
+      "maxItems": 4096
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "predicates",
+        "active_emitted",
+        "authorised_zero_evidence",
+        "assertions_emitted"
+      ],
+      "properties": {
+        "predicates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "active_emitted": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "authorised_zero_evidence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "assertions_emitted": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000000
+        }
+      },
+      "additionalProperties": false
+    },
+    "root_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "\\S"
+    },
+    "iri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "format": "uri"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "iriArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/iri"
+      },
+      "maxItems": 256,
+      "uniqueItems": true
+    },
+    "implementation": {
+      "type": "object",
+      "required": [
+        "state",
+        "assertions_emitted"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "active-emitted",
+            "authorised-zero-evidence"
+          ]
+        },
+        "assertions_emitted": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "active-emitted"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertions_emitted": {
+                "minimum": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "authorised-zero-evidence"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "assertions_emitted": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "predicate": {
+      "type": "object",
+      "required": [
+        "iri",
+        "preferred_label",
+        "inverse_label",
+        "description",
+        "domain",
+        "range",
+        "assertion_statuses",
+        "evidence_policy",
+        "source_vocabulary",
+        "status",
+        "implementation"
+      ],
+      "properties": {
+        "iri": {
+          "$ref": "#/$defs/iri"
+        },
+        "preferred_label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "inverse_label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "domain": {
+          "$ref": "#/$defs/iriArray"
+        },
+        "range": {
+          "$ref": "#/$defs/iriArray"
+        },
+        "super_properties": {
+          "$ref": "#/$defs/iriArray"
+        },
+        "characteristics": {
+          "$ref": "#/$defs/iriArray"
+        },
+        "assertion_statuses": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "official",
+              "normalized",
+              "inferred",
+              "model-derived"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "evidence_policy": {
+          "type": "object",
+          "required": [
+            "minimum_fields"
+          ],
+          "properties": {
+            "minimum_fields": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "\\S"
+              },
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true
+            },
+            "notes": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "additionalProperties": false
+        },
+        "weight_metric": {
+          "type": "object",
+          "required": [
+            "field",
+            "label",
+            "unit"
+          ],
+          "properties": {
+            "field": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "label": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "unit": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "additionalProperties": false
+        },
+        "source_vocabulary": {
+          "type": "object",
+          "required": [
+            "iri",
+            "version"
+          ],
+          "properties": {
+            "iri": {
+              "$ref": "#/$defs/iri"
+            },
+            "version": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": [
+            "active",
+            "deprecated"
+          ]
+        },
+        "replaced_by": {
+          "$ref": "#/$defs/iri"
+        },
+        "implementation": {
+          "$ref": "#/$defs/implementation"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "deprecated"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "replaced_by"
+            ],
+            "properties": {
+              "implementation": {
+                "properties": {
+                  "state": {
+                    "const": "authorised-zero-evidence"
+                  },
+                  "assertions_emitted": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}
