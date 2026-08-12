@@ -1,0 +1,220 @@
+{
+  "schema": "okf-hmlr-public-deployment-verification.v2",
+  "status": "fail",
+  "observed_at": "2026-08-12T00:32:29.447Z",
+  "verification_scope": "public-byte-identity-and-representative-real-browser-journey",
+  "evaluator": {
+    "path": "/private/tmp/verify-landregistry-v030-public.mjs",
+    "sha256": "5fe10e9c244855c04136ba9fe48bf2e9722bc53635dfcc39d622abff34b2db72"
+  },
+  "public_routes": {
+    "site": "https://chris-page-gov.github.io/okf-LandRegistry/",
+    "descriptor": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+    "explorer": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-LandRegistry%2Fokf-explorer.json&view=reader&verification=1786494750439#overview"
+  },
+  "explorer": {
+    "merge_commit": "c6c8ccd9daaab7600ce8261d0eca587acabf917b",
+    "pages_run": "https://github.com/chris-page-gov/okf-explorer/actions/runs/31549668889",
+    "version": "0.6.3",
+    "build_manifest": {
+      "schema": "okf-explorer-app-build-manifest.v1",
+      "algorithm": "sha256-canonical-json-materials-v1",
+      "file_count": 16,
+      "tree_sha256": "03b482117351213a1eecb405e8542365bd7693b55e58b46ace85921c5a975e53",
+      "materials": [
+        {
+          "path": "404.html",
+          "bytes": 1558,
+          "sha256": "5ae1fd422b088b43af591dadbbc0c60088d18ba160f73c82ca072d9741902492"
+        },
+        {
+          "path": "_app/immutable/assets/2.U6o4eik4.css",
+          "bytes": 83916,
+          "sha256": "233df10351335e9f033e1698e8749ef5cbd85697a70b6138b26769256ee4a26b"
+        },
+        {
+          "path": "_app/immutable/chunks/BI1F1HPt.js",
+          "bytes": 47866,
+          "sha256": "2f5f2dd3be83703f1a5dc20188e8a9fa82bd0bda1088901108369be95ca5bedd"
+        },
+        {
+          "path": "_app/immutable/chunks/Bjy-W4x2.js",
+          "bytes": 1365,
+          "sha256": "f07424758318dd6b5f32b0fe8de9d2ffb8d97a17c841758626d18ba0faa0456a"
+        },
+        {
+          "path": "_app/immutable/chunks/jQps95Y-.js",
+          "bytes": 29277,
+          "sha256": "a7d8370dac524f47959d7c72ea63a37bae1dec687fe41acc58c3f9a110544ba1"
+        },
+        {
+          "path": "_app/immutable/chunks/xihTtKlq.js",
+          "bytes": 65,
+          "sha256": "0214edcff77242079f540507a53803aa22d857b6ad673e60e39748b6c7aa08c1"
+        },
+        {
+          "path": "_app/immutable/entry/app.BFOX0jIu.js",
+          "bytes": 3975,
+          "sha256": "1976ceaf20e7f8798bc45a71fb450df6556d4c78d936d901a386ee8150bedb69"
+        },
+        {
+          "path": "_app/immutable/entry/start.CETPPCcJ.js",
+          "bytes": 82,
+          "sha256": "4f7cc81cbb662c9e7ad11fbe65c19dc026851b4f9e522fe73e70eb17703c706a"
+        },
+        {
+          "path": "_app/immutable/nodes/0.BqBVe4-s.js",
+          "bytes": 238,
+          "sha256": "762a929a28eedf54b48f3996696e2c980a2bbaabc398771937013a2041c06bc5"
+        },
+        {
+          "path": "_app/immutable/nodes/1.CWrobv6s.js",
+          "bytes": 629,
+          "sha256": "73be21e1095570a3b8317b389af874a15cf62719b8da756c61af0d979e0de02c"
+        },
+        {
+          "path": "_app/immutable/nodes/2.BqZo6FIF.js",
+          "bytes": 653389,
+          "sha256": "fd57f36664b1e9c8bbaec370cc50d22ea49e7c1b399f9ec1216622404d13a76b"
+        },
+        {
+          "path": "_app/immutable/workers/largeSearch.worker-B1gsWSi2.js",
+          "bytes": 68866,
+          "sha256": "95e0b67951ffc778fc9e9a77f2810e858bfa939a82c921291c4a619d605f1b49"
+        },
+        {
+          "path": "_app/version.json",
+          "bytes": 19,
+          "sha256": "7e3bfc0a575d30c4a04186d6a75809efc5e0c9c56a62a7f0f95acdc4da63c934"
+        },
+        {
+          "path": "favicon.svg",
+          "bytes": 300,
+          "sha256": "b13175f4b33ebf5759702efe154d463f3e1d30d4c1cb07334c394b677ae80cb9"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1318,
+          "sha256": "05169f9391e5e25f6740f0351d92b7d6488e0b8a299ac6c60c125788c1899f2f"
+        },
+        {
+          "path": "okf-registry.json",
+          "bytes": 7704,
+          "sha256": "781069a61e87d83cc30c39b9faa950a2260de3c7ddd0eeecba5f25b9a88fe10f"
+        }
+      ]
+    }
+  },
+  "release": {
+    "version": "0.3.0",
+    "candidate_commit_sha": "751b6c1e80fbbad3c07f19798c74aebd603eb62c",
+    "evidence_commit_sha": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc",
+    "approved_release_root_sha256": "6a29e38e7bb805aafb7f36ba8d1fa4ce976875f45997049cd4808d6ede7f75e1",
+    "final_g9_manifest_sha256": "3bb0d8ba015df82611db3f705b36bc7b927285468436e0aab81e9f32fc66a232",
+    "final_g9_record_sha256": "848833cd720b31101db1c6279b2416fc9678ba4d3e99ad1f7e32531f2ee89030",
+    "pages_run": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543515600"
+  },
+  "compatibility_boundary": {
+    "governed_candidate_acceptance": "OKF Explorer v0.6.2",
+    "post_g9_presentation_observation": "OKF Explorer v0.6.3"
+  },
+  "prior_failed_attempts": [
+    {
+      "receipt": "failed-attempt-1.json",
+      "failure": "The verifier observed the pre-query settled list before the debounced exact-boundary query became active.",
+      "correction": "Require both settled state and the exact data-okf-query value before reading rank one.",
+      "repository_or_bundle_changed": false
+    },
+    {
+      "receipt": "failed-attempt-2.json",
+      "failure": "The verifier required a right-panel Relationships (15) string before opening Graph.",
+      "correction": "Treat the graph summary and predicate-aware graph edge as the relationship-delivery evidence; the right-panel wording is not a release invariant.",
+      "repository_or_bundle_changed": false
+    }
+  ],
+  "deployed_identity": {
+    "explorer_manifest_sha256": "681498b253d1c1aba7749d8fc942bdc74a5fc412c897ab9bc13e0369ac558652",
+    "explorer_tree_sha256": "03b482117351213a1eecb405e8542365bd7693b55e58b46ace85921c5a975e53",
+    "descriptor_sha256": "36d21eee6b3fcf85ea1a9f9a6501e39d73acba3aef9904c4120075878d4b4b5d",
+    "checksums_sha256": "f92d3bb61ce9509f038875b29b49c9fa6c84aa50ec5cd31daa0bc4bf06c5efef",
+    "overview_sha256": "19311056b22c89fde444072fd0b41706a915941a3274b6c5777349f3cf0466aa",
+    "descriptor_version": "0.3.0",
+    "descriptor_id": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+    "counts": {
+      "curated_records": 55,
+      "datasets": 14,
+      "kinds": 10,
+      "merged_representations": 24,
+      "publishers": 27,
+      "record_types": 77,
+      "records": 2203,
+      "relationships": 22267,
+      "resources": 2203,
+      "source_representations": 2227,
+      "sources": 17,
+      "topics": 314
+    },
+    "entrypoints": {
+      "analysis_overview": {
+        "path": "data/explorer/analysis-overview.json",
+        "bytes": 790,
+        "sha256": "bbf6d19ae0a733b4044c3d4808ae0c499aa1a7fcf1d88d6d9091a652fca989fe",
+        "status": "pass"
+      },
+      "data_manifest": {
+        "path": "data/explorer/manifest.json",
+        "bytes": 21557,
+        "sha256": "8c59a3578fad8e5a5e67e70f66db19683bf41826e205fdc53c72ccd0b9a7f5dc",
+        "status": "pass"
+      },
+      "entities": {
+        "path": "data/explorer/search/entities.json",
+        "bytes": 8011,
+        "sha256": "67823b619e79208be83c4291ebe20d581bd46c37eaa06e5a76a74b9fd068a732",
+        "status": "pass"
+      },
+      "overview_index": {
+        "path": "data/explorer/overview.json",
+        "bytes": 15722,
+        "sha256": "19311056b22c89fde444072fd0b41706a915941a3274b6c5777349f3cf0466aa",
+        "status": "pass"
+      },
+      "record_locator": {
+        "path": "data/explorer/locator/manifest.json",
+        "bytes": 46811,
+        "sha256": "3e64031846cae4f10b9425735b85bd3d1e08c668d0d451c209839673b777a45f",
+        "status": "pass"
+      },
+      "relationship_adjacency": {
+        "path": "data/explorer/adjacency/manifest.json",
+        "bytes": 44744,
+        "sha256": "b7dd2b31c6035ab66e9bcfff1aa4181ee5cac2bc81f618200b69b5d94c3b4b09",
+        "status": "pass"
+      },
+      "relationship_runtime": {
+        "path": "data/semantic/runtime-manifest.json",
+        "bytes": 42801,
+        "sha256": "50f687e7d5fb5bda21bb538103ba24530d99d66bdeccb57d268e035ce8d3f99b",
+        "status": "pass"
+      },
+      "search_manifest": {
+        "path": "data/explorer/search/manifest.json",
+        "bytes": 22773,
+        "sha256": "25d47dab9b157dc96b27208e67af12d4ac5c35abfb4fb8dd89062cccba4f8707",
+        "status": "pass"
+      }
+    }
+  },
+  "browser_verification": null,
+  "limitations": [
+    "This public-browser observation is AI-agent-assisted, not an independent human accessibility, security, legal, licence, privacy or domain audit.",
+    "The representative public journey does not repeat every locked local journey; promotion also relies on exact deployed-byte identity and the full digest-bound local consumer receipts.",
+    "No representative-user study was performed.",
+    "The bundle remains metadata-only and must not be used for legal, ownership, priority or exact-boundary conclusions.",
+    "Explorer v0.6.3 is recorded as a post-G9 presentation observation; it does not widen the candidate’s governed v0.6.2 compatibility claim."
+  ],
+  "error": {
+    "message": "first result for exact boundary: expected \"Exact line of boundary: registration (DB)\", got \"Business Gateway developer pack\"",
+    "stack": "Error: first result for exact boundary: expected \"Exact line of boundary: registration (DB)\", got \"Business Gateway developer pack\"\n    at assertEqual (file:///private/tmp/verify-landregistry-v030-public.mjs:35:11)\n    at file:///private/tmp/verify-landregistry-v030-public.mjs:219:3"
+  }
+}

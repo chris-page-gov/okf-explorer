@@ -1,0 +1,870 @@
+{
+  "schema_version": "1.1.0",
+  "title": "HM Land Registry v0.3.0 delivery attempt register",
+  "language": "en-GB",
+  "as_of": "2026-08-12",
+  "status": "complete-published",
+  "scope": {
+    "repository": "https://github.com/chris-page-gov/okf-LandRegistry",
+    "release": "v0.3.0",
+    "candidate_commit": "751b6c1e80fbbad3c07f19798c74aebd603eb62c",
+    "candidate_tree": "e2858d97a6b8d495d585e58dfbf6767a06caa13e",
+    "evidence_commit": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc",
+    "release_root": "6a29e38e7bb805aafb7f36ba8d1fa4ce976875f45997049cd4808d6ede7f75e1",
+    "final_g9_manifest_sha256": "3bb0d8ba015df82611db3f705b36bc7b927285468436e0aab81e9f32fc66a232"
+  },
+  "definitions": {
+    "numbered_producer_attempt": "A numbered invocation of the governed candidate-producing sequence, retained whether it succeeds or fails.",
+    "initial": "The first candidate build from the then-frozen inputs.",
+    "corrective_or_replacement": "An attempt required because an earlier candidate was wrong, undeliverable or bound to a superseded dependency.",
+    "reproducibility": "A required clean-checkout build intended to reproduce an existing candidate byte-for-byte.",
+    "numbered_preflight": "A numbered attempt that closed before candidate output was touched.",
+    "separate_no_op_preflight": "A non-numbered inspection that stopped before invoking the producer and did not change candidate bytes.",
+    "ci_verification_build": "CI reconstruction or validation of an already frozen snapshot; not a new local producer candidate.",
+    "token_use_null": "The task record does not expose per-attempt model-token use. Null is evidence of unavailability, not zero."
+  },
+  "summary": {
+    "numbered_producer_attempts": 14,
+    "successful_builds": 11,
+    "failed_or_preflight_closed_numbered_attempts": 3,
+    "initial_attempt_ids": [1],
+    "corrective_or_replacement_attempt_ids": [3, 4, 5, 8, 9, 11, 13],
+    "successful_corrective_or_replacement_attempt_ids": [5, 8, 9, 11, 13],
+    "failed_corrective_attempt_ids": [3, 4],
+    "required_clean_reproduction_attempt_ids": [2, 6, 10, 12, 14],
+    "numbered_preflight_attempt_ids": [7],
+    "separate_no_op_preflight_count": 1,
+    "recorded_ci_verification_builds_outside_numbered_attempts": 3,
+    "land_registry_builds_after_final_build_14": 0,
+    "public_verifier_definition_failures": 3,
+    "subsequent_numbered_attempts_after_initial": 13,
+    "successful_builds_now_superseded": 9,
+    "current_candidate_build_id": 13,
+    "current_reproduction_build_id": 14,
+    "exact_build_time_seconds": null,
+    "partial_numeric_time_seconds": 890.936,
+    "partial_numeric_time_note": "Not a total delivery duration. Builds 8 and 9 have null wall time, several included values are approximate observable windows, and validation, review, CI, waiting and publication time are excluded.",
+    "exact_validation_time_seconds": null,
+    "partial_known_validation_time_seconds": 1263.383,
+    "partial_known_validation_time_note": "Sum of four retained local validation observations after Builds 8, 9, 11 and 13. The runs have mixed test selections and incomplete shell-overhead coverage, and do not constitute total validation time.",
+    "token_use_total": null,
+    "token_use_note": "Per-attempt v0.3.0 token use is unavailable. The historical 213,364-token figure belongs to v0.1 and is excluded."
+  },
+  "release_status": {
+    "g1_to_g9": {
+      "state": "complete",
+      "evidence_commit": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc"
+    },
+    "pull_request_integration": {
+      "state": "complete",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/pull/3"
+    },
+    "release_candidate": {
+      "state": "complete",
+      "tag": "v0.3.0-rc.1",
+      "github_release_id": 368893014,
+      "asset_count": 7
+    },
+    "final_release": {
+      "state": "complete-published-immutable",
+      "tag": "v0.3.0",
+      "tag_object": "d4159f1076c090dd69260a08308f4162859e4165",
+      "tag_target": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc",
+      "github_release_id": 368931199,
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/releases/tag/v0.3.0",
+      "published_at": "2026-08-12T00:46:46Z",
+      "asset_verification": {
+        "state": "passed",
+        "asset_count": 7,
+        "remote_sizes_and_sha256_match": true,
+        "archive_rebuilt_or_repackaged": false
+      },
+      "resolved_issue_url": "https://github.com/chris-page-gov/okf-explorer/issues/90",
+      "hotfix_pull_request_url": "https://github.com/chris-page-gov/okf-explorer/pull/91"
+    },
+    "deployment": {
+      "state": "complete",
+      "workflow_run_id": 31543515600,
+      "workflow_url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543515600",
+      "deployed_commit": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc",
+      "deployed_release_root": "6a29e38e7bb805aafb7f36ba8d1fa4ce976875f45997049cd4808d6ede7f75e1",
+      "outcome": "success"
+    },
+    "public_real_browser_verification": {
+      "state": "complete-passed-after-explorer-hotfix",
+      "site_url": "https://chris-page-gov.github.io/okf-LandRegistry/",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+      "explorer_url": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-LandRegistry%2Fokf-explorer.json&view=reader#overview",
+      "browser": "Chromium 151.0.7922.34",
+      "service_workers": "blocked-for-cache-isolated-verification",
+      "journey_receipt_path": "docs/postmortems/land-registry-v0.3.0/public-verification/receipt.json",
+      "journey_receipt_execution_path": "/private/tmp/okf-landregistry-v030-public-verification/receipt.json",
+      "journey_receipt_sha256": "3511e132a6b3b6d8348f750e977addbccacd5b0b16ba610a2b7c7102b95ce53c",
+      "verifier_sha256": "6fcf8f80f213f4a5d5b0ac827a118733bf800136fbe9163b617c7ba0cc98aa66",
+      "result": "passed",
+      "observed_dataset_groupings": 14,
+      "authoritative_record_count": 2203,
+      "authoritative_resource_count": 2203,
+      "authoritative_relationship_count": 22267,
+      "timeline_record_count": 2203,
+      "semantic_graph_relationship_count": 15,
+      "semantic_graph_predicate": "translation of",
+      "console_errors": 0,
+      "console_warnings": 0,
+      "network_failures": 0,
+      "explorer_release": {
+        "version": "0.6.3",
+        "github_release_id": 368930730,
+        "merge_commit": "c6c8ccd9daaab7600ce8261d0eca587acabf917b",
+        "pages_workflow_run_id": 31549668889,
+        "url": "https://github.com/chris-page-gov/okf-explorer/releases/tag/v0.6.3"
+      },
+      "prior_verifier_definition_failures": 3,
+      "land_registry_bytes_changed_by_hotfix_or_verifier_corrections": false,
+      "search_rank_observations": [14, 1],
+      "search_rank_governed": false,
+      "search_rank_diagnostic_issue_url": "https://github.com/chris-page-gov/okf-explorer/issues/92",
+      "resolved_issue_url": "https://github.com/chris-page-gov/okf-explorer/issues/90",
+      "hotfix_pull_request_url": "https://github.com/chris-page-gov/okf-explorer/pull/91"
+    }
+  },
+  "attempts": [
+    {
+      "id": 1,
+      "label": "initial governed candidate",
+      "classification": "initial",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-superseded",
+      "time_seconds": 67,
+      "time_precision": "approximate",
+      "time_basis": "Recovery-slot creation at 06:30:29 to final checksum at 06:31:36.",
+      "release_root": "2e5b4c82df36c8c4aa9f7f0af6faf54f793d90766c5fc8afc4925c758e14994d",
+      "records": 2203,
+      "assertions": 22226,
+      "cause": "Independent Stage 1 review occurred after freeze and found omitted source families, rights decisions, CPSV-AP material and predicates.",
+      "responsibility": "implementing-agent-sequencing-and-validation",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 2,
+      "label": "required clean reproduction",
+      "classification": "reproducibility",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-byte-identical-superseded",
+      "time_seconds": 66,
+      "time_precision": "recorded-command-duration",
+      "time_basis": "Command recorded one minute six seconds; output complete by 06:49:46.",
+      "release_root": "2e5b4c82df36c8c4aa9f7f0af6faf54f793d90766c5fc8afc4925c758e14994d",
+      "reproduces_attempt": 1,
+      "cause": "Required reproduction of Build 1; avoidable in retrospect because complete governance review should have preceded both builds.",
+      "responsibility": "required-control-amplified-by-agent-sequencing",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 3,
+      "label": "corrective replacement",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": false,
+      "outcome": "failed-live-bundle-unchanged",
+      "time_seconds": 24,
+      "time_precision": "approximate",
+      "time_basis": "Invocation to last retained partial-candidate write.",
+      "partial_candidate_size_reported": "247 MiB",
+      "retained_text_units": 34300652,
+      "retained_text_ceiling": 33554432,
+      "retained_text_excess": 746220,
+      "cause": "Full hydration exceeded the ceiling; tests used one fresh row plus clones or the stale live bundle, and Python/JavaScript mishandled optional review_status.",
+      "responsibility": "implementing-agent-test-design-and-validator-parity",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 4,
+      "label": "corrective retry",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": false,
+      "outcome": "failed-live-bundle-unchanged",
+      "time_seconds": 71,
+      "time_precision": "approximate",
+      "time_basis": "Invocation to last partial-candidate write at 15:21:30.",
+      "partial_candidate_size_reported": "458 MiB",
+      "cause": "The CPSV validator demanded an ATU projection although the governed profile deliberately models England and Wales as dcterms:Location and authorises zero ATU evidence.",
+      "responsibility": "implementing-agent-contract-and-test-contradiction",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 5,
+      "label": "corrected replacement",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-superseded-before-remote-publication",
+      "time_seconds": 75,
+      "time_precision": "approximate",
+      "time_basis": "Invocation through successful atomic exchange.",
+      "release_root": "15035135001312b74c8c52530179ba79fb2bf214d17868f021a128adbf7a7794",
+      "records": 2203,
+      "assertions": 22267,
+      "jsonld_bytes": 113502906,
+      "cause": "Corrected Builds 3 and 4, but the JSON-LD member exceeded the actual GitHub regular-object delivery boundary.",
+      "responsibility": "implementing-agent-delivery-boundary-validation",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 6,
+      "label": "required clean reproduction",
+      "classification": "reproducibility",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-byte-identical-superseded",
+      "time_seconds": 109.016,
+      "time_precision": "approximate-observable-window",
+      "time_basis": "Observable filesystem window; exact shell wall time unavailable.",
+      "release_root": "15035135001312b74c8c52530179ba79fb2bf214d17868f021a128adbf7a7794",
+      "reproduces_attempt": 5,
+      "cause": "Required clean reproduction of Build 5; later GitHub size rejection superseded both candidates.",
+      "responsibility": "required-control-amplified-by-agent-delivery-boundary-error",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 7,
+      "label": "compact-candidate preflight",
+      "classification": "numbered_preflight",
+      "builder_reached": false,
+      "candidate_published_locally": false,
+      "outcome": "failed-closed-before-output",
+      "time_seconds": 0.35,
+      "time_precision": "measured",
+      "time_basis": "Preflight duration.",
+      "cause": "scripts/build.py was absent from the stage-0 index.",
+      "responsibility": "implementing-agent-freeze-and-staging",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 8,
+      "label": "compact replacement",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-superseded",
+      "time_seconds": null,
+      "time_precision": "unavailable",
+      "time_basis": null,
+      "release_root": "6582516f86b50917c09ebac48c806a2db41c4e3bad37dde3e0226419877b8e05",
+      "test_count": 160,
+      "test_seconds": 122.831,
+      "cause": "Compact replacement was later superseded after independent review found text-mode newline portability and required a precise provenance-semantic impact account.",
+      "responsibility": "implementing-agent-portability-and-impact-accounting",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 9,
+      "label": "compact candidate",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-superseded",
+      "time_seconds": null,
+      "time_precision": "unavailable",
+      "time_basis": null,
+      "release_root": "ef33dd436ae051706a6e4e0135d28f3510dfa08c7b730a97b4eb7b6e0ef9fba4",
+      "jsonld_bytes": 94076057,
+      "yamlld_bytes": 104711329,
+      "test_count": 547,
+      "test_seconds": 403.256,
+      "cause": "Built after Build 8 portability and provenance corrections; post-freeze consumer evidence then exposed Explorer search-policy and skip-link focus defects.",
+      "responsibility": "implementing-agent-consumer-assurance-sequencing",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 10,
+      "label": "required clean reproduction",
+      "classification": "reproducibility",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-byte-identical-superseded",
+      "time_seconds": 96,
+      "time_precision": "approximate-observable-window",
+      "time_basis": "Cache creation at 16:54:01 to atomic exchange completion at 16:55:37.",
+      "release_root": "ef33dd436ae051706a6e4e0135d28f3510dfa08c7b730a97b4eb7b6e0ef9fba4",
+      "reproduces_attempt": 9,
+      "cause": "Required clean reproduction; consumer and accessibility checks should have preceded Builds 9 and 10.",
+      "responsibility": "required-control-amplified-by-agent-consumer-assurance-sequencing",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 11,
+      "label": "v0.6.2 consumer replacement",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-superseded",
+      "time_seconds": 96.2,
+      "time_precision": "measured-wall",
+      "time_basis": "96.20 seconds wall, 93.22 seconds user CPU, 1.91 seconds system CPU.",
+      "release_root": "900976ba4b8b610ec2dda2c17cd7e97f31725968f82cd35719748790cc9d24e3",
+      "test_count": 557,
+      "test_seconds": 370.777,
+      "test_shell_wall_seconds": 373.44,
+      "cause": "Explorer v0.6.2 consumer identity, bounded query policy, settled-result contract and focus corrections superseded Build 9/10 evidence.",
+      "responsibility": "implementing-agent-consumer-assurance-sequencing",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 12,
+      "label": "required clean reproduction",
+      "classification": "reproducibility",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-byte-identical-superseded",
+      "time_seconds": 95.53,
+      "time_precision": "measured-wall",
+      "time_basis": "95.53 seconds wall, 93.34 seconds user CPU, 1.70 seconds system CPU.",
+      "release_root": "900976ba4b8b610ec2dda2c17cd7e97f31725968f82cd35719748790cc9d24e3",
+      "reproduces_attempt": 11,
+      "cause": "Required clean reproduction of the v0.6.2-bound candidate.",
+      "responsibility": "required-control",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 13,
+      "label": "tree-identity correction",
+      "classification": "corrective_or_replacement",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-current-candidate",
+      "time_seconds": 94.66,
+      "time_precision": "measured-wall",
+      "time_basis": "94.66 seconds wall time.",
+      "release_root": "6a29e38e7bb805aafb7f36ba8d1fa4ce976875f45997049cd4808d6ede7f75e1",
+      "test_count": 557,
+      "test_seconds": 366.519,
+      "test_shell_wall_seconds": 369.23,
+      "cause": "Formal G5 exposed cross-tool drift between the evaluator's former ICU-like collation and three-field identity and Explorer v0.6.2's recursive UTF-8 bytewise ordering and four-field identity.",
+      "responsibility": "implementing-agent-cross-tool-contract-and-independent-test-design",
+      "avoidable": true,
+      "token_use": null
+    },
+    {
+      "id": 14,
+      "label": "required clean reproduction",
+      "classification": "reproducibility",
+      "builder_reached": true,
+      "candidate_published_locally": true,
+      "outcome": "success-byte-identical-current-reproduction",
+      "time_seconds": 96.18,
+      "time_precision": "measured-wall",
+      "time_basis": "96.18 seconds wall time.",
+      "release_root": "6a29e38e7bb805aafb7f36ba8d1fa4ce976875f45997049cd4808d6ede7f75e1",
+      "reproduces_attempt": 13,
+      "cause": "Required clean reproduction of the corrected final candidate before fresh G1-G8 assurance.",
+      "responsibility": "required-control",
+      "avoidable": false,
+      "token_use": null
+    }
+  ],
+  "validation_observations": [
+    {
+      "after_attempt_id": 8,
+      "selection": "focused-correction-suite",
+      "test_count": 160,
+      "test_seconds": 122.831,
+      "shell_wall_seconds": null
+    },
+    {
+      "after_attempt_id": 9,
+      "selection": "complete-suite-at-that-candidate",
+      "test_count": 547,
+      "test_seconds": 403.256,
+      "shell_wall_seconds": null
+    },
+    {
+      "after_attempt_id": 11,
+      "selection": "complete-suite",
+      "test_count": 557,
+      "test_seconds": 370.777,
+      "shell_wall_seconds": 373.44
+    },
+    {
+      "after_attempt_id": 13,
+      "selection": "complete-suite",
+      "test_count": 557,
+      "test_seconds": 366.519,
+      "shell_wall_seconds": 369.23
+    }
+  ],
+  "non_build_incidents": [
+    {
+      "id": "NBI-001",
+      "category": "environment-preflight",
+      "description": "Focused tests left __pycache__ bytecode in the governed .venv; the pre-Build-11 check stopped before invoking the builder.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-orchestration"
+    },
+    {
+      "id": "NBI-002",
+      "category": "candidate-contamination",
+      "description": "A rebuilt receipt accidentally captured ignored local evaluation/latest-report.json calibration output.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": true,
+      "responsibility": "implementing-agent-input-boundary"
+    },
+    {
+      "id": "NBI-003",
+      "category": "runtime-identity",
+      "description": "Pages used Python 3.13 outside .venv while the governed candidate used CPython 3.12.11 inside .venv.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-workflow-and-environment-contract"
+    },
+    {
+      "id": "NBI-004",
+      "category": "python-invocation",
+      "description": "The agent repeatedly applied build-only -I isolation to repository modules that required the project import path; the correct evidence-check invocation used -B.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-orchestration"
+    },
+    {
+      "id": "NBI-005",
+      "category": "browser-orchestration",
+      "description": "Two browser harnesses shared fixed port 4179 and produced EADDRINUSE before the governed Node 24 journey.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-parallel-orchestration"
+    },
+    {
+      "id": "NBI-006",
+      "category": "consumer-runtime",
+      "description": "Node 26 evidence preceded settlement of the Node 24 lock and could not support the governed candidate.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-dependency-sequencing"
+    },
+    {
+      "id": "NBI-007",
+      "category": "candidate-identity",
+      "description": "Candidate checks initially read ambient worktree state rather than exact candidate blobs and did not prove complete staged closure or ancestry.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-freeze-contract"
+    },
+    {
+      "id": "NBI-008",
+      "category": "receipt-causality",
+      "description": "The build receipt combined causal build inputs with validation, workflow, release-tooling and prose inputs, causing unnecessary root churn.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": true,
+      "responsibility": "implementing-agent-receipt-design"
+    },
+    {
+      "id": "NBI-009",
+      "category": "archive-determinism",
+      "description": "The initial semantic shard gzip header was platform-specific, and locally repeated bytes were incorrectly treated as sufficient cross-platform evidence.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": true,
+      "responsibility": "implementing-agent-portability-design"
+    },
+    {
+      "id": "NBI-010",
+      "category": "evidence-contract",
+      "description": "G8 archive binding was optional and semantic truth of SBOM/provenance content was not initially checked independently of hashes.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-assurance-design"
+    },
+    {
+      "id": "NBI-011",
+      "category": "release-procedure",
+      "description": "The release flow anchored checks to HEAD, omitted real evidence commits, admitted uncommitted evidence and did not initially repeat canonical closure after commit.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-release-design"
+    },
+    {
+      "id": "NBI-012",
+      "category": "release-governance",
+      "description": "The sole developer's inability to self-approve a GitHub pull request and the live administrator-enforcement rule were discovered only after G9.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-preflight-sequencing"
+    },
+    {
+      "id": "NBI-013",
+      "category": "test-oracle",
+      "description": "Tree-identity tests derived expectations from the same obsolete evaluator they were meant to challenge.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": true,
+      "responsibility": "implementing-agent-independent-test-design"
+    },
+    {
+      "id": "NBI-014",
+      "category": "memory-bounds",
+      "description": "The first size-policy correction materialised large artefacts and used about 332 MB peak RSS; streaming correction reduced this to about 31.2 MiB.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": true,
+      "responsibility": "implementing-agent-resource-bound-design"
+    },
+    {
+      "id": "NBI-015",
+      "category": "context-continuity",
+      "description": "Two transcript compactions increased state-recovery risk but did not duplicate a build; the excerpt contains Build 1 and its intentional Build 2 reproduction.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "process-state-not-build-cause"
+    },
+    {
+      "id": "NBI-016",
+      "category": "probe-orchestration",
+      "description": "Read-only probes guessed paths or keys, used zsh reserved names and ran an unsupported lookahead before bounded corrected reruns.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-orchestration"
+    },
+    {
+      "id": "NBI-017",
+      "category": "index-and-metadata-atomicity",
+      "description": "The control used an unstable multi-read Git-index view and left post-check metadata TOCTOU and incomplete rollback paths; versioned path/output validation was also too permissive.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-freeze-and-publication-design"
+    },
+    {
+      "id": "NBI-018",
+      "category": "inherited-assembler",
+      "description": "The inherited evidence assembler had a publication race and partial-set failure mode. The migration had to contain it but did not introduce it.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "inherited-repository-defect"
+    },
+    {
+      "id": "NBI-019",
+      "category": "release-workflow",
+      "description": "A non-triggering approval-variable step and a release-only workflow attached to ordinary pull requests could not enforce the intended release sequence.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-release-design"
+    },
+    {
+      "id": "NBI-020",
+      "category": "validator-parity",
+      "description": "Python and JavaScript used divergent optional-field and pattern grammars, and a whitespace exemption covered source-native CPSV-AP files but not byte-identical generated copies.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-test-and-validator-design"
+    },
+    {
+      "id": "NBI-021",
+      "category": "release-command-dry-run",
+      "description": "The first protected-branch dry run used a zsh-expanded refspec. It failed before contacting or changing the target ref; the corrected literal refspec then succeeded.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-shell-command-construction"
+    },
+    {
+      "id": "NBI-022",
+      "category": "sole-maintainer-governance-exception",
+      "description": "GitHub cannot record native approval by the pull-request author. The owner authorised a transparent one-release exception and temporary relaxation of administrator enforcement for the exact non-force fast-forward; protection was restored and no self-approval was claimed.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "responsibility": "implementing-agent-late-platform-preflight-with-owner-authorised-exception"
+    },
+    {
+      "id": "NBI-023",
+      "category": "explorer-presentation-and-acceptance-coverage",
+      "description": "Public Explorer presentation labelled 14 dataset groupings as HMLR records despite authoritative bundle counts of 2,203 records and 22,267 relationships. Explorer issue #90 and PR #91 track the correction.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "land_registry_data_rebuild_required": false,
+      "final_promotion_was_blocked": true,
+      "final_promotion_is_blocked": false,
+      "resolution": "Explorer v0.6.3 corrected Reader and Timeline, passed exact-head CI and public verification, and was released immutably before unchanged Land Registry promotion.",
+      "resolved_issue_url": "https://github.com/chris-page-gov/okf-explorer/issues/90",
+      "hotfix_pull_request_url": "https://github.com/chris-page-gov/okf-explorer/pull/91",
+      "responsibility": "implementing-agent-presentation-and-acceptance-test-design"
+    },
+    {
+      "id": "NBI-024",
+      "category": "explorer-hotfix-regression-design",
+      "description": "The first count regression gave datasets and records the same value, so it could pass against the broken precedence, and it omitted the same reversed fallback in Timeline. Independent review caught both before merge; the final tests use divergent counts and a separate legacy fallback.",
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "land_registry_data_rebuild_required": false,
+      "explorer_evidence_refresh_was_required": true,
+      "explorer_evidence_refresh_completed": true,
+      "responsibility": "implementing-agent-test-design"
+    },
+    {
+      "id": "NBI-025",
+      "category": "public-verifier-definition",
+      "description": "Three public verifier runs failed because the verifier read pre-query state, required non-contractual right-panel wording, imposed an ungoverned rank-one rule and conflated two frozen journeys. The failures were retained; no repository or bundle byte changed; the final contract-aligned verifier passed.",
+      "failed_verifier_attempts": 3,
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "repository_or_bundle_bytes_changed": false,
+      "final_receipt_sha256": "3511e132a6b3b6d8348f750e977addbccacd5b0b16ba610a2b7c7102b95ce53c",
+      "responsibility": "implementing-agent-verifier-design"
+    },
+    {
+      "id": "NBI-026",
+      "category": "search-ranking-readiness-diagnostic",
+      "description": "Two passing fresh-context observations over identical Explorer and Land Registry identities placed the governed boundary result at ranks 14 and 1. Presence, not rank, was governed; the variation is logged separately and must not be cited as stable performance.",
+      "observed_ranks": [14, 1],
+      "rank_governed": false,
+      "counted_as_build": false,
+      "candidate_bytes_changed": false,
+      "release_blocking": false,
+      "issue_url": "https://github.com/chris-page-gov/okf-explorer/issues/92",
+      "responsibility": "unresolved-explorer-runtime-diagnostic"
+    }
+  ],
+  "ci_verification": [
+    {
+      "workflow_run_id": 31537885306,
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31537885306",
+      "duration_seconds": 1334,
+      "snapshot_build_step_seconds": 335,
+      "outcome": "passed",
+      "purpose": "Exact-head frozen-snapshot build, full test suite, candidate-tree comparison and final G1-G9 validation.",
+      "counted_in_numbered_producer_attempts": false,
+      "created_new_release_root": false,
+      "token_use": null
+    },
+    {
+      "workflow_run_id": 31543262622,
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543262622",
+      "duration_seconds": 1307,
+      "verification_job_seconds": 1303,
+      "snapshot_build_step_seconds": 328,
+      "test_step_seconds": 928,
+      "outcome": "passed",
+      "purpose": "Default-branch verification of the already integrated exact evidence SHA before Pages dispatch.",
+      "counted_in_numbered_producer_attempts": false,
+      "created_new_release_root": false,
+      "token_use": null
+    },
+    {
+      "workflow_run_id": 31543515600,
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543515600",
+      "dispatch_to_completion_seconds": 2252,
+      "queue_seconds": 1081,
+      "verification_job_seconds": 1153,
+      "snapshot_build_step_seconds": 289,
+      "test_step_seconds": 813,
+      "pages_deploy_job_seconds": 13,
+      "pages_deploy_step_seconds": 11,
+      "outcome": "passed-and-deployed",
+      "purpose": "Exact-root dispatch verification and GitHub Pages deployment of evidence commit 1d708e39f2cde19610d43c5a7f5e36e4a2f947bc.",
+      "deployed_commit": "1d708e39f2cde19610d43c5a7f5e36e4a2f947bc",
+      "counted_in_numbered_producer_attempts": false,
+      "created_new_release_root": false,
+      "token_use": null
+    }
+  ],
+  "cross_pack_comparison": {
+    "state": "audit-complete-exact-historical-counts-unavailable-outside-land-registry",
+    "method": "Apply the Land Registry attempt taxonomy only where a durable attempt-by-attempt register exists. Record a lower bound of one validated current state elsewhere without converting that state into an inferred build count.",
+    "stage_exposure_bias": "Land Registry preserves every release stage and failed or superseded attempt. Other producer repositories expose at least one validated surviving state but not comparable complete attempt histories. Missing history must not be interpreted as zero failures or one build.",
+    "packs": [
+      {
+        "repository": "okf-LandRegistry",
+        "current_state": "immutable-v0.3.0-release-with-exact-build-1-to-14-register",
+        "validated_states_minimum": 1,
+        "exact_successful_builds": 11,
+        "exact_producer_attempts": 14,
+        "exact_corrective_or_replacement_attempts": 7,
+        "exact_clean_reproduction_attempts": 5,
+        "exact_failed_or_preflight_closed_outcomes": 3,
+        "exact_build_time_seconds": null,
+        "partial_mixed_precision_build_time_seconds": 890.936,
+        "exact_validation_time_seconds": null,
+        "partial_mixed_coverage_validation_time_seconds": 1263.383,
+        "recorded_causes": "complete-for-all-numbered-attempts",
+        "token_use": null
+      },
+      {
+        "repository": "okf-explorer",
+        "role": "shared-reader-not-producer",
+        "current_state": "released-and-publicly-verified-v0.6.3",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete development-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-ai-infrastructure",
+        "current_state": "released-and-publicly-verified-v0.6.0",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-govuk-content",
+        "current_state": "semantic-implementation-complete-locally-release-work-remains",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-ons",
+        "current_state": "semantic-implementation-complete-locally-candidate-review-and-deployment-remain",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-uk-government-apis",
+        "current_state": "semantic-implementation-complete-locally-candidate-release-and-deployment-remain",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-uk-legislation",
+        "current_state": "semantic-implementation-complete-locally-new-candidate-freeze-and-assurance-remain",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-uk-living",
+        "current_state": "semantic-implementation-complete-locally-specialist-review-release-and-public-verification-remain",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      },
+      {
+        "repository": "okf-testing",
+        "current_state": "local-semantic-contract-fixtures-complete-no-publication-target",
+        "validated_states_minimum": 1,
+        "exact_producer_attempts": null,
+        "exact_corrective_or_replacement_attempts": null,
+        "exact_clean_reproduction_attempts": null,
+        "exact_failed_or_preflight_closed_outcomes": null,
+        "exact_build_time_seconds": null,
+        "exact_validation_time_seconds": null,
+        "recorded_causes": null,
+        "recorded_causes_note": "No comparable complete producer-attempt history was recovered.",
+        "token_use": null
+      }
+    ],
+    "reason_for_null": "The completed audit found no comparable durable attempt register outside Land Registry. Exact counts, times and token figures cannot be reconstructed from the surviving validated state."
+  },
+  "sources": [
+    {
+      "type": "programme-ledger",
+      "path": "docs/okf-0.2-yaml-ld-semantic-authoring.md"
+    },
+    {
+      "type": "pull-request",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/pull/3"
+    },
+    {
+      "type": "workflow-run",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31537885306"
+    },
+    {
+      "type": "workflow-run",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543262622"
+    },
+    {
+      "type": "deployment-workflow-run",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/actions/runs/31543515600"
+    },
+    {
+      "type": "explorer-issue",
+      "url": "https://github.com/chris-page-gov/okf-explorer/issues/90"
+    },
+    {
+      "type": "explorer-pull-request",
+      "url": "https://github.com/chris-page-gov/okf-explorer/pull/91"
+    },
+    {
+      "type": "explorer-release",
+      "url": "https://github.com/chris-page-gov/okf-explorer/releases/tag/v0.6.3",
+      "github_release_id": 368930730
+    },
+    {
+      "type": "explorer-deployment-workflow-run",
+      "url": "https://github.com/chris-page-gov/okf-explorer/actions/runs/31549668889"
+    },
+    {
+      "type": "land-registry-release",
+      "url": "https://github.com/chris-page-gov/okf-LandRegistry/releases/tag/v0.3.0",
+      "github_release_id": 368931199
+    },
+    {
+      "type": "public-browser-receipt",
+      "path": "docs/postmortems/land-registry-v0.3.0/public-verification/receipt.json",
+      "sha256": "3511e132a6b3b6d8348f750e977addbccacd5b0b16ba610a2b7c7102b95ce53c"
+    },
+    {
+      "type": "explorer-diagnostic-issue",
+      "url": "https://github.com/chris-page-gov/okf-explorer/issues/92"
+    }
+  ]
+}
