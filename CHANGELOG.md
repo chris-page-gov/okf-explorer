@@ -54,6 +54,10 @@
   including `.nojekyll`, and added a workflow regression assertion. This keeps
   the downloaded release artefact's complete Site tree identical to its
   candidate receipt rather than silently omitting one governed file.
+- Stabilised the public exploratory-failure browser journey by waiting for its
+  initial fixture corpus to finish loading before replacing the bundle URL.
+  This removes a public-latency race in the release harness without changing
+  the Explorer runtime or its failure behaviour.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 

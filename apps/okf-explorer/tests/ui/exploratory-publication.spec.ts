@@ -202,6 +202,13 @@ test.describe('Explore OKF exploratory publication', () => {
     );
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#bins`);
 
+    // Public Pages can hydrate and finish the initial fixture load after the
+    // input has appeared. Wait for that load to commit before replacing its
+    // URL, otherwise it can restore BUNDLE_URL between fill() and submit.
+    await expect(page.locator('.title-block').getByText(
+      'Coventry everyday-services exploration',
+      { exact: true }
+    )).toBeVisible();
     const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
     await input.fill(failingUrl);
     await page.getByRole('button', { name: 'Load', exact: true }).click();
