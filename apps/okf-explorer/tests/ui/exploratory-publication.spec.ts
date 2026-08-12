@@ -238,6 +238,114 @@ test.describe('Explore OKF exploratory publication', () => {
     )).toBeVisible();
   });
 
+  test('a later URL load supersedes a delayed local-file read', async ({ context, page }) => {
+    await context.addInitScript(() => {
+      const originalText = File.prototype.text;
+      let releaseRead!: () => void;
+      const readGate = new Promise<void>((resolve) => {
+        releaseRead = resolve;
+      });
+      const browserState = globalThis as typeof globalThis & {
+        __releaseSlowFileRead: () => void;
+        __slowFileReadCompleted: boolean;
+      };
+      browserState.__releaseSlowFileRead = releaseRead;
+      browserState.__slowFileReadCompleted = false;
+      File.prototype.text = async function () {
+        if (this.name === 'slow-exploratory-bundle.json') await readGate;
+        const text = await originalText.call(this);
+        if (this.name === 'slow-exploratory-bundle.json') browserState.__slowFileReadCompleted = true;
+        return text;
+      };
+    });
+    await installBundle(context, bundle());
+    let releaseSubmittedBundle!: () => void;
+    const submittedBundleReleased = new Promise<void>((resolve) => {
+      releaseSubmittedBundle = resolve;
+    });
+    let submittedBundleRequested = false;
+    await context.route(DRAFT_BUNDLE_URL, async (route) => {
+      submittedBundleRequested = true;
+      await submittedBundleReleased;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          ...bundle(),
+          meta: { title: 'Explicitly submitted bundle' }
+        })
+      });
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#bins`);
+    await expect(page.locator('.title-block').getByText(
+      'Coventry everyday-services exploration',
+      { exact: true }
+    )).toBeVisible();
+
+    await page.locator('input[type="file"]').setInputFiles(
+      'tests/fixtures/slow-exploratory-bundle.json'
+    );
+    await expect(page.getByText('Loading descriptor and overview...')).toBeVisible();
+
+    const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
+    await input.fill(DRAFT_BUNDLE_URL);
+    await page.getByRole('button', { name: 'Load', exact: true }).click();
+    await expect.poll(() => submittedBundleRequested).toBe(true);
+    await expect(page.getByText('Loading descriptor and overview...')).toBeVisible();
+
+    await page.evaluate(() => {
+      const browserState = globalThis as typeof globalThis & { __releaseSlowFileRead: () => void };
+      browserState.__releaseSlowFileRead();
+    });
+    await expect.poll(() => page.evaluate(() => {
+      const browserState = globalThis as typeof globalThis & { __slowFileReadCompleted: boolean };
+      return browserState.__slowFileReadCompleted;
+    })).toBe(true);
+    await expect(page.getByText('Loading descriptor and overview...')).toBeVisible();
+
+    releaseSubmittedBundle();
+    await expect(page.locator('.title-block').getByText(
+      'Explicitly submitted bundle',
+      { exact: true }
+    )).toBeVisible();
+    await expect(input).toHaveValue(DRAFT_BUNDLE_URL);
+    await expect(page.locator('.title-block').getByText(
+      'Explicitly submitted bundle',
+      { exact: true }
+    )).toBeVisible();
+    await expect(page.getByText('Stale local file', { exact: true })).toHaveCount(0);
+  });
+
+  test('failed local descriptors use the selected file as feedback identity', async ({ context, page }) => {
+    const fileUrl = 'file:///slow-exploratory-bundle.json';
+    await installBundle(context, bundle());
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#bins`);
+    await expect(page.locator('.title-block').getByText(
+      'Coventry everyday-services exploration',
+      { exact: true }
+    )).toBeVisible();
+
+    await page.locator('input[type="file"]').setInputFiles(
+      'tests/fixtures/slow-exploratory-bundle.json'
+    );
+    await expect(page.getByRole('alert').filter({
+      hasText: /large-corpus descriptors need remote chunk URLs/i
+    })).toBeVisible();
+    await expect(page.getByRole('note', { name: 'Exploratory publication notice' })).toBeVisible();
+
+    const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
+    await expect(input).toHaveValue(fileUrl);
+    const feedback = page.getByRole('link', { name: 'Give feedback about this exact view' });
+    let feedbackUrl = new URL((await feedback.getAttribute('href'))!);
+    expect(feedbackUrl.searchParams.get('okf_bundle')).toBe(fileUrl);
+    expect(new URL(feedbackUrl.searchParams.get('okf_review_url')!).searchParams.get('bundle')).toBe(fileUrl);
+
+    await input.fill(DRAFT_BUNDLE_URL);
+    feedbackUrl = new URL((await feedback.getAttribute('href'))!);
+    expect(feedbackUrl.searchParams.get('okf_bundle')).toBe(fileUrl);
+    expect(new URL(feedbackUrl.searchParams.get('okf_review_url')!).searchParams.get('bundle')).toBe(fileUrl);
+  });
+
   test('keeps exploratory noindex fail-safe when subordinate bundle loading fails', async ({ context, page }) => {
     const failingUrl = 'https://exploratory.fixture.test/failing-large.json';
     let releaseInitialBundle!: () => void;
@@ -290,6 +398,16 @@ test.describe('Explore OKF exploratory publication', () => {
     await expect(page.getByRole('note', { name: 'Exploratory publication notice' })).toBeVisible();
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
     await expect(page.getByRole('alert').filter({ hasText: /missing-manifest|json/i })).toBeVisible();
+
+    const feedback = page.getByRole('link', { name: 'Give feedback about this exact view' });
+    let feedbackUrl = new URL((await feedback.getAttribute('href'))!);
+    expect(feedbackUrl.searchParams.get('okf_bundle')).toBe(failingUrl);
+    expect(new URL(feedbackUrl.searchParams.get('okf_review_url')!).searchParams.get('bundle')).toBe(failingUrl);
+
+    await input.fill(DRAFT_BUNDLE_URL);
+    feedbackUrl = new URL((await feedback.getAttribute('href'))!);
+    expect(feedbackUrl.searchParams.get('okf_bundle')).toBe(failingUrl);
+    expect(new URL(feedbackUrl.searchParams.get('okf_review_url')!).searchParams.get('bundle')).toBe(failingUrl);
   });
 
   test('is accessible at a narrow viewport and 200% browser zoom', async ({ context, page }) => {

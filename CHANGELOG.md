@@ -57,9 +57,12 @@
 - Separated the editable bundle-URL draft from the committed loaded-source URL
   so an initial asynchronous load cannot overwrite a person's newly typed URL
   or leak unsubmitted text into copied routes and feedback links. Delayed
-  registry start-up also cannot supersede an explicit load. Added deterministic
-  delayed-registry and delayed-bundle browser regressions before the existing
-  exploratory subordinate-failure assertions.
+  registry start-up and slow local-file reads also cannot supersede a later
+  explicit load or clear its loading state. Accepted remote and local
+  descriptor identities are bound before a later validation or subordinate-
+  hydration failure can expose feedback, so that feedback names the descriptor
+  actually under review. Added deterministic delayed-registry, delayed-bundle
+  and delayed-file browser regressions with exact failure-identity assertions.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 

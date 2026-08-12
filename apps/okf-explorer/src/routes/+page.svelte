@@ -1210,6 +1210,10 @@
         await loadSource(movedTo);
         return;
       }
+      // The fetched descriptor becomes the current review identity before any
+      // subordinate large-corpus resource is awaited. Its exploratory banner
+      // and feedback must still name this descriptor if hydration fails.
+      commitCurrentBundleUrl(fetched.responseUrl, url, bundleInputAtStart);
       const nextExploratoryPublication = parseExploratoryPublication(raw);
       // Commit the fail-safe publication envelope before any subordinate
       // large-corpus resources are awaited. If hydration fails, the parsed
@@ -1252,7 +1256,6 @@
           release_archive_url: federation.overview.descriptor.discovery.release_archive,
           routes: federation.overview.descriptor.discovery.routes
         });
-        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const hash = safeDecodeHash();
         selectedId = hash && hash !== 'overview' && federation.corpus.nodes[hash] ? hash : '';
       } else if (isLargeCorpusDescriptor(raw)) {
@@ -1278,7 +1281,6 @@
           publisher: large.descriptor.publisher,
           license: large.descriptor.license
         });
-        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const params = new URLSearchParams(location.search);
         // The v2 manifest may advertise additional corpus-specific filter keys. Keep
         // syntactically valid URL filters until that manifest is ready, then validate.
@@ -1319,7 +1321,6 @@
         smallQuery = retrieval.query;
         retrievalSort = retrieval.sort;
         history = rememberHistory({ url: resolvedUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
-        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
@@ -1344,7 +1345,7 @@
     }
   }
 
-  function commitLoadedBundleUrl(resolvedUrl: string, requestedUrl: string, inputAtStart: string) {
+  function commitCurrentBundleUrl(resolvedUrl: string, requestedUrl: string, inputAtStart: string) {
     bundleUrl = resolvedUrl;
     if (inputAtStart === requestedUrl && bundleInputUrl === inputAtStart) {
       bundleInputUrl = resolvedUrl;
@@ -1431,7 +1432,7 @@
   async function loadFile(file: File | null) {
     if (!file) return;
     const bundleInputAtStart = bundleInputUrl;
-    loadRequest += 1;
+    const requestId = ++loadRequest;
     largeSearchRequest += 1;
     largeSearchClient?.destroy();
     largeSearchClient = null;
@@ -1475,8 +1476,14 @@
     };
     try {
       const fileUrl = `file:///${encodeURIComponent(file.name)}`;
+      const fileText = await file.text();
+      if (requestId !== loadRequest) return;
+      // A locally selected file becomes the current review identity before
+      // parsing or subtype handling. If later validation fails after exposing
+      // a valid exploratory envelope, feedback must not name an older bundle.
+      commitCurrentBundleUrl(fileUrl, bundleInputAtStart, bundleInputAtStart);
       const raw = parseStructuredDocumentText<Record<string, unknown>>(
-        await file.text(),
+        fileText,
         file.name,
         file.type
       );
@@ -1496,15 +1503,14 @@
         corpus,
         ...(federation ? { federation: federation.overview } : {})
       };
-      bundleUrl = fileUrl;
-      if (bundleInputUrl === bundleInputAtStart) bundleInputUrl = fileUrl;
       geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
       selectedId = Object.keys(corpus.nodes)[0] || '';
     } catch (err) {
+      if (requestId !== loadRequest) return;
       error = err instanceof Error ? err.message : String(err);
     } finally {
-      loading = false;
+      if (requestId === loadRequest) loading = false;
     }
   }
 
