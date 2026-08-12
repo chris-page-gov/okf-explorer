@@ -85,7 +85,10 @@ below.
 2. Wait for **Publish GitHub Pages** to complete for that exact merge commit.
    Record the run URL and download both its unchanged `github-pages` artefact
    and `pages-site-candidate-receipt` evidence before Actions retention expires.
-   The run's `headSha` must equal the recorded merge commit.
+   The run's `headSha` must equal the recorded merge commit. The upload step
+   must preserve hidden files so the artefact includes `.nojekyll`; require the
+   extracted artefact's complete Site tree to match the candidate receipt
+   before using it as release evidence.
 3. Compare the deployed
    `okf-explorer-build-manifest.json` bytes and `tree_sha256` with the manifest
    in that Pages artefact. Also compare the public beginner chapter, `guide.css`

@@ -50,6 +50,10 @@
   longer install from it. Preserved the exact released Heritage
   evaluation-profile bytes while preventing current root workflows and the
   Foundry browser server from using a host interpreter.
+- Preserved hidden publication files in the unchanged GitHub Pages artefact,
+  including `.nojekyll`, and added a workflow regression assertion. This keeps
+  the downloaded release artefact's complete Site tree identical to its
+  candidate receipt rather than silently omitting one governed file.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 
