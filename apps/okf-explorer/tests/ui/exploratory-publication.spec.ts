@@ -4,6 +4,7 @@ import { type BrowserContext } from '@playwright/test';
 import { expect, test } from '../browserDiagnostics';
 
 const BUNDLE_URL = 'https://exploratory.fixture.test/okf-bundle.json';
+const DRAFT_BUNDLE_URL = 'https://exploratory.fixture.test/not-yet-loaded.json';
 const FEEDBACK_URL = 'https://feedback.fixture.test/issues/new?template=explore.yml';
 const SNAPSHOT = 'coventry-everyday-services-2026-08-12';
 const PLANE_ROOT = 'a'.repeat(64);
@@ -106,6 +107,7 @@ test.describe('Explore OKF exploratory publication', () => {
     await installBundle(context, bundle());
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph&q=rubbish&filter.type=Public%20service#bins`);
 
+    await page.getByRole('textbox', { name: 'Bundle or descriptor URL' }).fill(DRAFT_BUNDLE_URL);
     const feedback = page.getByRole('link', { name: 'Give feedback about this exact view' });
     const href = await feedback.getAttribute('href');
     const url = new URL(href!);
@@ -133,6 +135,7 @@ test.describe('Explore OKF exploratory publication', () => {
     await installBundle(context, bundle());
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#bins`);
 
+    await page.getByRole('textbox', { name: 'Bundle or descriptor URL' }).fill(DRAFT_BUNDLE_URL);
     await page.locator('[data-route="council"]').click();
     await expect(page).toHaveURL(/inspect\.node=council/);
     let feedback = new URL(
@@ -145,6 +148,7 @@ test.describe('Explore OKF exploratory publication', () => {
 
     await page.getByRole('button', { name: 'Copy route', exact: true }).click();
     const copied = new URL(await page.evaluate(() => navigator.clipboard.readText()));
+    expect(copied.searchParams.get('bundle')).toBe(BUNDLE_URL);
     expect(copied.searchParams.get('inspect.node')).toBe('council');
 
     await page.goBack();
@@ -178,9 +182,77 @@ test.describe('Explore OKF exploratory publication', () => {
     })).toBeVisible();
   });
 
+  test('a submitted bundle URL supersedes delayed start-up', async ({ context, page }) => {
+    let releaseRegistry!: () => void;
+    const registryReleased = new Promise<void>((resolve) => {
+      releaseRegistry = resolve;
+    });
+    let initialBundleRequests = 0;
+    await context.route('**/okf-registry.json', async (route) => {
+      await registryReleased;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          bundles: [{
+            url: DRAFT_BUNDLE_URL,
+            title: 'Registry completion marker'
+          }]
+        })
+      });
+    });
+    await context.route(BUNDLE_URL, async (route) => {
+      initialBundleRequests += 1;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(bundle())
+      });
+    });
+    await context.route(DRAFT_BUNDLE_URL, async (route) => route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ...bundle(),
+        meta: { title: 'Explicitly submitted bundle' }
+      })
+    }));
+
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#bins`);
+    const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
+    await input.fill(DRAFT_BUNDLE_URL);
+    await page.getByRole('button', { name: 'Load', exact: true }).click();
+    await expect(page.locator('.title-block').getByText(
+      'Explicitly submitted bundle',
+      { exact: true }
+    )).toBeVisible();
+
+    releaseRegistry();
+    await input.focus();
+    await expect(page.getByText('Registry completion marker', { exact: true })).toBeVisible();
+    expect(initialBundleRequests).toBe(0);
+    await expect(input).toHaveValue(DRAFT_BUNDLE_URL);
+    await expect(page.locator('.title-block').getByText(
+      'Explicitly submitted bundle',
+      { exact: true }
+    )).toBeVisible();
+  });
+
   test('keeps exploratory noindex fail-safe when subordinate bundle loading fails', async ({ context, page }) => {
     const failingUrl = 'https://exploratory.fixture.test/failing-large.json';
-    await installBundle(context, bundle());
+    let releaseInitialBundle!: () => void;
+    const initialBundleReleased = new Promise<void>((resolve) => {
+      releaseInitialBundle = resolve;
+    });
+    await context.route(BUNDLE_URL, async (route) => {
+      await initialBundleReleased;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        headers: { 'access-control-allow-origin': '*' },
+        body: JSON.stringify(bundle())
+      });
+    });
     await context.route(failingUrl, async (route) => route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -202,15 +274,16 @@ test.describe('Explore OKF exploratory publication', () => {
     );
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#bins`);
 
-    // Public Pages can hydrate and finish the initial fixture load after the
-    // input has appeared. Wait for that load to commit before replacing its
-    // URL, otherwise it can restore BUNDLE_URL between fill() and submit.
+    const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
+    await expect(page.getByText('Loading descriptor and overview...')).toBeVisible();
+    await input.fill(failingUrl);
+    await expect(input).toHaveValue(failingUrl);
+    releaseInitialBundle();
     await expect(page.locator('.title-block').getByText(
       'Coventry everyday-services exploration',
       { exact: true }
     )).toBeVisible();
-    const input = page.getByRole('textbox', { name: 'Bundle or descriptor URL' });
-    await input.fill(failingUrl);
+    await expect(input).toHaveValue(failingUrl);
     await page.getByRole('button', { name: 'Load', exact: true }).click();
 
     await expect(page.getByText('No bundle loaded')).toBeVisible();

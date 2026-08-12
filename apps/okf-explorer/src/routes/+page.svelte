@@ -406,7 +406,12 @@
     samples: Array<{ title: string; route: string; date: string; periodLabel?: string; catalogueFallback?: boolean }>;
   };
 
+  // Keep the editable draft separate from the URL of the source whose state
+  // is currently presented. An asynchronous load must not overwrite text a
+  // person has entered for their next load or leak that unsubmitted draft
+  // into copied routes and feedback links.
   let bundleUrl = $state(DEFAULT_BUNDLE);
+  let bundleInputUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
   let exploratoryPublication = $state<ExploratoryPublicationResult>({
     state: 'not-exploratory',
@@ -591,7 +596,7 @@
   );
   let bundleSuggestions = $derived(
     [...history, ...registry]
-      .filter((entry) => entry.url && (!bundleUrl || `${entry.title || entry.label || ''} ${entry.url}`.toLowerCase().includes(bundleUrl.toLowerCase())))
+      .filter((entry) => entry.url && (!bundleInputUrl || `${entry.title || entry.label || ''} ${entry.url}`.toLowerCase().includes(bundleInputUrl.toLowerCase())))
       .slice(0, 10)
   );
   let largeResultNames: Set<string> = $derived(new Set(largeResults.map((result) => result.name)));
@@ -692,13 +697,18 @@
   });
 
   async function initialize() {
+    const initialUrl = initialBundleUrl();
+    const loadRequestAtStart = loadRequest;
+    bundleUrl = initialUrl;
+    bundleInputUrl = initialUrl;
     history = loadHistory();
     registry = await loadRegistry(DEFAULT_REGISTRY);
     pins = loadPins();
-    bundleUrl = initialBundleUrl();
     const initialView = initialViewMode();
     if (initialView) activeView = initialView;
-    await loadSource(bundleUrl);
+    // A person can submit a URL while the optional registry is still loading.
+    // Never let delayed start-up supersede that explicit request.
+    if (loadRequest === loadRequestAtStart) await loadSource(initialUrl);
   }
 
   function initialBundleUrl(): string {
@@ -1090,6 +1100,7 @@
     declaredRawSubpath = ''
   ) {
     const requestId = ++loadRequest;
+    const bundleInputAtStart = bundleInputUrl;
     largeSearchRequest += 1;
     const absoluteUrl = toAbsoluteUrl(url);
     loading = true;
@@ -1193,6 +1204,9 @@
       if (requestId !== loadRequest) return;
       const movedTo = movedBundleTarget(raw, fetched.responseUrl);
       if (movedTo) {
+        if (bundleInputAtStart === url && bundleInputUrl === bundleInputAtStart) {
+          bundleInputUrl = movedTo;
+        }
         await loadSource(movedTo);
         return;
       }
@@ -1238,7 +1252,7 @@
           release_archive_url: federation.overview.descriptor.discovery.release_archive,
           routes: federation.overview.descriptor.discovery.routes
         });
-        bundleUrl = resolvedUrl;
+        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const hash = safeDecodeHash();
         selectedId = hash && hash !== 'overview' && federation.corpus.nodes[hash] ? hash : '';
       } else if (isLargeCorpusDescriptor(raw)) {
@@ -1264,7 +1278,7 @@
           publisher: large.descriptor.publisher,
           license: large.descriptor.license
         });
-        bundleUrl = resolvedUrl;
+        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const params = new URLSearchParams(location.search);
         // The v2 manifest may advertise additional corpus-specific filter keys. Keep
         // syntactically valid URL filters until that manifest is ready, then validate.
@@ -1305,7 +1319,7 @@
         smallQuery = retrieval.query;
         retrievalSort = retrieval.sort;
         history = rememberHistory({ url: resolvedUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
-        bundleUrl = resolvedUrl;
+        commitLoadedBundleUrl(resolvedUrl, url, bundleInputAtStart);
         const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
@@ -1330,6 +1344,13 @@
     }
   }
 
+  function commitLoadedBundleUrl(resolvedUrl: string, requestedUrl: string, inputAtStart: string) {
+    bundleUrl = resolvedUrl;
+    if (inputAtStart === requestedUrl && bundleInputUrl === inputAtStart) {
+      bundleInputUrl = resolvedUrl;
+    }
+  }
+
   function loadFederationChild(child: FederationChild) {
     const primary = child.descriptor || child.discovery.routes.find((route) =>
       route.purpose === 'descriptor' ||
@@ -1348,6 +1369,7 @@
     next.hash = 'overview';
     activeView = 'reader';
     replaceState(next, {});
+    bundleInputUrl = primary;
     void loadSource(primary, child.discovery.routes, child.discovery.raw_subpath);
   }
 
@@ -1408,6 +1430,7 @@
 
   async function loadFile(file: File | null) {
     if (!file) return;
+    const bundleInputAtStart = bundleInputUrl;
     loadRequest += 1;
     largeSearchRequest += 1;
     largeSearchClient?.destroy();
@@ -1474,6 +1497,7 @@
         ...(federation ? { federation: federation.overview } : {})
       };
       bundleUrl = fileUrl;
+      if (bundleInputUrl === bundleInputAtStart) bundleInputUrl = fileUrl;
       geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
       selectedId = Object.keys(corpus.nodes)[0] || '';
@@ -6503,13 +6527,16 @@
         <button class:active={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
       {/each}
     </nav>
-    <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void loadSource(bundleUrl); }}>
+    <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void loadSource(bundleInputUrl); }}>
       <div class="bundle-box">
-        <input bind:value={bundleUrl} onfocus={() => (suggestionsOpen = true)} oninput={() => (suggestionsOpen = true)} placeholder="Bundle or descriptor URL" />
+        <input bind:value={bundleInputUrl} onfocus={() => (suggestionsOpen = true)} oninput={() => (suggestionsOpen = true)} placeholder="Bundle or descriptor URL" />
         {#if suggestionsOpen && bundleSuggestions.length}
           <div class="bundle-suggestions">
             {#each bundleSuggestions as suggestion}
-              <button type="button" onclick={() => void loadSource(suggestion.url, suggestion.routes || [], suggestion.raw_subpath || '')}>
+              <button type="button" onclick={() => {
+                bundleInputUrl = suggestion.url;
+                void loadSource(suggestion.url, suggestion.routes || [], suggestion.raw_subpath || '');
+              }}>
                 <strong>{suggestion.title || suggestion.label || suggestion.url}</strong>
                 <span>{suggestion.url}</span>
                 {#if suggestion.version || suggestion.status}<small>{suggestion.version ? `v${suggestion.version}` : ''}{suggestion.version && suggestion.status ? ' · ' : ''}{suggestion.status || ''}</small>{/if}
