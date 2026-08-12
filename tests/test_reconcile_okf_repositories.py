@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import gzip
+import hashlib
 import importlib.util
 import io
 import json
@@ -9,6 +10,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from collections.abc import Callable
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
@@ -25,7 +27,801 @@ sys.modules[SPEC.name] = reconcile
 SPEC.loader.exec_module(reconcile)
 
 
+RICH_RUNTIME_PATH = "large/data/relationship-runtime/manifest.json"
+RICH_CHUNK_PATH = (
+    "large/data/relationship-runtime/planes/core/relationships-000.json.gz"
+)
+RICH_LOCATOR_PATH = "large/data/relationship-runtime/route-locator/manifest.json"
+
+
+def _fixture_json_bytes(value: object) -> bytes:
+    return (
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
+
+
+def _fixture_write_json(path: Path, value: object) -> bytes:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = _fixture_json_bytes(value)
+    path.write_bytes(data)
+    return data
+
+
+def _fixture_write_gzip_json(path: Path, value: object) -> bytes:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = gzip.compress(_fixture_json_bytes(value), mtime=0)
+    path.write_bytes(data)
+    return data
+
+
+def _fixture_digest(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _bind_runtime(repo: Path, runtime: dict[str, object]) -> None:
+    runtime_data = _fixture_write_json(repo / RICH_RUNTIME_PATH, runtime)
+    reference = {
+        "path": RICH_RUNTIME_PATH,
+        "sha256": _fixture_digest(runtime_data),
+        "bytes": len(runtime_data),
+    }
+    descriptor_path = repo / "okf-explorer.json"
+    descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
+    descriptor["entrypoints"]["relationship_runtime"] = reference
+    descriptor["entrypoint_integrity"]["relationship_runtime"] = reference
+    _fixture_write_json(descriptor_path, descriptor)
+    manifest_path = repo / "large/data/manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["indexes"]["relationship_runtime"] = reference
+    _fixture_write_json(manifest_path, manifest)
+
+
+def _bind_locator(
+    repo: Path,
+    locator: dict[str, object],
+    runtime: dict[str, object],
+) -> None:
+    locator_data = _fixture_write_json(repo / RICH_LOCATOR_PATH, locator)
+    runtime["route_locator"]["sha256"] = _fixture_digest(locator_data)  # type: ignore[index]
+    _bind_runtime(repo, runtime)
+
+
+def _rewrite_fixture_chunk(
+    repo: Path,
+    runtime: dict[str, object],
+    mutate: Callable[[dict[str, object]], None],
+) -> None:
+    chunk_path = repo / RICH_CHUNK_PATH
+    rows = json.loads(gzip.decompress(chunk_path.read_bytes()))
+    mutate(rows[0])
+    chunk_data = _fixture_write_gzip_json(chunk_path, rows)
+    chunk = runtime["planes"][0]["chunks"][0]  # type: ignore[index]
+    chunk.update(bytes=len(chunk_data), sha256=_fixture_digest(chunk_data))
+    _bind_runtime(repo, runtime)
+
+
+def _write_rich_runtime_fixture(
+    repo: Path,
+    *,
+    contract_repository_name: str | None = None,
+) -> None:
+    repo.mkdir()
+    (repo / "index.md").write_text(
+        '---\nokf_version: "0.2"\n---\n\n# UK living fixture\n',
+        encoding="utf-8",
+    )
+    _fixture_write_json(
+        repo / "schemas/semantic-assertion.schema.json",
+        {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://example.test/schema/semantic-assertion.json",
+            "type": "object",
+        },
+    )
+    for name, (discriminator, required) in (
+        reconcile.RICH_RUNTIME_SCHEMA_CONTRACTS.items()
+    ):
+        _fixture_write_json(
+            repo / "schemas" / name,
+            {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$id": f"https://example.test/schema/{name}",
+                "type": "object",
+                "required": list(required),
+                "properties": {
+                    **{field: {} for field in required},
+                    "schema": {"const": discriminator},
+                },
+            },
+        )
+    _fixture_write_json(
+        repo / "generated/semantic/life-course-corpus.jsonld",
+        {"@context": {}, "@graph": []},
+    )
+
+    snapshot = "fixture-2026-08-12"
+    assertion_id = "urn:okf:assertion:one"
+    route = "dataset/work-one"
+    row = {
+        "schema": "okf-relationship-runtime-row.v1",
+        "id": assertion_id,
+        "assertion_id": assertion_id,
+        "source": route,
+        "target": route,
+        "source_route": route,
+        "target_route": route,
+        "source_iri": "https://example.test/id/work-one",
+        "target_iri": "https://example.test/id/work-one",
+        "predicate": "https://example.test/vocabulary/related",
+        "predicate_iri": "https://example.test/vocabulary/related",
+        "kind": "related",
+        "label": "is related to",
+        "inverse_label": "is related from",
+        "direction": "source-to-target",
+        "assertion_status": "normalized",
+        "assertion_scope": "real-world",
+        "authority": {
+            "class": "derived",
+            "label": "Fixture derivation",
+            "source": "https://example.test/source",
+        },
+        "derivation": "urn:okf:derivation:fixture",
+        "observed_at": "2026-08-12T00:00:00Z",
+        "evidence": [
+            {
+                "@id": "urn:okf:evidence:fixture",
+                "type": "SourceRecord",
+                "url": "https://example.test/source",
+                "source_field": "fixture",
+                "source_value_sha256": "1" * 64,
+                "retrieved_at": "2026-08-12T00:00:00Z",
+            }
+        ],
+        "rights": {
+            "source": "https://example.test/rights",
+            "assertion": "Fixture rights statement",
+        },
+        "plane": "urn:okf:plane:core",
+        "lifecycle": "active",
+        "active": True,
+    }
+    chunk_data = _fixture_write_gzip_json(repo / RICH_CHUNK_PATH, [row])
+    chunk = {
+        "id": "urn:okf:chunk:core-000",
+        "path": RICH_CHUNK_PATH,
+        "media_type": "application/json",
+        "content_encoding": "gzip",
+        "bytes": len(chunk_data),
+        "sha256": _fixture_digest(chunk_data),
+        "count": 1,
+        "records": 1,
+    }
+
+    prefix = _fixture_digest(route.encode("utf-8"))[:2]
+    bucket_path = (
+        f"large/data/relationship-runtime/route-locator/bucket-{prefix}.json.gz"
+    )
+    assertion_digest = reconcile._rich_runtime_assertion_digest([assertion_id])
+    bucket = {
+        "schema": reconcile.RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA,
+        "hash_algorithm": reconcile.RICH_RUNTIME_LOCATOR_ALGORITHM,
+        "bucket": prefix,
+        "generated_at": "2026-08-12T00:00:00Z",
+        "routes": [
+            {
+                "route": route,
+                "chunks": [RICH_CHUNK_PATH],
+                "planes": [
+                    {
+                        "name": "core",
+                        "chunks": [RICH_CHUNK_PATH],
+                        "assertions": 1,
+                        "assertion_ids_sha256": assertion_digest,
+                    }
+                ],
+            }
+        ],
+        "counts": {"routes": 1, "chunk_references": 1},
+    }
+    bucket_data = _fixture_write_gzip_json(repo / bucket_path, bucket)
+    locator = {
+        "schema": reconcile.RICH_RUNTIME_LOCATOR_SCHEMA,
+        "hash_algorithm": reconcile.RICH_RUNTIME_LOCATOR_ALGORITHM,
+        "generated_at": "2026-08-12T00:00:00Z",
+        "bucket_path_template": (
+            "large/data/relationship-runtime/route-locator/bucket-{prefix}.json.gz"
+        ),
+        "buckets": [
+            {
+                "bucket": prefix,
+                "path": bucket_path,
+                "content_encoding": "gzip",
+                "bytes": len(bucket_data),
+                "sha256": _fixture_digest(bucket_data),
+                "routes": 1,
+                "chunk_references": 1,
+            }
+        ],
+        "counts": {"routes": 1, "buckets": 1, "chunk_references": 1},
+    }
+    locator_data = _fixture_write_json(repo / RICH_LOCATOR_PATH, locator)
+    runtime = {
+        "schema": reconcile.RICH_RUNTIME_SCHEMA,
+        "@id": "urn:okf:runtime:uk-living",
+        "snapshot": snapshot,
+        "generated_at": "2026-08-12T00:00:00Z",
+        "semantic_manifest": "generated/semantic/life-course-corpus.jsonld",
+        "assertion_contract": "schemas/semantic-assertion.schema.json",
+        "row_contract": "schemas/relationship-runtime-row.schema.json",
+        "default_planes": ["core"],
+        "planes": [
+            {
+                "name": "core",
+                "id": "urn:okf:plane:core",
+                "active": True,
+                "lifecycle": "active",
+                "authority_classes": ["derived"],
+                "assertions": 1,
+                "chunks": [chunk],
+            }
+        ],
+        "totals": {
+            "active_assertions": 1,
+            "historical_assertions": 0,
+            "rejected_assertions": 0,
+            "all_assertions": 1,
+            "chunks": 1,
+        },
+        "loading_policy": "bounded-route-hydration",
+        "route_locator": {
+            "id": "urn:okf:route-locator:uk-living",
+            "path": RICH_LOCATOR_PATH,
+            "routes": 1,
+            "buckets": 1,
+            "sha256": _fixture_digest(locator_data),
+        },
+    }
+    _fixture_write_json(
+        repo / "okf-explorer.json",
+        {
+            "okf_version": "0.2",
+            "snapshot": snapshot,
+            "entrypoints": {"data_manifest": "large/data/manifest.json"},
+            "entrypoint_integrity": {},
+        },
+    )
+    _fixture_write_json(
+        repo / "large/data/manifest.json",
+        {"snapshot": snapshot, "indexes": {}},
+    )
+    _bind_runtime(repo, runtime)
+
+    preset = reconcile.PRESETS["okf-uk-living"]
+    contract = reconcile.contract_for(
+        contract_repository_name or repo.name,
+        preset,
+    )
+    contract["semantic_layer"]["profile"] = "https://example.test/profile/"
+    contract["semantic_layer"]["authoritative_inputs"] = ["index.md"]
+    retained_roles = {
+        "explorer-runtime",
+        "relationship-runtime-manifest",
+        "relationship-runtime",
+        "relationship-route-locator",
+        "relationship-runtime-schema",
+        "relationship-schema",
+    }
+    contract["semantic_layer"]["outputs"] = [
+        declaration
+        for declaration in contract["semantic_layer"]["outputs"]
+        if declaration["role"] in retained_roles
+    ]
+    contract["relationship_contract"]["schema"] = (
+        "https://example.test/schema/semantic-assertion.json"
+    )
+    _fixture_write_json(repo / "okf.semantic.json", contract)
+
+
 class ReconcileOkfRepositoriesTests(unittest.TestCase):
+    def test_uk_living_preset_requires_the_reader_rich_runtime_surfaces(self) -> None:
+        preset = reconcile.PRESETS["okf-uk-living"]
+
+        self.assertTrue(preset.requires_rich_relationship_runtime)
+        rich_outputs = {
+            (declaration[0], declaration[1])
+            for declaration in preset.outputs
+            if declaration[1].startswith("relationship-")
+        }
+        self.assertTrue(
+            {
+                (RICH_RUNTIME_PATH, "relationship-runtime-manifest"),
+                (
+                    "large/data/relationship-runtime/planes/*/relationships-*.json.gz",
+                    "relationship-runtime",
+                ),
+                (RICH_LOCATOR_PATH, "relationship-route-locator"),
+                (
+                    "large/data/relationship-runtime/route-locator/bucket-*.json.gz",
+                    "relationship-route-locator",
+                ),
+                (
+                    "schemas/relationship-runtime-row.schema.json",
+                    "relationship-runtime-schema",
+                ),
+            }.issubset(rich_outputs)
+        )
+        self.assertEqual(
+            [],
+            reconcile.contract_errors(
+                reconcile.contract_for("okf-uk-living", preset)
+            ),
+        )
+
+    def test_uk_living_rich_runtime_passes_the_bounded_deep_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertEqual("conformant", result["status"], result)
+            self.assertEqual([], result["errors"])
+            self.assertEqual([], result["warnings"])
+
+    def test_uk_living_runtime_schemas_are_executable_contracts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            schema_path = repo / "schemas/relationship-runtime-row.schema.json"
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            schema["required"].remove("predicate_iri")
+            _fixture_write_json(schema_path, schema)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any(
+                    "omits required Reader fields" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+    def test_uk_living_cannot_self_downgrade_the_reviewed_runtime(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            contract_path = repo / "okf.semantic.json"
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+            contract["semantic_layer"]["outputs"] = [
+                declaration
+                for declaration in contract["semantic_layer"]["outputs"]
+                if declaration["role"]
+                not in {
+                    "relationship-runtime-manifest",
+                    "relationship-runtime",
+                    "relationship-route-locator",
+                    "relationship-runtime-schema",
+                }
+            ]
+            _fixture_write_json(contract_path, contract)
+            descriptor_path = repo / "okf-explorer.json"
+            descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
+            descriptor["entrypoints"].pop("relationship_runtime")
+            descriptor["entrypoint_integrity"].pop("relationship_runtime")
+            _fixture_write_json(descriptor_path, descriptor)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertEqual("non-conformant", result["status"])
+            self.assertTrue(
+                any(
+                    "reviewed preset requires rich relationship runtime output"
+                    in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+            contract_path = repo / "okf.semantic.json"
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+            contract["repository"]["name"] = "self-downgraded-producer"
+            _fixture_write_json(contract_path, contract)
+            renamed = reconcile.audit_repo(
+                repo,
+                strict=True,
+                reviewed_preset="okf-uk-living",
+            )
+            self.assertTrue(
+                any(
+                    "contradicts the explicit reviewed preset" in error
+                    for error in renamed["errors"]
+                ),
+                renamed["errors"],
+            )
+            self.assertTrue(
+                any(
+                    "entrypoints.relationship_runtime" in error
+                    for error in renamed["errors"]
+                ),
+                renamed["errors"],
+            )
+            self.assertTrue(
+                any(
+                    "entrypoints.relationship_runtime" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+    def test_uk_living_rejects_control_plane_and_digest_mutations(self) -> None:
+        mutations = (
+            (
+                "empty defaults",
+                lambda runtime: runtime.update({"default_planes": []}),
+                "default_planes must be a non-empty array",
+            ),
+            (
+                "lifecycle contradiction",
+                lambda runtime: runtime["planes"][0].update(
+                    {"lifecycle": "historical"}
+                ),
+                "lifecycle conflicts with its active flag",
+            ),
+            (
+                "chunk compression declaration",
+                lambda runtime: runtime["planes"][0]["chunks"][0].update(
+                    {"content_encoding": "identity"}
+                ),
+                "must advertise gzip-compressed JSON",
+            ),
+            (
+                "locator digest",
+                lambda runtime: runtime["route_locator"].update(
+                    {"sha256": "0" * 64}
+                ),
+                "route-locator bytes differ from the runtime SHA-256",
+            ),
+        )
+        for label, mutate, expected in mutations:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as directory:
+                repo = Path(directory) / "okf-uk-living"
+                _write_rich_runtime_fixture(repo)
+                runtime = json.loads(
+                    (repo / RICH_RUNTIME_PATH).read_text(encoding="utf-8")
+                )
+                mutate(runtime)
+                _bind_runtime(repo, runtime)
+
+                result = reconcile.audit_repo(repo, strict=True)
+
+                self.assertEqual("non-conformant", result["status"])
+                self.assertTrue(
+                    any(expected in error for error in result["errors"]),
+                    result["errors"],
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            runtime = json.loads(
+                (repo / RICH_RUNTIME_PATH).read_text(encoding="utf-8")
+            )
+            locator = json.loads(
+                (repo / RICH_LOCATOR_PATH).read_text(encoding="utf-8")
+            )
+            bucket_path = repo / locator["buckets"][0]["path"]
+            bucket = json.loads(gzip.decompress(bucket_path.read_bytes()))
+            bucket["routes"][0]["planes"][0]["assertion_ids_sha256"] = "0" * 64
+            bucket_data = _fixture_write_gzip_json(bucket_path, bucket)
+            locator["buckets"][0].update(
+                {"bytes": len(bucket_data), "sha256": _fixture_digest(bucket_data)}
+            )
+            _bind_locator(repo, locator, runtime)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertEqual("non-conformant", result["status"])
+            self.assertTrue(
+                any(
+                    "count or assertion-ID digest does not reconcile" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+    def test_uk_living_rich_rows_match_the_reader_contract(self) -> None:
+        mutations = (
+            (
+                "schema discriminator",
+                lambda row: row.update({"schema": "legacy-row.v1"}),
+                "fails its declared runtime schema at schema",
+            ),
+            (
+                "strict route",
+                lambda row: row.update({"source": "Dataset/work-one"}),
+                "must be a safe local runtime route",
+            ),
+            (
+                "predicate alias",
+                lambda row: row.update(
+                    {"predicate_iri": "https://example.test/vocabulary/other"}
+                ),
+                "predicate aliases differ",
+            ),
+            (
+                "direction",
+                lambda row: row.update({"direction": "undirected"}),
+                "direction or plane binding differs",
+            ),
+            (
+                "status",
+                lambda row: row.update({"assertion_status": "normalised"}),
+                "assertion status is outside the governed contract",
+            ),
+            (
+                "scope",
+                lambda row: row.update({"assertion_scope": "metadata"}),
+                "assertion scope is outside the governed contract",
+            ),
+            (
+                "authority label",
+                lambda row: row["authority"].update({"label": ""}),
+                "authority label must be a non-empty string",
+            ),
+            (
+                "evidence ceiling",
+                lambda row: row.update({"evidence": row["evidence"] * 17}),
+                "16-item evidence ceiling",
+            ),
+            (
+                "rights URL",
+                lambda row: row["rights"].update({"source": "file:///rights"}),
+                "rights source must be a canonical credential-free HTTP(S) URL",
+            ),
+            (
+                "Reader hostname grammar",
+                lambda row: row["rights"].update(
+                    {"source": "https://bad_host.example/rights"}
+                ),
+                "rights source must be a canonical credential-free HTTP(S) URL",
+            ),
+            (
+                "Reader port grammar",
+                lambda row: row["rights"].update(
+                    {"source": "https://example.test:00080/rights"}
+                ),
+                "rights source must be a canonical credential-free HTTP(S) URL",
+            ),
+            (
+                "inference requirements",
+                lambda row: row.update({"assertion_status": "inferred"}),
+                "inference rule must be a non-empty string",
+            ),
+        )
+        for label, mutate, expected in mutations:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as directory:
+                repo = Path(directory) / "okf-uk-living"
+                _write_rich_runtime_fixture(repo)
+                runtime = json.loads(
+                    (repo / RICH_RUNTIME_PATH).read_text(encoding="utf-8")
+                )
+                _rewrite_fixture_chunk(repo, runtime, mutate)
+
+                result = reconcile.audit_repo(repo, strict=True)
+
+                self.assertEqual("non-conformant", result["status"])
+                self.assertTrue(
+                    any(expected in error for error in result["errors"]),
+                    result["errors"],
+                )
+
+    def test_uk_living_rejects_duplicate_chunk_ids_and_row_text_overflow(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            runtime = json.loads(
+                (repo / RICH_RUNTIME_PATH).read_text(encoding="utf-8")
+            )
+            duplicate = copy.deepcopy(runtime["planes"][0]["chunks"][0])
+            duplicate_path = (
+                "large/data/relationship-runtime/planes/core/relationships-001.json.gz"
+            )
+            duplicate["path"] = duplicate_path
+            (repo / duplicate_path).write_bytes((repo / RICH_CHUNK_PATH).read_bytes())
+            runtime["planes"][0]["chunks"].append(duplicate)
+            _bind_runtime(repo, runtime)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any("chunks have duplicate identities" in error for error in result["errors"]),
+                result["errors"],
+            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            runtime = json.loads(
+                (repo / RICH_RUNTIME_PATH).read_text(encoding="utf-8")
+            )
+            _rewrite_fixture_chunk(
+                repo,
+                runtime,
+                lambda row: row.update({"label": "x" * 128}),
+            )
+
+            with patch.object(reconcile, "MAX_RICH_RUNTIME_ROW_TEXT_UNITS", 64):
+                result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any("retained-text ceiling" in error for error in result["errors"]),
+                result["errors"],
+            )
+
+    def test_rich_runtime_numbers_fail_closed_on_unbounded_json_integers(self) -> None:
+        huge = 10**10_000
+
+        with self.assertRaisesRegex(
+            reconcile.ArtifactReadError,
+            "must be a finite number from 0 to 1",
+        ):
+            reconcile._rich_runtime_unit_number(huge, "fixture confidence")
+        with self.assertRaisesRegex(
+            reconcile.ArtifactReadError,
+            "must be a finite number",
+        ):
+            reconcile._rich_runtime_finite_number(huge, "fixture strength")
+
+    def test_rich_runtime_whole_plane_hydration_is_bounded(self) -> None:
+        planes = ["official"]
+        chunks = {"official": ["one", "two"]}
+        rows = {"one": 1, "two": 1}
+
+        with self.assertRaisesRegex(
+            reconcile.ArtifactReadError,
+            "whole-plane hydration.*compressed limit",
+        ):
+            reconcile._validate_rich_runtime_whole_hydration(
+                planes,
+                chunks,
+                rows,
+                {"one": 40 * 1024 * 1024, "two": 40 * 1024 * 1024},
+                {"one": 1, "two": 1},
+            )
+        with self.assertRaisesRegex(
+            reconcile.ArtifactReadError,
+            "whole-plane hydration.*retained-text limit",
+        ):
+            reconcile._validate_rich_runtime_whole_hydration(
+                planes,
+                chunks,
+                rows,
+                {"one": 1, "two": 1},
+                {"one": 20 * 1024 * 1024, "two": 20 * 1024 * 1024},
+            )
+
+    def test_rich_runtime_json_rejects_browser_invalid_numbers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "numbers.json"
+            for payload in (
+                b'{"strength":NaN}',
+                b'{"strength":' + b"9" * 10_000 + b"}",
+            ):
+                with self.subTest(prefix=payload[:24]):
+                    path.write_bytes(payload)
+                    with self.assertRaisesRegex(
+                        reconcile.ArtifactReadError,
+                        "invalid fixture numbers",
+                    ):
+                        reconcile._rich_runtime_json(path, "fixture numbers")
+
+    def test_rich_runtime_gzip_decode_is_bounded_after_commitment_checks(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bomb.json.gz"
+            data = gzip.compress(json.dumps({"pad": "x" * 4096}).encode(), mtime=0)
+            path.write_bytes(data)
+
+            with self.assertRaisesRegex(
+                reconcile.ArtifactReadError,
+                "decoded document exceeds the 64-byte audit limit",
+            ):
+                reconcile._rich_runtime_json(
+                    path,
+                    "fixture gzip",
+                    expected_bytes=len(data),
+                    expected_hash=_fixture_digest(data),
+                    decoded_limit=64,
+                )
+
+            path.write_bytes(b"not gzip")
+            with self.assertRaisesRegex(
+                reconcile.ArtifactReadError,
+                "compressed bytes differ from its commitment",
+            ):
+                reconcile._rich_runtime_json(
+                    path,
+                    "fixture gzip",
+                    expected_bytes=8,
+                    expected_hash="0" * 64,
+                    decoded_limit=64,
+                )
+
+    def test_uk_living_entrypoint_integrity_bytes_must_agree(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            descriptor_path = repo / "okf-explorer.json"
+            descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
+            descriptor["entrypoints"]["relationship_runtime"]["bytes"] += 1
+            _fixture_write_json(descriptor_path, descriptor)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any(
+                    "entrypoint and integrity byte counts differ" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+    def test_contract_identity_gates_renamed_worktrees_and_rejects_conflicts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "renamed-worktree"
+            _write_rich_runtime_fixture(
+                repo,
+                contract_repository_name="okf-uk-living",
+            )
+            descriptor_path = repo / "okf-explorer.json"
+            descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
+            descriptor["entrypoints"].pop("relationship_runtime")
+            descriptor["entrypoint_integrity"].pop("relationship_runtime")
+            _fixture_write_json(descriptor_path, descriptor)
+
+            unbound = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any(
+                    "rerun with --preset okf-uk-living" in error
+                    for error in unbound["errors"]
+                ),
+                unbound["errors"],
+            )
+
+            result = reconcile.audit_repo(
+                repo,
+                strict=True,
+                reviewed_preset="okf-uk-living",
+            )
+
+            self.assertTrue(
+                any(
+                    "entrypoints.relationship_runtime" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-living"
+            _write_rich_runtime_fixture(repo)
+            contract_path = repo / "okf.semantic.json"
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+            contract["repository"]["name"] = "okf-testing"
+            _fixture_write_json(contract_path, contract)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertTrue(
+                any(
+                    "contradicts the reviewed repository directory identity" in error
+                    for error in result["errors"]
+                ),
+                result["errors"],
+            )
+
     def test_compressed_json_ld_is_a_supported_semantic_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "assertions-0.jsonld.gz"

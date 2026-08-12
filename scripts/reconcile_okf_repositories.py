@@ -13,7 +13,9 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import io
 import json
+import math
 import os
 import re
 import stat
@@ -145,9 +147,86 @@ AGENT_START = "<!-- okf-semantic-contract:start -->"
 AGENT_END = "<!-- okf-semantic-contract:end -->"
 ABSOLUTE_IRI = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:[^\s]+$")
 LOCAL_RUNTIME_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._~/-]*$")
+RICH_RUNTIME_ROUTE = re.compile(
+    r"^[a-z][a-z0-9-]*(?:/[A-Za-z0-9._~-]+)+$"
+)
+RICH_RUNTIME_HTTP_URL = re.compile(
+    r"^https?://(?:\[[0-9A-Fa-f:.]+\]|"
+    r"[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)"
+    r"(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|"
+    r"65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)",
+    re.IGNORECASE,
+)
 MAX_AUDIT_FILE_BYTES = 64 * 1024 * 1024
 MAX_AUDIT_DECODED_BYTES = 64 * 1024 * 1024
 MAX_AUDIT_GLOB_MATCHES = 10_000
+MAX_RICH_RUNTIME_PLANES = 16
+MAX_RICH_RUNTIME_CHUNKS = 10_000
+MAX_RICH_RUNTIME_ROWS = 1_000_000
+MAX_RICH_RUNTIME_CHUNK_ROWS = 50_000
+MAX_RICH_RUNTIME_CHUNK_BYTES = 8 * 1024 * 1024
+MAX_RICH_RUNTIME_ROUTE_CHUNKS = 64
+MAX_RICH_RUNTIME_ROUTE_ROWS = 100_000
+MAX_RICH_RUNTIME_ROUTE_COMPRESSED_BYTES = 64 * 1024 * 1024
+MAX_RICH_RUNTIME_WHOLE_ROWS = 300_000
+MAX_RICH_RUNTIME_RETAINED_TEXT_UNITS = 32 * 1024 * 1024
+MAX_RICH_RUNTIME_ROW_TEXT_UNITS = 32 * 1024
+MAX_RICH_RUNTIME_EVIDENCE_ITEMS = 16
+MAX_RICH_RUNTIME_SUPPORTING_ASSERTIONS = 128
+RICH_RUNTIME_SCHEMA = "okf-rich-relationship-runtime-manifest.v1"
+RICH_RUNTIME_ROW_SCHEMA = "okf-relationship-runtime-row.v1"
+RICH_RUNTIME_LOCATOR_SCHEMA = "okf-rich-relationship-route-locator.v1"
+RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA = (
+    "okf-rich-relationship-route-locator-bucket.v1"
+)
+RICH_RUNTIME_LOCATOR_ALGORITHM = "sha256-utf8-first-byte-hex"
+RICH_RUNTIME_LIFECYCLES = {"active", "historical", "rejected"}
+RICH_RUNTIME_ASSERTION_STATUSES = {
+    "official",
+    "normalized",
+    "inferred",
+    "model-derived",
+}
+RICH_RUNTIME_ASSERTION_SCOPES = {"real-world", "synthetic-fixture"}
+RICH_RUNTIME_AUTHORITY_CLASSES = {
+    "official",
+    "derived",
+    "model-assisted",
+    "synthetic",
+    "unclassified",
+}
+SHA256 = re.compile(r"^[0-9a-f]{64}$")
+RICH_RUNTIME_SCHEMA_CONTRACTS: dict[str, tuple[str, tuple[str, ...]]] = {
+    "relationship-runtime-row.schema.json": (
+        RICH_RUNTIME_ROW_SCHEMA,
+        (
+            "schema", "id", "assertion_id", "source", "target",
+            "source_iri", "target_iri", "predicate", "predicate_iri", "kind",
+            "label", "inverse_label", "direction", "assertion_status",
+            "assertion_scope", "authority", "derivation", "observed_at",
+            "evidence", "rights", "plane", "lifecycle", "active",
+        ),
+    ),
+    "relationship-runtime-manifest.schema.json": (
+        RICH_RUNTIME_SCHEMA,
+        (
+            "@id", "schema", "snapshot", "generated_at", "semantic_manifest",
+            "assertion_contract", "row_contract", "default_planes",
+            "route_locator", "planes", "totals", "loading_policy",
+        ),
+    ),
+    "relationship-route-locator.schema.json": (
+        RICH_RUNTIME_LOCATOR_SCHEMA,
+        (
+            "schema", "generated_at", "hash_algorithm", "bucket_path_template",
+            "buckets", "counts",
+        ),
+    ),
+    "relationship-route-locator-bucket.schema.json": (
+        RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA,
+        ("schema", "generated_at", "hash_algorithm", "bucket", "routes", "counts"),
+    ),
+}
 
 
 class ArtifactReadError(ValueError):
@@ -212,6 +291,7 @@ class Preset:
     runtime_projection_endpoints: tuple[str, ...] = ()
     semantic_authority_endpoints: tuple[str, ...] = ()
     setup: tuple[str, ...] = ()
+    requires_rich_relationship_runtime: bool = False
 
 
 PRESETS: dict[str, Preset] = {
@@ -346,8 +426,14 @@ PRESETS: dict[str, Preset] = {
             ("generated/semantic/life-course-corpus.yamlld", "semantic-yaml-ld", True),
             ("generated/semantic/life-course-corpus.jsonld", "semantic-json-ld", True),
             ("okf-explorer.json", "explorer-runtime", True),
-            ("large/data/relationships-0.json", "relationship-runtime", True),
-            ("large/data/relationship-adjacency/*.json", "relationship-route-locator", True),
+            ("large/data/relationship-runtime/manifest.json", "relationship-runtime-manifest", True),
+            ("large/data/relationship-runtime/planes/*/relationships-*.json.gz", "relationship-runtime", True),
+            ("large/data/relationship-runtime/route-locator/manifest.json", "relationship-route-locator", True),
+            ("large/data/relationship-runtime/route-locator/bucket-*.json.gz", "relationship-route-locator", True),
+            ("schemas/relationship-runtime-row.schema.json", "relationship-runtime-schema", True, False),
+            ("schemas/relationship-runtime-manifest.schema.json", "relationship-runtime-schema", True, False),
+            ("schemas/relationship-route-locator.schema.json", "relationship-runtime-schema", True, False),
+            ("schemas/relationship-route-locator-bucket.schema.json", "relationship-runtime-schema", True, False),
             ("schemas/semantic-assertion.schema.json", "relationship-schema", True, False),
             ("generated/semantic/validation-report.json", "semantic-validation", True),
             ("large/data/validation-report.json", "semantic-validation", True),
@@ -356,6 +442,7 @@ PRESETS: dict[str, Preset] = {
         ("uv run --locked python scripts/build_large_corpus.py",),
         ("uv run --locked python scripts/build_large_corpus.py --check", "uv run --locked python scripts/check_large_projection.py", "uv run --locked python -m unittest discover -s tests"),
         ("Relationship assertions use absolute semantic IDs and predicates while retaining local Explorer routes; publication remains subject to the repository's existing review and release gates.",),
+        requires_rich_relationship_runtime=True,
     ),
     "okf-testing": Preset(
         "conformance-fixtures", "index.md", "generated-yaml-ld-graph",
@@ -1612,7 +1699,1480 @@ def semantic_assertion_errors(row: dict[str, Any], label: str) -> list[str]:
     return errors
 
 
-def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
+def _rich_runtime_string(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not value or value.strip() != value:
+        raise ArtifactReadError(f"{label} must be a non-empty string")
+    return value
+
+
+def _rich_runtime_integer(value: Any, label: str, minimum: int = 0) -> int:
+    if (
+        not isinstance(value, int)
+        or isinstance(value, bool)
+        or value < minimum
+        or value > 2**53 - 1
+    ):
+        raise ArtifactReadError(
+            f"{label} must be a safe integer greater than or equal to {minimum}"
+        )
+    return value
+
+
+def _rich_runtime_hash(value: Any, label: str) -> str:
+    digest = _rich_runtime_string(value, label).lower()
+    if not SHA256.fullmatch(digest):
+        raise ArtifactReadError(f"{label} must be a lowercase SHA-256 digest")
+    return digest
+
+
+def _rich_runtime_iri(value: Any, label: str) -> str:
+    iri = _rich_runtime_string(value, label)
+    if not contract_uri(iri):
+        raise ArtifactReadError(f"{label} must be an absolute IRI")
+    return iri
+
+
+def _rich_runtime_local_route(value: Any, label: str) -> str:
+    route = _rich_runtime_string(value, label)
+    if not RICH_RUNTIME_ROUTE.fullmatch(route):
+        raise ArtifactReadError(f"{label} must be a safe local runtime route")
+    return route
+
+
+def _rich_runtime_http_url(value: Any, label: str) -> str:
+    url = (
+        safe_http_url(value)
+        if isinstance(value, str) and RICH_RUNTIME_HTTP_URL.match(value)
+        else ""
+    )
+    if not url:
+        raise ArtifactReadError(
+            f"{label} must be a canonical credential-free HTTP(S) URL"
+        )
+    return url
+
+
+def _rich_runtime_unit_number(value: Any, label: str) -> float:
+    try:
+        valid = (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and math.isfinite(value)
+            and 0 <= value <= 1
+        )
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise ArtifactReadError(f"{label} must be a finite number from 0 to 1")
+    return value
+
+
+def _rich_runtime_finite_number(value: Any, label: str) -> float:
+    try:
+        valid = (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and math.isfinite(value)
+        )
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise ArtifactReadError(f"{label} must be a finite number")
+    return value
+
+
+def _rich_runtime_optional_text(
+    source: dict[str, Any], field: str, label: str
+) -> str | None:
+    if field not in source:
+        return None
+    value = source[field]
+    if not isinstance(value, str):
+        raise ArtifactReadError(f"{label} must be a string")
+    return value
+
+
+def _rich_runtime_text_units(value: Any) -> int:
+    """Count JavaScript UTF-16 string units retained by the Reader projection."""
+    if isinstance(value, str):
+        return sum(2 if ord(character) > 0xFFFF else 1 for character in value)
+    if isinstance(value, list):
+        return sum(_rich_runtime_text_units(item) for item in value)
+    if isinstance(value, dict):
+        return sum(_rich_runtime_text_units(item) for item in value.values())
+    return 0
+
+
+def _rich_runtime_evidence(value: Any, label: str) -> dict[str, Any]:
+    evidence = _rich_runtime_object(value, label)
+    projected: dict[str, Any] = {
+        "@id": _rich_runtime_iri(evidence.get("@id"), f"{label} id"),
+        "type": _rich_runtime_string(evidence.get("type"), f"{label} type"),
+        "url": _rich_runtime_http_url(evidence.get("url"), f"{label} URL"),
+        "source_field": _rich_runtime_string(
+            evidence.get("source_field"), f"{label} source field"
+        ),
+        "source_value_sha256": _rich_runtime_hash(
+            evidence.get("source_value_sha256"),
+            f"{label} source-value SHA-256",
+        ),
+        "retrieved_at": _rich_runtime_string(
+            evidence.get("retrieved_at"), f"{label} retrieval time"
+        ),
+    }
+    if "resource" in evidence:
+        projected["resource"] = _rich_runtime_http_url(
+            evidence.get("resource"), f"{label} resource"
+        )
+    for field in ("normalization", "rule_id"):
+        if field in evidence:
+            projected[field] = _rich_runtime_iri(
+                evidence.get(field), f"{label} {field}"
+            )
+    for field in ("source_sha256", "literal_sha256"):
+        if field in evidence:
+            projected[field] = _rich_runtime_hash(
+                evidence.get(field), f"{label} {field}"
+            )
+    for field in (
+        "source_artifact",
+        "field_provenance",
+        "source_value",
+        "source_value_hash_canonicalization",
+        "value",
+        "rationale",
+        "locator",
+        "source_locator",
+    ):
+        text = _rich_runtime_optional_text(evidence, field, f"{label} {field}")
+        if text is not None:
+            projected[field] = text
+    return projected
+
+
+def _validate_rich_runtime_row(
+    row: dict[str, Any],
+    label: str,
+    *,
+    plane_id: str,
+    plane_active: bool,
+    plane_lifecycle: str,
+    authority_classes: set[str],
+    identifiers: set[str],
+    schema_validator: Any,
+) -> tuple[str, str, str, int]:
+    """Validate and reduce one row exactly as the bounded Reader does."""
+    _rich_runtime_apply_schema(schema_validator, row, label)
+    if row.get("schema") != RICH_RUNTIME_ROW_SCHEMA:
+        raise ArtifactReadError(f"{label} schema is unsupported")
+    identifier = _rich_runtime_iri(row.get("id"), f"{label} id")
+    assertion_id = _rich_runtime_iri(
+        row.get("assertion_id"), f"{label} assertion id"
+    )
+    if identifier != assertion_id or identifier in identifiers:
+        raise ArtifactReadError(
+            f"{label} has a mismatched or duplicate assertion identity"
+        )
+    identifiers.add(identifier)
+    source = _rich_runtime_local_route(row.get("source"), f"{label} source")
+    target = _rich_runtime_local_route(row.get("target"), f"{label} target")
+    for field, expected in (("source_route", source), ("target_route", target)):
+        if field in row and _rich_runtime_local_route(
+            row.get(field), f"{label} {field.replace('_', ' ')}"
+        ) != expected:
+            raise ArtifactReadError(f"{label} route aliases differ")
+    source_iri = _rich_runtime_iri(row.get("source_iri"), f"{label} source IRI")
+    target_iri = _rich_runtime_iri(row.get("target_iri"), f"{label} target IRI")
+    predicate = _rich_runtime_iri(row.get("predicate"), f"{label} predicate")
+    if _rich_runtime_iri(
+        row.get("predicate_iri"), f"{label} predicate IRI"
+    ) != predicate:
+        raise ArtifactReadError(f"{label} predicate aliases differ")
+    if (
+        row.get("direction") != "source-to-target"
+        or not isinstance(row.get("active"), bool)
+        or row.get("active") is not plane_active
+        or _rich_runtime_iri(row.get("plane"), f"{label} plane") != plane_id
+    ):
+        raise ArtifactReadError(f"{label} direction or plane binding differs")
+
+    status = _rich_runtime_string(
+        row.get("assertion_status"), f"{label} assertion status"
+    )
+    scope = _rich_runtime_string(
+        row.get("assertion_scope"), f"{label} assertion scope"
+    )
+    if status not in RICH_RUNTIME_ASSERTION_STATUSES:
+        raise ArtifactReadError(
+            f"{label} assertion status is outside the governed contract"
+        )
+    if scope not in RICH_RUNTIME_ASSERTION_SCOPES:
+        raise ArtifactReadError(
+            f"{label} assertion scope is outside the governed contract"
+        )
+    authority = _rich_runtime_object(row.get("authority"), f"{label} authority")
+    authority_class = _rich_runtime_string(
+        authority.get("class"), f"{label} authority class"
+    )
+    if (
+        authority_class not in RICH_RUNTIME_AUTHORITY_CLASSES
+        or authority_class not in authority_classes
+    ):
+        raise ArtifactReadError(f"{label} authority is outside its declared plane")
+    authority_label = _rich_runtime_string(
+        authority.get("label"), f"{label} authority label"
+    )
+    authority_source = _rich_runtime_http_url(
+        authority.get("source"), f"{label} authority source"
+    )
+    expected_authority = (
+        "synthetic"
+        if scope == "synthetic-fixture"
+        else {
+            "official": "official",
+            "normalized": "derived",
+            "inferred": "derived",
+            "model-derived": "model-assisted",
+        }[status]
+    )
+    if authority_class != expected_authority:
+        raise ArtifactReadError(
+            f"{label} authority conflicts with its assertion status and scope"
+        )
+
+    evidence_values = row.get("evidence")
+    if not isinstance(evidence_values, list) or not evidence_values:
+        raise ArtifactReadError(f"{label} has no evidence")
+    if len(evidence_values) > MAX_RICH_RUNTIME_EVIDENCE_ITEMS:
+        raise ArtifactReadError(
+            f"{label} exceeds the {MAX_RICH_RUNTIME_EVIDENCE_ITEMS}-item evidence ceiling"
+        )
+    evidence_ids: set[str] = set()
+    projected_evidence: list[dict[str, Any]] = []
+    for evidence_index, value in enumerate(evidence_values):
+        evidence_label = f"{label} evidence {evidence_index}"
+        evidence = _rich_runtime_evidence(value, evidence_label)
+        evidence_id = str(evidence["@id"])
+        if evidence_id in evidence_ids:
+            raise ArtifactReadError(f"{label} repeats an evidence identity")
+        evidence_ids.add(evidence_id)
+        projected_evidence.append(evidence)
+
+    rights = _rich_runtime_object(row.get("rights"), f"{label} rights")
+    rights_source = _rich_runtime_http_url(
+        rights.get("source"), f"{label} rights source"
+    )
+    rights_assertion = _rich_runtime_string(
+        rights.get("assertion"), f"{label} rights assertion"
+    )
+    derivation = _rich_runtime_iri(row.get("derivation"), f"{label} derivation")
+    observed_at = _rich_runtime_string(
+        row.get("observed_at"), f"{label} observation time"
+    )
+    kind = _rich_runtime_string(row.get("kind"), f"{label} kind")
+    relationship_label = _rich_runtime_string(row.get("label"), f"{label} label")
+    inverse_label = _rich_runtime_string(
+        row.get("inverse_label"), f"{label} inverse label"
+    )
+    review_status = (
+        _rich_runtime_string(row.get("review_status"), f"{label} review status")
+        if "review_status" in row
+        else None
+    )
+    rule: str | None = None
+    derivation_activity: str | None = None
+    confidence_score: float | None = None
+    supporting_assertions: list[str] | None = None
+    if status == "inferred":
+        rule = _rich_runtime_iri(row.get("rule"), f"{label} inference rule")
+        derivation_activity = _rich_runtime_iri(
+            row.get("derivation_activity"), f"{label} derivation activity"
+        )
+        confidence_score = _rich_runtime_unit_number(
+            row.get("confidence_score"), f"{label} confidence score"
+        )
+        values = row.get("supporting_assertions")
+        if not isinstance(values, list) or not values:
+            raise ArtifactReadError(
+                f"{label} inferred assertion has no supporting assertions"
+            )
+        if len(values) > MAX_RICH_RUNTIME_SUPPORTING_ASSERTIONS:
+            raise ArtifactReadError(
+                f"{label} exceeds the {MAX_RICH_RUNTIME_SUPPORTING_ASSERTIONS}-item "
+                "supporting-assertion ceiling"
+            )
+        supporting_assertions = [
+            _rich_runtime_iri(value, f"{label} supporting assertion {index}")
+            for index, value in enumerate(values)
+        ]
+    elif status == "model-derived":
+        derivation_activity = _rich_runtime_iri(
+            row.get("derivation_activity"), f"{label} derivation activity"
+        )
+        confidence_score = _rich_runtime_unit_number(
+            row.get("confidence_score"), f"{label} confidence score"
+        )
+        if not review_status:
+            raise ArtifactReadError(
+                f"{label} model-derived assertion requires review status"
+            )
+
+    projected: dict[str, Any] = {
+        "schema": RICH_RUNTIME_ROW_SCHEMA,
+        "id": identifier,
+        "assertion_id": assertion_id,
+        "source": source,
+        "target": target,
+        "source_route": source,
+        "target_route": target,
+        "source_iri": source_iri,
+        "target_iri": target_iri,
+        "predicate": predicate,
+        "predicate_iri": predicate,
+        "kind": kind,
+        "label": relationship_label,
+        "inverse_label": inverse_label,
+        "direction": "source-to-target",
+        "assertion_status": status,
+        "assertion_scope": scope,
+        "authority": {
+            "class": authority_class,
+            "label": authority_label,
+            "source": authority_source,
+        },
+        "derivation": derivation,
+        "observed_at": observed_at,
+        "evidence": projected_evidence,
+        "rights": {"source": rights_source, "assertion": rights_assertion},
+        "plane": plane_id,
+        "lifecycle": plane_lifecycle,
+        "active": plane_active,
+    }
+    if rule is not None:
+        projected["rule"] = rule
+    if derivation_activity is not None:
+        projected["derivation_activity"] = derivation_activity
+    if confidence_score is not None:
+        projected["confidence_score"] = confidence_score
+    if supporting_assertions is not None:
+        projected["supporting_assertions"] = supporting_assertions
+    if review_status is not None:
+        projected["review_status"] = review_status
+    for field in ("stale_after", "freshness", "support_profile"):
+        text = _rich_runtime_optional_text(row, field, f"{label} {field}")
+        if text is not None:
+            projected[field] = text
+    if "confidence" in row:
+        confidence = row.get("confidence")
+        if not isinstance(confidence, str):
+            confidence = _rich_runtime_finite_number(
+                confidence, f"{label} confidence"
+            )
+        projected["confidence"] = confidence
+    for field in ("strength", "count"):
+        if field in row:
+            projected[field] = _rich_runtime_finite_number(
+                row.get(field), f"{label} {field}"
+            )
+    if "official_legal_classification" in row:
+        if not isinstance(row.get("official_legal_classification"), bool):
+            raise ArtifactReadError(
+                f"{label} official legal classification must be boolean"
+            )
+        projected["official_legal_classification"] = row[
+            "official_legal_classification"
+        ]
+
+    retained_units = _rich_runtime_text_units(projected)
+    if retained_units > MAX_RICH_RUNTIME_ROW_TEXT_UNITS:
+        raise ArtifactReadError(
+            f"{label} exceeds the {MAX_RICH_RUNTIME_ROW_TEXT_UNITS}-unit "
+            "retained-text ceiling"
+        )
+    return assertion_id, source, target, retained_units
+
+
+def _rich_runtime_path(repo: Path, value: Any, label: str) -> tuple[str, Path]:
+    relative = _rich_runtime_string(value, label)
+    if not safe_repository_path(relative):
+        raise ArtifactReadError(f"{label} must be a safe repository-relative path")
+    try:
+        path = contained_repository_path(repo, relative)
+    except ValueError as exc:
+        raise ArtifactReadError(f"{label} is invalid: {exc}") from exc
+    return relative, path
+
+
+def _rich_runtime_reference(value: Any, label: str) -> tuple[str, str, int | None]:
+    if isinstance(value, str):
+        return value, "", None
+    if not isinstance(value, dict):
+        raise ArtifactReadError(f"{label} must be a path or resource object")
+    path = _rich_runtime_string(value.get("path"), f"{label} path")
+    digest = (
+        _rich_runtime_hash(value.get("sha256"), f"{label} SHA-256")
+        if value.get("sha256") is not None
+        else ""
+    )
+    size = (
+        _rich_runtime_integer(value.get("bytes"), f"{label} bytes", 1)
+        if value.get("bytes") is not None
+        else None
+    )
+    return path, digest, size
+
+
+def _rich_runtime_object(value: Any, label: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ArtifactReadError(f"{label} must be a JSON object")
+    return value
+
+
+def _rich_runtime_array(value: Any, label: str, *, non_empty: bool = True) -> list[Any]:
+    if not isinstance(value, list) or (non_empty and not value):
+        qualifier = "non-empty " if non_empty else ""
+        raise ArtifactReadError(f"{label} must be a {qualifier}array")
+    return value
+
+
+def _reject_nonstandard_json_constant(value: str) -> None:
+    raise ValueError(f"non-standard JSON constant: {value}")
+
+
+def _rich_runtime_json(
+    path: Path,
+    label: str,
+    *,
+    expected_bytes: int | None = None,
+    expected_hash: str | None = None,
+    decoded_limit: int = MAX_AUDIT_DECODED_BYTES,
+) -> tuple[bytes, Any]:
+    if expected_bytes is not None:
+        try:
+            actual_size = path.stat().st_size
+        except OSError as exc:
+            raise ArtifactReadError(f"cannot inspect {label}: {exc}") from exc
+        if actual_size != expected_bytes:
+            raise ArtifactReadError(
+                f"{label} compressed bytes differ from its commitment"
+            )
+    raw = read_bounded_bytes(path)
+    if expected_bytes is not None and len(raw) != expected_bytes:
+        raise ArtifactReadError(
+            f"{label} compressed bytes differ from its commitment"
+        )
+    if expected_hash is not None and sha256_bytes(raw) != expected_hash:
+        raise ArtifactReadError(
+            f"{label} compressed bytes differ from its commitment"
+        )
+    try:
+        if path.suffix.casefold() == ".gz":
+            with gzip.GzipFile(fileobj=io.BytesIO(raw), mode="rb") as handle:
+                decoded = handle.read(decoded_limit + 1)
+            if len(decoded) > decoded_limit:
+                raise ArtifactReadError(
+                    f"{label} decoded document exceeds the "
+                    f"{decoded_limit}-byte audit limit"
+                )
+        else:
+            decoded = raw
+        return raw, json.loads(
+            decoded,
+            parse_constant=_reject_nonstandard_json_constant,
+        )
+    except ArtifactReadError:
+        raise
+    except (EOFError, OSError, UnicodeError, ValueError) as exc:
+        raise ArtifactReadError(f"invalid {label}: {exc}") from exc
+
+
+def _rich_runtime_assertion_digest(identifiers: Iterable[str]) -> str:
+    canonical = json.dumps(
+        sorted(identifiers),
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return sha256_bytes(canonical)
+
+
+def _rich_runtime_required_output_errors(
+    outputs: Any,
+    preset: Preset,
+) -> list[str]:
+    """Keep a reviewed rich-runtime requirement independent of producer claims."""
+    declared = outputs if isinstance(outputs, list) else []
+    required_roles = {
+        "relationship-runtime-manifest",
+        "relationship-runtime",
+        "relationship-route-locator",
+        "relationship-runtime-schema",
+    }
+    errors: list[str] = []
+    for item in preset.outputs:
+        expected = output(*item)
+        if expected["role"] not in required_roles:
+            continue
+        if expected not in declared:
+            errors.append(
+                "reviewed preset requires rich relationship runtime output "
+                f"{expected['role']}: {expected['path']}"
+            )
+    return errors
+
+
+def _rich_runtime_declared_paths(
+    repo: Path,
+    preset: Preset,
+    role: str,
+) -> set[str]:
+    paths: set[str] = set()
+    for item in preset.outputs:
+        expected = output(*item)
+        if expected["role"] != role:
+            continue
+        try:
+            matches = matching_paths(repo, expected["path"])
+        except (OSError, ValueError) as exc:
+            raise ArtifactReadError(
+                f"invalid reviewed {role} path {expected['path']}: {exc}"
+            ) from exc
+        paths.update(path.relative_to(repo).as_posix() for path in matches)
+    return paths
+
+
+def _rich_runtime_descriptor_path(preset: Preset) -> str:
+    paths = [item[0] for item in preset.outputs if item[1] == "explorer-runtime"]
+    if len(paths) != 1 or any(character in paths[0] for character in "*?["):
+        raise ArtifactReadError(
+            "reviewed rich relationship runtime preset must name one descriptor file"
+        )
+    return paths[0]
+
+
+def _rich_runtime_schema_validators(
+    repo: Path,
+    preset: Preset,
+) -> dict[str, Any]:
+    """Compile the four reviewed Draft 2020-12 runtime contracts."""
+    try:
+        from jsonschema import Draft202012Validator, FormatChecker
+        from jsonschema.exceptions import SchemaError
+    except ImportError as exc:  # pragma: no cover - governed environments lock it
+        raise ArtifactReadError(
+            "jsonschema is required to audit rich relationship runtime contracts"
+        ) from exc
+
+    declared = _rich_runtime_declared_paths(
+        repo,
+        preset,
+        "relationship-runtime-schema",
+    )
+    by_name: dict[str, str] = {}
+    for relative in declared:
+        name = Path(relative).name
+        if name in by_name:
+            raise ArtifactReadError(
+                f"reviewed relationship-runtime schema name is duplicated: {name}"
+            )
+        by_name[name] = relative
+    if set(by_name) != set(RICH_RUNTIME_SCHEMA_CONTRACTS):
+        raise ArtifactReadError(
+            "reviewed relationship-runtime schema outputs differ from the four "
+            "required Reader contracts"
+        )
+
+    validators: dict[str, Any] = {}
+    for name, (discriminator, required_fields) in RICH_RUNTIME_SCHEMA_CONTRACTS.items():
+        relative, path = _rich_runtime_path(
+            repo,
+            by_name[name],
+            f"relationship-runtime schema {name}",
+        )
+        _, value = _rich_runtime_json(path, f"relationship-runtime schema {relative}")
+        schema = _rich_runtime_object(value, f"relationship-runtime schema {relative}")
+        if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+            raise ArtifactReadError(
+                f"relationship-runtime schema {relative} is not Draft 2020-12"
+            )
+        _rich_runtime_iri(schema.get("$id"), f"relationship-runtime schema {relative} $id")
+        if schema.get("type") != "object":
+            raise ArtifactReadError(
+                f"relationship-runtime schema {relative} root type must be object"
+            )
+        required = schema.get("required")
+        if not isinstance(required, list) or not set(required_fields).issubset(required):
+            raise ArtifactReadError(
+                f"relationship-runtime schema {relative} omits required Reader fields"
+            )
+        properties = schema.get("properties")
+        schema_property = properties.get("schema") if isinstance(properties, dict) else None
+        if not isinstance(schema_property, dict) or schema_property.get("const") != discriminator:
+            raise ArtifactReadError(
+                f"relationship-runtime schema {relative} has the wrong schema discriminator"
+            )
+        try:
+            Draft202012Validator.check_schema(schema)
+        except SchemaError as exc:
+            raise ArtifactReadError(
+                f"relationship-runtime schema {relative} is invalid: {exc.message}"
+            ) from exc
+        validators[discriminator] = Draft202012Validator(
+            schema,
+            format_checker=FormatChecker(),
+        )
+    return validators
+
+
+def _rich_runtime_apply_schema(
+    validator: Any,
+    value: Any,
+    label: str,
+) -> None:
+    errors = sorted(
+        validator.iter_errors(value),
+        key=lambda error: tuple(str(item) for item in error.absolute_path),
+    )
+    if not errors:
+        return
+    error = errors[0]
+    location = "/".join(str(item) for item in error.absolute_path) or "<root>"
+    raise ArtifactReadError(
+        f"{label} fails its declared runtime schema at {location}: {error.message}"
+    )
+
+
+def _validate_rich_runtime_whole_hydration(
+    default_planes: list[str],
+    plane_chunks: dict[str, list[str]],
+    chunk_rows: dict[str, int],
+    chunk_sizes: dict[str, int],
+    chunk_text_units: dict[str, int],
+) -> None:
+    """Mirror the Reader's default 300,000-row whole-runtime selection."""
+    selected: list[str] = []
+    selected_rows = 0
+    stop = False
+    for plane in default_planes:
+        for path in plane_chunks.get(plane, []):
+            if selected_rows >= MAX_RICH_RUNTIME_WHOLE_ROWS:
+                stop = True
+                break
+            selected.append(path)
+            selected_rows += chunk_rows[path]
+        if stop:
+            break
+    compressed_bytes = sum(chunk_sizes[path] for path in selected)
+    if compressed_bytes > MAX_RICH_RUNTIME_ROUTE_COMPRESSED_BYTES:
+        raise ArtifactReadError(
+            "relationship-runtime whole-plane hydration exceeds the Reader's "
+            f"{MAX_RICH_RUNTIME_ROUTE_COMPRESSED_BYTES}-byte compressed limit"
+        )
+    retained_units = sum(chunk_text_units[path] for path in selected)
+    if retained_units > MAX_RICH_RUNTIME_RETAINED_TEXT_UNITS:
+        raise ArtifactReadError(
+            "relationship-runtime whole-plane hydration exceeds the Reader's "
+            f"{MAX_RICH_RUNTIME_RETAINED_TEXT_UNITS}-unit retained-text limit"
+        )
+
+
+def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
+    """Validate every byte and route commitment in a required rich runtime."""
+    schema_validators = _rich_runtime_schema_validators(repo, preset)
+    descriptor_relative = _rich_runtime_descriptor_path(preset)
+    _, descriptor_path = _rich_runtime_path(
+        repo, descriptor_relative, "reviewed Explorer descriptor"
+    )
+    if not descriptor_path.is_file():
+        raise ArtifactReadError(
+            f"required Explorer descriptor is absent: {descriptor_relative}"
+        )
+    _, descriptor_value = _rich_runtime_json(
+        descriptor_path, f"Explorer descriptor {descriptor_relative}"
+    )
+    descriptor = _rich_runtime_object(descriptor_value, "Explorer descriptor")
+    entrypoints = _rich_runtime_object(
+        descriptor.get("entrypoints"), "Explorer descriptor entrypoints"
+    )
+    data_manifest_reference = entrypoints.get("data_manifest")
+    data_manifest_relative, _, _ = _rich_runtime_reference(
+        data_manifest_reference, "Explorer data-manifest entrypoint"
+    )
+    data_manifest_relative, data_manifest_path = _rich_runtime_path(
+        repo, data_manifest_relative, "Explorer data-manifest entrypoint"
+    )
+    if not data_manifest_path.is_file():
+        raise ArtifactReadError(
+            f"required data manifest is absent: {data_manifest_relative}"
+        )
+    _, data_manifest_value = _rich_runtime_json(
+        data_manifest_path, f"data manifest {data_manifest_relative}"
+    )
+    data_manifest = _rich_runtime_object(data_manifest_value, "data manifest")
+
+    descriptor_runtime = entrypoints.get("relationship_runtime")
+    if descriptor_runtime is None:
+        raise ArtifactReadError(
+            "Explorer descriptor must declare entrypoints.relationship_runtime"
+        )
+    descriptor_runtime_path, descriptor_runtime_hash, descriptor_runtime_bytes = (
+        _rich_runtime_reference(
+            descriptor_runtime,
+            "Explorer relationship-runtime entrypoint",
+        )
+    )
+    integrity = descriptor.get("entrypoint_integrity", {})
+    integrity = _rich_runtime_object(integrity, "Explorer entrypoint integrity")
+    descriptor_integrity = integrity.get("relationship_runtime")
+    if descriptor_integrity is not None:
+        integrity_path, integrity_hash, integrity_bytes = _rich_runtime_reference(
+            descriptor_integrity,
+            "Explorer relationship-runtime integrity",
+        )
+        if integrity_path != descriptor_runtime_path:
+            raise ArtifactReadError(
+                "Explorer relationship-runtime entrypoint and integrity paths differ"
+            )
+        if (
+            descriptor_runtime_hash
+            and integrity_hash
+            and descriptor_runtime_hash != integrity_hash
+        ):
+            raise ArtifactReadError(
+                "Explorer relationship-runtime entrypoint and integrity SHA-256 values differ"
+            )
+        if (
+            descriptor_runtime_bytes is not None
+            and integrity_bytes is not None
+            and descriptor_runtime_bytes != integrity_bytes
+        ):
+            raise ArtifactReadError(
+                "Explorer relationship-runtime entrypoint and integrity byte counts differ"
+            )
+        descriptor_runtime_hash = descriptor_runtime_hash or integrity_hash
+        if descriptor_runtime_bytes is None:
+            descriptor_runtime_bytes = integrity_bytes
+    if not descriptor_runtime_hash:
+        raise ArtifactReadError(
+            "Explorer relationship-runtime entrypoint must carry an entrypoint-integrity SHA-256"
+        )
+
+    indexes = _rich_runtime_object(data_manifest.get("indexes"), "data-manifest indexes")
+    manifest_runtime = indexes.get("relationship_runtime")
+    if manifest_runtime is None:
+        raise ArtifactReadError(
+            "data manifest must declare indexes.relationship_runtime"
+        )
+    manifest_runtime_path, manifest_runtime_hash, manifest_runtime_bytes = (
+        _rich_runtime_reference(
+            manifest_runtime,
+            "data-manifest relationship-runtime index",
+        )
+    )
+    if not manifest_runtime_hash:
+        raise ArtifactReadError(
+            "data-manifest relationship-runtime index must carry a SHA-256"
+        )
+    if descriptor_runtime_path != manifest_runtime_path:
+        raise ArtifactReadError(
+            "descriptor and data-manifest relationship-runtime paths differ"
+        )
+    if descriptor_runtime_hash != manifest_runtime_hash:
+        raise ArtifactReadError(
+            "descriptor and data-manifest relationship-runtime SHA-256 values differ"
+        )
+    if (
+        descriptor_runtime_bytes is not None
+        and manifest_runtime_bytes is not None
+        and descriptor_runtime_bytes != manifest_runtime_bytes
+    ):
+        raise ArtifactReadError(
+            "descriptor and data-manifest relationship-runtime byte counts differ"
+        )
+
+    expected_runtime_paths = _rich_runtime_declared_paths(
+        repo, preset, "relationship-runtime-manifest"
+    )
+    if expected_runtime_paths != {descriptor_runtime_path}:
+        raise ArtifactReadError(
+            "relationship-runtime entrypoint differs from the reviewed required manifest"
+        )
+    runtime_relative, runtime_path = _rich_runtime_path(
+        repo, descriptor_runtime_path, "relationship-runtime manifest"
+    )
+    if not runtime_path.is_file():
+        raise ArtifactReadError(
+            f"required relationship-runtime manifest is absent: {runtime_relative}"
+        )
+    runtime_raw, runtime_value = _rich_runtime_json(
+        runtime_path, f"relationship-runtime manifest {runtime_relative}"
+    )
+    if sha256_bytes(runtime_raw) != descriptor_runtime_hash:
+        raise ArtifactReadError(
+            "relationship-runtime manifest bytes differ from the declared SHA-256"
+        )
+    if descriptor_runtime_bytes is not None and len(runtime_raw) != descriptor_runtime_bytes:
+        raise ArtifactReadError(
+            "relationship-runtime manifest bytes differ from the descriptor byte count"
+        )
+    if manifest_runtime_bytes is not None and len(runtime_raw) != manifest_runtime_bytes:
+        raise ArtifactReadError(
+            "relationship-runtime manifest bytes differ from the data-manifest byte count"
+        )
+    runtime = _rich_runtime_object(runtime_value, "relationship-runtime manifest")
+    if runtime.get("schema") != RICH_RUNTIME_SCHEMA:
+        raise ArtifactReadError(
+            "relationship-runtime manifest schema is unsupported"
+        )
+    _rich_runtime_apply_schema(
+        schema_validators[RICH_RUNTIME_SCHEMA],
+        runtime,
+        "relationship-runtime manifest",
+    )
+    _rich_runtime_iri(runtime.get("@id"), "relationship-runtime manifest @id")
+    runtime_snapshot = _rich_runtime_string(
+        runtime.get("snapshot"), "relationship-runtime snapshot"
+    )
+    for label, document in (
+        ("Explorer descriptor", descriptor),
+        ("data manifest", data_manifest),
+    ):
+        if document.get("snapshot") != runtime_snapshot:
+            raise ArtifactReadError(
+                f"{label} snapshot differs from the relationship-runtime snapshot"
+            )
+    _rich_runtime_string(
+        runtime.get("generated_at"), "relationship-runtime generation time"
+    )
+    semantic_manifest_relative, semantic_manifest_path = _rich_runtime_path(
+        repo,
+        runtime.get("semantic_manifest"),
+        "relationship-runtime semantic manifest",
+    )
+    if not semantic_manifest_path.is_file():
+        raise ArtifactReadError(
+            "relationship-runtime semantic manifest is absent: "
+            f"{semantic_manifest_relative}"
+        )
+    assertion_contract_relative, assertion_contract_path = _rich_runtime_path(
+        repo,
+        runtime.get("assertion_contract"),
+        "relationship-runtime assertion contract",
+    )
+    if not assertion_contract_path.is_file():
+        raise ArtifactReadError(
+            "relationship-runtime assertion contract is absent: "
+            f"{assertion_contract_relative}"
+        )
+    row_contract_relative, row_contract_path = _rich_runtime_path(
+        repo, runtime.get("row_contract"), "relationship-runtime row contract"
+    )
+    if not row_contract_path.is_file():
+        raise ArtifactReadError(
+            f"relationship-runtime row contract is absent: {row_contract_relative}"
+        )
+    declared_runtime_schemas = _rich_runtime_declared_paths(
+        repo, preset, "relationship-runtime-schema"
+    )
+    if row_contract_relative not in declared_runtime_schemas:
+        raise ArtifactReadError(
+            "relationship-runtime row contract is not a reviewed runtime-schema output"
+        )
+
+    default_planes = _rich_runtime_array(
+        runtime.get("default_planes"), "relationship-runtime default_planes"
+    )
+    default_names = [
+        _rich_runtime_string(value, f"relationship-runtime default plane {index}")
+        for index, value in enumerate(default_planes)
+    ]
+    if len(default_names) != len(set(default_names)):
+        raise ArtifactReadError("relationship-runtime default planes are duplicated")
+    raw_planes = _rich_runtime_array(
+        runtime.get("planes"), "relationship-runtime planes"
+    )
+    if len(raw_planes) > MAX_RICH_RUNTIME_PLANES:
+        raise ArtifactReadError(
+            f"relationship-runtime exceeds the {MAX_RICH_RUNTIME_PLANES}-plane limit"
+        )
+
+    declared_chunk_paths = _rich_runtime_declared_paths(
+        repo, preset, "relationship-runtime"
+    )
+    plane_names: set[str] = set()
+    plane_ids: set[str] = set()
+    plane_by_name: dict[str, dict[str, Any]] = {}
+    plane_chunks: dict[str, list[str]] = {}
+    chunk_plane: dict[str, str] = {}
+    chunk_row_counts: dict[str, int] = {}
+    chunk_sizes: dict[str, int] = {}
+    chunk_text_units: dict[str, int] = {}
+    chunk_ids: set[str] = set()
+    all_assertion_ids: set[str] = set()
+    expected_routes: dict[str, dict[str, set[str]]] = {}
+    expected_route_chunks: dict[str, set[str]] = {}
+    active_names: list[str] = []
+    plane_assertion_total = 0
+    active_assertion_total = 0
+    historical_assertion_total = 0
+    rejected_assertion_total = 0
+    total_rows = 0
+
+    for plane_index, value in enumerate(raw_planes):
+        label = f"relationship-runtime plane {plane_index}"
+        plane = _rich_runtime_object(value, label)
+        name = _rich_runtime_string(plane.get("name"), f"{label} name")
+        identifier = _rich_runtime_iri(plane.get("id"), f"{label} id")
+        if name in plane_names or identifier in plane_ids:
+            raise ArtifactReadError(
+                "relationship-runtime planes have duplicate names or identities"
+            )
+        plane_names.add(name)
+        plane_ids.add(identifier)
+        plane_by_name[name] = plane
+        plane_chunks[name] = []
+        active = plane.get("active")
+        if not isinstance(active, bool):
+            raise ArtifactReadError(f"{label} active flag must be a boolean")
+        lifecycle = _rich_runtime_string(
+            plane.get("lifecycle"), f"{label} lifecycle"
+        )
+        if (
+            lifecycle not in RICH_RUNTIME_LIFECYCLES
+            or active != (lifecycle == "active")
+        ):
+            raise ArtifactReadError(
+                f"{label} lifecycle conflicts with its active flag"
+            )
+        if active:
+            active_names.append(name)
+        authority_classes = _rich_runtime_array(
+            plane.get("authority_classes"), f"{label} authority classes"
+        )
+        authority_values = [
+            _rich_runtime_string(item, f"{label} authority class {index}")
+            for index, item in enumerate(authority_classes)
+        ]
+        if (
+            len(authority_values) != len(set(authority_values))
+            or any(item not in RICH_RUNTIME_AUTHORITY_CLASSES for item in authority_values)
+        ):
+            raise ArtifactReadError(
+                f"{label} authority classes are duplicated or unsupported"
+            )
+        assertions = _rich_runtime_integer(
+            plane.get("assertions"), f"{label} assertion count"
+        )
+        raw_chunks = _rich_runtime_array(
+            plane.get("chunks"), f"{label} chunks", non_empty=assertions > 0
+        )
+        if not assertions and raw_chunks:
+            raise ArtifactReadError(f"{label} has chunks but no assertions")
+        plane_row_count = 0
+        for chunk_index, chunk_value in enumerate(raw_chunks):
+            chunk_label = f"{label} chunk {chunk_index}"
+            chunk = _rich_runtime_object(chunk_value, chunk_label)
+            chunk_relative, chunk_path = _rich_runtime_path(
+                repo, chunk.get("path"), f"{chunk_label} path"
+            )
+            if chunk_relative in chunk_plane:
+                raise ArtifactReadError(
+                    "relationship-runtime chunks have duplicate paths"
+                )
+            if chunk_relative not in declared_chunk_paths:
+                raise ArtifactReadError(
+                    f"{chunk_label} is not a reviewed relationship-runtime output"
+                )
+            if not chunk_path.is_file() or chunk_path.suffix.casefold() != ".gz":
+                raise ArtifactReadError(
+                    f"{chunk_label} must be a present gzip file"
+                )
+            chunk_id = _rich_runtime_iri(chunk.get("id"), f"{chunk_label} id")
+            if chunk_id in chunk_ids:
+                raise ArtifactReadError(
+                    "relationship-runtime chunks have duplicate identities"
+                )
+            chunk_ids.add(chunk_id)
+            if (
+                chunk.get("media_type") != "application/json"
+                or chunk.get("content_encoding") != "gzip"
+            ):
+                raise ArtifactReadError(
+                    f"{chunk_label} must advertise gzip-compressed JSON"
+                )
+            expected_bytes = _rich_runtime_integer(
+                chunk.get("bytes"), f"{chunk_label} bytes", 1
+            )
+            if expected_bytes > MAX_RICH_RUNTIME_CHUNK_BYTES:
+                raise ArtifactReadError(
+                    f"{chunk_label} exceeds the compressed-byte limit"
+                )
+            expected_hash = _rich_runtime_hash(
+                chunk.get("sha256"), f"{chunk_label} SHA-256"
+            )
+            expected_count = _rich_runtime_integer(
+                chunk.get("count"), f"{chunk_label} count"
+            )
+            if expected_count > MAX_RICH_RUNTIME_CHUNK_ROWS:
+                raise ArtifactReadError(f"{chunk_label} exceeds the row limit")
+            if chunk.get("records") is not None and _rich_runtime_integer(
+                chunk.get("records"), f"{chunk_label} records"
+            ) != expected_count:
+                raise ArtifactReadError(
+                    f"{chunk_label} count and records differ"
+                )
+            _, chunk_value = _rich_runtime_json(
+                chunk_path,
+                chunk_label,
+                expected_bytes=expected_bytes,
+                expected_hash=expected_hash,
+            )
+            if not isinstance(chunk_value, list) or any(
+                not isinstance(row, dict) for row in chunk_value
+            ):
+                raise ArtifactReadError(
+                    f"{chunk_label} must contain an array of relationship rows"
+                )
+            rows = chunk_value
+            if len(rows) != expected_count:
+                raise ArtifactReadError(
+                    f"{chunk_label} row count differs from its commitment"
+                )
+            chunk_retained_text_units = 0
+            for row_index, row in enumerate(rows):
+                row_label = f"{chunk_label} row {row_index}"
+                assertion_id, source, target, retained_units = (
+                    _validate_rich_runtime_row(
+                        row,
+                        row_label,
+                        plane_id=identifier,
+                        plane_active=active,
+                        plane_lifecycle=lifecycle,
+                        authority_classes=set(authority_values),
+                        identifiers=all_assertion_ids,
+                        schema_validator=schema_validators[RICH_RUNTIME_ROW_SCHEMA],
+                    )
+                )
+                chunk_retained_text_units += retained_units
+                if (
+                    chunk_retained_text_units
+                    > MAX_RICH_RUNTIME_RETAINED_TEXT_UNITS
+                ):
+                    raise ArtifactReadError(
+                        f"{chunk_label} exceeds the aggregate retained-text ceiling"
+                    )
+                for route in {source, target}:
+                    expected_routes.setdefault(route, {}).setdefault(
+                        name, set()
+                    ).add(assertion_id)
+                    expected_route_chunks.setdefault(route, set()).add(
+                        chunk_relative
+                    )
+            chunk_plane[chunk_relative] = name
+            plane_chunks[name].append(chunk_relative)
+            chunk_row_counts[chunk_relative] = len(rows)
+            chunk_sizes[chunk_relative] = expected_bytes
+            chunk_text_units[chunk_relative] = chunk_retained_text_units
+            plane_row_count += len(rows)
+            total_rows += len(rows)
+            if total_rows > MAX_RICH_RUNTIME_ROWS:
+                raise ArtifactReadError(
+                    f"relationship-runtime exceeds the {MAX_RICH_RUNTIME_ROWS}-row audit limit"
+                )
+        if plane_row_count != assertions:
+            raise ArtifactReadError(
+                f"{label} chunk counts do not reconcile with its assertions"
+            )
+        plane_assertion_total += assertions
+        if lifecycle == "active":
+            active_assertion_total += assertions
+        elif lifecycle == "historical":
+            historical_assertion_total += assertions
+        else:
+            rejected_assertion_total += assertions
+
+    if len(chunk_row_counts) > MAX_RICH_RUNTIME_CHUNKS:
+        raise ArtifactReadError(
+            f"relationship-runtime exceeds the {MAX_RICH_RUNTIME_CHUNKS}-chunk limit"
+        )
+    if set(chunk_row_counts) != declared_chunk_paths:
+        raise ArtifactReadError(
+            "reviewed relationship-runtime shard outputs differ from the manifest chunks"
+        )
+    if default_names != active_names:
+        raise ArtifactReadError(
+            "relationship-runtime default_planes must exactly equal active planes"
+        )
+    _validate_rich_runtime_whole_hydration(
+        default_names,
+        plane_chunks,
+        chunk_row_counts,
+        chunk_sizes,
+        chunk_text_units,
+    )
+    totals = _rich_runtime_object(runtime.get("totals"), "relationship-runtime totals")
+    expected_totals = {
+        "active_assertions": active_assertion_total,
+        "historical_assertions": historical_assertion_total,
+        "rejected_assertions": rejected_assertion_total,
+        "all_assertions": plane_assertion_total,
+        "chunks": len(chunk_row_counts),
+    }
+    for field, expected in expected_totals.items():
+        if _rich_runtime_integer(totals.get(field), f"relationship-runtime {field}") != expected:
+            raise ArtifactReadError(
+                f"relationship-runtime {field} does not reconcile with its planes"
+            )
+    _rich_runtime_string(
+        runtime.get("loading_policy"), "relationship-runtime loading policy"
+    )
+
+    locator_reference = _rich_runtime_object(
+        runtime.get("route_locator"), "relationship-runtime route locator"
+    )
+    locator_relative, locator_path = _rich_runtime_path(
+        repo,
+        locator_reference.get("path"),
+        "relationship-runtime route-locator path",
+    )
+    _rich_runtime_iri(
+        locator_reference.get("id"), "relationship-runtime route-locator id"
+    )
+    expected_route_count = _rich_runtime_integer(
+        locator_reference.get("routes"), "relationship-runtime route count", 1
+    )
+    expected_bucket_count = _rich_runtime_integer(
+        locator_reference.get("buckets"), "relationship-runtime route bucket count", 1
+    )
+    locator_hash = _rich_runtime_hash(
+        locator_reference.get("sha256"), "relationship-runtime route-locator SHA-256"
+    )
+    declared_locator_paths = _rich_runtime_declared_paths(
+        repo, preset, "relationship-route-locator"
+    )
+    reviewed_locator_manifests = {
+        item[0]
+        for item in preset.outputs
+        if item[1] == "relationship-route-locator" and not any(
+            character in item[0] for character in "*?["
+        )
+    }
+    if locator_relative not in reviewed_locator_manifests:
+        raise ArtifactReadError(
+            "relationship-runtime route locator is not the reviewed locator manifest"
+        )
+    locator_raw, locator_value = _rich_runtime_json(
+        locator_path, f"relationship route locator {locator_relative}"
+    )
+    if sha256_bytes(locator_raw) != locator_hash:
+        raise ArtifactReadError(
+            "relationship route-locator bytes differ from the runtime SHA-256"
+        )
+    locator = _rich_runtime_object(locator_value, "relationship route locator")
+    if (
+        locator.get("schema") != RICH_RUNTIME_LOCATOR_SCHEMA
+        or locator.get("hash_algorithm") != RICH_RUNTIME_LOCATOR_ALGORITHM
+    ):
+        raise ArtifactReadError(
+            "relationship route-locator schema or algorithm is unsupported"
+        )
+    _rich_runtime_apply_schema(
+        schema_validators[RICH_RUNTIME_LOCATOR_SCHEMA],
+        locator,
+        "relationship route locator",
+    )
+    _rich_runtime_string(
+        locator.get("generated_at"), "relationship route-locator generation time"
+    )
+    template = _rich_runtime_string(
+        locator.get("bucket_path_template"),
+        "relationship route-locator bucket template",
+    )
+    if template.count("{prefix}") != 1:
+        raise ArtifactReadError(
+            "relationship route-locator bucket template must contain one prefix token"
+        )
+    raw_bucket_metadata = _rich_runtime_array(
+        locator.get("buckets"), "relationship route-locator buckets"
+    )
+    if len(raw_bucket_metadata) > 256:
+        raise ArtifactReadError(
+            "relationship route locator exceeds the 256-bucket limit"
+        )
+    locator_counts = _rich_runtime_object(
+        locator.get("counts"), "relationship route-locator counts"
+    )
+
+    seen_prefixes: set[str] = set()
+    seen_bucket_paths: set[str] = set()
+    seen_routes: set[str] = set()
+    bucket_route_total = 0
+    bucket_chunk_reference_total = 0
+    for metadata_index, value in enumerate(raw_bucket_metadata):
+        metadata_label = f"relationship route-locator bucket {metadata_index}"
+        metadata = _rich_runtime_object(value, metadata_label)
+        prefix = _rich_runtime_string(metadata.get("bucket"), f"{metadata_label} prefix")
+        if not re.fullmatch(r"[0-9a-f]{2}", prefix) or prefix in seen_prefixes:
+            raise ArtifactReadError(
+                "relationship route-locator bucket prefixes are malformed or duplicated"
+            )
+        seen_prefixes.add(prefix)
+        bucket_relative, bucket_path = _rich_runtime_path(
+            repo, metadata.get("path"), f"{metadata_label} path"
+        )
+        if (
+            bucket_relative != template.replace("{prefix}", prefix)
+            or bucket_relative in seen_bucket_paths
+        ):
+            raise ArtifactReadError(
+                "relationship route-locator bucket paths are malformed or duplicated"
+            )
+        seen_bucket_paths.add(bucket_relative)
+        if metadata.get("content_encoding") != "gzip":
+            raise ArtifactReadError(
+                f"{metadata_label} must advertise gzip compression"
+            )
+        bucket_bytes = _rich_runtime_integer(
+            metadata.get("bytes"), f"{metadata_label} bytes", 1
+        )
+        if bucket_bytes > MAX_RICH_RUNTIME_CHUNK_BYTES:
+            raise ArtifactReadError(
+                f"{metadata_label} exceeds the compressed-byte limit"
+            )
+        bucket_hash = _rich_runtime_hash(
+            metadata.get("sha256"), f"{metadata_label} SHA-256"
+        )
+        metadata_routes = _rich_runtime_integer(
+            metadata.get("routes"), f"{metadata_label} routes", 1
+        )
+        metadata_chunk_references = _rich_runtime_integer(
+            metadata.get("chunk_references"),
+            f"{metadata_label} chunk references",
+            1,
+        )
+        _, bucket_value = _rich_runtime_json(
+            bucket_path,
+            metadata_label,
+            expected_bytes=bucket_bytes,
+            expected_hash=bucket_hash,
+        )
+        bucket = _rich_runtime_object(bucket_value, metadata_label)
+        if (
+            bucket.get("schema") != RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA
+            or bucket.get("hash_algorithm") != RICH_RUNTIME_LOCATOR_ALGORITHM
+            or bucket.get("bucket") != prefix
+        ):
+            raise ArtifactReadError(
+                f"{metadata_label} schema, algorithm or prefix is unsupported"
+            )
+        _rich_runtime_apply_schema(
+            schema_validators[RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA],
+            bucket,
+            metadata_label,
+        )
+        _rich_runtime_string(
+            bucket.get("generated_at"), f"{metadata_label} generation time"
+        )
+        raw_routes = _rich_runtime_array(
+            bucket.get("routes"), f"{metadata_label} routes"
+        )
+        bucket_counts = _rich_runtime_object(
+            bucket.get("counts"), f"{metadata_label} counts"
+        )
+        bucket_chunk_references = 0
+        for route_index, route_value in enumerate(raw_routes):
+            route_label = f"{metadata_label} route {route_index}"
+            route_row = _rich_runtime_object(route_value, route_label)
+            route = _rich_runtime_local_route(route_row.get("route"), route_label)
+            if (
+                route in seen_routes
+                or sha256_bytes(route.encode("utf-8"))[:2] != prefix
+            ):
+                raise ArtifactReadError(
+                    "relationship route-locator routes are duplicated or misplaced"
+                )
+            seen_routes.add(route)
+            raw_chunks = _rich_runtime_array(
+                route_row.get("chunks"), f"{route_label} chunks"
+            )
+            route_chunks = [
+                _rich_runtime_string(item, f"{route_label} chunk {index}")
+                for index, item in enumerate(raw_chunks)
+            ]
+            if (
+                len(route_chunks) != len(set(route_chunks))
+                or any(item not in chunk_row_counts for item in route_chunks)
+            ):
+                raise ArtifactReadError(
+                    f"{route_label} chunks are duplicated or unknown"
+                )
+            raw_commitments = _rich_runtime_array(
+                route_row.get("planes"), f"{route_label} plane commitments"
+            )
+            commitment_names: set[str] = set()
+            committed_chunks: set[str] = set()
+            for commitment_index, commitment_value in enumerate(raw_commitments):
+                commitment_label = (
+                    f"{route_label} plane commitment {commitment_index}"
+                )
+                commitment = _rich_runtime_object(
+                    commitment_value, commitment_label
+                )
+                name = _rich_runtime_string(
+                    commitment.get("name"), f"{commitment_label} name"
+                )
+                if name in commitment_names or name not in plane_by_name:
+                    raise ArtifactReadError(
+                        f"{route_label} plane commitments are duplicated or unknown"
+                    )
+                commitment_names.add(name)
+                raw_plane_chunks = _rich_runtime_array(
+                    commitment.get("chunks"), f"{commitment_label} chunks"
+                )
+                plane_chunks = [
+                    _rich_runtime_string(item, f"{commitment_label} chunk {index}")
+                    for index, item in enumerate(raw_plane_chunks)
+                ]
+                if (
+                    len(plane_chunks) != len(set(plane_chunks))
+                    or any(chunk_plane.get(item) != name for item in plane_chunks)
+                ):
+                    raise ArtifactReadError(
+                        f"{commitment_label} names duplicated, unknown or cross-plane chunks"
+                    )
+                committed_chunks.update(plane_chunks)
+                assertion_count = _rich_runtime_integer(
+                    commitment.get("assertions"),
+                    f"{commitment_label} assertion count",
+                    1,
+                )
+                assertion_digest = _rich_runtime_hash(
+                    commitment.get("assertion_ids_sha256"),
+                    f"{commitment_label} assertion digest",
+                )
+                actual_ids = expected_routes.get(route, {}).get(name, set())
+                if (
+                    len(actual_ids) != assertion_count
+                    or _rich_runtime_assertion_digest(actual_ids) != assertion_digest
+                ):
+                    raise ArtifactReadError(
+                        f"{commitment_label} count or assertion-ID digest does not reconcile"
+                    )
+            if set(route_chunks) != committed_chunks:
+                raise ArtifactReadError(
+                    f"{route_label} chunks differ from its plane commitments"
+                )
+            expected_planes = expected_routes.get(route)
+            if expected_planes is None or commitment_names != set(expected_planes):
+                raise ArtifactReadError(
+                    f"{route_label} plane commitments do not cover every incident plane"
+                )
+            if set(route_chunks) != expected_route_chunks[route]:
+                raise ArtifactReadError(
+                    f"{route_label} chunks do not cover every incident assertion"
+                )
+            active_commitments = [
+                commitment
+                for commitment in raw_commitments
+                if commitment.get("name") in default_names
+            ]
+            active_chunks = {
+                item
+                for commitment in active_commitments
+                for item in commitment.get("chunks", [])
+            }
+            active_rows = sum(
+                len(expected_planes[name])
+                for name in default_names
+                if name in expected_planes
+            )
+            active_shard_rows = sum(
+                chunk_row_counts[path] for path in active_chunks
+            )
+            active_compressed_bytes = sum(chunk_sizes[path] for path in active_chunks)
+            active_retained_text_units = sum(
+                chunk_text_units[path] for path in active_chunks
+            )
+            if (
+                len(active_chunks) > MAX_RICH_RUNTIME_ROUTE_CHUNKS
+                or active_rows > MAX_RICH_RUNTIME_ROUTE_ROWS
+                or active_shard_rows > MAX_RICH_RUNTIME_ROUTE_ROWS
+                or active_compressed_bytes
+                > MAX_RICH_RUNTIME_ROUTE_COMPRESSED_BYTES
+                or active_retained_text_units
+                > MAX_RICH_RUNTIME_RETAINED_TEXT_UNITS
+            ):
+                raise ArtifactReadError(
+                    f"{route_label} exceeds the bounded Reader hydration ceilings"
+                )
+            bucket_chunk_references += len(route_chunks)
+        if (
+            len(raw_routes) != metadata_routes
+            or bucket_chunk_references != metadata_chunk_references
+            or _rich_runtime_integer(
+                bucket_counts.get("routes"), f"{metadata_label} count routes"
+            )
+            != metadata_routes
+            or _rich_runtime_integer(
+                bucket_counts.get("chunk_references"),
+                f"{metadata_label} count chunk references",
+            )
+            != metadata_chunk_references
+        ):
+            raise ArtifactReadError(f"{metadata_label} counts do not reconcile")
+        bucket_route_total += metadata_routes
+        bucket_chunk_reference_total += metadata_chunk_references
+
+    if seen_bucket_paths != declared_locator_paths - reviewed_locator_manifests:
+        raise ArtifactReadError(
+            "reviewed route-locator bucket outputs differ from locator metadata"
+        )
+    if seen_routes != set(expected_routes):
+        raise ArtifactReadError(
+            "relationship route locator does not cover every runtime endpoint"
+        )
+    if (
+        expected_route_count != bucket_route_total
+        or expected_bucket_count != len(seen_prefixes)
+        or _rich_runtime_integer(
+            locator_counts.get("routes"), "relationship route-locator count routes"
+        )
+        != bucket_route_total
+        or _rich_runtime_integer(
+            locator_counts.get("buckets"), "relationship route-locator count buckets"
+        )
+        != len(seen_prefixes)
+        or _rich_runtime_integer(
+            locator_counts.get("chunk_references"),
+            "relationship route-locator count chunk references",
+        )
+        != bucket_chunk_reference_total
+    ):
+        raise ArtifactReadError(
+            "relationship route-locator counts do not reconcile"
+        )
+
+
+def rich_relationship_runtime_errors(
+    repo: Path,
+    contract: dict[str, Any],
+    preset: Preset,
+) -> list[str]:
+    semantic_layer = contract.get("semantic_layer")
+    outputs = semantic_layer.get("outputs") if isinstance(semantic_layer, dict) else []
+    errors = _rich_runtime_required_output_errors(outputs, preset)
+    try:
+        _validate_rich_relationship_runtime(repo, preset)
+    except (ArtifactReadError, OSError, UnicodeError, json.JSONDecodeError) as exc:
+        errors.append(f"required rich relationship runtime is invalid: {exc}")
+    return errors
+
+
+def audit_repo(
+    repo: Path,
+    *,
+    strict: bool = False,
+    reviewed_preset: str | None = None,
+) -> dict[str, Any]:
     errors: list[str] = []
     warnings: list[str] = []
     contract_path = repo / CONTRACT_NAME
@@ -1640,6 +3200,44 @@ def audit_repo(repo: Path, *, strict: bool = False) -> dict[str, Any]:
     relationship_contract = contract.get("relationship_contract")
     if not isinstance(relationship_contract, dict):
         relationship_contract = {}
+    physical_preset = PRESETS.get(repo.name)
+    contract_repository_name = repository_contract.get("name")
+    contract_preset = (
+        PRESETS.get(contract_repository_name)
+        if isinstance(contract_repository_name, str)
+        and contract_repository_name.strip() == contract_repository_name
+        else None
+    )
+    explicit_preset = PRESETS.get(reviewed_preset) if reviewed_preset else None
+    if reviewed_preset and explicit_preset is None:
+        errors.append(f"unknown reviewed repository preset: {reviewed_preset}")
+    if explicit_preset is not None and contract_repository_name != reviewed_preset:
+        errors.append(
+            "contract repository.name contradicts the explicit reviewed preset: "
+            f"{contract_repository_name!r} != {reviewed_preset!r}"
+        )
+    if (
+        physical_preset is not None
+        and reviewed_preset is not None
+        and reviewed_preset != repo.name
+    ):
+        errors.append(
+            "explicit reviewed preset contradicts the reviewed repository directory "
+            f"identity: {reviewed_preset!r} != {repo.name!r}"
+        )
+    if physical_preset is not None and contract_repository_name != repo.name:
+        errors.append(
+            "contract repository.name contradicts the reviewed repository "
+            f"directory identity: {contract_repository_name!r} != {repo.name!r}"
+        )
+    if physical_preset is None and explicit_preset is None and contract_preset is not None:
+        errors.append(
+            "recognised contract repository.name is in an unreviewed directory; "
+            f"rerun with --preset {contract_repository_name} to bind the renamed worktree"
+        )
+    preset = physical_preset or explicit_preset
+    if preset is not None and preset.requires_rich_relationship_runtime:
+        errors.extend(rich_relationship_runtime_errors(repo, contract, preset))
 
     claimed_profile = semantic_layer.get("profile")
     profile_errors: list[str] = []
@@ -1928,6 +3526,11 @@ def install(repo: Path) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", help="audit one repository instead of the reviewed okf-* set")
+    parser.add_argument(
+        "--preset",
+        choices=sorted(PRESETS),
+        help="bind --repo to an externally reviewed repository identity (for a renamed worktree)",
+    )
     parser.add_argument("--repos-root", default=str(Path.home() / "repos"))
     parser.add_argument("--install", action="store_true", help="write reviewed contracts and bounded AGENTS.md blocks")
     parser.add_argument(
@@ -1948,6 +3551,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.replace_profile and not args.sync_profile:
         parser.error("--replace-profile requires --sync-profile")
+    if args.preset and not args.repo:
+        parser.error("--preset requires --repo")
+    if args.preset and (args.install or args.sync_profile):
+        parser.error("--preset is audit-only and cannot be combined with install or profile sync")
 
     repositories = list(selected_repositories(args))
     try:
@@ -1978,7 +3585,14 @@ def main(argv: list[str] | None = None) -> int:
             apply_install(plan)
         for plan in sync_plans:
             apply_profile_sync(plan)
-        results = [audit_repo(repo, strict=args.strict) for repo in repositories]
+        results = [
+            audit_repo(
+                repo,
+                strict=args.strict,
+                reviewed_preset=args.preset,
+            )
+            for repo in repositories
+        ]
         report = {
             "schema": "okf-repository-reconciliation-report.v1",
             "profile": PROFILE_URL,
