@@ -68,7 +68,12 @@ test('publication selectors include rendered Foundry pages and request Site asse
   assert.equal(plan.requires_site, true);
   assert.deepEqual(
     plan.suites.map((suite) => suite.id),
-    ['accessibility', 'foundry_pages']
+    [
+      'accessibility',
+      'exploratory_publication',
+      'beginner_navigation',
+      'foundry_pages'
+    ]
   );
   assert.deepEqual(plan.commands.map((command) => command.family), ['ui', 'foundry']);
   assert.ok(
@@ -83,7 +88,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 7);
+  assert.equal(plan.suites.length, 10);
   assert.deepEqual(plan.commands.map((command) => command.family), ['ui', 'foundry']);
   for (const command of plan.commands) {
     for (const engine of ['chrome', 'firefox', 'webkit']) {
@@ -95,7 +100,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 7);
+  assert.equal(empty.suites.length, 10);
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
     /unknown test tag/
@@ -104,6 +109,21 @@ test('empty and unknown selectors fail closed instead of silently skipping', () 
     () => buildBrowserPlan({ journeyGroups: ['new-unmapped-group'] }),
     /unknown journey group/
   );
+});
+
+test('learning-path navigation is selected by its publication and quality surfaces', () => {
+  const publication = buildBrowserPlan({ journeyGroups: ['publication'] });
+  assert.ok(
+    publication.suites.some((suite) => suite.id === 'beginner_navigation')
+  );
+
+  for (const tag of ['accessibility', 'presentation', 'route', 'site']) {
+    const plan = buildBrowserPlan({ testTags: [tag] });
+    assert.ok(
+      plan.suites.some((suite) => suite.id === 'beginner_navigation'),
+      `${tag} must select beginner_navigation`
+    );
+  }
 });
 
 test('selector JSON must be an array of strings', () => {

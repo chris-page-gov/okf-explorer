@@ -30,6 +30,18 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/targeted-large-corpus.spec.ts'
   },
+  endpoint_labels: {
+    family: 'ui',
+    file: 'tests/ui/endpoint-label-index.spec.ts'
+  },
+  exploratory_publication: {
+    family: 'ui',
+    file: 'tests/ui/exploratory-publication.spec.ts'
+  },
+  beginner_navigation: {
+    family: 'foundry',
+    file: 'tests/foundry/beginner-guide-navigation.spec.ts'
+  },
   foundry_pages: {
     family: 'foundry',
     file: 'tests/foundry/foundry-docs.spec.ts'
@@ -46,17 +58,28 @@ const THREE_ENGINES = Object.freeze(['chrome', 'firefox', 'webkit']);
 // until they are assigned an assurance surface here.
 export const JOURNEY_GROUP_SUITES = Object.freeze({
   control: ['small_bundle', 'foundry_pages'],
-  graph: ['small_bundle', 'large_corpus', 'federation'],
-  links: ['small_bundle', 'large_corpus', 'federation'],
+  graph: ['small_bundle', 'large_corpus', 'endpoint_labels', 'federation'],
+  links: ['small_bundle', 'large_corpus', 'endpoint_labels', 'federation'],
   map: ['map', 'large_corpus'],
-  publication: ['accessibility', 'foundry_pages'],
-  reader: ['small_bundle', 'facets', 'large_corpus'],
+  publication: [
+    'accessibility',
+    'exploratory_publication',
+    'beginner_navigation',
+    'foundry_pages'
+  ],
+  reader: ['small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
   search: ['small_bundle', 'facets', 'large_corpus'],
   timeline: ['small_bundle', 'large_corpus']
 });
 
 export const TEST_TAG_SUITES = Object.freeze({
-  accessibility: ['accessibility', 'small_bundle', 'map', 'foundry_pages'],
+  accessibility: [
+    'accessibility',
+    'small_bundle',
+    'map',
+    'beginner_navigation',
+    'foundry_pages'
+  ],
   adversarial: ['small_bundle', 'large_corpus', 'foundry_pages'],
   alias: ['large_corpus', 'facets'],
   browser: ALL_SUITES,
@@ -77,9 +100,15 @@ export const TEST_TAG_SUITES = Object.freeze({
   mapping: ['small_bundle', 'large_corpus'],
   markdown: ['foundry_pages'],
   misspelling: ['large_corpus', 'facets'],
-  presentation: ['accessibility', 'foundry_pages'],
+  presentation: [
+    'accessibility',
+    'endpoint_labels',
+    'exploratory_publication',
+    'beginner_navigation',
+    'foundry_pages'
+  ],
   producer: ['small_bundle', 'large_corpus'],
-  profile: ['foundry_pages'],
+  profile: ['endpoint_labels', 'exploratory_publication', 'foundry_pages'],
   provenance: ['small_bundle', 'large_corpus', 'foundry_pages'],
   python: ['foundry_pages'],
   question: ['large_corpus'],
@@ -87,10 +116,10 @@ export const TEST_TAG_SUITES = Object.freeze({
   relationship: ['small_bundle', 'large_corpus', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
-  route: ['foundry_pages'],
+  route: ['exploratory_publication', 'beginner_navigation', 'foundry_pages'],
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
-  site: ['foundry_pages'],
+  site: ['beginner_navigation', 'foundry_pages'],
   source: ['small_bundle', 'large_corpus'],
   validator: ['foundry_pages'],
   workflow: ['foundry_pages'],

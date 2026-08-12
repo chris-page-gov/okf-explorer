@@ -2304,6 +2304,17 @@
       "type": "Research"
     },
     {
+      "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/explore-okf-open-data-test-candidates",
+      "@type": "okf:Concept",
+      "description": "Authoritative UK sources and a bounded Coventry citizen journey for testing readable labels, useful semantic linking and exploratory publication.",
+      "route": "research/explore-okf-open-data-test-candidates",
+      "section": "research",
+      "source_path": "research/explore-okf-open-data-test-candidates.md",
+      "timestamp": "2026-08-12T00:00:00Z",
+      "title": "Open data for the Explore OKF pilot",
+      "type": "Research"
+    },
+    {
       "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/fedavg",
       "@type": "okf:Concept",
       "description": "Communication-efficient decentralised training by model averaging.",
@@ -2369,6 +2380,9 @@
         },
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/bfcl"
+        },
+        {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/explore-okf-open-data-test-candidates"
         },
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/fedavg"
@@ -3872,7 +3886,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/da142ff4b370fe77fc8edbbf7c91cfce71ff310e44c1f78896364d27de22131e",
           "locator": "Markdown link resolving to document/overview.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/index.md",
           "source_field": "Markdown body",
           "source_sha256": "fc695c8d2dfdc9971877f4c0bcdccf351f6d6ca1d5ea1ee86f5058c2056beb1d",
@@ -3886,7 +3900,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -3921,7 +3935,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b78ea389168b37949775c04ade38ee85bbe99a06fc83566f56036c2628c4625f",
           "locator": "Markdown link resolving to document/peer-review.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/index.md",
           "source_field": "Markdown body",
           "source_sha256": "fc695c8d2dfdc9971877f4c0bcdccf351f6d6ca1d5ea1ee86f5058c2056beb1d",
@@ -3935,7 +3949,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -3970,7 +3984,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/29c2df0d42f6bc8d88771805f6f3b954ea1a129da1c725eb807748d3a2d198cd",
           "locator": "Markdown link resolving to document/sources/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/index.md",
           "source_field": "Markdown body",
           "source_sha256": "fc695c8d2dfdc9971877f4c0bcdccf351f6d6ca1d5ea1ee86f5058c2056beb1d",
@@ -3984,7 +3998,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -4019,7 +4033,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9223db4990746607b983f81de3306316a515fb3966d23bc577c1da39aff40a7d",
           "locator": "Markdown link resolving to document/themes/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/index.md",
           "source_field": "Markdown body",
           "source_sha256": "fc695c8d2dfdc9971877f4c0bcdccf351f6d6ca1d5ea1ee86f5058c2056beb1d",
@@ -4033,7 +4047,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -4852,7 +4866,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5e4dd70b3b9f8c95db8e1b75adad1c523332f746e624f7ea9e13248c1b427f36",
           "locator": "Markdown link resolving to document/sources/agent-ready-infrastructure-paper.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/sources/index.md",
           "source_field": "Markdown body",
           "source_sha256": "5bb033daa59be5c150af8826ce2b0266b2e6fd3baba1251e31198fb30a510ad3",
@@ -4866,7 +4880,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -4901,7 +4915,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/bae7298369ef427d5420fdcf859ba086930bc099f50a7430a7e7d681f98fb3d4",
           "locator": "Markdown link resolving to document/sources/engineering-deck.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/sources/index.md",
           "source_field": "Markdown body",
           "source_sha256": "5bb033daa59be5c150af8826ce2b0266b2e6fd3baba1251e31198fb30a510ad3",
@@ -4915,7 +4929,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -4950,7 +4964,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/876819422405f37cb2e48070f51ab9fb60b210383fcc207e606a2b75c918b227",
           "locator": "Markdown link resolving to document/sources/federated-ai-report.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/sources/index.md",
           "source_field": "Markdown body",
           "source_sha256": "5bb033daa59be5c150af8826ce2b0266b2e6fd3baba1251e31198fb30a510ad3",
@@ -4964,7 +4978,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -5930,7 +5944,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b133651d9864c4461f7a7754cf8ad5da2be4a1a0ea484a6842cd14e468dea400",
           "locator": "Markdown link resolving to document/themes/agent-ready-not-agent-trusting.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -5944,7 +5958,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -5979,7 +5993,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/462e7f3cb4bbd89bf76ab0f73792801af66ffb89e0ca3397c0e9115b4dd9b25a",
           "locator": "Markdown link resolving to document/themes/discovery-to-governance.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -5993,7 +6007,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -6028,7 +6042,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/2636f0ed98655ceb49c20285f0a70a678dd6eb987742fc6ceecd3f0d9506a8e5",
           "locator": "Markdown link resolving to document/themes/evaluation-format-to-execution.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -6042,7 +6056,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -6077,7 +6091,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/e3eaf696e20cf74fac1efdd6937270348e998fcbf275a7cc9e27eb0b41e718b3",
           "locator": "Markdown link resolving to document/themes/failure-taxonomy.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -6091,7 +6105,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -6126,7 +6140,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/7c12e621600e17724050b81afa6be48023cbd0c4c9f744e8d15284d306b27f56",
           "locator": "Markdown link resolving to document/themes/missing-collaborative-learning-layer.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -6140,7 +6154,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -6175,7 +6189,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/7307c5072704c9abd04c1a8d0d849731de2692d1dc0e793a954f66f944a1b3b8",
           "locator": "Markdown link resolving to document/themes/recommendations-roadmap.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -6189,7 +6203,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -6224,7 +6238,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/52cde861037e2db6314808fd854426a6c85bcadac0c5e3aea34b5555d10e352c",
           "locator": "Markdown link resolving to document/themes/uk-public-sector-implications.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "document/themes/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c7b7918f2198057e742ee1e588b47ff6f04495511292ec374f17fd207670062c",
@@ -6238,7 +6252,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8086,7 +8100,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/e5b812d7eae984116a2e5585a0de9e0c0efeb825e376cec03ddbb193835d73be",
           "locator": "Markdown link resolving to federated/cross-device-vs-cross-silo.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8100,7 +8114,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8135,7 +8149,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/4fc824011488ec7431ca105a1e6ace436a5305c3573be07b6e385a11ebf4ff99",
           "locator": "Markdown link resolving to federated/differential-privacy.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8149,7 +8163,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8184,7 +8198,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/0ec191a5fff693219fa7b357f62f8e6a78546fe6841278cb2cc72cb86ccf150a",
           "locator": "Markdown link resolving to federated/evaluation-rubric.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8198,7 +8212,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8233,7 +8247,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/e78c0cb70bb65f2f7da4903fd2bdc6d7d237a0b6901c3671f5bef72d3c4a3302",
           "locator": "Markdown link resolving to federated/federated-analytics.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8247,7 +8261,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8282,7 +8296,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/79b1d681199f25c915cc190ffb0330d5f7755792c9516da32e992c0260ae0d2b",
           "locator": "Markdown link resolving to federated/federated-evaluation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8296,7 +8310,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8331,7 +8345,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/182d829b4077aaaed136e5bba6105c873fd058df3cfa11c9800b8daa268b0215",
           "locator": "Markdown link resolving to federated/federated-learning.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8345,7 +8359,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8380,7 +8394,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5d15f68d17b6dbe78d78de8d94e96b284ae1d7756c582018616adb1629f7efc6",
           "locator": "Markdown link resolving to federated/federated-rag.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8394,7 +8408,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8429,7 +8443,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6a7a2b2296decf4de18bb0921e162a720d2c369ab7a44b33d9438c8d5d1461c3",
           "locator": "Markdown link resolving to federated/federated-unlearning.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8443,7 +8457,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8478,7 +8492,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9b6477178fd08f53dad2e1b12e460c281b16027a318bad1eb081985c1e8138c5",
           "locator": "Markdown link resolving to federated/homomorphic-encryption-mpc.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8492,7 +8506,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8527,7 +8541,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/f50a6aa5c0236a41bd27c08245f9397e9002bb7de927f628b732ea173b44dde6",
           "locator": "Markdown link resolving to federated/hub-and-spoke-vs-hierarchical.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8541,7 +8555,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8576,7 +8590,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/531bfdcc44c798a784bf73dafdf65796f0274f02b83c58a95832da2cf95f3997",
           "locator": "Markdown link resolving to federated/membership-inference.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8590,7 +8604,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8625,7 +8639,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/19aae4c9c17d24049d3bf66a25dec7b9e2638b225b078403587628103768a669",
           "locator": "Markdown link resolving to federated/model-poisoning-backdoors.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8639,7 +8653,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8674,7 +8688,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a39df5222192f321be23eea75e6c06e40cdaf04d9de9428a0bdefa74765149e2",
           "locator": "Markdown link resolving to federated/non-iid-data.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8688,7 +8702,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8723,7 +8737,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/95adfe5045c52a49344ba818f604a3cd6f5e4434727c6364436a80063c5979cf",
           "locator": "Markdown link resolving to federated/secure-aggregation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8737,7 +8751,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -8772,7 +8786,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5e8a20482f252bf0fb3c0d8159eed2b3e9a6d781abf531110b52466f872534d8",
           "locator": "Markdown link resolving to federated/trusted-execution-environments.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "federated/index.md",
           "source_field": "Markdown body",
           "source_sha256": "f48ce9e1c8988f6c76017984390ba22583e3686c17b7aafe520087eb34934397",
@@ -8786,7 +8800,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -9899,7 +9913,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/1fcef69eff14acd893914947594bb0686f17def5f576d3bf8dbc3ab631d5a349",
           "locator": "Markdown link resolving to frameworks/autogen.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -9913,7 +9927,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -9948,7 +9962,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6bdf7df1647b5246e325a35f1ab64f21dbf065121c267e5ccdb5213c2a3851d1",
           "locator": "Markdown link resolving to frameworks/context-hub.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -9962,7 +9976,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -9997,7 +10011,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a4f62d59517ba3fa85d00618f5bcba6deb19b7ebb546fd0168e6f231d7301111",
           "locator": "Markdown link resolving to frameworks/fate.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10011,7 +10025,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10046,7 +10060,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9258f9dd87ac77970a9f5dc2e7d858ced0b5ca4118960cc7514c1715743dacfc",
           "locator": "Markdown link resolving to frameworks/fedml.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10060,7 +10074,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10095,7 +10109,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/34df1d372db26afc187f4227314f296fcb36701fab714558dff6c1ba16724dcc",
           "locator": "Markdown link resolving to frameworks/flotilla.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10109,7 +10123,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10144,7 +10158,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/3685ed19faf0910b54e9cdfbb918a37c831c25ff03a44488467895d384cb5f51",
           "locator": "Markdown link resolving to frameworks/flower.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10158,7 +10172,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10193,7 +10207,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/f3aa3afea46584c1b0568edc6ddcc722b2b9f1168a0525758d14a21375b455fa",
           "locator": "Markdown link resolving to frameworks/nvidia-flare.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10207,7 +10221,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10242,7 +10256,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6595f8b99089c3d9c2be910a7e47a338ec560f0a5db28d21ad555b6a4cb49b90",
           "locator": "Markdown link resolving to frameworks/openai-agents-sdk.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10256,7 +10270,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10291,7 +10305,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/67e68d060ffb074e2d3c559770853e69165d834e2463417217d0269a00044549",
           "locator": "Markdown link resolving to frameworks/openfl.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10305,7 +10319,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10340,7 +10354,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/0d23c7811b93fe32f861407825d5592b5a6437d177c018b0131d7308311e2be6",
           "locator": "Markdown link resolving to frameworks/pysyft.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10354,7 +10368,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10389,7 +10403,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b2ed94331b7a3146a258d6ec024ff52ae50bab13f6d23e211b449029ecd6351e",
           "locator": "Markdown link resolving to frameworks/semantic-kernel.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10403,7 +10417,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10438,7 +10452,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8355616731362b94f7efd2fae220a37f20af3366d2e69fb1e5664cd64d536ff7",
           "locator": "Markdown link resolving to frameworks/substra.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10452,7 +10466,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -10487,7 +10501,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/00d25e96a91f371504e8e91f84defb85d0e23e3c7c1ce0842009dcaa1b75579e",
           "locator": "Markdown link resolving to frameworks/tensorflow-federated.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "frameworks/index.md",
           "source_field": "Markdown body",
           "source_sha256": "94f69338ad4c390def8b2f84b5b684e822f16edf31b21e14b89e2d6a5b0ceb4c",
@@ -10501,7 +10515,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12594,7 +12608,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9892737098b3f121f0aca5c96c54c0743f2cf80ba881a91a0f58a2e3061d14c4",
           "locator": "Markdown link resolving to glossary/agent-card.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12608,7 +12622,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12643,7 +12657,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/aedc4643c4efde12129430371390a905b552049613eccd03c222066113d88137",
           "locator": "Markdown link resolving to glossary/agent-skill.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12657,7 +12671,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12692,7 +12706,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/387b0079295e061914e4a45761e9da03267cce70e039b986f0ec73023bb73ddb",
           "locator": "Markdown link resolving to glossary/api-calling.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12706,7 +12720,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12741,7 +12755,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9050ee03ab47f3cfa0eab46ff307360632c638c77feb1ed651dc1e277635058d",
           "locator": "Markdown link resolving to glossary/api-gateway.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12755,7 +12769,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12790,7 +12804,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/28b94f8b2f224f8c455f226fee451d2fa63997cbb16329d7eb3af706a1ea804c",
           "locator": "Markdown link resolving to glossary/attestation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12804,7 +12818,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12839,7 +12853,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/1edcf71190a6923578fcfb6a210daf54ec445a3298bb2066d52400569a84eecf",
           "locator": "Markdown link resolving to glossary/audit-trail.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12853,7 +12867,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12888,7 +12902,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/ee2497612cb350019cb96dea0f3f0c792446196c1f424b1ea546121d42e8c579",
           "locator": "Markdown link resolving to glossary/bearer-token.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12902,7 +12916,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12937,7 +12951,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/7179502a0f29250508cae3233695b945547aa8d653e7f085f69527a8048a1f53",
           "locator": "Markdown link resolving to glossary/compensation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -12951,7 +12965,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -12986,7 +13000,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d8bf906ff03483a1936127e8cb301690b32651a1b501280a2c2a22fa9281131f",
           "locator": "Markdown link resolving to glossary/confused-deputy.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13000,7 +13014,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13035,7 +13049,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a5159b5e1da6c3cd4df02803f83dcde94d755671fadeefa802bb71b55bdcc429",
           "locator": "Markdown link resolving to glossary/consent.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13049,7 +13063,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13084,7 +13098,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/665151be994be8e9fe070272b5165683b64e054e9ec009b65edf5d1340334414",
           "locator": "Markdown link resolving to glossary/function-calling.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13098,7 +13112,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13133,7 +13147,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a926c6ef05f6d85cc2f7c226934c74d2d93156853441dfb76a75e750d94c3f69",
           "locator": "Markdown link resolving to glossary/idempotency.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13147,7 +13161,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13182,7 +13196,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/817b64a9d2cfc7df3bb6b8083cbbf73beffa4f40d4c7a881d6d342412d4de8d1",
           "locator": "Markdown link resolving to glossary/least-privilege.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13196,7 +13210,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13231,7 +13245,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/2c9290200fedf0ea807da0ad84d8da4f12f1fb92a935719365b5fce503b984fa",
           "locator": "Markdown link resolving to glossary/policy-as-code.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13245,7 +13259,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13280,7 +13294,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/7ac131be7efb0f7cd33059b3db1f56cc77771829132391fcf408025d277a401a",
           "locator": "Markdown link resolving to glossary/prompt-injection.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13294,7 +13308,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13329,7 +13343,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b1cc1562c1a444a2d32e39ee5b9be16c7bb55daa4c4a7b72358b14adba6c4929",
           "locator": "Markdown link resolving to glossary/provenance.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13343,7 +13357,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13378,7 +13392,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b71c5e445bd27840c81a1b4c8feb681fd94b63f20f711053b848a928dc9d5dcc",
           "locator": "Markdown link resolving to glossary/schema-grounding.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13392,7 +13406,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13427,7 +13441,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c3128e4c42091de5cd5642e76c1765a9724843fa97eba6e001a26d51dca075f8",
           "locator": "Markdown link resolving to glossary/semantic-grounding.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13441,7 +13455,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13476,7 +13490,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/3e6b90f37e28b1e458443edc50c371e47cf9ed10a06767a430de9f9245e88781",
           "locator": "Markdown link resolving to glossary/sender-constrained-token.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13490,7 +13504,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13525,7 +13539,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/70b85fbc611644c6bc13529b5edad0c0ba9fba366716a062abca1cc4536b1890",
           "locator": "Markdown link resolving to glossary/structured-output.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13539,7 +13553,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13574,7 +13588,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/75f37c677d348047d1b430605b9681eafdfc1917837e02c18cea118ce2b64481",
           "locator": "Markdown link resolving to glossary/tool-discovery.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13588,7 +13602,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13623,7 +13637,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/46995d5cf2bc669d231f7678e42f608c2cf4384dfbb1281204f544a5e631b4c1",
           "locator": "Markdown link resolving to glossary/tool-retrieval.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13637,7 +13651,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13672,7 +13686,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8dae7b8b44bf32d0a908060ca07498d082e4f62937e007bc50a306923eeb2ec1",
           "locator": "Markdown link resolving to glossary/tool-use.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13686,7 +13700,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13721,7 +13735,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/2fb1b2181ccb54da0e6ad3c9409bbd9a8153aa5d0f35c2057e506ec739561e10",
           "locator": "Markdown link resolving to glossary/workflow-engine.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13735,7 +13749,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -13770,7 +13784,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6194d91f6f5459ff06da69df4554417aad598c5f8f841827f5717f0b2b0069a0",
           "locator": "Markdown link resolving to glossary/workload-identity.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "glossary/index.md",
           "source_field": "Markdown body",
           "source_sha256": "cf7a04b0a7a4c0ae201f3aef88469c69a554a296c4d84227b8b785ebff3cec99",
@@ -13784,7 +13798,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16122,7 +16136,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c5dacdc1489171f938da24ddaf6687618d294a2b170f09151d1f63a2d8b1acac",
           "locator": "Markdown link resolving to document/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16136,7 +16150,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16171,7 +16185,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d8aeaf84d2eefbbdefce658fe8e1e522baffaa647da453df5d7d5ca75869f14b",
           "locator": "Markdown link resolving to document/peer-review.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16185,7 +16199,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16220,7 +16234,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/44f1bd9cf746065d5856dc9e48542b75abd5e92c8f6d2f9dec9b5693fcd2aa95",
           "locator": "Markdown link resolving to document/sources/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16234,7 +16248,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16269,7 +16283,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/60d0e01cc2ed08a5f9486d8b0f10911cb16767d28b626842216a92bbc0eb1524",
           "locator": "Markdown link resolving to document/themes/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16283,7 +16297,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16318,7 +16332,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5c87981044524a4f16f57bfc6ec0a5b106878b51f1c5aebbceafbab2e8b73c43",
           "locator": "Markdown link resolving to federated/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16332,7 +16346,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16367,7 +16381,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c41afe7a3df2e038e45d7f4f341da36c5e93432f1834d1f7cb05a9ca2c16aab9",
           "locator": "Markdown link resolving to frameworks/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16381,7 +16395,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16416,7 +16430,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a566b55603eb80edeca19c483d2fd849ed06ccfc9d1492ebf60e758b04472e5d",
           "locator": "Markdown link resolving to glossary/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16430,7 +16444,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16465,7 +16479,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/496a9fc363054307f34d50295a4f9e2cf10fd3144351a46e773939c377a9e2b6",
           "locator": "Markdown link resolving to log.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16479,7 +16493,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16514,7 +16528,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/3976e0fcc4de1421319c2502cf05bf97d941857f069d09d525f1b5b269cf0758",
           "locator": "Markdown link resolving to organisations/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16528,7 +16542,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16563,7 +16577,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/afdab977fc371f4a820d0b48bfc129922f71bcb79ec2ae9365e8be8cd78a09f2",
           "locator": "Markdown link resolving to research/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16577,7 +16591,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16612,7 +16626,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/89ea043c639864d3b638b0a78109216bfda80dc05fa6acb9172f1f96e3f7cf89",
           "locator": "Markdown link resolving to sources-index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16626,7 +16640,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16661,7 +16675,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/ca83bd8e2d1389a2c486603a9e44339202445b9a0b2a117f373c37062f653f0b",
           "locator": "Markdown link resolving to stack/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16675,7 +16689,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16710,7 +16724,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a79747ab5e124d38385474a8fffd390aa1722ca7e0b41ed8f59fc0b82d577aaa",
           "locator": "Markdown link resolving to standards/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16724,7 +16738,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16759,7 +16773,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/212b4afd841fe5af3bc40b5547ec3c96bf515164695fc38c3c9dffd51d947c96",
           "locator": "Markdown link resolving to uk-government/index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "index.md",
           "source_field": "Markdown body",
           "source_sha256": "69e93f37dedcc7ff2dc6f4711420b83fcc268b6db5143e0135d570272c39d363",
@@ -16773,7 +16787,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16808,7 +16822,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/174309e6dab7f7e37ea86ca8b0134126367a91842d5ea080dcc911ede26afe29",
           "locator": "Markdown link resolving to document/peer-review.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "log.md",
           "source_field": "Markdown body",
           "source_sha256": "63c4c5664614a615272bfb56da0c2b33377eb4ac84403bfd8dd26b85c8f7038e",
@@ -16822,7 +16836,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16857,7 +16871,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/dac5f9f06b9a3c07ed0c8df6938a628d8bdb1ea161c1f4139a0451ec53a067a4",
           "locator": "Markdown link resolving to frameworks/context-hub.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "log.md",
           "source_field": "Markdown body",
           "source_sha256": "63c4c5664614a615272bfb56da0c2b33377eb4ac84403bfd8dd26b85c8f7038e",
@@ -16871,7 +16885,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -16906,7 +16920,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/142fe3ce7fc96a0da603b5ace5c8f79a153f7817c15a07b48dbefc69b01b4c92",
           "locator": "Markdown link resolving to index.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "log.md",
           "source_field": "Markdown body",
           "source_sha256": "63c4c5664614a615272bfb56da0c2b33377eb4ac84403bfd8dd26b85c8f7038e",
@@ -16920,7 +16934,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -17886,7 +17900,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5c4d70a7a26fa99b00a7358e27fc9fa1e392b475e29822f631133ece4b5017a3",
           "locator": "Markdown link resolving to organisations/aisi.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -17900,7 +17914,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -17935,7 +17949,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c86c7c3c34eb87b144d5d6c52960169cccfb2b7c340c2ed75938aa361ea771c5",
           "locator": "Markdown link resolving to organisations/anthropic.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -17949,7 +17963,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -17984,7 +17998,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c88691c084a85cb27dd95ef16ce3a5b5c22dd47d943f3fdd6db0ab79401ed71f",
           "locator": "Markdown link resolving to organisations/cncf.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -17998,7 +18012,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18033,7 +18047,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/2ab7d254ca7801cbfee1696a50b8985f73809270de25e9c0777a162b773c6cdf",
           "locator": "Markdown link resolving to organisations/dsit.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18047,7 +18061,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18082,7 +18096,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/beaef8a945c69983ddfece5d77cd2f68223183acb2f0c1198d8950608663ad45",
           "locator": "Markdown link resolving to organisations/flower-labs.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18096,7 +18110,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18131,7 +18145,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/16446126fc96c4c667ccc5d7e5e607adeed6c895eaf3605cb7ef388cd24ded81",
           "locator": "Markdown link resolving to organisations/gds.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18145,7 +18159,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18180,7 +18194,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8e2e2d888f1e312cd95c2d1ec81b06a26d080528ecd6e95e5f4ac1766f8cdb30",
           "locator": "Markdown link resolving to organisations/google.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18194,7 +18208,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18229,7 +18243,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/23d7db2ae15846603981fce583fc613040960723c106b9443454b53fd50fbc4c",
           "locator": "Markdown link resolving to organisations/ico.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18243,7 +18257,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18278,7 +18292,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/099d8722c6b00701e0a2201f16674390bd34a2c88d5b68f1ccc7b1a4c6de9105",
           "locator": "Markdown link resolving to organisations/ietf.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18292,7 +18306,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18327,7 +18341,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/007b53d406c8ab1571179d854db49e8348c12c3d7d7fe73d7f0b107b94f18c50",
           "locator": "Markdown link resolving to organisations/linux-foundation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18341,7 +18355,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18376,7 +18390,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d971a56965bea9c6b346ec3ad8825db69b007e86f53c4811057ca7545222b98c",
           "locator": "Markdown link resolving to organisations/ncsc.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18390,7 +18404,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18425,7 +18439,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a6efd3b02aac79572722636b82034c72206f4dffcdf53f0ac2a5e427c9d4d776",
           "locator": "Markdown link resolving to organisations/nvidia.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18439,7 +18453,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18474,7 +18488,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/48456716756ddae59c3cfd0b8d3ba66dfe05d7e9f47a65fde13575e3a0e24350",
           "locator": "Markdown link resolving to organisations/openai.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18488,7 +18502,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18523,7 +18537,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/fdaf4126584dd7a22c3102e306929ece45bbc074fa59c5034e1920df783acf65",
           "locator": "Markdown link resolving to organisations/openapi-initiative.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18537,7 +18551,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18572,7 +18586,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/2ceab792faa00b00bebf677be06d22e865f0f3151c2430953b3c6ca1e78c8ce3",
           "locator": "Markdown link resolving to organisations/openmined.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18586,7 +18600,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -18621,7 +18635,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5f1b12f52a2b54747829c2436fb168800af0664d55ab55e91d97cecaedee8f6c",
           "locator": "Markdown link resolving to organisations/w3c.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "organisations/index.md",
           "source_field": "Markdown body",
           "source_sha256": "bdc45db619e906d12302fe6ee7bde91410ccf28031414d40dedadbda7ee49905",
@@ -18635,7 +18649,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19650,10 +19664,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5379e7570b961d09290ce70c6b77c1e854c754e0ad3b8b5f0fc0573087c7dc6e",
           "locator": "Markdown link resolving to research/agentbench.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/agentbench.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "fc99514857d35dd5d0a4eb70ac1383511f242950f7a4edee0f96ba5154f7923a",
@@ -19664,7 +19678,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19699,10 +19713,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8e8efdcf6bf1dd8e3b0017c6faed5edf37cf8bb483c7b167e5947c2934ddd612",
           "locator": "Markdown link resolving to research/api-bank.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/api-bank.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "116f9d499482d9a6f59ef8ab9552fbe5a504a5670e50233196f362f1b87295fe",
@@ -19713,7 +19727,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19748,10 +19762,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/22ef3636c8cd2e73921ff6de25379accbf59e2d4ff125f492248ef99701eea56",
           "locator": "Markdown link resolving to research/apigen.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/apigen.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "0baad88f95da1c698351afa5fffd7f15782f84d626baf6cb7af67d78012c8710",
@@ -19762,7 +19776,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19797,10 +19811,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/87c43d7a6751c5fd6425714922b188dfda05a439f88d670b8376b584b2b43cf6",
           "locator": "Markdown link resolving to research/bfcl.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/bfcl.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "04f6789b3332e77bf53141df29159687929022a7a2a0a2879f577e9a7abb5a7c",
@@ -19811,7 +19825,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19827,6 +19841,55 @@
         "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/bfcl"
       },
       "target_route": "research/bfcl"
+    },
+    {
+      "@id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/066196c07282b440cafae16dc2be1461b4a9576ae52cb9b39804c1f2675e1cd1",
+      "@type": [
+        "rdf:Statement",
+        "RelationshipAssertion"
+      ],
+      "assertion_scope": "real-world",
+      "assertion_status": "normalized",
+      "authority": {
+        "class": "derived",
+        "label": "Deterministic Markdown link projection",
+        "source": "https://github.com/chris-page-gov/okf-explorer"
+      },
+      "derivation": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/rules/markdown-link-v1",
+      "evidence": [
+        {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/066196c07282b440cafae16dc2be1461b4a9576ae52cb9b39804c1f2675e1cd1",
+          "locator": "Markdown link resolving to research/explore-okf-open-data-test-candidates.md",
+          "retrieved_at": "2026-08-12T00:00:00Z",
+          "source_artifact": "research/index.md",
+          "source_field": "Markdown body",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
+          "source_value": "research/explore-okf-open-data-test-candidates.md",
+          "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
+          "source_value_sha256": "58bfba793861c1e40701e613a0e2b1bb3623633124921fa5d8a5ad3ec8817167",
+          "type": "markdown-link",
+          "url": "https://github.com/chris-page-gov/okf-explorer/blob/main/research/index.md"
+        }
+      ],
+      "inverse_label": "referenced by",
+      "kind": "references",
+      "label": "references",
+      "observed_at": "2026-08-12T00:00:00Z",
+      "predicate": {
+        "@id": "http://purl.org/dc/terms/references"
+      },
+      "rights": {
+        "assertion": "navigation-only",
+        "source": "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+      },
+      "source": {
+        "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/index"
+      },
+      "source_route": "research/index",
+      "target": {
+        "@id": "https://chris-page-gov.github.io/okf-explorer/id/research/explore-okf-open-data-test-candidates"
+      },
+      "target_route": "research/explore-okf-open-data-test-candidates"
     },
     {
       "@id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/0ea4b99ee2b574900799af2ab675f7132f08500b96e71b34fa5e9e7e65a31c3d",
@@ -19846,10 +19909,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/0ea4b99ee2b574900799af2ab675f7132f08500b96e71b34fa5e9e7e65a31c3d",
           "locator": "Markdown link resolving to research/fedavg.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/fedavg.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "719e369be89bd6041ec0ff95db9ecb283b845167efdae9da4b52135745622677",
@@ -19860,7 +19923,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19895,10 +19958,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/70cd542b8b81ec8dd49e4190215e791c3dadfe7cd1e7e1dfb2e1e8e4a355085c",
           "locator": "Markdown link resolving to research/google-keyboard-fl.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/google-keyboard-fl.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "aee9f98b3fadab6833759a5c6cacb896bd8ce33b686eb589a3b8a73a2cba8cdf",
@@ -19909,7 +19972,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19944,10 +20007,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/aa9cfe853312102b987098a62af55561494386db7655d0d8592f0c866407f0fd",
           "locator": "Markdown link resolving to research/gorilla.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/gorilla.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "715f4c949750193b8612f3971b56c8c091648830fb721f2d444cf074cff25f8a",
@@ -19958,7 +20021,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -19993,10 +20056,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/3fddf8fcfc63ccdf2276d423fa4bf3986688f6a72cbfceebf28882ec17ff364f",
           "locator": "Markdown link resolving to research/kairouz-open-problems.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/kairouz-open-problems.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "341e7d10715c5a533cc30845660db9fd0aef73b63a18ed525adf2382797e3a2c",
@@ -20007,7 +20070,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20042,10 +20105,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/030a9c7186db43701e64f03ecc6d7f678ec3e7ace96731ee0710a9afe929c763",
           "locator": "Markdown link resolving to research/melloddy.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/melloddy.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "e23558afafa5420535d454bc65ad7d3681b67cd09857adddc7028ee38c619afb",
@@ -20056,7 +20119,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20091,10 +20154,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5229d1da0ff788175156cd8f7f8bdb20a9e329cb1221a97fc972f5625502d8fd",
           "locator": "Markdown link resolving to research/mrkl.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/mrkl.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "230a0076b41bd7cb9d48661a52dd254f45cc11bf8bc64249b0c60152deb2a754",
@@ -20105,7 +20168,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20140,10 +20203,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/ca07b9150aad3993b9186e2aba3a629094fa09695ae1a84e776e9fd605970d7c",
           "locator": "Markdown link resolving to research/react.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/react.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "ab3a43169b97bbfee0d39f4f19326f4e744562637b178ee12c7430e06513d836",
@@ -20154,7 +20217,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20189,10 +20252,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8ccb8823f6bec29f4e76624eb1665b58f03fddf8c87be9ea90cb5b19a6110a89",
           "locator": "Markdown link resolving to research/realm.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/realm.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "730ea3b131621cc015d288a23b218d5e9009aac9a6e223d4c812639b682ccf37",
@@ -20203,7 +20266,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20238,10 +20301,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/f550389246e3596a30a10566f5b5c5af3e04071a03418044eb0dda10ee137b5a",
           "locator": "Markdown link resolving to research/tau-bench.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/tau-bench.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "cfb5ef66524b86b5e97a8de6d17d353483f7a36bc673e32c5f774719b841ada4",
@@ -20252,7 +20315,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20287,10 +20350,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6edc4f34add8b5b7a6b8ca1a1218e07009ccdd2864a4aaf6533d92f671caa768",
           "locator": "Markdown link resolving to research/toolace.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/toolace.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "b63223dc12feb44b1abaed53fc9a0ffa3f551e2c153bf82d63bbfc5b1d4aa3e0",
@@ -20301,7 +20364,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20336,10 +20399,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9bb9de3837eaf355379f29cdb43da4e779ee4b72b8ddd58e49c08415010049fe",
           "locator": "Markdown link resolving to research/toolformer.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/toolformer.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "2dce9d66857188af8227c941f54c459605da2f88189ae4f0046d969207055d70",
@@ -20350,7 +20413,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20385,10 +20448,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d83ec5d47d12efbdeb9a00b943efd7b71aefd8bcacbe85f3f4a8ef6b152dd524",
           "locator": "Markdown link resolving to research/toolllm-toolbench.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/toolllm-toolbench.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "9bd29809af33f430a6085ddc7babfffc3adf88b957b62d881ec0a297dc41de24",
@@ -20399,7 +20462,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -20434,10 +20497,10 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/73256f8066077fa5081f0be967a555f28d8d709b4509cb7f767879c93e060bd2",
           "locator": "Markdown link resolving to research/toolsandbox.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "research/index.md",
           "source_field": "Markdown body",
-          "source_sha256": "3162af02e35838638ccf9a51858cc96a6b84655cdccfcc10fd3f77cdbc5e6ee5",
+          "source_sha256": "44821647237bde392d20a54364bc84798f993cdfeb7d3514b99dc303e3648b68",
           "source_value": "research/toolsandbox.md",
           "source_value_hash_canonicalization": "utf8-verbatim-resolved-path",
           "source_value_sha256": "26d430a4f163ed0ceeb9f1bd10a7690420c36f6d8e9cce207cd5caeb42241cbd",
@@ -20448,7 +20511,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27735,7 +27798,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c336a9ae2b0a921ab9b7b8a1ced6460aaf2166a1875951b4ec3c8e6b9257e7bf",
           "locator": "Markdown link resolving to stack/contracts-and-interfaces.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27749,7 +27812,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27784,7 +27847,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b3d473582f0b679410a5dcd10bf2703fcb04fab26638477f58e526e258f455e9",
           "locator": "Markdown link resolving to stack/control-plane.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27798,7 +27861,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27833,7 +27896,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d2b79cc78ee6d2b9f8997f106308b0d9e6e26a7fea67b879f64d844c9ab55291",
           "locator": "Markdown link resolving to stack/discovery-and-retrieval.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27847,7 +27910,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27882,7 +27945,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/1931b9e61d6e1e5ec694614fd41ef0a7f8e57d4f9c472bf875ce06115ba1b21f",
           "locator": "Markdown link resolving to stack/execution-and-orchestration.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27896,7 +27959,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27931,7 +27994,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/8d25f63514274bcabb191a5b0724eeaf3ff6eb5199fb6d23ed1e6bfd4978f5ce",
           "locator": "Markdown link resolving to stack/federation-layer.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27945,7 +28008,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -27980,7 +28043,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/cdbe0491c6d05ead1369a03f3b313aa246cd29340b17e0881c6858525e31e6c4",
           "locator": "Markdown link resolving to stack/identity-and-authorisation.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -27994,7 +28057,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -28029,7 +28092,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/21095b12f9ff583a1097516a0e88650ff5ae964887e53e7d51353b69b093d002",
           "locator": "Markdown link resolving to stack/observability-and-provenance.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -28043,7 +28106,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -28078,7 +28141,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5dd7434e8aa7628ee53ec32bc0cd42d2f10b59a2f61dd9d3a214e3bd6f2cbfb8",
           "locator": "Markdown link resolving to stack/policy-enforcement.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -28092,7 +28155,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -28127,7 +28190,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/73decd5a34e086e6f3121465f20673b05ea617ffd6b68edab49c89aa04e2a19c",
           "locator": "Markdown link resolving to stack/understanding-and-grounding.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "stack/index.md",
           "source_field": "Markdown body",
           "source_sha256": "a740a33521d4e0ce6b283d2e6bf114bb93cb9dc2eb089bb73f4912bd49961d48",
@@ -28141,7 +28204,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29352,7 +29415,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/411121e6e26f1cb63ab5bb95ec02d2133f904b3d2f44e6a7db5a50c83f955199",
           "locator": "Markdown link resolving to standards/a2a.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29366,7 +29429,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29401,7 +29464,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/bcdd45c757a0046158737861b7cc0a3e11acd9656f39a7e13a463ff800b326e8",
           "locator": "Markdown link resolving to standards/arazzo.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29415,7 +29478,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29450,7 +29513,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5bea9ff62afe61c508e756e769c588867e355eb3a10ad2e1f42e57aebcc503fb",
           "locator": "Markdown link resolving to standards/asyncapi.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29464,7 +29527,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29499,7 +29562,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/4d8dddb6139e0a2718402d0f2dfe0863a48abd6e4f1f887bf5812d77c08253ec",
           "locator": "Markdown link resolving to standards/dcat-ap.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29513,7 +29576,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29548,7 +29611,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/6f596de63c463c076d989a6e8e2befbb954e53d67488a99914de9d015886e90a",
           "locator": "Markdown link resolving to standards/dcat.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29562,7 +29625,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29597,7 +29660,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/f6651fa20381c3f464820152690eaee11513e53cd185449ac7c4a2d3d3238699",
           "locator": "Markdown link resolving to standards/dpop.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29611,7 +29674,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29646,7 +29709,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9e98998c48c0fe5db878a47332458f23d4a9342c10de25cc2207861410677221",
           "locator": "Markdown link resolving to standards/dqv.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29660,7 +29723,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29695,7 +29758,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/3eebc7c07da638ddc4464dc6a3d9d796c726346eab2ad7a21980292e87ad48db",
           "locator": "Markdown link resolving to standards/graphql.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29709,7 +29772,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29744,7 +29807,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c6269f97d822603a5732448f47a027bd021bf58639b94404b260fd98c413bbea",
           "locator": "Markdown link resolving to standards/grpc-protobuf.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29758,7 +29821,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29793,7 +29856,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/755c7a89867437ead129a5931ce23fcbdaa4d6f733bbc4f832da1bb5c9791830",
           "locator": "Markdown link resolving to standards/http-message-signatures.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29807,7 +29870,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29842,7 +29905,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/c2a667df650435ae63524104312dce9a8e8566cbfb87c304889d23029d69d47e",
           "locator": "Markdown link resolving to standards/json-schema.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29856,7 +29919,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29891,7 +29954,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d418cd1ea8706274e34e1c7aec9d6327346b441b189d40b765b64545c3240078",
           "locator": "Markdown link resolving to standards/mcp.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29905,7 +29968,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29940,7 +30003,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/bc96e8399da3fd943bd7a1ba5a879554130a8da7d9375626cc80f8e58201f89b",
           "locator": "Markdown link resolving to standards/mtls-bound-tokens.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -29954,7 +30017,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -29989,7 +30052,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/84c0bde17df3b919a595b538a6a2862176234bb9125eb98a4c658a5dcdf1eab6",
           "locator": "Markdown link resolving to standards/oauth-2-0-security-bcp.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30003,7 +30066,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30038,7 +30101,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a6ff3aee9a7b3d60a114cb3976adc3069455030f7de167e056cd0c62b1eee262",
           "locator": "Markdown link resolving to standards/oauth-2-0.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30052,7 +30115,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30087,7 +30150,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5969cf931d4f55219105583be9b6db4ddf1b188105fb7ed09f66d8e01d301334",
           "locator": "Markdown link resolving to standards/opa.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30101,7 +30164,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30136,7 +30199,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/faa48435b7f67ee648ef44239b4563520032c40e825b59b759a059cf8f9250be",
           "locator": "Markdown link resolving to standards/openapi.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30150,7 +30213,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30185,7 +30248,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/7dd4b7a0936b37bdb8a826ad0667868b8e6d69b044bbce4e1f0ad8fec8d0c99b",
           "locator": "Markdown link resolving to standards/opentelemetry.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30199,7 +30262,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30234,7 +30297,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b0cf3ec9d890767e7677e5da5ec39686d82106817507a9a8b40d8b440b5a0656",
           "locator": "Markdown link resolving to standards/pkce.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30248,7 +30311,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30283,7 +30346,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/138ac8d59f5cd7ddd18936b10e2dabf7ec947c322ea8244879ed580b3d174025",
           "locator": "Markdown link resolving to standards/spiffe-spire.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30297,7 +30360,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30332,7 +30395,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/0d82c8d1ce09f02b37e312f913843f8a59f1914910e1f797fd13fbe77bd792fe",
           "locator": "Markdown link resolving to standards/structured-outputs.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30346,7 +30409,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30381,7 +30444,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/10cba82da0525e0ee17e84693329a57e58ef333ab26f1b52a36077aa7ab5411d",
           "locator": "Markdown link resolving to standards/token-exchange.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30395,7 +30458,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30430,7 +30493,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/f29272b0e46f53973ec95dbdb83bace43f7c6e61e8b6b0fb0aab01b5eb264286",
           "locator": "Markdown link resolving to standards/w3c-prov.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30444,7 +30507,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -30479,7 +30542,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/e6df381df4c8e82a7f5a38e0494420c14c562e6c1c3bc13412c57c8b69d19762",
           "locator": "Markdown link resolving to standards/zero-trust.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "standards/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c3769cef072ca30e16a4b4382a3877d97df91bf8e4971d43cf48860b5cdc7122",
@@ -30493,7 +30556,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31753,7 +31816,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/de639df01a1e67170bf3a376dd8c98a82eaed1d4fc07b40b6584a23bb2ec9d55",
           "locator": "Markdown link resolving to uk-government/ai-management-essentials.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -31767,7 +31830,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31802,7 +31865,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/ebaf3037ac5efb8a29e32c4a7ae477a6426c74f1d0c111e9818bc5525881e27c",
           "locator": "Markdown link resolving to uk-government/atrs.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -31816,7 +31879,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31851,7 +31914,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/a7754067bd19b96c93ce24422ab40971a3496e906f4eab77f38f082c3b7d8342",
           "locator": "Markdown link resolving to uk-government/blueprint-modern-digital-government.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -31865,7 +31928,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31900,7 +31963,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/9e18cb9b79d9b823a864169dd1e91b87cb27701bf56eeb8473352328a548c530",
           "locator": "Markdown link resolving to uk-government/data-ethics-framework.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -31914,7 +31977,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31949,7 +32012,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/5751d85190978d2cb40cf9ac25b05783577481097af3b4bf9e1ea19919088a64",
           "locator": "Markdown link resolving to uk-government/dpia.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -31963,7 +32026,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -31998,7 +32061,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/b16a503c59b5312bec7ee016bf7e37dab7b6ef2f2d51649b36adc28762a269ea",
           "locator": "Markdown link resolving to uk-government/gds-api-standards.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -32012,7 +32075,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -32047,7 +32110,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/985a8aed20785f40d117b54782762812301d625f398b12a9b8f25a4518d7a14e",
           "locator": "Markdown link resolving to uk-government/ico-ai-guidance.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -32061,7 +32124,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -32096,7 +32159,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/d3a1baa07dac41c0e0e08899271b886a6572d96c2debd467c61e6508e3363ca6",
           "locator": "Markdown link resolving to uk-government/ncsc-secure-ai.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -32110,7 +32173,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -32145,7 +32208,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/678da425f4a0bb229a1fa1c27b90afd0d3c69796ed2279118ec2c816a3011ec4",
           "locator": "Markdown link resolving to uk-government/state-of-digital-government.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -32159,7 +32222,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -32194,7 +32257,7 @@
         {
           "@id": "https://chris-page-gov.github.io/okf-explorer/id/evidence/markdown-reference/960e6ad4957a0c051750ecdf253c1457c32b6dd8af3bfd7a7ea3225cf168eb9d",
           "locator": "Markdown link resolving to uk-government/uk-api-catalogue.md",
-          "retrieved_at": "2026-07-09T09:44:00Z",
+          "retrieved_at": "2026-08-12T00:00:00Z",
           "source_artifact": "uk-government/index.md",
           "source_field": "Markdown body",
           "source_sha256": "c68bc20628a56e4d8ae3ccc0a7f4771bb14e214ac0f7b830d0eb0d0aa0ca737e",
@@ -32208,7 +32271,7 @@
       "inverse_label": "referenced by",
       "kind": "references",
       "label": "references",
-      "observed_at": "2026-07-09T09:44:00Z",
+      "observed_at": "2026-08-12T00:00:00Z",
       "predicate": {
         "@id": "http://purl.org/dc/terms/references"
       },
@@ -32230,15 +32293,15 @@
   "@type": "okf:Bundle",
   "assertion_scope": "real-world",
   "counts": {
-    "assertions": 579,
-    "entities": 155
+    "assertions": 580,
+    "entities": 156
   },
   "description": "Agent-ready infrastructure, federated AI, standards, frameworks, research, and UK public-sector implications.",
   "descriptor": {
     "@id": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.json"
   },
   "generated": {
-    "at": "2026-07-09T09:44:00Z",
+    "at": "2026-08-12T00:00:00Z",
     "by": "process:build-okf-bundle"
   },
   "home": {
@@ -32260,5 +32323,5 @@
   },
   "status": "experimental",
   "title": "AI Infrastructure OKF Wiki",
-  "version": "0.6.3"
+  "version": "0.7.0"
 }

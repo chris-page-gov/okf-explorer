@@ -73,6 +73,78 @@ observations are evidence about that candidate. They are never copied into the
 candidate or used as a Site component input, so refreshing them cannot change
 the candidate identity.
 
+## Explorer v0.7.0 Release Sequence
+
+Explorer releases use the Explorer repository's own merge, Pages and browser
+evidence. They do not reuse the external Heritage R1/R2 promotion procedure
+below.
+
+1. Merge the fully green pull request into `main` and record the resulting
+   40-character merge commit. Do not tag the pull-request head or a mutable
+   branch name.
+2. Wait for **Publish GitHub Pages** to complete for that exact merge commit.
+   Record the run URL and download both its unchanged `github-pages` artefact
+   and `pages-site-candidate-receipt` evidence before Actions retention expires.
+   The run's `headSha` must equal the recorded merge commit.
+3. Compare the deployed
+   `okf-explorer-build-manifest.json` bytes and `tree_sha256` with the manifest
+   in that Pages artefact. Also compare the public beginner chapter, `guide.css`
+   and `guide.js` bytes with the same artefact. Use cache-bypassing requests;
+   an earlier successful Pages run is not evidence for this release.
+4. Run the focused public journeys against the deployed URL in installed Google
+   Chrome. The first command exercises governed endpoint labels and the
+   exploratory-publication banner across the Explorer; the second proves the
+   independently scrolling learning path, collapsed rail, hover and keyboard
+   expansion, persistent pin, narrow/touch fallback, reduced motion and exact
+   chapter routing:
+
+   ```sh
+   cd apps/okf-explorer
+   PLAYWRIGHT_BASE_URL=https://chris-page-gov.github.io/okf-explorer/ \
+     pnpm exec playwright test \
+       tests/ui/endpoint-label-index.spec.ts \
+       tests/ui/exploratory-publication.spec.ts \
+       --project=chrome
+   PLAYWRIGHT_BASE_URL=https://chris-page-gov.github.io/okf-explorer/ \
+     pnpm exec playwright test \
+       --config=playwright.foundry.config.ts \
+       tests/foundry/beginner-guide-navigation.spec.ts \
+       --project=chrome
+   ```
+
+   The `chrome` project is configured with `channel: "chrome"`; this is a
+   genuine Google Chrome run, not Playwright's bundled Chromium. Confirm the
+   tested fragment and current chapter survive navigation and reload, and that
+   no page or browser-console error occurred.
+5. Write `okf-explorer-v0.7.0-public-verification.json` outside `_site/`. It
+   must record the merge commit, Pages run and deployment URLs, observation
+   time, browser name and version, exact commands and passing test counts,
+   Pages artefact byte count and SHA-256, candidate-receipt SHA-256, deployed
+   application-manifest SHA-256 and tree SHA-256, tested URLs/fragments,
+   assertion results and any limitations. A failed or partial journey remains
+   failed evidence; do not edit it into a pass.
+6. Create and push annotated tag `v0.7.0` at the exact verified merge commit.
+   Prepare a draft release titled **OKF Explorer v0.7.0** from the matching
+   changelog section. Attach exactly these three assets:
+
+   - `okf-explorer-v0.7.0-pages-artifact.zip` — the unchanged `github-pages`
+     Actions artefact from step 2; it contains the released Explorer, rendered
+     corpus, OKF JSON/YAML-LD projections and legacy viewer;
+   - `okf-explorer-v0.7.0-sbom.cdx.json` — the checked
+     `release-assurance/explorer.sbom.cdx.json`, renamed without changing its
+     bytes; and
+   - `okf-explorer-v0.7.0-public-verification.json` — the exact step 5 receipt.
+
+7. Before publishing the draft, download all three assets and independently
+   compare their byte counts and SHA-256 digests with the local files. Confirm
+   the annotated tag peels to the recorded merge commit and the release has no
+   missing or unexpected assets. Publish only after those checks pass; then
+   record the immutable release URL in the semantic-authoring ledger.
+
+The Actions receipt and public-verification receipt remain evidence *about*
+the deployed candidate. Keeping them outside the Pages bytes prevents a
+self-referential rebuild in which recording a Site digest changes that Site.
+
 ## Heritage Publication Unit
 
 To bootstrap or refresh the external repository, materialise the deterministic
@@ -116,7 +188,7 @@ publication validates only the exact candidate manifest. Terminal release
 validation additionally requires that promoted envelope to bind the candidate
 and its assurance receipts.
 
-## Release Steps
+## Heritage Release Steps
 
 1. Create the external repository, select GitHub Actions as its Pages source,
    enable immutable releases, and install the five workflows and detached
@@ -173,11 +245,14 @@ and [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/s
 
 ## Publication Checks
 
-Run these before publishing or cutting a release:
+Run these before publishing or cutting an Explorer release:
 
 ```sh
-cd apps/okf-explorer && pnpm install && pnpm check && pnpm build && cd ../..
-uv run --locked python scripts/build_uk_government_api_okf.py --check
+pnpm --dir apps/okf-explorer install --frozen-lockfile
+pnpm --dir apps/okf-explorer check
+pnpm --dir apps/okf-explorer test
+pnpm --dir apps/okf-explorer sbom:check
+pnpm --dir apps/okf-explorer build:determinism
 uv run --locked python scripts/check_legislation_okf.py
 uv run --locked python scripts/build_legislation_evaluation.py
 uv run --locked python scripts/build_okf_bundle.py --check
@@ -191,7 +266,21 @@ uv run --locked python scripts/export_publication_unit.py \
   --check
 uv run --locked python scripts/build_site.py \
   --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
+pnpm --dir apps/okf-explorer test:e2e:terminal
 ```
+
+Run the live UK Government API producer check when its source inputs, builder
+or generated publication plane is selected for change or republication:
+
+```sh
+uv run --locked python scripts/build_uk_government_api_okf.py --check
+```
+
+That producer check deliberately observes a separately changing official
+inventory. A newly observed inventory difference must be triaged as producer
+publication work; it must not silently regenerate thousands of unrelated files
+or block an otherwise unchanged Explorer release. The pull-request impact plan
+and the release record must state whether this producer plane was selected.
 
 Pull requests use the checked-in impact planner to run independent Python, app,
 browser, Foundry, documentation, Site, and release-policy jobs in parallel.
@@ -210,3 +299,9 @@ The Svelte Explorer covers monolithic OKF bundles and large-corpus descriptors.
 Large-corpus startup remains overview-only; static search stays worker-backed;
 full dataset/resource/publisher chunks hydrate only for detail/filter/timeline/
 type/resource views; relationship chunks hydrate only for graph/link views.
+Explorer v0.7.0 additionally loads an optional, integrity-bound compact
+endpoint-label index before presenting route names, and retains a validated
+exploratory-publication banner across Reader, Graph, Links, Timeline, Type,
+Resources, Map and Narrative. Missing governed labels fail visibly as
+**Missing label**; malformed exploratory intent produces an explicit warning
+and `noindex` instead of ordinary release presentation.

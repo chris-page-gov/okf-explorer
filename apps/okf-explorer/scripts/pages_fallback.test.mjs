@@ -45,6 +45,7 @@ test('production build emits a project-root-safe GitHub Pages 404', async () => 
   await access(path.join(BUILD_ROOT, BUILD_MANIFEST_FILENAME));
 
   const document = await readFile(path.join(BUILD_ROOT, '404.html'), 'utf8');
+  const indexDocument = await readFile(path.join(BUILD_ROOT, 'index.html'), 'utf8');
   const requestedUrl = `${PUBLIC_ROOT}missing/nested/page`;
   const favicon = attribute(document, /<link\b[^>]*\brel="icon"[^>]*>/i, 'href');
   const returnLink = attribute(
@@ -55,6 +56,8 @@ test('production build emits a project-root-safe GitHub Pages 404', async () => 
 
   assert.equal(new URL(favicon, requestedUrl).href, `${PUBLIC_ROOT}favicon.svg`);
   assert.equal(new URL(returnLink, requestedUrl).href, PUBLIC_ROOT);
+  assert.match(document, /<html\s+lang="en-GB">/i);
+  assert.match(indexDocument, /<html\s+lang="en-GB">/i);
   assert.doesNotMatch(document, /(?:href|src)="\/(?!okf-explorer(?:\/|"))/i);
   assert.doesNotMatch(document, /(?:import\(|modulepreload|\/_app\/)/i);
   await access(path.join(BUILD_ROOT, 'favicon.svg'));

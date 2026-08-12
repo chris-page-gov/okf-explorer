@@ -44,12 +44,28 @@ function relationshipBucket(route: string): string {
   return ((hash >>> 24) & 0xff).toString(16).padStart(2, '0');
 }
 
-async function json(route: Route, body: unknown, status = 200) {
+async function json(route: Route, body: unknown, status = 200, noStore = false) {
   await route.fulfill({
     status,
     contentType: 'application/json',
-    headers: { 'access-control-allow-origin': '*' },
+    headers: {
+      'access-control-allow-origin': '*',
+      ...(noStore ? { 'cache-control': 'no-store' } : {})
+    },
     body: JSON.stringify(body)
+  });
+}
+
+async function installClipboard(context: BrowserContext): Promise<void> {
+  await context.addInitScript(() => {
+    let copied = '';
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: async (value: string) => { copied = String(value); },
+        readText: async () => copied
+      }
+    });
   });
 }
 
@@ -58,6 +74,7 @@ async function installTargetedFixture(
   requests: string[],
   options: {
     datasetGroupingCount?: number;
+    adjacencyDelayMs?: number;
     modelChunkFailures?: number;
     omitAdjacency?: boolean;
     omitAnalysisRecordCount?: boolean;
@@ -594,7 +611,10 @@ async function installTargetedFixture(
     if (url.pathname === '/data/resources.json') return json(route, [resource]);
     if (url.pathname === '/data/adjacency/manifest.json') return json(route, adjacency);
     if (url.pathname === `/data/adjacency/${bucket}.json`) {
-      return json(route, { [RECORD_ROUTE]: relationships });
+      if (options.adjacencyDelayMs) {
+        await new Promise((resolve) => setTimeout(resolve, options.adjacencyDelayMs));
+      }
+      return json(route, { [RECORD_ROUTE]: relationships }, 200, true);
     }
     if (url.pathname === `/${MODEL_MANIFEST_PATH}`) {
       return json(route, modelManifest);
@@ -704,6 +724,49 @@ test.describe('targeted large-corpus relationship hydration', () => {
     const assertionCount = modelEnrichment.locator('.enrichment-counts article').first();
     await expect(assertionCount.locator('strong')).toHaveText('1');
     await expect(assertionCount.locator('span')).toHaveText('accepted assertions');
+  });
+
+  test('copied graph edge restores after delayed targeted adjacency hydration and browser history', async ({
+    context,
+    page
+  }) => {
+    await installClipboard(context);
+    const requests: string[] = [];
+    await installTargetedFixture(context, requests, { adjacencyDelayMs: 300 });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    const edge = graph.getByRole('button', {
+      name: 'Target Act 1998 → has document type → ukpga'
+    });
+    await expect(edge).toBeVisible();
+    await edge.click();
+    const selectedKey = new URL(page.url()).searchParams.get('graph.edge');
+    expect(selectedKey).toBeTruthy();
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+
+    await page.locator('.stage-bar').getByRole('button', { name: 'Copy route', exact: true }).click();
+    const copied = await page.evaluate(() => navigator.clipboard.readText());
+    expect(new URL(copied).searchParams.get('graph.edge')).toBe(selectedKey);
+    // Leave the application before opening the shared URL so this proves a
+    // fresh consumer load rather than a same-document navigation retaining
+    // the already hydrated adjacency map.
+    await page.goto('about:blank');
+    await page.goto(copied);
+
+    await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+    await expect(page.locator('.relationship-detail-content')).toContainText('has document type');
+
+    await page.locator('.right-panel').getByRole('button', { name: 'Clear relationship' }).click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.edge')).toBeNull();
+    await page.goBack();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.edge')).toBe(selectedKey);
+    await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+    expect(requests.filter((path) => path === `/data/adjacency/${relationshipBucket(RECORD_ROUTE)}.json`).length)
+      .toBeGreaterThanOrEqual(2);
+    expectNoFullHydration(requests);
   });
 
   test('deep-linked Resources hydrates the resource index for the selected record', async ({

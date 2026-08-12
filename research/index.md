@@ -2,6 +2,16 @@
 
 The tool-use and federated-learning research lineage.
 
+## OKF Authoring Research
+
+- [Open data for the Explore OKF pilot](explore-okf-open-data-test-candidates.md)
+  selects a bounded Coventry everyday-services journey and authoritative UK
+  sources for testing readable graph labels, useful semantic linking,
+  CPSV-AP/SKOS mappings and multi-resolution geography before reviewing
+  `okf-uk-living`.
+
+## AI And Tool-Use Research
+
 - [FedAvg — McMahan et al. (2017)](fedavg.md) — Communication-efficient decentralised training by model averaging.
 - [Google keyboard FL — Hard et al. (2018)](google-keyboard-fl.md) — On-device federated training for next-word prediction at production scale.
 - [Kairouz et al. — Advances and open problems (2019)](kairouz-open-problems.md) — The field's open problems: heterogeneity, privacy, fairness, evaluation.

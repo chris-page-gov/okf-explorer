@@ -16,7 +16,9 @@ assumptions or their very large working transcripts.
    `okf-domain-profile.v1` handoff plus its pinned consumer lock and explicit
    dependency/impact graph.
 3. [Build, validate and publish](prompts/okf-bundle-build.md). The builder
-   consumes that exact handoff and implements the smallest justified bundle.
+   consumes that exact handoff, implements the smallest justified bundle and,
+   when selected, creates a bounded Explore OKF snapshot for feedback before
+   release-candidate construction.
 
 For an empty or imported target, begin the build with the fail-safe repository
 bootstrap:
@@ -28,7 +30,7 @@ uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --che
 ```
 
 The first command is a dry run. Adoption is always explicit. The scaffolder
-does not initialize Git, create a remote, commit, enable CI, push or publish.
+does not initialise Git, create a remote, commit, enable CI, push or publish.
 
 The handoff is validated by the
 [`okf-domain-profile.v1` schema](../profiles/authoring/v1/domain-profile.schema.json).
@@ -45,7 +47,8 @@ flowchart LR
     R -- "Yes" --> D["Bounded owner decision"]
     D --> F
     F --> CF["Stage 2: actual consumers"]
-    CF --> B["Deterministic OKF build"]
+    CF --> X["Explore OKF feedback snapshot"]
+    X --> B["Deterministic OKF candidate build"]
     B --> E["Evaluation and frozen-candidate assurance"]
     E --> RC["Immutable release candidate"]
     RC --> PUB["Promote identical bytes"]
@@ -109,17 +112,24 @@ Do not accept completion until all applicable statements are true:
   its JSON and YAML forms are equivalent, and its evidence references resolve;
 - the approved profile, evidence and input inventory have recorded SHA-256
   identities;
-- every release-relevant reader, validator, generator, finalizer and archive
+- every release-relevant reader, validator, generator, finaliser and archive
   reader is inventoried and pinned in one checksummed consumer lock;
-- the producer → artifact/plane → consumer → public-route dependency graph
+- the producer → artefact/plane → consumer → public-route dependency graph
   gives every edge an impact description and validation closure;
 - scope, denominator, rights, access, authority, derivation, freshness and
   unresolved gaps remain distinct and visible;
+- every graph-reachable entity has a readable label available without full
+  hydration, and opaque identifiers are confined to inspection/debug detail;
+- semantic-link coverage is reconciled by eligible entity class and link
+  purpose, with unresolved and conflicting mappings retained;
+- any selected Explore OKF snapshot has an immutable identity, persistent
+  exploratory banner, route-preserving feedback, limitations, non-release
+  claims and actual-consumer evidence;
 - each selected standard has an exact version, applicability decision,
   conformance artefact and validator rather than a name-only claim;
 - the two-stage tiny fixture first proves deterministic producer contracts,
   then runs the actual locked consumers against the same bytes and proves
-  positive, negative and degraded behavior before the full collection;
+  positive, negative and degraded behaviour before the full collection;
 - each selected plane has a scoped digest root and selective reruns follow the
   graph's transitive impact closure rather than intuition;
 - compatibility passes in both directions: new producer with supported
@@ -205,7 +215,7 @@ Keep these separate:
 - concept lifecycle; and
 - release lifecycle.
 
-An official source can be stale. A deterministic normalization can be accurate
+An official source can be stale. A deterministic normalisation can be accurate
 without becoming an official statement. A model candidate can have strong
 evidence without becoming source-native. A high confidence number cannot fix
 any of those category errors.
@@ -277,6 +287,10 @@ with an Explorer patch release.
 The original OKF 0.2 specification remains independently owned upstream. This
 Foundry profile is additive and must not be represented as a change to OKF
 core.
+
+The evidence and decision record for the new label, linkability and
+exploratory-stage controls is
+[Review of the OKF authoring methodology](okf-authoring-methodology-review-2026-08-12.md).
 
 ## Quick Start
 

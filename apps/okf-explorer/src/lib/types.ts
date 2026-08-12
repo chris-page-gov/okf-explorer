@@ -369,6 +369,7 @@ export type LargeCorpusDescriptor = {
     overview_index?: string;
     analysis_overview?: string;
     presentation?: LargeResourceReference;
+    endpoint_labels?: LargeResourceReference;
     search_manifest?: string;
     record_locator?: LargeResourceReference;
     notes?: string;
@@ -389,6 +390,9 @@ export type LargeCorpusDescriptor = {
     release_data_plane?: LargeResourceReference;
   };
   entrypoint_integrity?: Record<string, Exclude<LargeResourceReference, string>>;
+  /** Strict Explore OKF learning-publication contract; validated before display. */
+  exploratory_publication?: Record<string, unknown>;
+  indexing_policy?: string;
   distribution?: {
     control_plane?: string;
     data_plane?: string;
@@ -425,6 +429,8 @@ export type LargeDataManifest = {
     analysis?: string;
     presentation?: string;
     search?: string;
+    /** Compact, snapshot-bound labels and types for graph-reachable routes. */
+    endpoint_labels?: LargeResourceReference;
     record_locator?: LargeResourceReference;
     facets?: string;
     graph?: string;
@@ -1289,6 +1295,46 @@ export type LargePublisher = {
   [key: string]: unknown;
 };
 
+export type EndpointLabelAuthorityClass =
+  | 'source-native'
+  | 'domain-profile'
+  | 'editorial';
+
+export type LargeEndpointLabelAuthority = {
+  class: EndpointLabelAuthorityClass | string;
+  /** Evidence or governed profile that authorises the preferred label. */
+  source: string;
+};
+
+export type LargeEndpointLabelEntry = {
+  route: string;
+  /** Stable absolute semantic identity; route remains the local Explorer identity. */
+  iri: string;
+  label: string;
+  language: string;
+  type: string;
+  label_authority: LargeEndpointLabelAuthority;
+};
+
+export type LargeEndpointLabelIndex = {
+  schema: 'okf-explorer-endpoint-label-index.v1' | string;
+  snapshot: string;
+  generated_at?: string;
+  default_language: string;
+  /** Safe literal patterns; `*` is permitted only as the final character. */
+  opaque_identifier_patterns: string[];
+  entries: LargeEndpointLabelEntry[];
+  counts: {
+    entries: number;
+  };
+};
+
+export type LargeEndpointLabelRegistry = {
+  document: LargeEndpointLabelIndex;
+  byRoute: ReadonlyMap<string, LargeEndpointLabelEntry>;
+  opaqueIdentifierPatterns: readonly string[];
+};
+
 export type LargeRelationship = {
   schema?: 'okf-relationship-assertion.v2' | string;
   id?: string;
@@ -1572,6 +1618,7 @@ export type LargeCorpusSource = {
   overview: LargeOverview;
   analysis?: LargeAnalysisOverview;
   presentation?: LargeExplorerPresentation;
+  endpointLabels?: LargeEndpointLabelRegistry;
   termRegistry?: GovernedTermRegistry;
   termValidation?: GovernedTermValidation;
   providerDatapacks?: LargeProviderDatapackCollection;

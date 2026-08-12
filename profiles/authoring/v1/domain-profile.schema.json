@@ -24,6 +24,9 @@
     "tasks",
     "terminology",
     "semantic_model",
+    "semantic_linking",
+    "presentation_contract",
+    "exploratory_publication",
     "standards",
     "rights_access_privacy",
     "architecture",
@@ -338,6 +341,15 @@
       },
       "additionalProperties": false
     },
+    "semantic_linking": {
+      "$ref": "#/$defs/semanticLinking"
+    },
+    "presentation_contract": {
+      "$ref": "#/$defs/presentationContract"
+    },
+    "exploratory_publication": {
+      "$ref": "#/$defs/exploratoryPublication"
+    },
     "standards": {
       "type": "array",
       "minItems": 1,
@@ -586,9 +598,46 @@
       "minLength": 1,
       "pattern": "^(https?://|urn:|[A-Za-z][A-Za-z0-9._-]*:)"
     },
+    "canonicalCandidateId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!\\s)(?!.*\\s$)(?!.*[\\u0000-\\u001F\\u007F]).*\\S$"
+    },
+    "canonicalCandidateIdArray": {
+      "type": "array",
+      "maxItems": 1000000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/canonicalCandidateId"
+      }
+    },
+    "deterministicEligibilityRule": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!\\s)(?!.*\\s$)(?!.*[\\u0000-\\u001F\\u007F]).*\\S$",
+      "description": "Trimmed, control-free rule that deterministically selects the complete declared candidate inventory from the frozen source snapshot."
+    },
     "httpUrl": {
       "type": "string",
-      "pattern": "^https?://"
+      "format": "uri",
+      "allOf": [
+        {"pattern": "^https?://(?:\\[[0-9A-Fa-f:.]+\\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)"},
+        {"pattern": "^[\\u0021-\\u007E]+$"},
+        {"pattern": "^(?!.*[\\\"'<>\\\\^`{|}])"},
+        {"pattern": "^(?!.*%(?![0-9A-Fa-f]{2}))"}
+      ]
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "allOf": [
+        {"pattern": "^https://(?:\\[[0-9A-Fa-f:.]+\\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)"},
+        {"pattern": "^[\\u0021-\\u007E]+$"},
+        {"pattern": "^(?!.*[\\\"'<>\\\\^`{|}])"},
+        {"pattern": "^(?!.*%(?![0-9A-Fa-f]{2}))"}
+      ]
     },
     "stringArray": {
       "type": "array",
@@ -1866,6 +1915,675 @@
         },
         "task_refs": {
           "$ref": "#/$defs/idArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "semanticLinking": {
+      "type": "object",
+      "required": [
+        "objective",
+        "local_iri_policy",
+        "external_link_policy",
+        "mapping_policy",
+        "eligible_entity_denominators",
+        "link_sets",
+        "prohibited_shortcuts"
+      ],
+      "properties": {
+        "objective": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "local_iri_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "external_link_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "mapping_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "eligible_entity_denominators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/linkCoverageDenominator"
+          }
+        },
+        "link_sets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/linkSet"
+          }
+        },
+        "prohibited_shortcuts": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageDenominator": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_type",
+        "eligibility_rule",
+        "eligible_count",
+        "candidate_ids",
+        "candidate_list_sha256",
+        "source_snapshot_id",
+        "evidence_refs",
+        "minimum_coverage_percent",
+        "exclusions"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "entity_type": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "eligibility_rule": {
+          "$ref": "#/$defs/deterministicEligibilityRule"
+        },
+        "eligible_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count admitted by the eligibility rule before evidenced exclusions; it must equal the four disjoint coverage outcomes."
+        },
+        "candidate_ids": {
+          "$ref": "#/$defs/canonicalCandidateIdArray",
+          "description": "Stable source-native or repository-controlled identifiers for the exact candidates admitted by the eligibility rule; the list length must equal eligible_count."
+        },
+        "candidate_list_sha256": {
+          "$ref": "#/$defs/sha256OrUnknown",
+          "description": "SHA-256 of sorted candidate_ids encoded as one compact UTF-8 JSON array (ensure_ascii=false, separators comma and colon) followed by one LF byte; an approved profile cannot use unknown."
+        },
+        "source_snapshot_id": {
+          "$ref": "#/$defs/canonicalCandidateId",
+          "description": "Exact input_snapshot.snapshot_id from which the eligibility rule derives this candidate universe."
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs",
+          "description": "Evidence for the candidate extraction and completeness assessment."
+        },
+        "minimum_coverage_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "exclusions": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/linkCoverageExclusionRule"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageExclusionRule": {
+      "type": "object",
+      "required": [
+        "id",
+        "rule",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkSet": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "predicate_iri",
+        "target_namespace",
+        "mapping_relation",
+        "authority",
+        "evidence_rule",
+        "task_refs",
+        "denominator_ref",
+        "coverage_result_sha256",
+        "coverage_result"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "predicate_iri": {
+          "$ref": "#/$defs/httpUrl",
+          "description": "Predicate governed with mapping_relation: each SKOS relation uses its matching SKOS mapping predicate, identity uses the approved identity predicate set, and domain relationships exclude both sets."
+        },
+        "target_namespace": {
+          "$ref": "#/$defs/httpUrl",
+          "description": "Governed HTTP origin plus path or trailing-hash namespace containing every assertion target under URI-aware membership rules."
+        },
+        "mapping_relation": {
+          "enum": [
+            "identity",
+            "exact-match",
+            "close-match",
+            "broad-match",
+            "narrow-match",
+            "related-match",
+            "domain-relationship"
+          ]
+        },
+        "authority": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "evidence_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "task_refs": {
+          "$ref": "#/$defs/idArray"
+        },
+        "denominator_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "coverage_result_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of the complete sibling coverage_result encoded as canonical UTF-8 JSON with recursively sorted object keys, retained array order, ensure_ascii=false, compact comma/colon separators and one trailing LF byte."
+        },
+        "coverage_result": {
+          "$ref": "#/$defs/linkCoverageResult"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageResult": {
+      "type": "object",
+      "required": [
+        "eligible_count",
+        "linked_count",
+        "linked_candidate_ids",
+        "linked_assertion_count",
+        "link_assertions",
+        "unresolved_count",
+        "unresolved_candidate_ids",
+        "excluded_count",
+        "exclusion_results",
+        "conflicting_count",
+        "conflicting_candidate_ids",
+        "achieved_coverage_percent",
+        "dereference",
+        "observed_at",
+        "freshness_policy",
+        "freshness_status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "eligible_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Exact copy of the referenced denominator's eligible count."
+        },
+        "linked_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Eligible candidates with an asserted, evidence-backed external link."
+        },
+        "linked_candidate_ids": {
+          "$ref": "#/$defs/canonicalCandidateIdArray",
+          "description": "Exact eligible candidates with one or more asserted, evidence-backed external links."
+        },
+        "linked_assertion_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total external link assertions made for linked candidates; this may exceed linked_count when one candidate has more than one asserted link."
+        },
+        "link_assertions": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": {
+            "$ref": "#/$defs/linkCoverageAssertion"
+          },
+          "description": "Identity-bearing ledger of every external link assertion counted by this result."
+        },
+        "unresolved_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Eligible candidates for which no sufficiently evidenced link has yet been established."
+        },
+        "unresolved_candidate_ids": {
+          "$ref": "#/$defs/canonicalCandidateIdArray",
+          "description": "Exact eligible candidates for which no sufficiently evidenced link has been established."
+        },
+        "excluded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Candidates removed from the effective coverage denominator by an evidenced exclusion."
+        },
+        "exclusion_results": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/linkCoverageExclusionResult"
+          },
+          "description": "Exact evidence-bearing reconciliation of every counted exclusion."
+        },
+        "conflicting_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Eligible candidates with conflicting evidence that prevents one governed link from being asserted."
+        },
+        "conflicting_candidate_ids": {
+          "$ref": "#/$defs/canonicalCandidateIdArray",
+          "description": "Exact eligible candidates whose conflicting evidence prevents a governed link assertion."
+        },
+        "achieved_coverage_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Linked count divided by eligible count minus excluded count, rounded half-up to two decimal places; 100 when the effective denominator is zero."
+        },
+        "dereference": {
+          "type": "object",
+          "required": [
+            "attempted_count",
+            "succeeded_count",
+            "failed_count",
+            "method",
+            "results"
+          ],
+          "properties": {
+            "attempted_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "succeeded_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "method": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "results": {
+              "type": "array",
+              "maxItems": 1000000,
+              "items": {
+                "$ref": "#/$defs/linkDereferenceResult"
+              },
+              "description": "One identity-bound dereference outcome for every link assertion."
+            }
+          },
+          "additionalProperties": false
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time at which the coverage and dereference observations were made; an approved result binds this exact instant to approval-grade, digest-bound result evidence."
+        },
+        "freshness_policy": {
+          "type": "object",
+          "required": [
+            "maximum_age_days",
+            "clock",
+            "stale_result_action"
+          ],
+          "properties": {
+            "maximum_age_days": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "clock": {
+              "const": "profile-prepared-at"
+            },
+            "stale_result_action": {
+              "const": "fail-closed"
+            }
+          },
+          "additionalProperties": false
+        },
+        "freshness_status": {
+          "enum": [
+            "current",
+            "stale"
+          ],
+          "description": "Status calculated from observed_at, maximum_age_days and the profile prepared_at clock."
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs",
+          "description": "Evidence for the complete coverage observation. Approved semantic ledgers accept only support-checked or independently verified, digest-bound evidence."
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageExclusionResult": {
+      "type": "object",
+      "required": [
+        "exclusion_ref",
+        "count",
+        "candidate_ids",
+        "evidence_refs"
+      ],
+      "properties": {
+        "exclusion_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "candidate_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalCandidateId"
+          },
+          "description": "Stable source-native or repository-controlled identifiers for the exact candidates excluded by this rule; count must equal the number of identifiers, and identifiers cannot occur in another exclusion result."
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageAssertion": {
+      "type": "object",
+      "required": [
+        "id",
+        "candidate_id",
+        "target_iri",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/canonicalCandidateId"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/canonicalCandidateId"
+        },
+        "target_iri": {
+          "$ref": "#/$defs/httpUrl",
+          "description": "External target within the parent link set's governed target_namespace. A candidate-target pair can occur only once in that link set."
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkDereferenceResult": {
+      "type": "object",
+      "required": [
+        "assertion_ref",
+        "outcome",
+        "terminal_kind",
+        "http_status",
+        "observed_status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "assertion_ref": {
+          "$ref": "#/$defs/canonicalCandidateId"
+        },
+        "outcome": {
+          "enum": [
+            "succeeded",
+            "failed"
+          ]
+        },
+        "terminal_kind": {
+          "enum": [
+            "http-status",
+            "dns-error",
+            "timeout",
+            "tls-error",
+            "connection-error",
+            "redirect-error",
+            "policy-blocked",
+            "other-error"
+          ],
+          "description": "Machine-readable terminal result. HTTP 200-399 derives succeeded; every other terminal result derives failed."
+        },
+        "http_status": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 100,
+          "maximum": 599,
+          "description": "Terminal HTTP response status, or null for a non-HTTP terminal failure."
+        },
+        "observed_status": {
+          "$ref": "#/$defs/nonEmpty",
+          "description": "Human-readable accompaniment; it does not determine outcome."
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/evidenceRefs"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "terminal_kind": {
+                "const": "http-status"
+              }
+            },
+            "required": [
+              "terminal_kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "http_status": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 599
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "http_status": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "presentationContract": {
+      "type": "object",
+      "required": [
+        "default_language",
+        "label_priority",
+        "graph_reachable_label_rule",
+        "identifier_fallback",
+        "compact_label_index",
+        "relationship_display_rule",
+        "citizen_checks"
+      ],
+      "properties": {
+        "default_language": {
+          "const": "en-GB"
+        },
+        "label_priority": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "graph_reachable_label_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "identifier_fallback": {
+          "enum": [
+            "debug-only",
+            "never"
+          ]
+        },
+        "compact_label_index": {
+          "type": "object",
+          "required": [
+            "schema",
+            "descriptor_entrypoint",
+            "manifest_index",
+            "path",
+            "snapshot_bound",
+            "integrity_bound",
+            "missing_label_display"
+          ],
+          "properties": {
+            "schema": {
+              "const": "okf-explorer-endpoint-label-index.v1"
+            },
+            "descriptor_entrypoint": {
+              "const": "endpoint_labels"
+            },
+            "manifest_index": {
+              "const": "endpoint_labels"
+            },
+            "path": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "snapshot_bound": {
+              "const": true
+            },
+            "integrity_bound": {
+              "const": true
+            },
+            "missing_label_display": {
+              "const": "Missing label"
+            }
+          },
+          "additionalProperties": false
+        },
+        "relationship_display_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "citizen_checks": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "exploratoryPublication": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "descriptor_schema",
+        "publication_state",
+        "publisher",
+        "banner",
+        "indexing_policy",
+        "snapshot_bound",
+        "plane_root_bound",
+        "invalid_contract_policy",
+        "snapshot_policy",
+        "limitations",
+        "permitted_claims",
+        "prohibited_claims",
+        "promotion_rule"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "descriptor_schema": {
+          "const": "okf-exploratory-publication.v1"
+        },
+        "publication_state": {
+          "const": "exploratory"
+        },
+        "publisher": {
+          "type": "object",
+          "required": [
+            "name",
+            "url",
+            "authority_status"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "url": {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            "authority_status": {
+              "enum": [
+                "independent-research",
+                "official-source",
+                "unverified"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "banner": {
+          "type": "object",
+          "required": [
+            "label",
+            "message",
+            "feedback_url",
+            "preserve_route"
+          ],
+          "properties": {
+            "label": {
+              "const": "Exploratory"
+            },
+            "message": {
+              "const": "This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision."
+            },
+            "feedback_url": {
+              "$ref": "#/$defs/httpUrl"
+            },
+            "preserve_route": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "indexing_policy": {
+          "enum": [
+            "noindex",
+            "owner-decision"
+          ]
+        },
+        "snapshot_bound": {
+          "const": true
+        },
+        "plane_root_bound": {
+          "const": true
+        },
+        "invalid_contract_policy": {
+          "const": "explicit-warning-and-noindex"
+        },
+        "snapshot_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "limitations": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "permitted_claims": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "prohibited_claims": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "promotion_rule": {
+          "$ref": "#/$defs/nonEmpty"
         }
       },
       "additionalProperties": false

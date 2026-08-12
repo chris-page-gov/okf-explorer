@@ -1,0 +1,39 @@
+{
+  "schema": "okf-explorer-endpoint-label-index.v1",
+  "snapshot": "coventry-moving-home-2026-08-12-01",
+  "generated_at": "2026-08-12T12:00:00Z",
+  "default_language": "en-GB",
+  "opaque_identifier_patterns": [
+    "activity-*",
+    "publisher-*",
+    "rights-*",
+    "source-*"
+  ],
+  "entries": [
+    {
+      "route": "organisation/coventry-city-council",
+      "iri": "https://example.org/organisations/coventry-city-council",
+      "label": "Coventry City Council",
+      "language": "en-GB",
+      "type": "Public organisation",
+      "label_authority": {
+        "class": "source-native",
+        "source": "https://www.coventry.gov.uk/"
+      }
+    },
+    {
+      "route": "service/household-waste-collection",
+      "iri": "https://example.org/services/household-waste-collection",
+      "label": "Household waste collection",
+      "language": "en-GB",
+      "type": "Public service",
+      "label_authority": {
+        "class": "domain-profile",
+        "source": "https://example.org/profile/coventry-moving-home/v1/"
+      }
+    }
+  ],
+  "counts": {
+    "entries": 2
+  }
+}

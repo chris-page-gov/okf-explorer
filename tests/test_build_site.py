@@ -378,6 +378,31 @@ class BuildSiteTests(unittest.TestCase):
                 target.read_text(encoding="utf-8"),
             )
 
+    def test_every_generated_explorer_html_template_declares_en_gb(self) -> None:
+        generic = build_site.render_generic_page(
+            build_site.ROOT / "docs" / "index.md",
+            Path("docs/index.html"),
+        )
+        foundry, _prompt = build_site.render_foundry_page(
+            *build_site.FOUNDRY_PAGES[0],
+        )
+        external, _markdown = (
+            build_site.render_external_publication_compatibility(
+                build_site.ROOT / "evaluation" / "heritage" / "index.md",
+                Path("evaluation/heritage/index.html"),
+            )
+        )
+
+        for name, document in {
+            "generic": generic,
+            "Foundry": foundry,
+            "external publication": external,
+            "next redirect": build_site.render_next_redirect(),
+        }.items():
+            with self.subTest(template=name):
+                self.assertIn('<html lang="en-GB">', document)
+                self.assertNotIn('<html lang="en">', document)
+
     def test_beginner_guide_is_rendered_as_navigable_html(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix="okf-build-site-beginners-"
@@ -391,8 +416,10 @@ class BuildSiteTests(unittest.TestCase):
             rendered = sorted(target.glob("*.html"))
             self.assertEqual(len(sources), len(rendered))
             self.assertTrue((target / "guide.css").is_file())
+            self.assertTrue((target / "guide.js").is_file())
 
             index = (target / "index.html").read_text(encoding="utf-8")
+            self.assertIn('<html lang="en-GB">', index)
             self.assertIn(
                 '<h1 id="okf-explorer-from-the-beginning">'
                 "OKF Explorer From The Beginning</h1>",
@@ -403,7 +430,13 @@ class BuildSiteTests(unittest.TestCase):
                 index,
             )
             self.assertIn('aria-current="page"', index)
+            self.assertIn('<li class="is-current">', index)
             self.assertIn('aria-label="Beginner guide chapters"', index)
+            self.assertIn('class="beginner-guide"', index)
+            self.assertIn('src="guide.js" defer', index)
+            self.assertIn('data-guide-sidebar-toolbar hidden', index)
+            self.assertIn('data-guide-sidebar-pin', index)
+            self.assertIn('aria-controls="beginner-guide-chapters"', index)
 
             first = (
                 target / "01-product-in-plain-language.html"
@@ -416,16 +449,34 @@ class BuildSiteTests(unittest.TestCase):
         stylesheet = build_site.BEGINNER_GUIDE_CSS.read_text(
             encoding="utf-8"
         )
-        self.assertIn("position: sticky;", stylesheet)
+        self.assertIn("grid-template-rows: auto minmax(0, 1fr);", stylesheet)
         self.assertIn("height: 100dvh;", stylesheet)
+        self.assertIn("body.beginner-guide", stylesheet)
+        self.assertIn(".beginner-guide .guide-sidebar", stylesheet)
+        self.assertIn(".beginner-guide .guide-main", stylesheet)
         self.assertIn("overflow-y: auto;", stylesheet)
         self.assertIn("overscroll-behavior-y: contain;", stylesheet)
         self.assertIn("scrollbar-gutter: stable;", stylesheet)
-        self.assertIn(
-            ".guide-sidebar nav { position: static; }",
-            stylesheet,
-        )
         self.assertIn("overscroll-behavior-y: auto;", stylesheet)
+
+    def test_beginner_sidebar_supports_a_persistent_accessible_rail(self) -> None:
+        stylesheet = build_site.BEGINNER_GUIDE_CSS.read_text(
+            encoding="utf-8"
+        )
+        script = build_site.BEGINNER_GUIDE_JS.read_text(encoding="utf-8")
+
+        self.assertIn('data-guide-sidebar-collapsed="true"', stylesheet)
+        self.assertIn("writing-mode: vertical-rl;", stylesheet)
+        self.assertIn(":focus-within", stylesheet)
+        self.assertIn("prefers-reduced-motion: reduce", stylesheet)
+        self.assertIn("max-width: 760px", stylesheet)
+        self.assertIn("okf-beginner-guide-sidebar-pinned-v1", script)
+        self.assertIn("okf-beginner-guide-sidebar-collapsed-v1", script)
+        self.assertIn("window.localStorage", script)
+        self.assertIn("window.sessionStorage", script)
+        self.assertIn("aria-pressed", script)
+        self.assertIn("Pin learning path open", script)
+        self.assertIn("Unpin learning path", script)
 
     def test_beginner_renderer_escapes_raw_html_and_unsafe_links(self) -> None:
         renderer = build_site.beginner_markdown_renderer()

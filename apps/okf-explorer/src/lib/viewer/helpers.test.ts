@@ -185,6 +185,10 @@ describe('viewer helpers', () => {
 
   it('resolves analysis routes from graph nodes, facet routes and hierarchies', () => {
     expect(routeForAnalysisNode('facet/tag/IAPT')).toEqual({ key: 'tag', value: 'IAPT' });
+    expect(routeForAnalysisNode('facet/topic/Business%20%26%20economy')).toEqual({
+      key: 'topic',
+      value: 'Business & economy'
+    });
     expect(routeForAnalysisNode('facet/tag')).toBeNull();
     expect(routeForAnalysisNode('dataset/example')).toBeNull();
     expect(analysisNodeForRoute(analysis, 'facet/publisher/nhs-digital')?.count).toBe(42);

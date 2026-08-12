@@ -1,0 +1,31 @@
+{
+  "schema": "okf-exploratory-publication.v1",
+  "publication_state": "exploratory",
+  "snapshot_id": "coventry-moving-home-2026-08-12-01",
+  "generated_at": "2026-08-12T12:00:00Z",
+  "applicable_plane_roots": {
+    "data_plane_manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "publisher": {
+    "name": "Independent OKF research",
+    "url": "https://github.com/chris-page-gov/okf-uk-living",
+    "authority_status": "independent-research"
+  },
+  "banner": {
+    "label": "Exploratory",
+    "message": "This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision.",
+    "feedback_url": "https://github.com/chris-page-gov/okf-uk-living/issues/new",
+    "preserve_route": true
+  },
+  "indexing_policy": "noindex",
+  "limitations": [
+    "Source coverage, labels and semantic mappings remain subject to review."
+  ],
+  "permitted_claims": [
+    "The named snapshot is available for bounded research and feedback."
+  ],
+  "prohibited_claims": [
+    "Do not claim production approval, completeness, official endorsement or release conformance."
+  ],
+  "promotion_rule": "Owner review creates a fresh candidate; exploratory bytes are never silently relabelled as a release candidate."
+}

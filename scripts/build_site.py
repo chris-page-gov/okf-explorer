@@ -27,6 +27,7 @@ OUT = ROOT / "_site"
 GITHUB_PAGES_SITE_LIMIT_BYTES = 1_000_000_000
 BEGINNER_DOCS = ROOT / "docs" / "beginners"
 BEGINNER_GUIDE_CSS = BEGINNER_DOCS / "guide.css"
+BEGINNER_GUIDE_JS = BEGINNER_DOCS / "guide.js"
 FOUNDRY_CSS = ROOT / "docs" / "foundry.css"
 FOUNDRY_JS = ROOT / "docs" / "foundry.js"
 FOUNDRY_PAGES = (
@@ -554,9 +555,11 @@ def render_beginner_page(
     sidebar_items = []
     for item in sources:
         current = ' aria-current="page"' if item == source else ""
+        current_class = ' class="is-current"' if item == source else ""
         label = "Guide overview" if item.name == "index.md" else titles[item]
         sidebar_items.append(
-            f'<li><a href="{html.escape(item.with_suffix(".html").name, quote=True)}"'
+            f'<li{current_class}><a href="'
+            f'{html.escape(item.with_suffix(".html").name, quote=True)}"'
             f'{current}>{html.escape(label)}</a></li>'
         )
 
@@ -597,7 +600,7 @@ def render_beginner_page(
         quote=True,
     )
     return f"""<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -608,8 +611,9 @@ def render_beginner_page(
   title="Markdown source">
 <link rel="icon" type="image/svg+xml" href="{favicon_href}">
 <link rel="stylesheet" href="guide.css">
+<script src="guide.js" defer></script>
 </head>
-<body>
+<body class="beginner-guide">
 <a class="skip-link" href="#main-content">Skip to the guide</a>
 <header class="site-header">
   <div class="site-header__inner">
@@ -618,8 +622,16 @@ def render_beginner_page(
   </div>
 </header>
 <div class="guide-layout">
-  <aside class="guide-sidebar">
-    <nav aria-label="Beginner guide chapters">
+  <aside class="guide-sidebar" data-guide-sidebar>
+    <div class="guide-sidebar__toolbar" data-guide-sidebar-toolbar hidden>
+      <button class="guide-sidebar__pin" type="button"
+        aria-controls="beginner-guide-chapters" aria-pressed="false"
+        data-guide-sidebar-pin>
+        <span class="guide-sidebar__pin-mark" aria-hidden="true">&#9675;</span>
+        <span data-guide-sidebar-pin-label>Pin learning path open</span>
+      </button>
+    </div>
+    <nav id="beginner-guide-chapters" aria-label="Beginner guide chapters">
       <h2>Learning path</h2>
       <ol>{"".join(sidebar_items)}</ol>
     </nav>
@@ -661,6 +673,7 @@ def write_beginner_guide() -> None:
             encoding="utf-8",
         )
     copy_file(BEGINNER_GUIDE_CSS, target_dir / "guide.css")
+    copy_file(BEGINNER_GUIDE_JS, target_dir / "guide.js")
 
 
 def foundry_markdown_renderer() -> MarkdownIt:
@@ -797,7 +810,7 @@ def render_generic_page(source: Path, target: Path) -> str:
         else "OKF knowledge page"
     )
     return f"""<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -928,7 +941,7 @@ def render_foundry_page(
     title = markdown_title(source)
     return (
         f"""<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1027,7 +1040,7 @@ def render_external_publication_compatibility(
         quote=True,
     )
     page = f"""<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1097,7 +1110,7 @@ def write_generic_reading_pages() -> None:
 
 def render_next_redirect() -> str:
     return """<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

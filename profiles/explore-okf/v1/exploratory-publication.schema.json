@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/explore-okf/v1/exploratory-publication.schema.json",
+  "title": "Explore OKF exploratory publication descriptor",
+  "description": "The strict machine contract for an immutable, explicitly non-release Explore OKF learning publication.",
+  "type": "object",
+  "required": [
+    "schema",
+    "publication_state",
+    "snapshot_id",
+    "generated_at",
+    "applicable_plane_roots",
+    "publisher",
+    "banner",
+    "indexing_policy",
+    "limitations",
+    "permitted_claims",
+    "prohibited_claims",
+    "promotion_rule"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-exploratory-publication.v1"
+    },
+    "publication_state": {
+      "const": "exploratory"
+    },
+    "snapshot_id": {
+      "$ref": "#/$defs/nonEmptyShortString"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 64
+    },
+    "applicable_plane_roots": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "publisher": {
+      "type": "object",
+      "required": [
+        "name",
+        "authority_status"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/nonEmptyShortString"
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "authority_status": {
+          "enum": [
+            "independent-research",
+            "official-source",
+            "unverified"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "banner": {
+      "type": "object",
+      "required": [
+        "label",
+        "message",
+        "feedback_url",
+        "preserve_route"
+      ],
+      "properties": {
+        "label": {
+          "const": "Exploratory"
+        },
+        "message": {
+          "const": "This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision."
+        },
+        "feedback_url": {
+          "$ref": "#/$defs/httpUrl"
+        },
+        "preserve_route": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "indexing_policy": {
+      "enum": [
+        "noindex",
+        "owner-decision"
+      ]
+    },
+    "limitations": {
+      "$ref": "#/$defs/nonEmptyStringArray"
+    },
+    "permitted_claims": {
+      "$ref": "#/$defs/nonEmptyStringArray"
+    },
+    "prohibited_claims": {
+      "$ref": "#/$defs/nonEmptyStringArray"
+    },
+    "promotion_rule": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "\\S"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyShortString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "\\S"
+    },
+    "httpUrl": {
+      "type": "string",
+      "format": "uri",
+      "allOf": [
+        {"pattern": "^https?://(?:\\[[0-9A-Fa-f:.]+\\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)"},
+        {"pattern": "^[\\u0021-\\u007E]+$"},
+        {"pattern": "^(?!.*[\\\"'<>\\\\^`{|}])"},
+        {"pattern": "^(?!.*%(?![0-9A-Fa-f]{2}))"}
+      ],
+      "maxLength": 4096
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "allOf": [
+        {"pattern": "^https://(?:\\[[0-9A-Fa-f:.]+\\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)"},
+        {"pattern": "^[\\u0021-\\u007E]+$"},
+        {"pattern": "^(?!.*[\\\"'<>\\\\^`{|}])"},
+        {"pattern": "^(?!.*%(?![0-9A-Fa-f]{2}))"}
+      ],
+      "maxLength": 4096
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048,
+        "pattern": "\\S"
+      }
+    }
+  }
+}
