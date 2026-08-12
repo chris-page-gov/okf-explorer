@@ -151,20 +151,37 @@ These are publication invariants rather than individual function tests.
 
 ## The Required Publication Checks
 
+Explorer uses `uv` so a beginner, an AI agent and GitHub Actions all run the
+same locked environment. Install exactly `uv` 0.12.2 with Astral's
+[official version-specific installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer).
+On macOS or Linux, run:
+
+```sh
+curl -LsSf https://astral.sh/uv/0.12.2/install.sh | sh
+uv --version
+uv sync --locked
+```
+
+The official guide gives the equivalent version-specific PowerShell command
+for Windows. `uv --version` must report `uv 0.12.2`. The committed
+`.python-version` selects CPython 3.12.11 and `uv.lock` fixes every package
+artefact; `uv run --locked` then refuses to rewrite a stale lock while running
+a command.
+
 When OKF Markdown changes, regenerate:
 
 ```sh
-python3 scripts/build_okf_bundle.py
-python3 scripts/update_viewer.py
+uv run --locked python scripts/build_okf_bundle.py
+uv run --locked python scripts/update_viewer.py
 ```
 
 Before committing publication changes, run:
 
 ```sh
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/build_site.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/build_site.py
 ```
 
 The repository guide lists additional checks for registries, source

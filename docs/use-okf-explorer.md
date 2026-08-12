@@ -327,10 +327,10 @@ Tasks:
    type, title, description, and timestamp.
 5. Fix broken relative Markdown links.
 6. Run:
-   python3 scripts/build_okf_bundle.py
-   python3 scripts/update_viewer.py
-   python3 scripts/check_okf.py
-   python3 scripts/build_site.py
+   uv run --locked python scripts/build_okf_bundle.py
+   uv run --locked python scripts/update_viewer.py
+   uv run --locked python scripts/check_okf.py
+   uv run --locked python scripts/build_site.py
 7. Report the generated bundle URL I should use after GitHub Pages is published.
 
 Acceptance:
@@ -361,10 +361,10 @@ runtime server dependency.
 Run the checks before publishing:
 
 ```sh
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/build_site.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/build_site.py
 ```
 
 If you are also editing the Svelte Explorer itself:

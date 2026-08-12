@@ -102,22 +102,21 @@
   },
   "tooling": {
     "build": [
-      ".venv/bin/python scripts/build_okf_bundle.py",
-      ".venv/bin/python scripts/update_viewer.py",
+      "uv run --locked python scripts/build_okf_bundle.py",
+      "uv run --locked python scripts/update_viewer.py",
       "pnpm --dir apps/okf-explorer build",
-      ".venv/bin/python scripts/build_site.py"
+      "uv run --locked python scripts/build_site.py"
     ],
     "check": [
-      ".venv/bin/python scripts/build_okf_bundle.py --check",
-      ".venv/bin/python scripts/update_viewer.py --check",
-      ".venv/bin/python scripts/check_okf.py",
-      ".venv/bin/python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",
+      "uv run --locked python scripts/build_okf_bundle.py --check",
+      "uv run --locked python scripts/update_viewer.py --check",
+      "uv run --locked python scripts/check_okf.py",
+      "uv run --locked python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",
       "pnpm --dir apps/okf-explorer test",
       "pnpm --dir apps/okf-explorer check"
     ],
     "setup": [
-      "python3 -m venv .venv",
-      ".venv/bin/python -m pip install --requirement requirements-okf.txt",
+      "uv sync --locked",
       "pnpm --dir apps/okf-explorer install --frozen-lockfile"
     ]
   }

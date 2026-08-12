@@ -22,10 +22,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 2
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install "ruamel.yaml>=0.19,<0.20"
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Plan push impact or fail closed for manual publication
         id: plan
         run: |
@@ -34,7 +32,7 @@ jobs:
             echo 'builder_fixtures=["tiny","faithful","synthetic"]' >> "$GITHUB_OUTPUT"
             echo 'builder_planes=["control","data","search","semantic","presentation"]' >> "$GITHUB_OUTPUT"
           else
-            python3 scripts/plan_evaluation_foundry_impact.py --changed-from HEAD^ --output impact-plan.json --github-output "$GITHUB_OUTPUT" --explain
+            uv run --locked python scripts/plan_evaluation_foundry_impact.py --changed-from HEAD^ --output impact-plan.json --github-output "$GITHUB_OUTPUT" --explain
           fi
 
   adversarial-gate:
@@ -43,13 +41,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Reject all reconstructed late-finding classes
         run: >-
-          python3 scripts/check_heritage_adversarial.py
+          uv run --locked python scripts/check_heritage_adversarial.py
           --output "$RUNNER_TEMP/adversarial-results.json"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -93,11 +89,8 @@ jobs:
       pages: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - name: Install semantic OKF dependencies
-        run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Download exact app build
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
@@ -111,37 +104,37 @@ jobs:
           restore-keys: site-components-v3-${{ runner.os }}-
       - name: Validate Evaluation Foundry fixtures
         if: needs.impact.outputs.foundry == 'true'
-        run: python3 scripts/check_evaluation_foundry.py
+        run: uv run --locked python scripts/check_evaluation_foundry.py
       - name: Verify persisted public bases before the ordinary check
         if: needs.impact.outputs.foundry == 'true'
-        run: python3 scripts/retarget_heritage_source_snapshots.py --check
+        run: uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
       - name: Validate externalised heritage candidate family
         if: needs.impact.outputs.foundry == 'true'
         env:
           IMPACT_BUILDER_FIXTURES: ${{ needs.impact.outputs.builder_fixtures }}
           IMPACT_BUILDER_PLANES: ${{ needs.impact.outputs.builder_planes }}
         run: >-
-          python3 scripts/check_impacted_heritage_evaluation.py
+          uv run --locked python scripts/check_impacted_heritage_evaluation.py
           --fixtures-json "$IMPACT_BUILDER_FIXTURES"
           --planes-json "$IMPACT_BUILDER_PLANES"
       - name: Validate external publication topology and rooted bytes
         if: needs.impact.outputs.foundry == 'true'
         run: >-
-          python3 scripts/export_publication_unit.py
+          uv run --locked python scripts/export_publication_unit.py
           --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json
           --check
       - name: Validate YAML-LD registry and constraint ledger
         run: |
-          python3 scripts/build_okf_registry.py --check
-          python3 scripts/check_source_constraints.py
+          uv run --locked python scripts/build_okf_registry.py --check
+          uv run --locked python scripts/check_source_constraints.py
       - name: Validate OKF bundle and conformance
         run: |
-          python3 scripts/build_okf_bundle.py --check
-          python3 scripts/update_viewer.py --check
-          python3 scripts/check_okf.py
-          python3 scripts/check_legislation_okf.py
+          uv run --locked python scripts/build_okf_bundle.py --check
+          uv run --locked python scripts/update_viewer.py --check
+          uv run --locked python scripts/check_okf.py
+          uv run --locked python scripts/check_legislation_okf.py
       - name: Build componentised static Site
-        run: python3 scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
+        run: uv run --locked python scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Upload Pages artifact

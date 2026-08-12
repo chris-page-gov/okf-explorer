@@ -39,7 +39,7 @@ export default defineConfig({
     : {
         webServer: {
           command:
-            'python3 -m http.server 4174 --bind 127.0.0.1 --directory ../../_site',
+            'uv run --project ../.. --locked python -m http.server 4174 --bind 127.0.0.1 --directory ../../_site',
           url: localBaseURL,
           reuseExistingServer: !process.env.CI,
           timeout: 30_000

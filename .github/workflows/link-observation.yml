@@ -13,12 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Observe due stable link-intent shards
         run: >-
-          python3 scripts/observe_link_intents.py
+          uv run --locked python scripts/observe_link_intents.py
           --manifest evaluation/heritage/data/link-validation/manifest.json
           --output "$RUNNER_TEMP/link-observation-receipt.json"
       - name: Upload timestamped receipt outside candidate and Site

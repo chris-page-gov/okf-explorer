@@ -168,13 +168,13 @@ if documentation refers to a test that does not exist.
 Build the static site first:
 
 ```sh
-python3 scripts/build_site.py
+uv run --locked python scripts/build_site.py
 ```
 
 Serve the repository root:
 
 ```sh
-python3 -m http.server 8002 --bind 127.0.0.1
+uv run --locked python -m http.server 8002 --bind 127.0.0.1
 ```
 
 Run the full 100-question browser suite:
