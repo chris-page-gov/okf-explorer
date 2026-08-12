@@ -154,8 +154,24 @@ that cannot safely be inferred.
     an ordinary label.
 26. Build only evidenced semantic links that answer profile tasks or
     competency questions. Reconcile each external link set to its eligible,
-    linked, unresolved, excluded and conflicting counts; do not reward raw
-    triple count or duplicated projections.
+    linked, unresolved, excluded and conflicting candidate counts; separately
+    reconcile link assertions and dereference attempts. Require the eligible
+    count to equal its unique candidate-ID inventory, bind its canonical digest
+    and deterministic extraction rule to frozen-snapshot evidence, and assign
+    every candidate ID to exactly one outcome. Every exclusion must
+    identify exact eligible candidate IDs, a named rule and evidence, remain
+    disjoint from every other outcome. Give each assertion a stable ID and bind
+    it to exactly one machine-derived success-or-failure dereference result.
+    Reject duplicate candidate-target assertions, targets outside the governed
+    URI namespace and mapping labels that contradict their SKOS/identity
+    predicate. Record that validation reconciles the declared inventory but
+    cannot prove its eligibility rule omitted nothing; require owner/domain
+    review of that source-bound rule. Fail approved v1 profiles closed unless
+    every semantic ledger reference is approval-grade and digest-bound, one
+    evidence item matches both the canonical complete-result digest and its
+    observation time, encoded delimiters cannot bypass a governed namespace,
+    and coverage is current. Do
+    not reward raw triple count or duplicated projections.
 
 ## Phase 0 — Classify And Bootstrap The Repository
 

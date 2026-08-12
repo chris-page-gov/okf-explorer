@@ -2,11 +2,40 @@
 
 ## Unreleased
 
+## v0.7.0 - 2026-08-12 - Explore OKF authoring and review
+
 - Reviewed the reusable OKF authoring methodology against the completed Land
   Registry retrospective and public graph evidence without reopening that
-  producer. Added additive Authoring Profile v1 controls for readable labels,
+  producer. Added versioned Authoring Profile v1 controls for readable labels,
   compact graph endpoint indexes, denominator-based useful semantic linking
   and an explicitly non-release Explore OKF feedback stage.
+- Made semantic-link coverage identity-bound and fail-closed: declared
+  candidate inventories reconcile exactly across outcomes, assertions and
+  dereference receipts; mapping strength agrees with its predicate; targets
+  remain inside governed URI namespaces without encoded-delimiter bypasses;
+  duplicate assertions cannot inflate coverage; and approved observations
+  require one approval-grade receipt carrying the canonical complete-result
+  digest and exact observation time. The guidance explicitly separates this
+  mechanical guarantee from
+  the domain review needed to judge whether an eligibility rule omitted an
+  entity.
+- Added the strict, versioned Explore OKF producer contract, JSON Schemas,
+  examples and Python build/validation tooling for snapshot-bound endpoint
+  labels and exploratory-publication metadata.
+- Added Explorer consumption of integrity-bound endpoint labels across
+  route-based views. Opaque generated identifiers now appear as a visible
+  **Missing label** quality defect while the route, IRI, type and label
+  authority remain inspectable. Source-native record routes and selected
+  relationships now survive copied links, reload and browser history.
+- Added a persistent exploratory-publication banner, route- and filter-
+  preserving feedback links, explicit invalid-contract warnings and fail-safe
+  `noindex` behaviour across all Explorer views.
+- Fixed the beginner learning-path panel so its final chapter remains reachable
+  by scrolling the panel independently of the article. After chapter
+  selection, the panel can collapse to a narrow current-chapter rail, expands
+  on hover or keyboard focus, and provides an accessible persistent pin. Deep
+  section fragments now restore the exact article position after reload in
+  Chrome, Firefox and WebKit.
 - Updated both copy-ready Foundry prompts, the bundle-authoring guide and the
   beginner explanation, and researched a bounded Coventry everyday-services
   open-data pilot to test the method before reviewing `okf-uk-living`.

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   boxesOverlap,
+  graphEdgeStateKey,
+  graphRelationshipGroupKey,
   filterGraphRelationshipsBySemantics,
   graphRelationshipGroupSlot,
   groupGraphRelationships,
@@ -130,6 +132,34 @@ describe('graph presentation', () => {
     ]);
     expect(groups[0].nodeIds).toEqual(['tag/a', 'tag/b']);
     expect(orderGraphRelationshipGroups(groups, ['outgoing:dcterms:publisher'])[0].label).toBe('published by');
+  });
+
+  it('round-trips long authored edge and predicate identities through bounded graph state keys', () => {
+    const longTail = 'semantic-segment/'.repeat(48);
+    const edge = {
+      id: 'long-edge',
+      source: `work/${longTail}source`,
+      target: `concept/${longTail}target`,
+      label: `relates through ${longTail}`
+    };
+    const edgeKey = graphEdgeStateKey(edge);
+    const changedEdgeKey = graphEdgeStateKey({ ...edge, target: `${edge.target}-changed` });
+    expect(edgeKey).toMatch(/^okf-long-v1:\d+:[0-9a-f]{16}:[0-9a-f]{16}$/);
+    expect(edgeKey.length).toBeLessThanOrEqual(512);
+    expect(graphEdgeStateKey(edge)).toBe(edgeKey);
+    expect(changedEdgeKey).not.toBe(edgeKey);
+
+    const predicate = `https://example.gov.uk/ontology/${longTail}relationship`;
+    const groupKey = graphRelationshipGroupKey(
+      { ...edge, predicate },
+      edge.source
+    );
+    expect(groupKey).toMatch(/^okf-long-v1:\d+:[0-9a-f]{16}:[0-9a-f]{16}$/);
+    expect(groupKey.length).toBeLessThanOrEqual(512);
+    expect(graphRelationshipGroupKey({ ...edge, predicate }, edge.source)).toBe(groupKey);
+    expect(
+      graphRelationshipGroupKey({ ...edge, predicate: `${predicate}-changed` }, edge.source)
+    ).not.toBe(groupKey);
   });
 
   it('filters semantic relationships without conflating status, scope and authority', () => {

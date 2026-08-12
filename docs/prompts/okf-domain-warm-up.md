@@ -129,6 +129,23 @@ budget, or silently decide a material owner question.
 23. Maximise evidenced, useful semantic-link coverage against declared
     eligible-entity denominators, not raw triple count. Every link must answer
     a task or competency question; duplicated projections do not add coverage.
+    Give every eligible candidate a stable ID, reconcile the eligible count to
+    that exact unique list, bind its canonical digest and deterministic
+    extraction rule to the frozen source snapshot and evidence, and never
+    count an exclusion without its candidate IDs, named rule and evidence.
+    Partition every candidate ID exactly once across linked, unresolved,
+    excluded and conflicting. Keep linked-candidate and link-assertion counts
+    separate; give each assertion a stable ID and exactly one identity-bound
+    dereference result. State explicitly that the validator proves the declared
+    inventory's reconciliation, not that the eligibility rule omitted nothing;
+    require owner/domain review of that rule. Make mapping strength agree with
+    its SKOS or identity predicate, validate targets against their URI-aware
+    namespace, reject duplicate candidate-target assertions, and derive each
+    dereference outcome from a machine-readable terminal result. Fail approved
+    v1 profiles closed unless every semantic ledger reference is
+    approval-grade and digest-bound, one observation receipt matches both the
+    canonical complete-result digest and its time, encoded path delimiters
+    cannot manufacture namespace membership, and coverage is current.
 24. Treat an Explore OKF publication as an explicitly exploratory,
     snapshot-bound feedback artefact. It must not imply approval, completeness,
     official endorsement or release conformance.
@@ -247,7 +264,8 @@ record one applicability decision:
   conflicting cases, and task/competency references.
 - Use `skos:exactMatch`, `skos:closeMatch`, `skos:broadMatch`,
   `skos:narrowMatch` or `skos:relatedMatch` as evidence permits. Reserve
-  `owl:sameAs` for independently evidenced identity.
+  `owl:sameAs` for independently verified, digest-bound identity evidence; do
+  not pair a mapping label with a different or weaker predicate.
 
 ### E1. Explore OKF learning publication
 
@@ -411,7 +429,8 @@ Research is saturated only when:
 - every proposed entity/relationship answers a task or competency question;
 - every graph-reachable entity has a human label available at relationship
   projection granularity, and every external link set has an eligible-entity
-  denominator;
+  denominator with an exact candidate-ID inventory and auditable, disjoint
+  outcomes, canonical digest and frozen-snapshot evidence;
 - any selected Explore OKF snapshot has banner, feedback, limitations,
   immutable identity and explicit non-release claims;
 - a second adversarial pass adds no critical category; and

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 import tempfile
 import unittest
@@ -38,6 +39,109 @@ class OkfAuthoringProfileTests(unittest.TestCase):
                 key=lambda item: list(item.absolute_path),
             )
         ]
+
+    def candidate_digest(self, candidate_ids: list[str]) -> str:
+        payload = (
+            json.dumps(
+                sorted(candidate_ids),
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def coverage_result_digest(self, result: dict[str, object]) -> str:
+        payload = (
+            json.dumps(
+                result,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def sync_coverage_result_digest(self, value: dict[str, object]) -> str:
+        linking = value["semantic_linking"]
+        assert isinstance(linking, dict)
+        link_set = linking["link_sets"][0]
+        result = link_set["coverage_result"]
+        digest = self.coverage_result_digest(result)
+        link_set["coverage_result_sha256"] = digest
+        evidence = value["evidence"]
+        coverage_evidence = next(
+            item for item in evidence if item["id"] == "EV-LINK-COVERAGE-001"
+        )
+        coverage_evidence["sha256"] = digest
+        return digest
+
+    def set_linked_outcome(
+        self,
+        result: dict[str, object],
+        *,
+        assertions: int = 1,
+    ) -> None:
+        result["linked_count"] = 1
+        result["linked_candidate_ids"] = ["record-001"]
+        result["linked_assertion_count"] = assertions
+        result["link_assertions"] = [
+            {
+                "id": f"ASSERTION-{index + 1:03d}",
+                "candidate_id": "record-001",
+                "target_iri": f"https://example.org/source/{index + 1}",
+                "evidence_refs": ["EV-001"],
+            }
+            for index in range(assertions)
+        ]
+        result["unresolved_count"] = 0
+        result["unresolved_candidate_ids"] = []
+        result["achieved_coverage_percent"] = 100
+        dereference = result["dereference"]
+        assert isinstance(dereference, dict)
+        dereference.update(
+            {
+                "attempted_count": assertions,
+                "succeeded_count": assertions,
+                "failed_count": 0,
+                "results": [
+                    {
+                        "assertion_ref": f"ASSERTION-{index + 1:03d}",
+                        "outcome": "succeeded",
+                        "terminal_kind": "http-status",
+                        "http_status": 200,
+                        "observed_status": "HTTP 200",
+                        "evidence_refs": ["EV-001"],
+                    }
+                    for index in range(assertions)
+                ],
+            }
+        )
+
+    def approve_semantic_profile(self, value: dict[str, object]) -> None:
+        value["status"] = "approved"
+        input_snapshot = value["input_snapshot"]
+        assert isinstance(input_snapshot, dict)
+        input_snapshot["inventory_sha256"] = "1" * 64
+        consumer_contract = value["consumer_contract"]
+        assert isinstance(consumer_contract, dict)
+        lock = consumer_contract["lock"]
+        assert isinstance(lock, dict)
+        lock["sha256"] = "2" * 64
+        evidence = value["evidence"]
+        assert isinstance(evidence, list)
+        evidence[0]["sha256"] = "3" * 64
+        evidence[0]["verification"] = "support-checked"
+        linking = value["semantic_linking"]
+        assert isinstance(linking, dict)
+        denominator = linking["eligible_entity_denominators"][0]
+        denominator["minimum_coverage_percent"] = 0
+        self.sync_coverage_result_digest(value)
+        coverage_evidence = next(
+            item for item in evidence if item["id"] == "EV-LINK-COVERAGE-001"
+        )
+        coverage_evidence["verification"] = "support-checked"
 
     def test_schema_and_template_identify_the_versioned_public_contract(self) -> None:
         self.assertEqual("okf-domain-profile.v1", self.template["schema"])
@@ -109,8 +213,30 @@ class OkfAuthoringProfileTests(unittest.TestCase):
             self.template["presentation_contract"]["identifier_fallback"],
         )
         self.assertEqual(
+            "okf-explorer-endpoint-label-index.v1",
+            self.template["presentation_contract"]["compact_label_index"][
+                "schema"
+            ],
+        )
+        self.assertEqual(
+            "endpoint_labels",
+            self.template["presentation_contract"]["compact_label_index"][
+                "descriptor_entrypoint"
+            ],
+        )
+        self.assertEqual(
             "exploratory",
             self.template["exploratory_publication"]["publication_state"],
+        )
+        self.assertEqual(
+            "okf-exploratory-publication.v1",
+            self.template["exploratory_publication"]["descriptor_schema"],
+        )
+        self.assertEqual(
+            "independent-research",
+            self.template["exploratory_publication"]["publisher"][
+                "authority_status"
+            ],
         )
         self.assertTrue(
             self.template["exploratory_publication"]["banner"][
@@ -119,6 +245,12 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         )
         self.assertTrue(
             self.template["semantic_linking"]["eligible_entity_denominators"]
+        )
+        link_set = self.template["semantic_linking"]["link_sets"][0]
+        self.assertEqual("DENOM-001", link_set["denominator_ref"])
+        self.assertEqual(
+            0,
+            link_set["coverage_result"]["achieved_coverage_percent"],
         )
 
     def test_validator_dependency_nodes_require_concrete_repository_paths(self) -> None:
@@ -196,13 +328,37 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertEqual([], self.errors(legacy))
         self.assertEqual([], check_domain_profile.reference_errors(legacy))
 
-    def test_explore_controls_are_additive_for_existing_v1_profiles(self) -> None:
-        legacy = json.loads(json.dumps(self.template))
-        del legacy["semantic_linking"]
-        del legacy["presentation_contract"]
-        del legacy["exploratory_publication"]
-        self.assertEqual([], self.errors(legacy))
-        self.assertEqual([], check_domain_profile.reference_errors(legacy))
+    def test_explore_controls_are_required_for_v1_conformance(self) -> None:
+        for field in (
+            "semantic_linking",
+            "presentation_contract",
+            "exploratory_publication",
+        ):
+            with self.subTest(field=field):
+                invalid = json.loads(json.dumps(self.template))
+                del invalid[field]
+                self.assertTrue(
+                    any(
+                        f"'{field}' is a required property" in message
+                        for message in self.errors(invalid)
+                    )
+                )
+
+    def test_explore_contract_urls_use_the_browser_safe_shape(self) -> None:
+        for value in (
+            "https://example.org:99999/evidence",
+            "https://example.org:0/evidence",
+            "https://example.org/bare%value",
+            "https://example.org/<unsafe>",
+            "https://user:secret@example.org/evidence",
+        ):
+            with self.subTest(value=value):
+                invalid = json.loads(json.dumps(self.template))
+                invalid["exploratory_publication"]["banner"][
+                    "feedback_url"
+                ] = value
+                invalid["exploratory_publication"]["publisher"]["url"] = value
+                self.assertTrue(self.errors(invalid))
 
     def test_link_coverage_percentage_is_bounded(self) -> None:
         invalid = json.loads(json.dumps(self.template))
@@ -214,6 +370,618 @@ class OkfAuthoringProfileTests(unittest.TestCase):
                 "greater than the maximum" in message
                 for message in self.errors(invalid)
             )
+        )
+
+    def test_each_semantic_link_set_requires_a_complete_coverage_result(
+        self,
+    ) -> None:
+        for field in (
+            "denominator_ref",
+            "coverage_result_sha256",
+            "coverage_result",
+        ):
+            with self.subTest(link_set_field=field):
+                invalid = json.loads(json.dumps(self.template))
+                del invalid["semantic_linking"]["link_sets"][0][field]
+                self.assertTrue(
+                    any(
+                        f"'{field}' is a required property" in message
+                        for message in self.errors(invalid)
+                    )
+                )
+
+        required = (
+            "eligible_count",
+            "linked_count",
+            "linked_candidate_ids",
+            "linked_assertion_count",
+            "link_assertions",
+            "unresolved_count",
+            "unresolved_candidate_ids",
+            "excluded_count",
+            "exclusion_results",
+            "conflicting_count",
+            "conflicting_candidate_ids",
+            "achieved_coverage_percent",
+            "dereference",
+            "observed_at",
+            "freshness_policy",
+            "freshness_status",
+            "evidence_refs",
+        )
+        for field in required:
+            with self.subTest(field=field):
+                invalid = json.loads(json.dumps(self.template))
+                del invalid["semantic_linking"]["link_sets"][0][
+                    "coverage_result"
+                ][field]
+                self.assertTrue(
+                    any(
+                        f"'{field}' is a required property" in message
+                        for message in self.errors(invalid)
+                    )
+                )
+
+    def test_semantic_link_coverage_categories_must_reconcile_exactly(
+        self,
+    ) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        result["linked_count"] = 1
+        result["linked_candidate_ids"] = ["record-001"]
+        result["linked_assertion_count"] = 1
+        result["dereference"]["attempted_count"] = 1
+        result["dereference"]["succeeded_count"] = 1
+        result["achieved_coverage_percent"] = 100
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("coverage counts must reconcile exactly" in item for item in errors)
+        )
+
+    def test_semantic_link_coverage_percentage_uses_the_effective_denominator(
+        self,
+    ) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        self.set_linked_outcome(result)
+        result["achieved_coverage_percent"] = 99
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any(
+                "achieved_coverage_percent must equal 100.00" in item
+                for item in errors
+            )
+        )
+
+        rounded = json.loads(json.dumps(self.template))
+        denominator = rounded["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        result = rounded["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        denominator["eligible_count"] = 3
+        denominator["candidate_ids"] = ["record-001", "record-002", "record-003"]
+        denominator["candidate_list_sha256"] = self.candidate_digest(
+            denominator["candidate_ids"]
+        )
+        result.update(
+            {
+                "eligible_count": 3,
+                "linked_count": 1,
+                "linked_candidate_ids": ["record-001"],
+                "linked_assertion_count": 1,
+                "unresolved_count": 2,
+                "unresolved_candidate_ids": ["record-002", "record-003"],
+                "achieved_coverage_percent": 33.33,
+                "link_assertions": [
+                    {
+                        "id": "ASSERTION-001",
+                        "candidate_id": "record-001",
+                        "target_iri": "https://example.org/source/1",
+                        "evidence_refs": ["EV-001"],
+                    }
+                ],
+            }
+        )
+        result["dereference"].update(
+            {
+                "attempted_count": 1,
+                "succeeded_count": 1,
+                "results": [
+                    {
+                        "assertion_ref": "ASSERTION-001",
+                        "outcome": "succeeded",
+                        "terminal_kind": "http-status",
+                        "http_status": 200,
+                        "observed_status": "HTTP 200",
+                        "evidence_refs": ["EV-001"],
+                    }
+                ],
+            }
+        )
+        self.sync_coverage_result_digest(rounded)
+        self.assertEqual([], self.errors(rounded))
+        self.assertEqual([], check_domain_profile.reference_errors(rounded))
+
+    def test_every_linked_assertion_requires_a_reconciled_dereference_result(
+        self,
+    ) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        self.set_linked_outcome(result)
+        result["dereference"]["attempted_count"] = 0
+        result["dereference"]["succeeded_count"] = 0
+        result["dereference"]["results"] = []
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any(
+                "dereference every linked assertion exactly once" in item
+                for item in errors
+            )
+        )
+
+    def test_link_assertions_are_counted_separately_from_linked_candidates(
+        self,
+    ) -> None:
+        valid = json.loads(json.dumps(self.template))
+        result = valid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result, assertions=2)
+        self.sync_coverage_result_digest(valid)
+        self.assertEqual([], self.errors(valid))
+        self.assertEqual([], check_domain_profile.reference_errors(valid))
+
+    def test_excluded_candidates_require_named_reconciled_evidence(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        denominator = invalid["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        result.update(
+            {
+                "unresolved_count": 0,
+                "unresolved_candidate_ids": [],
+                "excluded_count": 1,
+                "achieved_coverage_percent": 100,
+            }
+        )
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("evidence-bearing exclusion_results" in item for item in errors)
+        )
+
+        denominator["exclusions"] = [
+            {
+                "id": "EXCLUSION-001",
+                "rule": "Exclude a withdrawn record only when the official source marks it withdrawn.",
+                "evidence_refs": ["EV-001"],
+            }
+        ]
+        result["exclusion_results"] = [
+            {
+                "exclusion_ref": "EXCLUSION-001",
+                "count": 1,
+                "candidate_ids": ["record-001"],
+                "evidence_refs": ["EV-001"],
+            }
+        ]
+        self.sync_coverage_result_digest(invalid)
+        self.assertEqual([], self.errors(invalid))
+        self.assertEqual([], check_domain_profile.reference_errors(invalid))
+
+    def test_unknown_and_duplicate_exclusion_results_fail_closed(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        result["exclusion_results"] = [
+            {
+                "exclusion_ref": "EXCLUSION-MISSING",
+                "count": 1,
+                "candidate_ids": ["record-withdrawn-001"],
+                "evidence_refs": ["EV-001"],
+            },
+            {
+                "exclusion_ref": "EXCLUSION-MISSING",
+                "count": 1,
+                "candidate_ids": ["record-withdrawn-002"],
+                "evidence_refs": ["EV-001"],
+            },
+        ]
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(any("unknown exclusion_ref" in item for item in errors))
+        self.assertTrue(any("repeats exclusion_ref" in item for item in errors))
+
+    def test_exclusion_results_identify_exact_disjoint_candidates(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        denominator = invalid["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        denominator.update(
+            {
+                "eligible_count": 2,
+                "candidate_ids": ["record-001", "record-002"],
+                "candidate_list_sha256": self.candidate_digest(
+                    ["record-001", "record-002"]
+                ),
+                "exclusions": [
+                    {
+                        "id": "EXCLUSION-001",
+                        "rule": "Officially withdrawn records only.",
+                        "evidence_refs": ["EV-001"],
+                    },
+                    {
+                        "id": "EXCLUSION-002",
+                        "rule": "Officially replaced records only.",
+                        "evidence_refs": ["EV-001"],
+                    },
+                ],
+            }
+        )
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        result.update(
+            {
+                "eligible_count": 2,
+                "unresolved_count": 0,
+                "unresolved_candidate_ids": [],
+                "excluded_count": 2,
+                "exclusion_results": [
+                    {
+                        "exclusion_ref": "EXCLUSION-001",
+                        "count": 2,
+                        "candidate_ids": ["record-001"],
+                        "evidence_refs": ["EV-001"],
+                    },
+                    {
+                        "exclusion_ref": "EXCLUSION-002",
+                        "count": 1,
+                        "candidate_ids": ["record-001"],
+                        "evidence_refs": ["EV-001"],
+                    },
+                ],
+            }
+        )
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("count must equal the number of candidate_ids" in item for item in errors)
+        )
+        self.assertTrue(
+            any("occurs in more than one exclusion result" in item for item in errors)
+        )
+
+        unknown = json.loads(json.dumps(invalid))
+        unknown_result = unknown["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        unknown_result["exclusion_results"][0].update(
+            {"count": 1, "candidate_ids": ["record-not-eligible"]}
+        )
+        unknown_result["excluded_count"] = 2
+        unknown_errors = check_domain_profile.reference_errors(unknown)
+        self.assertTrue(any("is not in denominator" in item for item in unknown_errors))
+
+    def test_outcome_ids_form_an_exact_disjoint_partition(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        denominator = invalid["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        denominator["eligible_count"] = 2
+        denominator["candidate_ids"] = ["record-001", "record-002"]
+        denominator["candidate_list_sha256"] = self.candidate_digest(
+            denominator["candidate_ids"]
+        )
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result)
+        result["eligible_count"] = 2
+        result["excluded_count"] = 1
+        result["exclusion_results"] = [
+            {
+                "exclusion_ref": "EXCLUSION-001",
+                "count": 1,
+                "candidate_ids": ["record-001"],
+                "evidence_refs": ["EV-001"],
+            }
+        ]
+        denominator["exclusions"] = [
+            {
+                "id": "EXCLUSION-001",
+                "rule": "Officially withdrawn records only.",
+                "evidence_refs": ["EV-001"],
+            }
+        ]
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(any("more than one coverage outcome" in item for item in errors))
+        self.assertTrue(any("does not classify denominator candidates" in item for item in errors))
+
+    def test_assertion_and_dereference_ledgers_reconcile_by_identity(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result, assertions=2)
+        result["link_assertions"][1]["id"] = "ASSERTION-001"
+        result["dereference"]["results"][1]["assertion_ref"] = "ASSERTION-001"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(any("repeats link assertion ID" in item for item in errors))
+        self.assertTrue(any("repeats dereference result" in item for item in errors))
+
+    def test_zero_linked_candidates_cannot_have_assertions(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        result["linked_assertion_count"] = 1
+        result["link_assertions"] = [
+            {
+                "id": "ASSERTION-001",
+                "candidate_id": "record-001",
+                "target_iri": "https://example.org/source/1",
+                "evidence_refs": ["EV-001"],
+            }
+        ]
+        result["dereference"].update(
+            {
+                "attempted_count": 1,
+                "succeeded_count": 1,
+                "results": [
+                    {
+                        "assertion_ref": "ASSERTION-001",
+                        "outcome": "succeeded",
+                        "terminal_kind": "http-status",
+                        "http_status": 200,
+                        "observed_status": "HTTP 200",
+                        "evidence_refs": ["EV-001"],
+                    }
+                ],
+            }
+        )
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(any("must either both be zero" in item for item in errors))
+
+    def test_candidate_ids_are_canonical_and_digest_bound(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        denominator = invalid["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        denominator["eligible_count"] = 2
+        denominator["candidate_ids"] = ["record-001", " record-001"]
+        denominator["candidate_list_sha256"] = self.candidate_digest(
+            denominator["candidate_ids"]
+        )
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        result["eligible_count"] = 2
+        result["unresolved_count"] = 2
+        result["unresolved_candidate_ids"] = denominator["candidate_ids"]
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(any("trimmed, control-free" in item for item in errors))
+
+        drifted = json.loads(json.dumps(self.template))
+        drifted["semantic_linking"]["eligible_entity_denominators"][0][
+            "candidate_list_sha256"
+        ] = "0" * 64
+        self.assertTrue(
+            any(
+                "candidate_list_sha256 must equal" in item
+                for item in check_domain_profile.reference_errors(drifted)
+            )
+        )
+
+    def test_approved_semantic_ledgers_require_approval_grade_evidence(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        self.approve_semantic_profile(invalid)
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result)
+        invalid["evidence"].append(
+            {
+                "id": "EV-UNKNOWN",
+                "title": "Unverified semantic observation",
+                "authority": "Unknown",
+                "location": "./unverified.json",
+                "retrieved_at": "2026-07-27T00:00:00Z",
+                "observed_at": "2026-07-27T00:00:00Z",
+                "verification": "unverified",
+                "sha256": "unknown",
+                "supports": ["Unverified semantic result"],
+            }
+        )
+        result["evidence_refs"] = ["EV-UNKNOWN"]
+        result["link_assertions"][0]["evidence_refs"] = ["EV-UNKNOWN"]
+        result["dereference"]["results"][0]["evidence_refs"] = ["EV-UNKNOWN"]
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(
+            any("semantic linking requires support-checked" in item for item in errors)
+        )
+
+    def test_approved_coverage_time_is_bound_to_observation_evidence(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        self.approve_semantic_profile(invalid)
+        coverage_evidence = next(
+            item
+            for item in invalid["evidence"]
+            if item["id"] == "EV-LINK-COVERAGE-001"
+        )
+        coverage_evidence["observed_at"] = "2020-01-01T00:00:00Z"
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(
+            any("canonical coverage result digest and observed_at" in item for item in errors)
+        )
+
+    def test_coverage_result_is_canonically_digest_bound(self) -> None:
+        for replacement in (None, "unknown"):
+            with self.subTest(replacement=replacement):
+                invalid = json.loads(json.dumps(self.template))
+                link_set = invalid["semantic_linking"]["link_sets"][0]
+                if replacement is None:
+                    del link_set["coverage_result_sha256"]
+                else:
+                    link_set["coverage_result_sha256"] = replacement
+                self.assertTrue(self.errors(invalid))
+
+        drifted = json.loads(json.dumps(self.template))
+        drifted_result = drifted["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        drifted_result["dereference"]["method"] += " Mutated after approval."
+        errors = check_domain_profile.semantic_linking_errors(drifted)
+        self.assertTrue(
+            any("coverage_result_sha256 must equal canonical" in item for item in errors)
+        )
+
+    def test_approved_coverage_requires_one_digest_and_time_witness(self) -> None:
+        approved = json.loads(json.dumps(self.template))
+        self.approve_semantic_profile(approved)
+        self.assertEqual([], check_domain_profile.semantic_linking_errors(approved))
+
+        arbitrary = json.loads(json.dumps(approved))
+        coverage_evidence = next(
+            item
+            for item in arbitrary["evidence"]
+            if item["id"] == "EV-LINK-COVERAGE-001"
+        )
+        coverage_evidence["sha256"] = "4" * 64
+        errors = check_domain_profile.semantic_linking_errors(arbitrary)
+        self.assertTrue(
+            any("canonical coverage result digest and observed_at" in item for item in errors)
+        )
+
+    def test_mapping_relation_and_predicate_must_be_compatible(self) -> None:
+        mutations = (
+            ("identity", "http://purl.org/dc/terms/source", "identity mapping"),
+            ("exact-match", "http://purl.org/dc/terms/source", "requires predicate_iri"),
+            (
+                "domain-relationship",
+                "http://www.w3.org/2002/07/owl#sameAs",
+                "domain-relationship cannot use",
+            ),
+        )
+        for relation, predicate, expected in mutations:
+            with self.subTest(relation=relation, predicate=predicate):
+                invalid = json.loads(json.dumps(self.template))
+                link_set = invalid["semantic_linking"]["link_sets"][0]
+                link_set["mapping_relation"] = relation
+                link_set["predicate_iri"] = predicate
+                errors = check_domain_profile.semantic_linking_errors(invalid)
+                self.assertTrue(any(expected in item for item in errors))
+
+    def test_link_assertion_target_must_belong_to_governed_namespace(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result)
+        result["link_assertions"][0]["target_iri"] = (
+            "https://attacker.example/not-official"
+        )
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(any("outside its governed target_namespace" in item for item in errors))
+
+    def test_encoded_path_delimiters_cannot_cross_a_governed_namespace(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result)
+        result["link_assertions"][0]["target_iri"] = (
+            "https://example.org/source%2Fevil"
+        )
+        self.sync_coverage_result_digest(invalid)
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(any("outside its governed target_namespace" in item for item in errors))
+
+        unsafe_namespace = json.loads(json.dumps(self.template))
+        unsafe_namespace["semantic_linking"]["link_sets"][0][
+            "target_namespace"
+        ] = "https://example.org/source%2F"
+        errors = check_domain_profile.semantic_linking_errors(unsafe_namespace)
+        self.assertTrue(any("target_namespace must be a safe HTTP" in item for item in errors))
+
+    def test_dereference_outcome_is_derived_from_terminal_result(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result)
+        row = result["dereference"]["results"][0]
+        row["terminal_kind"] = "timeout"
+        row["http_status"] = None
+        row["observed_status"] = "Timed out"
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(any("outcome contradicts" in item for item in errors))
+
+    def test_duplicate_candidate_target_assertions_are_rejected(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        result = invalid["semantic_linking"]["link_sets"][0]["coverage_result"]
+        self.set_linked_outcome(result, assertions=2)
+        result["link_assertions"][1]["target_iri"] = result["link_assertions"][0][
+            "target_iri"
+        ]
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(any("repeats the semantic assertion" in item for item in errors))
+
+    def test_identity_assertions_require_independently_verified_evidence(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        self.approve_semantic_profile(invalid)
+        link_set = invalid["semantic_linking"]["link_sets"][0]
+        link_set["mapping_relation"] = "identity"
+        link_set["predicate_iri"] = "http://www.w3.org/2002/07/owl#sameAs"
+        result = link_set["coverage_result"]
+        self.set_linked_outcome(result)
+        errors = check_domain_profile.semantic_linking_errors(invalid)
+        self.assertTrue(any("requires independently verified" in item for item in errors))
+
+    def test_denominator_identifies_every_eligible_candidate_exactly(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        denominator = invalid["semantic_linking"][
+            "eligible_entity_denominators"
+        ][0]
+        denominator["eligible_count"] = 2
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any(
+                "eligible_count must equal the number of candidate_ids" in item
+                for item in errors
+            )
+        )
+
+    def test_stale_coverage_policy_is_fail_closed_in_v1(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["semantic_linking"]["link_sets"][0]["coverage_result"][
+            "freshness_policy"
+        ]["stale_result_action"] = "retain-with-warning"
+        self.assertTrue(
+            any("'fail-closed' was expected" in message for message in self.errors(invalid))
+        )
+
+    def test_link_coverage_freshness_status_must_match_its_policy(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["semantic_linking"]["link_sets"][0]["coverage_result"][
+            "observed_at"
+        ] = "2025-01-01T00:00:00Z"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("freshness_status must be 'stale'" in item for item in errors)
+        )
+
+    def test_approved_profile_rejects_stale_fail_closed_link_coverage(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["status"] = "approved"
+        invalid["consumer_contract"]["lock"]["sha256"] = "0" * 64
+        result = invalid["semantic_linking"]["link_sets"][0][
+            "coverage_result"
+        ]
+        result["observed_at"] = "2025-01-01T00:00:00Z"
+        result["freshness_status"] = "stale"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("stale coverage result" in item for item in errors)
+        )
+
+    def test_link_set_coverage_must_bind_to_a_declared_denominator(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["semantic_linking"]["link_sets"][0][
+            "denominator_ref"
+        ] = "DENOM-MISSING"
+        errors = check_domain_profile.reference_errors(invalid)
+        self.assertTrue(
+            any("unknown denominator_ref 'DENOM-MISSING'" in item for item in errors)
         )
 
     def test_exploratory_banner_must_preserve_the_review_route(self) -> None:

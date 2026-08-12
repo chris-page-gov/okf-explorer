@@ -23,7 +23,7 @@ body {
 }
 a { color: var(--accent-dark); text-underline-offset: 0.15em; }
 a:hover { text-decoration-thickness: 0.15em; }
-a:focus-visible, [tabindex="-1"]:focus-visible {
+a:focus-visible, button:focus-visible, [tabindex="-1"]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
@@ -68,19 +68,40 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
   margin: 0 auto;
 }
 .guide-sidebar {
-  position: sticky;
-  top: 0;
-  align-self: start;
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  scrollbar-gutter: stable;
   border-right: 1px solid var(--line);
   background: #eaf1f6;
   padding: 1.5rem 1rem 2rem;
 }
 .guide-sidebar nav { position: static; }
+.guide-sidebar__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+.guide-sidebar__pin {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid #879dab;
+  border-radius: 0.3rem;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.45rem 0.65rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.guide-sidebar__pin:hover { background: #f7fafc; }
+.guide-sidebar__pin-mark {
+  flex: 0 0 auto;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
 .guide-sidebar h2 {
   margin: 0 0 0.65rem;
   font-size: 0.82rem;
@@ -94,10 +115,12 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
 }
 .guide-sidebar li + li { margin-top: 0.18rem; }
 .guide-sidebar a {
-  display: block;
+  display: flex;
+  min-height: 2.75rem;
   border-left: 4px solid transparent;
   border-radius: 0.2rem;
   padding: 0.45rem 0.55rem;
+  align-items: center;
   color: #233b4d;
   font-size: 0.9rem;
   line-height: 1.35;
@@ -202,6 +225,93 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
   font-size: 0.9rem;
 }
 
+@media (min-width: 761px) {
+  body.beginner-guide {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .beginner-guide .guide-layout {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .beginner-guide .guide-sidebar {
+    position: relative;
+    z-index: 3;
+    align-self: stretch;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+  }
+  .beginner-guide .guide-main {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide .guide-layout {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide .guide-sidebar {
+    width: 3.5rem;
+    padding: 0.5rem 0.35rem 1rem;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:is(:hover, :focus-within) {
+    width: min(19rem, calc(100vw - 2rem));
+    box-shadow: 0.35rem 0 0.8rem rgb(24 43 58 / 20%);
+    padding: 1.5rem 1rem 2rem;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within) .guide-sidebar__toolbar {
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within) .guide-sidebar__pin {
+    width: 2.75rem;
+    padding: 0.35rem;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within)
+    [data-guide-sidebar-pin-label],
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within) h2,
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within) li:not(.is-current) {
+    display: none;
+  }
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide
+    .guide-sidebar:not(:hover):not(:focus-within) .is-current a {
+    display: block;
+    max-height: calc(100dvh - 5rem);
+    overflow: hidden;
+    border-top: 4px solid var(--accent);
+    border-left: 0;
+    padding: 0.65rem 0.45rem;
+    text-overflow: ellipsis;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+}
+
+@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+  html[data-guide-sidebar-collapsed="true"] .beginner-guide .guide-sidebar {
+    transition: width 160ms ease, box-shadow 160ms ease, padding 160ms ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 @media (max-width: 760px) {
   .site-header__inner { align-items: flex-start; flex-direction: column; }
   .guide-layout { grid-template-columns: 1fr; }
@@ -214,6 +324,7 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
+  .guide-sidebar__toolbar { display: none; }
   .guide-sidebar ol {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
@@ -226,6 +337,7 @@ a:focus-visible, [tabindex="-1"]:focus-visible {
 
 @media print {
   body { background: #fff; }
+  body.beginner-guide { display: block; height: auto; overflow: visible; }
   .skip-link, .site-header, .guide-sidebar, .chapter-nav, .guide-footer {
     display: none;
   }

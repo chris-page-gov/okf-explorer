@@ -187,6 +187,34 @@ which were excluded. This makes “90 per cent of eligible public bodies have an
 official identifier” meaningful. A raw total of 10,000 relationships does not
 say whether any of them help a citizen.
 
+That denominator is not just a number. The profile lists each eligible stable
+ID, says how the deterministic rule derived it from the frozen source snapshot,
+cites evidence and records a digest of the canonical list. It then assigns
+every ID exactly once to linked, unresolved, excluded or conflicting. An
+exclusion names its exact candidates, rule and evidence. The validator also
+distinguishes linked candidates from link assertions, because one candidate
+may have several justified links, and matches each stable assertion ID to one
+bounded dereference result. Approved v1 profiles fail closed when a required
+digest is unknown or this evidence becomes stale.
+
+The computer can prove that this **declared list** balances exactly. It cannot
+know whether the author accidentally left a genuinely eligible entity out of
+the rule. Before approval, a domain reviewer or owner must compare that rule
+with the frozen source evidence and record their judgement. This is why the
+method does not call the percentage universal “semantic completeness”.
+
+The profile also prevents apparently cautious wording from hiding a stronger
+machine claim. A SKOS mapping label must use its matching SKOS predicate, while
+`owl:sameAs` requires independently verified identity evidence. Every target
+must sit inside the stated web namespace, including after percent-encoded path
+delimiters are rejected, and the same candidate-to-target link cannot be
+counted twice. `coverage_result_sha256` commits the complete result as
+canonical UTF-8 JSON while retaining the order of its ledger arrays. For an
+approved profile, one approval-grade evidence item must carry both that exact
+digest and the result's exact observation time; two unrelated receipts cannot
+be combined to satisfy the rule. A machine-readable HTTP or failure result
+determines whether dereferencing succeeded.
+
 Concepts can use qualified SKOS mappings such as exact, close, broader,
 narrower or related. `owl:sameAs` is much stronger: it says that two IRIs name
 the same individual, so matching words alone are never enough.
@@ -204,9 +232,16 @@ sources. The snapshot records its exact identity, limitations and indexing
 decision. It can be replaced by a new exploration, but it cannot be promoted
 to a release merely by changing its label.
 
-The current Explorer does not yet claim to implement this banner contract.
-The proposal becomes current behaviour only after the actual consumer and its
-cross-view tests pass. See the
+Explorer v0.7.0 implements this through the strict
+[Explore OKF profile](../../profiles/explore-okf/v1/index.md). It checks that
+the exploratory metadata matches the loaded snapshot and plane roots before
+trusting the publisher wording or feedback link. Every view retains the
+banner; malformed exploratory intent produces a visible warning and
+`noindex`. The same version consumes the compact label index, showing
+**Missing label** instead of an opaque generated name while keeping technical
+identity available through Inspect. A producer must still emit the contracts
+and pass actual-consumer journeys before its own snapshot can claim
+conformance. See the
 [methodology review](../okf-authoring-methodology-review-2026-08-12.md) for the
 full decision and acceptance rules.
 

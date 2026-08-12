@@ -39,6 +39,19 @@ async function waitForFixtureReady(page: Page) {
   await page.getByText('Preparing static search index...').waitFor({ state: 'hidden' });
 }
 
+async function installClipboard(page: Page) {
+  await page.context().addInitScript(() => {
+    let copied = '';
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: async (value: string) => { copied = String(value); },
+        readText: async () => copied
+      }
+    });
+  });
+}
+
 async function dragFacetOnto(page: Page, sourceKey: string, targetKey: string) {
   const source = facetSection(page, sourceKey).getByRole('button', { name: `Reorder ${sourceKey.replaceAll('_', ' ')}` });
   const target = facetSection(page, targetKey);
@@ -881,6 +894,7 @@ test.describe('large-corpus facet interaction contract', () => {
   });
 
   test('FACET-E2E-10A compacts graph controls and links node and relationship keys to the graph', async ({ page }) => {
+    await installClipboard(page);
     await openOnsFacetFixture(page);
     await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
     await waitForFixtureReady(page);
@@ -948,11 +962,27 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
 
     await graph.locator('.edge-hit').first().click();
+    const selectedEdgeKey = await graph.locator('.edge-hit').first().getAttribute('data-edge');
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.edge')).toBe(selectedEdgeKey);
     await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
     await expect(graph.locator('.graph-node.relationship-source')).toHaveCount(1);
     await expect(graph.locator('.graph-node.relationship-target')).toHaveCount(1);
     await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
     expect(await graph.locator('.edge-hit').first().evaluate((edge) => getComputedStyle(edge).outlineStyle)).toBe('none');
+
+    await page.locator('.stage-bar').getByRole('button', { name: 'Copy route', exact: true }).click();
+    const copied = await page.evaluate(() => navigator.clipboard.readText());
+    expect(new URL(copied).searchParams.get('graph.edge')).toBe(selectedEdgeKey);
+    await page.goto(copied);
+    await waitForFixtureReady(page);
+    await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
+    await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
+
+    await page.locator('.right-panel').getByRole('button', { name: 'Clear relationship' }).click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.edge')).toBeNull();
+    await page.goBack();
+    await expect.poll(() => new URL(page.url()).searchParams.get('graph.edge')).toBe(selectedEdgeKey);
+    await expect(graph.locator('.graph-edge.selected')).toHaveCount(1);
   });
 
   test('FACET-E2E-11 keeps controls available, scrolls normally, and sizes both collapsed rails', async ({ page }) => {

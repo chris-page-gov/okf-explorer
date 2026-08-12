@@ -67,6 +67,16 @@
   import EffectsReconciliationPanel from '$lib/viewer/EffectsReconciliationPanel.svelte';
   import ModelEnrichmentStatus from '$lib/viewer/ModelEnrichmentStatus.svelte';
   import FederationOverviewPanel from '$lib/viewer/FederationOverviewPanel.svelte';
+  import {
+    endpointLabelEntryForInspection,
+    endpointLabelForRoute,
+    endpointTypeForRoute,
+    decodeEndpointRouteSegment,
+    encodeEndpointRouteSegment,
+    isOpaqueEndpointIdentifier,
+    largeRecordRoute,
+    metadataEndpointRoute
+  } from '$lib/viewer/endpointLabels';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
     canDisplaySourceInline,
@@ -85,6 +95,7 @@
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
   import {
     boxesOverlap,
+    graphEdgeStateKey,
     graphRelationshipGroupSlot,
     groupGraphRelationships,
     orderGraphRelationshipGroups,
@@ -126,6 +137,12 @@
     parseStructuredDocumentText
   } from '$lib/sources/fetch';
   import { isLargeCorpusDescriptor } from '$lib/sources/descriptor';
+  import ExploratoryBanner from '$lib/publication/ExploratoryBanner.svelte';
+  import {
+    buildExploratoryFeedbackUrl,
+    parseExploratoryPublication,
+    type ExploratoryPublicationResult
+  } from '$lib/publication/exploratoryPublication';
   import { isFederationDescriptor, loadFederationOverview } from '$lib/sources/federation';
   import {
     loadLargeCorpus,
@@ -166,7 +183,6 @@
     relatedDisplaySeriesDatasets,
     relationshipTitle as formatRelationshipTitle,
     routeForAnalysisNode,
-    selectedFacetValueSummary,
     smallRelationshipKind as getSmallRelationshipKind,
     smallRelationshipTitle as getSmallRelationshipTitle,
     sourceDateLabel,
@@ -211,6 +227,9 @@
   const GRAPH_KEY_MODE_PARAM = 'graph.key';
   const GRAPH_LABELS_PARAM = 'graph.labels';
   const GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM = 'graph.relationship';
+  const GRAPH_HIGHLIGHT_EDGE_PARAM = 'graph.edge';
+  const SMALL_INSPECT_NODE_PARAM = 'inspect.node';
+  const SMALL_INSPECT_RELATIONSHIP_PARAM = 'inspect.relationship';
   const RELATIONSHIP_AUTHORITY_CLASSES: RelationshipAuthorityClass[] = [
     'official',
     'derived',
@@ -389,6 +408,12 @@
 
   let bundleUrl = $state(DEFAULT_BUNDLE);
   let source = $state<LoadedSource | null>(null);
+  let exploratoryPublication = $state<ExploratoryPublicationResult>({
+    state: 'not-exploratory',
+    publication: null,
+    warning: '',
+    noindex: false
+  });
   let error = $state('');
   let modelEnrichmentError = $state('');
   let loading = $state(false);
@@ -575,7 +600,31 @@
   let largeGeospatialRecords: GeospatialRecord[] = $derived(
     largeIndex
       ? largeBaseVisibleDatasets
-          .map((dataset) => classifyLargeDataset(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []))
+          .map((dataset): GeospatialRecord | null => {
+            const record = classifyLargeDataset(
+              dataset,
+              largeIndex?.resourcesByDataset.get(dataset.name) || []
+            );
+            return record
+              ? {
+                  ...record,
+                  title: endpointLabelForRoute(
+                    source?.kind === 'large' ? source.endpointLabels : undefined,
+                    record.route,
+                    record.title
+                  ),
+                  ...(dataset.publisher
+                    ? {
+                        publisher: endpointLabelForRoute(
+                          source?.kind === 'large' ? source.endpointLabels : undefined,
+                          metadataEndpointRoute('publisher', dataset.publisher),
+                          record.publisher || dataset.publisher
+                        )
+                      }
+                    : record.publisher ? { publisher: record.publisher } : {})
+                }
+              : null;
+          })
           .filter((record): record is GeospatialRecord => Boolean(record))
       : []
   );
@@ -709,6 +758,7 @@
       RELATIONSHIP_AUTHORITY_CLASSES.includes(value as RelationshipAuthorityClass)
     );
     graphHighlightedRelationshipGroup = params.get(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM)?.slice(0, 512) || '';
+    largeHighlightedEdge = params.get(GRAPH_HIGHLIGHT_EDGE_PARAM)?.slice(0, 512) || '';
   }
 
   function writeGraphState(params: URLSearchParams, route = '') {
@@ -723,7 +773,8 @@
       GRAPH_HIDDEN_AUTHORITY_PARAM,
       GRAPH_KEY_MODE_PARAM,
       GRAPH_LABELS_PARAM,
-      GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM
+      GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM,
+      GRAPH_HIGHLIGHT_EDGE_PARAM
     ]) {
       params.delete(key);
     }
@@ -748,6 +799,8 @@
     );
     if (graphHighlightedRelationshipGroup) {
       params.set(GRAPH_HIGHLIGHT_RELATIONSHIP_PARAM, graphHighlightedRelationshipGroup);
+    } else if (largeHighlightedEdge) {
+      params.set(GRAPH_HIGHLIGHT_EDGE_PARAM, largeHighlightedEdge);
     }
   }
 
@@ -766,6 +819,17 @@
     else next.searchParams.set('view', activeView);
     writeRetrievalState(next.searchParams, currentRetrievalState());
     writeGraphState(next.searchParams, route);
+    next.searchParams.delete(SMALL_INSPECT_NODE_PARAM);
+    next.searchParams.delete(SMALL_INSPECT_RELATIONSHIP_PARAM);
+    if (source?.kind === 'small') {
+      if (inspectedId) next.searchParams.set(SMALL_INSPECT_NODE_PARAM, inspectedId);
+      else if (smallInspectedRelationship) {
+        next.searchParams.set(
+          SMALL_INSPECT_RELATIONSHIP_PARAM,
+          smallRelationshipShareKey(smallInspectedRelationship)
+        );
+      }
+    }
     if (geospatialFilter) next.searchParams.set('geo', geospatialFilter);
     else next.searchParams.delete('geo');
     next.hash = route || (source?.kind === 'large' ? 'overview' : '');
@@ -860,6 +924,30 @@
     syncExplorerUrl();
   }
 
+  function exploratoryFeedbackHref(): string {
+    if (exploratoryPublication.state !== 'valid') return '';
+    const route = source?.kind === 'large'
+      ? largeInspectedRoute || largeSelectedRoute || 'overview'
+      : inspectedId
+        ? `node/${inspectedId}`
+        : smallInspectedRelationship
+          ? `relationship/${smallRelationshipShareKey(smallInspectedRelationship)}`
+          : selectedId;
+    const reviewRoute = source?.kind === 'large' ? route : selectedId;
+    const retrieval = currentRetrievalState();
+    return buildExploratoryFeedbackUrl(
+      exploratoryPublication.publication.feedbackUrl,
+      {
+        reviewUrl: buildExplorerUrl(reviewRoute),
+        bundleUrl,
+        view: activeView,
+        query: retrieval.query,
+        filters: retrieval.filters,
+        route
+      }
+    );
+  }
+
   function smallBundleTitle(corpus: NormalizedCorpus): string {
     return corpus.title || 'OKF bundle';
   }
@@ -903,16 +991,56 @@
       if (!visibleTypes.size) visibleTypes = new Set(typeList);
       if (hash && smallCorpus.nodes[hash]) {
         selectedId = hash;
-        inspectedId = '';
-        smallInspectedRelationship = null;
         if (!nextView) activeView = conversationPresentation(smallCorpus.nodes[hash]) ? 'narrative' : 'reader';
       }
+      applySmallInspectionState(browserParams);
     }
     applyGraphState(browserParams);
-    if (graphHighlightedRelationshipGroup) {
+    if (graphHighlightedRelationshipGroup || largeHighlightedEdge) {
       void tick().then(restoreGraphRelationshipInspection);
     } else if (!largeHighlightedEdge) {
       largeInspectedEdge = null;
+    }
+  }
+
+  function smallRelationshipShareKey(relationship: OkfRelationship): string {
+    const identifier = typeof relationship.id === 'string' ? relationship.id.trim() : '';
+    if (identifier) return `id:${identifier}`;
+    const index = smallCorpus?.relationships.indexOf(relationship) ?? -1;
+    return index >= 0 ? `index:${index}` : '';
+  }
+
+  function smallRelationshipForShareKey(key: string): OkfRelationship | null {
+    if (!smallCorpus || !key || key.length > 512) return null;
+    if (key.startsWith('id:')) {
+      const identifier = key.slice(3);
+      return smallCorpus.relationships.find((relationship) => relationship.id === identifier) || null;
+    }
+    if (key.startsWith('index:')) {
+      const index = Number(key.slice(6));
+      return Number.isSafeInteger(index) && index >= 0
+        ? smallCorpus.relationships[index] || null
+        : null;
+    }
+    return null;
+  }
+
+  function applySmallInspectionState(params: URLSearchParams) {
+    inspectedId = '';
+    smallInspectedRelationship = null;
+    if (!smallCorpus) return;
+    const inspectedNodeId = (params.get(SMALL_INSPECT_NODE_PARAM) || '').slice(0, 512);
+    if (inspectedNodeId && smallCorpus.nodes[inspectedNodeId]) {
+      inspectedId = inspectedNodeId;
+      rightCollapsed = false;
+      return;
+    }
+    const relationship = smallRelationshipForShareKey(
+      params.get(SMALL_INSPECT_RELATIONSHIP_PARAM) || ''
+    );
+    if (relationship) {
+      smallInspectedRelationship = relationship;
+      rightCollapsed = false;
     }
   }
 
@@ -967,6 +1095,15 @@
     loading = true;
     error = '';
     modelEnrichmentError = '';
+    // Clear content and publication state together. A previous exploratory
+    // source must never remain visible while its banner/noindex state is reset.
+    source = null;
+    exploratoryPublication = {
+      state: 'not-exploratory',
+      publication: null,
+      warning: '',
+      noindex: false
+    };
     selectedId = '';
     inspectedId = '';
     smallQuery = '';
@@ -1059,6 +1196,11 @@
         await loadSource(movedTo);
         return;
       }
+      const nextExploratoryPublication = parseExploratoryPublication(raw);
+      // Commit the fail-safe publication envelope before any subordinate
+      // large-corpus resources are awaited. If hydration fails, the parsed
+      // warning/noindex state remains in force and no stale source is shown.
+      exploratoryPublication = nextExploratoryPublication;
       const resolvedUrl = fetched.responseUrl;
       if (isFederationDescriptor(raw)) {
         const federation = loadFederationOverview(
@@ -1136,13 +1278,17 @@
         if (hash && hash !== 'overview') {
           applyLargeBrowserRoute(hash, hasSerializedFilters(params));
           applySerializedGraphCenter(params, hash);
+          applyGraphState(params);
           rightCollapsed = false;
           if (largeHasRecordLocator()) {
             void ensureLargeDataset(hash);
           }
           if (largeSelectedRoute || largeInspectedRoute) void hydrateForView(activeView);
         } else if (Object.keys(largeFacetFilters).length && !searchManifest) {
+          applyGraphState(params);
           void ensureLargeFullIndex();
+        } else {
+          applyGraphState(params);
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
         if (searchManifest) void initialiseLargeSearch(large, searchManifest, query, requestId);
@@ -1163,6 +1309,9 @@
         const hash = safeDecodeHash();
         selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
+      }
+      if (source?.kind === 'small') {
+        applySmallInspectionState(new URLSearchParams(location.search));
       }
       if (source?.kind === 'large' && (largeSelectedRoute || largeInspectedRoute)) {
         rightCollapsed = false;
@@ -1294,6 +1443,13 @@
     graphRelationshipDropTarget = '';
     loading = true;
     error = '';
+    source = null;
+    exploratoryPublication = {
+      state: 'not-exploratory',
+      publication: null,
+      warning: '',
+      noindex: false
+    };
     try {
       const fileUrl = `file:///${encodeURIComponent(file.name)}`;
       const raw = parseStructuredDocumentText<Record<string, unknown>>(
@@ -1301,6 +1457,8 @@
         file.name,
         file.type
       );
+      const nextExploratoryPublication = parseExploratoryPublication(raw);
+      exploratoryPublication = nextExploratoryPublication;
       if (isLargeCorpusDescriptor(raw)) {
         throw new Error('Large-corpus descriptors need remote chunk URLs; publish the descriptor or load it by URL.');
       }
@@ -1315,6 +1473,7 @@
         corpus,
         ...(federation ? { federation: federation.overview } : {})
       };
+      bundleUrl = fileUrl;
       geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
       selectedId = Object.keys(corpus.nodes)[0] || '';
@@ -1329,7 +1488,24 @@
     activeView = view;
     if (view === 'graph') graphLabelPhase = 0;
     await hydrateForView(view);
-    if (view === 'graph' && graphHighlightedRelationshipGroup) restoreGraphRelationshipInspection();
+    // A deep route can become available while an overview-first load is still
+    // settling. In that case hydrateForView may have legitimately returned
+    // against the earlier overview state. Before presenting a full-index view,
+    // close that race for record routes which have no bounded locator instead
+    // of leaving an isolated node on slower engines such as WebKit.
+    const selectedRoute = largeSelectedRoute || largeInspectedRoute || largeGraphCenterRoute;
+    if (
+      source?.kind === 'large' &&
+      largeRouteIsKnownRecord(selectedRoute) &&
+      FULL_INDEX_VIEWS.has(view) &&
+      !largeIndex &&
+      !largeHasRecordLocator()
+    ) {
+      await ensureLargeFullIndex();
+    }
+    if (view === 'graph' && (graphHighlightedRelationshipGroup || largeHighlightedEdge)) {
+      restoreGraphRelationshipInspection();
+    }
     syncExplorerUrl(push);
   }
 
@@ -1456,6 +1632,10 @@
       largeFacetIndexLoaded = true;
       sanitizeLargeFiltersFromFullIndex(index);
       reconcileLargeSelection();
+      if (activeView === 'graph' && (graphHighlightedRelationshipGroup || largeHighlightedEdge)) {
+        await tick();
+        restoreGraphRelationshipInspection();
+      }
       return index;
     } catch (err) {
       if (requestId === loadRequest && source === loadingSource) {
@@ -1490,7 +1670,7 @@
     // `asset/…` or `risk/…`. The locator, not a hard-coded `dataset/` prefix,
     // is the authority for whether a route hydrates a record.
     if (source?.kind !== 'large' || !route) return null;
-    const existing = largeTargetedDatasets.get(route) || largeIndex?.datasetByName.get(routeValue(route));
+    const existing = largeTargetedDatasets.get(route) || indexedDatasetForRoute(route);
     if (existing) return existing;
     if (!largeHasRecordLocator()) return null;
     const loadingSource = source;
@@ -1723,6 +1903,10 @@
         largeRelationshipsTruncated = result.truncated;
         largeRelationshipsByRoute = indexLargeRelationships(largeRelationships);
       }
+      if (activeView === 'graph' && (graphHighlightedRelationshipGroup || largeHighlightedEdge)) {
+        await tick();
+        restoreGraphRelationshipInspection();
+      }
       return largeRelationships;
     } catch (err) {
       if (requestId === loadRequest && source === loadingSource) {
@@ -1764,6 +1948,10 @@
         route,
         retainedRows
       );
+      if (graphHighlightedRelationshipGroup || largeHighlightedEdge) {
+        await tick();
+        restoreGraphRelationshipInspection();
+      }
       return retainedRows;
     } catch (err) {
       if (requestId === loadRequest && source === loadingSource) {
@@ -1795,6 +1983,7 @@
     inspectedId = id;
     smallInspectedRelationship = null;
     rightCollapsed = false;
+    syncExplorerUrl(true);
   }
 
   function selectLargeRoute(route: string) {
@@ -1900,6 +2089,7 @@
       inspectedId = '';
       smallInspectedRelationship = null;
     }
+    syncExplorerUrl(true);
   }
 
   function clearLargeApiPanel() {
@@ -2104,14 +2294,14 @@
   }
 
   function facetValueRoute(key: string, value: string): string {
-    return `facet/${key}/${value}`;
+    return `facet/${encodeEndpointRouteSegment(key)}/${encodeEndpointRouteSegment(value)}`;
   }
 
   function metadataFacetForRoute(route: string): { key: string; value: string } | null {
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) return facetRoute;
     const kind = routeKind(route);
-    const value = routeValue(route);
+    const value = decodeEndpointRouteSegment(routeValue(route));
     if (!value) return null;
     if (['category', 'type_code', 'document_type', 'creation_year', 'jurisdiction', 'legal_status', 'publisher', 'format', 'topic', 'tag', 'license', 'host', 'resource_type'].includes(kind)) return { key: kind, value };
     return null;
@@ -2357,6 +2547,7 @@
     smallInspectedRelationship = relationship;
     inspectedId = '';
     rightCollapsed = false;
+    syncExplorerUrl(true);
   }
 
   function inspectSmallGraphRelationship(relationship: OkfRelationship) {
@@ -2600,7 +2791,7 @@
 
   function chooseLargeResult(result: SearchResultDoc) {
     clearLargeFacetPreviewContext();
-    largeSelectedRoute = result.open || `dataset/${result.name}`;
+    largeSelectedRoute = datasetRoute(result);
     largeInspectedRoute = largeSelectedRoute;
     largeHighlightedRoute = largeSelectedRoute;
     largeGraphCenterRoute = largeSelectedRoute;
@@ -3719,6 +3910,12 @@
     return displayValue(value);
   }
 
+  function licenceDisplayLabel(record: AnyLargeRecord | undefined): string {
+    const identifier = recordString(record, 'license_id');
+    if (identifier) return facetValueDisplay('license', identifier);
+    return metadataDisplayValue(recordString(record, 'license_title'));
+  }
+
   function groupDisplayValue(value: unknown): string {
     if (!Array.isArray(value) || !value.length) return 'Not specified (metadata gap)';
     const labels = value
@@ -3751,15 +3948,43 @@
   }
 
   function facetSelectedSummary(key: string, values: string[]): string {
-    return selectedFacetValueSummary(largeAnalysis(), key, values);
+    const labels = values.slice(0, 2).map((value) => facetValueDisplay(key, value));
+    return `${labels.join(', ')}${values.length > 2 ? ` +${values.length - 2}` : ''}`;
   }
 
   function facetValueDisplay(key: string, value: string): string {
     if (value === MISSING_FILTER_VALUE) return 'Not specified (metadata gap)';
-    if ((key === 'publisher' || key === 'canonical_publisher') && largeIndex?.publisherByName.get(value)?.title) {
-      return largeIndex.publisherByName.get(value)?.title || value;
-    }
-    return facetValueLabel(largeAnalysis(), key, value);
+    const route = metadataEndpointRoute(
+      key === 'canonical_publisher' ? 'publisher' : key,
+      value
+    );
+    const indexedPublisher = (key === 'publisher' || key === 'canonical_publisher')
+      ? largeIndex?.publisherByName.get(value)?.title
+      : '';
+    const endpointLabels = source?.kind === 'large' ? source.endpointLabels : undefined;
+    const fallback = indexedPublisher || facetValueLabel(largeAnalysis(), key, value);
+    // The endpoint-label denominator covers graph-reachable routes, not every
+    // value in the much wider search-facet catalogue. An absent ordinary facet
+    // therefore keeps its existing safe label; an indexed graph route uses its
+    // governed presentation label.
+    return endpointLabels?.byRoute.has(route) || (
+      endpointLabels &&
+      (
+        isOpaqueEndpointIdentifier(value, endpointLabels.opaqueIdentifierPatterns) ||
+        isOpaqueEndpointIdentifier(fallback, endpointLabels.opaqueIdentifierPatterns)
+      )
+    )
+      ? endpointLabelForRoute(endpointLabels, route, fallback)
+      : fallback;
+  }
+
+  function facetMetadataDisplayValue(key: string, value: unknown): string {
+    const values = (Array.isArray(value) ? value : [value])
+      .map((item) => String(item || '').trim())
+      .filter(Boolean);
+    return values.length
+      ? values.map((item) => facetValueDisplay(key, item)).join(', ')
+      : metadataDisplayValue(value);
   }
 
   function facetSelectedValues(key: string): string[] {
@@ -3908,17 +4133,20 @@
     const documentationHost = recordString(record, 'documentation_host');
     const accessModel = recordString(record, 'access_model');
     const contractStatus = recordString(record, 'contract_status');
-    const formats = Array.isArray(record?.protocol)
-      ? record.protocol.map(String).slice(0, 2).join(', ')
+    const protocols = Array.isArray(record?.protocol)
+      ? record.protocol.map(String).slice(0, 2)
+      : [];
+    const formats = protocols.length
+      ? protocols.map((value) => facetValueDisplay('protocol', value)).join(', ')
       : Array.isArray(record?.formats)
-        ? record.formats.map(String).slice(0, 2).join(', ')
+        ? record.formats.slice(0, 2).map((value) => facetValueDisplay('format', String(value))).join(', ')
         : '';
     return [
       recordType,
       sourceAdapter ? `source ${sourceAdapter}` : '',
       confidence ? `confidence ${confidence}` : '',
-      endpointHost && endpointHost !== 'not-specified' ? `endpoint ${endpointHost}` : '',
-      documentationHost && documentationHost !== 'not-specified' ? `docs ${documentationHost}` : '',
+      endpointHost && endpointHost !== 'not-specified' ? `endpoint ${facetValueDisplay('host', endpointHost)}` : '',
+      documentationHost && documentationHost !== 'not-specified' ? `docs ${facetValueDisplay('host', documentationHost)}` : '',
       accessModel ? `access ${accessModel}` : '',
       contractStatus ? `contract ${contractStatus}` : '',
       formats
@@ -4034,14 +4262,18 @@
 
   function overviewEntryPoints() {
     const analysis = largeAnalysis();
-    const publisherEntries = (source?.kind === 'large' ? source.overview.top_publishers || [] : []).slice(0, 6).map((item) => ({
-      label: String(item.label || item.id || capitalise(publisherSingular())),
+    const publisherEntries = (source?.kind === 'large' ? source.overview.top_publishers || [] : []).slice(0, 6).map((item) => {
+      const publisherValue = String(item.id || '').replace(/^publisher\//, '');
+      const route = facetValueRoute('publisher', publisherValue);
+      return ({
+      label: largeLabelForRoute(metadataEndpointRoute('publisher', publisherValue)),
       meta: `${Number(item.dataset_count || 0).toLocaleString()} ${recordPlural()}`,
-      route: `facet/publisher/${String(item.id || '').replace(/^publisher\//, '')}`
-    }));
+      route
+    });
+    });
     const recentEntries = (source?.kind === 'large' ? source.overview.recent_datasets || [] : []).slice(0, 6).map((item) => ({
-      label: item.title,
-      meta: `${item.publisher_title} · ${item.resource_count} ${resourcePlural()}`,
+      label: largeDatasetLabel(item),
+      meta: `${largeRecordPublisherLabel(item)} · ${item.resource_count} ${resourcePlural()}`,
       route: datasetRoute(item)
     }));
     const analysisEntries =
@@ -4049,7 +4281,7 @@
         .filter((node) => node.id.startsWith('facet/'))
         .slice(0, 6)
         .map((node) => ({
-          label: node.label,
+          label: largeLabelForRoute(node.id),
           meta: `${(node.count || 0).toLocaleString()} ${recordPlural()}`,
           route: node.id
         })) || [];
@@ -4101,8 +4333,27 @@
   }
 
   function datasetRoute(dataset: LargeDataset | SearchResultDoc): string {
-    const open = (dataset as SearchResultDoc).open;
-    return typeof open === 'string' && open ? open : `dataset/${dataset.name}`;
+    return largeRecordRoute(dataset);
+  }
+
+  function indexedDatasetForRoute(route: string): LargeDataset | undefined {
+    if (!largeIndex || !route) return undefined;
+    return largeIndex.datasetByRoute.get(route)
+      || (route.startsWith('dataset/') ? largeIndex.datasetByName.get(routeValue(route)) : undefined);
+  }
+
+  function availableDatasetForRoute(route: string): LargeDataset | SearchResultDoc | undefined {
+    if (!route) return undefined;
+    return indexedDatasetForRoute(route)
+      || largeTargetedDatasets.get(route)
+      || largeResults.find((dataset) => datasetRoute(dataset) === route)
+      || (source?.kind === 'large'
+        ? source.overview.recent_datasets?.find((dataset) => datasetRoute(dataset) === route)
+        : undefined);
+  }
+
+  function largeRouteIsKnownRecord(route: string): boolean {
+    return Boolean(availableDatasetForRoute(route) || route.startsWith('dataset/'));
   }
 
   function rankedResultCanonicalUrl(dataset: LargeDataset | SearchResultDoc): string {
@@ -4114,7 +4365,50 @@
   }
 
   function publisherRoute(publisher: LargePublisher | string): string {
-    return `publisher/${typeof publisher === 'string' ? publisher : publisher.name}`;
+    return metadataEndpointRoute(
+      'publisher',
+      typeof publisher === 'string' ? publisher : publisher.name
+    );
+  }
+
+  function largeDatasetLabel(dataset: LargeDataset | SearchResultDoc): string {
+    return endpointLabelForRoute(
+      source?.kind === 'large' ? source.endpointLabels : undefined,
+      datasetRoute(dataset),
+      dataset.title
+    );
+  }
+
+  function governedDisplaySeriesLabel(
+    dataset: LargeDataset,
+    series: ReturnType<typeof datasetDisplaySeries>
+  ): string {
+    return series.inferred && series.label === dataset.title
+      ? largeDatasetLabel(dataset)
+      : series.label;
+  }
+
+  function largeResourceLabel(resource: LargeResource): string {
+    return largeLabelForRoute(resourceRoute(resource));
+  }
+
+  function largePublisherLabel(
+    publisher: string | undefined,
+    fallback = ''
+  ): string {
+    if (publisher) return largeLabelForRoute(publisherRoute(publisher));
+    return endpointLabelForRoute(
+      source?.kind === 'large' ? source.endpointLabels : undefined,
+      metadataEndpointRoute('publisher', 'unknown'),
+      fallback || `Unknown ${publisherSingular()}`
+    );
+  }
+
+  function largeRecordPublisherLabel(dataset: LargeDataset | SearchResultDoc): string {
+    return largePublisherLabel(
+      dataset.publisher,
+      dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`
+    );
   }
 
   function routeKind(route: string): string {
@@ -4180,7 +4474,30 @@
   function largeLabelForRoute(route: string): string {
     if (!route) return 'Overview';
     const kind = routeKind(route);
-    const value = routeValue(route);
+    const encodedValue = routeValue(route);
+    const value = [
+      'publisher',
+      'format',
+      'topic',
+      'tag',
+      'license',
+      'host',
+      'resource_type',
+      'category',
+      'type_code',
+      'document_type',
+      'creation_year',
+      'jurisdiction',
+      'legal_status'
+    ].includes(kind)
+      ? decodeEndpointRouteSegment(encodedValue)
+      : encodedValue;
+    const endpointLabels = source?.kind === 'large' ? source.endpointLabels : undefined;
+    const displayEndpointLabel = (fallback: string) => endpointLabelForRoute(
+      endpointLabels,
+      route,
+      fallback
+    );
     if (kind === 'record-type-stack') {
       return value.split('/').slice(1).join('/') || 'Record type group';
     }
@@ -4190,23 +4507,24 @@
       const facetValue = decodedGraphStackPart(parts.at(-1) || 'group');
       return `${facetValueDisplay(dimension, facetValue)} group`;
     }
+    if (endpointLabels?.byRoute.has(route)) return endpointLabelForRoute(endpointLabels, route);
     const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);
-    if (analysisLabel) return analysisLabel;
+    if (analysisLabel) return displayEndpointLabel(analysisLabel);
     const routedDataset = largeIndex?.datasetByRoute.get(route);
-    if (routedDataset) return routedDataset.title;
+    if (routedDataset) return displayEndpointLabel(routedDataset.title);
     const routedResult = largeResults.find((result) => datasetRoute(result) === route);
-    if (routedResult) return routedResult.title;
+    if (routedResult) return displayEndpointLabel(routedResult.title);
     if (kind === 'dataset') {
-      return largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value;
+      return displayEndpointLabel(largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value);
     }
-    if (kind === 'resource') return largeIndex?.resourceById.get(value)?.name || value;
-    if (kind === 'publisher') return largeIndex?.publisherByName.get(value)?.title || value;
+    if (kind === 'resource') return displayEndpointLabel(largeIndex?.resourceById.get(value)?.name || value);
+    if (kind === 'publisher') return displayEndpointLabel(largeIndex?.publisherByName.get(value)?.title || value);
     if (kind === 'resource-stack') {
       const datasetName = value.replace(/^dataset\//, '');
       const dataset = largeIndex?.datasetByName.get(datasetName);
-      return `${resourceStackLabel()}: ${dataset?.title || datasetName}`;
+      return `${resourceStackLabel()}: ${dataset ? largeDatasetLabel(dataset) : datasetName}`;
     }
-    return value || route;
+    return displayEndpointLabel(value || route);
   }
 
   function routeRelationships(route: string, limit = 120): LargeRelationship[] {
@@ -4260,7 +4578,7 @@
     const analysisFacet = routeForAnalysisNode(route);
     if (analysisFacet) return largeDatasetFacetValues(dataset, analysisFacet.key).includes(analysisFacet.value);
     const kind = routeKind(route);
-    const value = routeValue(route);
+    const value = decodeEndpointRouteSegment(routeValue(route));
     if (kind === 'dataset') return dataset.name === value;
     if (kind === 'publisher') return dataset.publisher === value;
     if (kind === 'format') return (dataset.formats || []).includes(value);
@@ -4368,6 +4686,11 @@
   }
 
   function routeTypeLabel(route: string): string {
+    const governedType = endpointTypeForRoute(
+      source?.kind === 'large' ? source.endpointLabels : undefined,
+      route
+    );
+    if (governedType) return governedType;
     const analysisFacet = routeForAnalysisNode(route);
     if (analysisFacet) return facetLabel(analysisFacet.key);
     const kind = routeKind(route);
@@ -4540,7 +4863,11 @@
         center: '',
         nodes: analysis.graph_overview.nodes.map((node) => ({
           id: node.id,
-          label: node.label,
+          label: endpointLabelForRoute(
+            source?.kind === 'large' ? source.endpointLabels : undefined,
+            node.id,
+            node.label
+          ),
           type: node.type,
           count: node.count
         })),
@@ -4595,7 +4922,7 @@
       edges.push({ source: sourceId, target: targetId, label, count, ...graphEdgeSemanticMetadata(record) });
     };
     const addDatasetNode = (dataset: LargeDataset) => {
-      addNode(datasetRoute(dataset), 'dataset', dataset.title);
+      addNode(datasetRoute(dataset), 'dataset');
     };
     const noteRecordTypeGrouping = (expandedLabel?: string) => {
       if (grouping && grouping.dimension !== 'record_type' && !expandedLabel) return;
@@ -4905,15 +5232,13 @@
       addLoadedRelationshipsForCenter();
     }
 
-    if (!largeIndex && center.startsWith('dataset/')) {
-      const result =
-        largeTargetedDatasets.get(center) ||
-        largeResults.find((item) => datasetRoute(item) === center || item.name === routeValue(center));
+    if (!largeIndex && availableDatasetForRoute(center)) {
+      const result = availableDatasetForRoute(center);
       if (result) {
         if (result.publisher) addEdge(center, publisherRoute(result.publisher), 'published by');
-        for (const format of (result.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
-        for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
-        for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
+        for (const format of (result.formats || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('format', format), 'has format');
+        for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('topic', topic), 'classified as');
+        for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('tag', tag), 'tagged');
         const resourceCount = result.resource_count || 0;
         if (resourceCount > 0) {
           const stackId = `resource-stack/${center}`;
@@ -4921,15 +5246,14 @@
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         }
       }
-    } else if (largeIndex && center.startsWith('dataset/')) {
-      const datasetName = routeValue(center);
-      const dataset = largeIndex.datasetByName.get(datasetName);
+    } else if (largeIndex && indexedDatasetForRoute(center)) {
+      const dataset = indexedDatasetForRoute(center);
       if (dataset) {
         if (dataset.publisher) addEdge(center, publisherRoute(dataset.publisher), 'published by');
-        for (const format of (dataset.formats || []).slice(0, 8)) addEdge(center, `format/${format}`, 'has format');
-        for (const topic of (dataset.topics || []).slice(0, 8)) addEdge(center, `topic/${topic}`, 'classified as');
-        for (const tag of (dataset.tags || []).slice(0, 8)) addEdge(center, `tag/${tag}`, 'tagged');
-        if (dataset.license_id) addEdge(center, `license/${dataset.license_id}`, 'licensed as');
+        for (const format of (dataset.formats || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('format', format), 'has format');
+        for (const topic of (dataset.topics || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('topic', topic), 'classified as');
+        for (const tag of (dataset.tags || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('tag', tag), 'tagged');
+        if (dataset.license_id) addEdge(center, metadataEndpointRoute('license', dataset.license_id), 'licensed as');
         const resources = largeIndex.resourcesByDataset.get(dataset.name) || [];
         if (resources.length > 8 && largeExpandedStackRoute !== center) {
           const stackId = `resource-stack/${center}`;
@@ -4963,7 +5287,7 @@
     } else if (!center && !largeIndex) {
       for (const result of largeResults.slice(0, 42)) {
         const datasetId = datasetRoute(result);
-        addNode(datasetId, 'dataset', result.title);
+        addNode(datasetId, 'dataset');
         if (result.publisher) addEdge(datasetId, publisherRoute(result.publisher), 'published by');
       }
     }
@@ -5722,7 +6046,7 @@
   }
 
   function graphEdgeKey(edge: LargeGraphEdge): string {
-    return `${edge.source}>${edge.target}:${edge.label}`;
+    return graphEdgeStateKey(edge);
   }
 
   function largeGraphEdgePlans(edges: LargeGraphEdge[]) {
@@ -5821,6 +6145,7 @@
     largeHighlightedEdge = graphEdgeKey(edge);
     clearLargeApiPanel();
     rightCollapsed = false;
+    syncExplorerUrl(true);
   }
 
   function clearGraphRelationshipHighlight(push = true) {
@@ -5832,15 +6157,20 @@
   }
 
   function restoreGraphRelationshipInspection() {
-    if (!graphHighlightedRelationshipGroup) return;
     const model = largeGraphModel();
-    const group = graphRelationshipGroups(model).find((candidate) => candidate.key === graphHighlightedRelationshipGroup);
-    const first = group ? graphGroupEdges(group, model)[0] : undefined;
+    const group = graphHighlightedRelationshipGroup
+      ? graphRelationshipGroups(model).find((candidate) => candidate.key === graphHighlightedRelationshipGroup)
+      : undefined;
+    const first = group
+      ? graphGroupEdges(group, model)[0]
+      : largeHighlightedEdge
+        ? model.relationships.find((edge) => graphEdgeKey(edge) === largeHighlightedEdge)
+        : undefined;
     if (!first) return;
     largeInspectedEdge = first;
     largeInspectedRoute = '';
     largeHighlightedRoute = '';
-    largeHighlightedEdge = '';
+    if (group) largeHighlightedEdge = '';
     relationshipDetailTab = 'relationship';
     rightCollapsed = false;
   }
@@ -5884,17 +6214,24 @@
     const detail = resolveLargeDetail(route);
     if (!detail) return 'This endpoint is not available in the currently loaded bundle.';
     if (detail.kind === 'dataset') {
-      return stripHtml(detail.dataset.notes || '') || `${detail.dataset.title} is a ${recordSingular()} in the current OKF bundle.`;
+      return stripHtml(detail.dataset.notes || '') || `${largeDatasetLabel(detail.dataset)} is a ${recordSingular()} in the current OKF bundle.`;
     }
     if (detail.kind === 'publisher') {
-      return `${detail.publisher.title || detail.publisher.name} publishes ${detail.datasets.length.toLocaleString()} indexed ${recordPlural()}.`;
+      return `${largePublisherLabel(detail.publisher.name)} publishes ${detail.datasets.length.toLocaleString()} indexed ${recordPlural()}.`;
     }
     if (detail.kind === 'resource') {
-      const format = detail.resource.format ? ` ${detail.resource.format}` : '';
-      return `A${format} source or access resource for ${detail.dataset?.title || detail.resource.dataset || 'the selected record'}.`;
+      const format = detail.resource.format
+        ? ` ${facetValueDisplay('format', detail.resource.format)}`
+        : '';
+      const datasetLabel = detail.dataset
+        ? largeDatasetLabel(detail.dataset)
+        : detail.resource.dataset
+          ? largeLabelForRoute(`dataset/${detail.resource.dataset}`)
+          : 'the selected record';
+      return `A${format} source or access resource for ${datasetLabel}.`;
     }
     if (detail.kind === 'search') {
-      return stripHtml(detail.result.notes || '') || `${detail.result.title} is an indexed search result.`;
+      return stripHtml(detail.result.notes || '') || `${largeDatasetLabel(detail.result)} is an indexed search result.`;
     }
     return `${routeTypeLabel(route)} node in the current OKF graph.`;
   }
@@ -5907,6 +6244,7 @@
     if (largeHighlightedEdge === graphEdgeKey(edge) || event?.ctrlKey || event?.metaKey) {
       largeHighlightedEdge = '';
       largeInspectedEdge = null;
+      syncExplorerUrl(true);
       return;
     }
     inspectLargeEdge(edge);
@@ -5919,6 +6257,11 @@
       label: relationship.kind,
       ...graphEdgeSemanticMetadata(relationship)
     });
+  }
+
+  function clearSmallRelationship() {
+    smallInspectedRelationship = null;
+    syncExplorerUrl(true);
   }
 
   function inspectAnalysisRelationshipType(row: { kind: string; count: number; samples?: Array<{ source: string; target: string; label?: string }> }) {
@@ -6139,6 +6482,9 @@
 
 <svelte:head>
   <title>OKF Explorer</title>
+  {#if exploratoryPublication.noindex}
+    <meta name="robots" content="noindex, nofollow" />
+  {/if}
 </svelte:head>
 
 <div
@@ -6182,6 +6528,10 @@
   </header>
 
   <div class="app-notices">
+    <ExploratoryBanner
+      result={exploratoryPublication}
+      feedbackUrl={exploratoryFeedbackHref()}
+    />
     {#if appAlertMessages.length}
       <div
         class="error"
@@ -6616,23 +6966,23 @@
                   {#each hierarchy.values as group}
                     {#if group.children?.length}
                       <details class="hierarchy-node">
-                        <summary><span aria-hidden="true">▸</span><strong>{group.label}</strong><small>{group.count.toLocaleString()}</small></summary>
+                        <summary><span aria-hidden="true">▸</span><strong>{largeLabelForRoute(group.route || group.id)}</strong><small>{group.count.toLocaleString()}</small></summary>
                         <div class="hierarchy-children">
                           {#if group.route}
                             <button type="button" disabled={Boolean(largeFacetApplyingKey)} onclick={() => void openHierarchyValue(hierarchy.facet, group.route, group.label)}>
-                              <span>All {group.label}</span><small>{group.count.toLocaleString()}</small>
+                              <span>All {largeLabelForRoute(group.route)}</span><small>{group.count.toLocaleString()}</small>
                             </button>
                           {/if}
                           {#each group.children as child}
                             <button type="button" disabled={Boolean(largeFacetApplyingKey)} onclick={() => void openHierarchyValue(hierarchy.facet, child.route || child.id, child.label)}>
-                              <span>{child.label}</span><small>{child.count.toLocaleString()}</small>
+                              <span>{largeLabelForRoute(child.route || child.id)}</span><small>{child.count.toLocaleString()}</small>
                             </button>
                           {/each}
                         </div>
                       </details>
                     {:else}
                       <button class="hierarchy-leaf" type="button" disabled={Boolean(largeFacetApplyingKey)} onclick={() => void openHierarchyValue(hierarchy.facet, group.route || group.id, group.label)}>
-                        <span>{group.label}</span><small>{group.count.toLocaleString()}</small>
+                        <span>{largeLabelForRoute(group.route || group.id)}</span><small>{group.count.toLocaleString()}</small>
                       </button>
                     {/if}
                   {/each}
@@ -6659,8 +7009,8 @@
                   <div class="node-list" data-okf-ranked-results="navigation">
                     {#each largeVisibleDatasets.slice(0, 80) as dataset}
                       <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                        <strong>{dataset.title}</strong>
-                        <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                        <strong>{largeDatasetLabel(dataset)}</strong>
+                        <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
                       </button>
                     {/each}
                   </div>
@@ -6672,8 +7022,8 @@
                   <div class="node-list" data-okf-ranked-results="navigation">
                     {#each largeResults.slice(0, 80) as result}
                       <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
-                        <strong>{result.title}</strong>
-                        <span>{result.publisher_title || result.publisher || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
+                        <strong>{largeDatasetLabel(result)}</strong>
+                        <span>{largeRecordPublisherLabel(result)} · {result.resource_count || 0} {resourcePlural()}</span>
                       </button>
                     {/each}
                   </div>
@@ -6807,8 +7157,8 @@
                 {#if largeIndex && largeSearchResponse && !largeSearchResponse.filters_applied}
                   {#each largeVisibleDatasets.slice(0, 160) as dataset}
                     <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                      <strong>{dataset.title}</strong>
-                      <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                      <strong>{largeDatasetLabel(dataset)}</strong>
+                      <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
                       {#if datasetMatchReason(dataset)}<small class="result-match">Why this matched: {datasetMatchReason(dataset)}</small>{/if}
                       {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                       <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
@@ -6820,8 +7170,8 @@
                 {:else}
                   {#each largeResults as result}
                     <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
-                      <strong>{result.title}</strong>
-                      <span>{result.publisher_title || `Unknown ${publisherSingular()}`} · {result.resource_count || 0} {resourcePlural()}</span>
+                      <strong>{largeDatasetLabel(result)}</strong>
+                      <span>{largeRecordPublisherLabel(result)} · {result.resource_count || 0} {resourcePlural()}</span>
                       <small class="result-match">Why this matched: {searchMatchReason(result)}</small>
                       {#if apiContextNote(result)}<p class="context-note">{apiContextNote(result)}</p>{/if}
                       <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
@@ -6860,7 +7210,7 @@
                   <h3>{capitalise(formatPlural())}</h3>
                   {#each (source.overview.format_counts || []).slice(0, 14) as format}
                     <button type="button" onclick={() => applyAnalysisFacet('format', format.value)}>
-                      {format.value}<span>{format.count.toLocaleString()} {recordPlural()}</span>
+                      {facetValueDisplay('format', format.value)}<span>{format.count.toLocaleString()} {recordPlural()}</span>
                     </button>
                   {/each}
                 </section>
@@ -6881,8 +7231,8 @@
               <div class="result-list">
                 {#each largeVisibleDatasets.slice(0, 160) as dataset}
                   <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                    <strong>{dataset.title}</strong>
-                    <span>{dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                    <strong>{largeDatasetLabel(dataset)}</strong>
+                    <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
                     {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                     <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
                     {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
@@ -6896,13 +7246,13 @@
                 <section>
                   <h3>Recent {recordPlural()}</h3>
                   {#each (source.overview.recent_datasets || []).slice(0, 10) as dataset}
-                    <button type="button" onclick={() => chooseLargeResult(dataset)}>{dataset.title}<span>{dataset.publisher_title}</span></button>
+                    <button type="button" onclick={() => chooseLargeResult(dataset)}>{largeDatasetLabel(dataset)}<span>{largeRecordPublisherLabel(dataset)}</span></button>
                   {/each}
                 </section>
                 <section>
                   <h3>{capitalise(formatPlural())}</h3>
                   {#each (source.overview.format_counts || []).slice(0, 14) as format}
-                    <span class="chip">{format.value} {format.count.toLocaleString()}</span>
+                    <span class="chip">{facetValueDisplay('format', format.value)} {format.count.toLocaleString()}</span>
                   {/each}
                 </section>
               </div>
@@ -7439,7 +7789,7 @@
                     <h2>Top connected groups</h2>
                     {#each analysisTopConnected().slice(0, 16) as node}
                       <button type="button" onclick={() => openOverviewEntry(node.id)}>
-                        {node.label}<span>{node.count.toLocaleString()}</span>
+                        {largeLabelForRoute(node.id)}<span>{node.count.toLocaleString()}</span>
                       </button>
                     {/each}
                   </article>
@@ -7509,7 +7859,7 @@
                               <a
                                 class:catalogue-fallback={item.catalogueFallback}
                                 href={buildExplorerUrl(item.route)}
-                                title={item.catalogueFallback ? `${item.title}; catalogue timestamp fallback` : item.title}
+                                title={item.catalogueFallback ? `${largeLabelForRoute(item.route)}; catalogue timestamp fallback` : largeLabelForRoute(item.route)}
                                 onclick={(event) => followExplorerRoute(event, item.route)}
                               >{timelineReleaseLinkLabel(item)}</a>
                             {/each}
@@ -7532,7 +7882,7 @@
                     <time>{bucket.label}</time>
                     <div>
                       <strong>{bucket.count.toLocaleString()} {bucket.count === 1 ? recordSingular() : recordPlural()}</strong>
-                      <span>{bucket.samples.slice(0, 3).map((item) => item.title).join(' · ')}</span>
+                      <span>{bucket.samples.slice(0, 3).map((item) => largeLabelForRoute(item.route)).join(' · ')}</span>
                     </div>
                   </button>
                 {:else}
@@ -7560,7 +7910,7 @@
                     </p>
                     {#each orderFacetRows(facet.values || [], facetValueOrder(facet.key), (value) => facetValueDisplay(facet.key, value)).slice(0, 12) as row}
                       <button type="button" onclick={() => applyAnalysisFacet(facet.key, row.value)}>
-                        {row.value}<span>{row.count.toLocaleString()}</span>
+                        {facetValueDisplay(facet.key, row.value)}<span>{row.count.toLocaleString()}</span>
                       </button>
                     {/each}
                   </article>
@@ -7571,11 +7921,11 @@
                     <p class="muted">{hierarchy.levels.join(' → ')}</p>
                     {#each hierarchy.values.slice(0, 10) as group}
                       <button type="button" onclick={() => void openHierarchyValue(hierarchy.facet, group.route || group.id, group.label)}>
-                        {group.label}<span>{group.count.toLocaleString()}</span>
+                        {largeLabelForRoute(group.route || group.id)}<span>{group.count.toLocaleString()}</span>
                       </button>
                       {#each (group.children || []).slice(0, 5) as child}
                         <button class="child" type="button" onclick={() => void openHierarchyValue(hierarchy.facet, child.route || child.id, child.label)}>
-                          {child.label}<span>{child.count.toLocaleString()}</span>
+                          {largeLabelForRoute(child.route || child.id)}<span>{child.count.toLocaleString()}</span>
                         </button>
                       {/each}
                     {/each}
@@ -7605,7 +7955,7 @@
                         ondblclick={(event) => void commitFacetHighlights(key, row.value, event)}
                         onkeydown={(event) => facetValueKeydown(key, row.value, event)}
                       >
-                        {row.value}<span>{row.count.toLocaleString()}</span>
+                        {facetValueDisplay(key, row.value)}<span>{row.count.toLocaleString()}</span>
                       </button>
                     {/each}
                   </article>
@@ -7623,7 +7973,7 @@
                   <h3>High-volume stacks</h3>
                   {#each analysisResourceStacks().slice(0, 16) as stack}
                     <button type="button" onclick={() => openOverviewEntry(stack.route)}>
-                      {stack.label}<span>{stack.count.toLocaleString()} {resourcePlural()} · {stack.publisher || `unknown ${publisherSingular()}`}</span>
+                      {largeLabelForRoute(stack.route)}<span>{stack.count.toLocaleString()} {resourcePlural()} · {stack.publisher ? largePublisherLabel(stack.publisher) : `unknown ${publisherSingular()}`}</span>
                     </button>
                   {:else}
                     <p class="muted">Resource-stack summaries are not available for this bundle yet.</p>
@@ -7633,7 +7983,7 @@
                   <h3>Resource dimensions</h3>
                   {#each analysisResourceDistributionRows() as row}
                     <button type="button" onclick={() => applyAnalysisFacet(row.key, row.value)}>
-                      {row.value}<span>{row.key} · {row.count.toLocaleString()}</span>
+                      {facetValueDisplay(row.key, row.value)}<span>{row.key} · {row.count.toLocaleString()}</span>
                     </button>
                   {/each}
                 </section>
@@ -7648,8 +7998,8 @@
                   {@const resources = largeIndex?.resourcesByDataset.get(dataset.name) || []}
                   <article>
                     <button class="stack-heading" type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
-                      <strong>{dataset.title}</strong>
-                      <span>{resources.length} {resourcePlural()} · {dataset.publisher_title || dataset.publisher}</span>
+                      <strong>{largeLabelForRoute(datasetRoute(dataset))}</strong>
+                      <span>{resources.length} {resourcePlural()} · {dataset.publisher ? largeLabelForRoute(publisherRoute(dataset.publisher)) : `unknown ${publisherSingular()}`}</span>
                     </button>
                     <div class="resource-stack">
                       {#each resources.slice(0, 12) as resource}
@@ -7659,8 +8009,8 @@
                           onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }}
                           ondblclick={() => recenterLargeRoute(resourceRoute(resource))}
                         >
-                          <strong>{resource.name || resource.id}</strong>
-                          <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                          <strong>{largeLabelForRoute(resourceRoute(resource))}</strong>
+                          <span>{resource.format ? facetValueDisplay('format', resource.format) : 'unknown'} · {resource.host ? facetValueDisplay('host', resource.host) : 'unknown host'}</span>
                         </button>
                       {/each}
                       {#if resources.length > 12}<span class="chip">+{resources.length - 12} more</span>{/if}
@@ -7695,7 +8045,7 @@
                       <section>
                         <strong>Enclosing process</strong>
                         <a href={buildExplorerUrl(selectedNarrative.process.route)} onclick={(event) => followExplorerRoute(event, selectedNarrative.process?.route || '')}>
-                          {selectedNarrative.process.label || largeLabelForRoute(selectedNarrative.process.route)}
+                          {endpointLabelForRoute(source.endpointLabels, selectedNarrative.process.route, selectedNarrative.process.label || largeLabelForRoute(selectedNarrative.process.route))}
                         </a>
                         {#if selectedNarrative.process.description}<small>{selectedNarrative.process.description}</small>{/if}
                       </section>
@@ -7706,7 +8056,7 @@
                         <div class="chips">
                           {#each group.links as link}
                             <a class="chip" href={buildExplorerUrl(link.route)} title={link.description || link.label || link.route} onclick={(event) => followExplorerRoute(event, link.route)}>
-                              {link.label || largeLabelForRoute(link.route)}
+                              {endpointLabelForRoute(source.endpointLabels, link.route, link.label || largeLabelForRoute(link.route))}
                             </a>
                           {/each}
                         </div>
@@ -7757,10 +8107,10 @@
                 <section>
                   <h3>Representative values</h3>
                   {#each topContextFacetValues('publisher', 4) as row}
-                    <button type="button" onclick={() => applyAnalysisFacet('publisher', row.value)}>{row.value}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
+                    <button type="button" onclick={() => applyAnalysisFacet('publisher', row.value)}>{facetValueDisplay('publisher', row.value)}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
                   {/each}
                   {#each topContextFacetValues('format', 4) as row}
-                    <button type="button" onclick={() => applyAnalysisFacet('format', row.value)}>{row.value}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
+                    <button type="button" onclick={() => applyAnalysisFacet('format', row.value)}>{facetValueDisplay('format', row.value)}<span>{row.count.toLocaleString()} {recordPlural()}</span></button>
                   {/each}
                 </section>
               </div>
@@ -8157,21 +8507,27 @@
             </div>
             <div class="relationship-detail-content" role="tabpanel" tabindex="0">
               {#if relationshipDetailTab === 'source'}
+                {@const sourceEndpointLabel = endpointLabelEntryForInspection(source.endpointLabels, selectedRelationship.source)}
                 <span class="badge">{routeTypeLabel(selectedRelationship.source)}</span>
                 <h3>{largeLabelForRoute(selectedRelationship.source)}</h3>
                 <p>{relationshipEndpointDescription(selectedRelationship.source)}</p>
                 <dl>
                   <dt>Role</dt><dd>Source of the selected relationship</dd>
                   <dt>Route</dt><dd>{selectedRelationship.source}</dd>
+                  {#if sourceEndpointLabel?.iri}<dt>IRI</dt><dd>{sourceEndpointLabel.iri}</dd>{/if}
+                  {#if sourceEndpointLabel}<dt>Label authority</dt><dd>{sourceEndpointLabel.label_authority.class} · {sourceEndpointLabel.label_authority.source}</dd>{/if}
                 </dl>
                 <button type="button" onclick={() => inspectLargeRoute(selectedRelationship.source)}>Inspect source card</button>
               {:else if relationshipDetailTab === 'target'}
+                {@const targetEndpointLabel = endpointLabelEntryForInspection(source.endpointLabels, selectedRelationship.target)}
                 <span class="badge">{routeTypeLabel(selectedRelationship.target)}</span>
                 <h3>{largeLabelForRoute(selectedRelationship.target)}</h3>
                 <p>{relationshipEndpointDescription(selectedRelationship.target)}</p>
                 <dl>
                   <dt>Role</dt><dd>Target of the selected relationship</dd>
                   <dt>Route</dt><dd>{selectedRelationship.target}</dd>
+                  {#if targetEndpointLabel?.iri}<dt>IRI</dt><dd>{targetEndpointLabel.iri}</dd>{/if}
+                  {#if targetEndpointLabel}<dt>Label authority</dt><dd>{targetEndpointLabel.label_authority.class} · {targetEndpointLabel.label_authority.source}</dd>{/if}
                 </dl>
                 <button type="button" onclick={() => inspectLargeRoute(selectedRelationship.target)}>Inspect target card</button>
               {:else}
@@ -8329,11 +8685,12 @@
               {@const operationalContext = datasetOperationalContext(largeDetail.dataset, largeDetail.resources)}
               {@const releasePeriod = datasetReleasePeriod(largeDetail.dataset, largeDetail.resources)}
               {@const displaySeries = datasetDisplaySeries(largeDetail.dataset)}
+              {@const displaySeriesLabel = governedDisplaySeriesLabel(largeDetail.dataset, displaySeries)}
               {@const seriesPeers = relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               {@const distinctAlternatives = distinctDatasetAlternatives(largeDetail.dataset)}
               {@const sourceAccessRows = sourceAccesses(largeDetail.dataset, largeDetail.resources)}
               <span class="badge">{capitalise(recordSingular())}</span>
-              <h2>{largeDetail.dataset.title}</h2>
+              <h2>{largeLabelForRoute(largeDetail.route)}</h2>
               {#if datasetMatchReason(largeDetail.dataset)}
                 <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
               {/if}
@@ -8344,7 +8701,7 @@
                 <section class="dataset-comparison" aria-label="Release and dataset comparison">
                   <header>
                     <div>
-                      <strong>{displaySeries.label}</strong>
+                      <strong>{displaySeriesLabel}</strong>
                       <span>{displaySeries.inferred ? 'Presentation grouping from release-labelled titles' : 'Declared dataset series'}</span>
                     </div>
                     {#if releasePeriod}<span class="selected-release">{releasePeriod.label} selected</span>{/if}
@@ -8352,14 +8709,14 @@
                   {#if seriesPeers.length}
                     <div class="comparison-group">
                       <h3>Other releases</h3>
-                      <nav class="release-period-links" aria-label={`Other ${displaySeries.label} releases`}>
+                      <nav class="release-period-links" aria-label={`Other ${displaySeriesLabel} releases`}>
                         {#each seriesPeers.slice(0, 24) as peer}
                           {@const peerPeriod = datasetReleasePeriod(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
                           <a
                             href={buildExplorerUrl(datasetRoute(peer))}
-                            title={peer.title}
+                            title={largeDatasetLabel(peer)}
                             onclick={(event) => followExplorerRoute(event, datasetRoute(peer))}
-                          >{peerPeriod?.label || peer.title}</a>
+                          >{peerPeriod?.label || largeDatasetLabel(peer)}</a>
                         {/each}
                       </nav>
                     </div>
@@ -8372,7 +8729,7 @@
                           {@const candidate = alternativeDataset(alternative)}
                           {@const route = alternativeRoute(alternative)}
                           <article>
-                            <a href={buildExplorerUrl(route)} onclick={(event) => followExplorerRoute(event, route)}>{candidate.title}</a>
+                            <a href={buildExplorerUrl(route)} onclick={(event) => followExplorerRoute(event, route)}>{largeDatasetLabel(candidate)}</a>
                             <span>{alternative.relationship_type === 'cross-source-alternative' ? 'Different source' : 'Suggested alternative'}</span>
                             {#if alternativeDifferenceSummary(alternative).length}
                               <small>{alternativeDifferenceSummary(alternative).join(' · ')}</small>
@@ -8486,7 +8843,7 @@
                     <h4>Publisher or distribution links supplied by the catalogue</h4>
                     <ul>
                       {#each operationalContext.linkedSources.slice(0, 8) as linkedSource}
-                        <li><a href={linkedSource.url} target="_blank" rel="noopener noreferrer">{linkedSource.label} ↗</a> <span class="muted">{linkedSource.host}</span></li>
+                        <li><a href={linkedSource.url} target="_blank" rel="noopener noreferrer">{linkedSource.label} ↗</a> <span class="muted">{facetValueDisplay('host', linkedSource.host)}</span></li>
                       {/each}
                     </ul>
                     <p class="muted">A linked host may contain newer operational information. Explorer does not call it authoritative until the bundle supplies canonical-source evidence and provenance.</p>
@@ -8508,15 +8865,15 @@
                   {:else}
                     <p class="muted">No content or resource year is declared for this record.</p>
                   {/if}
-                  {#if displaySeries.label}
-                    <p><strong>{displaySeries.inferred ? 'Display series' : 'Series'}</strong> {displaySeries.label}</p>
+                  {#if displaySeriesLabel}
+                    <p><strong>{displaySeries.inferred ? 'Display series' : 'Series'}</strong> {displaySeriesLabel}</p>
                     {#if seriesPeers.length}
                       <h4>Other releases in this series</h4>
                       <div class="series-records">
                         {#each seriesPeers.slice(0, 12) as peer}
                           {@const peerPeriod = datasetReleasePeriod(peer, largeIndex?.resourcesByDataset.get(peer.name) || [])}
                           <a href={buildExplorerUrl(datasetRoute(peer))} onclick={(event) => followExplorerRoute(event, datasetRoute(peer))}>
-                            <strong>{peer.title}</strong>
+                            <strong>{largeDatasetLabel(peer)}</strong>
                             <span>{peerPeriod ? `Release or coverage ${peerPeriod.label}` : 'No release period supplied'}</span>
                           </a>
                         {/each}
@@ -8538,13 +8895,13 @@
               >
                 <summary>Overview</summary>
                 <dl>
-                <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeDetail.dataset.publisher_title || largeDetail.dataset.publisher || 'Unknown'}</button></dd>
+                <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeRecordPublisherLabel(largeDetail.dataset)}</button></dd>
                 <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
                 <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.dataset.license_title || largeDetail.dataset.license_id)}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{licenceDisplayLabel(largeDetail.dataset)}<small>{licenceBasisLabel(largeDetail.dataset)}</small></dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.dataset.concept_id)}</dd>
                 <dt><span class="label-help">Metadata quality<button class="info-icon" type="button" aria-label="Explain metadata quality" onclick={() => toggleHelp('metadata-quality')} onmouseenter={() => showHelp('metadata-quality')} onmouseleave={() => hideHelp('metadata-quality')} onfocus={() => showHelp('metadata-quality')} onblur={() => hideHelp('metadata-quality')}>i</button>{#if activeHelpKey === 'metadata-quality'}<span class="info-bubble" role="tooltip">{helpText('metadata-quality')}</span>{/if}</span></dt><dd>{formatPercent(largeDetail.dataset.quality?.overall)}</dd>
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.access_model)}</dd>
@@ -8589,9 +8946,9 @@
                 </details>
               {/if}
               <div class="chips">
-                {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
-                {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
-                {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
+                {#each (largeDetail.dataset.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${facetValueDisplay('topic', topic)}`} onclick={() => applyAnalysisFacet('topic', topic)}>{facetValueDisplay('topic', topic)}</button>{/each}
+                {#each (largeDetail.dataset.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${facetValueDisplay('format', format)}`} onclick={() => applyAnalysisFacet('format', format)}>{facetValueDisplay('format', format)}</button>{/each}
+                {#each (largeDetail.dataset.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${facetValueDisplay('tag', tag)}`} onclick={() => applyAnalysisFacet('tag', tag)}>{facetValueDisplay('tag', tag)}</button>{/each}
               </div>
               <details class="metadata-section disclosure-section" id="detail-panel-data" hidden={detailPanelTab !== 'data'}>
                 <summary>Normalised record fields</summary>
@@ -8682,8 +9039,8 @@
                 <div class="disclosure-list">
                   {#each largeDetail.resources.slice(0, 30) as resource}
                     <button type="button" onclick={() => { largeHighlightedRoute = resourceRoute(resource); inspectLargeRoute(resourceRoute(resource)); }} ondblclick={() => recenterLargeRoute(resourceRoute(resource))}>
-                      <strong>{resource.name || resource.id}</strong>
-                      <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                      <strong>{largeResourceLabel(resource)}</strong>
+                      <span>{resource.format ? facetValueDisplay('format', resource.format) : 'unknown'} · {resource.host ? facetValueDisplay('host', resource.host) : 'unknown host'}</span>
                     </button>
                   {/each}
                 </div>
@@ -8707,7 +9064,7 @@
               </div>
             {:else if largeDetail.kind === 'resource'}
               <span class="badge">{capitalise(resourceSingular())}</span>
-              <h2>{largeDetail.resource.name || largeDetail.resource.id}</h2>
+              <h2>{largeResourceLabel(largeDetail.resource)}</h2>
               <p>{stripHtml(largeDetail.resource.description || '') || largeDetail.resource.url}</p>
               {#if largeDetail.dataset}
                 {#each providerDatapacksForRecord(source.providerDatapacks, largeDetail.dataset) as providerDatapack}
@@ -8727,13 +9084,13 @@
               <details class="metadata-section disclosure-section" open>
                 <summary>Overview</summary>
                 <dl>
-                <dt>{capitalise(recordSingular())}</dt><dd>{largeDetail.dataset?.title || largeDetail.resource.dataset}</dd>
-                <dt>Format</dt><dd>{largeDetail.resource.format || 'unknown'}</dd>
+                <dt>{capitalise(recordSingular())}</dt><dd>{largeDetail.dataset ? largeDatasetLabel(largeDetail.dataset) : largeLabelForRoute(`dataset/${largeDetail.resource.dataset}`)}</dd>
+                <dt>Format</dt><dd>{largeDetail.resource.format ? facetValueDisplay('format', largeDetail.resource.format) : 'unknown'}</dd>
                 <dt>Source format</dt><dd>{displayValue(largeDetail.resource.source_format)}</dd>
                 <dt>Format confidence</dt><dd>{formatPercent(largeDetail.resource.format_confidence)}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.resource.concept_id)}</dd>
-                <dt>Host</dt><dd>{largeDetail.resource.host || 'unknown'}</dd>
-                <dt>Type</dt><dd>{largeDetail.resource.resource_type || 'unknown'}</dd>
+                <dt>Host</dt><dd>{largeDetail.resource.host ? facetValueDisplay('host', largeDetail.resource.host) : 'unknown'}</dd>
+                <dt>Type</dt><dd>{largeDetail.resource.resource_type ? facetValueDisplay('resource_type', largeDetail.resource.resource_type) : 'unknown'}</dd>
                 <dt>URL</dt><dd>{#if isUrl(largeDetail.resource.url)}<a href={largeDetail.resource.url} target="_blank" rel="noopener">{largeDetail.resource.url}</a>{:else}{displayValue(largeDetail.resource.url)}{/if}</dd>
                 <dt>GOV.UK path</dt><dd>{displayValue(largeDetail.resource.govuk_content_path)}</dd>
                 </dl>
@@ -8769,7 +9126,7 @@
               </details>
             {:else if largeDetail.kind === 'publisher'}
               <span class="badge">{capitalise(publisherSingular())}</span>
-              <h2>{largeDetail.publisher.title}</h2>
+              <h2>{largeLabelForRoute(largeDetail.route)}</h2>
               <p>{stripHtml(largeDetail.publisher.description || '')}</p>
               <div class="detail-actions">
                 <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
@@ -8779,7 +9136,7 @@
               <details class="metadata-section disclosure-section" open>
                 <summary>Overview</summary>
                 <dl>
-                <dt>Name</dt><dd>{largeDetail.publisher.name}</dd>
+                <dt>Preferred label</dt><dd>{largeLabelForRoute(largeDetail.route)}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.publisher.concept_id)}</dd>
                 <dt>{capitalise(recordPlural())}</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
                 <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
@@ -8803,7 +9160,7 @@
                 <summary>{capitalise(recordPlural())} ({largeDetail.datasets.length.toLocaleString()})</summary>
                 <div class="disclosure-list">
                   {#each largeDetail.datasets.slice(0, 40) as dataset}
-                    <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{dataset.title}</button>
+                    <button type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>{largeDatasetLabel(dataset)}</button>
                   {/each}
                 </div>
               </details>
@@ -8813,7 +9170,7 @@
               </details>
             {:else if largeDetail.kind === 'search'}
               <span class="badge">{capitalise(recordSingular())}</span>
-              <h2>{largeDetail.result.title}</h2>
+              <h2>{largeDatasetLabel(largeDetail.result)}</h2>
               <div class="detail-actions primary-detail-actions">
                 {#if largeHasRecordLocator()}
                   <button class="primary-action" type="button" onclick={() => void ensureLargeDataset(largeDetail.route, largeDetail.result)}>
@@ -8846,16 +9203,16 @@
               <details class="metadata-section disclosure-section" open>
                 <summary>Overview</summary>
                 <dl>
-                <dt>{capitalise(publisherSingular())}</dt><dd>{largeDetail.result.publisher_title}</dd>
+                <dt>{capitalise(publisherSingular())}</dt><dd>{largeRecordPublisherLabel(largeDetail.result)}</dd>
                 <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
-                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
-                <dt>Protocol</dt><dd>{displayValue(largeDetail.result.protocol)}</dd>
-                <dt>Topics</dt><dd>{displayValue(largeDetail.result.topics)}</dd>
-                <dt>Endpoint host</dt><dd>{displayValue(largeDetail.result.endpoint_host)}</dd>
-                <dt>Documentation host</dt><dd>{displayValue(largeDetail.result.documentation_host)}</dd>
+                <dt><span class="label-help">Licence<button class="info-icon" type="button" aria-label="Explain licence" onclick={() => toggleHelp('licence')} onmouseenter={() => showHelp('licence')} onmouseleave={() => hideHelp('licence')} onfocus={() => showHelp('licence')} onblur={() => hideHelp('licence')}>i</button>{#if activeHelpKey === 'licence'}<span class="info-bubble" role="tooltip">{helpText('licence')}</span>{/if}</span></dt><dd>{licenceDisplayLabel(largeDetail.result)}<small>{licenceBasisLabel(largeDetail.result)}</small></dd>
+                <dt>Protocol</dt><dd>{facetMetadataDisplayValue('protocol', largeDetail.result.protocol)}</dd>
+                <dt>Topics</dt><dd>{facetMetadataDisplayValue('topic', largeDetail.result.topics)}</dd>
+                <dt>Endpoint host</dt><dd>{facetMetadataDisplayValue('host', largeDetail.result.endpoint_host)}</dd>
+                <dt>Documentation host</dt><dd>{facetMetadataDisplayValue('host', largeDetail.result.documentation_host)}</dd>
                 <dt><span class="label-help">Access model<button class="info-icon" type="button" aria-label="Explain access model" onclick={() => toggleHelp('access-model')} onmouseenter={() => showHelp('access-model')} onmouseleave={() => hideHelp('access-model')} onfocus={() => showHelp('access-model')} onblur={() => hideHelp('access-model')}>i</button>{#if activeHelpKey === 'access-model'}<span class="info-bubble" role="tooltip">{helpText('access-model')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.access_model)}</dd>
                 <dt><span class="label-help">Contract status<button class="info-icon" type="button" aria-label="Explain contract status" onclick={() => toggleHelp('contract-status')} onmouseenter={() => showHelp('contract-status')} onmouseleave={() => hideHelp('contract-status')} onfocus={() => showHelp('contract-status')} onblur={() => hideHelp('contract-status')}>i</button>{#if activeHelpKey === 'contract-status'}<span class="info-bubble" role="tooltip">{helpText('contract-status')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.contract_status)}</dd>
                 <dt><span class="label-help">DCAT term<button class="info-icon" type="button" aria-label="Explain DCAT term" onclick={() => toggleHelp('dcat-type')} onmouseenter={() => showHelp('dcat-type')} onmouseleave={() => hideHelp('dcat-type')} onfocus={() => showHelp('dcat-type')} onblur={() => hideHelp('dcat-type')}>i</button>{#if activeHelpKey === 'dcat-type'}<span class="info-bubble" role="tooltip">{helpText('dcat-type')}</span>{/if}</span></dt><dd><code class="standard-term">{metadataDisplayValue(largeDetail.result.dcat_type)}</code></dd>
@@ -8879,9 +9236,9 @@
               {/if}
               <LegislationDetail record={largeDetail.result} />
               <div class="chips">
-                {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${topic}`} onclick={() => applyAnalysisFacet('topic', topic)}>{topic}</button>{/each}
-                {#each (largeDetail.result.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${format}`} onclick={() => applyAnalysisFacet('format', format)}>{format}</button>{/each}
-                {#each (largeDetail.result.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${tag}`} onclick={() => applyAnalysisFacet('tag', tag)}>{tag}</button>{/each}
+                {#each (largeDetail.result.topics || []).slice(0, 10) as topic}<button class="chip topic-chip" type="button" title={`Filter by topic: ${facetValueDisplay('topic', topic)}`} onclick={() => applyAnalysisFacet('topic', topic)}>{facetValueDisplay('topic', topic)}</button>{/each}
+                {#each (largeDetail.result.formats || []).slice(0, 16) as format}<button class="chip" type="button" title={`Filter by format: ${facetValueDisplay('format', format)}`} onclick={() => applyAnalysisFacet('format', format)}>{facetValueDisplay('format', format)}</button>{/each}
+                {#each (largeDetail.result.tags || []).slice(0, 16) as tag}<button class="chip" type="button" title={`Filter by tag: ${facetValueDisplay('tag', tag)}`} onclick={() => applyAnalysisFacet('tag', tag)}>{facetValueDisplay('tag', tag)}</button>{/each}
               </div>
             {:else}
               {@const routeLoadedRecords = metadataRoutePreviewRecords(largeDetail.route, Number.MAX_SAFE_INTEGER)}
@@ -8926,8 +9283,8 @@
                 {/if}
                 {#each routePreviewRecords as record}
                   <button type="button" onclick={() => openMetadataPreviewRecord(record)}>
-                    <strong>{record.title}</strong>
-                    <span>{record.publisher_title || record.publisher || `Unknown ${publisherSingular()}`} · {record.resource_count || 0} {resourcePlural()}</span>
+                    <strong>{largeDatasetLabel(record)}</strong>
+                    <span>{largeRecordPublisherLabel(record)} · {record.resource_count || 0} {resourcePlural()}</span>
                     {#if apiContextNote(record)}<p class="context-note">{apiContextNote(record)}</p>{/if}
                     <p>{stripHtml(record.notes || '').slice(0, 180)}</p>
                     {#if apiRecordMeta(record)}<small class="result-meta">{apiRecordMeta(record)}</small>{/if}
@@ -8938,8 +9295,8 @@
                 <h3>{capitalise(resourcePlural())} preview</h3>
                 {#each routeResources.slice(0, 12) as resource}
                   <button type="button" onclick={() => inspectLargeRoute(resourceRoute(resource))}>
-                    <strong>{resource.name || resource.id}</strong>
-                    <span>{resource.format || 'unknown'} · {resource.host || 'unknown host'}</span>
+                    <strong>{largeResourceLabel(resource)}</strong>
+                    <span>{resource.format ? facetValueDisplay('format', resource.format) : 'unknown'} · {resource.host ? facetValueDisplay('host', resource.host) : 'unknown host'}</span>
                   </button>
                 {/each}
               {/if}
@@ -9011,7 +9368,7 @@
           <div class="detail-actions">
             <button type="button" onclick={() => inspectNode(smallInspectedRelationship?.source || '')}>Inspect source</button>
             <button type="button" onclick={() => inspectNode(smallInspectedRelationship?.target || '')}>Inspect target</button>
-            <button type="button" onclick={() => (smallInspectedRelationship = null)}>Clear relationship</button>
+            <button type="button" onclick={clearSmallRelationship}>Clear relationship</button>
           </div>
           <dl>
             <dt>Direction</dt><dd>Source → target</dd>

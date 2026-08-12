@@ -1,6 +1,6 @@
 # Review Of The OKF Authoring Methodology
 
-Status: draft for owner review, 12 August 2026.
+Status: reviewed and implemented in OKF Explorer v0.7.0, 12 August 2026.
 
 This review uses the completed
 [HM Land Registry v0.3.0 delivery retrospective](postmortems/land-registry-v0.3.0-delivery-retrospective.md)
@@ -10,9 +10,9 @@ authoring method before reviewing `okf-uk-living`.
 
 ## Decision In Brief
 
-The existing Foundry method is strong at identity, provenance, deterministic
-generation, evidence and release assurance. It is not yet strong enough at
-three earlier questions:
+The previous Foundry method was strong at identity, provenance, deterministic
+generation, evidence and release assurance. It was not strong enough at three
+earlier questions:
 
 1. Can a citizen understand every entity and relationship that a view exposes?
 2. Does each semantic link answer an evidenced question, and are all eligible
@@ -210,17 +210,56 @@ services merely because they link to one.
 
 Record for each link set:
 
-- eligible entity rule and count;
-- resolved, unresolved, excluded and conflicting counts;
+- eligible entity rule, exact candidate-ID inventory, frozen source snapshot,
+  canonical inventory digest and evidence;
+- linked-candidate, link-assertion, unresolved, excluded and conflicting
+  counts;
 - target namespace and authority;
 - relationship or mapping predicate;
 - minimum evidence;
-- public dereference success;
+- public dereference successes and failures;
 - task/competency references; and
-- observed date and freshness policy.
+- observed date, freshness policy and calculated freshness status.
 
-Report percentages with their denominators. Never publish one unexplained
-“semantic completeness” score.
+Treat those four candidate outcomes as an identity-bound partition: their
+exact ID sets are disjoint and their union must equal the eligible inventory.
+The inventory itself is derived by the declared deterministic eligibility rule,
+bound to the frozen input snapshot and evidence, and protected by a canonical
+sorted-list digest; approved profiles fail when any of those bindings is
+unknown. Calculate achieved
+coverage as linked divided by eligible minus evidenced exclusions, and retain
+every category beside the percentage. Do not allow exclusions to inflate the
+score anonymously: each exclusion result must cite a named rule and evidence,
+list the stable unique identifiers of the exact excluded candidates, equal its
+declared count and remain disjoint from every other exclusion result. Every
+excluded ID must belong to the denominator's exact unique candidate-ID list,
+whose length must equal the eligible count. Count link assertions separately
+when a candidate has more than one. Record stable assertion IDs, require the
+assertion ledger to cover every linked candidate and bind exactly one
+success-or-failure dereference result to each assertion. Reconcile all counts
+from these identity-bearing ledgers, bind the observation to
+evidence and calculate freshness against the profile's declared clock. The v1
+contract fails closed when an approved profile's result is stale. Never
+publish one unexplained “semantic completeness” score.
+
+The validator's completeness claim stops at the declared inventory. It proves
+that the frozen candidate IDs, digest, four outcomes, assertion ledger and
+evidence reconcile; it cannot prove that the author's eligibility rule found
+every entity that should exist in the domain. Approval therefore includes a
+recorded owner or domain-review judgement that compares the deterministic rule
+with the frozen source snapshot and its support-checked, digest-bound evidence.
+
+Make the predicate agree with the mapping strength: use the corresponding
+SKOS predicate for each SKOS mapping, and use `owl:sameAs` only for identity
+backed by independently verified, digest-bound assertion evidence. A domain
+relationship cannot use an identity or SKOS mapping predicate. Validate every
+assertion target against its governed HTTP namespace using URI origin and
+path/hash semantics without decoding an encoded slash into a false child path,
+reject duplicate candidate-target assertions, and bind all semantic ledger
+evidence at approval grade. Canonically hash the complete coverage result,
+retaining ledger order, and require one approval-grade receipt to carry both
+that exact digest and `observed_at`. Derive dereference success or failure from the
+machine-readable terminal result rather than human prose.
 
 ### 7. Test Readability As A Contract
 
@@ -260,7 +299,7 @@ domain warm-up → tiny fixture → Explore OKF → reviewed candidate → assur
 
 ### Required Banner
 
-Every Explorer view and standalone human page displays a banner such as:
+Every Explorer view displays a banner such as:
 
 > **Exploratory** — This is an incomplete research view, not an authoritative
 > service or released data product. Content and links may change. Check the
@@ -271,6 +310,11 @@ The banner follows the usability intent of the
 but does not claim that the independent OKF project is a government service.
 It remains visible on every view, preserves the current route in the feedback
 link and is exposed in the machine descriptor.
+
+If a producer publishes a companion human landing page for the same
+exploratory snapshot, that producer must show the equivalent warning there as
+well. Explorer v0.7.0 enforces the banner inside Explorer; it cannot inject UI
+into independently hosted producer pages.
 
 ### Machine Contract
 
@@ -317,12 +361,26 @@ Before the `okf-uk-living` review begins, the methodology should demonstrate:
 The recommended data and pilot are in
 [Open data for the Explore OKF pilot](../research/explore-okf-open-data-test-candidates.md).
 
-## Implementation Boundary
+## Implemented Boundary
 
-This review updates the authoring profile, prompts and acceptance method. The
-current Explorer does not yet claim to render the new exploratory descriptor
-banner or to reject every opaque fallback label. Those consumer changes must
-be implemented and tested separately through
+The review now has matching producer and consumer contracts. The normative
+[Explore OKF profile](../profiles/explore-okf/v1/index.md) defines the compact
+endpoint-label index and exploratory-publication descriptor; the Python
+tooling builds and validates both against the bundle snapshot and integrity
+envelope.
+
+OKF Explorer v0.7.0 consumes those contracts. Graph, Links, Facets and other
+route-based labels use the governed compact index without hydrating the full
+record, display **Missing label** instead of leaking an opaque generated
+identifier, and retain the route, IRI, type and label authority in Inspect.
+Every view also retains a validated exploratory banner and route-preserving
+feedback link. A malformed, unsupported or mismatched exploratory contract is
+shown as an explicit warning and is forced to `noindex`; it is never silently
+treated as a conforming exploratory publication.
+
+This implementation closes
 [issue #94](https://github.com/chris-page-gov/okf-explorer/issues/94) and
-[issue #95](https://github.com/chris-page-gov/okf-explorer/issues/95) before
-the first public Explore OKF URL is represented as conforming to this method.
+[issue #95](https://github.com/chris-page-gov/okf-explorer/issues/95). It does
+not make an existing producer conform automatically: each producer must emit
+the two snapshot-bound documents, pass actual-consumer journeys and preserve
+the exploratory limitations in its public descriptor.

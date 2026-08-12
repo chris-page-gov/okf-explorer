@@ -4,6 +4,7 @@ import type {
   LargeAnalysisOverview,
   LargeDataManifest,
   LargeDataset,
+  LargeEndpointLabelRegistry,
   LargeEffectsReconciliation,
   LargeFacetRow,
   LargeFullIndex,
@@ -46,6 +47,7 @@ import {
   validateProviderDatapackCollection
 } from '$lib/viewer/providerDatapack';
 import { isHttpUrl } from '$lib/viewer/helpers';
+import { normaliseEndpointLabelIndex } from '$lib/viewer/endpointLabels';
 import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -1232,7 +1234,19 @@ export function descriptorEntrypoint(
   if (resourcePath(integrity) !== resourcePath(entrypoint)) {
     throw new Error(`Descriptor entrypoint and integrity path differ for ${name}`);
   }
-  resourceHash(integrity);
+  const integrityHash = resourceHash(integrity);
+  if (entrypoint && typeof entrypoint === 'object') {
+    const entrypointHash = resourceHash(entrypoint);
+    if (entrypointHash && entrypointHash !== integrityHash) {
+      throw new Error(`Descriptor entrypoint and integrity SHA-256 differ for ${name}`);
+    }
+    if (
+      entrypoint.bytes !== undefined &&
+      entrypoint.bytes !== integrity.bytes
+    ) {
+      throw new Error(`Descriptor entrypoint and integrity byte count differ for ${name}`);
+    }
+  }
   return integrity;
 }
 
@@ -2283,6 +2297,40 @@ export async function loadLargeCorpus(
   const presentation = presentationPath
     ? normalizeExplorerPresentation(await fetchResource<unknown>(presentationPath).catch(() => undefined))
     : undefined;
+  const descriptorEndpointLabels = descriptorEntrypoint(descriptor, 'endpoint_labels');
+  const manifestEndpointLabels = manifest.indexes?.endpoint_labels;
+  let endpointLabels: LargeEndpointLabelRegistry | undefined;
+  if (descriptorEndpointLabels || manifestEndpointLabels) {
+    const endpointLabelManifestSnapshot = declaredSnapshot(manifest, 'Data manifest');
+    if (!descriptorSnapshot || !endpointLabelManifestSnapshot) {
+      throw new Error(
+        'Endpoint label index requires snapshot identifiers on both the descriptor and data manifest'
+      );
+    }
+    if (descriptorSnapshot !== endpointLabelManifestSnapshot) {
+      throw new Error('Descriptor and data manifest endpoint label index snapshots differ');
+    }
+    if (!descriptorEndpointLabels || !manifestEndpointLabels) {
+      throw new Error(
+        'Endpoint label index must be advertised by both the descriptor and data manifest'
+      );
+    }
+    const descriptorEndpointLabelsBinding = boundGovernanceResource(
+      descriptorEndpointLabels,
+      'Descriptor endpoint label index'
+    );
+    const manifestEndpointLabelsBinding = boundGovernanceResource(
+      manifestEndpointLabels,
+      'Data manifest endpoint label index'
+    );
+    if (!bindingEquals(descriptorEndpointLabelsBinding, manifestEndpointLabelsBinding)) {
+      throw new Error('Descriptor and data manifest endpoint label index bindings differ');
+    }
+    endpointLabels = normaliseEndpointLabelIndex(
+      await fetchResource<unknown>(governanceResourceReference(descriptorEndpointLabelsBinding)),
+      descriptorSnapshot
+    );
+  }
   const descriptorTermsPath = descriptorEntrypoint(descriptor, 'terms');
   const manifestTermsPath = manifest.indexes?.terms;
   if (
@@ -2402,6 +2450,7 @@ export async function loadLargeCorpus(
     ['Overview', overview],
     ['Analysis overview', analysis],
     ['Presentation profile', presentation],
+    ['Endpoint label index', endpointLabels?.document],
     ['Governed term registry', termRegistry],
     ['Governed term validation', termValidation],
     ['Provider datapack manifest', providerDatapackManifest],
@@ -3376,6 +3425,7 @@ export async function loadLargeCorpus(
     overview,
     analysis,
     presentation,
+    endpointLabels,
     termRegistry,
     termValidation,
     providerDatapacks,

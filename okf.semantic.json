@@ -69,7 +69,10 @@
       "standards/",
       "uk-government/",
       "profiles/bundle-wiki/v1/",
-      "profiles/bundle-wiki/v1.vendor-lock.json"
+      "profiles/bundle-wiki/v1.vendor-lock.json",
+      "profiles/authoring/v1/",
+      "profiles/explore-okf/v1/",
+      "docs/okf-authoring-methodology-review-2026-08-12.md"
     ],
     "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
     "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
@@ -104,16 +107,19 @@
     "build": [
       "uv run --locked python scripts/build_okf_bundle.py",
       "uv run --locked python scripts/update_viewer.py",
-      "pnpm --dir apps/okf-explorer build",
+      "pnpm --dir apps/okf-explorer sbom",
+      "pnpm --dir apps/okf-explorer build:determinism",
       "uv run --locked python scripts/build_site.py"
     ],
     "check": [
       "uv run --locked python scripts/build_okf_bundle.py --check",
       "uv run --locked python scripts/update_viewer.py --check",
       "uv run --locked python scripts/check_okf.py",
-      "uv run --locked python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",
+      "uv run --locked python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_explore_okf_profile tests.test_explore_okf_tooling tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",
       "pnpm --dir apps/okf-explorer test",
-      "pnpm --dir apps/okf-explorer check"
+      "pnpm --dir apps/okf-explorer check",
+      "pnpm --dir apps/okf-explorer sbom:check",
+      "pnpm --dir apps/okf-explorer test:e2e:terminal"
     ],
     "setup": [
       "uv sync --locked",

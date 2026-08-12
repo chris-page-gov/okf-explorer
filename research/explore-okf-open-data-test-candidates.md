@@ -115,10 +115,24 @@ edges.
 | Dataset to distribution | `dcat:distribution` | Catalogue/source explicitly relates them | Every included dataset with a public distribution |
 | Boundary to resolution/vintage | local governed projection plus provenance | ONS product metadata names resolution and date | Every cached boundary representation |
 
-Each row expands into counts for eligible, linked, unresolved, excluded and
-conflicting entities. The pilot should not set a percentage target before the
-eligible population is known, but graph-reachable label coverage is always
-100 per cent.
+Each row expands into an exact unique candidate-ID inventory plus linked,
+unresolved, excluded and conflicting candidate-ID sets whose disjoint union is
+the inventory. The deterministic extraction rule, canonical inventory digest
+and evidence bind it to the frozen source snapshot. Link assertions are
+counted separately; each has a stable ID and one identity-bound dereference
+result. An
+exclusion names the exact eligible candidate IDs, rule and evidence and cannot
+overlap another outcome. The pilot should not set a percentage target before
+the eligible population is known, but graph-reachable label coverage is always
+100 per cent. This proves reconciliation only inside the author-declared
+inventory; owner/domain review must judge whether the deterministic eligibility
+rule omitted anything from the frozen source snapshot. Mapping predicates must
+agree with their declared strength. Every target must remain inside its
+URI-aware namespace, with encoded path delimiters rejected. Duplicate
+candidate-target assertions are rejected, and dereference outcomes come from
+machine-readable terminal results. For approved v1 results, one approval-grade
+evidence item must carry both the canonical complete-result digest and the
+result's exact `observed_at`; coverage must also be current.
 
 ## Boundary Sidecar Test
 

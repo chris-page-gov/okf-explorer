@@ -45,6 +45,9 @@ APIs exemplar, and related large-corpus OKF packs.
   uses the Land Registry retrospective without reopening that pack, then adds
   human-readable graph labels, denominator-based semantic linking and a
   shareable Explore OKF feedback stage before candidate freeze.
+- [Explore OKF profile](../profiles/explore-okf/v1/index.md) is the strict,
+  machine-tested contract for a snapshot-bound compact endpoint-label index
+  and persistent exploratory-publication banner.
 - [Evaluation Foundry and YAML-LD](beginners/22-evaluation-foundry-and-yaml-ld.md)
   adapts that process for functionality evaluation, explains additive semantic
   identity and assertions for beginners, and keeps source-backed, tiny and

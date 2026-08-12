@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/explore-okf/v1/endpoint-label-index.schema.json",
+  "title": "Explore OKF endpoint label index",
+  "description": "A compact, snapshot-bound index that gives every graph-reachable Explorer route a governed human label and type without full-record hydration.",
+  "type": "object",
+  "required": [
+    "schema",
+    "snapshot",
+    "default_language",
+    "opaque_identifier_patterns",
+    "entries",
+    "counts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-explorer-endpoint-label-index.v1"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/nonEmptyShortString"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 64
+    },
+    "default_language": {
+      "const": "en-GB"
+    },
+    "opaque_identifier_patterns": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9._~:/-]+\\*?$"
+      }
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "entries"
+      ],
+      "properties": {
+        "entries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyShortString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "\\S"
+    },
+    "httpUrl": {
+      "type": "string",
+      "format": "uri",
+      "allOf": [
+        {
+          "pattern": "^https?://(?:\\[[0-9A-Fa-f:.]+\\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::(?:[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#]|$)"
+        },
+        {
+          "pattern": "^[\\u0021-\\u007E]+$"
+        },
+        {
+          "pattern": "^(?!.*[\\\"'<>\\\\^`{|}])"
+        },
+        {
+          "pattern": "^(?!.*%(?![0-9A-Fa-f]{2}))"
+        }
+      ],
+      "maxLength": 4096
+    },
+    "entry": {
+      "type": "object",
+      "required": [
+        "route",
+        "iri",
+        "label",
+        "language",
+        "type",
+        "label_authority"
+      ],
+      "properties": {
+        "route": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 1024,
+          "pattern": "^[a-z][a-z0-9-]*(?:/(?:[A-Za-z0-9._~-]|%(?!(?:2D|2E|3[0-9]|4[1-9A-F]|5[0-9A]|5F|6[1-9A-F]|7[0-9A]|7E))[0-9A-F]{2})+)+$"
+        },
+        "iri": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 4096
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^(?!Missing label$)(?!\\s)(?!.*[\\u0000-\\u001F\\u007F]).*\\S$"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^(?!Missing label$)(?!\\s)(?!.*[\\u0000-\\u001F\\u007F]).*\\S$"
+        },
+        "label_authority": {
+          "type": "object",
+          "required": [
+            "class",
+            "source"
+          ],
+          "properties": {
+            "class": {
+              "enum": [
+                "source-native",
+                "domain-profile",
+                "editorial"
+              ]
+            },
+            "source": {
+              "$ref": "#/$defs/httpUrl"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

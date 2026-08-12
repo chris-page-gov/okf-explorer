@@ -175,9 +175,9 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('licenceBasisLabel');
     expect(pageSource).toContain('class="info-icon"');
     expect(pageSource).toContain('quality-contract_signal');
-    expect(pageSource).toContain('largeDetail.result.license_title');
+    expect(pageSource).toContain('licenceDisplayLabel(largeDetail.result)');
     expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.timestamp)');
-    expect(pageSource).toContain('metadataDisplayValue(largeDetail.result.license_title || largeDetail.result.license_id)');
+    expect(pageSource).toContain("facetValueDisplay('license', identifier)");
     expect(pageSource).not.toContain("|| 'None'");
     expect(pageSource).toContain("source-date:created");
     expect(pageSource).toContain("source-date:modified");

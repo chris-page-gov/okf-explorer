@@ -1,5 +1,6 @@
 import type { LargeAnalysisOverview, LargeDataset, LargeDatasetOperationalMetadata, LargeResource, OkfNode, OkfRelationship } from '$lib/types';
 import { normalizeExplorerDisplay } from './facetPresentation';
+import { decodeEndpointRouteSegment, encodeEndpointRouteSegment } from './endpointLabels';
 
 export type AnalysisFacet = NonNullable<LargeAnalysisOverview['facet_analysis']>[number];
 export type AnalysisHierarchy = NonNullable<LargeAnalysisOverview['hierarchies']>[number];
@@ -444,7 +445,11 @@ export function metadataGapLabel(value: string): string {
 
 export function facetValueLabel(analysis: LargeAnalysisOverview | undefined, key: string, value: string): string {
   if (value === 'not-specified') return metadataGapLabel(value);
-  const analysisLabel = analysisLabelForRoute(analysis, `facet/${key}/${value}`);
+  const canonicalRoute = `facet/${encodeEndpointRouteSegment(key)}/${encodeEndpointRouteSegment(value)}`;
+  const analysisLabel = analysisLabelForRoute(analysis, canonicalRoute) ||
+    // Keep pre-profile analysis artefacts readable while producers migrate to
+    // canonical percent-encoded route segments.
+    analysisLabelForRoute(analysis, `facet/${key}/${value}`);
   return analysisLabel || metadataGapLabel(value);
 }
 
@@ -489,7 +494,12 @@ export function routeForAnalysisNode(id: string): { key: string; value: string }
   if (!id.startsWith('facet/')) return null;
   const [, key, ...valueParts] = id.split('/');
   const value = valueParts.join('/');
-  return key && value ? { key, value } : null;
+  return key && value
+    ? {
+        key: decodeEndpointRouteSegment(key),
+        value: decodeEndpointRouteSegment(value)
+      }
+    : null;
 }
 
 export function timelineBucketFacetFilter(bucket: AnalysisTimelineBucket): { key: string; value: string } | null {

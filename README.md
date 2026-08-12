@@ -10,6 +10,11 @@ development, search, knowledge graphs, semantic-web standards, data catalogues,
 geospatial or legislation data, AI infrastructure or this repository's v0.2,
 federation, Foundry and release-assurance model.
 
+On desktop, the learning path scrolls independently of the article. After a
+chapter is selected it can collapse to a narrow current-chapter rail, expands
+on hover or keyboard focus, and can be pinned open; narrow and touch layouts
+retain the ordinary chapter list.
+
 ## Open The Hosted Explorer
 
 The Svelte OKF Explorer can load OKF bundles from this repository or from any
@@ -70,6 +75,8 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
   bundle][authoring-prompt-kit]
 - [Review the citizen-readable, semantically linked Explore OKF authoring
   method][authoring-method-review]
+- [Implement the strict Explore OKF label-index and exploratory-publication
+  profile][explore-okf-profile]
 - [Use the Evaluation Foundry and YAML-LD heritage exemplar][evaluation-foundry-guide]
 - [Review the evidence-backed Heritage Foundry engineering postmortem][heritage-postmortem]
 
@@ -197,6 +204,11 @@ The repository contains:
 - `docs/okf-authoring-methodology-review-2026-08-12.md` - evidence-backed
   correction for readable graph labels, useful external-link coverage and the
   pre-candidate Explore OKF feedback stage.
+- `profiles/explore-okf/v1/` - strict schemas, examples and producer/consumer
+  rules for compact endpoint labels and persistent exploratory publication.
+- `scripts/okf_explore.py` - deterministic producer builders and envelope
+  validators for those Explore OKF documents, isolated from released
+  producers' governed semantic-tooling bytes.
 - `scripts/check_domain_profile.py` - schema, cross-reference and JSON/YAML
   equivalence validator for an OKF Foundry domain handoff.
 - `docs/demo-script-2026-07-09.md` - 20 minute demonstration script.
@@ -476,5 +488,6 @@ Pages to use **GitHub Actions** as the source.
 [large-record-contract]: docs/large-record-narrative-source-contract.md
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html
 [authoring-method-review]: docs/okf-authoring-methodology-review-2026-08-12.md
+[explore-okf-profile]: profiles/explore-okf/v1/index.md
 [evaluation-foundry-guide]: https://chris-page-gov.github.io/okf-explorer/docs/beginners/22-evaluation-foundry-and-yaml-ld.html
 [heritage-postmortem]: https://chris-page-gov.github.io/okf-explorer/docs/postmortems/heritage-foundry-2026/

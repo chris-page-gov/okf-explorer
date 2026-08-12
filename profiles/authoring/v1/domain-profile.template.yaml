@@ -13,7 +13,7 @@ repository_lifecycle:
   bootstrap_status: planned
   bootstrap_evidence:
     - validation/repository-bootstrap.json
-  initial_commit_policy: The default branch starts with one reviewed initialization-only commit containing governance and source/generated boundaries, never the corpus, generated bundle or release evidence.
+  initial_commit_policy: The default branch starts with one reviewed initialisation-only commit containing governance and source/generated boundaries, never the corpus, generated bundle or release evidence.
   default_branch: main
   feature_branch_policy: Perform acquisition, domain and build work on a feature branch and merge it through a reviewed pull request.
   required_checks:
@@ -77,7 +77,7 @@ authority_model:
   source_authorities:
     - The named source publisher is authoritative for its supplied content and metadata.
   semantic_authorities:
-    - Source-native definitions take precedence over local normalization.
+    - Source-native definitions take precedence over local normalisation.
   operational_authorities:
     - The repository maintainer controls the generated publication.
   decision_authorities:
@@ -207,7 +207,7 @@ semantic_model:
       evidence_refs:
         - EV-001
   identifier_policy:
-    native_identifier_rule: Preserve source identifiers verbatim alongside normalized routes.
+    native_identifier_rule: Preserve source identifiers verbatim alongside normalised routes.
     route_rule: Create deterministic route-safe local identifiers and record collisions.
     iri_rule: Use a repository-controlled namespace until a permanent domain is approved.
     collision_rule: Fail closed on two source identities mapping to one local identifier.
@@ -233,9 +233,16 @@ semantic_linking:
   external_link_policy: Reuse persistent official identifiers and IRIs where eligibility, authority and mapping strength are evidenced.
   mapping_policy: Use qualified SKOS or domain relationships; reserve owl:sameAs for independently evidenced identity.
   eligible_entity_denominators:
-    - entity_type: TYPE-001
+    - id: DENOM-001
+      entity_type: TYPE-001
       eligibility_rule: Every in-scope document with a source-native public identifier is eligible.
-      eligible_count: null
+      eligible_count: 1
+      candidate_ids:
+        - record-001
+      candidate_list_sha256: 6158269c623d331999260e3ae14691fd1920f7c6af313a4107e717049f372d0f
+      source_snapshot_id: replace-me-snapshot
+      evidence_refs:
+        - EV-001
       minimum_coverage_percent: 100
       exclusions: []
   link_sets:
@@ -248,6 +255,36 @@ semantic_linking:
       evidence_rule: Retain the acquired source URL, observation time and content digest.
       task_refs:
         - TASK-001
+      denominator_ref: DENOM-001
+      coverage_result_sha256: 39bfae699d84c8d23f4f7a636ebb00d9e03ac9c8494c098402d18bb99c744bdd
+      coverage_result:
+        eligible_count: 1
+        linked_count: 0
+        linked_candidate_ids: []
+        linked_assertion_count: 0
+        link_assertions: []
+        unresolved_count: 1
+        unresolved_candidate_ids:
+          - record-001
+        excluded_count: 0
+        exclusion_results: []
+        conflicting_count: 0
+        conflicting_candidate_ids: []
+        achieved_coverage_percent: 0
+        dereference:
+          attempted_count: 0
+          succeeded_count: 0
+          failed_count: 0
+          method: Send a bounded HTTP request for every asserted external link and record the terminal status against the immutable evidence snapshot.
+          results: []
+        observed_at: "2026-07-27T00:00:00Z"
+        freshness_policy:
+          maximum_age_days: 30
+          clock: profile-prepared-at
+          stale_result_action: fail-closed
+        freshness_status: current
+        evidence_refs:
+          - EV-LINK-COVERAGE-001
   prohibited_shortcuts:
     - Do not infer identity or a semantic link from matching labels, URLs, hierarchy, co-occurrence or embedding similarity alone.
     - Do not count duplicated delivery projections as additional semantic coverage.
@@ -262,9 +299,13 @@ presentation_contract:
   graph_reachable_label_rule: Every graph-reachable entity must have a concise human label, language and label authority available without full-record hydration.
   identifier_fallback: debug-only
   compact_label_index:
+    schema: okf-explorer-endpoint-label-index.v1
+    descriptor_entrypoint: endpoint_labels
+    manifest_index: endpoint_labels
     path: data/labels/index.json
     snapshot_bound: true
     integrity_bound: true
+    missing_label_display: Missing label
   relationship_display_rule: Predicates must read naturally in context and semantic/compatibility projections must not create unexplained duplicate edges.
   citizen_checks:
     - No default label in Reader, Graph, Links, Facets, Type, Timeline, Resources, Map or Narrative may expose a configured opaque identifier pattern.
@@ -272,13 +313,21 @@ presentation_contract:
 
 exploratory_publication:
   enabled: true
+  descriptor_schema: okf-exploratory-publication.v1
   publication_state: exploratory
+  publisher:
+    name: Independent OKF research
+    url: https://example.org/research/
+    authority_status: independent-research
   banner:
     label: Exploratory
-    message: This is an incomplete research view, not an authoritative service or released data product. Check the cited official source before making a decision.
+    message: This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision.
     feedback_url: https://example.org/issues/new
     preserve_route: true
   indexing_policy: noindex
+  snapshot_bound: true
+  plane_root_bound: true
+  invalid_contract_policy: explicit-warning-and-noindex
   snapshot_policy: Every shared iteration receives an immutable snapshot identifier and retains the applicable plane roots.
   limitations:
     - Source coverage, labels and semantic mappings remain subject to review.
@@ -415,9 +464,9 @@ consumer_contract:
       - id: EDGE-PRODUCER-DATA
         from_node: NODE-PRODUCER
         to_node: NODE-DATA
-        contract: The producer emits normalized records, relationships and evidence under the frozen data-plane manifest.
+        contract: The producer emits normalised records, relationships and evidence under the frozen data-plane manifest.
         change_impacts:
-          - Source, normalization, identity, rights or relationship changes invalidate the data plane and its downstream consumer checks.
+          - Source, normalisation, identity, rights or relationship changes invalidate the data plane and its downstream consumer checks.
         affected_plane_refs:
           - PLANE-DATA
           - PLANE-PRESENTATION
@@ -502,7 +551,7 @@ consumer_contract:
         - VAL-001
     consumer_stage:
       id: FIXTURE-STAGE-CONSUMER
-      purpose: Execute every required locked consumer against the producer-stage bytes and inspect real routes, state restoration and degraded behavior.
+      purpose: Execute every required locked consumer against the producer-stage bytes and inspect real routes, state restoration and degraded behaviour.
       commands:
         - replace-me-command-that-runs-the-pinned-consumer-against-the-fixture
       cases:
@@ -540,7 +589,7 @@ consumer_contract:
       digest_manifest: validation/digests/data-plane.json
       root_receipt: validation/digests/data-plane-root.json
       invalidated_by:
-        - Source snapshot, normalization, identity, rights, record or relationship changes
+        - Source snapshot, normalisation, identity, rights, record or relationship changes
       consumer_refs:
         - CONSUMER-001
       validation_refs:
@@ -611,7 +660,7 @@ enrichment:
   evidence_requirement: Every non-source-native assertion identifies its inputs and derivation.
   independent_review: Deterministic validation plus a separate domain review for material semantic claims.
   authority_boundary: Generated assertions never become official source statements.
-  budget: No paid model calls are authorized by this profile.
+  budget: No paid model calls are authorised by this profile.
 
 validation:
   - id: VAL-001
@@ -685,7 +734,7 @@ decisions:
       - Live resolution
       - Hybrid snapshot and bounded live reconciliation
     consequences:
-      - The choice determines refresh and stale-state behavior.
+      - The choice determines refresh and stale-state behaviour.
     status: open
     owner: Project owner
     blocking_for_build: false
@@ -736,6 +785,20 @@ evidence:
     supports:
       - STD-OKF-02
       - OKF 0.2 core requirements
+    contradicts: []
+  - id: EV-LINK-COVERAGE-001
+    title: Semantic link coverage result receipt
+    evidence_type: Local validation receipt
+    authority: Profile author pending independent review
+    location: ./evidence/LINKSET-001-coverage-result.json
+    locator: Entire canonical coverage_result object
+    retrieved_at: "2026-07-27T00:00:00Z"
+    observed_at: "2026-07-27T00:00:00Z"
+    access_state: documented-not-tested
+    verification: unverified
+    sha256: 39bfae699d84c8d23f4f7a636ebb00d9e03ac9c8494c098402d18bb99c744bdd
+    supports:
+      - LINKSET-001 coverage result and observation time
     contradicts: []
 
 build_recommendation:

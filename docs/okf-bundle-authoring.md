@@ -93,7 +93,7 @@ query parameters before presenting links, but redaction is a final display
 safeguard rather than a way to distribute secrets.
 
 Selected Schema.org and provenance fields are promoted into the detail card.
-The complete normalized node remains available in the **Node JSON and
+The complete normalised node remains available in the **Node JSON and
 provenance** disclosure, so additional metadata can be inspected without
 requiring every field to have a dedicated UI component.
 
@@ -241,7 +241,7 @@ diverse display preview; that fallback does not create RDF assertions.
 ## Source API Links
 
 Use `source_api_url` for a machine-readable endpoint that returns the source
-record behind the normalized OKF record. Explorer treats **View source data**
+record behind the normalised OKF record. Explorer treats **View source data**
 as the primary action and keeps **Open raw JSON ↗** as a new-tab fallback.
 
 For the in-app Source Inspector to work well, the endpoint should:
@@ -253,7 +253,7 @@ For the in-app Source Inspector to work well, the endpoint should:
 - expose stable identifiers, publisher/provenance and update dates where the
   source has them.
 
-Do not copy the source response wholesale into normalized OKF fields. Preserve
+Do not copy the source response wholesale into normalised OKF fields. Preserve
 the source link, map governed fields into the bundle with explicit provenance,
 and let the inspector show the unaltered remote response on demand. Explorer
 renders response values as text and does not execute source HTML.
@@ -299,7 +299,7 @@ The v1 comparison is deliberately non-exhaustive:
 }
 ```
 
-Use a selector over a stable normalized field such as `source_surface`.
+Use a selector over a stable normalised field such as `source_surface`.
 Reviewed examples should bind to stable `record_id` values. Search result
 documents should preserve the selector field, `record_id` and `native_id` so
 Explorer can show the status and resolve a safe provider hand-off before full
@@ -378,7 +378,7 @@ records:
     update_frequency: Monthly
 ```
 
-Explorer loads and merges the sidecar with the normalized dataset index. This
+Explorer loads and merges the sidecar with the normalised dataset index. This
 keeps enrichment independently refreshable without changing lexical search or
 facet postings, while undeclared sidecars remain fully backward compatible.
 
@@ -524,7 +524,8 @@ Emit relationships as first-class records or rows with:
 - stable predicate IRI when a governed vocabulary defines the property;
 - evidence type;
 - confidence;
-- assertion status such as official, normalized, inferred or model-derived;
+- assertion status such as `official`, `normalized`, `inferred` or
+  `model-derived`;
 - observed timestamp;
 - match key or source basis where the relationship was inferred;
 - an explicit strength metric and unit only when the domain defines one;
@@ -547,8 +548,36 @@ Do not maximise the raw number of relationships. Maximise **evidenced, useful
 link coverage** against declared eligible-entity denominators. Every link set
 must identify the competency question or task it serves, target namespace,
 predicate or qualified mapping, authority, minimum evidence, eligible count,
-linked count, unresolved count, exclusions and conflicts. Duplicated delivery
-projections do not increase semantic coverage.
+linked-candidate and link-assertion counts, unresolved count, exclusions and
+conflicts. Bind the denominator's exact canonical candidate-ID inventory and
+digest to the frozen input snapshot, deterministic eligibility rule and
+evidence; approved profiles cannot use unknown digests. Record exact candidate
+IDs for all four outcomes and require their disjoint union to equal the
+denominator. Each exclusion must identify the exact stable candidate IDs, named
+rule and evidence; the validator reconciles the unique, disjoint IDs with the
+excluded count and the denominator. Record stable assertion IDs and one
+identity-bound dereference result for each; the validator derives the
+candidate, assertion, attempt, success and failure counts. Approved v1
+profiles fail closed on stale results. Duplicated delivery projections do not
+increase semantic coverage.
+
+That is a closed guarantee over the **author-declared** candidate inventory,
+not proof that the eligibility rule found every real-world eligible entity.
+The validator binds the rule, frozen snapshot, exact IDs, digest and evidence;
+an owner or domain reviewer must separately judge and evidence the rule's
+source-bound completeness before approval.
+
+Keep mapping relation and predicate compatible. Each SKOS mapping uses its
+corresponding SKOS predicate; `owl:sameAs` is limited to identity with
+independently verified, digest-bound assertion evidence; and ordinary domain
+relationships cannot use identity or SKOS mapping predicates. Require every
+target IRI to belong to its governed HTTP namespace under URI-aware origin and
+path/hash rules, rejecting encoded path delimiters rather than decoding them
+into false namespace membership. Reject duplicate candidate-target assertions.
+For an approved profile, every semantic ledger evidence reference is
+approval-grade and digest-bound, and one receipt matches both the canonical
+complete-result digest and its observation time. Dereference
+outcome is derived from a machine-readable terminal kind and HTTP status.
 
 Use SKOS mapping properties for concept mappings at the evidenced strength.
 Reserve `owl:sameAs` for independently evidenced identity; matching labels,
@@ -577,19 +606,31 @@ view, not an authoritative service or released data product.
 
 The profile and descriptor must carry `publication_state: exploratory`, an
 immutable snapshot identity, limitations, applicable plane roots, an indexing
-decision and a route-preserving feedback URL. Every Explorer view and human
-page must show a persistent **Exploratory** banner. Rights, privacy, security,
-actual-consumer loading and basic link/label validation still gate sharing.
+decision and a route-preserving feedback URL. Every Explorer view must show a
+persistent **Exploratory** banner. A producer that publishes a companion human
+page for the same snapshot must show the equivalent warning on that page;
+Explorer cannot inject UI into an independently hosted producer page. Rights,
+privacy, security, actual-consumer loading and basic link/label validation
+still gate sharing.
 
 An exploratory snapshot is review evidence. It may be superseded by another
 snapshot, but it is never silently relabelled or promoted as a release
-candidate. The current Explorer does not yet claim this banner contract; until
-that consumer change is implemented and tested, documentation must label the
-capability as planned.
+candidate. Explorer v0.7.0 implements the strict
+[Explore OKF contract](../profiles/explore-okf/v1/index.md): it validates the
+descriptor before showing the persistent banner, preserves the current route
+and filters in the feedback URL, and forces malformed exploratory intent to an
+explicit warning with `noindex`.
+
+Large-corpus producers may publish the companion compact endpoint-label index
+through matching `entrypoints.endpoint_labels` and `indexes.endpoint_labels`
+references. Its snapshot and SHA-256 must match the descriptor and data-plane
+manifest. Explorer uses reviewed labels from that index in route-based views,
+shows **Missing label** for an opaque unlabelled endpoint and keeps the raw
+route, IRI, type and label authority in Inspect.
 
 ## Metadata Repair Rules
 
-It is acceptable to infer or normalize metadata, but never hide the basis:
+It is acceptable to infer or normalise metadata, but never hide the basis:
 
 - Preserve source-declared values when available.
 - Canonicalise obvious variants such as OGL licence spellings and CSV/PDF

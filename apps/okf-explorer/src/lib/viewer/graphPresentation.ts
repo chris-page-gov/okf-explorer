@@ -48,6 +48,38 @@ export type GroupableGraphEdge = DirectedGraphEdge & {
   authorityClass?: string;
 };
 
+const GRAPH_STATE_KEY_INLINE_LIMIT = 480;
+const FNV1A64_OFFSET = 0xcbf29ce484222325n;
+const FNV1A64_PRIME = 0x100000001b3n;
+
+function fnv1a64(bytes: Uint8Array, reverse = false): string {
+  let hash = FNV1A64_OFFSET;
+  for (let offset = 0; offset < bytes.length; offset += 1) {
+    const index = reverse ? bytes.length - offset - 1 : offset;
+    hash ^= BigInt(bytes[index]);
+    hash = BigInt.asUintN(64, hash * FNV1A64_PRIME);
+  }
+  return hash.toString(16).padStart(16, '0');
+}
+
+/**
+ * Keep graph identities losslessly inline when they are short. Long authored
+ * IRIs and labels use a bounded, deterministic two-direction fingerprint so
+ * URL state, SVG identifiers and restoration all use the same complete input
+ * without truncation. The byte length and two 64-bit passes make accidental
+ * collisions vanishingly unlikely for presentation state; this is not an
+ * evidence or release-integrity digest.
+ */
+export function boundedGraphStateKey(value: string): string {
+  if (value.length <= GRAPH_STATE_KEY_INLINE_LIMIT) return value;
+  const bytes = new TextEncoder().encode(value);
+  return `okf-long-v1:${bytes.length}:${fnv1a64(bytes)}:${fnv1a64(bytes, true)}`;
+}
+
+export function graphEdgeStateKey(edge: Pick<DirectedGraphEdge, 'source' | 'target' | 'label'>): string {
+  return boundedGraphStateKey(`${edge.source}>${edge.target}:${edge.label}`);
+}
+
 export type GraphSemanticFilters = {
   assertionStatuses?: string[];
   assertionScopes?: string[];
@@ -286,7 +318,7 @@ function relationshipDirection(edge: GroupableGraphEdge, center: string): GraphR
 
 export function graphRelationshipGroupKey(edge: GroupableGraphEdge, center: string): string {
   const predicate = edge.predicate?.trim() || edge.label.trim() || 'related';
-  return `${relationshipDirection(edge, center)}:${predicate}`;
+  return boundedGraphStateKey(`${relationshipDirection(edge, center)}:${predicate}`);
 }
 
 export function filterGraphRelationshipsBySemantics(
