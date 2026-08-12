@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize deterministic local heritage browser evidence and its receipt."""
+"""Materialise deterministic local heritage browser evidence and its receipt."""
 
 from __future__ import annotations
 
@@ -1123,7 +1123,7 @@ def build_receipt(
             ],
             "reused_gates": [],
             "rationale": (
-                "This receipt was materialized from a full current candidate: no "
+                "This receipt was materialised from a full current candidate: no "
                 "corpus, Explorer, Site or browser-evidence identity was carried "
                 "forward from the previous receipt."
             ),
@@ -1242,7 +1242,7 @@ def main(argv: list[str] | None = None) -> int:
         observed_at=args.observed_at,
     )
     print(
-        f"materialized local candidate receipt: {output} "
+        f"materialised local candidate receipt: {output} "
         f"questions={receipt['question_suite']['questions_run']} "
         f"journeys={receipt['local_journeys']['journeys_run']}"
     )

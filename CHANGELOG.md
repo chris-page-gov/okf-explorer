@@ -63,6 +63,8 @@
   hydration failure can expose feedback, so that feedback names the descriptor
   actually under review. Added deterministic delayed-registry, delayed-bundle
   and delayed-file browser regressions with exact failure-identity assertions.
+  Refreshed the exact-app Heritage consumer evidence and corrected its receipt
+  generator to use British-English publication wording.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 

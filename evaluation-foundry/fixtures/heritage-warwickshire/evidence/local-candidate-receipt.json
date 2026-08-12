@@ -1,21 +1,21 @@
 {
   "candidate": {
-    "explorer_manifest_sha256": "b35d4e8cfece55325aeebb2eb1874267b08b25e4d7bbe6873d47622cb812a227",
-    "explorer_tree_sha256": "07f802d59fbcb4e5f9b44bce9b9e8258c8222ff797adcb60c65552cb3e3dc372",
+    "explorer_manifest_sha256": "bc602cb3f189fbe9ccc10779061396e2c77f925668cb3115446a1646fc45ed69",
+    "explorer_tree_sha256": "0489fddd63a953a952eaad49f9e79aed1ddd4cb76538545b1e83976eb9737bd7",
     "generated_at": "2026-08-03T10:29:12Z",
     "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
     "heritage_release_root_sha256": "55609afca3621996bda438d7ff4db928245a947355163adbbe5bbd02e0126dbd",
     "site_file_count": 10331,
-    "site_internal_references": 4810,
+    "site_internal_references": 4809,
     "site_reading_pages": 269,
     "site_size_gate": {
-      "headroom_bytes": 183729297,
+      "headroom_bytes": 183728410,
       "limit_bytes": 1000000000,
-      "site_bytes": 816270703,
+      "site_bytes": 816271590,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "b0973be07378eddcef0da0a74ca6b0b5a331b06d79952d540537badac89cfb43",
+    "site_tree_sha256": "aefdf756871e3ada9a2567a1ef8b1a0e1df1d564cd01394f255965702a176788",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
     "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
@@ -49,7 +49,7 @@
     "status": "passed"
   },
   "local_journeys": {
-    "base_url": "http://127.0.0.1:8003/",
+    "base_url": "http://127.0.0.1:8004/",
     "errors": 0,
     "failed": 0,
     "journey_ids": [
@@ -62,8 +62,8 @@
     "manifest_sha256": "f3b3426db62c6ac97180534e7f9d6faec95606f7087805d87634be880173d0de",
     "passed": 3,
     "result": "evidence/receipts/local-journey-results.json.gz",
-    "result_gzip_sha256": "fce161a1f0fb30e78bc028aa69858cd81f9a76082bccf08324d3da17d10059eb",
-    "result_json_sha256": "e99433aa3adfac8071ba04852ae27ec49fa0c03197593a27f1729658d1e289ae",
+    "result_gzip_sha256": "c8c5dfab6333abbfc22a311bc350743776dac8b46a5d3bcadd1c9ed95367b0be",
+    "result_json_sha256": "bed1f881ac0edb8e8abc455c78944cabc3d97dfac53dc45b3d931e662c19d638",
     "start_bundles": [
       "/publication/tiny/okf-explorer.json",
       "/publication/okf-explorer.json",
@@ -72,7 +72,7 @@
     "status": "passed",
     "validation_only": 0
   },
-  "observed_at": "2026-08-12T16:45:14Z",
+  "observed_at": "2026-08-12T18:57:43Z",
   "producer_materials": {
     "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
     "bytes": 400721,
@@ -109,7 +109,7 @@
   },
   "publication_shell_rebind": {
     "change_class": "full-candidate-rebuild",
-    "rationale": "This receipt was materialized from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
+    "rationale": "This receipt was materialised from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
     "rerun_gates": [
       "faithful/tiny/synthetic corpus material and release-root validation",
       "faithful/tiny/synthetic deterministic tree identity",
@@ -129,13 +129,13 @@
     "average_plain_language_and_government_style": 17.2,
     "average_retrieval": 31.3,
     "average_total": 92.7,
-    "base_url": "http://127.0.0.1:8003/",
+    "base_url": "http://127.0.0.1:8004/",
     "bundle": "/publication/okf-explorer.json",
     "questions_run": 100,
     "questions_scored": 100,
     "result": "evidence/receipts/question-suite-results.json.gz",
-    "result_gzip_sha256": "dade967bd115471a3d0d5da3dee983f0aeb3888582176b650864d7cc64c76082",
-    "result_json_sha256": "184cd06b9f0ca92d799cf66528ec63a85efb25283ffd0b651dd99d365e247bf7",
+    "result_gzip_sha256": "e677ac517365bc92ffddebbc2d054ace69d8ae1a34aa9a17a3575aec2fec913e",
+    "result_json_sha256": "460f5c241d18abdaf67e1e43d621f1a2cbef5e6df6d5a29e1a9a4c83a5ba9ad1",
     "scores_at_least_80": 100,
     "scores_below_60": 0,
     "status": "passed",
