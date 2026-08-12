@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added a fail-closed `okf-uk-living` reconciliation gate for the complete rich
+  relationship runtime, route locator and four executable Draft 2020-12
+  schemas. The audit validates every projected assertion and route commitment,
+  applies the Reader's aggregate loading ceilings, and requires an explicit
+  reviewed preset when a producer is audited from a renamed worktree.
+
 ## v0.7.0 - 2026-08-12 - Explore OKF authoring and review
 
 - Reviewed the reusable OKF authoring methodology against the completed Land
