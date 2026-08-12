@@ -46,7 +46,10 @@ def main() -> int:
         updated = ""
 
     if updated and updated != (ROOT / "viewer.html").read_text(encoding="utf-8"):
-        errors.append("viewer.html is not synchronized; run python3 scripts/update_viewer.py")
+        errors.append(
+            "viewer.html is not synchronised; run "
+            "uv run --locked python scripts/update_viewer.py"
+        )
 
     bundle, bundle_errors = build_okf_bundle.build_bundle()
     errors.extend(f"runtime bundle: {error}" for error in bundle_errors)
@@ -67,7 +70,8 @@ def main() -> int:
                 for path, content in expected.items():
                     if not path.is_file() or path.read_text(encoding="utf-8") != content:
                         errors.append(
-                            f"{path.name} is not synchronized; run python3 scripts/build_okf_bundle.py"
+                            f"{path.name} is not synchronised; run "
+                            "uv run --locked python scripts/build_okf_bundle.py"
                         )
 
     if errors:

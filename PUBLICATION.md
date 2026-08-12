@@ -54,10 +54,17 @@ only if its bytes still match the previous assembly manifest; collisions must
 have an explicit final owner. `.site-components/` is a local/CI cache and is
 not source material.
 
+Run `uv sync --locked` before local publication work. Every Explorer-owned
+Python command below uses the committed CPython 3.12.11 and `uv.lock` through
+`uv run --locked`. The separately versioned external Heritage publication unit
+retains a byte-preserved legacy requirements manifest, but its host-Python
+workflow does not lock transitive dependencies; do not mistake that explicit
+compatibility boundary for the governed Explorer environment.
+
 The candidate receipt is deliberately written outside `_site/`:
 
 ```sh
-python3 scripts/build_site.py \
+uv run --locked python scripts/build_site.py \
   --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
 ```
 
@@ -74,9 +81,9 @@ candidate into its `site/` directory, copy all five repository workflows to
 install the promotion-envelope template outside the candidate root:
 
 ```sh
-python3 scripts/retarget_heritage_source_snapshots.py --check
-python3 scripts/build_heritage_evaluation.py --check --fixture all
-python3 scripts/export_publication_unit.py \
+uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
+uv run --locked python scripts/build_heritage_evaluation.py --check --fixture all
+uv run --locked python scripts/export_publication_unit.py \
   --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
   --output /path/to/okf-heritage-coventry-warwickshire/site
 python3 /path/to/okf-heritage-coventry-warwickshire/site/scripts/check_publication_unit_manifest.py \
@@ -170,19 +177,19 @@ Run these before publishing or cutting a release:
 
 ```sh
 cd apps/okf-explorer && pnpm install && pnpm check && pnpm build && cd ../..
-python3 scripts/build_uk_government_api_okf.py --check
-python3 scripts/check_legislation_okf.py
-python3 scripts/build_legislation_evaluation.py
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/check_heritage_adversarial.py
-python3 scripts/retarget_heritage_source_snapshots.py --check
-python3 scripts/build_heritage_evaluation.py --check --fixture all
-python3 scripts/export_publication_unit.py \
+uv run --locked python scripts/build_uk_government_api_okf.py --check
+uv run --locked python scripts/check_legislation_okf.py
+uv run --locked python scripts/build_legislation_evaluation.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/check_heritage_adversarial.py
+uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
+uv run --locked python scripts/build_heritage_evaluation.py --check --fixture all
+uv run --locked python scripts/export_publication_unit.py \
   --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
   --check
-python3 scripts/build_site.py \
+uv run --locked python scripts/build_site.py \
   --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
 ```
 

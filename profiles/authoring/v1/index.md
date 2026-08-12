@@ -116,7 +116,7 @@ only when a calibration method and evidence are declared.
 
 - Hash-lock an approved domain profile and its evidence register.
 - For an empty or imported target, run
-  `python3 scripts/okf_repository_bootstrap.py TARGET` as a dry run before
+  `uv run --locked python scripts/okf_repository_bootstrap.py TARGET` as a dry run before
   `--apply`. Non-empty and dirty targets require `--adopt-existing`; existing
   files are preserved and the tool never initializes Git, creates remotes,
   commits, enables CI, pushes or publishes.

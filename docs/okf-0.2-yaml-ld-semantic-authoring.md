@@ -299,7 +299,7 @@ It records:
 Run the cross-repository audit with:
 
 ```sh
-python3 scripts/reconcile_okf_repositories.py
+uv run --locked python scripts/reconcile_okf_repositories.py
 ```
 
 Use `--strict` when selecting a release candidate. The default mode separates

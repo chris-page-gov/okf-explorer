@@ -29,16 +29,12 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - name: Install impact-planner dependency
-        run: python3 -m pip install "ruamel.yaml>=0.19,<0.20"
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Build fail-closed impact plan
         id: plan
         run: >-
-          python3 scripts/plan_evaluation_foundry_impact.py
+          uv run --locked python scripts/plan_evaluation_foundry_impact.py
           --changed-from "origin/${{ github.event.pull_request.base.ref || 'main' }}"
           --output impact-plan.json
           --github-output "$GITHUB_OUTPUT"
@@ -53,14 +49,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - name: Install microfixture dependencies
-        run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Reject all reconstructed late-finding classes
         run: >-
-          python3 scripts/check_heritage_adversarial.py
+          uv run --locked python scripts/check_heritage_adversarial.py
           --output "$RUNNER_TEMP/adversarial-results.json"
       - name: Upload deterministic adversarial receipt
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -76,28 +69,25 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - name: Install semantic OKF dependencies
-        run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Download exact app build for identity-bound Python contracts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: okf-explorer-app-build
           path: apps/okf-explorer/build
       - name: Run deterministic Python contracts
-        run: python3 -m unittest discover -s tests
+        run: uv run --locked python -m unittest discover -s tests
       - name: Validate YAML-LD registry and constraints
         run: |
-          python3 scripts/build_okf_registry.py --check
-          python3 scripts/check_source_constraints.py
+          uv run --locked python scripts/build_okf_registry.py --check
+          uv run --locked python scripts/check_source_constraints.py
       - name: Validate impacted candidate planes
         env:
           IMPACT_BUILDER_FIXTURES: ${{ needs.impact-plan.outputs.builder_fixtures }}
           IMPACT_BUILDER_PLANES: ${{ needs.impact-plan.outputs.builder_planes }}
         run: >-
-          python3 scripts/check_impacted_heritage_evaluation.py
+          uv run --locked python scripts/check_impacted_heritage_evaluation.py
           --fixtures-json "$IMPACT_BUILDER_FIXTURES"
           --planes-json "$IMPACT_BUILDER_PLANES"
 
@@ -173,13 +163,9 @@ jobs:
       - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
-      - if: steps.browser-plan.outputs.requires_site == 'true'
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - name: Install Site dependencies when selected
+      - name: Set up locked Python toolchain when selected
         if: steps.browser-plan.outputs.requires_site == 'true'
-        run: python3 -m pip install -r requirements-okf.txt
+        uses: ./.github/actions/setup-locked-python
       - name: Download exact app build for selected Foundry pages
         if: steps.browser-plan.outputs.requires_site == 'true'
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
@@ -188,7 +174,7 @@ jobs:
           path: apps/okf-explorer/build
       - name: Assemble Site only when a rendered-page suite is selected
         if: steps.browser-plan.outputs.requires_site == 'true'
-        run: python3 scripts/build_site.py
+        run: uv run --locked python scripts/build_site.py
       - name: Run selector-bounded Chromium assurance
         working-directory: apps/okf-explorer
         env:
@@ -210,23 +196,20 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
       - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
-      - name: Install Site dependencies
-        run: python3 -m pip install -r requirements-okf.txt
       - name: Download exact app build for Foundry browser assurance
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: okf-explorer-app-build
           path: apps/okf-explorer/build
       - name: Assemble Site for the Foundry browser suite
-        run: python3 scripts/build_site.py
+        run: uv run --locked python scripts/build_site.py
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
         run: pnpm exec playwright install --with-deps firefox webkit
@@ -240,17 +223,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Validate Evaluation Foundry fixtures
-        run: python3 scripts/check_evaluation_foundry.py
+        run: uv run --locked python scripts/check_evaluation_foundry.py
       - name: Verify persisted public bases before the ordinary check
-        run: python3 scripts/retarget_heritage_source_snapshots.py --check
+        run: uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
       - name: Validate separate publication unit and rooted digests
         run: >-
-          python3 scripts/export_publication_unit.py
+          uv run --locked python scripts/export_publication_unit.py
           --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json
           --check
 
@@ -262,17 +243,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Check documentation lockstep
-        run: python3 scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
+        run: uv run --locked python scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
       - name: Validate bundle, viewer and OKF conformance
         run: |
-          python3 scripts/build_okf_bundle.py --check
-          python3 scripts/update_viewer.py --check
-          python3 scripts/check_okf.py
+          uv run --locked python scripts/build_okf_bundle.py --check
+          uv run --locked python scripts/update_viewer.py --check
+          uv run --locked python scripts/check_okf.py
 
   site:
     needs: [impact-plan, adversarial-gate, app]
@@ -280,10 +259,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Download exact app build
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
@@ -298,7 +275,7 @@ jobs:
           key: site-components-v3-${{ runner.os }}-${{ github.sha }}
           restore-keys: site-components-v3-${{ runner.os }}-
       - name: Build componentised static Site
-        run: python3 scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
+        run: uv run --locked python scripts/build_site.py --candidate-receipt "$RUNNER_TEMP/site-candidate-receipt.json"
       - name: Upload candidate identity outside Site bytes
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -311,12 +288,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Validate draft promotion envelope contract
-        run: python3 scripts/check_promotion_envelope.py release-assurance/heritage-publication-envelope.json
+        run: uv run --locked python scripts/check_promotion_envelope.py release-assurance/heritage-publication-envelope.json
 
   okf-explorer-ci:
     if: always()
@@ -333,8 +308,11 @@ jobs:
       - release-policy
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Preserve required-check compatibility
         env:
           RESULTS: ${{ toJSON(needs) }}
         run: |
-          python3 -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'
+          uv run --locked python -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'

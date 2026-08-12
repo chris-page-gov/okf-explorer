@@ -124,11 +124,11 @@ Automated checks cover evidence structure and observable source properties. Expe
 ## Rebuild and validate
 
 ```sh
-python3 scripts/build_legislation_okf.py --refresh
-python3 scripts/check_legislation_okf.py
-python3 scripts/build_legislation_evaluation.py
+uv run --locked python scripts/build_legislation_okf.py --refresh
+uv run --locked python scripts/check_legislation_okf.py
+uv run --locked python scripts/build_legislation_evaluation.py
 cd apps/okf-explorer && pnpm test && pnpm check && pnpm build
-cd ../.. && python3 scripts/build_site.py
+cd ../.. && uv run --locked python scripts/build_site.py
 ```
 
 The source cache under `tmp/legislation-okf-source/` is intentionally untracked. The generated `legislation/` pack is checked in so Pages deployment and review do not depend on live upstream availability.

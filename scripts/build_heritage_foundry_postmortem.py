@@ -563,7 +563,7 @@ def extract_commands(script: str) -> list[str]:
 
 def command_categories(command: str) -> list[str]:
     categories: list[str] = []
-    executable = r"(?:\.venv/bin/python|python3?|uv\s+run\s+python)"
+    executable = r"(?:\.venv/bin/python|python3?|uv\s+run(?:\s+--locked)?\s+python)"
     checks = (
         ("heritage-build", rf"(?:^|[;&\n])\s*{executable}\s+scripts/build_heritage_evaluation\.py\b"),
         ("site-build", rf"(?:^|[;&\n])\s*{executable}\s+scripts/build_site\.py\b"),

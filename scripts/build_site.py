@@ -1674,7 +1674,10 @@ def component_source_fingerprint(
             *common,
             ROOT / "scripts" / "build_okf_bundle.py",
             ROOT / "scripts" / "update_viewer.py",
+            ROOT / ".python-version",
+            ROOT / "pyproject.toml",
             ROOT / "requirements-okf.txt",
+            ROOT / "uv.lock",
             ROOT / "okf.config.json",
             *(ROOT / name for name in PUBLIC_ROOT_FILES),
             *(ROOT / name for name in PUBLIC_DIRS),
@@ -1689,7 +1692,10 @@ def component_source_fingerprint(
                 relative.suffix.lower() == ".md"
                 or relative.as_posix()
                 in {
+                    ".python-version",
+                    "pyproject.toml",
                     "requirements-okf.txt",
+                    "uv.lock",
                     "okf.config.json",
                     PUBLICATION_UNIT_DESCRIPTOR.relative_to(ROOT).as_posix(),
                 }

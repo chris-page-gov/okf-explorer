@@ -10,6 +10,17 @@
 - Updated both copy-ready Foundry prompts, the bundle-authoring guide and the
   beginner explanation, and researched a bounded Coventry everyday-services
   open-data pilot to test the method before reviewing `okf-uk-living`.
+- Replaced host-dependent Python and repeated unpinned `pip` installation with
+  a committed `uv.lock`, CPython 3.12.11 pin and `uv` 0.12.2 requirement.
+  Local guidance and all root workflows now use one locked invocation path,
+  with a reusable commit-pinned CI setup action and regression enforcement.
+- Kept `requirements-okf.txt` only as the byte-preserved legacy compatibility
+  requirements manifest required by the current digest-bound Heritage
+  publication-unit contract; its separately versioned host-Python workflow
+  does not lock transitive dependencies, while Explorer development and CI no
+  longer install from it. Preserved the exact released Heritage
+  evaluation-profile bytes while preventing current root workflows and the
+  Foundry browser server from using a host interpreter.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 

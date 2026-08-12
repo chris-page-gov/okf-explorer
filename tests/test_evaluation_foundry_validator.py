@@ -801,7 +801,7 @@ class EvaluationFoundryValidatorTests(unittest.TestCase):
             ROOT / ".github" / "workflows" / "pages.yml",
         ):
             self.assertIn(
-                "python3 scripts/check_evaluation_foundry.py",
+                "uv run --locked python scripts/check_evaluation_foundry.py",
                 workflow.read_text(encoding="utf-8"),
             )
 

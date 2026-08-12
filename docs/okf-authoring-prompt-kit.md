@@ -24,9 +24,9 @@ For an empty or imported target, begin the build with the fail-safe repository
 bootstrap:
 
 ```sh
-python3 scripts/okf_repository_bootstrap.py /path/to/target
-python3 scripts/okf_repository_bootstrap.py /path/to/target --apply
-python3 scripts/okf_repository_bootstrap.py /path/to/target --check --adopt-existing
+uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target
+uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --apply
+uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --check --adopt-existing
 ```
 
 The first command is a dry run. Adoption is always explicit. The scaffolder
@@ -298,7 +298,7 @@ exploratory-stage controls is
 2. Validate its `domain-profile.json`:
 
    ```sh
-   python3 scripts/check_domain_profile.py \
+   uv run --locked python scripts/check_domain_profile.py \
      domain-profile/domain-profile.json \
      --equivalent domain-profile/domain-profile.yaml
    ```

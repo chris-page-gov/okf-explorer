@@ -219,10 +219,49 @@ The repository contains:
   Markdown corpus.
 - `sources-index.md` and `log.md` - source and provenance indexes.
 
+## Python Toolchain
+
+Install exactly `uv` 0.12.2 with Astral's
+[official version-specific installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer),
+then create the exact project environment from the committed lock. On macOS
+or Linux:
+
+```sh
+curl -LsSf https://astral.sh/uv/0.12.2/install.sh | sh
+uv --version
+uv sync --locked
+uv run --locked python -c 'import sys; print(sys.version)'
+```
+
+The installation guide gives the equivalent version-specific PowerShell
+command for Windows. `uv --version` must report `uv 0.12.2`; the project
+refuses a different version rather than silently changing its lock semantics.
+
+The repository pins CPython 3.12.11 in `.python-version`, direct dependencies
+in `pyproject.toml`, exact transitive artefacts in `uv.lock`, and the required
+`uv` version in `[tool.uv]`. Use `uv run --locked python …` for every governed
+Python command; do not rely on whichever `python3` happens to be first on the
+host `PATH`.
+
+`requirements-okf.txt` remains temporarily as a byte-preserved legacy
+compatibility requirements manifest because the current digest-bound Heritage
+publication unit exports those bytes. Root development and CI do not install
+from it. A regression test keeps its six legacy constraints aligned with the
+corresponding project dependencies; retiring it requires a separately reviewed
+publication-unit contract change. The separately versioned external workflow
+still installs those ranges with host Python and does not lock their transitive
+resolution; it is an explicit compatibility boundary, not part of the governed
+Explorer environment.
+For the same reason, the two released Heritage evaluation profiles retain the
+historical `python3` fixture declarations bound into their candidate evidence;
+current root workflows do not execute those strings, and their exact bytes are
+regression locked until that publication unit is versioned independently.
+
 ## Read Locally
 
-Run `python3 scripts/build_site.py`, serve `_site/` as the local web root, and
-open `http://127.0.0.1:8002/next/` to review the canonical Svelte Explorer.
+Run `uv run --locked python scripts/build_site.py`, serve `_site/` as the local
+web root, and open `http://127.0.0.1:8002/next/` to review the canonical Svelte
+Explorer.
 The root Pages URL redirects to `next/`, while the dependency-free
 compatibility Explorer remains available at `legacy/`. The legacy single-file
 viewer remains available at `viewer.html`.
@@ -326,30 +365,31 @@ accepting dependency updates. For Playwright updates, run the affected Chrome
 journeys locally; the terminal-equivalent CI assurance then repeats the
 browser contract across Chrome, Firefox and WebKit.
 
-When `apps/okf-explorer/build/` exists, `python3 scripts/build_site.py` copies
-it to `_site/next/`. The root `index.html` redirects to `next/` and preserves
-query-string and hash routes, so published root links use the canonical Svelte
-Explorer. The old dependency-free Explorer is copied to `_site/legacy/`.
+When `apps/okf-explorer/build/` exists,
+`uv run --locked python scripts/build_site.py` copies it to `_site/next/`. The
+root `index.html` redirects to `next/` and preserves query-string and hash
+routes, so published root links use the canonical Svelte Explorer. The old
+dependency-free Explorer is copied to `_site/legacy/`.
 
 ## Validate And Build
 
 ```sh
-python3 scripts/build_uk_government_api_okf.py --check
-python3 scripts/check_legislation_okf.py
-python3 scripts/build_legislation_evaluation.py
-python3 scripts/check_evaluation_foundry.py
-python3 scripts/check_heritage_adversarial.py
-python3 scripts/retarget_heritage_source_snapshots.py --check
-python3 scripts/build_heritage_evaluation.py --fixture all --check
-python3 scripts/export_publication_unit.py \
+uv run --locked python scripts/build_uk_government_api_okf.py --check
+uv run --locked python scripts/check_legislation_okf.py
+uv run --locked python scripts/build_legislation_evaluation.py
+uv run --locked python scripts/check_evaluation_foundry.py
+uv run --locked python scripts/check_heritage_adversarial.py
+uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
+uv run --locked python scripts/build_heritage_evaluation.py --fixture all --check
+uv run --locked python scripts/export_publication_unit.py \
   --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
   --check
-python3 scripts/build_okf_registry.py --check
-python3 scripts/check_documentation_lockstep.py
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/build_site.py
+uv run --locked python scripts/build_okf_registry.py --check
+uv run --locked python scripts/check_documentation_lockstep.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/build_site.py
 node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/next/ --bundle /uk-government-apis/okf-explorer.json --limit 100
 node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/next/ --suite evaluation/gov-ckan/questions.json --limit 100
 ```
@@ -364,29 +404,30 @@ also published. The large heritage corpus is excluded: the main Site emits only
 small compatibility pages that point to its independently rooted publication.
 
 To regenerate the heritage evaluation from its frozen, network-independent
-source snapshots, run `python3 scripts/build_heritage_evaluation.py --fixture
-all`. Plane and path selectors permit bounded rebuilds; unchanged files are not
-rewritten. Live source acquisition and scheduled link observation are separate,
-reviewable steps, so CI never refreshes mutable upstream data inside candidate
-bytes.
+source snapshots, run
+`uv run --locked python scripts/build_heritage_evaluation.py --fixture all`.
+Plane and path selectors permit bounded rebuilds; unchanged files are not
+rewritten. Live source acquisition and scheduled link observation are
+separate, reviewable steps, so CI never refreshes mutable upstream data inside
+candidate bytes.
 
 To regenerate the explorer bundle after Markdown changes:
 
 ```sh
-python3 scripts/build_okf_bundle.py
+uv run --locked python scripts/build_okf_bundle.py
 ```
 
 To regenerate the UK Government APIs exemplar from the official catalogue CSV:
 
 ```sh
-python3 scripts/build_uk_government_api_okf.py
+uv run --locked python scripts/build_uk_government_api_okf.py
 ```
 
 To refresh the complete legislation work catalogue from the official Atom API:
 
 ```sh
-python3 scripts/build_legislation_okf.py --refresh
-python3 scripts/check_legislation_okf.py
+uv run --locked python scripts/build_legislation_okf.py --refresh
+uv run --locked python scripts/check_legislation_okf.py
 ```
 
 Publication-affecting changes to `scripts/`, `sources/`, `uk-government-apis/`,
