@@ -1,0 +1,50 @@
+{
+  "schema": "okf-explorer-large-corpus.v1",
+  "kind": "okf-large-corpus",
+  "okf_version": "0.2",
+  "snapshot": "coventry-everyday-services-2026-08-12",
+  "generated_at": "2026-08-12T09:30:00Z",
+  "plane_roots": {
+    "semantic": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "exploratory_publication": {
+    "schema": "okf-exploratory-publication.v1",
+    "publication_state": "exploratory",
+    "snapshot_id": "coventry-everyday-services-2026-08-12",
+    "generated_at": "2026-08-12T09:30:00Z",
+    "applicable_plane_roots": {
+      "semantic": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "publisher": {
+      "name": "Independent Coventry research project",
+      "url": "https://publisher.fixture.test/",
+      "authority_status": "independent-research"
+    },
+    "banner": {
+      "label": "Exploratory",
+      "message": "This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision.",
+      "feedback_url": "https://feedback.fixture.test/issues/new?template=explore.yml",
+      "preserve_route": true
+    },
+    "indexing_policy": "noindex",
+    "limitations": [
+      "Coverage and semantic mappings remain under review."
+    ],
+    "permitted_claims": [
+      "This named snapshot is available for research and feedback."
+    ],
+    "prohibited_claims": [
+      "Do not claim official endorsement, completeness or release approval."
+    ],
+    "promotion_rule": "Owner review creates a fresh candidate; exploratory bytes are never relabelled."
+  },
+  "title": "Stale local file",
+  "entrypoints": {
+    "data_manifest": "unsupported-local-manifest.json"
+  },
+  "counts": {
+    "records": 1
+  },
+  "nodes": {},
+  "relationships": []
+}

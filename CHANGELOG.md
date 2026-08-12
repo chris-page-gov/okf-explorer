@@ -54,6 +54,17 @@
   including `.nojekyll`, and added a workflow regression assertion. This keeps
   the downloaded release artefact's complete Site tree identical to its
   candidate receipt rather than silently omitting one governed file.
+- Separated the editable bundle-URL draft from the committed loaded-source URL
+  so an initial asynchronous load cannot overwrite a person's newly typed URL
+  or leak unsubmitted text into copied routes and feedback links. Delayed
+  registry start-up and slow local-file reads also cannot supersede a later
+  explicit load or clear its loading state. Accepted remote and local
+  descriptor identities are bound before a later validation or subordinate-
+  hydration failure can expose feedback, so that feedback names the descriptor
+  actually under review. Added deterministic delayed-registry, delayed-bundle
+  and delayed-file browser regressions with exact failure-identity assertions.
+  Refreshed the exact-app Heritage consumer evidence and corrected its receipt
+  generator to use British-English publication wording.
 
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 
