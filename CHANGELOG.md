@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
+
+- Corrected the unloaded large-corpus overview metric to prefer the declared
+  record count over the dataset-grouping count. This prevents 14 Land Registry
+  dataset groupings from being labelled as 14 discovery records when the
+  bundle declares 2,203 records.
+- Preserved compatibility with older bundles that publish only a dataset count
+  and added cross-browser regression coverage for bundles whose record and
+  dataset-grouping counts differ.
+
 ## v0.6.2 - 2026-08-11 - Bounded producer search policy
 
 - Added an exact, opt-in `okf-static-search.v2` query policy so a producer can

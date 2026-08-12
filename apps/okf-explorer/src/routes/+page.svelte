@@ -4021,9 +4021,9 @@
       ];
     }
     return [
-      { label: recordPlural(), value: summary?.record_count || counts.datasets || 0 },
-      { label: resourcePlural(), value: summary?.resource_count || counts.resources || 0 },
-      { label: 'relationships', value: summary?.relationship_count || counts.relationships || 0 },
+      { label: recordPlural(), value: summary?.record_count ?? counts.records ?? counts.datasets ?? 0 },
+      { label: resourcePlural(), value: summary?.resource_count ?? counts.resources ?? 0 },
+      { label: 'relationships', value: summary?.relationship_count ?? counts.relationships ?? 0 },
       { label: 'active filters', value: activeLargeFilterCount }
     ];
   }
@@ -7482,7 +7482,7 @@
           {:else if activeView === 'timeline'}
             <div class="view-heading">
               <h2>Timeline</h2>
-              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.datasets ?? source.manifest.counts?.records ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
+              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.records ?? source.manifest.counts?.datasets ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
             </div>
             <div class="timeline-toolbar" aria-label="Timeline resolution">
               {#each ['latest', 'year', 'quarter', 'month'] as resolution}
