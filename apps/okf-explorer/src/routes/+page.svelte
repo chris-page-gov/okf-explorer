@@ -7482,7 +7482,7 @@
           {:else if activeView === 'timeline'}
             <div class="view-heading">
               <h2>Timeline</h2>
-              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.datasets ?? source.manifest.counts?.records ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
+              <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.records ?? source.manifest.counts?.datasets ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
             </div>
             <div class="timeline-toolbar" aria-label="Timeline resolution">
               {#each ['latest', 'year', 'quarter', 'month'] as resolution}

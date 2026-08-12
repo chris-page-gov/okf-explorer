@@ -57,9 +57,11 @@ async function installTargetedFixture(
   context: BrowserContext,
   requests: string[],
   options: {
+    datasetGroupingCount?: number;
     modelChunkFailures?: number;
     omitAdjacency?: boolean;
     omitAnalysisRecordCount?: boolean;
+    omitDeclaredRecordCount?: boolean;
     resourceHydrationSafe?: boolean;
   } = {}
 ) {
@@ -378,8 +380,11 @@ async function installTargetedFixture(
     description: 'A huge logical corpus with bounded record and relationship indexes.',
     snapshot: SNAPSHOT,
     counts: {
-      datasets: options.resourceHydrationSafe ? 4 : 365_786,
-      records: options.resourceHydrationSafe ? 4 : 365_786,
+      datasets: options.datasetGroupingCount
+        ?? (options.resourceHydrationSafe ? 4 : 365_786),
+      ...(options.omitDeclaredRecordCount
+        ? {}
+        : { records: options.resourceHydrationSafe ? 4 : 365_786 }),
       resources: 1,
       relationships: 853_883
     },
@@ -647,12 +652,32 @@ test.describe('targeted large-corpus relationship hydration', () => {
   }) => {
     const requests: string[] = [];
     await installTargetedFixture(page.context(), requests, {
+      datasetGroupingCount: 14,
       omitAnalysisRecordCount: true
     });
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
 
     const recordMetric = page.locator('[data-metric="legal-works"]');
     await expect(recordMetric.locator('strong')).toHaveText('365,786');
+    await expect(recordMetric.locator('span')).toHaveText('legal works');
+
+    await page.getByLabel('Views').getByRole('button', { name: 'Timeline', exact: true }).click();
+    await expect(page.getByText('365,786 legal works in overview')).toBeVisible();
+  });
+
+  test('overview keeps the legacy dataset-count fallback when no record count is declared', async ({
+    page
+  }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      datasetGroupingCount: 14,
+      omitAnalysisRecordCount: true,
+      omitDeclaredRecordCount: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
+
+    const recordMetric = page.locator('[data-metric="legal-works"]');
+    await expect(recordMetric.locator('strong')).toHaveText('14');
     await expect(recordMetric.locator('span')).toHaveText('legal works');
   });
 
