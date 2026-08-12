@@ -227,6 +227,67 @@ semantic_model:
     - Do not infer authority from model confidence.
     - Do not use owl:sameAs without authoritative identity evidence.
 
+semantic_linking:
+  objective: Maximise evidenced links that answer declared user tasks, not the raw number of triples.
+  local_iri_policy: Give every graph-reachable entity a stable repository-controlled IRI and preserve every source-native identifier separately.
+  external_link_policy: Reuse persistent official identifiers and IRIs where eligibility, authority and mapping strength are evidenced.
+  mapping_policy: Use qualified SKOS or domain relationships; reserve owl:sameAs for independently evidenced identity.
+  eligible_entity_denominators:
+    - entity_type: TYPE-001
+      eligibility_rule: Every in-scope document with a source-native public identifier is eligible.
+      eligible_count: null
+      minimum_coverage_percent: 100
+      exclusions: []
+  link_sets:
+    - id: LINKSET-001
+      label: Record to official source
+      predicate_iri: http://purl.org/dc/terms/source
+      target_namespace: https://example.org/source/
+      mapping_relation: domain-relationship
+      authority: The acquired source record explicitly identifies its canonical source.
+      evidence_rule: Retain the acquired source URL, observation time and content digest.
+      task_refs:
+        - TASK-001
+  prohibited_shortcuts:
+    - Do not infer identity or a semantic link from matching labels, URLs, hierarchy, co-occurrence or embedding similarity alone.
+    - Do not count duplicated delivery projections as additional semantic coverage.
+
+presentation_contract:
+  default_language: en-GB
+  label_priority:
+    - Reviewed source-native preferred label
+    - Reviewed domain-profile preferred label
+    - Deterministic editorial display label with explicit derivation
+    - Visible missing-label defect; expose the identifier only through inspection
+  graph_reachable_label_rule: Every graph-reachable entity must have a concise human label, language and label authority available without full-record hydration.
+  identifier_fallback: debug-only
+  compact_label_index:
+    path: data/labels/index.json
+    snapshot_bound: true
+    integrity_bound: true
+  relationship_display_rule: Predicates must read naturally in context and semantic/compatibility projections must not create unexplained duplicate edges.
+  citizen_checks:
+    - No default label in Reader, Graph, Links, Facets, Type, Timeline, Resources, Map or Narrative may expose a configured opaque identifier pattern.
+    - A novice must be able to answer each selected competency question without interpreting internal repository vocabulary.
+
+exploratory_publication:
+  enabled: true
+  publication_state: exploratory
+  banner:
+    label: Exploratory
+    message: This is an incomplete research view, not an authoritative service or released data product. Check the cited official source before making a decision.
+    feedback_url: https://example.org/issues/new
+    preserve_route: true
+  indexing_policy: noindex
+  snapshot_policy: Every shared iteration receives an immutable snapshot identifier and retains the applicable plane roots.
+  limitations:
+    - Source coverage, labels and semantic mappings remain subject to review.
+  permitted_claims:
+    - The named snapshot is available for bounded research and feedback.
+  prohibited_claims:
+    - Do not claim production approval, completeness, official endorsement or release conformance.
+  promotion_rule: Owner review creates a fresh candidate; exploratory bytes are never silently relabelled as a release candidate.
+
 standards:
   - id: STD-OKF-02
     title: Open Knowledge Format

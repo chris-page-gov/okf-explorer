@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Reviewed the reusable OKF authoring methodology against the completed Land
+  Registry retrospective and public graph evidence without reopening that
+  producer. Added additive Authoring Profile v1 controls for readable labels,
+  compact graph endpoint indexes, denominator-based useful semantic linking
+  and an explicitly non-release Explore OKF feedback stage.
+- Updated both copy-ready Foundry prompts, the bundle-authoring guide and the
+  beginner explanation, and researched a bounded Coventry everyday-services
+  open-data pilot to test the method before reviewing `okf-uk-living`.
+
 ## v0.6.3 - 2026-08-12 - Accurate large-corpus overview counts
 
 - Corrected the unloaded large-corpus overview metric to prefer the declared

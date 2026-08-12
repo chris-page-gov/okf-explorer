@@ -423,7 +423,7 @@ distributions rather than flattening them into the catalogue modified date.
 ## Optional Same-Origin Range Packs
 
 Large publications that cannot place every virtual shard directly in a Pages
-artifact may advertise `govuk-okf-github-release-pack-index.v1` through the
+artefact may advertise `govuk-okf-github-release-pack-index.v1` through the
 descriptor's optional `entrypoints.release_data_plane` reference. Registry
 entries do not change: they still point to the stable `okf-explorer.json`, and
 the descriptor selects the transport.
@@ -467,7 +467,7 @@ search shard must occur in the pack index. Query token and result-chunk fan-out
 remain bounded. Route-adjacency manifests must bind
 the loaded bundle snapshot as well. Record chunks, search shards and FNV-1a
 route-adjacency shards therefore keep their existing paths and route/deep-link
-behavior.
+behaviour.
 
 All pack paths and logical references must be safe descriptor-relative paths.
 Absolute paths, cross-origin references, traversal (including percent-encoded
@@ -534,6 +534,28 @@ Relationship labels should be readable in a graph: `published by`, `licensed
 as`, `has format`, `classified as`, `described by`, `has operation`, `provided
 by`, `documented at`.
 
+Stable identifiers are not display labels. Every graph-reachable source,
+target, publisher, rights statement, activity, concept and other entity must
+have a concise human label, language and label authority. For a large corpus,
+emit those values in a compact, snapshot-bound and integrity-bound label index
+so Graph, Links and Facets can name an endpoint without hydrating its full
+record. A raw hash, route key or generated identifier is available through
+Inspect, but must not become the ordinary visible fallback. Prefer a visible
+`Missing label` quality defect to a plausible-looking internal identifier.
+
+Do not maximise the raw number of relationships. Maximise **evidenced, useful
+link coverage** against declared eligible-entity denominators. Every link set
+must identify the competency question or task it serves, target namespace,
+predicate or qualified mapping, authority, minimum evidence, eligible count,
+linked count, unresolved count, exclusions and conflicts. Duplicated delivery
+projections do not increase semantic coverage.
+
+Use SKOS mapping properties for concept mappings at the evidenced strength.
+Reserve `owl:sameAs` for independently evidenced identity; matching labels,
+URLs, hierarchy, proximity or model similarity never establish it. Prefer
+stable official IRIs and reused governed vocabulary terms where applicable,
+following [W3C Data on the Web Best Practices](https://www.w3.org/TR/dwbp/).
+
 The Explorer groups a focus graph by predicate and direction, falling back to
 the human label for older bundles. Keep confidence, relationship strength and
 aggregate count separate: confidence estimates correctness, strength is a
@@ -542,6 +564,28 @@ only when the same declared count, strength, weight or evidence-count metric
 covers every displayed edge and varies across them. See
 [Ontology and semantic graph architecture](ontology-and-semantic-graph-architecture-2026-07-24.md)
 for the proposed vocabulary, inference, validation and provenance layers.
+
+The complete citizen-readability, link-coverage and exploratory-publication
+method is in
+[Review of the OKF authoring methodology](okf-authoring-methodology-review-2026-08-12.md).
+
+## Exploratory Publication
+
+An early semantic model may be shared as an **Explore OKF** snapshot after the
+tiny fixture and before candidate freeze. It remains an incomplete research
+view, not an authoritative service or released data product.
+
+The profile and descriptor must carry `publication_state: exploratory`, an
+immutable snapshot identity, limitations, applicable plane roots, an indexing
+decision and a route-preserving feedback URL. Every Explorer view and human
+page must show a persistent **Exploratory** banner. Rights, privacy, security,
+actual-consumer loading and basic link/label validation still gate sharing.
+
+An exploratory snapshot is review evidence. It may be superseded by another
+snapshot, but it is never silently relabelled or promoted as a release
+candidate. The current Explorer does not yet claim this banner contract; until
+that consumer change is implemented and tested, documentation must label the
+capability as planned.
 
 ## Metadata Repair Rules
 
@@ -592,11 +636,11 @@ its large-corpus descriptor and data manifest. Use
 - a paraphrased definition and the precise, bounded way the bundle applies it;
 - separate recognition, meaning and bounded-application review status, method,
   reviewer/process and time; and
-- artifact occurrence counts and sample JSON paths.
+- artefact occurrence counts and sample JSON paths.
 
 Use `okf-explorer-governed-term-validation.v1` to record the deterministic
 checks for unique IDs, namespace expansion, authoritative provenance, declared
-kind, bounded-application review and generated-artifact coverage. A conformant
+kind, bounded-application review and generated-artefact coverage. A conformant
 report must have no unregistered terms, pending application reviews, unused
 standards terms or failed checks.
 

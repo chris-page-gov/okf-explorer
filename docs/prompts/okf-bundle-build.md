@@ -142,12 +142,20 @@ that cannot safely be inferred.
     as passed.
 23. Execute the actual pinned consumers. A schema-only validator, mock UI,
     hand-written compatibility parser or HTTP status probe cannot substitute
-    for the reader, generator, finalizer or archive consumer it is meant to
+    for the reader, generator, finaliser or archive consumer it is meant to
     protect.
 24. Maintain an explicit dependency graph and independent digest roots for
     applicable source, control, data, search, semantic, presentation and
     release planes. Reuse or selective rerun is permitted only when the graph's
     transitive impact closure and relevant roots prove it safe.
+25. Treat stable identifiers and display labels as separate contracts. Fail a
+    build when any graph-reachable endpoint lacks a concise human label in the
+    snapshot-bound compact label index; never render a hash or generated key as
+    an ordinary label.
+26. Build only evidenced semantic links that answer profile tasks or
+    competency questions. Reconcile each external link set to its eligible,
+    linked, unresolved, excluded and conflicting counts; do not reward raw
+    triple count or duplicated projections.
 
 ## Phase 0 — Classify And Bootstrap The Repository
 
@@ -159,7 +167,7 @@ Before acquisition, generation or corpus work:
    `--adopt-existing` is explicit;
 3. create `.gitignore`, `AGENTS.md`, README/status, SECURITY and licensing
    decisions plus documented source/generated boundaries and disabled CI;
-4. make one initialization-only default-branch commit containing no corpus,
+4. make one initialisation-only default-branch commit containing no corpus,
    generated bundle or release evidence;
 5. configure the intended required checks while keeping CI disabled until its
    commands and permissions are reviewed; and
@@ -210,7 +218,7 @@ Never backpatch a frozen release tree to claim a later observation.
    - an artefact map marking source, generated, immutable and post-freeze
      outputs; and
    - a dependency/impact graph from source and producer through every
-     generated plane, consumer, finalizer and public route; and
+     generated plane, consumer, finaliser and public route; and
    - a recovery checkpoint that another task can consume without this
      transcript.
 4. Bind the build identity to:
@@ -240,14 +248,14 @@ and no hidden scope decision remains.
 ## Phase 1 — Two-stage tiny canonical fixture
 
 Before a full corpus build, create one fixture with two ordered stages. It must
-exercise every selected producer, consumer, schema, finalizer, archive root and
+exercise every selected producer, consumer, schema, finaliser, archive root and
 public representation without corpus-scale network access or paid model calls,
 and should finish in under one minute.
 
 ### Stage 1 — Producer contracts and plane roots
 
 Build the fixture twice from clean generated directories. Validate syntax,
-identity, references, negative/degraded behavior, checksums and every selected
+identity, references, negative/degraded behaviour, checksums and every selected
 plane root before a downstream consumer runs.
 
 Include applicable positive and negative cases:
@@ -280,10 +288,10 @@ Only after Stage 1 passes:
 
 1. Resolve every `required_for_release` consumer from the exact consumer lock.
 2. Execute the actual consumer binary, application, worker, validator,
-   generator, finalizer or archive reader against the Stage 1 bytes. Do not use
+   generator, finaliser or archive reader against the Stage 1 bytes. Do not use
    a mock or schema-only substitute.
 3. Exercise its real entrypoint and applicable overview, record, search,
-   facet, graph, archive/finalizer and degraded-input paths.
+   facet, graph, archive/finaliser and degraded-input paths.
 4. Capture consumer version/digest, command, fixture root, loaded bundle
    identity, view/query/fragment state, requested resources, terminal outcome
    and receipt.
@@ -327,7 +335,7 @@ Gate G2 passes when every expected item has exactly one terminal outcome, all
 receipts rehash, rights/access constraints are visible and there are no silent
 skips.
 
-## Phase 3 — Source-native normalization
+## Phase 3 — Source-native normalisation
 
 1. Parse defensively with bounded sizes, timeouts and safe archive/XML rules.
 2. Preserve native identifiers, raw values, hierarchy, language and temporal
@@ -413,9 +421,16 @@ For a large corpus:
 For all shapes:
 
 - support Reader, Search, Facets, Graph, Links, Timeline, Type, Resources,
-  Narrative and any profile-selected Map behavior with relevant data;
+  Narrative and any profile-selected Map behaviour with relevant data;
 - label official/source-native, normalized/rule-derived and model-assisted
   relationships distinctly;
+- emit a compact snapshot/integrity-bound label and type index for every
+  graph-reachable endpoint, including publishers, sources, rights statements,
+  activities and concepts;
+- expose stable identifiers and IRIs through inspection while treating a
+  missing human label as a visible validation defect, not a display fallback;
+- test every relevant view and facet for configured opaque-ID patterns and
+  unexplained duplicate semantic/compatibility edges;
 - break relationship totals down by predicate, authority, freshness and
   datapack rather than showing only one headline;
 - expose repository, descriptor, documentation, raw subpath and release/archive
@@ -431,6 +446,28 @@ For all shapes:
 Measure the profile's startup-transfer, search-latency, memory and accessibility
 targets against representative data rather than copying another domain's
 numbers blindly.
+
+## Phase 5A — Explore OKF, when selected
+
+After both tiny-fixture stages pass and before full candidate freeze:
+
+1. build a bounded exploratory snapshot from only the source families and
+   competency questions approved for learning;
+2. emit `publication_state: exploratory`, snapshot identity, applicable plane
+   roots, limitations, permitted/prohibited claims and indexing policy;
+3. render a persistent **Exploratory** banner in every view and human page;
+4. make its feedback link preserve the current bundle, view, query and route;
+5. execute the actual pinned Explorer across Reader, Graph, Links and every
+   selected view, including readable-label and external-link coverage checks;
+6. share only the exact browser-verified snapshot URL and retain the review
+   state; and
+7. after owner feedback, either create another exploratory snapshot, close the
+   experiment or revise the domain profile and build a fresh candidate.
+
+Do not claim this phase is implemented merely because a descriptor contains
+the fields. The locked Explorer must visibly render and preserve the banner.
+Exploratory bytes never become release-candidate bytes by renaming or status
+editing.
 
 The control, data, search and presentation planes must have separate digest
 manifests and roots. Semantic and release planes do too when selected. A search
@@ -578,8 +615,8 @@ challenge criteria pass or have explicit owner-accepted exceptions.
    preflight, preserve that external blocker. Do not start an expensive retry
    loop or falsely claim a scan. Publication then requires the owner's explicit
    exception plus all available deterministic security checks.
-7. Verify all canonical artefacts exist before invoking any finalizer. A
-   finalizer seals existing artefacts; it does not create missing analysis.
+7. Verify all canonical artefacts exist before invoking any finaliser. A
+   finaliser seals existing artefacts; it does not create missing analysis.
 
 Gate G7 passes when the exact frozen candidate reproduces, required security,
 accessibility and performance receipts exist, and all exceptions are explicit.
@@ -660,7 +697,7 @@ Document:
 - what the bundle includes and excludes;
 - authority and derivation labels;
 - coverage and denominator;
-- freshness and snapshot/live behavior;
+- freshness and snapshot/live behaviour;
 - rights/access/privacy constraints;
 - search/facet/graph/timeline/resource semantics;
 - source and alternate recovery routes;
@@ -745,7 +782,7 @@ Lead with the outcome. Report:
   and
 - the next owner action only when one remains.
 
-Do not claim completion if required artefacts are missing or finalization
+Do not claim completion if required artefacts are missing or finalisation
 failed. Preserve the checkpoint and state the exact recovery action instead.
 ```
 
@@ -756,7 +793,7 @@ failed. Preserve the checkpoint and state the exact recovery action instead.
 The gates prevent expensive late discovery:
 
 - the domain profile keeps research decisions out of the build transcript;
-- the two-stage tiny fixture catches producer, actual-consumer, finalizer and
+- the two-stage tiny fixture catches producer, actual-consumer, finaliser and
   unsafe-input defects before the corpus;
 - the consumer lock and impact graph make dependency changes reviewable;
 - per-plane roots permit evidenced selective reruns without hiding affected

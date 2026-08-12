@@ -104,6 +104,22 @@ class OkfAuthoringProfileTests(unittest.TestCase):
             "withhold-until-exact-url-browser-verified",
             deep_link["share_policy"],
         )
+        self.assertEqual(
+            "debug-only",
+            self.template["presentation_contract"]["identifier_fallback"],
+        )
+        self.assertEqual(
+            "exploratory",
+            self.template["exploratory_publication"]["publication_state"],
+        )
+        self.assertTrue(
+            self.template["exploratory_publication"]["banner"][
+                "preserve_route"
+            ]
+        )
+        self.assertTrue(
+            self.template["semantic_linking"]["eligible_entity_denominators"]
+        )
 
     def test_validator_dependency_nodes_require_concrete_repository_paths(self) -> None:
         invalid = json.loads(json.dumps(self.template))
@@ -179,6 +195,33 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         del legacy["consumer_contract"]
         self.assertEqual([], self.errors(legacy))
         self.assertEqual([], check_domain_profile.reference_errors(legacy))
+
+    def test_explore_controls_are_additive_for_existing_v1_profiles(self) -> None:
+        legacy = json.loads(json.dumps(self.template))
+        del legacy["semantic_linking"]
+        del legacy["presentation_contract"]
+        del legacy["exploratory_publication"]
+        self.assertEqual([], self.errors(legacy))
+        self.assertEqual([], check_domain_profile.reference_errors(legacy))
+
+    def test_link_coverage_percentage_is_bounded(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["semantic_linking"]["eligible_entity_denominators"][0][
+            "minimum_coverage_percent"
+        ] = 101
+        self.assertTrue(
+            any(
+                "greater than the maximum" in message
+                for message in self.errors(invalid)
+            )
+        )
+
+    def test_exploratory_banner_must_preserve_the_review_route(self) -> None:
+        invalid = json.loads(json.dumps(self.template))
+        invalid["exploratory_publication"]["banner"]["preserve_route"] = False
+        self.assertTrue(
+            any("True was expected" in message for message in self.errors(invalid))
+        )
 
     def test_profile_rejects_an_unreviewed_applicability_vocabulary(self) -> None:
         invalid = json.loads(json.dumps(self.template))

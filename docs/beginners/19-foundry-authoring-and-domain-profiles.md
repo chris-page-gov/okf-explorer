@@ -70,9 +70,9 @@ The profile records:
 - post-deploy deep links and their expected restored state;
 - validation and evaluation;
 - unresolved owner decisions;
-- traceability from outcomes to artifacts and checks.
+- traceability from outcomes to artefacts and checks.
 
-It is a control artifact. It is not:
+It is a control artefact. It is not:
 
 - the knowledge graph;
 - an ontology;
@@ -82,7 +82,7 @@ It is a control artifact. It is not:
 ## Consumers Are Part Of The Contract
 
 A bundle is not complete merely because its files match a schema. The actual
-reader, validator, search worker, generator, finalizer or archive reader may
+reader, validator, search worker, generator, finaliser or archive reader may
 still reject those files or interpret them differently.
 
 The profile therefore inventories every release-relevant consumer and pins an
@@ -93,7 +93,7 @@ checksummed and reviewed with the profile. Avoid moving labels such as
 The accompanying dependency graph makes change impact explicit:
 
 ```text
-source/producer → generated plane → consumer/finalizer → public route
+source/producer → generated plane → consumer/finaliser → public route
 ```
 
 Every edge records its contract, affected planes and validations. When an
@@ -135,7 +135,7 @@ Every considered standard receives an explicit decision:
 A normative decision names:
 
 - exact version;
-- conformance artifact;
+- conformance artefact;
 - validator or test;
 - scope of the claim.
 
@@ -156,6 +156,59 @@ Choose the smallest architecture that answers the recorded user tasks while
 preserving evidence and future extension points.
 
 A small Markdown bundle can be the right production result.
+
+## Identity Is Not A Display Name
+
+A graph needs stable identifiers so that a machine can tell two things apart.
+A person needs concise names so that they can understand those things. These
+are separate requirements.
+
+Every entity that can appear in Graph, Links, Facets or another Explorer view
+therefore needs:
+
+- a stable identifier or IRI;
+- a preferred human label and language;
+- the source or derivation of that label; and
+- an optional description for further context.
+
+For a large bundle, a compact label index makes those names available before
+the complete entity record is downloaded. A generated hash may be useful in
+Inspect, but it is a quality defect when it appears as the ordinary name of an
+organisation, source, activity or rights statement.
+
+## Useful Semantic Linking
+
+The aim is not to draw the largest possible graph. Every link should answer a
+recorded user question and have enough evidence for its claimed strength.
+
+For each kind of external link, the profile records which entities are
+eligible, how many are linked, which remain unresolved or conflicting and
+which were excluded. This makes “90 per cent of eligible public bodies have an
+official identifier” meaningful. A raw total of 10,000 relationships does not
+say whether any of them help a citizen.
+
+Concepts can use qualified SKOS mappings such as exact, close, broader,
+narrower or related. `owl:sameAs` is much stronger: it says that two IRIs name
+the same individual, so matching words alone are never enough.
+
+## Explore OKF Before A Release Candidate
+
+After the tiny producer and consumer fixtures pass, a project may publish a
+small **Explore OKF** snapshot for learning. It shows the real Explorer
+functionality and preliminary semantic links, but every view carries a clear
+**Exploratory** banner and route-preserving feedback link.
+
+The banner says that the view is incomplete research, not an authoritative
+service or released data product, and directs readers to the cited official
+sources. The snapshot records its exact identity, limitations and indexing
+decision. It can be replaced by a new exploration, but it cannot be promoted
+to a release merely by changing its label.
+
+The current Explorer does not yet claim to implement this banner contract.
+The proposal becomes current behaviour only after the actual consumer and its
+cross-view tests pass. See the
+[methodology review](../okf-authoring-methodology-review-2026-08-12.md) for the
+full decision and acceptance rules.
 
 ## Two-Stage Tiny Fixture First
 
@@ -270,7 +323,7 @@ that used similar source data produced different models.
 Build and assure one release candidate. Promotion publishes those exact bytes
 rather than rebuilding from nominally the same source.
 
-This prevents a successful test from referring to one artifact while the
+This prevents a successful test from referring to one artefact while the
 public release contains another.
 
 ## Use It With Any AI

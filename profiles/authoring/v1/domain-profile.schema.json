@@ -338,6 +338,15 @@
       },
       "additionalProperties": false
     },
+    "semantic_linking": {
+      "$ref": "#/$defs/semanticLinking"
+    },
+    "presentation_contract": {
+      "$ref": "#/$defs/presentationContract"
+    },
+    "exploratory_publication": {
+      "$ref": "#/$defs/exploratoryPublication"
+    },
     "standards": {
       "type": "array",
       "minItems": 1,
@@ -1866,6 +1875,251 @@
         },
         "task_refs": {
           "$ref": "#/$defs/idArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "semanticLinking": {
+      "type": "object",
+      "required": [
+        "objective",
+        "local_iri_policy",
+        "external_link_policy",
+        "mapping_policy",
+        "eligible_entity_denominators",
+        "link_sets",
+        "prohibited_shortcuts"
+      ],
+      "properties": {
+        "objective": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "local_iri_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "external_link_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "mapping_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "eligible_entity_denominators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/linkCoverageDenominator"
+          }
+        },
+        "link_sets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/linkSet"
+          }
+        },
+        "prohibited_shortcuts": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkCoverageDenominator": {
+      "type": "object",
+      "required": [
+        "entity_type",
+        "eligibility_rule",
+        "eligible_count",
+        "minimum_coverage_percent",
+        "exclusions"
+      ],
+      "properties": {
+        "entity_type": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "eligibility_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "eligible_count": {
+          "$ref": "#/$defs/countOrNull"
+        },
+        "minimum_coverage_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "exclusions": {
+          "$ref": "#/$defs/stringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linkSet": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "predicate_iri",
+        "target_namespace",
+        "mapping_relation",
+        "authority",
+        "evidence_rule",
+        "task_refs"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "predicate_iri": {
+          "$ref": "#/$defs/httpUrl"
+        },
+        "target_namespace": {
+          "$ref": "#/$defs/httpUrl"
+        },
+        "mapping_relation": {
+          "enum": [
+            "identity",
+            "exact-match",
+            "close-match",
+            "broad-match",
+            "narrow-match",
+            "related-match",
+            "domain-relationship"
+          ]
+        },
+        "authority": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "evidence_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "task_refs": {
+          "$ref": "#/$defs/idArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "presentationContract": {
+      "type": "object",
+      "required": [
+        "default_language",
+        "label_priority",
+        "graph_reachable_label_rule",
+        "identifier_fallback",
+        "compact_label_index",
+        "relationship_display_rule",
+        "citizen_checks"
+      ],
+      "properties": {
+        "default_language": {
+          "const": "en-GB"
+        },
+        "label_priority": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "graph_reachable_label_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "identifier_fallback": {
+          "enum": [
+            "debug-only",
+            "never"
+          ]
+        },
+        "compact_label_index": {
+          "type": "object",
+          "required": [
+            "path",
+            "snapshot_bound",
+            "integrity_bound"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "snapshot_bound": {
+              "const": true
+            },
+            "integrity_bound": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "relationship_display_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "citizen_checks": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "exploratoryPublication": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "publication_state",
+        "banner",
+        "indexing_policy",
+        "snapshot_policy",
+        "limitations",
+        "permitted_claims",
+        "prohibited_claims",
+        "promotion_rule"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "publication_state": {
+          "const": "exploratory"
+        },
+        "banner": {
+          "type": "object",
+          "required": [
+            "label",
+            "message",
+            "feedback_url",
+            "preserve_route"
+          ],
+          "properties": {
+            "label": {
+              "const": "Exploratory"
+            },
+            "message": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "feedback_url": {
+              "$ref": "#/$defs/httpUrl"
+            },
+            "preserve_route": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "indexing_policy": {
+          "enum": [
+            "noindex",
+            "owner-decision"
+          ]
+        },
+        "snapshot_policy": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "limitations": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "permitted_claims": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "prohibited_claims": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "promotion_rule": {
+          "$ref": "#/$defs/nonEmpty"
         }
       },
       "additionalProperties": false

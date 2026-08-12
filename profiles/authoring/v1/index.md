@@ -22,7 +22,7 @@ An `okf-domain-profile.v1` document is a research and control artefact. It
 freezes:
 
 - purpose, scope, exclusions and any completeness denominator;
-- repository classification, bootstrap evidence, initialization-only commit
+- repository classification, bootstrap evidence, initialisation-only commit
   policy, source/generated boundaries, CI state and clean-work handoff;
 - source, semantic, operational and decision authority;
 - the collection's document families, representations, formats, languages,
@@ -33,6 +33,11 @@ freezes:
 - user roles, tasks, evidence needs and hard failures;
 - source-native terminology, entities, identifiers, versions and
   relationships;
+- useful external-link coverage against declared eligible-entity denominators;
+- a human-readable presentation contract and compact label index for every
+  graph-reachable entity;
+- an optional snapshot-bound Explore OKF publication state, persistent banner
+  and route-preserving feedback contract;
 - the exact standards selected for the domain and how each will be tested;
 - the smallest justified OKF/Explorer publication architecture;
 - the exact downstream consumers, their executable package/version/commit/lock
@@ -167,6 +172,25 @@ An approved profile that uses this contract must have a real consumer-lock
 SHA-256. The semantic validator also checks lock/inventory equivalence,
 consumer and plane references, required-consumer execution, both compatibility
 directions and deep-link coverage.
+
+## Additive Explore OKF Controls
+
+The schema also exposes optional `semantic_linking`, `presentation_contract`
+and `exploratory_publication` controls. They are additive so earlier v1
+profiles remain valid. New or materially revised Foundry profiles should
+populate all three from the template:
+
+- `semantic_linking` measures justified external links against eligible entity
+  denominators rather than rewarding raw triple count;
+- `presentation_contract` prevents stable identifiers from leaking into
+  citizen-facing labels and requires a compact label index at relationship
+  projection granularity; and
+- `exploratory_publication` defines a visibly incomplete, immutable learning
+  snapshot that can receive route-preserving feedback before candidate freeze.
+
+These fields do not make the current Explorer implement the banner or opaque
+label rejection. The actual pinned consumer must pass those behaviours before
+a public snapshot claims Explore OKF conformance.
 
 The Explorer package exposes the generic actual-consumer command:
 

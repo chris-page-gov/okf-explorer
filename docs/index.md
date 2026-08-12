@@ -41,6 +41,10 @@ APIs exemplar, and related large-corpus OKF packs.
 - [OKF Foundry prompt kit](okf-authoring-prompt-kit.md) provides a general
   two-stage domain-research and build protocol, a versioned machine handoff and
   reusable assurance gates for any document or record collection.
+- [OKF authoring methodology review](okf-authoring-methodology-review-2026-08-12.md)
+  uses the Land Registry retrospective without reopening that pack, then adds
+  human-readable graph labels, denominator-based semantic linking and a
+  shareable Explore OKF feedback stage before candidate freeze.
 - [Evaluation Foundry and YAML-LD](beginners/22-evaluation-foundry-and-yaml-ld.md)
   adapts that process for functionality evaluation, explains additive semantic
   identity and assertions for beginners, and keeps source-backed, tiny and
@@ -145,6 +149,10 @@ Useful references:
 - [GOV.UK Service Standard](https://www.gov.uk/service-manual/service-standard)
 - [GOV.UK accessibility introduction](https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction)
 - [GOV.UK Design System accessibility strategy](https://design-system.service.gov.uk/community/accessibility-strategy/)
+- [Open data for the Explore OKF pilot](../research/explore-okf-open-data-test-candidates.md)
+  recommends a bounded Coventry everyday-services slice for testing labels,
+  official links, CPSV-AP/SKOS mappings and multi-resolution boundaries before
+  the full `okf-uk-living` review.
 
 ## Public URLs
 
