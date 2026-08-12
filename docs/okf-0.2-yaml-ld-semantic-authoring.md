@@ -308,6 +308,26 @@ hard contract/core errors from explicit migration warnings so legacy local
 predicate names or descriptor-only YAML-LD remain visible rather than being
 silently treated as complete.
 
+The reviewed `okf-uk-living` producer must also declare the complete rich
+relationship runtime: its manifest, bounded gzip plane chunks, SHA-256 route
+locator and buckets, and the four executable Draft 2020-12 runtime schemas.
+The reconciler validates every row against the pinned local schemas, rejects
+remote or recursive schema references, and checks both route-scoped and
+whole-plane loading against the Reader's aggregate row, chunk, compressed-byte
+and retained-text ceilings. When a reviewed producer is checked from a renamed
+worktree, bind its external identity explicitly without granting write access:
+
+```sh
+uv run --locked python scripts/reconcile_okf_repositories.py \
+  --repo /path/to/renamed-worktree \
+  --preset okf-uk-living \
+  --strict
+```
+
+`--preset` is audit-only. The reconciler rejects it for installation or profile
+sync, and rejects any disagreement between the explicit preset, repository
+contract and physical repository identity.
+
 ## Selective CPSV-AP 3.2.0 adoption
 
 The [Core Public Service Vocabulary Application Profile (CPSV-AP) 3.2.0](https://semiceu.github.io/CPSV-AP/releases/3.2.0/)
