@@ -194,6 +194,18 @@ class CiPublicationTopologyTests(unittest.TestCase):
             {"impact", "adversarial-gate", "app"},
             self.job_needs(jobs["build"]),
         )
+        pages_upload = next(
+            step
+            for step in jobs["build"]["steps"]
+            if str(step.get("uses", "")).startswith(
+                "actions/upload-pages-artifact@"
+            )
+        )
+        self.assertIs(
+            True,
+            pages_upload["with"]["include-hidden-files"],
+            "the candidate receipt includes .nojekyll, so the Pages archive must too",
+        )
 
     def test_nightly_shadow_and_observers_are_separate(self) -> None:
         shadow = self.text(".github/workflows/foundry-full-shadow.yml")
