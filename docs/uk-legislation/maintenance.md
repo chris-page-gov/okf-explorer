@@ -17,8 +17,8 @@ This guide keeps the corpus, documentation spine and illustrated manual independ
 ## Corpus refresh
 
 ```sh
-python3 scripts/build_legislation_okf.py --refresh
-python3 scripts/check_legislation_okf.py
+uv run --locked python scripts/build_legislation_okf.py --refresh
+uv run --locked python scripts/check_legislation_okf.py
 ```
 
 Update corpus counts, represented years, type coverage and any upstream-access conflict in the architecture guide and screenshots. Preserve source anomalies as warnings rather than silently rewriting them.

@@ -103,18 +103,21 @@ machine-readable `okf-moved.v1` contract consumed by Explorer v0.4.0 and later.
 
 ## Local Validation
 
+First run `uv sync --locked`. This uses the committed CPython 3.12.11 and
+dependency lock rather than the host's default Python installation.
+
 Run these before publication work:
 
 ```sh
-python3 scripts/build_uk_government_api_okf.py --check
-python3 scripts/check_legislation_okf.py
-python3 scripts/build_okf_registry.py --check
-python3 scripts/check_source_constraints.py
-python3 scripts/check_documentation_lockstep.py
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/build_site.py
+uv run --locked python scripts/build_uk_government_api_okf.py --check
+uv run --locked python scripts/check_legislation_okf.py
+uv run --locked python scripts/build_okf_registry.py --check
+uv run --locked python scripts/check_source_constraints.py
+uv run --locked python scripts/check_documentation_lockstep.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/build_site.py
 ```
 
 Large-corpus generators must publish both chunked whole-corpus relationships
@@ -130,7 +133,7 @@ pnpm check
 pnpm test
 pnpm build
 cd ../..
-python3 scripts/build_site.py
+uv run --locked python scripts/build_site.py
 ```
 
 ## How To Decide What To Read

@@ -151,8 +151,8 @@ class HeritageFoundryPostmortemTests(unittest.TestCase):
 
     def test_command_classifier_can_assign_multiple_relevant_categories(self) -> None:
         command = (
-            "python3 scripts/build_heritage_evaluation.py && "
-            "python3 scripts/build_site.py && pnpm exec playwright test"
+            "uv run --locked python scripts/build_heritage_evaluation.py && "
+            "uv run --locked python scripts/build_site.py && pnpm exec playwright test"
         )
         self.assertEqual(
             ["heritage-build", "site-build", "playwright"],

@@ -9,8 +9,8 @@ The 100-point rubric is deliberately capped below 50 when an answer has no offic
 Run:
 
 ```bash
-python3 scripts/build_legislation_evaluation.py
-python3 scripts/evaluate_legislation_answers.py answers.jsonl --out results.json
+uv run --locked python scripts/build_legislation_evaluation.py
+uv run --locked python scripts/evaluate_legislation_answers.py answers.jsonl --out results.json
 ```
 
 Answers must conform to [answer-schema.json](answer-schema.json). `questions.json` is generated deterministically by `scripts/build_legislation_evaluation.py` and contains the full rubric, source passages and expected concepts.

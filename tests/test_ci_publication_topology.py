@@ -92,7 +92,7 @@ class CiPublicationTopologyTests(unittest.TestCase):
             python_job.index(
                 "Download exact app build for identity-bound Python contracts"
             ),
-            python_job.index("python3 -m unittest discover -s tests"),
+            python_job.index("uv run --locked python -m unittest discover -s tests"),
         )
         self.assertIn("check_impacted_heritage_evaluation.py", python_job)
         self.assertIn("needs.impact-plan.outputs.builder_fixtures", python_job)
@@ -145,7 +145,7 @@ class CiPublicationTopologyTests(unittest.TestCase):
         full = workflow[
             workflow.index("  browser-full:") : workflow.index("\n  foundry:")
         ]
-        self.assertIn("python3 scripts/build_site.py", full)
+        self.assertIn("uv run --locked python scripts/build_site.py", full)
         self.assertIn("pnpm test:e2e:terminal", full)
         self.assertLess(
             full.index("pnpm install --frozen-lockfile"),
@@ -201,7 +201,7 @@ class CiPublicationTopologyTests(unittest.TestCase):
         links = self.text(".github/workflows/link-observation.yml")
         self.assertIn("schedule:", shadow)
         self.assertIn("workflow_dispatch:", shadow)
-        self.assertIn("python3 scripts/build_site.py", shadow)
+        self.assertIn("uv run --locked python scripts/build_site.py", shadow)
         self.assertIn("pnpm test:e2e:terminal", shadow)
         self.assertIn("--check --fixture all", shadow)
         self.assertLess(

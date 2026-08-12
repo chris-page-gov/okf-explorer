@@ -13,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Reject all reconstructed late-finding classes
         run: >-
-          python3 scripts/check_heritage_adversarial.py
+          uv run --locked python scripts/check_heritage_adversarial.py
           --output "$RUNNER_TEMP/adversarial-results.json"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
@@ -41,9 +39,8 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
       - name: Install Chromium for the browser-backed contract test
@@ -52,8 +49,6 @@ jobs:
       - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
-      - name: Install Site dependencies
-        run: python3 -m pip install -r requirements-okf.txt
       - name: Validate and deterministically build Explorer
         working-directory: apps/okf-explorer
         run: |
@@ -62,7 +57,7 @@ jobs:
           pnpm sbom:check
           pnpm build:determinism
       - name: Assemble Site for rendered Foundry pages
-        run: python3 scripts/build_site.py
+        run: uv run --locked python scripts/build_site.py
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
         run: pnpm exec playwright install --with-deps firefox webkit
@@ -77,14 +72,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-okf.txt
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - name: Run full Foundry and candidate checks
         run: |
-          python3 scripts/check_evaluation_foundry.py
-          python3 scripts/retarget_heritage_source_snapshots.py --check
-          python3 scripts/build_heritage_evaluation.py --check --fixture all
-          python3 scripts/export_publication_unit.py --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json --check
-          python3 -m unittest discover -s tests
+          uv run --locked python scripts/check_evaluation_foundry.py
+          uv run --locked python scripts/retarget_heritage_source_snapshots.py --check
+          uv run --locked python scripts/build_heritage_evaluation.py --check --fixture all
+          uv run --locked python scripts/export_publication_unit.py --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json --check
+          uv run --locked python -m unittest discover -s tests

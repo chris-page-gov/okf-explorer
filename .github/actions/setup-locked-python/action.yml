@@ -1,0 +1,19 @@
+name: Set up locked Python
+description: Install the governed Python and uv versions and synchronise uv.lock.
+
+runs:
+  using: composite
+  steps:
+    - name: Set up governed Python
+      uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      with:
+        python-version-file: .python-version
+    - name: Set up uv 0.12.2
+      uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      with:
+        version: "0.12.2"
+        enable-cache: true
+        cache-dependency-glob: uv.lock
+    - name: Synchronise the locked Python environment
+      shell: bash
+      run: uv sync --locked

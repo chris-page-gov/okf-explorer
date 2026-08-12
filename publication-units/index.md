@@ -14,10 +14,10 @@ deployed or promoted belongs only in signed release evidence.
 Build or verify the export with:
 
 ```sh
-python3 scripts/export_publication_unit.py \
+uv run --locked python scripts/export_publication_unit.py \
   --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
   --output tmp/heritage-publication
-python3 scripts/export_publication_unit.py \
+uv run --locked python scripts/export_publication_unit.py \
   --descriptor publication-units/heritage-coventry-warwickshire/publication-unit.json \
   --check
 ```

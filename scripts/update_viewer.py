@@ -593,7 +593,7 @@ def rendered_viewer(graph: dict[str, object]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="fail if viewer.html is not synchronized")
+    parser.add_argument("--check", action="store_true", help="fail if viewer.html is not synchronised")
     args = parser.parse_args(argv)
 
     graph, errors = build_graph()
@@ -606,9 +606,13 @@ def main(argv: list[str] | None = None) -> int:
     current = VIEWER.read_text(encoding="utf-8")
     if args.check:
         if updated != current:
-            print("viewer.html is not synchronized; run python3 scripts/update_viewer.py", file=sys.stderr)
+            print(
+                "viewer.html is not synchronised; run "
+                "uv run --locked python scripts/update_viewer.py",
+                file=sys.stderr,
+            )
             return 1
-        print(f"viewer.html is synchronized with {len(graph['nodes'])} nodes and {len(graph['edges'])} edges")
+        print(f"viewer.html is synchronised with {len(graph['nodes'])} nodes and {len(graph['edges'])} edges")
         return 0
 
     if updated != current:

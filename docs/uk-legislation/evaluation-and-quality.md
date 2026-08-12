@@ -27,8 +27,8 @@ An answer is capped below 50 when it has no official citation, omits the proposi
 ## Run the suite
 
 ```sh
-python3 scripts/build_legislation_evaluation.py
-python3 scripts/evaluate_legislation_answers.py answers.jsonl --out results.json
+uv run --locked python scripts/build_legislation_evaluation.py
+uv run --locked python scripts/evaluate_legislation_answers.py answers.jsonl --out results.json
 ```
 
 The answer contract is in `evaluation/legislation/answer-schema.json`; the questions and full rubric are in `evaluation/legislation/questions.json`.
@@ -36,18 +36,18 @@ The answer contract is in `evaluation/legislation/answer-schema.json`; the quest
 ## Publication checks
 
 ```sh
-python3 scripts/check_legislation_okf.py
-python3 -m unittest discover -s tests
+uv run --locked python scripts/check_legislation_okf.py
+uv run --locked python -m unittest discover -s tests
 cd apps/okf-explorer
 pnpm test
 pnpm check
 pnpm build
 cd ../..
-python3 scripts/build_okf_bundle.py --check
-python3 scripts/update_viewer.py --check
-python3 scripts/check_okf.py
-python3 scripts/check_documentation_lockstep.py
-python3 scripts/build_site.py
+uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/update_viewer.py --check
+uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/check_documentation_lockstep.py
+uv run --locked python scripts/build_site.py
 ```
 
 ## Human review prompts
