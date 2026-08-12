@@ -89,6 +89,10 @@ APIs exemplar, and related large-corpus OKF packs.
 
 ## Quality And Review
 
+- [HM Land Registry v0.3.0 delivery retrospective](postmortems/land-registry-v0.3.0-delivery-retrospective.md)
+  records all 14 numbered producer attempts, the agent-created late defects,
+  partial build and validation timings, unavailable token evidence, final
+  publication and enforceable delivery improvements.
 - [OKF Explorer evaluation harness](okf-explorer-evaluation.md) defines the
   100-question scoring suite, accessibility checks, GOV.UK-aligned publication
   rubric and visual-regression evidence.
