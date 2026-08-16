@@ -248,26 +248,34 @@ source = { virtual = "." }
 dependencies = [
     { name = "jsonschema" },
     { name = "markdown-it-py" },
-    { name = "pillow" },
     { name = "pyld" },
-    { name = "python-docx" },
     { name = "rdflib" },
     { name = "referencing" },
     { name = "ruamel-yaml" },
     { name = "yaml-ld" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pillow" },
+    { name = "python-docx" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "markdown-it-py", specifier = ">=4,<5" },
-    { name = "pillow", specifier = ">=11,<13" },
     { name = "pyld", specifier = ">=2.0.4,<3" },
-    { name = "python-docx", specifier = ">=1.2,<2" },
     { name = "rdflib", specifier = ">=7.1,<8" },
     { name = "referencing", specifier = ">=0.37,<0.38" },
     { name = "ruamel-yaml", specifier = ">=0.19,<0.20" },
     { name = "yaml-ld", specifier = ">=1.1.22,<2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pillow", specifier = ">=11,<13" },
+    { name = "python-docx", specifier = ">=1.2,<2" },
 ]
 
 [[package]]
