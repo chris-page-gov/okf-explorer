@@ -139,7 +139,7 @@ Legacy CKAN records can retain source series metadata under `extras.series`.
 For those legacy records Explorer may group clearly release-labelled title
 variants for presentation, but labels that inferred group as a display aid.
 The inferred group does not create an RDF identity assertion and must not be
-serialized back into the bundle as fact.
+serialised back into the bundle as fact.
 
 Catalogue dates must remain distinct from dataset currency. Map CKAN
 `metadata_created` and `metadata_modified` as catalogue-record dates; do not
@@ -257,6 +257,14 @@ Do not copy the source response wholesale into normalised OKF fields. Preserve
 the source link, map governed fields into the bundle with explicit provenance,
 and let the inspector show the unaltered remote response on demand. Explorer
 renders response values as text and does not execute source HTML.
+
+For XML, plain-text or link-only resources, declare typed `source_access`
+instead of using the JSON-only `source_api_url` compatibility field. The
+[large-record narrative and source-access contract](large-record-narrative-source-contract.md)
+defines the bounded `link`, `json`, `xml` and `text` display modes. A typed
+access declaration tells Explorer how to inspect a resource safely; it does
+not, by itself, establish the resource's authority, freshness, provenance or
+rights.
 
 ## Provider Datapacks For Snapshot And Reviewed-Live Context
 
@@ -665,7 +673,7 @@ Never claim DCAT-AP or OpenAPI conformance from an OKF record alone. Conformance
 requires an emitted standards artefact and a validation step against that
 standard.
 
-### Govern Every Serialized Term
+### Govern every serialised term
 
 A bundle can optionally advertise `terms` and `term_validation` entrypoints in
 its large-corpus descriptor and data manifest. Use

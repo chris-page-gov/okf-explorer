@@ -102,7 +102,7 @@ set of work that must rerun.
 
 ## Evidence Has Several Axes
 
-One `status` field or confidence score cannot safely carry every judgment.
+One `status` field or confidence score cannot safely carry every judgement.
 Record independently:
 
 - assertion authority;

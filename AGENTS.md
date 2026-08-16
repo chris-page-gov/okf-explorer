@@ -10,7 +10,9 @@ Format (OKF) Markdown bundle for the AI infrastructure research material.
   guidance on plain English and style for UK government content. Review
   inherited American English whenever a document is touched. Preserve exact
   code and schema identifiers, URLs, quotations and official titles where
-  localisation would be incorrect or incompatible.
+  localisation would be incorrect or incompatible. Follow the repository
+  [documentation style guide](docs/documentation-style.md) and do not apply
+  spelling changes by blind search-and-replace.
 - Keep links browser-compatible Markdown links. Do not introduce Obsidian-only
   wikilinks.
 - Do not add Word lock files, `.DS_Store`, `_site/`, or temporary files to Git.
@@ -38,6 +40,7 @@ Format (OKF) Markdown bundle for the AI infrastructure research material.
 uv run --locked python scripts/build_okf_bundle.py --check
 uv run --locked python scripts/update_viewer.py --check
 uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/check_british_english.py
 uv run --locked python scripts/build_site.py
 ```
 

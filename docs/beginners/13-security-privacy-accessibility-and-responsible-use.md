@@ -46,13 +46,13 @@ Bundle, record and resource URLs can appear in:
 - server logs;
 - screenshots;
 - copied links;
-- evaluation artifacts.
+- evaluation artefacts.
 
 Never put passwords, API keys, bearer tokens, session identifiers or private
 personal data in them.
 
-The geospatial classifier removes recognized credential query parameters
-before display or preview. Redaction is a defense in depth; the real rule is
+The geospatial classifier removes recognised credential query parameters
+before display or preview. Redaction is a defence in depth; the real rule is
 that secrets do not belong in a static public pack.
 
 ## Remote Content Rendering
@@ -128,7 +128,7 @@ Metadata that names a licence should preserve whether it was:
 An inferred licence needs its source and confidence. “Publicly reachable”
 does not mean “openly licensed.”
 
-## Privacy And Data Minimization
+## Privacy And Data Minimisation
 
 The product should collect or expose only what is needed.
 
@@ -241,7 +241,7 @@ Fluency is not a substitute for provenance.
 
 Useful checks include:
 
-- unit tests for URL sanitization and bounds;
+- unit tests for URL sanitisation and bounds;
 - schema tests for remote input shapes;
 - browser tests for unsafe and failure states;
 - dependency review;

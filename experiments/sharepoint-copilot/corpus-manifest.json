@@ -1,0 +1,870 @@
+{
+  "build_status": "complete",
+  "corpus_kind": "deliberately_confusable_challenge_sample",
+  "corpus_size": 20,
+  "design": {
+    "header_override": "linear_retrieval_title",
+    "header_pattern": "customer_pack",
+    "preset": "compact_reference_guide",
+    "retrieval_hard_limit_characters": 36000,
+    "retrieval_target_characters": 20000
+  },
+  "development_cases": {
+    "count": 48,
+    "path": "development-cases.v1.jsonl",
+    "sha256": "e742f49fed5e36f679f9e16a8e550ac907f175a5db98c495fbf1e6e4a42fcdd7",
+    "status": "development_only_not_final_holdout"
+  },
+  "digest_definitions": {
+    "family_html_sha256": "SHA-256 of the exact family HTML bytes at the pinned commit",
+    "governed_record_sha256": "SHA-256 of the exact UTF-8 unescaped JSON text embedded in the family HTML",
+    "source_projection_sha256": "SHA-256 stated by the governed record for the shared journey projection"
+  },
+  "families": [
+    {
+      "aliases": [
+        "school admissions application",
+        "primary or secondary school place"
+      ],
+      "domain_id": "school-years",
+      "family_html_sha256": "4030a0d5dfb92ec4154bec3b4d57a07365deaa8052177135fe1abfd986a24205",
+      "governed_record_sha256": "df3a438a9be6a05821b85e0c5f1437dfe96167989f5f822f67d403e2324eb78e",
+      "group": "school",
+      "id": "apply-for-school-place",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/apply-for-school-place.html",
+      "source_path": "explore/ai/families/apply-for-school-place.html",
+      "specialist_review": "required",
+      "title": "Apply for a school place"
+    },
+    {
+      "aliases": [
+        "school place appeal",
+        "challenge refused school admission"
+      ],
+      "domain_id": "school-years",
+      "family_html_sha256": "70ae0bf2082f1fd567b2e4aa75bd6f5174d9ab49bce3541cd1baa42d91a4fd32",
+      "governed_record_sha256": "508a854228412372cf9ffd5bf893215ecd51870c6800fb7e5a5de71ab91949ac",
+      "group": "school",
+      "id": "appeal-school-admission",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/appeal-school-admission.html",
+      "source_path": "explore/ai/families/appeal-school-admission.html",
+      "specialist_review": "required",
+      "title": "Appeal a school admission decision"
+    },
+    {
+      "aliases": [
+        "appeal school exclusion",
+        "suspended or expelled from school"
+      ],
+      "domain_id": "school-years",
+      "family_html_sha256": "9d12ac2399ee7e85d0df48d19887b7d70ae2f9d22e5c75f8233d2b4edc876469",
+      "governed_record_sha256": "0a68909aa5399cced22ff0c9cb506e2ba68c7a89ac68a9fd7fb25135fd42977f",
+      "group": "school",
+      "id": "challenge-school-exclusion",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/challenge-school-exclusion.html",
+      "source_path": "explore/ai/families/challenge-school-exclusion.html",
+      "specialist_review": "required",
+      "title": "Challenge a school exclusion"
+    },
+    {
+      "aliases": [
+        "school meal support",
+        "free lunches at school"
+      ],
+      "domain_id": "school-years",
+      "family_html_sha256": "abdce3063083c397bca7fe18a0be116f18daa7e948e53302ec0ab7068a52fc13",
+      "governed_record_sha256": "343cd0ebcd84dd874153481ddfe9c4f56a0e5fc0c5a8cca064d15a051d49cd66",
+      "group": "school",
+      "id": "apply-for-free-school-meals",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/apply-for-free-school-meals.html",
+      "source_path": "explore/ai/families/apply-for-free-school-meals.html",
+      "specialist_review": "required",
+      "title": "Apply for free school meals"
+    },
+    {
+      "aliases": [
+        "join council housing list",
+        "housing association home",
+        "housing register application"
+      ],
+      "domain_id": "housing-and-community",
+      "family_html_sha256": "bc5e56c6c14ff3f5987bb8b922a2f3bbf5a3c0d5c201877ef4a7ce3ec10c14c5",
+      "governed_record_sha256": "ee1f765daace0804f4663e1a5095f8eb03987cb8294dbda3d294d8c17bdf5750",
+      "group": "housing",
+      "id": "apply-for-social-housing",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/apply-for-social-housing.html",
+      "source_path": "explore/ai/families/apply-for-social-housing.html",
+      "specialist_review": "required",
+      "title": "Apply for social housing"
+    },
+    {
+      "aliases": [
+        "at risk of homelessness",
+        "emergency housing help",
+        "council homelessness application"
+      ],
+      "domain_id": "housing-and-community",
+      "family_html_sha256": "9ec63d11f4297afe10e86c6584f4d4db046c1e4c189ea2a6a8c25b9ef81e2128",
+      "governed_record_sha256": "6d1240869419554ef27d8cc3589570f52c2c123209a96ac6bad6c79e5401bb17",
+      "group": "housing",
+      "id": "get-homelessness-help",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/get-homelessness-help.html",
+      "source_path": "explore/ai/families/get-homelessness-help.html",
+      "specialist_review": "required",
+      "title": "Get homelessness help"
+    },
+    {
+      "aliases": [
+        "private renting",
+        "find a rented home",
+        "tenant rights"
+      ],
+      "domain_id": "housing-and-community",
+      "family_html_sha256": "1a1c1413addb85e16e76057333fbf1f87034dd61d86f6a92e28caa243833834b",
+      "governed_record_sha256": "059a6cdc19ecfd717a9a15539f5380d59039a1f37da60e8c8e90e947511d9c43",
+      "group": "housing",
+      "id": "rent-private-home",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/rent-private-home.html",
+      "source_path": "explore/ai/families/rent-private-home.html",
+      "specialist_review": "required",
+      "title": "Rent a private home"
+    },
+    {
+      "aliases": [
+        "deposit protection scheme",
+        "landlord kept my deposit",
+        "tenancy deposit dispute"
+      ],
+      "domain_id": "housing-and-community",
+      "family_html_sha256": "7dd24ff45480ba69ef1d278440e5478a2eda5bcd15674fd14c804c55ccb889b7",
+      "governed_record_sha256": "be1fef7767967cdd63e3893217b0b03abccc6421dbc32705439bc94745550051",
+      "group": "housing",
+      "id": "protect-tenancy-deposit",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/protect-tenancy-deposit.html",
+      "source_path": "explore/ai/families/protect-tenancy-deposit.html",
+      "specialist_review": "required",
+      "title": "Protect a tenancy deposit"
+    },
+    {
+      "aliases": [
+        "find a job online",
+        "government job vacancies"
+      ],
+      "domain_id": "finding-work-and-unemployment",
+      "family_html_sha256": "cc16342644c1f0aa51a5a2c7a5b08788e02c9944bfd16f28945f84c9272f44a3",
+      "governed_record_sha256": "a2c4a0da5da36ee881daff4c69b9b557295e3b0bcef6a07a97839357812ba623",
+      "group": "work",
+      "id": "use-public-job-search",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/use-public-job-search.html",
+      "source_path": "explore/ai/families/use-public-job-search.html",
+      "specialist_review": "required",
+      "title": "Use public job search"
+    },
+    {
+      "aliases": [
+        "contact Jobcentre Plus",
+        "work coach help"
+      ],
+      "domain_id": "finding-work-and-unemployment",
+      "family_html_sha256": "6ea2ce1d329177be2f2ddb77386c46fc8103b644c1f64d8e71f7e03f733d71ba",
+      "governed_record_sha256": "a8bcf66284e92e0f1d49cc4e1053e50e2d7cc40cc34d9434260b2e129b901954",
+      "group": "work",
+      "id": "get-jobcentre-support",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/get-jobcentre-support.html",
+      "source_path": "explore/ai/families/get-jobcentre-support.html",
+      "specialist_review": "required",
+      "title": "Get Jobcentre support"
+    },
+    {
+      "aliases": [
+        "redundancy rights and pay",
+        "job lost because role ended"
+      ],
+      "domain_id": "finding-work-and-unemployment",
+      "family_html_sha256": "cd0508d2b91d2b6b5fcfb6f89bcf6326b46bfc062a34fe1fc5baf59283ff337b",
+      "governed_record_sha256": "0ace70e1431d485d44298235912d2a70cefbd069c82e397f224c81d9ca0ebaa8",
+      "group": "work",
+      "id": "get-redundancy-support",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/get-redundancy-support.html",
+      "source_path": "explore/ai/families/get-redundancy-support.html",
+      "specialist_review": "required",
+      "title": "Get redundancy support"
+    },
+    {
+      "aliases": [
+        "unemployment Universal Credit claim",
+        "UC when out of work"
+      ],
+      "domain_id": "finding-work-and-unemployment",
+      "family_html_sha256": "8af1646c4ef9ab1872a7225b05e0108c7d5b6e4308d4daf318b017f0177339e7",
+      "governed_record_sha256": "a8e8d596acd7ec3e498989b4690be4698d392821dd3e98d37d523fd5fda4a15c",
+      "group": "work",
+      "id": "claim-universal-credit-while-unemployed",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/claim-universal-credit-while-unemployed.html",
+      "source_path": "explore/ai/families/claim-universal-credit-while-unemployed.html",
+      "specialist_review": "required",
+      "title": "Claim Universal Credit while unemployed"
+    },
+    {
+      "aliases": [
+        "death registration",
+        "register someone who died",
+        "death certificate",
+        "registrar after a death",
+        "make registrar appointment",
+        "obtain death certificate"
+      ],
+      "domain_id": "death-and-bereavement",
+      "family_html_sha256": "47c03ef4042870bc3e1ef141575e633ba0b162076f55d4779c92598e0b19c288",
+      "governed_record_sha256": "1f09c5e35e69577d821f038d71055b21c83abd6dd8bd9ef2bfb5a7bc67ff8280",
+      "group": "bereavement",
+      "id": "register-a-death",
+      "jurisdictions": [
+        "England and Wales",
+        "Scotland",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/register-a-death.html",
+      "source_path": "explore/ai/families/register-a-death.html",
+      "specialist_review": "required",
+      "title": "Register a death"
+    },
+    {
+      "aliases": [
+        "organise funeral",
+        "choose funeral director",
+        "funeral costs and wishes"
+      ],
+      "domain_id": "death-and-bereavement",
+      "family_html_sha256": "aca3bcdbf1c4d31801c4058b820488e5ce3473e6ef2227c04312dcb2c6f784c2",
+      "governed_record_sha256": "7e8500745c015d6b12b496456f9d8cdffeccce555b4ff5c63e674c6519e92d30",
+      "group": "bereavement",
+      "id": "arrange-funeral",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/arrange-funeral.html",
+      "source_path": "explore/ai/families/arrange-funeral.html",
+      "specialist_review": "required",
+      "title": "Arrange a funeral"
+    },
+    {
+      "aliases": [
+        "book crematorium",
+        "arrange cemetery burial",
+        "burial or cremation forms"
+      ],
+      "domain_id": "death-and-bereavement",
+      "family_html_sha256": "24264f7266ff1b3e9a3b56dbb9332d5b7a7f4061abf3f476c96e887f7a11b195",
+      "governed_record_sha256": "4c9c304cbbfc5cd1f06f5af4b0f9e3fe148707136b0e3988b4fc57ab732038b4",
+      "group": "bereavement",
+      "id": "arrange-burial-or-cremation",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/arrange-burial-or-cremation.html",
+      "source_path": "explore/ai/families/arrange-burial-or-cremation.html",
+      "specialist_review": "required",
+      "title": "Arrange burial or cremation"
+    },
+    {
+      "aliases": [
+        "probate",
+        "confirmation in Scotland",
+        "letters of administration",
+        "executor duties",
+        "deal with an estate"
+      ],
+      "domain_id": "death-and-bereavement",
+      "family_html_sha256": "2be13fcb04a08bb19f243fb3ee887f88359a0ec91b0a9b699389e8ab0441c003",
+      "governed_record_sha256": "ed6a2ad09886c69a3393751ad9d3f5bb5e69b8c08631e063f0d66dec4892f20f",
+      "group": "bereavement",
+      "id": "administer-an-estate",
+      "jurisdictions": [
+        "England and Wales",
+        "Scotland",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/administer-an-estate.html",
+      "source_path": "explore/ai/families/administer-an-estate.html",
+      "specialist_review": "required",
+      "title": "Administer an estate"
+    },
+    {
+      "aliases": [
+        "apply for British passport",
+        "first adult passport",
+        "replace UK passport"
+      ],
+      "domain_id": "citizenship-democracy-and-rights",
+      "family_html_sha256": "eb793e726c84fcb3f460c818f600240793a9c14b581fab57997039233736f416",
+      "governed_record_sha256": "6b3c410de93f640e5eccefbcfe89bff79601b20ed0d858e33944d2dac593dd90",
+      "group": "passport-and-immigration",
+      "id": "obtain-uk-passport",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/obtain-uk-passport.html",
+      "source_path": "explore/ai/families/obtain-uk-passport.html",
+      "specialist_review": "required",
+      "title": "Obtain a UK passport"
+    },
+    {
+      "aliases": [
+        "replace expired passport",
+        "renew UK passport",
+        "passport running out"
+      ],
+      "domain_id": "holidays-volunteering-and-living-overseas",
+      "family_html_sha256": "72cfbe85483aacd3ac0c604f80b2caaafcb18300b346b89d0071c880eeef8a0a",
+      "governed_record_sha256": "8284a49bf36dbc4b4d7bf8e609ac11458f05c0a3cd1046c568c0447e3193bf86",
+      "group": "passport-and-immigration",
+      "id": "renew-passport",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/renew-passport.html",
+      "source_path": "explore/ai/families/renew-passport.html",
+      "specialist_review": "required",
+      "title": "Renew a passport"
+    },
+    {
+      "aliases": [
+        "apply to come to UK",
+        "UK visa application",
+        "immigration permission route"
+      ],
+      "domain_id": "citizenship-democracy-and-rights",
+      "family_html_sha256": "4b78713a7f2430dbdd120d30d65677abdc8726cbc764f57b4fc4bff47c57becb",
+      "governed_record_sha256": "54dceab1d2cf53de35f1c1ea7c3443a9b0b90e09aec07d07ad23edbc0789512e",
+      "group": "passport-and-immigration",
+      "id": "apply-for-visa-or-immigration-permission",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/apply-for-visa-or-immigration-permission.html",
+      "source_path": "explore/ai/families/apply-for-visa-or-immigration-permission.html",
+      "specialist_review": "required",
+      "title": "Apply for visa or immigration permission"
+    },
+    {
+      "aliases": [
+        "become British citizen",
+        "British citizenship application",
+        "naturalisation route"
+      ],
+      "domain_id": "citizenship-democracy-and-rights",
+      "family_html_sha256": "063c9cc7672a5de02db3c0dfaeaca6f0ff21f978ab2fe6daa8d7a4eefdb22ed2",
+      "governed_record_sha256": "e6b71eadcd9dcf5792718dd60e867d63d440e65e3aabd9c5551db9e7f7c3fa68",
+      "group": "passport-and-immigration",
+      "id": "apply-for-citizenship",
+      "jurisdictions": [
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ],
+      "population_status": "population_complete",
+      "public_url": "https://chris-page-gov.github.io/okf-uk-living/explore/ai/families/apply-for-citizenship.html",
+      "source_path": "explore/ai/families/apply-for-citizenship.html",
+      "specialist_review": "required",
+      "title": "Apply for citizenship"
+    }
+  ],
+  "profiles": {
+    "word-full-v1": {
+      "document_count": 20,
+      "documents": [
+        {
+          "body_text_sha256": "c393525ab87dae7429311188a21c9eee7da78ec47309de064514769bbbec566c",
+          "bytes": 51267,
+          "family_id": "apply-for-school-place",
+          "path": "profiles/word-full-v1/apply-for-school-place.docx",
+          "sha256": "7b74a4a62f4de574949887d49707a8a0bb5bea2780a62306c5c3955663ebf681",
+          "text_characters": 39221,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "340507e75ee946e5ebbc3ada783971aad1cf11b1be8316b149d99580054e04e2",
+          "bytes": 51277,
+          "family_id": "appeal-school-admission",
+          "path": "profiles/word-full-v1/appeal-school-admission.docx",
+          "sha256": "e3716cb34538048b01df816b202d0f4608f1714c17fb5e6287ef5b86683b82cd",
+          "text_characters": 39290,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "ed16b707ca9a1839f8a49d870368efe80ef582204a45c264b17549cf66eda437",
+          "bytes": 51285,
+          "family_id": "challenge-school-exclusion",
+          "path": "profiles/word-full-v1/challenge-school-exclusion.docx",
+          "sha256": "c5ca302c03c754b4e8f92852db007e6189912203b37d8d3b6574de766c5d4b82",
+          "text_characters": 39425,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "08c0c7cd2e2885ec38ac2ef7686fc8e26e507dea9a7d8f093aa81575214a000c",
+          "bytes": 51199,
+          "family_id": "apply-for-free-school-meals",
+          "path": "profiles/word-full-v1/apply-for-free-school-meals.docx",
+          "sha256": "a1900238a37634d6a771932c727998c4f84b5a417029ad6c0ce281931eb21903",
+          "text_characters": 39289,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "8a0464bc2383ed33783c6d682c520c1b581b4e5362c0b0328ec87b963da86227",
+          "bytes": 51717,
+          "family_id": "apply-for-social-housing",
+          "path": "profiles/word-full-v1/apply-for-social-housing.docx",
+          "sha256": "4cdad16c4db6f9327a25aaf8e929be64689714a8856b2a28599502f451025e3b",
+          "text_characters": 40372,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "6dad103183fd445586c5260cda25e81bc7153b6ce063f56069f773091928f463",
+          "bytes": 51873,
+          "family_id": "get-homelessness-help",
+          "path": "profiles/word-full-v1/get-homelessness-help.docx",
+          "sha256": "10dbdcef1b1d159d8762ce692ae40717647d5126e30f181fef592c656831e127",
+          "text_characters": 40552,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "9223cd796af4a664b00422272c1270df6ff1b77d24b35a227a9918392a5eb217",
+          "bytes": 51926,
+          "family_id": "rent-private-home",
+          "path": "profiles/word-full-v1/rent-private-home.docx",
+          "sha256": "82e8470fe9ffc7f4d9d69b9d68c36e1455795755a5ca812116a6acb25e6a0e4a",
+          "text_characters": 40291,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "fa2576e59b393beaac9f7c54cc979b0c3520de585eb324cecda462f3d94cc335",
+          "bytes": 51891,
+          "family_id": "protect-tenancy-deposit",
+          "path": "profiles/word-full-v1/protect-tenancy-deposit.docx",
+          "sha256": "479ac50eeea09d7fd7a6c011a5508205bcb493f8397b97a08064be2812ccbc7e",
+          "text_characters": 40702,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "8948f841a0f3dbc1906da43abfb130227e204dcf741e10be476d1f55aa340f13",
+          "bytes": 51711,
+          "family_id": "use-public-job-search",
+          "path": "profiles/word-full-v1/use-public-job-search.docx",
+          "sha256": "8a667ed5c5cde585f1ba6626b761a7832f0aaf08d12cc90c509e63a17a1b93cf",
+          "text_characters": 39905,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "5a49885de7a8652caa6c477874d68551857bb3600e41dcea8f9cefd2c54e7474",
+          "bytes": 51563,
+          "family_id": "get-jobcentre-support",
+          "path": "profiles/word-full-v1/get-jobcentre-support.docx",
+          "sha256": "4bd448e8addb32dd70e902d7d697e05d0e2d08af659f4cd008ea315a55f58c3c",
+          "text_characters": 39733,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "01d824a48efeb669abd0a4f0d5fe5c484dd9442bb6c9331931c35274de81a65e",
+          "bytes": 51405,
+          "family_id": "get-redundancy-support",
+          "path": "profiles/word-full-v1/get-redundancy-support.docx",
+          "sha256": "6e7e9e48968fac2b866ab93917855e69edef113be3ad7444a8f0d5fcbc4a6466",
+          "text_characters": 39033,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "8578e676fda8442475854406636dc2dfeca15e3d4951db8248ee11fd2fd154d7",
+          "bytes": 51220,
+          "family_id": "claim-universal-credit-while-unemployed",
+          "path": "profiles/word-full-v1/claim-universal-credit-while-unemployed.docx",
+          "sha256": "c34b2674330ba8b12ac49daf83954a2fe9e345dbeb75975e6ed8f953c76f11ba",
+          "text_characters": 39800,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "46b729d5e2c60a5c3932132689503b571bc9a94dc0518ed821db46c5e55db9c2",
+          "bytes": 51111,
+          "family_id": "register-a-death",
+          "path": "profiles/word-full-v1/register-a-death.docx",
+          "sha256": "835a546763ea44995e3e1f2c9724fe86e661ffbcbaae355a3bc3a6bd0b59b5be",
+          "text_characters": 38434,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "70a9ecc5e8293fb64bf27de2a160873036829f4efda16a63eaf4b96fcf1242b5",
+          "bytes": 51629,
+          "family_id": "arrange-funeral",
+          "path": "profiles/word-full-v1/arrange-funeral.docx",
+          "sha256": "e8534af10bc839d84770094de9fbd5851931299aeb4cecd9740df9d3c233d52b",
+          "text_characters": 38524,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "bc7f42c17bd69fa797517e1b9b48953438220ef207e38a2dc4b53eee56ff5fad",
+          "bytes": 51621,
+          "family_id": "arrange-burial-or-cremation",
+          "path": "profiles/word-full-v1/arrange-burial-or-cremation.docx",
+          "sha256": "23b5ebcefddcb6c2baa0827f89d71302dfa5954affb465f5901df0a21fdc3fff",
+          "text_characters": 39156,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "b349f0d97cf01bb5186e49f0ce8becd3d6626e36c1ee19e63be21bdb3b3b10d0",
+          "bytes": 54742,
+          "family_id": "administer-an-estate",
+          "path": "profiles/word-full-v1/administer-an-estate.docx",
+          "sha256": "7e29ca9ebdf51a73a03969c4706af9ea16816ffb409d2281513b24b3efac6b69",
+          "text_characters": 52698,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "b16fdff0a25d10a6a308d1374286512fe9f14673a89c862ab0b4235c4ed4b335",
+          "bytes": 49466,
+          "family_id": "obtain-uk-passport",
+          "path": "profiles/word-full-v1/obtain-uk-passport.docx",
+          "sha256": "b0604887c2761817a2c0d3db8b5bbeb6fcf591a69e854aa23f930ff4ba309b26",
+          "text_characters": 30104,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "2681adaa8811ff78b4f3f6a424fc5fa0d21528abaf6c137a48d084767f399041",
+          "bytes": 49820,
+          "family_id": "renew-passport",
+          "path": "profiles/word-full-v1/renew-passport.docx",
+          "sha256": "bccb1168e3d1bc5e61b5ac21a21e3287eac30f2b1df7a246c104c345b87b4b0c",
+          "text_characters": 31089,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "2b31bf003cc337e3c0053acec78d153dbdaa4186210ff4e7dd32d8ac907221bf",
+          "bytes": 49703,
+          "family_id": "apply-for-visa-or-immigration-permission",
+          "path": "profiles/word-full-v1/apply-for-visa-or-immigration-permission.docx",
+          "sha256": "643bb7bf69e2e85807b21c69cc55977de538e4566f465d26bd3f264aee3cad4f",
+          "text_characters": 31712,
+          "within_retrieval_target": null
+        },
+        {
+          "body_text_sha256": "28dbd5af2636ce99e23c7afd5a35fb369bedecf2932b4667e6779904e1bbbd90",
+          "bytes": 49568,
+          "family_id": "apply-for-citizenship",
+          "path": "profiles/word-full-v1/apply-for-citizenship.docx",
+          "sha256": "676671cb146bc17f86ae36843d46bac0b9402f7ff0baefce5761c67067d31036",
+          "text_characters": 30682,
+          "within_retrieval_target": null
+        }
+      ]
+    },
+    "word-retrieval-v2": {
+      "document_count": 20,
+      "documents": [
+        {
+          "body_text_sha256": "f67e3c98b9cdbd306daf7cc40b4d32a1fd0f0d3f0456a50458501065ee0e910d",
+          "bytes": 43695,
+          "family_id": "apply-for-school-place",
+          "path": "profiles/word-retrieval-v2/apply-for-school-place.docx",
+          "sha256": "f3701103e7bc2ae9118486c5736812552be7a8cc854abf5b681d2e85e0f0aa1b",
+          "text_characters": 12220,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "ba5d42e491e7865f3889c3396fe76b964d40562050fe5c621a32a950791f462b",
+          "bytes": 43698,
+          "family_id": "appeal-school-admission",
+          "path": "profiles/word-retrieval-v2/appeal-school-admission.docx",
+          "sha256": "a1102d97864f7f739650eb614feec6a5aa828bb377ef10794f1c1297039546bf",
+          "text_characters": 12224,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "63073231aee40045b4340cfdaf4fda048b2ebe4c81015899bc3bfbe55ffc16d7",
+          "bytes": 43696,
+          "family_id": "challenge-school-exclusion",
+          "path": "profiles/word-retrieval-v2/challenge-school-exclusion.docx",
+          "sha256": "295133831050a3c4f6626dd1402f4218108885f872b1d2c23bf5dfe7047883bb",
+          "text_characters": 12244,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "ab8bb7797e87e7fd9098f66604d66c860555ad52f409ece03906dfdae97bb48a",
+          "bytes": 43675,
+          "family_id": "apply-for-free-school-meals",
+          "path": "profiles/word-retrieval-v2/apply-for-free-school-meals.docx",
+          "sha256": "bddc235fef00d5fe94c162c652d6f65fd670b4c5a0d23b9af3de82bd55af7c33",
+          "text_characters": 12220,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "75544af543b091987e468567a867ec05a2247b04fd515aa03c494b23e098daf2",
+          "bytes": 43863,
+          "family_id": "apply-for-social-housing",
+          "path": "profiles/word-retrieval-v2/apply-for-social-housing.docx",
+          "sha256": "971b8af7ed984fa29d0365c31cd33715cbd134b67039260f5edf40da1135b94d",
+          "text_characters": 12655,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "fbe0536a72c433231b370228ec6643ebba06d237be273dbdc106b1fdc8e1630b",
+          "bytes": 43936,
+          "family_id": "get-homelessness-help",
+          "path": "profiles/word-retrieval-v2/get-homelessness-help.docx",
+          "sha256": "028256eccae1471b0a27c36fbd0e3de1bc90d45c291b0d4ff9f73c9583c2785e",
+          "text_characters": 12714,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "16a3fce5e251f6df41bc60b9b306458d7089b5623e0a81255d47bc8285adeac2",
+          "bytes": 43888,
+          "family_id": "rent-private-home",
+          "path": "profiles/word-retrieval-v2/rent-private-home.docx",
+          "sha256": "c49bdd4e5748d29cce145f3b3efd9c4bfbffc524823cc80bf0fce6c8788b71f0",
+          "text_characters": 12540,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "c743cca6c5f5b3d86c84f4a311473d8d104f935cbd6c238f7699fb8e35f96d9f",
+          "bytes": 43872,
+          "family_id": "protect-tenancy-deposit",
+          "path": "profiles/word-retrieval-v2/protect-tenancy-deposit.docx",
+          "sha256": "729cd7d45bcedad2de2a9194462fa1bbed3f74b5c412d4cb07063a741b579efe",
+          "text_characters": 12641,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "166a309551110c9277fa6c3e8d4c7ba93a818dcccfeba097890bfb68ed1adf93",
+          "bytes": 43804,
+          "family_id": "use-public-job-search",
+          "path": "profiles/word-retrieval-v2/use-public-job-search.docx",
+          "sha256": "c8cd7139a5e62e3ba2bd5449eb988c8ce90ba8f2a1528c8ba73e17f2aa28481d",
+          "text_characters": 12363,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "ba91c3f64c357384c72df801d0b63f9aff8cde588e18f7dd3efb0f108d5555f9",
+          "bytes": 43779,
+          "family_id": "get-jobcentre-support",
+          "path": "profiles/word-retrieval-v2/get-jobcentre-support.docx",
+          "sha256": "e2a09d1bf2aeef0b8919a8dc8d602993ae957c0e7bc369b7c98f5c19795db708",
+          "text_characters": 12409,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "2cfd1b4c169a22fef66b26c0a564e19403f5d767c2d64578428cff2819397eca",
+          "bytes": 43778,
+          "family_id": "get-redundancy-support",
+          "path": "profiles/word-retrieval-v2/get-redundancy-support.docx",
+          "sha256": "9d9d00f612c44f71dc8f011625a513b3e7571d11c44a6740a5e568e7ba8ed191",
+          "text_characters": 12129,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "723e1bf6578e7262f6368a998166d009b133da45d518da2c42f03d537cbded79",
+          "bytes": 43734,
+          "family_id": "claim-universal-credit-while-unemployed",
+          "path": "profiles/word-retrieval-v2/claim-universal-credit-while-unemployed.docx",
+          "sha256": "ae7ca50f32aaf5f6d471f8d1aba710a2704e227b5d0bdce0199ec563ee05518d",
+          "text_characters": 12337,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "57164fdd10bdef8c28cc4dbc6adae4c45e44afd00147bb856ed42b0bf1857b52",
+          "bytes": 44178,
+          "family_id": "register-a-death",
+          "path": "profiles/word-retrieval-v2/register-a-death.docx",
+          "sha256": "6374a2cbc9bf6489098d5c7e6ea37975df9b2d2880df6cc86f7ceb4c0a740faf",
+          "text_characters": 13384,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "26dd6105c2bfda97e687990d04756250549737de2125a4718c1a1f7d5cc6e152",
+          "bytes": 43828,
+          "family_id": "arrange-funeral",
+          "path": "profiles/word-retrieval-v2/arrange-funeral.docx",
+          "sha256": "2c2ae26adb63f53fb7dffc3fd0cb8e75d5ea58e569ad5fe538f49cb584f71f02",
+          "text_characters": 12178,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "1b6a5a1bdb158bfce8992731b0ba28bc8d339905122cf60eda9b78b8dae5fd48",
+          "bytes": 43836,
+          "family_id": "arrange-burial-or-cremation",
+          "path": "profiles/word-retrieval-v2/arrange-burial-or-cremation.docx",
+          "sha256": "b9293c5c33f4970e7deb4b0df0607b2a55607247d9a2c931dd8f432211eb47ba",
+          "text_characters": 12377,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "20a3a93ed37bf6b3b81dcf466321cd94384b056243539dfa5cedb193595e8ce7",
+          "bytes": 45671,
+          "family_id": "administer-an-estate",
+          "path": "profiles/word-retrieval-v2/administer-an-estate.docx",
+          "sha256": "e0f15c53e5232e03f4c5f90a5716063f19cc2bdae2f2ec903a79a25bbc27553c",
+          "text_characters": 17884,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "bb003781363f5301bd4213729d3f7fe4e2ded1b480802c343a26ab90325f262e",
+          "bytes": 43095,
+          "family_id": "obtain-uk-passport",
+          "path": "profiles/word-retrieval-v2/obtain-uk-passport.docx",
+          "sha256": "7efb6f4584f31ca50fbddad2c4bbdf4a6032e5f617977f9fc4ce56c9362c9027",
+          "text_characters": 9848,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "9ba67383272c82c97d779db48902bd1c4c69ecad556bc56c63c0213cf7523332",
+          "bytes": 43197,
+          "family_id": "renew-passport",
+          "path": "profiles/word-retrieval-v2/renew-passport.docx",
+          "sha256": "ee2ef6b1cf806b166813be7bbc83a35777ce46973d7afd21ee688905c785526f",
+          "text_characters": 10200,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "b53ce1b417cf9319c5fff7aaa4fadd0b225f5f09c62f8585bae3934288e7dac5",
+          "bytes": 43169,
+          "family_id": "apply-for-visa-or-immigration-permission",
+          "path": "profiles/word-retrieval-v2/apply-for-visa-or-immigration-permission.docx",
+          "sha256": "50d20c844b362b7c5832543f09a91f0dac893fdce86babd750d2f14a137146ac",
+          "text_characters": 10281,
+          "within_retrieval_target": true
+        },
+        {
+          "body_text_sha256": "e7ef725185024a19bf5233301bbcb7e63fad2ba3f42a9e2a2be2692332ffe156",
+          "bytes": 43085,
+          "family_id": "apply-for-citizenship",
+          "path": "profiles/word-retrieval-v2/apply-for-citizenship.docx",
+          "sha256": "b467a1a3e9c767f122acc578ff381d1b9e9664ece45908990d5fbc46551d7260",
+          "text_characters": 9925,
+          "within_retrieval_target": true
+        }
+      ]
+    }
+  },
+  "publication": {
+    "bundle_rebuild_required": false,
+    "official_advice": false,
+    "status": "private_experiment_not_release_grade"
+  },
+  "purpose": "Frozen challenge corpus for SharePoint and OneNote natural-language family discovery experiments",
+  "schema": "explore-okf-sharepoint-pilot-corpus.v1",
+  "source": {
+    "commit": "736d7dc4dbb4e44082f6b7786dd88afd55954792",
+    "record_generated_at_values": [
+      "2026-08-08T00:00:00+01:00"
+    ],
+    "record_schema": "explore-okf-ai-family-record.v1",
+    "repository": "okf-uk-living",
+    "source_projection_bytes": 7217377,
+    "source_projection_path": "explore/journey-projection.json",
+    "source_projection_sha256": "646157327f3181bbef544613e8cd7398328c155dfb6939fcb9a3f1c883e07184"
+  }
+}

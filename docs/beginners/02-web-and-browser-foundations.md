@@ -42,7 +42,7 @@ https://explorer.example/?bundle=ENCODED_URL&view=reader#overview
 
 The query string carries named values such as the bundle URL and active view.
 The fragment begins with `#` and identifies state within the page. The
-Explorer also serializes searches and filters into the URL so Back, Forward,
+Explorer also serialises searches and filters into the URL so Back, Forward,
 bookmarking and sharing behave predictably.
 
 An **absolute URL** contains the whole address. A **relative URL** such as
@@ -119,7 +119,7 @@ directly.
 
 XML represents nested elements and attributes. UK legislation services use
 Atom and CLML XML, so the Explorer includes domain-specific XML parsing even
-though most OKF runtime artifacts are JSON.
+though most OKF runtime artefacts are JSON.
 
 ## What “Static” Means
 
@@ -148,8 +148,8 @@ The canonical Explorer is written with:
 
 A component combines structure, behaviour and styling for a part of the
 interface. For example, the geospatial map and legislation detail surface are
-specialized components. Shared TypeScript modules handle loading, search,
-normalization and presentation rules.
+specialised components. Shared TypeScript modules handle loading, search,
+normalisation and presentation rules.
 
 The build produces ordinary browser files. A user does not need Svelte
 installed to visit the published Explorer.
@@ -207,7 +207,7 @@ When a user opens the Explorer:
 2. the application reads the requested bundle URL;
 3. it fetches a small bundle or large descriptor;
 4. it validates enough structure to choose a loader;
-5. it loads overview and search artifacts as needed;
+5. it loads overview and search artefacts as needed;
 6. the worker handles large search calculations;
 7. components render the selected view;
 8. URL state and browser history record meaningful interaction.

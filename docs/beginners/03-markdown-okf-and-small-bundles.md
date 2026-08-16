@@ -68,9 +68,9 @@ but labels those as compatibility fallbacks.
 
 The same item has several names depending on the task:
 
-- **document** emphasizes the Markdown page;
-- **record** emphasizes the described item and its fields;
-- **node** emphasizes its position in a graph.
+- **document** emphasises the Markdown page;
+- **record** emphasises the described item and its fields;
+- **node** emphasises its position in a graph.
 
 A Markdown link from one known corpus file to another becomes a directed
 relationship. If page A links to page B, the graph records A as the source and
@@ -85,7 +85,7 @@ references A.”
 Every node needs an identifier so links, search results and saved URLs can
 refer to the same thing.
 
-For the small corpus, a normalized file path is a practical starting point:
+For the small corpus, a normalised file path is a practical starting point:
 
 ```text
 standards/openapi.md
@@ -126,7 +126,7 @@ A simplified small bundle looks like this:
 }
 ```
 
-The real bundle includes corpus metadata, normalized sections, aliases and
+The real bundle includes corpus metadata, normalised sections, aliases and
 other compatibility fields. The important point is that all records and
 relationships can be loaded together.
 
@@ -140,7 +140,7 @@ The small-bundle builder:
 1. reads `okf.config.json`;
 2. follows the configured corpus root and sections;
 3. parses frontmatter and Markdown;
-4. normalizes record fields;
+4. normalises record fields;
 5. resolves links to known files;
 6. creates directed relationships;
 7. writes deterministic JSON.
@@ -149,11 +149,11 @@ The small-bundle builder:
 ordered content rather than changing arbitrarily between builds. Stable output
 is easier to review, cache and verify.
 
-The generated `okf-bundle.json` is a publication artifact. The Markdown
+The generated `okf-bundle.json` is a publication artefact. The Markdown
 remains the source of truth, so a correction belongs in Markdown and is then
 regenerated.
 
-## Compatibility Normalization
+## Compatibility Normalisation
 
 Older bundles may use different names:
 
@@ -163,8 +163,8 @@ Older bundles may use different names:
 - v0.1 `timestamp` instead of structured `generated.at`;
 - body citations instead of structured `sources`.
 
-The small-bundle loader normalizes compatible variants into one internal
-corpus shape. Compatibility is useful, but it has limits: normalization
+The small-bundle loader normalises compatible variants into one internal
+corpus shape. Compatibility is useful, but it has limits: normalisation
 should not guess semantic identity that the pack did not state.
 
 Chapter 17 explains the v0.2 trust, lifecycle and passive attestation fields
@@ -183,7 +183,7 @@ The Explorer must:
 - make external destinations visible;
 - preserve readable fallback text when a richer presentation is unavailable.
 
-The presence of a Mermaid-like diagram or Markdown table does not authorize
+The presence of a Mermaid-like diagram or Markdown table does not authorise
 arbitrary scripts.
 
 ## JSON, YAML And YAML-LD
@@ -213,7 +213,7 @@ becomes a problem when:
 - data updates would invalidate one enormous cached file.
 
 The answer is not to abandon static publication. It is to publish a descriptor
-and several bounded artifacts, which is the subject of
+and several bounded artefacts, which is the subject of
 [Large corpora and progressive loading](04-large-corpora-and-progressive-loading.md).
 
 ## Try It Mentally

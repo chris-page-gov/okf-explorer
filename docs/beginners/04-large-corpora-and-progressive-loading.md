@@ -11,11 +11,11 @@ A menu does not bring every dish to the table. It gives enough information to
 choose, then the kitchen prepares what was selected.
 
 A large OKF descriptor plays the role of the menu. It states what the
-collection is, which artifacts exist and where to find them. Search indexes
+collection is, which artefacts exist and where to find them. Search indexes
 and compact result records help the user choose. Full records and relationship
 neighbourhoods load only when needed.
 
-Unlike a restaurant, the artifacts are built in advance; the static host is
+Unlike a restaurant, the artefacts are built in advance; the static host is
 not running custom queries.
 
 ## Descriptor
@@ -45,7 +45,7 @@ publication but does not contain every record.
 
 ## Manifest
 
-A **manifest** inventories artifacts in a publication. The data manifest can
+A **manifest** inventories artefacts in a publication. The data manifest can
 point to:
 
 - overview and analysis files;
@@ -79,7 +79,7 @@ used at two different architectural levels.
 
 ## Chunks And Shards
 
-Both split a large artifact, but the reason for the split differs.
+Both split a large artefact, but the reason for the split differs.
 
 A **chunk** is a bounded group of records, often chosen by numeric position:
 
@@ -112,7 +112,7 @@ Indexes duplicate selected information intentionally. The canonical record is
 still distinct from its search or display projection.
 
 A facet value such as `Scotland` may therefore have an exact posting list
-without being a materialized relationship node. Explorer can show a bounded
+without being a materialised relationship node. Explorer can show a bounded
 membership preview and graph from that posting, clearly labelled as
 index-derived. Selecting one real record then loads that record's adjacency
 shard. Asking a facet card to load every corpus relationship is both unnecessary
@@ -139,7 +139,7 @@ truncated by a budget.
 
 ## Compression
 
-Repeated text in JSON compresses well. Large artifacts may be published with
+Repeated text in JSON compresses well. Large artefacts may be published with
 gzip compression to reduce transfer size.
 
 Compression introduces two sizes:
@@ -158,8 +158,8 @@ from bytes. If the bytes change, the expected hash no longer matches.
 
 Integrity metadata helps answer:
 
-- Did the fetched artifact match the manifest?
-- Did artifacts from two different snapshots get mixed?
+- Did the fetched artefact match the manifest?
+- Did artefacts from two different snapshots get mixed?
 - Can a frozen release be verified later?
 
 It does not prove the content was correct at the source. It proves that the
@@ -172,14 +172,14 @@ The publication model can provide both.
 ## Byte-Range Release Packs
 
 Static hosts and release systems can impose limits on file count or request
-patterns. Several immutable artifacts can be concatenated into a larger pack.
-An index records each artifact's offset and length.
+patterns. Several immutable artefacts can be concatenated into a larger pack.
+An index records each artefact's offset and length.
 
 An HTTP **Range** request asks for only those bytes. The Explorer verifies the
 selected slice before parsing it. This keeps a static, immutable release usable
 without downloading the entire pack for one record.
 
-Range packs are an optimization and mirror. The logical artifact paths remain
+Range packs are an optimisation and mirror. The logical artefact paths remain
 the data contract.
 
 ## Registries

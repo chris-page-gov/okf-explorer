@@ -45,7 +45,7 @@ Within `apps/okf-explorer/src/`:
 
 - `routes/+page.svelte` coordinates the main application state and views;
 - `lib/types.ts` defines shared runtime data shapes;
-- `lib/sources/` loads, normalizes and verifies small and large packs;
+- `lib/sources/` loads, normalises and verifies small and large packs;
 - `lib/okfV02.ts` presents structured v0.2 trust and lifecycle metadata;
 - `lib/sources/federation.ts` validates overview-first federations;
 - `lib/search/` defines search clients, static search and retrieval URL state;
@@ -97,7 +97,7 @@ descriptor
 ```
 
 The UK API and legislation builders produce related but domain-specific
-artifacts. Before changing a manifest field:
+artefacts. Before changing a manifest field:
 
 1. find its TypeScript type;
 2. find the builder output;
@@ -155,7 +155,7 @@ Avoid changing a stable IRI merely to improve a display label.
 
 The authoring profile freezes domain research decisions before implementation.
 The federation profile defines cross-publication discovery. Release-assurance
-artifacts bind the tested browser build and corpus bytes.
+artefacts bind the tested browser build and corpus bytes.
 
 When changing one of these contracts:
 
@@ -183,7 +183,7 @@ When changing one of these contracts:
    presentation.
 4. Add builder output.
 5. Add schema/type support.
-6. Add loader normalization.
+6. Add loader normalisation.
 7. Add display only where it helps a user task.
 8. Add unit and browser coverage.
 9. Document standards mapping and provenance.
@@ -222,7 +222,7 @@ Screen placement is not part of the semantic definition.
 
 1. Require a deliberate user action.
 2. define supported schemes, formats and CORS expectations;
-3. sanitize credential-like URL fields;
+3. sanitise credential-like URL fields;
 4. cap response bytes and parsed complexity;
 5. avoid automatic proxying or private-network probing;
 6. preserve the original source and local metadata;
@@ -294,10 +294,17 @@ large search contract and main page state.
 Before handing off a change, be able to say:
 
 - what source of truth changed;
-- which generated artifacts were refreshed;
+- which generated artefacts were refreshed;
 - what compatibility boundary was preserved;
 - which checks passed;
 - what remains uncertain or intentionally out of scope.
+
+For documentation, follow the repository
+[British-English and plain-English guidance](../documentation-style.md) and
+run `uv run --locked python scripts/check_british_english.py`. For semantic changes,
+check the [canonical semantic-authoring and rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md#local-implementation-and-release-ledger)
+before describing implementation, review, release, deployment or public
+verification state.
 
 ## Next
 

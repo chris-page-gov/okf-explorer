@@ -63,3 +63,25 @@ producers must publish a typed resource instead.
 This contract describes presentation, not authority. Producers remain
 responsible for source identity, assertion provenance, jurisdiction, rights,
 freshness and limitations.
+
+## Further format-specific work
+
+The current contract gives one resource one bounded display mode. Future work
+tracked under [issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76)
+should retain, rather than replace, that safe baseline:
+
+- allow a record to describe several representations of the same source with
+  stable resource IDs, roles, media types and optional format profiles;
+- select a renderer from the declared media type and profile, then validate the
+  returned `Content-Type`, using a file extension only as a conservative
+  compatibility fallback;
+- distinguish an unavailable representation (`406`), missing resource (`404`),
+  browser cross-origin restriction, invalid declared-format response and size
+  limit in user-facing errors; and
+- add regressions proving that CLML/XML is never sent through JSON parsing,
+  point-in-time URLs keep their date, malformed XML fails safely, source markup
+  remains inert and legacy JSON inspection still behaves as documented.
+
+A specialist legislation view may reuse a typed XML representation, but its
+provision tree, legal status and point-in-time interpretation remain a separate
+domain contract rather than a generic consequence of `display_mode: xml`.

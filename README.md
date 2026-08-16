@@ -69,6 +69,10 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Reproduce the UK Legislation runtime acceptance gate](https://chris-page-gov.github.io/okf-explorer/docs/legislation-runtime-acceptance.html)
 - [Use the illustrated UK Legislation persona manual][legislation-manual]
 - [Use an AI with an OKF pack][ai-okf-usage]
+- [Review the SharePoint and Microsoft 365 Copilot governed-retrieval
+  trial][sharepoint-copilot-trial]: 293 of 293 authored situations returned a
+  safe response and 292 selected the exact expected family; the one preserved
+  near-neighbour collision defines the next held-out test.
 - [Create an OKF bundle that uses the Explorer well][bundle-authoring]
 - [Add per-record narratives and typed source access][large-record-contract]
 - [Use the OKF Foundry prompts to research a domain, then build and publish its
@@ -154,6 +158,10 @@ The repository contains:
 - `evaluation/legislation/` - 100-question legal-answer suite, 100-point rubric and provenance-complete answer contract.
 - `evaluation-foundry/` - schemas, reversible mappings, coverage evidence,
   journeys and question suites for functionality evaluations.
+- `experiments/sharepoint-copilot/` - deterministic Word-record generators,
+  frozen synthetic retrieval schedules and public experiment controls. Raw
+  Microsoft 365 responses and tenant evidence remain in an ignored private
+  results directory.
 - `evaluation/heritage/` - the canonical source copy of the faithful Coventry
   and Warwickshire heritage evaluation corpus, its tiny assurance fixture and
   its isolated synthetic supplement; its public bytes are owned by the
@@ -484,6 +492,7 @@ Pages to use **GitHub Actions** as the source.
 [federation-docs]: https://chris-page-gov.github.io/okf-explorer/docs/federated-bundles.html
 [whole-law-example]: https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json&view=reader
 [ai-okf-usage]: https://chris-page-gov.github.io/okf-explorer/docs/ai-okf-usage.html
+[sharepoint-copilot-trial]: https://chris-page-gov.github.io/okf-explorer/docs/sharepoint-m365-copilot-trial.html
 [bundle-authoring]: https://chris-page-gov.github.io/okf-explorer/docs/okf-bundle-authoring.html
 [large-record-contract]: docs/large-record-narrative-source-contract.md
 [authoring-prompt-kit]: https://chris-page-gov.github.io/okf-explorer/docs/okf-authoring-prompt-kit.html

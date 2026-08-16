@@ -129,7 +129,7 @@ positive state beyond a documented compatibility default.
 ## Attested Computation
 
 An Attested Computation declaration describes a computation and the evidence
-that an authorized runtime could use to evaluate it:
+that an authorised runtime could use to evaluate it:
 
 - computation identity;
 - executor and attester;
@@ -146,7 +146,7 @@ Opening a bundle never:
 - asks an attester for a verdict;
 - treats a declared contract as a passing receipt.
 
-Execution requires an explicit, separately authorized runtime. The Explorer
+Execution requires an explicit, separately authorised runtime. The Explorer
 can display missing contract fields without claiming an attestation result.
 
 ## Compatibility With v0.1
@@ -156,7 +156,7 @@ For older bundles:
 - `generated.at` wins when present; otherwise the UI can use `timestamp`;
 - structured `sources` win when present; otherwise bounded citations can be
   projected;
-- a single verification mapping and a list normalize to one internal form;
+- a single verification mapping and a list normalise to one internal form;
 - missing trust and lifecycle data do not reject the concept.
 
 Fallbacks are labelled. Compatibility must not invent a generator, verifier,
@@ -177,6 +177,9 @@ publication quality requirements.
 ## Continue
 
 Read [OKF conformance](../okf-conformance.md) for the precise current boundary.
+Use the [canonical semantic-authoring and rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md#local-implementation-and-release-ledger)
+for the live distinction between local implementation, review, release,
+deployment and public verification.
 
 ## Next
 

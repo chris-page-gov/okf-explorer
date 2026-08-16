@@ -20,7 +20,7 @@ The exemplar publishes three bundles because they prove different things.
 | Product | Purpose | Real-world claims? | Loaded by default? | Included in faithful counts? |
 |---|---|---:|---:|---:|
 | [Tiny assurance fixture](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/index.html) | Prove the producer and real Explorer journey cheaply | Yes, copied from the frozen source | No | No |
-| [Source-backed faithful corpus](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html) | Evaluate the complete, explicitly bounded source population | Yes, with visible normalization | Yes | Yes |
+| [Source-backed faithful corpus](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/index.html) | Evaluate the complete, explicitly bounded source population | Yes, with visible normalisation | Yes | Yes |
 | [Synthetic supplement](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.html) | Demonstrate features the source cannot evidence | No; every item is invented | No | No |
 
 This separation prevents an attractive demonstration from quietly becoming a
@@ -43,7 +43,7 @@ exemplar they include:
 - Which records appeared in Heritage at Risk, in what year and condition?
 - Which periods, people and alternative names can be found?
 - How did annual risk observations change?
-- Which associations are source-declared, mechanically normalized or only
+- Which associations are source-declared, mechanically normalised or only
   illustrative?
 
 Each question becomes a scored question, an Explorer journey or an explicit
@@ -90,7 +90,7 @@ evidence. This prevents, for example, a place called Warwick Bridge in Cumbria
 from being mistaken for Warwick District.
 
 The workbooks also supply a register **year**, not a publication day. A
-normalized HAR observation therefore records `year`, `temporal_coverage` and
+normalised HAR observation therefore records `year`, `temporal_coverage` and
 `date_precision: year`, while day-precision timestamp fields remain empty. The
 Timeline can show the annual snapshot without inventing 1 January.
 
@@ -116,7 +116,7 @@ evidence:
 | Relationship | Evidence | What may be claimed |
 |---|---|---|
 | NHLE asset → geography | Historic England feature geometry intersected with the pinned ONS boundary | Exact spatial intersection for that snapshot and boundary vintage |
-| HAR observation → geography | Exact authority field and value from the annual workbook | Reversible field normalization; **not** a spatial intersection |
+| HAR observation → geography | Exact authority field and value from the annual workbook | Reversible field normalisation; **not** a spatial intersection |
 
 Both can use the governed `containedInPlace` predicate for navigation, while
 their assertion metadata lets the interface explain how each edge was made.
@@ -298,20 +298,26 @@ The exemplar uses **YAML-LD** as the canonical authoring form for this additive
 extension. [YAML-LD 1.0](https://www.w3.org/TR/yaml-ld-10/) is now a W3C
 Working Draft, not a W3C Recommendation, and may still change. This project
 therefore pins and validates a deliberately constrained subset: people edit
-Markdown and its readable front matter, not two parallel graph files. The safe
-path is deliberately simple:
+Markdown and its readable front matter, not two parallel graph files.
+
+The [canonical semantic-authoring contract and live rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md)
+records the current cross-repository implementation and release boundaries.
+Treat it as the live ledger rather than copying its status table into this
+chapter.
+
+The safe path is deliberately simple:
 
 1. accept only JSON-compatible YAML—string-keyed maps, lists and scalar
    values, UTF-8 text and finite numbers, with no executable tags, cycles or
    duplicate keys;
 2. parse that YAML into the ordinary JSON data model;
 3. process the result as JSON-LD using pinned contexts;
-4. normalize the graph and bind its semantic identity with the semantic plane
+4. normalise the graph and bind its semantic identity with the semantic plane
    root; and
-5. generate JSON-LD as an interchange materialization whenever that semantic
+5. generate JSON-LD as an interchange materialisation whenever that semantic
    plane changes and again for a release.
 
-In short: **YAML-LD is what authors maintain, the normalized graph is what
+In short: **YAML-LD is what authors maintain, the normalised graph is what
 semantic equality means, and JSON-LD is what interoperable tools receive.** A
 generated JSON-LD file is never a competing hand-edited source of truth.
 
@@ -320,13 +326,13 @@ no person sensibly types that root file by hand. Here “authoring form” means
 named deterministic build stage: the builder emits real YAML, reparses those
 exact YAML-LD bytes through the same safe loader used for hand-authored front
 matter, and derives the semantic shards and JSON-LD only from that parsed data
-model. This prevents a Python object from being serialized twice and merely
+model. This prevents a Python object from being serialised twice and merely
 labelled “YAML-LD canonical.”
 
-For equality, the parsed graph is normalized with the URDNA2015 algorithm into
+For equality, the parsed graph is normalised with the URDNA2015 algorithm into
 canonical N-Quads and hashed. Comments, indentation, mapping order and scalar
 quoting therefore do not change the semantic plane root. The receipt also
-records an exact-byte artifact root, so reviewers can still see and verify a
+records an exact-byte artefact root, so reviewers can still see and verify a
 formatting-only file change.
 
 JSON-LD keywords beginning with `@` are quoted because not every YAML parser
@@ -434,7 +440,7 @@ IRI-route registry and predicate registry. A changed meaning or route therefore
 changes the URDNA2015 graph digest and semantic plane root, invalidating the
 appropriate checks. The JSON-LD interchange file is regenerated from parsed
 YAML-LD on that same semantic change; a presentation-only edit does not
-rematerialize it.
+rematerialise it.
 
 The exemplar publishes its
 [YAML-LD graph](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld),
@@ -469,7 +475,7 @@ One label cannot say both “who supports this?” and “is this about reality?
 | `real-world` | Intended as a claim or projection about a real entity |
 | `synthetic-fixture` | Invented solely to test a capability |
 
-An official source field can be mechanically normalized. A model-derived
+An official source field can be mechanically normalised. A model-derived
 record can still concern a real entity. A perfectly complete synthetic fixture
 is still not a real-world claim. Keeping the axes independent makes those
 differences visible.

@@ -229,6 +229,28 @@ class CiPublicationTopologyTests(unittest.TestCase):
             {"adversarial-gate"},
             self.job_needs(shadow_jobs["foundry-full-family"]),
         )
+        shadow_foundry_steps = shadow_jobs["foundry-full-family"]["steps"]
+        shadow_foundry_build_index = next(
+            index
+            for index, step in enumerate(shadow_foundry_steps)
+            if step.get("run") == "pnpm build:determinism"
+        )
+        shadow_foundry_checks_index = next(
+            index
+            for index, step in enumerate(shadow_foundry_steps)
+            if step.get("name") == "Run full Foundry and candidate checks"
+        )
+        self.assertEqual(
+            "apps/okf-explorer",
+            shadow_foundry_steps[shadow_foundry_build_index].get(
+                "working-directory"
+            ),
+        )
+        self.assertLess(
+            shadow_foundry_build_index,
+            shadow_foundry_checks_index,
+            "candidate checks require the exact Explorer build manifest",
+        )
         shadow_browser = shadow[
             shadow.index("  browser-three-engine:") : shadow.index(
                 "\n  foundry-full-family:"

@@ -28,6 +28,40 @@ GITHUB_PAGES_SITE_LIMIT_BYTES = 1_000_000_000
 BEGINNER_DOCS = ROOT / "docs" / "beginners"
 BEGINNER_GUIDE_CSS = BEGINNER_DOCS / "guide.css"
 BEGINNER_GUIDE_JS = BEGINNER_DOCS / "guide.js"
+LEGACY_BEGINNER_HEADING_IDS = {
+    (
+        "16-beginner-glossary.md",
+        "BFC, BFE, BGC, BSC and BUC",
+    ): "bfc-bfe-bgc-and-buc",
+    (
+        "03-markdown-okf-and-small-bundles.md",
+        "Compatibility Normalisation",
+    ): "compatibility-normalization",
+    (
+        "07-semantic-web-and-ontologies.md",
+        "Serialisation",
+    ): "serialization",
+    (
+        "12-ai-infrastructure-and-federated-ai.md",
+        "Identity And Authorisation",
+    ): "identity-and-authorization",
+    (
+        "13-security-privacy-accessibility-and-responsible-use.md",
+        "Privacy And Data Minimisation",
+    ): "privacy-and-data-minimization",
+    (
+        "21-release-gates-evidence-and-owner-review.md",
+        "Authorise continued checking",
+    ): "authorize-continued-checking",
+    (
+        "21-release-gates-evidence-and-owner-review.md",
+        "Authorise RC deployment",
+    ): "authorize-rc-deployment",
+    (
+        "21-release-gates-evidence-and-owner-review.md",
+        "Authorise final promotion",
+    ): "authorize-final-promotion",
+}
 FOUNDRY_CSS = ROOT / "docs" / "foundry.css"
 FOUNDRY_JS = ROOT / "docs" / "foundry.js"
 FOUNDRY_PAGES = (
@@ -509,16 +543,78 @@ def published_markdown_renderer() -> MarkdownIt:
     def render_heading_open(tokens, index, options, env):
         inline = tokens[index + 1] if index + 1 < len(tokens) else None
         label = inline.content if inline and inline.type == "inline" else "section"
-        base = heading_slug(label)
+        source_name = Path(env["source"]).name if env.get("source") else ""
+        base = LEGACY_BEGINNER_HEADING_IDS.get(
+            (source_name, label),
+            heading_slug(label),
+        )
         counts = env.setdefault("_heading_slug_counts", {})
         occurrence = counts.get(base, 0)
         counts[base] = occurrence + 1
         identifier = base if occurrence == 0 else f"{base}-{occurrence}"
         tokens[index].attrSet("id", identifier)
+        if env.get("heading_permalinks"):
+            tokens[index].attrSet("tabindex", "-1")
+            tokens[index].attrSet("data-section-heading", "")
+            env["_current_heading"] = {
+                "identifier": identifier,
+                "label": label,
+            }
         return renderer.renderer.renderToken(tokens, index, options, env)
 
-    def render_table_open(_tokens, _index, _options, _env):
-        return '<div class="table-scroll"><table>\n'
+    def render_heading_close(tokens, index, options, env):
+        permalink = ""
+        if env.get("heading_permalinks"):
+            heading = env.pop("_current_heading", None)
+            if heading:
+                identifier = heading["identifier"]
+                label = heading["label"]
+                permalink = (
+                    f'<a class="heading-permalink" href="#{quote(identifier, safe="-_")}" '
+                    f'aria-label="Permalink to {html.escape(label, quote=True)}">#</a>'
+                )
+        return permalink + renderer.renderer.renderToken(
+            tokens,
+            index,
+            options,
+            env,
+        )
+
+    default_fence_renderer = renderer.renderer.rules["fence"]
+    default_code_block_renderer = renderer.renderer.rules["code_block"]
+
+    def render_focusable_code(default_renderer, tokens, index, options, env):
+        rendered = default_renderer(tokens, index, options, env)
+        if env.get("focusable_code"):
+            return rendered.replace("<pre>", '<pre tabindex="0">', 1)
+        return rendered
+
+    def render_fence(tokens, index, options, env):
+        return render_focusable_code(
+            default_fence_renderer,
+            tokens,
+            index,
+            options,
+            env,
+        )
+
+    def render_code_block(tokens, index, options, env):
+        return render_focusable_code(
+            default_code_block_renderer,
+            tokens,
+            index,
+            options,
+            env,
+        )
+
+    def render_table_open(_tokens, _index, _options, env):
+        attributes = ""
+        if env.get("focusable_code"):
+            attributes = (
+                ' tabindex="0" role="region" '
+                'aria-label="Scrollable data table"'
+            )
+        return f'<div class="table-scroll"{attributes}><table>\n'
 
     def render_table_close(_tokens, _index, _options, _env):
         return "</table></div>\n"
@@ -526,6 +622,9 @@ def published_markdown_renderer() -> MarkdownIt:
     renderer.renderer.rules["link_open"] = render_link_open
     renderer.renderer.rules["image"] = render_image
     renderer.renderer.rules["heading_open"] = render_heading_open
+    renderer.renderer.rules["heading_close"] = render_heading_close
+    renderer.renderer.rules["fence"] = render_fence
+    renderer.renderer.rules["code_block"] = render_code_block
     renderer.renderer.rules["table_open"] = render_table_open
     renderer.renderer.rules["table_close"] = render_table_close
     return renderer
@@ -548,7 +647,12 @@ def render_beginner_page(
     )
     body = beginner_markdown_renderer().render(
         markdown,
-        {"source": str(source), "output_route": str(output_route)},
+        {
+            "source": str(source),
+            "output_route": str(output_route),
+            "heading_permalinks": True,
+            "focusable_code": True,
+        },
     )
     current_index = sources.index(source)
 

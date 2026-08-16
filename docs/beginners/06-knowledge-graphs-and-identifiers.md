@@ -138,7 +138,7 @@ meaning that software may use for inference.
 The boundary is not perfectly sharp in everyday speech. In this project:
 
 - RDFS provides lightweight class and property structure;
-- SKOS organizes governed concepts;
+- SKOS organises governed concepts;
 - selected OWL rules can support bounded inference;
 - SHACL and JSON Schema validate publication contracts.
 
@@ -172,7 +172,7 @@ inference, validation and presentation as separate layers.
 Two visually similar edges can have different origins:
 
 - **official** — stated by an authoritative source;
-- **normalized** — mapped into a common field or identifier by a builder;
+- **`normalized`** — mapped into a common field or identifier by a builder;
 - **inferred** — derived from declared semantic rules;
 - **model-derived** — proposed or classified by a statistical or generative
   model.
@@ -227,7 +227,7 @@ A **projection** is a derived view suited to a task:
 Projection is not fabrication when its transformation is defined. It should
 remain traceable to the underlying nodes and edges.
 
-An aggregate edge may summarize many underlying edges and must say so with a
+An aggregate edge may summarise many underlying edges and must say so with a
 count and inspection path.
 
 ## A Relationship Registry
@@ -261,7 +261,7 @@ The Explorer may:
 - cycle labels to avoid collisions;
 - keep selected layout state in a URL.
 
-These are presentation decisions. They must not be serialized back into the
+These are presentation decisions. They must not be serialised back into the
 semantic graph as claims about the world.
 
 ## Next

@@ -79,7 +79,7 @@ Before reporting governed enrichment as ready, the Explorer cross-checks:
 - predicate and evidence vocabularies;
 - chunk inventory and counts.
 
-The three artifacts serve different roles. Self-declaration by the generated
+The three artefacts serve different roles. Self-declaration by the generated
 assertion file is not independent acceptance evidence.
 
 ## Aligned Route Shards
@@ -219,7 +219,7 @@ A release-bound acceptance run stages:
 Each material has a safe relative path, positive byte count and SHA-256 digest.
 The receipt can therefore be rehashed independently.
 
-Publication uses write-once behaviour. A divergent existing artifact causes
+Publication uses write-once behaviour. A divergent existing artefact causes
 failure rather than being overwritten.
 
 ## Evidence Chain
@@ -244,7 +244,7 @@ unbound local files is not release evidence for different public bytes.
 
 Read [UK Legislation runtime acceptance](../legislation-runtime-acceptance.md),
 [Federated OKF bundles](../federated-bundles.md) and the release-assurance
-artifacts for the exact gates.
+artefacts for the exact gates.
 
 ## Next
 

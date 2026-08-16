@@ -16,7 +16,7 @@ The **active context** is the current evidence set:
 - a selected record.
 
 Changing the query or a facet should affect every view consistently. If Reader
-shows 40 filtered records while Resources silently summarizes the whole
+shows 40 filtered records while Resources silently summarises the whole
 corpus, the interface creates a false comparison.
 
 The first context is `overview`. It is a generated description of the pack's
@@ -45,7 +45,7 @@ level it should explain:
 - suggested routes into the collection;
 - provenance and source notices.
 
-At record level it presents normalized fields and body content without making
+At record level it presents normalised fields and body content without making
 the reader decode raw JSON.
 
 ## Graph
@@ -55,7 +55,7 @@ Graph shows nodes and typed relationships.
 For a small selected neighbourhood, an automatic compact layout can work.
 For a dense focus graph, the Explorer groups relationships by:
 
-- predicate or normalized relationship label;
+- predicate or normalised relationship label;
 - direction relative to the focus.
 
 Users can hide, expand and reorder groups. That state affects visibility and
@@ -63,7 +63,7 @@ layout only.
 
 At whole-corpus overview, aggregate nodes and counts are more honest than a
 random sample of raw records. Selecting an aggregate should lead to the
-records it summarizes.
+records it summarises.
 
 ### Labels And Collisions
 
@@ -91,7 +91,7 @@ Confidence is not silently treated as strength.
 Links presents relationships as readable lists, groups and paths. It is
 valuable when a graph would be crowded or inaccessible.
 
-The overview should summarize relationship types and connected groups before
+The overview should summarise relationship types and connected groups before
 loading the whole relationship universe. For a selected record it can show:
 
 - outgoing links;
@@ -160,7 +160,7 @@ Map uses spatial evidence as another context reducer. It can show:
 
 - source coordinates or geometry;
 - declared coverage;
-- recognized places;
+- recognised places;
 - geospatial services and files;
 - bounded previews requested by the user.
 

@@ -100,15 +100,15 @@ model-assisted assertion into an official statement.
 
 ## Relationship Summaries
 
-A federation can summarize a large external relationship plane by predicate,
+A federation can summarise a large external relationship plane by predicate,
 authority and freshness.
 
 Each breakdown must add exactly to the declared total. The summary also states
 its scope so a small set of inline control-plane edges is not confused with
 millions of child data-plane relationships.
 
-A summary supports overview and planning. It does not make every summarized
-edge inspectable until the relevant child or route-scoped artifact is loaded.
+A summary supports overview and planning. It does not make every summarised
+edge inspectable until the relevant child or route-scoped artefact is loaded.
 
 ## Source Families
 
@@ -178,7 +178,7 @@ YAML loading uses:
 - no custom or executable tags;
 - bounded bytes and structure.
 
-The loader can recognize JSON content sent with a generic media type. YAML
+The loader can recognise JSON content sent with a generic media type. YAML
 requires a suitable file extension or media type. Packs should still publish
 standards-correct media types and frozen JSON-LD representations.
 

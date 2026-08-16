@@ -1,7 +1,7 @@
 # Building, Testing And Publishing
 
 This repository publishes a static application and several kinds of data
-artifact. A reliable change follows the source-of-truth boundary and runs the
+artefact. A reliable change follows the source-of-truth boundary and runs the
 checks for the layer it touched.
 
 ## Source Files And Generated Files
@@ -29,13 +29,13 @@ the edit.
 
 ## Build
 
-A build transforms source into runnable or publishable artifacts.
+A build transforms source into runnable or publishable artefacts.
 
 The local small-bundle build:
 
 1. parses configured Markdown;
 2. resolves links;
-3. creates normalized records and relationships;
+3. creates normalised records and relationships;
 4. writes deterministic JSON.
 
 The Svelte build:
@@ -47,7 +47,7 @@ The Svelte build:
 The site build:
 
 1. assembles the canonical app;
-2. copies public pack artifacts and Markdown;
+2. copies public pack artefacts and Markdown;
 3. publishes compatibility surfaces;
 4. adds redirects and service-worker retirement behaviour;
 5. rejects forbidden temporary files;
@@ -58,11 +58,11 @@ The site build:
 ## Check Mode
 
 Several generators accept `--check`. They calculate the expected output and
-compare it with the checked-in artifact without rewriting it.
+compare it with the checked-in artefact without rewriting it.
 
 Check mode answers:
 
-> Are source and generated publication synchronized?
+> Are source and generated publication synchronised?
 
 It is useful in automated checks and before a commit.
 
@@ -72,7 +72,7 @@ A unit test exercises one module or rule with controlled inputs.
 
 Examples in the Explorer cover:
 
-- small-bundle normalization;
+- small-bundle normalisation;
 - search request and response contracts;
 - retrieval URL state;
 - graph and facet presentation;
@@ -213,7 +213,7 @@ A deterministic builder:
 
 - orders output consistently;
 - avoids volatile timestamps where no source changed;
-- uses explicit normalization rules;
+- uses explicit normalisation rules;
 - records source and pipeline versions;
 - produces the same hash from the same inputs.
 
@@ -225,7 +225,7 @@ Determinism makes review meaningful. If thousands of lines change because of
 unstable ordering, a reviewer can miss the actual data change.
 
 Some live-source builds necessarily observe a new snapshot. The observation
-time should then be explicit and coherent across its artifacts.
+time should then be explicit and coherent across its artefacts.
 
 ## Caching And Fixtures
 
@@ -260,7 +260,7 @@ A release can freeze:
 
 - Explorer assets;
 - corpus Markdown;
-- descriptor and data artifacts;
+- descriptor and data artefacts;
 - legacy viewer;
 - integrity metadata.
 - a software bill of materials;
@@ -276,7 +276,7 @@ Do not hide a failing check by editing the expected output.
 Classify the failure:
 
 - source error;
-- stale generated artifact;
+- stale generated artefact;
 - invalid schema;
 - code regression;
 - outdated test expectation;
@@ -302,7 +302,7 @@ sufficient evidence for a public release. Release assurance binds:
 
 - the approved domain profile;
 - immutable source bytes;
-- generated pack artifacts;
+- generated pack artefacts;
 - governed accepted enrichment;
 - deterministic application bytes;
 - the assembled site;
