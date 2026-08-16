@@ -20,7 +20,7 @@ A responsible research path is:
 6. cite a direct official passage;
 7. state unresolved legal or factual issues.
 
-The Explorer supports this path but does not replace legal judgment.
+The Explorer supports this path but does not replace legal advice.
 
 ## Types Of UK Legislation
 
@@ -86,7 +86,7 @@ demand.
 This is **progressive completeness**:
 
 - every work is present in the checked catalogue snapshot;
-- every recognized provision of a selected work is discovered from its
+- every recognised provision of a selected work is discovered from its
   authoritative XML when requested;
 - the static repository does not freeze hundreds of millions of provision
   nodes.
@@ -140,7 +140,7 @@ legal effects.
 
 ## Schema.org Legislation
 
-Schema.org provides widely recognized web terms for legislation. It helps
+Schema.org provides widely recognised web terms for legislation. It helps
 general web interoperability and discovery.
 
 It is a compatibility layer, not a replacement for ELI's legal-resource model
@@ -179,7 +179,7 @@ Three questions are easily confused:
 - **Extent:** To which legal jurisdictions or territories did it extend?
 
 A latest revised text may not answer a historical question. A provision can
-exist in the document yet not be commenced for the situation being analyzed.
+exist in the document yet not be commenced for the situation being analysed.
 Extent and application can require further legal interpretation.
 
 The researcher must also inspect changes made and changes received, including

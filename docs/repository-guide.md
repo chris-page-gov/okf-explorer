@@ -33,6 +33,7 @@ compatibility job:
 | `docs/` | Manuals, evaluation docs, conformance notes, the DCAT-AP/OpenAPI standards crosswalk and review history. |
 | `evaluation/okf-explorer/` | UK Government APIs question suite and visual-regression evidence. |
 | `evaluation/gov-ckan/` | GOV.UK CKAN paired exemplar question suite. |
+| `experiments/sharepoint-copilot/` | Deterministic Word-record generators, frozen evaluation controls and redacted aggregate findings for the Microsoft 365 Copilot grounding trial. Raw tenant identifiers, transcripts and attempt evidence stay in the ignored private results directory. |
 | `document/`, `stack/`, `standards/`, `federated/`, `frameworks/`, `research/`, `uk-government/`, `organisations/`, `glossary/` | The local Markdown OKF corpus used by the small bundle. |
 | `okf.config.json` | Small-bundle corpus configuration. |
 | `okf-registry.json` and `okf-registry.jsonld` | Generated registry projections for the Explorer and Linked Data clients. |
@@ -151,7 +152,9 @@ If you are researching legislation, start with the
 [illustrated manual](uk-legislation/illustrated-manual.md).
 
 If you are asking an AI to answer questions from a pack, start with
-[ai-okf-usage.md](ai-okf-usage.md).
+[ai-okf-usage.md](ai-okf-usage.md). For evidence about retrieval from governed
+Word records in SharePoint, continue to the
+[Microsoft 365 Copilot trial report](sharepoint-m365-copilot-trial.md).
 
 If you are building a new pack, start with
 [okf-bundle-authoring.md](okf-bundle-authoring.md) and keep

@@ -21,13 +21,13 @@ Tool use introduces questions that plain text generation does not:
 
 - Which tool is relevant?
 - Does the argument shape match its contract?
-- Is the user authorized for the action?
+- Is the user authorised for the action?
 - What happens if a step is retried?
 - How is the outcome observed and audited?
 
 ## The Agent-Ready Vertical Stack
 
-The corpus organizes these questions into connected layers.
+The corpus organises these questions into connected layers.
 
 ### Contracts And Interfaces
 
@@ -62,9 +62,9 @@ actually match the user's intent.
 A perfectly valid call to the wrong “delete” operation is schema-grounded but
 semantically wrong.
 
-### Identity And Authorization
+### Identity And Authorisation
 
-Identity establishes who or what is acting. Authorization establishes what it
+Identity establishes who or what is acting. Authorisation establishes what it
 may do.
 
 Relevant ideas include:
@@ -119,9 +119,9 @@ identical.
 ### MCP
 
 Model Context Protocol connects hosts, clients and servers around tools,
-resources and prompts. It helps standardize model-to-tool integration.
+resources and prompts. It helps standardise model-to-tool integration.
 
-It does not by itself solve authorization policy, tool trust or safe use of
+It does not by itself solve authorisation policy, tool trust or safe use of
 retrieved instructions.
 
 ### A2A
@@ -137,7 +137,7 @@ machine-readable workflow narrative rather than an execution engine.
 ### Structured Outputs
 
 Structured output constrains generated data to a schema. It improves form and
-parsing; it does not guarantee that the content is true or authorized.
+parsing; it does not guarantee that the content is true or authorised.
 
 ## Security Concepts
 
@@ -156,7 +156,7 @@ Every request is evaluated using identity, policy and context.
 
 ## Federated Learning
 
-Traditional centralized training collects data in one place. **Federated
+Traditional centralised training collects data in one place. **Federated
 learning** coordinates training across participants while raw data remains at
 those participants.
 
@@ -169,7 +169,7 @@ A simplified round is:
 5. updates are aggregated;
 6. the new shared model begins another round.
 
-Federation reduces some data-centralization risks. It does not automatically
+Federation reduces some data-centralisation risks. It does not automatically
 provide privacy, security, fairness or legal compliance.
 
 ## Cross-Device And Cross-Silo
@@ -261,12 +261,12 @@ not automatically remove learned influence.
 
 Retrieval-Augmented Generation, or RAG, supplies a model with retrieved
 evidence. A federated or confidential design retrieves across sources that
-cannot be centralized.
+cannot be centralised.
 
 The system must manage:
 
 - query privacy;
-- authorization per source;
+- authorisation per source;
 - result provenance;
 - cross-source ranking;
 - bounded context;

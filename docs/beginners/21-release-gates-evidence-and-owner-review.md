@@ -454,7 +454,7 @@ Promotion should not rebuild the release. Compare:
 ### Who is involved
 
 The release system proves byte identity. The project owner or delegated
-release owner authorizes promotion and accepts the disclosed residual risk.
+release owner authorises promotion and accepts the disclosed residual risk.
 
 ### What does not count
 
@@ -491,7 +491,7 @@ Use status words precisely:
 | `blocked` | An external condition prevents completion |
 | `deferred` | The owner deliberately moved bounded work to a later release |
 | `candidate` | Evidence or an assertion is proposed but not accepted |
-| `accepted exception` | A non-hard limitation was explicitly accepted by an authorized owner |
+| `accepted exception` | A non-hard limitation was explicitly accepted by an authorised owner |
 
 `Implemented`, `looks good`, `green` and `HTTP 200` are not gate results.
 
@@ -639,19 +639,19 @@ The owner can:
 - request a change;
 - accept a non-hard bounded exception;
 - reject an exception;
-- authorize RC deployment;
+- authorise RC deployment;
 - reject release; or
-- authorize final promotion after public validation.
+- authorise final promotion after public validation.
 
 The owner does not need to say “I accept all gates.” Gates pass through their
 own evidence.
 
 ## Copy-Ready Owner Statements
 
-### Authorize continued checking
+### Authorise continued checking
 
-> I authorize the team to complete the remaining checks for the named
-> candidate. This is not approval of unrun gates and does not authorize public
+> I authorise the team to complete the remaining checks for the named
+> candidate. This is not approval of unrun gates and does not authorise public
 > release.
 
 ### Accept the domain contract
@@ -666,16 +666,16 @@ own evidence.
 > mitigations recorded in [evidence]. This does not waive any declared hard
 > failure and does not apply to later candidate bytes.
 
-### Authorize RC deployment
+### Authorise RC deployment
 
-> I authorize deployment of candidate [full digest] as a release candidate. I
+> I authorise deployment of candidate [full digest] as a release candidate. I
 > have reviewed the applicable gate receipts, claims, limitations and residual
 > risks. Final promotion remains conditional on the exact deployed routes
 > passing Foundry G8 public identity and journey checks.
 
-### Authorize final promotion
+### Authorise final promotion
 
-> I authorize promotion of the verified RC to final release. The promotion
+> I authorise promotion of the verified RC to final release. The promotion
 > evidence shows that the archive, manifests, bundle roots and public
 > artefacts are byte-identical to the RC that passed Foundry G8.
 
@@ -768,7 +768,7 @@ It cannot make an owner decision.
 
 ### “I accept all gates”
 
-An owner can authorize work and accept bounded residual risk. They cannot make
+An owner can authorise work and accept bounded residual risk. They cannot make
 unrun checks become passes or manufacture an independent review.
 
 ### “The site returned HTTP 200”
@@ -804,7 +804,7 @@ Before agreeing to the next release action, ask:
 - [ ] Is the reviewer role and independence clear?
 - [ ] Are warnings and limitations explained?
 - [ ] Are any hard failures present?
-- [ ] Does an exception identify an authorized owner and exact digest?
+- [ ] Does an exception identify an authorised owner and exact digest?
 - [ ] Is the public URL still labelled unverified until its browser gate?
 - [ ] Will promotion reuse the RC bytes without rebuilding?
 

@@ -6,8 +6,11 @@ ArcGIS/OGC services, and for pack builders deciding which geography metadata
 to supply.
 
 Explorer remains a static browser application. Opening Map does not call an
-AI, geocoder, tile provider or application server. External geometry is loaded
-only when a user selects **Preview on demand**.
+AI, geocoder or application server, but it currently requests four
+OpenStreetMap raster tiles. External record geometry is loaded only when a
+user selects **Preview on demand**. Read the beginner guide's
+[current-basemap explanation](beginners/10-geospatial-data.md#the-current-basemap-dependency)
+for the privacy, availability and tile-policy limits.
 
 The first screenshots use the local Pages build and the real 41,520-record UK
 Government APIs bundle. Preview screenshots use a deterministic demonstration
@@ -66,7 +69,9 @@ coverage uses an encoded `geo=coverage:...` value.
 ## 3. Read The Locator Without Inventing Boundaries
 
 The locator is deliberately schematic. It provides spatial orientation and
-selection without fetching basemap tiles.
+selection using four live OpenStreetMap raster tiles when they are available,
+plus a local hand-authored outline, grid and markers. The remote tiles are
+context, not evidence, and the local overlay remains usable if they fail.
 
 ![A selected mapped record with source-coordinate and representative-centroid conventions explained beside the locator](assets/geospatial-map-manual/03-locator-and-selection.png)
 

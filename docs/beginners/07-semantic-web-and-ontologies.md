@@ -60,10 +60,10 @@ identifier, names, homepage and relationships.
 Use a literal for a value. Use an identified resource when identity and further
 description matter.
 
-## Serialization
+## Serialisation
 
 RDF is an abstract graph model, not one file syntax. It can be written as
-Turtle, JSON-LD and other serializations.
+Turtle, JSON-LD and other serialisations.
 
 ### Turtle
 
@@ -168,7 +168,7 @@ SKOS is a good fit for:
 - licence families;
 - format families;
 - geography classifications;
-- organizational classifications.
+- organisational classifications.
 
 Example:
 
@@ -215,7 +215,7 @@ exampleOffice publishes houseDataset
 ```
 
 The entailed statement should carry its derivation rule and source assertions
-if it is materialized into an OKF publication.
+if it is materialised into an OKF publication.
 
 ## OWL Profiles And Bounded Reasoning
 
@@ -223,7 +223,7 @@ Full ontology reasoning can be expensive and difficult to explain. OWL defines
 profiles suited to different needs. The architecture proposes a deliberately
 bounded, OWL 2 RL-style rule set.
 
-The builder can **materialize** selected entailments: calculate them once,
+The builder can **materialise** selected entailments: calculate them once,
 publish them as derived edges and record how they were produced. The browser
 then filters and displays those edges without running an unrestricted
 description-logic reasoner.
@@ -278,7 +278,7 @@ the OWL ontology inconsistent.
 | Validation | Did this publication supply required fields and evidence? | SHACL and JSON Schema |
 | Presentation | How should the current graph be arranged? | Explorer presentation profile |
 
-PROV describes how statements and artifacts were produced. DCAT supplies
+PROV describes how statements and artefacts were produced. DCAT supplies
 domain terms for data catalogues. They are introduced in the next chapter.
 
 ## What The Explorer Implements Now
@@ -289,7 +289,7 @@ claim that every loaded bundle is an ontology, and it does not perform
 unbounded OWL inference in the browser.
 
 The advanced semantic extension, vocabulary registry, validation views and
-materialized inference are a delivery roadmap. Beginner documentation must not
+materialised inference are a delivery roadmap. Beginner documentation must not
 turn proposals into current behaviour.
 
 ## Next

@@ -46,13 +46,13 @@ difficult to diagnose.
 
 ## From Text To Tokens
 
-A search index first turns text into normalized **tokens**. A simple example:
+A search index first turns text into normalised **tokens**. A simple example:
 
 ```text
 "Housing prices in London" → ["housing", "prices", "london"]
 ```
 
-Normalization can include lowercasing, punctuation handling and removal of
+Normalisation can include lowercasing, punctuation handling and removal of
 common words. The exact rules form part of the index contract. A builder and
 query worker must agree on them.
 
@@ -240,9 +240,9 @@ same screen.
 
 The large-corpus search worker:
 
-1. receives a normalized request;
+1. receives a normalised request;
 2. loads only required lexicon, posting, filter and result shards;
-3. recognizes declared entities and aliases;
+3. recognises declared entities and aliases;
 4. generates candidate document positions;
 5. applies hard filters;
 6. scores or sorts candidates;

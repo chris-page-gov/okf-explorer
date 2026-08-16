@@ -3,6 +3,7 @@
 
   const PINNED_KEY = 'okf-beginner-guide-sidebar-pinned-v1';
   const COLLAPSED_KEY = 'okf-beginner-guide-sidebar-collapsed-v1';
+  const FRAGMENT_TARGET_CLASS = 'fragment-target';
   const desktop = window.matchMedia('(min-width: 761px)');
   const root = document.documentElement;
   const sidebar = document.querySelector('[data-guide-sidebar]');
@@ -69,6 +70,12 @@
   };
 
   const restoreFragmentInArticle = () => {
+    document
+      .querySelectorAll(`.${FRAGMENT_TARGET_CLASS}`)
+      .forEach((element) => {
+        element.classList.remove(FRAGMENT_TARGET_CLASS);
+      });
+
     if (!window.location.hash || window.location.hash === '#') {
       return;
     }
@@ -79,9 +86,21 @@
       return;
     }
     const target = document.getElementById(identifier);
-    if (target instanceof HTMLElement) {
-      target.scrollIntoView({ block: 'start' });
+    if (
+      !(target instanceof HTMLElement) ||
+      !target.matches('[data-section-heading]')
+    ) {
+      return;
     }
+
+    target.classList.add(FRAGMENT_TARGET_CLASS);
+    const previousScrollBehaviour = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    target.focus({ preventScroll: true });
+    window.requestAnimationFrame(() => {
+      root.style.scrollBehavior = previousScrollBehaviour;
+    });
   };
 
   const restoreGuidePosition = () => {
@@ -121,6 +140,7 @@
     restoreGuidePosition();
   });
   window.addEventListener('hashchange', restoreGuidePosition);
+  window.addEventListener('popstate', restoreGuidePosition);
   window.addEventListener('storage', (event) => {
     if (event.key === PINNED_KEY) {
       pinned = event.newValue === 'true';

@@ -23,7 +23,8 @@ body {
 }
 a { color: var(--accent-dark); text-underline-offset: 0.15em; }
 a:hover { text-decoration-thickness: 0.15em; }
-a:focus-visible, button:focus-visible, [tabindex="-1"]:focus-visible {
+a:focus-visible, button:focus-visible, [tabindex="-1"]:focus-visible,
+[tabindex="0"]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
@@ -159,6 +160,27 @@ a:focus-visible, button:focus-visible, [tabindex="-1"]:focus-visible {
 .guide-content h3 {
   margin: 1.8rem 0 0.6rem;
   font-size: 1.15rem;
+}
+[data-section-heading] {
+  scroll-margin-top: 1rem;
+}
+[data-section-heading]:target,
+[data-section-heading].fragment-target {
+  border-radius: 0.2rem;
+  background: #fff4bf;
+  box-shadow: -0.45rem 0 0 #ffbf47;
+}
+.heading-permalink {
+  margin-left: 0.45rem;
+  color: var(--muted);
+  font-size: 0.75em;
+  font-weight: 700;
+  text-decoration: none;
+}
+.heading-permalink:hover,
+.heading-permalink:focus-visible {
+  color: var(--accent-dark);
+  text-decoration: underline;
 }
 .guide-content p, .guide-content ul, .guide-content ol,
 .guide-content blockquote { margin-top: 0.75rem; margin-bottom: 1rem; }
@@ -341,6 +363,7 @@ a:focus-visible, button:focus-visible, [tabindex="-1"]:focus-visible {
   .skip-link, .site-header, .guide-sidebar, .chapter-nav, .guide-footer {
     display: none;
   }
+  .heading-permalink { display: none; }
   .guide-layout { display: block; }
   .guide-main { padding: 0; }
   .guide-content { max-width: none; }

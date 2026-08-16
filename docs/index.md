@@ -35,6 +35,12 @@ APIs exemplar, and related large-corpus OKF packs.
   interaction journeys.
 - [Use an AI with an OKF pack](ai-okf-usage.md) gives prompts and data-access
   rules for asking questions over a pack without losing provenance.
+- [SharePoint and Microsoft 365 Copilot trial](sharepoint-m365-copilot-trial.md)
+  reports a complete 293-family governed-retrieval development run: all 293
+  responses stayed inside the safety boundary and 292 selected the exact
+  expected family. It also records the one near-neighbour exception, service
+  protection, charging assumptions and the remaining independent-holdout and
+  OneNote questions.
 - [Create OKF bundles](okf-bundle-authoring.md) explains how to build bundles
   that take full advantage of Explorer facets, search, graph, timeline,
   resources and right-card metadata.

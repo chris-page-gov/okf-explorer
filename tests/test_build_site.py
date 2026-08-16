@@ -421,8 +421,12 @@ class BuildSiteTests(unittest.TestCase):
             index = (target / "index.html").read_text(encoding="utf-8")
             self.assertIn('<html lang="en-GB">', index)
             self.assertIn(
-                '<h1 id="okf-explorer-from-the-beginning">'
-                "OKF Explorer From The Beginning</h1>",
+                '<h1 id="okf-explorer-from-the-beginning" tabindex="-1" '
+                'data-section-heading="">OKF Explorer From The Beginning'
+                '<a class="heading-permalink" '
+                'href="#okf-explorer-from-the-beginning" '
+                'aria-label="Permalink to OKF Explorer From The Beginning">'
+                "#</a></h1>",
                 index,
             )
             self.assertIn(
@@ -438,10 +442,36 @@ class BuildSiteTests(unittest.TestCase):
             self.assertIn('data-guide-sidebar-pin', index)
             self.assertIn('aria-controls="beginner-guide-chapters"', index)
 
+            for page_path in rendered:
+                page = page_path.read_text(encoding="utf-8")
+                heading_ids = re.findall(
+                    r'<h[1-6] id="([^"]+)" tabindex="-1" '
+                    r'data-section-heading="">',
+                    page,
+                )
+                self.assertTrue(heading_ids, page_path)
+                self.assertEqual(len(heading_ids), len(set(heading_ids)))
+                for identifier in heading_ids:
+                    self.assertIn(
+                        f'class="heading-permalink" href="#{identifier}"',
+                        page,
+                    )
+
+            glossary = (
+                target / "16-beginner-glossary.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('<h3 id="accessibility"', glossary)
+            self.assertIn('<h3 id="yaml-ld"', glossary)
+            self.assertNotIn("<p><strong>Accessibility</strong>", glossary)
+
             first = (
                 target / "01-product-in-plain-language.html"
             ).read_text(encoding="utf-8")
-            self.assertIn('<div class="table-scroll"><table>', first)
+            self.assertIn(
+                '<div class="table-scroll" tabindex="0" role="region" '
+                'aria-label="Scrollable data table"><table>',
+                first,
+            )
             self.assertIn('href="02-web-and-browser-foundations.html"', first)
             self.assertIn('href="index.html"', first)
 
@@ -477,6 +507,10 @@ class BuildSiteTests(unittest.TestCase):
         self.assertIn("aria-pressed", script)
         self.assertIn("Pin learning path open", script)
         self.assertIn("Unpin learning path", script)
+        self.assertIn("fragment-target", script)
+        self.assertIn("target.focus({ preventScroll: true })", script)
+        self.assertIn("window.addEventListener('popstate'", script)
+        self.assertIn("[data-section-heading].fragment-target", stylesheet)
 
     def test_beginner_renderer_escapes_raw_html_and_unsafe_links(self) -> None:
         renderer = build_site.beginner_markdown_renderer()
@@ -488,6 +522,22 @@ class BuildSiteTests(unittest.TestCase):
         self.assertIn("&lt;script&gt;", rendered)
         self.assertNotIn("<script>", rendered)
         self.assertNotIn('href="javascript:', rendered)
+
+    def test_beginner_code_blocks_are_keyboard_scrollable(self) -> None:
+        renderer = build_site.beginner_markdown_renderer()
+        rendered = renderer.render(
+            "```text\nA very long line\n```\n",
+            {
+                "source": str(build_site.BEGINNER_DOCS / "index.md"),
+                "output_route": "docs/beginners/index.html",
+                "focusable_code": True,
+            },
+        )
+
+        self.assertIn(
+            '<pre tabindex="0"><code class="language-text">',
+            rendered,
+        )
 
     def test_beginner_links_rewrite_every_published_markdown_target(self) -> None:
         source = build_site.BEGINNER_DOCS / "index.md"
@@ -867,6 +917,67 @@ class BuildSiteTests(unittest.TestCase):
         self.assertIn('id="same-heading"', rendered)
         self.assertIn('id="same-heading-1"', rendered)
         self.assertIn('id="symbols-rdf-yaml-ld"', rendered)
+
+    def test_beginner_heading_permalinks_use_stable_disambiguated_ids(
+        self,
+    ) -> None:
+        renderer = build_site.beginner_markdown_renderer()
+        source = build_site.BEGINNER_DOCS / "index.md"
+        rendered = renderer.render(
+            "# Review & Evidence\n\n## Review & Evidence\n\n"
+            "## Encoded punctuation: data/information?\n",
+            {
+                "source": str(source),
+                "output_route": "docs/beginners/index.html",
+                "heading_permalinks": True,
+            },
+        )
+
+        self.assertIn('id="review-evidence" tabindex="-1"', rendered)
+        self.assertIn('href="#review-evidence"', rendered)
+        self.assertIn('id="review-evidence-1" tabindex="-1"', rendered)
+        self.assertIn('href="#review-evidence-1"', rendered)
+        self.assertIn(
+            'id="encoded-punctuation-datainformation" tabindex="-1"',
+            rendered,
+        )
+
+    def test_british_headings_preserve_established_fragment_ids(self) -> None:
+        renderer = build_site.beginner_markdown_renderer()
+        cases = (
+            (
+                "16-beginner-glossary.md",
+                "BFC, BFE, BGC, BSC and BUC",
+                "bfc-bfe-bgc-and-buc",
+            ),
+            (
+                "03-markdown-okf-and-small-bundles.md",
+                "Compatibility Normalisation",
+                "compatibility-normalization",
+            ),
+            (
+                "13-security-privacy-accessibility-and-responsible-use.md",
+                "Privacy And Data Minimisation",
+                "privacy-and-data-minimization",
+            ),
+            (
+                "21-release-gates-evidence-and-owner-review.md",
+                "Authorise RC deployment",
+                "authorize-rc-deployment",
+            ),
+        )
+        for filename, label, identifier in cases:
+            with self.subTest(filename=filename, label=label):
+                rendered = renderer.render(
+                    f"## {label}\n",
+                    {
+                        "source": str(build_site.BEGINNER_DOCS / filename),
+                        "output_route": f"docs/beginners/{filename[:-3]}.html",
+                        "heading_permalinks": True,
+                    },
+                )
+                self.assertIn(f'id="{identifier}"', rendered)
+                self.assertIn(f'href="#{identifier}"', rendered)
 
     def test_foundry_rewriter_covers_docs_and_preserves_fragments(self) -> None:
         source = (

@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+- Expanded the beginner learning path with a practical data-to-ontology
+  on-ramp, route-based study plans, foundational definitions, an annotated
+  authoritative-source register and reconciled geospatial and glossary
+  material. Standardised the affected documentation on British English with
+  context-aware guidance and checks that preserve exact code, schema, URL and
+  official-title spellings.
+- Added stable visible permalinks to beginner headings while preserving
+  established fragment identifiers. Direct fragment loads, refresh and browser
+  history now focus and visibly highlight the selected section without
+  replacing the existing accessible collapsible and pinned learning-path
+  sidebar.
+- Added a deterministic SharePoint Word-record experiment for all 293 governed
+  `okf-uk-living` service families, with a frozen synthetic evaluation schedule,
+  exact provenance and citation gates, append-only continuation controls and an
+  explicit ignored boundary for tenant-specific transcripts and attempt
+  evidence. The completed Microsoft 365 Copilot development run kept all 293
+  family responses inside the safety boundary and selected the exact expected
+  family in 292 cases. The public report preserves the one Universal Credit
+  near-neighbour exception, distinguishes service protection from semantic
+  failure, estimates the counterfactual pay-as-you-go charge and states that an
+  independent holdout and the OneNote condition remain outstanding.
+- Reconciled the external-source inspection research with the implemented
+  typed `source_access` contract. The guidance now separates today's bounded
+  `link`, `json`, `xml` and `text` display modes from future multiple-
+  representation selection, format-specific renderers, clearer transport and
+  parse diagnostics, and their required regressions.
 - Added a fail-closed `okf-uk-living` reconciliation gate for the complete rich
   relationship runtime, route locator and four executable Draft 2020-12
   schemas. The audit validates every projected assertion and route commitment,
@@ -823,7 +849,7 @@ source-of-truth changes.
   execution.
 - Fixed large-corpus browser searches by copying reactive retrieval state into
   structured-clone-safe data before posting requests to the search worker.
-- Standardized absent and legacy `None`/`null` metadata as `Not specified
+- Standardised absent and legacy `None`/`null` metadata as `Not specified
   (metadata gap)` in record details and illustrated the wording in the new
   manual.
 - Replaced the ambiguous large-corpus `tokens` label with `distinct indexed

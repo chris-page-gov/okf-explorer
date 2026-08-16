@@ -8,6 +8,102 @@ It is an introduction to the whole product, not a simplified replacement for
 the detailed specifications elsewhere in this repository. Each chapter gives
 you the vocabulary and mental model needed to read those specifications.
 
+The curriculum uses the separate
+[okf-uk-living project](https://github.com/chris-page-gov/okf-uk-living)
+as its applied UK citizen-service example. Links take you to that project's 24
+life-course domains, evidence registers and branching journeys without copying
+its corpus into this repository.
+
+## Choose A Route
+
+You do not need to read everything in one sitting.
+
+### Fifteen-Minute Orientation
+
+Use this route to decide whether the curriculum is relevant:
+
+1. Spend 8 minutes on
+   [From a missed collection to an ontology](00-data-information-knowledge-and-ontology.md),
+   from the opening through
+   [DIKW](00-data-information-knowledge-and-ontology.md#dikw-a-useful-prompt-not-a-universal-law).
+2. Spend 4 minutes on
+   [The product in plain language](01-product-in-plain-language.md#three-things-with-similar-names)
+   to separate OKF, a bundle and the Explorer.
+3. Spend 3 minutes using the stable definitions of
+   [ontology](23-foundational-definitions.md#ontology),
+   [assertion](23-foundational-definitions.md#assertion),
+   [evidence](23-foundational-definitions.md#evidence),
+   [authority](23-foundational-definitions.md#authority) and
+   [scope](23-foundational-definitions.md#scope).
+
+At the end, you should be able to say why a recorded non-collection is data,
+why local rules supply context, why an evidence-bearing conclusion is not
+automatically official, and why an ontology is not simply the top of a DIKW
+pyramid.
+
+### Ninety-Minute Foundation
+
+Use this route before a workshop or first contribution:
+
+1. **20 minutes:** read the complete
+   [missed-collection on-ramp](00-data-information-knowledge-and-ontology.md).
+2. **10 minutes:** read
+   [The product in plain language](01-product-in-plain-language.md).
+3. **15 minutes:** read
+   [Markdown, OKF and small bundles](03-markdown-okf-and-small-bundles.md).
+4. **15 minutes:** read
+   [Knowledge graphs and stable identifiers](06-knowledge-graphs-and-identifiers.md).
+5. **15 minutes:** read
+   [Validation, provenance and catalogue standards](08-validation-provenance-and-catalogue-standards.md).
+6. **10 minutes:** read the Reader, Graph, Links and accessibility sections of
+   [Explorer views and presentation](09-explorer-views-and-presentation.md).
+7. **5 minutes:** answer the on-ramp's
+   [understanding check](00-data-information-knowledge-and-ontology.md#check-your-understanding)
+   and follow any unclear term into the
+   [foundational definitions](23-foundational-definitions.md).
+
+### Publisher Route
+
+If you will create or maintain an OKF publication:
+
+1. complete the 90-minute foundation;
+2. read [Large corpora and progressive loading](04-large-corpora-and-progressive-loading.md)
+   if the collection will not fit the small-bundle path;
+3. read [Security, privacy, accessibility and responsible use](13-security-privacy-accessibility-and-responsible-use.md)
+   and [Building, testing and publishing](14-building-testing-and-publishing.md);
+4. read [OKF v0.2 trust, lifecycle and attestation](17-okf-v02-trust-lifecycle-and-attestation.md)
+   and [Foundry authoring and domain profiles](19-foundry-authoring-and-domain-profiles.md);
+5. use the [authoritative-source register](24-authoritative-source-register.md)
+   to label every specification, draft, guidance source and licence accurately;
+   and
+6. follow the project [semantic contract](../../okf.semantic.json) before any
+   semantic or relationship change; and
+7. use the [canonical semantic-authoring and rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md#local-implementation-and-release-ledger)
+   to distinguish local implementation from review, release, deployment and
+   public verification.
+
+### Reviewer Route
+
+If you will review meaning, evidence or publication readiness:
+
+1. read the [foundational definitions](23-foundational-definitions.md), with
+   particular attention to evidence, authority, provenance, confidence,
+   status, scope, jurisdiction and observation time;
+2. inspect the [authoritative-source register](24-authoritative-source-register.md)
+   and challenge claims that omit a source's status or boundary;
+3. read [Validation, provenance and catalogue standards](08-validation-provenance-and-catalogue-standards.md)
+   and [Security, privacy, accessibility and responsible use](13-security-privacy-accessibility-and-responsible-use.md);
+4. read [Governed enrichment and release assurance](20-governed-enrichment-and-release-assurance.md),
+   [Release gates, evidence and owner review](21-release-gates-evidence-and-owner-review.md)
+   and [Evaluation Foundry and YAML-LD](22-evaluation-foundry-and-yaml-ld.md);
+5. verify that YAML-LD 1.0 is described as a
+   [W3C Working Draft](24-authoritative-source-register.md#s11-yaml-ld-10),
+   not a Recommendation; and
+6. check the [canonical semantic-authoring and rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md#local-implementation-and-release-ledger)
+   before repeating an implementation or release-state claim; and
+7. check that ordinary Markdown links remain distinguishable from declared
+   domain predicates.
+
 ## What You Will Be Able To Explain
 
 After working through this guide, you should be able to explain:
@@ -43,6 +139,10 @@ to build one idea at a time and show where it appears in the implementation.
 
 Read the chapters in order if the subject is new to you:
 
+0. [From a missed collection to an ontology](00-data-information-knowledge-and-ontology.md)
+   builds the data, information, knowledge and ontology foundations, treats
+   DIKW as a contested heuristic, and introduces a branching public-service
+   example.
 1. [The product in plain language](01-product-in-plain-language.md) introduces
    the problem, the people involved and the central source-to-evidence journey.
 2. [Web and browser foundations](02-web-and-browser-foundations.md) explains
@@ -104,10 +204,17 @@ Read the chapters in order if the subject is new to you:
     adapts the Foundry process for functionality evaluation, then explains
     what additive YAML-LD identity, predicates, assertion evidence and linked
     Explorer routes provide beyond ordinary OKF front matter.
+23. [Foundational definitions](23-foundational-definitions.md) supplies stable,
+    cross-referenced definitions for the curriculum's core data, semantic,
+    evidence and public-service terms.
+24. [Annotated authoritative-source register](24-authoritative-source-register.md)
+    records direct primary links, document status, observation dates, uses and
+    boundaries.
 
 ## Shorter Routes
 
-If you want to use the Explorer but not change it, read chapters 1, 3, 5 and 9,
+If you want to use the Explorer but not change it, take the 15-minute
+orientation, then read chapters 3, 5 and 9,
 then use the [illustrated Explorer manual](../okf-explorer-persona-manual.md).
 
 If you want to publish a bundle, read chapters 1, 3, 4, 5, 6, 8 and 14, then
@@ -125,8 +232,9 @@ If you want an AI to research a pack, read chapters 1, 5 and 8, then follow
 [Use an AI with an OKF pack](../ai-okf-usage.md).
 
 If you own or review a release but do not implement it, read chapters 13, 14,
-19, 20 and 21. Chapter 21 explains exactly which decisions require owner input
-and which results must come from tools or independent reviewers.
+19, 20 and 21 after the reviewer route. Chapter 21 explains exactly which
+decisions require owner input and which results must come from tools or
+independent reviewers.
 
 ## Coverage Map
 
@@ -135,10 +243,13 @@ explanation; “continue with” is the detailed contract or operating manual.
 
 | Area | Introduced in | Continue with |
 |---|---|---|
+| Data, information, knowledge, DIKW and ontology | 0 and 23 | [Ontology architecture](../ontology-and-semantic-graph-architecture-2026-07-24.md) |
+| Public-service and evidence vocabulary | 0 and 23 | [Applied okf-uk-living corpus](https://github.com/chris-page-gov/okf-uk-living) |
+| Standards, guidance, source status and boundaries | 24 | [Standards crosswalk](../okf-standards-crosswalk.md) |
 | Product purpose and evidence journey | 1 | [Explorer persona manual](../okf-explorer-persona-manual.md) |
 | Browser, URLs, HTTP, static apps, Svelte, PWA | 2 | [Repository guide](../repository-guide.md) |
 | Markdown, frontmatter, links and OKF records | 3 | [Bundle authoring](../okf-bundle-authoring.md) |
-| Small-bundle normalization and compatibility | 3 | [OKF conformance](../okf-conformance.md) |
+| Small-bundle normalisation and compatibility | 3 | [OKF conformance](../okf-conformance.md) |
 | Descriptors, manifests, chunks, shards and lazy loading | 4 | [Overview context](../explorer-overview-context.md) |
 | Registries, releases and provider datapacks | 4 | [Provider datapacks](../provider-datapacks.md) |
 | Search, filters, ranking, facets and context | 5 | [Search and filtering design](../search-filtering-design.md) |
@@ -158,6 +269,7 @@ explanation; “continue with” is the detailed contract or operating manual.
 | Governed enrichment and frozen runtime evidence | 20 | [Legislation runtime acceptance](../legislation-runtime-acceptance.md) |
 | Release gates, receipts, independent review and owner decisions | 21 | [Foundry build prompt](../prompts/okf-bundle-build.md) |
 | Functionality evaluation, isolated synthetic fixtures and YAML-LD | 22 | [Heritage evaluation profile](../../evaluation-foundry/fixtures/heritage-warwickshire/profile.md) |
+| OKF 0.2/YAML-LD implementation and live rollout state | 17, 20, 21 and 22 | [Canonical semantic-authoring and rollout ledger](../okf-0.2-yaml-ld-semantic-authoring.md#local-implementation-and-release-ledger) |
 
 ## Implementation Coverage Audit
 
@@ -167,7 +279,7 @@ only the concepts named in architecture documents:
 | Implementation area | Beginner chapters |
 |---|---|
 | Canonical Svelte application and browser runtime | 1, 2, 9 and 13 |
-| Small-bundle loader and compatibility normalization | 3 |
+| Small-bundle loader and compatibility normalisation | 3 |
 | Large-corpus loader, manifests and release data plane | 4 |
 | Static search client, worker, facets and retrieval URL state | 5 |
 | Graph, facet, source and conversation presentation modules | 6 and 9 |
@@ -194,7 +306,7 @@ only the concepts named in architecture documents:
 The Explorer tries to keep four things distinguishable:
 
 1. what a source actually said;
-2. what a builder normalized or inferred;
+2. what a builder normalised or inferred;
 3. what publication rules require;
 4. how the interface currently presents the result.
 

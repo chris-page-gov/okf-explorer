@@ -20,6 +20,14 @@ async function resetGuideState(page: import('@playwright/test').Page) {
     { pinned: pinnedKey, collapsed: collapsedKey }
   );
   await page.reload();
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => resolve());
+        });
+      })
+  );
 }
 
 test('the full chapter list scrolls independently to its final item', async ({ page }) => {
@@ -56,7 +64,12 @@ test('a shared deep section fragment survives reload and restores the exact sect
 
   const section = page.locator(`#${deepSectionId}`);
   await expect(page).toHaveURL(new RegExp(`#${deepSectionId}$`));
-  await expect(section).toHaveText('E8 — Validate Links, Rendering And Accessibility');
+  await expect(section).toContainText('E8 — Validate Links, Rendering And Accessibility');
+  await expect(
+    section.getByRole('link', {
+      name: 'Permalink to E8 — Validate Links, Rendering And Accessibility'
+    })
+  ).toHaveAttribute('href', `#${deepSectionId}`);
   await expect(section).toBeInViewport();
   expect(await page.evaluate(() => document.querySelector(':target')?.id)).toBe(
     deepSectionId

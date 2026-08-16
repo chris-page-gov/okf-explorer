@@ -71,7 +71,7 @@ A validation result can identify:
 - the property path;
 - severity;
 - a human message;
-- the source artifact.
+- the source artefact.
 
 Publishing results as data makes remediation reviewable and lets the Explorer
 eventually present a validation view.
@@ -80,7 +80,7 @@ eventually present a validation view.
 
 SHACL can check this particular data graph against a declared contract.
 JSON Schema can check a JSON document. These are effectively closed
-publication questions: did this artifact include what its profile requires?
+publication questions: did this artefact include what its profile requires?
 
 RDFS and OWL reasoning use open-world semantics: missing information can be
 unknown.
@@ -120,7 +120,7 @@ Conformance statements should name:
 
 - which source supplied a value;
 - when it was observed;
-- which activity normalized or inferred it;
+- which activity normalised or inferred it;
 - which software or person performed the activity;
 - which prior entities it used;
 - which output it generated.
@@ -131,10 +131,10 @@ another.
 
 ## PROV
 
-The W3C PROV data model organizes provenance around:
+The W3C PROV data model organises provenance around:
 
-- **Entity** — a source document, dataset, assertion or generated artifact;
-- **Activity** — harvesting, parsing, normalization, mapping, inference or
+- **Entity** — a source document, dataset, assertion or generated artefact;
+- **Activity** — harvesting, parsing, normalisation, mapping, inference or
   validation;
 - **Agent** — a person, organisation or software system responsible for an
   activity.
@@ -155,7 +155,7 @@ can describe roles and influences when a simple edge is not enough.
 Whole-record provenance is sometimes too coarse. A record can combine:
 
 - an official title;
-- a normalized licence;
+- a normalised licence;
 - a model-derived topic;
 - an inferred publisher type.
 
@@ -259,7 +259,7 @@ Different checks catch different errors:
 | Semantic expansion | A JSON-LD context or identifier is invalid |
 | SHACL | A governed concept lacks its required scheme |
 | Cross-file invariant | A manifest count differs from its chunks |
-| Integrity | Artifact bytes do not match the declared hash |
+| Integrity | Artefact bytes do not match the declared hash |
 | Browser contract test | A valid pack cannot be selected or navigated |
 | Evaluation question | Search misses evidence needed for a real task |
 
