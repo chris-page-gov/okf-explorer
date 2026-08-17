@@ -8,6 +8,9 @@ test('built learner hub is static, small and split from Explorer', async () => {
 
   assert.match(root, /Build a knowledge base <em>your AI can trust<\/em>/);
   assert.match(root, /docs\/project-studio\/index\.html/);
+  assert.match(root, /Open worked example/);
+  assert.match(root, /okf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer\.json/);
+  assert.match(root, /#asset%2F1342941/);
   assert.match(root, /application\/ld\+json/);
   assert.match(root, /"learningResourceType"/);
   assert.ok(Buffer.byteLength(root) < 40_000, 'root HTML must remain below 40 KB');

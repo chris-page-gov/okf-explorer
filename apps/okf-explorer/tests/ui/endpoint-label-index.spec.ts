@@ -372,6 +372,11 @@ test.describe('governed endpoint labels', () => {
       }
       await expect(graph).not.toContainText('publisher-5f7670365c7dc347f281bbef');
       await expect(graph).not.toContainText('publisher-aaaaaaaaaaaaaaaaaaaaaaaa');
+      if (viewport.name === 'narrow') {
+        const navigationToggle = page.getByRole('button', { name: 'Toggle navigation' });
+        await expect(navigationToggle).toHaveText('›');
+        await navigationToggle.click();
+      }
       const publisherFacet = page.getByRole('group', { name: 'publisher facet' });
       await expect(publisherFacet.getByRole('button', { name: /HM Land Registry/ })).toBeVisible();
       await expect(publisherFacet.getByRole('button', { name: /Missing label/ })).toBeVisible();

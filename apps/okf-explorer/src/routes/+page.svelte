@@ -4,6 +4,11 @@
   import './landing.css';
 
   const registry = learningRegistry;
+  const workedExampleHref = explorerHref(
+    'https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json',
+    'asset/1342941',
+    'Coventry Cathedral'
+  );
   const stages = [
     { number: '01', title: 'Choose', text: 'Pick a subject small enough to finish and name who it should help.', output: 'Project brief', time: '30–45 min', href: './docs/project-studio/01-choose.html' },
     { number: '02', title: 'Question', text: 'Write the questions your bundle and app must answer before collecting data.', output: 'Question set', time: '45 min', href: './docs/project-studio/02-question.html' },
@@ -45,8 +50,10 @@
   const structuredDataScript = '<script type="application/ld+json">' +
     JSON.stringify(structuredData).replaceAll('<', '\\u003c') + '<' + '/script>';
 
-  function explorerHref(bundleUrl: string, route = 'overview'): string {
-    return `./explore/?bundle=${encodeURIComponent(bundleUrl)}#${encodeURIComponent(route)}`;
+  function explorerHref(bundleUrl: string, route = 'overview', query = ''): string {
+    const search = new URLSearchParams({ bundle: bundleUrl });
+    if (query) search.set('q', query);
+    return `./explore/?${search.toString()}#${encodeURIComponent(route)}`;
   }
 
   function packTheme(entry: BundleRegistryEntry): string {
@@ -86,7 +93,7 @@
       <a href="#people">People</a>
       <a href="./docs/beginners/index.html">Reference guide</a>
     </nav>
-    <a class="header-action" href="./explore/">Open Explorer</a>
+    <a class="header-action" href={workedExampleHref}>Open worked example</a>
   </header>
 
   <main>
