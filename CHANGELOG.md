@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Replaced the learner-hub header's unscoped Explorer launch with an exact,
+  source-backed three-record Heritage worked example opening the Coventry
+  Cathedral record. On narrow screens, large-corpus navigation now starts
+  collapsed so the selected evidence appears before optional facet controls.
 - Published the evidence-backed OKF evolution review, including its chronology,
   bundle inventory, standards decision ledger, conversation evidence register,
   current best practice, grounding analysis and bounded MCP retrieval prototype.

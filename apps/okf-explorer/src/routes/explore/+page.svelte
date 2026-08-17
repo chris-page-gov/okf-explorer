@@ -432,6 +432,11 @@
   let rightCollapsed = $state(false);
   let leftWidth = $state(320);
   let rightWidth = $state(420);
+
+  function narrowExplorerViewport(): boolean {
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 620px)').matches;
+  }
+
   let registry = $state<BundleRegistryEntry[]>([]);
   let history = $state<BundleRegistryEntry[]>([]);
   let suggestionsOpen = $state(false);
@@ -1262,7 +1267,7 @@
         const large = await loadLargeCorpus(resolvedUrl, raw as unknown as LargeCorpusDescriptor);
         if (requestId !== loadRequest) return;
         source = large;
-        leftCollapsed = false;
+        leftCollapsed = narrowExplorerViewport();
         rightCollapsed = true;
         loadFacetPreferences();
         void ensureLargeFacetIndex();

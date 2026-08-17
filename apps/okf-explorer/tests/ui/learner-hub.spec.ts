@@ -1,5 +1,9 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import {
+  ONS_FACET_BUNDLE_URL,
+  installOnsFacetFixture
+} from './fixtures/ons-facets.fixture';
 
 const REVIEW_BUNDLE = 'https://review.fixture.test/okf-bundle.json';
 
@@ -9,6 +13,11 @@ test('HUB-E2E-01 gives a beginner a complete static starting point', async ({ br
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Build a knowledge base your AI can trust' })).toBeVisible();
+  const workedExample = page.getByRole('link', { name: 'Open worked example' });
+  await expect(workedExample).toHaveAttribute(
+    'href',
+    './explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer.json&q=Coventry+Cathedral#asset%2F1342941'
+  );
   await expect(page.getByRole('link', { name: 'Start your project' })).toHaveAttribute(
     'href',
     './docs/project-studio/index.html'
@@ -43,7 +52,18 @@ test('HUB-E2E-02 is accessible, compact and does not fetch a bundle', async ({ p
   ).toEqual([]);
 });
 
-test('HUB-E2E-03 preserves a legacy root Explorer link', async ({ context, page }) => {
+test('HUB-E2E-03 keeps the worked record ahead of navigation on a narrow screen', async ({ context, page }) => {
+  await installOnsFacetFixture(context);
+  await page.setViewportSize({ width: 320, height: 760 });
+  await page.goto(`/explore/?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#overview`);
+  await expect(page.getByText('ONS facet interaction fixture', { exact: true }).first()).toBeVisible();
+
+  await expect(page.locator('.app')).toHaveClass(/leftCollapsed/);
+  await expect(page.getByRole('button', { name: 'Toggle navigation' })).toHaveText('›');
+  await expect(page.locator('.stage')).toBeVisible();
+});
+
+test('HUB-E2E-04 preserves a legacy root Explorer link', async ({ context, page }) => {
   await context.route(REVIEW_BUNDLE, async (route) => {
     await route.fulfill({
       status: 200,
