@@ -1,0 +1,130 @@
+{
+  "schema": "okf-mcp-context-evaluation.v1",
+  "evaluation_type": "authored development questions; not an independent holdout",
+  "bundle": {
+    "bundle_id": "ai-infrastructure-wiki",
+    "title": "OKF Explorer",
+    "description": "Agent-ready infrastructure, federated AI, standards, frameworks, research, and UK public-sector implications.",
+    "okf_version": "0.2",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+    "generated_at": "2026-08-17T00:00:00Z",
+    "sha256": "bacc0fc83b79e89700bcc030f68deb9aa58fb37d41d6fdbbbec64a8e97cbb2a3",
+    "record_count": 165,
+    "relationship_count": 588
+  },
+  "configuration": {
+    "retrieval": "deterministic-lexical-v1",
+    "top_k_context": 3,
+    "top_k_rank": 5,
+    "max_bytes": 12000,
+    "token_estimate": "ceil(serialized context characters / 4)"
+  },
+  "summary": {
+    "question_count": 7,
+    "expected_record_in_context_count": 7,
+    "expected_record_in_context_rate": 1.0,
+    "mean_reciprocal_rank_at_5": 0.8333333333333333,
+    "bundle_bytes": 1902109,
+    "mean_context_content_bytes": 8433.0,
+    "mean_byte_reduction_ratio": 0.9955665001322217
+  },
+  "cases": [
+    {
+      "question": "What happened first in the journey from LLM-Wiki to OKF?",
+      "expected_record_id": "research/okf-evolution-review/chronology.md",
+      "rank_in_top_5": 3,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/bundle-inventory.md",
+        "document/sources/agent-ready-infrastructure-paper.md",
+        "research/okf-evolution-review/chronology.md"
+      ],
+      "content_bytes": 3763,
+      "estimated_tokens": 941
+    },
+    {
+      "question": "Which repositories are actual OKF bundle producers?",
+      "expected_record_id": "research/okf-evolution-review/bundle-inventory.md",
+      "rank_in_top_5": 1,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/bundle-inventory.md",
+        "research/okf-evolution-review/mcp-and-discovery.md",
+        "research/okf-evolution-review/best-practice.md"
+      ],
+      "content_bytes": 11742,
+      "estimated_tokens": 2936
+    },
+    {
+      "question": "Why is YAML-LD additive rather than part of the OKF 0.2 core?",
+      "expected_record_id": "research/okf-evolution-review/standards-decisions.md",
+      "rank_in_top_5": 2,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/mcp-and-discovery.md",
+        "research/okf-evolution-review/standards-decisions.md",
+        "research/okf-evolution-review/index.md"
+      ],
+      "content_bytes": 3978,
+      "estimated_tokens": 994
+    },
+    {
+      "question": "What evidence supports using OKF for compact LLM grounding?",
+      "expected_record_id": "research/okf-evolution-review/grounding-and-retrieval.md",
+      "rank_in_top_5": 1,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/grounding-and-retrieval.md",
+        "research/okf-evolution-review/index.md",
+        "research/explore-okf-open-data-test-candidates.md"
+      ],
+      "content_bytes": 4035,
+      "estimated_tokens": 1008
+    },
+    {
+      "question": "Should bundle discovery use a meta-OKF bundle or a registry?",
+      "expected_record_id": "research/okf-evolution-review/mcp-and-discovery.md",
+      "rank_in_top_5": 1,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/mcp-and-discovery.md",
+        "research/okf-evolution-review/bundle-inventory.md",
+        "research/explore-okf-open-data-test-candidates.md"
+      ],
+      "content_bytes": 11860,
+      "estimated_tokens": 2965
+    },
+    {
+      "question": "What is the current OKF authoring and validation best practice?",
+      "expected_record_id": "research/okf-evolution-review/best-practice.md",
+      "rank_in_top_5": 1,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/best-practice.md",
+        "research/okf-evolution-review/standards-decisions.md",
+        "research/explore-okf-open-data-test-candidates.md"
+      ],
+      "content_bytes": 11911,
+      "estimated_tokens": 2976
+    },
+    {
+      "question": "Which conversations influenced the OKF design?",
+      "expected_record_id": "research/okf-evolution-review/conversation-register.md",
+      "rank_in_top_5": 1,
+      "selected_in_context_top_3": true,
+      "context_record_ids": [
+        "research/okf-evolution-review/conversation-register.md",
+        "research/explore-okf-open-data-test-candidates.md",
+        "research/okf-evolution-review/chronology.md"
+      ],
+      "content_bytes": 11742,
+      "estimated_tokens": 2930
+    }
+  ],
+  "limitations": [
+    "The questions were authored with knowledge of the review records.",
+    "This evaluates retrieval and compactness, not language-model answer correctness.",
+    "The token figure is a model-independent proxy, not a tokenizer measurement.",
+    "A direct prompt-and-link client may perform its own indexing and cannot be reduced to bundle byte size alone."
+  ]
+}

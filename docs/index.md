@@ -51,6 +51,18 @@ APIs exemplar, and related large-corpus OKF packs.
   uses the Land Registry retrospective without reopening that pack, then adds
   human-readable graph labels, denominator-based semantic linking and a
   shareable Explore OKF feedback stage before candidate freeze.
+- [From LLM-Wiki to governed OKF bundle wikis](okf-evolution-review-2026-08-17.md)
+  reconstructs the complete evidence-backed journey through OKF 0.1, OKF 0.2,
+  YAML-LD, Explorer, grounding, MCP and bundle discovery, and links to the
+  inspectable review bundle and empirical context-retrieval receipt.
+- [OKF learner hub specification](learner-hub-specification-2026-08-17.md)
+  defines the researched 18-year-old learner persona, evidence-led pedagogy,
+  cross-bundle information-worker stories, root-site architecture, performance
+  contract and publication acceptance journeys.
+- [Project studio](project-studio/index.md) is the eight-stage beginner path
+  from choosing a subject to a tested personal learning app.
+- [Project studio](project-studio/index.md) is the eight-stage beginner path
+  from choosing a subject to a tested personal learning app.
 - [Explore OKF profile](../profiles/explore-okf/v1/index.md) is the strict,
   machine-tested contract for a snapshot-bound compact endpoint-label index
   and persistent exploratory-publication banner.
