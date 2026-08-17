@@ -28,7 +28,19 @@ const config = {
       name: packageVersion
     },
     prerender: {
-      entries: ['*']
+      entries: ['*'],
+      handleHttpError: ({ path, message }) => {
+        // Documentation and profile pages are rendered by scripts/build_site.py
+        // after SvelteKit has produced the application. The site-wide link
+        // checker remains responsible for proving that these routes exist.
+        if (/^\/(?:docs|profile)\//.test(path)) return;
+        throw new Error(message);
+      },
+      handleMissingId: ({ path, message }) => {
+        // Explorer hashes are durable application record routes, not DOM IDs.
+        if (path === '/explore/') return;
+        throw new Error(message);
+      }
     }
   }
 };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import pageSource from '../../routes/+page.svelte?raw';
+import pageSource from '../../routes/explore/+page.svelte?raw';
 
 describe('large-corpus left panel UX harness', () => {
   it('starts with all facets folded instead of opening the first provider list', () => {

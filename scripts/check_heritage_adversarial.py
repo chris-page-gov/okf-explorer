@@ -58,7 +58,7 @@ JOURNEYS = (
     / "heritage-warwickshire"
     / "journeys.json"
 )
-APP_PAGE = ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte"
+APP_PAGE = ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte"
 STATIC_404 = ROOT / "apps" / "okf-explorer" / "static" / "404.html"
 GENERATED_AT = "2026-08-02T00:00:00Z"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")

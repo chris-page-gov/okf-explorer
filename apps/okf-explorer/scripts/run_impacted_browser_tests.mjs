@@ -38,6 +38,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/exploratory-publication.spec.ts'
   },
+  learner_hub: {
+    family: 'ui',
+    file: 'tests/ui/learner-hub.spec.ts'
+  },
   beginner_navigation: {
     family: 'foundry',
     file: 'tests/foundry/beginner-guide-navigation.spec.ts'
@@ -64,6 +68,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
   publication: [
     'accessibility',
     'exploratory_publication',
+    'learner_hub',
     'beginner_navigation',
     'foundry_pages'
   ],
@@ -75,6 +80,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
 export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
+    'learner_hub',
     'small_bundle',
     'map',
     'beginner_navigation',
@@ -104,6 +110,7 @@ export const TEST_TAG_SUITES = Object.freeze({
     'accessibility',
     'endpoint_labels',
     'exploratory_publication',
+    'learner_hub',
     'beginner_navigation',
     'foundry_pages'
   ],
@@ -112,14 +119,14 @@ export const TEST_TAG_SUITES = Object.freeze({
   provenance: ['small_bundle', 'large_corpus', 'foundry_pages'],
   python: ['foundry_pages'],
   question: ['large_corpus'],
-  registry: ['small_bundle', 'foundry_pages'],
+  registry: ['small_bundle', 'learner_hub', 'foundry_pages'],
   relationship: ['small_bundle', 'large_corpus', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
-  route: ['exploratory_publication', 'beginner_navigation', 'foundry_pages'],
+  route: ['exploratory_publication', 'learner_hub', 'beginner_navigation', 'foundry_pages'],
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
-  site: ['beginner_navigation', 'foundry_pages'],
+  site: ['learner_hub', 'beginner_navigation', 'foundry_pages'],
   source: ['small_bundle', 'large_corpus'],
   validator: ['foundry_pages'],
   workflow: ['foundry_pages'],

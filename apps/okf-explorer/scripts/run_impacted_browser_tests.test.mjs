@@ -71,6 +71,7 @@ test('publication selectors include rendered Foundry pages and request Site asse
     [
       'accessibility',
       'exploratory_publication',
+      'learner_hub',
       'beginner_navigation',
       'foundry_pages'
     ]
@@ -88,7 +89,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 10);
+  assert.equal(plan.suites.length, 11);
   assert.deepEqual(plan.commands.map((command) => command.family), ['ui', 'foundry']);
   for (const command of plan.commands) {
     for (const engine of ['chrome', 'firefox', 'webkit']) {
@@ -100,7 +101,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 10);
+  assert.equal(empty.suites.length, 11);
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
     /unknown test tag/

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Published the evidence-backed OKF evolution review, including its chronology,
+  bundle inventory, standards decision ledger, conversation evidence register,
+  current best practice, grounding analysis and bounded MCP retrieval prototype.
+  The generated OKF bundle now contains 165 nodes and 588 semantic assertions.
+- Replaced the Pages root with a static learner-first project studio for an
+  18-year-old non-specialist, while preserving the complete interactive
+  Explorer at `/explore/` and retaining legacy deep-link behaviour. Added an
+  eight-stage independent-learning pathway, governed bundle catalogue,
+  cross-bundle personas and user stories, project templates, accessibility
+  checks and three-engine browser journeys.
 - Expanded the beginner learning path with a practical data-to-ontology
   on-ramp, route-based study plans, foundational definitions, an annotated
   authoritative-source register and reconciled geospatial and glossary

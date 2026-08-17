@@ -2360,7 +2360,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 self.assertIn(f"assets/okf-search-filtering-manual/{capture['file']}", manual)
 
     def test_svelte_graph_supports_record_type_grouping_and_metadata_reduction(self):
-        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
+        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
 
         self.assertIn("record-type-stack", source)
         self.assertIn("facet-stack", source)
@@ -2373,7 +2373,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("GRAPH_EXPANDED_GROUP_LIMIT", source)
 
     def test_svelte_facets_support_search_paging_and_single_select_default(self):
-        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
+        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
 
         self.assertIn("FACET_PAGE_SIZE", source)
         self.assertIn("largeFacetSearch", source)
@@ -2385,7 +2385,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("event?.ctrlKey || event?.metaKey || event?.shiftKey", source)
 
     def test_svelte_graph_has_distinct_node_icon_vocabulary(self):
-        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
+        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
 
         self.assertIn("node.type === 'publisher'", source)
         self.assertIn("node.type === 'format'", source)
@@ -2395,7 +2395,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("node.type === 'host' || node.type === 'resource_type'", source)
 
     def test_svelte_timeline_and_relationship_drawer_are_interactive(self):
-        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "+page.svelte").read_text(encoding="utf-8")
+        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
         styles = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "styles.css").read_text(encoding="utf-8")
 
         self.assertIn("TimelineResolution", source)
