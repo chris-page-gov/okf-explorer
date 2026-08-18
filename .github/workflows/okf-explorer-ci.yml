@@ -113,14 +113,13 @@ jobs:
       - name: Install OKF Explorer dependencies
         working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
-      - name: Install Chromium for the browser-backed contract test
-        working-directory: apps/okf-explorer
-        run: pnpm exec playwright install --with-deps chromium
       - name: Validate Svelte OKF Explorer
         working-directory: apps/okf-explorer
         run: pnpm check
       - name: Run OKF Explorer tests
         working-directory: apps/okf-explorer
+        env:
+          PLAYWRIGHT_CHROMIUM_CHANNEL: chrome
         run: pnpm test
       - name: Check CycloneDX dependency inventory
         working-directory: apps/okf-explorer
@@ -212,6 +211,7 @@ jobs:
         run: uv run --locked python scripts/build_site.py
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
+        timeout-minutes: 10
         run: pnpm exec playwright install --with-deps firefox webkit
       - name: Run terminal-equivalent Chrome, Firefox and WebKit assurance
         working-directory: apps/okf-explorer

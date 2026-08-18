@@ -26,6 +26,12 @@ import {
 
 const execFileAsync = promisify(execFile);
 const SCRIPT_ROOT = path.dirname(fileURLToPath(import.meta.url));
+const chromiumLaunchOptions = Object.freeze({
+  headless: true,
+  ...(process.env.PLAYWRIGHT_CHROMIUM_CHANNEL
+    ? { channel: process.env.PLAYWRIGHT_CHROMIUM_CHANNEL }
+    : {})
+});
 
 const valid = {
   schema: 'okf-explorer-journeys.v1',
@@ -312,7 +318,7 @@ test('rejects missing, relative and credential-bearing canonical result URLs', a
 });
 
 test('captures one coherent rank snapshot while a real page repeatedly rerenders', { timeout: 20_000 }, async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch(chromiumLaunchOptions);
   try {
     const page = await browser.newPage();
     await page.setContent(`
@@ -357,7 +363,7 @@ test('keeps declarative wait_for strict instead of weakening it to the first mat
 });
 
 test('waits for the exact query to settle and selects a ranked result by canonical URL', { timeout: 20_000 }, async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch(chromiumLaunchOptions);
   try {
     const page = await browser.newPage();
     await page.route('https://explorer.test/**', (route) => route.fulfill({
@@ -385,7 +391,7 @@ test('waits for the exact query to settle and selects a ranked result by canonic
 });
 
 test('retains one atomic settled result observation across an immediate rerender', { timeout: 20_000 }, async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch(chromiumLaunchOptions);
   try {
     const page = await browser.newPage();
     await page.route('https://explorer.test/**', (route) => route.fulfill({
@@ -433,7 +439,7 @@ test('retains one atomic settled result observation across an immediate rerender
 });
 
 test('fails promptly when a query has settled without its canonical ranked result', { timeout: 20_000 }, async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch(chromiumLaunchOptions);
   try {
     const page = await browser.newPage();
     await page.route('https://explorer.test/**', (route) => route.fulfill({

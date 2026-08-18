@@ -55,6 +55,10 @@ APIs exemplar, and related large-corpus OKF packs.
   reconstructs the complete evidence-backed journey through OKF 0.1, OKF 0.2,
   YAML-LD, Explorer, grounding, MCP and bundle discovery, and links to the
   inspectable review bundle and empirical context-retrieval receipt.
+- [Walk through the AI Infrastructure knowledge graph](ai-infrastructure-knowledge-graph-walkthrough.md)
+  gives a no-code route through the best compact semantic example in GitHub
+  and Explorer, then explains how to download the frozen bundle and open it as
+  an Obsidian vault.
 - [OKF learner hub specification](learner-hub-specification-2026-08-17.md)
   defines the researched 18-year-old learner persona, evidence-led pedagogy,
   cross-bundle information-worker stories, root-site architecture, performance

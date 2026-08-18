@@ -82,6 +82,8 @@ bounds. Run it with `pnpm test:e2e` from `apps/okf-explorer/`.
 - [Implement the strict Explore OKF label-index and exploratory-publication
   profile][explore-okf-profile]
 - [Use the Evaluation Foundry and YAML-LD heritage exemplar][evaluation-foundry-guide]
+- [Walk through the AI Infrastructure knowledge graph in GitHub, Explorer and
+  Obsidian](docs/ai-infrastructure-knowledge-graph-walkthrough.md)
 - [Review the evidence-backed Heritage Foundry engineering postmortem][heritage-postmortem]
 
 The ONS example is the primary no-install demonstration: the Explorer is hosted
