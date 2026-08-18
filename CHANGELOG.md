@@ -13,6 +13,14 @@
   Pages now binds the assembled candidate to its exact commit and governance
   bytes, then verifies the deployed estate-registry journey in installed Chrome
   without rebuilding the candidate.
+- Recorded the first adoption wave in the lockstep tracker: Explorer, AI
+  Infrastructure, UK Government APIs, ELS and Planning are merged; Land
+  Registry, WCC, GOV.UK Content, ONS, legislation and UK Living remain in
+  independent validation or publication. The WCC workbook case now proves that
+  unadmitted `.xlsx` changes can select four content-free inventory and
+  documentation gates without a semantic or release rebuild. Its first hosted
+  run also replaced a brittle Playwright cache-path link with the supported
+  installed-Chrome channel and added a clean-console favicon.
 - Rebound the heritage local-candidate receipt to the exact deterministic
   Explorer build changed by the learner registry correction. A genuine Chrome
   run passed all 100 questions and all three local journeys; the corpus,

@@ -24,28 +24,28 @@ additional optimisations found during adoption are recorded in the backlog.
 | Documentation and changelog lockstep | Implemented in Explorer | The checker reads the publication contract and no longer exempts dependency automation. Estate adoption remains in progress. |
 | Dependency-routed validation | Implemented in Explorer | The fail-closed planner returns direct and transitive affected planes without executing untrusted command declarations. |
 | Browser installation policy | Implemented in Explorer templates | Ordinary checks use installed Chrome; Firefox/WebKit installation is bounded to affected assurance. |
-| Exact-deployment verification | Implemented on Explorer branch | The Site candidate binds the full commit and control-file digests; the first merged Pages run must still produce the live installed-Chrome receipt. |
+| Exact-deployment verification | Merged in [PR #109](https://github.com/chris-page-gov/okf-explorer/pull/109) | The Site candidate binds the full commit and control-file digests. Pages run [32175666804](https://github.com/chris-page-gov/okf-explorer/actions/runs/32175666804) is publishing exact commit `f981130c`; the live installed-Chrome receipt is pending. |
 | New source-family intake | Implemented in profile | Workbook-folder controls cover formulae, macros, hidden sheets, external links, locale, rights and sensitivity without treating cells as semantic authority automatically. |
 
 ## Repository adoption
 
 | Repository | Role | Audit | Adoption | Validation | Publication |
 | --- | --- | --- | --- | --- | --- |
-| `okf-explorer` | Profile, registry and consumer | Complete | Implemented on feature branch | 465 Python tests, 408 application tests, 86 Node contract tests, deterministic application build, SBOM and 817 MB Site assembly passed | Pending merge, Pages run and exact-route receipt |
-| `okf-ai-infrastructure` | Small bundle producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-LandRegistry` | Large-corpus producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-govuk-content` | Large-corpus producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-ons` | Large-corpus producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-uk-government-apis` | Large-corpus producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-uk-legislation` | Federation producer | Complete | Isolated adoption queued | Pending | Pending |
-| `okf-uk-living` | Large-corpus producer | Complete | Isolated adoption queued | Pending | Pending |
+| `okf-explorer` | Profile, registry and consumer | Complete | Merged through [PR #109](https://github.com/chris-page-gov/okf-explorer/pull/109) at `f981130c` | All PR gates passed, including the 15-minute full browser job and exact-commit Site assembly | Pages and live exact-route receipt in progress |
+| `okf-ai-infrastructure` | Small bundle producer | Complete | Merged through [PR #5](https://github.com/chris-page-gov/okf-ai-infrastructure/pull/5) at `39c82b51` | 64 tests and PR/main contract, semantic and British-English gates passed; no generated-byte drift | Exact-byte Pages and bounded HTTP identity passed; real-browser interaction/console evidence remains backlog |
+| `okf-LandRegistry` | Large-corpus producer | Complete | Implemented in [PR #7](https://github.com/chris-page-gov/okf-LandRegistry/pull/7) | Impact and verification jobs passed; parallel full test job in progress | No v0.3.0 rebuild or deployment |
+| `okf-govuk-content` | Large-corpus producer | Complete | Isolated adoption committed; publication in progress | 372 Python, 46 Explorer and 2 semantic tests plus all bundle, policy, checksum and SBOM gates passed; no generated-byte drift | Pending PR integration |
+| `okf-ons` | Large-corpus producer | Complete | Isolated adoption committed; publication in progress | 277 tests, Ruff, one-build bundle validation and assembled OKF gate passed; no tracked generated-byte drift | Pending PR integration; ignored bundle baseline limitation recorded |
+| `okf-uk-government-apis` | Large-corpus producer | Complete | Merged through [PR #4](https://github.com/chris-page-gov/okf-uk-government-apis/pull/4) at `55c7e679` | 39 tests and PR/main contract, checksum and bundle gates passed; no generated-byte drift | Exact-byte Pages and bounded HTTP identity passed; real-browser interaction/console evidence remains backlog |
+| `okf-uk-legislation` | Federation producer | Complete | Isolated adoption in final validation | 467 of 469 initial tests passed; lifecycle projections are being rebound to the changed workflow bytes | Pending |
+| `okf-uk-living` | Large-corpus producer | Complete | Isolated adoption in final validation | Frozen base corpus remains unchanged; additive documentation overlay is being regenerated and checked | Pending |
 | `okf-testing` | Conformance fixtures | Complete | Not applicable: local non-Git fixture | Local-only evidence recorded | Not applicable |
 | `okf-heritage-coventry-warwickshire` | Immutable derived publication unit | Complete | Future-release template implemented; released bytes excluded | Focused template checks passed | No rebuild of existing releases |
-| `okf-els-api` | Public draft bundle producer | Complete | Explorer migration preset implemented; isolated adoption queued | Preset tests passed | Pending |
-| `okf-planning` | Public draft bundle producer | Complete | Explorer migration preset implemented; isolated adoption queued | Preset tests passed | Pending |
+| `okf-els-api` | Public draft bundle producer | Complete | Merged through [PR #6](https://github.com/chris-page-gov/okf-els-api/pull/6) at `811a6881` | 35 tests and deterministic bundle checks passed; no generated-byte drift or build-before-check masking | Exact-main Pages run [32175479631](https://github.com/chris-page-gov/okf-els-api/actions/runs/32175479631) in progress; real-browser receipt remains migration-pending |
+| `okf-planning` | Public draft bundle producer | Complete | Merged through [PR #2](https://github.com/chris-page-gov/okf-planning/pull/2) at `9941f9e4` | 26 tests, OKF conformance, 280-file integrity and packed candidate passed; one redundant build removed | Exact-main Pages run [32175480025](https://github.com/chris-page-gov/okf-planning/actions/runs/32175480025) in progress; real-browser receipt remains migration-pending |
 | `OKF-knowledge-catalog` | Upstream specification fork and dependency | Complete | Not applicable | Exact repository identity recorded | Not applicable |
 | `ai-engineering-lab-hackathon-london-2026` | Fixture and demonstrator host | Complete | Not applicable as a producer | Exact repository identity recorded | Not applicable as a producer |
-| `wcc-domesday-map/okf/warwickshire-public` | Embedded private OKF producer | Complete | In progress in isolated clone | Focused CI checks passed; contract checks pending | Pending |
+| `wcc-domesday-map/okf/warwickshire-public` | Embedded private OKF producer | Complete | Implemented in replacement [PR #35](https://github.com/wcc-domesday-map/domesday-map/pull/35) | 376 tests, 172,257 OKF checks, canonical contract/impact gates and installed-Chrome journeys passed locally; hosted CI in progress | Private manual publication boundary unchanged; no deployment requested |
 | `ai-infrastructure-wiki-compat` | Legacy compatibility redirect | Complete | Not applicable beyond route preservation | Exact repository identity recorded | Preserve redirect only |
 | `govuk-casa/okf` | Experimental embedded Markdown consumer | Complete | Not applicable as a governed producer | Exact repository identity recorded | Not a governed producer |
 
@@ -53,10 +53,11 @@ additional optimisations found during adoption are recorded in the backlog.
 
 | Workstream | Scope | Dependency | State |
 | --- | --- | --- | --- |
-| Registry and methodology | Explorer schemas, documentation and generated registry | None | Implemented; full validation in progress |
-| Small-bundle and Land Registry adoption | Repository contracts, CI and repository-specific checks | Explorer profile publication | Audit complete; isolated implementation queued |
-| Large-producer adoption | GOV.UK Content, ONS, APIs, legislation and living | Explorer profile publication | CI audit complete; isolated implementation queued |
-| Validation and deployment | Repository checks, PRs, merges and live journeys | Applicable adoption changes | In progress |
+| Registry and methodology | Explorer schemas, documentation and generated registry | None | Merged; Pages exact-route assurance in progress |
+| Small-bundle and Land Registry adoption | Repository contracts, CI and repository-specific checks | Explorer profile publication | AI, APIs, ELS and Planning merged; Land Registry full tests in progress |
+| Large-producer adoption | GOV.UK Content, ONS, legislation and living | Explorer profile publication | Implemented in isolated clones; validation or PR publication in progress |
+| Workbook-source adoption | WCC embedded producer and candidate `.xlsx` family | Explorer profile publication | Replacement PR #35 in hosted validation; private deployment unchanged |
+| Validation and deployment | Repository checks, PRs, merges and live journeys | Applicable adoption changes | In progress without blocking independent repositories |
 
 ## Decisions and conflict log
 
@@ -125,6 +126,20 @@ additional optimisations found during adoption are recorded in the backlog.
   browser rendezvous and loopback sockets. The unchanged suite passed when run
   with its governed browser and loopback permissions. Treat this error class as
   an execution-environment boundary, not a reason to rebuild application bytes.
+- The first WCC runner-Chrome attempt linked `chromium.executablePath()` into
+  Playwright's browser cache. Playwright Test headless mode resolves a distinct
+  `chromium_headless_shell` path, so the Silver job failed before browser
+  interaction. The supported `chrome` channel now selects installed Chrome for
+  every affected launcher without a download or cache mutation. Installed
+  Chrome then exposed a real missing-favicon console error, corrected with a
+  self-contained icon. Future adoptions must use an explicit supported channel
+  and retain clean-console checks rather than synthesising cache paths.
+- GitHub did not attach the corrected WCC branch head to PR #34 even though both
+  Git and the GitHub ref API reported `6aa4910b`. Independent repository work
+  continued. The stale PR was closed without deleting its branch and replacement
+  PR #35 immediately bound the correct head and started fresh checks. Future
+  orchestration must compare the PR head OID with the remote branch OID after
+  every corrective push and replace only the affected PR if they diverge.
 
 ## Optimisation backlog
 
