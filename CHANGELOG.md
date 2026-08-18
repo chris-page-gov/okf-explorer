@@ -31,8 +31,10 @@
   Chrome run proved the identity and route bytes but exposed an origin-root
   favicon 404 through the clean-console gate. The page now links its
   project-relative SVG icon and verifier diagnostics include the resource URL
-  and location. The correction needs one affected Site build, not a semantic
-  bundle, corpus or release rebuild.
+  and location. The final registry binds audited correction `6060d4a2`, with
+  11 applicable repositories adopted and six reviewed units non-applicable.
+  The correction needs one affected Site build, not a semantic bundle, corpus
+  or release rebuild.
 - Rebound the heritage local-candidate receipt to the exact deterministic
   Explorer build changed by the learner registry correction. A genuine Chrome
   run passed all 100 questions and all three local journeys; the corpus,

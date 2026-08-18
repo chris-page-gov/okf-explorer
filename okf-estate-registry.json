@@ -261,20 +261,21 @@
         "evidence": [
           "https://github.com/chris-page-gov/okf-explorer/pull/109"
         ],
-        "state": "in-progress",
+        "state": "adopted",
         "updated": "2026-08-18"
       },
       "audit": {
-        "commit": "f981130cc0aebeea14639f3f0fa4d453d5d19b61",
+        "commit": "6060d4a22e896ed12b9cd88cb44112d225c40a03",
         "errors": [],
         "evidence": [
           "https://github.com/chris-page-gov/okf-explorer/pull/109",
-          "https://github.com/chris-page-gov/okf-explorer/actions/runs/32175666804"
+          "https://github.com/chris-page-gov/okf-explorer/actions/runs/32175666804",
+          "https://github.com/chris-page-gov/okf-explorer/commit/6060d4a22e896ed12b9cd88cb44112d225c40a03"
         ],
-        "observed_at": "2026-08-18T20:24:36+01:00",
-        "state": "migration",
+        "observed_at": "2026-08-18T21:37:00+01:00",
+        "state": "conformant",
         "warnings": [
-          "The final registry-result follow-up still requires an exact deployed-commit Chrome receipt."
+          "The first exact-main run proved candidate identity and route bytes but failed on a missing favicon; audited commit 6060d4a22e896ed12b9cd88cb44112d225c40a03 corrects the renderer and diagnostics, while the mandatory post-merge Chrome gate remains the public publication boundary."
         ]
       },
       "contract_state": "verified",

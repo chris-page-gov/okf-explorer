@@ -29,20 +29,21 @@ repositories:
       source_url: https://raw.githubusercontent.com/chris-page-gov/okf-explorer/f981130cc0aebeea14639f3f0fa4d453d5d19b61/okf.publication.json
       sha256: 47ba3180b856b9d24125fecfe0ba4c221e4f29c73f11c9ebf294dccd1f093b54
     adoption:
-      state: in-progress
+      state: adopted
       updated: "2026-08-18"
       evidence:
         - https://github.com/chris-page-gov/okf-explorer/pull/109
     audit:
-      state: migration
-      observed_at: "2026-08-18T20:24:36+01:00"
-      commit: f981130cc0aebeea14639f3f0fa4d453d5d19b61
+      state: conformant
+      observed_at: "2026-08-18T21:37:00+01:00"
+      commit: 6060d4a22e896ed12b9cd88cb44112d225c40a03
       errors: []
       warnings:
-        - The final registry-result follow-up still requires an exact deployed-commit Chrome receipt.
+        - The first exact-main run proved candidate identity and route bytes but failed on a missing favicon; audited commit 6060d4a22e896ed12b9cd88cb44112d225c40a03 corrects the renderer and diagnostics, while the mandatory post-merge Chrome gate remains the public publication boundary.
       evidence:
         - https://github.com/chris-page-gov/okf-explorer/pull/109
         - https://github.com/chris-page-gov/okf-explorer/actions/runs/32175666804
+        - https://github.com/chris-page-gov/okf-explorer/commit/6060d4a22e896ed12b9cd88cb44112d225c40a03
   - id: https://github.com/chris-page-gov/okf-ai-infrastructure
     name: okf-ai-infrastructure
     repository_url: https://github.com/chris-page-gov/okf-ai-infrastructure
