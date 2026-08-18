@@ -478,6 +478,7 @@ class BuildSiteTests(unittest.TestCase):
             rendered = target.read_text(encoding="utf-8")
             self.assertIn('id="repository-okf-explorer"', rendered)
             self.assertIn('href="../../okf-estate-registry.json"', rendered)
+            self.assertIn('href="../../favicon.svg"', rendered)
             self.assertIn('id="optimisation-backlog"', rendered)
 
     def test_beginner_guide_is_rendered_as_navigable_html(self) -> None:
