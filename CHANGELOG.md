@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added a no-code walkthrough of the immutable AI Infrastructure OKF v0.6.0
+  knowledge graph. It starts with browser-only GitHub and Explorer routes,
+  explains the optional Obsidian download, follows one Markdown relationship
+  into its direct and reified semantic representations, and distinguishes the
+  roles and limits of YAML-LD, JSON-LD, validation, release receipts and MCP
+  retrieval.
 - Replaced the learner-hub header's unscoped Explorer launch with an exact,
   source-backed three-record Heritage worked example opening the Coventry
   Cathedral record. On narrow screens, large-corpus navigation now starts
