@@ -40,6 +40,17 @@ def build() -> dict[str, str]:
     for item in document.get("bundles", []):
         if not isinstance(item, dict):
             raise okf_semantic.SemanticError("registry bundles must be mappings")
+        schema_document = {"@context": document.get("@context"), **item}
+        schema_errors = okf_semantic.schema_errors(
+            schema_document,
+            "bundle.schema.json",
+        )
+        if schema_errors:
+            identity = item.get("@id", "<unknown>")
+            raise okf_semantic.SemanticError(
+                f"registry bundle {identity} fails bundle.schema.json: "
+                + " | ".join(schema_errors)
+            )
         descriptor = id_value(item.get("descriptor"))
         if not descriptor:
             raise okf_semantic.SemanticError(f"registry bundle {item.get('@id', '<unknown>')} has no descriptor")

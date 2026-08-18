@@ -15,6 +15,219 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
+SEMANTIC_CONTRACT = {
+    "schema": "okf-repository-semantic-contract.v1",
+    "repository": {
+        "name": "okf-bundle",
+        "role": "governed-producer",
+        "root_index": "README.md",
+    },
+    "okf_core": {
+        "version": "0.2",
+        "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md",
+        "status": "migration",
+    },
+    "semantic_layer": {
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+        "state": "migration",
+        "authoritative_inputs": ["source/"],
+        "outputs": [],
+        "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
+        "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
+        "limitations": [
+            "The bootstrap declares a migration boundary only; no semantic corpus or assertion has been reviewed."
+        ],
+    },
+    "relationship_contract": {
+        "schema": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/semantic-assertion.schema.json",
+        "authoring": "runtime-assertion-migration",
+        "direct_triple_policy": "migration-pending",
+        "predicate_policy": "absolute-iri",
+        "required_fields": [
+            "id",
+            "source",
+            "target",
+            "source_iri",
+            "target_iri",
+            "predicate",
+            "kind",
+            "label",
+            "inverse_label",
+            "assertion_status",
+            "assertion_scope",
+            "authority",
+            "derivation",
+            "observed_at",
+            "evidence",
+            "rights",
+        ],
+    },
+    "tooling": {"setup": [], "build": [], "check": []},
+    "reader": {
+        "consumer": "https://chris-page-gov.github.io/okf-explorer/",
+        "delivery": "yaml-ld-small-graph",
+        "preserves": [
+            "direction",
+            "semantic-identities",
+            "local-routes",
+            "predicate",
+            "relationship-kind",
+            "preferred-and-inverse-labels",
+            "assertion-status-and-scope",
+            "authority",
+            "derivation",
+            "supporting-assertions",
+            "confidence",
+            "review-status",
+            "evidence",
+            "rights",
+            "freshness",
+            "lifecycle",
+        ],
+    },
+}
+
+PUBLICATION_CONTRACT = {
+    "schema": "okf-repository-publication-contract.v1",
+    "modified": "2026-08-18",
+    "locale": "en-GB",
+    "time_zone": "Europe/London",
+    "repository": {
+        "name": "okf-bundle",
+        "url": "https://example.invalid/replace-after-repository-review",
+        "role": "governed-producer",
+        "root_index": "README.md",
+        "lifecycle": "bootstrap",
+    },
+    "semantic_contract": {
+        "path": "okf.semantic.json",
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+    },
+    "source_families": [
+        {
+            "id": "repository-foundations",
+            "label": "Repository foundations",
+            "description": "Authored bootstrap documentation awaiting domain review.",
+            "kind": "markdown-tree",
+            "paths": ["source/**", "README.md", "REPOSITORY_STATUS.md"],
+            "formats": ["text/markdown"],
+            "origin": "authored",
+            "authority": "not-assessed",
+            "snapshot_policy": "pinned-revision",
+            "inventory": {
+                "method": "pinned-source-register",
+                "manifest_path": "source/README.md",
+                "identity": ["relative-path", "source-identifier"],
+            },
+            "rights": {"status": "not-evaluated", "evidence": []},
+            "sensitivity": {
+                "status": "not-assessed",
+                "assessment": "Domain content has not been admitted to the bootstrap.",
+                "evidence": [],
+            },
+            "extraction": {
+                "mode": "none",
+                "network_access": "prohibited",
+                "command_ids": [],
+                "limitations": ["Acquisition and generation remain disabled."],
+            },
+            "invalidates": ["source", "documentation"],
+            "limitations": [
+                "Replace this family with reviewed domain inputs before enabling CI or publication."
+            ],
+        }
+    ],
+    "boundaries": {
+        "authored": [
+            {"path": "source/**", "role": "content", "source_family_id": "repository-foundations"},
+            {"path": "README.md", "role": "documentation", "source_family_id": "repository-foundations"},
+            {"path": "REPOSITORY_STATUS.md", "role": "documentation", "source_family_id": "repository-foundations"},
+            {"path": "CHANGELOG.md", "role": "changelog"},
+            {"path": "okf.semantic.json", "role": "policy"},
+            {"path": "okf.publication.json", "role": "publication-contract"},
+            {"path": ".github/workflows/**", "role": "workflow"},
+        ],
+        "generated": [],
+    },
+    "planes": [
+        {
+            "id": "source",
+            "depends_on": [],
+            "paths": ["source/**", "okf.semantic.json", "okf.publication.json"],
+            "command_ids": ["check-scaffold"],
+        },
+        {
+            "id": "documentation",
+            "depends_on": ["source"],
+            "paths": ["README.md", "REPOSITORY_STATUS.md", "CHANGELOG.md"],
+            "command_ids": ["check-scaffold"],
+        },
+    ],
+    "tooling": {
+        "commands": [
+            {
+                "id": "check-scaffold",
+                "kind": "check",
+                "planes": ["source", "documentation"],
+                "command": "git diff --check",
+                "source": "AGENTS.md",
+                "review_status": "reviewed-local-guidance",
+                "network": "none",
+                "mutates": "none",
+                "timeout_minutes": 5,
+            }
+        ]
+    },
+    "lockstep": {
+        "controlled_paths": ["source/**", "generated/**", ".github/workflows/**", "okf.semantic.json", "okf.publication.json"],
+        "documentation_paths": ["README.md", "REPOSITORY_STATUS.md", "CHANGELOG.md"],
+        "changelog_path": "CHANGELOG.md",
+        "check_command_id": "check-scaffold",
+        "dependency_update_policy": "assess-release-bound-bytes-no-blanket-exemption",
+        "unknown_path_policy": "fail-closed",
+    },
+    "ci": {
+        "provider": "none",
+        "workflow_paths": [],
+        "impact_routing": "not-applicable",
+        "parallelism": "not-applicable",
+        "unknown_path_policy": "not-applicable",
+        "browser": {
+            "ordinary": {"policy": "not-applicable", "engines": [], "command_ids": []},
+            "cross_engine": {
+                "policy": "not-applicable",
+                "engines": [],
+                "command_ids": [],
+                "installation": {"policy": "none", "command_ids": []},
+            },
+        },
+    },
+    "publication": {
+        "mode": "none",
+        "scope": "unpublished",
+        "authority": {
+            "decision": "Publication is disabled until repository and domain review.",
+            "evidence_paths": ["REPOSITORY_STATUS.md"],
+        },
+        "candidate_policy": "promote-exact-assured-bytes-without-rebuild",
+        "targets": [],
+    },
+    "verification": {
+        "required": False,
+        "browser": "not-applicable",
+        "exact_commit_required": False,
+        "identity_checks": [],
+        "journeys": [],
+        "console_policy": "not-applicable",
+        "command_ids": [],
+    },
+    "limitations": [
+        "The placeholder repository URL, source family and command set must be replaced during review.",
+        "A schema-valid bootstrap does not authorise acquisition, generation, CI or publication.",
+    ],
+}
+
+
 FILES = {
     ".gitignore": """# Operating-system and editor debris
 .DS_Store
@@ -37,6 +250,9 @@ release-assurance/tmp/
 - Do not edit `generated/` or release evidence by hand.
 - Preserve unrelated work and use feature branches and pull requests.
 - Keep CI disabled until the bootstrap and domain profile are reviewed.
+- Read `okf.semantic.json` and `okf.publication.json` before admitting source
+  material or enabling any build, CI or publication command.
+- Keep documentation and `CHANGELOG.md` in lockstep with controlled changes.
 - Never create remotes, push, publish, or spend money implicitly.
 """,
     "README.md": """# OKF bundle
@@ -48,6 +264,15 @@ This initialization commit deliberately contains no corpus, generated bundle,
 or release evidence. Domain and build work belongs on a feature branch and is
 merged through review.
 """,
+    "CHANGELOG.md": """# Changelog
+
+## Unreleased
+
+- Created a disabled OKF repository bootstrap with explicit semantic and
+  publication migration boundaries.
+""",
+    "okf.semantic.json": json.dumps(SEMANTIC_CONTRACT, indent=2) + "\n",
+    "okf.publication.json": json.dumps(PUBLICATION_CONTRACT, indent=2) + "\n",
     "SECURITY.md": """# Security
 
 Report suspected vulnerabilities privately to the repository owner. Do not

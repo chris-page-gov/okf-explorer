@@ -160,7 +160,7 @@ class CiPublicationTopologyTests(unittest.TestCase):
         document = YAML(typ="safe").load(workflow)
         jobs = self.workflow_jobs(".github/workflows/pages.yml")
         self.assertNotIn("permissions", document)
-        for job_name in ("impact", "adversarial-gate", "app"):
+        for job_name in ("impact", "adversarial-gate", "app", "verify"):
             with self.subTest(job=job_name):
                 self.assertEqual({"contents": "read"}, jobs[job_name]["permissions"])
         self.assertEqual(
@@ -171,6 +171,12 @@ class CiPublicationTopologyTests(unittest.TestCase):
             {"pages": "write", "id-token": "write"},
             jobs["deploy"]["permissions"],
         )
+        self.assertEqual(10, jobs["impact"]["timeout-minutes"])
+        self.assertEqual(10, jobs["adversarial-gate"]["timeout-minutes"])
+        self.assertEqual(30, jobs["app"]["timeout-minutes"])
+        self.assertEqual(45, jobs["build"]["timeout-minutes"])
+        self.assertEqual(10, jobs["deploy"]["timeout-minutes"])
+        self.assertEqual(10, jobs["verify"]["timeout-minutes"])
         self.assertIn("--changed-from HEAD^", workflow)
         self.assertIn("needs.impact.outputs.foundry", workflow)
         self.assertNotIn("'evaluation/**'", workflow)
@@ -178,6 +184,9 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("site-components-v3-${{ runner.os }}-${{ github.sha }}", workflow)
         self.assertNotIn("hashFiles('evaluation/heritage", workflow)
         self.assertIn("site-candidate-receipt.json", workflow)
+        self.assertIn("scripts/check_documentation_lockstep.py --base HEAD^", workflow)
+        self.assertIn("scripts/build_okf_estate_registry.py --check", workflow)
+        self.assertIn('--publication-commit "${{ github.sha }}"', workflow)
         self.assertIn("check_impacted_heritage_evaluation.py", workflow)
         self.assertLess(
             workflow.index("retarget_heritage_source_snapshots.py --check"),
@@ -191,6 +200,13 @@ class CiPublicationTopologyTests(unittest.TestCase):
             {"impact", "adversarial-gate", "app"},
             self.job_needs(jobs["build"]),
         )
+        self.assertEqual({"deploy"}, self.job_needs(jobs["verify"]))
+        verify = workflow[workflow.index("  verify:") :]
+        self.assertIn("verify_okf_deployment.mjs", verify)
+        self.assertIn("--journey estate-registry", verify)
+        self.assertIn('--expected-commit "${{ github.sha }}"', verify)
+        self.assertNotIn("playwright install", verify)
+        self.assertNotIn("build_site.py", verify)
         pages_upload = next(
             step
             for step in jobs["build"]["steps"]
@@ -206,10 +222,19 @@ class CiPublicationTopologyTests(unittest.TestCase):
 
     def test_nightly_shadow_and_observers_are_separate(self) -> None:
         shadow = self.text(".github/workflows/foundry-full-shadow.yml")
+        shadow_document = YAML(typ="safe").load(shadow)
         shadow_jobs = self.workflow_jobs(".github/workflows/foundry-full-shadow.yml")
         links = self.text(".github/workflows/link-observation.yml")
         self.assertIn("schedule:", shadow)
         self.assertIn("workflow_dispatch:", shadow)
+        self.assertEqual(
+            "${{ github.workflow }}-${{ github.ref }}",
+            shadow_document["concurrency"]["group"],
+        )
+        self.assertIs(True, shadow_document["concurrency"]["cancel-in-progress"])
+        self.assertEqual(10, shadow_jobs["adversarial-gate"]["timeout-minutes"])
+        self.assertEqual(45, shadow_jobs["browser-three-engine"]["timeout-minutes"])
+        self.assertEqual(45, shadow_jobs["foundry-full-family"]["timeout-minutes"])
         self.assertIn("uv run --locked python scripts/build_site.py", shadow)
         self.assertIn("pnpm test:e2e:terminal", shadow)
         self.assertIn("--check --fixture all", shadow)
@@ -255,8 +280,8 @@ class CiPublicationTopologyTests(unittest.TestCase):
         ]
         shadow_steps = shadow_jobs["browser-three-engine"]["steps"]
         shadow_chromium_steps = [
-            (index, step)
-            for index, step in enumerate(shadow_steps)
+            step
+            for step in shadow_steps
             if step.get("run")
             == "pnpm exec playwright install --with-deps chromium"
         ]
@@ -266,16 +291,21 @@ class CiPublicationTopologyTests(unittest.TestCase):
             if step.get("name") == "Validate and deterministically build Explorer"
             and "pnpm test" in step.get("run", "")
         ]
-        self.assertEqual(1, len(shadow_chromium_steps))
+        self.assertEqual([], shadow_chromium_steps)
         self.assertEqual(1, len(shadow_validation_steps))
-        shadow_chromium_index, shadow_chromium_step = shadow_chromium_steps[0]
         self.assertEqual(
-            "apps/okf-explorer", shadow_chromium_step.get("working-directory")
+            "chrome",
+            shadow_steps[shadow_validation_steps[0]]
+            .get("env", {})
+            .get("PLAYWRIGHT_CHROMIUM_CHANNEL"),
         )
-        self.assertLess(
-            shadow_chromium_index,
-            shadow_validation_steps[0],
+        shadow_cross_engine_install = next(
+            step
+            for step in shadow_steps
+            if step.get("run")
+            == "pnpm exec playwright install --with-deps firefox webkit"
         )
+        self.assertEqual(10, shadow_cross_engine_install.get("timeout-minutes"))
         self.assertLess(
             shadow_browser.index("pnpm install --frozen-lockfile"),
             shadow_browser.index("pnpm exec svelte-kit sync"),
@@ -328,6 +358,10 @@ class CiPublicationTopologyTests(unittest.TestCase):
     def test_external_repository_templates_enforce_pages_and_release_provenance(
         self,
     ) -> None:
+        ci = self.text(
+            "publication-units/heritage-coventry-warwickshire/"
+            "repository-template/ci.yml"
+        )
         candidate = self.text(
             "publication-units/heritage-coventry-warwickshire/"
             "repository-template/candidate-release.yml"
@@ -344,7 +378,9 @@ class CiPublicationTopologyTests(unittest.TestCase):
             "publication-units/heritage-coventry-warwickshire/"
             "repository-template/pages.yml"
         )
+        ci_document = YAML(typ="safe").load(ci)
         candidate_document = YAML(typ="safe").load(candidate)
+        terminal_document = YAML(typ="safe").load(terminal)
         promotion_document = YAML(typ="safe").load(promotion)
         pages_document = YAML(typ="safe").load(pages)
         policy = self.text("release-assurance/release-policy.json")
@@ -352,8 +388,24 @@ class CiPublicationTopologyTests(unittest.TestCase):
             self.text("release-assurance/link-observation-policy.json")
         )
         publication = self.text("PUBLICATION.md")
+        self.assertEqual(
+            "${{ github.workflow }}-${{ github.ref }}",
+            ci_document["concurrency"]["group"],
+        )
+        self.assertIs(True, ci_document["concurrency"]["cancel-in-progress"])
+        self.assertEqual(15, ci_document["jobs"]["candidate"]["timeout-minutes"])
         self.assertIn("workflow_dispatch:", candidate)
         self.assertEqual({"workflow_dispatch"}, set(candidate_document["on"]))
+        self.assertEqual(
+            "candidate-release-${{ inputs.tag }}",
+            candidate_document["concurrency"]["group"],
+        )
+        self.assertIs(
+            False, candidate_document["concurrency"]["cancel-in-progress"]
+        )
+        self.assertEqual(
+            30, candidate_document["jobs"]["candidate-release"]["timeout-minutes"]
+        )
         self.assertNotIn("  push:", candidate)
         self.assertNotIn("immutable-releases", candidate)
         self.assertNotIn("--immutable-settings", candidate)
@@ -422,6 +474,28 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("working-directory: assurance/apps/okf-explorer", terminal)
         self.assertIn("PLAYWRIGHT_PACKAGE:", terminal)
         self.assertIn("node_modules/@playwright/test", terminal)
+        self.assertEqual(
+            "terminal-assurance-${{ inputs.candidate_tag }}",
+            terminal_document["concurrency"]["group"],
+        )
+        self.assertIs(True, terminal_document["concurrency"]["cancel-in-progress"])
+        terminal_steps = terminal_document["jobs"]["terminal-assurance"]["steps"]
+        terminal_browser_install = next(
+            step
+            for step in terminal_steps
+            if step.get("run")
+            == "pnpm exec playwright install --with-deps firefox webkit"
+        )
+        self.assertEqual(10, terminal_browser_install.get("timeout-minutes"))
+        self.assertNotIn(
+            "playwright install --with-deps chromium",
+            terminal,
+        )
+        self.assertIn(
+            'PLAYWRIGHT_EXECUTABLE_PATH="$(command -v google-chrome)"',
+            terminal,
+        )
+        self.assertIn('if [ "$engine" = chromium ]', terminal)
         self.assertIn(
             '--publication-root "$GITHUB_WORKSPACE/publication/site"',
             terminal,
@@ -469,6 +543,17 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("--draft=false", promotion)
         self.assertIn('test "$GITHUB_REF" = refs/heads/main', promotion)
         self.assertEqual({"workflow_dispatch"}, set(promotion_document["on"]))
+        self.assertEqual(
+            "promotion-release-${{ inputs.promotion_tag }}",
+            promotion_document["concurrency"]["group"],
+        )
+        self.assertIs(
+            False, promotion_document["concurrency"]["cancel-in-progress"]
+        )
+        self.assertEqual(
+            30,
+            promotion_document["jobs"]["promotion-release"]["timeout-minutes"],
+        )
         self.assertNotIn("immutable-releases", promotion)
         self.assertNotIn("--immutable-settings", promotion)
         self.assertNotIn("secrets.", promotion)
@@ -530,6 +615,8 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn('      - "site/**"', pages)
         self.assertEqual(["site/**"], pages_document["on"]["push"]["paths"])
         self.assertIn("check_publication_unit_manifest.py site", pages)
+        self.assertEqual(10, pages_document["jobs"]["build"]["timeout-minutes"])
+        self.assertEqual(10, pages_document["jobs"]["deploy"]["timeout-minutes"])
         self.assertNotIn("pip install", pages)
         self.assertNotIn("requirements-okf.txt", pages)
         self.assertNotIn("permissions", pages_document)

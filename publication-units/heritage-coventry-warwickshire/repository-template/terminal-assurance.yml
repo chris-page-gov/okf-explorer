@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: terminal-assurance-${{ inputs.candidate_tag }}
+  cancel-in-progress: true
+
 jobs:
   terminal-assurance:
     runs-on: ubuntu-latest
@@ -55,11 +59,13 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: assurance/apps/okf-explorer/pnpm-lock.yaml
-      - name: Install pinned assurance dependencies and all terminal engines
+      - name: Install pinned assurance dependencies
         working-directory: assurance/apps/okf-explorer
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm exec playwright install --with-deps chromium firefox webkit
+        run: pnpm install --frozen-lockfile
+      - name: Install Firefox and WebKit browser dependencies
+        working-directory: assurance/apps/okf-explorer
+        timeout-minutes: 10
+        run: pnpm exec playwright install --with-deps firefox webkit
       - name: Require R1 to exist before observing it
         env:
           GH_TOKEN: ${{ github.token }}
@@ -119,16 +125,21 @@ jobs:
       - name: Run 21 live and 11 receipt-backed actions in all three engines
         run: |
           for engine in chromium firefox webkit; do
-            node assurance/scripts/evaluate_okf_explorer.mjs \
-              --base-url "$EXPLORER_URL" \
-              --bundle-root "$PUBLICATION_ROOT_URL" \
-              --candidate-bundle "${PUBLICATION_ROOT_URL}okf-explorer.json" \
-              --candidate-receipt "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json" \
-              --journeys "$RUNNER_TEMP/public-journey/journeys.json" \
-              --journey-id journey-publication \
-              --journeys-only \
-              --browser-engine "$engine" \
-              --out "$RUNNER_TEMP/journey-$engine"
+            browser_environment=()
+            if [ "$engine" = chromium ]; then
+              browser_environment=(PLAYWRIGHT_EXECUTABLE_PATH="$(command -v google-chrome)")
+            fi
+            env "${browser_environment[@]}" \
+              node assurance/scripts/evaluate_okf_explorer.mjs \
+                --base-url "$EXPLORER_URL" \
+                --bundle-root "$PUBLICATION_ROOT_URL" \
+                --candidate-bundle "${PUBLICATION_ROOT_URL}okf-explorer.json" \
+                --candidate-receipt "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json" \
+                --journeys "$RUNNER_TEMP/public-journey/journeys.json" \
+                --journey-id journey-publication \
+                --journeys-only \
+                --browser-engine "$engine" \
+                --out "$RUNNER_TEMP/journey-$engine"
           done
       - name: Bind the complete three-engine journey receipt
         run: >-

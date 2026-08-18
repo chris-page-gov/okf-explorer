@@ -1,0 +1,492 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/source-family.schema.json",
+  "title": "OKF publication source family",
+  "description": "A bounded family of authored, acquired or synthetic inputs to an OKF publication pipeline.",
+  "type": "object",
+  "required": [
+    "id",
+    "label",
+    "kind",
+    "paths",
+    "formats",
+    "origin",
+    "authority",
+    "snapshot_policy",
+    "inventory",
+    "rights",
+    "sensitivity",
+    "extraction",
+    "invalidates"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/localIdentifier"
+    },
+    "label": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "kind": {
+      "enum": [
+        "markdown-tree",
+        "structured-data-folder",
+        "workbook-folder",
+        "csv-folder",
+        "json",
+        "jsonl",
+        "xml",
+        "rdf",
+        "api",
+        "database",
+        "geospatial",
+        "document-folder",
+        "mixed",
+        "other"
+      ]
+    },
+    "paths": {
+      "$ref": "#/$defs/repositoryPatterns"
+    },
+    "formats": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "origin": {
+      "enum": [
+        "authored",
+        "acquired",
+        "synthetic",
+        "mixed"
+      ]
+    },
+    "authority": {
+      "enum": [
+        "official",
+        "authoritative-internal",
+        "external-reference",
+        "editorial",
+        "synthetic",
+        "mixed",
+        "not-assessed"
+      ]
+    },
+    "snapshot_policy": {
+      "enum": [
+        "immutable-checksummed",
+        "content-addressed",
+        "pinned-revision",
+        "reviewed-live",
+        "synthetic",
+        "not-applicable"
+      ]
+    },
+    "inventory": {
+      "type": "object",
+      "required": [
+        "method",
+        "manifest_path",
+        "identity"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "deterministic-file-inventory",
+            "content-addressed-manifest",
+            "pinned-source-register",
+            "bounded-live-observation",
+            "synthetic-fixture-register"
+          ]
+        },
+        "manifest_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "identity": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "relative-path",
+              "bytes",
+              "sha256",
+              "media-type",
+              "source-identifier",
+              "source-version",
+              "observed-at"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "approved",
+            "restricted",
+            "mixed",
+            "not-evaluated"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/httpUris"
+        },
+        "limitations": {
+          "$ref": "#/$defs/strings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sensitivity": {
+      "type": "object",
+      "required": [
+        "status",
+        "assessment"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "public-no-personal-data",
+            "assessed-no-personal-data",
+            "contains-personal-data",
+            "potentially-sensitive",
+            "not-assessed"
+          ]
+        },
+        "assessment": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "evidence": {
+          "$ref": "#/$defs/httpUris"
+        }
+      },
+      "additionalProperties": false
+    },
+    "extraction": {
+      "type": "object",
+      "required": [
+        "mode",
+        "network_access",
+        "command_ids"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "deterministic-local",
+            "versioned-adapter",
+            "manual-reviewed"
+          ]
+        },
+        "network_access": {
+          "enum": [
+            "prohibited",
+            "separate-authorised-step",
+            "required"
+          ]
+        },
+        "command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        },
+        "limitations": {
+          "$ref": "#/$defs/strings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "invalidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/planeIdentifier"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "workbook_controls": {
+      "$ref": "#/$defs/workbookControls"
+    },
+    "limitations": {
+      "$ref": "#/$defs/strings"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "workbook-folder"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "workbook_controls"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "workbook_controls"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "strings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "localIdentifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "localIdentifiers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/localIdentifier"
+      },
+      "uniqueItems": true
+    },
+    "planeIdentifier": {
+      "enum": [
+        "source",
+        "semantic",
+        "runtime",
+        "documentation",
+        "application",
+        "browser",
+        "release",
+        "deployment"
+      ]
+    },
+    "repositoryPattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\)(?!.*[#%])(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "repositoryPath": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/repositoryPattern"
+        },
+        {
+          "pattern": "^[^*?\\[]+$"
+        },
+        {
+          "pattern": "[^/]$"
+        }
+      ]
+    },
+    "repositoryPatterns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repositoryPattern"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "httpUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "httpUris": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/httpUri"
+      },
+      "uniqueItems": true
+    },
+    "workbookControls": {
+      "type": "object",
+      "required": [
+        "preserve_original_bytes",
+        "file_inventory",
+        "sheet_visibility_policy",
+        "cell_value_policy",
+        "formula_policy",
+        "cached_value_policy",
+        "macro_policy",
+        "external_link_policy",
+        "embedded_object_policy",
+        "recalculation_policy",
+        "date_system_policy",
+        "locale_policy",
+        "csv_companion_policy"
+      ],
+      "properties": {
+        "preserve_original_bytes": {
+          "const": true
+        },
+        "file_inventory": {
+          "const": "relative-path-bytes-sha256-and-media-type"
+        },
+        "sheet_visibility_policy": {
+          "const": "inventory-visible-hidden-and-very-hidden"
+        },
+        "cell_value_policy": {
+          "const": "preserve-formula-raw-cached-and-displayed-separately"
+        },
+        "formula_policy": {
+          "enum": [
+            "inspect-without-execution",
+            "evaluate-in-declared-engine"
+          ]
+        },
+        "cached_value_policy": {
+          "const": "record-and-flag-stale-or-missing"
+        },
+        "macro_policy": {
+          "enum": [
+            "reject",
+            "quarantine-without-execution",
+            "retain-without-execution",
+            "authorised-execution"
+          ]
+        },
+        "external_link_policy": {
+          "enum": [
+            "reject",
+            "inventory-without-refresh",
+            "pinned-authorised-refresh"
+          ]
+        },
+        "embedded_object_policy": {
+          "enum": [
+            "reject",
+            "quarantine",
+            "inventory-without-execution"
+          ]
+        },
+        "recalculation_policy": {
+          "enum": [
+            "prohibited",
+            "authorised-declared-engine"
+          ]
+        },
+        "date_system_policy": {
+          "const": "record-per-workbook"
+        },
+        "locale_policy": {
+          "const": "declare-and-record"
+        },
+        "csv_companion_policy": {
+          "const": "separate-lossy-representation"
+        },
+        "calculation_engine": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "active_content_authority": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "active_content_command_id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "external_refresh_authority": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "external_refresh_command_id": {
+          "$ref": "#/$defs/localIdentifier"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "formula_policy": {
+                    "const": "evaluate-in-declared-engine"
+                  }
+                },
+                "required": [
+                  "formula_policy"
+                ]
+              },
+              {
+                "properties": {
+                  "recalculation_policy": {
+                    "const": "authorised-declared-engine"
+                  }
+                },
+                "required": [
+                  "recalculation_policy"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "calculation_engine",
+              "active_content_authority",
+              "active_content_command_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "macro_policy": {
+                "const": "authorised-execution"
+              }
+            },
+            "required": [
+              "macro_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "active_content_authority",
+              "active_content_command_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "external_link_policy": {
+                "const": "pinned-authorised-refresh"
+              }
+            },
+            "required": [
+              "external_link_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "external_refresh_authority",
+              "external_refresh_command_id"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

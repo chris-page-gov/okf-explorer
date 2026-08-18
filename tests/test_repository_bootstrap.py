@@ -9,6 +9,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "okf_repository_bootstrap.py"
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import okf_publication  # noqa: E402
 
 
 def run(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -36,10 +39,16 @@ class RepositoryBootstrapTests(unittest.TestCase):
             applied = run(str(target), "--apply")
             self.assertEqual(0, applied.returncode, applied.stderr)
             self.assertTrue((target / "AGENTS.md").is_file())
+            self.assertTrue((target / "CHANGELOG.md").is_file())
+            self.assertTrue((target / "okf.semantic.json").is_file())
+            self.assertTrue((target / "okf.publication.json").is_file())
             self.assertTrue(
                 (target / ".github/workflows/okf-ci.yml.disabled").is_file()
             )
             self.assertFalse((target / ".git").exists())
+            contract = okf_publication.load_publication_contract(target)
+            self.assertEqual("bootstrap", contract["repository"]["lifecycle"])
+            self.assertEqual("none", contract["publication"]["mode"])
             checked = run(str(target), "--check", "--adopt-existing")
             self.assertEqual(0, checked.returncode, checked.stderr)
 

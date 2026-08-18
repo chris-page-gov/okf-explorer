@@ -1,0 +1,504 @@
+{
+  "schema": "okf-repository-publication-contract.v1",
+  "modified": "2026-08-18",
+  "locale": "en-GB",
+  "time_zone": "Europe/London",
+  "repository": {
+    "name": "okf-example-workbooks",
+    "url": "https://github.com/example-gov/okf-example-workbooks",
+    "role": "governed-producer",
+    "root_index": "index.md",
+    "lifecycle": "migration"
+  },
+  "semantic_contract": {
+    "path": "okf.semantic.json",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+  },
+  "source_families": [
+    {
+      "id": "reviewed-workbooks",
+      "label": "Reviewed service workbooks",
+      "description": "A checked folder of original workbooks used as governed source material.",
+      "kind": "workbook-folder",
+      "paths": [
+        "source/workbooks/*.xlsx",
+        "source/workbooks/*.xlsm",
+        "source/workbooks/*.ods",
+        "source/workbooks/*.csv"
+      ],
+      "formats": [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel.sheet.macroEnabled.12",
+        "application/vnd.oasis.opendocument.spreadsheet",
+        "text/csv"
+      ],
+      "origin": "acquired",
+      "authority": "authoritative-internal",
+      "snapshot_policy": "immutable-checksummed",
+      "inventory": {
+        "method": "deterministic-file-inventory",
+        "manifest_path": "generated/source-inventory.json",
+        "identity": [
+          "relative-path",
+          "bytes",
+          "sha256",
+          "media-type"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://example.gov/rights/workbooks"
+        ],
+        "limitations": [
+          "Approval applies to the recorded source snapshot only."
+        ]
+      },
+      "sensitivity": {
+        "status": "assessed-no-personal-data",
+        "assessment": "The recorded snapshot was reviewed before it entered the publication pipeline.",
+        "evidence": [
+          "https://example.gov/privacy/workbooks"
+        ]
+      },
+      "extraction": {
+        "mode": "versioned-adapter",
+        "network_access": "prohibited",
+        "command_ids": [
+          "inventory-workbooks",
+          "build-bundle"
+        ],
+        "limitations": [
+          "The adapter records unsupported workbook features instead of attempting to execute them."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "semantic",
+        "documentation",
+        "browser",
+        "deployment"
+      ],
+      "workbook_controls": {
+        "preserve_original_bytes": true,
+        "file_inventory": "relative-path-bytes-sha256-and-media-type",
+        "sheet_visibility_policy": "inventory-visible-hidden-and-very-hidden",
+        "cell_value_policy": "preserve-formula-raw-cached-and-displayed-separately",
+        "formula_policy": "inspect-without-execution",
+        "cached_value_policy": "record-and-flag-stale-or-missing",
+        "macro_policy": "quarantine-without-execution",
+        "external_link_policy": "inventory-without-refresh",
+        "embedded_object_policy": "inventory-without-execution",
+        "recalculation_policy": "prohibited",
+        "date_system_policy": "record-per-workbook",
+        "locale_policy": "declare-and-record",
+        "csv_companion_policy": "separate-lossy-representation"
+      },
+      "limitations": [
+        "CSV companions do not preserve formulae, formatting, hidden sheets or workbook relationships."
+      ]
+    }
+  ],
+  "boundaries": {
+    "authored": [
+      {
+        "path": "source/workbooks/*",
+        "role": "source-envelope",
+        "source_family_id": "reviewed-workbooks"
+      },
+      {
+        "path": "scripts/*",
+        "role": "generator"
+      },
+      {
+        "path": "tests/*",
+        "role": "test"
+      },
+      {
+        "path": "okf.semantic.json",
+        "role": "policy"
+      },
+      {
+        "path": "okf.publication.json",
+        "role": "publication-contract"
+      },
+      {
+        "path": "README.md",
+        "role": "documentation"
+      },
+      {
+        "path": "docs/*",
+        "role": "documentation"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "role": "changelog"
+      },
+      {
+        "path": ".github/workflows/*",
+        "role": "workflow"
+      },
+      {
+        "path": "PUBLICATION.md",
+        "role": "release-authorisation"
+      }
+    ],
+    "generated": [
+      {
+        "path": "generated/source-inventory.json",
+        "role": "checksum-manifest",
+        "plane": "source",
+        "required": true,
+        "build_command_ids": [
+          "inventory-workbooks"
+        ],
+        "check_command_ids": [
+          "inventory-workbooks"
+        ]
+      },
+      {
+        "path": "generated/okf-bundle.yamlld",
+        "role": "semantic-yaml-ld",
+        "plane": "semantic",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle"
+        ],
+        "check_command_ids": [
+          "check-bundle"
+        ]
+      },
+      {
+        "path": "_site/*",
+        "role": "site",
+        "plane": "deployment",
+        "required": true,
+        "build_command_ids": [
+          "build-site"
+        ],
+        "check_command_ids": [
+          "check-site"
+        ]
+      }
+    ]
+  },
+  "planes": [
+    {
+      "id": "source",
+      "depends_on": [],
+      "paths": [
+        "source/workbooks/*",
+        "scripts/*",
+        "generated/source-inventory.json"
+      ],
+      "command_ids": [
+        "inventory-workbooks"
+      ]
+    },
+    {
+      "id": "semantic",
+      "depends_on": [
+        "source"
+      ],
+      "paths": [
+        "okf.semantic.json",
+        "generated/okf-bundle.yamlld"
+      ],
+      "command_ids": [
+        "build-bundle",
+        "check-bundle"
+      ]
+    },
+    {
+      "id": "documentation",
+      "depends_on": [
+        "source",
+        "semantic"
+      ],
+      "paths": [
+        "README.md",
+        "docs/*",
+        "CHANGELOG.md"
+      ],
+      "command_ids": [
+        "check-lockstep"
+      ]
+    },
+    {
+      "id": "deployment",
+      "depends_on": [
+        "semantic",
+        "documentation"
+      ],
+      "paths": [
+        "_site/*",
+        ".github/workflows/pages.yml"
+      ],
+      "command_ids": [
+        "build-site",
+        "check-site"
+      ]
+    },
+    {
+      "id": "browser",
+      "depends_on": [
+        "deployment"
+      ],
+      "paths": [
+        "tests/browser/*"
+      ],
+      "command_ids": [
+        "test-chrome",
+        "install-extra-browsers",
+        "test-all-browsers",
+        "verify-pages"
+      ]
+    }
+  ],
+  "tooling": {
+    "commands": [
+      {
+        "id": "inventory-workbooks",
+        "kind": "inventory",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python scripts/inventory_workbooks.py --check",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "build-bundle",
+        "kind": "build",
+        "planes": [
+          "source",
+          "semantic"
+        ],
+        "command": "uv run --locked python scripts/build_bundle.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-bundle",
+        "kind": "check",
+        "planes": [
+          "semantic"
+        ],
+        "command": "uv run --locked python scripts/check_bundle.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-lockstep",
+        "kind": "check",
+        "planes": [
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/check_publication_lockstep.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "build-site",
+        "kind": "build",
+        "planes": [
+          "documentation",
+          "deployment"
+        ],
+        "command": "uv run --locked python scripts/build_site.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-site",
+        "kind": "check",
+        "planes": [
+          "deployment"
+        ],
+        "command": "uv run --locked python scripts/build_site.py --check",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "test-chrome",
+        "kind": "test",
+        "planes": [
+          "browser"
+        ],
+        "command": "pnpm exec playwright test --project=chrome",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "install-extra-browsers",
+        "kind": "setup",
+        "planes": [
+          "browser"
+        ],
+        "command": "pnpm exec playwright install --with-deps firefox webkit",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "dependency-install",
+        "mutates": "external-state",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "test-all-browsers",
+        "kind": "test",
+        "planes": [
+          "browser"
+        ],
+        "command": "pnpm exec playwright test --project=chrome --project=firefox --project=webkit",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 20
+      },
+      {
+        "id": "verify-pages",
+        "kind": "verify",
+        "planes": [
+          "deployment",
+          "browser"
+        ],
+        "command": "pnpm exec playwright test tests/browser/publication.spec.ts --project=chrome",
+        "source": "PUBLICATION.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "bounded-read",
+        "mutates": "none",
+        "timeout_minutes": 5
+      }
+    ]
+  },
+  "lockstep": {
+    "controlled_paths": [
+      "source/*",
+      "scripts/*",
+      "tests/*",
+      ".github/workflows/*",
+      "okf.semantic.json",
+      "okf.publication.json"
+    ],
+    "documentation_paths": [
+      "README.md",
+      "docs/*",
+      "CHANGELOG.md"
+    ],
+    "changelog_path": "CHANGELOG.md",
+    "check_command_id": "check-lockstep",
+    "dependency_update_policy": "assess-release-bound-bytes-no-blanket-exemption",
+    "unknown_path_policy": "fail-closed"
+  },
+  "ci": {
+    "provider": "github-actions",
+    "workflow_paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/pages.yml"
+    ],
+    "impact_routing": "dependency-graph",
+    "parallelism": "independent-planes",
+    "unknown_path_policy": "fail-closed",
+    "browser": {
+      "ordinary": {
+        "policy": "installed-chrome",
+        "engines": [
+          "chrome"
+        ],
+        "command_ids": [
+          "test-chrome"
+        ]
+      },
+      "cross_engine": {
+        "policy": "impact-triggered",
+        "engines": [
+          "firefox",
+          "webkit"
+        ],
+        "command_ids": [
+          "test-all-browsers"
+        ],
+        "installation": {
+          "policy": "bounded-playwright",
+          "command_ids": [
+            "install-extra-browsers"
+          ],
+          "timeout_minutes": 10
+        }
+      }
+    }
+  },
+  "publication": {
+    "mode": "automatic-protected-main",
+    "scope": "candidate",
+    "authority": {
+      "decision": "The named release owner approves promotion after the exact candidate passes the declared gates.",
+      "evidence_paths": [
+        "PUBLICATION.md"
+      ]
+    },
+    "candidate_policy": "promote-exact-assured-bytes-without-rebuild",
+    "targets": [
+      {
+        "id": "github-pages",
+        "kind": "github-pages",
+        "workflow_path": ".github/workflows/pages.yml",
+        "public_base_url": "https://example-gov.github.io/okf-example-workbooks/",
+        "exact_commit_required": true,
+        "promote_without_rebuild": true
+      }
+    ]
+  },
+  "verification": {
+    "required": true,
+    "browser": "real-browser",
+    "exact_commit_required": true,
+    "identity_checks": [
+      "commit",
+      "descriptor",
+      "sha256",
+      "route"
+    ],
+    "journeys": [
+      {
+        "id": "open-workbook-bundle",
+        "url": "https://example-gov.github.io/okf-example-workbooks/",
+        "expected_identity": "The deployed descriptor identifies the approved commit and workbook snapshot.",
+        "steps": [
+          "Open the public landing page.",
+          "Follow the worked-example link.",
+          "Confirm the workbook source, semantic relationships and limitations are visible."
+        ]
+      }
+    ],
+    "console_policy": "no-errors",
+    "command_ids": [
+      "verify-pages"
+    ]
+  },
+  "limitations": [
+    "This example defines publication controls; it does not grant authority to publish a real workbook snapshot.",
+    "Cross-engine assurance runs only when the impact plan identifies a browser-sensitive change."
+  ]
+}

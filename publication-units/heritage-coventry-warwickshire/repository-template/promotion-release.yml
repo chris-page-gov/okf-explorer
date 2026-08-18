@@ -22,9 +22,14 @@ permissions:
   id-token: write
   attestations: write
 
+concurrency:
+  group: promotion-release-${{ inputs.promotion_tag }}
+  cancel-in-progress: false
+
 jobs:
   promotion-release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       CANDIDATE_TAG: ${{ inputs.candidate_tag }}
       PROMOTION_TAG: ${{ inputs.promotion_tag }}

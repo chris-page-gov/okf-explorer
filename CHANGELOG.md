@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Started the estate-wide OKF build and publication standardisation programme.
+  Added a separate publication-method v1 profile, an executable repository
+  contract, contract-driven documentation and changelog lockstep, a fail-closed
+  dependency planner, a 17-entry operational estate registry with an accessible
+  generated view, safe workbook-folder controls and a live adoption tracker.
+  The semantic bundle registry now validates every bundle against its frozen
+  schema, while ordinary Explorer and future heritage CI use runner Chrome and
+  reserve bounded Firefox/WebKit installation for cross-engine assurance.
+  Pages now binds the assembled candidate to its exact commit and governance
+  bytes, then verifies the deployed estate-registry journey in installed Chrome
+  without rebuilding the candidate.
 - Added a no-code walkthrough of the immutable AI Infrastructure OKF v0.6.0
   knowledge graph. It starts with browser-only GitHub and Explorer routes,
   explains the optional Obsidian download, follows one Markdown relationship

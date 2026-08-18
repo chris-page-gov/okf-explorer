@@ -3,7 +3,7 @@
 "@type": okf:Registry
 title: OKF Explorer Registry
 description: Curated registry of independently publishable OKF bundle examples.
-modified: "2026-08-03T00:00:00Z"
+modified: "2026-08-18T00:00:00Z"
 profile:
   "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
 bundles:
@@ -11,8 +11,8 @@ bundles:
     "@type": okf:Bundle
     title: AI Infrastructure
     description: Default reference bundle generated from the AI infrastructure Markdown corpus during migration.
-    version: 0.4.0
-    status: preview
+    version: 0.6.0
+    status: stable
     descriptor:
       "@id": https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json
     semanticDescriptor:
@@ -31,7 +31,7 @@ bundles:
     title: ONS data discovery OKF
     description: Metadata-only ONS discovery demonstrator with explicit coverage, confusable alternatives, standards evidence and MCP selection bindings.
     version: 0.2.0
-    status: bounded-demonstrator
+    status: preview
     descriptor:
       "@id": https://chris-page-gov.github.io/okf-ons/okf-explorer.json
     semanticDescriptor:
@@ -107,7 +107,7 @@ bundles:
     title: UK Whole-Law OKF
     description: Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes.
     version: 0.3.0
-    status: candidate
+    status: preview
     descriptor:
       "@id": https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json
     semanticDescriptor:
@@ -135,6 +135,7 @@ bundles:
     title: Coventry and Warwickshire Heritage Evaluation
     description: Independently published Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement; promotion evidence is carried by its signed release envelope.
     version: 1.0.0
+    status: stable
     descriptor:
       "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json
     semanticDescriptor:

@@ -1,0 +1,516 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/estate-registry.schema.json",
+  "title": "OKF estate registry",
+  "description": "A reviewed operational registry of OKF repositories and their publication contracts.",
+  "type": "object",
+  "required": [
+    "schema",
+    "modified",
+    "locale",
+    "time_zone",
+    "title",
+    "description",
+    "methodology",
+    "semantic_bundle_registry",
+    "projections",
+    "repositories",
+    "backlog"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-estate-registry.v1"
+    },
+    "modified": {
+      "type": "string",
+      "format": "date"
+    },
+    "locale": {
+      "const": "en-GB"
+    },
+    "time_zone": {
+      "const": "Europe/London"
+    },
+    "title": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "methodology": {
+      "type": "object",
+      "required": [
+        "profile",
+        "version"
+      ],
+      "properties": {
+        "profile": {
+          "const": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/"
+        },
+        "version": {
+          "const": "1.0"
+        }
+      },
+      "additionalProperties": false
+    },
+    "semantic_bundle_registry": {
+      "type": "object",
+      "required": [
+        "source_path",
+        "published_url",
+        "profile"
+      ],
+      "properties": {
+        "source_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "published_url": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "profile": {
+          "$ref": "#/$defs/httpUri"
+        }
+      },
+      "additionalProperties": false
+    },
+    "projections": {
+      "type": "object",
+      "required": [
+        "machine_json_path",
+        "human_route"
+      ],
+      "properties": {
+        "machine_json_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "human_route": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\.\\.)(?:[A-Za-z0-9._~-]+/)*[A-Za-z0-9._~-]+\\.html$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repositoryEntry"
+      },
+      "minItems": 1
+    },
+    "backlog": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/backlogItem"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "strings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "localIdentifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "httpUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "httpUris": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/httpUri"
+      },
+      "uniqueItems": true
+    },
+    "repositoryPattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\)(?!.*[#%])(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "repositoryPath": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/repositoryPattern"
+        },
+        {
+          "pattern": "^[^*?\\[]+$"
+        },
+        {
+          "pattern": "[^/]$"
+        }
+      ]
+    },
+    "repositoryRole": {
+      "enum": [
+        "managed-producer-profile",
+        "embedded-producer-consumer",
+        "immutable-derived-publication-unit",
+        "fixture-demonstrator-host",
+        "compatibility-redirect",
+        "upstream-specification-reference"
+      ]
+    },
+    "repositoryEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "repository_url",
+        "role",
+        "public_bundle_ids",
+        "contract_state",
+        "publication_contract",
+        "adoption",
+        "audit"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"
+        },
+        "repository_url": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/httpUri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role": {
+          "$ref": "#/$defs/repositoryRole"
+        },
+        "public_bundle_ids": {
+          "$ref": "#/$defs/httpUris"
+        },
+        "contract_state": {
+          "enum": [
+            "proposed",
+            "installed",
+            "verified",
+            "not-applicable"
+          ]
+        },
+        "publication_contract": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/publicationContractBinding"
+            },
+            {
+              "$ref": "#/$defs/notApplicablePublicationContract"
+            }
+          ]
+        },
+        "adoption": {
+          "$ref": "#/$defs/adoption"
+        },
+        "audit": {
+          "$ref": "#/$defs/audit"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "contract_state": {
+                "enum": [
+                  "installed",
+                  "verified"
+                ]
+              }
+            },
+            "required": [
+              "contract_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publication_contract": {
+                "required": [
+                  "source_url",
+                  "sha256"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "contract_state": {
+                "const": "not-applicable"
+              }
+            },
+            "required": [
+              "contract_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publication_contract": {
+                "$ref": "#/$defs/notApplicablePublicationContract"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "publication_contract": {
+                "$ref": "#/$defs/publicationContractBinding"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "repository_url": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "repository_url"
+            ]
+          },
+          "then": {
+            "properties": {
+              "role": {
+                "const": "fixture-demonstrator-host"
+              },
+              "contract_state": {
+                "const": "not-applicable"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "publicationContractBinding": {
+      "type": "object",
+      "required": [
+        "applicability",
+        "path"
+      ],
+      "properties": {
+        "applicability": {
+          "const": "applicable"
+        },
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "source_url": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "contract": {
+          "$ref": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/repository-publication.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notApplicablePublicationContract": {
+      "type": "object",
+      "required": [
+        "applicability",
+        "rationale"
+      ],
+      "properties": {
+        "applicability": {
+          "const": "not-applicable"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "adoption": {
+      "type": "object",
+      "required": [
+        "state",
+        "updated"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "pending",
+            "in-progress",
+            "adopted",
+            "non-applicable",
+            "blocked"
+          ]
+        },
+        "updated": {
+          "type": "string",
+          "format": "date"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "evidence": {
+          "$ref": "#/$defs/httpUris"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "non-applicable",
+                  "blocked"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "rationale"
+            ]
+          }
+        }
+      ]
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "state",
+        "errors",
+        "warnings",
+        "evidence"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "not-reviewed",
+            "conformant",
+            "migration",
+            "non-conformant",
+            "non-applicable"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "errors": {
+          "$ref": "#/$defs/strings"
+        },
+        "warnings": {
+          "$ref": "#/$defs/strings"
+        },
+        "evidence": {
+          "$ref": "#/$defs/httpUris"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "conformant",
+                  "migration",
+                  "non-conformant"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "observed_at",
+              "commit"
+            ]
+          }
+        }
+      ]
+    },
+    "backlogItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "status",
+        "priority",
+        "discovered",
+        "repositories",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "planned",
+            "in-progress",
+            "done",
+            "non-applicable"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        "discovered": {
+          "type": "string",
+          "format": "date"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"
+          },
+          "uniqueItems": true
+        },
+        "evidence": {
+          "$ref": "#/$defs/httpUris"
+        },
+        "notes": {
+          "$ref": "#/$defs/strings"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -19,6 +19,7 @@ from typing import Callable, Iterator
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 
 import build_okf_bundle
+import build_okf_estate_registry
 import site_component_cache
 from markdown_it import MarkdownIt
 
@@ -101,6 +102,8 @@ COPY_READY_PROMPT = re.compile(
 )
 SVELTE_EXPLORER_BUILD = ROOT / "apps" / "okf-explorer" / "build"
 EXPLORER_BUILD_MANIFEST = "okf-explorer-build-manifest.json"
+PUBLICATION_IDENTITY = Path("okf-publication-identity.json")
+PUBLICATION_IDENTITY_SCHEMA = "okf-publication-deployment-identity.v1"
 SITE_TREE_ALGORITHM = (
     "sha256-over-canonical-json-path-bytes-digest-list-"
     "excluding-receipt-v1"
@@ -134,6 +137,8 @@ PUBLIC_ROOT_FILES = [
     "okf-bundle.jsonld",
     "okf-registry.json",
     "okf-registry.jsonld",
+    "okf-estate-registry.json",
+    "okf.publication.json",
     "README.md",
     "PUBLICATION.md",
     "LICENSE.md",
@@ -388,6 +393,7 @@ def published_source_routes() -> dict[Path, Path]:
 
 def published_reading_routes() -> set[Path]:
     routes = set(published_source_routes().values())
+    routes.add(Path("registry/estate/index.html"))
     routes.update(
         source.relative_to(ROOT).with_suffix(".html")
         for source in readable_markdown_sources()
@@ -1212,6 +1218,21 @@ def write_generic_reading_pages() -> None:
             copy_file(output, compatibility)
 
 
+def write_estate_registry_page() -> None:
+    """Generate the accessible human view from the canonical estate registry."""
+
+    registry = build_okf_estate_registry.build()
+    target = Path(registry["projections"]["human_route"])
+    output = OUT / target
+    output.parent.mkdir(parents=True, exist_ok=True)
+    if output.exists():
+        raise RuntimeError(f"estate registry would overwrite {target}")
+    output.write_text(
+        build_okf_estate_registry.render_html(registry),
+        encoding="utf-8",
+    )
+
+
 def render_next_redirect() -> str:
     return """<!doctype html>
 <html lang="en-GB">
@@ -1381,6 +1402,91 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def repository_commit() -> str:
+    """Return the exact checked-out commit used to assemble a publication."""
+
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    commit = result.stdout.strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise RuntimeError(f"Git returned an invalid publication commit: {commit!r}")
+    return commit
+
+
+def resolve_publication_commit(requested: str | None) -> str:
+    """Return the checked-out commit, rejecting a mismatched requested identity."""
+
+    observed = repository_commit()
+    if requested is not None and requested != observed:
+        raise RuntimeError(
+            "requested publication commit does not match the checked-out commit: "
+            f"requested={requested!r} observed={observed!r}"
+        )
+    return observed
+
+
+def publication_identity(commit: str) -> dict[str, object]:
+    """Bind public control projections to the commit which assembled the Site."""
+
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError("publication commit must be a full lowercase Git SHA")
+    materials = []
+    for relative in (
+        Path("okf.publication.json"),
+        Path("okf-estate-registry.json"),
+        Path("okf-registry.json"),
+        Path("registry/estate/index.html"),
+    ):
+        path = OUT / relative
+        raw = path.read_bytes()
+        materials.append(
+            {
+                "path": relative.as_posix(),
+                "bytes": len(raw),
+                "sha256": sha256_bytes(raw),
+            }
+        )
+    contract = json.loads((ROOT / "okf.publication.json").read_text(encoding="utf-8"))
+    return {
+        "schema": PUBLICATION_IDENTITY_SCHEMA,
+        "repository": contract["repository"],
+        "commit": commit,
+        "materials": materials,
+        "publication_boundary": (
+            "This identity is authoritative only when the Site candidate was "
+            "assembled from a clean checkout of this commit and promoted without rebuild."
+        ),
+    }
+
+
+def write_publication_identity(commit: str) -> dict[str, object]:
+    identity = publication_identity(commit)
+    payload = json.dumps(identity, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    (OUT / PUBLICATION_IDENTITY).write_text(payload, encoding="utf-8")
+    return identity
+
+
+def publication_identity_receipt() -> dict[str, object] | None:
+    path = OUT / PUBLICATION_IDENTITY
+    if not path.is_file():
+        return None
+    raw = path.read_bytes()
+    identity = json.loads(raw)
+    if identity.get("schema") != PUBLICATION_IDENTITY_SCHEMA:
+        raise RuntimeError("publication identity has an unexpected schema")
+    return {
+        "path": PUBLICATION_IDENTITY.as_posix(),
+        "bytes": len(raw),
+        "sha256": sha256_bytes(raw),
+        "commit": identity["commit"],
+    }
+
+
 def assembled_explorer_identity() -> tuple[str, str]:
     """Recompute the app tree and manifest hashes from assembled Site bytes."""
 
@@ -1519,7 +1625,7 @@ def site_candidate_receipt(
 
     explorer_tree, explorer_manifest = assembled_explorer_identity()
     site_tree = published_site_tree_receipt()
-    return {
+    receipt = {
         "schema": "okf-site-candidate-receipt.v1",
         "algorithm": "deterministic-pre-deploy-identity-without-observations-v1",
         "explorer": {
@@ -1540,6 +1646,10 @@ def site_candidate_receipt(
             },
         },
     }
+    identity = publication_identity_receipt()
+    if identity is not None:
+        receipt["publication_identity"] = identity
+    return receipt
 
 
 def write_site_candidate_receipt(path: Path, receipt: dict[str, object]) -> None:
@@ -1790,6 +1900,7 @@ def component_source_fingerprint(
         sources = [
             *common,
             ROOT / "scripts" / "build_okf_bundle.py",
+            ROOT / "scripts" / "build_okf_estate_registry.py",
             ROOT / "scripts" / "update_viewer.py",
             ROOT / ".python-version",
             ROOT / "pyproject.toml",
@@ -1912,6 +2023,7 @@ def build_site_component(component: str, target: Path) -> None:
                 include=lambda relative: relative.suffix.lower() == ".md",
             )
             write_generic_reading_pages()
+            write_estate_registry_page()
             write_beginner_guide()
             write_foundry_pages()
             return
@@ -2076,11 +2188,18 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="write deterministic pre-deploy identity outside the Site",
     )
+    parser.add_argument(
+        "--publication-commit",
+        help="full Git commit to bind into the deployed Site identity",
+    )
     args = parser.parse_args(argv)
     cache_root = args.component_cache
     if not cache_root.is_absolute():
         cache_root = ROOT / cache_root
     selected = set(args.component or SITE_COMPONENTS)
+    publication_commit = None
+    if not args.components_only:
+        publication_commit = resolve_publication_commit(args.publication_commit)
     artifacts = build_or_load_components(cache_root, selected)
     if args.components_only:
         return 0
@@ -2090,6 +2209,8 @@ def main(argv: list[str] | None = None) -> int:
         cache_root / "assembly" / "site-assembly-manifest.json",
         allowed_overrides=SITE_COMPONENT_OVERRIDE_OWNERS,
     )
+    assert publication_commit is not None
+    write_publication_identity(publication_commit)
     candidate_receipt = args.candidate_receipt
     if candidate_receipt is None:
         candidate_receipt = (

@@ -5,6 +5,12 @@ APIs exemplar, and related large-corpus OKF packs.
 
 ## Start Here
 
+- [Build and publish OKF bundles consistently](okf-build-and-publication-methodology.md)
+  defines the estate lifecycle standard; its
+  [implementation tracker](okf-estate-standardisation-tracker.md) records
+  repository adoption, validation and publication. The generated
+  [OKF estate registry](../registry/estate/index.html) provides the current
+  machine-backed repository view and optimisation backlog.
 - [OKF Explorer from the beginning](beginners/index.md) is the complete
   zero-background learning path. It introduces the web application, Markdown
   and OKF bundles, large-corpus loading, search, graphs, semantic-web

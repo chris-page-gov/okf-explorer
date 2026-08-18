@@ -1,0 +1,83 @@
+{
+  "id": "reviewed-workbooks",
+  "label": "Reviewed service workbooks",
+  "description": "A checked folder of original workbooks used as governed source material.",
+  "kind": "workbook-folder",
+  "paths": [
+    "source/workbooks/*.xlsx",
+    "source/workbooks/*.xlsm",
+    "source/workbooks/*.ods",
+    "source/workbooks/*.csv"
+  ],
+  "formats": [
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel.sheet.macroEnabled.12",
+    "application/vnd.oasis.opendocument.spreadsheet",
+    "text/csv"
+  ],
+  "origin": "acquired",
+  "authority": "authoritative-internal",
+  "snapshot_policy": "immutable-checksummed",
+  "inventory": {
+    "method": "deterministic-file-inventory",
+    "manifest_path": "generated/source-inventory.json",
+    "identity": [
+      "relative-path",
+      "bytes",
+      "sha256",
+      "media-type"
+    ]
+  },
+  "rights": {
+    "status": "approved",
+    "evidence": [
+      "https://example.gov/rights/workbooks"
+    ],
+    "limitations": [
+      "Approval applies to the recorded source snapshot only."
+    ]
+  },
+  "sensitivity": {
+    "status": "assessed-no-personal-data",
+    "assessment": "The recorded snapshot was reviewed before it entered the publication pipeline.",
+    "evidence": [
+      "https://example.gov/privacy/workbooks"
+    ]
+  },
+  "extraction": {
+    "mode": "versioned-adapter",
+    "network_access": "prohibited",
+    "command_ids": [
+      "inventory-workbooks",
+      "build-bundle"
+    ],
+    "limitations": [
+      "The adapter records unsupported workbook features instead of attempting to execute them."
+    ]
+  },
+  "invalidates": [
+    "source",
+    "semantic",
+    "documentation",
+    "browser",
+    "deployment"
+  ],
+  "workbook_controls": {
+    "preserve_original_bytes": true,
+    "file_inventory": "relative-path-bytes-sha256-and-media-type",
+    "sheet_visibility_policy": "inventory-visible-hidden-and-very-hidden",
+    "cell_value_policy": "preserve-formula-raw-cached-and-displayed-separately",
+    "formula_policy": "inspect-without-execution",
+    "cached_value_policy": "record-and-flag-stale-or-missing",
+    "macro_policy": "quarantine-without-execution",
+    "external_link_policy": "inventory-without-refresh",
+    "embedded_object_policy": "inventory-without-execution",
+    "recalculation_policy": "prohibited",
+    "date_system_policy": "record-per-workbook",
+    "locale_policy": "declare-and-record",
+    "csv_companion_policy": "separate-lossy-representation"
+  },
+  "limitations": [
+    "CSV companions do not preserve formulae, formatting, hidden sheets or workbook relationships."
+  ]
+}

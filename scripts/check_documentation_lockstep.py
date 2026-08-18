@@ -1,85 +1,92 @@
 #!/usr/bin/env python3
-"""Require documentation and changelog updates for publication-affecting changes."""
+"""Require contract-declared documentation and changelog publication lockstep."""
 
 from __future__ import annotations
 
 import argparse
-import os
 import subprocess
 import sys
+from collections.abc import Iterable, Mapping
 from pathlib import Path
+from typing import Any
+
+from okf_publication import (
+    CONTRACT_NAME,
+    PublicationContractError,
+    load_publication_contract,
+    matches_any,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
-CONTROLLED_PREFIXES = (
-    ".github/workflows/",
-    "apps/okf-explorer/src/",
-    "apps/okf-explorer/tests/",
-    "explorer/",
-    "scripts/",
-    "sources/",
-    "tests/",
-    "uk-government-apis/",
-    "legislation/",
-    "evaluation/legislation/",
-    "evaluation/okf-explorer/",
-)
-CONTROLLED_FILES = (
-    "apps/okf-explorer/package.json",
-    "apps/okf-explorer/pnpm-lock.yaml",
-    "apps/okf-explorer/playwright.config.ts",
-    "README.md",
-)
-DOCUMENTATION_PREFIXES = ("docs/", "sources/")
-DOCUMENTATION_FILES = ("README.md", "CHANGELOG.md")
-CHANGELOG = "CHANGELOG.md"
 
-
-def git_lines(args: list[str]) -> list[str]:
-    result = subprocess.run(["git", *args], cwd=ROOT, check=True, text=True, capture_output=True)
+def git_lines(root: Path, args: list[str]) -> list[str]:
+    result = subprocess.run(
+        ["git", *args], cwd=root, check=True, text=True, capture_output=True
+    )
     return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
 
-def changed_files(base: str | None) -> set[str]:
+def changed_files(root: Path, base: str | None) -> set[str]:
     if base:
-        return set(git_lines(["diff", "--name-only", base]))
-    files = set(git_lines(["diff", "--name-only"]))
-    files.update(git_lines(["diff", "--cached", "--name-only"]))
-    files.update(git_lines(["ls-files", "--others", "--exclude-standard"]))
+        return set(git_lines(root, ["diff", "--name-only", base]))
+    files = set(git_lines(root, ["diff", "--name-only"]))
+    files.update(git_lines(root, ["diff", "--cached", "--name-only"]))
+    files.update(git_lines(root, ["ls-files", "--others", "--exclude-standard"]))
     return files
 
 
-def is_controlled(path: str) -> bool:
-    return path in CONTROLLED_FILES or path.startswith(CONTROLLED_PREFIXES)
+def lockstep_errors(
+    contract: Mapping[str, Any], changed: Iterable[str]
+) -> tuple[list[str], list[str], list[str]]:
+    """Return errors, controlled paths and documentation paths."""
 
-
-def is_documentation(path: str) -> bool:
-    return path in DOCUMENTATION_FILES or path.startswith(DOCUMENTATION_PREFIXES)
+    files = set(changed)
+    lockstep = contract["lockstep"]
+    controlled = sorted(
+        path for path in files if matches_any(path, lockstep["controlled_paths"])
+    )
+    if not controlled:
+        return [], [], []
+    documentation = sorted(
+        path for path in files if matches_any(path, lockstep["documentation_paths"])
+    )
+    errors: list[str] = []
+    if not documentation:
+        errors.append(
+            "controlled publication files changed without a contract-declared documentation change"
+        )
+    changelog = lockstep["changelog_path"]
+    if changelog not in files:
+        errors.append(f"controlled publication files changed without {changelog}")
+    return errors, controlled, documentation
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", help="git diff range to inspect, for example origin/main...HEAD")
+    parser.add_argument("--root", type=Path, default=ROOT, help="repository root")
+    parser.add_argument(
+        "--contract",
+        type=Path,
+        default=Path(CONTRACT_NAME),
+        help="publication contract path, relative to the repository root",
+    )
     args = parser.parse_args()
+    root = args.root.resolve()
 
-    if os.environ.get("GITHUB_ACTOR") == "dependabot[bot]":
-        print("documentation lockstep skipped for Dependabot dependency maintenance")
-        return 0
+    try:
+        contract = load_publication_contract(root, args.contract)
+        files = changed_files(root, args.base)
+        errors, controlled, documentation = lockstep_errors(contract, files)
+    except (PublicationContractError, subprocess.CalledProcessError) as error:
+        print(f"documentation lockstep could not be evaluated: {error}", file=sys.stderr)
+        return 2
 
-    files = changed_files(args.base)
-    controlled = sorted(path for path in files if is_controlled(path))
     if not controlled:
         print("documentation lockstep: no controlled publication files changed")
         return 0
-
-    docs = sorted(path for path in files if is_documentation(path))
-    errors: list[str] = []
-    if not docs:
-        errors.append("controlled publication files changed without README/docs/sources/CHANGELOG documentation changes")
-    if CHANGELOG not in files:
-        errors.append("controlled publication files changed without CHANGELOG.md")
-
     if errors:
         print("documentation lockstep failed:", file=sys.stderr)
         for error in errors:
@@ -91,7 +98,11 @@ def main() -> int:
             print(f"- ... {len(controlled) - 40} more", file=sys.stderr)
         return 1
 
-    print(f"documentation lockstep: {len(controlled)} controlled file(s), {len(docs)} documentation file(s), changelog updated")
+    print(
+        "documentation lockstep: "
+        f"{len(controlled)} controlled file(s), "
+        f"{len(documentation)} documentation file(s), changelog updated"
+    )
     return 0
 
 

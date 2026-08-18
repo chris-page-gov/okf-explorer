@@ -814,6 +814,17 @@ title: 'Coventry Cathedral'
         self.assertEqual("descriptor", whole_law["routes"][0]["purpose"])
         self.assertIn("@context", semantic)
 
+    def test_registry_validates_every_bundle_against_the_canonical_schema(self) -> None:
+        document = okf_semantic.load_yaml_ld(build_okf_registry.SOURCE)
+        self.assertIsInstance(document, dict)
+        for item in document["bundles"]:
+            with self.subTest(bundle=item["@id"]):
+                errors = okf_semantic.schema_errors(
+                    {"@context": document["@context"], **item},
+                    "bundle.schema.json",
+                )
+                self.assertEqual([], errors)
+
 
 if __name__ == "__main__":
     unittest.main()

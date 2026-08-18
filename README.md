@@ -153,6 +153,17 @@ The repository contains:
 - `registry/okf-registry.yamlld` - canonical semantic source for the curated
   bundle registry; `okf-registry.json`, `okf-registry.jsonld` and the Explorer
   static copy are generated projections.
+- [`docs/okf-build-and-publication-methodology.md`](docs/okf-build-and-publication-methodology.md)
+  - shared lifecycle method for impact planning, source-family intake,
+  documentation and changelog lockstep, efficient CI and exact-deployment
+  verification. Its [estate tracker](docs/okf-estate-standardisation-tracker.md)
+  records adoption across repositories.
+- `registry/okf-estate-registry.yaml` - canonical operational registry for all
+  reviewed OKF repositories and publication units. The generated
+  [`okf-estate-registry.json`](okf-estate-registry.json) and
+  [browser-readable estate view](https://chris-page-gov.github.io/okf-explorer/registry/estate/index.html)
+  keep repository roles, adoption, dated audit evidence and the optimisation
+  backlog together without overloading semantic bundle status.
 - `uk-government-apis/` - generated large-corpus OKF exemplar sourced from the
   GOV.UK API Catalogue, data.gov.uk, Ordnance Survey and ONS public API
   metadata.

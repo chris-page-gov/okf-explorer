@@ -2,6 +2,9 @@
   "profile": "OKF v0.2 + Bundle Wiki YAML-LD semantic profile v1",
   "siteTitle": "OKF Explorer",
   "defaultBundle": "okf-bundle.json",
+  "semanticMarkdownExclusions": [
+    "profiles/publication-method/"
+  ],
   "corpora": [
     {
       "id": "ai-infrastructure-wiki",
