@@ -104,25 +104,22 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertIn("needs.impact-plan.outputs.python == 'true'", app_job)
         app_steps = jobs["app"]["steps"]
         chromium_install_steps = [
-            (index, step)
-            for index, step in enumerate(app_steps)
+            step
+            for step in app_steps
             if step.get("run")
             == "pnpm exec playwright install --with-deps chromium"
         ]
         app_test_steps = [
-            index
-            for index, step in enumerate(app_steps)
-            if step.get("run") == "pnpm test"
+            step for step in app_steps if step.get("run") == "pnpm test"
         ]
-        self.assertEqual(1, len(chromium_install_steps))
+        self.assertEqual([], chromium_install_steps)
         self.assertEqual(1, len(app_test_steps))
-        chromium_install_index, chromium_install_step = chromium_install_steps[0]
         self.assertEqual(
-            "apps/okf-explorer", chromium_install_step.get("working-directory")
+            "apps/okf-explorer", app_test_steps[0].get("working-directory")
         )
-        self.assertLess(
-            chromium_install_index,
-            app_test_steps[0],
+        self.assertEqual(
+            "chrome",
+            app_test_steps[0].get("env", {}).get("PLAYWRIGHT_CHROMIUM_CHANNEL"),
         )
 
         targeted = workflow[
