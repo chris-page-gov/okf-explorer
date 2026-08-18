@@ -383,6 +383,14 @@ Its Markdown pages are in the generated corpus and are available through all
 existing Explorer views. This tests the proposition that an OKF review should
 be inspectable using the same consumer it evaluates.
 
+For a worked example, follow the
+[AI Infrastructure knowledge-graph walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md).
+It begins with browser-only GitHub and Explorer routes, explains the optional
+Obsidian download without assuming coding experience, follows one Markdown
+link into its direct and reified graph representations, and distinguishes the
+roles of GitHub, Obsidian, Explorer, YAML-LD, JSON-LD, validation, release
+receipts and MCP retrieval.
+
 ## Alignment with the original aims
 
 | Aim | Current alignment | Helpful variation | Hindrance or remaining risk |

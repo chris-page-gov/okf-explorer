@@ -224,6 +224,12 @@ If the ontology architecture document brought you here, read chapters 6, 7, 8
 and 9. They explain every conceptual layer assumed by
 [Ontology and semantic graph architecture](../ontology-and-semantic-graph-architecture-2026-07-24.md).
 
+If you want to inspect one complete example before following the full learning
+path, use the
+[AI Infrastructure knowledge-graph walkthrough](../ai-infrastructure-knowledge-graph-walkthrough.md).
+It starts in a web browser, requires no GitHub account or coding tools, and
+then gives an optional Obsidian route.
+
 If you want to contribute code, read chapters 1 through 9, then 13 through 21.
 The domain chapters are still important before changing Map or legislation
 features.
