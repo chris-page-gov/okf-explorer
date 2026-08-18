@@ -13,6 +13,28 @@
   Pages now binds the assembled candidate to its exact commit and governance
   bytes, then verifies the deployed estate-registry journey in installed Chrome
   without rebuilding the candidate.
+- Recorded the estate adoption wave in the lockstep tracker and hash-bound
+  every publication contract to its reviewed commit. All 11 applicable
+  producers are adopted: Explorer, AI Infrastructure, UK Government APIs,
+  GOV.UK Content, ONS, UK Living, ELS, Planning, WCC, Land Registry and
+  legislation. Land's focused routing
+  [PR #8](https://github.com/chris-page-gov/okf-LandRegistry/pull/8) passed its
+  exact-main immutable-maintenance path; legislation passed hosted validation,
+  exact-main Pages deployment and six byte-identical HTTP route checks. Six
+  reviewed fixtures, immutable publication units, compatibility surfaces and
+  upstream references have justified non-applicable decisions. The WCC
+  workbook case proves that an unadmitted
+  `.xlsx` change can select four content-free inventory and documentation gates
+  without a semantic or release rebuild. It also replaced a brittle Playwright
+  cache-path link with the supported installed-Chrome channel.
+- Corrected the generated estate-registry page after its first exact-commit
+  Chrome run proved the identity and route bytes but exposed an origin-root
+  favicon 404 through the clean-console gate. The page now links its
+  project-relative SVG icon and verifier diagnostics include the resource URL
+  and location. The final registry binds audited correction `6060d4a2`, with
+  11 applicable repositories adopted and six reviewed units non-applicable.
+  The correction needs one affected Site build, not a semantic bundle, corpus
+  or release rebuild.
 - Rebound the heritage local-candidate receipt to the exact deterministic
   Explorer build changed by the learner registry correction. A genuine Chrome
   run passed all 100 questions and all three local journeys; the corpus,

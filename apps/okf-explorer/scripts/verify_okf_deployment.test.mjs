@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import { pathToFileURL } from 'node:url';
 
 import {
+  formatConsoleError,
   isEntrypoint,
   parseArgs,
   parseJsonBytes,
@@ -21,6 +22,28 @@ const contract = {
     url: 'https://github.com/example/okf-fixture'
   }
 };
+
+
+test('console errors include their resource location when Chrome provides one', () => {
+  assert.equal(
+    formatConsoleError({
+      text: () => 'Failed to load resource: the server responded with a status of 404 ()',
+      location: () => ({
+        url: 'https://example.org/favicon.ico',
+        lineNumber: 0,
+        columnNumber: 0
+      })
+    }),
+    'Failed to load resource: the server responded with a status of 404 () @ https://example.org/favicon.ico:0:0'
+  );
+  assert.equal(
+    formatConsoleError({
+      text: () => 'fixture error',
+      location: () => ({})
+    }),
+    'fixture error'
+  );
+});
 
 
 test('byte JSON parsing is explicit, UTF-8 strict and deterministic', () => {

@@ -81,6 +81,10 @@ class OkfEstateRegistryTests(unittest.TestCase):
         self.assertIn('lang="en-GB"', rendered)
         self.assertIn('id="repository-okf-explorer"', rendered)
         self.assertIn('href="../../okf-estate-registry.json"', rendered)
+        self.assertIn(
+            '<link rel="icon" type="image/svg+xml" href="../../favicon.svg">',
+            rendered,
+        )
         self.assertIn("Command strings in repository contracts are untrusted", rendered)
         self.assertIn('id="optimisation-backlog"', rendered)
 

@@ -186,6 +186,9 @@ def render_html(registry: Mapping[str, Any]) -> str:
     route = Path(registry["projections"]["human_route"])
     machine = registry["projections"]["machine_json_path"]
     machine_href = posixpath.relpath(machine, start=route.parent.as_posix())
+    favicon_href = posixpath.relpath(
+        "favicon.svg", start=route.parent.as_posix()
+    )
     entries = registry["repositories"]
     backlog = registry["backlog"]
     adoption_counts: dict[str, int] = {}
@@ -282,6 +285,7 @@ def render_html(registry: Mapping[str, Any]) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(registry['title'])}</title>
+<link rel="icon" type="image/svg+xml" href="{html.escape(favicon_href, quote=True)}">
 <style>
 :root {{ color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.55; }}
 body {{ margin: 0; background: Canvas; color: CanvasText; }}

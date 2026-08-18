@@ -25,6 +25,15 @@ function sha256(value) {
 }
 
 
+export function formatConsoleError(message) {
+  const location = message.location();
+  const suffix = location?.url
+    ? ` @ ${location.url}:${location.lineNumber ?? 0}:${location.columnNumber ?? 0}`
+    : '';
+  return `${message.text()}${suffix}`;
+}
+
+
 export function parseJsonBytes(value, label = 'JSON material') {
   const bytes = Buffer.isBuffer(value) ? value : Buffer.from(value);
   let text;
@@ -212,7 +221,7 @@ async function openExpectedJourney(browser, url, binding, deadline) {
     const consoleErrors = [];
     const pageErrors = [];
     page.on('console', (message) => {
-      if (message.type() === 'error') consoleErrors.push(message.text());
+      if (message.type() === 'error') consoleErrors.push(formatConsoleError(message));
     });
     page.on('pageerror', (error) => pageErrors.push(error.message));
     try {
