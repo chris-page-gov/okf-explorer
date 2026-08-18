@@ -1,3 +1,5 @@
+
+
 # okf-explorer
 
 Static explorer and bundle tooling for Open Knowledge Format (OKF) wikis.
@@ -381,7 +383,7 @@ the selected source, predicate and target on separate tabs.
 
 ```sh
 cd apps/okf-explorer
-pnpm install
+pnpm install --frozen-lockfile
 pnpm audit --audit-level=moderate
 pnpm sbom:check
 pnpm check
