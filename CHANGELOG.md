@@ -13,6 +13,10 @@
   Pages now binds the assembled candidate to its exact commit and governance
   bytes, then verifies the deployed estate-registry journey in installed Chrome
   without rebuilding the candidate.
+- Rebound the heritage local-candidate receipt to the exact deterministic
+  Explorer build changed by the learner registry correction. A genuine Chrome
+  run passed all 100 questions and all three local journeys; the corpus,
+  semantic bundle and released external heritage publication remain unchanged.
 - Added a no-code walkthrough of the immutable AI Infrastructure OKF v0.6.0
   knowledge graph. It starts with browser-only GitHub and Explorer routes,
   explains the optional Obsidian download, follows one Markdown relationship

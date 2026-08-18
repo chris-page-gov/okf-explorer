@@ -112,6 +112,15 @@ additional optimisations found during adoption are recorded in the backlog.
   version. The canonical registry projections were already correct; the small
   application projection was corrected and its existing drift test now passes.
   This is a dependency the initial parallel work allocation had not identified.
+- The first hosted Python-contract gate then correctly rejected the heritage
+  local-candidate receipt because it still bound the preceding Explorer app
+  tree. The existing Site and corpus bytes were reused: installed Chrome reran
+  the 100-question evaluation and the tiny, faithful and synthetic journeys,
+  then the receipt alone was rebound to the exact current app identity. The
+  first journey invocation omitted its declared publication `bundle-root` and
+  failed all three paths independently; the corrected invocation passed 3 of 3.
+  Future orchestration must carry an application's route and its corpus mount
+  as separate declared inputs when the Pages root is a learner landing page.
 - Local browser tests initially failed because the managed sandbox denied macOS
   browser rendezvous and loopback sockets. The unchanged suite passed when run
   with its governed browser and loopback permissions. Treat this error class as
