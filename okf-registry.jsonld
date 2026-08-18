@@ -33,13 +33,13 @@
             "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.yamlld"
           ],
           "status": [
-            "preview"
+            "stable"
           ],
           "title": [
             "AI Infrastructure"
           ],
           "version": [
-            "0.4.0"
+            "0.6.0"
           ]
         },
         {
@@ -70,7 +70,7 @@
             "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld"
           ],
           "status": [
-            "bounded-demonstrator"
+            "preview"
           ],
           "title": [
             "ONS data discovery OKF"
@@ -231,7 +231,7 @@
             "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld"
           ],
           "status": [
-            "candidate"
+            "preview"
           ],
           "title": [
             "UK Whole-Law OKF"
@@ -276,6 +276,9 @@
           "semanticDescriptor": [
             "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld"
           ],
+          "status": [
+            "stable"
+          ],
           "title": [
             "Coventry and Warwickshire Heritage Evaluation"
           ],
@@ -291,7 +294,7 @@
         "Curated registry of independently publishable OKF bundle examples."
       ],
       "modified": [
-        "2026-08-03T00:00:00Z"
+        "2026-08-18T00:00:00Z"
       ],
       "title": [
         "OKF Explorer Registry"

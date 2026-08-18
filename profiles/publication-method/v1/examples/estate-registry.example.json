@@ -1,0 +1,88 @@
+{
+  "schema": "okf-estate-registry.v1",
+  "modified": "2026-08-18",
+  "locale": "en-GB",
+  "time_zone": "Europe/London",
+  "title": "Example OKF estate registry",
+  "description": "An illustrative operational register containing one adopting repository and one upstream reference.",
+  "methodology": {
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/",
+    "version": "1.0"
+  },
+  "semantic_bundle_registry": {
+    "source_path": "registry/okf-registry.yamlld",
+    "published_url": "https://example-gov.github.io/okf-example-workbooks/registry/okf-registry.json",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+  },
+  "projections": {
+    "machine_json_path": "registry/okf-estate-registry.json",
+    "human_route": "registry/index.html"
+  },
+  "repositories": [
+    {
+      "id": "https://github.com/example-gov/okf-example-workbooks",
+      "name": "okf-example-workbooks",
+      "repository_url": "https://github.com/example-gov/okf-example-workbooks",
+      "role": "managed-producer-profile",
+      "public_bundle_ids": [
+        "https://example.gov/bundles/workbook-example"
+      ],
+      "contract_state": "proposed",
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "adoption": {
+        "state": "pending",
+        "updated": "2026-08-18",
+        "evidence": []
+      },
+      "audit": {
+        "state": "not-reviewed",
+        "errors": [],
+        "warnings": [],
+        "evidence": []
+      }
+    },
+    {
+      "id": "https://github.com/example-specification/okf-upstream",
+      "name": "okf-upstream",
+      "repository_url": "https://github.com/example-specification/okf-upstream",
+      "role": "upstream-specification-reference",
+      "public_bundle_ids": [],
+      "contract_state": "not-applicable",
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "This repository is an upstream specification reference, not a managed OKF publication unit."
+      },
+      "adoption": {
+        "state": "non-applicable",
+        "updated": "2026-08-18",
+        "rationale": "The estate records the dependency without imposing a local publication contract.",
+        "evidence": []
+      },
+      "audit": {
+        "state": "non-applicable",
+        "errors": [],
+        "warnings": [],
+        "evidence": []
+      }
+    }
+  ],
+  "backlog": [
+    {
+      "id": "measure-ci-durations",
+      "title": "Record measured CI durations before changing impact-routing thresholds",
+      "status": "open",
+      "priority": "P3",
+      "discovered": "2026-08-18",
+      "repositories": [
+        "okf-example-workbooks"
+      ],
+      "evidence": [],
+      "notes": [
+        "Keep optimisation evidence separate from conformance status."
+      ]
+    }
+  ]
+}

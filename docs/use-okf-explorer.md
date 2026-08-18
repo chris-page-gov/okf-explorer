@@ -420,20 +420,42 @@ encodeURIComponent('https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json
 ## Add Your Bundle To The Registry
 
 To make the Explorer suggest your bundle while people type in the Bundle URL
-field, add an entry to `okf-registry.json`:
+field, add a semantic bundle entry to the canonical
+`registry/okf-registry.yamlld` source. Do not edit the generated
+`okf-registry.json` or `okf-registry.jsonld` projections by hand. A minimal
+entry is:
 
-```json
-{
-  "id": "my-okf",
-  "label": "My OKF bundle",
-  "url": "https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json",
-  "kind": "external-bundle",
-  "description": "Short description of the bundle."
-}
+```yaml
+- "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/bundles/my-okf
+  "@type": okf:Bundle
+  title: My OKF bundle
+  description: Short description of the bundle.
+  version: 1.0.0
+  status: preview
+  descriptor:
+    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json
+  semanticDescriptor:
+    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.yamlld
+  home:
+    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/
+  profile:
+    "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
+  publisher:
+    "@id": https://github.com/YOUR-GITHUB-USER
+  license:
+    "@id": https://example.org/record-the-actual-licence
+  recordTypeLabel: external-bundle
 ```
 
 For a large corpus, use the descriptor URL and a `kind` such as
 `large-corpus`.
+
+Regenerate and verify the projections with:
+
+```sh
+uv run --locked python scripts/build_okf_registry.py
+uv run --locked python scripts/build_okf_registry.py --check
+```
 
 ## Troubleshooting
 

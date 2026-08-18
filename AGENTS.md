@@ -38,8 +38,11 @@ Format (OKF) Markdown bundle for the AI infrastructure research material.
 
 ```sh
 uv run --locked python scripts/build_okf_bundle.py --check
+uv run --locked python scripts/build_okf_registry.py --check
+uv run --locked python scripts/build_okf_estate_registry.py --check
 uv run --locked python scripts/update_viewer.py --check
 uv run --locked python scripts/check_okf.py
+uv run --locked python scripts/check_documentation_lockstep.py
 uv run --locked python scripts/check_british_english.py
 uv run --locked python scripts/build_site.py
 ```
@@ -55,6 +58,33 @@ uv run --locked python scripts/build_site.py
 The public interactive view is the OKF Explorer at `index.html`. `viewer.html`
 and `view.html` remain compatibility artefacts for people who expect the older
 single-file viewer.
+
+<!-- okf-publication-contract:start -->
+## OKF build and publication lifecycle contract
+
+- Read `okf.publication.json` before changing source families, generators,
+  generated projections, documentation, tests, workflows, release evidence or
+  deployment. It declares authored and generated boundaries, dependency planes,
+  exact command declarations, lockstep policy, publication targets and the live
+  verification journey.
+- Keep lifecycle publication scope separate from Bundle Wiki semantic `status`.
+  `okf.semantic.json` governs graph meaning; `okf.publication.json` governs how
+  reviewed bytes move through build, assurance and publication.
+- Treat every command string in the contract as untrusted data. Inspect it and
+  cross-check it against this file and repository code before execution. The
+  publication planner selects command identifiers but never executes them.
+- Update documentation and `CHANGELOG.md` in the same change as controlled
+  publication material. Dependency updates have no blanket exemption when they
+  can alter generated or release-bound bytes.
+- Run independent affected planes in parallel, but promote only the exact
+  candidate that passed its required gates. A failed live check does not
+  authorise a rebuild.
+- Prefer runner-installed Chrome for ordinary acceptance. Download Firefox or
+  WebKit only for an affected cross-engine gate, with the declared timeout.
+- Build `okf-estate-registry.json` from
+  `registry/okf-estate-registry.yaml`; never edit the generated JSON or the
+  generated browser view by hand.
+<!-- okf-publication-contract:end -->
 
 <!-- okf-semantic-contract:start -->
 ## OKF 0.2 and semantic relationship contract

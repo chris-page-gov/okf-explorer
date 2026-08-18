@@ -20,6 +20,64 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_publication_identity_binds_commit_and_control_materials(self) -> None:
+        commit = "a" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="okf-publication-identity-"
+        ) as temporary:
+            output = Path(temporary)
+            for name in (
+                "okf.publication.json",
+                "okf-estate-registry.json",
+                "okf-registry.json",
+            ):
+                (output / name).write_bytes((ROOT / name).read_bytes())
+            route = output / "registry" / "estate" / "index.html"
+            route.parent.mkdir(parents=True)
+            route.write_text("<!doctype html><title>Registry</title>\n")
+            with mock.patch.object(build_site, "OUT", output):
+                identity = build_site.publication_identity(commit)
+                self.assertEqual(
+                    build_site.PUBLICATION_IDENTITY_SCHEMA, identity["schema"]
+                )
+                self.assertEqual(commit, identity["commit"])
+                materials = {
+                    item["path"]: item for item in identity["materials"]
+                }
+                self.assertIn("okf.publication.json", materials)
+                self.assertIn("okf-estate-registry.json", materials)
+                self.assertIn("registry/estate/index.html", materials)
+                build_site.write_publication_identity(commit)
+                receipt = build_site.publication_identity_receipt()
+        self.assertIsNotNone(receipt)
+        self.assertEqual(commit, receipt["commit"])
+        self.assertEqual(
+            build_site.PUBLICATION_IDENTITY.as_posix(), receipt["path"]
+        )
+
+    def test_publication_identity_rejects_a_symbolic_ref(self) -> None:
+        with self.assertRaisesRegex(ValueError, "full lowercase Git SHA"):
+            build_site.publication_identity("main")
+
+    def test_requested_publication_commit_must_match_head(self) -> None:
+        commit = "a" * 40
+        with mock.patch.object(build_site, "repository_commit", return_value=commit):
+            self.assertEqual(commit, build_site.resolve_publication_commit(None))
+            self.assertEqual(commit, build_site.resolve_publication_commit(commit))
+            with self.assertRaisesRegex(RuntimeError, "does not match"):
+                build_site.resolve_publication_commit("b" * 40)
+
+    def test_mismatched_publication_commit_fails_before_component_work(self) -> None:
+        with (
+            mock.patch.object(
+                build_site, "repository_commit", return_value="a" * 40
+            ),
+            mock.patch.object(build_site, "build_or_load_components") as build,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "does not match"):
+                build_site.main(["--publication-commit", "b" * 40])
+        build.assert_not_called()
+
     def test_project_root_href_is_directory_canonical(self) -> None:
         self.assertEqual(
             "../",
@@ -392,16 +450,35 @@ class BuildSiteTests(unittest.TestCase):
                 Path("evaluation/heritage/index.html"),
             )
         )
+        estate = build_site.build_okf_estate_registry.render_html(
+            build_site.build_okf_estate_registry.build()
+        )
 
         for name, document in {
             "generic": generic,
             "Foundry": foundry,
             "external publication": external,
+            "estate registry": estate,
             "next redirect": build_site.render_next_redirect(),
         }.items():
             with self.subTest(template=name):
                 self.assertIn('<html lang="en-GB">', document)
                 self.assertNotIn('<html lang="en">', document)
+
+    def test_estate_registry_is_generated_from_the_canonical_source(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="okf-build-site-estate-registry-"
+        ) as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_estate_registry_page()
+
+            target = output / "registry" / "estate" / "index.html"
+            self.assertTrue(target.is_file())
+            rendered = target.read_text(encoding="utf-8")
+            self.assertIn('id="repository-okf-explorer"', rendered)
+            self.assertIn('href="../../okf-estate-registry.json"', rendered)
+            self.assertIn('id="optimisation-backlog"', rendered)
 
     def test_beginner_guide_is_rendered_as_navigable_html(self) -> None:
         with tempfile.TemporaryDirectory(

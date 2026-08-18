@@ -1,0 +1,648 @@
+{
+  "backlog": [
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "shared-live-chrome-verifier",
+      "notes": [
+        "The verifier must consume existing candidate identity and must not rebuild release-bound bytes."
+      ],
+      "priority": "P1",
+      "repositories": [
+        "okf-explorer",
+        "okf-ai-infrastructure",
+        "okf-LandRegistry",
+        "okf-govuk-content",
+        "okf-ons",
+        "okf-uk-government-apis",
+        "okf-uk-legislation",
+        "okf-uk-living",
+        "okf-els-api",
+        "okf-planning"
+      ],
+      "status": "in-progress",
+      "title": "Publish a commit-pinned installed-Chrome verifier for repository-declared live journeys"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "register-current-public-producers",
+      "notes": [
+        "Registration follows producer review and does not promote a draft automatically."
+      ],
+      "priority": "P2",
+      "repositories": [
+        "okf-LandRegistry",
+        "okf-govuk-content",
+        "okf-uk-living",
+        "okf-els-api",
+        "okf-planning"
+      ],
+      "status": "open",
+      "title": "Review public producers absent from the semantic bundle registry"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "profile-legislation-validator",
+      "notes": [
+        "Documentation-only routing remains fail-closed until timings and dependencies are recorded."
+      ],
+      "priority": "P1",
+      "repositories": [
+        "okf-uk-legislation"
+      ],
+      "status": "open",
+      "title": "Profile the UK Legislation validator before dependency-safe sharding"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "profile-ons-tests",
+      "notes": [
+        "Remove the duplicate build first because it is independently evidenced and lower risk."
+      ],
+      "priority": "P2",
+      "repositories": [
+        "okf-ons"
+      ],
+      "status": "open",
+      "title": "Profile the ONS test stage before splitting it"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "workbook-adapter-fixtures",
+      "notes": [
+        "Cover formulae, cached values, hidden sheets, macros, external links, date systems, locale, rights and sensitivity without executing active content."
+      ],
+      "priority": "P1",
+      "repositories": [
+        "okf-ons",
+        "wcc-domesday-map-warwickshire-public"
+      ],
+      "status": "planned",
+      "title": "Add safe workbook-folder conformance fixtures and inventories"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "estate-transaction-orchestrator",
+      "notes": [
+        "Preserve the reconciler's atomic multi-target preflight while avoiding estate-wide blocking."
+      ],
+      "priority": "P2",
+      "repositories": [
+        "okf-explorer"
+      ],
+      "status": "planned",
+      "title": "Orchestrate one repository transaction at a time while running independent repositories concurrently"
+    },
+    {
+      "discovered": "2026-08-18",
+      "evidence": [],
+      "id": "measure-site-component-cache",
+      "notes": [
+        "Recent restore and save cost was material, but a clean build may be substantially slower."
+      ],
+      "priority": "P3",
+      "repositories": [
+        "okf-explorer"
+      ],
+      "status": "open",
+      "title": "Measure Explorer Site component cache restore and build costs before changing cache policy"
+    }
+  ],
+  "description": "Reviewed operational register of OKF producers, embedded publication units, fixtures, compatibility surfaces and specification dependencies.",
+  "locale": "en-GB",
+  "methodology": {
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/",
+    "version": "1.0"
+  },
+  "modified": "2026-08-18",
+  "projections": {
+    "human_route": "registry/estate/index.html",
+    "machine_json_path": "okf-estate-registry.json"
+  },
+  "repositories": [
+    {
+      "adoption": {
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/pull/108"
+        ],
+        "state": "in-progress",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "77bd6be770a49585fc29b83d9dfde15134ed3c67",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/commit/77bd6be770a49585fc29b83d9dfde15134ed3c67"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "The publication contract and estate projection are not installed on main at this observed commit."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-explorer",
+      "name": "okf-explorer",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-explorer",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "ee86ff6682d5d0daa76ae2343e852db058d2c24d",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-ai-infrastructure/commit/ee86ff6682d5d0daa76ae2343e852db058d2c24d"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Feature-branch push and pull-request workflows duplicate the same validation.",
+          "Documentation and changelog lockstep is not yet contract-driven."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-ai-infrastructure",
+      "name": "okf-ai-infrastructure",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/ai-infrastructure"
+      ],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-ai-infrastructure",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "ea0360d20cdb6de65cc6fab45e1fe76aa0680188",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-LandRegistry/commit/ea0360d20cdb6de65cc6fab45e1fe76aa0680188"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Full offline build and full tests are serialised despite having independent work before convergence.",
+          "The existing dependency graph does not yet enforce changelog lockstep."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-LandRegistry",
+      "name": "okf-LandRegistry",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-LandRegistry",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "a4240ff45ba1b67ff2572a2bb188f03494dd77ed",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-govuk-content/commit/a4240ff45ba1b67ff2572a2bb188f03494dd77ed"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Feature-branch push and pull-request workflows duplicate approximately seven minutes of validation.",
+          "Live deployment assurance is HTTP-based rather than a real-browser journey."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-govuk-content",
+      "name": "okf-govuk-content",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-govuk-content",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "cf8fb907ca29f3a6527cfc0c31f56506a055f129",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-ons/commit/cf8fb907ca29f3a6527cfc0c31f56506a055f129"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "The Pages path builds the same bundle twice and the first build can mask tracked-output drift before the check.",
+          "The full test stage is the largest remaining measured duration and needs profiling before sharding."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-ons",
+      "name": "okf-ons",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/ons-data-discovery"
+      ],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-ons",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "276faf8f8af7580a988bfd7ef7ac5de741d8a0a0",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-uk-government-apis/commit/276faf8f8af7580a988bfd7ef7ac5de741d8a0a0"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Feature-branch push and pull-request workflows duplicate validation.",
+          "Pages can proceed without a dependency on the complete unit-test gate."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-uk-government-apis",
+      "name": "okf-uk-government-apis",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/uk-government-apis"
+      ],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-uk-government-apis",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "d0944aecf66ad6390d9360b2489b67553f7c9517",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-uk-legislation/commit/d0944aecf66ad6390d9360b2489b67553f7c9517"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Pull requests and feature pushes duplicate a 21 to 29 minute full validator.",
+          "Documentation-only routing requires timing evidence and a fail-closed impact classifier before adoption."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-uk-legislation",
+      "name": "okf-uk-legislation",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/uk-legislation",
+        "https://chris-page-gov.github.io/okf-explorer/bundles/uk-whole-law"
+      ],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-uk-legislation",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "4bc010eab3c9c072f68960393c1458a772aa700b",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-uk-living/commit/4bc010eab3c9c072f68960393c1458a772aa700b"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Manual-only publication is intentional and must not be broadened merely for standardisation.",
+          "The declared live journey does not yet emit a shared exact-commit Chrome receipt."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-uk-living",
+      "name": "okf-uk-living",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-uk-living",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "24b4436d69fef21cf23e9fa13a8db561af64740f",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-els-api/commit/24b4436d69fef21cf23e9fa13a8db561af64740f"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "The draft producer lacks a changelog and publication contract.",
+          "Constant Pages concurrency allows a pull-request run to cancel a deployment."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-els-api",
+      "name": "okf-els-api",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-els-api",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "de342fbfd43f7320a7de0b0af71a22286d86e7a7",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-planning/commit/de342fbfd43f7320a7de0b0af71a22286d86e7a7"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "The draft producer lacks semantic and publication contracts on main.",
+          "Pages repeats a deterministic bundle build after the clean check."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-planning",
+      "name": "okf-planning",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-planning",
+      "role": "managed-producer-profile"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e",
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/commit/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Existing release and site bytes are immutable and excluded from retrofit; improvements apply to the next publication unit template."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+      "name": "okf-heritage-coventry-warwickshire",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/heritage-coventry-warwickshire"
+      ],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf.publication.json"
+      },
+      "repository_url": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+      "role": "immutable-derived-publication-unit"
+    },
+    {
+      "adoption": {
+        "evidence": [
+          "https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026/commit/8418bce78496e36598b10d4562b1fb275ad610bb"
+        ],
+        "rationale": "Preserve the registered fixture route while applying producer controls to current OKF repositories.",
+        "state": "non-applicable",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026/commit/8418bce78496e36598b10d4562b1fb275ad610bb"
+        ],
+        "state": "non-applicable",
+        "warnings": []
+      },
+      "contract_state": "not-applicable",
+      "id": "https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "name": "ai-engineering-lab-hackathon-london-2026",
+      "public_bundle_ids": [
+        "https://chris-page-gov.github.io/okf-explorer/bundles/gov-ckan"
+      ],
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "The repository hosts a legacy demonstrator fixture but is not governed as a standalone OKF producer in this programme."
+      },
+      "repository_url": "https://github.com/chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "role": "fixture-demonstrator-host"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "state": "pending",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "commit": "99fe3890a2697c4935cf92bb12f5491687ca0b1e",
+        "errors": [],
+        "evidence": [
+          "https://github.com/wcc-domesday-map/domesday-map/commit/99fe3890a2697c4935cf92bb12f5491687ca0b1e"
+        ],
+        "observed_at": "2026-08-18T18:30:00+01:00",
+        "state": "migration",
+        "warnings": [
+          "Two Chromium-only CI paths download a browser already supplied by the runner.",
+          "The producer uses governed Excel workbooks and needs explicit workbook-folder intake controls."
+        ]
+      },
+      "contract_state": "proposed",
+      "id": "https://github.com/wcc-domesday-map/domesday-map/tree/main/okf/warwickshire-public",
+      "name": "wcc-domesday-map-warwickshire-public",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "applicable",
+        "path": "okf/warwickshire-public/okf.publication.json"
+      },
+      "repository_url": "https://github.com/wcc-domesday-map/domesday-map",
+      "role": "embedded-producer-consumer"
+    },
+    {
+      "adoption": {
+        "evidence": [
+          "https://github.com/chris-page-gov/ai-infrastructure-wiki/commit/0a10d78b7b07cfa8c0ea790f96274a520b057fa1"
+        ],
+        "rationale": "Route preservation and a bounded redirect check are sufficient for this compatibility surface.",
+        "state": "non-applicable",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/ai-infrastructure-wiki/commit/0a10d78b7b07cfa8c0ea790f96274a520b057fa1"
+        ],
+        "state": "non-applicable",
+        "warnings": []
+      },
+      "contract_state": "not-applicable",
+      "id": "https://github.com/chris-page-gov/ai-infrastructure-wiki",
+      "name": "ai-infrastructure-wiki-compat",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "This repository preserves a redirect for legacy URLs and does not own current OKF bundle bytes."
+      },
+      "repository_url": "https://github.com/chris-page-gov/ai-infrastructure-wiki",
+      "role": "compatibility-redirect"
+    },
+    {
+      "adoption": {
+        "evidence": [
+          "https://github.com/chris-page-gov/govuk-casa/commit/7372f770d58af156e9738900043e4c149eeea0e5"
+        ],
+        "rationale": "Record the experiment without presenting it as an assured estate producer.",
+        "state": "non-applicable",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/govuk-casa/commit/7372f770d58af156e9738900043e4c149eeea0e5"
+        ],
+        "state": "non-applicable",
+        "warnings": []
+      },
+      "contract_state": "not-applicable",
+      "id": "https://github.com/chris-page-gov/govuk-casa/tree/main/okf",
+      "name": "govuk-casa-okf",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "The embedded Markdown is an experimental consumer example, not a governed current publication producer."
+      },
+      "repository_url": "https://github.com/chris-page-gov/govuk-casa",
+      "role": "embedded-producer-consumer"
+    },
+    {
+      "adoption": {
+        "evidence": [
+          "https://github.com/chris-page-gov/OKF-knowledge-catalog/commit/d44368c15e38e7c92481c5992e4f9b5b421a801d"
+        ],
+        "rationale": "Pin and review the specification identity without imposing producer lifecycle controls.",
+        "state": "non-applicable",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "errors": [],
+        "evidence": [
+          "https://github.com/chris-page-gov/OKF-knowledge-catalog/commit/d44368c15e38e7c92481c5992e4f9b5b421a801d"
+        ],
+        "state": "non-applicable",
+        "warnings": []
+      },
+      "contract_state": "not-applicable",
+      "id": "https://github.com/chris-page-gov/OKF-knowledge-catalog",
+      "name": "OKF-knowledge-catalog",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "This is an upstream specification fork and dependency, not an OKF publication producer."
+      },
+      "repository_url": "https://github.com/chris-page-gov/OKF-knowledge-catalog",
+      "role": "upstream-specification-reference"
+    },
+    {
+      "adoption": {
+        "evidence": [],
+        "rationale": "Run it as local conformance input; do not create a remote or publication implicitly.",
+        "state": "non-applicable",
+        "updated": "2026-08-18"
+      },
+      "audit": {
+        "errors": [],
+        "evidence": [],
+        "state": "non-applicable",
+        "warnings": [
+          "Three .DS_Store files were observed locally and must be excluded from any future fixture import."
+        ]
+      },
+      "contract_state": "not-applicable",
+      "id": "https://chris-page-gov.github.io/okf-explorer/registry/estate/local/okf-testing",
+      "name": "okf-testing",
+      "public_bundle_ids": [],
+      "publication_contract": {
+        "applicability": "not-applicable",
+        "rationale": "The discovered fixture folder is local, is not a Git repository and has no publication target."
+      },
+      "repository_url": null,
+      "role": "fixture-demonstrator-host"
+    }
+  ],
+  "schema": "okf-estate-registry.v1",
+  "semantic_bundle_registry": {
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+    "published_url": "https://chris-page-gov.github.io/okf-explorer/okf-registry.json",
+    "source_path": "registry/okf-registry.yamlld"
+  },
+  "time_zone": "Europe/London",
+  "title": "OKF estate registry"
+}

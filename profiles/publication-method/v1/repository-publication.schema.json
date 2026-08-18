@@ -1,0 +1,1063 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/repository-publication.schema.json",
+  "title": "OKF repository publication contract",
+  "description": "The lifecycle, build, documentation, CI, publication and verification contract for one OKF repository.",
+  "type": "object",
+  "required": [
+    "schema",
+    "modified",
+    "locale",
+    "time_zone",
+    "repository",
+    "semantic_contract",
+    "source_families",
+    "boundaries",
+    "planes",
+    "tooling",
+    "lockstep",
+    "ci",
+    "publication",
+    "verification",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "okf-repository-publication-contract.v1"
+    },
+    "modified": {
+      "type": "string",
+      "format": "date"
+    },
+    "locale": {
+      "const": "en-GB"
+    },
+    "time_zone": {
+      "const": "Europe/London"
+    },
+    "repository": {
+      "$ref": "#/$defs/repository"
+    },
+    "semantic_contract": {
+      "type": "object",
+      "required": [
+        "path",
+        "profile"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "profile": {
+          "$ref": "#/$defs/httpUri"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_families": {
+      "type": "array",
+      "items": {
+        "$ref": "https://chris-page-gov.github.io/okf-explorer/profile/publication-method/v1/source-family.schema.json"
+      },
+      "minItems": 1
+    },
+    "boundaries": {
+      "type": "object",
+      "required": [
+        "authored",
+        "generated"
+      ],
+      "properties": {
+        "authored": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/authoredBoundary"
+          },
+          "minItems": 1
+        },
+        "generated": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/generatedBoundary"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "planes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/plane"
+      },
+      "minItems": 1
+    },
+    "tooling": {
+      "type": "object",
+      "required": [
+        "commands"
+      ],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/command"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "lockstep": {
+      "$ref": "#/$defs/lockstep"
+    },
+    "ci": {
+      "$ref": "#/$defs/ci"
+    },
+    "publication": {
+      "$ref": "#/$defs/publication"
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    },
+    "limitations": {
+      "$ref": "#/$defs/strings"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "publication": {
+            "properties": {
+              "mode": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "publication"
+        ]
+      },
+      "then": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "required": {
+                "const": false
+              },
+              "browser": {
+                "const": "not-applicable"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "strings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "localIdentifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "localIdentifiers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/localIdentifier"
+      },
+      "uniqueItems": true
+    },
+    "httpUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "httpUris": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/httpUri"
+      },
+      "uniqueItems": true
+    },
+    "repositoryPattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\)(?!.*[#%])(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))[^\\u0000-\\u001f\\u007f]+$"
+    },
+    "repositoryPath": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/repositoryPattern"
+        },
+        {
+          "pattern": "^[^*?\\[]+$"
+        },
+        {
+          "pattern": "[^/]$"
+        }
+      ]
+    },
+    "repositoryPatterns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repositoryPattern"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "name",
+        "url",
+        "role",
+        "root_index",
+        "lifecycle"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"
+        },
+        "url": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "role": {
+          "enum": [
+            "profile-and-consumer",
+            "small-bundle",
+            "governed-producer",
+            "large-corpus-producer",
+            "federation",
+            "conformance-fixtures"
+          ]
+        },
+        "root_index": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "lifecycle": {
+          "enum": [
+            "bootstrap",
+            "active",
+            "migration",
+            "fixture",
+            "archived"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "authoredBoundary": {
+      "type": "object",
+      "required": [
+        "path",
+        "role"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPattern"
+        },
+        "role": {
+          "enum": [
+            "content",
+            "source-envelope",
+            "source-register",
+            "policy",
+            "profile",
+            "schema",
+            "generator",
+            "test",
+            "documentation",
+            "changelog",
+            "workflow",
+            "publication-contract",
+            "release-authorisation"
+          ]
+        },
+        "source_family_id": {
+          "$ref": "#/$defs/localIdentifier"
+        }
+      },
+      "additionalProperties": false
+    },
+    "generatedBoundary": {
+      "type": "object",
+      "required": [
+        "path",
+        "role",
+        "plane",
+        "required",
+        "build_command_ids",
+        "check_command_ids"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPattern"
+        },
+        "role": {
+          "enum": [
+            "semantic-yaml-ld",
+            "semantic-json-ld",
+            "semantic-shards",
+            "explorer-runtime",
+            "relationship-runtime",
+            "search-index",
+            "site",
+            "checksum-manifest",
+            "sbom",
+            "validation-receipt",
+            "browser-receipt",
+            "release-pack",
+            "registry-projection",
+            "other"
+          ]
+        },
+        "plane": {
+          "$ref": "#/$defs/planeIdentifier"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "build_command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        },
+        "check_command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "planeIdentifier": {
+      "enum": [
+        "source",
+        "semantic",
+        "runtime",
+        "documentation",
+        "application",
+        "browser",
+        "release",
+        "deployment"
+      ]
+    },
+    "plane": {
+      "type": "object",
+      "required": [
+        "id",
+        "depends_on",
+        "paths",
+        "command_ids"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/planeIdentifier"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/planeIdentifier"
+          },
+          "uniqueItems": true
+        },
+        "paths": {
+          "$ref": "#/$defs/repositoryPatterns"
+        },
+        "command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "command": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "planes",
+        "command",
+        "source",
+        "review_status",
+        "network",
+        "mutates"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "kind": {
+          "enum": [
+            "setup",
+            "inventory",
+            "acquire",
+            "build",
+            "check",
+            "test",
+            "deploy",
+            "verify"
+          ]
+        },
+        "planes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/planeIdentifier"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "source": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "review_status": {
+          "enum": [
+            "reviewed-local-guidance",
+            "unreviewed"
+          ]
+        },
+        "network": {
+          "enum": [
+            "none",
+            "bounded-read",
+            "dependency-install",
+            "acquisition",
+            "deployment"
+          ]
+        },
+        "mutates": {
+          "enum": [
+            "none",
+            "generated-only",
+            "source-and-generated",
+            "external-state"
+          ]
+        },
+        "timeout_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 360
+        }
+      },
+      "additionalProperties": false
+    },
+    "lockstep": {
+      "type": "object",
+      "required": [
+        "controlled_paths",
+        "documentation_paths",
+        "changelog_path",
+        "check_command_id",
+        "dependency_update_policy",
+        "unknown_path_policy"
+      ],
+      "properties": {
+        "controlled_paths": {
+          "$ref": "#/$defs/repositoryPatterns"
+        },
+        "documentation_paths": {
+          "$ref": "#/$defs/repositoryPatterns"
+        },
+        "changelog_path": {
+          "const": "CHANGELOG.md"
+        },
+        "check_command_id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "dependency_update_policy": {
+          "const": "assess-release-bound-bytes-no-blanket-exemption"
+        },
+        "unknown_path_policy": {
+          "const": "fail-closed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ci": {
+      "type": "object",
+      "required": [
+        "provider",
+        "workflow_paths",
+        "impact_routing",
+        "parallelism",
+        "unknown_path_policy",
+        "browser"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "github-actions",
+            "other",
+            "none"
+          ]
+        },
+        "workflow_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repositoryPath"
+          },
+          "uniqueItems": true
+        },
+        "impact_routing": {
+          "enum": [
+            "dependency-graph",
+            "path-rules",
+            "full-suite",
+            "not-applicable"
+          ]
+        },
+        "parallelism": {
+          "enum": [
+            "independent-planes",
+            "serial",
+            "not-applicable"
+          ]
+        },
+        "unknown_path_policy": {
+          "enum": [
+            "fail-closed",
+            "full-suite",
+            "not-applicable"
+          ]
+        },
+        "browser": {
+          "$ref": "#/$defs/browserPolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "browserPolicy": {
+      "type": "object",
+      "required": [
+        "ordinary",
+        "cross_engine"
+      ],
+      "properties": {
+        "ordinary": {
+          "type": "object",
+          "required": [
+            "policy",
+            "engines",
+            "command_ids"
+          ],
+          "properties": {
+            "policy": {
+              "enum": [
+                "installed-chrome",
+                "pinned-bundled-chromium",
+                "not-applicable"
+              ]
+            },
+            "engines": {
+              "$ref": "#/$defs/browserEngines"
+            },
+            "command_ids": {
+              "$ref": "#/$defs/localIdentifiers"
+            },
+            "exception_justification": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "policy": {
+                    "const": "installed-chrome"
+                  }
+                },
+                "required": [
+                  "policy"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "engines": {
+                    "contains": {
+                      "const": "chrome"
+                    },
+                    "minContains": 1
+                  },
+                  "command_ids": {
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "policy": {
+                    "const": "pinned-bundled-chromium"
+                  }
+                },
+                "required": [
+                  "policy"
+                ]
+              },
+              "then": {
+                "required": [
+                  "exception_justification"
+                ],
+                "properties": {
+                  "engines": {
+                    "contains": {
+                      "const": "chromium"
+                    },
+                    "minContains": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "cross_engine": {
+          "type": "object",
+          "required": [
+            "policy",
+            "engines",
+            "command_ids",
+            "installation"
+          ],
+          "properties": {
+            "policy": {
+              "enum": [
+                "impact-triggered",
+                "always",
+                "not-applicable"
+              ]
+            },
+            "engines": {
+              "$ref": "#/$defs/browserEngines"
+            },
+            "command_ids": {
+              "$ref": "#/$defs/localIdentifiers"
+            },
+            "installation": {
+              "$ref": "#/$defs/browserInstallation"
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "policy": {
+                    "enum": [
+                      "impact-triggered",
+                      "always"
+                    ]
+                  }
+                },
+                "required": [
+                  "policy"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "engines": {
+                    "allOf": [
+                      {
+                        "contains": {
+                          "const": "firefox"
+                        },
+                        "minContains": 1
+                      },
+                      {
+                        "contains": {
+                          "const": "webkit"
+                        },
+                        "minContains": 1
+                      }
+                    ]
+                  },
+                  "command_ids": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "browserEngines": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "chrome",
+          "chromium",
+          "firefox",
+          "webkit"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "browserInstallation": {
+      "type": "object",
+      "required": [
+        "policy",
+        "command_ids"
+      ],
+      "properties": {
+        "policy": {
+          "enum": [
+            "none",
+            "runner-installed",
+            "bounded-playwright"
+          ]
+        },
+        "command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        },
+        "timeout_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "bounded-playwright"
+              }
+            },
+            "required": [
+              "policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "timeout_minutes"
+            ],
+            "properties": {
+              "command_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "publication": {
+      "type": "object",
+      "required": [
+        "mode",
+        "scope",
+        "authority",
+        "candidate_policy",
+        "targets"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "manual",
+            "automatic-protected-main"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "unpublished",
+            "private",
+            "bounded-demonstrator",
+            "candidate",
+            "public-release",
+            "fixture"
+          ]
+        },
+        "authority": {
+          "type": "object",
+          "required": [
+            "decision",
+            "evidence_paths"
+          ],
+          "properties": {
+            "decision": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "evidence_paths": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/repositoryPath"
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "candidate_policy": {
+          "const": "promote-exact-assured-bytes-without-rebuild"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publicationTarget"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "targets": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "publicationTarget": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "workflow_path",
+        "public_base_url",
+        "exact_commit_required",
+        "promote_without_rebuild"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "kind": {
+          "enum": [
+            "github-pages",
+            "github-release",
+            "sites",
+            "private-static",
+            "other"
+          ]
+        },
+        "workflow_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "public_base_url": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "exact_commit_required": {
+          "const": true
+        },
+        "promote_without_rebuild": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "required",
+        "browser",
+        "exact_commit_required",
+        "identity_checks",
+        "journeys",
+        "console_policy",
+        "command_ids"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "browser": {
+          "enum": [
+            "real-browser",
+            "not-applicable"
+          ]
+        },
+        "exact_commit_required": {
+          "type": "boolean"
+        },
+        "identity_checks": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "commit",
+              "descriptor",
+              "snapshot",
+              "sha256",
+              "record-count",
+              "route"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "journeys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/verificationJourney"
+          }
+        },
+        "console_policy": {
+          "enum": [
+            "no-errors",
+            "documented-allowlist",
+            "not-applicable"
+          ]
+        },
+        "command_ids": {
+          "$ref": "#/$defs/localIdentifiers"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "required": {
+                "const": true
+              }
+            },
+            "required": [
+              "required"
+            ]
+          },
+          "then": {
+            "properties": {
+              "browser": {
+                "const": "real-browser"
+              },
+              "exact_commit_required": {
+                "const": true
+              },
+              "identity_checks": {
+                "minItems": 1
+              },
+              "journeys": {
+                "minItems": 1
+              },
+              "command_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "verificationJourney": {
+      "type": "object",
+      "required": [
+        "id",
+        "url",
+        "expected_identity",
+        "steps"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "url": {
+          "$ref": "#/$defs/httpUri"
+        },
+        "expected_identity": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "minItems": 1
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/verificationCheck"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "verificationCheck": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "href_contains"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/localIdentifier"
+        },
+        "kind": {
+          "enum": [
+            "link",
+            "linked-json"
+          ]
+        },
+        "href_contains": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "expected_text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "expected_schema": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "linked-json"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "expected_schema"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

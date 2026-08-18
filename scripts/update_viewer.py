@@ -8,7 +8,7 @@ import json
 import os
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import quote, unquote
 
@@ -16,6 +16,7 @@ import okf_semantic
 
 ROOT = Path(__file__).resolve().parents[1]
 VIEWER = ROOT / "viewer.html"
+CONFIG = ROOT / "okf.config.json"
 OKF_ROOT_FILES = {"index.md", "sources-index.md", "log.md"}
 OKF_DIRS = {
     "document",
@@ -39,11 +40,57 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
+def semantic_markdown_exclusion_prefixes() -> tuple[tuple[str, ...], ...]:
+    """Return validated repository-relative prefixes excluded from the graph."""
+
+    config = json.loads(CONFIG.read_text(encoding="utf-8"))
+    declared = config.get("semanticMarkdownExclusions", [])
+    if not isinstance(declared, list):
+        raise ValueError("semanticMarkdownExclusions must be an array")
+    prefixes: list[tuple[str, ...]] = []
+    for value in declared:
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(
+                "semanticMarkdownExclusions entries must be non-empty strings"
+            )
+        candidate = PurePosixPath(value.rstrip("/"))
+        if candidate.is_absolute() or not candidate.parts or any(
+            part in {".", ".."} for part in candidate.parts
+        ):
+            raise ValueError(
+                "semanticMarkdownExclusions entries must be safe "
+                "repository-relative prefixes"
+            )
+        prefixes.append(candidate.parts)
+    return tuple(prefixes)
+
+
+def is_semantic_markdown_excluded(
+    path: Path,
+    prefixes: tuple[tuple[str, ...], ...] | None = None,
+) -> bool:
+    """Return whether a Markdown path is outside the semantic corpus boundary."""
+
+    try:
+        parts = path.resolve().relative_to(ROOT.resolve()).parts
+    except ValueError:
+        return True
+    configured = (
+        prefixes
+        if prefixes is not None
+        else semantic_markdown_exclusion_prefixes()
+    )
+    return any(parts[: len(prefix)] == prefix for prefix in configured)
+
+
 def iter_okf_markdown() -> list[Path]:
     paths: list[Path] = []
+    exclusion_prefixes = semantic_markdown_exclusion_prefixes()
     for path in ROOT.rglob("*.md"):
         parts = path.relative_to(ROOT).parts
         if not parts or parts[0] in {"_site", "tmp"}:
+            continue
+        if is_semantic_markdown_excluded(path, exclusion_prefixes):
             continue
         if parts[0] in OKF_DIRS or (len(parts) == 1 and parts[0] in OKF_ROOT_FILES):
             paths.append(path)

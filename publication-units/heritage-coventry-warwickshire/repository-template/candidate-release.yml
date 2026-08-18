@@ -15,9 +15,14 @@ permissions:
   id-token: write
   attestations: write
 
+concurrency:
+  group: candidate-release-${{ inputs.tag }}
+  cancel-in-progress: false
+
 jobs:
   candidate-release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       TAG: ${{ inputs.tag }}
       ASSURANCE_REF: ${{ inputs.assurance_ref }}

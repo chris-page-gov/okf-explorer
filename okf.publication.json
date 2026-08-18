@@ -1,0 +1,989 @@
+{
+  "schema": "okf-repository-publication-contract.v1",
+  "modified": "2026-08-18",
+  "locale": "en-GB",
+  "time_zone": "Europe/London",
+  "repository": {
+    "name": "okf-explorer",
+    "url": "https://github.com/chris-page-gov/okf-explorer",
+    "role": "profile-and-consumer",
+    "root_index": "index.md",
+    "lifecycle": "active"
+  },
+  "semantic_contract": {
+    "path": "okf.semantic.json",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+  },
+  "source_families": [
+    {
+      "id": "ai-infrastructure-markdown",
+      "label": "AI infrastructure Markdown corpus",
+      "description": "The repository-authored Markdown corpus used as the Explorer's small default bundle and documentation graph.",
+      "kind": "markdown-tree",
+      "paths": [
+        "index.md",
+        "document/**",
+        "federated/**",
+        "frameworks/**",
+        "glossary/**",
+        "organisations/**",
+        "research/*.md",
+        "stack/**",
+        "standards/**",
+        "uk-government/**"
+      ],
+      "formats": [
+        "text/markdown"
+      ],
+      "origin": "authored",
+      "authority": "editorial",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "pinned-source-register",
+        "manifest_path": "sources-index.md",
+        "identity": [
+          "relative-path",
+          "source-identifier",
+          "source-version"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+        ],
+        "limitations": [
+          "Third-party sources retain the rights and attribution recorded beside each source reference."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "The published Markdown corpus is public technical and governance documentation; source-specific constraints remain in the source constraint ledger.",
+        "evidence": [
+          "https://chris-page-gov.github.io/okf-explorer/docs/source-constraint-ledger.html"
+        ]
+      },
+      "extraction": {
+        "mode": "none",
+        "network_access": "prohibited",
+        "command_ids": [],
+        "limitations": [
+          "Markdown links contribute derived reference assertions only; they do not confer a domain predicate or external authority."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "semantic",
+        "runtime",
+        "documentation",
+        "browser",
+        "release",
+        "deployment"
+      ],
+      "limitations": [
+        "The corpus is a maintained research and demonstration bundle, not an official register."
+      ]
+    },
+    {
+      "id": "estate-governance",
+      "label": "OKF estate governance sources",
+      "description": "Authored registries, profile schemas and repository publication controls used to coordinate the OKF estate.",
+      "kind": "structured-data-folder",
+      "paths": [
+        "registry/**",
+        "profiles/publication-method/v1/**",
+        "okf.publication.json"
+      ],
+      "formats": [
+        "application/json",
+        "application/yaml",
+        "text/markdown"
+      ],
+      "origin": "authored",
+      "authority": "editorial",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "pinned-source-register",
+        "manifest_path": "docs/okf-estate-standardisation-tracker.md",
+        "identity": [
+          "relative-path",
+          "source-version",
+          "observed-at"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+        ],
+        "limitations": []
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "The registry records public repository governance state and deliberately excludes credentials and restricted source material.",
+        "evidence": []
+      },
+      "extraction": {
+        "mode": "deterministic-local",
+        "network_access": "prohibited",
+        "command_ids": [
+          "build-estate-registry",
+          "build-bundle-registry"
+        ],
+        "limitations": [
+          "Generated registry projections report reviewed state; they do not prove that a repository is currently deployed or conformant."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "documentation",
+        "runtime",
+        "browser",
+        "deployment"
+      ],
+      "limitations": [
+        "Lifecycle publication scope is separate from a bundle's semantic status."
+      ]
+    }
+  ],
+  "boundaries": {
+    "authored": [
+      {
+        "path": "index.md",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "document/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "federated/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "frameworks/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "glossary/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "organisations/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "research/*.md",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "stack/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "standards/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "uk-government/**",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "registry/**",
+        "role": "source-register",
+        "source_family_id": "estate-governance"
+      },
+      {
+        "path": "profiles/publication-method/v1/**",
+        "role": "profile",
+        "source_family_id": "estate-governance"
+      },
+      {
+        "path": "profiles/**",
+        "role": "profile"
+      },
+      {
+        "path": "scripts/**",
+        "role": "generator"
+      },
+      {
+        "path": "tests/**",
+        "role": "test"
+      },
+      {
+        "path": "apps/okf-explorer/src/**",
+        "role": "generator"
+      },
+      {
+        "path": "apps/okf-explorer/tests/**",
+        "role": "test"
+      },
+      {
+        "path": "docs/**",
+        "role": "documentation"
+      },
+      {
+        "path": "README.md",
+        "role": "documentation"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "role": "changelog"
+      },
+      {
+        "path": "okf.semantic.json",
+        "role": "policy"
+      },
+      {
+        "path": "okf.publication.json",
+        "role": "publication-contract",
+        "source_family_id": "estate-governance"
+      },
+      {
+        "path": ".github/workflows/**",
+        "role": "workflow"
+      },
+      {
+        "path": "PUBLICATION.md",
+        "role": "release-authorisation"
+      }
+    ],
+    "generated": [
+      {
+        "path": "okf-bundle.yamlld",
+        "role": "semantic-yaml-ld",
+        "plane": "semantic",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle"
+        ],
+        "check_command_ids": [
+          "check-bundle"
+        ]
+      },
+      {
+        "path": "okf-bundle.jsonld",
+        "role": "semantic-json-ld",
+        "plane": "semantic",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle"
+        ],
+        "check_command_ids": [
+          "check-bundle"
+        ]
+      },
+      {
+        "path": "okf-bundle.json",
+        "role": "explorer-runtime",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle"
+        ],
+        "check_command_ids": [
+          "check-bundle"
+        ]
+      },
+      {
+        "path": "okf-registry.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle-registry"
+        ],
+        "check_command_ids": [
+          "check-bundle-registry"
+        ]
+      },
+      {
+        "path": "okf-registry.jsonld",
+        "role": "registry-projection",
+        "plane": "semantic",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle-registry"
+        ],
+        "check_command_ids": [
+          "check-bundle-registry"
+        ]
+      },
+      {
+        "path": "okf-estate-registry.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-estate-registry"
+        ],
+        "check_command_ids": [
+          "check-estate-registry"
+        ]
+      },
+      {
+        "path": "release-assurance/explorer.sbom.cdx.json",
+        "role": "sbom",
+        "plane": "release",
+        "required": true,
+        "build_command_ids": [
+          "build-sbom"
+        ],
+        "check_command_ids": [
+          "check-sbom"
+        ]
+      },
+      {
+        "path": "_site/*",
+        "role": "site",
+        "plane": "deployment",
+        "required": true,
+        "build_command_ids": [
+          "build-site"
+        ],
+        "check_command_ids": [
+          "build-site"
+        ]
+      },
+      {
+        "path": "_site/okf-publication-identity.json",
+        "role": "validation-receipt",
+        "plane": "deployment",
+        "required": true,
+        "build_command_ids": [
+          "build-site"
+        ],
+        "check_command_ids": [
+          "verify-pages"
+        ]
+      }
+    ]
+  },
+  "planes": [
+    {
+      "id": "source",
+      "depends_on": [],
+      "paths": [
+        "index.md",
+        "document/**",
+        "federated/**",
+        "frameworks/**",
+        "glossary/**",
+        "organisations/**",
+        "research/*.md",
+        "sources/**",
+        "stack/**",
+        "standards/**",
+        "uk-government/**",
+        "constraints/**",
+        "registry/**",
+        "profiles/**",
+        "publication-units/**",
+        "scripts/**",
+        ".github/actions/**",
+        "okf.config.json"
+      ],
+      "command_ids": [
+        "check-source-constraints"
+      ]
+    },
+    {
+      "id": "semantic",
+      "depends_on": [
+        "source"
+      ],
+      "paths": [
+        "okf.semantic.json",
+        "okf-bundle.yamlld",
+        "okf-bundle.jsonld",
+        "okf-registry.jsonld",
+        "scripts/build_okf_bundle.py",
+        "scripts/build_okf_registry.py",
+        "scripts/okf_semantic.py",
+        "tests/test_okf_semantic.py"
+      ],
+      "command_ids": [
+        "build-bundle",
+        "check-bundle",
+        "build-bundle-registry",
+        "check-bundle-registry",
+        "check-okf"
+      ]
+    },
+    {
+      "id": "runtime",
+      "depends_on": [
+        "semantic"
+      ],
+      "paths": [
+        "okf-bundle.json",
+        "okf-registry.json",
+        "okf-estate-registry.json",
+        "apps/okf-explorer/static/**",
+        "explorer/**",
+        "scripts/build_okf_estate_registry.py"
+      ],
+      "command_ids": [
+        "build-estate-registry",
+        "check-estate-registry",
+        "update-viewer",
+        "check-viewer"
+      ]
+    },
+    {
+      "id": "documentation",
+      "depends_on": [
+        "source",
+        "semantic"
+      ],
+      "paths": [
+        "README.md",
+        "CHANGELOG.md",
+        "PUBLICATION.md",
+        "docs/**",
+        "sources-index.md",
+        "AGENTS.md"
+      ],
+      "command_ids": [
+        "check-lockstep",
+        "check-british-english"
+      ]
+    },
+    {
+      "id": "application",
+      "depends_on": [
+        "runtime"
+      ],
+      "paths": [
+        "apps/okf-explorer/**"
+      ],
+      "command_ids": [
+        "check-app",
+        "test-app",
+        "build-app"
+      ]
+    },
+    {
+      "id": "browser",
+      "depends_on": [
+        "application",
+        "documentation"
+      ],
+      "paths": [
+        "evaluation/**",
+        "evaluation-foundry/**",
+        "apps/okf-explorer/e2e/**",
+        "apps/okf-explorer/playwright.config.ts",
+        ".github/workflows/foundry-full-shadow.yml"
+      ],
+      "command_ids": [
+        "install-extra-browsers",
+        "test-terminal"
+      ]
+    },
+    {
+      "id": "release",
+      "depends_on": [
+        "source",
+        "semantic",
+        "runtime",
+        "documentation",
+        "application",
+        "browser"
+      ],
+      "paths": [
+        "release-assurance/**",
+        "publication-units/**",
+        "CITATION.cff",
+        "LICENSE.md",
+        "LICENSE-CODE.md",
+        "pyproject.toml",
+        "uv.lock",
+        "requirements-okf.txt",
+        ".python-version",
+        "tests/**"
+      ],
+      "command_ids": [
+        "build-sbom",
+        "check-sbom",
+        "test-python"
+      ]
+    },
+    {
+      "id": "deployment",
+      "depends_on": [
+        "release"
+      ],
+      "paths": [
+        ".github/workflows/pages.yml",
+        "scripts/build_site.py",
+        "tests/test_build_site.py",
+        "_site/*"
+      ],
+      "command_ids": [
+        "build-site",
+        "verify-pages"
+      ]
+    }
+  ],
+  "tooling": {
+    "commands": [
+      {
+        "id": "build-bundle",
+        "kind": "build",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/build_okf_bundle.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-bundle",
+        "kind": "check",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/build_okf_bundle.py --check",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "build-bundle-registry",
+        "kind": "build",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/build_okf_registry.py",
+        "source": "scripts/build_okf_registry.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-bundle-registry",
+        "kind": "check",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/build_okf_registry.py --check",
+        "source": "scripts/build_okf_registry.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "build-estate-registry",
+        "kind": "build",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_okf_estate_registry.py",
+        "source": "scripts/build_okf_estate_registry.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-estate-registry",
+        "kind": "check",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_okf_estate_registry.py --check",
+        "source": "scripts/build_okf_estate_registry.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "update-viewer",
+        "kind": "build",
+        "planes": [
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/update_viewer.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-viewer",
+        "kind": "check",
+        "planes": [
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/update_viewer.py --check",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-okf",
+        "kind": "check",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/check_okf.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-source-constraints",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python scripts/check_source_constraints.py",
+        "source": "scripts/check_source_constraints.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-lockstep",
+        "kind": "check",
+        "planes": [
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/check_documentation_lockstep.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-british-english",
+        "kind": "check",
+        "planes": [
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/check_british_english.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-app",
+        "kind": "check",
+        "planes": [
+          "application"
+        ],
+        "command": "pnpm --dir apps/okf-explorer check",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "test-app",
+        "kind": "test",
+        "planes": [
+          "application",
+          "browser"
+        ],
+        "command": "pnpm --dir apps/okf-explorer test",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 20
+      },
+      {
+        "id": "build-app",
+        "kind": "build",
+        "planes": [
+          "application",
+          "release"
+        ],
+        "command": "pnpm --dir apps/okf-explorer build:determinism",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 15
+      },
+      {
+        "id": "install-extra-browsers",
+        "kind": "setup",
+        "planes": [
+          "browser"
+        ],
+        "command": "pnpm --dir apps/okf-explorer exec playwright install --with-deps firefox webkit",
+        "source": ".github/workflows/foundry-full-shadow.yml",
+        "review_status": "reviewed-local-guidance",
+        "network": "dependency-install",
+        "mutates": "external-state",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "test-terminal",
+        "kind": "test",
+        "planes": [
+          "browser",
+          "release"
+        ],
+        "command": "pnpm --dir apps/okf-explorer test:e2e:terminal",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "bounded-read",
+        "mutates": "none",
+        "timeout_minutes": 30
+      },
+      {
+        "id": "build-sbom",
+        "kind": "build",
+        "planes": [
+          "release"
+        ],
+        "command": "pnpm --dir apps/okf-explorer sbom",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-sbom",
+        "kind": "check",
+        "planes": [
+          "release"
+        ],
+        "command": "pnpm --dir apps/okf-explorer sbom:check",
+        "source": "apps/okf-explorer/package.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "test-python",
+        "kind": "test",
+        "planes": [
+          "source",
+          "semantic",
+          "runtime",
+          "documentation",
+          "release"
+        ],
+        "command": "uv run --locked python -m unittest discover -s tests -v",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 45
+      },
+      {
+        "id": "build-site",
+        "kind": "build",
+        "planes": [
+          "documentation",
+          "application",
+          "release",
+          "deployment"
+        ],
+        "command": "uv run --locked python scripts/build_site.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 30
+      },
+      {
+        "id": "verify-pages",
+        "kind": "verify",
+        "planes": [
+          "browser",
+          "deployment"
+        ],
+        "command": "node apps/okf-explorer/scripts/verify_okf_deployment.mjs --contract okf.publication.json --journey estate-registry --candidate-receipt site-candidate-receipt.json --expected-commit COMMIT_SHA --output live-deployment-receipt.json",
+        "source": "okf.publication.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "bounded-read",
+        "mutates": "none",
+        "timeout_minutes": 5
+      }
+    ]
+  },
+  "lockstep": {
+    "controlled_paths": [
+      ".github/workflows/**",
+      "apps/okf-explorer/src/**",
+      "apps/okf-explorer/tests/**",
+      "apps/okf-explorer/package.json",
+      "apps/okf-explorer/pnpm-lock.yaml",
+      "constraints/**",
+      "evaluation/**",
+      "evaluation-foundry/**",
+      "explorer/**",
+      "okf.semantic.json",
+      "okf.publication.json",
+      "profiles/**",
+      "publication-units/**",
+      "registry/**",
+      "release-assurance/**",
+      "scripts/**",
+      "sources/**",
+      "tests/**",
+      "uk-government-apis/**",
+      "legislation/**"
+    ],
+    "documentation_paths": [
+      "README.md",
+      "docs/**",
+      "sources/**",
+      "CHANGELOG.md"
+    ],
+    "changelog_path": "CHANGELOG.md",
+    "check_command_id": "check-lockstep",
+    "dependency_update_policy": "assess-release-bound-bytes-no-blanket-exemption",
+    "unknown_path_policy": "fail-closed"
+  },
+  "ci": {
+    "provider": "github-actions",
+    "workflow_paths": [
+      ".github/workflows/okf-explorer-ci.yml",
+      ".github/workflows/pages.yml",
+      ".github/workflows/foundry-full-shadow.yml"
+    ],
+    "impact_routing": "dependency-graph",
+    "parallelism": "independent-planes",
+    "unknown_path_policy": "fail-closed",
+    "browser": {
+      "ordinary": {
+        "policy": "installed-chrome",
+        "engines": [
+          "chrome"
+        ],
+        "command_ids": [
+          "test-app"
+        ]
+      },
+      "cross_engine": {
+        "policy": "impact-triggered",
+        "engines": [
+          "firefox",
+          "webkit"
+        ],
+        "command_ids": [
+          "test-terminal"
+        ],
+        "installation": {
+          "policy": "bounded-playwright",
+          "command_ids": [
+            "install-extra-browsers"
+          ],
+          "timeout_minutes": 10
+        }
+      }
+    }
+  },
+  "publication": {
+    "mode": "automatic-protected-main",
+    "scope": "public-release",
+    "authority": {
+      "decision": "GitHub Pages publishes only the merged protected-main candidate after repository validation and exact Site assembly.",
+      "evidence_paths": [
+        "PUBLICATION.md",
+        ".github/workflows/pages.yml"
+      ]
+    },
+    "candidate_policy": "promote-exact-assured-bytes-without-rebuild",
+    "targets": [
+      {
+        "id": "github-pages",
+        "kind": "github-pages",
+        "workflow_path": ".github/workflows/pages.yml",
+        "public_base_url": "https://chris-page-gov.github.io/okf-explorer/",
+        "exact_commit_required": true,
+        "promote_without_rebuild": true
+      }
+    ]
+  },
+  "verification": {
+    "required": true,
+    "browser": "real-browser",
+    "exact_commit_required": true,
+    "identity_checks": [
+      "commit",
+      "descriptor",
+      "sha256",
+      "route"
+    ],
+    "journeys": [
+      {
+        "id": "estate-registry",
+        "url": "https://chris-page-gov.github.io/okf-explorer/registry/estate/index.html",
+        "expected_identity": "OKF estate registry",
+        "steps": [
+          "Open the generated estate registry without downloading the repository.",
+          "Confirm the okf-explorer entry, adoption state and audit date.",
+          "Open the machine-readable JSON projection from the registry page.",
+          "Return to the registry and open the publication method profile."
+        ],
+        "checks": [
+          {
+            "id": "machine-registry",
+            "kind": "linked-json",
+            "href_contains": "okf-estate-registry.json",
+            "expected_schema": "okf-estate-registry.v1"
+          },
+          {
+            "id": "publication-profile",
+            "kind": "link",
+            "href_contains": "/profile/publication-method/v1/",
+            "expected_text": "Read publication method profile v1"
+          }
+        ]
+      }
+    ],
+    "console_policy": "no-errors",
+    "command_ids": [
+      "verify-pages"
+    ]
+  },
+  "limitations": [
+    "GitHub Releases remain a manually governed frozen-snapshot boundary and are not triggered by the Pages workflow.",
+    "The estate registry reports dated reviewed state; it does not confer publication authority on another repository.",
+    "COMMIT_SHA in the verifier declaration is a required full Git commit supplied by the protected deployment workflow, not a shell command or branch name."
+  ]
+}

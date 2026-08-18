@@ -1240,9 +1240,11 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
             {
                 "okf-LandRegistry",
                 "okf-ai-infrastructure",
+                "okf-els-api",
                 "okf-explorer",
                 "okf-govuk-content",
                 "okf-ons",
+                "okf-planning",
                 "okf-testing",
                 "okf-uk-government-apis",
                 "okf-uk-legislation",
@@ -1270,6 +1272,99 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
                 [error.message for error in validator.iter_errors(contract)],
                 name,
             )
+
+    def test_public_draft_migration_presets_match_reviewed_repositories(self) -> None:
+        expected = {
+            "okf-els-api": {
+                "repository": {
+                    "name": "okf-els-api",
+                    "role": "governed-producer",
+                    "root_index": "bundle/index.md",
+                },
+                "state": "descriptor-yaml-ld",
+                "inputs": [
+                    "source/",
+                    "scripts/build_bundle.py",
+                    "scripts/okf_v02.py",
+                    *reconcile.PROFILE_SOURCE_INPUTS,
+                ],
+                "outputs": [
+                    reconcile.output("bundle/okf-bundle.yamlld", "semantic-yaml-ld", True),
+                    reconcile.output("bundle/okf-bundle.jsonld", "semantic-json-ld", True),
+                    reconcile.output("bundle/context/okf-els-api.jsonld", "semantic-context", True),
+                    reconcile.output("bundle/okf-explorer.json", "explorer-runtime", True),
+                    reconcile.output("bundle/data/manifest.json", "relationship-runtime-manifest", True),
+                    reconcile.output("bundle/data/relationships-0.json", "relationship-runtime", True),
+                    reconcile.output("bundle/data/standards/term-validation.json", "semantic-validation", True),
+                ],
+                "build": ["python3 scripts/build_bundle.py"],
+                "check": [
+                    "python3 scripts/build_bundle.py --check",
+                    "python3 scripts/check_okf.py",
+                    "python3 -m unittest discover -s tests -v",
+                ],
+            },
+            "okf-planning": {
+                "repository": {
+                    "name": "okf-planning",
+                    "role": "large-corpus-producer",
+                    "root_index": "bundle/index.md",
+                },
+                "state": "descriptor-yaml-ld",
+                "inputs": [
+                    "source/dataset.json",
+                    "source/organisation.json",
+                    "src/okf_planning/build.py",
+                    "src/okf_planning/model.py",
+                    "src/okf_planning/sources.py",
+                    "scripts/build_bundle.py",
+                    *reconcile.PROFILE_SOURCE_INPUTS,
+                ],
+                "outputs": [
+                    reconcile.output("bundle/okf-bundle.yamlld", "semantic-yaml-ld", True),
+                    reconcile.output("bundle/okf-bundle.jsonld", "semantic-json-ld", True),
+                    reconcile.output("bundle/context/okf-planning.jsonld", "semantic-context", True),
+                    reconcile.output("bundle/okf-explorer.json", "explorer-runtime", True),
+                    reconcile.output("bundle/data/manifest.json", "relationship-runtime-manifest", True),
+                    reconcile.output("bundle/data/relationships-*.json", "relationship-runtime", True),
+                    reconcile.output("bundle/data/standards/evaluation.json", "semantic-validation", True),
+                ],
+                "setup": ["python -m pip install -e \".[test]\""],
+                "build": ["python3 scripts/build_bundle.py"],
+                "check": [
+                    "python3 scripts/check_okf.py",
+                    "pytest",
+                    "git diff --exit-code",
+                ],
+            },
+        }
+
+        for name, values in expected.items():
+            with self.subTest(repository=name):
+                contract = reconcile.contract_for(name, reconcile.PRESETS[name])
+                self.assertEqual(values["repository"], contract["repository"])
+                self.assertEqual(values["state"], contract["semantic_layer"]["state"])
+                self.assertEqual(
+                    values["inputs"],
+                    contract["semantic_layer"]["authoritative_inputs"],
+                )
+                self.assertEqual(
+                    values["outputs"], contract["semantic_layer"]["outputs"]
+                )
+                self.assertEqual(
+                    "runtime-assertion-migration",
+                    contract["relationship_contract"]["authoring"],
+                )
+                self.assertEqual(
+                    "migration-pending",
+                    contract["relationship_contract"]["direct_triple_policy"],
+                )
+                self.assertEqual(
+                    "json-large-corpus-chunks", contract["reader"]["delivery"]
+                )
+                self.assertEqual(values.get("setup"), contract["tooling"].get("setup"))
+                self.assertEqual(values["build"], contract["tooling"]["build"])
+                self.assertEqual(values["check"], contract["tooling"]["check"])
 
     def test_portable_contract_gate_rejects_schema_invalid_shapes(self) -> None:
         contract = reconcile.contract_for(

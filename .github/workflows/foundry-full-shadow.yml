@@ -8,9 +8,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   adversarial-gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up locked Python toolchain
@@ -27,6 +32,7 @@ jobs:
   browser-three-engine:
     needs: adversarial-gate
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -43,14 +49,13 @@ jobs:
         uses: ./.github/actions/setup-locked-python
       - working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
-      - name: Install Chromium for the browser-backed contract test
-        working-directory: apps/okf-explorer
-        run: pnpm exec playwright install --with-deps chromium
       - name: Materialise SvelteKit TypeScript configuration
         working-directory: apps/okf-explorer
         run: pnpm exec svelte-kit sync
       - name: Validate and deterministically build Explorer
         working-directory: apps/okf-explorer
+        env:
+          PLAYWRIGHT_CHROMIUM_CHANNEL: chrome
         run: |
           pnpm check
           pnpm test
@@ -60,6 +65,7 @@ jobs:
         run: uv run --locked python scripts/build_site.py
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
+        timeout-minutes: 10
         run: pnpm exec playwright install --with-deps firefox webkit
       - name: Run full Chrome, Firefox and WebKit terminal assurance
         working-directory: apps/okf-explorer
@@ -68,6 +74,7 @@ jobs:
   foundry-full-family:
     needs: adversarial-gate
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
