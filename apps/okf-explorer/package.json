@@ -30,14 +30,14 @@
     "@axe-core/playwright": "4.12.1",
     "@playwright/test": "^1.62.1",
     "@sveltejs/adapter-static": "^3.0.8",
-    "@sveltejs/kit": "^2.70.2",
-    "@sveltejs/vite-plugin-svelte": "^7.2.0",
-    "@vitest/coverage-v8": "^4.1.10",
-    "svelte": "^5.56.8",
-    "svelte-check": "^4.7.4",
+    "@sveltejs/kit": "^2.70.3",
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "svelte": "^5.56.10",
+    "svelte-check": "^4.7.6",
     "typescript": "^6.0.3",
-    "vite": "^8.2.0",
-    "vitest": "^4.1.10"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   },
   "pnpm": {
     "overrides": {
