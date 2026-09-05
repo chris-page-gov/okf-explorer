@@ -373,15 +373,16 @@ test.describe('governed endpoint labels', () => {
       await expect(graph).not.toContainText('publisher-5f7670365c7dc347f281bbef');
       await expect(graph).not.toContainText('publisher-aaaaaaaaaaaaaaaaaaaaaaaa');
       if (viewport.name === 'narrow') {
-        const navigationToggle = page.getByRole('button', { name: 'Toggle navigation' });
-        await expect(navigationToggle).toHaveText('›');
-        await navigationToggle.click();
+        await page.getByRole('navigation', { name: 'Workspace panels' })
+          .getByRole('button', { name: 'Search & facets' }).click();
       }
-      const publisherFacet = page.getByRole('group', { name: 'publisher facet' });
-      await expect(publisherFacet.getByRole('button', { name: /HM Land Registry/ })).toBeVisible();
-      await expect(publisherFacet.getByRole('button', { name: /Missing label/ })).toBeVisible();
-      const accessFacet = page.getByRole('group', { name: 'access facet' });
-      await expect(accessFacet.getByRole('button', { name: /public/i })).toBeVisible();
+      const publisherFacet = page.locator('[data-facet-key="publisher"]');
+      await publisherFacet.locator('.facet-toggle').click();
+      await expect(publisherFacet.locator('.facet-values').getByRole('button', { name: /HM Land Registry/ })).toBeVisible();
+      await expect(publisherFacet.locator('.facet-values').getByRole('button', { name: /Missing label/ })).toBeVisible();
+      const accessFacet = page.locator('[data-facet-key="access"]');
+      await accessFacet.locator('.facet-toggle').click();
+      await expect(accessFacet.locator('.facet-values').getByRole('button', { name: /public/i })).toBeVisible();
       await expect(accessFacet).not.toContainText('Missing label');
       expect(requests).toContain('/data/labels/index.json');
       expect(requests).toContain(`/data/adjacency/${relationshipBucket(ACTIVITY_ROUTE)}.json`);
@@ -413,10 +414,15 @@ test.describe('governed endpoint labels', () => {
       await page.setViewportSize(viewport);
       await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#${DATASET_ROUTE}`);
 
-    await expect(page.getByRole('heading', { name: 'Applying for probate guidance' }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /Web page/ }).first()).toBeVisible();
-    await expect(page.locator('main').getByRole('button', { name: 'Probate services', exact: true })).toBeVisible();
-    await expect(page.locator('main')).toContainText('Open Government Licence v3.0');
+    if (viewport.name === 'narrow') {
+      await page.getByRole('navigation', { name: 'Workspace panels' })
+        .getByRole('button', { name: 'Details', exact: true }).click();
+    }
+    const initialDetails = page.locator('.right-panel');
+    await expect(initialDetails.getByRole('heading', { name: 'Applying for probate guidance' }).first()).toBeVisible();
+    await expect(initialDetails.getByRole('button', { name: /Web page/ }).first()).toBeVisible();
+    await expect(initialDetails.getByRole('button', { name: 'Probate services', exact: true })).toBeVisible();
+    await expect(initialDetails).toContainText('Open Government Licence v3.0');
     await expect(page.locator('.stage')).not.toContainText('dataset-opaque-internal-title');
     await expect(page.locator('.stage')).not.toContainText(LICENCE_ID);
     await expect(page.locator('.stage')).not.toContainText('Incorrect legacy licence title');

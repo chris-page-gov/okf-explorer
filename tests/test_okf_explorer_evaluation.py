@@ -890,7 +890,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertGreaterEqual(
             assertions,
             {
-                "url_param_includes",
+                "kept_facet_value",
                 "history_round_trip_restored",
                 "graph_edge_selected",
                 "relationship_drawer_resized",
@@ -2025,6 +2025,48 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             payload["messages"]["current_bytes"],
         )
 
+    def test_kept_facet_receipts_require_a_complete_valid_predicate(self):
+        module_url = (ROOT / "scripts/evaluate_okf_explorer.mjs").as_uri()
+        keep = {"mode": "keep", "selection": {"local_authority": ["Coventry"]}}
+        valid = {"preview": {}, "reductions": [keep]}
+        cases = [
+            ({"filter.local_authority": "Coventry"}, True),
+            ({"explore": json.dumps(valid)}, True),
+            ({"explore": json.dumps({"preview": {"local_authority": ["Coventry"]}, "reductions": []})}, False),
+            ({"explore": json.dumps({"preview": {}, "reductions": [{**keep, "mode": "remove"}]})}, False),
+            ({"explore": json.dumps({"preview": {}, "reductions": [{"mode": "keep", "selection": {"local_authority": ["Coventry", "Warwick"]}}]})}, False),
+            ({"filter.local_authority": "Warwick"}, False),
+            ({"explore": "null"}, False),
+            ({"explore": "{"}, False),
+            ({"explore": "x" * 16001}, False),
+            ({"explore": json.dumps({"reductions": [keep]})}, False),
+            ({"explore": json.dumps({"preview": {}, "reductions": [keep, {"mode": "wrong", "selection": {"type": ["Record"]}}]})}, False),
+            ({"explore": json.dumps({"preview": {}, "reductions": [keep, {"mode": "remove", "selection": {"type": ["Other"]}}]})}, True),
+        ]
+        program = f"""
+            import {{ keptFacetValue }} from {json.dumps(module_url)};
+            const cases = {json.dumps(cases)};
+            console.log(JSON.stringify(cases.map(([params]) =>
+              keptFacetValue(new URLSearchParams(params), 'local_authority', 'Coventry'))));
+        """
+        result = subprocess.run(["node", "--input-type=module", "--eval", program], cwd=ROOT,
+                                check=True, capture_output=True, text=True)
+        self.assertEqual([expected for _, expected in cases], json.loads(result.stdout))
+
+    def test_kept_facet_assertion_rejects_invalid_manifest_fields(self):
+        for facet, value in (("", "Coventry"), ("__proto__", "Coventry"), ("local_authority", " "), ("local_authority", "x" * 501)):
+            with self.subTest(facet=facet, value=value[:20]), tempfile.TemporaryDirectory() as directory:
+                temporary = Path(directory)
+                journey_path = self._write_validation_journey(temporary, {"action": "search", "value": "Coventry"})
+                manifest = json.loads(journey_path.read_text())
+                manifest["journeys"][0]["assertions"].append({"assertion": "kept_facet_value", "facet": facet, "value": value})
+                journey_path.write_text(json.dumps(manifest))
+                result = subprocess.run(["node", str(ROOT / "scripts/evaluate_okf_explorer.mjs"), "--no-browser",
+                                         "--journeys-only", "--journeys", str(journey_path), "--out", str(temporary / "results")],
+                                        cwd=ROOT, capture_output=True, text=True)
+                self.assertNotEqual(0, result.returncode)
+                self.assertIn("kept_facet_value requires", result.stderr)
+
     def test_final_url_location_assertion_ignores_hash_but_rejects_redirect_drift(self):
         module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
         program = f"""
@@ -2371,18 +2413,6 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         self.assertIn("metadataFacetForRoute", source)
         self.assertIn("click a stack to expand it", source)
         self.assertIn("GRAPH_EXPANDED_GROUP_LIMIT", source)
-
-    def test_svelte_facets_support_search_paging_and_single_select_default(self):
-        source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
-
-        self.assertIn("FACET_PAGE_SIZE", source)
-        self.assertIn("largeFacetSearch", source)
-        self.assertIn("visibleLargeFacetRows", source)
-        self.assertIn("Show more", source)
-        self.assertIn("canonical_publisher", source)
-        self.assertIn("normaliseFacetSearchText", source)
-        self.assertIn("activeFacetKey === key", source)
-        self.assertIn("event?.ctrlKey || event?.metaKey || event?.shiftKey", source)
 
     def test_svelte_graph_has_distinct_node_icon_vocabulary(self):
         source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")

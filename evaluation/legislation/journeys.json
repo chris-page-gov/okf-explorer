@@ -84,7 +84,7 @@
       ],
       "assertions": [
         {"assertion": "search_value", "value": "Human Rights Act"},
-        {"assertion": "url_param_includes", "name": "filter.year", "value": "1998"},
+        {"assertion": "kept_facet_value", "facet": "year", "value": "1998"},
         {"assertion": "url_param_equals", "name": "sort", "value": "title"},
         {"assertion": "sort_value", "value": "title"},
         {"assertion": "history_round_trip_restored"},

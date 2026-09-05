@@ -1,3 +1,4 @@
+import { exploreIdentities, highlightFirst, MAX_FOLDED_MEMBERS, readExploration } from '$lib/viewer/facetSelection';
 import type {
   LargeFilterPostings,
   LargeReleaseDataPlaneIndex,
@@ -834,13 +835,40 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     for (const set of intersectionSets.slice(1)) matches = intersectOrdinals(matches, set);
   }
 
-  const requestedPostingKeys = [...new Set([...Object.keys(request.filters ?? {}), ...(request.facet_keys || [])])];
+  const exploration = request.exploration ? readExploration(request.exploration) : undefined;
+  const explorationKeys = exploration ? [...new Set([
+    ...Object.keys(exploration.preview), ...exploration.reductions.flatMap(step => Object.keys(step.selection))
+  ])] : [];
+  const requestedPostingKeys = [...new Set([...Object.keys(request.filters ?? {}), ...(request.facet_keys || []), ...explorationKeys])];
   const filterIndexes = new Map<string, LargeFilterPostings>();
   await Promise.all(requestedPostingKeys.map(async (key) => {
     const postings = await filterPostingsFor(key);
     if (postings) filterIndexes.set(key, postings);
   }));
   const filtered = filterOrdinals(matches, request.filters, filterIndexes);
+  const hasActiveExploration = explorationKeys.length > 0 || Boolean(exploration?.reductions.length);
+  if (explorationKeys.some(key => !filterIndexes.has(key)) || (hasActiveExploration && !filtered.applied)) {
+    throw new Error('This index cannot evaluate every selected facet. Clear the selection or use a bundle with complete facet postings.');
+  }
+  // Withhold partial exploration counts while legacy filters use the full-index fallback.
+  const explored = exploration && filtered.applied ? exploreIdentities(filtered.ordinals, exploration,
+    (key, value) => new Set(filterIndexes.get(key)?.values[value] || [])) : undefined;
+  if (explored) filtered.ordinals = explored.scope;
+  const explorationFacets: LargeSearchResponse['facets'] = {};
+  if (explored) for (const key of request.facet_keys || []) {
+    const postings = filterIndexes.get(key);
+    if (postings) explorationFacets[key] = Object.entries(postings.values).map(([value, ids]) => ({
+      value, count: ids.filter(id => explored.scope.has(id)).length,
+      highlighted: ids.filter(id => explored.highlighted.has(id)).length
+    })).sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
+  }
+  const explorationResult = explored ? {
+    highlighted_count: explored.highlighted.size,
+    facets: explorationFacets,
+    ...(explored.scope.size <= MAX_FOLDED_MEMBERS && !cappedCandidates ? {
+      scope_ids: [...explored.scope], highlighted_ids: [...explored.highlighted]
+    } : {})
+  } : undefined;
   const facets: LargeSearchResponse['facets'] = {};
   // If any active filter needs the v1/full-index fallback, every dynamic count
   // would omit that constraint. Suppress the partial counts instead of
@@ -872,6 +900,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
       postingsTruncated ? [{ reason: 'capped-postings' }] : [];
     return {
       results: [],
+      exploration: explorationResult,
       total: filtered.ordinals.size,
       total_relation: totalRelation,
       truncated: Boolean(truncations.length),
@@ -912,6 +941,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   }
 
   const prelimit = strategy === 'idf-exact' && request.sort === 'relevance' ? limit * 3 : limit;
+  if (explored) ordinals = highlightFirst(ordinals, id => explored.highlighted.has(id));
   ordinals = ordinals.slice(0, prelimit);
   const docsByOrdinal = new Map<number, SearchResultDoc>();
   const chunkPaths = new Set<string>();
@@ -949,6 +979,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   }
 
   const results: SearchResultDoc[] = [];
+  if (explored) ordinals = highlightFirst(ordinals, id => explored.highlighted.has(id));
   for (const ordinal of ordinals.slice(0, limit)) {
     const doc = docsByOrdinal.get(ordinal);
     if (!doc) continue;
@@ -962,6 +993,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
     if (entityRecognition && !fields.includes(entityRecognition.entity.filter_key)) fields.unshift(entityRecognition.entity.filter_key);
     results.push({
       ...doc,
+      ...(explored ? { highlighted: explored.highlighted.has(ordinal) } : {}),
       score: Math.round(total * 1000) / 1000,
       match: {
         query_tokens: tokens,
@@ -991,6 +1023,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   if (resultLimitReached) truncations.push({ reason: 'result-limit' });
   return {
     results,
+    exploration: explorationResult,
     total: filtered.ordinals.size,
     total_relation: totalRelation,
     truncated: Boolean(truncations.length),

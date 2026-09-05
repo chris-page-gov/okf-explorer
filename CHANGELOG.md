@@ -2,6 +2,42 @@
 
 ## Unreleased
 
+- Preserved the byte-frozen Heritage evaluation profiles while classifying the
+  four current repository journey manifests through their existing control rule.
+  Corrected impact planning to validate both artefact and semantic identities in
+  version 2 plane receipts, retaining fail-closed handling of malformed roots.
+
+- Added a paired Search and Details layout for medium screens, compact inline
+  footer controls and a Results tab for small-bundle navigation. Collapsed paired
+  selection actions into an explicit disclosure, aligned tab/control heights and
+  reduced oversized detail headings. Kept facet selection summaries within a
+  stable header so double-click targets do not move. Colour segments
+  now toggle values while keeping facets folded; a second ordinary click removes
+  a selection. Double-click keeps the original multi-value selection.
+- Restored the required geospatial index when opening a Reader URL with a map
+  restriction, including browser history restoration, and retained loading state
+  until that scope is available.
+
+- Opened each new bundle with all facets folded and Title as the browsing default,
+  preserving explicit URL sorting. Replaced facet bars with alternating luminance
+  colours and a separate black-on-white highlight track, labelled counts and
+  selection ticks, with measured adjacent-colour contrast tests.
+
+- Preserved the full-index fallback for older search bundles when no highlight
+  or keep selection is active. Section facets now use the same declared section
+  as the record inspector. Added regression coverage for both behaviours and
+  clarified the information included in shared URLs and exported pins.
+
+- Harmonised Explorer selection around SeeLinks: highlight-first previews,
+  OR within a facet, AND across facets, reversible keep/remove operations and
+  presentation folds with live counts. Added shared cards and lists, a mobile
+  three-panel workspace with footer and swipe navigation, keyboard splitters,
+  bundle-qualified bookmarks and tabbed small-bundle provenance. Extracted the
+  interaction algebra, panel shell, facets, results, bookmark shelf and small
+  record inspector into independently reviewable modules. Local rehearsal
+  evidence and remaining browser gates are recorded in
+  [the implementation note](docs/explorer-interaction-implementation.md).
+
 - Started the estate-wide OKF build and publication standardisation programme.
   Added a separate publication-method v1 profile, an executable repository
   contract, contract-driven documentation and changelog lockstep, a fail-closed

@@ -82,6 +82,49 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
                     self.assertFalse(plan["fail_closed"])
                     self.assertIn("IMPACT-PRODUCER", plan["matched_rule_ids"])
 
+    def test_current_journeys_use_existing_control_rule_without_mutating_profile(self) -> None:
+        original = copy.deepcopy(self.profile)
+        for path in sorted(impact.REPOSITORY_JOURNEYS):
+            plan = impact.build_impact_plan(self.profile, [path])
+            self.assertFalse(plan["fail_closed"])
+            self.assertIn("IMPACT-FOUNDRY-JOURNEYS", plan["matched_rule_ids"])
+            self.assertTrue(plan["selectors"]["jobs"]["foundry"])
+        self.assertEqual(original, self.profile)
+        unknown = impact.build_impact_plan(self.profile, ["evaluation/other/journeys.json"])
+        self.assertTrue(unknown["fail_closed"])
+
+    def test_v2_semantic_roots_preserve_graph_identity_and_validate_artifacts(self) -> None:
+        receipt = json.loads((ROOT / "evaluation/heritage/tiny/assurance/plane-roots.json").read_text())
+        original = impact._validated_plane_root_digests(receipt)
+        plane = receipt["planes"]["semantic"]
+        entry = next(row for row in plane["entries"] if "semantic_sha256" in row)
+        entry["sha256"] = "a" * 64
+        plane["artifact_root_sha256"] = impact._rooted_json_sha256(plane["entries"])
+        self.assertEqual(original, impact._validated_plane_root_digests(receipt))
+        # A changed graph must affect the semantic role even if serialisation is unchanged.
+        entry["semantic_sha256"] = "b" * 64
+        plane["artifact_root_sha256"] = impact._rooted_json_sha256(plane["entries"])
+        plane["root_sha256"] = impact._rooted_json_sha256([impact.identity_entry(row) for row in plane["entries"]])
+        receipt["release_root_sha256"] = impact._rooted_json_sha256([
+            {"plane": role, "root_sha256": value["root_sha256"]}
+            for role, value in sorted(receipt["planes"].items())
+        ])
+        changed = impact._validated_plane_root_digests(receipt)
+        self.assertEqual(["semantic"], [role for role in original if original[role] != changed[role]])
+        for corruption in ("missing_artifact", "stale_artifact", "incomplete_identity"):
+            bad = copy.deepcopy(receipt)
+            plane = bad["planes"]["semantic"]
+            if corruption == "missing_artifact":
+                del plane["artifact_root_sha256"]
+            elif corruption == "stale_artifact":
+                plane["artifact_root_sha256"] = "0" * 64
+            else:
+                entry = next(row for row in plane["entries"] if "semantic_sha256" in row)
+                del entry["semantic_algorithm"]
+                plane["artifact_root_sha256"] = impact._rooted_json_sha256(plane["entries"])
+            with self.subTest(corruption=corruption), self.assertRaises(impact.ImpactPlanError):
+                impact._validated_plane_root_digests(bad)
+
     def test_v2_schema_reuses_foundry_contract_definitions(self) -> None:
         schema = json.loads(
             (
@@ -340,6 +383,7 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
                     value["root_sha256"] = impact._receipt_root_sha256(
                         "okf-evaluation-plane-roots.v2", value["entries"]
                     )
+                    value["artifact_root_sha256"] = value["root_sha256"]
                 payload["release_root_sha256"] = impact._receipt_root_sha256(
                     "okf-evaluation-plane-roots.v2",
                     [

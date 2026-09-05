@@ -19,7 +19,7 @@ const MAX_FILTER_VALUES = 100;
 const FILTER_KEY = /^[a-zA-Z0-9_-]+$/;
 
 export function defaultRetrievalSort(query: string): RetrievalSort {
-  return query.trim() ? 'relevance' : 'newest';
+  return query.trim() ? 'relevance' : 'title';
 }
 
 export function isRetrievalSort(value: string | null): value is RetrievalSort {

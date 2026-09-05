@@ -104,6 +104,7 @@ export class LargeSearchClient {
       ),
       sort: request.sort,
       ranking: request.ranking,
+      ...(request.exploration ? { exploration: JSON.parse(JSON.stringify(request.exploration)) } : {}),
       facet_keys: request.facet_keys ? [...request.facet_keys] : undefined,
       ...(request.include_results !== undefined ? { include_results: request.include_results } : {})
     };

@@ -37,7 +37,7 @@ describe('retrieval URL state', () => {
     params.set('sort', 'random');
     const state = parseRetrievalState(params, ['publisher']);
     expect(state.filters).toEqual({ publisher: ['ons'] });
-    expect(state.sort).toBe('newest');
+    expect(state.sort).toBe('title');
   });
 
   it('ignores unknown filter values when the complete facet vocabulary is known', () => {
@@ -62,11 +62,11 @@ describe('retrieval URL state', () => {
     ).filters).toEqual({ publisher: [MISSING_FILTER_VALUE] });
   });
 
-  it('uses relevance for a query and newest for filter-only browsing', () => {
+  it('uses relevance for a query and title for filter-only browsing', () => {
     expect(defaultRetrievalSort('planning')).toBe('relevance');
-    expect(defaultRetrievalSort('')).toBe('newest');
+    expect(defaultRetrievalSort('')).toBe('title');
     expect(parseRetrievalState(new URLSearchParams('q=planning')).sort).toBe('relevance');
-    expect(parseRetrievalState(new URLSearchParams('filter.type=Concept')).sort).toBe('newest');
+    expect(parseRetrievalState(new URLSearchParams('filter.type=Concept')).sort).toBe('title');
   });
 
   it('detects serialised filters independently of their validity', () => {
@@ -82,6 +82,10 @@ describe('retrieval URL state', () => {
       filters: {},
       sort: 'newest'
     });
-    expect(params.toString()).toBe('unrelated=kept');
+    expect(params.toString()).toBe('unrelated=kept&sort=newest');
   });
+});
+
+it('preserves an explicit newest sort from a shared URL', () => {
+  expect(parseRetrievalState(new URLSearchParams('sort=newest')).sort).toBe('newest');
 });

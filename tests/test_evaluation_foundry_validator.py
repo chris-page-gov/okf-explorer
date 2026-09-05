@@ -477,6 +477,15 @@ class EvaluationFoundryValidatorTests(unittest.TestCase):
         for fragment in expected:
             self.assertTrue(any(fragment in error for error in errors), fragment)
 
+    def test_kept_facet_assertion_validates_bounded_fields(self) -> None:
+        for facet, value, valid in (("local_authority", "Coventry", True), ("__proto__", "Coventry", False),
+                                     ("local_authority", "", False), ("local_authority", "x" * 501, False)):
+            with self.subTest(facet=facet, valid=valid):
+                journeys = self.valid_documents()["journeys"]
+                journeys["journeys"][0]["assertions"].append({"assertion": "kept_facet_value", "facet": facet, "value": value})
+                errors = check_evaluation_foundry.journey_shape_errors(journeys)
+                self.assertEqual(not valid, any("kept_facet_value" in error for error in errors))
+
     def test_verify_url_expected_final_hash_must_be_a_safe_hash(self) -> None:
         journeys = self.valid_documents()["journeys"]
         for final_hash in ("record/with whitespace", "#"):

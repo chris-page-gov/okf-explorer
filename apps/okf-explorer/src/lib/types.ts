@@ -525,6 +525,8 @@ export type LargeSearchTypoTolerance = {
 export type SearchRankingStrategy = 'weighted' | 'idf' | 'idf-exact';
 
 export type LargeSearchRequest = {
+  /** Complete-set exploration, evaluated before the display and hydration limits. */
+  exploration?: import('./viewer/facetSelection').Exploration;
   query: string;
   filters: Record<string, string[]>;
   sort: 'relevance' | 'newest' | 'title' | 'metadata-quality';
@@ -585,6 +587,12 @@ export type LargeSearchTruncation = {
 };
 
 export type LargeSearchResponse = {
+  exploration?: {
+    highlighted_count: number;
+    scope_ids?: number[];
+    highlighted_ids?: number[];
+    facets: Record<string, LargeFacetRow[]>;
+  };
   results: SearchResultDoc[];
   total: number;
   /** Whether total is exact, a lower bound, or only the size of an approximate candidate set. */
@@ -968,6 +976,7 @@ export type LargeAnalysisOverview = {
 };
 
 export type SearchResultDoc = {
+  highlighted?: boolean;
   ordinal: number;
   name: string;
   title: string;
@@ -1070,6 +1079,7 @@ export type SearchSuggestion = {
 };
 
 export type LargeFacetRow = {
+  highlighted?: number;
   value: string;
   count: number;
 };

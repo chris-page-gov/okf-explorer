@@ -38,3 +38,6 @@ experiments/sharepoint-copilot/results/private/
 
 # Local-only raw evidence for generated public postmortems.
 postmortem/
+
+# Local research drafts are excluded from Git and Site assembly.
+/research/*.docx

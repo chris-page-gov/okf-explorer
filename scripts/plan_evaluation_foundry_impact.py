@@ -17,6 +17,8 @@ from typing import Any, Iterable
 
 from ruamel.yaml import YAML
 
+from plane_root_validation import V2_SCHEMA, identity_entry
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PROFILE = (
@@ -26,6 +28,14 @@ DEFAULT_PROFILE = (
     / "heritage-warwickshire"
     / "evaluation-profile.yaml"
 )
+# The released Heritage profiles are byte-frozen. These current repository
+# journeys use their existing browser-control rule without editing that contract.
+REPOSITORY_JOURNEYS = frozenset({
+    "evaluation/gov-ckan/journeys.json",
+    "evaluation/legislation/journeys.json",
+    "evaluation/okf-explorer/journeys.json",
+    "evaluation/heritage/journeys.json",
+})
 JOB_IDS = (
     "python",
     "app",
@@ -230,13 +240,21 @@ def _validated_plane_root_digests(receipt: dict[str, Any]) -> dict[str, str]:
             )
         if plane.get("files") != len(entries) or plane.get("bytes") != byte_total:
             raise ImpactPlanError(f"plane {role!r} count or byte total differs")
-        observed = _receipt_root_sha256(receipt.get("schema"), entries)
+        identities = entries
+        if receipt.get("schema") == V2_SCHEMA:
+            if plane.get("artifact_root_sha256") != _rooted_json_sha256(entries):
+                raise ImpactPlanError(f"plane {role!r} artifact root differs from its entries")
+            try:
+                identities = [identity_entry(entry) for entry in entries]
+            except RuntimeError as error:
+                raise ImpactPlanError(str(error)) from error
+        observed = _receipt_root_sha256(receipt.get("schema"), identities)
         if plane.get("root_sha256") != observed:
             raise ImpactPlanError(f"plane {role!r} root differs from its entries")
         claimed_roots[role] = observed
         # Compare a schema-neutral canonical entry manifest so a supported
         # receipt-format migration does not masquerade as a corpus change.
-        roots[role] = _rooted_json_sha256(entries)
+        roots[role] = _rooted_json_sha256(identities)
     release_basis = [
         {"plane": role, "root_sha256": digest}
         for role, digest in sorted(claimed_roots.items())
@@ -533,6 +551,10 @@ def build_impact_plan(
             if any(
                 isinstance(pattern, str) and pattern_matches(path, pattern)
                 for pattern in rule.get("patterns", [])
+            ) or (
+                profile.get("profile_id") == "heritage-coventry-warwickshire-v1"
+                and rule.get("id") == "IMPACT-FOUNDRY-JOURNEYS"
+                and path in REPOSITORY_JOURNEYS
             )
         ]
         matched.sort(key=lambda item: str(item.get("id", "")))

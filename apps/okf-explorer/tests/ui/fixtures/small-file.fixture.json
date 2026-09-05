@@ -1,0 +1,14 @@
+{
+  "okf_version": "0.1",
+  "meta": {
+    "title": "File loading fixture"
+  },
+  "nodes": {
+    "alpha": {
+      "id": "alpha",
+      "title": "Alpha file record",
+      "type": "Dataset"
+    }
+  },
+  "edges": []
+}
