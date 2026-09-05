@@ -16,17 +16,25 @@
   let touch: { x: number; y: number; at: number } | null = null;
   let shell = $state<HTMLElement>();
   let previousPanel: WorkspacePanel | undefined;
+  let lastPaneFocus: HTMLElement | null = null;
+  function rememberFocus(event: FocusEvent) {
+    const target = event.target;
+    lastPaneFocus = target instanceof HTMLElement && target.closest('.workspace-pane') ? target : null;
+  }
   $effect(() => {
     const panel = activePanel;
     const width = viewportWidth;
     const panelChanged = previousPanel !== undefined && previousPanel !== panel;
     previousPanel = panel;
-    const focused = document.activeElement;
+    // Chrome may blur a control as soon as a media query hides its pane,
+    // before the resize effect runs. Retain that focus context across the blur.
+    const focused = document.activeElement === document.body ? lastPaneFocus : document.activeElement;
     const focusedPane = focused?.closest('.workspace-pane');
     if (!shell || width > 1099 || !focusedPane) return;
     void tick().then(() => {
       // Resizing within one layout must not interrupt typing in a visible control.
-      if (document.activeElement !== focused || (!panelChanged && focusedPane.getClientRects().length)) return;
+      const current = document.activeElement;
+      if ((current !== focused && current !== document.body) || (!panelChanged && focusedPane.getClientRects().length)) return;
       shell?.querySelector<HTMLElement>(`[data-panel="${panel}"]`)?.focus({ preventScroll: true });
     });
   });
@@ -66,7 +74,7 @@
   }
 </script>
 
-<svelte:window bind:innerWidth={viewportWidth} />
+<svelte:window bind:innerWidth={viewportWidth} onfocusin={rememberFocus} />
 
 <main bind:this={shell} class="workspace workspace-shell" class:showing-pair={showingPair} style={`--navigation-width:${leftCollapsed ? 44 : leftWidth}px;--details-width:${rightCollapsed ? 44 : rightWidth}px`} ontouchstart={startSwipe} ontouchend={endSwipe} ontouchcancel={() => touch = null}>
   <aside tabindex="-1" data-panel="navigation" class="left-panel workspace-pane" class:mobile-active={activePanel === 'navigation'} class:rail={leftCollapsed} aria-label="Search and facets">

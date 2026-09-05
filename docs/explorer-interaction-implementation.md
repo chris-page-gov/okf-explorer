@@ -3,7 +3,7 @@
 This local change implements the UI review of 5 September 2026 and the user's
 SeeLinks refinements. The base Explorer commit is
 `c8af0b05cab49a5341e0b787e17d49a674868d3a`. The implementation belongs to this repository. The separate
-[early-years rehearsal kit](https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years)
+early-years rehearsal kit (`gds-local-hackathon-20260909-early-years`)
 contains the fictional producer fixture and portable consumer acceptance.
 SeeLinks was inspected read-only. The kit's original pinned Explorer build and
 historical execution receipts are preserved. The owner authorised public publication of this synthetic rehearsal on 5 September 2026; production gates remain required.
@@ -98,3 +98,7 @@ not become a graph-meaning change, and a malformed identity still blocks trust.
 The obsolete Python facet source-string assertion is covered instead by the
 shared component rendering tests and actual browser search, paging and selection
 journeys.
+
+Focus recovery retains the last focused pane when Chrome clears the active
+element before a responsive resize is delivered. Focusing a control outside the
+panes clears that fallback, so resizing does not steal explicit visible focus.

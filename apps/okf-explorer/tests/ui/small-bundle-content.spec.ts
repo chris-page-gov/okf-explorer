@@ -512,3 +512,22 @@ test('SMALL-E2E-15 preserves visible input focus and repairs focus when a pane b
   await expect(page.locator('[data-panel="navigation"]')).toBeHidden();
   await expect(page.locator('[data-panel="details"]')).toBeFocused();
 });
+
+for (const focus of ['browser-blur', 'outside-control']) {
+  test(`SMALL-E2E-16 repairs a hidden pane after ${focus}`, async ({ page }) => {
+    await page.setViewportSize({ width: 724, height: 705 });
+    await page.getByRole('button', { name: 'Search & details', exact: true }).click();
+    await page.getByRole('tab', { name: 'Results', exact: true }).click();
+    await page.locator('.left-panel .node-list button').filter({ hasText: 'Beta related record' }).click();
+    const search = page.getByRole('textbox', { name: 'Search nodes' });
+    const reader = page.getByRole('button', { name: 'Reader', exact: true });
+    await search.focus();
+    if (focus === 'browser-blur') {
+      // Model Chrome clearing activeElement before Svelte receives resize.
+      await search.evaluate(node => (node as HTMLInputElement).blur());
+    } else await reader.focus();
+    await page.setViewportSize({ width: 320, height: 705 });
+    await expect(page.locator('[data-panel="navigation"]')).toBeHidden();
+    await expect(focus === 'browser-blur' ? page.locator('[data-panel="details"]') : reader).toBeFocused();
+  });
+}

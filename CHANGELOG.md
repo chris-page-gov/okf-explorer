@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Preserved panel focus across Chrome's native blur during responsive resizing,
+  while leaving an explicitly focused visible control undisturbed.
+
 - Preserved the byte-frozen Heritage evaluation profiles while classifying the
   four current repository journey manifests through their existing control rule.
   Corrected impact planning to validate both artefact and semantic identities in
