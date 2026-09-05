@@ -123,6 +123,7 @@ JOURNEY_ACTIONS = {
     "verify_url",
 }
 JOURNEY_ASSERTIONS = {
+    "kept_facet_value",
     "disclosure_defaults_observed",
     "disclosure_toggle_observed",
     "external_link_opened_in_new_tab",
@@ -929,6 +930,12 @@ def journey_shape_errors(journeys: dict[str, Any]) -> list[str]:
                     f"journeys: journeys[{index}].assertions[{assertion_index}].assertion "
                     f"must be a supported evaluator assertion"
                 )
+            elif assertion.get("assertion") == "kept_facet_value":
+                facet, value = assertion.get("facet"), assertion.get("value")
+                if (not isinstance(facet, str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", facet)
+                    or facet in {"__proto__", "constructor", "prototype"}
+                    or not isinstance(value, str) or not value.strip() or len(value) > 500):
+                    errors.append("journeys: kept_facet_value requires a valid facet and nonempty bounded value")
     return errors
 
 

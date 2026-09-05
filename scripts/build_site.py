@@ -1874,6 +1874,8 @@ def is_component_source_allowed(relative: Path) -> bool:
         relative.name in FORBIDDEN_NAMES
         or relative.name.startswith("~$")
         or relative.suffix.lower() in FORBIDDEN_SUFFIXES
+        # Research drafts are local working documents, not Site transport assets.
+        or (relative.parts[:1] == ("research",) and relative.suffix.lower() == ".docx")
         or is_ephemeral_evaluation_result(relative)
         or is_mutable_evaluation_evidence(relative)
         or relative == PROMOTION_ENVELOPE

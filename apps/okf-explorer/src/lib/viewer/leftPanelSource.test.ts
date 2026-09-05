@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import pageSource from '../../routes/explore/+page.svelte?raw';
 
+// Extracted facet/result behaviour is exercised in sharedExplorerRendering.test.ts,
+// facetSelection.test.ts and browser acceptance, without source-location assertions.
 describe('large-corpus left panel UX harness', () => {
   it('starts with all facets folded instead of opening the first provider list', () => {
     expect(pageSource).toContain("let activeFacetKey = $state('');");
@@ -8,13 +10,6 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).not.toContain('activeFacetKey = Object.keys(largeIndex.facets)[0]');
   });
 
-  it('toggles open facets closed and hydrates unopened facets with a loading state', () => {
-    expect(pageSource).toContain('async function openLargeFacet(key: string)');
-    expect(pageSource).toContain('if (facetIsOpen(key) && !facetIsPinned(key)');
-    expect(pageSource).toContain("return facetIsPinned(key) || Boolean(largeFacetFilters[key]?.length) || activeFacetKey === key");
-    expect(pageSource).toContain("largeFacetHydratingKey = key;");
-    expect(pageSource).toContain('Loading facet values...');
-  });
 
   it('shows an immediate applying cue and disables competing facet clicks', () => {
     expect(pageSource).toContain('let largeFacetApplyingKey = $state');
@@ -55,27 +50,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('largeSearchClient !== client');
   });
 
-  it('separates retrieval controls and explains matches without exposing raw scores', () => {
-    expect(pageSource).toContain('<h2>Search</h2>');
-    expect(pageSource).toContain('<span>Filter results');
-    expect(pageSource).toContain('<span>Sort</span>');
-    expect(pageSource).toContain('class="active-filter-chips"');
-    expect(pageSource).toContain('function removeLargeFilter');
-    expect(pageSource).toContain('Why this matched: {searchMatchReason(result)}');
-    expect(pageSource).toContain('Not specified (metadata gap)');
-    expect(pageSource).not.toContain('score {result.score}');
-  });
 
-  it('exposes every ranked row and a query-specific settled marker for atomic evidence capture', () => {
-    expect(pageSource).toContain('function rankedResultCanonicalUrl');
-    expect(pageSource.match(/data-okf-ranked-result data-result-canonical-url=\{rankedResultCanonicalUrl/g)).toHaveLength(4);
-    expect(pageSource.match(/data-okf-ranked-results="primary"/g)).toHaveLength(1);
-    expect(pageSource.match(/data-okf-ranked-results="navigation"/g)).toHaveLength(2);
-    expect(pageSource).toContain('data-okf-query={largeAppliedQuery}');
-    expect(pageSource).toContain("data-okf-search-state={largeSearching ? 'searching' : 'settled'}");
-    expect(pageSource).not.toContain('data-result-canonical-url={dataset.url || undefined}');
-    expect(pageSource).not.toContain('data-result-canonical-url={result.url || undefined}');
-  });
 
   it('labels reduced record cards in the left panel instead of leaving unexplained cards under facets', () => {
     expect(pageSource).toContain('class="left-results"');
@@ -83,15 +58,6 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('Search matches');
   });
 
-  it('layers bundle-scoped facet preferences over provider defaults', () => {
-    expect(pageSource).toContain("const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1'");
-    expect(pageSource).toContain('function providerFacetPreferences()');
-    expect(pageSource).toContain('function presentedLargeFacetKeys()');
-    expect(pageSource).toContain('Pin facet');
-    expect(pageSource).toContain('Move earlier');
-    expect(pageSource).toContain('Hide from Suggested');
-    expect(pageSource).toContain('oncontextmenu={(event) => openFacetMenu(key, event)}');
-  });
 
   it('uses corpus-declared facet keys and treats generic facets only as a fallback', () => {
     expect(pageSource).toContain("let largeFacetKeys: string[] = $derived(source?.kind === 'large' ? declaredLargeFacetKeys(source) : []);");
@@ -104,40 +70,8 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('!declaredLargeFacetKeys(large, null).length');
   });
 
-  it('uses compact distributions for manageable facets and search-first previews for large facets', () => {
-    expect(pageSource).toContain('class="facet-distribution-bar"');
-    expect(pageSource).toContain('facetDistributionSegmentLabel');
-    expect(pageSource).toContain('class="facet-search-ghost"');
-    expect(pageSource).toContain('placeholder={facetSearchPlaceholder(key)}');
-    expect(pageSource).toContain('What makes a useful facet?');
-    expect(pageSource).toContain('if (dynamic !== undefined) return dynamic.length;');
-    expect(pageSource).toContain("Object.prototype.hasOwnProperty.call(largeBaselineFacetRows, key)");
-    expect(pageSource).toContain('await ensureLargeFacetIndex();');
-    expect(pageSource).toContain('providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key))');
-    expect(pageSource).toContain(
-      'if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());'
-    );
-    expect(pageSource).not.toContain('facetDistributionSegments(rows, 18)');
-    expect(pageSource).not.toContain('function preloadLargeFacetDistributions');
-  });
 
-  it('keeps graph context and facet summaries dense without removing their semantic controls', () => {
-    expect(pageSource).toContain('class="graph-context-rail"');
-    expect(pageSource).toContain('class="graph-key-strip"');
-    expect(pageSource).toContain('class="graph-authority-filters"');
-    expect(pageSource).toContain('family.rows.slice(0, 3)');
-    expect(pageSource).toContain('family.valueCount - Math.min(3, family.rows.length)');
-  });
 
-  it('uses SeeLinks-style preview, commit, pin-open and drag interactions without legacy Adjust', () => {
-    expect(pageSource).toContain('function previewLargeFacetValue');
-    expect(pageSource).toContain('async function commitFacetHighlights');
-    expect(pageSource).toContain('ondblclick={(event) => void commitFacetHighlights');
-    expect(pageSource).toContain('aria-label={`Reorder ${facetDisplayLabel(key)}`}');
-    expect(pageSource).toContain('function dropFacetBefore');
-    expect(pageSource).toContain("aria-label={`${facetIsPinned(key) ? 'Unpin' : 'Pin'} ${facetDisplayLabel(key)}`}");
-    expect(pageSource).not.toContain('Adjust');
-  });
 
   it('offers keyboard-navigable left and data-card tab sets while retaining disclosures within tabs', () => {
     expect(pageSource).toContain('role="tablist" aria-label="Left panel"');

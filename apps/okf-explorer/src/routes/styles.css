@@ -1,4 +1,5 @@
 :root {
+  --explorer-control-height: 36px;
   --bg: #eef2f5;
   --surface: #ffffff;
   --surface-2: #f7f9fb;
@@ -111,6 +112,12 @@ input:focus {
 }
 
 .tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--explorer-control-height);
+  min-height: var(--explorer-control-height);
+  line-height: 1.2;
   font-weight: 700;
 }
 
@@ -309,25 +316,6 @@ input:focus {
   background: #fff8cc;
 }
 
-.workspace {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: var(--left-width) 6px minmax(420px, 1fr) 6px var(--right-width);
-}
-
-.leftCollapsed .workspace {
-  grid-template-columns: 44px 6px minmax(420px, 1fr) 6px var(--right-width);
-}
-
-.rightCollapsed .workspace {
-  grid-template-columns: var(--left-width) 6px minmax(420px, 1fr) 6px 44px;
-}
-
-.leftCollapsed.rightCollapsed .workspace {
-  grid-template-columns: 44px 6px minmax(420px, 1fr) 6px 44px;
-}
-
 .left-panel,
 .right-panel {
   min-width: 0;
@@ -366,14 +354,6 @@ input:focus {
   writing-mode: vertical-rl;
 }
 
-.leftCollapsed .left-panel .panel-bar,
-.rightCollapsed .right-panel .panel-bar {
-  height: 100%;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 10px;
-  overflow: hidden;
-}
 
 .right-panel .panel-bar {
   justify-content: flex-start;
@@ -389,10 +369,6 @@ input:focus {
   padding: 9px;
 }
 
-.leftCollapsed .left-content,
-.rightCollapsed .detail {
-  display: none;
-}
 
 .splitter {
   min-width: 6px;
@@ -1775,11 +1751,15 @@ input:focus {
   background: #fff2ef;
 }
 
-.reader-view h2,
-.detail h2 {
+.reader-view h2 {
   margin: 8px 0;
   font-size: 22px;
 }
+
+.detail { font-size:14px; line-height:1.45; }
+.detail h1, .detail h2 { font-size:18px; line-height:1.3; margin:8px 0; }
+.detail h3 { font-size:16px; line-height:1.35; }
+.detail .markdown-body { padding:8px; margin-top:8px; }
 
 .federation-overview {
   display: grid;
@@ -3937,52 +3917,6 @@ button.chip:focus {
     flex: 0 0 auto;
   }
 
-  .workspace,
-  .rightCollapsed .workspace {
-    display: grid;
-    grid-template-columns: minmax(235px, 40%) minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) 44px;
-  }
-
-  .leftCollapsed .workspace,
-  .leftCollapsed.rightCollapsed .workspace {
-    grid-template-columns: 44px minmax(0, 1fr);
-  }
-
-  .left-panel {
-    grid-column: 1;
-    grid-row: 1;
-    height: auto;
-    max-height: none;
-  }
-
-  .stage {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .right-panel {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    height: min(34dvh, 320px);
-    max-height: min(34vh, 320px);
-    border-top: 1px solid var(--line);
-  }
-
-  .rightCollapsed .right-panel {
-    height: 44px;
-    max-height: 44px;
-  }
-
-  .right-panel .panel-bar {
-    min-height: 38px;
-  }
-
-  .rightCollapsed .right-panel .panel-bar {
-    height: 44px;
-    flex-direction: row;
-  }
-
   .conversation-pair,
   .conversation-event {
     grid-template-columns: 1fr;
@@ -4002,29 +3936,11 @@ button.chip:focus {
 }
 
 @media (max-width: 620px) {
-  .app {
-    height: auto;
-  }
-
-  .topbar,
-  .workspace,
-  .rightCollapsed .workspace,
-  .leftCollapsed .workspace,
-  .leftCollapsed.rightCollapsed .workspace {
-    display: block;
-  }
-
-  .left-panel,
-  .right-panel,
-  .rightCollapsed .right-panel {
-    height: 45dvh;
-    max-height: 45vh;
-  }
-
-  .leftCollapsed .left-panel,
-  .rightCollapsed .right-panel {
-    height: 44px;
-  }
+  .app { height:100dvh; }
+  .topbar { display:grid; grid-template-areas:"title" "tabs" "bundle"; grid-template-columns:minmax(0,1fr); gap:6px; padding:8px; }
+  .title-block p { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tabs button { padding:6px 10px; }
+  .bundle-loader { min-width:0; }
 
   .graph-summary {
     text-align: left;
@@ -4053,4 +3969,14 @@ button.chip:focus {
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* Shared cards and lists have one scroll container in the active workspace panel. */
+.reader-view.shared-reader { display:block; padding:0; }
+
+/* Shared control density across view, navigation and inspector tabs. */
+.panel-tabs button, .detail .detail-tabs button {
+  display:flex; align-items:center; justify-content:center;
+  min-height:var(--explorer-control-height); height:var(--explorer-control-height);
+  padding:0 7px; line-height:1.2;
 }

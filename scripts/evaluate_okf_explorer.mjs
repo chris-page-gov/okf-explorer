@@ -193,6 +193,7 @@ const JOURNEY_ASSERTIONS = new Set([
   'url_param_equals',
   'url_param_includes',
   'url_param_absent',
+  'kept_facet_value',
   'sort_value',
   'search_value',
   'history_round_trip_restored',
@@ -1468,6 +1469,9 @@ function validateJourneys(
       if (!JOURNEY_ASSERTIONS.has(assertion.assertion)) {
         throw new Error(`Journey ${journey.id} has unknown assertion ${assertion.assertion}.`);
       }
+      if (assertion.assertion === 'kept_facet_value' && (!validFacetKey(assertion.facet) || !validFacetValue(assertion.value))) {
+        throw new Error(`Journey ${journey.id} kept_facet_value requires a valid facet and nonempty bounded value.`);
+      }
     }
   }
 }
@@ -1640,8 +1644,8 @@ async function observeQuestion(page, options, question) {
   await page.waitForSelector('main', { timeout: 20000 });
   await page.waitForTimeout(500);
   await waitForSettledSearch(page);
-  const results = await page.locator('.result-list button, .record-list button, .large-card, [data-route]').count().catch(() => 0);
-  const resultButtons = page.locator('.result-list button, .record-list button');
+  const results = await page.locator('[data-okf-ranked-results="primary"] [data-okf-ranked-result], .result-list > button, .record-list > button').count().catch(() => 0);
+  const resultButtons = page.locator('[data-okf-ranked-results="primary"] .result-open, .result-list > button, .record-list > button');
   const firstResultCount = await resultButtons.count().catch(() => 0);
   if (firstResultCount > 0) {
     await resultButtons.first().click();
@@ -1677,7 +1681,7 @@ async function observeQuestion(page, options, question) {
       detailTitle,
       searchValue: document.querySelector('.search-input')?.value || '',
       resultCount: Math.max(
-        document.querySelectorAll('.result-list button, .record-list button').length,
+        document.querySelectorAll('[data-okf-ranked-results="primary"] [data-okf-ranked-result], .result-list > button, .record-list > button').length,
         document.querySelectorAll('.api-card, .dataset-card-ui, .large-card').length
       ),
       chipCount: document.querySelectorAll('.metadata-chip, .chip, .tag-chip').length,
@@ -1698,14 +1702,19 @@ async function waitForSettledSearch(page) {
     const query = new URL(window.location.href).searchParams.get('q')?.trim() || '';
     const busy = [
       'Loading bundle...',
+      'Loading descriptor and overview...',
+      'Loading record index...',
       'Preparing static search index',
       'Searching static index...',
       'Loading the record and resource index'
     ].some((message) => bodyText.includes(message));
-    const resultCount = document.querySelectorAll('.result-list > button, .record-list > button').length;
+    const primary = document.querySelector('[data-okf-ranked-results="primary"][data-okf-search-state]');
+    if (primary) return !busy && primary.getAttribute('data-okf-search-state') === 'settled' &&
+      primary.getAttribute('aria-busy') !== 'true' && (primary.getAttribute('data-okf-query') || '').trim() === query;
+    const resultCount = document.querySelectorAll('[data-okf-ranked-results="primary"] [data-okf-ranked-result], .result-list > button, .record-list > button').length;
     const explicitEmptyState = /No static-search matches|No results|No records match|No spatial evidence in this context|0\s+shown\s+of\s+0\s+matching\s+records/i.test(bodyText);
     return !busy && (!query || resultCount > 0 || explicitEmptyState);
-  }, undefined, { timeout: 30000 }).catch(() => undefined);
+  }, undefined, { timeout: 30000 });
   await page.waitForTimeout(250);
 }
 
@@ -1850,18 +1859,34 @@ function selectedJourneys(options, journeys) {
 async function locateFacet(page, action) {
   const label = action.facet_label || action.facet || action.facet_key;
   const facetKey = action.facet_key || action.facet;
-  const sections = page.locator('.facet-section');
-  const count = await sections.count();
-  for (let index = 0; index < count; index += 1) {
-    const section = sections.nth(index);
-    const sectionKey = await section.getAttribute('data-facet-key');
-    if (facetKey && sectionKey === String(facetKey)) return section;
-    const control = section.locator('.facet-toggle, summary').first();
-    if (!(await control.count())) continue;
-    const controlText = (await control.innerText()).trim().toLowerCase();
-    if (controlText.includes(String(label).toLowerCase())) return section;
+  const mobileNavigation = page.getByRole('navigation', { name: 'Workspace panels' })
+    .getByRole('button', { name: /^Search & (facets|details)$/ });
+  if (await mobileNavigation.isVisible()) await mobileNavigation.click();
+  const navigationToggle = page.getByRole('button', { name: 'Toggle navigation', exact: true });
+  if (await navigationToggle.isVisible() && await navigationToggle.getAttribute('aria-expanded') === 'false') {
+    await navigationToggle.click();
   }
-  throw new Error(`Facet section not found: ${label}`);
+  const facetsTab = page.getByRole('tab', { name: 'Facets', exact: true });
+  if (await facetsTab.isVisible()) await facetsTab.click();
+  const find = async () => {
+    const sections = page.locator('.facet-section');
+    for (let index = 0; index < await sections.count(); index += 1) {
+      const section = sections.nth(index);
+      if (facetKey && await section.getAttribute('data-facet-key') === String(facetKey)) return section;
+      const control = section.locator('.facet-toggle, summary').first();
+      if (await control.count() && (await control.innerText()).trim().toLowerCase().includes(String(label).toLowerCase())) return section;
+    }
+    return null;
+  };
+  let section = await find();
+  const all = page.locator('.facet-scope-switch').getByRole('button', { name: 'All', exact: true });
+  if (!section && await all.isVisible()) {
+    await all.click();
+    await page.locator('.facet-section').first().waitFor({ state: 'visible' });
+    section = await find();
+  }
+  if (!section) throw new Error(`Facet section not found: ${label}`);
+  return section;
 }
 
 async function openFacet(section) {
@@ -1890,9 +1915,9 @@ async function runJourneyAction(page, action, evidence, options) {
     return { value: await input.inputValue(), url: page.url() };
   }
   if (action.action === 'open_first_result') {
-    const result = page.locator('.result-list > button').first();
+    const result = page.locator('[data-okf-ranked-results="primary"] .result-open, .result-list > button').first();
     await result.waitFor({ state: 'visible', timeout: 20000 });
-    const title = (await result.locator('strong').first().innerText()).trim();
+    const title = (await result.locator('h2, strong').first().innerText()).trim();
     await result.click();
     await page.waitForTimeout(300);
     return { title, url: page.url() };
@@ -1906,7 +1931,7 @@ async function runJourneyAction(page, action, evidence, options) {
   if (action.action === 'select_facet_value') {
     const section = await locateFacet(page, action);
     await openFacet(section);
-    const search = section.locator('.facet-search input');
+    const search = section.locator('.facet-search input, .facet-values input');
     if (await search.count()) {
       await search.fill(action.search || action.value);
       await page.waitForTimeout(100);
@@ -1914,10 +1939,12 @@ async function runJourneyAction(page, action, evidence, options) {
     const candidate = section.locator('.facet-values button:not(.facet-more)').filter({ hasText: action.value }).first();
     await candidate.waitFor({ state: 'visible', timeout: 20000 });
     const label = (await candidate.innerText()).trim();
-    await candidate.click();
+    const modernFacet = await candidate.getAttribute('data-facet-value') !== null;
+    if (modernFacet) await candidate.press('Alt+Enter');
+    else await candidate.click();
     const facetKey = action.facet_key || action.facet;
     if (
-      facetKey &&
+      !modernFacet && facetKey &&
       !new URL(page.url()).searchParams.getAll(`filter.${facetKey}`).includes(String(action.value))
     ) {
       // Current compact facets use a first click to preview a value and Enter
@@ -1957,8 +1984,10 @@ async function runJourneyAction(page, action, evidence, options) {
     const restoredForwardQuery = await page.locator('.search-input').first().inputValue();
     await page.goBack({ waitUntil: 'domcontentloaded' });
     await waitForSettledSearch(page);
-    const restored = restoredBackUrl === originalUrl && restoredBackQuery === originalQuery && restoredForwardQuery === alternateQuery;
-    evidence.historyRoundTrip = { originalUrl, originalQuery, alternateQuery, restoredBackUrl, restoredBackQuery, restoredForwardQuery, restored };
+    const finalBackUrl = page.url();
+    const finalBackQuery = await page.locator('.search-input').first().inputValue();
+    const restored = restoredBackUrl === originalUrl && restoredBackQuery === originalQuery && restoredForwardQuery === alternateQuery && finalBackUrl === originalUrl && finalBackQuery === originalQuery;
+    evidence.historyRoundTrip = { originalUrl, originalQuery, alternateQuery, restoredBackUrl, restoredBackQuery, restoredForwardQuery, finalBackUrl, finalBackQuery, restored };
     return evidence.historyRoundTrip;
   }
   if (action.action === 'select_view') {
@@ -2212,6 +2241,35 @@ async function runJourneyAction(page, action, evidence, options) {
   throw new Error(`Unsupported journey action: ${action.action}`);
 }
 
+function validFacetKey(key) {
+  return typeof key === 'string' && /^[\w-]{1,80}$/.test(key) && !['__proto__', 'constructor', 'prototype'].includes(key);
+}
+
+function validFacetValue(value) {
+  return typeof value === 'string' && Boolean(value.trim()) && value.length <= 500;
+}
+
+/** Independently check the complete URL predicate before accepting a keep receipt. */
+function keptFacetValue(params, key, value) {
+  if (!validFacetKey(key) || !validFacetValue(value)) return false;
+  const validSelection = selection => selection && typeof selection === 'object' && !Array.isArray(selection) &&
+    Object.keys(selection).length <= 32 && Object.entries(selection).every(([facet, values]) =>
+      validFacetKey(facet) && Array.isArray(values) && values.length > 0 && values.length <= 100 && values.every(validFacetValue));
+  const raw = params.get('explore');
+  let state;
+  if (raw) {
+    if (raw.length > 16000) return false;
+    try { state = JSON.parse(raw); } catch { return false; }
+    if (!state || !validSelection(state.preview) || !Array.isArray(state.reductions) || state.reductions.length > 24 ||
+      !state.reductions.every(step => step && ['keep', 'remove'].includes(step.mode) &&
+        validSelection(step.selection) && Object.keys(step.selection).length > 0)) return false;
+  }
+  const legacy = params.getAll(`filter.${key}`);
+  if (legacy.length === 1 && legacy[0] === value) return true;
+  return Boolean(state?.reductions.some(step => step.mode === 'keep' &&
+    Array.isArray(step.selection[key]) && new Set(step.selection[key]).size === 1 && step.selection[key][0] === value));
+}
+
 async function evaluateJourneyAssertion(page, assertion, evidence) {
   let passed = false;
   let actual = null;
@@ -2222,6 +2280,10 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
       : assertion.assertion === 'url_param_equals'
         ? actual.length === 1 && actual[0] === assertion.value
         : actual.some((value) => value.includes(String(assertion.value)));
+  } else if (assertion.assertion === 'kept_facet_value') {
+    const params = new URL(page.url()).searchParams;
+    actual = { legacy: params.getAll(`filter.${assertion.facet}`), exploration: params.get('explore') };
+    passed = keptFacetValue(params, assertion.facet, assertion.value);
   } else if (assertion.assertion === 'sort_value') {
     const urlValue = new URL(page.url()).searchParams.get('sort');
     const control = page.locator('.sort-control select').first();
@@ -2235,7 +2297,7 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
     actual = evidence.historyRoundTrip || null;
     passed = Boolean(actual?.restored);
   } else if (assertion.assertion === 'result_count_min') {
-    actual = await page.locator('.result-list > button').count();
+    actual = await page.locator('[data-okf-ranked-results="primary"] [data-okf-ranked-result], .result-list > button').count();
     passed = actual >= Number(assertion.value);
   } else if (assertion.assertion === 'map_filter_applied') {
     actual = evidence.mapFilter || null;
@@ -2728,6 +2790,7 @@ export {
   inspectCandidate,
   inspectExplorerBuild,
   loadCandidateReceipt,
+  keptFacetValue,
   parseArgs,
   resultTimestamp,
   selectPlaywrightBrowser,

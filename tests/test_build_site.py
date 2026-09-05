@@ -20,6 +20,20 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_research_draft_is_excluded_from_site_transport(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "research"
+            output = Path(directory) / "published"
+            source.mkdir()
+            (source / "private-draft.docx").write_bytes(b"local draft")
+            (source / "diagram.svg").write_text("<svg/>")
+            build_site.copy_public_tree(
+                source, output,
+                include=lambda path: build_site.is_component_source_allowed(Path("research") / path),
+            )
+            self.assertFalse((output / "private-draft.docx").exists())
+            self.assertEqual((output / "diagram.svg").read_text(), "<svg/>")
+
     def test_publication_identity_binds_commit_and_control_materials(self) -> None:
         commit = "a" * 40
         with tempfile.TemporaryDirectory(

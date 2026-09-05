@@ -472,3 +472,90 @@ uv run --locked python scripts/build_okf_registry.py --check
   `data/search/*` files are included in the deployed site.
 - If browser navigation loses the bundle, copy the route again from the
   Explorer after the bundle has loaded.
+
+## Explore by highlighting and keeping sets
+
+Both compact OKF bundles and indexed large corpora use the same facet controls.
+A single value click highlights its matching records and brings them to the top
+of the Reader. It does not remove other records. Clicking a selected value again removes it. Clicking an unselected value
+replaces the selection in that facet. Hold **Command on macOS** or **Ctrl on
+Windows/Linux**, or enable **Select multiple values**, to add or remove values.
+Values in one facet combine with **or**; selections in different facets combine
+with **and**. Opening another facet folds the previous one unless it is pinned.
+Its selected values and distribution remain visible in the compact summary.
+
+Double-click a value to **Keep highlighted**. **Keep unhighlighted** keeps the
+complement of the complete selection. Both operations narrow the current search
+scope and can be reversed with **Undo keep**. With a keyboard, Enter highlights
+and Alt+Enter keeps. A zero-match highlight remains a valid selection; keeping
+it produces an empty result with recovery controls. **Reset view** clears the
+query, reductions, highlights, map restriction and presentation folds.
+
+**Fold highlighted** and **Fold unhighlighted** hide those records in the Reader
+without removing their membership from facet counts. The compact folded summary
+shows the current highlighted split and can be unfolded. Fold membership is a
+snapshot for the current loaded bundle and is reset when another bundle opens.
+Its counts change with subsequent highlights and searches. Folding is available
+only when complete membership can be retained within the 50,000-record local
+limit. Counts from capped search candidates are labelled partial; unavailable
+counts are not presented as zero. Search, highlights and keep history are in the
+URL; presentation folds remain local to the open session.
+
+For indexed corpora, highlighting and keep/remove predicates run before the
+result display and document-loading limits. Those limits still apply to the
+cards shown. A 200-card page therefore does not define the complement of a
+329-record search. Query uncertainty and resource-loading limits remain visible.
+
+Bundles without a static search worker use simple local text search over loaded
+record fields. Every search word must match those fields; this is labelled in the
+results. Map-constrained indexed counts describe only known matching records
+when the indexed result window is incomplete. Folding is disabled until complete
+membership is available, rather than saving records outside the visible scope.
+
+Each newly opened bundle starts with every facet folded, including saved pinned
+facets. Opening a pinned facet keeps it open during that bundle session. Title is
+the default browsing sort; typed searches default to relevance. Explicit sorting
+in a shared URL is preserved. Clicking a colour toggles that value and leaves the facet folded. Colour controls
+have keyboard access, value names and counts; the expanded list provides larger
+touch targets. Colours separate neighbouring values; the separate
+black-on-white track shows highlighted membership. Labels, ticks and counts carry
+the meaning without requiring colour perception. Unknown membership is shown as
+unknown rather than an empty highlight track.
+
+## Move between panels
+
+Below 600 pixels, Explorer shows one independently scrollable panel at a time. Use the fixed **Search & facets**, **Results** and **Details**
+footer buttons, or swipe horizontally across ordinary panel content. Graphs,
+maps, form controls and selected text keep their own gestures. Selecting a
+record opens Details; choosing a view returns to Results. Keyboard focus moves
+with a record opened from a panel. Switching panels preserves scroll positions.
+
+Between 600 and 1099 pixels, **Search & details** places the two side panels next
+to each other. **Results** switches to the full-width results view. Selection
+actions stay available in both modes. In the paired layout, **Actions** opens
+the keep, undo and fold controls while the count stays visible. Footer icons and
+labels share one compact line. View buttons, side-panel tabs and footer controls
+use the same 36-pixel height. Detail headings use a smaller, consistent scale. The left panel uses **Facets** and **Results** tabs for both bundle sizes,
+so the results list does not duplicate the centre while browsing facets.
+
+On wider screens, collapse either side to a narrow rail with vertical context
+text. Drag a splitter, or focus it and use the arrow keys, to resize a panel.
+Home and End select its minimum and maximum widths. Facet pins keep selected
+facets open. Small-bundle record details have Overview, Evidence and Data tabs;
+**Pin section** keeps a section visible while switching tabs.
+
+Reader cards and lists use the same selected record for detail, Copy route and
+Pin. Inspecting a graph neighbour leaves the graph's explicit focus unchanged.
+Pins retain the source bundle and complete route, so identical record IDs from
+different bundles remain distinct. The saved-pin shelf supports removal,
+copying JSON and downloading JSON. Older unqualified pins are left in their
+original storage rather than assigned to an unknown bundle.
+
+Copied Explorer URLs and exported pins include the source URL, search query,
+selected facet values and record route. Check those details before sharing.
+Pins are stored in this browser; they are not automatically sent to a service.
+
+Record relationship summaries identify incoming or outgoing direction and show
+the explicit source and target. Incoming links use an inverse label when one is
+declared. **Inspect relationship** opens assertion evidence; the separate record
+button opens the neighbouring record.

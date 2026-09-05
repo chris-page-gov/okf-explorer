@@ -111,7 +111,7 @@
       ],
       "assertions": [
         {"assertion":"url_param_includes","name":"bundle","value":"/okf-explorer.json"},
-        {"assertion":"url_param_includes","name":"filter.local_authority","value":"Coventry"},
+        {"assertion":"kept_facet_value","facet":"local_authority","value":"Coventry"},
         {"assertion":"search_value","value":"NHLE 1342941"},
         {"assertion":"sort_value","value":"title"},
         {"assertion":"result_count_min","value":1},

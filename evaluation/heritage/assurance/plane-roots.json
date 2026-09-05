@@ -2,8 +2,8 @@
   "algorithm": "sha256-over-canonical-ordered-entry-identities; root YAML-LD and JSON-LD use URDNA2015 graph identity while artifact_root_sha256 retains exact-byte identity",
   "planes": {
     "control": {
-      "artifact_root_sha256": "def861c55c37e3fbe8d12a0162c9008d6ead3d3d5d501497c0c9d7eaa9aa15a0",
-      "bytes": 144175,
+      "artifact_root_sha256": "7c2f94aacd6c4e2c77d401be4b61d22d66aed8478143c46f27d9705f64377c16",
+      "bytes": 144167,
       "entries": [
         {
           "bytes": 42863,
@@ -16,9 +16,9 @@
           "sha256": "8c5ec68d71b11afa001afd189d23d1d833b7e8a99ff870f7679c896557217cd6"
         },
         {
-          "bytes": 29187,
+          "bytes": 29179,
           "path": "journeys.json",
-          "sha256": "f3b3426db62c6ac97180534e7f9d6faec95606f7087805d87634be880173d0de"
+          "sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb"
         },
         {
           "bytes": 10155,
@@ -37,7 +37,7 @@
         }
       ],
       "files": 6,
-      "root_sha256": "def861c55c37e3fbe8d12a0162c9008d6ead3d3d5d501497c0c9d7eaa9aa15a0"
+      "root_sha256": "7c2f94aacd6c4e2c77d401be4b61d22d66aed8478143c46f27d9705f64377c16"
     },
     "data": {
       "artifact_root_sha256": "44af2b22c84a93e411cf1237b59241e3f230c97ece5e5f14f5c4568d3cf819c9",
@@ -15702,6 +15702,6 @@
       "root_sha256": "3b969c993770830d599077de02f6f9b4fca4e17138f7101349372fc3dd00f9d6"
     }
   },
-  "release_root_sha256": "55609afca3621996bda438d7ff4db928245a947355163adbbe5bbd02e0126dbd",
+  "release_root_sha256": "7ceed0df108ba2f524b01791b305ed73b8d5ab945606ecb330ed8b17a1e445f9",
   "schema": "okf-evaluation-plane-roots.v2"
 }

@@ -133,6 +133,52 @@ async function harness(manifest = baseManifest(), payloadOverrides: Array<[strin
 describe('large static search worker', () => {
   beforeEach(() => vi.unstubAllGlobals());
 
+  it('brings the complete highlighted set ahead of the result limit without reducing it', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: { type: 'query', id: 2, request: {
+      query: 'flood', filters: {}, sort: 'relevance', facet_keys: ['type', 'country'],
+      exploration: { preview: { type: ['Guide'] }, reductions: [] }
+    } } } as MessageEvent);
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(4);
+    expect(response.results.map((row: { name: string }) => row.name)).toEqual(['flood-guide']);
+    expect(response.results[0].highlighted).toBe(true);
+    expect(response.exploration.scope_ids).toEqual([0, 1, 2, 3]);
+    expect(response.exploration.highlighted_ids).toEqual([3]);
+    expect(response.exploration.facets.type).toContainEqual({ value: 'Guide', count: 1, highlighted: 1 });
+  });
+
+  it('keeps the complement of a complete conjunction and reports current-scope facets without hydration', async () => {
+    const worker = await harness();
+    await worker.onmessage?.({ data: { type: 'query', id: 2, request: {
+      query: 'flood', filters: {}, sort: 'relevance', facet_keys: ['type'], include_results: false,
+      exploration: { preview: { country: ['England'] }, reductions: [
+        { mode: 'remove', selection: { type: ['API', 'Dataset'], country: ['England'] } }
+      ] }
+    } } } as MessageEvent);
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(2);
+    expect(response.exploration.scope_ids).toEqual([1, 3]);
+    expect(response.exploration.highlighted_ids).toEqual([3]);
+    expect(response.exploration.facets.type).toContainEqual({ value: 'Dataset', count: 0, highlighted: 0 });
+    expect(vi.mocked(fetch).mock.calls.map(([input]) => String(input))).not.toContain('https://example.test/docs.json');
+  });
+
+  it('withholds fold membership for capped postings and refuses unsupported exploration facets', async () => {
+    const manifest = baseManifest(); manifest.counts.max_postings_per_token = 2;
+    const worker = await harness(manifest, [['https://example.test/postings.json', { tokens: { flood: [[0, 20, 1], [1, 16, 1]] } }]]);
+    await worker.onmessage?.({ data: { type: 'query', id: 2, request: {
+      query: 'flood', filters: {}, sort: 'relevance', exploration: { preview: { type: ['API'] }, reductions: [] }
+    } } } as MessageEvent);
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total_relation).toBe('gte');
+    expect(response.exploration.scope_ids).toBeUndefined();
+    await worker.onmessage?.({ data: { type: 'query', id: 3, request: {
+      query: 'flood', filters: {}, sort: 'relevance', exploration: { preview: { unavailable: ['x'] }, reductions: [] }
+    } } } as MessageEvent);
+    expect(worker.postMessage.mock.calls.at(-1)?.[0].type).toBe('error');
+  });
+
   it('applies OR-within and AND-across filters before the result limit and returns dynamic facets', async () => {
     const worker = await harness();
     await worker.onmessage?.({ data: {
@@ -230,7 +276,7 @@ describe('large static search worker', () => {
     expect(response.ignored_filters).toEqual({ type: ['retired-value'] });
   });
 
-  it('suppresses dynamic facets when an active filter needs full-index fallback', async () => {
+  it.each([undefined, { preview: {}, reductions: [] }])('preserves fallback and suppresses partial facets with exploration %j', async (exploration) => {
     const worker = await harness();
     await worker.onmessage?.({ data: {
       type: 'query',
@@ -239,7 +285,8 @@ describe('large static search worker', () => {
         query: 'flood',
         filters: { type: ['API'], unindexed: ['current'] },
         sort: 'relevance',
-        facet_keys: ['type']
+        facet_keys: ['type'],
+        exploration
       }
     } } as MessageEvent);
 
@@ -248,6 +295,7 @@ describe('large static search worker', () => {
     expect(response.filters_applied).toBe(false);
     expect(response.facets).toEqual({});
     expect(response.ignored_filters).toEqual({});
+    expect(response.exploration).toBeUndefined();
   });
 
   it('applies filters and returns empty dynamic facets for a lexical no-match', async () => {
@@ -746,7 +794,7 @@ describe('large static search worker', () => {
     expect(response.total_relation).toBe('eq');
   });
 
-  it('reports that v1 manifests need the full-index filter fallback', async () => {
+  it.each([undefined, { preview: {}, reductions: [] }])('preserves v1 fallback with exploration %j', async (exploration) => {
     const manifest = baseManifest();
     manifest.schema = 'okf-static-search.v1';
     delete manifest.entrypoints.filter_postings;
@@ -755,7 +803,7 @@ describe('large static search worker', () => {
     await worker.onmessage?.({ data: {
       type: 'query',
       id: 2,
-      request: { query: 'flood', filters: { type: ['API'] }, sort: 'relevance', ranking: 'weighted' }
+      request: { query: 'flood', filters: { type: ['API'] }, sort: 'relevance', ranking: 'weighted', exploration }
     } } as MessageEvent);
 
     const response = worker.postMessage.mock.calls[0][0].response;
@@ -1300,5 +1348,17 @@ describe('large static search worker', () => {
       error: expect.stringContaining('integrity check failed')
     });
     expect(postingsFetches).toHaveLength(2);
+  });
+});
+
+it('rejects active exploration when a legacy filter cannot be evaluated', async () => {
+  const worker = await harness();
+  await worker.onmessage?.({ data: {
+    type: 'query', id: 2,
+    request: { query: 'flood', filters: { unindexed: ['current'] }, sort: 'relevance',
+      exploration: { preview: { type: ['API'] }, reductions: [] } }
+  } } as MessageEvent);
+  expect(worker.postMessage.mock.calls[0][0]).toMatchObject({
+    type: 'error', error: expect.stringContaining('cannot evaluate every selected facet')
   });
 });

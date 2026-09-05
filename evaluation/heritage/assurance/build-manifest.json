@@ -1,6 +1,6 @@
 {
   "counts": {
-    "bytes": 121649095,
+    "bytes": 121649087,
     "files": 3131,
     "planes": {
       "control": 7,
@@ -15,7 +15,7 @@
       "bytes": 568015,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "58f63f860d4916804d5d68908df6f0803c8a6a0f16bbaa030d6954642b2c9336"
+      "sha256": "ca1663d45249ac2fe0a28bb5710c580215357823b90896640c7d9285634f8f9d"
     },
     {
       "bytes": 6701,
@@ -18750,10 +18750,10 @@
       "sha256": "ab927df126b854e61a2a7c61a8bf2666adf1668f069f8589f0f4b9447969fb09"
     },
     {
-      "bytes": 29187,
+      "bytes": 29179,
       "path": "journeys.json",
       "plane": "control",
-      "sha256": "f3b3426db62c6ac97180534e7f9d6faec95606f7087805d87634be880173d0de"
+      "sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb"
     },
     {
       "bytes": 356,

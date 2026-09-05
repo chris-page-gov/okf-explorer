@@ -541,6 +541,7 @@ const searchManifest = {
 };
 
 export type OnsFacetFixtureOptions = {
+  withoutSearch?: boolean;
   responseBytes?: number[];
   filterPaddingBytes?: number;
 };
@@ -568,8 +569,14 @@ export async function installOnsFacetFixture(
     const url = new URL(route.request().url());
     requestLog.push(url.pathname);
     const respond = (body: unknown, status = 200) => json(route, body, status, options.responseBytes);
-    if (url.pathname === '/okf-explorer.json') return respond(descriptor);
-    if (url.pathname === '/data/manifest.json') return respond(manifest);
+    if (url.pathname === '/okf-explorer.json') {
+      const { search_manifest, ...entrypoints } = descriptor.entrypoints;
+      return respond(options.withoutSearch ? { ...descriptor, entrypoints } : descriptor);
+    }
+    if (url.pathname === '/data/manifest.json') {
+      const { search, ...indexes } = manifest.indexes;
+      return respond(options.withoutSearch ? { ...manifest, indexes } : manifest);
+    }
     if (url.pathname === '/data/overview.json') return respond(overview);
     if (url.pathname === '/data/analysis.json') return respond(analysis);
     if (url.pathname === '/data/presentation.json') return respond(presentation);
@@ -618,8 +625,8 @@ export async function openOnsFacetFixture(
   });
   await installOnsFacetFixture(page.context(), requestLog, options);
   await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#overview`);
-  await page.getByPlaceholder('Search ONS products, concepts and geographies').waitFor();
-  await page.locator('[data-facet-key="derivation_mode"]').waitFor();
+  await page.getByPlaceholder('Search ONS products, concepts and geographies').waitFor({ state: 'attached' });
+  await page.locator('[data-facet-key="derivation_mode"]').waitFor({ state: 'attached' });
   await page.getByText('Preparing static search index...').waitFor({ state: 'hidden' });
   return requestLog;
 }

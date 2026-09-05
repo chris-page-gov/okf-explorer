@@ -1,5 +1,17 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import BookmarkShelf from '$lib/components/BookmarkShelf.svelte';
+  import SmallRecordInspector from '$lib/components/SmallRecordInspector.svelte';
+  import { focusedSmallGraph } from '$lib/viewer/smallGraph';
+  import { matchesLocalText, summariseLocalExploration } from '$lib/viewer/localExploration';
+  import WorkspaceShell from '$lib/components/WorkspaceShell.svelte';
+  import FacetPanel, { type FacetModel } from '$lib/components/FacetPanel.svelte';
+  import ExplorationToolbar from '$lib/components/ExplorationToolbar.svelte';
+  import ResultList, { type ResultItem } from '$lib/components/ResultList.svelte';
+  import { emptyExploration, explorationFromUrl, writeExploration, previewValue, keepPreview, hasSelection, matchesSelection, matchesReductions, highlightFirst, selectionLabel, MAX_FOLDED_MEMBERS, type Exploration, type Reduction, type FoldedSet } from '$lib/viewer/facetSelection';
+  import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
+  import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
+  import { displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
   import { pushState, replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
@@ -432,9 +444,18 @@
   let rightCollapsed = $state(false);
   let leftWidth = $state(320);
   let rightWidth = $state(420);
+  let activePanel = $state<WorkspacePanel>('content');
+  let resultLayout = $state<'cards' | 'list'>('cards');
+  let reductions = $state<Reduction[]>([]);
+  let foldedSets = $state<FoldedSet[]>([]);
+  let smallOpenFacet = $state('');
+  let smallPinnedFacets = $state<string[]>([]);
+  let smallOpenedPinnedFacets = $state<string[]>([]);
+  let multiSelect = $state(false);
+  let foldedIds = $derived(new Set(foldedSets.flatMap(fold => fold.members)));
 
   function narrowExplorerViewport(): boolean {
-    return typeof window !== 'undefined' && window.matchMedia('(max-width: 620px)').matches;
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 980px)').matches;
   }
 
   let registry = $state<BundleRegistryEntry[]>([]);
@@ -489,6 +510,8 @@
   let facetMenuKey = $state('');
   let facetPreviewLabels = $state<Record<string, string>>({});
   let largeFacetHighlights = $state<Record<string, string[]>>({});
+  let exploration = $derived<Exploration>({ preview: largeFacetHighlights, reductions });
+  let explorationActive = $derived(hasSelection(largeFacetHighlights) || reductions.length > 0);
   let largeFacetPreviewRoute = $state('');
   let draggingFacetKey = $state('');
   let facetDropTargetKey = $state('');
@@ -514,7 +537,8 @@
   let largeSourceInspectorOpen = $state(false);
   let largeApiRequest = 0;
   let activeFacetKey = $state('');
-  let pins = $state<string[]>([]);
+  let openedPinnedFacets = $state<string[]>([]);
+  let pins = $state<Bookmark[]>([]);
   let graphCanvasWidth = $state(DEFAULT_GRAPH_WIDTH);
   let graphZoom = $state(1);
   let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: DEFAULT_GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: DEFAULT_GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
@@ -541,7 +565,7 @@
   let edgePanelHeight = $state(180);
   let edgePanelResizing = $state(false);
   let timelineResolution = $state<TimelineResolution>('latest');
-  let retrievalSort = $state<RetrievalSort>('newest');
+  let retrievalSort = $state<RetrievalSort>('title');
   let geospatialFilter = $state('');
   let edgePanelResizeCleanup: (() => void) | null = null;
 
@@ -568,6 +592,7 @@
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
+      if (!matchesReductions(reductions, key => smallFacetValues(node, key))) return false;
       if (!query) return true;
       return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
@@ -578,7 +603,7 @@
   let smallGeospatialRouteIds: Set<string> = $derived(
     new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
   );
-  let visibleNodes = $derived(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes);
+  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights)));
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -652,8 +677,47 @@
   );
   let largeDetail: LargeDetail | null = $derived(resolveVisibleLargeDetail(largeFacetPreviewRoute || largeInspectedRoute || largeSelectedRoute));
   let largeFacetKeys: string[] = $derived(source?.kind === 'large' ? declaredLargeFacetKeys(source) : []);
-  let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, geospatialFilter ? 1 : 0));
-  let pinnedLabels: Array<{ route: string; label: string }> = $derived(pins.map((route) => ({ route, label: largeLabelForRoute(route) })));
+  let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, (geospatialFilter ? 1 : 0) + reductions.length));
+  let pinnedLabels = $derived(pins);
+  let largeExplorationScope = $derived(currentLargeExplorationScope());
+  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).length);
+  let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
+  let smallFacets = $derived<FacetModel[]>(SMALL_FACETS.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key) })));
+  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights) })));
+  let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
+
+  function currentLargeExplorationScope() {
+    if (!largeSearchClient || geospatialFilter) {
+      // Indexed map results can be bounded by the result limit. Never invent
+      // complete map membership from that window, even with a full record index.
+      const rows: Array<LargeDataset | SearchResultDoc> = largeSearchClient
+        ? largeResults.filter(row => largeVisibleDatasetNames.has(row.name))
+        : largeVisibleDatasets;
+      const complete = Boolean(largeIndex) && (!largeSearchClient ||
+        (largeSearchResponse?.total_relation === 'eq' && largeResults.length === largeSearchResponse.total));
+      return summariseLocalExploration(rows, largeFacetHighlights, presentedLargeFacetKeys(),
+        row => largeSearchClient ? String((row as SearchResultDoc).ordinal) : datasetRoute(row),
+        (row, key) => largeDatasetFacetValues(largeIndex?.datasetByName.get(row.name) || row, key), complete);
+    }
+    const response = largeSearchResponse;
+    return { total: response?.total ?? largeVisibleDatasets.length,
+      highlighted: response?.exploration?.highlighted_count || 0,
+      exact: response?.total_relation === 'eq', facets: response?.exploration?.facets || {},
+      scopeIds: response?.exploration?.scope_ids?.map(String),
+      highlightedIds: response?.exploration?.highlighted_ids?.map(String) };
+  }
+
+  function readerResultItems(): ResultItem[] {
+    const indexed = Boolean(largeSearchClient);
+    const rows: Array<LargeDataset | SearchResultDoc> = largeSearchClient ? largeResults : largeVisibleDatasets;
+    return rows.filter(row => (!geospatialFilter || largeVisibleDatasetNames.has(row.name)) && !foldedIds.has(indexed ? String((row as SearchResultDoc).ordinal) : datasetRoute(row))).map(row => ({
+      id: indexed ? String((row as SearchResultDoc).ordinal) : datasetRoute(row), route: datasetRoute(row), title: largeDatasetLabel(row), type: apiRecordMeta(row) || 'Record',
+      description: stripHtml(row.notes || '').slice(0, 400), metadata: largeRecordPublisherLabel(row) + ' · ' + (row.resource_count || 0) + ' ' + resourcePlural(),
+      reason: indexed ? searchMatchReason(row as SearchResultDoc) : '',
+      highlighted: indexed ? Boolean((row as SearchResultDoc).highlighted) : hasSelection(largeFacetHighlights) && matchesSelection(largeFacetHighlights, key => largeDatasetFacetValues(row, key)),
+      canonicalUrl: rankedResultCanonicalUrl(row)
+    }));
+  }
 
   function compareSmallNodes(left: OkfNode, right: OkfNode): number {
     if (retrievalSort === 'title') return left.title.localeCompare(right.title);
@@ -668,6 +732,110 @@
     const query = smallQuery.trim().toLowerCase();
     if (!query) return left.title.localeCompare(right.title);
     return smallMatchScore(right, query) - smallMatchScore(left, query) || left.title.localeCompare(right.title);
+  }
+
+  function setExploration(next: Exploration) {
+    // Validate before committing state so every successful interaction remains shareable.
+    writeExploration(new URLSearchParams(), next);
+    largeFacetHighlights = next.preview;
+    reductions = next.reductions;
+  }
+
+  function restoreExploration(params: URLSearchParams) {
+    try { setExploration(explorationFromUrl(params)); }
+    catch (err) { error = err instanceof Error ? err.message : String(err); setExploration(emptyExploration()); }
+  }
+
+  function refreshExploration() {
+    syncExplorerUrl(true);
+    if (source?.kind === 'large') {
+      void runLargeSearch(largeQuery, { preserveSelection: true });
+    }
+    void tick().then(() => document.querySelector('[data-okf-ranked-results="primary"]')?.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  }
+
+  let lastFacetClick: { key: string; value: string; at: number; preview: Record<string, string[]> } | null = null;
+
+  function previewFacet(key: string, value: string, additive = false) {
+    try {
+      lastFacetClick = { key, value, at: Date.now(), preview: largeFacetHighlights };
+      setExploration({ preview: previewValue(largeFacetHighlights, key, value, additive), reductions });
+      if (source?.kind === 'large') activeFacetKey = key;
+      else smallOpenFacet = key;
+      refreshExploration();
+    } catch (err) { error = err instanceof Error ? err.message : String(err); }
+  }
+
+  function previewFacetSummary(key: string, value: string, additive: boolean) {
+    previewFacet(key, value, additive);
+    activeFacetKey = ''; smallOpenFacet = '';
+    openedPinnedFacets = openedPinnedFacets.filter(item => item !== key);
+    smallOpenedPinnedFacets = smallOpenedPinnedFacets.filter(item => item !== key);
+  }
+
+  function openSmallFacet(key: string) {
+    if (smallOpenFacet === key || smallOpenedPinnedFacets.includes(key)) {
+      smallOpenFacet = '';
+      smallOpenedPinnedFacets = smallOpenedPinnedFacets.filter(item => item !== key);
+    } else {
+      smallOpenFacet = key;
+      if (smallPinnedFacets.includes(key)) smallOpenedPinnedFacets = [...smallOpenedPinnedFacets, key];
+    }
+  }
+
+  function toggleSmallFacetPin(key: string) {
+    const pin = !smallPinnedFacets.includes(key);
+    smallPinnedFacets = pin ? [...smallPinnedFacets, key] : smallPinnedFacets.filter(item => item !== key);
+    smallOpenedPinnedFacets = pin ? [...new Set([...smallOpenedPinnedFacets, key])] : smallOpenedPinnedFacets.filter(item => item !== key);
+  }
+
+  function keepExploration(mode: Reduction['mode']) {
+    try { setExploration(keepPreview(exploration, mode)); refreshExploration(); }
+    catch (err) { error = err instanceof Error ? err.message : String(err); }
+  }
+
+  function clearExplorationPreview() { largeFacetHighlights = {}; refreshExploration(); }
+  function undoExploration() {
+    const last = reductions.at(-1);
+    if (last) setExploration({ preview: last.selection, reductions: reductions.slice(0, -1) });
+    refreshExploration();
+  }
+  function resetExploration() {
+    setExploration(emptyExploration()); foldedSets = []; geospatialFilter = '';
+    if (source?.kind === 'large') { largeFacetFilters = {}; largeQuery = ''; }
+    else { visibleTypes = new Set(typeList); smallQuery = ''; }
+    refreshExploration();
+  }
+
+  function foldExploration(highlighted: boolean) {
+    if (!hasSelection(largeFacetHighlights)) return;
+    let members: string[];
+    if (source?.kind === 'large') {
+      if (!largeExplorationScope.scopeIds || !largeExplorationScope.highlightedIds) return;
+      const selected = new Set(largeExplorationScope.highlightedIds);
+      members = largeExplorationScope.scopeIds.filter(id => selected.has(id) === highlighted);
+    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights) === highlighted).map(node => node.id);
+    members = members.filter(id => !foldedIds.has(id));
+    if (!members.length || members.length > MAX_FOLDED_MEMBERS) return;
+    foldedSets = [...foldedSets, { id: crypto.randomUUID(), label: `${highlighted ? '' : 'Outside '} ${selectionLabel(largeFacetHighlights)}`.trim(), members }];
+  }
+
+  function foldedSetCounts() {
+    if (source?.kind === 'large' && !largeExplorationScope.scopeIds) return {};
+    const scope = new Set(source?.kind === 'large' ? largeExplorationScope.scopeIds : visibleNodes.map(node => node.id));
+    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).map(node => node.id));
+    return Object.fromEntries(foldedSets.map(fold => [fold.id, { inScope: fold.members.filter(id => scope.has(id)).length, highlighted: fold.members.filter(id => scope.has(id) && selected.has(id)).length }]));
+  }
+
+  function explorerLargeFacets(): FacetModel[] {
+    return presentedLargeFacetKeys().map(key => {
+      const indexed = largeExplorationScope.facets[key];
+      const fallback = largeFacetRows(key);
+      const rows = indexed ? [...indexed, ...fallback.filter(row => !indexed.some(item => item.value === row.value)).map(row => ({ ...row, count: 0, highlighted: 0 }))] : fallback;
+      return { key, label: facetDisplayLabel(key), open: facetIsOpen(key), pinned: facetIsPinned(key),
+        exact: Boolean(indexed && largeExplorationScope.exact),
+        rows: rows.map(row => ({ ...row, label: facetValueDisplay(key, row.value) })) };
+    });
   }
 
   function smallMatchScore(node: OkfNode, query: string): number {
@@ -833,6 +1001,7 @@
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
     writeRetrievalState(next.searchParams, currentRetrievalState());
+    writeExploration(next.searchParams, exploration);
     writeGraphState(next.searchParams, route);
     next.searchParams.delete(SMALL_INSPECT_NODE_PARAM);
     next.searchParams.delete(SMALL_INSPECT_RELATIONSHIP_PARAM);
@@ -973,7 +1142,10 @@
     const hash = safeDecodeHash();
     const browserParams = new URLSearchParams(location.search);
     geospatialFilter = geospatialFilterFromParams(browserParams);
+    const previousExploration = JSON.stringify(exploration);
+    restoreExploration(browserParams);
     if (source?.kind === 'large') {
+      if (geospatialFilter) void ensureLargeFullIndex();
       const params = browserParams;
       const state = parseRetrievalState(params, largeSourceFacetKeys(source));
       const previousFilters = JSON.stringify(largeFacetFilters);
@@ -987,11 +1159,12 @@
       if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
         void hydrateForView(activeView);
       }
-      if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort) {
+      if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort || previousExploration !== JSON.stringify(exploration)) {
         if (largeSearchClient) void runLargeSearch(state.query, { preserveSelection: true });
         else {
           largeSearchPendingQuery = state.query;
-          if (!source.searchManifest) void ensureLargeFullIndex();
+          largeAppliedQuery = state.query.trim();
+          if (!largeSearchIndexLoading) void runLargeSearch(state.query, { preserveSelection: true });
         }
       }
       reconcileLargeSelection();
@@ -1059,7 +1232,7 @@
     }
   }
 
-  function applyLargeBrowserRoute(hash: string, preserveSerializedFilters = false) {
+  function applyLargeBrowserRoute(hash: string, preserveSerializedFilters = false, openFacet = true) {
     const route = hash && hash !== 'overview' ? hash : '';
     clearLargeFacetPreviewContext();
     largeSelectedRoute = '';
@@ -1078,7 +1251,7 @@
     rightCollapsed = false;
     const facetRoute = routeForAnalysisNode(route);
     if (facetRoute) {
-      activeFacetKey = facetRoute.key;
+      if (openFacet) activeFacetKey = facetRoute.key;
       if (!preserveSerializedFilters) largeFacetFilters = { [facetRoute.key]: [facetRoute.value] };
       largeInspectedRoute = route;
       largeHighlightedRoute = route;
@@ -1099,12 +1272,24 @@
     largeGraphCenterRoute = centerRoute;
   }
 
+  async function openBundle(url: string, routes: FederationAccessRoute[] = [], rawSubpath = '') {
+    const target = new URL(location.href);
+    target.search = new URLSearchParams({ bundle: url }).toString();
+    target.hash = 'overview';
+    window.history.pushState({}, '', target);
+    activeView = 'reader';
+    await loadSource(url, routes, rawSubpath);
+  }
+
   async function loadSource(
     url: string,
     declaredRoutes: FederationAccessRoute[] = [],
     declaredRawSubpath = ''
   ) {
     const requestId = ++loadRequest;
+    foldedSets = [];
+    smallOpenFacet = ''; smallPinnedFacets = []; smallOpenedPinnedFacets = []; openedPinnedFacets = [];
+    activePanel = 'content';
     const bundleInputAtStart = bundleInputUrl;
     largeSearchRequest += 1;
     const absoluteUrl = toAbsoluteUrl(url);
@@ -1123,7 +1308,7 @@
     selectedId = '';
     inspectedId = '';
     smallQuery = '';
-    retrievalSort = 'newest';
+    retrievalSort = 'title';
     geospatialFilter = geospatialFilterFromParams(new URLSearchParams(location.search));
     smallInspectedRelationship = null;
     largeSelectedRoute = '';
@@ -1287,6 +1472,7 @@
           license: large.descriptor.license
         });
         const params = new URLSearchParams(location.search);
+        restoreExploration(params);
         // The v2 manifest may advertise additional corpus-specific filter keys. Keep
         // syntactically valid URL filters until that manifest is ready, then validate.
         const retrieval = parseRetrievalState(params, searchManifest ? undefined : largeSourceFacetKeys(large));
@@ -1297,7 +1483,7 @@
         largeSearchPendingQuery = retrieval.query;
         const hash = safeDecodeHash();
         if (hash && hash !== 'overview') {
-          applyLargeBrowserRoute(hash, hasSerializedFilters(params));
+          applyLargeBrowserRoute(hash, hasSerializedFilters(params), false);
           applySerializedGraphCenter(params, hash);
           applyGraphState(params);
           rightCollapsed = false;
@@ -1312,9 +1498,12 @@
           applyGraphState(params);
         }
         if (FULL_INDEX_VIEWS.has(activeView) || RELATIONSHIP_VIEWS.has(activeView)) void hydrateForView(activeView);
+        if (geospatialFilter) void ensureLargeFullIndex();
         if (searchManifest) void initialiseLargeSearch(large, searchManifest, query, requestId);
+        else if (query.trim() || Object.keys(largeFacetFilters).length || explorationActive) void runLargeSearch(query, { preserveSelection: true });
       } else {
         const corpus = normalizeSmallBundle(raw);
+        restoreExploration(new URLSearchParams(location.search));
         source = { kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus };
         const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
         const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
@@ -1415,7 +1604,7 @@
       syncExplorerUrl();
       const pendingQuery = largeSearchPendingQuery || initialQuery || largeQuery;
       largeSearchPendingQuery = '';
-      if (pendingQuery.trim() || Object.keys(largeFacetFilters).length) {
+      if (pendingQuery.trim() || Object.keys(largeFacetFilters).length || explorationActive) {
         void runLargeSearch(pendingQuery, { preserveSelection: true });
       }
     } catch (searchError) {
@@ -1436,6 +1625,9 @@
 
   async function loadFile(file: File | null) {
     if (!file) return;
+    foldedSets = []; setExploration(emptyExploration()); activePanel = 'content';
+    smallOpenFacet = ''; smallPinnedFacets = []; smallOpenedPinnedFacets = []; openedPinnedFacets = []; activeFacetKey = '';
+    smallQuery = ''; largeQuery = ''; retrievalSort = 'title'; leftPanelTab = 'facets';
     const bundleInputAtStart = bundleInputUrl;
     const requestId = ++loadRequest;
     largeSearchRequest += 1;
@@ -1521,6 +1713,7 @@
 
   async function selectView(view: ViewMode, push = true) {
     activeView = view;
+    if (push) activePanel = 'content';
     if (view === 'graph') graphLabelPhase = 0;
     await hydrateForView(view);
     // A deep route can become available while an overview-first load is still
@@ -1615,6 +1808,7 @@
   }
 
   function largeHasAnalysisOverview(view: ViewMode = activeView): boolean {
+    if (reductions.length || geospatialFilter) return false;
     if (!largeIsOverviewContext()) return false;
     const analysis = largeAnalysis();
     if (!analysis) return false;
@@ -1788,11 +1982,13 @@
   }
 
   async function openLargeFacet(key: string) {
-    if (facetIsOpen(key) && !facetIsPinned(key) && !largeFacetFilters[key]?.length) {
-      activeFacetKey = '';
+    if (facetIsOpen(key)) {
+      openedPinnedFacets = openedPinnedFacets.filter(item => item !== key);
+      if (activeFacetKey === key) activeFacetKey = '';
       return;
     }
     activeFacetKey = key;
+    if (facetIsPinned(key)) openedPinnedFacets = [...new Set([...openedPinnedFacets, key])];
     await hydrateLargeFacetValues(key);
   }
 
@@ -1817,7 +2013,7 @@
 
   function requestedDynamicFacetKeys(): string[] {
     return [...new Set([
-      ...providerOrderedLargeFacetKeys().filter((key) => facetIsOpen(key)),
+      ...presentedLargeFacetKeys(),
       activeFacetKey,
       ...Object.keys(largeFacetFilters)
     ])].filter((key) => key && supportsWorkerFilter(key));
@@ -2006,6 +2202,8 @@
   }
 
   function selectNode(id: string) {
+    rightCollapsed = false;
+    activePanel = 'details';
     selectedId = id;
     inspectedId = '';
     smallInspectedRelationship = null;
@@ -2015,6 +2213,7 @@
   }
 
   function inspectNode(id: string) {
+    activePanel = 'details';
     inspectedId = id;
     smallInspectedRelationship = null;
     rightCollapsed = false;
@@ -2022,6 +2221,7 @@
   }
 
   function selectLargeRoute(route: string) {
+    activePanel = 'details';
     if (!largeRouteInReduction(route)) return;
     clearLargeFacetPreviewContext();
     largeSelectedRoute = route;
@@ -2042,6 +2242,7 @@
   }
 
   function inspectLargeRoute(route: string) {
+    activePanel = 'details';
     if (!largeRouteCanInteract(route)) return;
     clearLargeFacetPreviewContext();
     largeInspectedRoute = route;
@@ -2103,10 +2304,15 @@
     void navigator.clipboard?.writeText(route);
   }
 
-  function pinRoute(route = source?.kind === 'large' ? largeSelectedRoute || largeInspectedRoute : selectedId) {
-    if (!route) return;
-    pins = [route, ...pins.filter((item) => item !== route)].slice(0, 20);
+  function pinRoute(route = source?.kind === 'large' ? displayedRoute(largeInspectedRoute, largeSelectedRoute) : displayedRoute(inspectedId, selectedId)) {
+    if (!route || !bundleUrl) return;
+    pins = addBookmark(pins, { bundle: bundleUrl, route, label: source?.kind === 'large' ? largeLabelForRoute(route) : smallCorpus?.nodes[route]?.title || route, url: buildExplorerUrl(route) });
     savePins();
+  }
+
+  function openPin(pin: Bookmark) {
+    // A pin owns its bundle and full retrieval route, including inspection state.
+    location.assign(pin.url);
   }
 
   function clearInspection() {
@@ -2196,6 +2402,12 @@
     window.history.forward();
   }
 
+  function downloadPins() {
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ schema: 'okf-explorer:bookmarks:v2', pins }, null, 2)], { type: 'application/json' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'okf-explorer-pins.json'; link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   function exportPins() {
     const payload = {
       exported_at: new Date().toISOString(),
@@ -2205,34 +2417,16 @@
     void navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
   }
 
-  function loadPins() {
-    try {
-      const raw = localStorage.getItem('okf-explorer:pins');
-      return raw ? (JSON.parse(raw) as string[]) : [];
-    } catch {
-      return [];
-    }
+  function loadPins(): Bookmark[] {
+    try { return readBookmarks(localStorage.getItem(BOOKMARK_STORAGE_KEY)); } catch { return []; }
   }
 
   function savePins() {
     try {
-      localStorage.setItem('okf-explorer:pins', JSON.stringify(pins));
+      localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(pins));
     } catch {
       // Ignore storage failures in private windows.
     }
-  }
-
-  function toggleType(type: string) {
-    const next = new Set(visibleTypes);
-    if (next.has(type) && next.size > 1) next.delete(type);
-    else next.add(type);
-    visibleTypes = next;
-    syncExplorerUrl(true);
-  }
-
-  function resetTypes() {
-    visibleTypes = new Set(typeList);
-    syncExplorerUrl(true);
   }
 
   function setSmallQuery(query: string) {
@@ -2278,6 +2472,7 @@
   }
 
   function searchResultSummary(): string {
+    if (!largeSearchClient || geospatialFilter) return `${largeReaderResults.length.toLocaleString('en-GB')} shown of ${scopeCount.toLocaleString('en-GB')} ${largeExplorationScope.exact ? 'matching' : 'loaded matching'} records${!largeSearchClient ? ' · simple local text search' : ''}`;
     return formatSearchResultSummary({
       response: largeSearchResponse,
       shown: largeResults.length,
@@ -2347,102 +2542,34 @@
   }
 
   function previewLargeFacetValue(key: string, value: string, event?: MouseEvent) {
-    const additive = Boolean(event?.ctrlKey || event?.metaKey || event?.shiftKey);
-    if (additive) {
-      const next = new Set(largeFacetHighlights[key] || []);
-      if (next.has(value)) next.delete(value);
-      else next.add(value);
-      const highlights = { ...largeFacetHighlights, [key]: [...next] };
-      if (!next.size) delete highlights[key];
-      largeFacetHighlights = highlights;
-    } else {
-      largeFacetHighlights = { [key]: [value] };
-    }
-    largeFacetPreviewRoute = facetValueRoute(key, value);
-    largeHighlightedRoute = largeFacetPreviewRoute;
-    rightCollapsed = false;
-  }
-
-  function clearFacetHighlights(key: string) {
-    const { [key]: _removed, ...remaining } = largeFacetHighlights;
-    largeFacetHighlights = remaining;
-    if (routeForAnalysisNode(largeFacetPreviewRoute)?.key === key) {
-      largeFacetPreviewRoute = '';
-      largeHighlightedRoute = largeInspectedRoute || largeSelectedRoute;
-    }
+    if (event && event.detail >= 2) return;
+    previewFacet(key, value, Boolean(event?.ctrlKey || event?.metaKey || event?.shiftKey));
   }
 
   function clearLargeFacetPreviewContext() {
-    largeFacetHighlights = {};
     largeFacetPreviewRoute = '';
   }
 
-  async function applyLargeFacetReduction(
-    filters: Record<string, string[]>,
-    key: string,
-    value: string,
-    removing = false
-  ) {
-    if (largeFacetApplyingKey) return;
-    largeFacetApplyingKey = key;
-    largeFacetApplyingValue = value;
-    await tick();
-    const route = facetValueRoute(key, value);
-    try {
-      activeFacetKey = key;
-      largeFacetFilters = filters;
-      largeFacetHighlights = {};
-      largeFacetPreviewRoute = '';
-      largeSelectedRoute = '';
-      if (removing) {
-        if (largeInspectedRoute === route) {
-          largeInspectedRoute = '';
-          largeHighlightedRoute = '';
-          largeGraphCenterRoute = '';
-        }
-      } else {
-        largeInspectedRoute = route;
-        largeHighlightedRoute = route;
-        largeGraphCenterRoute = route;
-        rightCollapsed = false;
-      }
-      largeForwardRoute = '';
-      largeHighlightedEdge = '';
-      largeInspectedEdge = null;
-      clearLargeApiPanel();
-      reconcileLargeSelection();
-      syncExplorerUrl(true);
-      refreshLargeReduction();
-    } finally {
-      await tick();
-      largeFacetApplyingKey = '';
-      largeFacetApplyingValue = '';
+  async function commitFacetHighlights(key: string, value: string, restoreSelection = false) {
+    // An ordinary click toggles immediately; a double click keeps its original OR set.
+    if (restoreSelection && lastFacetClick?.key === key && lastFacetClick.value === value &&
+      Date.now() - lastFacetClick.at < 1000 && lastFacetClick.preview[key]?.includes(value)) {
+      largeFacetHighlights = lastFacetClick.preview;
     }
-  }
-
-  async function commitFacetHighlights(key: string, value: string, event?: MouseEvent) {
-    const highlighted = largeFacetHighlights[key]?.length ? largeFacetHighlights[key] : [value];
-    const current = largeFacetFilters[key] || [];
-    const sameSelection = highlighted.length === current.length && highlighted.every((item) => current.includes(item));
-    const additive = Boolean(event?.ctrlKey || event?.metaKey || event?.shiftKey);
-    const filters = { ...largeFacetFilters };
-    if (sameSelection && !additive) {
-      delete filters[key];
-    } else if (additive) {
-      filters[key] = [...new Set([...current, ...highlighted])];
-    } else {
-      filters[key] = [...highlighted];
-    }
-    await applyLargeFacetReduction(filters, key, value, sameSelection && !additive);
+    if (!largeFacetHighlights[key]?.includes(value)) largeFacetHighlights = previewValue(largeFacetHighlights, key, value);
+    keepExploration('keep');
   }
 
   function facetValueKeydown(key: string, value: string, event: KeyboardEvent) {
     if (event.key !== 'Enter') return;
     event.preventDefault();
-    void commitFacetHighlights(key, value);
+    if (event.altKey) void commitFacetHighlights(key, value);
+    else previewFacet(key, value, event.ctrlKey || event.metaKey || event.shiftKey);
   }
 
   function clearLargeFilters() {
+    reductions = [];
+    foldedSets = [];
     largeFacetFilters = {};
     largeFacetHighlights = {};
     largeFacetPreviewRoute = '';
@@ -2461,27 +2588,12 @@
     void runLargeSearch(largeQuery, { preserveSelection: true });
   }
 
-  function clearFacetFilter(key: string) {
-    if (!largeFacetFilters[key]?.length) return;
-    const { [key]: _removed, ...rest } = largeFacetFilters;
-    largeFacetFilters = rest;
-    const { [key]: _highlighted, ...remainingHighlights } = largeFacetHighlights;
-    largeFacetHighlights = remainingHighlights;
-    if (routeForAnalysisNode(largeFacetPreviewRoute)?.key === key) largeFacetPreviewRoute = '';
-    if (largeInspectedRoute && routeForAnalysisNode(largeInspectedRoute)?.key === key) {
-      largeInspectedRoute = '';
-      largeHighlightedRoute = '';
-      largeGraphCenterRoute = '';
-    }
-    facetMenuKey = '';
-    reconcileLargeSelection();
-    syncExplorerUrl(true);
-    refreshLargeReduction();
-  }
-
   function setGeospatialFilter(value: string) {
     geospatialFilter = isGeospatialFilter(value) ? value : '';
-    if (source?.kind === 'large') reconcileLargeSelection();
+    if (source?.kind === 'large') {
+      if (geospatialFilter) void ensureLargeFullIndex();
+      reconcileLargeSelection();
+    }
     else if (selectedId && !visibleNodes.some((node) => node.id === selectedId)) {
       selectedId = visibleNodes[0]?.id || '';
       inspectedId = '';
@@ -2501,14 +2613,6 @@
     }
   }
 
-  function relatedNodes(node: OkfNode) {
-    if (!smallCorpus) return [];
-    return detailRelationships
-      .map((relationship) => (relationship.source === node.id ? relationship.target : relationship.source))
-      .map((id) => smallCorpus.nodes[id])
-      .filter(Boolean);
-  }
-
   function graphPosition(index: number, count: number, radius: number, cx: number, cy: number) {
     if (count <= 0) return { x: cx, y: cy };
     const angle = -Math.PI / 2 + (index / count) * Math.PI * 2;
@@ -2516,14 +2620,7 @@
   }
 
   function graphModel() {
-    const nodes = selectedNode
-      ? [selectedNode, ...relatedNodes(selectedNode)].filter((node, index, all) => all.findIndex((item) => item.id === node.id) === index)
-      : visibleNodes.slice(0, 36);
-    const ids = new Set(nodes.map((node) => node.id));
-    return {
-      nodes,
-      relationships: smallCorpus?.relationships.filter((relationship) => ids.has(relationship.source) && ids.has(relationship.target)).slice(0, 80) || []
-    };
+    return focusedSmallGraph(smallCorpus, visibleNodes, selectedId, foldedIds);
   }
 
   function smallRelationshipKind(relationship: OkfRelationship): string {
@@ -2579,6 +2676,7 @@
   }
 
   function inspectSmallRelationship(relationship: OkfRelationship) {
+    activePanel = 'details';
     smallInspectedRelationship = relationship;
     inspectedId = '';
     rightCollapsed = false;
@@ -2623,7 +2721,7 @@
   async function runLargeSearch(query: string, options: { preserveSelection?: boolean } = {}) {
     largeQuery = query;
     const trimmed = query.trim();
-    const hasFilters = Object.keys(largeFacetFilters).length > 0;
+    const hasFilters = Object.keys(largeFacetFilters).length > 0 || reductions.length > 0 || hasSelection(largeFacetHighlights) || foldedSets.length > 0;
     const hasFacetRequest = Boolean(activeFacetKey && supportsWorkerFilter(activeFacetKey));
     const requestId = ++largeSearchRequest;
     error = '';
@@ -2651,9 +2749,12 @@
     }
     if (!largeSearchClient) {
       largeSearchPendingQuery = query;
+      largeAppliedQuery = trimmed;
       largeResults = [];
       largeSuggestions = [];
       largeSearching = largeSearchIndexLoading;
+      if (!largeSearchIndexLoading) await ensureLargeFullIndex();
+      syncExplorerUrl();
       return;
     }
     const client = largeSearchClient;
@@ -2696,10 +2797,11 @@
           filters: largeFacetFilters,
           sort: retrievalSort,
           ranking: 'weighted',
-          facet_keys: requestedDynamicFacetKeys()
+          facet_keys: requestedDynamicFacetKeys(),
+          exploration
         }),
         trimmed ? client.suggest(query) : Promise.resolve([]),
-        trimmed && (!hasFilters || !supportsCurrentWorkerFilters()) && remoteTemplate
+        trimmed && !reductions.length && !hasSelection(largeFacetHighlights) && (!hasFilters || !supportsCurrentWorkerFilters()) && remoteTemplate
           ? searchOfficialLegislation(remoteTemplate, query).catch(() => [])
           : Promise.resolve([])
       ]);
@@ -2785,7 +2887,6 @@
     largeForwardRoute = '';
     largeHighlightedEdge = '';
     largeInspectedEdge = null;
-    largeFacetHighlights = {};
     largeFacetPreviewRoute = '';
     clearLargeApiPanel();
   }
@@ -2825,6 +2926,7 @@
   }
 
   function chooseLargeResult(result: SearchResultDoc) {
+    activePanel = 'details';
     clearLargeFacetPreviewContext();
     largeSelectedRoute = datasetRoute(result);
     largeInspectedRoute = largeSelectedRoute;
@@ -2920,7 +3022,7 @@
     if (!largeIndex?.datasets) return [];
     const queryActive = Boolean(largeAppliedQuery.trim());
     const rows = largeIndex.datasets.filter((dataset) => {
-      if (queryActive && !largeResultNames.has(dataset.name)) return false;
+      if (queryActive && (largeSearchClient ? !largeResultNames.has(dataset.name) : !matchesLocalText(largeAppliedQuery, [dataset.title, dataset.name, dataset.notes, dataset.publisher, dataset.tags]))) return false;
       return datasetMatchesLargeFilters(dataset);
     });
     if (retrievalSort === 'relevance' && queryActive) {
@@ -2932,10 +3034,11 @@
     } else {
       rows.sort((left, right) => String(right.timestamp || right.metadata_modified || '').localeCompare(String(left.timestamp || left.metadata_modified || '')));
     }
-    return rows;
+    return highlightFirst(rows, dataset => hasSelection(largeFacetHighlights) && matchesSelection(largeFacetHighlights, key => largeDatasetFacetValues(dataset, key)));
   }
 
   function datasetMatchesLargeFilters(dataset: LargeDataset, exceptKey = ''): boolean {
+    if (!matchesReductions(reductions, key => largeDatasetFacetValues(dataset, key))) return false;
     for (const [key, selected] of Object.entries(largeFacetFilters)) {
       if (key === exceptKey || !selected.length) continue;
       const values = largeDatasetFacetValues(dataset, key);
@@ -3075,20 +3178,6 @@
     return Number.isFinite(configured) ? Math.max(3, Math.min(18, configured)) : DEFAULT_FACET_DISTRIBUTION_SEGMENTS;
   }
 
-  function facetDistribution(key: string): FacetDistributionSegment[] {
-    const rows = facetPreviewRows(key);
-    // Histogram bars remain keyboard targets, so each segment keeps a 24px
-    // hit area. Respect the provider's bounded segment limit here as well as
-    // for categorical distributions; an unconditional 18-column histogram
-    // overflows the normal navigation panel by more than 160px.
-    if (facetUsesHistogram(key)) return facetDistributionSegments(rows, facetDistributionLimit());
-    return facetDistributionSegments(rows, facetDistributionLimit());
-  }
-
-  function facetUsesDiverseSummary(key: string): boolean {
-    return facetAvailableValueCount(key) > facetSearchThreshold();
-  }
-
   function declaredFacetValueFamilies(key: string): FacetValueFamily[] {
     const rows = new Map(largeFacetRows(key).map((row) => [row.value, row]));
     return analysisHierarchiesForFacet(key).flatMap((hierarchy) => hierarchy.values.map((value) => {
@@ -3104,17 +3193,6 @@
         valueCount: matches.length || (value.children?.length || 1)
       };
     }));
-  }
-
-  function facetValueFamilies(key: string): FacetValueFamily[] {
-    const declared = declaredFacetValueFamilies(key);
-    return declared.length
-      ? declared
-      : diverseFacetValueFamilies(largeFacetRows(key), (value) => facetValueDisplay(key, value));
-  }
-
-  function showAllFacetValues(key: string) {
-    largeFacetBrowseAll = { ...largeFacetBrowseAll, [key]: true };
   }
 
   function facetExamples(key: string): string[] {
@@ -3140,46 +3218,9 @@
     return facetExampleValues(rows, undefined, (value) => facetValueDisplay(key, value));
   }
 
-  function facetSearchPlaceholder(key: string): string {
-    const examples = facetExamples(key);
-    return examples.length ? `e.g. ${examples.join(' · ')}` : 'Type to filter values';
-  }
-
-  function facetIcon(key: string): string {
-    const control = facetControl(key).toLowerCase();
-    const valueType = providerPresentationFacet(key)?.value_type || analysisFacetForKey(key)?.value_type;
-    if (analysisHierarchiesForFacet(key).length) return '▸';
-    if (valueType === 'date' || control.includes('histogram') || control.includes('range')) return '▥';
-    if (valueType === 'number') return '#';
-    if (facetUsesSearch(key)) return '⌕';
-    return '●';
-  }
-
   function facetPaletteKind(key: string): 'categorical' | 'sequential' {
     const valueType = providerPresentationFacet(key)?.value_type || analysisFacetForKey(key)?.value_type;
     return valueType === 'number' || valueType === 'date' || facetUsesHistogram(key) ? 'sequential' : 'categorical';
-  }
-
-  function facetSegmentColour(key: string, index: number, count: number, otherValues?: number): string {
-    if (otherValues) return '#aeb9c5';
-    if (facetPaletteKind(key) === 'sequential') {
-      const lightness = Math.round(30 + (index / Math.max(1, count - 1)) * 42);
-      return `hsl(209 76% ${lightness}%)`;
-    }
-    const palette = [
-      '#005ea5', '#e85d04', '#00703c', '#7b61a8', '#b10e73', '#00838f',
-      '#d4351c', '#b58800', '#3d5a80', '#c44e00', '#2f6f3e', '#6f42c1'
-    ];
-    return palette[index % palette.length];
-  }
-
-  function setFacetPreviewLabel(key: string, value: string) {
-    facetPreviewLabels = { ...facetPreviewLabels, [key]: value };
-  }
-
-  function clearFacetPreviewLabel(key: string) {
-    const { [key]: _removed, ...rest } = facetPreviewLabels;
-    facetPreviewLabels = rest;
   }
 
   function facetDistributionSegmentLabel(key: string, segment: FacetDistributionSegment): string {
@@ -3195,25 +3236,8 @@
     return largeBaselineFacetRows[key] ? 'Whole corpus' : 'Whole corpus preview';
   }
 
-  function facetDistributionCaption(key: string, segments: FacetDistributionSegment[]): string {
-    const detail = facetPreviewLabels[key] || (segments[0] ? facetDistributionSegmentLabel(key, segments[0]) : 'No values in this context');
-    return `${facetDistributionScope(key)} · ${detail}`;
-  }
-
-  function facetDistributionSummary(key: string, segments: FacetDistributionSegment[]): string {
-    const totalValues = segments.reduce((total, segment) => total + (segment.otherValues || 1), 0);
-    const labels = segments.map((segment) => facetDistributionSegmentLabel(key, segment)).join('; ');
-    return `${facetDistributionScope(key)}. ${totalValues.toLocaleString()} values. ${labels}`;
-  }
-
   function normaliseFacetSearchText(value: string): string {
     return value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
-  }
-
-  function setLargeFacetQuery(key: string, value: string) {
-    largeFacetSearch = { ...largeFacetSearch, [key]: value };
-    largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: FACET_PAGE_SIZE };
-    if (value.trim()) largeFacetBrowseAll = { ...largeFacetBrowseAll, [key]: true };
   }
 
   function largeFacetDisplayLimit(key: string): number {
@@ -3234,19 +3258,6 @@
       ...rows.filter((row) => selected.has(row.value)),
       ...matches.filter((row) => !selected.has(row.value))
     ];
-  }
-
-  function visibleLargeFacetRows(key: string, rows = filteredLargeFacetRows(key)) {
-    return rows.slice(0, largeFacetDisplayLimit(key));
-  }
-
-  function showMoreLargeFacetRows(key: string) {
-    largeFacetVisibleLimits = { ...largeFacetVisibleLimits, [key]: largeFacetDisplayLimit(key) + FACET_PAGE_SIZE };
-  }
-
-  function facetSelectionModeHint(key: string): string {
-    const action = 'Click previews; double-click or press Enter filters. Ctrl-click or Cmd-click highlights several values.';
-    return facetAvailableValueCount(key) <= FACET_PAGE_SIZE ? action : `Search within this facet first. ${action}`;
   }
 
   function largeAnalysis() {
@@ -3664,6 +3675,7 @@
 
   function resetFacetPreferences() {
     facetPreferences = providerFacetPreferences();
+    activeFacetKey = ''; openedPinnedFacets = [];
     if (source?.kind === 'large') {
       try {
         const stored = storedFacetPreferenceMap();
@@ -3682,7 +3694,7 @@
   }
 
   function facetIsOpen(key: string): boolean {
-    return facetIsPinned(key) || Boolean(largeFacetFilters[key]?.length) || activeFacetKey === key;
+    return openedPinnedFacets.includes(key) || activeFacetKey === key;
   }
 
   function facetIsHidden(key: string): boolean {
@@ -3734,9 +3746,10 @@
   function toggleFacetPin(key: string, restoreMenuFocus = true) {
     const pinned = new Set(facetPreferences.pinned);
     const hidden = new Set(facetPreferences.hidden);
-    if (pinned.has(key)) pinned.delete(key);
+    if (pinned.has(key)) { pinned.delete(key); openedPinnedFacets = openedPinnedFacets.filter(item => item !== key); }
     else {
       pinned.add(key);
+      openedPinnedFacets = [...new Set([...openedPinnedFacets, key])];
       hidden.delete(key);
       activeFacetKey = key;
       void hydrateLargeFacetValues(key);
@@ -3765,54 +3778,11 @@
     closeFacetMenu(key);
   }
 
-  function canMoveFacetPreference(key: string, direction: -1 | 1): boolean {
-    const pinned = facetIsPinned(key);
-    const group = facetPreferences.order.filter((candidate) => facetIsPinned(candidate) === pinned);
-    const current = group.indexOf(key);
-    return current >= 0 && current + direction >= 0 && current + direction < group.length;
-  }
-
   function moveFacetPreference(key: string, direction: -1 | 1) {
     const nextOrder = moveFacetKeyWithinPinGroup(facetPreferences.order, facetPreferences.pinned, key, direction);
     if (nextOrder === facetPreferences.order) return;
     updateFacetPreferences({ ...facetPreferences, order: nextOrder });
     closeFacetMenu(key);
-  }
-
-  function startFacetDrag(key: string, event: DragEvent) {
-    draggingFacetKey = key;
-    facetDropTargetKey = '';
-    event.dataTransfer?.setData('text/plain', key);
-    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
-  }
-
-  function dragFacetOver(key: string, event: DragEvent) {
-    const sourceKey = draggingFacetKey || event.dataTransfer?.getData('text/plain') || '';
-    if (!sourceKey || sourceKey === key || facetIsPinned(sourceKey) !== facetIsPinned(key)) return;
-    event.preventDefault();
-    facetDropTargetKey = key;
-    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
-  }
-
-  function dropFacetBefore(key: string, event: DragEvent) {
-    event.preventDefault();
-    const sourceKey = draggingFacetKey || event.dataTransfer?.getData('text/plain') || '';
-    const nextOrder = moveFacetKeyToTargetWithinPinGroup(
-      facetPreferences.order,
-      facetPreferences.pinned,
-      sourceKey,
-      key
-    );
-    if (nextOrder !== facetPreferences.order) {
-      updateFacetPreferences({ ...facetPreferences, order: nextOrder });
-    }
-    draggingFacetKey = '';
-    facetDropTargetKey = '';
-  }
-
-  function finishFacetDrag() {
-    draggingFacetKey = '';
-    facetDropTargetKey = '';
   }
 
   function closeFacetMenu(key: string, restoreFocus = true) {
@@ -3834,80 +3804,12 @@
     }
   }
 
-  function explainFacet(key: string) {
-    if (facetPreferences.density !== 'explained') {
-      updateFacetPreferences({ ...facetPreferences, density: 'explained' });
-    }
-    closeFacetMenu(key);
-    if (!facetIsOpen(key)) void openLargeFacet(key);
-  }
-
-  function openBrowseTab() {
-    leftPanelTab = 'browse';
-    void tick().then(() => document.getElementById('left-tab-browse')?.focus());
-  }
-
-  function facetContextKeydown(key: string, event: KeyboardEvent) {
-    if (event.key === 'ContextMenu' || (event.shiftKey && event.key === 'F10')) openFacetMenu(key, event);
-  }
-
-  function facetMenuKeydown(key: string, event: KeyboardEvent) {
-    const menu = document.getElementById(`facet-menu-${key}`);
-    const items = [...(menu?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') || [])];
-    if (!items.length) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      closeFacetMenu(key);
-      return;
-    }
-    if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
-    const current = Math.max(0, items.indexOf(document.activeElement as HTMLButtonElement));
-    const nextIndex = event.key === 'Home'
-      ? 0
-      : event.key === 'End'
-        ? items.length - 1
-        : (current + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-    event.preventDefault();
-    items[nextIndex].focus();
-  }
-
   function facetDisplayLabel(key: string): string {
     return providerPresentationFacet(key)?.label || analysisFacetForKey(key)?.label || key.replaceAll('_', ' ');
   }
 
   function facetSummary(key: string): string {
     return getFacetSummary(largeAnalysis(), key, source?.kind === 'large' ? source.overview.facet_previews || {} : {});
-  }
-
-  function facetDefinition(key: string): string {
-    const providerDefinition = providerPresentationFacet(key)?.description || analysisFacetForKey(key)?.description;
-    if (providerDefinition) return providerDefinition;
-    const definitions: Record<string, string> = {
-      publisher: 'Owning or publishing organisation in the harvested source metadata.',
-      canonical_publisher: 'Normalised provider identity used to connect variant organisation names.',
-      organisation_family: 'Broad public-sector grouping used to organise providers.',
-      publisher_family: 'Broad public-sector grouping inferred from publisher metadata.',
-      format: 'Protocol or file/API format advertised by the source.',
-      protocol: 'API or data-access protocol detected from the endpoint or contract metadata.',
-      contract_status: 'Whether a machine-readable contract, capability document or service description was observed.',
-      record_type: 'The kind of catalogue item: API product, data endpoint, data product, operation, contract or schema.',
-      quality_band: 'Bucketed metadata quality score for quick triage.',
-      assurance_status: 'Observed, declared or assured confidence level for the public metadata.',
-      source_adapter: 'Harvester or adapter that contributed the record.',
-      source_tier: 'Source tier used by the UK Government API OKF specification.',
-      confidence: 'How strongly the source supports the record.',
-      access_model: 'Observed public access requirement, such as anonymous, API key or approval required.',
-      dcat_type: 'Closest DCAT/DCAT-AP term. Rendered as a standards term, not as a repo-only label.',
-      openapi_type: 'Closest OpenAPI object or fragment that could be emitted by an exporter.',
-      dcat_export_status: 'DCAT export-readiness state for this generated metadata record.',
-      openapi_export_status: 'OpenAPI export-readiness state for this generated metadata record.',
-      openapi_security_scheme: 'OpenAPI securitySchemes.type implied by the observed access model.',
-      license: 'Licence metadata from the source. Not specified means a metadata gap, not a licence.',
-      data_classification: 'Public metadata classification inferred from visibility and access model.',
-      environment: 'Observed environment such as production/public, sandbox/test or retired.',
-      relationship_density: 'Bucket showing how connected records are in the generated graph.'
-    };
-    return definitions[key] || '';
   }
 
   function helpText(key: string): string {
@@ -3982,11 +3884,6 @@
     return Array.isArray(value) ? value.map((item) => String(item || '').trim()).filter(Boolean) : [];
   }
 
-  function facetSelectedSummary(key: string, values: string[]): string {
-    const labels = values.slice(0, 2).map((value) => facetValueDisplay(key, value));
-    return `${labels.join(', ')}${values.length > 2 ? ` +${values.length - 2}` : ''}`;
-  }
-
   function facetValueDisplay(key: string, value: string): string {
     if (value === MISSING_FILTER_VALUE) return 'Not specified (metadata gap)';
     const route = metadataEndpointRoute(
@@ -4035,19 +3932,6 @@
     if (meta?.cardinality !== undefined) return meta.cardinality;
     if (Object.prototype.hasOwnProperty.call(largeFacetIndex, key)) return largeFacetIndex[key]?.length || 0;
     return source?.kind === 'large' ? source.overview.facet_previews?.[key]?.length || 0 : 0;
-  }
-
-  function facetSummaryBadge(key: string): string {
-    const selected = facetSelectedValues(key).length;
-    if (selected) return `${selected} selected`;
-    if (largeFacetHydratingKey === key || (largeFullLoading && facetIsOpen(key) && !largeIndex)) return 'Loading';
-    if (facetIsOpen(key) && largeIndex) {
-      const available = facetAvailableValueCount(key);
-      if (largeFacetQuery(key).trim()) return 'Search active';
-      if (available) return `${available} values`;
-    }
-    const available = facetAvailableValueCount(key);
-    return available || facetPreviewIsComplete(key) ? `${available} values` : 'Load';
   }
 
   function largeVocabulary(key: string, fallback: string): string {
@@ -4234,10 +4118,16 @@
   }
 
   function largeContextMetrics() {
+    if (geospatialFilter) return [
+      { label: `${recordPlural()} in map scope${largeExplorationScope.exact ? '' : ' (loaded)'}`, value: scopeCount },
+      { label: `${recordPlural()} shown`, value: largeReaderResults.length },
+      { label: 'highlighted', value: highlightedCount },
+      { label: 'active filters', value: activeLargeFilterCount }
+    ];
     const counts = source?.kind === 'large' ? source.manifest.counts : {};
     const hasApiCounts =
       counts.declared_api_products !== undefined || counts.provider_native_api_products !== undefined || counts.data_access_endpoints !== undefined || counts.data_products !== undefined;
-    const responseIsReduction = Boolean(largeSearchResponse && (largeAppliedQuery.trim() || Object.keys(largeFacetFilters).length));
+    const responseIsReduction = Boolean(largeSearchResponse && (largeAppliedQuery.trim() || Object.keys(largeFacetFilters).length || explorationActive));
     const responseTotal = responseIsReduction ? largeSearchResponse?.total : undefined;
     const localCountMatchesResponse = responseTotal === undefined || largeVisibleDatasets.length === responseTotal;
     if (largeIndex) {
@@ -6173,6 +6063,7 @@
   }
 
   function inspectLargeEdge(edge: LargeGraphEdge) {
+    activePanel = 'details';
     graphHighlightedRelationshipGroup = '';
     largeInspectedEdge = edge;
     largeInspectedRoute = '';
@@ -6211,6 +6102,7 @@
   }
 
   function inspectLargeRelationshipGroup(group: GraphRelationshipGroup, model: LargeGraphModel, event?: MouseEvent) {
+    activePanel = 'details';
     if (
       graphHighlightedRelationshipGroup === group.key
       || event?.ctrlKey
@@ -6286,6 +6178,7 @@
   }
 
   function inspectLargeRelationship(relationship: LargeRelationship) {
+    activePanel = 'details';
     inspectLargeEdge({
       source: relationship.source,
       target: relationship.target,
@@ -6444,22 +6337,6 @@
     inspectLargeRoute(route);
   }
 
-  function beginResize(side: 'left' | 'right', event: PointerEvent) {
-    const startX = event.clientX;
-    const startLeft = leftWidth;
-    const startRight = rightWidth;
-    const move = (next: PointerEvent) => {
-      if (side === 'left') leftWidth = Math.max(220, Math.min(560, startLeft + next.clientX - startX));
-      else rightWidth = Math.max(300, Math.min(680, startRight - (next.clientX - startX)));
-    };
-    const up = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  }
-
   function beginEdgePanelResize(event: PointerEvent) {
     if (event.button !== undefined && event.button !== 0) return;
     const target = event.target instanceof Element ? event.target : null;
@@ -6538,7 +6415,7 @@
         <button class:active={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
       {/each}
     </nav>
-    <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void loadSource(bundleInputUrl); }}>
+    <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void openBundle(bundleInputUrl); }}>
       <div class="bundle-box">
         <input bind:value={bundleInputUrl} onfocus={() => (suggestionsOpen = true)} oninput={() => (suggestionsOpen = true)} placeholder="Bundle or descriptor URL" />
         {#if suggestionsOpen && bundleSuggestions.length}
@@ -6546,7 +6423,7 @@
             {#each bundleSuggestions as suggestion}
               <button type="button" onclick={() => {
                 bundleInputUrl = suggestion.url;
-                void loadSource(suggestion.url, suggestion.routes || [], suggestion.raw_subpath || '');
+                void openBundle(suggestion.url, suggestion.routes || [], suggestion.raw_subpath || '');
               }}>
                 <strong>{suggestion.title || suggestion.label || suggestion.url}</strong>
                 <span>{suggestion.url}</span>
@@ -6593,17 +6470,37 @@
     {/if}
   </div>
 
-  <main class="workspace">
-    <aside class="left-panel">
-      <div class="panel-bar">
-        <button aria-label="Toggle navigation" type="button" onclick={() => (leftCollapsed = !leftCollapsed)}>{leftCollapsed ? '›' : '‹'}</button>
-        {#if leftCollapsed}
-          <span class="panel-rail-label" title={source?.kind === 'large' ? largeLabelForRoute(largeSelectedRoute || largeInspectedRoute) : detailNode?.title || smallCorpus?.title || 'Browse'}>
-            {source?.kind === 'large' ? largeLabelForRoute(largeSelectedRoute || largeInspectedRoute) || 'Browse' : detailNode?.title || smallCorpus?.title || 'Browse'}
-          </span>
-        {/if}
-      </div>
-      <div class="left-content">
+  {#snippet navigationTabs()}
+          <div class="panel-tabs" role="tablist" aria-label="Left panel">
+            {#each availableLeftPanelTabs() as tab}
+              <button
+                id={`left-tab-${tab}`}
+                role="tab"
+                type="button"
+                aria-selected={leftPanelTab === tab}
+                aria-controls={`left-panel-${tab}`}
+                tabindex={leftPanelTab === tab ? 0 : -1}
+                class:active={leftPanelTab === tab}
+                onclick={() => selectLeftPanelTab(tab)}
+                onkeydown={(event) => leftPanelTabKeydown(event, tab)}
+              >{leftPanelTabLabel(tab)}</button>
+            {/each}
+          </div>
+
+          {#each availableLeftPanelTabs().filter((tab) => tab !== leftPanelTab) as tab}
+            <div id={`left-panel-${tab}`} role="tabpanel" aria-labelledby={`left-tab-${tab}`} hidden></div>
+          {/each}
+
+  {/snippet}
+
+  {#snippet selectionActions(compact: boolean)}
+      {#if source && (compact || source.kind === 'small' || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length)}
+        <ExplorationToolbar {compact} scopeKnown={source.kind === 'small' || Boolean(largeIndex || largeSearchResponse)} {exploration} highlighted={highlightedCount} total={scopeCount} busy={largeSearching || largeFullLoading} canFold={source.kind === 'small' ? scopeCount <= MAX_FOLDED_MEMBERS : Boolean(largeExplorationScope.scopeIds)} folds={foldedSets} foldCounts={foldedSetCounts()} approximate={source.kind === 'large' && !largeExplorationScope.exact} label={source.kind === 'large' ? facetDisplayLabel : key => SMALL_FACETS.find(facet => facet.key === key)?.label || key} onkeep={keepExploration} onfold={foldExploration} onunfold={(id) => foldedSets = foldedSets.filter(fold => fold.id !== id)} onclear={clearExplorationPreview} onundo={undoExploration} onreset={resetExploration} />
+      {/if}
+  {/snippet}
+
+  <WorkspaceShell actions={selectionActions} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)}>
+    {#snippet navigation()}
         {#if source?.kind === 'large'}
           <section class="retrieval-control">
             <h2>Search</h2>
@@ -6664,31 +6561,12 @@
             <section class="pinned-list">
               <h2>Pins</h2>
               {#each pinnedLabels as pin}
-                <button type="button" onclick={() => selectLargeRoute(pin.route)}>{pin.label}</button>
+                <button type="button" onclick={() => openPin(pin)}>{pin.label}</button>
               {/each}
             </section>
           {/if}
 
-          <div class="panel-tabs" role="tablist" aria-label="Left panel">
-            {#each availableLeftPanelTabs() as tab}
-              <button
-                id={`left-tab-${tab}`}
-                role="tab"
-                type="button"
-                aria-selected={leftPanelTab === tab}
-                aria-controls={`left-panel-${tab}`}
-                tabindex={leftPanelTab === tab ? 0 : -1}
-                class:active={leftPanelTab === tab}
-                onclick={() => selectLeftPanelTab(tab)}
-                onkeydown={(event) => leftPanelTabKeydown(event, tab)}
-              >{leftPanelTabLabel(tab)}</button>
-            {/each}
-          </div>
-
-          {#each availableLeftPanelTabs().filter((tab) => tab !== leftPanelTab) as tab}
-            <div id={`left-panel-${tab}`} role="tabpanel" aria-labelledby={`left-tab-${tab}`} hidden></div>
-          {/each}
-
+          {@render navigationTabs()}
           {#if leftPanelTab === 'facets'}
             <div id="left-panel-facets" class="facet-preview panel-tab-content" role="tabpanel" aria-labelledby="left-tab-facets">
               <div class="filter-heading">
@@ -6737,260 +6615,7 @@
                   Applying {facetDisplayLabel(largeFacetApplyingKey)}: {facetValueDisplay(largeFacetApplyingKey, largeFacetApplyingValue)}...
                 </p>
               {/if}
-              <div class="facet-sections" aria-label="Facet filters">
-                {#each presentedLargeFacetKeys() as key}
-                  {@const selectedFacetValues = facetSelectedValues(key)}
-                  {@const selectedFacetCount = selectedFacetValues.length}
-                  {@const facetHint = facetSummary(key)}
-                  {@const facetTerm = facetDefinition(key)}
-                  {@const facetHierarchies = analysisHierarchiesForFacet(key)}
-                  <section
-                    class="facet-section"
-                    class:open={facetIsOpen(key)}
-                    class:pinned={facetIsPinned(key)}
-                    class:dragging={draggingFacetKey === key}
-                    class:drag-over={facetDropTargetKey === key}
-                    role="group"
-                    aria-label={`${facetDisplayLabel(key)} facet`}
-                    data-facet-key={key}
-                    ondragover={(event) => dragFacetOver(key, event)}
-                    ondrop={(event) => dropFacetBefore(key, event)}
-                  >
-                    <div class="facet-section-header">
-                      <button
-                        class="facet-drag-handle"
-                        type="button"
-                        draggable="true"
-                        aria-label={`Reorder ${facetDisplayLabel(key)}`}
-                        title="Drag to reorder this facet"
-                        ondragstart={(event) => startFacetDrag(key, event)}
-                        ondragend={finishFacetDrag}
-                      >⋮⋮</button>
-                      <button
-                        class="facet-toggle"
-                        type="button"
-                        aria-expanded={facetIsOpen(key)}
-                        aria-controls={`facet-panel-${key}`}
-                        onclick={() => void openLargeFacet(key)}
-                        onkeydown={(event) => facetContextKeydown(key, event)}
-                        oncontextmenu={(event) => openFacetMenu(key, event)}
-                      >
-                        <span class="facet-title">
-                          <span class="facet-type-icon" aria-hidden="true">{facetIcon(key)}</span>
-                          <span>{facetDisplayLabel(key)}</span>
-                          {#if facetIsPinned(key)}<span class="facet-pin" aria-label="Pinned facet">★</span>{/if}
-                        </span>
-                        <small>{facetSummaryBadge(key)}</small>
-                        {#if selectedFacetCount && !facetIsOpen(key)}
-                          <em>{facetSelectedSummary(key, selectedFacetValues)}</em>
-                        {/if}
-                      </button>
-                      <div class="facet-actions">
-                        <button
-                          class="facet-pin-trigger"
-                          type="button"
-                          aria-label={`${facetIsPinned(key) ? 'Unpin' : 'Pin'} ${facetDisplayLabel(key)}`}
-                          aria-pressed={facetIsPinned(key)}
-                          title={facetIsPinned(key) ? 'Unpin facet' : 'Pin facet open'}
-                          onclick={() => toggleFacetPin(key, false)}
-                        >{facetIsPinned(key) ? '★' : '☆'}</button>
-                        <button
-                          id={`facet-menu-trigger-${key}`}
-                          class="facet-menu-trigger"
-                          type="button"
-                          aria-label={`Actions for ${facetDisplayLabel(key)}`}
-                          aria-haspopup="menu"
-                          aria-expanded={facetMenuKey === key}
-                          onclick={(event) => openFacetMenu(key, event)}
-                        >•••</button>
-                        {#if facetMenuKey === key}
-                          <div id={`facet-menu-${key}`} class="facet-menu" role="menu" tabindex="-1" aria-label={`${facetDisplayLabel(key)} actions`} onkeydown={(event) => facetMenuKeydown(key, event)}>
-                            <button role="menuitem" type="button" onclick={() => toggleFacetPin(key)}>{facetIsPinned(key) ? 'Unpin facet' : 'Pin facet'}</button>
-                            <button role="menuitem" type="button" disabled={!canMoveFacetPreference(key, -1)} onclick={() => moveFacetPreference(key, -1)}>Move earlier</button>
-                            <button role="menuitem" type="button" disabled={!canMoveFacetPreference(key, 1)} onclick={() => moveFacetPreference(key, 1)}>Move later</button>
-                            <button role="menuitem" type="button" onclick={() => toggleFacetHidden(key)}>{facetIsHidden(key) || (facetIsLowPriority(key) && !facetIsPinned(key)) ? 'Show in Suggested' : 'Hide from Suggested'}</button>
-                            <button role="menuitem" type="button" disabled={!selectedFacetCount} onclick={() => { clearFacetFilter(key); closeFacetMenu(key); }}>Clear this facet</button>
-                            <button role="menuitem" type="button" onclick={() => explainFacet(key)}>About this facet</button>
-                          </div>
-                        {/if}
-                      </div>
-                    </div>
-
-                    {#if !facetUsesSearch(key) && facetPreviewIsComplete(key)}
-                      {@const distribution = facetDistribution(key)}
-                      {#if distribution.length}
-                        <div class="facet-distribution">
-                          <div
-                            class="facet-distribution-bar"
-                            class:histogram={facetUsesHistogram(key)}
-                            role="group"
-                            aria-label={`${facetDisplayLabel(key)} distribution`}
-                            title={facetDistributionSummary(key, distribution)}
-                            data-palette={facetPaletteKind(key)}
-                          >
-                            {#each distribution as segment, index}
-                              {@const segmentLabel = facetDistributionSegmentLabel(key, segment)}
-                              <button
-                                class="facet-distribution-segment"
-                                class:aggregate={Boolean(segment.otherValues)}
-                                class:active={!segment.otherValues && selectedFacetValues.includes(segment.value)}
-                                class:highlighted={!segment.otherValues && facetValueIsHighlighted(key, segment.value)}
-                                type="button"
-                                aria-label={segment.otherValues ? `Open ${facetDisplayLabel(key)} to find ${segment.otherValues.toLocaleString()} other values` : `${segmentLabel}. Click to preview; double-click or press Enter to filter.`}
-                                aria-pressed={segment.otherValues ? undefined : selectedFacetValues.includes(segment.value)}
-                                data-facet-value={segment.value}
-                                data-tone={index % 2 === 0 ? 'strong' : 'contrast'}
-                                style={`--facet-weight:${segment.count};--facet-height:${Math.min(1, segment.count / Math.max(...distribution.map((row) => row.count)))};--facet-colour:${facetSegmentColour(key, index, distribution.length, segment.otherValues)}`}
-                                title={segmentLabel}
-                                onmouseenter={() => setFacetPreviewLabel(key, segmentLabel)}
-                                onmouseleave={() => clearFacetPreviewLabel(key)}
-                                onfocus={() => setFacetPreviewLabel(key, segmentLabel)}
-                                onblur={() => clearFacetPreviewLabel(key)}
-                                oncontextmenu={(event) => event.preventDefault()}
-                                onclick={(event) => segment.otherValues ? void openLargeFacet(key) : previewLargeFacetValue(key, segment.value, event)}
-                                ondblclick={(event) => segment.otherValues ? void openLargeFacet(key) : void commitFacetHighlights(key, segment.value, event)}
-                                onkeydown={(event) => segment.otherValues ? undefined : facetValueKeydown(key, segment.value, event)}
-                              ></button>
-                            {/each}
-                          </div>
-                          <p>{facetDistributionCaption(key, distribution)}</p>
-                        </div>
-                      {:else if !facetIsOpen(key)}
-                        <div class="facet-search-ghost">
-                          <span aria-hidden="true">⌕</span>{facetSearchPlaceholder(key)}
-                        </div>
-                      {/if}
-                    {:else if !facetIsOpen(key)}
-                      <div class="facet-search-ghost">
-                        <span aria-hidden="true">⌕</span>{facetUsesSearch(key)
-                          ? `Search values · ${facetSearchPlaceholder(key)}`
-                          : largeFacetIndexLoading || largeSearchIndexLoading
-                            ? 'Loading distribution...'
-                            : `Open to load distribution · ${facetSearchPlaceholder(key)}`}
-                      </div>
-                    {/if}
-
-                    {#if facetIsOpen(key)}
-                      {@const diverseFamilies = facetUsesDiverseSummary(key) ? facetValueFamilies(key) : []}
-                      <div id={`facet-panel-${key}`} class="facet-panel">
-                        {#if facetPreferences.density === 'explained' && facetTerm}
-                          <p class="facet-definition">{facetTerm}</p>
-                        {/if}
-                        {#if facetPreferences.density === 'explained' && facetHint}
-                          <p class="facet-hint">{facetHint} · coverage {formatPercent(analysisFacetForKey(key)?.coverage)} · {facetAvailableValueCount(key).toLocaleString()} values</p>
-                        {/if}
-                        {#if facetHierarchies.length}
-                          <button class="facet-browse-link" type="button" onclick={openBrowseTab}>
-                            Browse {facetHierarchies[0].label} →
-                          </button>
-                        {/if}
-                        {#if diverseFamilies.length}
-                          <section class="facet-family-summary" aria-label={`${facetDisplayLabel(key)} value families`}>
-                            <div class="facet-family-bar" aria-hidden="true">
-                              {#each diverseFamilies as family, index}
-                                <i
-                                  style={`--facet-weight:${family.count};--facet-colour:${facetSegmentColour(key, index, diverseFamilies.length, family.id === 'other' ? family.valueCount : undefined)}`}
-                                ></i>
-                              {/each}
-                            </div>
-                            <p class="facet-family-key">
-                              {#each diverseFamilies as family, index}
-                                <span style={`--facet-colour:${facetSegmentColour(key, index, diverseFamilies.length, family.id === 'other' ? family.valueCount : undefined)}`}>
-                                  {family.label}
-                                </span>
-                              {/each}
-                            </p>
-                            <div class="facet-family-groups">
-                              {#each diverseFamilies as family}
-                                <div>
-                                  <strong>{family.label}:</strong>
-                                  <span>
-                                    {#each family.rows.slice(0, 3) as row, index}
-                                      {#if index}<b aria-hidden="true">|</b>{/if}
-                                      <button
-                                        class:active={selectedFacetValues.includes(row.value)}
-                                        class:highlighted={facetValueIsHighlighted(key, row.value)}
-                                        type="button"
-                                        aria-pressed={selectedFacetValues.includes(row.value)}
-                                        title={`${row.count.toLocaleString()} records. Click to preview; double-click or press Enter to filter.`}
-                                        disabled={Boolean(largeFacetApplyingKey)}
-                                        onclick={(event) => previewLargeFacetValue(key, row.value, event)}
-                                        ondblclick={(event) => void commitFacetHighlights(key, row.value, event)}
-                                        onkeydown={(event) => facetValueKeydown(key, row.value, event)}
-                                      >{facetValueDisplay(key, row.value)}</button>
-                                    {/each}
-                                    {#if family.valueCount > Math.min(3, family.rows.length)}
-                                      <em>+{(family.valueCount - Math.min(3, family.rows.length)).toLocaleString()}</em>
-                                    {/if}
-                                  </span>
-                                </div>
-                              {/each}
-                            </div>
-                          </section>
-                        {/if}
-                        <div class="facet-values">
-                          {#if !largeIndex && largeFacetHydratingKey === key}
-                            <p class="facet-loading">Loading facet values...</p>
-                          {:else}
-                            {@const filteredFacetRows = filteredLargeFacetRows(key)}
-                            {@const visibleFacetRows = visibleLargeFacetRows(key, filteredFacetRows)}
-                            {#if facetUsesSearch(key)}
-                              <label class="facet-search">
-                                <span>Search {facetDisplayLabel(key)}</span>
-                                <input
-                                  value={largeFacetQuery(key)}
-                                  placeholder={facetSearchPlaceholder(key)}
-                                  oninput={(event) => setLargeFacetQuery(key, event.currentTarget.value)}
-                                />
-                              </label>
-                            {/if}
-                            {#if facetPreferences.density === 'explained'}
-                              <p class="facet-mode-hint">{facetSelectionModeHint(key)}</p>
-                            {/if}
-                            {#if largeFacetHighlights[key]?.length}
-                              <div class="facet-highlight-actions" aria-live="polite">
-                                <span>{largeFacetHighlights[key].length.toLocaleString()} highlighted</span>
-                                <button type="button" onclick={() => void commitFacetHighlights(key, largeFacetHighlights[key][0])}>Filter to highlighted</button>
-                                <button type="button" onclick={() => clearFacetHighlights(key)}>Clear preview</button>
-                              </div>
-                            {/if}
-                            {#if !diverseFamilies.length || largeFacetBrowseAll[key] || largeFacetQuery(key).trim()}
-                              {#each visibleFacetRows as value}
-                                <button
-                                  class:active={selectedFacetValues.includes(value.value)}
-                                  class:highlighted={facetValueIsHighlighted(key, value.value)}
-                                  type="button"
-                                  aria-pressed={selectedFacetValues.includes(value.value)}
-                                  data-facet-value={value.value}
-                                  title="Click to preview; double-click or press Enter to filter"
-                                  disabled={Boolean(largeFacetApplyingKey)}
-                                  onclick={(event) => previewLargeFacetValue(key, value.value, event)}
-                                  ondblclick={(event) => void commitFacetHighlights(key, value.value, event)}
-                                  onkeydown={(event) => facetValueKeydown(key, value.value, event)}
-                                >
-                                  <span>{facetValueDisplay(key, value.value)}</span><small>{value.count.toLocaleString()}</small>
-                                </button>
-                              {/each}
-                              {#if visibleFacetRows.length < filteredFacetRows.length}
-                                <button class="facet-more" type="button" onclick={() => showMoreLargeFacetRows(key)}>
-                                  <span>Show more</span><small>{(filteredFacetRows.length - visibleFacetRows.length).toLocaleString()} more</small>
-                                </button>
-                              {/if}
-                            {:else}
-                              <button class="facet-more" type="button" onclick={() => showAllFacetValues(key)}>
-                                <span>Browse all values</span><small>{filteredFacetRows.length.toLocaleString()}</small>
-                              </button>
-                            {/if}
-                            {#if !filteredFacetRows.length}
-                              <p class="facet-loading">No values match this facet search.</p>
-                            {/if}
-                          {/if}
-                        </div>
-                      </div>
-                    {/if}
-                  </section>
-                {/each}
-              </div>
+              <FacetPanel facets={explorerLargeFacets()} selection={largeFacetHighlights} bind:multiple={multiSelect} busy={largeSearching} onopen={(key) => void openLargeFacet(key)} onpin={(key) => toggleFacetPin(key, false)} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} onmove={moveFacetPreference} onhide={toggleFacetHidden} />
             </div>
           {:else if leftPanelTab === 'browse'}
             <div id="left-panel-browse" class="hierarchy-browser panel-tab-content" role="tabpanel" aria-labelledby="left-tab-browse">
@@ -7082,17 +6707,13 @@
               <button type="button" onclick={clearGeospatialFilter}>{geospatialFilterLabel(geospatialFilter)} ×</button>
             </section>
           {/if}
-          <div class="type-filters">
-            <div class="filter-heading">
-              <span>Filter results</span>
-              <button type="button" onclick={resetTypes}>All</button>
+          {@render navigationTabs()}
+          {#if leftPanelTab === 'facets'}
+            <div id="left-panel-facets" role="tabpanel" aria-labelledby="left-tab-facets">
+          <FacetPanel facets={smallFacets} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} />
             </div>
-            {#each typeList as type}
-              <button class:active={visibleTypes.has(type)} type="button" onclick={() => toggleType(type)}>
-                <span class="type-dot"></span>{type}
-              </button>
-            {/each}
-          </div>
+          {:else}
+            <div id="left-panel-results" role="tabpanel" aria-labelledby="left-tab-results">
           <section class="sort-control">
             <label>
               <span>Sort</span>
@@ -7104,21 +6725,19 @@
               </select>
             </label>
           </section>
-          <div class="node-list">
-            {#each visibleNodes as node}
-              <button class:active={node.id === selectedId} type="button" onclick={() => selectNode(node.id)}>
+          <div class="node-list" data-okf-ranked-results="navigation">
+            {#each smallResults as node}
+              <button data-okf-ranked-result class:active={node.id === (inspectedId || selectedId)} type="button" onclick={() => selectNode(node.id)}>
                 <strong>{node.title}</strong>
-                <span>{node.type || 'Node'} · {node.source || node.id}</span>
+                <span>{node.type} · {node.metadata}</span>
               </button>
             {/each}
           </div>
+            </div>
+          {/if}
         {/if}
-      </div>
-    </aside>
-
-    <button class="splitter" aria-label="Resize navigation" type="button" onpointerdown={(event) => beginResize('left', event)}></button>
-
-    <section class="stage">
+    {/snippet}
+    {#snippet content(actions)}
       <div class="stage-bar">
         <div class="nav-controls" aria-label="History navigation">
           <button type="button" title="Back" aria-label="Back" onclick={navigateBack}>←</button>
@@ -7135,11 +6754,12 @@
           {:else}
             <button type="button" onclick={copyRoute}>Copy route</button>
             <button type="button" onclick={() => pinRoute()}>Pin</button>
-            <button type="button" onclick={() => (rightCollapsed = false)}>Inspect</button>
+            <button type="button" onclick={() => { rightCollapsed = false; activePanel = 'details'; }}>Inspect</button>
           {/if}
         </div>
       </div>
 
+      {@render actions?.(false)}
       {#if source?.kind === 'large' && largeSourceInspectorOpen}
         <SourceInspector
           data={largeApiJson}
@@ -7181,45 +6801,9 @@
           {/if}
 
           {#if activeView === 'reader'}
-            {#if largeQuery || activeLargeFilterCount}
-              <div class="view-heading">
-                <h2>{largeQuery ? 'Search Results' : 'Filtered Results'}</h2>
-                <span>{largeSearching ? 'Searching static index...' : searchResultSummary()}</span>
-              </div>
-              <div
-                class="result-list"
-                data-okf-ranked-results="primary"
-                data-okf-query={largeAppliedQuery}
-                data-okf-search-state={largeSearching ? 'searching' : 'settled'}
-              >
-                {#if largeIndex && largeSearchResponse && !largeSearchResponse.filters_applied}
-                  {#each largeVisibleDatasets.slice(0, 160) as dataset}
-                    <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
-                      <strong>{largeDatasetLabel(dataset)}</strong>
-                      <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
-                      {#if datasetMatchReason(dataset)}<small class="result-match">Why this matched: {datasetMatchReason(dataset)}</small>{/if}
-                      {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
-                      <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
-                      {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
-                    </button>
-                  {:else}
-                    <p class="muted">No static-search matches in the current reduction.</p>
-                  {/each}
-                {:else}
-                  {#each largeResults as result}
-                    <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
-                      <strong>{largeDatasetLabel(result)}</strong>
-                      <span>{largeRecordPublisherLabel(result)} · {result.resource_count || 0} {resourcePlural()}</span>
-                      <small class="result-match">Why this matched: {searchMatchReason(result)}</small>
-                      {#if apiContextNote(result)}<p class="context-note">{apiContextNote(result)}</p>{/if}
-                      <p>{stripHtml(result.notes || '').slice(0, 220)}</p>
-                      {#if apiRecordMeta(result)}<small class="result-meta">{apiRecordMeta(result)}</small>{/if}
-                    </button>
-                  {:else}
-                    <p class="muted">No static-search matches.</p>
-                  {/each}
-                {/if}
-              </div>
+            {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex)}
+              <div class="view-heading"><h2>Results</h2><span>{largeSearching ? 'Updating results…' : searchResultSummary()}</span></div>
+              <ResultList items={largeReaderResults} busy={largeSearching || Boolean(geospatialFilter && largeFullLoading)} selected={largeInspectedRoute || largeSelectedRoute} bind:layout={resultLayout} query={largeAppliedQuery} onselect={(route) => { const result = largeResults.find(row => datasetRoute(row) === route); if (result) chooseLargeResult(result); else selectLargeRoute(route); }} />
             {:else if largeHasAnalysisOverview('reader')}
               {@const analysis = largeAnalysis()}
               <div class="view-heading">
@@ -7990,7 +7574,7 @@
                         class:highlighted={facetValueIsHighlighted(key, row.value)}
                         type="button"
                         onclick={(event) => previewLargeFacetValue(key, row.value, event)}
-                        ondblclick={(event) => void commitFacetHighlights(key, row.value, event)}
+                        ondblclick={() => void commitFacetHighlights(key, row.value, true)}
                         onkeydown={(event) => facetValueKeydown(key, row.value, event)}
                       >
                         {facetValueDisplay(key, row.value)}<span>{row.count.toLocaleString()}</span>
@@ -8182,14 +7766,8 @@
               onloadchild={loadFederationChild}
             />
           {:else}
-            <section class="reader-view">
-              {#each visibleNodes as node}
-                <button class="node-card" class:active={node.id === selectedId} type="button" onclick={() => inspectNode(node.id)} ondblclick={() => selectNode(node.id)}>
-                  <span>{node.type || 'Node'}</span>
-                  <h2>{node.title}</h2>
-                  <p>{node.description || node.summary || node.source || node.id}</p>
-                </button>
-              {/each}
+            <section class="reader-view shared-reader">
+              <ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} />
             </section>
           {/if}
         {:else if activeView === 'graph'}
@@ -8482,33 +8060,9 @@
       {:else}
         <section class="empty-state">Load an OKF bundle or large-corpus descriptor.</section>
       {/if}
-      <div class="pins-bar">
-        <div class="pin-actions">
-          <button type="button" onclick={() => (spreadPins = !spreadPins)}>{spreadPins ? 'Compact pins' : 'Spread pins'}</button>
-          <button type="button" onclick={exportPins}>Export pins</button>
-        </div>
-        {#if pinnedLabels.length}
-          <div class="pin-list" class:spread={spreadPins}>
-            {#each pinnedLabels as pin}
-              <button type="button" onclick={() => source?.kind === 'large' ? selectLargeRoute(pin.route) : (selectedId = pin.route)}>{pin.label}</button>
-            {/each}
-          </div>
-        {/if}
-      </div>
-    </section>
-
-    <button class="splitter" aria-label="Resize details" type="button" onpointerdown={(event) => beginResize('right', event)}></button>
-
-    <aside class="right-panel">
-      <div class="panel-bar">
-        <button aria-label="Toggle details" type="button" onclick={() => (rightCollapsed = !rightCollapsed)}>{rightCollapsed ? '‹' : '›'}</button>
-        {#if rightCollapsed}
-          <span class="panel-rail-label" title={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) : detailNode?.title || 'Details'}>
-            {source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Details' : detailNode?.title || 'Details'}
-          </span>
-        {/if}
-      </div>
-      <div class="detail">
+      <BookmarkShelf {pins} onopen={openPin} oncopy={exportPins} ondownload={downloadPins} onremove={(pin) => { pins = pins.filter(item => item.bundle !== pin.bundle || item.route !== pin.route); savePins(); }} />
+    {/snippet}
+    {#snippet details()}
         {#if source?.kind === 'large'}
           {#if largeInspectedEdge}
             {@const relationshipEdges = inspectedRelationshipEdges()}
@@ -9456,119 +9010,11 @@
             <pre>{jsonText(smallInspectedRelationship)}</pre>
           </details>
         {:else if detailNode}
-          {@const okf = okfConceptPresentation(detailNode)}
-          <span class="badge">{detailNode.type || 'Node'}</span>
-          {#if smallCorpus?.okfVersion}<span class="badge">OKF {smallCorpus.okfVersion}</span>{/if}
-          <span class="badge" data-trust-tier={okf.trustTier}>{trustTierLabel(okf.trustTier)}</span>
-          <span class="badge" data-lifecycle-status={okf.status}>{okf.status}</span>
-          {#if okf.stale}<span class="badge warning" data-stale="true">Stale</span>{/if}
-          <h2>{detailNode.title}</h2>
-          <p>{detailNode.description || detailNode.summary || detailNode.source || detailNode.id}</p>
-          {#if selectedFederationChild && (selectedFederationChild.descriptor || selectedFederationChild.discovery.routes.some((route) => route.purpose === 'descriptor' || (!route.purpose && ['published', 'raw'].includes(route.kind))))}
-            <div class="detail-actions">
-              <button type="button" onclick={() => loadFederationChild(selectedFederationChild)}>Load child bundle</button>
-            </div>
-          {/if}
-          <dl>
-            <dt>Route</dt><dd>{detailNode.id}</dd>
-            <dt>Section</dt><dd>{detailNode.section || 'root'}</dd>
-            <dt>Source</dt><dd>{metadataDisplayValue(detailNode.source)}</dd>
-            <dt>Links</dt><dd>{detailRelationships.length}</dd>
-          </dl>
-          <section class="okf-v02-summary" aria-label="OKF trust, lifecycle and provenance">
-            <h3>Trust, lifecycle and provenance</h3>
-            <p class="muted">OKF v0.2 signals are advisory context for deciding whether and how to use this concept.</p>
-            <dl>
-              <dt>Trust tier</dt><dd>{trustTierLabel(okf.trustTier)}</dd>
-              <dt>Lifecycle</dt><dd>{okf.status}{detailNode.status ? '' : ' (default)'}</dd>
-              <dt>Generated by</dt><dd>{okf.generated.by || 'Not declared'}</dd>
-              <dt>Generated at</dt>
-              <dd>
-                {okf.generated.at || 'Not declared'}
-                {#if okf.generated.basis === 'legacy-v0.1-timestamp'}<small>Legacy OKF v0.1 timestamp fallback</small>{/if}
-              </dd>
-              {#if okf.verified.length}
-                <dt>Verified</dt>
-                <dd>{okf.verified.map((event) => `${event.by || 'Unknown actor'}${event.at ? ` · ${event.at}` : ''}`).join('; ')}</dd>
-              {/if}
-              {#if okf.staleAfter}
-                <dt>Stale after</dt><dd>{okf.staleAfter}{okf.stale ? ' · stale now' : ' · currently fresh'}</dd>
-              {/if}
-              {#if okf.usageWindow}
-                <dt>Usage window</dt><dd>{okf.usageWindow.from || '…'} → {okf.usageWindow.to || '…'}</dd>
-              {/if}
-            </dl>
-            {#if okf.sources.length}
-              <h4>Provenance sources</h4>
-              <div class="okf-source-list">
-                {#each okf.sources as provenanceSource, index}
-                  <article>
-                    <strong>{provenanceSource.title || provenanceSource.id || `Source ${index + 1}`}</strong>
-                    <code>{provenanceSource.resource}</code>
-                    {#if provenanceSource.author}<span>Author {provenanceSource.author}</span>{/if}
-                    {#if provenanceSource.last_modified}<span>Modified {provenanceSource.last_modified}</span>{/if}
-                    {#if typeof provenanceSource.usage_count === 'number'}<span>Usage {provenanceSource.usage_count.toLocaleString()}</span>{/if}
-                    {#if provenanceSource.legacy}<small>Legacy # Citations fallback</small>{/if}
-                  </article>
-                {/each}
-              </div>
-            {/if}
-          </section>
-          {#if okf.attestedComputation}
-            <section class="attestation-contract" aria-label="Attested Computation contract">
-              <h3>Attested Computation contract</h3>
-              <p><strong>Declared contract only.</strong> Explorer does not execute the computation, executor or attester when a bundle is opened.</p>
-              <dl>
-                <dt>Runtime</dt><dd>{okf.attestedComputation.runtime || 'Not declared'}</dd>
-                <dt>Computation</dt><dd>{okf.attestedComputation.computation || (okf.attestedComputation.inlineComputation ? 'Inline fenced computation' : 'Not declared')}</dd>
-                <dt>Parameters</dt><dd>{okf.attestedComputation.parameters.length ? okf.attestedComputation.parameters.map((parameter) => `${parameter.name}: ${parameter.type}${parameter.required ? ' (required)' : ''}`).join('; ') : 'None declared'}</dd>
-                <dt>Executor</dt><dd>{okf.attestedComputation.executorResource || 'Not declared'}</dd>
-                <dt>Receipt</dt><dd>{okf.attestedComputation.receiptFields.join(', ') || 'Not declared'}</dd>
-                <dt>Attester</dt><dd>{okf.attestedComputation.attesterResource || 'Not declared'}</dd>
-              </dl>
-              {#if okf.attestedComputation.contractWarnings.length}
-                <p class="warning-text">{okf.attestedComputation.contractWarnings.join(' ')}</p>
-              {/if}
-            </section>
-          {/if}
-          {@const nodeLinks = smallNodeLinks(detailNode, source?.kind === 'small' ? source.url : '')}
-          {#if nodeLinks.length}
-            <section class="small-node-links" aria-label="Source and resource links">
-              <h3>Source and resources</h3>
-              {#each nodeLinks as link}
-                <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>
-              {/each}
-            </section>
-          {/if}
-          {@const metadataRows = smallNodeMetadataRows(detailNode)}
-          {#if metadataRows.length}
-            <h3>Selected metadata</h3>
-            <dl>
-              {#each metadataRows as row}
-                <dt>{row.label}</dt><dd>{metadataDisplayValue(row.value)}</dd>
-              {/each}
-            </dl>
-          {/if}
-          {#if detailNode.body}
-            <section class="markdown-body" aria-label="Markdown body">
-              {@html renderSafeMarkdown(detailNode.body, source?.kind === 'small' ? source.url : '')}
-            </section>
-          {/if}
-          <h3>Relationships</h3>
-          {#each detailRelationships.slice(0, 20) as relationship}
-            <button type="button" onclick={() => inspectNode(relationship.source === detailNode?.id ? relationship.target : relationship.source)}>
-              {relationship.kind || 'related'} · {smallCorpus?.nodes[relationship.source === detailNode.id ? relationship.target : relationship.source]?.title}
-            </button>
-          {/each}
-          <details class="json-panel">
-            <summary>Node JSON and provenance</summary>
-            <pre>{jsonText(detailNode)}</pre>
-          </details>
+          <SmallRecordInspector {detailNode} {smallCorpus} {detailRelationships} sourceUrl={source?.kind === 'small' ? source.url : ''} {selectedFederationChild} outsideScope={!visibleNodeIds.has(detailNode.id)} {inspectNode} inspectRelationship={inspectSmallRelationship} {loadFederationChild} />
         {:else}
           <h2>No selection</h2>
           <p>Select a node or search result to inspect its data.</p>
         {/if}
-      </div>
-    </aside>
-  </main>
+    {/snippet}
+  </WorkspaceShell>
 </div>

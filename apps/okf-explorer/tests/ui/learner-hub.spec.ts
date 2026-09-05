@@ -58,9 +58,15 @@ test('HUB-E2E-03 keeps the worked record ahead of navigation on a narrow screen'
   await page.goto(`/explore/?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#overview`);
   await expect(page.getByText('ONS facet interaction fixture', { exact: true }).first()).toBeVisible();
 
-  await expect(page.locator('.app')).toHaveClass(/leftCollapsed/);
-  await expect(page.getByRole('button', { name: 'Toggle navigation' })).toHaveText('›');
-  await expect(page.locator('.stage')).toBeVisible();
+  const panels = page.getByRole('navigation', { name: 'Workspace panels' });
+  await expect(page.locator('[data-panel="content"]')).toBeVisible();
+  await expect(page.locator('[data-panel="navigation"]')).toBeHidden();
+  await expect(panels.getByRole('button', { name: /Results/ })).toHaveAttribute('aria-current', 'page');
+  await panels.getByRole('button', { name: 'Search & facets' }).click();
+  await expect(page.locator('[data-panel="navigation"]')).toBeVisible();
+  await expect(page.locator('[data-panel="content"]')).toBeHidden();
+  await panels.getByRole('button', { name: /Results/ }).click();
+  await expect(page.locator('[data-panel="content"]')).toBeVisible();
 });
 
 test('HUB-E2E-04 preserves a legacy root Explorer link', async ({ context, page }) => {

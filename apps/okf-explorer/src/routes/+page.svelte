@@ -1,4 +1,16 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
+  // Preserve previously shared root URLs while keeping the plain learning home.
+  onMount(() => {
+    const current = new URL(window.location.href);
+    if (!current.searchParams.has('bundle')) return;
+    const target = new URL('./explore/', current);
+    target.search = current.search;
+    target.hash = current.hash;
+    window.location.replace(target.href);
+  });
+
   import type { BundleRegistryEntry } from '$lib/types';
   import { learningRegistry } from '$lib/learning-registry';
   import './landing.css';

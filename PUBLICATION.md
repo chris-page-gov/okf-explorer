@@ -21,10 +21,11 @@ Explorer's ordinary Site rebuild and release closure.
   depends on the Explorer through the explicit `okf-explorer-large-corpus.v1`
   runtime contract. Its immutable descriptor is
   `publication-units/heritage-coventry-warwickshire/publication-unit.json`.
-- GitHub Pages: public root redirects to the canonical Svelte OKF Explorer
-  under `next/`, preserving query-string and hash routes.
+- GitHub Pages: the public root opens the learning home. Previously shared root
+  URLs containing a bundle redirect to `/explore/`, preserving query and fragment.
 - Svelte Explorer: when `apps/okf-explorer/build/` exists, the Pages build
-  publishes the canonical Vite 8 / SvelteKit implementation under `next/`.
+  publishes the canonical implementation under `/explore/`. The `next/` route
+  remains a compatibility redirect.
 - Legacy Explorer: the dependency-free compatibility Explorer is published
   explicitly under `legacy/`, while `viewer.html` and `view.html` remain the
   single-file legacy viewer surfaces.
@@ -52,7 +53,8 @@ Explorer's ordinary Site rebuild and release closure.
 assembled with manifest-owned, changed-only writes. A stale output is removed
 only if its bytes still match the previous assembly manifest; collisions must
 have an explicit final owner. `.site-components/` is a local/CI cache and is
-not source material.
+not source material. Local Word drafts under `research/` are excluded from
+Git and Site data assembly; reviewed research Markdown remains publishable.
 
 Run `uv sync --locked` before local publication work. Every Explorer-owned
 Python command below uses the committed CPython 3.12.11 and `uv.lock` through

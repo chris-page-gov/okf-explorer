@@ -67,7 +67,7 @@
       "assertions": [
         {"assertion": "search_value", "value": "Land Registry"},
         {"assertion": "url_param_equals", "name": "q", "value": "Land Registry"},
-        {"assertion": "url_param_includes", "name": "filter.format", "value": "CSV"},
+        {"assertion": "kept_facet_value", "facet": "format", "value": "CSV"},
         {"assertion": "url_param_equals", "name": "sort", "value": "title"},
         {"assertion": "sort_value", "value": "title"},
         {"assertion": "history_round_trip_restored"},
