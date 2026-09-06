@@ -1,477 +1,43 @@
-# Use The OKF Explorer With Your Own Bundle
+# Use Explorer
 
-This manual shows the fastest path from a folder of Markdown notes to a public
-OKF bundle that can be opened in the hosted Svelte OKF Explorer.
+Current interaction guide, checked against the shared Explorer behaviour on
+6 September 2026. Domain screenshots and dated design reports may show older
+controls; this page is the maintained guide for both small and indexed bundles.
 
-For the current role-based documentation set, start with
-[docs/index.md](index.md). For UI behaviour with screenshots, use the
-[illustrated persona manual](okf-explorer-persona-manual.md). For AI prompting,
-use [ai-okf-usage.md](ai-okf-usage.md). For bundle authoring, use
-[okf-bundle-authoring.md](okf-bundle-authoring.md).
+## Open a collection
 
-For geography-led browsing, begin with the
-[Map personas and user stories](geospatial-map-personas-and-user-stories.md),
-then follow the [illustrated Map manual](geospatial-map-manual.md). The
-[Map exploration contract](geospatial-map-exploration.md) explains the
-classification and recovery rules behind the interface.
+Start from the [example catalogue](onboarding/examples.md), or open
+[Explorer](../explore/) and paste an authorised bundle/descriptor URL into
+**Bundle or descriptor URL**, then choose **Load**. The bare site root is the
+learning hub. **File** loads a local generated JSON bundle; it does not upload
+that file to a publishing service.
 
-## Try The Large CKAN Example
+For a first local example, use the [fictional study club](onboarding/first-bundle.md).
+For hosting, authoring and release gates, use the
+[development guide](development.md) and [bundle authoring guide](okf-bundle-authoring.md).
 
-Open this URL first:
+## A short exploration
 
-[GOV.UK CKAN OKF bundle in the hosted Svelte Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&view=reader#overview)
+1. Search for a title or known alias. Read why it matched where available.
+2. Click a facet value once to highlight its set; click it again to deselect.
+3. Inspect a result's Overview and Evidence, including the source and date.
+4. Use **Keep highlighted** only when you want to narrow the current scope.
+5. Use **Undo keep** or **Reset view** to recover. Check URL contents before sharing.
 
-It loads the Svelte Explorer from this repository and the GOV.UK CKAN
-large-corpus descriptor from another repository:
+Reader presents records. Graph and Links show explicit relationships. Timeline,
+Type, Resources, Map and Narrative give other views of the available material;
+the bundle's coverage and capabilities constrain what each can show.
 
-```text
-Explorer:
-https://chris-page-gov.github.io/okf-explorer/
+## Inspect the evidence
 
-Bundle descriptor:
-https://chris-page-gov.github.io/ai-engineering-lab-hackathon-london-2026/gov-ckan/okf-explorer.json
-```
+Use the record's source links, observation dates, rights and assertion context.
+A displayed date may be a catalogue date rather than the latest source update.
+An incoming link uses an inverse label when available; inspect the relationship
+to see its source, target and evidence. A graph connection is not proof of
+identity, official endorsement or an inferred domain fact.
 
-The important idea is that the Explorer and the bundle do not need to live in
-the same repository. Any public HTTPS OKF bundle URL can be supplied in the
-`bundle=` query parameter.
-
-```mermaid
-flowchart LR
-  Explorer["Hosted Svelte OKF Explorer<br/>ai-infrastructure-wiki/next/"]
-  Descriptor["External bundle descriptor<br/>gov-ckan/okf-explorer.json"]
-  Data["Chunked static data<br/>data/overview.json<br/>data/search/*<br/>data/analysis/overview.json"]
-  Browser["Your browser"]
-
-  Browser --> Explorer
-  Explorer --> Descriptor
-  Descriptor --> Data
-```
-
-## What You Should See In The CKAN Example
-
-1. Reader opens with a lightweight overview of the GOV.UK CKAN corpus.
-2. The left panel contains search and facets such as publisher, controlled
-   topic, format, tag, licence, host, resource type, and update year.
-   Suggested omits complete single-valued dimensions because they cannot narrow
-   the result set; use All to inspect them, or pin/select one to retain it.
-3. Searching for `IAPT` reduces the Reader and Graph views to relevant datasets.
-4. Graph shows a bounded context, zoom controls, relationship labels and a
-   node-type key filtered to what is present. Dense focus graphs expose ordered
-   relationship regions automatically from four relationships. A single dense
-   relationship family becomes two paired columns, with two icons per row and
-   both label columns facing away from the focus. Smaller lists keep one outside-
-   labelled column; staircases use the available left/right width before placing
-   a label above or below. Each icon and visible
-   label has its own tight pointer target, so selecting a name cannot select a
-   different node in the empty space between them. Only conflicting relationship
-   labels cycle. `Labels (a/n)` shows the active
-   non-overlapping label set and pauses or resumes that cycle. `Nodes` exposes
-   only node types in the graph and lets you hide or restore each type.
-   `Relationships (n)` replaces that key with the predicates in the graph; choosing
-   one highlights its source nodes, target nodes and directed edges and opens
-   Source, Relationship and Target inspector tabs. `Nodes (n)` and
-   `Relationships (n)` use pressed styling to identify the active key without
-   implying that the graph itself is switched on or off. These compact controls
-   remain visible while the centre panel scrolls. Use Ctrl/Command+wheel or the
-   +/- buttons to zoom; an unmodified wheel scrolls to the relationship rows
-   below. Focus graphs repeat the focused node name as a title inside the SVG;
-   publisher and licence nodes occupy the lower-left and lower-right anchors so
-   a graph screenshot retains a document-like identity and final line.
-   Selecting a related node opens its data card without moving the graph. Its
-   **Graph** action recentres that record and records both the previous focus
-   and the inspected route in the URL, so browser Back restores the exact graph
-   and detail context from before the action.
-   A stack that covers the entire current result is labelled **All matching …**.
-   When only a bounded subset has been loaded, it states the loaded and total
-   counts instead. Opening a large stack produces semantic subgroups; if no
-   suitable facet divides it, deterministic title bands or ranges keep the
-   graph bounded rather than drawing dozens of individual records. Open any
-   subgroup to divide it again; the open path is recorded in the URL, so
-   browser Back closes exactly one stack level at a time. The hierarchy strip
-   above the canvas shows each traversed level as a row of sibling choices.
-   The selected sibling is marked **Open below**, while the final row names the
-   level represented by the graph underneath. Inactive parent siblings remain
-   in the strip instead of being mixed into the active branch's child graph.
-   These rows are intentionally compact and horizontally scroll their sibling
-   choices. The graph's node or relationship key and authority controls share
-   one compact rail; facet cards use shorter headers and values plus a bounded
-   three-value summary sample, preserving relative emphasis while leaving more
-   of the graph and facet list visible.
-5. Links opens relationship summaries first. Selecting a relationship summary
-   opens the right-hand data card with direction, source, target, count, and
-   JSON detail.
-6. Timeline groups recurring records by dataset series and the release or
-   coverage period represented by the data. Catalogue update dates appear only
-   as labelled fallbacks. Select a year or month to follow that release's
-   durable Explorer route.
-7. A selected record separates **Other releases** in the same series from
-   **Alternative datasets**. Alternatives link to their own routes and show
-   declared differences where the bundle supplies them.
-8. Map classifies the current search/facet reduction from declared coverage,
-   coordinates, UK place names, ArcGIS/OGC services and spatial file formats.
-   Its place/evidence chips add a `geo=` reduction to the public URL.
-
-The facet toolbar separates two deliberately different actions. **Clear
-filters** removes the current facet and map reduction, while **Reset facet
-layout** restores the provider's facet order, visibility and Guidance defaults
-without changing active filters. They are grouped together so the distinction
-is visible at the point of use. At tablet widths the bounded bundle loader stays
-on the title row, with the view tabs on their own scrollable row.
-
-## Use The Map Canvas
-
-Map works with existing bundles; no AI, geocoder or new application server is
-required for browsing. It requests a small OpenStreetMap reference layer for
-geographic context. If those public tiles are unavailable, the local metadata,
-coverage outline, markers and source links remain usable.
-
-1. Search or apply ordinary facets first so Map starts from a useful context.
-2. Select **Map**. A large corpus loads its ordinary dataset/resource index and
-   classifies it locally; a small bundle reuses its in-memory nodes.
-3. Select an evidence chip such as **Map or feature service** or a recognised
-   UK area such as **Scotland**. The same reduction then applies if you switch
-   to Reader, Graph, Timeline or Resources.
-4. Select a marker or list row to open the normal Explorer detail card. The
-   map and result list share one bounded workspace; the result list scrolls
-   inside that height rather than pushing the map down the page. Solid markers
-   are source coordinates; ring markers are labelled representative centroids
-   and do not imply a boundary.
-5. Use **Open source ↗** for every linked spatial resource. For direct GeoJSON,
-   OGC API JSON or an ArcGIS feature service, **Preview on demand** attempts a
-   bounded browser-side feature preview. Failure leaves the local metadata and
-   source link intact.
-
-The preview does not insert credentials or proxy private services. WMS, WFS,
-WMTS, WCS, KML, GML, Shapefile and GeoPackage are discoverable and filterable,
-but this prototype links rather than parses those bodies. See
-[Geospatial Map exploration](geospatial-map-exploration.md) for the evidence,
-CRS, provenance and pack-builder conventions.
-
-## Large-Corpus Enrichment Contract
-
-The GOV.UK CKAN example is not just a raw CKAN dump. The builder generates a
-large-corpus OKF model designed for AI agents and human exploration:
-
-- Stable concept identifiers: datasets expose logical paths such as
-  `datasets/<publisher>/<package>.md`, publishers expose
-  `publishers/<publisher>.md`, and resources expose
-  `resources/<package>/<position>-<resource>.md`.
-- Canonical licences: variants such as `not specified`, `not-specified`, and
-  `notspecified` collapse to `not-specified`; OGL variants such as `uk-ogl`,
-  `OGL-UK-3.0`, and `ogl` collapse to `open-government-licence-v3`.
-- Licence inference: source-declared licences are preferred. Where an official
-  provider has clear site-wide terms, missing source metadata can be filled with
-  an inferred licence only when the generated record exposes the inference
-  basis, source URL, and lower confidence. The UK Government APIs exemplar uses
-  this for ONS records without CKAN licence fields, citing
-  [ONS terms and conditions](https://www.ons.gov.uk/help/terms-conditions#using-ons-content).
-  It also derives an Ordnance Survey licence-required status for OS
-  provider-native API records from
-  [OS licensing guidance](https://www.ordnancesurvey.co.uk/licensing), rather
-  than treating OS APIs as OGL by default.
-- Canonical formats: variants such as `CSV`, `.csv`, and `text/csv` collapse to
-  `CSV`; `PDF`, `.pdf`, and `application/pdf` collapse to `PDF`.
-- Publisher authority records: one canonical publisher record is generated per
-  CKAN organization, and datasets reference that publisher concept.
-- Richer relationships: the bundle can expose `published by`, `publisher
-  authority`, `download resource`, `API endpoint`, `documentation`, `licence`,
-  `maintainer`, `temporal coverage`, `spatial coverage`, `derived from`, and
-  `supersedes` relationships where source metadata supports them.
-- Controlled topics: raw CKAN tags are supplemented with higher-level topics
-  such as Transport, Planning, Environment, Public Health, Education,
-  Consultation, Finance, Housing, Geospatial, and Business And Economy.
-- Quality signals: each dataset receives deterministic metadata scores for
-  completeness, licence confidence, update recency, resource availability, API
-  availability, and format confidence. Download success is recorded as
-  `not checked` because the static generator does not download resource bodies.
-- Provenance: generated concepts record CKAN package ID, CKAN name, source API
-  URL, harvest timestamp, generation timestamp, enrichment version, and
-  transformation pipeline version.
-
-These fields are visible in the Explorer detail card after opening a dataset,
-resource, or publisher. They are also present in the local normalized JSON for
-agent use.
-
-## URL Patterns
-
-Small or medium bundles use one generated file:
-
-```text
-https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_OKF_BUNDLE_URL
-```
-
-Large corpora use a descriptor that points at chunked static data:
-
-```text
-https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_OKF_EXPLORER_DESCRIPTOR_URL
-```
-
-For large public bundles hosted on GitHub Pages or another static CDN, keep
-chunk files comfortably below the Explorer's 64 MiB response cap and expect the
-browser to hydrate records lazily. The Explorer loads full record chunks in
-small batches and retries transient CDN/server responses such as HTTP 503, so a
-facet click should not create a large parallel request burst against the host.
-
-Example for a small bundle:
-
-```text
-Bundle:
-https://example.github.io/my-okf/okf-bundle.json
-
-Explorer URL:
-https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fexample.github.io%2Fmy-okf%2Fokf-bundle.json
-```
-
-If URL encoding is confusing, open the Explorer without a `bundle=` parameter
-and paste the bundle URL into the Bundle URL field:
-
-```text
-https://chris-page-gov.github.io/okf-explorer/
-```
-
-## Create A Small OKF Bundle From Markdown
-
-Use this path for most wiki-sized projects.
-
-```mermaid
-flowchart TD
-  Notes["Markdown notes<br/>with YAML frontmatter"]
-  Assistant["AI coding assistant<br/>Codex or similar"]
-  Builder["scripts/build_okf_bundle.py"]
-  Bundle["okf-bundle.json"]
-  Pages["GitHub Pages"]
-  Explorer["Hosted Svelte OKF Explorer"]
-
-  Notes --> Assistant
-  Assistant --> Builder
-  Builder --> Bundle
-  Bundle --> Pages
-  Pages --> Explorer
-```
-
-### 1. Start From This Repository
-
-Fork or clone `ai-infrastructure-wiki`.
-
-Keep:
-
-- `scripts/build_okf_bundle.py`
-- `scripts/update_viewer.py`
-- `scripts/check_okf.py`
-- `scripts/build_site.py`
-- `okf.config.json`
-- `.github/workflows/pages.yml`
-- `apps/okf-explorer/`
-- `explorer/`
-
-Then add or replace the Markdown corpus with your own notes.
-
-Each OKF Markdown file should have YAML frontmatter like this:
-
-```markdown
----
-type: "Concept"
-title: "Example concept"
-description: "One sentence explaining this node."
-tags: [example, okf]
-timestamp: 2026-07-06T00:00:00Z
----
-
-# Example concept
-
-This concept links to [another concept](another-concept.md).
-```
-
-Keep links as browser-compatible Markdown links. Do not use Obsidian-only
-wikilinks.
-
-The Explorer preserves more than the frontmatter summary for these small
-bundles:
-
-- generated `edges` and legacy `relationships` both feed Graph and Links;
-- Search includes the Markdown `body` text;
-- selecting a result renders its Markdown body with raw HTML escaped;
-- safe HTTP(S) source and resource links open on demand in a new tab; and
-- selected Schema.org/provenance fields appear above a disclosure containing
-  the full normalized node JSON.
-
-Relative Markdown and resource links resolve from the public bundle URL.
-Credential-like URL query parameters are removed from displayed links. Never
-publish a bundle containing a secret, even if the Explorer would redact it.
-
-### 2. Ask A Coding Assistant To Normalize The Bundle
-
-Paste this prompt into Codex or another coding assistant while it is opened in
-your repository:
-
-```text
-You are working in a repository that should publish an Open Knowledge Format
-bundle for the Markdown files in this repo.
-
-Goal:
-- Treat Markdown files as the source of truth.
-- Build a small OKF bundle at okf-bundle.json that can be loaded by the hosted
-  Svelte OKF Explorer.
-- Keep browser-compatible Markdown links. Do not introduce Obsidian wikilinks.
-- Preserve existing prose unless a frontmatter or link fix is needed.
-
-Tasks:
-1. Inspect the Markdown corpus and identify the folders that should be included.
-2. Update okf.config.json so it describes this corpus, including siteTitle,
-   corpus id, title, subtitle, root file, sourceRoot, markdownUrl, and section
-   order.
-3. If scripts/update_viewer.py has a fixed list of OKF folders, update that list
-   to include the corpus folders and exclude generated or private folders.
-4. Ensure every included Markdown file has YAML frontmatter with at least:
-   type, title, description, and timestamp.
-5. Fix broken relative Markdown links.
-6. Run:
-   uv run --locked python scripts/build_okf_bundle.py
-   uv run --locked python scripts/update_viewer.py
-   uv run --locked python scripts/check_okf.py
-   uv run --locked python scripts/build_site.py
-7. Report the generated bundle URL I should use after GitHub Pages is published.
-
-Acceptance:
-- okf-bundle.json is generated and committed.
-- viewer.html is synchronized if the legacy viewer is retained.
-- _site/ is generated locally but not committed.
-- The repository can publish with GitHub Pages using GitHub Actions.
-```
-
-For a very large dataset, ask the assistant for the large-corpus path instead:
-
-```text
-This corpus is too large for one okf-bundle.json file. Build the
-okf-explorer-large-corpus.v1 descriptor path instead:
-- okf-explorer.json
-- data/manifest.json
-- data/overview.json
-- data/analysis/overview.json
-- chunked dataset/resource/relationship files under data/
-- static search shards under data/search/
-
-Keep startup overview-only, load search through static shards, and avoid any
-runtime server dependency.
-```
-
-### 3. Validate Locally
-
-Run the checks before publishing:
-
-```sh
-uv run --locked python scripts/build_okf_bundle.py --check
-uv run --locked python scripts/update_viewer.py --check
-uv run --locked python scripts/check_okf.py
-uv run --locked python scripts/build_site.py
-```
-
-If you are also editing the Svelte Explorer itself:
-
-```sh
-cd apps/okf-explorer
-pnpm install
-pnpm check
-pnpm build
-```
-
-For a normal bundle-only project, you do not need to build the Svelte Explorer.
-You can use the hosted Explorer from this repository.
-
-### 4. Publish With GitHub Pages
-
-1. Push your repository to GitHub.
-2. In repository settings, enable GitHub Pages with **GitHub Actions** as the
-   source.
-3. Push to `main` and wait for the Pages workflow to deploy.
-4. Confirm that your bundle is public:
-
-```text
-https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json
-```
-
-For a large corpus, confirm the descriptor is public:
-
-```text
-https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-explorer.json
-```
-
-### 5. Open Your Bundle In The Hosted Explorer
-
-Paste the public bundle URL into:
-
-```text
-https://chris-page-gov.github.io/okf-explorer/
-```
-
-Or build a direct link:
-
-```text
-https://chris-page-gov.github.io/okf-explorer/?bundle=ENCODED_PUBLIC_BUNDLE_URL
-```
-
-You can encode a URL in a browser console:
-
-```js
-encodeURIComponent('https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json')
-```
-
-## Add Your Bundle To The Registry
-
-To make the Explorer suggest your bundle while people type in the Bundle URL
-field, add a semantic bundle entry to the canonical
-`registry/okf-registry.yamlld` source. Do not edit the generated
-`okf-registry.json` or `okf-registry.jsonld` projections by hand. A minimal
-entry is:
-
-```yaml
-- "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/bundles/my-okf
-  "@type": okf:Bundle
-  title: My OKF bundle
-  description: Short description of the bundle.
-  version: 1.0.0
-  status: preview
-  descriptor:
-    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.json
-  semanticDescriptor:
-    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/okf-bundle.yamlld
-  home:
-    "@id": https://YOUR-GITHUB-USER.github.io/YOUR-REPO/
-  profile:
-    "@id": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/
-  publisher:
-    "@id": https://github.com/YOUR-GITHUB-USER
-  license:
-    "@id": https://example.org/record-the-actual-licence
-  recordTypeLabel: external-bundle
-```
-
-For a large corpus, use the descriptor URL and a `kind` such as
-`large-corpus`.
-
-Regenerate and verify the projections with:
-
-```sh
-uv run --locked python scripts/build_okf_registry.py
-uv run --locked python scripts/build_okf_registry.py --check
-```
-
-## Troubleshooting
-
-- If the Explorer says it cannot load the bundle, check that the URL is public
-  HTTPS and opens directly in a browser.
-- If a file picker works but a URL does not, the bundle is probably not
-  published to GitHub Pages yet.
-- If graph or link views are slow, the bundle may need the large-corpus
-  descriptor path rather than one monolithic JSON file.
-- If Graph and Links are empty for a hand-built small bundle, emit either a
-  top-level `edges` array (the generator form) or `relationships` array. Do not
-  split relationships between both names.
-- If search works locally but not after publishing, confirm that all generated
-  `data/search/*` files are included in the deployed site.
-- If browser navigation loses the bundle, copy the route again from the
-  Explorer after the bundle has loaded.
+For AI use, follow [the access guide](ai-okf-usage.md). Copying an Explorer route
+does not guarantee that your AI can retrieve the bundle or its linked content.
 
 ## Explore by highlighting and keeping sets
 
@@ -559,3 +125,63 @@ Record relationship summaries identify incoming or outgoing direction and show
 the explicit source and target. Incoming links use an inverse label when one is
 declared. **Inspect relationship** opens assertion evidence; the separate record
 button opens the neighbouring record.
+
+## Earlier guide sections
+
+These headings retain existing links; each points to its maintained instructions.
+
+## Try The Large CKAN Example
+
+Open the CKAN entry in the [example catalogue](onboarding/examples.md#govuk-ckan).
+Use its [personas and journeys](gov-ckan-personas-and-user-journeys.md) to choose a task.
+
+## What You Should See In The CKAN Example
+
+The [search manual](static-search-filtering-manual.md) explains indexed results,
+limits and gaps, alongside dated CKAN screenshots. Use the interaction rules above.
+
+## Use The Map Canvas
+
+Follow the [Map manual](geospatial-map-manual.md) for coordinates, geometry,
+area context and its source limits.
+
+## Large-Corpus Enrichment Contract
+
+See [bundle authoring](okf-bundle-authoring.md) and
+[governed enrichment](beginners/20-governed-enrichment-and-release-assurance.md)
+for producer requirements and assurance gates.
+
+## URL Patterns
+
+Use [search and URL restoration](static-search-filtering-manual.md#5-share-and-restore-retrieval-state)
+and the opening instructions above. Explorer lives at `/explore/`.
+
+## Create A Small OKF Bundle From Markdown
+
+Follow the [complete first-bundle exercise](onboarding/first-bundle.md).
+
+### 3. Validate Locally
+
+The [first-bundle guide](onboarding/first-bundle.md) provides its exact checks.
+For Explorer itself, use the [development guide](development.md).
+
+## Add Your Bundle To The Registry
+
+The learner catalogue does not admit new bundles. Propose an entry in the authored
+[`registry/okf-registry.yamlld`](../registry/okf-registry.yamlld), following its
+existing entry shape and the [bundle authoring requirements](okf-bundle-authoring.md).
+Use a stable identity, title, description, kind, version, descriptor URL and home
+URL, with source and rights evidence. Do not add a URL until the exact deployment
+and a record journey have passed the repository's browser gate.
+
+Then update the editorial [learning catalogue](../registry/learning-catalogue.json)
+to include the admitted bundle ID and a useful task. Generate and check all
+projections with `uv run --locked python scripts/build_okf_registry.py` and the
+same command with `--check`. Generated JSON, TypeScript and catalogue Markdown
+must not be edited by hand. Admission and publication remain separately reviewed.
+
+## Troubleshooting
+
+Use [AI access and troubleshooting](ai-okf-usage.md) for retrieval limitations,
+the [first-bundle checks](onboarding/first-bundle.md) for teaching-file errors,
+and the [development guide](development.md) for repository build failures.

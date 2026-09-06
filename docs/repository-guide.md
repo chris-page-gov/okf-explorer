@@ -83,10 +83,10 @@ when selected. Documentation state and screenshot routes are maintained under
 
 ## Stable Public Entry Points
 
-- Root Explorer redirect:
+- Learning hub and preserved Explorer routes:
   `https://chris-page-gov.github.io/okf-explorer/`
 - Svelte Explorer:
-  `https://chris-page-gov.github.io/okf-explorer/`
+  `https://chris-page-gov.github.io/okf-explorer/explore/`
 - Legacy compatibility Explorer:
   `https://chris-page-gov.github.io/okf-explorer/legacy/`
 - UK Government APIs descriptor:

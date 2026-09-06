@@ -1,5 +1,8 @@
 # Create OKF Bundles That Use The Explorer Well
 
+New to authoring? [Build the fictional six-record starter](onboarding/first-bundle.md) first. Core OKF concepts need not carry every API-catalogue field described below. Provider, protocol and standards-alignment fields apply to relevant domain profiles; they are not universal requirements for a student’s notes.
+
+
 The Explorer rewards packs that make discovery dimensions explicit. A usable
 OKF bundle is not only a list of records; it is a static knowledge product with
 search, facets, routes, relationships, provenance, quality signals and a clear
@@ -104,7 +107,7 @@ these fields lines up with DCAT-AP (`dcat:DataService`) and OpenAPI, so new
 field names stay federatable with external API/data catalogues instead of
 drifting into a repo-only vocabulary.
 
-Every record should have:
+For an API or data-catalogue profile, relevant records should have:
 
 - stable `id` and route-safe `route`;
 - `title`, `description` or `notes`;
@@ -763,5 +766,5 @@ polite to static hosts.
 - Timeline is ordered and useful for latest/year/quarter/month browsing.
 - Relationship rows carry evidence and confidence.
 - No secrets, tokens, API keys, passwords or live credentials are stored.
-- The pack has a 100-question evaluation suite or a documented smaller
+- The pack has a task- and evidence-derived evaluation suite or a documented smaller
   acceptance suite for its first release.

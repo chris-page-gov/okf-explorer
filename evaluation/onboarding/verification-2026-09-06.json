@@ -1,0 +1,434 @@
+{
+  "schema": "okf-onboarding-documentation-check.v1",
+  "observed_at": "2026-09-06T08:26:29.635968+00:00",
+  "scope": "Local documentation-set implementation; no external publication or AI-answer evaluation.",
+  "base_commit": "35aa9df8d187ea1344470fc787ec47df08247cda",
+  "candidate_state": "uncommitted local changes",
+  "environment": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "model_evidence": "persisted turn context and installed Codex configuration agree",
+    "codex": "0.146.1",
+    "python": "3.12.11",
+    "uv": "0.12.2",
+    "node": "26.7.0",
+    "pnpm": "10.33.2",
+    "sandbox": "workspace-write with restricted command networking; scoped host approvals used for browser IPC and loopback test commands",
+    "configuration_changed": false,
+    "browser": "installed Google Chrome through repository Playwright",
+    "desktop_browser_limit": "CUA unavailable because the Mac was locked; local Chrome navigation was used instead",
+    "python_execution": "uv run --locked --offline --no-sync; pre-existing project environment",
+    "browser_evaluator_environment": "PLAYWRIGHT_PACKAGE points to apps/okf-explorer/node_modules/@playwright/test; PLAYWRIGHT_EXECUTABLE_PATH points to installed Google Chrome",
+    "command_notation": "OUTPUT denotes a local receipt directory; command paths are relative to the Explorer repository."
+  },
+  "app_tree_sha256": "d27ca497f04f69069db04c61d1f68403400a6770d4c42ae363036b42c3462eec",
+  "inputs": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha256": "cf0e599f54c85ef5ce7537df9848e6a19c8603737f660d868863bba2ff7d4882"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "f9df4bc79a3a21745fe6a2a5c5bff86a7f97345bd449dad9606a5b5e8bb4910a"
+    },
+    {
+      "path": "README.md",
+      "sha256": "bbab7d60eba34593fd494fa36c24147fc8055e4f7c9b6ad62ca60340b14004f0"
+    },
+    {
+      "path": "apps/okf-explorer/scripts/learner_hub_contract.test.mjs",
+      "sha256": "d38428145b2f3362ac6171283ef361b961728c5654e22014c587c321ba79b3da"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/learning-catalogue.json",
+      "sha256": "4dd1f57f21ab9688e7199a6051c9b03293e61c1c97240b34c6bd44ee26474f57"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/learning-registry.ts",
+      "sha256": "4fcc93560b73a0ea99c65af087f79a3f8287d0c4da7c6c30826d38f6f27b88aa"
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/+page.svelte",
+      "sha256": "aed00c43946b81fc15fb487381934db097b21ee80634a8ce780a2e37bd7abe94"
+    },
+    {
+      "path": "apps/okf-explorer/tests/ui/learner-hub.spec.ts",
+      "sha256": "a4341fe6cb325712f2e0978db55cda87b8f1c92439456a6da723a05cc55ec4ca"
+    },
+    {
+      "path": "docs/ai-infrastructure-knowledge-graph-walkthrough.md",
+      "sha256": "bc027a14f49a08ad511c7dfcdad9c30542026cd00abc9b7a5a5e22954259d6dc"
+    },
+    {
+      "path": "docs/ai-okf-reference.md",
+      "sha256": "cc26194398eb4077f9c42758b6f6a88bb867b29b9cdfcef5f2378f170faf2f6f"
+    },
+    {
+      "path": "docs/ai-okf-usage.md",
+      "sha256": "01c00b3cf28b0b0f8b2de07442a06a4290255b099bcab959f37ba394208f265e"
+    },
+    {
+      "path": "docs/beginners/03-markdown-okf-and-small-bundles.md",
+      "sha256": "099116e97b6cb6237d3b77717dd222248d187b497d473238ae3a92fab28d5253"
+    },
+    {
+      "path": "docs/beginners/07-semantic-web-and-ontologies.md",
+      "sha256": "fb3311bb186be4d56090b5f7ed4e7fd14b9ce034c439399be9486ee1ca001b0d"
+    },
+    {
+      "path": "docs/beginners/index.md",
+      "sha256": "2d2fc1c6361b8ef3d5462fc3b66e5c01be484d3578debb8c4e15b37a64d1d64a"
+    },
+    {
+      "path": "docs/development.md",
+      "sha256": "42764922baeedc49824563b2207b9e6bcff1cadaa2a0f76e729c8d3473a1ae53"
+    },
+    {
+      "path": "docs/examples/first-bundle/LICENSE.md",
+      "sha256": "54baa30c8e9dfdca671f4139e1a8382d406fa5a40c625570af46e86e0bca54f6"
+    },
+    {
+      "path": "docs/examples/first-bundle/ai-context.md",
+      "sha256": "73cdd108373dc5c8c9c091336d3141aac215dfbb5c467a5d0b9e3b037824a9d0"
+    },
+    {
+      "path": "docs/examples/first-bundle/checksums.json",
+      "sha256": "a4c49066e428fe0327027e5ae19bf1a0dd29b12d628bbe92177d033ec68da5ec"
+    },
+    {
+      "path": "docs/examples/first-bundle/first-bundle.zip",
+      "sha256": "4e7f44ceb194869f14bc12f9adc1ed39b728992652f44f376a9a0684d7805696"
+    },
+    {
+      "path": "docs/examples/first-bundle/index.md",
+      "sha256": "de0de51db86588cce59c14f131d496f25a50414e1f39a8f36f48201f668a57d2"
+    },
+    {
+      "path": "docs/examples/first-bundle/okf-bundle.json",
+      "sha256": "d1d3ff273fdaa275a0e54965884608ff6b0634b8c19c6a699b8660a3ba759bc7"
+    },
+    {
+      "path": "docs/examples/first-bundle/questions.json",
+      "sha256": "695d96eff3df8709d570907a639661c8130655969db58bdb367bd53c91d122b4"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/booking.md",
+      "sha256": "969514963ada7d6c64c8cadb52a2abe4635b0c7525ef6657f5605294597ba265"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/data-drop-in.md",
+      "sha256": "16f744375ecb0158424d94727d2c0198ce558b4cfcc8cc53980d8cb1b5a82daa"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/library-room.md",
+      "sha256": "c388e89bf9ec974fa74aabd2e06f5a8833b88592919d2d98295ac24be1d5d2d8"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/reading-circle.md",
+      "sha256": "d2ce1ed71358bef4160fec7e82648dbdedce530993a91c8e809bab3b98623201"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/repair-demonstration.md",
+      "sha256": "4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25"
+    },
+    {
+      "path": "docs/examples/first-bundle/records/workshop-room.md",
+      "sha256": "0efa61c0bcca24656d49f30a476c13aaa93ae7b65030c1e583e6c61b3d39f776"
+    },
+    {
+      "path": "docs/geospatial-map-exploration.md",
+      "sha256": "f8e25255dff18746fea566cbeb5b34065654d4c6bb96019558ec3d2f807e44f5"
+    },
+    {
+      "path": "docs/index.md",
+      "sha256": "c40a9aeb97c4f11f4920766991010c2565936126647e4c9fd3f329322872e177"
+    },
+    {
+      "path": "docs/okf-0.2-yaml-ld-semantic-authoring.md",
+      "sha256": "5350893b8caef1b89b1940dd78d8c359a9577f23238f290e9f2f75ba739501d2"
+    },
+    {
+      "path": "docs/okf-authoring-prompt-kit.md",
+      "sha256": "3ad319cc3d1be5f0cd5283b8b8634d986ae9888d5ebfb66bee0a0e7e45f6c97e"
+    },
+    {
+      "path": "docs/okf-bundle-authoring.md",
+      "sha256": "2745b24ac0bce7bce7d6808b24d28de0b95344eaf660297516dd7108b013d5a3"
+    },
+    {
+      "path": "docs/okf-explorer-persona-manual.md",
+      "sha256": "eb8e3e57025dadb8b6c76bd944d3db630027725ebbf69c12e8c7534eecac1cd2"
+    },
+    {
+      "path": "docs/okf-pack-parity.md",
+      "sha256": "e0825c88e2f3cf1a870d97272d0a10afaef8b602dee6cc88a4793d8447ab783e"
+    },
+    {
+      "path": "docs/onboarding/audience-journeys.md",
+      "sha256": "7d6f035d2fa0ac064baa013d635b9d42711aa741b00f4b7139afa7d90228fe55"
+    },
+    {
+      "path": "docs/onboarding/examples.md",
+      "sha256": "f9363346cbd9feaef5adc90cbad47ca064f50d01e1321bb7e3b98bd91cd622ab"
+    },
+    {
+      "path": "docs/onboarding/first-bundle.md",
+      "sha256": "8fed46e14eb886ffe2f0129e9c4366f45bf373150d7e36d5be18adcd9103c3d4"
+    },
+    {
+      "path": "docs/onboarding/index.md",
+      "sha256": "e56a65d0090030ac66e157af34c738419c78649cb5fb639632c2000f927131ef"
+    },
+    {
+      "path": "docs/onboarding/maintenance.md",
+      "sha256": "8e7ee0be9c7a6c023e362b646c5e1b754c8c66be76770d269b1e5174e5ad03d3"
+    },
+    {
+      "path": "docs/onboarding/try-a-bundle.md",
+      "sha256": "d9d267d61bff06ec236f6bc1321a92590b8e3f274ed1cc31b8828bad62af0a33"
+    },
+    {
+      "path": "docs/project-studio/05-build.md",
+      "sha256": "945f1538a5e7e5dfcc475fcfe004b6307bfb4a46d3585280b742651114c8ea23"
+    },
+    {
+      "path": "docs/project-studio/07-ground.md",
+      "sha256": "d5e058fe1498be0605b8415d8acf65a381f42eae139464e43ec1d419fcb5ee37"
+    },
+    {
+      "path": "docs/project-studio/08-create.md",
+      "sha256": "c8109817391e193ff5ce9bdca4e42bfe46780e474f6101a4db6fc305d0fa3e30"
+    },
+    {
+      "path": "docs/project-studio/index.md",
+      "sha256": "8cd4e4cc98ae662717d2d32f80e5466f00b9a19400447ac794a9c68b65636fd2"
+    },
+    {
+      "path": "docs/project-studio/personas-and-pack-stories.md",
+      "sha256": "e531b5cbbbde8352b0cb639131ba5277a0e840d7104c67cc463f7995cfe7eddc"
+    },
+    {
+      "path": "docs/prompts/okf-bundle-build.md",
+      "sha256": "203c88f8403a08f30d6fac35aa36cb9419a436b7966952805fbed167a0256e08"
+    },
+    {
+      "path": "docs/reference/index.md",
+      "sha256": "ac5af520ab4608d6473244159f1baaeabfc4eb6c6f93888d7b6ab3229241c7b2"
+    },
+    {
+      "path": "docs/repository-guide.md",
+      "sha256": "3e9f5ae1f9a98967078a14ecffbffb1f76acc99e43efcc97ef979a98e5f752a2"
+    },
+    {
+      "path": "docs/sharepoint-m365-copilot-trial.md",
+      "sha256": "2b7f3ba4685fecb76175759a4939a855afcd836f0ad970ce4a043ce3a696de27"
+    },
+    {
+      "path": "docs/static-search-filtering-manual.md",
+      "sha256": "3f735d2c58562cb190a354511f746bd9a4edd88f2369d0c5e800aedd461be9ad"
+    },
+    {
+      "path": "docs/uk-legislation-okf.md",
+      "sha256": "39f4867408a21642507fdb9c09f040cfeb61d69765254bf42e13eedd493a212f"
+    },
+    {
+      "path": "docs/uk-legislation/getting-started.md",
+      "sha256": "063f23a548b4120dbe2c279a152338f6d50171dbf99842411e66ea50c08f60ee"
+    },
+    {
+      "path": "docs/uk-legislation/index.md",
+      "sha256": "4ba6f3be011b47780b6f7a8999a0138d8d0db66daff8cda8192f892383e14485"
+    },
+    {
+      "path": "docs/uk-legislation/maintenance.md",
+      "sha256": "c628d96b78bd00c2da3f859e5603104c0d408f93c164d266e93468f18a2778a3"
+    },
+    {
+      "path": "docs/use-okf-explorer.md",
+      "sha256": "0ab7b2e66c553911c547f418692f998715f6fd2d7529daa152bd4a265c8d6f97"
+    },
+    {
+      "path": "evaluation-foundry/fixtures/heritage-warwickshire/adversarial/microfixtures.json",
+      "sha256": "e598616b02f60ff5796878c4fb527a667d842fed873b00dd966db8918c95a4be"
+    },
+    {
+      "path": "mcp/README.md",
+      "sha256": "44d0f5057fb7097d81fa31e68ad3adebba958a0d4a965b38d674798adcc5e99f"
+    },
+    {
+      "path": "okf.publication.json",
+      "sha256": "cd3a59fcbb2eecc148041a2132107225f046c2cf86f29b6646c16b21bf07dcf5"
+    },
+    {
+      "path": "registry/learning-catalogue.json",
+      "sha256": "18a980896f99e8eb0714c4dbd348880e8dcc7f66c5c99c45b36885ba06d2b03c"
+    },
+    {
+      "path": "scripts/build_learning_example.py",
+      "sha256": "a9fa91e97c65c55f12a4e96165a1891101b67ac655b8e2fa4aeaa5b04c870fbe"
+    },
+    {
+      "path": "scripts/build_okf_registry.py",
+      "sha256": "a1ac3cf376afee9395f6195414ac7c2cc26805e6769bc6426aa6ff2c5ae7a982"
+    },
+    {
+      "path": "scripts/build_site.py",
+      "sha256": "236540985d66ff494e52e022e941b396a691de804f9ca1bff78dd75adcc73a8f"
+    },
+    {
+      "path": "scripts/learning_catalogue.py",
+      "sha256": "8a179eace8a83bb12262e342dca3322be916c261c92a1516ecd3b4a3e1b6befa"
+    },
+    {
+      "path": "tests/test_learning_onboarding.py",
+      "sha256": "42e0a27ed22772953bd420a91349034a5ec4d02b054a735de4f2ffd37192a1be"
+    },
+    {
+      "path": "tests/test_legislation_documentation.py",
+      "sha256": "72e73750019c4a3abea8e9f5a9df2f1e48f05619a26096928fc1f22663fe6d9e"
+    }
+  ],
+  "checks": [
+    {
+      "command": "uv run --locked python -m unittest discover -s tests",
+      "result": "passed",
+      "tests": 482,
+      "log": "python-suite-final.log"
+    },
+    {
+      "command": "pnpm --dir apps/okf-explorer check",
+      "result": "passed; zero errors and warnings",
+      "log": "svelte-check.log"
+    },
+    {
+      "command": "pnpm --dir apps/okf-explorer test",
+      "result": "431 unit tests passed; deterministic build and 2 learner contracts passed; 81 other Node tests passed, 1 skipped and 6 initially blocked by host permissions. All 6 passed in the scoped host rerun.",
+      "log": "app-tests.log",
+      "rerun_log": "host-tests.log"
+    },
+    {
+      "command": "pnpm --dir apps/okf-explorer build:determinism",
+      "result": "passed on final generated catalogue",
+      "log": "final-app-build.log"
+    },
+    {
+      "command": "PLAYWRIGHT_BASE_URL=http://127.0.0.1:4187/ pnpm --dir apps/okf-explorer test:e2e tests/ui/learner-hub.spec.ts --project=chrome",
+      "result": "passed",
+      "tests": 4,
+      "log": "learner-browser.log"
+    },
+    {
+      "command": "node documentation-journey.cjs",
+      "result": "passed; actual URL navigation, HTTP ZIP download, six-record File load, record body and mobile overflow check",
+      "log": "documentation-journey.json"
+    },
+    {
+      "command": "uv run --locked python scripts/build_site.py",
+      "result": "passed",
+      "reading_pages": 324,
+      "links_checked": 8179,
+      "log": "documentation-final-audit.log"
+    },
+    {
+      "command": "uv run --locked python scripts/check_british_english.py [all changed Markdown paths]",
+      "result": "passed",
+      "files": 47,
+      "log": "british-english-final.log"
+    },
+    {
+      "command": "uv run --locked python scripts/check_documentation_lockstep.py",
+      "result": "passed"
+    },
+    {
+      "command": "uv run --locked python scripts/build_learning_example.py --check",
+      "result": "passed; corrupt-copy rejection and unchanged-output checks also passed in the Python suite"
+    },
+    {
+      "command": "uv run --locked python scripts/build_okf_registry.py --check",
+      "result": "passed; 7 admitted bundles and 6 generated projections"
+    },
+    {
+      "command": "uv run --locked python scripts/build_okf_bundle.py --check",
+      "result": "passed; 165 nodes and 588 assertions"
+    },
+    {
+      "command": "uv run --locked python scripts/build_okf_estate_registry.py --check",
+      "result": "passed"
+    },
+    {
+      "command": "uv run --locked python scripts/update_viewer.py --check",
+      "result": "passed"
+    },
+    {
+      "command": "uv run --locked python scripts/check_okf.py",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/ --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json --bundle /publication/okf-explorer.json --limit 100 --out OUTPUT/questions",
+      "result": "passed",
+      "questions_scored": 100,
+      "at_or_above_80": 100,
+      "average_score": 92.6,
+      "log": "heritage-questions.log"
+    },
+    {
+      "command": "node scripts/evaluate_okf_explorer.mjs --base-url http://127.0.0.1:8002/ --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json --journeys-only --bundle-root http://127.0.0.1:8002/publication/ --candidate-bundle /okf-explorer.json --journey-id journey-tiny --journey-id journey-faithful --journey-id journey-synthetic-isolation --out OUTPUT/journeys",
+      "result": "passed",
+      "journeys": 3,
+      "log": "heritage-journeys.log"
+    }
+  ],
+  "public_journeys": [
+    {
+      "id": "ons-data-discovery",
+      "url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&q=population#overview",
+      "result": "record, source links and route restoration passed",
+      "record_url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&q=population#dataset/ons-open-geography-dataset-0c32f51c86554abab67036f07d66d6f6",
+      "child_url": null
+    },
+    {
+      "id": "gov-ckan",
+      "url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-engineering-lab-hackathon-london-2026%2Fgov-ckan%2Fokf-explorer.json&q=environment#overview",
+      "result": "unverified",
+      "record_url": null,
+      "child_url": null
+    },
+    {
+      "id": "uk-government-apis",
+      "url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&q=flood#overview",
+      "result": "record, source links and route restoration passed",
+      "record_url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-government-apis%2Fokf-explorer.json&q=flood#dataset/data-gov-uk-area-covered-by-local-flood-risk-management-strategy",
+      "child_url": null
+    },
+    {
+      "id": "uk-legislation",
+      "url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&q=Housing#overview",
+      "result": "record, source links and route restoration passed",
+      "record_url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&q=Housing#dataset/uksi-2026-753",
+      "child_url": null
+    },
+    {
+      "id": "uk-whole-law",
+      "url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fwhole-law%2Fokf-explorer.json#overview",
+      "result": "federation and published child navigation passed",
+      "record_url": null,
+      "child_url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json#overview"
+    }
+  ],
+  "known_limits": [
+    "GOV.UK CKAN search and compact record navigation worked; Load full record did not reach full evidence within the bounded check. The catalogue withholds a direct launch recommendation.",
+    "The UK Government APIs organisation query Ordnance Survey returned no results; the flood-record journey passed.",
+    "No AI-host tool invocation or answer correctness evaluation was performed for the new teaching prompts.",
+    "No public deployment or release approval is claimed."
+  ],
+  "frozen_repository": {
+    "name": "govuk-webmcp",
+    "commit": "32f3d55bf34c4056a4b51b8fa00ad3c94a799d03",
+    "action": "read-only; no edits, builds, deployment or state changes",
+    "pre_existing_dirty_path": ".devpost-hackathon-state.json"
+  },
+  "model_api_calls": 0,
+  "publication_actions": [],
+  "detailed_local_receipts": "evaluation/onboarding/results/2026-09-06/ (ignored; includes logs, real browser evidence and screenshots)",
+  "tracked_acceptance_receipt": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json"
+}

@@ -140,6 +140,7 @@ PUBLIC_ROOT_FILES = [
     "okf-estate-registry.json",
     "okf.publication.json",
     "README.md",
+    "mcp/README.md",
     "PUBLICATION.md",
     "LICENSE.md",
     "LICENSE-CODE.md",
@@ -849,19 +850,11 @@ def split_frontmatter(markdown: str) -> tuple[str | None, str]:
 def documentation_navigation(target: Path) -> str:
     routes = published_source_routes()
     items = (
-        ("Documentation", routes[(ROOT / "docs" / "index.md").resolve()]),
-        (
-            "Beginner guide",
-            routes[(ROOT / "docs" / "beginners" / "index.md").resolve()],
-        ),
-        (
-            "Foundry prompt kit",
-            routes[(ROOT / "docs" / "okf-authoring-prompt-kit.md").resolve()],
-        ),
-        (
-            "Bundle authoring",
-            routes[(ROOT / "docs" / "okf-bundle-authoring.md").resolve()],
-        ),
+        ("Start here", routes[(ROOT / "docs/onboarding/index.md").resolve()]),
+        ("Try AI", routes[(ROOT / "docs/onboarding/try-a-bundle.md").resolve()]),
+        ("Examples", routes[(ROOT / "docs/onboarding/examples.md").resolve()]),
+        ("First bundle", routes[(ROOT / "docs/onboarding/first-bundle.md").resolve()]),
+        ("Documentation", routes[(ROOT / "docs/index.md").resolve()]),
     )
     links = []
     for label, route in items:

@@ -1,0 +1,31 @@
+[
+  {
+    "question": "Which free activity happens on Thursday, and at what time?",
+    "expected": "Data drop-in; Thursday at 12:00.",
+    "record_ids": [
+      "records/data-drop-in.md"
+    ]
+  },
+  {
+    "question": "Where is the Data drop-in held, and what is recorded about step-free access?",
+    "expected": "Library room; the room record says step-free.",
+    "record_ids": [
+      "records/data-drop-in.md",
+      "records/library-room.md"
+    ]
+  },
+  {
+    "question": "Is the Workshop room step-free?",
+    "expected": "Not recorded. Do not transfer the Library room statement.",
+    "record_ids": [
+      "records/workshop-room.md"
+    ]
+  },
+  {
+    "question": "What telephone number should I call to book?",
+    "expected": "Not recorded. Do not invent a number or browse.",
+    "record_ids": [
+      "records/booking.md"
+    ]
+  }
+]

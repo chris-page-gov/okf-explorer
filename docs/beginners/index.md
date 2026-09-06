@@ -1,5 +1,10 @@
 # OKF Explorer From The Beginning
 
+For a first useful AI experience, [start with an existing bundle](../onboarding/try-a-bundle.md).
+Use [the maintained example catalogue](../onboarding/examples.md) and
+[audience journeys](../onboarding/audience-journeys.md) before this deeper reference.
+
+
 This learning path explains the ideas behind OKF Explorer without assuming
 experience of web development, data catalogues, search systems, knowledge
 graphs, ontologies, public-sector data or AI infrastructure.

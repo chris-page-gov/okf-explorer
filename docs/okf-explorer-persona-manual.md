@@ -1,5 +1,10 @@
 # OKF Explorer Persona Manual
 
+For current controls, use [Use Explorer](use-okf-explorer.md). The dated
+screenshots below are retained as historical illustrations; they may show
+older layout and selection behaviour.
+
+
 This manual describes the Explorer through user stories. It is written for
 people who need to browse a pack, evaluate an API/data source, demonstrate the
 Explorer, or build a better OKF bundle.
@@ -76,8 +81,8 @@ by count.
 
 Expected behaviour:
 
-- Search remains above the **Facets**, **Browse** and **Results** tabs because it
-  changes the shared context used by all three.
+- Search remains above **Facets** and **Results** because it changes their
+  shared context. Provider hierarchy browsing depends on bundle capabilities.
 - Manageable closed facets with complete vocabulary counts show a proportional
   distribution strip on first load. Hovering or focusing a segment names its
   value and count below the strip; truncated or high-cardinality facets show a
@@ -88,15 +93,15 @@ Expected behaviour:
 - Only the open facet renders its values. Closed facets show counts and selected
   summaries only.
 - High-cardinality facets expose an in-facet search box and paged values.
-- A plain click on a strip segment or value previews it without changing the
-  shared filter URL. Ctrl-click or Cmd-click adds or removes preview highlights.
-- Double-click or Enter commits the preview as a filter; **Filter to
-  highlighted** commits a multi-value set. The facet remains open so the reader
-  can inspect and change the reduction.
+- A plain click on a strip segment or value toggles its highlight. The URL
+  retains the shared selection. Ctrl-click or Cmd-click enables multiple values.
+- Click or Enter highlights the focused value. Double-click or Alt+Enter keeps
+  the highlighted set; **Keep unhighlighted** keeps its complement. Use the
+  current interaction guide for folding, pins and multi-value selection.
 - A direct star pins the facet open while another facet is explored. The drag
   handle reorders facets; Move earlier/Move later in the actions menu is the
-  keyboard fallback. Preferences are local to this bundle and **Reset** restores
-  provider defaults.
+  keyboard fallback where provided. Every newly opened bundle starts folded,
+  including pinned facets; opening a pinned facet keeps it open during the session.
 - The facet actions button, header right-click and `Shift+F10` expose pin, move,
   hide, clear and explain commands. There is no legacy **Adjust** command, and
   right-clicking a facet value does not select it.
@@ -147,7 +152,7 @@ Expected behaviour:
   disclosures within each tab.
 - A lightweight search card puts **Load full record** with the primary actions
   near the title rather than below all available metadata.
-- The first **Overview** disclosure starts open. Context, normalized fields,
+- The first **Overview** disclosure starts open. Context, normalised fields,
   standards alignment, quality, provenance, additional metadata, resources and
   relationships start folded and can be opened independently.
 - The card surfaces the best source-supplied update date near the title and

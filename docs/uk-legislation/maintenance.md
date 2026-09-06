@@ -1,15 +1,22 @@
 # Maintenance Guide
 
+These Explorer-local commands maintain the retained compatibility generator and
+fixtures. For the independently published corpus, use the
+[producer repository](https://github.com/chris-page-gov/okf-uk-legislation) and
+its own reviewed build/publication contract. Do not treat a local refresh here
+as publication of that producer.
+
+
 [Documentation spine](index.md) · [Getting started](getting-started.md) · [Personas and journeys](personas-and-user-journeys.md) · [Illustrated manual](illustrated-manual.md) · [Agent guide](agent-research-guide.md) · [Evaluation](evaluation-and-quality.md)
 
-This guide keeps the corpus, documentation spine and illustrated manual independently updateable but synchronized.
+This guide keeps the corpus, documentation spine and illustrated manual independently updateable but synchronised.
 
 ## Source-of-truth map
 
 | Surface | Source of truth | Generated or maintained output |
 |---|---|---|
 | work catalogue and facets | official Atom feeds plus `scripts/build_legislation_okf.py` | `legislation/` |
-| provision normalization | `apps/okf-explorer/src/lib/legislation/structure.ts` | live browser CLML tree |
+| provision normalisation | `apps/okf-explorer/src/lib/legislation/structure.ts` | live browser CLML tree |
 | answer benchmark | `scripts/build_legislation_evaluation.py` | `evaluation/legislation/questions.json` |
 | documentation spine | `docs/uk-legislation/` and `docs/uk-legislation-okf.md` | Pages `docs/` routes |
 | screenshots | hosted Explorer states in `manifest.json` | `docs/assets/uk-legislation-manual/` |
@@ -41,7 +48,7 @@ Refresh screenshots when:
 - the Explorer layout or legislation detail card changes;
 - counts or generation timestamps shown in an image are no longer the intended documentation checkpoint;
 - search ranking materially changes;
-- normalized CLML labels or passage actions change;
+- normalised CLML labels or passage actions change;
 - an image fails visual inspection or no longer matches its user journey.
 
 Do not refresh screenshots merely to erase a documented upstream anomaly.

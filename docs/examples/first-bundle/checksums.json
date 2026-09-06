@@ -1,0 +1,16 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "LICENSE.md": "54baa30c8e9dfdca671f4139e1a8382d406fa5a40c625570af46e86e0bca54f6",
+    "ai-context.md": "73cdd108373dc5c8c9c091336d3141aac215dfbb5c467a5d0b9e3b037824a9d0",
+    "index.md": "de0de51db86588cce59c14f131d496f25a50414e1f39a8f36f48201f668a57d2",
+    "okf-bundle.json": "d1d3ff273fdaa275a0e54965884608ff6b0634b8c19c6a699b8660a3ba759bc7",
+    "questions.json": "695d96eff3df8709d570907a639661c8130655969db58bdb367bd53c91d122b4",
+    "records/booking.md": "969514963ada7d6c64c8cadb52a2abe4635b0c7525ef6657f5605294597ba265",
+    "records/data-drop-in.md": "16f744375ecb0158424d94727d2c0198ce558b4cfcc8cc53980d8cb1b5a82daa",
+    "records/library-room.md": "c388e89bf9ec974fa74aabd2e06f5a8833b88592919d2d98295ac24be1d5d2d8",
+    "records/reading-circle.md": "d2ce1ed71358bef4160fec7e82648dbdedce530993a91c8e809bab3b98623201",
+    "records/repair-demonstration.md": "4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25",
+    "records/workshop-room.md": "0efa61c0bcca24656d49f30a476c13aaa93ae7b65030c1e583e6c61b3d39f776"
+  }
+}

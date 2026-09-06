@@ -1,5 +1,10 @@
 # Static Search and Filtering Manual
 
+For current controls, use [Use Explorer](use-okf-explorer.md). The dated
+screenshots below are retained as historical illustrations; they may show
+older layout and selection behaviour.
+
+
 This illustrated manual covers the deterministic search and filtering
 interface introduced on `codex/static-search-filtering`. It uses the real
 GOV.UK CKAN descriptor: 58,461 datasets, 268,241 resources and 1,960,101
@@ -36,7 +41,7 @@ In this unfiltered state:
 - the metrics show the complete large-corpus overview;
 - facets remain folded until opened, with compact distributions or search
   previews in their closed state;
-- the default sort is **Newest** because there is no text query;
+- the default sort is **Title** because there is no text query;
 - the application has loaded only overview context, not every record; and
 - the selected route remains in the URL hash.
 
@@ -130,8 +135,11 @@ search and filtering design](search-filtering-design.md#producer-declared-query-
 
 ## 3. Add And Remove Filters
 
-Open a facet and select a value. A normal click replaces the current value in
-that facet. Ctrl-click, Cmd-click or Shift-click adds another value.
+Open a facet and select a value to highlight its set. A normal click on an
+unselected value replaces the selection in that facet; clicking a selected value
+removes it. Ctrl-click or Cmd-click, or **Select multiple values**, enables
+multiple values. Use **Keep highlighted** to reduce scope. The dated screenshot
+below illustrates a reduced set, not the effect of a single highlight click.
 
 The semantics are fixed and shareable:
 
@@ -171,7 +179,7 @@ The Sort menu offers:
 Defaults are intentional:
 
 - a text query defaults to **Relevance**;
-- filter-only browsing defaults to **Newest**; and
+- filter-only browsing defaults to **Title**; and
 - choosing a different sort writes it to the public URL.
 
 The ranking benchmark evaluates current weighted scoring, field-weighted IDF,

@@ -1,0 +1,255 @@
+{
+  "corpora": {
+    "study-club": {
+      "assertion_scope": "synthetic-fixture",
+      "id": "study-club",
+      "nodes": {
+        "records/booking.md": {
+          "body": "# Booking\n\nBooking is required for the [Repair demonstration](repair-demonstration.md). No telephone number, booking URL or availability is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "Booking information for a fictional activity.",
+          "id": "records/booking.md",
+          "route": "records/booking.md",
+          "section": "note",
+          "source": "records/booking.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Booking",
+          "trust_tier": "unverified",
+          "type": "Note"
+        },
+        "records/data-drop-in.md": {
+          "body": "# Data drop-in\n\nThe data drop-in meets on Thursday at 12:00 in the [Library room](library-room.md). It is free.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "A free fictional Thursday activity.",
+          "id": "records/data-drop-in.md",
+          "route": "records/data-drop-in.md",
+          "section": "activity",
+          "source": "records/data-drop-in.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Data drop-in",
+          "trust_tier": "unverified",
+          "type": "Activity"
+        },
+        "records/library-room.md": {
+          "body": "# Library room\n\nThe Library room is recorded as step-free. No address or capacity is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "A fictional room with recorded access information.",
+          "id": "records/library-room.md",
+          "route": "records/library-room.md",
+          "section": "place",
+          "source": "records/library-room.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Library room",
+          "trust_tier": "unverified",
+          "type": "Place"
+        },
+        "records/reading-circle.md": {
+          "body": "# Reading circle\n\nThe reading circle meets on Tuesday at 18:30 in the [Library room](library-room.md). It is free.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "A free fictional Tuesday activity.",
+          "id": "records/reading-circle.md",
+          "route": "records/reading-circle.md",
+          "section": "activity",
+          "source": "records/reading-circle.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Reading circle",
+          "trust_tier": "unverified",
+          "type": "Activity"
+        },
+        "records/repair-demonstration.md": {
+          "body": "# Repair demonstration\n\nThe repair demonstration meets on Saturday at 10:00 in the [Workshop room](workshop-room.md). [Booking](booking.md) is required. Its price is not recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "A fictional Saturday activity requiring booking.",
+          "id": "records/repair-demonstration.md",
+          "route": "records/repair-demonstration.md",
+          "section": "activity",
+          "source": "records/repair-demonstration.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Repair demonstration",
+          "trust_tier": "unverified",
+          "type": "Activity"
+        },
+        "records/workshop-room.md": {
+          "body": "# Workshop room\n\nAccessibility for the Workshop room is not recorded. No address or capacity is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "description": "A fictional room with missing access information.",
+          "id": "records/workshop-room.md",
+          "route": "records/workshop-room.md",
+          "section": "place",
+          "source": "records/workshop-room.md",
+          "status": "draft",
+          "tags": [
+            "fictional",
+            "teaching"
+          ],
+          "title": "Workshop room",
+          "trust_tier": "unverified",
+          "type": "Place"
+        }
+      },
+      "relationships": [
+        {
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Original fictional teaching notes"
+          },
+          "derivation": "deterministic-local-markdown-reference",
+          "evidence": [
+            {
+              "source_artifact": "records/booking.md",
+              "source_sha256": "969514963ada7d6c64c8cadb52a2abe4635b0c7525ef6657f5605294597ba265"
+            }
+          ],
+          "id": "urn:okf:study-club:reference:239dc34a79ea5191d3b68ca2aaefbc80af1d1eed1203aff61d4d4728125086a6",
+          "inverse_label": "referenced by",
+          "kind": "references",
+          "label": "references",
+          "observed_at": "2026-09-06T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/references",
+          "rights": {
+            "assertion": "Original teaching material; see the included LICENSE.md."
+          },
+          "source": "records/booking.md",
+          "source_iri": "urn:okf:study-club:records/booking.md",
+          "target": "records/repair-demonstration.md",
+          "target_iri": "urn:okf:study-club:records/repair-demonstration.md"
+        },
+        {
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Original fictional teaching notes"
+          },
+          "derivation": "deterministic-local-markdown-reference",
+          "evidence": [
+            {
+              "source_artifact": "records/data-drop-in.md",
+              "source_sha256": "16f744375ecb0158424d94727d2c0198ce558b4cfcc8cc53980d8cb1b5a82daa"
+            }
+          ],
+          "id": "urn:okf:study-club:reference:cc9aedd77f39c24c7aeec8fb98d57e915b55c1a5e0117230b404b9a5a866f617",
+          "inverse_label": "referenced by",
+          "kind": "references",
+          "label": "references",
+          "observed_at": "2026-09-06T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/references",
+          "rights": {
+            "assertion": "Original teaching material; see the included LICENSE.md."
+          },
+          "source": "records/data-drop-in.md",
+          "source_iri": "urn:okf:study-club:records/data-drop-in.md",
+          "target": "records/library-room.md",
+          "target_iri": "urn:okf:study-club:records/library-room.md"
+        },
+        {
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Original fictional teaching notes"
+          },
+          "derivation": "deterministic-local-markdown-reference",
+          "evidence": [
+            {
+              "source_artifact": "records/reading-circle.md",
+              "source_sha256": "d2ce1ed71358bef4160fec7e82648dbdedce530993a91c8e809bab3b98623201"
+            }
+          ],
+          "id": "urn:okf:study-club:reference:4d81c842b7f3c6d6a733fababf80e5531fed06f4892950d7076c761b7c2bdd5b",
+          "inverse_label": "referenced by",
+          "kind": "references",
+          "label": "references",
+          "observed_at": "2026-09-06T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/references",
+          "rights": {
+            "assertion": "Original teaching material; see the included LICENSE.md."
+          },
+          "source": "records/reading-circle.md",
+          "source_iri": "urn:okf:study-club:records/reading-circle.md",
+          "target": "records/library-room.md",
+          "target_iri": "urn:okf:study-club:records/library-room.md"
+        },
+        {
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Original fictional teaching notes"
+          },
+          "derivation": "deterministic-local-markdown-reference",
+          "evidence": [
+            {
+              "source_artifact": "records/repair-demonstration.md",
+              "source_sha256": "4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25"
+            }
+          ],
+          "id": "urn:okf:study-club:reference:b50a2ca5655399f729604571b6e4867df097ff2a84b88bbcdc17b76ae12dced9",
+          "inverse_label": "referenced by",
+          "kind": "references",
+          "label": "references",
+          "observed_at": "2026-09-06T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/references",
+          "rights": {
+            "assertion": "Original teaching material; see the included LICENSE.md."
+          },
+          "source": "records/repair-demonstration.md",
+          "source_iri": "urn:okf:study-club:records/repair-demonstration.md",
+          "target": "records/booking.md",
+          "target_iri": "urn:okf:study-club:records/booking.md"
+        },
+        {
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Original fictional teaching notes"
+          },
+          "derivation": "deterministic-local-markdown-reference",
+          "evidence": [
+            {
+              "source_artifact": "records/repair-demonstration.md",
+              "source_sha256": "4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25"
+            }
+          ],
+          "id": "urn:okf:study-club:reference:abc3d57bfcdce35b75b902251668124cde7d088f1d12c94bdf652c16125dead8",
+          "inverse_label": "referenced by",
+          "kind": "references",
+          "label": "references",
+          "observed_at": "2026-09-06T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/references",
+          "rights": {
+            "assertion": "Original teaching material; see the included LICENSE.md."
+          },
+          "source": "records/repair-demonstration.md",
+          "source_iri": "urn:okf:study-club:records/repair-demonstration.md",
+          "target": "records/workshop-room.md",
+          "target_iri": "urn:okf:study-club:records/workshop-room.md"
+        }
+      ],
+      "title": "Fictional study club"
+    }
+  },
+  "meta": {
+    "default_corpus": "study-club",
+    "description": "6 fictional teaching records; no real events or service assurances.",
+    "title": "Fictional study club"
+  },
+  "okf_version": "0.2"
+}

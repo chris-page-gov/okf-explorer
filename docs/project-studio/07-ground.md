@@ -11,6 +11,14 @@ and relevant bundle link. Model Context Protocol (MCP) earns its extra
 infrastructure only when bounded search, identity and logging improve measured
 results. Read the [grounding evidence](../../research/okf-evolution-review/grounding-and-retrieval.md).
 
+## Start with a worked question
+
+Use [the fictional context prompt and expected answers](../onboarding/first-bundle.md#ask-one-question)
+or [the government evidence exercise](../onboarding/try-a-bundle.md).
+Choose a [supported access route](../ai-okf-usage.md) and first identify exactly
+what your AI received. Explorer's local MCP adapter remains a retrieval prototype,
+so include an MCP comparison only when you have a verified compatible server.
+
 ## Do and check
 
 Freeze the candidate and questions. Write the expected identity, required
@@ -28,4 +36,5 @@ cost and failures. Report dangerous cases, not only averages.
 Explain why retrieval accuracy and answer correctness are separate. Decide
 whether MCP earns its operational cost.
 
-Next: [create a personal interface](08-create.md).
+You can finish with the evaluated bundle. Optional next step:
+[create a personal interface](08-create.md).

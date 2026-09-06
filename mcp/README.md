@@ -1,5 +1,8 @@
 # OKF MCP retrieval prototype
 
+For end-user AI access, start with [the access chooser](../docs/ai-okf-usage.md). This adapter has no standard `initialize` handler or tool input schemas and is not ready for installation in an arbitrary MCP client. It reads one configured corpus from a `corpora` mapping with `nodes` and `relationships`; it does not load large descriptors or top-level `edges`. Its five operations are `okf.list_bundles`, `okf.search`, `okf.get_record`, `okf.follow_relationships` and `okf.context_pack`.
+
+
 This prototype provides bounded, read-only access to a local
 `okf-bundle.json`. It is an empirical retrieval surface, not a claim of
 production deployment or certification against every MCP client revision.

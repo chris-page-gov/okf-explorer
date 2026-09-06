@@ -19,7 +19,9 @@ Each large OKF pack should expose:
   services, including DCAT/DCAT-AP terms, OpenAPI terms, export-readiness
   status and missing requirements;
 - generated facet definitions and quality hints that match the UI vocabulary;
-- a 100-question evaluation suite using the shared additive rubric;
+- an evaluation suite derived from its persona, task and evidence matrix, using
+  the shared additive rubric; retain historical 100-question suites as examples,
+  not a universal size requirement;
 - a persona/story interaction manifest that maps every evaluation question to
   a user need, records honest coverage gaps, and exercises behaviours that a
   query-only score cannot observe.
@@ -134,13 +136,13 @@ The shared harness supports both packs:
 node scripts/evaluate_okf_explorer.mjs \
   --suite evaluation/okf-explorer/questions.json \
   --visual evaluation/okf-explorer/visual-regressions.json \
-  --base-url http://127.0.0.1:8002/next/
+  --base-url http://127.0.0.1:8002/explore/
 ```
 
 ```sh
 node scripts/evaluate_okf_explorer.mjs \
   --suite evaluation/gov-ckan/questions.json \
-  --base-url http://127.0.0.1:8002/next/
+  --base-url http://127.0.0.1:8002/explore/
 ```
 
 The CKAN suite declares its hosted descriptor as `target_bundle`, so the second

@@ -12,19 +12,19 @@ test('HUB-E2E-01 gives a beginner a complete static starting point', async ({ br
   const page = await context.newPage();
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { name: 'Build a knowledge base your AI can trust' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Use knowledge you can inspect with your AI' })).toBeVisible();
   const workedExample = page.getByRole('link', { name: 'Open worked example' });
   await expect(workedExample).toHaveAttribute(
     'href',
     './explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer.json&q=Coventry+Cathedral#asset%2F1342941'
   );
-  await expect(page.getByRole('link', { name: 'Start your project' })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: 'Try a bundle with AI' })).toHaveAttribute(
     'href',
-    './docs/project-studio/index.html'
+    './docs/onboarding/try-a-bundle.html'
   );
-  await expect(page.getByRole('heading', { name: 'Eight small stages, one useful result' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'An optional project course' })).toBeVisible();
   await expect(page.locator('.journey-grid > li')).toHaveCount(8);
-  await expect(page.locator('.bundle-card')).toHaveCount(7);
+  await expect(page.locator('.bundle-card')).toHaveCount(3);
   await context.close();
 });
 
@@ -38,7 +38,7 @@ test('HUB-E2E-02 is accessible, compact and does not fetch a bundle', async ({ p
 
   await page.setViewportSize({ width: 320, height: 760 });
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Build a knowledge base your AI can trust' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Use knowledge you can inspect with your AI' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   expect(bundleRequests).toEqual([]);
 
