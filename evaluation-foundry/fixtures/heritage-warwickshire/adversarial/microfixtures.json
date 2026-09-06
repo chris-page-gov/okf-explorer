@@ -127,7 +127,7 @@
       "validator": "registry_lockstep",
       "planes": ["semantic", "app", "site-data"],
       "test_tags": ["heritage", "microfixture", "registry"],
-      "input": {"required_projections": ["okf-registry.json", "apps/okf-explorer/static/okf-registry.json", "okf-registry.jsonld"]},
+      "input": {"required_projections": ["okf-registry.json", "apps/okf-explorer/static/okf-registry.json", "okf-registry.jsonld", "apps/okf-explorer/src/lib/learning-registry.ts", "apps/okf-explorer/src/lib/learning-catalogue.json", "docs/onboarding/examples.md"]},
       "expected": {"synchronized": true}
     },
     {

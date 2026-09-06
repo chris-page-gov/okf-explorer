@@ -1,0 +1,100 @@
+{
+  "schema": "okf-onboarding-premerge-check.v1",
+  "observed_at": "2026-09-06T14:45:13.167454+00:00",
+  "scope": "Video integration and final pre-merge verification of the reviewed onboarding documentation set.",
+  "prior_checkpoint": {
+    "path": "evaluation/onboarding/verification-2026-09-06.json",
+    "meaning": "Historical pre-video implementation checkpoint. Its input hashes and results describe the earlier candidate, not subsequent edits or a public deployment."
+  },
+  "base_commit": "35aa9df8d187ea1344470fc787ec47df08247cda",
+  "video": {
+    "url": "https://www.youtube.com/watch?v=mPk-vv1LfIU",
+    "title": "crpage submission 2026 09 03 at 20 32 21",
+    "author": "Chris Page",
+    "duration_seconds": 109,
+    "published_date": "2026-09-03",
+    "verification": "YouTube oEmbed metadata and the actual Edge video page, description and transcript read on 6 September 2026. Full playback and independent AI invocation were not performed.",
+    "transcript_landmarks_seconds": [
+      1,
+      33,
+      42
+    ]
+  },
+  "changed_after_checkpoint": [
+    {
+      "path": "README.md",
+      "sha256": "662ffcfc35cfb37d46cbb4743ab58157ceb1a20e8cf6006435fa06247b933d03"
+    },
+    {
+      "path": "docs/onboarding/try-a-bundle.md",
+      "sha256": "2fe24492075f685541feae46314a09f46504f3178387be356628502e40d810a4"
+    },
+    {
+      "path": "docs/ai-okf-usage.md",
+      "sha256": "f7ed35f9d22d4d024dec1175ac10e6b8d394535304df24c4f3c25223abaffefa"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "50e12aa28268d80c229e916ee7a9d02008c5d68457615d3b90aa14dbc0d979f1"
+    }
+  ],
+  "checks": [
+    {
+      "command": "AGENTS.md eight pre-commit build/check commands",
+      "result": "passed",
+      "log": "premerge-contracts.log; premerge-site.log"
+    },
+    {
+      "command": "uv run --locked python scripts/build_learning_example.py --check",
+      "result": "passed"
+    },
+    {
+      "command": "uv run --locked python -m unittest tests.test_learning_onboarding tests.test_legislation_documentation -v",
+      "result": "15 tests passed, including corrupt-copy rejection",
+      "log": "premerge-focused.log"
+    },
+    {
+      "command": "uv run --locked python scripts/check_british_english.py [all 47 changed Markdown paths]",
+      "result": "passed",
+      "log": "premerge-british-english.log"
+    },
+    {
+      "command": "uv run --locked python scripts/build_site.py --candidate-receipt OUTPUT/site-candidate-receipt.json",
+      "result": "324 reading pages and 8184 links checked; app tree unchanged",
+      "site_tree_sha256": "fc96dfa5f508d712410cebeab9e865c43761fad4456d581ca30a3d55687cb88e"
+    },
+    {
+      "command": "uv run --locked python scripts/build_heritage_local_candidate_receipt.py --question-results OUTPUT/questions/results.json --journey-results OUTPUT/journeys/results.json --site-candidate-receipt OUTPUT/site-candidate-receipt.json --observed-at CURRENT_UTC",
+      "result": "Materialised final Site identity with existing real results for the unchanged app; both receipt-binding tests passed",
+      "log": "premerge-receipts.log"
+    },
+    {
+      "command": "node evaluation/onboarding/results/2026-09-06/documentation-journey.cjs",
+      "result": "passed; actual local URL navigation, HTTP ZIP download, six-record File load and mobile documentation check",
+      "browser": "installed Google Chrome via repository Playwright",
+      "log": "premerge-browser.json"
+    },
+    {
+      "command": "curl -fsS http://127.0.0.1:4187/docs/onboarding/try-a-bundle.html",
+      "result": "passed; final video duration and timestamp links present"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "app_tree_sha256": "d27ca497f04f69069db04c61d1f68403400a6770d4c42ae363036b42c3462eec",
+  "frozen_repository": {
+    "name": "govuk-webmcp",
+    "commit": "32f3d55bf34c4056a4b51b8fa00ad3c94a799d03",
+    "result": "Unchanged; existing dirty competition-state file preserved. No edits, builds or deployment."
+  },
+  "permissions": "Scoped host-approved GitHub networking, browser IPC and loopback testing; no global configuration changes.",
+  "model_api_calls": 0,
+  "unrun_gates": [
+    "Pull-request CI",
+    "Protected-main merge",
+    "Exact-commit Pages deployment and live verification"
+  ],
+  "logs": "evaluation/onboarding/results/2026-09-06/ (ignored local execution receipts)"
+}

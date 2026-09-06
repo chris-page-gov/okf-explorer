@@ -138,7 +138,7 @@ core publication and remains the source of truth.
 The small-bundle builder:
 
 1. reads `okf.config.json`;
-2. follows the configured corpus root and sections;
+2. reads Explorer’s own fixed repository root and configured sections;
 3. parses frontmatter and Markdown;
 4. normalises record fields;
 5. resolves links to known files;
@@ -152,6 +152,9 @@ is easier to review, cache and verify.
 The generated `okf-bundle.json` is a publication artefact. The Markdown
 remains the source of truth, so a correction belongs in Markdown and is then
 regenerated.
+
+For a separate learning folder, use [the teaching builder](../onboarding/first-bundle.md).
+The root builder’s `--output` option changes its destination, not its source collection.
 
 ## Compatibility Normalisation
 

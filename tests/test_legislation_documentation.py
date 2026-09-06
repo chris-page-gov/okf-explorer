@@ -55,11 +55,15 @@ class LegislationDocumentationTest(unittest.TestCase):
             self.assertTrue(item["expected_text"])
             self.assertIn(f"../assets/uk-legislation-manual/{item['image']}", manual)
 
-    def test_readme_promotes_legislation_in_opening_examples(self) -> None:
-        opening = (ROOT / "README.md").read_text(encoding="utf-8").split("## Read Locally", 1)[0]
-        self.assertIn("| UK Legislation OKF |", opening)
-        self.assertIn("[Documentation spine][legislation-docs]", opening)
-        self.assertIn("[legislation-manual]", opening)
+    def test_readme_reaches_legislation_through_the_shared_example_catalogue(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("[Example catalogue](docs/onboarding/examples.md)", readme)
+        catalogue = (ROOT / "docs/onboarding/examples.md").read_text(encoding="utf-8")
+        self.assertIn("### UK Legislation", catalogue)
+        self.assertIn("../../docs/uk-legislation/index.md", catalogue)
+        self.assertIn("### UK Whole-Law", catalogue)
+        spine = (DOCS / "index.md").read_text(encoding="utf-8")
+        self.assertIn("illustrated-manual.md", spine)
 
 
 if __name__ == "__main__":

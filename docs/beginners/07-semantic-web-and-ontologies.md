@@ -289,7 +289,10 @@ claim that every loaded bundle is an ontology, and it does not perform
 unbounded OWL inference in the browser.
 
 The advanced semantic extension, vocabulary registry, validation views and
-materialised inference are a delivery roadmap. Beginner documentation must not
+materialised inference have separate implementation states. Governed term
+definitions and semantic assertions are present; class/property/inference views
+remain named future capabilities. Consult the [implementation ledger](../okf-0.2-yaml-ld-semantic-authoring.md)
+and its observation dates rather than treating every extension as future work. Beginner documentation must not
 turn proposals into current behaviour.
 
 ## Next

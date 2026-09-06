@@ -133,6 +133,7 @@ jobs:
       - name: Validate YAML-LD registry and constraint ledger
         run: |
           uv run --locked python scripts/build_okf_registry.py --check
+          uv run --locked python scripts/build_learning_example.py --check
           uv run --locked python scripts/build_okf_estate_registry.py --check
           uv run --locked python scripts/check_source_constraints.py
       - name: Validate OKF bundle and conformance

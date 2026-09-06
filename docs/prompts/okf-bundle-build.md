@@ -49,7 +49,7 @@ Publication authority and target:
 Network/access policy:
 {{NETWORK_POLICY}}
 
-Paid model/API authorization and hard cap, or "not authorized":
+Paid model/API authorisation and hard cap, or "not authorised":
 {{MODEL_API_AUTHORIZATION_AND_CAP}}
 
 Execution budget and unattended constraints:
@@ -107,7 +107,7 @@ that cannot safely be inferred.
     model attempts, validation receipts and post-freeze public observations in
     separate, documented locations.
 11. Treat `AGENTS.md`, README, human guides, machine schemas, examples,
-    validation commands and release notes as one synchronized product.
+    validation commands and release notes as one synchronised product.
 12. Make small, coherent commits after each green tranche. Preserve unrelated
     user changes. Do not force-push or rewrite published history.
 13. Use at most three stable workstreams at once. Assign each one a bounded
@@ -175,6 +175,7 @@ that cannot safely be inferred.
 
 ## Phase 0 — Classify And Bootstrap The Repository
 
+This classification is the preflight for the recovery and budget phase below.
 Before acquisition, generation or corpus work:
 
 1. classify the target as `existing`, `empty-new` or `imported`;
@@ -193,7 +194,7 @@ Before acquisition, generation or corpus work:
 The scaffolder must never create a remote, push, publish or enable CI
 implicitly. Record its classification, plan, check output, initial commit and
 handoff in repository-lifecycle evidence.
-23. Test producer/consumer compatibility in both directions and retain the
+Test producer/consumer compatibility in both directions and retain the
     fixtures that define the supported window.
 
 ## Evidence and release states
@@ -384,7 +385,7 @@ Always:
    useful title/description, source provenance, generation, verification,
    lifecycle, freshness, rights/access, coverage and evidence state.
 6. Keep `index.md`, `log.md`, README, documentation and generated projections
-   synchronized.
+   synchronised.
 
 When `canonical_authoring` is `markdown-yaml-ld`:
 
@@ -558,7 +559,7 @@ Require:
 
 For paid calls:
 
-- require the explicit authorization in Run inputs;
+- require the explicit authorisation in Run inputs;
 - reserve worst-case cost before scheduling;
 - enforce `spent + in-flight reservations + next upper bound <= hard cap`;
 - stop before the cap, not after it;
@@ -694,12 +695,12 @@ Adapt paths to the selected small/large/federated profile, but normally publish:
   checksums.json
 
 The actual schema versions, Explorer thresholds and profile commit are
-researched and pinned at build time. Do not fossilize values copied from this
+researched and pinned at build time. Do not freeze indefinitely values copied from this
 prompt.
 
 ## Documentation deliverables
 
-Publish synchronized guidance for:
+Publish synchronised guidance for:
 
 - first-time readers;
 - domain researchers;

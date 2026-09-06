@@ -4,8 +4,10 @@ Status: beginner project pathway, checked 17 August 2026.
 
 Choose a subject, research reliable sources, create a small Open Knowledge
 Format (OKF) bundle, test it, connect it to an artificial intelligence (AI)
-assistant and build a personal learning interface. You do not need prior
-knowledge of coding or linked data. Allow 8 to 18 hours for a first project.
+assistant and optionally build a personal learning interface. You do not need prior
+knowledge of coding or linked data. Allow 8 to 18 hours for the full course.
+For an immediate result, [try an existing bundle](../onboarding/try-a-bundle.md)
+or [adapt the complete fictional starter](../onboarding/first-bundle.md).
 
 Keep the [project record](project-record-template.md) beside your files so you
 can stop, resume and explain your decisions.
@@ -17,7 +19,10 @@ can stop, resume and explain your decisions.
 - 15 to 60 concepts with stable identities and evidenced relationships;
 - a validated OKF bundle that people and software can inspect;
 - an evaluation comparing expected and observed AI answers; and
-- an accessible learning app tested by somebody new to the subject.
+- optionally, an accessible learning app tested by somebody new to the subject.
+
+A sourced answer, a reviewed correction or a private reusable bundle is also a
+successful stopping point. Choose [the journey that fits your task](../onboarding/audience-journeys.md).
 
 ## The learning rhythm
 
@@ -49,6 +54,6 @@ not replace an operational database, statutory register, source API,
 calculation engine, access-control system or professional judgement.
 
 Use the [beginner reference guide](../beginners/index.md) when a concept is
-unfamiliar and [existing bundles](../../explore/) as worked examples.
+unfamiliar and [existing examples](../onboarding/examples.md) as worked examples.
 
 Next: [choose a subject](01-choose.md).

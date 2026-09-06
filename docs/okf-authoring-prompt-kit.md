@@ -1,5 +1,8 @@
 # OKF Foundry Prompt Kit
 
+For a personal first experiment, use [the complete small starter](onboarding/first-bundle.md). This prompt kit is the governed production route; its profiles and release gates remain required when applicable.
+
+
 Anyone responsible for a collection of documents or records can use this kit
 to turn it into an evidence-bearing OKF publication. It transfers the reusable
 method developed across legislation, ONS data discovery, GOV.UK content,

@@ -2,7 +2,7 @@
 
 This is the maintained documentation spine for the UK Legislation OKF pack and its legislation-specific Explorer behaviour.
 
-[Open the hosted UK Legislation Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview)
+[Open the hosted UK Legislation Explorer](https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview)
 
 ## Choose your route
 
@@ -28,7 +28,7 @@ The spine keeps five concerns separate so each can be updated without rewriting 
 
 ## Stable public entry points
 
-- Explorer: `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fai-infrastructure-wiki%2Flegislation%2Fokf-explorer.json&view=reader#overview`
+- Explorer: `https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-uk-legislation%2Fokf-explorer.json&view=reader#overview`
 - Bundle descriptor: `https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json`
 - Generated bundle wiki: `https://chris-page-gov.github.io/okf-uk-legislation/`
 - Evaluation suite: `https://chris-page-gov.github.io/okf-uk-legislation/evaluation/`

@@ -1,0 +1,210 @@
+[
+  {
+    "id": "government-evidence",
+    "kind": "application",
+    "title": "Government evidence for your AI",
+    "group": "Try a first answer",
+    "audience": "consumers and knowledge workers",
+    "question": "Which recorded official page explains Tax-Free Childcare, and what does the saved evidence not establish?",
+    "access": "Experimental WebMCP, or use the human-selected evidence with a text-capable AI.",
+    "limit": "Submitted competition candidate: repository, data, build and deployment remain frozen. Metadata does not decide eligibility.",
+    "guide": "docs/onboarding/try-a-bundle.md",
+    "readiness": "Human journey checked 6 September 2026; host-dependent AI access.",
+    "source": "https://github.com/chris-page-gov/govuk-webmcp",
+    "featured": true
+  },
+  {
+    "id": "heritage",
+    "kind": "bundle",
+    "title": "Tiny Coventry and Warwickshire heritage example",
+    "group": "Try a first answer",
+    "audience": "students, consumers and domain experts",
+    "question": "Which record identifies the modern Coventry cathedral, and which names help find it?",
+    "access": "Inspect the tiny record, then supply a bounded extract to a capable AI.",
+    "limit": "The official title and reviewed discovery names are different fields. The tiny fixture is separate from the full and synthetic products.",
+    "guide": "docs/onboarding/try-a-bundle.md",
+    "readiness": "Tiny record and evidence journey checked 6 September 2026.",
+    "bundle_id": "heritage-coventry-warwickshire",
+    "featured": true,
+    "explorer": {
+      "variant": "tiny",
+      "query": "Coventry Cathedral",
+      "route": "asset/1342941"
+    }
+  },
+  {
+    "id": "ai-infrastructure",
+    "kind": "bundle",
+    "title": "AI Infrastructure",
+    "group": "Try a first answer",
+    "audience": "students and domain experts",
+    "question": "How does the bundle connect MCP and Anthropic, and what does that reference assert?",
+    "access": "Use the small Markdown/JSON material with a file- or URL-capable AI.",
+    "limit": "A bundle about AI is not an AI service. The records retain their review and lifecycle signals.",
+    "guide": "docs/ai-infrastructure-knowledge-graph-walkthrough.md",
+    "readiness": "MCP record and relationships checked in Explorer on 6 September 2026.",
+    "bundle_id": "ai-infrastructure",
+    "featured": true,
+    "explorer": {
+      "use_default": true,
+      "route": "standards/mcp.md"
+    }
+  },
+  {
+    "id": "study-club",
+    "kind": "starter",
+    "title": "Fictional study club",
+    "group": "Make and adapt a collection",
+    "audience": "students and knowledge workers",
+    "question": "Which free activity is on Thursday, where is it held and what is recorded about access?",
+    "access": "Attach or paste the complete labelled context; inspect the same records in Explorer.",
+    "limit": "Six invented records; no real events, people or service assurances. Small projection, not a rich-profile release.",
+    "guide": "docs/onboarding/first-bundle.md",
+    "readiness": "Complete local teaching starter; expected AI answers are supplied, not claimed as model-tested."
+  },
+  {
+    "id": "early-years",
+    "kind": "collection",
+    "title": "Synthetic early-years rehearsal",
+    "group": "Make and adapt a collection",
+    "audience": "domain experts and public-service teams",
+    "question": "Does a proposed support action establish that support actually happened?",
+    "access": "Use the published kit and its local Explorer/file-based instructions.",
+    "limit": "22 concepts and 23 relationships; entirely synthetic. Candidate record links are not identity or matching evidence.",
+    "guide": "docs/onboarding/audience-journeys.md",
+    "readiness": "Published source kit; no additional hosted demo is claimed here.",
+    "source": "https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years"
+  },
+  {
+    "id": "uk-living",
+    "kind": "collection",
+    "title": "A Life in the UK",
+    "group": "Use knowledge at work",
+    "audience": "knowledge workers and service designers",
+    "question": "How do two similar service families differ in source, purpose and jurisdiction?",
+    "access": "Read bounded records; the documented Copilot trial uses generated Word records in a configured SharePoint scope.",
+    "limit": "Discovery does not decide entitlement. Specialist-review gaps and the trial limitations remain visible.",
+    "guide": "docs/sharepoint-m365-copilot-trial.md",
+    "readiness": "Producer collection and dated development trial; check current release.",
+    "source": "https://github.com/chris-page-gov/okf-uk-living"
+  },
+  {
+    "id": "govuk-content",
+    "kind": "collection",
+    "title": "GOV.UK content",
+    "group": "Use knowledge at work",
+    "audience": "consumers and content designers",
+    "question": "Which captured guidance page is the right starting point for this topic?",
+    "access": "Use identified records or the bounded collection admitted by the frozen government evidence application.",
+    "limit": "The 69-record demonstrator is separate from the publication census; metadata is not the complete current guidance.",
+    "guide": "docs/onboarding/try-a-bundle.md",
+    "readiness": "Bounded producer demonstrator; check current release.",
+    "source": "https://github.com/chris-page-gov/okf-govuk-content"
+  },
+  {
+    "id": "ons",
+    "kind": "bundle",
+    "title": "ONS data discovery",
+    "group": "Find data and services",
+    "audience": "analysts and domain experts",
+    "question": "Which product, geography and vintage match the question?",
+    "access": "A capable agent can read selected discovery records and follow their source links.",
+    "limit": "Metadata does not calculate the underlying statistic.",
+    "guide": "docs/onboarding/audience-journeys.md",
+    "readiness": "Record, source links and route restoration checked 6 September 2026.",
+    "bundle_id": "ons-data-discovery",
+    "explorer": {
+      "query": "population",
+      "route": "dataset/ons-open-geography-dataset-0c32f51c86554abab67036f07d66d6f6"
+    }
+  },
+  {
+    "id": "ckan",
+    "kind": "bundle",
+    "title": "GOV.UK CKAN",
+    "group": "Find data and services",
+    "audience": "analysts and knowledge workers",
+    "question": "Which datasets have a suitable publisher, licence and resource link?",
+    "access": "Use the producer and dated task guide. A direct launch recommendation is withheld pending a complete record-evidence check.",
+    "limit": "Catalogue inclusion does not guarantee accessible resources or data quality.",
+    "guide": "docs/gov-ckan-personas-and-user-journeys.md",
+    "readiness": "Partial browser check on 6 September 2026: search and a compact card opened; full record evidence was not reached.",
+    "bundle_id": "gov-ckan"
+  },
+  {
+    "id": "government-apis",
+    "kind": "bundle",
+    "title": "UK Government APIs",
+    "group": "Find data and services",
+    "audience": "integration developers and domain experts",
+    "question": "Which service might provide a capability, and where is its real contract?",
+    "access": "Use metadata to discover the provider documentation.",
+    "limit": "No endpoint execution, credentials or operational authority are implied. This includes dataset records: check the record type. The organisation query “Ordnance Survey” returned no matches during this check; the flood record journey passed.",
+    "guide": "docs/onboarding/audience-journeys.md",
+    "readiness": "Record, source links and route restoration checked 6 September 2026.",
+    "bundle_id": "uk-government-apis",
+    "explorer": {
+      "query": "flood",
+      "route": "dataset/data-gov-uk-area-covered-by-local-flood-risk-management-strategy"
+    }
+  },
+  {
+    "id": "land-registry",
+    "kind": "collection",
+    "title": "HM Land Registry",
+    "group": "Find data and services",
+    "audience": "property researchers and knowledge workers",
+    "question": "Which information product helps with this question, and what does the metadata not prove?",
+    "access": "Inspect bounded source-linked product metadata.",
+    "limit": "Metadata-only discovery is not ownership, title or legal evidence.",
+    "guide": "docs/onboarding/audience-journeys.md",
+    "readiness": "Producer metadata collection; check current release and rights.",
+    "source": "https://github.com/chris-page-gov/okf-LandRegistry"
+  },
+  {
+    "id": "legislation",
+    "kind": "bundle",
+    "title": "UK Legislation",
+    "group": "Advanced domain journeys",
+    "audience": "legal and policy researchers",
+    "question": "Which work, jurisdiction, version and official provision should I inspect?",
+    "access": "Follow the advanced agent research guide with exact record identities and sources.",
+    "limit": "Discovery is not legal advice; preserve official, editorial and model-assisted distinctions.",
+    "guide": "docs/uk-legislation/index.md",
+    "readiness": "Record, source links and route restoration checked 6 September 2026.",
+    "bundle_id": "uk-legislation",
+    "explorer": {
+      "query": "Housing",
+      "route": "dataset/uksi-2026-753"
+    }
+  },
+  {
+    "id": "whole-law",
+    "kind": "bundle",
+    "title": "UK Whole-Law",
+    "group": "Advanced domain journeys",
+    "audience": "policy researchers and domain experts",
+    "question": "Which independently governed collection covers this source category?",
+    "access": "Discover child descriptions, then load the appropriate child.",
+    "limit": "Explorer federation is not automatic search across every child record.",
+    "guide": "docs/federated-bundles.md",
+    "readiness": "Federation and published child navigation checked 6 September 2026.",
+    "bundle_id": "uk-whole-law",
+    "explorer": {
+      "query": "",
+      "route": "overview"
+    }
+  },
+  {
+    "id": "els-planning",
+    "kind": "conditional",
+    "title": "ELS API and planning lineages",
+    "group": "Advanced domain journeys",
+    "audience": "education and planning specialists",
+    "question": "Identify an education capability or trace a planning record to its authority.",
+    "access": "Use the pack stories to frame a requirement. No verified public entry route is supplied here.",
+    "limit": "Verify ownership, licence, publication and a bounded journey before calling these live examples.",
+    "guide": "docs/project-studio/personas-and-pack-stories.md",
+    "readiness": "Conditional discovery; no live deployment verification is claimed."
+  }
+]

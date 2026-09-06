@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-08-18",
+  "modified": "2026-09-06",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -365,6 +365,90 @@
         ],
         "check_command_ids": [
           "verify-pages"
+        ]
+      },
+      {
+        "path": "apps/okf-explorer/src/lib/learning-registry.ts",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle-registry"
+        ],
+        "check_command_ids": [
+          "check-bundle-registry"
+        ]
+      },
+      {
+        "path": "apps/okf-explorer/src/lib/learning-catalogue.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle-registry"
+        ],
+        "check_command_ids": [
+          "check-bundle-registry"
+        ]
+      },
+      {
+        "path": "docs/onboarding/examples.md",
+        "role": "registry-projection",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-bundle-registry"
+        ],
+        "check_command_ids": [
+          "check-bundle-registry"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/okf-bundle.json",
+        "role": "explorer-runtime",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/ai-context.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/checksums.json",
+        "role": "checksum-manifest",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/first-bundle.zip",
+        "role": "release-pack",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
         ]
       }
     ]
@@ -839,6 +923,34 @@
         "source": "okf.publication.json",
         "review_status": "reviewed-local-guidance",
         "network": "bounded-read",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "build-learning-example",
+        "kind": "build",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_learning_example.py",
+        "source": "scripts/build_learning_example.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-learning-example",
+        "kind": "check",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_learning_example.py --check",
+        "source": "scripts/build_learning_example.py",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
       }

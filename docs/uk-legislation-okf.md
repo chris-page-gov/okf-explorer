@@ -1,5 +1,11 @@
 # UK Legislation OKF
 
+This architecture document retains dated release observations. Consult the
+[producer](https://github.com/chris-page-gov/okf-uk-legislation) for current
+release identity. Explorer-local generator commands describe compatibility
+material, not authority to refresh the independent production corpus.
+
+
 This is the architecture and data-model volume of the [UK Legislation documentation spine](uk-legislation/index.md). For task guidance use [Getting started](uk-legislation/getting-started.md); for worked interfaces use the [illustrated manual](uk-legislation/illustrated-manual.md).
 
 ## Public viewer
@@ -19,26 +25,25 @@ still machine-readable semantic data: they retain stable routes, predicates,
 authority, derivation and evidence, and an agent can traverse them through the
 published search and adjacency manifests.
 
-The currently published artifacts are inconsistent: the operational Explorer
+The earlier demonstration documented below reported inconsistent artefacts: the operational Explorer
 descriptor identifies release `0.3.0`, while the root YAML-LD and JSON-LD
-representations still identify bundle version `0.2.0`. For this demonstration,
-agents should treat `0.3.0` as the operational release and identify the
-semantic representations as stale and not release-aligned; they must not
-silently combine the conflicting metadata. The root publication does not
-currently expose a Turtle document.
+representations still identify bundle version `0.2.0`. That observation is historical; check the current producer descriptor and
+semantic representations together before using them. Do not silently combine
+conflicting release metadata. The demonstration did not expose a root Turtle
+document.
 
 ## What “complete” means
 
 The generator first reads the `/all/data.feed` facets, then retrieves every year with `results-count=10000` and checks that each response count exactly equals the official year-facet count. It separately retrieves `/draft/data.feed`. Work IDs are deduplicated by the official `/id/{type}/{year}/{number}` identifier. The corpus validator requires at least 300,000 unique works and representative primary, secondary, devolved and EU-origin type codes.
 
-For each selected work, the browser obtains the official `application/xml` manifestation and walks every recognized CLML structural element:
+For each selected work, the browser obtains the official `application/xml` manifestation and walks every recognised CLML structural element:
 
 - preliminaries, Body and EUBody;
 - Group, Part, Chapter, Division, Title, Section and Subsection containers;
 - Pblock, PsubBlock, P1group-P3group and P1-P7 nested provisions;
 - Schedules, Schedule, Appendix, Annex, Attachments and explanatory/signed sections.
 
-Each node retains the CLML element name and ID, receives a normalized human type such as Section, Article, Regulation, Rule or Paragraph where the ID supports it, records number/title/text/extent/status, retains its parent/depth and links to the official selected passage. This is progressive completeness: discovery metadata is local; authoritative text is fetched only for the work being researched.
+Each node retains the CLML element name and ID, receives a normalised human type such as Section, Article, Regulation, Rule or Paragraph where the ID supports it, records number/title/text/extent/status, retains its parent/depth and links to the official selected passage. This is progressive completeness: discovery metadata is local; authoritative text is fetched only for the work being researched.
 
 ## Ontology decision
 
@@ -54,7 +59,7 @@ No single vocabulary covers identity, versions, manifestations, subdivisions and
 
 ELI is the primary semantic spine. Schema.org is a compatibility layer, not a replacement for ELI or CLML. CLML is authoritative for UK subdivision shape. The official [ELI-to-Schema.org mapping](https://op.europa.eu/documents/3938058/11669184/eli-sdo.ttl) informs the crosswalk.
 
-## Normalized categories, types and topics
+## Normalised categories, types and topics
 
 Official type codes are retained. They are also grouped into `primary`, `secondary`, `draft`, `eu-origin` and `other`, with separate jurisdiction and document-type facets. This preserves Church Measures, local/private Acts, old Parliament material, ministerial directions and other uncommon families rather than forcing them into a misleading primary/secondary binary.
 
@@ -119,7 +124,7 @@ An answer that cites only an Act landing page is not provenance-complete. A dire
 
 `evaluation/legislation/questions.json` contains 100 questions across 25 authorities and four common research modes: rule extraction, application, temporal/currency analysis and counsel-style synthesis. The 100-point rubric weights substantive correctness, authoritative sourcing, proposition provenance, pinpoint passages, temporal/jurisdictional context, completeness/uncertainty and clarity.
 
-Automated checks cover evidence structure and observable source properties. Expert review supplies the legal judgment that an automated keyword score cannot. Missing official citations, missing proposition ledgers, uncited propositions or failure to cite the expected passage cap an answer below 50.
+Automated checks cover evidence structure and observable source properties. Expert review supplies the legal judgement that an automated keyword score cannot. Missing official citations, missing proposition ledgers, uncited propositions or failure to cite the expected passage cap an answer below 50.
 
 ## Rebuild and validate
 

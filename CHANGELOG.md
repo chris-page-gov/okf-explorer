@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Reorganised onboarding into linked task guides for trying AI, choosing examples,
+  audience journeys and a complete fictional first bundle. Shortened the README,
+  separated development/reference material and reconciled current interaction
+  instructions. Added one generated learning catalogue with a frozen external
+  government WebMCP entry, explicit AI-access limits and deterministic starter
+  files, question checks and download. Production gates and historical anchors
+  remain preserved. Linked Chris Page’s recorded AI/WebMCP demonstration from
+  the README and access guide, with a watch-and-try exercise that distinguishes
+  the recording from host compatibility and the separate human browser check.
+
 - Preserved panel focus across Chrome's native blur during responsive resizing,
   while leaving an explicitly focused visible control undisturbed.
 

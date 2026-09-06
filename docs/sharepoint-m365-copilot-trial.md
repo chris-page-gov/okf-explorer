@@ -1,5 +1,8 @@
 # SharePoint and Microsoft 365 Copilot trial report
 
+For knowledge workers, this trial demonstrates finding the intended service family from generated Word records in a configured SharePoint scope. It did not test arbitrary OKF JSON uploads. Start with [AI access routes](ai-okf-usage.md) or [a small fictional collection](onboarding/first-bundle.md); the development results and remaining tests below retain their original limits.
+
+
 This report records aggregate findings from the `C-293` scale-development
 trial. Raw Copilot transcripts, tenant identifiers and attempt-level evidence
 remain in the ignored private results directory.

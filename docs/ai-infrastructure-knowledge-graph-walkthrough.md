@@ -1,5 +1,8 @@
 # Walk through the AI Infrastructure knowledge graph
 
+For an AI interaction using these records, start with [the MCP question](onboarding/try-a-bundle.md#see-how-the-evidence-is-organised) and [choose an access route](ai-okf-usage.md). This bundle describes AI infrastructure; it does not operate an AI.
+
+
 Status: beginner walkthrough of the immutable AI Infrastructure OKF v0.6.0
 release, checked 18 August 2026.
 

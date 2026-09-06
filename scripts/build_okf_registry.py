@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import okf_semantic
+from learning_catalogue import build_learning_outputs
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "registry" / "okf-registry.yamlld"
@@ -18,6 +19,9 @@ OUTPUTS = {
     ROOT / "okf-registry.json": "legacy",
     ROOT / "apps" / "okf-explorer" / "static" / "okf-registry.json": "legacy",
     ROOT / "okf-registry.jsonld": "semantic",
+    ROOT / "apps/okf-explorer/src/lib/learning-registry.ts": "learning-registry",
+    ROOT / "apps/okf-explorer/src/lib/learning-catalogue.json": "learning-catalogue",
+    ROOT / "docs/onboarding/examples.md": "learning-docs",
 }
 
 
@@ -94,6 +98,7 @@ def build() -> dict[str, str]:
     return {
         "legacy": json.dumps(legacy, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         "semantic": okf_semantic.semantic_json(document),
+        **build_learning_outputs(bundles),
     }
 
 
@@ -122,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         rendered = build()
-    except okf_semantic.SemanticError as exc:
+    except (okf_semantic.SemanticError, ValueError, KeyError) as exc:
         print(f"registry build failed: {exc}", file=sys.stderr)
         return 1
     if args.check:

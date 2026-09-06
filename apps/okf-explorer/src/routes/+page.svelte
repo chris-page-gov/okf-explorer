@@ -11,11 +11,10 @@
     window.location.replace(target.href);
   });
 
-  import type { BundleRegistryEntry } from '$lib/types';
-  import { learningRegistry } from '$lib/learning-registry';
+  import learningCatalogue from '$lib/learning-catalogue.json';
   import './landing.css';
 
-  const registry = learningRegistry;
+  const featuredExamples = learningCatalogue.filter((entry) => entry.featured);
   const workedExampleHref = explorerHref(
     'https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json',
     'asset/1342941',
@@ -52,8 +51,8 @@
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': ['WebSite', 'LearningResource'],
-    name: 'Build a knowledge base your AI can trust',
-    description: 'A free project pathway for researching a subject, creating and validating an Open Knowledge Format bundle, grounding an AI and building a personal learning interface.',
+    name: 'Use knowledge you can inspect with your AI',
+    description: 'A practical path from a first sourced answer to a small, inspectable knowledge bundle, with optional deeper study.',
     inLanguage: 'en-GB',
     educationalLevel: 'Beginner',
     learningResourceType: ['Project-based learning', 'Technical guide', 'Interactive explorer'],
@@ -68,30 +67,22 @@
     return `./explore/?${search.toString()}#${encodeURIComponent(route)}`;
   }
 
-  function packTheme(entry: BundleRegistryEntry): string {
-    const id = `${entry.id || ''} ${entry.title || ''}`.toLowerCase();
-    if (id.includes('ons')) return 'Statistics and geography';
-    if (id.includes('ckan')) return 'Open data catalogue';
-    if (id.includes('api')) return 'APIs and integration';
-    if (id.includes('law') || id.includes('legislation')) return 'Law and policy';
-    if (id.includes('heritage')) return 'History and place';
-    return 'AI and knowledge systems';
-  }
+
 
 </script>
 
 <svelte:head>
-  <title>Build a knowledge base your AI can trust</title>
-  <meta name="description" content="Choose a subject, research reliable sources, build and validate an OKF bundle, connect your AI and create a personal learning app." />
-  <meta property="og:title" content="Build a knowledge base your AI can trust" />
-  <meta property="og:description" content="A free, beginner-first project pathway from research questions to a tested personal knowledge app." />
+  <title>Use knowledge you can inspect with your AI</title>
+  <meta name="description" content="Try bundled evidence with your AI, inspect the sources and make a small collection of your own." />
+  <meta property="og:title" content="Use knowledge you can inspect with your AI" />
+  <meta property="og:description" content="Task guides for consumers, domain experts, students and knowledge workers." />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
   <link rel="canonical" href="https://chris-page-gov.github.io/okf-explorer/" />
   {@html structuredDataScript}
 </svelte:head>
 
-<a class="skip-link" href="#start">Skip to the project</a>
+<a class="skip-link" href="#start">Skip to getting started</a>
 
 <div class="learning-site">
   <header class="learning-header">
@@ -100,7 +91,7 @@
       <span>Learning hub</span>
     </a>
     <nav aria-label="Learning hub">
-      <a href="#journey">Project path</a>
+      <a href="./docs/onboarding/index.html">Start here</a>
       <a href="#bundles">Examples</a>
       <a href="#people">People</a>
       <a href="./docs/beginners/index.html">Reference guide</a>
@@ -112,25 +103,25 @@
     <section class="hero" id="start" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">A practical project for curious people</p>
-        <h1 id="hero-title">Build a knowledge base <em>your AI can trust</em></h1>
-        <p class="hero-lead">Choose any subject. Turn reliable sources into a small, linked knowledge bundle. Test what your AI knows. Then build an app that helps somebody else learn.</p>
+        <h1 id="hero-title">Use knowledge you can inspect <em>with your AI</em></h1>
+        <p class="hero-lead">Ask a useful question of an existing bundle. Check its evidence and limits. Then make a small collection about something you know. Explorer helps you inspect knowledge; your chosen AI uses the material it can actually access.</p>
         <div class="hero-actions">
-          <a class="button primary" href="./docs/project-studio/index.html">Start your project</a>
-          <a class="button secondary" href={explorerHref('../okf-bundle.json', 'research/okf-evolution-review/index.md')}>Explore the evidence</a>
+          <a class="button primary" href="./docs/onboarding/try-a-bundle.html">Try a bundle with AI</a>
+          <a class="button secondary" href="./docs/onboarding/first-bundle.html">Make your first bundle</a>
         </div>
         <ul class="hero-promises" aria-label="Project promises">
           <li>No prior coding or linked-data knowledge assumed</li>
-          <li>Free, static and usable with your choice of AI</li>
+          <li>Human browser route and host-specific AI guidance</li>
           <li>Privacy and evidence decisions before upload</li>
         </ul>
       </div>
       <aside class="project-card" aria-label="Your finished project">
-        <p class="card-kicker">What you will finish with</p>
+        <p class="card-kicker">Choose a useful result</p>
         <ol>
-          <li><span>01</span><strong>A researched subject</strong><small>questions, users and a source ledger</small></li>
-          <li><span>02</span><strong>A validated OKF bundle</strong><small>small files, stable identities and evidenced links</small></li>
-          <li><span>03</span><strong>A grounded AI test</strong><small>held-back questions, citations and limitations</small></li>
-          <li><span>04</span><strong>Your own learning app</strong><small>built with AI, understood and tested by you</small></li>
+          <li><span>01</span><strong>A sourced answer</strong><small>understand what the evidence supports</small></li>
+          <li><span>02</span><strong>A checked correction</strong><small>preserve the distinctions in your subject</small></li>
+          <li><span>03</span><strong>A reusable bundle</strong><small>keep a small collection for recurring questions</small></li>
+          <li><span>04</span><strong>An optional learning app</strong><small>continue when an interface serves your purpose</small></li>
         </ol>
       </aside>
     </section>
@@ -142,11 +133,33 @@
       <div><strong>MCP</strong><span>Model Context Protocol: an optional way for an AI to request bounded context.</span></div>
     </section>
 
+    <section class="section bundle-section" id="bundles" aria-labelledby="bundle-title">
+      <div class="section-heading">
+        <p class="eyebrow">Try, inspect, adapt</p>
+        <h2 id="bundle-title">Start with an existing example</h2>
+        <p>These featured experiences and the complete catalogue share one maintained editorial source. Applications, bundles and teaching fixtures have different limits.</p>
+      </div>
+      <div class="bundle-grid">
+        {#each featuredExamples as example}
+          <article class="bundle-card">
+            <div class="bundle-meta"><span>{example.kind}</span><small>{example.audience}</small></div>
+            <h3>{example.title}</h3>
+            <p>{example.question}</p>
+            <p>{example.limit}</p>
+            <div class="card-actions">
+              <a href={`./${example.guide.replace(/\.md$/, '.html')}`}>Try {example.title}</a>
+            </div>
+          </article>
+        {/each}
+      </div>
+      <p class="lineage-link"><a href="./docs/onboarding/examples.html">Browse the complete example catalogue, including specialist and conditional collections</a>.</p>
+    </section>
+
     <section class="section journey-section" id="journey" aria-labelledby="journey-title">
       <div class="section-heading">
         <p class="eyebrow">Learn by making</p>
-        <h2 id="journey-title">Eight small stages, one useful result</h2>
-        <p>Each stage repeats the same rhythm: explain, inspect a worked example, do one task, check it, then recall what mattered. You can stop after any checkpoint and return later.</p>
+        <h2 id="journey-title">An optional project course</h2>
+        <p>Start with the short guides above, or continue through the full course. App creation is optional. Each stage repeats the same rhythm: explain, inspect a worked example, do one task, check it, then recall what mattered. You can stop after any checkpoint and return later.</p>
       </div>
       <ol class="journey-grid">
         {#each stages as stage}
@@ -179,39 +192,13 @@
       </aside>
     </section>
 
-    <section class="section bundle-section" id="bundles" aria-labelledby="bundle-title">
-      <div class="section-heading">
-        <p class="eyebrow">Working examples</p>
-        <h2 id="bundle-title">Learn from real OKF bundles</h2>
-        <p>These entries come from the governed registry. Their labels such as preview, candidate or bounded demonstrator are part of the evidence, not decoration.</p>
-      </div>
-      <div class="bundle-grid">
-        {#each registry as pack}
-          <article class="bundle-card">
-            <div class="bundle-meta"><span>{packTheme(pack)}</span><small>{pack.status || 'status not declared'}</small></div>
-            <h3>{pack.title || pack.label}</h3>
-            <p>{pack.description}</p>
-            <dl>
-              <div><dt>Version</dt><dd>{pack.version ? `v${pack.version}` : 'not declared'}</dd></div>
-              <div><dt>Delivery</dt><dd>{pack.kind || 'bundle'}</dd></div>
-            </dl>
-            <div class="card-actions">
-              <a href={explorerHref(pack.url)}>Try in Explorer</a>
-              {#if pack.home_url}<a href={pack.home_url}>Pack home <span aria-hidden="true">↗</span></a>{/if}
-            </div>
-          </article>
-        {/each}
-      </div>
-      <p class="lineage-link"><a href="./docs/okf-evolution-review-2026-08-17.html#the-journey-in-evidence">See the full LLM-Wiki and OKF lineage, including products that are not in the current registry</a>.</p>
-    </section>
-
     <section class="section persona-section" id="people" aria-labelledby="people-title">
       <div class="sam-card">
-        <p class="eyebrow">Meet the primary learner</p>
-        <h2 id="people-title">Sam is 18, curious and new to this</h2>
-        <p>Sam can browse, edit files and ask an AI for help. They do not yet know data modelling, provenance or deployment. They need a visible result early, plain language, low-cost tools, safe choices and a clear definition of “done”.</p>
+        <p class="eyebrow">Choose your own stopping point</p>
+        <h2 id="people-title">Different people, useful outcomes</h2>
+        <p>Consumers can finish with a sourced answer. Domain experts can check a distinction. Knowledge workers can prepare a reusable collection. Students can learn by changing a working example.</p>
         <blockquote>“Show me why this idea helps my subject, let me try it on a real example, and give me a check I can trust.”</blockquote>
-        <a href="./docs/learner-hub-specification-2026-08-17.html#primary-learner-persona">Read Sam’s complete persona and user stories</a>
+        <a href="./docs/onboarding/audience-journeys.html">Choose your audience journey</a>
       </div>
       <div class="worker-stories">
         <h2>One format, many kinds of work</h2>
@@ -242,9 +229,9 @@
         <h2 id="next-title">Choose your next useful action</h2>
       </div>
       <div class="next-actions">
-        <a href="./docs/project-studio/index.html"><strong>Start the project studio</strong><span>Build from subject choice to tested app</span></a>
-        <a href="./docs/beginners/index.html"><strong>Open the complete guide</strong><span>Look up concepts and advanced detail</span></a>
-        <a href="./docs/okf-evolution-review-2026-08-17.html"><strong>Read the research review</strong><span>See evidence, decisions and limitations</span></a>
+        <a href="./docs/project-studio/index.html"><strong>Start the project studio</strong><span>An optional course from subject to checked bundle</span></a>
+        <a href="./docs/beginners/index.html"><strong>Use the beginner reference</strong><span>Look up concepts and advanced detail</span></a>
+        <a href="./docs/index.html"><strong>Find a task guide</strong><span>AI access, Explorer, authoring and reference</span></a>
         <a href="https://github.com/chris-page-gov/okf-explorer"><strong>Inspect the source</strong><span>Repository, tests and publication history</span></a>
       </div>
     </section>

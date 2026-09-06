@@ -1,5 +1,8 @@
 # Geospatial Map Exploration
 
+This document preserves the prototype design. Map is available in the current Explorer; use [the Map manual](geospatial-map-manual.md) and [current interaction guide](use-okf-explorer.md) for user instructions.
+
+
 ## Status
 
 Working prototype contract for the `geospatial` branch. The implementation is

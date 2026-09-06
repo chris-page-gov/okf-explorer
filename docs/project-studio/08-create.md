@@ -1,5 +1,8 @@
 # Stage 8: create and test your learning interface
 
+This is an optional capstone. A sourced answer or a checked bundle is already a
+useful result; see [the audience journeys](../onboarding/audience-journeys.md).
+
 **Outcome:** a tested app and honest publication decision. **Time:** 2 to 6
 hours.
 
