@@ -27,7 +27,7 @@
     "sbom:check": "node scripts/build_sbom.mjs --check"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "^1.62.1",
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.70.2",
