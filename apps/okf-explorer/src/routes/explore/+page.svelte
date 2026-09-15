@@ -105,6 +105,7 @@
     smallNodeSearchText
   } from '$lib/viewer/smallNodePresentation';
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
+  import { smallTimelineRows } from '$lib/viewer/smallTimeline';
   import {
     boxesOverlap,
     graphEdgeStateKey,
@@ -7953,12 +7954,19 @@
               {/each}
             </section>
           {:else}
-            <section class="timeline-view">
-              {#each visibleNodes.filter((node) => conceptGenerated(node).at).sort((a, b) => conceptGenerated(b).at.localeCompare(conceptGenerated(a).at)).slice(0, 120) as node}
-                <button type="button" onclick={() => inspectNode(node.id)}>
-                  <time>{conceptGenerated(node).at.slice(0, 10)}</time>
-                  <div><strong>{node.title}</strong><span>{node.type || 'Node'}</span></div>
+            <p class="timeline-note">Source publication dates are shown where supplied. Each date is labelled; capture and record-generation dates remain separate.</p>
+            <section class="timeline-view small-record-timeline" aria-label="Record timeline">
+              {#each smallTimelineRows(visibleNodes).slice(0, 120) as row}
+                <button type="button" onclick={() => inspectNode(row.node.id)}>
+                  <div class="timeline-date"><small>{row.primary.label}</small><time datetime={row.primary.value}>{row.primary.display}</time></div>
+                  <div><strong>{row.node.title}</strong><span>{row.node.type || 'Node'}</span>
+                    {#each row.audit as date}
+                      <small class="timeline-audit">{date.label}: <time datetime={date.value}>{date.display}</time></small>
+                    {/each}
+                  </div>
                 </button>
+              {:else}
+                <p class="muted">No dated records are visible in the current selection.</p>
               {/each}
             </section>
           {/if}
