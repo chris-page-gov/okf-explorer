@@ -39,6 +39,31 @@ identity, official endorsement or an inferred domain fact.
 For AI use, follow [the access guide](ai-okf-usage.md). Copying an Explorer route
 does not guarantee that your AI can retrieve the bundle or its linked content.
 
+### Read Timeline dates
+
+For small bundles, Timeline labels the event represented by each date. A declared
+publication or issue date on the source described by a record is labelled
+**Source published** or **Source issued**. A publication date on the record itself
+is labelled **Record published** or **Record issued**. The source's date takes
+precedence; capture, observation, generation and legacy timestamps remain
+separately labelled. If publication metadata is absent, an audit date is shown
+with its own label.
+
+A month such as **April 2026** stays a month; Explorer does not invent a day.
+Timeline sorts by the date it displays first. These metadata dates do not prove
+when legislation took effect, whether a source is current or when the underlying
+subject came into existence. Conversation timelines and indexed-corpus release
+timelines retain their own event and coverage models.
+
+For authors, source publication metadata belongs on a nested `schema:about`
+object, while `schema:datePublished` or `dcterms:issued` on the record describes
+that record. Strings and JSON-LD `@value` literals accept `YYYY`, `YYYY-MM`, full
+ISO dates and timestamps. `captured_at`, `retrieved_at` or
+`provenance.retrieved_at` supply a capture date; `observedAt` records observation
+and `generated.at` records generation. A linked source identifier alone does not
+supply a publication date, and conflicting publication dates are not resolved
+by choosing an arbitrary value.
+
 ## Explore by highlighting and keeping sets
 
 Both compact OKF bundles and indexed large corpora use the same facet controls.

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Labelled small-bundle Timeline dates by their provenance. A described source's
+  declared publication or issue date takes precedence, with month and year
+  precision preserved. Record publication, capture, observation, generation and
+  legacy timestamps remain separately labelled instead of implying publication.
+  Refreshed the exact-build Heritage runtime evidence: all 100 questions met the
+  required score and all three local journeys passed against the new app, with
+  the original source snapshots preserved. Documented the evidence refresh.
+
 - Reorganised onboarding into linked task guides for trying AI, choosing examples,
   audience journeys and a complete fictional first bundle. Shortened the README,
   separated development/reference material and reconciled current interaction

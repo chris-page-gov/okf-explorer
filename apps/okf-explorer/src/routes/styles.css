@@ -3167,6 +3167,22 @@ input:focus {
   margin-bottom: 10px;
 }
 
+.small-record-timeline button {
+  grid-template-columns: minmax(110px, 160px) minmax(0, 1fr);
+}
+
+.timeline-date {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+}
+
+.timeline-date small,
+.timeline-audit {
+  display: block;
+  color: var(--muted);
+}
+
 .timeline-toolbar button {
   padding: 7px 10px;
 }
