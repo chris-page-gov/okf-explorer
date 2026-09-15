@@ -22,7 +22,7 @@ export type DatasetReleasePeriod = {
   sortKey: string;
   year: string;
   month: number;
-  source: 'declared' | 'title' | 'resource' | 'catalogue';
+  source: 'declared' | 'release' | 'title' | 'resource' | 'catalogue';
   catalogueFallback: boolean;
 };
 
@@ -264,6 +264,21 @@ export function datasetReleasePeriod(dataset: LargeDataset, resources: LargeReso
   for (const value of declared.flatMap(stringsFromValue)) {
     const period = releasePeriodFromText(value, 'declared');
     if (period) return period;
+  }
+  const releaseDate = stringValue(operationalMetadata(dataset.operational_metadata)?.latest_release?.date);
+  const releaseMatch = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(releaseDate);
+  if (releaseMatch) {
+    const year = Number(releaseMatch[1]);
+    const month = Number(releaseMatch[2] || 1);
+    const day = Number(releaseMatch[3] || 1);
+    const calendar = new Date(0);
+    calendar.setUTCFullYear(year, month - 1, day);
+    // Validate partial dates without upgrading their precision. Labels and
+    // dynamic release markers are not evidence of a publication date.
+    if (year > 0 && calendar.getUTCFullYear() === year && calendar.getUTCMonth() === month - 1 && calendar.getUTCDate() === day) {
+      const period = releasePeriodFromText(releaseDate, 'release');
+      if (period) return period;
+    }
   }
   const titlePeriod = releasePeriodFromText(dataset.title, 'title');
   if (titlePeriod) return titlePeriod;

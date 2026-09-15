@@ -80,6 +80,7 @@ async function installTargetedFixture(
     omitAnalysisRecordCount?: boolean;
     omitDeclaredRecordCount?: boolean;
     resourceHydrationSafe?: boolean;
+    sourceReleaseDate?: string;
   } = {}
 ) {
   let modelChunkFailuresRemaining = options.modelChunkFailures || 0;
@@ -100,6 +101,9 @@ async function installTargetedFixture(
     topics: [],
     record_type: 'Legislation Work',
     timestamp: '1998-11-19T00:00:00Z',
+    ...(options.sourceReleaseDate ? {
+      operational_metadata: { latest_release: { date: options.sourceReleaseDate } }
+    } : {}),
     legislation_id_uri: 'https://www.legislation.gov.uk/id/ukpga/1998/42',
     document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
@@ -782,6 +786,50 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(page.getByText('1 manifestations shown from current reduction')).toBeVisible();
     await expect(page.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
     expect(requests).toContain('/data/resources.json');
+  });
+
+  for (const omitAdjacency of [false, true]) {
+    test(`deep-linked Timeline hydrates selected-record periods ${omitAdjacency ? 'without' : 'with'} targeted adjacency`, async ({ page }) => {
+      const requests: string[] = [];
+      await installTargetedFixture(page.context(), requests, {
+        resourceHydrationSafe: true,
+        sourceReleaseDate: '2026-04',
+        omitAdjacency
+      });
+      await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=timeline#${RECORD_ROUTE}`);
+
+      const timeline = page.getByRole('region', { name: 'Dataset release series' });
+      await expect(timeline.getByText('Target Act 1998', { exact: true })).toBeVisible();
+      await expect(timeline.getByRole('link', { name: 'Apr', exact: true })).toBeVisible();
+      await expect(timeline).toContainText('2026');
+      await expect(timeline).not.toContainText('catalogue timestamp fallback');
+      expect(requests).toContain('/data/works-1.json');
+      expect(requests).toContain('/data/resources.json');
+      expect(requests).not.toContain('/data/relationships-full.json');
+    });
+  }
+
+  test('switching from targeted Graph to Timeline loads the periods index', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, { resourceHydrationSafe: true });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
+    expectNoFullHydration(requests);
+
+    await page.getByLabel('Views').getByRole('button', { name: 'Timeline', exact: true }).click();
+    await expect(page.getByRole('region', { name: 'Dataset release series' })).toContainText('Target Act 1998');
+    expect(requests).toContain('/data/works-1.json');
+    expect(requests).not.toContain('/data/relationships-full.json');
+  });
+
+  test('switching a selected record to Timeline retains the full-index memory safety limit', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests);
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
+    await page.getByLabel('Views').getByRole('button', { name: 'Timeline', exact: true }).click();
+    await expect(page.getByText(/browser memory safety limit/i)).toBeVisible();
+    expectNoFullHydration(requests);
   });
 
   test('record Narrative uses authored process context and typed XML source access', async ({

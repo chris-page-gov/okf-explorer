@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Restored indexed Timeline when opened directly on a selected record or after
+  targeted Graph loading, retaining the browser memory limit and bounded graph
+  requests. Recognised explicit operational source release dates separately
+  from catalogue timestamp fallbacks, preserving month and year precision.
+  Refreshed the exact-build Heritage evidence with 100 passing questions and
+  three passing local journeys, retaining the original source snapshots.
+
 - Labelled small-bundle Timeline dates by their provenance. A described source's
   declared publication or issue date takes precedence, with month and year
   precision preserved. Record publication, capture, observation, generation and

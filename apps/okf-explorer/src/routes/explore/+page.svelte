@@ -1752,6 +1752,13 @@
   async function hydrateForView(view: ViewMode) {
     if (source?.kind !== 'large') return;
     if (largeHasAnalysisOverview(view)) return;
+    if (view === 'timeline') {
+      // Timeline periods come from the record/resource index. A selected
+      // record or its bounded adjacency cannot supply that view's reduction.
+      // Keep the existing full-index safety limit and Graph's targeted path.
+      await ensureLargeFullIndex();
+      return;
+    }
     const selectedRoute = largeSelectedRoute || largeInspectedRoute;
     const targetedRelationships = Boolean(
       selectedRoute && largeHasTargetedRelationships(selectedRoute) && view !== 'resources'

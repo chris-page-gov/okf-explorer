@@ -278,6 +278,13 @@ Expected behaviour:
 - Missing dates are shown as missing source metadata, not as new, stale or
   invalid.
 - Timeline should reflect the active search/filter reduction.
+- Opening Timeline directly on a selected indexed record loads the record and
+  resource index needed for its periods. This uses the existing browser memory
+  limit; Graph can still use bounded record relationships without loading the
+  whole index.
+- An explicit operational source release date is distinct from a catalogue
+  timestamp. A month or year alone remains at that precision; an unknown date
+  or dynamic marker does not become a publication date.
 
 The timeline is a navigation aid and a metadata-quality signal. It is not a
 guarantee that the underlying API was created or modified on that date unless

@@ -351,6 +351,45 @@ describe('viewer helpers', () => {
     expect(datasetReleasePeriod(fallback)?.catalogueFallback).toBe(true);
   });
 
+  it.each([
+    ['2026', '2026', 0],
+    ['2026-04', 'Apr 2026', 4],
+    ['2026-04-06', 'Apr 2026', 4]
+  ])('uses the explicit source release %s without a catalogue fallback or invented month', (date, label, month) => {
+    const dataset: LargeDataset = {
+      name: 'source-reference',
+      title: 'Handbook 2026/27',
+      published_at: '2026-09-15',
+      metadata_modified: '2026-09-16',
+      operational_metadata: { latest_release: { date: String(date), label: 'Referenced handbook publication' } }
+    };
+    expect(datasetReleasePeriod(dataset)).toEqual({
+      label, sortKey: String(date).slice(0, 7), year: '2026', month,
+      source: 'release', catalogueFallback: false
+    });
+    expect(datasetDateContext(dataset).updated).toBe('2026-09-16');
+    expect(datasetDateContext(dataset).updatedLabel).toBe('Catalogue metadata updated');
+  });
+
+  it.each([undefined, 'unknown', '2026-13', '2026-02-30', 'Released in April 2026'])('does not turn an absent or invalid release date %s into publication evidence', (date) => {
+    const dataset: LargeDataset = {
+      name: 'undated', title: 'Undated record',
+      operational_metadata: { latest_release: { date, dynamic: true, label: 'April 2026 expected' } }
+    };
+    expect(datasetReleasePeriod(dataset)).toBeNull();
+    expect(datasetReleasePeriod({ ...dataset, metadata_modified: '2026-09-15' })).toMatchObject({
+      sortKey: '2026-09', source: 'catalogue', catalogueFallback: true
+    });
+  });
+
+  it('retains declared coverage ahead of a distinct source release date', () => {
+    expect(datasetReleasePeriod({
+      name: 'historical-release', title: 'Historical observations',
+      temporal_coverage: '2024',
+      operational_metadata: { latest_release: { date: '2026-04' } }
+    })).toMatchObject({ sortKey: '2024', source: 'declared', catalogueFallback: false });
+  });
+
   it('separates CKAN catalogue dates from evidence-backed operational metadata', () => {
     const dataset: LargeDataset = {
       name: 'overseas-companies',
