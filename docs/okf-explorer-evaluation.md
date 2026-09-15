@@ -1,4 +1,4 @@
-# OKF Explorer Evaluation Harness
+# OKF Explorer evaluation harness
 
 This repository now carries repeatable browser evaluation suites for the UK
 Government APIs OKF pack, the hosted GOV.UK CKAN OKF pack, and future large OKF
@@ -11,6 +11,29 @@ The suite evaluates three publication goals:
   information clearly?
 - Are terms such as confidence, licence basis, API evidence and metadata quality
   defined in the UI instead of being unexplained percentages?
+
+### Evidence tied to an Explorer build
+
+The Heritage local candidate receipt binds its browser results to an exact
+Explorer application tree and build manifest. A change to application bytes
+requires fresh runtime evidence, even when the frozen Heritage source corpus
+is unchanged. A prior receipt cannot establish that the new application was
+tested. Its earlier version remains available in Git history.
+
+Refresh the 100-question suite and the three local journeys against the current
+assembled Site, preserving the original source snapshot dates. Serve the Site
+at a loopback root with `/publication/` mapped internally to the repository's
+checked `evaluation/heritage/` corpus directory. The Site intentionally excludes
+those runtime corpus files. Use `--bundle` for the question suite and
+`--candidate-bundle` plus `--bundle-root` for the journeys, so tiny, faithful and
+synthetic fixtures keep their own starting bundles. Materialise the new
+results with `scripts/build_heritage_local_candidate_receipt.py`, supplying
+both fresh result files, the current Site candidate receipt and an observation
+time after both executions. The materialiser checks scores, journey outcomes,
+source roots, app identity and timestamps before writing evidence.
+
+These are local Explorer runtime checks. Public deployment verification and
+domain-specific policy evaluation remain separately recorded activities.
 
 The rubric is aligned with GOV.UK service-quality guidance: user needs, simple
 task completion, accessibility, open standards, security/privacy, measurable
@@ -62,7 +85,7 @@ Additional evidence now captures the OS Data Hub graph failures:
 - `facet-record-type-graph-context-2026-07-08.png`: record-type counts looked
   like a false graph breakdown when the active reduction was not explicit.
 
-## Interaction Checks
+## Interaction checks
 
 The browser harness and static lockstep tests should treat these behaviours as
 publication requirements for large OKF packs:
@@ -137,7 +160,7 @@ The score is additive and totals 100 points:
 This is not an assurance score for the source APIs. It scores how well the OKF
 Explorer helps a reader inspect the available public metadata.
 
-## Running Locally
+## Running locally
 
 Run the focused Map UI suite directly from the Explorer application:
 
