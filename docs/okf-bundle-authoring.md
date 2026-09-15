@@ -149,6 +149,15 @@ Catalogue dates must remain distinct from dataset currency. Map CKAN
 present them as the first publication or latest data release unless the source
 explicitly says so.
 
+For a verified source release or referenced publication, an indexed record can
+declare `operational_metadata.latest_release.date` as `YYYY`, `YYYY-MM` or
+`YYYY-MM-DD`. Timeline uses this explicit date before title/resource guesses
+and catalogue timestamps, while retaining declared temporal coverage first.
+Use the adjacent `label` to explain which source or referenced work was released;
+keep its evidence URL in the operational source metadata. An undated dynamic
+marker or release label alone does not establish a date. Do not put a publication
+date in `temporal_coverage` unless it is also the period represented by the data.
+
 When the source or a reviewed augmentation identifies substitutes, emit
 structured `alternatives` rather than a prose comparison sentence:
 
