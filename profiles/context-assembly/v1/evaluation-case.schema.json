@@ -1,0 +1,338 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-context-evaluation-case.v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "fixture_kind": {
+      "enum": [
+        "source-backed",
+        "synthetic"
+      ]
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "resolved_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "selected_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "route": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "literal_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "captured_at": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_date": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_date_kind": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "record_id",
+              "route",
+              "source_sha256",
+              "locator",
+              "literal_sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "predicate": {
+                "type": "string",
+                "minLength": 1
+              },
+              "assertion_status": {
+                "enum": [
+                  "official",
+                  "normalized",
+                  "inferred",
+                  "model-derived"
+                ]
+              },
+              "authority_class": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "source",
+              "target",
+              "predicate"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/path"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "forbidden_records": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requirement_missing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "missing": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "id",
+              "missing"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "area": {
+                "enum": [
+                  "missing_evidence",
+                  "conflicts",
+                  "omissions"
+                ]
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "area",
+              "code",
+              "ids"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "boundaries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string"
+              },
+              "assertion_status": {
+                "enum": [
+                  "official",
+                  "normalized",
+                  "inferred",
+                  "model-derived"
+                ]
+              },
+              "authority_class": {
+                "type": "string"
+              },
+              "rights": {
+                "type": "string"
+              },
+              "access": {
+                "enum": [
+                  "public",
+                  "restricted"
+                ]
+              },
+              "review_status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "record_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "evidence_status": {
+          "enum": [
+            "sufficient",
+            "insufficient",
+            "conflicting"
+          ]
+        },
+        "ambiguity_phrases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved_terms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget_truncated": {
+          "type": "boolean"
+        },
+        "assertion_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/path"
+          }
+        }
+      },
+      "required": [
+        "resolved_concepts",
+        "selected_concepts",
+        "sources",
+        "assertions",
+        "paths",
+        "evidence",
+        "forbidden_records",
+        "requirements",
+        "issues",
+        "boundaries",
+        "evidence_status"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "question",
+    "description",
+    "scope",
+    "fixture_kind",
+    "expected",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/evaluation-case.schema.json",
+  "title": "Governed context evaluation case v1",
+  "description": "Independent assessor requirements, never assembler seeds. Passes are exact evidence and path checks, not keyword scores."
+}

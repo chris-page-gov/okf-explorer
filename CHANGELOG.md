@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+- Reject invalid optional review status, original assertion identities and extra alias fields before context assembly or rendering.
+
+- Make context-control replay portable across zlib builds while retaining exact
+  archive digests, bounded decompression and byte-for-byte fresh content checks.
+  Reject archive tampering, changed content and oversized evidence.
+
+- Add a transport-independent governed context assembler and additive producer,
+  package and evaluation-case contracts. Keep Search and the earlier lexical
+  MCP context pack separate. Check declared phrases, directed dependencies,
+  whole evidence, provenance and explicit gaps within bounded packages; do not
+  generate model answers or infer domain rules from hyperlinks.
+- Add independent A–H package evaluation, exact identity and path controls,
+  portable execution receipts and synthetic negative cases. Preserve earlier
+  research trials and distinguish optional tool registration from observed AI
+  host invocation.
+- Execute the generic engine's synthetic controls, independent assessor
+  controls and non-DWP retained case in a required context CI job. Check exact
+  source URL and capture-time expectations alongside hashes and directed paths.
+- Keep the standalone study-club context case under `tests/fixtures`, preserving
+  its exact inputs and execution evidence without claiming a complete
+  Evaluation Foundry fixture family.
+
 - Restored indexed Timeline when opened directly on a selected record or after
   targeted Graph loading, retaining the browser memory limit and bounded graph
   requests. Recognised explicit operational source release dates separately

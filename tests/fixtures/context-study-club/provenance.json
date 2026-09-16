@@ -1,0 +1,16 @@
+{
+  "schema": "okf-context-fixture-provenance.v1",
+  "fixture_kind": "synthetic",
+  "source": {
+    "path": "apps/okf-explorer/src/test/contextFixture.ts",
+    "sha256": "d8804aebc4b7d5a78e495c726152ed8df4234f7e405e3b423f9dcb13a934f941"
+  },
+  "export": {
+    "path": "index.json",
+    "sha256": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a"
+  },
+  "method": "Static export of studyClubContextFixture(), checked for exact canonical equality with the current typed fixture using the installed TypeScript compiler in memory. Fictional source text and explicit synthetic assertions; not a claim about a real event or service. The export is versioned test input, not a generated app artefact.",
+  "limitations": [
+    "No real-world source authority. The current source hash identifies the reviewed fixture definition; the engine execution receipt separately binds the exact exported index bytes."
+  ]
+}

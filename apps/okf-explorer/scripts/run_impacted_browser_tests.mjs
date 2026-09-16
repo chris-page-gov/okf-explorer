@@ -10,6 +10,14 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/accessibility.spec.ts'
   },
+  ask_okf: {
+    family: 'ui',
+    file: 'tests/ui/ask-okf.spec.ts'
+  },
+  timeline_provenance: {
+    family: 'ui',
+    file: 'tests/ui/timeline-provenance.spec.ts'
+  },
   federation: {
     family: 'ui',
     file: 'tests/ui/federation-overview.spec.ts'
@@ -67,36 +75,38 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
   map: ['map', 'large_corpus'],
   publication: [
     'accessibility',
+    'ask_okf',
     'exploratory_publication',
     'learner_hub',
     'beginner_navigation',
     'foundry_pages'
   ],
-  reader: ['small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
-  search: ['small_bundle', 'facets', 'large_corpus'],
-  timeline: ['small_bundle', 'large_corpus']
+  reader: ['ask_okf', 'small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
+  search: ['ask_okf', 'small_bundle', 'facets', 'large_corpus'],
+  timeline: ['timeline_provenance', 'small_bundle', 'large_corpus']
 });
 
 export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
+    'ask_okf',
     'learner_hub',
     'small_bundle',
     'map',
     'beginner_navigation',
     'foundry_pages'
   ],
-  adversarial: ['small_bundle', 'large_corpus', 'foundry_pages'],
+  adversarial: ['ask_okf', 'small_bundle', 'large_corpus', 'foundry_pages'],
   alias: ['large_corpus', 'facets'],
   browser: ALL_SUITES,
   consumer: ALL_UI,
-  contract: ['small_bundle', 'foundry_pages'],
+  contract: ['ask_okf', 'small_bundle', 'foundry_pages'],
   data: ['small_bundle', 'large_corpus', 'map'],
   denominator: ['large_corpus', 'facets'],
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],
-  digest: ['small_bundle'],
-  evidence: ['small_bundle', 'foundry_pages'],
+  digest: ['ask_okf', 'small_bundle'],
+  evidence: ['ask_okf', 'small_bundle', 'foundry_pages'],
   graph: ['small_bundle', 'large_corpus', 'federation'],
   impact: ['foundry_pages'],
   journey: ['large_corpus', 'foundry_pages'],
@@ -108,6 +118,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   misspelling: ['large_corpus', 'facets'],
   presentation: [
     'accessibility',
+    'ask_okf',
     'endpoint_labels',
     'exploratory_publication',
     'learner_hub',
@@ -116,9 +127,9 @@ export const TEST_TAG_SUITES = Object.freeze({
   ],
   producer: ['small_bundle', 'large_corpus'],
   profile: ['endpoint_labels', 'exploratory_publication', 'foundry_pages'],
-  provenance: ['small_bundle', 'large_corpus', 'foundry_pages'],
+  provenance: ['ask_okf', 'timeline_provenance', 'small_bundle', 'large_corpus', 'foundry_pages'],
   python: ['foundry_pages'],
-  question: ['large_corpus'],
+  question: ['ask_okf', 'large_corpus'],
   registry: ['small_bundle', 'learner_hub', 'foundry_pages'],
   relationship: ['small_bundle', 'large_corpus', 'federation'],
   release: ['foundry_pages'],

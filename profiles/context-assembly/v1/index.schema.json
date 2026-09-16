@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-context-index.v1"
+    },
+    "bundle": {
+      "$ref": "common.schema.json#/$defs/bundle"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/record"
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/assertion"
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/requirement"
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "bundle",
+    "scope",
+    "limitations",
+    "records",
+    "assertions",
+    "requirements"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/index.schema.json",
+  "title": "Governed context producer index v1",
+  "description": "Shape validation does not establish source sufficiency. Empty provenance or authority values remain representable so the engine can report insufficient evidence."
+}

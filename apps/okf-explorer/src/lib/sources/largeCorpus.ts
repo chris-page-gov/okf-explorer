@@ -48,6 +48,8 @@ import {
 } from '$lib/viewer/providerDatapack';
 import { isHttpUrl } from '$lib/viewer/helpers';
 import { normaliseEndpointLabelIndex } from '$lib/viewer/endpointLabels';
+import { validateContextIndex } from '$lib/context/index';
+import type { BoundContextIndex } from '$lib/context/types';
 import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -2279,6 +2281,28 @@ export async function loadLargeCorpus(
   }
   const fetchResource: ResourceFetcher = <T>(reference: LargeResourceReference, requireReleaseEntry = false) =>
     fetchJsonResource<T>(reference, baseUrl, { releaseDataPlane, requireReleaseEntry });
+  const contextReference = descriptorEntrypoint(descriptor, 'context_assembly');
+  let contextPromise: Promise<BoundContextIndex> | undefined;
+  // Optional and lazy: a bad context projection must not break existing Search.
+  const loadContextAssembly = contextReference ? async (): Promise<BoundContextIndex> => {
+    if (!contextPromise) {
+      contextPromise = (async () => {
+        if (!descriptorSnapshot) throw new Error('Context index requires a descriptor snapshot binding.');
+        if (typeof contextReference !== 'object' || !SHA256.test(resourceHash(contextReference))
+          || !Number.isSafeInteger(contextReference.bytes) || !contextReference.bytes
+          || contextReference.bytes > 4 * 1024 * 1024) {
+          throw new Error('Context index requires SHA-256 and a byte binding of at most 4 MiB.');
+        }
+        const path = safeRelativeResourcePath(resourcePath(contextReference));
+        if (contextReference.compression && contextReference.compression !== 'identity') {
+          throw new Error('Context v1 requires an uncompressed JSON index.');
+        }
+        const index = validateContextIndex(await fetchResource<unknown>(contextReference), descriptorSnapshot);
+        return { index, binding: { index_url: new URL(path, baseUrl).toString(), index_sha256: resourceHash(contextReference) } };
+      })().catch((error) => { contextPromise = undefined; throw error; });
+    }
+    return contextPromise;
+  } : undefined;
   const dataManifestReference = descriptorEntrypoint(descriptor, 'data_manifest');
   if (!dataManifestReference) throw new Error(`${url}: large-corpus descriptor has no data manifest`);
   const manifest = await fetchResource<LargeDataManifest>(dataManifestReference);
@@ -3453,6 +3477,7 @@ export async function loadLargeCorpus(
     },
     releaseDataPlane: releaseDataPlane?.document,
     searchManifest,
+    loadContextAssembly,
     loadFacetIndex() {
       if (!facetIndexPromise) {
         facetIndexPromise = manifest.indexes.facets

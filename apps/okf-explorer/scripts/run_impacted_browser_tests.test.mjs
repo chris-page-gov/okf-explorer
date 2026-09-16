@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -53,7 +53,7 @@ test('search selectors resolve only the relevant Chromium UI suites', () => {
   assert.deepEqual(plan.engines, ['chrome']);
   assert.deepEqual(
     plan.suites.map((suite) => suite.id),
-    ['facets', 'small_bundle', 'large_corpus']
+    ['ask_okf', 'facets', 'small_bundle', 'large_corpus']
   );
   assert.equal(plan.commands.length, 1);
   assert.equal(plan.commands[0].family, 'ui');
@@ -70,6 +70,7 @@ test('publication selectors include rendered Foundry pages and request Site asse
     plan.suites.map((suite) => suite.id),
     [
       'accessibility',
+      'ask_okf',
       'exploratory_publication',
       'learner_hub',
       'beginner_navigation',
@@ -89,7 +90,10 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 11);
+  assert.equal(plan.suites.length, 13);
+  const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
+    .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
+  assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
   assert.deepEqual(plan.commands.map((command) => command.family), ['ui', 'foundry']);
   for (const command of plan.commands) {
     for (const engine of ['chrome', 'firefox', 'webkit']) {
@@ -101,7 +105,8 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 11);
+  assert.equal(empty.suites.length, 13);
+  assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
     /unknown test tag/
@@ -110,6 +115,24 @@ test('empty and unknown selectors fail closed instead of silently skipping', () 
     () => buildBrowserPlan({ journeyGroups: ['new-unmapped-group'] }),
     /unknown journey group/
   );
+});
+
+test('Ask OKF is selected for governed evidence and interaction changes', () => {
+  for (const tag of ['consumer', 'runtime', 'accessibility', 'adversarial', 'contract', 'digest', 'evidence', 'presentation', 'provenance', 'question']) {
+    const plan = buildBrowserPlan({ testTags: [tag] });
+    assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')), `${tag} must select Ask OKF`);
+  }
+  for (const group of ['reader', 'search', 'publication']) {
+    const plan = buildBrowserPlan({ journeyGroups: [group] });
+    assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')), `${group} must select Ask OKF`);
+  }
+});
+
+test('Timeline provenance is selected by its temporal and provenance surfaces', () => {
+  for (const selectors of [{ journeyGroups: ['timeline'] }, { testTags: ['provenance'] }]) {
+    const plan = buildBrowserPlan(selectors);
+    assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/timeline-provenance.spec.ts')));
+  }
 });
 
 test('learning-path navigation is selected by its publication and quality surfaces', () => {

@@ -1,0 +1,69 @@
+{
+  "schema": "okf-context-evaluation-case.v1",
+  "id": "study-club/reading-room",
+  "title": "Reading circle room evidence",
+  "question": "Explain Reading circle",
+  "description": "Independent assessor requirements for the synthetic library-room dependency.",
+  "scope": "Invented teaching data only.",
+  "fixture_kind": "synthetic",
+  "limitations": [
+    "No real activity or access facts."
+  ],
+  "expected": {
+    "resolved_concepts": [
+      "https://example.test/study-club/concept/reading"
+    ],
+    "selected_concepts": [
+      "https://example.test/study-club/concept/reading"
+    ],
+    "sources": [
+      {
+        "record_id": "https://example.test/study-club/evidence/library",
+        "route": "evidence/library",
+        "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+        "locator": "Fictional source excerpt",
+        "literal_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+      }
+    ],
+    "assertions": [
+      {
+        "source": "https://example.test/study-club/evidence/reading",
+        "target": "https://example.test/study-club/evidence/library",
+        "predicate": "http://purl.org/dc/terms/requires"
+      }
+    ],
+    "paths": [
+      {
+        "seed": "https://example.test/study-club/concept/reading",
+        "assertions": [
+          "https://example.test/study-club/assertion/0",
+          "https://example.test/study-club/assertion/1"
+        ],
+        "records": [
+          "https://example.test/study-club/concept/reading",
+          "https://example.test/study-club/evidence/reading",
+          "https://example.test/study-club/evidence/library"
+        ]
+      }
+    ],
+    "evidence": [
+      "https://example.test/study-club/evidence/reading",
+      "https://example.test/study-club/evidence/library"
+    ],
+    "forbidden_records": [
+      "https://example.test/study-club/evidence/workshop"
+    ],
+    "requirements": [
+      "https://example.test/study-club/requirement/reading"
+    ],
+    "issues": [],
+    "boundaries": [
+      {
+        "record_id": "https://example.test/study-club/evidence/library",
+        "authority_class": "synthetic",
+        "scope": "Invented teaching data. No real event or service."
+      }
+    ],
+    "evidence_status": "sufficient"
+  }
+}
