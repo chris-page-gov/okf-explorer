@@ -88,20 +88,21 @@ node --test scripts/run_impacted_browser_tests.test.mjs
 ```
 
 Results: Svelte check reported no errors or warnings; all 17 transport cases
-passed; seven browser cases passed in each of Chrome, Firefox and WebKit
-(21 browser cases). The final three-engine Ask run included the expanded
+passed; eight browser cases passed in each of Chrome, Firefox and WebKit
+(24 browser cases). The final three-engine Ask run included the expanded
 machine-readable package and its keyboard-accessible, read-only text area.
 
 The terminal browser run passed 306 interface cases and 78 rendered-document
 cases across the three engines. Review then found that its explicit suite list
 omitted Ask OKF and the existing Timeline provenance test. Both are now included
-in the runner. Separate final runs passed all 21 Ask cases and all three
+in the runner. A final focused run passed all 24 Ask cases and all three
 Timeline provenance cases. All ten runner contract tests pass, including a
 comparison with the actual interface test directory to prevent another silent
 omission. The final `pnpm check` reported zero errors and zero warnings.
 
 The browser cases cover lazy loading and preservation of Search state; missing
-required evidence and smaller budgets; inert injected source instructions and an
+required evidence and smaller budgets; malformed optional review metadata;
+inert injected source instructions and an
 axe accessibility check; identical build/explain packages; failed-digest
 isolation; cancellation on source change; and use without WebMCP at a narrow
 viewport. The transport cases cover input bounds, unsupported properties,
@@ -120,10 +121,13 @@ questions met the required threshold of 80, with a mean of 92.6. The tiny,
 faithful and synthetic-isolation journeys all passed, with no failed actions,
 execution errors or validation-only records.
 
-The question results were recorded at `2026-09-16T01:10:18.933000Z`; the journey
-results at `2026-09-16T01:08:18.789000Z`. Both bind application tree
-`a6fc13a3e6799c21b0b2472c77f9642fa1f3c8149d57132ff8aead4680161f6c` and manifest
-`fe2fdb41f5bf2b7a245a84162e55ae1de8481ff3d5a60d10f2b53ee1b012c69f`.
+The question results were recorded at `2026-09-16T01:50:20.411000Z`; the journey
+results at `2026-09-16T01:48:20.803000Z`. Both bind application tree
+`f449bdf90c3ec5f567094c30bd0778a5d1ed4b01fe9239de52d28acc13cd3fcf` and manifest
+`add0678f94f1c4f1a0fdc7b7d683c22d126c453f50f988556d7fd8ec4cf007c0`.
+These were fresh browser executions after the optional-metadata validation
+correction. Earlier passing results retain their original build identities in
+Git history; they were not relabelled as evidence for the corrected application.
 
 The [retained local candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
 binds the exact compressed execution results, application and assembled Site.

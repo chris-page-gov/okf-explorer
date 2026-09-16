@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reject invalid optional review status, original assertion identities and extra alias fields before context assembly or rendering.
+
 - Make context-control replay portable across zlib builds while retaining exact
   archive digests, bounded decompression and byte-for-byte fresh content checks.
   Reject archive tampering, changed content and oversized evidence.

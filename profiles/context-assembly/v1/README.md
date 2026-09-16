@@ -20,6 +20,7 @@ The TypeScript contract is maintained in
 files only. Unknown fields are rejected. Missing provenance and authority remain
 representable where the engine needs to report incomplete evidence: passing
 shape validation alone is not evidence sufficiency.
+Runtime validation also rejects non-string review status, invalid original assertion IRIs and undeclared alias-object fields before assembly.
 
 Package identity is SHA-256 of canonical JSON with `context_id` and
 `budget.used_bytes` omitted. The final byte count measures the complete UTF-8

@@ -4,6 +4,19 @@ import { studyClubContextFixture } from '../../test/contextFixture';
 
 const BASE = 'https://example.test/study-club/';
 describe('governed context assembly, independent of any domain', () => {
+  it.each(['review-status', 'original-assertion', 'alias-fields'])('rejects malformed optional %s before producing a package', async (variant) => {
+    const index = await studyClubContextFixture();
+    if (variant === 'review-status') {
+      // This JSON value cannot be interpolated into the evidence UI safely.
+      (index.records[0] as unknown as Record<string, unknown>).review_status = { toString: 'not-callable' };
+    } else if (variant === 'original-assertion') {
+      (index.assertions[0] as unknown as Record<string, unknown>).original_assertion_id = {};
+    } else {
+      (index.records[0] as unknown as Record<string, unknown>).aliases = [{ label: 'Reading circle', case_sensitive: false, undeclared: 'extra data' }];
+    }
+    expect(() => validateContextIndex(index)).toThrow('Invalid context index:');
+    await expect(assembleContext(index, 'Explain Reading circle')).rejects.toThrow('Invalid context index:');
+  });
   it('resolves an alias and follows dependencies to evidence without external retrieval', async () => {
     const index = await studyClubContextFixture();
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('No network permitted'));

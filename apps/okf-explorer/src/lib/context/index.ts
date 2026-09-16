@@ -116,10 +116,14 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
     validateGovernance(row);
     assert(['public', 'restricted'].includes(String(row.access)), 'access must be explicit');
     assert(typeof row.rights === 'string', 'rights shape');
+    assert(row.review_status === undefined || typeof row.review_status === 'string', 'invalid review status');
     assert(row.aliases === undefined || (Array.isArray(row.aliases) && row.aliases.length <= 100
       && row.aliases.every((alias) => typeof alias === 'string' ? alias.length <= 500
         : object(alias) && typeof alias.label === 'string' && alias.label.length <= 500
           && typeof alias.case_sensitive === 'boolean')), 'invalid aliases');
+    for (const alias of (row.aliases || []) as unknown[]) {
+      if (object(alias)) fields(alias, ['label', 'case_sensitive'], 'alias');
+    }
     assert(row.conflicts_with === undefined || (Array.isArray(row.conflicts_with)
       && row.conflicts_with.length <= 100 && row.conflicts_with.every(iri)), 'invalid conflicts');
   }
@@ -133,6 +137,7 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
       && STATUSES.has(String(row.assertion_status)) && Array.isArray(row.provenance), 'invalid assertion governance');
     assert(row.provenance.length <= 32 && row.provenance.every(object), 'invalid assertion provenance');
     validateGovernance(row);
+    assert(row.original_assertion_id === undefined || iri(row.original_assertion_id), 'invalid original assertion ID');
   }
   const requirementIds = new Set<string>();
   for (const row of value.requirements) {

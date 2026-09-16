@@ -7,8 +7,9 @@ const ORIGIN = 'https://ask-okf.fixture.test';
 const BUNDLE = `${ORIGIN}/okf-explorer.json`;
 const UNSUPPORTED = `${ORIGIN}/unsupported.json`;
 
-async function installFixture(page: Page, options: { missing?: boolean; injection?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean } = {}) {
+async function installFixture(page: Page, options: { missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean } = {}) {
   const context = await studyClubContextFixture();
+  if (options.malformedReview) (context.records[0] as unknown as Record<string, unknown>).review_status = { toString: 'not-callable' };
   if (options.missing) context.records = context.records.filter((record) => !record.id.endsWith('evidence/library'));
   if (options.injection) {
     const evidence = context.records.find((record) => record.id.endsWith('evidence/library'))!;
@@ -74,6 +75,20 @@ async function openAsk(page: Page, bundle = BUNDLE) {
   await page.getByRole('button', { name: 'Ask OKF', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ask OKF', exact: true })).toBeVisible();
 }
+
+test('malformed review metadata fails closed without crashing the evidence interface', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await installFixture(page, { malformedReview: true });
+  await openAsk(page);
+  await page.getByLabel('Question', { exact: true }).fill('Explain Reading circle');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  await expect(page.locator('.ask-okf [role="alert"]')).toContainText('invalid review status');
+  await expect(page.locator('[data-context-id]')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect(page.locator('input.search-input')).toBeVisible();
+  expect(errors).toEqual([]);
+});
 
 test('Ask uses a lazy bound index and preserves the existing Search state', async ({ page }) => {
   const { requests } = await installFixture(page);
