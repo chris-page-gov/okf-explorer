@@ -48,6 +48,11 @@ class ContextAssemblyContractTests(unittest.TestCase):
                                 cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_portable_control_archive_integrity(self):
+        result = subprocess.run(['node', '--test', 'tests/context_control_archive.test.mjs'],
+                                cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
 
 if __name__ == '__main__':
     unittest.main()

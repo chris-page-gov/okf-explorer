@@ -21,9 +21,9 @@ From the repository root:
 
 ```sh
 node --experimental-strip-types scripts/run_context_evaluation.mjs \
-  --index evaluation-foundry/fixtures/context-study-club/index.json \
-  --case evaluation-foundry/fixtures/context-study-club/case.json \
-  --output evaluation-foundry/fixtures/context-study-club/execution.json --check
+  --index tests/fixtures/context-study-club/index.json \
+  --case tests/fixtures/context-study-club/case.json \
+  --output tests/fixtures/context-study-club/execution.json --check
 ```
 
 The retained execution observes three selected records and all A–H stages

@@ -4,8 +4,8 @@ import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { gzipSync } from 'node:zlib';
 import { canonical, sha256, evaluateContextPackage } from './evaluate_context_package.mjs';
+import { createControlArchive, controlOutputBinding, readControlArchive, verifyControlArchive } from './context_control_archive.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const options = {};
@@ -36,13 +36,16 @@ if (new Set(manifest.controls.map((row) => row.id)).size !== manifest.controls.l
 const directory = path.join(ROOT, 'apps/okf-explorer/src/lib/context');
 const files = [
   ...((await readdir(directory)).filter((name) => name.endsWith('.ts') && !name.endsWith('.test.ts')).map((name) => path.join(directory, name))),
-  ...['run_context_controls.mjs', 'evaluate_context_package.mjs', 'check_context_assembly.py'].map((name) => path.join(ROOT, 'scripts', name)),
+  ...['run_context_controls.mjs', 'context_control_archive.mjs', 'evaluate_context_package.mjs', 'check_context_assembly.py'].map((name) => path.join(ROOT, 'scripts', name)),
   ...((await readdir(path.join(ROOT, 'profiles/context-assembly/v1'))).filter((name) => name.endsWith('.schema.json')).map((name) => path.join(ROOT, 'profiles/context-assembly/v1', name)))
 ];
 const implementation = [];
 for (const file of files.sort()) implementation.push({ path: path.relative(ROOT, file), sha256: sha256(await readFile(file)) });
 const { assembleContext } = await import('../apps/okf-explorer/src/lib/context/index.ts');
 const output = path.resolve(options.output), results = [];
+const retained = options.check ? JSON.parse(await readFile(output, 'utf8')) : null;
+const retainedControls = new Map((retained?.execution?.controls || []).map((control) => [control.id, control]));
+if (options.check && retainedControls.size !== retained.execution.controls.length) throw new Error('Retained context control IDs must be unique');
 for (const control of manifest.controls) {
   const mutant = structuredClone(original);
   // A mutant is a new synthetic input, never the original published snapshot.
@@ -93,16 +96,22 @@ for (const control of manifest.controls) {
   const payload = { schema: 'okf-context-control-output.v1', control_id: control.id, fixture_kind: 'synthetic-mutation',
     mutation: control, original_index_sha256: sha256(indexBytes), mutant_index_sha256: mutantHash,
     package: assembled, positive_case_assessment: assessed, checks };
-  const bytes = gzipSync(Buffer.from(JSON.stringify(payload) + '\n'), { level: 9 });
-  bytes[9] = 255; // Portable deterministic gzip OS marker.
+  const content = Buffer.from(JSON.stringify(payload) + '\n');
   const relative = `control-outputs/${control.id}.json.gz`;
   const destination = path.join(path.dirname(output), relative);
+  let outputBinding;
   if (options.check) {
-    if (!bytes.equals(await readFile(destination))) throw new Error(`Stale context control output: ${control.id}`);
-  } else { await mkdir(path.dirname(destination), { recursive: true }); await writeFile(destination, bytes); }
+    const previous = retainedControls.get(control.id)?.output;
+    if (!previous || previous.path !== relative) throw new Error(`Missing or mismatched retained context control: ${control.id}`);
+    outputBinding = verifyControlArchive(await readControlArchive(destination), previous, content);
+  } else {
+    const bytes = createControlArchive(content);
+    outputBinding = controlOutputBinding(relative, bytes, content);
+    await mkdir(path.dirname(destination), { recursive: true }); await writeFile(destination, bytes);
+  }
   results.push({ id: control.id, description: control.description, status: checks.every((row) => row.status === 'passed') ? 'passed' : 'failed',
     mutant_index_sha256: mutantHash, context_id: assembled.context_id, evidence_status: assembled.evidence_status,
-    output: { path: relative, sha256: sha256(bytes) }, checks });
+    output: outputBinding, checks });
 }
 for (const input of implementation) {
   if (sha256(await readFile(path.join(ROOT, input.path))) !== input.sha256) throw new Error(`Implementation changed during execution: ${input.path}`);
@@ -113,7 +122,7 @@ const execution = { schema: 'okf-context-controls-execution.v1',
   status: results.every((row) => row.status === 'passed') ? 'passed' : 'failed', controls: results,
   limitations: ['Synthetic controls establish the stated failure handling only; they are not real source defects or proof of legal correctness.'] };
 if (options.check) {
-  if (canonical(JSON.parse(await readFile(output, 'utf8')).execution) !== canonical(execution)) throw new Error('Stale context control receipt');
+  if (canonical(retained.execution) !== canonical(execution)) throw new Error('Stale context control receipt');
 } else {
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, JSON.stringify({ schema: 'okf-context-controls-receipt.v1', started_at: startedAt,

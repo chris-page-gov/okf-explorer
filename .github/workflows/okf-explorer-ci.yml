@@ -91,9 +91,9 @@ jobs:
       - name: Replay the non-DWP end-to-end context case
         run: >-
           node --experimental-strip-types scripts/run_context_evaluation.mjs
-          --index evaluation-foundry/fixtures/context-study-club/index.json
-          --case evaluation-foundry/fixtures/context-study-club/case.json
-          --output evaluation-foundry/fixtures/context-study-club/execution.json
+          --index tests/fixtures/context-study-club/index.json
+          --case tests/fixtures/context-study-club/case.json
+          --output tests/fixtures/context-study-club/execution.json
           --check
 
   python-contracts:

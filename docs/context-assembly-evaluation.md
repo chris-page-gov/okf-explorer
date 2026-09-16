@@ -58,8 +58,10 @@ Keep a non-DWP synthetic fixture to demonstrate that the engine has no hidden
 benefit-specific rules. Fictional study-club activity and room records can test
 multi-record evidence selection and the failure to transfer one room's access
 statement to another. Label invented assertions and evidence explicitly. The
-[retained study-club case](../evaluation-foundry/fixtures/context-study-club/README.md)
+[retained study-club case](https://github.com/chris-page-gov/okf-explorer/blob/main/tests/fixtures/context-study-club/README.md)
 provides an actual end-to-end execution and exact reproduction command.
+It is a standalone context test under `tests/fixtures`, separate from the
+complete fixture families governed by the Evaluation Foundry.
 
 ## Evidence and publication
 
@@ -93,8 +95,11 @@ node --experimental-strip-types scripts/run_context_controls.mjs \
   --output /path/to/control-execution.json
 ```
 
-The receipt links deterministic compressed packages and assessment details for
-every actual run. Add `--check` to execute again and compare them. Both runners
+The receipt binds each retained compressed archive and its exact uncompressed
+content separately. Replay verifies the stored archive's digest and size, then
+decompresses within fixed bounds and compares exact fresh payload bytes. It
+does not require different zlib builds to produce identical DEFLATE bytes.
+Add `--check` to execute again and compare the evidence. Both runners
 bind implementation hashes before execution and reject a run if those files
 change before the receipt is written. A passing control requires its declared
 outcome and rejection of the independent positive acceptance case.
