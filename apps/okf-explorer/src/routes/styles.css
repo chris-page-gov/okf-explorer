@@ -17,6 +17,17 @@
   --focus: #ffdd00;
 }
 
+.context-mode-controls {
+  display: flex;
+  gap: .4rem;
+  padding: .7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.context-mode-controls button { flex: 1; min-height: 38px; }
+.context-mode-controls [aria-pressed="true"] { background: var(--accent); color: white; }
+.context-mode-controls button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
 * {
   box-sizing: border-box;
 }

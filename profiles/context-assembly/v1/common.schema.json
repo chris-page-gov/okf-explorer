@@ -1,0 +1,462 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/common.schema.json",
+  "title": "Governed context assembly common definitions v1",
+  "$defs": {
+    "record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "route": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "concept",
+            "evidence",
+            "scope"
+          ]
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "case_sensitive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label",
+                  "case_sensitive"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "text": {
+          "type": "string"
+        },
+        "assertion_status": {
+          "enum": [
+            "official",
+            "normalized",
+            "inferred",
+            "model-derived"
+          ]
+        },
+        "authority": {
+          "type": "object",
+          "properties": {
+            "class": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "class",
+            "label",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "scope": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "source_sha256": {
+                "type": "string"
+              },
+              "locator": {
+                "type": "string"
+              },
+              "captured_at": {
+                "type": "string"
+              },
+              "source_date": {
+                "type": "string"
+              },
+              "source_date_kind": {
+                "type": "string"
+              },
+              "literal_sha256": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "source_sha256",
+              "locator",
+              "captured_at"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "rights": {
+          "type": "string"
+        },
+        "access": {
+          "enum": [
+            "public",
+            "restricted"
+          ]
+        },
+        "review_status": {
+          "type": "string"
+        },
+        "conflicts_with": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "route",
+        "label",
+        "kind",
+        "text",
+        "assertion_status",
+        "authority",
+        "scope",
+        "provenance",
+        "rights",
+        "access"
+      ],
+      "additionalProperties": false
+    },
+    "assertion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "assertion_status": {
+          "enum": [
+            "official",
+            "normalized",
+            "inferred",
+            "model-derived"
+          ]
+        },
+        "authority": {
+          "type": "object",
+          "properties": {
+            "class": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "class",
+            "label",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "scope": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "source_sha256": {
+                "type": "string"
+              },
+              "locator": {
+                "type": "string"
+              },
+              "captured_at": {
+                "type": "string"
+              },
+              "source_date": {
+                "type": "string"
+              },
+              "source_date_kind": {
+                "type": "string"
+              },
+              "literal_sha256": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "source_sha256",
+              "locator",
+              "captured_at"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "original_assertion_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "target",
+        "predicate",
+        "label",
+        "assertion_status",
+        "authority",
+        "scope",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "when_all": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "scope": {
+          "type": "string"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "covers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required_paths": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/path"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "when_all",
+        "required",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string"
+        },
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "ids"
+      ],
+      "additionalProperties": false
+    },
+    "path": {
+      "type": "object",
+      "properties": {
+        "seed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "seed",
+        "assertions",
+        "records"
+      ],
+      "additionalProperties": false
+    },
+    "bundle": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "snapshot",
+        "source_url"
+      ],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_nodes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "max_relationships": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "max_bytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 524288
+        }
+      },
+      "required": [
+        "max_nodes",
+        "max_relationships",
+        "max_depth",
+        "max_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string"
+        },
+        "captured_at": {
+          "type": "string"
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "source_date_kind": {
+          "type": "string"
+        },
+        "literal_sha256": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "source_sha256",
+        "locator",
+        "captured_at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

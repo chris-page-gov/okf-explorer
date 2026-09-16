@@ -371,6 +371,8 @@ export type LargeCorpusDescriptor = {
     presentation?: LargeResourceReference;
     endpoint_labels?: LargeResourceReference;
     search_manifest?: string;
+    /** Optional, digest-bound projection for governed context assembly. */
+    context_assembly?: LargeResourceReference;
     record_locator?: LargeResourceReference;
     notes?: string;
     performance?: string;
@@ -1638,6 +1640,7 @@ export type LargeCorpusSource = {
   modelEnrichmentSnapshot: () => LargeModelEnrichmentState | undefined;
   releaseDataPlane?: LargeReleaseDataPlaneIndex;
   searchManifest?: LargeResourceReference;
+  loadContextAssembly?: () => Promise<import('./context/types').BoundContextIndex>;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;
   loadDatasetForRoute: (route: string, ordinal?: number) => Promise<LargeDataset | null>;
   loadFullIndex: () => Promise<LargeFullIndex>;
@@ -1673,5 +1676,6 @@ export type LoadedSource =
       title: string;
       corpus: NormalizedCorpus;
       federation?: FederationOverview;
+      loadContextAssembly?: () => Promise<import('./context/types').BoundContextIndex>;
     }
   | LargeCorpusSource;

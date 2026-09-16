@@ -34,6 +34,14 @@ the optional [project studio](docs/project-studio/index.md),
 reviews. You can finish with a sourced answer or a private bundle; building an
 app and publishing are optional later steps.
 
+[Governed context assembly](docs/context-assembly.md) adds a separate Ask OKF
+evidence workflow for bundles that declare a compatible index. It follows
+explicit relationships, retains provenance and reports missing context; it
+does not run a model or make a domain decision. The
+[A–H evaluation method](docs/context-assembly-evaluation.md) separates source,
+semantic, retrieval, traversal, assembly, provenance, boundary and answerability
+checks from lexical search scores and later model-answer assessment.
+
 ## Contribute
 
 Use the [development guide](docs/development.md) for locked setup, local builds,

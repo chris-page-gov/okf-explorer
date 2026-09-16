@@ -1,0 +1,331 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-governed-context.v1"
+    },
+    "context_id": {
+      "type": "string",
+      "pattern": "^urn:sha256:[a-f0-9]{64}$"
+    },
+    "engine": {
+      "const": "okf-context-assembly.v1"
+    },
+    "question": {
+      "type": "string"
+    },
+    "bundle": {
+      "$ref": "common.schema.json#/$defs/bundle"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "index_url": {
+          "type": "string"
+        },
+        "index_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "index_url",
+        "index_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "string"
+    },
+    "evidence_status": {
+      "enum": [
+        "sufficient",
+        "insufficient",
+        "conflicting"
+      ]
+    },
+    "resolved_concepts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string"
+          },
+          "matched": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "method": {
+            "const": "declared-phrase"
+          },
+          "confidence": {
+            "const": "exact-alias"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "matched",
+          "method",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ambiguities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phrase": {
+            "type": "string"
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "phrase",
+          "candidates"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "unresolved_terms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "selected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record": {
+            "$ref": "common.schema.json#/$defs/record"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/path"
+            }
+          }
+        },
+        "required": [
+          "record",
+          "reasons",
+          "paths"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/assertion"
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string"
+          },
+          "when_all": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "scope": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "enum": [
+              "supported-within-declared-scope",
+              "insufficient"
+            ]
+          },
+          "missing": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "covers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required_paths": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "common.schema.json#/$defs/path"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "when_all",
+          "required",
+          "scope",
+          "status",
+          "missing"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/issue"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/issue"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_nodes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "max_relationships": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "max_bytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 524288
+        },
+        "used_nodes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_relationships": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reached_depth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "omissions": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/issue"
+          }
+        }
+      },
+      "required": [
+        "max_nodes",
+        "max_relationships",
+        "max_depth",
+        "max_bytes",
+        "used_nodes",
+        "used_relationships",
+        "used_bytes",
+        "reached_depth",
+        "truncated",
+        "omissions"
+      ],
+      "additionalProperties": false
+    },
+    "ai_answer": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "schema",
+    "context_id",
+    "engine",
+    "question",
+    "bundle",
+    "binding",
+    "scope",
+    "evidence_status",
+    "resolved_concepts",
+    "ambiguities",
+    "unresolved_terms",
+    "selected",
+    "relationships",
+    "requirements",
+    "missing_evidence",
+    "conflicts",
+    "limitations",
+    "budget",
+    "ai_answer"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/package.schema.json",
+  "title": "Governed context package v1"
+}

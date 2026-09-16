@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import BookmarkShelf from '$lib/components/BookmarkShelf.svelte';
+  import AskOkf from '$lib/components/AskOkf.svelte';
   import SmallRecordInspector from '$lib/components/SmallRecordInspector.svelte';
   import { focusedSmallGraph } from '$lib/viewer/smallGraph';
   import { matchesLocalText, summariseLocalExploration } from '$lib/viewer/localExploration';
@@ -436,6 +437,7 @@
   let modelEnrichmentError = $state('');
   let loading = $state(false);
   let activeView = $state<ViewMode>('reader');
+  let interactionMode = $state<'search' | 'ask'>('search');
   let selectedId = $state('');
   let inspectedId = $state('');
   let smallInspectedRelationship = $state<OkfRelationship | null>(null);
@@ -1288,6 +1290,7 @@
     declaredRawSubpath = ''
   ) {
     const requestId = ++loadRequest;
+    interactionMode = 'search';
     foldedSets = [];
     smallOpenFacet = ''; smallPinnedFacets = []; smallOpenedPinnedFacets = []; openedPinnedFacets = [];
     activePanel = 'content';
@@ -1713,6 +1716,7 @@
   }
 
   async function selectView(view: ViewMode, push = true) {
+    interactionMode = 'search';
     activeView = view;
     if (push) activePanel = 'content';
     if (view === 'graph') graphLabelPhase = 0;
@@ -6509,7 +6513,19 @@
 
   <WorkspaceShell actions={selectionActions} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)}>
     {#snippet navigation()}
-        {#if source?.kind === 'large'}
+        {#if source}
+          <div class="context-mode-controls" role="group" aria-label="Search or assemble evidence">
+            <button type="button" aria-pressed={interactionMode === 'search'} onclick={() => { interactionMode = 'search'; activePanel = 'navigation'; }}>Search</button>
+            <button type="button" aria-pressed={interactionMode === 'ask'} onclick={() => { interactionMode = 'ask'; activePanel = 'content'; }}>Ask OKF</button>
+          </div>
+        {/if}
+        {#if source && interactionMode === 'ask'}
+          <section class="retrieval-control">
+            <h2>Question evidence</h2>
+            <p>Ask OKF uses this bundle’s declared context index. Your Search query and filters are retained separately.</p>
+            <button type="button" onclick={() => activePanel = 'content'}>Open question form</button>
+          </section>
+        {:else if source?.kind === 'large'}
           <section class="retrieval-control">
             <h2>Search</h2>
             <div class="search-control">
@@ -6746,6 +6762,21 @@
         {/if}
     {/snippet}
     {#snippet content(actions)}
+      {#if source}
+        <div hidden={interactionMode !== 'ask'}>
+          <AskOkf {source} onOpenRecord={(route) => {
+            if (!source) return;
+            // Context evidence can sit outside the retained Search reduction.
+            // A separate record view keeps that query, its filters and this
+            // context package intact instead of bypassing selection guards.
+            const target = new URL(location.href);
+            target.search = new URLSearchParams({ bundle: source.url }).toString();
+            target.hash = route;
+            window.open(target.toString(), '_blank', 'noopener,noreferrer');
+          }} />
+        </div>
+      {/if}
+      {#if interactionMode === 'search'}
       <div class="stage-bar">
         <div class="nav-controls" aria-label="History navigation">
           <button type="button" title="Back" aria-label="Back" onclick={navigateBack}>←</button>
@@ -8076,6 +8107,7 @@
         <section class="empty-state">Load an OKF bundle or large-corpus descriptor.</section>
       {/if}
       <BookmarkShelf {pins} onopen={openPin} oncopy={exportPins} ondownload={downloadPins} onremove={(pin) => { pins = pins.filter(item => item.bundle !== pin.bundle || item.route !== pin.route); savePins(); }} />
+      {/if}
     {/snippet}
     {#snippet details()}
         {#if source?.kind === 'large'}
