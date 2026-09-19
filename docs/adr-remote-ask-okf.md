@@ -8,6 +8,17 @@ Amended on 19 September 2026 for the separately approved full-source corpus.
 The original 52-record custody service and its receipts remain historical,
 explicitly versioned evidence. Full-source deployment and ChatGPT acceptance
 must be verified separately; they are not implied by those earlier observations.
+The full-source HTTPS deployment and three-case official SDK parity check were
+verified later that day against Explorer revision
+`751201168bf16ad9caec80eb4c1b9bf8514f1c71`. A separate 43-case raw HTTP run also
+verified complete package equality, with every result remaining insufficient.
+Subsequent client observations and published-browser checks are maintained in
+[OKF-DWP's demonstration record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/remote-mcp-demo.md).
+An initial ChatGPT call exposed conversational-word ranking noise; the shared
+English query filter was corrected without adding domain-specific ranking. The
+[remote access guide](remote-mcp.md#initial-full-source-https-verification) records
+the deployment identity and exact package results; this decision does not
+replace those execution receipts.
 
 ## Context
 
@@ -33,7 +44,10 @@ Its manifest is a local deployment input, bound to its immutable URL and digest.
 The shared `context/corpus.ts` module retrieves only manifest-listed, hash-bound
 files beneath that directory, then invokes `assembleContext`. The service caches
 verified public assets within 8 MiB and 64 files; questions and packages are not
-cached. A caller cannot provide a
+cached. The transport uses manual redirect handling and rejects all 3xx statuses
+without following `Location`: actual workerd rejected Fetch's `error` redirect
+mode before I/O. This compatibility change preserves the shared core's redirect
+rejection and source integrity checks. A caller cannot provide a
 URL, file path, alternate index or remote context. Verification precedes context
 assembly; a mismatch yields a tool error without evidence. Historical version
 `efb05c66616a9cd4328a86cf412780fe7bc7cf0b` stays entirely embedded and remains

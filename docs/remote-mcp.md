@@ -25,15 +25,69 @@ and snapshot `dwp-context-corpus-73cf69d371e212aba4e7`. The
 uses the same binding. Reader, Search and the graph retain their DMG scope;
 Ask OKF also retrieves ADM pages and links their official PDFs.
 
-The full-source build has passed local transport, integrity and shared-engine
-parity checks. Public deployment and actual ChatGPT acceptance remain pending
-separate verification. Earlier observations below establish the historical
-52-record service, not the new default. See the
+The full-source service is deployed. On 19 September 2026, the official MCP SDK
+called the public HTTPS endpoint and verified complete package equality with
+the shared engine for imprisonment, hospital admission and the explicit
+historical imprisonment version. A separate 43-case raw HTTP run also verified
+complete package equality. An initial full-source ChatGPT call reached the tool
+but exposed a ranking flaw: conversational words could outweigh the question's
+subject. The generic English query filter now omits personal pronouns and broad
+forms of “go” and “get”; substantive terms such as “receiving” and “payment”
+remain. Current client and published-browser observations are maintained in
+[OKF-DWP's demonstration record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/remote-mcp-demo.md).
+Earlier ChatGPT observations below concern the historical 52-record service. See the
 [full-source decision](adr-full-source-context-discovery.md) for retrieval bounds.
 
 The original custody profile remains available by explicitly requesting version
 `efb05c66616a9cd4328a86cf412780fe7bc7cf0b`. Its source bytes and acceptance
 identities remain unchanged.
+
+### Initial full-source HTTPS verification
+
+This records the deployment before the English question-filter correction.
+Its results and receipts remain pinned to that earlier engine.
+
+The endpoint is `https://ask-okf.crpage.chatgpt.site/okf/mcp`. Sites version 4
+deployed Explorer source commit `751201168bf16ad9caec80eb4c1b9bf8514f1c71`,
+with Worker SHA-256
+`bd14ead0a450f95ec60efc8f87def3d17b5ad071fd7c2a20f410a1347312c5af`.
+Its hosting deployment ID is `appgdep_6aaec3a802f08191a245a882fdfa9d46`.
+The [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/697dd85c1cd5ea5191a77124de5a868d06d1652c/validation/corpus-questions/deployment.json)
+and [SDK verification](https://github.com/chris-page-gov/okf-dwp/blob/697dd85c1cd5ea5191a77124de5a868d06d1652c/validation/corpus-questions/sdk-receipt.json)
+are retained separately at DWP revision
+`697dd85c1cd5ea5191a77124de5a868d06d1652c`.
+
+The SDK 2.0.0 run used MCP `2026-07-28` and checked the advertised input/output
+schemas, read-only annotations, immutable source identity and every package
+field. JSON text and structured content were identical. These are the observed
+default-budget results:
+
+| Profile and question | Context identity | Evidence package |
+| --- | --- | --- |
+| Full-source imprisonment | `urn:sha256:fbd44c332557919cc4e387a6991613c1b0a0316325a47f64143f5244e15ebea1` | `insufficient`; 64 records, 127 relationships, 516,146 bytes; core truncation reported. |
+| Full-source hospital | `urn:sha256:429650f641cd52dfbd217b4fd5fecfc8b38ba7e1272b99a9b734688ec824d297` | `insufficient`; 64 records, 110 relationships, 501,145 bytes; core truncation reported. |
+| Explicit historical imprisonment | `urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e` | Original `sufficient` scoped result; 52 records, 127 relationships, 487,506 bytes; no core truncation. |
+
+The first full-source deployment exposed a Worker transport incompatibility:
+the runtime rejected the Fetch `error` redirect mode before requesting evidence.
+The adapter now uses `manual` mode and rejects every 3xx response without
+following `Location`. Actual workerd execution and an exhaustive 300–399 status
+regression verify this boundary; the shared engine and source hashes are
+unchanged. A successful SDK call still does not establish complete delivery to
+a ChatGPT model, Voice invocation or legal answerability.
+
+The independent raw HTTP client used MCP `2025-11-25` for all 40 supplied staff
+question occurrences and three boundary controls. All 43 complete packages
+matched direct shared-engine execution and remained `insufficient`, with no AI
+answers. All 40 staff questions returned whole-page evidence, including ADM
+pages. Ten packages retained an independently located candidate page; 19
+retained a page from an independently located candidate document. These overlap
+measures test discovery against research starting points, not legal accuracy,
+exhaustive recall or specialist approval. The raw-response hashes and per-case
+results are in the [initial full-source run receipt](https://github.com/chris-page-gov/okf-dwp/blob/697dd85c1cd5ea5191a77124de5a868d06d1652c/validation/corpus-questions/receipt.json).
+These metrics describe the source revision and engine identified by that
+receipt. The question-filter correction has its own before/after evaluation;
+an earlier transport result does not certify changed application bytes.
 
 ## Historical connection and verification: custody profile
 
@@ -164,7 +218,7 @@ short summary alone is not equivalent evidence.
 
 ## Evaluate full-source discovery
 
-After deployment is verified and connection metadata refreshed, call `ask_okf`
+After refreshing connection metadata, call the verified HTTPS `ask_okf` service
 with explicit version `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` and either exact
 question below. Inspect `retrieval`, selected whole pages, source families,
 authority, graph paths and omissions. Both results remain insufficient: finding
@@ -278,7 +332,7 @@ The independent `remote-mcp` CI job validates the service on every change,
 including changes to the engine it imports. Service-only changes do not invalidate
 the unchanged Heritage browser artefacts. The package schema adds an optional
 `retrieval` field; historical packages remain valid without it. The
-the lifecycle contract classifies the service under `application`. Documentation
+lifecycle contract classifies the service under `application`. Documentation
 and changelog lockstep applies to service code, source pins and dependencies.
 
 The locked official SDK supports the current `2026-07-28` protocol and its

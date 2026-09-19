@@ -119,6 +119,23 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Assurance and deployment
 
+The full-source public HTTPS service was verified on 19 September 2026 using
+the official SDK 2.0.0 with protocol `2026-07-28`. Its imprisonment and hospital
+packages matched direct shared-core execution in full; both remain insufficient
+and report core truncation. Explicit historical imprisonment retained its
+original sufficient package and context identity. Explorer source revision
+`751201168bf16ad9caec80eb4c1b9bf8514f1c71` produced the deployed Worker
+`bd14ead0a450f95ec60efc8f87def3d17b5ad071fd7c2a20f410a1347312c5af`.
+The [initial remote access record](../../docs/remote-mcp.md#initial-full-source-https-verification)
+separates hosting and SDK receipts from the independently passing 43-case raw
+HTTP run. All 43 results remain insufficient; retrieving candidate evidence is
+not an answer-quality assessment. Subsequent client and published-browser
+observations are maintained in
+[OKF-DWP's demonstration record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/remote-mcp-demo.md).
+An initial ChatGPT call exposed conversational-word ranking noise, prompting a
+separately evaluated shared English query-filter correction. The earlier hosted
+receipt certifies only its recorded engine and deployment bytes.
+
 Tests cover immutable hashes, current and legacy SDK parity with the direct
 index and corpus engines, full-text/structured-content equality, input rejection,
 small-budget failure, historical hospital gaps, exact origins/hosts, malformed

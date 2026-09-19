@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { assembleCorpusContext, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
 import { studyClubContextFixture } from '../../test/contextFixture';
 const sha = (v: Uint8Array) => createHash('sha256').update(v).digest('hex');
-async function fixture(count = 2) {
+async function fixture(count = 2, texts?: string[]) {
   const base = await studyClubContextFixture(); const template = base.records[0];
   base.records = []; base.assertions = []; base.requirements = [];
   const files = new Map<string, Uint8Array>();
@@ -15,7 +15,7 @@ async function fixture(count = 2) {
     return { path, bytes: bytes.length, sha256: sha(bytes), ...(gzip ? { encoding: 'gzip' as const, decoded_bytes: decoded.length, decoded_sha256: sha(decoded) } : {}) };
   };
   const records = Array.from({ length: count }, (_, i) => {
-    const text = i === 0 ? 'Orchards and apples.' : 'Orchards and pears.';
+    const text = texts?.[i] ?? (i === 0 ? 'Orchards and apples.' : 'Orchards and pears.');
     return { ...template, id: `https://example.test/evidence/${i}`, route: `evidence/${i}`, text,
       provenance: template.provenance.map(p => ({ ...p, literal_sha256: sha(new TextEncoder().encode(text)) })) };
   });
@@ -43,6 +43,28 @@ describe('full-source governed corpus discovery', () => {
   });
   it('normalises accents and selects a stable FNV bucket', () => {
     expect(corpusTokens('Café CAFÉ x 1 APpLes')).toEqual(['cafe', 'apples']); expect(corpusBucket('hello')).toBe('4f');
+  });
+  it.each([
+    'What happens to your tickets if you go abroad?',
+    'What happens to her tickets if she is going abroad?',
+    'What tickets do they get abroad?',
+    'What tickets is he getting abroad?'
+  ])('does not let conversational pronouns or broad verbs outrank the subject: %s', async question => {
+    const f = await fixture(2, [
+      'Your go her she going they get he getting. Stationery instructions.',
+      'Library tickets abroad require a return plan.'
+    ]);
+    const result = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+    expect(result.retrieval?.query_tokens).toEqual(['tickets', 'abroad']);
+    expect(result.retrieval?.candidate_count).toBe(1);
+    expect(result.selected.map(item => item.record.text)).toEqual(['Library tickets abroad require a return plan.']);
+    expect(result.retrieval?.candidates[0].matched).toEqual(['tickets', 'abroad']);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('retains substantive receiving and payment terms when filtering question scaffolding', async () => {
+    const f = await fixture();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'What payment is she receiving?', {}, f.fetcher);
+    expect(result.retrieval?.query_tokens).toEqual(['payment', 'receiving']);
   });
   it.each(['../outside', 'https://evil.test/data', '/outside', 'records/%2e%2e/x', 'records/../x', 'records\\x'])('rejects unsafe reference %s before fetching', async path => {
     const f = await fixture(); f.manifest.base_index.path = path;

@@ -15,14 +15,18 @@ export const CORPUS_LIMITS = Object.freeze({ query_tokens: 24, candidates: 16, f
   fetched_bytes: 16 * 1024 * 1024, decoded_bytes: 32 * 1024 * 1024 });
 const FILE_LIMIT = 4 * 1024 * 1024;
 const HASH = /^[a-f0-9]{64}$/;
-// Language scaffolding; benefit names, paragraph identifiers and legal rules do not belong here.
+// English question scaffolding: pronouns and broad request/action verbs are
+// poor evidence discriminators even when rare in a formal source corpus.
+// Domain terms (including receiving/payment), identifiers and rules stay intact.
 const STOP = new Set(('a an the and or but to of for from on in into at with without by as is are was were be been being ' +
   'has have had do does did will would can could should may might i we you they it its their this that these those ' +
   'what which who how why when where whether explain show describe compare find give tell please happens happen ' +
   'effect effects affect affects distinguish distinguishing difference differences between each all any some both ' +
   'trace conclusion conclusions relevant given following about against over under than then also need needed ' +
   'information evidence source sources question answer me my us our such so if not must meaning means mean ' +
-  'regarding relates concerning details detail').split(' '));
+  'regarding relates concerning details detail ' +
+  'your yours yourself yourselves mine myself he him his himself she her hers herself ' +
+  'ours ourselves them theirs themselves itself go going get getting').split(' '));
 function check(value: unknown, message: string): asserts value { if (!value) throw new Error(`Invalid context corpus: ${message}`); }
 function object(value: unknown): value is Record<string, any> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function integer(value: unknown, max = 1_000_000): value is number { return Number.isSafeInteger(value) && Number(value) >= 0 && Number(value) <= max; }
