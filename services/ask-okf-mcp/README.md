@@ -32,6 +32,32 @@ with dynamic code generation prohibited. Build metadata is in
 `dist/build-receipt.json`. Host and origin allow-lists are deployment-owned source
 configuration in `src/service.ts`, not caller-supplied parameters.
 
+### Browser assurance
+
+After installing the service dependencies above, use the existing Explorer
+browser-test dependencies from the repository root:
+
+```sh
+cd apps/okf-explorer
+pnpm install --frozen-lockfile
+pnpm exec svelte-kit sync
+pnpm exec playwright test --config playwright.service-review.config.ts
+```
+
+The test configuration builds and starts this service on port 8787, or reuses a
+running local preview. It checks Chrome, Firefox and WebKit using the frozen,
+vendored historical profile. The required `remote-mcp-browser` CI job runs Chrome; local
+cross-browser results and screenshots are written to
+`output/playwright/service-review/` at the repository root.
+
+The checks cover inert shared links, explicit replay, catalogue and content
+paging, exact displayed source hashes, the selected record's title and source,
+provenance, gaps, stale-question handling and escaped source markup. A separate
+synthetic response tests hostile markup; it is not source evidence. These checks
+do not attest a live deployment, current legal answerability or an AI client's
+reasoning. Set `ASK_OKF_REVIEW_BASE_URL` only when intentionally checking another
+service deployment; that disables automatic local server startup.
+
 ## Compact evidence and browser review
 
 Version 0.3.0 adds two read-only tools alongside the unchanged full-package tool:

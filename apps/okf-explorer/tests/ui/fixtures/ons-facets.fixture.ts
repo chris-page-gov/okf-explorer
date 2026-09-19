@@ -541,6 +541,7 @@ const searchManifest = {
 };
 
 export type OnsFacetFixtureOptions = {
+  conceptualClassification?: boolean;
   withoutSearch?: boolean;
   responseBytes?: number[];
   filterPaddingBytes?: number;
@@ -578,7 +579,13 @@ export async function installOnsFacetFixture(
       return respond(options.withoutSearch ? { ...manifest, indexes } : manifest);
     }
     if (url.pathname === '/data/overview.json') return respond(overview);
-    if (url.pathname === '/data/analysis.json') return respond(analysis);
+    if (url.pathname === '/data/analysis.json') return respond(options.conceptualClassification ? {
+      ...analysis, facet_analysis: analysis.facet_analysis.map(facet => facet.key === 'topic' ? {
+        ...facet, classification: { basis: ['explicit-mention'], review_status: 'unreviewed',
+          classified_records: ONS_RECORD_COUNT, total_records: ONS_RECORD_COUNT,
+          limitations: ['A mention is a discovery aid and does not establish applicability.'] }
+      } : facet)
+    } : analysis);
     if (url.pathname === '/data/presentation.json') return respond(presentation);
     if (url.pathname === '/data/providers/manifest.json') return respond(providerDatapackManifest);
     if (url.pathname === '/data/providers/ons-explore-local-statistics.json') return respond(providerDatapack);

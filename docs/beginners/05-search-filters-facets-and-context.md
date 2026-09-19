@@ -34,6 +34,14 @@ often?”
 
 Facets reveal structure and provide filter controls.
 
+A conceptual facet, such as a circumstance or topic, can be more useful than a
+volume or file-type facet. Its meaning depends on the classification method.
+An explicit text mention establishes that the term occurs; it does not prove
+that the rule applies to the reader's situation. Open the facet to check the
+producer's method, review status and whole-snapshot classification coverage.
+Unclassified records remain visible: a missing tag is not evidence of absence.
+See [conceptual navigation](../conceptual-navigation.md) for the practical flow.
+
 ### Context Selection
 
 “Which full records, relationships and passages should a person or AI inspect

@@ -20,6 +20,15 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_linked_reading_dependencies_retain_their_exact_markdown(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="okf-reading-alternates-") as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_generic_reading_pages()
+            for relative in [Path("CHANGELOG.md"), Path("services/ask-okf-mcp/README.md"),
+                             Path("services/ask-okf-mcp/ARCHITECTURE.md")]:
+                self.assertEqual((output / relative).read_bytes(), (ROOT / relative).read_bytes())
+
     def test_research_draft_is_excluded_from_site_transport(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "research"

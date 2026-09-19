@@ -11,7 +11,7 @@ assembly and AI reasoning.
 
 ## Smaller responses and inspectable evidence
 
-The version 0.3.0 candidate adds `ask_okf_manifest` and `read_okf_evidence`.
+Version 0.3.0 adds `ask_okf_manifest` and `read_okf_evidence`.
 A **manifest** is a small catalogue: which records were selected, their source
 links and the evidence gaps. It is not an answer or the source text. The read
 tool retrieves exact passages, provenance and diagnostics in manageable parts,
@@ -27,8 +27,12 @@ This recreates evidence, not the AI's wording or a stored audit history.
 The [delivery decision](adr-compact-evidence-delivery.md) and
 [service examples](../services/ask-okf-mcp/README.md#compact-evidence-and-browser-review)
 explain budgets, continuation and integrity checks. A smaller transfer does not
-change source completeness or make an insufficient package sufficient. Actual
-client and deployment checks are recorded separately from this implementation.
+change source completeness or make an insufficient package sufficient. On 19 September 2026, Sites version 6 deployed runtime commit
+`169b8c387a29435d39dc31cbb2066376d84b39a6`. The official SDK verified all three
+tools, unchanged full-package outputs, compact reconstruction and three
+fail-closed controls. The [additive delivery receipts](https://github.com/chris-page-gov/okf-dwp/tree/main/validation/compact-delivery)
+separate hosting, SDK and browser evidence. This does not establish ChatGPT
+Voice support or legal answer quality.
 
 ## Approved versions and release status
 

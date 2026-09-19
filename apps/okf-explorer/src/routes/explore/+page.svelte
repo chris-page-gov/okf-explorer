@@ -8,6 +8,7 @@
   import { matchesLocalText, summariseLocalExploration } from '$lib/viewer/localExploration';
   import WorkspaceShell from '$lib/components/WorkspaceShell.svelte';
   import FacetPanel, { type FacetModel } from '$lib/components/FacetPanel.svelte';
+  import { facetClassification } from '$lib/viewer/facetClassification';
   import ExplorationToolbar from '$lib/components/ExplorationToolbar.svelte';
   import ResultList, { type ResultItem } from '$lib/components/ResultList.svelte';
   import { emptyExploration, explorationFromUrl, writeExploration, previewValue, keepPreview, hasSelection, matchesSelection, matchesReductions, highlightFirst, selectionLabel, MAX_FOLDED_MEMBERS, type Exploration, type Reduction, type FoldedSet } from '$lib/viewer/facetSelection';
@@ -108,6 +109,7 @@
   } from '$lib/viewer/smallNodePresentation';
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
   import { smallTimelineRows } from '$lib/viewer/smallTimeline';
+  import { largeDatasetTimelinePeriod, timelinePeriodBucket, timelinePeriodInScope, type LargeTimelinePeriod, type TimelineDateScope } from '$lib/viewer/largeTimeline';
   import {
     boxesOverlap,
     graphEdgeStateKey,
@@ -419,7 +421,7 @@
     catalogueFallbackCount?: number;
     facetKey?: string;
     facetValue?: string;
-    samples: Array<{ title: string; route: string; date: string; periodLabel?: string; catalogueFallback?: boolean }>;
+    samples: Array<{ title: string; route: string; date: string; periodLabel?: string; catalogueFallback?: boolean; dateRole?: string; dateBasis?: string; audit?: Array<{ label: string; value: string; display: string }> }>;
   };
 
   // Keep the editable draft separate from the URL of the source whose state
@@ -572,6 +574,7 @@
   let edgePanelHeight = $state(180);
   let edgePanelResizing = $state(false);
   let timelineResolution = $state<TimelineResolution>('latest');
+  let timelineDateScope = $state<TimelineDateScope>('all');
   let retrievalSort = $state<RetrievalSort>('title');
   let geospatialFilter = $state('');
   let edgePanelResizeCleanup: (() => void) | null = null;
@@ -840,6 +843,8 @@
       const fallback = largeFacetRows(key);
       const rows = indexed ? [...indexed, ...fallback.filter(row => !indexed.some(item => item.value === row.value)).map(row => ({ ...row, count: 0, highlighted: 0 }))] : fallback;
       return { key, label: facetDisplayLabel(key), open: facetIsOpen(key), pinned: facetIsPinned(key),
+        description: providerPresentationFacet(key)?.description || analysisFacetForKey(key)?.description,
+        classification: facetClassification(analysisFacetForKey(key)?.classification),
         exact: Boolean(indexed && largeExplorationScope.exact),
         rows: rows.map(row => ({ ...row, label: facetValueDisplay(key, row.value) })) };
     });
@@ -1370,6 +1375,7 @@
     detailPanelTab = 'overview';
     edgePanelHeight = 180;
     timelineResolution = 'latest';
+    timelineDateScope = 'all';
     graphLayoutMode = 'auto';
     graphKeyMode = 'nodes';
     graphLabelsPaused = false;
@@ -3410,28 +3416,16 @@
     applyAnalysisFacet(filter.key, filter.value);
   }
 
-  function datasetTimelineStamp(dataset: LargeDataset): string {
-    return datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || [])?.sortKey || '';
-  }
-
-  function quarterForStamp(stamp: string): string {
-    if (!/^\d{4}-\d{2}/.test(stamp)) return '';
-    const month = Number(stamp.slice(5, 7));
-    if (!Number.isFinite(month) || month < 1 || month > 12) return '';
-    return `${stamp.slice(0, 4)}-Q${Math.floor((month - 1) / 3) + 1}`;
-  }
-
-  function timelineRowsForCurrentContext(): LargeDataset[] {
+  function timelineRowsForCurrentContext(): Array<{ dataset: LargeDataset; period: LargeTimelinePeriod }> {
     return largeVisibleDatasets
-      .filter((dataset) => /^\d{4}/.test(datasetTimelineStamp(dataset)))
-      .sort((left, right) => datasetTimelineStamp(right).localeCompare(datasetTimelineStamp(left)));
+      .map(dataset => ({ dataset, period: largeDatasetTimelinePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []) }))
+      .filter((row): row is { dataset: LargeDataset; period: LargeTimelinePeriod } => Boolean(row.period && timelinePeriodInScope(row.period, timelineDateScope)))
+      .sort((left, right) => right.period.sortKey.localeCompare(left.period.sortKey));
   }
 
-  function latestTimelineBuckets(rows: LargeDataset[]): TimelineBucket[] {
+  function latestTimelineBuckets(rows: ReturnType<typeof timelineRowsForCurrentContext>): TimelineBucket[] {
     const groups = new Map<string, TimelineBucket>();
-    for (const dataset of rows) {
-      const period = datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []);
-      if (!period) continue;
+    for (const { dataset, period } of rows) {
       const series = datasetDisplaySeries(dataset);
       const bucket = groups.get(series.key) || {
         key: series.key,
@@ -3448,7 +3442,7 @@
         route: datasetRoute(dataset),
         date: period.sortKey,
         periodLabel: period.label,
-        catalogueFallback: period.catalogueFallback
+        catalogueFallback: period.catalogueFallback, dateRole: period.role, dateBasis: period.basis, audit: period.audit
       });
       groups.set(series.key, bucket);
     }
@@ -3458,20 +3452,14 @@
         const leftLatest = left.samples[0]?.date || '';
         const rightLatest = right.samples[0]?.date || '';
         return rightLatest.localeCompare(leftLatest) || left.label.localeCompare(right.label);
-      })
-      .slice(0, 80);
+      });
   }
 
-  function groupedTimelineBuckets(rows: LargeDataset[], resolution: Exclude<TimelineResolution, 'latest'>): TimelineBucket[] {
+  function groupedTimelineBuckets(rows: ReturnType<typeof timelineRowsForCurrentContext>, resolution: Exclude<TimelineResolution, 'latest'>): TimelineBucket[] {
     const groups = new Map<string, TimelineBucket>();
-    for (const dataset of rows) {
-      const stamp = datasetTimelineStamp(dataset);
-      const key =
-        resolution === 'year'
-          ? stamp.slice(0, 4)
-          : resolution === 'quarter'
-            ? quarterForStamp(stamp)
-            : stamp.slice(0, 7);
+    for (const { dataset, period } of rows) {
+      const stamp = period.sortKey;
+      const key = timelinePeriodBucket(period, resolution);
       if (!key) continue;
       const bucket = groups.get(key) || {
         key,
@@ -3482,13 +3470,12 @@
       };
       bucket.count += 1;
       if (bucket.samples.length < 8) {
-        const period = datasetReleasePeriod(dataset, largeIndex?.resourcesByDataset.get(dataset.name) || []);
         bucket.samples.push({
           title: dataset.title,
           route: datasetRoute(dataset),
           date: stamp,
           periodLabel: period?.label,
-          catalogueFallback: period?.catalogueFallback
+          catalogueFallback: period?.catalogueFallback, dateRole: period?.role, dateBasis: period?.basis, audit: period?.audit
         });
       }
       groups.set(key, bucket);
@@ -6456,6 +6443,7 @@
     <div class="title-block">
       <h1 aria-label="OKF Explorer"><a class="hub-link" href="../" aria-label="Return to the OKF learning hub">OKF Explorer</a></h1>
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
+      <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
     </div>
     <nav class="tabs" aria-label="Views">
       {#each VIEW_MODES as view}
@@ -7544,6 +7532,9 @@
               </section>
             {/if}
           {:else if activeView === 'timeline'}
+            {@const timelineBuckets = currentTimelineBuckets()}
+            {@const timelineBucketLimit = timelineResolution === 'latest' ? 80 : 120}
+            {@const displayedTimelineBuckets = timelineBuckets.slice(0, timelineBucketLimit)}
             <div class="view-heading">
               <h2>Timeline</h2>
               <span>{largeIndex ? `${largeVisibleDatasets.length.toLocaleString()} ${recordPlural()} in current reduction` : `${(source.manifest.counts?.records ?? source.manifest.counts?.datasets ?? 0).toLocaleString()} ${recordPlural()} in overview`}</span>
@@ -7551,18 +7542,25 @@
             <div class="timeline-toolbar" aria-label="Timeline resolution">
               {#each ['latest', 'year', 'quarter', 'month'] as resolution}
                 <button class:active={timelineResolution === resolution} type="button" onclick={() => setTimelineResolution(resolution)}>
-                  {resolution === 'latest' ? 'Releases' : capitalise(resolution)}
+                  {resolution === 'latest' ? 'Dated records' : capitalise(resolution)}
                 </button>
               {/each}
-              <span>{timelineResolution === 'latest' ? 'Series with release or coverage periods, newest first' : `Release coverage grouped by ${timelineResolution}, newest first`}</span>
+              <span>{timelineResolution === 'latest' ? 'Source, inferred and audit dates, newest first' : `Primary dates grouped by ${timelineResolution}, newest first`}</span>
             </div>
+            {#if largeIndex}<label class="timeline-role-filter">Primary date role
+              <select bind:value={timelineDateScope} aria-label="Primary date role">
+                <option value="all">All date roles</option><option value="source">Declared source dates and coverage</option><option value="audit">Capture and record audit dates</option>
+              </select>
+            </label>{/if}
+            <p class="timeline-note">Publication, coverage, inferred periods and capture are different date roles. These dates do not establish legal applicability. Choose a source-date role to exclude capture and inferred dates.</p>
+            <p class="timeline-counts" role="status">Showing {displayedTimelineBuckets.length.toLocaleString('en-GB')} of {timelineBuckets.length.toLocaleString('en-GB')} dated record groups.{#if timelineBuckets.length > timelineBucketLimit} The display limit is {timelineBucketLimit}; refine the record selection to inspect other groups.{/if}</p>
             {#if timelineResolution === 'latest' && largeIndex}
               <section class="timeline-view release-series-list" aria-label="Dataset release series">
-                {#each currentTimelineBuckets().slice(0, 120) as bucket}
+                {#each displayedTimelineBuckets as bucket}
                   <article class="release-series">
                     <header>
                       <strong>{bucket.label}</strong>
-                      <span>{bucket.count.toLocaleString()} {bucket.count === 1 ? 'release' : 'releases'}</span>
+                      <span>{bucket.count.toLocaleString()} {bucket.count === 1 ? 'dated record' : 'dated records'}</span>
                     </header>
                     <div class="release-year-list" aria-label={`${bucket.label} releases`}>
                       {#each timelineReleaseYearGroups(bucket) as yearGroup}
@@ -7570,28 +7568,32 @@
                           <strong>{yearGroup.year}</strong>
                           <div class="release-period-links">
                             {#each yearGroup.samples as item}
+                              <span class="timeline-evidence-date">
                               <a
                                 class:catalogue-fallback={item.catalogueFallback}
                                 href={buildExplorerUrl(item.route)}
-                                title={item.catalogueFallback ? `${largeLabelForRoute(item.route)}; catalogue timestamp fallback` : largeLabelForRoute(item.route)}
+                                title={`${largeLabelForRoute(item.route)}; ${item.dateRole || 'Date role not declared'}`}
                                 onclick={(event) => followExplorerRoute(event, item.route)}
                               >{timelineReleaseLinkLabel(item)}</a>
+                              <small>{item.dateRole || 'Date role not declared'}</small>
+                              {#if item.audit?.length}<details><summary>Audit dates</summary>{#each item.audit as date}<small>{date.label}: <time datetime={date.value}>{date.display}</time></small>{/each}</details>{/if}
+                              </span>
                             {/each}
                           </div>
                         </div>
                       {/each}
                     </div>
                     {#if bucket.catalogueFallbackCount}
-                      <small>{bucket.catalogueFallbackCount.toLocaleString()} period {bucket.catalogueFallbackCount === 1 ? 'uses' : 'use'} a catalogue timestamp fallback because coverage was not supplied.</small>
+                      <small>{bucket.catalogueFallbackCount.toLocaleString()} {bucket.catalogueFallbackCount === 1 ? 'record uses' : 'records use'} an audit date because a source period was not supplied.</small>
                     {/if}
                   </article>
                 {:else}
-                  <p class="muted">Release or coverage periods are not available for this bundle yet.</p>
+                  <p class="muted">No dates match this role in the current record selection.</p>
                 {/each}
               </section>
             {:else}
               <section class="timeline-view timeline-axis">
-                {#each currentTimelineBuckets().slice(0, 120) as bucket, index}
+                {#each displayedTimelineBuckets as bucket, index}
                   <button style={`--row:${index}`} type="button" onclick={() => applyTimelineBucket(bucket)}>
                     <time>{bucket.label}</time>
                     <div>
@@ -7606,12 +7608,12 @@
             {/if}
             {#if timelineResolution !== 'latest'}
               <div class="timeline-note">
-                These groups use declared coverage or release periods first, then title and resource evidence. Catalogue timestamps are only a labelled fallback.
+                Groups retain the precision of the source date. A year-only date stays in a “month not specified” or “quarter not specified” group. Dates inferred from titles and record audit dates remain labelled in Dated records.
               </div>
             {/if}
           {:else if activeView === 'type'}
             <div class="view-heading">
-              <h2>Facets And Dimensions</h2>
+              <h2>Facets and dimensions</h2>
               <span>{largeHasAnalysisOverview('type') ? 'provider order with local pin and reorder preferences' : 'filter chips affect every display'}</span>
             </div>
             <section class="type-view">

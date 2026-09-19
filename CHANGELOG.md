@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Refresh exact-build acceptance for the navigation candidate: 100 Heritage
+  questions and three local journeys passed. Add separate service-browser CI
+  coverage and full-corpus conceptual-filter browser checks. An actual DWP
+  check exposed a producer topic-field mismatch, corrected in the additive
+  producer projection; the regression now compares hydrated record counts.
+
+
 - Preserve exact Markdown alternates when newly linked reading pages come from
   outside the ordinary copied documentation directories, including the changelog
   and remote-service guides. Validate those links in the assembled site.

@@ -18,6 +18,8 @@ export type SmallTimelineRow = {
 const PUBLISHED = ['schema:datePublished', 'https://schema.org/datePublished', 'http://schema.org/datePublished', 'datePublished'];
 const ISSUED = ['dcterms:issued', 'http://purl.org/dc/terms/issued', 'issued'];
 const ABOUT = ['schema:about', 'https://schema.org/about', 'http://schema.org/about', 'about'];
+const MONTH_FORMAT = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', timeZone: 'UTC' });
+const DAY_FORMAT = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
 function record(value: unknown): Record<string, unknown> | undefined {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -43,9 +45,7 @@ function parseDate(value: string, label: string): SmallTimelineDate | undefined 
   calendar.setUTCFullYear(year, month - 1, day);
   if (year < 1 || calendar.getUTCFullYear() !== year || calendar.getUTCMonth() !== month - 1 || calendar.getUTCDate() !== day) return undefined;
   const precision: DatePrecision = match[4] ? 'timestamp' : match[3] ? 'day' : match[2] ? 'month' : 'year';
-  const display = precision === 'year' ? match[1] : new Intl.DateTimeFormat('en-GB', {
-    year: 'numeric', month: 'long', ...(match[3] ? { day: 'numeric' as const } : {}), timeZone: 'UTC'
-  }).format(calendar);
+  const display = precision === 'year' ? match[1] : (match[3] ? DAY_FORMAT : MONTH_FORMAT).format(calendar);
   return { value, display, precision, label };
 }
 

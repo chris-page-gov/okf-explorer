@@ -664,6 +664,8 @@ export type LargeFacetAnalysis = {
   key: string;
   label: string;
   description?: string;
+  /** Optional producer-declared discovery coverage; not legal applicability. */
+  classification?: import('./viewer/facetClassification').FacetClassification;
   coverage: number;
   cardinality: number;
   top_share: number;

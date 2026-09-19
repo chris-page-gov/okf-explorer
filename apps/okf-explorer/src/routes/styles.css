@@ -3263,6 +3263,12 @@ input:focus {
   gap: 6px;
 }
 
+.timeline-evidence-date { display: grid; gap: 4px; align-content: start; max-width: 20rem; }
+.timeline-evidence-date small { display: block; font-size: .75rem; color: var(--muted); }
+.timeline-evidence-date summary { cursor: pointer; font-size: .75rem; }
+.timeline-role-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.timeline-role-filter select { min-height: 40px; max-width: 100%; }
+
 .release-year-list {
   display: grid;
   gap: 5px;

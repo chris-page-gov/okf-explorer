@@ -1,6 +1,6 @@
 # Decision: bounded evidence delivery and stateless review
 
-Date: 19 September 2026. Status: accepted for the version 0.3.0 candidate;
+Date: 19 September 2026. Status: accepted for version 0.3.0;
 publication and client observations are recorded separately.
 
 ## Problem
