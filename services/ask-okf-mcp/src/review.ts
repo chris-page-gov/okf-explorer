@@ -95,6 +95,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
   };
   const invalidate = () => {
     generation++; recipe = null; current = null; output.hidden = true; records.replaceChildren(); recordSummaries.clear(); clearRead();
+    element('replay-link').replaceChildren();
     status.textContent = 'Question or version changed. Recreate evidence to make a new context.';
     element('recipe-info').textContent = 'This will create a new context, rather than replay the shared identity.';
   };
@@ -154,6 +155,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
   element<HTMLFormElement>('review-form').addEventListener('submit', async event => {
     event.preventDefault(); const run = ++generation;
     output.hidden = true; current = null; records.replaceChildren(); recordSummaries.clear(); clearRead(); status.textContent = 'Verifying source files and recreating evidence…';
+    element('replay-link').replaceChildren();
     const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value };
     try {
       const result = await call('ask_okf_manifest', request);

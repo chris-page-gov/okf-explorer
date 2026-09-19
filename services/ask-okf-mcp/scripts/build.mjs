@@ -33,7 +33,7 @@ for (const path of [...new Set([...Object.keys(worker.metafile.inputs).filter(p 
   const localPath = path.replace(/^raw:/, '');
   inputs[localPath] = hash(await readFile(localPath));
 }
-const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.3.0', inputs,
+const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.3.1', inputs,
   outputs: { 'dist/server/index.js': hash(await readFile('dist/server/index.js')), 'dist/node.mjs': hash(await readFile('dist/node.mjs')) },
   worker_node_dependencies: false, bundle_version: corpusRelease.version,
   historical_bundle_versions: ['efb05c66616a9cd4328a86cf412780fe7bc7cf0b'] };

@@ -136,6 +136,7 @@ test('built script loads inert replay, exact source evidence, metadata, diagnost
   await expect(page.locator('#read-data')).toHaveText('');
   await expect(page.locator('#read-source')).toHaveText('');
   await expect(page.locator('#read-heading')).toHaveText('Evidence reader');
+  await expect(page.locator('#replay-link a')).toHaveCount(0);
   await expect(page.locator('#status')).toContainText('Recreate evidence to make a new context');
   expect(calls).toHaveLength(callsBeforeEdit);
   const buildReceipt = await readFile(path.resolve('../../services/ask-okf-mcp/dist/build-receipt.json'));
@@ -158,6 +159,40 @@ test('built script loads inert replay, exact source evidence, metadata, diagnost
       : 'Local built service with historical vendored source; no live deployment, full-corpus network or AI-answer verification.',
       'Sufficient is the preserved historical research profile status, not current legal or individual entitlement assurance.']
   }, null, 2) + '\n');
+  expect(errors).toEqual([]);
+});
+
+test('replay links are removed when changing or recreating a context and regenerated for the new identity', async ({ page }) => {
+  const errors = consoleErrors(page);
+  await page.goto('/review/#' + encoded);
+  const { result: original } = await invoke(page, 'ask_okf_manifest', () => page.getByRole('button', { name: 'Recreate evidence' }).click());
+  expect(original.context_id).toBe(contextId);
+  await page.getByRole('button', { name: 'Show replay link' }).click();
+  await expect(page.locator('#replay-link a')).toHaveCount(1);
+
+  const changedQuestion = 'Explain the effect of hospital admission on State Pension Credit.';
+  await page.getByLabel('General question').fill(changedQuestion);
+  await expect(page.locator('#replay-link a')).toHaveCount(0);
+  const { result: changed } = await invoke(page, 'ask_okf_manifest', () => page.getByRole('button', { name: 'Recreate evidence' }).click());
+  expect(changed.context_id).not.toBe(original.context_id);
+  await expect(page.locator('#identity')).toContainText(changed.context_id);
+  await expect(page.locator('#replay-link a')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Show replay link' }).click();
+  const link = new URL((await page.locator('#replay-link a').getAttribute('href'))!);
+  const changedRecipe = JSON.parse(Buffer.from(link.hash.slice(1), 'base64url').toString());
+  expect(changedRecipe.context_id).toBe(changed.context_id);
+  expect(changedRecipe.question).toBe(changedQuestion);
+  expect(changedRecipe.version).toBe(version);
+
+  // Submitting again also clears an existing link, even without an input event.
+  const { result: recreated } = await invoke(page, 'ask_okf_manifest', () => page.getByRole('button', { name: 'Recreate evidence' }).click());
+  expect(recreated.context_id).toBe(changed.context_id);
+  await expect(page.locator('#replay-link a')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Show replay link' }).click();
+  await expect(page.locator('#replay-link a')).toHaveCount(1);
+  await page.getByLabel('Approved source version').selectOption({ index: 0 });
+  await expect(page.locator('#replay-link a')).toHaveCount(0);
+  await expect(page.locator('#context')).toBeHidden();
   expect(errors).toEqual([]);
 });
 

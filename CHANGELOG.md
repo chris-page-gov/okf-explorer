@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Include the bounded, transitive Markdown reading closure in the documentation
+  cache identity, so changes to linked service guides and changelogs rebuild
+  their rendered pages and exact-source alternates. Keep unrelated service
+  sources outside that cache dependency.
+
+- Correct a stale replay link in Ask OKF service 0.3.1: changing the question or
+  source version, or starting another replay, removes the old link. Browser
+  regression checks that a newly requested link matches the new context.
+  Preserve 0.3.0 deployment evidence and verify the corrected runtime separately.
+
 - Extend conceptual-navigation acceptance with an optional published-bundle
   journey. Check real network responses against pinned local files and verify
   the deployed application manifest, while retaining the offline fixture mode.

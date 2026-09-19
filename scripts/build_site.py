@@ -1911,6 +1911,9 @@ def component_source_fingerprint(
             ROOT / "okf.config.json",
             *(ROOT / name for name in PUBLIC_ROOT_FILES),
             *(ROOT / name for name in PUBLIC_DIRS),
+            # Reading pages and their raw Markdown alternates also include
+            # linked dependencies outside those copied directories.
+            *readable_markdown_sources(),
         ]
 
         def include(relative: Path) -> bool:

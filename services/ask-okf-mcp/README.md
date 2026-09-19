@@ -5,6 +5,11 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
+[Service changelog](CHANGELOG.md). Version 0.3.1 clears displayed replay links
+when a question or source version changes, or another replay starts. A link is
+shown again only when requested for the current verified context. Earlier
+version 0.3.0 observations remain historical evidence, not acceptance of this fix.
+
 ## Run and check
 
 Use Node 22 or later from the repository root:
