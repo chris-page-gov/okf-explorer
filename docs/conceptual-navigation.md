@@ -113,6 +113,16 @@ The default descriptor is `okf-review-context.json`. Set
 entire producer corpus into the application source or static directory for this
 check. A local observation does not replace public deployment verification.
 
+For a published journey, also supply `OKF_CONCEPT_BUNDLE_URL` with the pinned
+HTTPS descriptor URL, `PLAYWRIGHT_BASE_URL` with the published Explorer URL,
+and `OKF_CONCEPT_APP_MANIFEST_URL` and `OKF_CONCEPT_APP_MANIFEST_SHA256` for the
+expected deployed application. Keep the external local corpus directory as the
+independent expected input. This mode uses real network responses without
+interception, checks the published descriptor and observed corpus files against
+those local bytes, and verifies every file in the application manifest. The
+receipt distinguishes a public application journey from a published bundle
+tested using a local application.
+
 The [changelog](../CHANGELOG.md) records user-visible changes. The
 [domain-profile examples](prompts/domain-profile-examples.md) explain how a
 producer discovers terminology, scope and evidence before generating facets.

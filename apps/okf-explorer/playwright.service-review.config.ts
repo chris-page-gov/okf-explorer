@@ -1,16 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const observationOutput = process.env.ASK_OKF_REVIEW_OUTPUT || '../../output/playwright/service-review';
+
 /** Exercise the built read-only service, independently of the Explorer Vite app. */
 export default defineConfig({
   testDir: './tests/service-review',
-  outputDir: './test-results/service-review',
+  outputDir: process.env.ASK_OKF_REVIEW_OUTPUT ? `${observationOutput}/test-results` : './test-results/service-review',
+  metadata: { observationOutput, externalService: Boolean(process.env.ASK_OKF_REVIEW_BASE_URL) },
   fullyParallel: false,
   workers: 1,
   timeout: 45_000,
   expect: { timeout: 10_000 },
   forbidOnly: Boolean(process.env.CI),
   retries: 0,
-  reporter: [['line'], ['json', { outputFile: '../../output/playwright/service-review/results.json' }]],
+  reporter: [['line'], ['json', { outputFile: `${observationOutput}/results.json` }]],
   use: {
     baseURL: process.env.ASK_OKF_REVIEW_BASE_URL || 'http://127.0.0.1:8787',
     viewport: { width: 1280, height: 900 },

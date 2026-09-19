@@ -13,6 +13,7 @@ const env = (globalThis as unknown as { process: { env: Record<string, string | 
 const corpusRoot = env.OKF_CONCEPT_CORPUS_ROOT;
 const descriptorPath = env.OKF_CONCEPT_DESCRIPTOR || 'okf-review-context.json';
 const origin = 'https://concept-corpus.fixture.test';
+const publishedBundleUrl = env.OKF_CONCEPT_BUNDLE_URL;
 const hash = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 
 test('producer conceptual facets preserve actual corpus selection across Reader, Graph and Timeline', async ({ page }, testInfo) => {
@@ -27,6 +28,20 @@ test('producer conceptual facets preserve actual corpus selection across Reader,
   const json = async (reference: string) => JSON.parse(await readFile(localPath(reference), 'utf8'));
   const descriptorBytes = await readFile(localPath(descriptorPath));
   const descriptor = JSON.parse(descriptorBytes.toString('utf8'));
+  const bundleUrl = publishedBundleUrl || `${origin}/${descriptorPath}`;
+  const publishedBase = publishedBundleUrl ? new URL('.', publishedBundleUrl) : null;
+  if (publishedBundleUrl) {
+    const url = new URL(publishedBundleUrl);
+    expect(url.protocol).toBe('https:');
+    expect(url.username || url.password).toBe('');
+    expect(env.OKF_CONCEPT_APP_MANIFEST_URL, 'Published journeys require an app build manifest').toBeTruthy();
+    expect(env.OKF_CONCEPT_APP_MANIFEST_SHA256, 'Published journeys require the expected app manifest digest').toBeTruthy();
+    expect(String(testInfo.project.use.baseURL).startsWith(new URL('.', env.OKF_CONCEPT_APP_MANIFEST_URL).href),
+      'The app manifest must belong to the tested Explorer site').toBe(true);
+    const response = await page.request.get(publishedBundleUrl);
+    expect(response.ok()).toBe(true);
+    expect(hash(await response.body()), 'Published descriptor differs from the local acceptance input').toBe(hash(descriptorBytes));
+  }
   const manifest = await json(descriptor.entrypoints.data_manifest);
   const analysis = await json(manifest.indexes.analysis);
   const facets = await json(manifest.indexes.facets);
@@ -59,22 +74,41 @@ test('producer conceptual facets preserve actual corpus selection across Reader,
     appBuild = { manifest_sha256: hash(bytes), tree_sha256: build.tree_sha256, verified_materials: build.materials.length };
   }
   const served = new Map<string, { path: string; bytes: number; sha256: string }>();
+  const publicReadChecks: Promise<void>[] = [];
+  const publicReadErrors: string[] = [];
   const consoleErrors: string[] = [];
   page.on('pageerror', error => consoleErrors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
-  await page.context().route(`${origin}/**`, async route => {
-    const reference = decodeURIComponent(new URL(route.request().url()).pathname.slice(1));
-    const bytes = await readFile(localPath(reference));
-    served.set(reference, { path: reference, bytes: bytes.length, sha256: hash(bytes) });
-    await route.fulfill({ status: 200, body: bytes, headers: {
-      'content-type': reference.endsWith('.gz') ? 'application/gzip' : reference.endsWith('.md') ? 'text/markdown' : 'application/json',
-      'access-control-allow-origin': '*'
-    } });
-  });
+  if (publishedBase) {
+    // Observe actual HTTPS responses; never intercept or substitute public bytes.
+    page.on('response', response => {
+      if (!response.url().startsWith(publishedBase.href)) return;
+      publicReadChecks.push((async () => {
+        const responsePath = decodeURIComponent(response.url().slice(publishedBase.href.length).split(/[?#]/)[0]);
+        const reference = path.posix.join(path.posix.dirname(descriptorPath), responsePath);
+        expect(response.ok(), reference).toBe(true);
+        const bytes = await response.body();
+        const expected = await readFile(localPath(reference));
+        expect(bytes.length, reference).toBe(expected.length);
+        expect(hash(bytes), reference).toBe(hash(expected));
+        served.set(reference, { path: reference, bytes: bytes.length, sha256: hash(bytes) });
+      })().catch(error => { publicReadErrors.push(String(error)); }));
+    });
+  } else {
+    await page.context().route(`${origin}/**`, async route => {
+      const reference = decodeURIComponent(new URL(route.request().url()).pathname.slice(1));
+      const bytes = await readFile(localPath(reference));
+      served.set(reference, { path: reference, bytes: bytes.length, sha256: hash(bytes) });
+      await route.fulfill({ status: 200, body: bytes, headers: {
+        'content-type': reference.endsWith('.gz') ? 'application/gzip' : reference.endsWith('.md') ? 'text/markdown' : 'application/json',
+        'access-control-allow-origin': '*'
+      } });
+    });
+  }
   await page.setViewportSize({ width: 1440, height: 1050 });
   const observations = [];
   for (const row of cases) {
-    await page.goto(`?bundle=${encodeURIComponent(`${origin}/${descriptorPath}`)}#overview`);
+    await page.goto(`?bundle=${encodeURIComponent(bundleUrl)}#overview`);
     await expect(page.locator('.title-block')).toContainText(descriptor.title);
     const facet = page.locator(`[data-facet-key="${row.key}"]`);
     const toggle = facet.locator('.facet-toggle');
@@ -117,15 +151,24 @@ test('producer conceptual facets preserve actual corpus selection across Reader,
     observations.push({ ...row, views: [reader, { view: 'graph', scope: expectedScope }, { view: 'timeline', scope: expectedScope }],
       date_group_counts: dateGroupCounts, rendered_audit_series: auditRecords, rendered_source_series: sourceRecords, targeted_accessibility_violations: accessibility.violations });
   }
+  await Promise.all(publicReadChecks);
+  expect(publicReadErrors).toEqual([]);
+  if (publishedBundleUrl) expect(served.has(descriptorPath), 'Browser loaded the published descriptor').toBe(true);
   expect(consoleErrors).toEqual([]);
+  const publicApp = publishedBundleUrl && String(testInfo.project.use.baseURL).startsWith('https://')
+    && String(env.OKF_CONCEPT_APP_MANIFEST_URL).startsWith('https://');
   await writeFile(path.join(output, 'observation.json'), JSON.stringify({
     schema: 'okf-concept-navigation-browser-observation.v1', observed_at: new Date().toISOString(),
-    status: 'passed', environment: 'local-browser-candidate', browser: testInfo.project.name,
+    status: 'passed', environment: publicApp ? 'public-browser-deployment' : publishedBundleUrl ? 'published-bundle-local-browser-candidate' : 'local-browser-candidate', browser: testInfo.project.name,
     app_build: appBuild,
-    descriptor: { path: descriptorPath, sha256: hash(descriptorBytes), snapshot: descriptor.snapshot },
+    ...(publishedBundleUrl ? { app_url: testInfo.project.use.baseURL, app_manifest_url: env.OKF_CONCEPT_APP_MANIFEST_URL } : {}),
+    descriptor: { path: descriptorPath, sha256: hash(descriptorBytes), snapshot: descriptor.snapshot, ...(publishedBundleUrl ? { url: publishedBundleUrl } : {}) },
     observations, console_errors: consoleErrors, served_files: [...served.values()].sort((a, b) => a.path.localeCompare(b.path)),
-    limitations: ['Local candidate only; this is not a public deployment receipt.',
-      'Corpus bytes are served unchanged by a bounded local test fixture; gzip file bytes retain their declared hashes.',
+    limitations: [...(publishedBundleUrl ? [
+      publicApp ? 'Dated public browser observation of the stated URLs and hashes; not perpetual deployment assurance.' : 'Published corpus with a local application candidate; not a public application deployment receipt.',
+      'Corpus responses came directly from the published URLs without interception and were checked against the exact local acceptance files.'
+    ] : ['Local candidate only; this is not a public deployment receipt.',
+      'Corpus bytes are served unchanged by a bounded local test fixture; gzip file bytes retain their declared hashes.']),
       'Accessibility checks cover facet and Timeline controls only, not the whole application.',
       'Classification discovery is not specialist-reviewed legal applicability.']
   }, null, 2) + '\n');

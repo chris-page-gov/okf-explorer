@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Extend conceptual-navigation acceptance with an optional published-bundle
+  journey. Check real network responses against pinned local files and verify
+  the deployed application manifest, while retaining the offline fixture mode.
+
+- Keep browser observations of an external Ask OKF service in a separately
+  selectable output directory. Receipts distinguish the tested target from the
+  local build reference and leave deployment identity to its own receipt.
+
 - Refresh exact-build acceptance for the navigation candidate: 100 Heritage
   questions and three local journeys passed. Add separate service-browser CI
   coverage and full-corpus conceptual-filter browser checks. An actual DWP

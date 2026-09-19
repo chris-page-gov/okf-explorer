@@ -13,7 +13,6 @@ const question = 'A claimant is imprisoned. Explain the effect on JSA, IS, State
 const contextId = 'urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e';
 const recipe = { bundle: 'okf-dwp', question, version, context_id: contextId };
 const encoded = Buffer.from(JSON.stringify(recipe)).toString('base64url');
-const output = path.resolve('../../output/playwright/service-review');
 const sha256 = (value: string | Uint8Array) => createHash('sha256').update(value).digest('hex');
 
 function decode(text: string) {
@@ -41,6 +40,8 @@ function consoleErrors(page: Page) {
 }
 
 test('built script loads inert replay, exact source evidence, metadata, diagnostics and bounded parts', async ({ page }, testInfo) => {
+  const output = path.resolve(testInfo.config.metadata.observationOutput);
+  const externalService = testInfo.config.metadata.externalService === true;
   const errors = consoleErrors(page);
   const calls: { name: string; section?: string; offset?: number }[] = [];
   page.on('request', request => {
@@ -137,22 +138,27 @@ test('built script loads inert replay, exact source evidence, metadata, diagnost
   await expect(page.locator('#read-heading')).toHaveText('Evidence reader');
   await expect(page.locator('#status')).toContainText('Recreate evidence to make a new context');
   expect(calls).toHaveLength(callsBeforeEdit);
-  expect(errors).toEqual([]);
-
   const buildReceipt = await readFile(path.resolve('../../services/ask-okf-mcp/dist/build-receipt.json'));
   await writeFile(path.join(output, `${testInfo.project.name}-receipt.json`), JSON.stringify({
     schema: 'okf-service-review-browser-observation.v1', observed_at: new Date().toISOString(),
     browser: testInfo.project.name, base_url: testInfo.project.use.baseURL ?? 'http://127.0.0.1:8787',
-    built_service_receipt_sha256: sha256(buildReceipt), version, context_id: contextId,
+    target: externalService ? 'external-service' : 'local-built-service',
+    functional_assertions: 'passed', console_gate: errors.length === 0 ? 'passed' : 'failed',
+    test_candidate_build_receipt_sha256: sha256(buildReceipt),
+    deployment_identity: externalService ? 'Not established by this browser test; see the separately retained deployment and SDK receipts.' : 'Local candidate build receipt.',
+    version, context_id: contextId,
     selected_records: 52, first_catalogue_count: firstPageCount, record_text_id: source.id,
     record_text_sha256: source.text_sha256, package_sha256: firstPart.content_sha256,
     assertions: ['inert-fragment', 'explicit-submit', 'catalogue-pagination', 'exact-source-text-hash',
       'selected-record-title-identity-and-source', 'provenance-and-inclusion-reasons', 'diagnostics',
       'bounded-next-part', 'replay-link', 'stale-question-invalidated'],
     calls, console_errors: errors,
-    limitations: ['Local built service with historical vendored source; no live deployment, full-corpus network or AI-answer verification.',
+    limitations: [externalService
+      ? 'External service using the historical vendored profile; no full-corpus network or AI-answer verification. The local candidate build receipt identifies the test reference, not the remote deployment.'
+      : 'Local built service with historical vendored source; no live deployment, full-corpus network or AI-answer verification.',
       'Sufficient is the preserved historical research profile status, not current legal or individual entitlement assurance.']
   }, null, 2) + '\n');
+  expect(errors).toEqual([]);
 });
 
 test('question change discards a late replay response', async ({ page }) => {
