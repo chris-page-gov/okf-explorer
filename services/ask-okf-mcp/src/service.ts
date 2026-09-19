@@ -15,12 +15,15 @@ export const DEFAULT_ORIGINS = [PUBLIC_ORIGIN, 'https://chatgpt.com', 'https://c
 const METHODS = new Set(['initialize', 'notifications/initialized', 'notifications/cancelled', 'ping', 'server/discover', 'tools/list', 'tools/call']);
 const encoder = new TextEncoder();
 
+type FailureStage = 'source_load' | 'source_transport' | 'source_integrity' | 'source_decode' | 'context_assembly';
+
 export type Diagnostic = {
   event: 'ask_okf' | 'http'; tool?: 'ask_okf'; service_version: string; bundle_version: string;
   duration_ms: number; status: string; error_code?: string; records_considered?: number;
   records_selected?: number; relationships_considered?: number; relationships_selected?: number;
   traversed_path_steps?: number; package_bytes?: number; truncated?: boolean;
   corpus_records_available?: number;
+  error_stage?: FailureStage;
 };
 export type ServiceOptions = {
   loadContext: (version?: string) => Promise<ApprovedSource>;
@@ -30,6 +33,20 @@ export type ServiceOptions = {
   diagnostics?: (entry: Diagnostic) => void;
 };
 const error = (status: number, message: string, code = -32600) => Response.json({ jsonrpc: '2.0', id: null, error: { code, message } }, { status });
+
+/** Fixed categories only: never put exception text, source URLs or questions into diagnostics. */
+function failureStage(cause: unknown, stage: FailureStage): FailureStage {
+  if (stage === 'source_load') return stage;
+  if (cause instanceof Error && (
+    cause.message === 'Corpus asset exceeds its binding.'
+    || cause.message === 'Corpus asset integrity check failed.'
+    || cause.message === 'Context corpus file exceeds its byte binding'
+    || cause.message.startsWith('Invalid context corpus: transfer integrity failed:')
+    || cause.message.startsWith('Invalid context corpus: decoded integrity failed:')
+  )) return 'source_integrity';
+  if (stage === 'context_assembly' && cause instanceof SyntaxError) return 'source_decode';
+  return stage;
+}
 
 async function boundedBody(request: Request): Promise<string> {
   const declared = request.headers.get('content-length');
@@ -82,13 +99,22 @@ export function createAskService(options: ServiceOptions) {
       _meta: { securitySchemes: [{ type: 'noauth' }], 'okf/untrustedContent': true }
     }, async ({ question, budget, version = BUNDLE_VERSION }) => {
       const started = performance.now();
+      let stage: FailureStage = 'source_load';
       try {
         const source = await options.loadContext(version);
+        stage = 'context_assembly';
         if ('manifest' in source && !options.fetchCorpus && !corpusFetchers.has(source.binding.index_sha256)) {
           corpusFetchers.set(source.binding.index_sha256, createCorpusFetcher(source));
         }
+        const fetchCorpus: typeof fetch = async (input, init) => {
+          stage = 'source_transport';
+          const fetcher = options.fetchCorpus ?? corpusFetchers.get(source.binding.index_sha256)!;
+          const response = await fetcher(input, init);
+          stage = 'context_assembly';
+          return response;
+        };
         const result = 'manifest' in source
-          ? await assembleCorpusContext(source.manifest, source.binding, question, budget ?? {}, options.fetchCorpus ?? corpusFetchers.get(source.binding.index_sha256)!)
+          ? await assembleCorpusContext(source.manifest, source.binding, question, budget ?? {}, fetchCorpus)
           : await assembleContext(source.index, question, budget, source.binding);
         const json = JSON.stringify(result);
         diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started),
@@ -100,8 +126,8 @@ export function createAskService(options: ServiceOptions) {
           traversed_path_steps: result.selected.reduce((total, item) => total + item.paths.reduce((sum, path) => sum + path.assertions.length, 0), 0),
           package_bytes: encoder.encode(json).byteLength, truncated: result.budget.truncated }, version);
         return { structuredContent: result, content: [{ type: 'text' as const, text: json }] };
-      } catch {
-        diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started), status: 'error', error_code: 'context_unavailable' }, version);
+      } catch (cause) {
+        diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started), status: 'error', error_code: 'context_unavailable', error_stage: failureStage(cause, stage) }, version);
         return { isError: true, content: [{ type: 'text' as const, text: 'The approved context could not be verified or assembled. No evidence package is available.' }] };
       }
     });

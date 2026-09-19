@@ -110,7 +110,8 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
 
 test('unverified corpus asset never falls back to historical evidence or model knowledge', async () => {
   const f = await fixture(); f.files.set('base-index.json', encoder.encode('{}'));
-  const service = createAskService({ loadContext: async () => f.source, fetchCorpus: f.fetcher });
+  const log: Diagnostic[] = [];
+  const service = createAskService({ loadContext: async () => f.source, fetchCorpus: f.fetcher, diagnostics: row => log.push(row) });
   try {
     const response = await service.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
@@ -119,8 +120,49 @@ test('unverified corpus asset never falls back to historical evidence or model k
     const result = JSON.parse(raw.startsWith('event:') ? raw.split('\n').find(line => line.startsWith('data: '))!.slice(6) : raw).result;
     assert.equal(result.isError, true); assert.equal(result.structuredContent, undefined);
     assert.equal(f.requested.length, 1);
+    assert.equal(log.find(row => row.error_code === 'context_unavailable')?.error_stage, 'source_integrity');
   } finally { await service.close(); }
 });
+
+for (const stage of ['source_load', 'source_transport', 'source_decode', 'context_assembly'] as const) {
+  test(`safe ${stage} diagnostic excludes arbitrary exception text and input`, async () => {
+    const f = await fixture(); const log: Diagnostic[] = [];
+    const secret = 'SYNTHETIC_PRIVATE_MARKER https://example.test/private?token=fixture';
+    if (stage === 'source_decode') {
+      const bytes = encoder.encode(`{"invalid": ${secret}}`);
+      f.files.set('base-index.json', bytes);
+      f.source.manifest.base_index.bytes = bytes.length;
+      f.source.manifest.base_index.sha256 = createHash('sha256').update(bytes).digest('hex');
+    }
+    const service = createAskService({
+      loadContext: async () => {
+        if (stage === 'source_load') throw new Error(secret);
+        if (stage === 'context_assembly') return { ...f.source, binding: { ...f.source.binding, index_url: secret } };
+        return f.source;
+      },
+      fetchCorpus: async (input, init) => {
+        if (stage === 'source_transport') throw new TypeError(secret);
+        return f.fetcher(input, init);
+      }, diagnostics: row => log.push(row)
+    });
+    try {
+      const response = await service.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
+          name: 'ask_okf', arguments: { bundle: 'okf-dwp', question: 'SYNTHETIC_QUERY_MARKER' }
+        } }) }));
+      const raw = await response.text();
+      const result = JSON.parse(raw.startsWith('event:') ? raw.split('\n').find(line => line.startsWith('data: '))!.slice(6) : raw).result;
+      assert.equal(result.isError, true); assert.equal(result.structuredContent, undefined);
+      const diagnostic = log.find(row => row.error_code === 'context_unavailable');
+      assert.equal(diagnostic?.error_stage, stage);
+      assert.ok(!JSON.stringify(log).includes('SYNTHETIC_'));
+      assert.ok(!JSON.stringify(log).includes('example.test'));
+      assert.ok(!raw.includes(secret));
+      assert.ok(!raw.includes('SYNTHETIC_QUERY_MARKER'));
+    } finally { await service.close(); }
+  });
+}
 
 test('public asset cache accepts only pinned file identities and reuses verified bytes', async () => {
   const f = await fixture();

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Record fixed failure stages for remote evidence assembly without logging
+  questions, source URLs or exception text. Refresh exact-app Heritage and
+  non-DWP regression receipts after the corpus extension; preserve their source
+  snapshots and existing context results.
+
 - Extend the remote MCP service to an approved immutable full DMG and ADM
   corpus, retain the original profile by version and cache only verified public
   source files. Add an accessible landing page with beginner guidance and clear
