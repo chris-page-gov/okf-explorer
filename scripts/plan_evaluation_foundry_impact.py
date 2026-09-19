@@ -36,6 +36,11 @@ REPOSITORY_JOURNEYS = frozenset({
     "evaluation/okf-explorer/journeys.json",
     "evaluation/heritage/journeys.json",
 })
+# The remote adapter is independently tested by the required remote-mcp CI job.
+# It consumes the context engine but does not produce Heritage app/fixture bytes.
+# Keep this repository extension outside the byte-frozen Heritage profile.
+REMOTE_MCP_ROOT = "services/ask-okf-mcp/"
+REMOTE_MCP_FILES = frozenset({"scripts/stage_remote_mcp_site.mjs"})
 JOB_IDS = (
     "python",
     "app",
@@ -545,6 +550,20 @@ def build_impact_plan(
     explanations: list[dict[str, Any]] = []
 
     for path in normalized_paths:
+        if (
+            profile.get("profile_id") == "heritage-coventry-warwickshire-v1"
+            and (path.startswith(REMOTE_MCP_ROOT) or path in REMOTE_MCP_FILES)
+        ):
+            rule_id = "REPOSITORY-REMOTE-MCP"
+            matched_rule_ids.add(rule_id)
+            explanations.append(
+                {
+                    "path": path,
+                    "rule_ids": [rule_id],
+                    "reason": "Independent remote MCP adapter: required remote-mcp CI tests and build apply; this path does not change Heritage app or fixture bytes.",
+                }
+            )
+            continue
         matched = [
             rule
             for rule in rules

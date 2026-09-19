@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-09-06",
+  "modified": "2026-09-19",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -256,6 +256,30 @@
       {
         "path": "PUBLICATION.md",
         "role": "release-authorisation"
+      },
+      {
+        "path": "services/ask-okf-mcp/src/**",
+        "role": "generator"
+      },
+      {
+        "path": "services/ask-okf-mcp/scripts/**",
+        "role": "generator"
+      },
+      {
+        "path": "services/ask-okf-mcp/test/**",
+        "role": "test"
+      },
+      {
+        "path": "services/ask-okf-mcp/vendor/**",
+        "role": "source-envelope"
+      },
+      {
+        "path": "services/ask-okf-mcp/package.json",
+        "role": "policy"
+      },
+      {
+        "path": "services/ask-okf-mcp/package-lock.json",
+        "role": "policy"
       }
     ],
     "generated": [
@@ -450,6 +474,19 @@
         "check_command_ids": [
           "check-learning-example"
         ]
+      },
+      {
+        "path": "services/ask-okf-mcp/dist/**",
+        "role": "other",
+        "plane": "application",
+        "required": false,
+        "build_command_ids": [
+          "build-remote-mcp"
+        ],
+        "check_command_ids": [
+          "check-remote-mcp",
+          "test-remote-mcp"
+        ]
       }
     ]
   },
@@ -549,12 +586,17 @@
         "runtime"
       ],
       "paths": [
-        "apps/okf-explorer/**"
+        "apps/okf-explorer/**",
+        "services/ask-okf-mcp/**",
+        "scripts/stage_remote_mcp_site.mjs"
       ],
       "command_ids": [
         "check-app",
         "test-app",
-        "build-app"
+        "build-app",
+        "check-remote-mcp",
+        "test-remote-mcp",
+        "build-remote-mcp"
       ]
     },
     {
@@ -953,6 +995,45 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
+      },
+      {
+        "id": "check-remote-mcp",
+        "kind": "check",
+        "planes": [
+          "application"
+        ],
+        "command": "npm --prefix services/ask-okf-mcp run check",
+        "source": "docs/remote-mcp.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "test-remote-mcp",
+        "kind": "test",
+        "planes": [
+          "application"
+        ],
+        "command": "npm --prefix services/ask-okf-mcp test",
+        "source": "docs/remote-mcp.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "build-remote-mcp",
+        "kind": "build",
+        "planes": [
+          "application"
+        ],
+        "command": "npm --prefix services/ask-okf-mcp run build",
+        "source": "docs/remote-mcp.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 10
       }
     ]
   },
@@ -977,7 +1058,8 @@
       "sources/**",
       "tests/**",
       "uk-government-apis/**",
-      "legislation/**"
+      "legislation/**",
+      "services/ask-okf-mcp/**"
     ],
     "documentation_paths": [
       "README.md",

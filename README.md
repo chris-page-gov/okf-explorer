@@ -42,6 +42,10 @@ does not run a model or make a domain decision. The
 semantic, retrieval, traversal, assembly, provenance, boundary and answerability
 checks from lexical search scores and later model-answer assessment.
 
+[Remote Ask OKF](docs/remote-mcp.md) exposes the same context engine to external
+AI clients through a read-only MCP service. The guide separates source coverage,
+transport tests, actual ChatGPT invocation and Voice compatibility.
+
 ## Contribute
 
 Use the [development guide](docs/development.md) for locked setup, local builds,

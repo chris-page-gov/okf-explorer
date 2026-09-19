@@ -96,6 +96,30 @@ jobs:
           --output tests/fixtures/context-study-club/execution.json
           --check
 
+  remote-mcp:
+    needs: adversarial-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '26.7.0'
+          cache: npm
+          cache-dependency-path: services/ask-okf-mcp/package-lock.json
+      - name: Install locked remote service dependencies
+        working-directory: services/ask-okf-mcp
+        run: npm ci --ignore-scripts
+      - name: Check the shared engine adapter types
+        working-directory: services/ask-okf-mcp
+        run: npm run check
+      - name: Test protocol, bundle binding and failure controls
+        working-directory: services/ask-okf-mcp
+        run: npm test
+      - name: Build the remote service from the shared engine
+        working-directory: services/ask-okf-mcp
+        run: npm run build
+
   python-contracts:
     needs: [impact-plan, adversarial-gate, app]
     if: needs.impact-plan.outputs.python == 'true'
@@ -334,6 +358,7 @@ jobs:
       - impact-plan
       - adversarial-gate
       - context-assembly
+      - remote-mcp
       - python-contracts
       - app
       - browser-targeted

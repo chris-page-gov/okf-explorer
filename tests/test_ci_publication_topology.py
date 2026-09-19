@@ -23,6 +23,21 @@ class CiPublicationTopologyTests(unittest.TestCase):
         needs = job.get("needs", [])
         return {needs} if isinstance(needs, str) else set(needs)
 
+    def test_remote_mcp_is_required_and_independent_of_heritage_app(self) -> None:
+        jobs = self.workflow_jobs(".github/workflows/okf-explorer-ci.yml")
+        remote = jobs["remote-mcp"]
+        self.assertEqual({"adversarial-gate"}, self.job_needs(remote))
+        self.assertNotIn("if", remote)
+        self.assertEqual(10, remote["timeout-minutes"])
+        self.assertIn("remote-mcp", self.job_needs(jobs["okf-explorer-ci"]))
+        commands = {
+            step["run"]: step.get("working-directory")
+            for step in remote["steps"] if "run" in step
+        }
+        for command in ("npm ci --ignore-scripts", "npm run check", "npm test", "npm run build"):
+            self.assertEqual("services/ask-okf-mcp", commands[command])
+        self.assertFalse(any("playwright" in command or "heritage" in command for command in commands))
+
     def test_ci_is_impact_planned_parallel_and_fail_closed(self) -> None:
         workflow = self.text(".github/workflows/okf-explorer-ci.yml")
         jobs = self.workflow_jobs(".github/workflows/okf-explorer-ci.yml")
