@@ -9,6 +9,10 @@
 - Keep the remote adapter's locked tests and build in a required CI job. Route
   service-only changes independently from unchanged Heritage browser artefacts,
   while preserving unknown-path failure controls and frozen profile contracts.
+- Deploy the public HTTPS test service and verify complete package equality with
+  two protocol clients. Record actual ChatGPT calls and distinguish its runner's
+  output limit from the assembler's explicit evidence budget. Retain smaller
+  package demonstrations and limitations without changing the shared engine.
 
 - Reject invalid optional review status, original assertion identities and extra alias fields before context assembly or rendering.
 

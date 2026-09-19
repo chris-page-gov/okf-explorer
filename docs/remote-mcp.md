@@ -11,11 +11,54 @@ assembly and AI reasoning.
 
 ## Connection and verification status
 
-The intended test endpoint is `https://ask-okf.crpage.chatgpt.site/okf/mcp`.
-Deployment, full response delivery and ChatGPT invocation must be verified
-against that exact endpoint before describing it as working. A local or Inspector
-test alone is not ChatGPT acceptance. Record the deployment identity and actual
-client observations alongside the raw acceptance packages.
+The public test endpoint is `https://ask-okf.crpage.chatgpt.site/okf/mcp`.
+On 19 September 2026, two independent clients called this endpoint and received
+complete packages identical to direct execution of Explorer's shared engine.
+The current SDK negotiated MCP `2026-07-28`; the other client exercised
+`2025-11-25`. The [retained DWP receipts](https://github.com/chris-page-gov/okf-dwp/tree/675edd0c7f52fe9eb692e75646d467d1b4ecc855/validation/remote-mcp)
+separate protocol delivery, full-package comparison and ChatGPT observations.
+
+The deployed runtime comes from Explorer commit
+`9ee4da64283e119aadde457128ced6291c30bcb9`, exported without a second context
+implementation. Its compiled Worker SHA-256 is
+`9bba73f65de283b60a73f5f7531746af585085e8c6ef32ddd411b0b788cd48f7`.
+Sites deployment `appgdep_6aaea5a30a4081918f4093d11a7743e9` uses source commit
+`623985aa372a797ff9eb618e78cb810b2de0ba23`. The host reserves `/mcp`, so use the
+complete `/okf/mcp` path. A successful GET of the landing page is not a tool call.
+
+### Actual ChatGPT acceptance and delivery limits
+
+The owner's Pro account connected successfully on 19 September. In a text chat,
+GPT-5.6 Sol at Extra High invoked `ask_okf`, and the visible tool card contained
+the requested arguments and governed response. The default imprisonment package
+was too large for complete model access: the model reported host truncation,
+even though the assembler correctly returned `budget.truncated: false`. An
+earlier GPT-6 Pro attempt reported that its returned payload was unavailable.
+Neither attempt establishes full-question answer delivery in ChatGPT.
+
+Explicit smaller budgets demonstrated complete delivery in the same account:
+
+| Question and `max_bytes` | Model-visible result | Boundary |
+| --- | --- | --- |
+| Hospital, `32768` | Context `9fd8b81a090b97977a34558c6fda5154457123ccea1b8e818c2a26b93faa05d3`; 8 records, 0 relationships, 31,017 bytes; no reported host truncation | `insufficient`, core truncation true; retained records are authored concepts, not hospital evidence. |
+| Imprisonment, `98304` | Context `269eb8a525f4fa2df34bc79df9024ba0e2a91a6da2a1081d5d29429a44005017`; 10 records, 11 relationships, 82,299 bytes; no reported host truncation | `insufficient`, core truncation true; four benefit-specific evidence requirements remain unsatisfied. |
+
+These are ordinary budgeted packages from the unchanged engine. The adapter does
+not silently shorten evidence, replace it with an AI summary or upgrade the
+result to sufficient. The reliable current ChatGPT demonstration is a real
+bounded call with visible gaps. Use Explorer or a full-response MCP client for
+the complete default package. Full-question ChatGPT answerability remains open;
+future transport changes need separate acceptance and must preserve provenance.
+
+Further client inspection confirmed that the complete default object reached
+the runner, but its emitted evidence digest was also truncated. The model
+reported an approximately 10,000-token runner display cap without an exposed
+override or persistent object between executions. This is an observation of
+that client mode, not a universal ChatGPT limit. A later response produced a
+source-cited explanation while acknowledging missing middle portions of its
+digest; that useful partial result is not full-context acceptance. The complete
+bounded imprisonment retry did inspect the retained chapter 12 source page,
+its `normalized` status, derived authority, official PDF URL and locator.
 
 The initial approved source is `okf-dwp`, pinned to content revision
 `efb05c66616a9cd4328a86cf412780fe7bc7cf0b`. Its
@@ -35,11 +78,14 @@ gives this route, checked on 19 September 2026:
 2. Open [ChatGPT Plugins](https://chatgpt.com/plugins) and select the plus button.
 3. Give the connection the name **Ask OKF** and a description such as
    “Inspect bounded evidence from the public OKF-DWP demonstration bundle”.
-4. Under **Connection**, enter the verified public HTTPS endpoint including
-   `/mcp`. This public read-only service requires no account credentials.
+4. Under **Connection**, enter
+   `https://ask-okf.crpage.chatgpt.site/okf/mcp` and choose **No Auth**.
+   This public read-only service requires no account credentials.
 5. Review the discovered tool: `ask_okf`. It must be read-only and contain no
    write operations.
-6. Start a new conversation and add the connection from the tools menu.
+6. Complete **Create**, then **Connect** if offered. Start a new conversation,
+   open **Add files and more**, type **Ask OKF** and select the matching plugin.
+   Check that its named pill appears before submitting the question.
 
 Availability depends on account and workspace policy. A Pro subscription is
 not, by itself, evidence that a specific client can connect. Observe connection,
@@ -88,6 +134,17 @@ short summary alone is not equivalent evidence.
 
 ## Reproduce the two acceptance cases
 
+For the tested ChatGPT connection demonstration, use this explicit small-budget
+prompt after selecting **Ask OKF**:
+
+```text
+Call ask_okf once with bundle "okf-dwp", version "efb05c66616a9cd4328a86cf412780fe7bc7cf0b", budget {"max_bytes":32768}, and question "A claimant is admitted to hospital. Explain the effect on JSA, Income Support, State Pension Credit and ESA, distinguishing entitlement, payment and changes in amount, and trace each conclusion to the applicable DWP guidance." Report the returned context_id, evidence_status, selected.length, relationships.length, budget.used, budget.truncated and missing_evidence. Say whether the host truncated the response. Explain only what the evidence establishes; do not use web search, outside knowledge or custody evidence to invent a hospital answer.
+```
+
+The following default-budget cases test the complete service output. The larger
+imprisonment result hit the observed ChatGPT host limit; do not present these
+instructions as a proven complete-answer ChatGPT workflow.
+
 Use a fresh connected conversation. Ask for a real tool call, not a general web
 answer:
 
@@ -114,11 +171,15 @@ Use this exact second question with the same `bundle` and default budget:
 > State Pension Credit and ESA, distinguishing entitlement, payment and changes
 > in amount, and trace each conclusion to the applicable DWP guidance.
 
-The local MCP observation retained 50 records and 115 relationships but no
+The public HTTPS observation retained 50 records and 115 relationships but no
 applicable declared evidence requirement. It reported hospital admission and
 other unresolved terms, with `evidence_status: insufficient`. Those retained
-custody records must not be presented as hospital evidence. Public endpoint and
-ChatGPT observations must be recorded separately.
+custody records must not be presented as hospital evidence.
+
+| Case | Context identity | Remote result |
+| --- | --- | --- |
+| Imprisonment | `urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e` | `sufficient`, 52 records, 127 relationships, no truncation. |
+| Hospital | `urn:sha256:8908ea39720333dd8b580efd48c0f3d6d7892d7f64d0ead2a815e3ab3b9770ac` | `insufficient`, 50 records, 115 relationships, ten missing-evidence entries, no truncation. |
 
 Run both through the remote endpoint, save the unmodified packages and compare
 their identities with direct shared-engine execution. Repeat using an independent

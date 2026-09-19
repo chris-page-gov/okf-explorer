@@ -111,3 +111,29 @@ registry URL, version, snapshot, size and SHA-256 values together. Regenerate th
 Worker and rerun the exact context acceptance checks. Never change a public
 version to serve different bytes. No runtime refresh or mutable branch alias is
 provided.
+
+## Verify a remote deployment
+
+The official SDK acceptance client makes one `ask_okf` call for each exact
+imprisonment and hospital question. It pins MCP `2026-07-28`, validates discovery
+against the canonical input/output schemas and all read-only annotations, then
+compares every returned package field with a fresh call to the unchanged local
+engine. It also checks JSON text parity and the immutable bundle identity
+advertised by `/health`.
+
+Before contacting the endpoint, the verifier checks every recorded build input
+and output digest, requires runtime inputs and build logic to match the recorded
+Git commit, and reproduces the local build byte for byte. It fails on changed
+runtime inputs or a stale receipt. The receipt separately hashes and classifies
+the verifier itself, including an explicitly uncommitted verification script;
+it never presents an arbitrary working tree as committed source.
+
+```sh
+node scripts/verify-remote.mjs --endpoint https://ask-okf.crpage.chatgpt.site/okf/mcp --output /tmp/ask-okf-sdk-verification.json
+```
+
+The small receipt records question and package digests, context identifiers,
+versions, counts, evidence status and timings. It excludes source passages and
+question text. Retain the hosting receipt separately: matching data and a local
+build digest alone do not prove which Worker build was deployed. SDK success is
+also separate from actual ChatGPT and Voice acceptance.
