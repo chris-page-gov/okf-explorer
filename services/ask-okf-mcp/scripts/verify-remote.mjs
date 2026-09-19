@@ -6,7 +6,9 @@ import { fileURLToPath } from 'node:url';
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/client/validators/cf-worker';
 import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { APPROVED_BUNDLE, verifyBundledContext } from '../src/registry.ts';
+import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
+import { APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
+import { createCorpusFetcher } from '../src/corpusFetch.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA } from '../src/contracts.ts';
 
 const args = process.argv.slice(2);
@@ -22,7 +24,9 @@ const serviceRoot = fileURLToPath(new URL('..', import.meta.url));
 const hash = value => createHash('sha256').update(value).digest('hex');
 const indexText = await readFile(new URL('../vendor/okf-dwp-assembly-index.json', import.meta.url), 'utf8');
 const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json', import.meta.url), 'utf8');
-const approved = await verifyBundledContext(indexText, descriptorText);
+const legacy = await verifyBundledContext(indexText, descriptorText);
+const approved = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-corpus-manifest.json', import.meta.url), 'utf8'));
+const corpusFetch = createCorpusFetcher(approved);
 const buildReceiptPath = new URL('../dist/build-receipt.json', import.meta.url);
 const buildReceipt = JSON.parse(await readFile(buildReceiptPath, 'utf8'));
 const repositoryRoot = resolve(serviceRoot, '../..');
@@ -64,8 +68,9 @@ if (health.ready !== true || health.bundle_version !== APPROVED_BUNDLE.version |
   throw new Error('Remote approved bundle identity differs from the comparison source.');
 }
 const cases = [
-  { id: 'imprisonment', question: 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.', expected: 'sufficient' },
-  { id: 'hospital', question: 'A claimant is admitted to hospital. Explain the effect on JSA, Income Support, State Pension Credit and ESA, distinguishing entitlement, payment and changes in amount, and trace each conclusion to the applicable DWP guidance.', expected: 'insufficient' }
+  { id: 'imprisonment', question: 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.', expected: 'insufficient', version: APPROVED_BUNDLE.version },
+  { id: 'hospital', question: 'A claimant is admitted to hospital. Explain the effect on JSA, Income Support, State Pension Credit and ESA, distinguishing entitlement, payment and changes in amount, and trace each conclusion to the applicable DWP guidance.', expected: 'insufficient', version: APPROVED_BUNDLE.version },
+  { id: 'historical-imprisonment', question: 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.', expected: 'sufficient', version: LEGACY_APPROVED_BUNDLE.version }
 ];
 const client = new Client({ name: 'okf-remote-sdk-acceptance', version: '1.0.0' }, {
   versionNegotiation: { mode: { pin: '2026-07-28' } }, jsonSchemaValidator: new CfWorkerJsonSchemaValidator()
@@ -85,10 +90,13 @@ try {
   }
   toolsHash = hash(canonicalJson(tools));
   for (const item of cases) {
-    const direct = await assembleContext(approved.index, item.question, undefined, approved.binding);
+    const historical = item.version === LEGACY_APPROVED_BUNDLE.version;
+    const direct = historical
+      ? await assembleContext(legacy.index, item.question, undefined, legacy.binding)
+      : await assembleCorpusContext(approved.manifest, approved.binding, item.question, {}, corpusFetch);
     const start = performance.now();
     const response = await client.callTool({ name: 'ask_okf', arguments: {
-      bundle: APPROVED_BUNDLE.id, version: APPROVED_BUNDLE.version, question: item.question
+      bundle: APPROVED_BUNDLE.id, version: item.version, question: item.question
     } });
     const duration = Math.round(performance.now() - start);
     const remote = response.structuredContent;
@@ -102,7 +110,7 @@ try {
     if (remote.evidence_status !== item.expected || remote.ai_answer !== null) {
       throw new Error(`Remote ${item.id} evidence boundary is unexpected.`);
     }
-    results.push({ id: item.id, question_sha256: hash(item.question), context_id: remote.context_id,
+    results.push({ id: item.id, bundle_version: item.version, question_sha256: hash(item.question), context_id: remote.context_id,
       package_canonical_sha256: hash(canonicalJson(remote)), package_json_sha256: hash(JSON.stringify(remote)),
       package_bytes: Buffer.byteLength(JSON.stringify(remote)), evidence_status: remote.evidence_status,
       selected_records: remote.selected.length, selected_relationships: remote.relationships.length,

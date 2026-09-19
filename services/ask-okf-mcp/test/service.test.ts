@@ -7,7 +7,7 @@ import { StreamableHTTPClientTransport as LegacyTransport } from '@modelcontextp
 import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/client/validators/cf-worker';
 import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { createAskService, MAX_BODY_BYTES, PUBLIC_ORIGIN, type Diagnostic } from '../src/service.ts';
-import { APPROVED_BUNDLE, BUNDLE_VERSION, verifyBundledContext } from '../src/registry.ts';
+import { LEGACY_APPROVED_BUNDLE as APPROVED_BUNDLE, LEGACY_BUNDLE_VERSION as BUNDLE_VERSION, verifyBundledContext } from '../src/registry.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA, validator } from '../src/contracts.ts';
 
 const question = 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.';
@@ -199,7 +199,14 @@ test('host-compatible /okf/mcp alias returns the same complete package as /mcp',
     assert.equal(alias.status, 200);
     assert.equal(await alias.text(), await primary.text());
     const landing = await s.fetch(new Request(`${PUBLIC_ORIGIN}/`));
-    assert.match(await landing.text(), /MCP endpoint: \/okf\/mcp/);
+    const html = await landing.text();
+    assert.match(html, /MCP endpoint: <code>\/okf\/mcp<\/code>/);
+    assert.match(html, /bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752%2Ffull-dmg%2Fokf-corpus-context.json/);
+    assert.match(html, /efb05c66616a9cd4328a86cf412780fe7bc7cf0b%2Ffull-dmg%2Fokf-explorer.json/);
+    assert.match(html, /19,090 measured pages/);
+    assert.match(html, /Discovery packages remain <strong>insufficient<\/strong>/);
+    assert.match(html, /405 Method Not Allowed/);
+    assert.equal(landing.headers.get('content-type'), 'text/html; charset=utf-8');
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'GET' }))).status, 405);
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp-other`, { method: 'GET' }))).status, 404);
   } finally { await s.close(); }

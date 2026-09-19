@@ -42,6 +42,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/endpoint-label-index.spec.ts'
   },
+  relationship_pagination: {
+    family: 'ui',
+    file: 'tests/ui/relationship-pagination.spec.ts'
+  },
   exploratory_publication: {
     family: 'ui',
     file: 'tests/ui/exploratory-publication.spec.ts'
@@ -70,8 +74,8 @@ const THREE_ENGINES = Object.freeze(['chrome', 'firefox', 'webkit']);
 // until they are assigned an assurance surface here.
 export const JOURNEY_GROUP_SUITES = Object.freeze({
   control: ['small_bundle', 'foundry_pages'],
-  graph: ['small_bundle', 'large_corpus', 'endpoint_labels', 'federation'],
-  links: ['small_bundle', 'large_corpus', 'endpoint_labels', 'federation'],
+  graph: ['small_bundle', 'large_corpus', 'endpoint_labels', 'relationship_pagination', 'federation'],
+  links: ['small_bundle', 'large_corpus', 'endpoint_labels', 'relationship_pagination', 'federation'],
   map: ['map', 'large_corpus'],
   publication: [
     'accessibility',
@@ -90,6 +94,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
     'ask_okf',
+    'relationship_pagination',
     'learner_hub',
     'small_bundle',
     'map',
@@ -107,11 +112,11 @@ export const TEST_TAG_SUITES = Object.freeze({
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
   evidence: ['ask_okf', 'small_bundle', 'foundry_pages'],
-  graph: ['small_bundle', 'large_corpus', 'federation'],
+  graph: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   impact: ['foundry_pages'],
   journey: ['large_corpus', 'foundry_pages'],
   'json-ld': ['small_bundle', 'federation'],
-  link: ['small_bundle', 'federation', 'foundry_pages'],
+  link: ['small_bundle', 'relationship_pagination', 'federation', 'foundry_pages'],
   manifest: ['small_bundle'],
   mapping: ['small_bundle', 'large_corpus'],
   markdown: ['foundry_pages'],
@@ -120,6 +125,7 @@ export const TEST_TAG_SUITES = Object.freeze({
     'accessibility',
     'ask_okf',
     'endpoint_labels',
+    'relationship_pagination',
     'exploratory_publication',
     'learner_hub',
     'beginner_navigation',
@@ -131,7 +137,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   python: ['foundry_pages'],
   question: ['ask_okf', 'large_corpus'],
   registry: ['small_bundle', 'learner_hub', 'foundry_pages'],
-  relationship: ['small_bundle', 'large_corpus', 'federation'],
+  relationship: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
   route: ['exploratory_publication', 'learner_hub', 'beginner_navigation', 'foundry_pages'],

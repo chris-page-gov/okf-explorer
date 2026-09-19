@@ -301,6 +301,140 @@
     },
     "ai_answer": {
       "type": "null"
+    },
+    "retrieval": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "const": "indexed-lexical-candidates.v1"
+        },
+        "corpus_records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "corpus_pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "empty_pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fetched_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fetched_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "decoded_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "query_tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "omitted_query_tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "matched": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "score": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "id",
+              "matched",
+              "score"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "query_tokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "candidates": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "files": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fetched_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "decoded_bytes": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "query_tokens",
+            "candidates",
+            "files",
+            "fetched_bytes",
+            "decoded_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "omissions": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/issue"
+          }
+        }
+      },
+      "required": [
+        "method",
+        "corpus_records",
+        "corpus_pages",
+        "empty_pages",
+        "candidate_count",
+        "fetched_files",
+        "fetched_bytes",
+        "decoded_bytes",
+        "query_tokens",
+        "omitted_query_tokens",
+        "candidates",
+        "limits",
+        "truncated",
+        "omissions"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

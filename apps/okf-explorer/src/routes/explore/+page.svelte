@@ -4,6 +4,7 @@
   import AskOkf from '$lib/components/AskOkf.svelte';
   import SmallRecordInspector from '$lib/components/SmallRecordInspector.svelte';
   import { focusedSmallGraph } from '$lib/viewer/smallGraph';
+  import { relationshipWindow, visibleIncidentRelationships, type RelationshipWindow } from '$lib/viewer/relationshipWindows';
   import { matchesLocalText, summariseLocalExploration } from '$lib/viewer/localExploration';
   import WorkspaceShell from '$lib/components/WorkspaceShell.svelte';
   import FacetPanel, { type FacetModel } from '$lib/components/FacetPanel.svelte';
@@ -390,6 +391,7 @@
     relationships: LargeGraphEdge[];
     grouping?: LargeGraphGrouping;
     hierarchy?: LargeGraphHierarchy;
+    relationshipWindow?: RelationshipWindow<LargeRelationship>;
   };
 
   type GraphLabel = GraphLabelPlacement;
@@ -478,6 +480,8 @@
   let largeInspectedEdge = $state<LargeGraphEdge | null>(null);
   let largeExpandedStackRoute = $state('');
   let largeExpandedGraphGroups = $state<string[]>([]);
+  let graphRelationshipPage = $state({ route: '', offset: 0 });
+  let linkRelationshipPage = $state({ key: '', offset: 0 });
   let largeFacetIndex = $state<Record<string, LargeFacetRow[]>>({});
   let largeFacetIndexLoaded = $state(false);
   let largeFacetIndexLoading = $state(false);
@@ -1337,6 +1341,8 @@
     largeTargetedDatasets = new Map();
     largeTargetedLoadingRoute = '';
     largeRelationships = [];
+    graphRelationshipPage = { route: '', offset: 0 };
+    linkRelationshipPage = { key: '', offset: 0 };
     largeRelationshipsByRoute = new Map();
     largeIncompleteRelationshipRoutes = {};
     largeRelationshipsTruncated = false;
@@ -1645,6 +1651,8 @@
     largeTargetedDatasets = new Map();
     largeTargetedLoadingRoute = '';
     largeRelationships = [];
+    graphRelationshipPage = { route: '', offset: 0 };
+    linkRelationshipPage = { key: '', offset: 0 };
     largeRelationshipsByRoute = new Map();
     largeSearchResponse = null;
     largeResults = [];
@@ -4829,6 +4837,7 @@
     const edges: LargeGraphEdge[] = [];
     const edgeKeys = new Set<string>();
     let grouping: LargeGraphGrouping | undefined;
+    let incidentWindow: RelationshipWindow<LargeRelationship> | undefined;
     let hierarchyRoot: Omit<LargeGraphHierarchy, 'levels'> | undefined;
     const hierarchyLevels: LargeGraphHierarchyLevel[] = [];
 
@@ -5124,7 +5133,11 @@
       }
     };
     const addLoadedRelationshipsForCenter = () => {
-      const rows = routeRelationships(center, 120);
+      incidentWindow = relationshipWindow(
+        routeRelationships(center, Number.MAX_SAFE_INTEGER),
+        graphRelationshipPage.route === center ? graphRelationshipPage.offset : 0
+      );
+      const rows = incidentWindow.rows;
       if (rows.length <= 36) {
         for (const relationship of rows) addEdge(
           relationship.source,
@@ -5148,6 +5161,10 @@
       for (const group of [...groups.values()].sort((left, right) => right.rows.length - left.rows.length || left.kind.localeCompare(right.kind))) {
         if (group.rows.length > 4 || individualCount + group.rows.length > 28) {
           const stackId = `relationship-stack/${routeSlug(center)}/${routeSlug(group.kind)}/${routeSlug(group.otherKind)}-${group.direction}`;
+          if (largeExpandedGraphGroups.includes(stackId)) {
+            for (const relationship of group.rows) addEdge(relationship.source, relationship.target, relationship.kind, relationship);
+            continue;
+          }
           const pluralKind = group.otherKind.replaceAll('_', ' ');
           addNode(stackId, 'relationship-stack', `${group.kind} (${group.rows.length} ${pluralKind}${group.rows.length === 1 ? '' : 's'})`, group.rows.length, center);
           if (group.direction === 'out') edges.push({ source: center, target: stackId, label: `${group.kind} x${group.rows.length}` });
@@ -5237,6 +5254,7 @@
       center,
       nodes: [...nodeMap.values()].slice(0, 110),
       relationships: edges.slice(0, 120),
+      relationshipWindow: incidentWindow,
       grouping,
       hierarchy: hierarchyRoot
         ? { ...hierarchyRoot, levels: hierarchyLevels }
@@ -6214,22 +6232,39 @@
     });
   }
 
-  function currentLinkEdges(limit = 180): LargeGraphEdge[] {
+  function linkRelationshipScopeKey(): string {
+    return JSON.stringify([largeSelectedRoute, largeAppliedQuery, largeFacetFilters, reductions, foldedSets]);
+  }
+
+  function currentLinkWindow(): RelationshipWindow<LargeGraphEdge> {
+    let relationships: LargeRelationship[] | readonly LargeRelationship[];
     if (largeRelationships.length || (largeSelectedRoute && largeRelationshipsByRoute.has(largeSelectedRoute))) {
-      const relationships =
-        largeSelectedRoute && largeRouteInReduction(largeSelectedRoute)
-          ? routeRelationships(largeSelectedRoute, limit)
-          : largeRelationships
-              .filter((relationship) => relationship.source.startsWith('dataset/') && largeVisibleDatasetNames.has(routeValue(relationship.source)))
-              .slice(0, limit);
-      return relationships.map((relationship) => ({
-        source: relationship.source,
-        target: relationship.target,
-        label: relationship.kind,
+      relationships = largeSelectedRoute && largeRouteInReduction(largeSelectedRoute)
+        ? routeRelationships(largeSelectedRoute, Number.MAX_SAFE_INTEGER)
+        : visibleIncidentRelationships(
+            largeRelationships,
+            largeIndex ? new Set(largeVisibleDatasets.map(datasetRoute)) : null
+          );
+      const page = relationshipWindow(relationships, linkRelationshipPage.key === linkRelationshipScopeKey() ? linkRelationshipPage.offset : 0, 180);
+      return { ...page, rows: page.rows.map((relationship) => ({
+        source: relationship.source, target: relationship.target, label: relationship.kind,
         ...graphEdgeSemanticMetadata(relationship)
-      }));
+      })) };
     }
-    return largeGraphModel().relationships.slice(0, limit);
+    return relationshipWindow(largeGraphModel().relationships, 0, 180);
+  }
+
+  function showGraphRelationshipPage(route: string, offset: number) {
+    graphRelationshipPage = { route, offset };
+    largeExpandedGraphGroups = [];
+    largeHighlightedEdge = '';
+    largeInspectedEdge = null;
+    graphHighlightedRelationshipGroup = '';
+    graphLabelPhase = 0;
+  }
+
+  function showLinkRelationshipPage(offset: number) {
+    linkRelationshipPage = { key: linkRelationshipScopeKey(), offset };
   }
 
   function graphViewBox(): string {
@@ -6952,6 +6987,16 @@
             {@const nodeKeyNodes = graphNodeKeyNodes(relationshipModel, model)}
             {@const focusTitleLines = model.center ? graphFocusTitleLines(largeLabelForRoute(model.center)) : []}
             <div class="graph-shell">
+              {#if fullModel.relationshipWindow && fullModel.relationshipWindow.total > fullModel.relationshipWindow.pageSize}
+                <div class="view-heading" aria-label="Graph relationship pages">
+                  <span role="status">Relationships {fullModel.relationshipWindow.offset + 1}–{fullModel.relationshipWindow.end} of {fullModel.relationshipWindow.total} before grouping and filters. Open a stack to inspect this page's members.</span>
+                  <button type="button" disabled={fullModel.relationshipWindow.previous === null} onclick={() => showGraphRelationshipPage(fullModel.center, fullModel.relationshipWindow?.previous ?? 0)}>Previous relationships</button>
+                  <button type="button" disabled={fullModel.relationshipWindow.next === null} onclick={() => showGraphRelationshipPage(fullModel.center, fullModel.relationshipWindow?.next ?? 0)}>Next relationships</button>
+                </div>
+              {/if}
+              {#if largeExpandedGraphGroups.some((route) => route.startsWith('relationship-stack/'))}
+                <button type="button" onclick={() => { largeExpandedGraphGroups = []; }}>Collapse relationship stacks</button>
+              {/if}
               <div class="graph-toolbar">
                 <div class="graph-control-row">
                   <div class="graph-buttons" aria-label="Graph controls">
@@ -7458,12 +7503,20 @@
               {/if}
             {:else}
               {@const boundedMetadataContext = largeHasBoundedMetadataRouteContext()}
+              {@const linkWindow = currentLinkWindow()}
               <div class="view-heading">
                 <h2>Links</h2>
                 <span>{largeRelationships.length ? 'full relationship chunks loaded' : boundedMetadataContext ? 'bounded current-facet links' : 'current graph relationships'}</span>
               </div>
+              {#if linkWindow.total > linkWindow.pageSize}
+                <div class="view-heading" aria-label="Link pages">
+                  <span role="status">Links {linkWindow.offset + 1}–{linkWindow.end} of {linkWindow.total} in this scope.</span>
+                  <button type="button" disabled={linkWindow.previous === null} onclick={() => showLinkRelationshipPage(linkWindow.previous ?? 0)}>Previous links</button>
+                  <button type="button" disabled={linkWindow.next === null} onclick={() => showLinkRelationshipPage(linkWindow.next ?? 0)}>Next links</button>
+                </div>
+              {/if}
               <section class="links-view">
-                {#each currentLinkEdges() as relationship}
+                {#each linkWindow.rows as relationship}
                   <button
                     data-relationship-authority={relationship.authorityClass || 'unclassified'}
                     data-relationship-status={relationship.assertionStatus || 'unclassified'}

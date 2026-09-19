@@ -2,6 +2,38 @@
 
 ## Unreleased
 
+- Verify the deployed full-source HTTPS service with the official MCP SDK:
+  complete imprisonment and hospital packages match the shared core, and the
+  explicit historical imprisonment package remains unchanged. A separate raw
+  HTTP client verifies exact package equality for 40 staff questions and three
+  controls, all correctly insufficient. Keep subsequent ChatGPT observations
+  and Explorer Pages publication as separate acceptance records. Fix the confirmed
+  Worker redirect incompatibility using manual handling that rejects every 3xx
+  response without following it.
+
+- Remove personal pronouns and broad forms of “go” and “get” from full-source
+  question ranking after a real ChatGPT call exposed conversational-word noise.
+  Retain substantive evidence terms and verify the correction with non-DWP
+  fixtures and a separate full staff-question run; no answer rules are added.
+
+- Record fixed failure stages for remote evidence assembly without logging
+  questions, source URLs or exception text. Refresh exact-app Heritage and
+  non-DWP regression receipts after the corpus extension; preserve their source
+  snapshots and existing context results.
+
+- Extend the remote MCP service to an approved immutable full DMG and ADM
+  corpus, retain the original profile by version and cache only verified public
+  source files. Add an accessible landing page with beginner guidance and clear
+  source coverage, protocol and answerability boundaries.
+
+- Add hash-bound full-source lexical discovery to Ask OKF, with explicit page,
+  query, transfer and package limits. Preserve source governance, scoped graph
+  traversal and the historical narrow-index adapter; never treat lexical
+  matches as a complete answer. Share the corpus reader across UI and tools.
+- Fix silently omitted large-graph relationships, inactive stack expansion and
+  Links overview assumptions about record identifiers. Add bounded paging,
+  counts and cross-browser regressions.
+
 - Add an independent read-only remote MCP adapter for the existing Ask OKF
   engine, with approved immutable source bindings, bounded requests and the
   unchanged governed evidence package. Document ChatGPT setup, host boundaries,

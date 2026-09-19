@@ -4,6 +4,22 @@ Status: accepted for implementation, 19 September 2026. Public deployment and
 client acceptance are separate observations; this decision does not certify
 either.
 
+Amended on 19 September 2026 for the separately approved full-source corpus.
+The original 52-record custody service and its receipts remain historical,
+explicitly versioned evidence. Full-source deployment and ChatGPT acceptance
+must be verified separately; they are not implied by those earlier observations.
+The full-source HTTPS deployment and three-case official SDK parity check were
+verified later that day against Explorer revision
+`751201168bf16ad9caec80eb4c1b9bf8514f1c71`. A separate 43-case raw HTTP run also
+verified complete package equality, with every result remaining insufficient.
+Subsequent client observations and published-browser checks are maintained in
+[OKF-DWP's demonstration record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/remote-mcp-demo.md).
+An initial ChatGPT call exposed conversational-word ranking noise; the shared
+English query filter was corrected without adding domain-specific ranking. The
+[remote access guide](remote-mcp.md#initial-full-source-https-verification) records
+the deployment identity and exact package results; this decision does not
+replace those execution receipts.
+
 ## Context
 
 Explorer's Ask OKF interface and optional WebMCP adapter already use
@@ -22,10 +38,20 @@ identity, evidence, paths, provenance, omissions and budgets. There is no new
 answer format, model call, summarising layer or domain-specific retrieval code.
 
 The server resolves a logical bundle identifier and optional immutable version
-through a reviewed allow-list. Approved indexes are local deployment inputs,
-bound to their immutable upstream URL and digest. A caller cannot provide a
+through a reviewed allow-list. The full-source default is DWP revision
+`bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752`, covering captured DMG and ADM pages.
+Its manifest is a local deployment input, bound to its immutable URL and digest.
+The shared `context/corpus.ts` module retrieves only manifest-listed, hash-bound
+files beneath that directory, then invokes `assembleContext`. The service caches
+verified public assets within 8 MiB and 64 files; questions and packages are not
+cached. The transport uses manual redirect handling and rejects all 3xx statuses
+without following `Location`: actual workerd rejected Fetch's `error` redirect
+mode before I/O. This compatibility change preserves the shared core's redirect
+rejection and source integrity checks. A caller cannot provide a
 URL, file path, alternate index or remote context. Verification precedes context
-assembly; a mismatch yields a tool error without evidence. Tool discovery can
+assembly; a mismatch yields a tool error without evidence. Historical version
+`efb05c66616a9cd4328a86cf412780fe7bc7cf0b` stays entirely embedded and remains
+callable explicitly. Tool discovery can
 still advertise the capability before that verification. Updating a bundle
 requires a reviewed source change and new deployment.
 
@@ -40,6 +66,7 @@ without improving the first acceptance case.
 | --- | --- |
 | OKF-DWP producer | Source capture, rights, scope, semantic assertions and context requirements. |
 | Shared context engine | Deterministic resolution, traversal, bounded selection and explicit insufficiency. |
+| Shared corpus retrieval | Complete captured-page lexical index; bounded whole-page candidates, hash checks and explicit retrieval omissions. |
 | Explorer | Human inspection of that package and links to evidence. |
 | WebMCP adapter | Optional browser-local tool exposure, subject to host support. |
 | Remote MCP adapter | Input validation, approved bundle binding, protocol transport and operational diagnostics. |
@@ -52,6 +79,12 @@ package's scope. It is not specialist approval, current-law assurance or a
 claimant entitlement decision. `insufficient` and `conflicting` remain useful
 results. Neither a successful protocol call nor a plausible model response
 changes source authority.
+
+The full-source discovery profile has zero completeness requirements and always
+remains insufficient. Its optional `retrieval` package field reports candidates
+and resource omissions; it does not turn lexical matches into resolved concepts,
+applicability decisions or legal conclusions. Existing packages remain valid
+without that field. See the [full-source decision](adr-full-source-context-discovery.md).
 
 ## Publication and assurance
 

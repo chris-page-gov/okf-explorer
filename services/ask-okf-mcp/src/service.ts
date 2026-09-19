@@ -1,7 +1,10 @@
 import { createMcpHandler, McpServer } from '@modelcontextprotocol/server';
 import { assembleContext } from '../../../apps/okf-explorer/src/lib/context/index.ts';
+import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import { INPUT_SCHEMA, validator, inputContract, outputContract } from './contracts.ts';
-import { APPROVED_BUNDLE, SERVICE_VERSION, type ApprovedContext } from './registry.ts';
+import { createCorpusFetcher } from './corpusFetch.ts';
+import { landingResponse } from './landing.ts';
+import { APPROVED_BUNDLE, APPROVED_VERSIONS, BUNDLE_VERSION, SERVICE_VERSION, type ApprovedSource } from './registry.ts';
 
 export const MAX_BODY_BYTES = 32768;
 export const MAX_CONCURRENT_REQUESTS = 4;
@@ -12,19 +15,38 @@ export const DEFAULT_ORIGINS = [PUBLIC_ORIGIN, 'https://chatgpt.com', 'https://c
 const METHODS = new Set(['initialize', 'notifications/initialized', 'notifications/cancelled', 'ping', 'server/discover', 'tools/list', 'tools/call']);
 const encoder = new TextEncoder();
 
+type FailureStage = 'source_load' | 'source_transport' | 'source_integrity' | 'source_decode' | 'context_assembly';
+
 export type Diagnostic = {
   event: 'ask_okf' | 'http'; tool?: 'ask_okf'; service_version: string; bundle_version: string;
   duration_ms: number; status: string; error_code?: string; records_considered?: number;
   records_selected?: number; relationships_considered?: number; relationships_selected?: number;
   traversed_path_steps?: number; package_bytes?: number; truncated?: boolean;
+  corpus_records_available?: number;
+  error_stage?: FailureStage;
 };
 export type ServiceOptions = {
-  loadContext: () => Promise<ApprovedContext>;
+  loadContext: (version?: string) => Promise<ApprovedSource>;
+  fetchCorpus?: typeof fetch;
   allowedHosts?: string[];
   allowedOrigins?: string[];
   diagnostics?: (entry: Diagnostic) => void;
 };
 const error = (status: number, message: string, code = -32600) => Response.json({ jsonrpc: '2.0', id: null, error: { code, message } }, { status });
+
+/** Fixed categories only: never put exception text, source URLs or questions into diagnostics. */
+function failureStage(cause: unknown, stage: FailureStage): FailureStage {
+  if (stage === 'source_load') return stage;
+  if (cause instanceof Error && (
+    cause.message === 'Corpus asset exceeds its binding.'
+    || cause.message === 'Corpus asset integrity check failed.'
+    || cause.message === 'Context corpus file exceeds its byte binding'
+    || cause.message.startsWith('Invalid context corpus: transfer integrity failed:')
+    || cause.message.startsWith('Invalid context corpus: decoded integrity failed:')
+  )) return 'source_integrity';
+  if (stage === 'context_assembly' && cause instanceof SyntaxError) return 'source_decode';
+  return stage;
+}
 
 async function boundedBody(request: Request): Promise<string> {
   const declared = request.headers.get('content-length');
@@ -58,9 +80,10 @@ async function boundedBody(request: Request): Promise<string> {
 export function createAskService(options: ServiceOptions) {
   const hosts = new Set(options.allowedHosts ?? [new URL(PUBLIC_ORIGIN).host]);
   const origins = new Set(options.allowedOrigins ?? DEFAULT_ORIGINS);
-  const diagnostic = (entry: Omit<Diagnostic, 'service_version' | 'bundle_version'>) => {
+  const corpusFetchers = new Map<string, typeof fetch>();
+  const diagnostic = (entry: Omit<Diagnostic, 'service_version' | 'bundle_version'>, version = BUNDLE_VERSION) => {
     // Logging must not alter a valid evidence result or leak raw errors.
-    try { options.diagnostics?.({ ...entry, service_version: SERVICE_VERSION, bundle_version: APPROVED_BUNDLE.version }); } catch { /* non-critical sink */ }
+    try { options.diagnostics?.({ ...entry, service_version: SERVICE_VERSION, bundle_version: version }); } catch { /* non-critical sink */ }
   };
   const checkInput = validator.getValidator(INPUT_SCHEMA);
   const handler = createMcpHandler(() => {
@@ -74,21 +97,37 @@ export function createAskService(options: ServiceOptions) {
       outputSchema: outputContract,
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       _meta: { securitySchemes: [{ type: 'noauth' }], 'okf/untrustedContent': true }
-    }, async ({ question, budget }) => {
+    }, async ({ question, budget, version = BUNDLE_VERSION }) => {
       const started = performance.now();
+      let stage: FailureStage = 'source_load';
       try {
-        const { index, binding } = await options.loadContext();
-        const result = await assembleContext(index, question, budget, binding);
+        const source = await options.loadContext(version);
+        stage = 'context_assembly';
+        if ('manifest' in source && !options.fetchCorpus && !corpusFetchers.has(source.binding.index_sha256)) {
+          corpusFetchers.set(source.binding.index_sha256, createCorpusFetcher(source));
+        }
+        const fetchCorpus: typeof fetch = async (input, init) => {
+          stage = 'source_transport';
+          const fetcher = options.fetchCorpus ?? corpusFetchers.get(source.binding.index_sha256)!;
+          const response = await fetcher(input, init);
+          stage = 'context_assembly';
+          return response;
+        };
+        const result = 'manifest' in source
+          ? await assembleCorpusContext(source.manifest, source.binding, question, budget ?? {}, fetchCorpus)
+          : await assembleContext(source.index, question, budget, source.binding);
         const json = JSON.stringify(result);
         diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started),
-          status: result.evidence_status, records_considered: index.records.length,
-          records_selected: result.selected.length, relationships_considered: index.assertions.length,
+          status: result.evidence_status,
+          ...('manifest' in source ? { corpus_records_available: source.manifest.records.count }
+            : { records_considered: source.index.records.length, relationships_considered: source.index.assertions.length }),
+          records_selected: result.selected.length,
           relationships_selected: result.relationships.length,
           traversed_path_steps: result.selected.reduce((total, item) => total + item.paths.reduce((sum, path) => sum + path.assertions.length, 0), 0),
-          package_bytes: encoder.encode(json).byteLength, truncated: result.budget.truncated });
+          package_bytes: encoder.encode(json).byteLength, truncated: result.budget.truncated }, version);
         return { structuredContent: result, content: [{ type: 'text' as const, text: json }] };
-      } catch {
-        diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started), status: 'error', error_code: 'context_unavailable' });
+      } catch (cause) {
+        diagnostic({ event: 'ask_okf', tool: 'ask_okf', duration_ms: Math.round(performance.now() - started), status: 'error', error_code: 'context_unavailable', error_stage: failureStage(cause, stage) }, version);
         return { isError: true, content: [{ type: 'text' as const, text: 'The approved context could not be verified or assembled. No evidence package is available.' }] };
       }
     });
@@ -123,9 +162,10 @@ export function createAskService(options: ServiceOptions) {
         try { await options.loadContext(); } catch { return finish(error(503, 'Approved bundle is unavailable.'), 'integrity_error'); }
         return finish(Response.json({ service: 'ask-okf', version: SERVICE_VERSION, ready: true,
           bundle: APPROVED_BUNDLE.id, bundle_version: APPROVED_BUNDLE.version, snapshot: APPROVED_BUNDLE.snapshot,
-          index_sha256: APPROVED_BUNDLE.index_sha256, engine: 'okf-context-assembly.v1' }), 'health');
+          index_sha256: APPROVED_BUNDLE.index_sha256, approved_versions: APPROVED_VERSIONS,
+          engine: 'okf-context-assembly.v1' }), 'health');
       }
-      if (url.pathname === '/' && request.method === 'GET') return finish(new Response('Ask OKF\nIndependent experimental, read-only evidence service. Not official benefits advice.\nMCP endpoint: /okf/mcp\nHealth: /health\nNo claimant personal data.\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }), 'landing');
+      if (url.pathname === '/' && request.method === 'GET') return finish(landingResponse(), 'landing');
       if (url.pathname !== '/mcp' && url.pathname !== '/okf/mcp') return finish(error(404, 'Not found.'), 'not_found');
       if (request.method === 'OPTIONS') return finish(new Response(null, { status: 204, headers: {
         'Access-Control-Allow-Methods': 'POST, OPTIONS',

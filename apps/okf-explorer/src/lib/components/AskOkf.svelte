@@ -2,6 +2,7 @@
   import { tick } from 'svelte';
   import type { LoadedSource } from '$lib/types';
   import { assembleContext, DEFAULT_CONTEXT_BUDGET, MAX_CONTEXT_BUDGET } from '$lib/context/index';
+  import { assembleCorpusContext } from '$lib/context/corpus';
   import type { ContextBudget, ContextPackage } from '$lib/context/types';
   import { documentContextRegistry, registerContextTools } from '$lib/context/webmcp';
   import { isHttpUrl } from '$lib/viewer/helpers';
@@ -48,7 +49,12 @@
     const request = ++requestNumber;
     const bound = await expected.loadContextAssembly();
     checkCurrent(expected, generation, signal);
-    const assembled = await assembleContext(bound.index, value, limits, bound.binding);
+    const assembled = 'corpus' in bound
+      ? await assembleCorpusContext(bound.corpus, bound.binding, value, limits, (input, init) => {
+          checkCurrent(expected, generation, signal);
+          return fetch(input, { ...init, signal: init?.signal ? AbortSignal.any([signal, init.signal]) : signal });
+        })
+      : await assembleContext(bound.index, value, limits, bound.binding);
     checkCurrent(expected, generation, signal);
     retained.set(assembled.context_id, assembled);
     while (retained.size > 4) retained.delete(retained.keys().next().value!);
@@ -134,6 +140,10 @@
     return /^[a-z][a-z0-9-]*(?:\/[A-Za-z0-9._~%-]+)+$/.test(route) && !/%(?![0-9a-fA-F]{2})/.test(route);
   }
 
+  function canOpenRecord(route: string): boolean {
+    return safeRoute(route) && (source.kind !== 'large' || !source.endpointLabels || source.endpointLabels.byRoute.has(route));
+  }
+
   function recordLabel(id: string): string {
     return result?.selected.find((item) => item.record.id === id)?.record.label || id;
   }
@@ -167,7 +177,7 @@
     </div>
   </form>
   <p class="tool-status">{toolMessage}</p>
-  {#if busy}<p role="status">Assembling evidence from the declared context index…</p>{/if}
+  {#if busy}<p role="status">Assembling evidence from the declared bundle sources…</p>{/if}
   {#if error}<p class="error" role="alert">{error}</p>{/if}
   {#if result}
     <section class="context-package" aria-labelledby="context-package-title" data-context-id={result.context_id}>
@@ -186,8 +196,22 @@
       <dl class="identity">
         <div><dt>Bundle snapshot</dt><dd>{result.bundle.snapshot}</dd></div>
         <div><dt>Context ID</dt><dd>{result.context_id}</dd></div>
-        <div><dt>Index SHA-256</dt><dd>{result.binding.index_sha256 || 'Not supplied'}</dd></div>
+        <div><dt>{result.retrieval ? 'Corpus manifest SHA-256' : 'Index SHA-256'}</dt><dd>{result.binding.index_sha256 || 'Not supplied'}</dd></div>
       </dl>
+      {#if result.retrieval}
+        <section class="corpus-retrieval" aria-labelledby="corpus-retrieval-title">
+          <h4 id="corpus-retrieval-title">Corpus evidence discovery</h4>
+          <p>Deterministic lexical discovery over {result.retrieval.corpus_records.toLocaleString('en-GB')} records and {result.retrieval.corpus_pages.toLocaleString('en-GB')} source pages. {result.retrieval.empty_pages.toLocaleString('en-GB')} pages have no extracted text. Matching words identify candidates; they do not establish a concept, authority or a complete answer.</p>
+          <p>{result.retrieval.candidate_count.toLocaleString('en-GB')} candidates found. Tokens used: {result.retrieval.query_tokens.join(', ') || 'none'}.</p>
+          {#if result.retrieval.omitted_query_tokens.length}<p>Tokens omitted by the retrieval limit: {result.retrieval.omitted_query_tokens.join(', ')}.</p>{/if}
+          <p>{result.retrieval.fetched_files} of {result.retrieval.limits.files} files fetched; {result.retrieval.fetched_bytes.toLocaleString('en-GB')} of {result.retrieval.limits.fetched_bytes.toLocaleString('en-GB')} transfer bytes; {result.retrieval.decoded_bytes.toLocaleString('en-GB')} of {result.retrieval.limits.decoded_bytes.toLocaleString('en-GB')} decoded bytes. Candidate limit: {result.retrieval.limits.candidates}; query-token limit: {result.retrieval.limits.query_tokens}.</p>
+          {#if result.retrieval.truncated}<p><strong>Discovery was bounded. Further evidence may exist outside these candidates.</strong></p>{/if}
+          {#if result.retrieval.omissions.length}<ul>{#each result.retrieval.omissions as issue}<li><strong>{issue.code}</strong>: {issue.message}</li>{/each}</ul>{/if}
+          <details><summary>Ranked candidates ({result.retrieval.candidates.length})</summary>
+            <ul>{#each result.retrieval.candidates as candidate}<li><strong>{recordLabel(candidate.id)}</strong> — matched {candidate.matched.join(', ')}; lexical score {candidate.score}.<br /><code>{candidate.id}</code></li>{/each}</ul>
+          </details>
+        </section>
+      {/if}
       <h4>Concepts resolved</h4>
       <ul>{#each result.resolved_concepts as concept}<li><strong>{concept.label}</strong> — matched {concept.matched.join(', ')} (declared phrase)</li>{:else}<li>No declared concepts were resolved.</li>{/each}</ul>
       {#if result.unresolved_terms.length}<p><strong>Unresolved terms:</strong> {result.unresolved_terms.join(', ')}</p>{/if}
@@ -217,13 +241,15 @@
       </details>
       <h4>Selected evidence and interpretation</h4>
       {#each result.selected as item}
+        {@const citedSource = item.record.provenance.find((evidence) => isHttpUrl(evidence.url))}
         <article class="evidence-item">
           <h5>{item.record.label}</h5>
           <p class="authority">{item.record.authority.label} · {item.record.assertion_status} · {item.record.review_status || 'Review status not supplied'}</p>
           <p>{item.record.scope}</p>
-          {#if safeRoute(item.record.route)}<button type="button" onclick={() => onOpenRecord(item.record.route)}>Open record in new tab: {item.record.label}</button>{/if}
+          {#if canOpenRecord(item.record.route)}<button type="button" onclick={() => onOpenRecord(item.record.route)}>Open record in new tab: {item.record.label}</button>{/if}
+          {#if citedSource}<p><a href={citedSource.url} target="_blank" rel="noopener noreferrer">View cited source: {item.record.label}</a></p>{/if}
           <details class="source-passage">
-            <summary>Read whole source passage</summary>
+            <summary>{item.record.kind === 'evidence' ? 'Read whole source passage' : 'Read project-authored context'}</summary>
             <pre class="evidence-text">{item.record.text}</pre>
           </details>
           <details>

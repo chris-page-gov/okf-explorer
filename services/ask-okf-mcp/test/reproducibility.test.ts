@@ -19,6 +19,7 @@ test('Worker, Node build and receipt are identical in a relocated checkout', asy
       await cp(join(serviceRoot, path), join(relocatedService, path), copy);
     }
     for (const path of ['apps/okf-explorer/src/lib/context/index.ts', 'apps/okf-explorer/src/lib/context/types.ts',
+      'apps/okf-explorer/src/lib/context/corpus.ts',
       'profiles/context-assembly/v1/package.schema.json', 'profiles/context-assembly/v1/common.schema.json']) {
       await mkdir(resolve(relocatedRoot, path, '..'), { recursive: true });
       await cp(join(repoRoot, path), join(relocatedRoot, path), copy);
