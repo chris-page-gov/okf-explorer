@@ -90,7 +90,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 13);
+  assert.equal(plan.suites.length, 14);
   const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
     .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
   assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
@@ -105,7 +105,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 13);
+  assert.equal(empty.suites.length, 14);
   assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
@@ -133,6 +133,31 @@ test('Timeline provenance is selected by its temporal and provenance surfaces', 
     const plan = buildBrowserPlan(selectors);
     assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/timeline-provenance.spec.ts')));
   }
+});
+
+test('relationship windows and graph or Links changes select pagination assurance', () => {
+  for (const selectors of [
+    ...['graph', 'links'].map((group) => ({ journeyGroups: [group] })),
+    ...['graph', 'relationship', 'link', 'accessibility', 'presentation', 'runtime', 'consumer']
+      .map((tag) => ({ testTags: [tag] }))
+  ]) {
+    const plan = buildBrowserPlan(selectors);
+    assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/relationship-pagination.spec.ts')),
+      `${JSON.stringify(selectors)} must select relationship pagination`);
+  }
+
+  const profile = YAML.parse(readFileSync(new URL(
+    '../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml', import.meta.url), 'utf8'));
+  const runtime = profile.impact_policy.path_rules.find((rule) => rule.id === 'IMPACT-EXPLORER-RUNTIME');
+  const pathPrefix = 'apps/okf-explorer/src/';
+  assert.ok(runtime.patterns.includes(`${pathPrefix}**`));
+  for (const filename of [
+    'apps/okf-explorer/src/lib/viewer/relationshipWindows.ts',
+    'apps/okf-explorer/src/routes/explore/+page.svelte'
+  ]) assert.ok(filename.startsWith(pathPrefix), `${filename} must remain in the governed runtime rule`);
+  const runtimePlan = buildBrowserPlan({ testTags: runtime.test_tags, journeyGroups: runtime.journey_groups });
+  assert.ok(runtimePlan.suites.some((suite) => suite.id === 'relationship_pagination'));
+  assert.ok(runtime.jobs.includes('browser_full'));
 });
 
 test('learning-path navigation is selected by its publication and quality surfaces', () => {
