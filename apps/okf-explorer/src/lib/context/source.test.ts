@@ -3,6 +3,7 @@ import { loadLargeCorpus } from '../sources/largeCorpus';
 import { contextSha256 } from './index';
 import { studyClubContextFixture } from '../../test/contextFixture';
 import type { LargeCorpusDescriptor } from '../types';
+import type { ContextCorpusManifest } from './corpus';
 
 async function fixture() {
   const index = await studyClubContextFixture();
@@ -23,13 +24,35 @@ async function fixture() {
   return { descriptor, index, payloads, fetcher };
 }
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+
+async function corpusFixture() {
+  const fixtureData = await fixture();
+  const { descriptor, index, payloads } = fixtureData;
+  const empty = JSON.stringify({ schema: 'okf-context-postings.v1', postings: {} });
+  const manifest: ContextCorpusManifest = {
+    schema: 'okf-context-corpus.v1', bundle: { ...index.bundle, snapshot: 'corpus-fixture-v1' },
+    semantic_source_snapshot: index.bundle.snapshot, scope: index.scope, limitations: index.limitations,
+    base_index: descriptor.entrypoints.context_assembly as { path: string; bytes: number; sha256: string },
+    counts: { documents: 0, pages: 0, nonempty_pages: 0, empty_pages: 0, tokenless_pages: 0 },
+    records: { count: 0, shards: [] },
+    search: { tokenisation: 'nfkd-lowercase-ascii-alphanumeric-min2-v1', bucket_algorithm: 'fnv1a32-high-byte-hex-v1', shards: {} }
+  };
+  for (let number = 0; number < 256; number++) manifest.search.shards[number.toString(16).padStart(2, '0')] = {
+    path: `postings/${number}.json`, bytes: new TextEncoder().encode(empty).byteLength, sha256: await contextSha256(empty)
+  };
+  const raw = JSON.stringify(manifest);
+  payloads.set('https://example.test/corpus.json', raw);
+  descriptor.entrypoints.context_corpus = { path: 'corpus.json', bytes: new TextEncoder().encode(raw).byteLength, sha256: await contextSha256(raw) };
+  return { ...fixtureData, manifest };
+}
+
 describe('optional context source adapter', () => {
   it('does not fetch the index until requested and reuses verified bytes', async () => {
     const { descriptor, index, fetcher } = await fixture();
     const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
     expect(fetcher.mock.calls.some((args) => String(args[0]).endsWith('context.json'))).toBe(false);
     const bound = await source.loadContextAssembly!();
-    expect(bound.index).toEqual(index);
+    expect('index' in bound && bound.index).toEqual(index);
     expect(bound.binding.index_sha256).toEqual((descriptor.entrypoints.context_assembly as { sha256: string }).sha256);
     expect(await source.loadContextAssembly!()).toBe(bound);
   });
@@ -54,5 +77,42 @@ describe('optional context source adapter', () => {
     const { descriptor } = await fixture(); delete descriptor.entrypoints.context_assembly;
     const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
     expect(source.loadContextAssembly).toBeUndefined();
+  });
+  it('lazily prefers an explicitly bound corpus while preserving its independent snapshot', async () => {
+    const { descriptor, manifest, fetcher } = await corpusFixture();
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    expect(fetcher.mock.calls.some(([url]) => String(url).endsWith('corpus.json'))).toBe(false);
+    const bound = await source.loadContextAssembly!();
+    expect('corpus' in bound && bound.corpus).toEqual(manifest);
+    expect(bound.binding.index_url).toBe('https://example.test/corpus.json');
+    expect(await source.loadContextAssembly!()).toBe(bound);
+    expect(fetcher.mock.calls.some(([url]) => String(url).endsWith('context.json'))).toBe(false);
+  });
+  it('rejects cross-snapshot corpus substitution without falling back to the older index', async () => {
+    const { descriptor, fetcher } = await corpusFixture();
+    descriptor.snapshot = 'wrong-semantic-source';
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    await expect(source.loadContextAssembly!()).rejects.toThrow('semantic source snapshot mismatch');
+    expect(fetcher.mock.calls.some(([url]) => String(url).endsWith('context.json'))).toBe(false);
+  });
+  it('rejects a malformed corpus declaration without breaking ordinary source loading or downgrading', async () => {
+    const { descriptor } = await corpusFixture();
+    descriptor.entrypoints.context_corpus = '';
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    expect(source.overview.title).toBe('Fixture');
+    await expect(source.loadContextAssembly!()).rejects.toThrow('SHA-256');
+  });
+  it('confines corpus manifest references to the descriptor base', async () => {
+    const { descriptor, fetcher } = await corpusFixture();
+    (descriptor.entrypoints.context_corpus as { path: string }).path = '../corpus.json';
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    await expect(source.loadContextAssembly!()).rejects.toThrow('unsafe');
+    expect(fetcher.mock.calls.some(([url]) => String(url).endsWith('corpus.json'))).toBe(false);
+  });
+  it('checks corpus file integrity before parsing any returned instructions or records', async () => {
+    const { descriptor, payloads } = await corpusFixture();
+    payloads.set('https://example.test/corpus.json', '{}');
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    await expect(source.loadContextAssembly!()).rejects.toThrow(/integrity|byte length/);
   });
 });

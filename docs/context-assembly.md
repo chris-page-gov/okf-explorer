@@ -127,3 +127,32 @@ WebMCP registration is feature-detected; registration alone does not prove that
 the user's AI host can invoke the tools. Browser journeys, genuine tool calls
 and model responses require their own observations against the exact deployed
 implementation. No such outcome follows automatically from an engine test.
+
+## Full-source discovery
+
+A producer may additionally declare a hash-bound `entrypoints.context_corpus`
+manifest. Ask OKF prefers that explicitly advertised corpus; an invalid corpus
+fails closed, without silently reverting to the smaller index. The original
+`context_assembly` adapter remains compatible for producers without a corpus.
+
+The shared corpus reader selects whole pages from the complete frozen lexical
+index, then uses the existing concepts and directed assertions. Inspect the
+package's `retrieval` section for corpus/page counts, query words, scored
+candidates, fetched bytes, limits and omissions. A lexical candidate is separate
+from a resolved concept. No source selection becomes an official interpretation.
+
+Read the [full-source architecture decision](adr-full-source-context-discovery.md)
+for exact ranking, limits, integrity checks and failure behaviour. Search,
+Reader and Ask can have different declared coverage: for example, a DMG Reader
+can expose an Ask corpus that also includes ADM. Evidence without a corresponding
+Reader record links directly to its cited source.
+
+## Relationships in large views
+
+Graph and Links expose bounded pages of relationships with counts and navigation.
+Graph shows 72 loaded incident relationships per page; Links shows 180 per page.
+Opening a relationship stack reveals its members; collapsing it restores the
+stack. Overview Links uses the bundle's actual record routes rather than assuming
+a `dataset/` prefix. A page counter describes loaded relationships, not a claim
+that an entire remote graph has already been fetched. These display controls do
+not add relationships missing from the producer's semantic model.

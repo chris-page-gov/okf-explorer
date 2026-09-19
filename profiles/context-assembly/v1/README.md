@@ -29,3 +29,10 @@ The package never contains a generated AI answer.
 
 See the [implementation guide](../../../docs/context-assembly.md) and
 [evaluation method](../../../docs/context-assembly-evaluation.md).
+
+## Optional full-source discovery
+
+The governed package may contain a `retrieval` object recording whole-page lexical
+candidates, corpus coverage, query terms, transfer budgets and omissions. This is
+separate from concept resolution and completeness requirements. See the
+[full-source decision](../../../docs/adr-full-source-context-discovery.md).

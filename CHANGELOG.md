@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add hash-bound full-source lexical discovery to Ask OKF, with explicit page,
+  query, transfer and package limits. Preserve source governance, scoped graph
+  traversal and the historical narrow-index adapter; never treat lexical
+  matches as a complete answer. Share the corpus reader across UI and tools.
+- Fix silently omitted large-graph relationships, inactive stack expansion and
+  Links overview assumptions about record identifiers. Add bounded paging,
+  counts and cross-browser regressions.
+
 - Add an independent read-only remote MCP adapter for the existing Ask OKF
   engine, with approved immutable source bindings, bounded requests and the
   unchanged governed evidence package. Document ChatGPT setup, host boundaries,

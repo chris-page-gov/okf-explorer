@@ -49,7 +49,8 @@ import {
 import { isHttpUrl } from '$lib/viewer/helpers';
 import { normaliseEndpointLabelIndex } from '$lib/viewer/endpointLabels';
 import { validateContextIndex } from '$lib/context/index';
-import type { BoundContextIndex } from '$lib/context/types';
+import { validateContextCorpusManifest } from '$lib/context/corpus';
+import type { BoundContextSource } from '$lib/context/types';
 import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
 import {
   type PreparedReleaseDataPlane,
@@ -2281,14 +2282,18 @@ export async function loadLargeCorpus(
   }
   const fetchResource: ResourceFetcher = <T>(reference: LargeResourceReference, requireReleaseEntry = false) =>
     fetchJsonResource<T>(reference, baseUrl, { releaseDataPlane, requireReleaseEntry });
-  const contextReference = descriptorEntrypoint(descriptor, 'context_assembly');
-  let contextPromise: Promise<BoundContextIndex> | undefined;
+  const declaresContext = (name: 'context_corpus' | 'context_assembly') => (
+    Object.hasOwn(descriptor.entrypoints || {}, name) || Object.hasOwn(descriptor.entrypoint_integrity || {}, name)
+  );
+  const corpusDeclared = declaresContext('context_corpus');
+  let contextPromise: Promise<BoundContextSource> | undefined;
   // Optional and lazy: a bad context projection must not break existing Search.
-  const loadContextAssembly = contextReference ? async (): Promise<BoundContextIndex> => {
+  const loadContextAssembly = corpusDeclared || declaresContext('context_assembly') ? async (): Promise<BoundContextSource> => {
     if (!contextPromise) {
       contextPromise = (async () => {
+        const contextReference = descriptorEntrypoint(descriptor, corpusDeclared ? 'context_corpus' : 'context_assembly');
         if (!descriptorSnapshot) throw new Error('Context index requires a descriptor snapshot binding.');
-        if (typeof contextReference !== 'object' || !SHA256.test(resourceHash(contextReference))
+        if (!contextReference || typeof contextReference !== 'object' || !SHA256.test(resourceHash(contextReference))
           || !Number.isSafeInteger(contextReference.bytes) || !contextReference.bytes
           || contextReference.bytes > 4 * 1024 * 1024) {
           throw new Error('Context index requires SHA-256 and a byte binding of at most 4 MiB.');
@@ -2297,8 +2302,17 @@ export async function loadLargeCorpus(
         if (contextReference.compression && contextReference.compression !== 'identity') {
           throw new Error('Context v1 requires an uncompressed JSON index.');
         }
-        const index = validateContextIndex(await fetchResource<unknown>(contextReference), descriptorSnapshot);
-        return { index, binding: { index_url: new URL(path, baseUrl).toString(), index_sha256: resourceHash(contextReference) } };
+        const document = await fetchResource<unknown>(contextReference);
+        const binding = { index_url: new URL(path, baseUrl).toString(), index_sha256: resourceHash(contextReference) };
+        if (corpusDeclared) {
+          const corpus = validateContextCorpusManifest(document);
+          if (corpus.semantic_source_snapshot !== descriptorSnapshot) {
+            throw new Error('Context corpus semantic source snapshot mismatch.');
+          }
+          return { corpus, binding };
+        }
+        const index = validateContextIndex(document, descriptorSnapshot);
+        return { index, binding };
       })().catch((error) => { contextPromise = undefined; throw error; });
     }
     return contextPromise;

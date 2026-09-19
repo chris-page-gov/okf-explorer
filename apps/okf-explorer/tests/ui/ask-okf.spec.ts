@@ -2,12 +2,13 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { contextSha256 } from '../../src/lib/context/index';
 import { studyClubContextFixture } from '../../src/test/contextFixture';
+import { corpusBucket, type ContextCorpusManifest } from '../../src/lib/context/corpus';
 
 const ORIGIN = 'https://ask-okf.fixture.test';
 const BUNDLE = `${ORIGIN}/okf-explorer.json`;
 const UNSUPPORTED = `${ORIGIN}/unsupported.json`;
 
-async function installFixture(page: Page, options: { missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean } = {}) {
+async function installFixture(page: Page, options: { missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean; corpus?: boolean; wrongCorpusPage?: boolean } = {}) {
   const context = await studyClubContextFixture();
   if (options.malformedReview) (context.records[0] as unknown as Record<string, unknown>).review_status = { toString: 'not-callable' };
   if (options.missing) context.records = context.records.filter((record) => !record.id.endsWith('evidence/library'));
@@ -19,10 +20,46 @@ async function installFixture(page: Page, options: { missing?: boolean; injectio
   }
   const raw = JSON.stringify(context);
   const reference = { path: 'context.json', sha256: options.wrongHash ? '0'.repeat(64) : await contextSha256(raw), bytes: new TextEncoder().encode(raw).byteLength };
+  const corpusPayloads = new Map<string, string>();
+  let corpusReference: { path: string; bytes: number; sha256: string } | undefined;
+  let endpointReference: { path: string; bytes: number; sha256: string } | undefined;
+  if (options.corpus) {
+    const pageRecord = structuredClone(context.records.find((record) => record.kind === 'evidence')!);
+    Object.assign(pageRecord, { id: 'https://example.test/study-club/evidence/watercolour', route: 'evidence/watercolour', label: 'Watercolour workshop', text: 'Watercolour teaching material is in this wider corpus. No programme or eligibility rules are declared.' });
+    pageRecord.provenance = [{ url: 'https://example.test/study-club/watercolour.md', source_sha256: await contextSha256(pageRecord.text),
+      literal_sha256: await contextSha256(pageRecord.text), captured_at: '2026-09-19T00:00:00Z', locator: 'Whole synthetic watercolour source page' }];
+    const bind = async (path: string, value: unknown) => {
+      const body = JSON.stringify(value);
+      corpusPayloads.set('/' + path, body);
+      return { path, bytes: new TextEncoder().encode(body).byteLength, sha256: await contextSha256(body) };
+    };
+    const recordReference = await bind('corpus-records.json', { schema: 'okf-context-records.v1', first_ordinal: 0, records: [pageRecord] });
+    const corpus: ContextCorpusManifest = {
+      schema: 'okf-context-corpus.v1', bundle: { ...context.bundle, snapshot: 'synthetic-wider-corpus-v1' },
+      semantic_source_snapshot: context.bundle.snapshot, scope: context.scope, limitations: context.limitations,
+      base_index: reference, counts: { documents: 1, pages: 1, nonempty_pages: 1, empty_pages: 0, tokenless_pages: 0 },
+      records: { count: 1, shards: [{ ...recordReference, first_ordinal: 0, count: 1 }] },
+      search: { tokenisation: 'nfkd-lowercase-ascii-alphanumeric-min2-v1', bucket_algorithm: 'fnv1a32-high-byte-hex-v1', shards: {} }
+    };
+    for (let number = 0; number < 256; number++) {
+      const bucket = number.toString(16).padStart(2, '0');
+      corpus.search.shards[bucket] = await bind(`postings/${bucket}.json`, { schema: 'okf-context-postings.v1', postings: bucket === corpusBucket('watercolour') ? { watercolour: [0] } : {} });
+    }
+    corpusReference = await bind('corpus-manifest.json', corpus);
+    endpointReference = await bind('labels.json', {
+      schema: 'okf-explorer-endpoint-label-index.v1', snapshot: context.bundle.snapshot,
+      generated_at: '2026-09-19T00:00:00Z', default_language: 'en-GB', opaque_identifier_patterns: [],
+      counts: { entries: context.records.length },
+      entries: context.records.map((record) => ({ route: record.route, iri: record.id, label: record.label,
+        language: 'en-GB', type: record.kind, label_authority: { class: 'editorial', source: ORIGIN } }))
+    });
+    if (options.wrongCorpusPage) corpusPayloads.set('/corpus-records.json', '{}');
+  }
   const descriptor = {
     schema: 'okf-explorer-large-corpus.v1', kind: 'okf-large-corpus', title: 'Study-club context fixture',
     snapshot: context.bundle.snapshot, counts: { datasets: context.records.length, records: context.records.length, resources: 0, publishers: 0, relationships: 0 },
-    entrypoints: { data_manifest: 'manifest.json', overview_index: 'overview.json', context_assembly: reference }
+    entrypoints: { data_manifest: 'manifest.json', overview_index: 'overview.json', context_assembly: reference,
+      ...(corpusReference ? { context_corpus: corpusReference, endpoint_labels: endpointReference } : {}) }
   };
   const records = context.records.map((record, ordinal) => ({
     ordinal, name: record.route.replaceAll('/', '-'), route: record.route, title: record.label,
@@ -34,6 +71,7 @@ async function installFixture(page: Page, options: { missing?: boolean; injectio
     const path = new URL(route.request().url()).pathname;
     requests.push(path);
     let body: unknown;
+    if (corpusPayloads.has(path)) return route.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: corpusPayloads.get(path)! });
     if (path === '/context.json') {
       await options.waitForIndex;
       return route.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: raw });
@@ -45,7 +83,7 @@ async function installFixture(page: Page, options: { missing?: boolean; injectio
     };
     else if (path === '/manifest.json') body = {
       title: descriptor.title, snapshot: context.bundle.snapshot, counts: descriptor.counts,
-      indexes: { overview: 'overview.json', facets: 'facets.json' },
+      indexes: { overview: 'overview.json', facets: 'facets.json', ...(endpointReference ? { endpoint_labels: endpointReference } : {}) },
       chunks: { datasets: ['records.json'], resources: [], publishers: [], relationships: [] }
     };
     else if (path === '/overview.json') body = { schema: 'okf-overview.v1', title: descriptor.title, snapshot: context.bundle.snapshot, counts: descriptor.counts };
@@ -223,4 +261,43 @@ test('Ask remains available without WebMCP and on a narrow viewport', async ({ p
   await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
   await expect(page.locator('[data-evidence-status]')).toHaveText('Declared evidence requirements met');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+test('corpus Ask and page tools expose the same wider evidence and honest lexical boundaries', async ({ page }) => {
+  const { requests } = await installFixture(page, { corpus: true });
+  await openAsk(page);
+  expect(requests).not.toContain('/corpus-manifest.json');
+  await page.getByLabel('Question', { exact: true }).fill('watercolour');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Watercolour workshop', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Open record in new tab: Watercolour workshop', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'View cited source: Watercolour workshop', exact: true })).toHaveAttribute('href', 'https://example.test/study-club/watercolour.md');
+  await expect(page.locator('.corpus-retrieval')).toContainText('1 records and 1 source pages');
+  await expect(page.locator('.corpus-retrieval')).toContainText('Matching words identify candidates');
+  await expect(page.locator('[data-evidence-status]')).toHaveText('Insufficient evidence');
+  await page.getByRole('button', { name: 'Inspect package JSON', exact: true }).click();
+  const humanPackage = JSON.parse(await page.getByLabel('Evidence package JSON').inputValue());
+  expect(humanPackage.retrieval.candidate_count).toBe(1);
+  expect(humanPackage.ai_answer).toBeNull();
+  const toolPackage = await page.evaluate(async () => {
+    const registry = (document as unknown as { modelContext: { getTools: () => Promise<Array<{ name: string; execute: (input: unknown) => Promise<unknown> }>> } }).modelContext;
+    return (await registry.getTools()).find((tool) => tool.name === 'okf_build_context')!.execute({ question: 'watercolour' });
+  });
+  expect(toolPackage).toEqual(humanPackage);
+  expect(requests).toContain('/corpus-records.json');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect((await new AxeBuilder({ page }).include('.ask-okf').analyze()).violations).toEqual([]);
+});
+
+test('a corpus page integrity failure cannot downgrade to the narrow index or invent evidence', async ({ page }) => {
+  await installFixture(page, { corpus: true, wrongCorpusPage: true });
+  await openAsk(page);
+  await page.getByLabel('Question', { exact: true }).fill('watercolour');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  await expect(page.locator('.ask-okf [role="alert"]')).toContainText('integrity failed');
+  await expect(page.locator('[data-context-id]')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await page.locator('input.search-input').fill('Reading');
+  await expect(page).toHaveURL(/q=Reading/);
 });
