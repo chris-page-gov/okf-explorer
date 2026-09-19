@@ -19,7 +19,7 @@ body{font:1.05rem/1.6 system-ui,sans-serif;max-width:68rem;margin:2rem auto;padd
 <section id="context" hidden><h2>Verified context</h2><p id="identity"></p><p id="boundary"></p>
 <div class="controls"><button id="diagnostics" type="button">Read gaps, scope and budgets</button><button id="relationships" type="button">Read relationship paths</button><button id="package" type="button">Read full machine package</button><button id="copy-link" type="button">Show replay link</button></div>
 <p id="replay-link"></p><h2>Selected records</h2><p id="record-count"></p><div id="records"></div><button id="more-records" type="button" hidden>Show more records</button>
-<section aria-labelledby="read-heading"><h2 id="read-heading">Evidence reader</h2><p id="read-status" role="status" aria-live="polite">Select a record or diagnostic section.</p><pre id="read-data"></pre><button id="read-next" type="button" hidden>Read next part</button></section>
+<section aria-labelledby="read-heading"><h2 id="read-heading">Evidence reader</h2><p id="read-source"></p><p id="read-status" role="status" aria-live="polite">Select a record or diagnostic section.</p><pre id="read-data"></pre><button id="read-next" type="button" hidden>Read next part</button></section>
 </section><noscript>JavaScript is needed to invoke the read-only evidence tools. The official source documents remain available through the main Explorer.</noscript>
 </main></body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8',
     'Content-Security-Policy': "default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" } });
@@ -33,6 +33,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
   const status = element('status');
   const output = element('context');
   const records = element('records');
+  const recordSummaries = new Map<string, any>();
   const more = element<HTMLButtonElement>('more-records');
   const nextPart = element<HTMLButtonElement>('read-next');
   let recipe: any = null;
@@ -88,11 +89,12 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     } catch { status.textContent = 'The replay fragment is invalid. Enter a new general question; the invalid fragment will not be sent.'; }
   }
   const clearRead = () => {
+    element('read-heading').textContent = 'Evidence reader'; element('read-source').replaceChildren();
     readSequence++; partOffset = null; readRequest = null; nextPart.hidden = true; element('read-data').textContent = '';
     element('read-status').textContent = 'Select a record or diagnostic section.';
   };
   const invalidate = () => {
-    generation++; recipe = null; current = null; output.hidden = true; records.replaceChildren(); clearRead();
+    generation++; recipe = null; current = null; output.hidden = true; records.replaceChildren(); recordSummaries.clear(); clearRead();
     status.textContent = 'Question or version changed. Recreate evidence to make a new context.';
     element('recipe-info').textContent = 'This will create a new context, rather than replay the shared identity.';
   };
@@ -103,6 +105,12 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     const run = generation;
     const sequence = ++readSequence;
     if (!current) return;
+    const selected = record_id ? recordSummaries.get(record_id) : null;
+    element('read-heading').textContent = selected ? `${selected.label} — ${section === 'record_text' ? 'exact text' : 'provenance and inclusion'}` : ({ diagnostics: 'Gaps, scope and budgets', relationships: 'Relationship paths', package: 'Full machine package' } as Record<string, string>)[section] || 'Evidence reader';
+    const source = element('read-source'); source.replaceChildren();
+    if (record_id) note(source, record_id);
+    const sourceURL = selected && safeSource(selected.source_url);
+    if (sourceURL) { const link = document.createElement('a'); link.href = sourceURL; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Original source — ' + selected.source_locator; source.append(link); }
     nextPart.hidden = true; element('read-data').textContent = '';
     element('read-status').textContent = 'Replaying the context and verifying the requested evidence…';
     try {
@@ -117,7 +125,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     } catch (error) { if (generation === run && sequence === readSequence) element('read-status').textContent = error instanceof Error ? error.message : 'Evidence unavailable.'; }
   }
   function render(result: any, append = false) {
-    if (!append) records.replaceChildren();
+    if (!append) { records.replaceChildren(); recordSummaries.clear(); }
     current = result; output.hidden = false;
     element('identity').textContent = result.context_id + ' · source ' + result.bundle.snapshot;
     const summary = result.summary;
@@ -125,6 +133,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
       + `${summary.missing_evidence} evidence gaps, ${summary.ambiguities} ambiguities, ${summary.conflicts} declared conflicts. `
       + `Context truncated: ${summary.context_truncated}; retrieval truncated: ${summary.retrieval_truncated}. Read the diagnostics before making claims.`;
     for (const record of result.records) {
+      recordSummaries.set(record.id, record);
       const article = document.createElement('article'); note(article, record.label, 'h3');
       note(article, `${record.kind} · ${record.assertion_status} · authority ${record.authority_class} · ${record.review_status}`, 'small');
       note(article, record.id, 'small');
@@ -144,7 +153,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
   }
   element<HTMLFormElement>('review-form').addEventListener('submit', async event => {
     event.preventDefault(); const run = ++generation;
-    output.hidden = true; current = null; records.replaceChildren(); clearRead(); status.textContent = 'Verifying source files and recreating evidence…';
+    output.hidden = true; current = null; records.replaceChildren(); recordSummaries.clear(); clearRead(); status.textContent = 'Verifying source files and recreating evidence…';
     const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value };
     try {
       const result = await call('ask_okf_manifest', request);
