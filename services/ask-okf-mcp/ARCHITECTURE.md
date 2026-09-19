@@ -3,7 +3,7 @@
 Decision: 19 September 2026. Status: implementation candidate.
 
 The remote service is a tool-only adapter. It imports the same deterministic
-`assembleContext` implementation used by Explorer and WebMCP. It does not
+`assembleContext` and `assembleCorpusContext` implementations used by Explorer and WebMCP. It does not
 implement search, retrieval, interpretation or model answering. The existing
 `okf-governed-context.v1` package remains the output contract.
 
@@ -13,12 +13,22 @@ wrapper and a bundled Worker entry point run the same handler. The single
 read-only tool is `ask_okf`. Anonymous access exposes only an approved public
 bundle snapshot; it does not confer source authority or give individual advice.
 
-At build time, verify the vendored OKF-DWP descriptor and context-index bytes
+At build time, verify the vendored OKF-DWP corpus manifest and historical descriptor/context-index bytes
 against fixed SHA-256 values and compose the existing canonical package schema
 from local references. At request time, accept only a logical bundle identifier
-and allow-listed immutable version. No request can supply a URL; no source is
-fetched at runtime. The original immutable index URL and digest bind every
-returned package, allowing exact parity with Explorer and direct engine calls.
+and allow-listed immutable version. No request can supply a URL. Default corpus
+requests retrieve only files listed by the verified manifest under its immutable
+GitHub commit and directory; each compressed and decoded digest is checked by
+the shared core. The service caches verified public file bytes within an 8 MiB,
+64-file bound. Historical custody requests remain entirely vendored. The pinned
+index or manifest URL and digest bind every package, allowing parity with
+Explorer and direct engine calls. The default corpus manifest path matches the
+additive Explorer descriptor's path, not a different alias for identical bytes.
+
+Full-source discovery has no completeness requirements and cannot manufacture
+sufficiency. Its 19,090 measured DMG/ADM pages include 893 explicit empty-text
+exclusions. The original 52-record custody profile remains available by explicit
+immutable version. A new default does not rewrite its data or acceptance receipts.
 
 Preserve the complete package in `structuredContent` and JSON text, including
 missing evidence, scope, rights, paths and budget omissions. A smaller requested

@@ -3,7 +3,7 @@ import { fromJsonSchema } from '@modelcontextprotocol/server';
 import common from '../../../profiles/context-assembly/v1/common.schema.json' with { type: 'json' };
 import packageSchema from '../../../profiles/context-assembly/v1/package.schema.json' with { type: 'json' };
 import type { ContextBudget, ContextPackage } from '../../../apps/okf-explorer/src/lib/context/types.ts';
-import { BUNDLE_VERSION } from './registry.ts';
+import { APPROVED_VERSIONS } from './registry.ts';
 
 /** Compose existing local profile references without changing the contract. */
 export function composePackageSchema() {
@@ -24,12 +24,12 @@ export const INPUT_SCHEMA = {
   type: 'object', additionalProperties: false, required: ['bundle', 'question'],
   properties: {
     bundle: { type: 'string', enum: ['okf-dwp'], description: 'Approved public bundle identifier; URLs are not accepted.' },
-    version: { type: 'string', enum: [BUNDLE_VERSION], description: 'Immutable approved revision. Omit to use the same pinned revision.' },
+    version: { type: 'string', enum: [...APPROVED_VERSIONS], description: 'Immutable approved revision. Omit for the pinned full-source discovery corpus; the original custody profile remains available by its explicit revision.' },
     question: { type: 'string', minLength: 1, maxLength: 2000, pattern: '\\S', description: 'General knowledge task. Do not include claimant personal data.' },
     budget: { type: 'object', additionalProperties: false, properties: structuredClone(common.$defs.budget.properties) }
   }
 } as const;
-export type AskInput = { bundle: 'okf-dwp'; version?: typeof BUNDLE_VERSION; question: string; budget?: Partial<ContextBudget> };
+export type AskInput = { bundle: 'okf-dwp'; version?: string; question: string; budget?: Partial<ContextBudget> };
 // This interpreter works in Workers without dynamic code generation.
 export const validator = new CfWorkerJsonSchemaValidator();
 export const inputContract = fromJsonSchema<AskInput>(INPUT_SCHEMA, validator);

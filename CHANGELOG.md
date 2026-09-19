@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Extend the remote MCP service to an approved immutable full DMG and ADM
+  corpus, retain the original profile by version and cache only verified public
+  source files. Add an accessible landing page with beginner guidance and clear
+  source coverage, protocol and answerability boundaries.
+
 - Add hash-bound full-source lexical discovery to Ask OKF, with explicit page,
   query, transfer and package limits. Preserve source governance, scoped graph
   traversal and the historical narrow-index adapter; never treat lexical
