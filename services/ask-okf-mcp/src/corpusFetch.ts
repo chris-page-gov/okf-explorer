@@ -18,7 +18,9 @@ export function createCorpusFetcher(source: ApprovedCorpus, upstream: typeof fet
     if (hit) { cached.delete(url); cached.set(url, hit); return hit; }
     if (pending.has(url)) return pending.get(url)!;
     const promise = (async () => {
-      const response = await upstream(url, { redirect: 'error', credentials: 'omit', signal: init?.signal ?? AbortSignal.timeout(15000) });
+      // workerd rejects redirect:'error' before I/O. Manual mode never follows
+      // Location; every 3xx response fails the same non-OK guard below.
+      const response = await upstream(url, { redirect: 'manual', credentials: 'omit', signal: init?.signal ?? AbortSignal.timeout(15000) });
       if (!response.ok || (response.url && response.url !== url) || !response.body) throw new Error('Approved corpus asset is unavailable.');
       const reader = response.body.getReader();
       const chunks: Uint8Array[] = []; let length = 0;

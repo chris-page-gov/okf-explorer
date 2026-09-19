@@ -21,7 +21,7 @@ const legacy = await verifyBundledContext(indexText, descriptorText);
 const question = 'hospital';
 const encoder = new TextEncoder();
 
-async function fixture() {
+async function fixture(transportRedirect: 'error' | 'manual' = 'error') {
   const files = new Map<string, Uint8Array>();
   const reference = async (path: string, value: unknown, compressed = false) => {
     const decoded = encoder.encode(JSON.stringify(value));
@@ -59,7 +59,7 @@ async function fixture() {
     const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url);
     assert.equal(url.origin, 'https://example.test');
     assert.ok(url.pathname.startsWith('/corpus/'));
-    assert.equal(init?.redirect, 'error'); assert.equal(init?.credentials, 'omit');
+    assert.equal(init?.redirect, transportRedirect); assert.equal(init?.credentials, 'omit');
     const path = url.pathname.slice('/corpus/'.length); requested.push(path);
     const raw = files.get(path); assert.ok(raw, `Unknown corpus fetch ${path}`);
     return new Response(raw as BodyInit);
@@ -165,7 +165,7 @@ for (const stage of ['source_load', 'source_transport', 'source_decode', 'contex
 }
 
 test('public asset cache accepts only pinned file identities and reuses verified bytes', async () => {
-  const f = await fixture();
+  const f = await fixture('manual');
   const fetcher = createCorpusFetcher(f.source, f.fetcher);
   const url = new URL('base-index.json', f.source.binding.index_url).href;
   const first = new Uint8Array(await (await fetcher(url)).arrayBuffer());
@@ -178,7 +178,7 @@ test('public asset cache accepts only pinned file identities and reuses verified
 });
 
 test('asset cache rejects bad hashes without caching corrupted bytes', async () => {
-  const f = await fixture();
+  const f = await fixture('manual');
   const fetcher = createCorpusFetcher(f.source, f.fetcher);
   const url = new URL('base-index.json', f.source.binding.index_url).href;
   const original = f.files.get('base-index.json')!;
@@ -187,4 +187,30 @@ test('asset cache rejects bad hashes without caching corrupted bytes', async () 
   f.files.set('base-index.json', original);
   assert.deepEqual(new Uint8Array(await (await fetcher(url)).arrayBuffer()), original);
   assert.equal(f.requested.length, 2);
+});
+
+test('Worker transport rejects every redirect status without following an unsafe Location', async () => {
+  const f = await fixture();
+  const url = new URL('base-index.json', f.source.binding.index_url).href;
+  const unsafe = 'http://169.254.169.254/latest/meta-data';
+  const requests: string[] = [];
+  let status = 300;
+  const upstream: typeof fetch = async (input, init) => {
+    requests.push(String(input));
+    assert.equal(input, url, 'Only the exact manifest-listed URL may reach upstream');
+    assert.equal(init?.redirect, 'manual', 'Redirects must be returned without following Location');
+    assert.equal(init?.credentials, 'omit');
+    assert.equal(init?.headers, undefined, 'Caller authentication and cookies must not be forwarded');
+    assert.equal(init?.body, undefined);
+    assert.ok(init?.signal instanceof AbortSignal);
+    return new Response(null, { status, headers: { Location: unsafe } });
+  };
+  const fetcher = createCorpusFetcher(f.source, upstream);
+  for (status = 300; status <= 399; status++) {
+    await assert.rejects(fetcher(url, {
+      headers: { Authorization: 'SYNTHETIC_TEST_ONLY', Cookie: 'synthetic=test' }
+    }), /unavailable/);
+  }
+  assert.equal(requests.length, 100, 'A rejected redirect must never be cached');
+  assert.ok(requests.every(request => request === url));
 });

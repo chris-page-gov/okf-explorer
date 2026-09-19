@@ -82,6 +82,12 @@ service does not claim ChatGPT Deep Research compatibility.
   the approved immutable GitHub revision. Redirects and arbitrary URLs are
   rejected. Provenance links are data, never fetch targets. The original custody
   index remains entirely vendored and makes no runtime source requests.
+  The service adapter uses `redirect: 'manual'` and rejects every non-OK response,
+  including all 3xx statuses, without following `Location`. This preserves the
+  shared core's redirect rejection on Worker runtimes which reject the Fetch
+  `error` redirect mode before making a request. An isolated workerd
+  `1.20260918.1` run reproduced that failure and verified this transport change;
+  it is not a replacement for hosted acceptance.
 - Immutable public asset bytes have an 8 MiB, 64-file LRU cache per service
   instance. Every asset's size and digest are checked before caching; the shared
   core independently verifies and accounts for files on every context request.
