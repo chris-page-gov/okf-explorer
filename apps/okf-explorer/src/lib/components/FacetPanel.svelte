@@ -1,6 +1,8 @@
 <script lang="ts">
   import { facetColour, HIGHLIGHT_COLOUR, TRACK_COLOUR } from '$lib/viewer/facetColours';
+  import { classificationMethodLabels, type FacetClassification } from '$lib/viewer/facetClassification';
   export type FacetModel = { key: string; label: string; description?: string; pinned?: boolean; open?: boolean;
+    classification?: FacetClassification;
     rows: { value: string; label: string; count: number; highlighted?: number }[]; exact?: boolean };
   let { facets, selection, multiple = $bindable(false), busy = false, onopen, onpin, onpreview, onpreviewsummary, onkeep, onmove, onhide }:
     { facets: FacetModel[]; selection: Record<string, string[]>; multiple?: boolean; busy?: boolean;
@@ -61,6 +63,14 @@
       {#if facet.open}
         <div id={`facet-values-${facet.key}`} class="facet-values">
           {#if facet.description}<p>{facet.description}</p>{/if}
+          {#if facet.classification}
+            <div class="classification-note" role="note" aria-label={`${facet.label} classification evidence`}>
+              <strong>Producer-declared classification · {facet.classification.review_status.replaceAll('-', ' ')}</strong>
+              <p>{classificationMethodLabels(facet.classification).join(' · ') || 'Method not supplied'}</p>
+              <p>{facet.classification.classified_records.toLocaleString('en-GB')} of {facet.classification.total_records.toLocaleString('en-GB')} records classified in the whole snapshot. Missing classification does not establish that a topic is absent.</p>
+              {#each facet.classification.limitations as limitation}<p>{limitation}</p>{/each}
+            </div>
+          {/if}
           {#if facet.rows.length > 12}<input aria-label={`Find values in ${facet.label}`} placeholder="Find a value" value={searches[facet.key] || ''} oninput={(event) => searches = { ...searches, [facet.key]: event.currentTarget.value }} />{/if}
           <small class="count-key">Highlighted / in scope{facet.exact === false ? ' · partial counts' : ''}</small>
           {#each rows.slice(0, limits[facet.key] || 40) as row (row.value)}
@@ -98,6 +108,7 @@
   @media (forced-colors: active) { .bar-segment { border:1px solid CanvasText; } .highlight-track { background:Canvas; } .highlight-share { background:Highlight; forced-color-adjust:none; } }
   .zero-bar { font-size:.65rem; } .facet-values { padding:6px; display:grid; gap:5px; }
   .facet-values p { margin:0 0 5px; font-size:.8rem; } .facet-values input { width:100%; min-width:0; }
+  .classification-note { border-left:3px solid #806000; background:#fff9df; padding:8px; font-size:.8rem; }
   .facet-value { display:flex; justify-content:space-between; align-items:center; gap:8px; text-align:left; min-height:40px; padding:6px 8px; }
   .facet-value small { white-space:nowrap; font-variant-numeric:tabular-nums; }
   .facet-value.highlighted { background:#fff4b8; border-color:#665400; box-shadow:inset 4px 0 #665400; }

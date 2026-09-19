@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+- Include the bounded, transitive Markdown reading closure in the documentation
+  cache identity, so changes to linked service guides and changelogs rebuild
+  their rendered pages and exact-source alternates. Keep unrelated service
+  sources outside that cache dependency.
+
+- Correct a stale replay link in Ask OKF service 0.3.1: changing the question or
+  source version, or starting another replay, removes the old link. Browser
+  regression checks that a newly requested link matches the new context.
+  Preserve 0.3.0 deployment evidence and verify the corrected runtime separately.
+
+- Extend conceptual-navigation acceptance with an optional published-bundle
+  journey. Check real network responses against pinned local files and verify
+  the deployed application manifest, while retaining the offline fixture mode.
+
+- Keep browser observations of an external Ask OKF service in a separately
+  selectable output directory. Receipts distinguish the tested target from the
+  local build reference and leave deployment identity to its own receipt.
+
+- Refresh exact-build acceptance for the navigation candidate: 100 Heritage
+  questions and three local journeys passed. Add separate service-browser CI
+  coverage and full-corpus conceptual-filter browser checks. An actual DWP
+  check exposed a producer topic-field mismatch, corrected in the additive
+  producer projection; the regression now compares hydrated record counts.
+
+
+- Preserve exact Markdown alternates when newly linked reading pages come from
+  outside the ordinary copied documentation directories, including the changelog
+  and remote-service guides. Validate those links in the assembled site.
+
+
+- Add bounded, lossless evidence catalogues and read-only evidence slices to the
+  remote Ask OKF service, preserving full-package output and context identity.
+  Add a stateless browser evidence reader, explicit delivery limits and replay
+  tests. These changes are a version 0.3.0 candidate; hosted and AI-client
+  observations are separate from implementation checks.
+
+
+- Show producer facet descriptions and optional conceptual-classification
+  methods, review status and whole-snapshot coverage. Preserve ordinary facet
+  filtering across Graph and Timeline without turning text mentions into
+  applicability relationships. Add explicit source, inferred and audit date
+  roles, source-only Timeline selection and partial-date groups that never
+  invent a month. Keep a visible Explorer changes link in the header.
+
 - Verify the deployed full-source HTTPS service with the official MCP SDK:
   complete imprisonment and hospital packages match the shared core, and the
   explicit historical imprisonment package remains unchanged. A separate raw

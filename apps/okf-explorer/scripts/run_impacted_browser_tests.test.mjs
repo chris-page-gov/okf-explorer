@@ -53,7 +53,7 @@ test('search selectors resolve only the relevant Chromium UI suites', () => {
   assert.deepEqual(plan.engines, ['chrome']);
   assert.deepEqual(
     plan.suites.map((suite) => suite.id),
-    ['ask_okf', 'facets', 'small_bundle', 'large_corpus']
+    ['ask_okf', 'facets', 'conceptual_navigation', 'small_bundle', 'large_corpus']
   );
   assert.equal(plan.commands.length, 1);
   assert.equal(plan.commands[0].family, 'ui');
@@ -90,7 +90,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 14);
+  assert.equal(plan.suites.length, 16);
   const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
     .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
   assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
@@ -105,7 +105,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 14);
+  assert.equal(empty.suites.length, 16);
   assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),

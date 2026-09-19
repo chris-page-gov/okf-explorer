@@ -1201,6 +1201,13 @@ def write_generic_reading_pages() -> None:
                 render_generic_page(source, target),
                 encoding="utf-8",
             )
+            # The bounded reading closure can include Markdown outside the
+            # ordinary copied directories (for example a service README).
+            # Its advertised exact-build alternate must exist as well.
+            if not repository_source_is_copied_to_site(relative):
+                raw_output = OUT / relative
+                raw_output.parent.mkdir(parents=True, exist_ok=True)
+                raw_output.write_bytes(source.read_bytes())
         if relative.parts and relative.parts[0] == "profiles":
             compatibility = OUT / relative.with_suffix(".html")
             if compatibility.exists():
@@ -1904,6 +1911,9 @@ def component_source_fingerprint(
             ROOT / "okf.config.json",
             *(ROOT / name for name in PUBLIC_ROOT_FILES),
             *(ROOT / name for name in PUBLIC_DIRS),
+            # Reading pages and their raw Markdown alternates also include
+            # linked dependencies outside those copied directories.
+            *readable_markdown_sources(),
         ]
 
         def include(relative: Path) -> bool:

@@ -120,6 +120,41 @@ jobs:
         working-directory: services/ask-okf-mcp
         run: npm run build
 
+  remote-mcp-browser:
+    needs: adversarial-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '26.7.0'
+          cache: npm
+          cache-dependency-path: services/ask-okf-mcp/package-lock.json
+      - name: Install locked remote service dependencies
+        working-directory: services/ask-okf-mcp
+        run: npm ci --ignore-scripts
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 10
+      - name: Install locked browser test dependencies
+        working-directory: apps/okf-explorer
+        run: pnpm install --frozen-lockfile
+      - name: Materialise browser test TypeScript configuration
+        working-directory: apps/okf-explorer
+        run: pnpm exec svelte-kit sync
+      - name: Verify the built evidence review page in Chrome
+        working-directory: apps/okf-explorer
+        run: pnpm exec playwright test --config playwright.service-review.config.ts --project chrome
+      - name: Retain service review browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: ask-okf-service-review-browser
+          path: |
+            output/playwright/service-review/
+            apps/okf-explorer/test-results/service-review/
+
   python-contracts:
     needs: [impact-plan, adversarial-gate, app]
     if: needs.impact-plan.outputs.python == 'true'
@@ -359,6 +394,7 @@ jobs:
       - adversarial-gate
       - context-assembly
       - remote-mcp
+      - remote-mcp-browser
       - python-contracts
       - app
       - browser-targeted

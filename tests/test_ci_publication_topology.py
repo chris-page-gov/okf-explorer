@@ -38,6 +38,34 @@ class CiPublicationTopologyTests(unittest.TestCase):
             self.assertEqual("services/ask-okf-mcp", commands[command])
         self.assertFalse(any("playwright" in command or "heritage" in command for command in commands))
 
+    def test_remote_mcp_browser_is_a_separate_required_built_service_gate(self) -> None:
+        jobs = self.workflow_jobs(".github/workflows/okf-explorer-ci.yml")
+        browser = jobs["remote-mcp-browser"]
+        self.assertEqual({"adversarial-gate"}, self.job_needs(browser))
+        self.assertNotIn("if", browser)
+        self.assertEqual(10, browser["timeout-minutes"])
+        self.assertIn("remote-mcp-browser", self.job_needs(jobs["okf-explorer-ci"]))
+        commands = {
+            step["run"]: step.get("working-directory")
+            for step in browser["steps"] if "run" in step
+        }
+        self.assertEqual("services/ask-okf-mcp", commands["npm ci --ignore-scripts"])
+        for command in (
+            "pnpm install --frozen-lockfile",
+            "pnpm exec svelte-kit sync",
+            "pnpm exec playwright test --config playwright.service-review.config.ts --project chrome",
+        ):
+            self.assertEqual("apps/okf-explorer", commands[command])
+        self.assertFalse(any("heritage" in command for command in commands))
+        config = self.text("apps/okf-explorer/playwright.service-review.config.ts")
+        self.assertIn("npm --prefix ../../services/ask-okf-mcp run build", config)
+        self.assertIn("npm --prefix ../../services/ask-okf-mcp start", config)
+        self.assertIn("reuseExistingServer: !process.env.CI", config)
+        upload = next(step for step in browser["steps"]
+                      if step.get("name") == "Retain service review browser evidence")
+        self.assertEqual("always()", upload["if"])
+        self.assertIn("output/playwright/service-review/", upload["with"]["path"])
+
     def test_ci_is_impact_planned_parallel_and_fail_closed(self) -> None:
         workflow = self.text(".github/workflows/okf-explorer-ci.yml")
         jobs = self.workflow_jobs(".github/workflows/okf-explorer-ci.yml")

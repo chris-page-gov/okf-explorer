@@ -9,6 +9,31 @@ The [architecture decision](adr-remote-ask-okf.md) and
 [context guide](context-assembly.md) describe the separation between evidence
 assembly and AI reasoning.
 
+## Smaller responses and inspectable evidence
+
+Version 0.3.0 adds `ask_okf_manifest` and `read_okf_evidence`.
+A **manifest** is a small catalogue: which records were selected, their source
+links and the evidence gaps. It is not an answer or the source text. The read
+tool retrieves exact passages, provenance and diagnostics in manageable parts,
+checking the same source version and context identity on each invocation.
+The existing `ask_okf` full-package output is preserved.
+
+A returned browser link opens a simple evidence reader. Select **Recreate
+evidence** to check and view the evidence. The question travels in the link's
+fragment and is not submitted merely by opening it. Shared links still contain
+the question, so use general questions without personal information.
+This recreates evidence, not the AI's wording or a stored audit history.
+
+The [delivery decision](adr-compact-evidence-delivery.md) and
+[service examples](../services/ask-okf-mcp/README.md#compact-evidence-and-browser-review)
+explain budgets, continuation and integrity checks. A smaller transfer does not
+change source completeness or make an insufficient package sufficient. On 19 September 2026, Sites version 6 deployed runtime commit
+`169b8c387a29435d39dc31cbb2066376d84b39a6`. The official SDK verified all three
+tools, unchanged full-package outputs, compact reconstruction and three
+fail-closed controls. The [additive delivery receipts](https://github.com/chris-page-gov/okf-dwp/tree/main/validation/compact-delivery)
+separate hosting, SDK and browser evidence. This does not establish ChatGPT
+Voice support or legal answer quality.
+
 ## Approved versions and release status
 
 The new service default is full-source discovery at DWP revision

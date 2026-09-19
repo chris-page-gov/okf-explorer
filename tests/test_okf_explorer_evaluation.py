@@ -2427,9 +2427,16 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
     def test_svelte_timeline_and_relationship_drawer_are_interactive(self):
         source = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "explore" / "+page.svelte").read_text(encoding="utf-8")
         styles = (ROOT / "apps" / "okf-explorer" / "src" / "routes" / "styles.css").read_text(encoding="utf-8")
+        timeline = (ROOT / "apps" / "okf-explorer" / "src" / "lib" / "viewer" / "largeTimeline.ts").read_text(encoding="utf-8")
 
         self.assertIn("TimelineResolution", source)
-        self.assertIn("quarterForStamp", source)
+        self.assertIn("timelinePeriodBucket(period, resolution)", source)
+        self.assertIn("period.precision === 'year'", timeline)
+        self.assertIn("quarter' ? `${year}-Q${Math.ceil(month / 3)}`", timeline)
+        self.assertIn("month not specified", timeline)
+        self.assertIn('aria-label="Primary date role"', source)
+        self.assertIn("timelineBuckets.slice(0, timelineBucketLimit)", source)
+        self.assertIn("of {timelineBuckets.length.toLocaleString('en-GB')} dated record groups", source)
         self.assertIn("currentTimelineBuckets", source)
         self.assertIn("Newest", source)
         self.assertIn("beginEdgePanelResize", source)

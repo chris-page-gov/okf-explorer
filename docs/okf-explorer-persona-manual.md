@@ -270,11 +270,14 @@ time buckets, so I can avoid being stranded on old records.
 
 Expected behaviour:
 
-- Timeline defaults to Latest, not arbitrary or oldest-first order.
-- Latest shows newest dated records first.
+- Timeline defaults to **Dated records**, with the newest primary dates first.
+- Each primary date names its role: source coverage or publication, inferred
+  period, capture or record audit. **Primary date role** can show only declared
+  source dates or only records whose primary date is an audit date.
 - Year, Quarter and Month group dated metadata at progressively finer
   resolution.
-- Clicking a bucket applies a date facet/reduction.
+- An analysis overview bucket can apply its declared date facet. A hydrated
+  date bucket opens its first sample; it does not silently create a date filter.
 - Missing dates are shown as missing source metadata, not as new, stale or
   invalid.
 - Timeline should reflect the active search/filter reduction.
@@ -285,6 +288,12 @@ Expected behaviour:
 - An explicit operational source release date is distinct from a catalogue
   timestamp. A month or year alone remains at that precision; an unknown date
   or dynamic marker does not become a publication date.
+- Month and quarter groups retain a “not specified” group for coarser dates.
+  Expand **Audit dates** to inspect capture and generation alongside a source
+  date. Listing-page and HTTP updates are not document publication evidence.
+
+See [conceptual navigation and date evidence](conceptual-navigation.md) for
+classification methods, review labels, incomplete coverage and date roles.
 
 The timeline is a navigation aid and a metadata-quality signal. It is not a
 guarantee that the underlying API was created or modified on that date unless

@@ -10,6 +10,8 @@ import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/contex
 import { APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA } from '../src/contracts.ts';
+import { MANIFEST_INPUT_SCHEMA, MANIFEST_OUTPUT_SCHEMA, EVIDENCE_INPUT_SCHEMA, EVIDENCE_OUTPUT_SCHEMA } from '../src/deliveryContracts.ts';
+import { verifyCompactDelivery } from './verify-delivery.mjs';
 
 const args = process.argv.slice(2);
 if (args.length !== 4 || args[0] !== '--endpoint' || args[2] !== '--output') {
@@ -57,6 +59,11 @@ execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: serviceRoot, timeou
 const reproducedReceipt = JSON.parse(await readFile(buildReceiptPath, 'utf8'));
 if (canonicalJson(reproducedReceipt) !== canonicalJson(buildReceipt)) throw new Error('Local build did not reproduce its recorded inputs and outputs.');
 const verifierBytes = await readFile(fileURLToPath(import.meta.url));
+const verifierHelperURL = new URL('./verify-delivery.mjs', import.meta.url);
+const verifierHelperBytes = await readFile(verifierHelperURL);
+const verifierHelperPath = relative(repositoryRoot, fileURLToPath(verifierHelperURL)).replaceAll('\\', '/');
+let verifierHelperMatchesCommit = false;
+try { verifierHelperMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierHelperPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierHelperBytes); } catch { /* Explicit working-tree verifier support. */ }
 const verifierPath = relative(repositoryRoot, fileURLToPath(import.meta.url)).replaceAll('\\', '/');
 let verifierMatchesCommit = false;
 try { verifierMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierBytes); } catch { /* An uncommitted verification script is explicitly classified. */ }
@@ -79,14 +86,27 @@ const transport = new StreamableHTTPClientTransport(endpoint);
 const started = new Date().toISOString();
 const results = [];
 let toolsHash;
+let compactDelivery;
+const toolContracts = [
+  { name: 'ask_okf', inputSchema: INPUT_SCHEMA, outputSchema: OUTPUT_SCHEMA },
+  { name: 'ask_okf_manifest', inputSchema: MANIFEST_INPUT_SCHEMA, outputSchema: MANIFEST_OUTPUT_SCHEMA },
+  { name: 'read_okf_evidence', inputSchema: EVIDENCE_INPUT_SCHEMA, outputSchema: EVIDENCE_OUTPUT_SCHEMA }
+];
 try {
   await client.connect(transport);
   const tools = await client.listTools();
-  if (tools.tools.length !== 1 || tools.tools[0].name !== 'ask_okf'
-    || canonicalJson(tools.tools[0].inputSchema) !== canonicalJson(INPUT_SCHEMA)
-    || canonicalJson(tools.tools[0].outputSchema) !== canonicalJson(OUTPUT_SCHEMA)
-    || canonicalJson(tools.tools[0].annotations) !== canonicalJson(expectedAnnotations)) {
+  if (tools.tools.length !== toolContracts.length || new Set(tools.tools.map(tool => tool.name)).size !== toolContracts.length) {
     throw new Error('Remote tool discovery differs from the governed service contract.');
+  }
+  for (const contract of toolContracts) {
+    const tool = tools.tools.find(item => item.name === contract.name);
+    if (!tool || canonicalJson(tool.inputSchema) !== canonicalJson(contract.inputSchema)
+      || canonicalJson(tool.outputSchema) !== canonicalJson(contract.outputSchema)
+      || canonicalJson(tool.annotations) !== canonicalJson(expectedAnnotations)
+      || tool._meta?.['okf/untrustedContent'] !== true
+      || canonicalJson(tool._meta?.securitySchemes) !== canonicalJson([{ type: 'noauth' }])) {
+      throw new Error('Remote tool discovery differs for ' + contract.name + '.');
+    }
   }
   toolsHash = hash(canonicalJson(tools));
   for (const item of cases) {
@@ -118,8 +138,15 @@ try {
       truncated: remote.budget.truncated, duration_ms: duration,
       full_package_matches_direct_engine: true, text_matches_structured_content: true, model_answer_present: false });
   }
+  const compactRequest = { bundle: APPROVED_BUNDLE.id, version: APPROVED_BUNDLE.version,
+    question: 'What happens to your benefits if you go abroad?', budget: { max_bytes: 32768 } };
+  const compactContext = await assembleCorpusContext(approved.manifest, approved.binding,
+    compactRequest.question, compactRequest.budget, corpusFetch);
+  compactDelivery = await verifyCompactDelivery(client, compactContext, compactRequest, endpoint.origin);
 } finally { await client.close(); }
-// Detect a concurrent source change during the network verification as well.
+// Detect a concurrent source or verifier change during the network verification as well.
+if (hash(await readFile(fileURLToPath(import.meta.url))) !== hash(verifierBytes)
+  || hash(await readFile(verifierHelperURL)) !== hash(verifierHelperBytes)) throw new Error('Verifier changed during verification.');
 for (const [path, digest] of Object.entries(buildReceipt.inputs)) await checkSource(path, digest);
 const receipt = {
   schema: 'okf-remote-mcp-sdk-verification.v1', endpoint: endpoint.href, started_at: started,
@@ -128,13 +155,17 @@ const receipt = {
   comparison_source_assurance: { classification: 'exact-runtime-inputs-match-commit', inputs_sha256: sourceProof,
     build_receipt_inputs_and_outputs_checked: true, local_build_reproduced: true,
     verifier: { path: verifierPath, sha256: hash(verifierBytes), matches_comparison_commit: verifierMatchesCommit,
-      classification: verifierMatchesCommit ? 'committed' : 'working-tree-verifier' } },
+      classification: verifierMatchesCommit ? 'committed' : 'working-tree-verifier',
+      supporting_files: [{ path: verifierHelperPath, sha256: hash(verifierHelperBytes), matches_comparison_commit: verifierHelperMatchesCommit,
+        classification: verifierHelperMatchesCommit ? 'committed' : 'working-tree-verifier' }] } },
   comparison_worker_sha256: buildReceipt.outputs['dist/server/index.js'],
   deployment_identity_note: 'The remote health endpoint confirms the immutable bundle identity. The comparator Worker digest is not itself proof of the deployed Worker bytes; retain the hosting deployment receipt separately.',
   bundle_version: APPROVED_BUNDLE.version, binding: approved.binding, snapshot: APPROVED_BUNDLE.snapshot,
-  tool: 'ask_okf', tool_discovery_canonical_sha256: toolsHash,
-  input_schema_matches: true, output_schema_matches: true, annotations: expectedAnnotations, health, cases: results, passed: true,
-  limitations: ['This official SDK client verification does not prove ChatGPT or Voice integration.']
+  tool: 'ask_okf', tools: toolContracts.map(tool => tool.name), tool_discovery_canonical_sha256: toolsHash,
+  input_schema_matches: true, output_schema_matches: true, annotations: expectedAnnotations, health, cases: results, compact_delivery: compactDelivery, passed: true,
+  limitations: ['This official SDK client verification does not prove ChatGPT or Voice integration.',
+    'Delivery bounds cover the structured JSON value. MCP may transmit both text and structured copies plus envelope metadata.',
+    'Complete reconstruction proves delivery integrity, not evidence sufficiency or legal correctness.']
 };
 await writeFile(output, JSON.stringify(receipt, null, 2) + '\n');
-console.log(JSON.stringify({ passed: true, endpoint: endpoint.href, cases: results.map(item => ({ id: item.id, evidence_status: item.evidence_status, context_id: item.context_id })), receipt: output }));
+console.log(JSON.stringify({ passed: true, endpoint: endpoint.href, cases: results.map(item => ({ id: item.id, evidence_status: item.evidence_status, context_id: item.context_id })), compact_delivery: { context_id: compactDelivery.context_id, catalogue_records: compactDelivery.catalogue_records, reads: compactDelivery.reads.length, reconstructed_package_matches_direct_engine: compactDelivery.reconstructed_package_matches_direct_engine }, receipt: output }));

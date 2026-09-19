@@ -20,6 +20,90 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_docs_fingerprint_tracks_transitive_reading_sources_only(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="okf-docs-fingerprint-") as temporary:
+            root = Path(temporary)
+            files = {
+                "docs/index.md": "# Guide\n\n[Service](../services/example/README.md)\n",
+                "services/example/README.md": (
+                    "# Service\n\n[Changes](CHANGELOG.md)\n"
+                    "[Excluded](../../uk-government-apis/private.md)\n"
+                    "[Transient](../../evaluation/example/results/run.md)\n"
+                ),
+                "services/example/CHANGELOG.md": "# Service changes\n\nFirst entry.\n",
+                "services/example/unlinked.md": "# Unrelated document\n",
+                "services/example/src/runtime.ts": "export const unrelated = 1;\n",
+                "uk-government-apis/private.md": "# Excluded document\n",
+                "evaluation/example/results/run.md": "# Transient result\n",
+            }
+            for relative, content in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+
+            def fingerprint():
+                # Each invocation represents a fresh build, including discovery.
+                build_site.readable_markdown_sources.cache_clear()
+                return build_site.component_source_fingerprint("docs")
+
+            build_site.readable_markdown_sources.cache_clear()
+            self.addCleanup(build_site.readable_markdown_sources.cache_clear)
+            with (
+                mock.patch.object(build_site, "ROOT", root),
+                mock.patch.object(
+                    build_site, "PUBLICATION_UNIT_DESCRIPTOR", root / "unit.json"
+                ),
+            ):
+                first, materials = fingerprint()
+                paths = {item["path"] for item in materials}
+                self.assertEqual(paths, {
+                    "docs/index.md",
+                    "services/example/README.md",
+                    "services/example/CHANGELOG.md",
+                    # Copied raw by the existing public-directory policy,
+                    # but excluded from the rendered reading closure.
+                    "uk-government-apis/private.md",
+                })
+                self.assertNotIn(
+                    (root / "uk-government-apis/private.md").resolve(),
+                    build_site.readable_markdown_sources(),
+                )
+
+                changes = root / "services/example/CHANGELOG.md"
+                changes.write_text("# Service changes\n\nNew entry.\n", encoding="utf-8")
+                second, _ = fingerprint()
+                self.assertNotEqual(first, second)
+
+                for relative in (
+                    "services/example/unlinked.md",
+                    "services/example/src/runtime.ts",
+                    "evaluation/example/results/run.md",
+                ):
+                    with self.subTest(unrelated=relative):
+                        (root / relative).write_text("Changed unrelated bytes.\n", encoding="utf-8")
+                        self.assertEqual(second, fingerprint()[0])
+
+                # A new transitive page changes both the route and raw-alternate
+                # output set, and must be represented in the next fingerprint.
+                changes.write_text(
+                    "# Service changes\n\n[Detail](release.md)\n", encoding="utf-8"
+                )
+                (changes.parent / "release.md").write_text("# Release detail\n", encoding="utf-8")
+                third, materials = fingerprint()
+                self.assertNotEqual(second, third)
+                self.assertIn("services/example/release.md", {
+                    item["path"] for item in materials
+                })
+
+    def test_linked_reading_dependencies_retain_their_exact_markdown(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="okf-reading-alternates-") as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build_site, "OUT", output):
+                build_site.write_generic_reading_pages()
+            for relative in [Path("CHANGELOG.md"), Path("services/ask-okf-mcp/README.md"),
+                             Path("services/ask-okf-mcp/ARCHITECTURE.md")]:
+                self.assertEqual((output / relative).read_bytes(), (ROOT / relative).read_bytes())
+
     def test_research_draft_is_excluded_from_site_transport(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "research"
