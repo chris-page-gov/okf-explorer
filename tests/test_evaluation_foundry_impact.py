@@ -93,6 +93,29 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
         unknown = impact.build_impact_plan(self.profile, ["evaluation/other/journeys.json"])
         self.assertTrue(unknown["fail_closed"])
 
+    def test_remote_adapter_is_independent_but_unknown_services_fail_closed(self) -> None:
+        original = copy.deepcopy(self.profile)
+        for path in (
+            "services/ask-okf-mcp/src/server.ts",
+            "services/ask-okf-mcp/package-lock.json",
+            "services/ask-okf-mcp/data/bundles.json",
+            "scripts/stage_remote_mcp_site.mjs",
+        ):
+            plan = impact.build_impact_plan(self.profile, [path])
+            self.assert_valid_plan(plan)
+            self.assertFalse(plan["fail_closed"])
+            self.assertIn("REPOSITORY-REMOTE-MCP", plan["matched_rule_ids"])
+            self.assertFalse(any(plan["selectors"]["jobs"].values()))
+            self.assertEqual([], plan["selectors"]["builder_planes"])
+        self.assertEqual(original, self.profile)
+        unknown = impact.build_impact_plan(self.profile, ["services/another/src/server.ts"])
+        self.assertTrue(unknown["fail_closed"])
+        mixed = impact.build_impact_plan(self.profile, [
+            "services/ask-okf-mcp/src/server.ts",
+            "apps/okf-explorer/src/lib/context/index.ts",
+        ])
+        self.assertTrue(mixed["selectors"]["jobs"]["app"])
+
     def test_v2_semantic_roots_preserve_graph_identity_and_validate_artifacts(self) -> None:
         receipt = json.loads((ROOT / "evaluation/heritage/tiny/assurance/plane-roots.json").read_text())
         original = impact._validated_plane_root_digests(receipt)

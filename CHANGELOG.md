@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Add an independent read-only remote MCP adapter for the existing Ask OKF
+  engine, with approved immutable source bindings, bounded requests and the
+  unchanged governed evidence package. Document ChatGPT setup, host boundaries,
+  privacy, threats and separate deployment/client acceptance.
+- Keep the remote adapter's locked tests and build in a required CI job. Route
+  service-only changes independently from unchanged Heritage browser artefacts,
+  while preserving unknown-path failure controls and frozen profile contracts.
+- Deploy the public HTTPS test service and verify complete package equality with
+  two protocol clients. Record actual ChatGPT calls and distinguish its runner's
+  output limit from the assembler's explicit evidence budget. Retain smaller
+  package demonstrations and limitations without changing the shared engine.
+
 - Reject invalid optional review status, original assertion identities and extra alias fields before context assembly or rendering.
 
 - Make context-control replay portable across zlib builds while retaining exact
