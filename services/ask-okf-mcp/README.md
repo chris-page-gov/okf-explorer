@@ -1,6 +1,6 @@
 # Ask OKF remote MCP service
 
-A tool-only remote transport for Explorer's existing governed context assembly
+A read-only remote transport for Explorer's existing governed context assembly
 engine. It serves approved immutable public OKF-DWP versions anonymously. It makes no
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
@@ -20,7 +20,7 @@ npm start
 
 The local development endpoint is `http://127.0.0.1:8787/mcp`. The equivalent
 `/okf/mcp` route avoids a hosting-platform-reserved `/mcp` path; the public
-landing page advertises `/okf/mcp`. Both routes use the same handler and tool.
+landing page advertises `/okf/mcp`. Both routes use the same handler and tools.
 `GET /health`
 verifies the vendored default corpus manifest and reports its immutable identity.
 Source shards are verified when requested, so health does not claim every remote
@@ -32,7 +32,38 @@ with dynamic code generation prohibited. Build metadata is in
 `dist/build-receipt.json`. Host and origin allow-lists are deployment-owned source
 configuration in `src/service.ts`, not caller-supplied parameters.
 
-## Tool contract
+## Compact evidence and browser review
+
+Version 0.3.0 adds two read-only tools alongside the unchanged full-package tool:
+
+- `ask_okf_manifest`: assemble a context and return a small catalogue. Start here
+  when the AI client cannot receive a complete package in one response.
+- `read_okf_evidence`: reassemble and verify the same context, then read selected
+  evidence, provenance, paths, gaps or the full package in bounded exact slices.
+
+Use the manifest's `question`, `replay.version`, `replay.budget` and `context_id`
+unchanged for every read. Request `section: "diagnostics"` to inspect boundaries,
+then `section: "record_text", record_id: "<selected ID>"` for a passage and
+`record_metadata` for provenance and inclusion reasons. Follow `next_offset`
+until null and check `content_sha256` before treating a value as complete.
+Catalogue continuation uses `delivery.next_offset` and requires `context_id`.
+
+A result defaults to 16 KiB; `delivery_bytes` allows up to 64 KiB without changing
+selection. MCP's text/structured copies and link envelope can be larger than a
+single result. A fully delivered package can still be insufficient. The manifest
+is not source evidence; no tool generates an AI answer.
+
+Open the returned `review_url` to inspect the same evidence in a browser. The
+page is inert until **Recreate evidence** is selected; each request verifies
+approved source files and the requested context identity. The URL fragment
+contains the general question and may persist in browser/client history.
+This is evidence replay, not a stored audit log or AI-answer replay.
+
+See the [delivery decision](../../docs/adr-compact-evidence-delivery.md) for schemas,
+privacy, limits and alternatives. Local review: `http://127.0.0.1:8787/review/`.
+Release observations distinguish candidate checks from actual deployment.
+
+## Full-package tool contract
 
 `ask_okf` accepts this object:
 

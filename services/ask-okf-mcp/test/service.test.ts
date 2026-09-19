@@ -64,7 +64,7 @@ test('official v2 SDK calls current HTTP and receives exact complete core packag
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.deepEqual(list.tools.map(t => t.name), ['ask_okf']);
+    assert.deepEqual(list.tools.map(t => t.name), ['ask_okf', 'ask_okf_manifest', 'read_okf_evidence']);
     assert.equal(list.tools[0].annotations?.readOnlyHint, true);
     assert.deepEqual(list.tools[0].outputSchema, OUTPUT_SCHEMA);
     const result = await client.callTool({ name: 'ask_okf', arguments: input });
@@ -87,7 +87,7 @@ test('official v1 SDK uses stateless legacy HTTP with identical package', async 
   const transport = new LegacyTransport(new URL(url), { fetch: async (input, init) => s.fetch(new Request(input, init)) });
   try {
     await client.connect(transport);
-    const list = await client.listTools(); assert.equal(list.tools.length, 1);
+    const list = await client.listTools(); assert.equal(list.tools.length, 3);
     const result = await client.callTool({ name: 'ask_okf', arguments: input });
     assert.equal(canonicalJson(result.structuredContent), canonicalJson(expected));
     assert.ok(Array.isArray(result.content));
@@ -209,5 +209,91 @@ test('host-compatible /okf/mcp alias returns the same complete package as /mcp',
     assert.equal(landing.headers.get('content-type'), 'text/html; charset=utf-8');
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'GET' }))).status, 405);
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp-other`, { method: 'GET' }))).status, 404);
+  } finally { await s.close(); }
+});
+
+test('SDK compact catalogue and lossless reads preserve exact full-package identity', async () => {
+  const s = service();
+  const client = new Client({ name: 'okf-compact-acceptance', version: '1.0.0' }, {
+    jsonSchemaValidator: new CfWorkerJsonSchemaValidator(), versionNegotiation: { mode: { pin: '2026-07-28' } }
+  });
+  const transport = new StreamableHTTPClientTransport(new URL(url), { fetch: async (input, init) => s.fetch(new Request(input, init)) });
+  try {
+    await client.connect(transport);
+    const first = await client.callTool({ name: 'ask_okf_manifest', arguments: input });
+    assert.equal(first.isError, undefined);
+    const manifest = first.structuredContent as any;
+    assert.equal(manifest.context_id, expected.context_id);
+    assert.equal(manifest.evidence_status, expected.evidence_status);
+    assert.equal(manifest.summary.full_package_bytes, Buffer.byteLength(JSON.stringify(expected)));
+    assert.equal(manifest.response_bytes, Buffer.byteLength(JSON.stringify(manifest)));
+    assert.ok(manifest.response_bytes <= 16384);
+    assert.equal(first.content[1].type, 'resource_link');
+    const review = new URL(manifest.review_url);
+    assert.equal(review.pathname, '/review/'); assert.equal(review.search, '');
+    const recipe = JSON.parse(Buffer.from(review.hash.slice(1), 'base64url').toString('utf8'));
+    assert.equal(recipe.context_id, expected.context_id); assert.equal(recipe.question, question);
+    const ids = manifest.records.map((item: any) => item.id);
+    let offset = manifest.delivery.next_offset;
+    while (offset !== null) {
+      const result = await client.callTool({ name: 'ask_okf_manifest', arguments: { ...recipe, offset } });
+      assert.equal(result.isError, undefined);
+      const page = result.structuredContent as any;
+      ids.push(...page.records.map((item: any) => item.id)); offset = page.delivery.next_offset;
+      assert.ok(page.response_bytes <= 16384);
+    }
+    assert.deepEqual(ids, expected.selected.map(item => item.record.id));
+    const parts: string[] = []; offset = 0;
+    do {
+      const result = await client.callTool({ name: 'read_okf_evidence', arguments: { ...recipe, section: 'package', offset, delivery_bytes: 65536 } });
+      assert.equal(result.isError, undefined);
+      const part = result.structuredContent as any;
+      assert.ok(Buffer.byteLength(JSON.stringify(part)) <= 65536);
+      assert.equal(part.delivery.used_bytes, Buffer.byteLength(JSON.stringify(part)));
+      parts.push(part.data); offset = part.next_offset;
+    } while (offset !== null);
+    assert.equal(parts.join(''), canonicalJson(expected));
+  } finally { await client.close(); await s.close(); }
+});
+
+test('compact delivery rejects changed contexts, unknown IDs, unsafe inputs and unbound continuation', async () => {
+  const s = service();
+  const context_id = expected.context_id;
+  try {
+    for (const [name, args] of [
+      ['ask_okf_manifest', { ...input, offset: 1 }],
+      ['ask_okf_manifest', { ...input, context_id: 'urn:sha256:' + '0'.repeat(64) }],
+      ['ask_okf_manifest', { ...input, delivery_bytes: 100 }],
+      ['ask_okf_manifest', { ...input, url: 'https://evil.test/' }],
+      ['read_okf_evidence', { ...input, context_id, section: 'record_text', record_id: 'https://evil.test/' }],
+      ['read_okf_evidence', { ...input, context_id, section: 'package', question: 'another question' }],
+      ['read_okf_evidence', { ...input, context_id, section: 'package', budget: { max_nodes: 1 } }],
+      ['read_okf_evidence', { ...input, context_id, section: 'package', offset: -1 }],
+      ['read_okf_evidence', { ...input, context_id, section: 'package', file: '/etc/passwd' }]
+    ]) {
+      const result = await rpc(s, 'tools/call', { name, arguments: args });
+      assert.ok(result.message.result?.isError || result.message.error, JSON.stringify(args));
+      assert.equal(result.message.result?.structuredContent, undefined);
+    }
+  } finally { await s.close(); }
+});
+
+test('review page is a static inert shell with privacy and executable-content boundaries', async () => {
+  let loads = 0;
+  const s = createAskService({ loadContext: async () => { loads++; return approved; } });
+  try {
+    const page = await s.fetch(new Request(`${PUBLIC_ORIGIN}/review/`));
+    const html = await page.text();
+    assert.equal(page.status, 200);
+    assert.match(html, /Recreate evidence/);
+    assert.match(html, /does not reproduce an AI answer/);
+    assert.match(page.headers.get('content-security-policy')!, /script-src 'self'/);
+    assert.match(page.headers.get('content-security-policy')!, /frame-ancestors 'none'/);
+    assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
+    assert.equal(page.headers.get('cache-control'), 'no-store');
+    const script = await s.fetch(new Request(`${PUBLIC_ORIGIN}/review.js`));
+    assert.equal(script.status, 200);
+    assert.equal(loads, 0);
+    assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/review/?question=private`))).status, 400);
   } finally { await s.close(); }
 });

@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+- Preserve exact Markdown alternates when newly linked reading pages come from
+  outside the ordinary copied documentation directories, including the changelog
+  and remote-service guides. Validate those links in the assembled site.
+
+
+- Add bounded, lossless evidence catalogues and read-only evidence slices to the
+  remote Ask OKF service, preserving full-package output and context identity.
+  Add a stateless browser evidence reader, explicit delivery limits and replay
+  tests. These changes are a version 0.3.0 candidate; hosted and AI-client
+  observations are separate from implementation checks.
+
+
+- Show producer facet descriptions and optional conceptual-classification
+  methods, review status and whole-snapshot coverage. Preserve ordinary facet
+  filtering across Graph and Timeline without turning text mentions into
+  applicability relationships. Add explicit source, inferred and audit date
+  roles, source-only Timeline selection and partial-date groups that never
+  invent a month. Keep a visible Explorer changes link in the header.
+
 - Verify the deployed full-source HTTPS service with the official MCP SDK:
   complete imprisonment and hospital packages match the shared core, and the
   explicit historical imprisonment package remains unchanged. A separate raw

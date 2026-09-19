@@ -3,7 +3,7 @@ import type { ContextBinding, ContextIndex } from '../../../apps/okf-explorer/sr
 import { validateContextCorpusManifest, type ContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import corpusRelease from '../vendor/okf-dwp-corpus-release.json' with { type: 'json' };
 
-export const SERVICE_VERSION = '0.2.0';
+export const SERVICE_VERSION = '0.3.0';
 export const LEGACY_BUNDLE_VERSION = 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b';
 export const LEGACY_APPROVED_BUNDLE = {
   id: 'okf-dwp',
