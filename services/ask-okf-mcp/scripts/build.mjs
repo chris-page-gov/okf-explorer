@@ -2,7 +2,7 @@ import { build } from 'esbuild';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, relative } from 'node:path';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -12,8 +12,10 @@ const approved = [
 ];
 for (const [path, digest] of approved) if (hash(await readFile(path)) !== digest) throw new Error(`Integrity mismatch: ${path}`);
 const raw = { name: 'raw-file', setup(build) {
-  build.onResolve({ filter: /\?raw$/ }, args => ({ path: resolve(args.resolveDir, args.path.slice(0, -4)), namespace: 'raw' }));
-  build.onLoad({ filter: /.*/, namespace: 'raw' }, async args => ({ contents: await readFile(args.path, 'utf8'), loader: 'text' }));
+  build.onResolve({ filter: /\?raw$/ }, args => ({
+    path: relative(root, resolve(args.resolveDir, args.path.slice(0, -4))).replaceAll('\\', '/'), namespace: 'raw'
+  }));
+  build.onLoad({ filter: /.*/, namespace: 'raw' }, async args => ({ contents: await readFile(resolve(root, args.path), 'utf8'), loader: 'text' }));
 } };
 const shared = { tsconfigRaw: { compilerOptions: { target: 'ES2022', useDefineForClassFields: true } }, bundle: true, format: 'esm', target: 'es2022', plugins: [raw], metafile: true, sourcemap: false, legalComments: 'eof' };
 await mkdir('dist/server', { recursive: true });

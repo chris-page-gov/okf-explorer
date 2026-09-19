@@ -10,7 +10,8 @@ if (!output || args.length !== 1) throw new Error('Usage: node scripts/stage_rem
 const repo = resolve(import.meta.dirname, '..');
 if (!relative(repo, output).startsWith('..')) throw new Error('Use a separate checkout outside the source repository.');
 const git = (...values) => execFileSync('git', values, { cwd: repo, encoding: 'utf8' }).trim();
-const paths = ['services/ask-okf-mcp', 'apps/okf-explorer/src/lib/context', 'profiles/context-assembly/v1', 'LICENSE'];
+const paths = ['services/ask-okf-mcp', 'apps/okf-explorer/src/lib/context', 'profiles/context-assembly/v1',
+  'LICENSE.md', 'LICENSE-CODE.md', 'docs/remote-mcp.md', 'docs/adr-remote-ask-okf.md'];
 if (git('status', '--porcelain', '--', ...paths)) throw new Error('Commit and review the service inputs before staging.');
 const commit = git('rev-parse', '--verify', 'HEAD');
 const files = git('ls-tree', '-r', '--name-only', commit, '--', ...paths).split('\n').filter(Boolean);
