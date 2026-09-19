@@ -18,7 +18,10 @@ npm run build
 npm start
 ```
 
-The local development endpoint is `http://127.0.0.1:8787/mcp`; `GET /health`
+The local development endpoint is `http://127.0.0.1:8787/mcp`. The equivalent
+`/okf/mcp` route avoids a hosting-platform-reserved `/mcp` path; the public
+landing page advertises `/okf/mcp`. Both routes use the same handler and tool.
+`GET /health`
 verifies the vendored bundle and reports its immutable identity. `ASK_OKF_PORT`
 changes the local port. The Node wrapper binds loopback deliberately. HTTPS
 production hosting uses the Worker build, `dist/server/index.js`, whose default

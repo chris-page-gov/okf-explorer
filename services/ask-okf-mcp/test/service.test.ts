@@ -187,3 +187,20 @@ test('request rate is bounded per instance without retaining client identities',
   const response = await s.fetch(request({})); assert.equal(response.status, 429);
   assert.equal(response.headers.get('retry-after'), '60'); await s.close();
 });
+
+test('host-compatible /okf/mcp alias returns the same complete package as /mcp', async () => {
+  const s = service();
+  try {
+    const message = { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'ask_okf', arguments: input } };
+    const primary = await s.fetch(request(message));
+    const alias = await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, {
+      method: 'POST', headers, body: JSON.stringify(message)
+    }));
+    assert.equal(alias.status, 200);
+    assert.equal(await alias.text(), await primary.text());
+    const landing = await s.fetch(new Request(`${PUBLIC_ORIGIN}/`));
+    assert.match(await landing.text(), /MCP endpoint: \/okf\/mcp/);
+    assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'GET' }))).status, 405);
+    assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp-other`, { method: 'GET' }))).status, 404);
+  } finally { await s.close(); }
+});

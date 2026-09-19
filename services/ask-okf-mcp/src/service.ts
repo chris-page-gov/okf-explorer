@@ -125,8 +125,8 @@ export function createAskService(options: ServiceOptions) {
           bundle: APPROVED_BUNDLE.id, bundle_version: APPROVED_BUNDLE.version, snapshot: APPROVED_BUNDLE.snapshot,
           index_sha256: APPROVED_BUNDLE.index_sha256, engine: 'okf-context-assembly.v1' }), 'health');
       }
-      if (url.pathname === '/' && request.method === 'GET') return finish(new Response('Ask OKF\nIndependent experimental, read-only evidence service. Not official benefits advice.\nMCP endpoint: /mcp\nHealth: /health\nNo claimant personal data.\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }), 'landing');
-      if (url.pathname !== '/mcp') return finish(error(404, 'Not found.'), 'not_found');
+      if (url.pathname === '/' && request.method === 'GET') return finish(new Response('Ask OKF\nIndependent experimental, read-only evidence service. Not official benefits advice.\nMCP endpoint: /okf/mcp\nHealth: /health\nNo claimant personal data.\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }), 'landing');
+      if (url.pathname !== '/mcp' && url.pathname !== '/okf/mcp') return finish(error(404, 'Not found.'), 'not_found');
       if (request.method === 'OPTIONS') return finish(new Response(null, { status: 204, headers: {
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Accept, MCP-Protocol-Version, Mcp-Method, Mcp-Name',

@@ -11,7 +11,7 @@ assembly and AI reasoning.
 
 ## Connection and verification status
 
-The intended test endpoint is `https://ask-okf.crpage.chatgpt.site/mcp`.
+The intended test endpoint is `https://ask-okf.crpage.chatgpt.site/okf/mcp`.
 Deployment, full response delivery and ChatGPT invocation must be verified
 against that exact endpoint before describing it as working. A local or Inspector
 test alone is not ChatGPT acceptance. Record the deployment identity and actual
