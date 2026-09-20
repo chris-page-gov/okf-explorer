@@ -9,6 +9,7 @@ import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/l
 import { createAskService, MAX_BODY_BYTES, PUBLIC_ORIGIN, type Diagnostic } from '../src/service.ts';
 import { LEGACY_APPROVED_BUNDLE as APPROVED_BUNDLE, LEGACY_BUNDLE_VERSION as BUNDLE_VERSION, verifyBundledContext } from '../src/registry.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA, validator } from '../src/contracts.ts';
+import { CORPUS_EXPLORER_URL } from '../src/landing.ts';
 
 const question = 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.';
 const indexText = await readFile(new URL('../vendor/okf-dwp-assembly-index.json', import.meta.url), 'utf8');
@@ -201,10 +202,13 @@ test('host-compatible /okf/mcp alias returns the same complete package as /mcp',
     const landing = await s.fetch(new Request(`${PUBLIC_ORIGIN}/`));
     const html = await landing.text();
     assert.match(html, /MCP endpoint: <code>\/okf\/mcp<\/code>/);
+    assert.ok(html.includes(CORPUS_EXPLORER_URL));
+    assert.ok(CORPUS_EXPLORER_URL.endsWith('%2Fcombined%2Fokf-explorer.json'));
     assert.match(html, /bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752%2Ffull-dmg%2Fokf-corpus-context.json/);
     assert.match(html, /efb05c66616a9cd4328a86cf412780fe7bc7cf0b%2Ffull-dmg%2Fokf-explorer.json/);
     assert.match(html, /19,090 measured pages/);
-    assert.match(html, /Discovery packages remain <strong>insufficient<\/strong>/);
+    assert.match(html, /Packages remain <strong>insufficient<\/strong>/);
+    assert.match(html, /staff-task profiles now declare missing scope, legal and review obligations/);
     assert.match(html, /405 Method Not Allowed/);
     assert.equal(landing.headers.get('content-type'), 'text/html; charset=utf-8');
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'GET' }))).status, 405);
@@ -290,10 +294,30 @@ test('review page is a static inert shell with privacy and executable-content bo
     assert.match(page.headers.get('content-security-policy')!, /script-src 'self'/);
     assert.match(page.headers.get('content-security-policy')!, /frame-ancestors 'none'/);
     assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
-    assert.equal(page.headers.get('cache-control'), 'no-store');
+    assert.equal(page.headers.get('cache-control'), 'no-store, no-transform');
     const script = await s.fetch(new Request(`${PUBLIC_ORIGIN}/review.js`));
     assert.equal(script.status, 200);
     assert.equal(loads, 0);
     assert.equal((await s.fetch(new Request(`${PUBLIC_ORIGIN}/review/?question=private`))).status, 400);
+  } finally { await s.close(); }
+});
+
+test('only HTML responses request no transformation while retaining their CSP', async () => {
+  const s = service();
+  try {
+    for (const path of ['/', '/review', '/review/']) {
+      const page = await s.fetch(new Request(`${PUBLIC_ORIGIN}${path}`));
+      assert.equal(page.headers.get('cache-control'), 'no-store, no-transform');
+      assert.match(page.headers.get('content-security-policy')!, /default-src 'none'/);
+      assert.match(page.headers.get('content-security-policy')!, /frame-ancestors 'none'/);
+      assert.equal(page.headers.get('x-content-type-options'), 'nosniff');
+      assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
+    }
+    for (const path of ['/health', '/review.js', '/unknown', '/okf/mcp']) {
+      const response = await s.fetch(new Request(`${PUBLIC_ORIGIN}${path}`));
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+    }
+    const protocol = await s.fetch(request({ jsonrpc: '2.0', id: 1, method: 'tools/list' }));
+    assert.equal(protocol.headers.get('cache-control'), 'no-store');
   } finally { await s.close(); }
 });

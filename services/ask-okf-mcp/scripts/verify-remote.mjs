@@ -7,11 +7,12 @@ import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/cli
 import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/client/validators/cf-worker';
 import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
-import { APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
+import { APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA } from '../src/contracts.ts';
 import { MANIFEST_INPUT_SCHEMA, MANIFEST_OUTPUT_SCHEMA, EVIDENCE_INPUT_SCHEMA, EVIDENCE_OUTPUT_SCHEMA } from '../src/deliveryContracts.ts';
 import { verifyCompactDelivery } from './verify-delivery.mjs';
+import { verificationCases } from './verification-cases.mjs';
 
 const args = process.argv.slice(2);
 if (args.length !== 4 || args[0] !== '--endpoint' || args[2] !== '--output') {
@@ -29,6 +30,16 @@ const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json
 const legacy = await verifyBundledContext(indexText, descriptorText);
 const approved = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-corpus-manifest.json', import.meta.url), 'utf8'));
 const corpusFetch = createCorpusFetcher(approved);
+const previous = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-previous-corpus-manifest.json', import.meta.url), 'utf8'), PREVIOUS_APPROVED_BUNDLE.version);
+const previousFetch = createCorpusFetcher(previous);
+const corpusSources = new Map([[APPROVED_BUNDLE.version, { source: approved, fetch: corpusFetch }],
+  [PREVIOUS_APPROVED_BUNDLE.version, { source: previous, fetch: previousFetch }]]);
+async function directContext(item) {
+  if (item.version === LEGACY_APPROVED_BUNDLE.version) return assembleContext(legacy.index, item.question, item.budget, legacy.binding);
+  const selected = corpusSources.get(item.version);
+  if (!selected) throw new Error('Unapproved verification source version.');
+  return assembleCorpusContext(selected.source.manifest, selected.source.binding, item.question, item.budget ?? {}, selected.fetch);
+}
 const buildReceiptPath = new URL('../dist/build-receipt.json', import.meta.url);
 const buildReceipt = JSON.parse(await readFile(buildReceiptPath, 'utf8'));
 const repositoryRoot = resolve(serviceRoot, '../..');
@@ -62,6 +73,11 @@ const verifierBytes = await readFile(fileURLToPath(import.meta.url));
 const verifierHelperURL = new URL('./verify-delivery.mjs', import.meta.url);
 const verifierHelperBytes = await readFile(verifierHelperURL);
 const verifierHelperPath = relative(repositoryRoot, fileURLToPath(verifierHelperURL)).replaceAll('\\', '/');
+const verifierCasesURL = new URL('./verification-cases.mjs', import.meta.url);
+const verifierCasesBytes = await readFile(verifierCasesURL);
+const verifierCasesPath = relative(repositoryRoot, fileURLToPath(verifierCasesURL)).replaceAll('\\', '/');
+let verifierCasesMatchesCommit = false;
+try { verifierCasesMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierCasesPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierCasesBytes); } catch { /* Explicit working-tree acceptance cases. */ }
 let verifierHelperMatchesCommit = false;
 try { verifierHelperMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierHelperPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierHelperBytes); } catch { /* Explicit working-tree verifier support. */ }
 const verifierPath = relative(repositoryRoot, fileURLToPath(import.meta.url)).replaceAll('\\', '/');
@@ -74,11 +90,8 @@ const health = await healthResponse.json();
 if (health.ready !== true || health.bundle_version !== APPROVED_BUNDLE.version || health.index_sha256 !== APPROVED_BUNDLE.index_sha256) {
   throw new Error('Remote approved bundle identity differs from the comparison source.');
 }
-const cases = [
-  { id: 'imprisonment', question: 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.', expected: 'insufficient', version: APPROVED_BUNDLE.version },
-  { id: 'hospital', question: 'A claimant is admitted to hospital. Explain the effect on JSA, Income Support, State Pension Credit and ESA, distinguishing entitlement, payment and changes in amount, and trace each conclusion to the applicable DWP guidance.', expected: 'insufficient', version: APPROVED_BUNDLE.version },
-  { id: 'historical-imprisonment', question: 'A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance.', expected: 'sufficient', version: LEGACY_APPROVED_BUNDLE.version }
-];
+const verification = verificationCases(APPROVED_BUNDLE.version, PREVIOUS_APPROVED_BUNDLE.version, LEGACY_APPROVED_BUNDLE.version);
+const cases = verification.full;
 const client = new Client({ name: 'okf-remote-sdk-acceptance', version: '1.0.0' }, {
   versionNegotiation: { mode: { pin: '2026-07-28' } }, jsonSchemaValidator: new CfWorkerJsonSchemaValidator()
 });
@@ -87,6 +100,7 @@ const started = new Date().toISOString();
 const results = [];
 let toolsHash;
 let compactDelivery;
+const compactDeliveryVersions = [];
 const toolContracts = [
   { name: 'ask_okf', inputSchema: INPUT_SCHEMA, outputSchema: OUTPUT_SCHEMA },
   { name: 'ask_okf_manifest', inputSchema: MANIFEST_INPUT_SCHEMA, outputSchema: MANIFEST_OUTPUT_SCHEMA },
@@ -110,13 +124,10 @@ try {
   }
   toolsHash = hash(canonicalJson(tools));
   for (const item of cases) {
-    const historical = item.version === LEGACY_APPROVED_BUNDLE.version;
-    const direct = historical
-      ? await assembleContext(legacy.index, item.question, undefined, legacy.binding)
-      : await assembleCorpusContext(approved.manifest, approved.binding, item.question, {}, corpusFetch);
+    const direct = await directContext(item);
     const start = performance.now();
     const response = await client.callTool({ name: 'ask_okf', arguments: {
-      bundle: APPROVED_BUNDLE.id, version: item.version, question: item.question
+      bundle: APPROVED_BUNDLE.id, version: item.version, question: item.question, ...(item.budget ? { budget: item.budget } : {})
     } });
     const duration = Math.round(performance.now() - start);
     const remote = response.structuredContent;
@@ -138,15 +149,19 @@ try {
       truncated: remote.budget.truncated, duration_ms: duration,
       full_package_matches_direct_engine: true, text_matches_structured_content: true, model_answer_present: false });
   }
-  const compactRequest = { bundle: APPROVED_BUNDLE.id, version: APPROVED_BUNDLE.version,
-    question: 'What happens to your benefits if you go abroad?', budget: { max_bytes: 32768 } };
-  const compactContext = await assembleCorpusContext(approved.manifest, approved.binding,
-    compactRequest.question, compactRequest.budget, corpusFetch);
-  compactDelivery = await verifyCompactDelivery(client, compactContext, compactRequest, endpoint.origin);
+  for (const item of verification.compact) {
+    const compactRequest = { bundle: APPROVED_BUNDLE.id, version: item.version,
+      question: item.question, ...(item.budget ? { budget: item.budget } : {}) };
+    const compactContext = await directContext(item);
+    compactDeliveryVersions.push({ ...await verifyCompactDelivery(client, compactContext, compactRequest,
+      endpoint.origin, { read_bytes: 32768 }), id: item.id });
+  }
+  compactDelivery = compactDeliveryVersions[0];
 } finally { await client.close(); }
 // Detect a concurrent source or verifier change during the network verification as well.
 if (hash(await readFile(fileURLToPath(import.meta.url))) !== hash(verifierBytes)
-  || hash(await readFile(verifierHelperURL)) !== hash(verifierHelperBytes)) throw new Error('Verifier changed during verification.');
+  || hash(await readFile(verifierHelperURL)) !== hash(verifierHelperBytes)
+  || hash(await readFile(verifierCasesURL)) !== hash(verifierCasesBytes)) throw new Error('Verifier changed during verification.');
 for (const [path, digest] of Object.entries(buildReceipt.inputs)) await checkSource(path, digest);
 const receipt = {
   schema: 'okf-remote-mcp-sdk-verification.v1', endpoint: endpoint.href, started_at: started,
@@ -157,12 +172,14 @@ const receipt = {
     verifier: { path: verifierPath, sha256: hash(verifierBytes), matches_comparison_commit: verifierMatchesCommit,
       classification: verifierMatchesCommit ? 'committed' : 'working-tree-verifier',
       supporting_files: [{ path: verifierHelperPath, sha256: hash(verifierHelperBytes), matches_comparison_commit: verifierHelperMatchesCommit,
-        classification: verifierHelperMatchesCommit ? 'committed' : 'working-tree-verifier' }] } },
+        classification: verifierHelperMatchesCommit ? 'committed' : 'working-tree-verifier' },
+        { path: verifierCasesPath, sha256: hash(verifierCasesBytes), matches_comparison_commit: verifierCasesMatchesCommit,
+          classification: verifierCasesMatchesCommit ? 'committed' : 'working-tree-verifier' }] } },
   comparison_worker_sha256: buildReceipt.outputs['dist/server/index.js'],
   deployment_identity_note: 'The remote health endpoint confirms the immutable bundle identity. The comparator Worker digest is not itself proof of the deployed Worker bytes; retain the hosting deployment receipt separately.',
   bundle_version: APPROVED_BUNDLE.version, binding: approved.binding, snapshot: APPROVED_BUNDLE.snapshot,
   tool: 'ask_okf', tools: toolContracts.map(tool => tool.name), tool_discovery_canonical_sha256: toolsHash,
-  input_schema_matches: true, output_schema_matches: true, annotations: expectedAnnotations, health, cases: results, compact_delivery: compactDelivery, passed: true,
+  input_schema_matches: true, output_schema_matches: true, annotations: expectedAnnotations, health, cases: results, compact_delivery: compactDelivery, compact_delivery_versions: compactDeliveryVersions, passed: true,
   limitations: ['This official SDK client verification does not prove ChatGPT or Voice integration.',
     'Delivery bounds cover the structured JSON value. MCP may transmit both text and structured copies plus envelope metadata.',
     'Complete reconstruction proves delivery integrity, not evidence sufficiency or legal correctness.']

@@ -2,8 +2,9 @@ import { contextSha256, validateContextIndex } from '../../../apps/okf-explorer/
 import type { ContextBinding, ContextIndex } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 import { validateContextCorpusManifest, type ContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import corpusRelease from '../vendor/okf-dwp-corpus-release.json' with { type: 'json' };
+import previousRelease from '../vendor/okf-dwp-previous-corpus-release.json' with { type: 'json' };
 
-export const SERVICE_VERSION = '0.3.1';
+export const SERVICE_VERSION = '0.4.0';
 export const LEGACY_BUNDLE_VERSION = 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b';
 export const LEGACY_APPROVED_BUNDLE = {
   id: 'okf-dwp',
@@ -23,7 +24,13 @@ export const APPROVED_BUNDLE = {
   index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/${corpusRelease.manifest_path}`,
   index_sha256: corpusRelease.manifest_sha256, index_bytes: corpusRelease.manifest_bytes
 } as const;
-export const APPROVED_VERSIONS = [BUNDLE_VERSION, LEGACY_BUNDLE_VERSION] as const;
+export const PREVIOUS_BUNDLE_VERSION = previousRelease.version;
+export const PREVIOUS_APPROVED_BUNDLE = {
+  id: 'okf-dwp', version: PREVIOUS_BUNDLE_VERSION, snapshot: previousRelease.snapshot,
+  index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/${previousRelease.manifest_path}`,
+  index_sha256: previousRelease.manifest_sha256, index_bytes: previousRelease.manifest_bytes
+} as const;
+export const APPROVED_VERSIONS = [BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION] as const;
 
 export type ApprovedContext = { index: ContextIndex; binding: ContextBinding };
 export type ApprovedCorpus = { manifest: ContextCorpusManifest; binding: ContextBinding };
@@ -46,12 +53,14 @@ export async function verifyBundledContext(indexText: string, descriptorText: st
 }
 
 /** Verify the approved manifest before its pinned, hash-bound shard retrieval. */
-export async function verifyBundledCorpus(manifestText: string): Promise<ApprovedCorpus> {
-  if (new TextEncoder().encode(manifestText).byteLength !== APPROVED_BUNDLE.index_bytes
-    || await contextSha256(manifestText) !== APPROVED_BUNDLE.index_sha256) {
+export async function verifyBundledCorpus(manifestText: string, version = BUNDLE_VERSION): Promise<ApprovedCorpus> {
+  const approved = version === BUNDLE_VERSION ? APPROVED_BUNDLE : version === PREVIOUS_BUNDLE_VERSION ? PREVIOUS_APPROVED_BUNDLE : undefined;
+  if (!approved) throw new Error('Bundle version is not approved.');
+  if (new TextEncoder().encode(manifestText).byteLength !== approved.index_bytes
+    || await contextSha256(manifestText) !== approved.index_sha256) {
     throw new Error('Approved corpus integrity check failed.');
   }
   const manifest = validateContextCorpusManifest(JSON.parse(manifestText));
-  if (manifest.bundle.snapshot !== APPROVED_BUNDLE.snapshot) throw new Error('Approved corpus snapshot mismatch.');
-  return { manifest, binding: { index_url: APPROVED_BUNDLE.index_url, index_sha256: APPROVED_BUNDLE.index_sha256 } };
+  if (manifest.bundle.snapshot !== approved.snapshot) throw new Error('Approved corpus snapshot mismatch.');
+  return { manifest, binding: { index_url: approved.index_url, index_sha256: approved.index_sha256 } };
 }

@@ -48,6 +48,15 @@ test('compact verifier reconstructs exact package and preserves fail-closed cont
   assert.ok(result.reads.find((item: any) => item.section === 'package').slices > 1);
 });
 
+test('compact verifier supports bounded larger delivery slices and rejects unsafe limits', async () => {
+  const result = await verifyCompactDelivery(client(), context, request, origin, { read_bytes: 32768 });
+  assert.equal(result.reconstructed_package_matches_direct_engine, true);
+  assert.ok(result.calls.filter((row: any) => row.tool === 'read_okf_evidence').every((row: any) => row.response_limit === 32768));
+  for (const read_bytes of [8191, 65537, 8192.5, NaN]) {
+    await assert.rejects(verifyCompactDelivery(client(), context, request, origin, { read_bytes }), /bounded verification delivery size/);
+  }
+});
+
 for (const [label, mutation] of Object.entries<Mutation>({
   'record omitted from catalogue': (name, value) => { if (name === 'ask_okf_manifest') value.records.pop(); },
   'scope status upgraded': (name, value) => { if (name === 'ask_okf_manifest') value.evidence_status = 'conflicting'; },

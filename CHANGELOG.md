@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Serve the additive DWP staff-semantic corpus by default in Ask OKF service
+  0.4.0, retaining both earlier approved corpus versions and exact replay links.
+  Verify the real three-version loader and compact delivery against hash-bound
+  source files. Keep current staff profiles insufficient with named obligations.
+- Request `no-transform` for service HTML while preserving Content Security
+  Policy and `no-store`; verify actual host behaviour separately. Align the
+  service architecture, README, changelog and reproduction commands.
+
 - Count missing-evidence explanations while trimming Ask OKF packages to their
   byte budget. Retain whole evidence records when they fit, rather than falling
   back to an empty package after adding final diagnostics. Add generic boundary
