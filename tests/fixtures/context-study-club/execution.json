@@ -1,7 +1,7 @@
 {
   "schema": "okf-context-execution-receipt.v1",
-  "started_at": "2026-09-20T19:12:23.542Z",
-  "observed_at": "2026-09-20T19:12:23.807Z",
+  "started_at": "2026-09-20T21:53:41.818Z",
+  "observed_at": "2026-09-20T21:53:42.057Z",
   "execution": {
     "schema": "okf-context-execution.v1",
     "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
@@ -11,7 +11,7 @@
       "implementation": [
         {
           "path": "apps/okf-explorer/src/lib/context/corpus.ts",
-          "sha256": "7f0ffe7cb2627be1d83ab5d3efecc0f99c0be967ea876dbfa73410280bda1d14"
+          "sha256": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/delivery.ts",
@@ -19,7 +19,7 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/index.ts",
-          "sha256": "110b53569b216af33a0969e6390596a9a51b189b48ff58b03337be8dba4ee18d"
+          "sha256": "bade207cbc414b9a057778fdc28564d1c0f9c03e7548b3644a3fb9ec9b8731e6"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/types.ts",

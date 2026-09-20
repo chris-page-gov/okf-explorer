@@ -46,3 +46,21 @@ export async function studyClubContextFixture(): Promise<ContextIndex> {
       when_all: [`${base}concept/${name}`], required: [name, ...(name === 'reading' ? ['library'] : ['workshop', 'booking'])].map((s) => `${base}evidence/${s}`),
       scope: 'Retain activity, location and booking evidence including explicitly unknown facts.' })) };
 }
+
+/** Exact-sized, valid synthetic graph for input resource-bound controls. */
+export async function sizedStudyClubContextFixture(targetBytes: number): Promise<ContextIndex> {
+  const index = await studyClubContextFixture();
+  const template = index.records.find(row => row.kind === 'concept')!;
+  const fillers = Array.from({ length: Math.ceil(targetBytes / 100000) }, (_, i) => ({
+    ...template, id: `https://example.test/padding/${i}`, route: `concept/padding${i}`,
+    label: `Synthetic padding ${i}`, aliases: [], text: ''
+  }));
+  index.records.push(...fillers);
+  let remaining = targetBytes - new TextEncoder().encode(JSON.stringify(index)).length;
+  if (remaining < 0) throw new Error('Requested fixture size is too small');
+  for (const row of fillers) {
+    const length = Math.min(remaining, 100000); row.text = 'x'.repeat(length); remaining -= length;
+  }
+  if (remaining) throw new Error('Requested fixture size cannot fit the record text limit');
+  return index;
+}

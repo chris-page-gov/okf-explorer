@@ -218,6 +218,7 @@
       {#if result.ambiguities.length}
         <h4>Ambiguous terms</h4>
         <ul>{#each result.ambiguities as ambiguity}<li>{ambiguity.phrase}: {ambiguity.candidates.map(recordLabel).join('; ')}</li>{/each}</ul>
+        <p>Evidence for each alternative meaning is labelled below. No meaning has been selected; do not combine the alternatives into one interpretation.</p>
       {/if}
       {#if result.missing_evidence.length || result.conflicts.length || result.budget.omissions.length}
         <h4>Gaps, conflicts and omissions</h4>
@@ -242,8 +243,10 @@
       <h4>Selected evidence and interpretation</h4>
       {#each result.selected as item}
         {@const citedSource = item.record.provenance.find((evidence) => isHttpUrl(evidence.url))}
+        {@const alternativeSeeds = [...new Set(item.paths.map(path => path.seed).filter(seed => result?.ambiguities.some(ambiguity => ambiguity.candidates.includes(seed))))]}
         <article class="evidence-item">
           <h5>{item.record.label}</h5>
+          {#if alternativeSeeds.length}<p class="alternative-meaning"><strong>Alternative meaning:</strong> {alternativeSeeds.map(recordLabel).join('; ')}. This meaning remains unresolved.</p>{/if}
           <p class="authority">{item.record.authority.label} · {item.record.assertion_status} · {item.record.review_status || 'Review status not supplied'}</p>
           <p>{item.record.scope}</p>
           {#if canOpenRecord(item.record.route)}<button type="button" onclick={() => onOpenRecord(item.record.route)}>Open record in new tab: {item.record.label}</button>{/if}
@@ -265,7 +268,7 @@
             {/each}
             <p>Rights: {item.record.rights}</p>
             <h6>Traversal paths</h6>
-            <ul>{#each item.paths as path}<li>{path.records.map(recordLabel).join(' → ')}<br />Assertion IDs: {path.assertions.join(', ') || 'Resolved starting record'}</li>{/each}</ul>
+            <ul>{#each item.paths as path}<li>{path.records.map(recordLabel).join(' → ')}<br />Assertion IDs: {path.assertions.join(', ') || 'Starting record'}</li>{/each}</ul>
           </details>
         </article>
       {:else}<p>No whole evidence items were selected.</p>{/each}

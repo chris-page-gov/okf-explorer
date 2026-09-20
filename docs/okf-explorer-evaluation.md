@@ -32,6 +32,32 @@ both fresh result files, the current Site candidate receipt and an observation
 time after both executions. The materialiser checks scores, journey outcomes,
 source roots, app identity and timestamps before writing evidence.
 
+With the Site and `/publication/` alias served at `http://127.0.0.1:8002/`, the
+browser commands are:
+
+```sh
+node scripts/evaluate_okf_explorer.mjs \
+  --base-url http://127.0.0.1:8002/ \
+  --bundle /publication/okf-explorer.json \
+  --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json \
+  --limit 100 --out tmp/heritage-questions
+
+node scripts/evaluate_okf_explorer.mjs \
+  --base-url http://127.0.0.1:8002/ \
+  --candidate-bundle /okf-explorer.json \
+  --bundle-root http://127.0.0.1:8002/publication/ \
+  --journeys-only \
+  --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json \
+  --journey-id journey-tiny --journey-id journey-faithful \
+  --journey-id journey-synthetic-isolation --out tmp/heritage-journeys
+```
+
+Keep the journey candidate root-relative as shown: the receipt expects that
+declaration and verifies the resolved URL. Do not pass `--bundle` for the journey
+run; it deliberately overrides all starting bundles and would replace the tiny
+and synthetic fixtures with the faithful corpus. Set the documented Playwright
+package and browser executable environment variables when using a local browser.
+
 These are local Explorer runtime checks. Public deployment verification and
 domain-specific policy evaluation remain separately recorded activities.
 

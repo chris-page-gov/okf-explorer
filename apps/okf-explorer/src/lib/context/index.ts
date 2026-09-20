@@ -4,6 +4,9 @@ import type {
 } from './types.ts';
 export type * from './types.ts';
 
+// Semantic/base indexes can hold an authored graph larger than one corpus shard.
+// This does not change package budgets or corpus manifest/posting/record limits.
+export const MAX_CONTEXT_INDEX_BYTES = 8 * 1024 * 1024;
 export const DEFAULT_CONTEXT_BUDGET: ContextBudget = {
   max_nodes: 64, max_relationships: 128, max_depth: 6, max_bytes: 524288
 };
@@ -98,7 +101,7 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
   assert(Array.isArray(value.records) && value.records.length <= 10000, 'record limit');
   assert(Array.isArray(value.assertions) && value.assertions.length <= 30000, 'assertion limit');
   assert(Array.isArray(value.requirements) && value.requirements.length <= 500, 'requirement limit');
-  assert(bytes(value) <= 4 * 1024 * 1024, 'index exceeds 4 MiB');
+  assert(bytes(value) <= MAX_CONTEXT_INDEX_BYTES, 'index exceeds 8 MiB');
   const ids = new Set<string>();
   for (const row of value.records) {
     assert(object(row) && iri(row.id) && !ids.has(row.id as string), 'duplicate or invalid record ID');
@@ -316,34 +319,50 @@ export async function assembleContext(
   }
   if (resolution.truncated) omissions.push({ code: 'resolution_budget',
     message: 'Concept resolution reached its fixed comparison budget; interpretation is incomplete.', ids: [] });
-  const queue: Array<{ id: string; path: ContextPath; reason: string }> = (discovery?.evidenceSeeds || []).map((row) => ({
+  const queue: Array<{ id: string; path: ContextPath; reason: string; alternative?: string }> = (discovery?.evidenceSeeds || []).map((row) => ({
     id: row.id, path: { seed: row.id, assertions: [], records: [row.id] }, reason: row.reason
   })).concat(resolution.resolved.map((row) => ({
     id: row.id, path: { seed: row.id, assertions: [], records: [row.id] },
     reason: `Declared phrase match: ${row.matched.join(', ')}`
   })));
+  // Inspect both declared alternatives without treating either as a resolved
+  // meaning. Requirement activation below still uses resolved concepts only.
+  for (const ambiguity of resolution.ambiguities) {
+    for (const id of ambiguity.candidates) {
+      const alternative = `Ambiguous alternative for ${JSON.stringify(ambiguity.phrase)}: ${id}`;
+      queue.push({ id, path: { seed: id, assertions: [], records: [id] }, alternative,
+        reason: `${alternative}. No meaning has been selected.` });
+    }
+  }
   let depth = 0;
   const addIssue = (rows: ContextIssue[], issue: ContextIssue) => {
     if (!rows.some((r) => r.code === issue.code && r.ids.join('|') === issue.ids.join('|'))) rows.push(issue);
   };
-  while (queue.length) {
-    const item = queue.shift()!;
+  for (let cursor = 0; cursor < queue.length; cursor++) {
+    const item = queue[cursor];
     const existing = selected.get(item.id);
     if (existing) {
-      if (existing.paths.length < 4 && !existing.paths.some((p) => p.assertions.join('|') === item.path.assertions.join('|'))) {
+      const unseenPath = !existing.paths.some((p) => p.seed === item.path.seed && p.assertions.join('|') === item.path.assertions.join('|'));
+      if (existing.paths.length >= 4 && unseenPath && item.alternative) {
+        addIssue(omissions, { code: 'alternative_path_budget', message: 'The fixed four-path-per-record limit prevented following another alternative path.', ids: [item.id, item.path.seed] });
+      }
+      const acceptedPath = existing.paths.length < 4 && unseenPath;
+      if (acceptedPath) {
         existing.paths.push(item.path);
         if (!existing.reasons.includes(item.reason)) existing.reasons.push(item.reason);
       }
-      continue;
+      // Preserve each alternative's path through a shared junction. Re-expansion
+      // is bounded by the same four stored paths, never by all possible walks.
+      if (!item.alternative || !acceptedPath) continue;
     }
-    const record = recordById.get(item.id);
+    const record = existing?.record || recordById.get(item.id);
     if (!record) { addIssue(missing, { code: 'missing_record', message: 'A traversed destination is absent from this index.', ids: [item.id] }); continue; }
     if (record.access !== 'public') { addIssue(missing, { code: 'restricted_evidence', message: 'A required or reached item is not available for public context assembly.', ids: [item.id] }); continue; }
-    if (selected.size >= limit.max_nodes) { addIssue(omissions, { code: 'node_budget', message: 'The node budget prevented inclusion.', ids: [item.id] }); continue; }
-    selected.set(item.id, { record, reasons: [item.reason], paths: [item.path] });
+    if (!existing && selected.size >= limit.max_nodes) { addIssue(omissions, { code: 'node_budget', message: 'The node budget prevented inclusion.', ids: [item.id] }); continue; }
+    if (!existing) selected.set(item.id, { record, reasons: [item.reason], paths: [item.path] });
     depth = Math.max(depth, item.path.assertions.length);
     governanceIssues(record).forEach((issue) => addIssue(missing, issue));
-    if (record.kind === 'evidence') {
+    if (!existing && record.kind === 'evidence') {
       const digest = await contextSha256(record.text);
       if (record.provenance.some((p) => p.literal_sha256 && p.literal_sha256 !== digest)) {
         addIssue(missing, { code: 'evidence_digest_mismatch', message: 'The passage does not match its declared literal digest.', ids: [record.id] });
@@ -365,7 +384,8 @@ export async function assembleContext(
       governanceIssues(assertion).forEach((issue) => addIssue(missing, issue));
       queue.push({ id: assertion.target, path: { seed: item.path.seed,
         assertions: [...item.path.assertions, assertion.id], records: [...item.path.records, assertion.target] },
-        reason: `Followed ${assertion.predicate} from ${record.id}` });
+        ...(item.alternative ? { alternative: item.alternative } : {}),
+        reason: `${item.alternative ? item.alternative + '. ' : ''}Followed ${assertion.predicate} from ${record.id}` });
     }
   }
   const seedIds = new Set(resolution.resolved.map((row) => row.id));
@@ -386,6 +406,9 @@ export async function assembleContext(
   };
   if (discovery) {
     base.limitations.push('Lexical matches are candidate evidence, not resolved concepts or proof of applicability. Full-corpus indexing does not establish complete policy coverage.');
+  }
+  if (resolution.ambiguities.length) {
+    base.limitations.push('Evidence reached through an ambiguous alternative belongs to that candidate meaning only. Alternatives are not combined into one interpretation, do not activate evidence requirements, and remain unresolved.');
   }
   if (!applicable.length) addIssue(missing, { code: 'no_evidence_requirements', message: 'No declared evidence requirements cover the resolved task. Completeness cannot be established.', ids: [] });
   const coveredSeeds = new Set(applicable.flatMap((requirement) => [...requirement.when_all, ...(requirement.covers || [])]));
