@@ -1,21 +1,21 @@
 {
   "candidate": {
-    "explorer_manifest_sha256": "a551e1601d7722cea6edfe4e613a4fcc44191d8dfc74a0368b67b6a33f8d6f0c",
-    "explorer_tree_sha256": "c0666ae2659d3cf3eba8a19c41c5d9873adefb5514134823f54549fcabc0a0d2",
+    "explorer_manifest_sha256": "9fc8cb1bbf10e4e5182efd69d56f2b5ed39a2e6ecf942dce64357c4a529d1ce8",
+    "explorer_tree_sha256": "abbcbe8b30c208a2bc4e55a994ec41a7cc5d1a0deb1db51e187b0dd9eec8c4bb",
     "generated_at": "2026-08-03T10:29:12Z",
     "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
     "heritage_release_root_sha256": "7ceed0df108ba2f524b01791b305ed73b8d5ab945606ecb330ed8b17a1e445f9",
-    "site_file_count": 10513,
-    "site_internal_references": 7460,
-    "site_reading_pages": 341,
+    "site_file_count": 10519,
+    "site_internal_references": 7505,
+    "site_reading_pages": 344,
     "site_size_gate": {
-      "headroom_bytes": 181344669,
+      "headroom_bytes": 181273498,
       "limit_bytes": 1000000000,
-      "site_bytes": 818655331,
+      "site_bytes": 818726502,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "cd65a5b798c17686916269ad526272d8c2fbd10c774f33ae123fbb1dfeed5190",
+    "site_tree_sha256": "f8a983e64a7713619690d4c72a909f09c15769fb79b0e554878581eeb77cf897",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
     "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
@@ -62,8 +62,8 @@
     "manifest_sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb",
     "passed": 3,
     "result": "evidence/receipts/local-journey-results.json.gz",
-    "result_gzip_sha256": "b22c763949b97a6aea0891598a381338eef537d8e5acc86e5297cc749a891372",
-    "result_json_sha256": "88e583e88e7891478a428504c738a2dfee65cd6d246decc0bd75c978db2a3590",
+    "result_gzip_sha256": "4129417ab70fc750bd0ed3429a51c06ba3df6445356a06d3b6d6d1b57ed037e7",
+    "result_json_sha256": "ef802f07ffb43669a587edd336605c6e328e9d3dfa6c8ef4569c22ab527754e5",
     "start_bundles": [
       "/publication/tiny/okf-explorer.json",
       "/publication/okf-explorer.json",
@@ -72,7 +72,7 @@
     "status": "passed",
     "validation_only": 0
   },
-  "observed_at": "2026-09-20T22:02:16Z",
+  "observed_at": "2026-09-20T23:48:41.896065Z",
   "producer_materials": {
     "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
     "bytes": 400721,
@@ -134,8 +134,8 @@
     "questions_run": 100,
     "questions_scored": 100,
     "result": "evidence/receipts/question-suite-results.json.gz",
-    "result_gzip_sha256": "a1447bbcd24d32a2b5dc5aed263982543c5306275f7f08e3b29195c11176d6a9",
-    "result_json_sha256": "524be7e875b49b0c299a04c2cd492deb5ecabae751efde4be72880a728a96286",
+    "result_gzip_sha256": "c42cf28b64b4806a4c3331b822ae95c53c407e68f400c3e57355368ef5504a3d",
+    "result_json_sha256": "7e952aaa7daf9bd2269d0605cd6bcc90ccf5393ab5694a598d986caeb54311cd",
     "scores_at_least_80": 100,
     "scores_below_60": 0,
     "status": "passed",

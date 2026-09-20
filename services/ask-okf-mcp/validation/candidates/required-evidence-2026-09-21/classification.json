@@ -1,0 +1,115 @@
+{
+  "schema": "okf-local-engine-candidate-observation.v1",
+  "classification": "undeployed-required-evidence-engine-candidate",
+  "observed_at": "2026-09-20T23:36:46.001Z",
+  "service_version": "0.5.0",
+  "deployment_verified": false,
+  "network_calls": 0,
+  "model_calls": 0,
+  "source_versions_unchanged": true,
+  "integration_receipt_sha256": "a1a5add5f85fcafb21ed2eb65be323af050877a5cad34c40b60079d4e28029b6",
+  "build_receipt_sha256": "c9820a92a4445e5119657d570fe8b5cfd7d61ebc83cbf18c9525dee758fb4724",
+  "worker_sha256": "0a52a679eef3d7598ec3dac4b3352966a38f401e1e4b18dd52e2d453583a86f2",
+  "preserved_observations": {
+    "validation/approved-versions-0.4.0.json": "e8b350ff52c9534f31bdf0ae1b9df70ab82b9ceb9224ffdd78be6ebd7c397f67",
+    "validation/approved-versions-0.5.0.json": "44f6018ace34f72ce0f6085e92c51f3d2d9b57ecd223f7c37a3ddc7141d2c56b",
+    "validation/history/0.4.0-symlink/build-receipt.json": "c8ecc03c995a3ab9dcf7ed82787db0f5efcde951ec221aed15a61bfd8f4af8e3",
+    "validation/history/0.4.0-symlink/approved-versions.json": "58e03be808c90cd407a8d319e34c40e976905eb2a83ea14e3434bc585b8f55c9",
+    "validation/history/0.5.0-source-family-label/build-receipt.json": "26545b9218c19f68ba332371b3b6e4a6e71251a6c7328f00162511fa21d9bfb5",
+    "validation/history/0.5.0-source-family-label/approved-versions.json": "59ab3f768f0b265348912bff8669e73ea716396b6193cb1374c8f714e4abd9bd"
+  },
+  "previous_observation": "../../approved-versions-0.5.0.json",
+  "context_comparison": {
+    "full_custody": [
+      {
+        "case_id": "custody",
+        "source_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+        "previous_context_id": "urn:sha256:1f56e16fb9786219841e10ed050534fb205b4d33f158f1b45e2ee5c19329d9e6",
+        "candidate_context_id": "urn:sha256:03ff072b596de93bccd6d599bead6fec79f6a03c6f0216ffec7f52096c9a65a8",
+        "context_id_changed": true,
+        "selected_records": 64,
+        "selected_relationships": 114,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "custody",
+        "source_version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
+        "previous_context_id": "urn:sha256:39b0991d365cd31e46260e6edc3cccc197cf8b5e3d15d35cc927a3f8472671c6",
+        "candidate_context_id": "urn:sha256:816073d0bda440d84c090c4cd4dcdcc043a969c2a6545802944c799f531e32b5",
+        "context_id_changed": true,
+        "selected_records": 64,
+        "selected_relationships": 118,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "custody",
+        "source_version": "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+        "previous_context_id": "urn:sha256:e8ed7b421e18a02f08e2dba1bfbb411e1032ef213d204f1a6d0ccb966f703b55",
+        "candidate_context_id": "urn:sha256:ca021aa44e549e3b98fb7c1e8e37f8ecd1c686dcbd6aa5d7c347b8c291273ee3",
+        "context_id_changed": true,
+        "selected_records": 64,
+        "selected_relationships": 128,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "custody",
+        "source_version": "efb05c66616a9cd4328a86cf412780fe7bc7cf0b",
+        "previous_context_id": "urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e",
+        "candidate_context_id": "urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e",
+        "context_id_changed": false,
+        "selected_records": 52,
+        "selected_relationships": 127,
+        "evidence_status": "sufficient"
+      }
+    ],
+    "compact": [
+      {
+        "case_id": "staff-care-home-compact-delivery",
+        "source_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+        "previous_context_id": "urn:sha256:6cdc3dd154d4f11e1fb8b9dd1b99c42da59856ba7857de5a3fe04d6f3ab86078",
+        "candidate_context_id": "urn:sha256:966eaeff3a84fe870dbf61d6d46a27a10e8c66b05ff83a514849644cebb77c2a",
+        "context_id_changed": true,
+        "selected_records": 35,
+        "selected_relationships": 61,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "previous-staff-child-dla-pip-compact-delivery",
+        "source_version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
+        "previous_context_id": "urn:sha256:6731af05bf1a9f89578743da3c0bcafc1094c2db74ef6ef27410f903d8af7344",
+        "candidate_context_id": "urn:sha256:6731af05bf1a9f89578743da3c0bcafc1094c2db74ef6ef27410f903d8af7344",
+        "context_id_changed": false,
+        "selected_records": 50,
+        "selected_relationships": 36,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "previous-bounded-abroad-compact-delivery",
+        "source_version": "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+        "previous_context_id": "urn:sha256:2cdfa5feb6310f58166d66e814bd3b2fbe2e9e146e25b25a65453b48e3dffabd",
+        "candidate_context_id": "urn:sha256:2cdfa5feb6310f58166d66e814bd3b2fbe2e9e146e25b25a65453b48e3dffabd",
+        "context_id_changed": false,
+        "selected_records": 6,
+        "selected_relationships": 0,
+        "evidence_status": "insufficient"
+      },
+      {
+        "case_id": "historical-custody-compact-delivery",
+        "source_version": "efb05c66616a9cd4328a86cf412780fe7bc7cf0b",
+        "previous_context_id": "urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e",
+        "candidate_context_id": "urn:sha256:283cddceca09958b96949527280ea14775de5f26d092c939cacfaa545500e80e",
+        "context_id_changed": false,
+        "selected_records": 52,
+        "selected_relationships": 127,
+        "evidence_status": "sufficient"
+      }
+    ]
+  },
+  "scope": "Actual production service adapter and vendored loader, with hash-verified local immutable Git blobs, through SDK 2 and SDK 1. The build receipt binds the compiled Worker; this run does not call that Worker over a deployed network.",
+  "limitations": [
+    "The source versions and package version remain unchanged. Changed shared-engine allocation and dependency diagnostics can produce different context identities from the same source version.",
+    "Earlier receipts and their engine identities remain historical observations; they are not relabelled as candidate-engine acceptance.",
+    "No hosting, browser, ChatGPT, Voice, model-answer, legal-completeness or specialist acceptance is established.",
+    "Generated review URLs name the normal public origin but were used only as local replay inputs here; they do not prove that the candidate context can be recreated on the deployed service."
+  ]
+}

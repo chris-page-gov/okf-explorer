@@ -5,10 +5,14 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
-[Service changelog](CHANGELOG.md). Version **0.5.0 is a release candidate** for
+[Service changelog](CHANGELOG.md). The package version remains **0.5.0** for
 the combined DMG and ADM Reader, household/care-home concepts and selected
-statutory evidence. It preserves three earlier explicit source versions and
-the existing read-only contracts, limits and Content Security Policy (CSP).
+statutory evidence. This checkout additionally contains an **undeployed shared-engine
+candidate** for required-evidence allocation, with a
+[separate local integration observation](validation/candidates/required-evidence-2026-09-21/README.md).
+It preserves the four approved source versions and existing read-only contracts,
+limits and Content Security Policy (CSP). Candidate checks do not attest a new
+public 0.5.0 deployment.
 
 The default release is pinned to DWP commit
 `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`. The build verifies its manifest;
@@ -45,7 +49,7 @@ configuration in `src/service.ts`, not caller-supplied parameters.
 
 ### Reproduce the four-version local integration
 
-The [retained integration receipt](validation/approved-versions-0.5.0.json)
+The [current engine-candidate receipt](validation/candidates/required-evidence-2026-09-21/approved-versions.json)
 checks the actual vendored source loader, all four immutable version identities,
 official SDK 2 and SDK 1 full-package parity, and lossless compact replay of each
 complete package. It also checks that a
@@ -66,7 +70,7 @@ npm run check
 npm test
 ```
 
-The retained run verified 108 immutable source files and reproduced all four
+The candidate run verified 108 immutable source files and reproduced all four
 custody contexts through both SDK versions. It also ran the live verifier’s
 exact compact cases locally: self-funded permanent care-home admission at
 256 KiB on the current corpus, Child DLA/PIP at 256 KiB on the earlier staff
@@ -75,7 +79,9 @@ custody replay. Source text, provenance, paths,
 diagnostics, relationships and complete package slices matched the shared engine.
 The three corpus packages remained insufficient; the original custody package
 retained its historical, bounded sufficient result and original context identity.
-The care-home package contains 35 selected records and 50 relationships. This
+The candidate care-home package contains 35 selected records and 61 relationships;
+the [preserved original 0.5.0 observation](validation/approved-versions-0.5.0.json)
+contained 35 records and 50 relationships. This
 is bounded evidence delivery, not a finding that the question can be answered
 completely. The unit suite uses the same real loader and checks the receipt against the
 executed runner and current service build. It requires no DWP checkout or network.
@@ -90,8 +96,14 @@ against this candidate; its exact build-hash check remains enforced. Each
 receipt attests its recorded engine and bindings, not arbitrary future engines.
 The [first 0.5.0 candidate observation](validation/history/0.5.0-source-family-label/classification.json)
 is also preserved: its landing page still called the Reader facet “Source
-manual”. The current build corrects this to “Source family” and the integration
-was rerun; the evidence versions and context identities are unchanged.
+manual”. The subsequent original 0.5.0 build corrected this to “Source family”
+and reran the integration without changing context identities. The new
+required-evidence engine observation is separate: it changes three corpus
+custody context identifiers and the compact care-home identifier. The other
+three compact identifiers remain exact. See the
+[candidate comparison and boundaries](validation/candidates/required-evidence-2026-09-21/README.md#context-identity-changes-are-explicit).
+An immutable source version does not freeze a future engine's package identity;
+older receipts and replay identifiers remain tied to their recorded engine.
 
 ### Browser assurance
 
@@ -260,7 +272,7 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Assurance and deployment
 
-The 0.5.0 candidate passes local registry, SDK transport and HTML-header tests.
+The undeployed shared-engine candidate passes local registry, SDK transport and HTML-header tests.
 The registry rejects cross-version manifest swaps and modified bytes; all three
 historical versions stay explicit. Pending metadata prevents release builds.
 The primary `compact_delivery` receipt now covers the exact staff question
@@ -271,9 +283,10 @@ Child DLA/PIP, the discovery-corpus abroad case and original custody replay.
 The live verifier has seven full-package cases and four compact cases, all
 using their version-specific source binding.
 
-Actual 0.5.0 hosting, response headers, body transformations, cookies and client
-behaviour need separate deployment receipts. No hosting issue is declared closed
-by these source changes.
+Hosting, response headers, body transformations, cookies and client behaviour
+need separate deployment receipts tied to the engine actually published. Earlier
+0.5.0 observations do not attest this changed candidate. No hosting issue is
+declared closed by these source changes.
 
 The earlier full-source public HTTPS service was verified on 19 September 2026 using
 the official SDK 2.0.0 with protocol `2026-07-28`. Its imprisonment and hospital

@@ -272,7 +272,13 @@ describe('governed context assembly, independent of any domain', () => {
     expect(requiredIssues).toHaveLength(1);
     expect(requiredIssues[0].ids).toEqual(result.requirements[0].missing);
     expect(requiredIssues[0].ids).toContain(library.id);
-    expect(requiredIssues[0].ids).not.toContain(`${BASE}evidence/reading`);
+    // The reading passage survives, but its declared library dependency does
+    // not. Trimming the incident edge must not make that source look complete.
+    expect(requiredIssues[0].ids).toContain(`${BASE}evidence/reading`);
+    expect(result.missing_evidence.filter(issue => issue.code === 'missing_dependency')).toEqual([
+      { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.',
+        ids: [`${BASE}evidence/reading`, library.id] }
+    ]);
   });
   it('still returns a bounded refusal when diagnostics alone cannot fit', async () => {
     const index = await studyClubContextFixture();

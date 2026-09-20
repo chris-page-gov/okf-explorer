@@ -113,7 +113,9 @@ warning during the source-change case. This receipt does not claim a
 warning-free browser run. Publication checks, production build identity,
 actual DWP journeys and native host invocation are separate gates.
 
-## Fresh Heritage assurance
+<a id="fresh-heritage-assurance"></a>
+
+## Earlier Heritage assurance: context-budget correction
 
 The existing Heritage corpus was exercised against the context-budget correction
 on 20 September 2026 using Playwright with installed Google Chrome. All 100
@@ -129,7 +131,7 @@ These were fresh browser executions against the corrected application. Earlier
 passing results retain their original build identities in Git history; they
 were not relabelled as evidence for this build.
 
-The [retained local candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
+The [earlier local candidate receipt](https://github.com/chris-page-gov/okf-explorer/blob/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
 binds the exact compressed execution results, application and assembled Site.
 The materialiser checks the raw and compressed result identities, all 100
 question records, every journey action and assertion, and observation timing.
@@ -140,3 +142,30 @@ for the governed refresh procedure.
 These results establish local runtime assurance. They do not establish public
 deployment identity, native WebMCP host access, domain correctness or specialist
 acceptance. The receipt retains its pending public deployment gate.
+
+## Required-evidence allocation and record-type labels
+
+A fresh local browser execution on **21 September 2026 at 00:48 BST** checked
+application tree
+`abbcbe8b30c208a2bc4e55a994ec41a7cc5d1a0deb1db51e187b0dd9eec8c4bb`
+and manifest
+`9fc8cb1bbf10e4e5182efd69d56f2b5ed39a2e6ecf942dce64357c4a529d1ce8`.
+All **100 Heritage questions** reached the threshold of 80, with a mean of
+**92.6**. The tiny, faithful and synthetic-isolation journeys all passed with
+no failed actions, execution errors or validation-only records. Question results
+were recorded at `2026-09-20T23:48:06.962000Z`; journey results at
+`2026-09-20T23:46:06.995000Z`.
+
+The [current local candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
+binds the actual compressed results and assembled Site. Source corpus versions
+remain unchanged; earlier runtime observations retain their own identities in
+Git. This is cross-domain local browser assurance, not DWP legal review or a
+public deployment check.
+
+The additional mixed-record browser regression holds the full-record response
+open, checks the declared type in the search summary, then confirms the same
+label after loading. Eleven unit controls check label precedence, invalid or
+blank fields and collection fallback. The shared context engine has 18 bounded
+allocation/dependency controls. Its [DWP development comparison](../validation/context-allocation/2026-09-21/README.md)
+and the [separate service integration](../services/ask-okf-mcp/validation/candidates/required-evidence-2026-09-21/README.md)
+record their own source bindings, changed context identifiers and limits.

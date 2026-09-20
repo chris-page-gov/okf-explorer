@@ -5,6 +5,7 @@ import {
   narrativeRouteGroups,
   narrativeRouteLinks,
   recordNarrative,
+  recordTypeLabel,
   sourceAccesses,
   sourceOpenLabel
 } from './largeRecordContracts';
@@ -18,6 +19,32 @@ const dataset: LargeDataset = {
     next: [{ route: 'episode/follow-up', label: 'Follow up' }]
   }
 };
+
+describe('large record type label', () => {
+  it('prefers the declared record type and preserves authored case', () => {
+    expect(recordTypeLabel({ record_type: '  API Product  ', type: 'Dataset' }, 'Catalogue record'))
+      .toBe('API Product');
+  });
+
+  it('uses type when record_type is absent, blank or not a string', () => {
+    for (const record_type of [undefined, '', ' \n ', 42, ['API Product']]) {
+      expect(recordTypeLabel({ record_type, type: '  Research Protocol  ' }, 'Catalogue record'))
+        .toBe('Research Protocol');
+    }
+  });
+
+  it('retains the collection label when neither declared type is usable', () => {
+    expect(recordTypeLabel({}, 'Heritage record')).toBe('Heritage record');
+    expect(recordTypeLabel({ record_type: '\t', type: ' ' }, 'API/data record')).toBe('API/data record');
+    expect(recordTypeLabel({ record_type: {}, type: ['Dataset'] }, 'Catalogue record')).toBe('Catalogue record');
+  });
+
+  it('returns labels as text without interpreting markup or source family', () => {
+    const record = { record_type: '<em>Case Study</em>', source_family: 'Research' };
+    expect(recordTypeLabel(record, 'Catalogue record')).toBe('<em>Case Study</em>');
+    expect(recordTypeLabel({ ...record, record_type: '' }, 'Catalogue record')).toBe('Catalogue record');
+  });
+});
 
 describe('large record narrative contract', () => {
   it('accepts a non-empty authored narrative and filters invalid route links', () => {

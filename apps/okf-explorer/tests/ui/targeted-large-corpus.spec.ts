@@ -915,6 +915,35 @@ test.describe('targeted large-corpus relationship hydration', () => {
     expectNoFullHydration(requests);
   });
 
+  test('record type badge preserves the declared type before and after targeted hydration', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests);
+    let releaseRecord!: () => void;
+    const recordReady = new Promise<void>((resolve) => { releaseRecord = resolve; });
+    await page.route(`${ORIGIN}/data/works-0.json`, async (route) => {
+      await recordReady;
+      await route.fallback();
+    });
+
+    try {
+      await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+      await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+      await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
+      const detail = page.locator('.right-panel');
+      await expect(detail.getByRole('button', { name: 'Loading selected record...', exact: true })).toBeVisible();
+      await expect(detail.locator('.badge').first()).toHaveText('Legislation Work');
+
+      releaseRecord();
+      await expect(detail.getByRole('button', { name: 'Loading selected record...', exact: true })).toHaveCount(0);
+      await expect(detail.locator('.badge').first()).toHaveText('Legislation Work');
+      await expect(detail.locator('dt').filter({ hasText: 'Record type' }).locator('+ dd')).toHaveText('Legislation Work');
+      expect(requests).toContain('/data/works-0.json');
+      expectNoFullHydration(requests);
+    } finally {
+      releaseRecord();
+    }
+  });
+
   test('official search selection hydrates the selected route when Graph opens', async ({ page }) => {
     const requests: string[] = [];
     await installTargetedFixture(page.context(), requests);

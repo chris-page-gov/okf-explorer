@@ -87,9 +87,11 @@ jobs:
         run: pnpm exec svelte-kit sync
       - name: Execute generic engine failure controls
         working-directory: apps/okf-explorer
-        run: pnpm exec vitest run src/lib/context/context.test.ts
+        run: pnpm exec vitest run src/lib/context/context.test.ts src/lib/context/allocation.test.ts
       - name: Execute independent contract and assessor controls
         run: uv run --locked python -m unittest tests.test_context_assembly -v
+      - name: Reject modified or unbounded archived comparison inputs
+        run: node --test validation/context-allocation/2026-09-21/admission.test.mjs
       - name: Replay the non-DWP end-to-end context case
         run: >-
           node --experimental-strip-types scripts/run_context_evaluation.mjs

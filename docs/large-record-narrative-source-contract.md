@@ -4,6 +4,18 @@ Large-corpus producers can give an individual record an authored Narrative view
 and can explicitly control how Explorer presents an external source. Both
 contracts are additive to `okf-explorer-large-corpus.v1`.
 
+## Record type label
+
+The detail badge uses the first nonblank string in `record_type`, then `type`.
+It preserves the producer's wording and case. If neither field supplies a usable
+label, Explorer uses the collection's singular record label as before. This
+applies both to a search summary and to the full record after loading.
+
+For example, a mixed collection can show “Research Protocol” and “Dataset” on
+individual records. Explorer does not infer a type from a URL or source family,
+and a type label does not confer authority or review status. Labels are rendered
+as text, so source markup cannot become executable interface content.
+
 ## Record narrative
 
 A hydrated record may publish `narrative`:
