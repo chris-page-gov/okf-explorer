@@ -214,7 +214,10 @@ export function createAskService(options: ServiceOptions) {
       const url = new URL(request.url);
       const origin = request.headers.get('origin');
       const finish = (response: Response, status: string): Response => {
-        response.headers.set('Cache-Control', 'no-store');
+        // Preserve the page's CSP and ask intermediaries not to inject scripts
+        // into HTML. Other protocol and asset responses keep their prior policy.
+        const html = response.headers.get('Content-Type')?.split(';', 1)[0].trim().toLowerCase() === 'text/html';
+        response.headers.set('Cache-Control', html ? 'no-store, no-transform' : 'no-store');
         response.headers.set('X-Content-Type-Options', 'nosniff');
         response.headers.set('Referrer-Policy', 'no-referrer');
         if (origin && origins.has(origin)) {

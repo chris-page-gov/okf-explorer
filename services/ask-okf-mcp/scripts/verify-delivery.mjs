@@ -11,13 +11,14 @@ const equal = (actual, expected, label) => {
 const require = (condition, label) => { if (!condition) throw new Error(`Compact verification failed: ${label}.`); };
 
 /** Verify transport delivery separately from context selection and evidence sufficiency. */
-export async function verifyCompactDelivery(client, direct, request, reviewOrigin) {
+export async function verifyCompactDelivery(client, direct, request, reviewOrigin, options = {}) {
   const budget = Object.fromEntries(['max_nodes', 'max_relationships', 'max_depth', 'max_bytes'].map(key => [key, direct.budget[key]]));
   const replay = { bundle: request.bundle, version: request.version, budget };
   const replayArgs = { ...request, budget, context_id: direct.context_id };
   const expectedReview = reviewLink(reviewOrigin, { ...replayArgs });
   const manifestLimit = 16384;
-  const readLimit = 8192;
+  const readLimit = options.read_bytes ?? 8192;
+  require(Number.isInteger(readLimit) && readLimit >= 8192 && readLimit <= 65536, 'bounded verification delivery size');
   const calls = [];
   let manifestOffset = 0;
   const catalogue = [];
@@ -116,7 +117,7 @@ export async function verifyCompactDelivery(client, direct, request, reviewOrigi
     require(response.content[0].text === 'Evidence could not be verified. The context identity, selected record or requested range may differ. No source content was returned; start again with ask_okf_manifest if the source or question changed.', `${control.id} fixed error`);
     controls.push({ id: control.id, rejected_without_evidence: true });
   }
-  return { id: 'bounded-abroad-compact-delivery', bundle_version: request.version,
+  return { id: 'bounded-compact-delivery', bundle_version: request.version,
     question_sha256: hash(request.question), context_id: direct.context_id, context_budget: budget,
     evidence_status: direct.evidence_status, context_truncated: direct.budget.truncated,
     retrieval_truncated: direct.retrieval?.truncated ?? false, selected_records: direct.selected.length,

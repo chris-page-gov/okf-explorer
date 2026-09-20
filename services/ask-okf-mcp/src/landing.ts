@@ -1,10 +1,12 @@
-import { APPROVED_BUNDLE, BUNDLE_VERSION, LEGACY_BUNDLE_VERSION } from './registry.ts';
+import { APPROVED_BUNDLE, BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION } from './registry.ts';
 
 const explorer = 'https://chris-page-gov.github.io/okf-explorer/explore/?bundle=';
 export const CORPUS_EXPLORER_URL = explorer + encodeURIComponent(
-  `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/full-dmg/okf-corpus-context.json`);
+  `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/combined/okf-explorer.json`);
 export const LEGACY_EXPLORER_URL = explorer + encodeURIComponent(
   `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${LEGACY_BUNDLE_VERSION}/full-dmg/okf-explorer.json`);
+export const PREVIOUS_EXPLORER_URL = explorer + encodeURIComponent(
+  `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/full-dmg/okf-corpus-context.json`);
 
 /** Static human navigation; no user input or executable source content. */
 export function landingResponse(): Response {
@@ -15,16 +17,17 @@ export function landingResponse(): Response {
 <aside><strong>Independent experimental publication.</strong> This is not an official DWP service, benefits advice, an award calculation or an individual entitlement decision. Do not submit claimant personal data.</aside>
 <h2>Start with the evidence</h2><p>The default corpus contains 331 DMG PDFs and 182 ADM PDFs: 19,090 measured pages, including 18,197 pages with extracted text. The 893 empty extractions remain accounted for.</p>
 <p><a href="${CORPUS_EXPLORER_URL}">Open DMG and ADM evidence in Ask OKF Explorer</a></p>
-<p>Choose <strong>Ask OKF</strong> to retrieve source pages across both collections. Reader, Search and the graph retain their DMG scope. ADM evidence links to its official source PDF.</p>
-<p>Discovery packages remain <strong>insufficient</strong>: no completeness requirements have been declared for this broader corpus. A useful source match is a research lead, not a complete answer.</p>
+<p>Choose <strong>Ask OKF</strong> to retrieve source pages across both collections. Reader, Search, Graph and Timeline now cover both manuals. Use the Source manual facet to distinguish DMG and ADM, then inspect conceptual relationships and the official PDF pages.</p>
+<p>Packages remain <strong>insufficient</strong>: staff-task profiles now declare missing scope, legal and review obligations explicitly. A useful source match is a research lead, not a complete answer.</p>
 <ul><li><a href="https://github.com/chris-page-gov/okf-dwp/blob/main/docs/learning-path.md">Follow the beginner learning path</a></li>
-<li><a href="https://github.com/chris-page-gov/okf-dwp/blob/main/evaluation/staff-questions/results.md">Read the evaluation results and their limitations</a></li></ul>
+<li><a href="https://github.com/chris-page-gov/okf-dwp/blob/main/evaluation/semantic-expansion/README.md">Read the evaluation results and their limitations</a></li></ul>
 <h2>Connect an AI client</h2><p>MCP endpoint: <code>/okf/mcp</code></p>
 <p>Select and copy this full address: <code>https://ask-okf.crpage.chatgpt.site/okf/mcp</code>. Use No Auth. Start with <code>ask_okf_manifest</code> for a compact catalogue, then <code>read_okf_evidence</code> to read exact source text and diagnostics in bounded parts. The original <code>ask_okf</code> full-package tool remains available.</p>
 <p><a href="/review/">Recreate and inspect an evidence context</a>. Each read verifies the approved corpus and context identity. This is an evidence replay, not a stored audit log or an AI answer.</p>
 <p>Opening the endpoint as an ordinary web page returns <code>405 Method Not Allowed</code>: an MCP client calls it using POST. Use Explorer above to inspect evidence yourself.</p>
 <p><a href="https://chris-page-gov.github.io/okf-explorer/docs/remote-mcp.html">Read the connection guide and delivery limitations</a>. Tool access, complete ChatGPT delivery and live Voice access are separate checks.</p>
 <p>Default immutable revision: <code>${APPROVED_BUNDLE.version}</code>. <a href="/health">Inspect the service identity</a>.</p>
+<h2>Earlier discovery corpus</h2><p><a href="${PREVIOUS_EXPLORER_URL}">Open the earlier full-source discovery corpus</a>. Its captured DMG and ADM sources remain available by explicitly requesting version <code>${PREVIOUS_BUNDLE_VERSION}</code>. That version does not include the new staff-task semantic profiles.</p>
 <h2>Historical custody acceptance case</h2><p><a href="${LEGACY_EXPLORER_URL}">Open the original 52-record custody profile</a>. To call it remotely, explicitly request version <code>${LEGACY_BUNDLE_VERSION}</code>. Its earlier acceptance receipts do not establish delivery of the new full-source corpus.</p>
 </main></body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8',
     'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'" } });

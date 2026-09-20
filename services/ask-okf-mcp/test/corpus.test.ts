@@ -11,12 +11,14 @@ import { assembleContext, canonicalJson, contextSha256 } from '../../../apps/okf
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import { createAskService, PUBLIC_ORIGIN, type Diagnostic } from '../src/service.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
-import { BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, APPROVED_BUNDLE, verifyBundledCorpus, verifyBundledContext } from '../src/registry.ts';
+import { BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, APPROVED_BUNDLE,
+  PREVIOUS_APPROVED_BUNDLE, APPROVED_VERSIONS, verifyBundledCorpus, verifyBundledContext } from '../src/registry.ts';
 import type { ContextRecord } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 
 const indexText = await readFile(new URL('../vendor/okf-dwp-assembly-index.json', import.meta.url), 'utf8');
 const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json', import.meta.url), 'utf8');
 const manifestText = await readFile(new URL('../vendor/okf-dwp-corpus-manifest.json', import.meta.url), 'utf8');
+const previousManifestText = await readFile(new URL('../vendor/okf-dwp-previous-corpus-manifest.json', import.meta.url), 'utf8');
 const legacy = await verifyBundledContext(indexText, descriptorText);
 const question = 'hospital';
 const encoder = new TextEncoder();
@@ -75,6 +77,27 @@ test('vendored corpus identity verifies, and modified manifest bytes fail closed
   await assert.rejects(verifyBundledCorpus(manifestText + ' '), /integrity/);
 });
 
+test('current and earlier corpus versions retain separate immutable identities', async () => {
+  const current = await verifyBundledCorpus(manifestText);
+  const previous = await verifyBundledCorpus(previousManifestText, PREVIOUS_BUNDLE_VERSION);
+  assert.equal(PREVIOUS_BUNDLE_VERSION, 'bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752');
+  assert.equal(PREVIOUS_APPROVED_BUNDLE.index_sha256, 'aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95');
+  assert.equal(previous.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/full-dmg/context/corpus/manifest.json`);
+  assert.equal(current.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/combined/context/corpus/manifest.json`);
+  assert.deepEqual(APPROVED_VERSIONS, [BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.notEqual(current.manifest.bundle.snapshot, previous.manifest.bundle.snapshot);
+  assert.notEqual(current.manifest.base_index.sha256, previous.manifest.base_index.sha256);
+  // A semantic revision does not re-acquire or rewrite the immutable source pages.
+  assert.deepEqual(current.manifest.records, previous.manifest.records);
+  assert.deepEqual(current.manifest.search, previous.manifest.search);
+  await assert.rejects(verifyBundledCorpus(manifestText, PREVIOUS_BUNDLE_VERSION), /integrity/);
+  await assert.rejects(verifyBundledCorpus(previousManifestText), /integrity/);
+  await assert.rejects(verifyBundledCorpus(previousManifestText + ' ', PREVIOUS_BUNDLE_VERSION), /integrity/);
+  for (const version of ['main', 'https://example.test/corpus.json', LEGACY_BUNDLE_VERSION]) {
+    await assert.rejects(verifyBundledCorpus(manifestText, version), /not approved/);
+  }
+});
+
 for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol} SDK returns the same shared corpus package`, async () => {
   const f = await fixture(); const log: Diagnostic[] = []; const versions: Array<string | undefined> = [];
   const service = createAskService({ loadContext: async version => { versions.push(version); return version === LEGACY_BUNDLE_VERSION ? legacy : f.source; },
@@ -105,6 +128,9 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
     const historical = await client.callTool({ name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: LEGACY_BUNDLE_VERSION, question } });
     assert.equal(canonicalJson(historical.structuredContent), canonicalJson(await assembleContext(legacy.index, question, {}, legacy.binding)));
     assert.equal(f.requested.length, before, 'Historical request must not fetch corpus assets');
+    const earlier = await client.callTool({ name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: PREVIOUS_BUNDLE_VERSION, question } });
+    assert.equal(earlier.isError, undefined);
+    assert.equal(versions.at(-1), PREVIOUS_BUNDLE_VERSION, 'An explicit historical corpus revision must reach the loader unchanged');
   } finally { await client.close(); await service.close(); }
 });
 

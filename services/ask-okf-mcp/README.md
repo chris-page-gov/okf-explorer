@@ -5,10 +5,16 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
-[Service changelog](CHANGELOG.md). Version 0.3.1 clears displayed replay links
-when a question or source version changes, or another replay starts. A link is
-shown again only when requested for the current verified context. Earlier
-version 0.3.0 observations remain historical evidence, not acceptance of this fix.
+[Service changelog](CHANGELOG.md). Version **0.4.0 is a release candidate** for
+the combined DMG and ADM Reader and staff-task semantic profiles. It preserves
+the two earlier explicit source versions and requests no transformation of HTML
+responses while retaining the existing Content Security Policy (CSP).
+
+The default release is pinned to DWP commit
+`9de52acf1db84b27f8933d80480eaa850e74fa33`. The build verifies its manifest;
+an unpinned or altered release fails closed.
+Local tests are not a deployment receipt or a claim that hosting injects no
+scripts or cookies. Earlier 0.3.x observations remain historical evidence.
 
 ## Run and check
 
@@ -36,6 +42,43 @@ export implements `fetch(request)`. It has no Node or Ajv dependency and is test
 with dynamic code generation prohibited. Build metadata is in
 `dist/build-receipt.json`. Host and origin allow-lists are deployment-owned source
 configuration in `src/service.ts`, not caller-supplied parameters.
+
+### Reproduce the three-version local integration
+
+The [retained integration receipt](validation/approved-versions-0.4.0.json)
+checks the actual vendored source loader, all three immutable version identities
+and lossless compact replay of each complete package. It also checks that a
+historical replay cannot silently switch to the current version. The local
+corpus reader verifies every requested file against its manifest digest; it
+makes no network calls and does not establish remote reachability or hosting.
+
+From this service directory, with the documented DWP revision checked out:
+
+```sh
+npm run build
+node --experimental-strip-types scripts/verify-approved-versions.ts \
+  --dwp-root /path/to/okf-dwp \
+  --out validation/approved-versions-0.4.0.json
+npm run check
+npm test
+```
+
+The 20 September run verified 68 source files and reproduced all three contexts.
+It also ran the live verifier’s exact compact cases locally: Child DLA/PIP at
+256 KiB on the current corpus, the earlier abroad question at 32 KiB on the
+previous corpus, and original custody replay. Source text, provenance, paths,
+diagnostics, relationships and complete package slices matched the shared engine.
+The two corpus packages remained insufficient; the original custody package
+retained its historical, bounded sufficient result and original context identity.
+The unit suite uses the same real loader and checks the receipt against the
+executed runner and current service build. It requires no DWP checkout or network.
+
+The build keeps logical dependency paths stable across real and symlinked
+locked installations. Tests compare Worker, Node and receipt bytes in both
+layouts. An earlier symlink-dependent local build is [preserved as historical
+evidence](validation/history/0.4.0-symlink/classification.json), with its original
+receipt and Worker hash. The current integration receipt comes from an actual
+rerun after the portability fix; its exact build-hash check remains enforced.
 
 ### Browser assurance
 
@@ -65,7 +108,7 @@ service deployment; that disables automatic local server startup.
 
 ## Compact evidence and browser review
 
-Version 0.3.0 adds two read-only tools alongside the unchanged full-package tool:
+Since version 0.3.0, two read-only tools are available alongside the unchanged full-package tool:
 
 - `ask_okf_manifest`: assemble a context and return a small catalogue. Start here
   when the AI client cannot receive a complete package in one response.
@@ -101,21 +144,28 @@ Release observations distinguish candidate checks from actual deployment.
 ```json
 {
   "bundle": "okf-dwp",
-  "version": "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
   "question": "A claimant is imprisoned. Explain the effect on JSA, IS, State Pension Credit and ESA, distinguishing loss of payment from loss of entitlement, and trace each conclusion to the relevant DMG guidance."
 }
 ```
 
-`version` is optional; omission selects that pinned full-source discovery corpus:
-513 PDFs, 19,090 measured DMG/ADM pages and 18,197 non-empty evidence records.
-The 893 empty extracted pages remain explicitly accounted for. The corpus also
-retains 282 existing concepts and 1,105 directed semantic relationships.
+`version` is optional. Omission selects the combined
+staff-semantic corpus: 513 PDFs, 19,090 measured DMG/ADM pages and 18,197 non-empty
+evidence records. The 893 empty extractions remain accounted for. Its additive
+semantic base has 840 records and 1,322 assertions, including 43 authored
+concepts, 40 staff-task profiles and reference-only legislative metadata.
 
-The original 52-record custody acceptance profile remains available by requesting
-`version: "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"`. Its immutable index and result
-are preserved. Broader corpus discovery has no completeness requirements and
-therefore returns `evidence_status: insufficient`, even when useful evidence is
-retrieved. Source capture, retrieval and a sufficient answer are different claims.
+| Source selection | Behaviour |
+| --- | --- |
+| Omit `version` | Combined DMG and ADM corpus with proposed staff-task requirements, pinned to `9de52acf1db84b27f8933d80480eaa850e74fa33` |
+| `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` | Earlier full-source discovery corpus, retained byte for byte with its own manifest and binding |
+| `efb05c66616a9cd4328a86cf412780fe7bc7cf0b` | Original 52-record custody acceptance profile, with its original immutable index and result |
+
+The combined profiles expose missing scope, source closure, legal-version and
+independent-review obligations. They do not promote a retrieved page to a
+complete answer. The earlier discovery corpus lacks task completeness
+requirements and remains insufficient. The custody profile's bounded sufficiency
+result applies only to its own declared historical scope. Source capture,
+retrieval and an adequately evidenced answer are different claims.
 
 Arbitrary URLs,
 unknown bundles/versions and extra fields are rejected. An optional `budget`
@@ -139,7 +189,7 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Security and operational limits
 
-- The default corpus manifest is vendored and hash-verified at build and first
+- Both approved corpus manifests are vendored and hash-verified at build and first
   use. The shared engine fetches only manifest-listed, hash-bound assets below
   the approved immutable GitHub revision. Redirects and arbitrary URLs are
   rejected. Provenance links are data, never fetch targets. The original custody
@@ -161,8 +211,15 @@ service does not claim ChatGPT Deep Research compatibility.
   distributed denial-of-service protection.
 - Origins are exact HTTPS allow-list entries. Requests without Origin are
   permitted for remote non-browser MCP clients. Host checks prevent DNS rebinding.
-- No cookies, credentials, user identities or saved questions. Do not send
-  personal claimant data.
+- The service application creates no cookies and stores no credentials, user
+  identities or questions. Hosting intermediaries may have separate behaviours;
+  these require a live check. Do not send personal claimant data.
+- HTML responses carry `Cache-Control: no-store, no-transform`; JSON, JavaScript,
+  MCP and error responses retain `no-store`. Existing CSP restrictions remain.
+  [Cloudflare documents that `no-transform` prevents JavaScript Detections
+  injection](https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/#if-your-origin-sends-a-no-transform-header)
+  (checked 20 September 2026). This is a targeted origin-header change, not proof
+  that all hosting scripts, challenges or cookies have been eliminated.
 - Diagnostics contain tool/service/bundle version, elapsed time, considered and
   selected record/assertion counts, selected path-step count, package size,
   evidence status, truncation and fixed error codes. They exclude question text,
@@ -175,13 +232,26 @@ service does not claim ChatGPT Deep Research compatibility.
 - Tools are annotated read-only, idempotent and closed-world. Those annotations
   are hints, not a security boundary. Source text, tool descriptions and returned
   data remain untrusted inputs to any AI client.
-- Complete packages are about 0.5 MiB; JSON text plus structured content can make
+- Complete packages can approach 0.5 MiB; JSON text plus structured content can make
   the MCP response approximately 1 MiB. A client must ingest the complete result
   or disclose its own limit; this service never silently clips it.
 
 ## Assurance and deployment
 
-The full-source public HTTPS service was verified on 19 September 2026 using
+The 0.4.0 candidate passes local registry, SDK transport and HTML-header tests.
+The registry rejects cross-version manifest swaps and modified bytes; both
+historical versions stay explicit. Pending metadata prevents release builds.
+The primary `compact_delivery` receipt now covers the exact staff Child DLA/PIP
+question at a 256 KiB context budget. `compact_delivery_versions` also retains
+the prior-corpus abroad case and original custody replay. The live verifier
+keeps its original full-package questions and adds both previous-corpus and
+staff-question checks; all use the version-specific source binding.
+
+Actual 0.4.0 hosting, response headers, body transformations, cookies and client
+behaviour need separate deployment receipts. No hosting issue is declared closed
+by these source changes.
+
+The earlier full-source public HTTPS service was verified on 19 September 2026 using
 the official SDK 2.0.0 with protocol `2026-07-28`. Its imprisonment and hospital
 packages matched direct shared-core execution in full; both remain insufficient
 and report core truncation. Explicit historical imprisonment retained its
@@ -217,10 +287,13 @@ and client acceptance record.
 
 Use a reviewed change to vendor the new manifest and update
 `vendor/okf-dwp-corpus-release.json` with its immutable commit, snapshot, size and
-SHA-256 together. A pending publication blocks the release build. The pinned
-manifest path is `full-dmg/context/corpus/manifest.json`, matching the additive
+SHA-256 together. A pending publication blocks the release build. The new default
+manifest path is `combined/context/corpus/manifest.json`, matching the additive
 Explorer descriptor so identical questions/budgets use the same binding.
-Regenerate the Worker and rerun context acceptance checks. Preserve explicit
+Recopy the final manifest if the combined projection changes before pinning.
+The previous corpus release and manifest remain in the separately named
+`okf-dwp-previous-corpus-*` vendor files. Regenerate the Worker and rerun context
+acceptance checks. Preserve explicit
 historical versions; never change a public version to serve different bytes.
 No mutable branch alias, model fallback or general web search is provided.
 
