@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Document the published Ask OKF service 0.5.0, its household/statutory default
+  and all four explicitly selectable source revisions in the top-level guide.
+  Record seven actual full-context and four compact SDK passes, three functional
+  browser passes and the retained Firefox hosting-cookie warnings. Keep evidence
+  delivery, legal completeness and AI answer quality separate.
+- Restore publication documentation lockstep after the service-only PR updated
+  its nested guide and changelog without the contract-required top-level entries.
+  Preserve the failed Pages run; this documentation correction changes no engine
+  or service runtime bytes. Check lockstep before impact-based job selection so
+  service-only pull requests cannot skip this publication requirement.
+
 - Keep ambiguous Ask OKF meanings inspectable as separately labelled evidence
   branches without resolving them or activating their evidence requirements.
   Preserve bounded paths through shared junctions and expose path-limit omissions.

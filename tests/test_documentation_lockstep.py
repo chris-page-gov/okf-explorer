@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import json
 import sys
+
+import yaml
 import unittest
 from pathlib import Path
 
@@ -50,6 +53,32 @@ class DocumentationLockstepTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
         self.assertEqual(["README.md"], documentation)
+
+    def test_service_only_change_requires_top_level_lockstep(self) -> None:
+        contract = json.loads((ROOT / "okf.publication.json").read_text())
+        changed = {
+            "services/ask-okf-mcp/src/registry.ts",
+            "services/ask-okf-mcp/README.md",
+            "services/ask-okf-mcp/CHANGELOG.md",
+        }
+        errors, _, _ = lockstep.lockstep_errors(contract, changed)
+        self.assertEqual(2, len(errors))
+        errors, _, _ = lockstep.lockstep_errors(
+            contract, changed | {"docs/remote-mcp.md", "CHANGELOG.md"}
+        )
+        self.assertEqual([], errors)
+
+    def test_pull_request_lockstep_cannot_be_skipped_by_impact_plan(self) -> None:
+        workflow = yaml.safe_load(
+            (ROOT / ".github/workflows/okf-explorer-ci.yml").read_text()
+        )
+        job = workflow["jobs"]["impact-plan"]
+        self.assertNotIn("if", job)
+        checks = [step for step in job["steps"]
+                  if "check_documentation_lockstep.py" in step.get("run", "")]
+        self.assertEqual(1, len(checks))
+        self.assertNotIn("if", checks[0])
+        self.assertIn("...HEAD", checks[0]["run"])
 
     def test_dependency_updates_have_no_actor_exemption(self) -> None:
         errors, controlled, _ = lockstep.lockstep_errors(CONTRACT, {"requirements.lock"})

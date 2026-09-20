@@ -9,6 +9,11 @@ The [architecture decision](adr-remote-ask-okf.md) and
 [context guide](context-assembly.md) describe the separation between evidence
 assembly and AI reasoning.
 
+Service-only changes must update this top-level guide and the root changelog as
+well as their service documentation. The pull-request impact gate checks that
+requirement before deciding which expensive checks are needed; Pages checks it
+again before publication.
+
 ## Smaller responses and inspectable evidence
 
 Version 0.3.0 adds `ask_okf_manifest` and `read_okf_evidence`.
@@ -36,7 +41,37 @@ Voice support or legal answer quality.
 
 ## Approved versions and release status
 
-The new service default is full-source discovery at DWP revision
+Service **0.5.0** uses the household and statutory source revision
+`3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` by default. It includes both manuals,
+51 authored concepts, 96 selected guidance pages and 20 selected dated statutory
+units. The wider source collection remains 513 PDFs and 19,090 measured pages.
+Selected evidence is an aid to review: all 40 development tasks still return
+insufficient context and retain 203 named obligations. A retrieved legal passage
+does not establish how the law applies to an individual.
+
+The public deployment uses Explorer commit
+`d538de99e6567633204253cd88b87cbe325ac39a`. On 20 September 2026, an actual
+remote SDK run passed seven full-context cases and four compact reconstructions
+across the four approved source revisions. All 93 requests succeeded without
+retries. A separate public reader run passed evidence reconstruction in Chrome,
+Firefox and WebKit. Chrome and WebKit passed strict console checks; two hosting
+cookie warnings keep Firefox's strict check failed. These are delivery checks,
+not legal review, AI answer acceptance or a ChatGPT Voice demonstration. The
+[service guide](../services/ask-okf-mcp/README.md) describes the current contract;
+[DWP publication follow-up](https://github.com/chris-page-gov/okf-dwp/pull/16)
+retains the separate hosting, SDK and browser observations.
+
+Earlier source revisions remain explicitly selectable: the staff-semantic
+revision `9de52acf1db84b27f8933d80480eaa850e74fa33`, full-source revision
+`bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752`, and original custody revision
+`efb05c66616a9cd4328a86cf412780fe7bc7cf0b`. Replaying a link checks its source and
+context identity. A changed engine can produce a different context from the
+same source; a stale context identity fails closed rather than opening different
+evidence under the old identity.
+
+### Historical full-source release
+
+The earlier full-source default used DWP revision
 `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752`: 331 DMG PDFs and 182 ADM PDFs,
 19,090 measured pages, 18,197 non-empty evidence records and 893 explicitly
 accounted-for empty extractions. It retains the existing authored semantic
