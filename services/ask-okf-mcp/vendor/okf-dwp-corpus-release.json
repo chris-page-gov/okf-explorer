@@ -1,9 +1,9 @@
 {
   "schema": "okf-remote-corpus-release.v1",
   "publication_status": "pinned",
-  "version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
-  "snapshot": "dwp-combined-context-4f5567f14244aabffdd5",
+  "version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+  "snapshot": "dwp-combined-context-8082d887c8e9d5ff6d91",
   "manifest_path": "combined/context/corpus/manifest.json",
-  "manifest_sha256": "9d20d0a6af54050bdddcd3550a2c01abe26c360754a27d2f7781dd03054db265",
+  "manifest_sha256": "06362458d013322b565e13884066fd896b68986df8be93c09a02979eab8f199b",
   "manifest_bytes": 718466
 }

@@ -1,5 +1,32 @@
 # Ask OKF service changelog
 
+## 0.5.0 — household and statutory evidence candidate
+
+- Pin the default combined corpus to
+  `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`: 901 semantic records,
+  1,427 assertions and 20 selected statutory units. Keep machine extraction,
+  legal applicability and specialist acceptance distinct; all 203 obligations
+  remain open and the demonstrated household context remains insufficient.
+- Preserve the preceding `9de52acf1db84b27f8933d80480eaa850e74fa33`
+  staff corpus, earlier discovery corpus and original custody profile as three
+  explicit historical versions. Add a separate verified staff manifest and
+  version-routing, manifest-swap and package/lock/build identity controls.
+- Verify all four versions using the official SDK 2 and SDK 1 clients against
+  exact local immutable DWP Git blobs: 108 files hash-verified. Retain a new
+  integration receipt and the earlier observations unchanged. Preserve the
+  original custody context identity; each other receipt binds its actual engine
+  and version rather than promising blanket cross-engine byte compatibility.
+- Exercise compact replay for the current self-funded care-home question at
+  256 KiB, prior-staff Child DLA/PIP, discovery-corpus abroad and historical
+  custody. The current care-home package includes 35 records and 50 relationships.
+  Keep the existing catalogue/reader schemas and primary receipt field names.
+- Extend the remote verifier to seven full and four compact cases. Pace service
+  HTTP requests by at least 750 ms, record counts and spacing, and disable
+  automatic retries without changing production rate limits or dependencies.
+- Link the landing page to the public beginner learning path. Retain all existing
+  read-only tools, request/source bounds, portable builds, CSP and no-transform
+  headers. Deployment, browser, ChatGPT and Voice checks remain separate gates.
+
 ## 0.4.0 — combined staff evidence candidate
 
 - Make build output and receipts independent of real or symlinked locked

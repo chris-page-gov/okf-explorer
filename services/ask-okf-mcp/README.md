@@ -5,13 +5,13 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
-[Service changelog](CHANGELOG.md). Version **0.4.0 is a release candidate** for
-the combined DMG and ADM Reader and staff-task semantic profiles. It preserves
-the two earlier explicit source versions and requests no transformation of HTML
-responses while retaining the existing Content Security Policy (CSP).
+[Service changelog](CHANGELOG.md). Version **0.5.0 is a release candidate** for
+the combined DMG and ADM Reader, household/care-home concepts and selected
+statutory evidence. It preserves three earlier explicit source versions and
+the existing read-only contracts, limits and Content Security Policy (CSP).
 
 The default release is pinned to DWP commit
-`9de52acf1db84b27f8933d80480eaa850e74fa33`. The build verifies its manifest;
+`3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`. The build verifies its manifest;
 an unpinned or altered release fails closed.
 Local tests are not a deployment receipt or a claim that hosting injects no
 scripts or cookies. Earlier 0.3.x observations remain historical evidence.
@@ -43,42 +43,55 @@ with dynamic code generation prohibited. Build metadata is in
 `dist/build-receipt.json`. Host and origin allow-lists are deployment-owned source
 configuration in `src/service.ts`, not caller-supplied parameters.
 
-### Reproduce the three-version local integration
+### Reproduce the four-version local integration
 
-The [retained integration receipt](validation/approved-versions-0.4.0.json)
-checks the actual vendored source loader, all three immutable version identities
-and lossless compact replay of each complete package. It also checks that a
+The [retained integration receipt](validation/approved-versions-0.5.0.json)
+checks the actual vendored source loader, all four immutable version identities,
+official SDK 2 and SDK 1 full-package parity, and lossless compact replay of each
+complete package. It also checks that a
 historical replay cannot silently switch to the current version. The local
 corpus reader verifies every requested file against its manifest digest; it
 makes no network calls and does not establish remote reachability or hosting.
 
-From this service directory, with the documented DWP revision checked out:
+From this service directory, with all four documented DWP commits available in
+a local Git repository. The runner reads exact immutable Git blobs, not the
+working-tree files; it refuses to overwrite an existing observation:
 
 ```sh
 npm run build
 node --experimental-strip-types scripts/verify-approved-versions.ts \
   --dwp-root /path/to/okf-dwp \
-  --out validation/approved-versions-0.4.0.json
+  --out /tmp/approved-versions-0.5.0-new-run.json
 npm run check
 npm test
 ```
 
-The 20 September run verified 68 source files and reproduced all three contexts.
-It also ran the live verifier’s exact compact cases locally: Child DLA/PIP at
-256 KiB on the current corpus, the earlier abroad question at 32 KiB on the
-previous corpus, and original custody replay. Source text, provenance, paths,
+The retained run verified 108 immutable source files and reproduced all four
+custody contexts through both SDK versions. It also ran the live verifier’s
+exact compact cases locally: self-funded permanent care-home admission at
+256 KiB on the current corpus, Child DLA/PIP at 256 KiB on the earlier staff
+corpus, the abroad question at 32 KiB on the discovery corpus, and original
+custody replay. Source text, provenance, paths,
 diagnostics, relationships and complete package slices matched the shared engine.
-The two corpus packages remained insufficient; the original custody package
+The three corpus packages remained insufficient; the original custody package
 retained its historical, bounded sufficient result and original context identity.
-The unit suite uses the same real loader and checks the receipt against the
+The care-home package contains 35 selected records and 50 relationships. This
+is bounded evidence delivery, not a finding that the question can be answered
+completely. The unit suite uses the same real loader and checks the receipt against the
 executed runner and current service build. It requires no DWP checkout or network.
 
 The build keeps logical dependency paths stable across real and symlinked
 locked installations. Tests compare Worker, Node and receipt bytes in both
 layouts. An earlier symlink-dependent local build is [preserved as historical
 evidence](validation/history/0.4.0-symlink/classification.json), with its original
-receipt and Worker hash. The current integration receipt comes from an actual
-rerun after the portability fix; its exact build-hash check remains enforced.
+receipt and Worker hash. The [0.4.0 receipt](validation/approved-versions-0.4.0.json)
+also remains unchanged. The new receipt comes from an actual four-version run
+against this candidate; its exact build-hash check remains enforced. Each
+receipt attests its recorded engine and bindings, not arbitrary future engines.
+The [first 0.5.0 candidate observation](validation/history/0.5.0-source-family-label/classification.json)
+is also preserved: its landing page still called the Reader facet “Source
+manual”. The current build corrects this to “Source family” and the integration
+was rerun; the evidence versions and context identities are unchanged.
 
 ### Browser assurance
 
@@ -151,17 +164,26 @@ Release observations distinguish candidate checks from actual deployment.
 `version` is optional. Omission selects the combined
 staff-semantic corpus: 513 PDFs, 19,090 measured DMG/ADM pages and 18,197 non-empty
 evidence records. The 893 empty extractions remain accounted for. Its additive
-semantic base has 840 records and 1,322 assertions, including 43 authored
-concepts, 40 staff-task profiles and reference-only legislative metadata.
+semantic base has 901 records and 1,427 assertions, including 51 authored
+concepts, 40 staff-task profiles, legislative reference metadata and 20 selected
+statutory units linked by 43 source-backed references. Machine extraction and
+normalisation remain distinct from official sources and specialist approval.
+These statutory records are additional semantic evidence; they are not included
+in the 18,197 PDF-page evidence records or the 513-PDF source count.
 
 | Source selection | Behaviour |
 | --- | --- |
-| Omit `version` | Combined DMG and ADM corpus with proposed staff-task requirements, pinned to `9de52acf1db84b27f8933d80480eaa850e74fa33` |
+| Omit `version`, or `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` | Combined DMG and ADM corpus with household/care-home concepts, proposed staff-task requirements and selected statutory bodies |
+| `9de52acf1db84b27f8933d80480eaa850e74fa33` | Earlier staff semantic corpus with metadata-only legal references, retained with its own manifest and binding |
 | `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` | Earlier full-source discovery corpus, retained byte for byte with its own manifest and binding |
 | `efb05c66616a9cd4328a86cf412780fe7bc7cf0b` | Original 52-record custody acceptance profile, with its original immutable index and result |
 
 The combined profiles expose missing scope, source closure, legal-version and
-independent-review obligations. They do not promote a retrieved page to a
+independent-review obligations: all 203 declared obligations remain open.
+The statutory additions preserve acquisition dates, requested versions, source
+locators, rights and extraction limitations. They are selected evidence, not a
+complete amendment/territorial analysis or accepted case applicability. They
+do not promote a retrieved page to a
 complete answer. The earlier discovery corpus lacks task completeness
 requirements and remains insufficient. The custody profile's bounded sufficiency
 result applies only to its own declared historical scope. Source capture,
@@ -189,7 +211,7 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Security and operational limits
 
-- Both approved corpus manifests are vendored and hash-verified at build and first
+- All three approved corpus manifests are vendored and hash-verified at build and first
   use. The shared engine fetches only manifest-listed, hash-bound assets below
   the approved immutable GitHub revision. Redirects and arbitrary URLs are
   rejected. Provenance links are data, never fetch targets. The original custody
@@ -238,16 +260,18 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Assurance and deployment
 
-The 0.4.0 candidate passes local registry, SDK transport and HTML-header tests.
-The registry rejects cross-version manifest swaps and modified bytes; both
+The 0.5.0 candidate passes local registry, SDK transport and HTML-header tests.
+The registry rejects cross-version manifest swaps and modified bytes; all three
 historical versions stay explicit. Pending metadata prevents release builds.
-The primary `compact_delivery` receipt now covers the exact staff Child DLA/PIP
-question at a 256 KiB context budget. `compact_delivery_versions` also retains
-the prior-corpus abroad case and original custody replay. The live verifier
-keeps its original full-package questions and adds both previous-corpus and
-staff-question checks; all use the version-specific source binding.
+The primary `compact_delivery` receipt now covers the exact staff question
+“Does Pension Credit stop is a citizen moves into a care home permanently if
+they are self-funding?” at a 256 KiB context budget. The supplied question's
+wording is preserved. `compact_delivery_versions` also retains prior-staff
+Child DLA/PIP, the discovery-corpus abroad case and original custody replay.
+The live verifier has seven full-package cases and four compact cases, all
+using their version-specific source binding.
 
-Actual 0.4.0 hosting, response headers, body transformations, cookies and client
+Actual 0.5.0 hosting, response headers, body transformations, cookies and client
 behaviour need separate deployment receipts. No hosting issue is declared closed
 by these source changes.
 
@@ -291,17 +315,17 @@ SHA-256 together. A pending publication blocks the release build. The new defaul
 manifest path is `combined/context/corpus/manifest.json`, matching the additive
 Explorer descriptor so identical questions/budgets use the same binding.
 Recopy the final manifest if the combined projection changes before pinning.
-The previous corpus release and manifest remain in the separately named
-`okf-dwp-previous-corpus-*` vendor files. Regenerate the Worker and rerun context
+The preceding staff release and discovery release remain in separately named
+`okf-dwp-staff-corpus-*` and `okf-dwp-previous-corpus-*` vendor files. The original
+custody index remains vendored separately. Regenerate the Worker and rerun context
 acceptance checks. Preserve explicit
 historical versions; never change a public version to serve different bytes.
 No mutable branch alias, model fallback or general web search is provided.
 
 ## Verify a remote deployment
 
-The official SDK acceptance client calls the exact imprisonment and hospital
-questions against full-source discovery and repeats imprisonment against the
-historical custody version. It pins MCP `2026-07-28`, validates discovery
+The official SDK acceptance client calls the exact imprisonment, hospital and
+staff questions across the four approved versions. It pins MCP `2026-07-28`, validates discovery
 against the canonical input/output schemas and all read-only annotations, then
 compares every returned package field with a fresh call to the unchanged local
 engine. Discovery remains insufficient; historical custody retains its original
@@ -318,6 +342,16 @@ it never presents an arbitrary working tree as committed source.
 ```sh
 node scripts/verify-remote.mjs --endpoint https://ask-okf.crpage.chatgpt.site/okf/mcp --output /tmp/ask-okf-sdk-verification.json
 ```
+
+Every HTTP request to the service, including health and SDK discovery, starts
+at least 750 ms after the previous one. This conservative client pacing stays
+below the service's 120-request/minute limit when no other client shares that
+instance. Direct immutable-source downloads are separate. The receipt records
+the interval, observed minimum spacing, request/status counts and zero automatic
+retries; SDK reconnection retries are disabled. A 429 or other failed request
+stops verification. Preserve that failure; do not silently rerun it. The pacing
+helper is independently hash-bound with the verifier and tested with concurrent
+requests, rate-limited responses and network failure.
 
 The small receipt records question and package digests, context identifiers,
 versions, counts, evidence status and timings. It excludes source passages and

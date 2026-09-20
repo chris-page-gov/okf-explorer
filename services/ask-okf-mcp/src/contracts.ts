@@ -24,7 +24,7 @@ export const INPUT_SCHEMA = {
   type: 'object', additionalProperties: false, required: ['bundle', 'question'],
   properties: {
     bundle: { type: 'string', enum: ['okf-dwp'], description: 'Approved public bundle identifier; URLs are not accepted.' },
-    version: { type: 'string', enum: [...APPROVED_VERSIONS], description: 'Immutable approved revision. Omit for the pinned staff-semantic DMG and ADM corpus; earlier discovery and custody profiles remain available by their explicit revisions.' },
+    version: { type: 'string', enum: [...APPROVED_VERSIONS], description: 'Immutable approved revision. Omit for the pinned household and statutory-evidence DMG and ADM corpus; earlier staff, discovery and custody profiles remain available by their explicit revisions.' },
     question: { type: 'string', minLength: 1, maxLength: 2000, pattern: '\\S', description: 'General knowledge task. Do not include claimant personal data.' },
     budget: { type: 'object', additionalProperties: false, properties: structuredClone(common.$defs.budget.properties) }
   }

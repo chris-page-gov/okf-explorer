@@ -1,12 +1,12 @@
 {
   "base_index": {
-    "bytes": 4581714,
+    "bytes": 4120652,
     "path": "base-index.json",
-    "sha256": "8082d887c8e9d5ff6d9106e70c7bc5d671a0944c75c317ada8158eb2b69dc8eb"
+    "sha256": "4f5567f14244aabffdd58a237e06f4e9422979aff8b1027941399a7cad11117e"
   },
   "bundle": {
     "id": "https://chris-page-gov.github.io/okf-dwp/id/context-corpus/dwp-guidance",
-    "snapshot": "dwp-combined-context-8082d887c8e9d5ff6d91",
+    "snapshot": "dwp-combined-context-4f5567f14244aabffdd5",
     "source_url": "https://github.com/chris-page-gov/okf-dwp"
   },
   "counts": {
@@ -10951,7 +10951,7 @@
     },
     "tokenisation": "nfkd-lowercase-ascii-alphanumeric-min2-v1"
   },
-  "semantic_source_snapshot": "dwp-combined-7e7910d4be2c0d52556b",
+  "semantic_source_snapshot": "dwp-combined-e288cc6c7cfdf1edf101",
   "source_groups": [
     {
       "capture_date_role": "Acquisition observation, not source publication or legal commencement",

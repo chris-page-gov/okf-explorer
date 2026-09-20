@@ -1,10 +1,10 @@
 # Remote Ask OKF transport
 
-Decision: 19 September 2026; updated 20 September 2026 for service 0.4.0.
+Decision: 19 September 2026; updated 21 September 2026 for service 0.5.0.
 The original full-source HTTPS deployment and official SDK package parity were
 verified on 19 September. An independent 43-case raw HTTP run also passed
 complete-package parity. Those are historical observations. The new combined
-staff-profile candidate has separate local verification; hosting and client
+household/statutory-evidence candidate has separate local verification; hosting and client
 acceptance require new receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
@@ -22,7 +22,7 @@ exact verified slices. Anonymous access exposes only allow-listed immutable
 public source versions; it does not confer source authority or give individual
 advice. Compact delivery changes transfer size, not evidence selection.
 
-At build time, verify the vendored OKF-DWP corpus manifest and historical descriptor/context-index bytes
+At build time, verify all three vendored OKF-DWP corpus manifests and historical descriptor/context-index bytes
 against fixed SHA-256 values and compose the existing canonical package schema
 from local references. At request time, accept only a logical bundle identifier
 and allow-listed immutable version. No request can supply a URL. Default corpus
@@ -52,15 +52,37 @@ The default combined DMG/ADM corpus includes 40 proposed staff-task evidence
 profiles and 203 explicit open obligations. Its contexts remain insufficient
 while scope, evidence closure, legal version, applicability and independent
 review are unresolved. Its 19,090 measured pages include 893 explicit empty-text
-exclusions. Legal references provide navigation metadata, not statutory text or
-accepted applicability.
+exclusions. Its semantic base contains 901 records and 1,427 assertions, including
+51 authored concepts and 20 selected statutory units with 43 source-backed
+references. Source text is held as machine-extracted, normalised evidence with
+derived authority, version and acquisition metadata; it is never labelled as
+specialist-approved interpretation. Unresolved extent, amendments, applicability
+and citation dependencies remain explicit. The additional bodies do not close
+the 203 obligations or establish a complete legal dependency set.
+
+The default is pinned to `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`.
+The preceding `9de52acf1db84b27f8933d80480eaa850e74fa33` staff semantic
+corpus remains separately available, including its original metadata-only legal
+references, manifest bytes and binding.
 
 The earlier `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` full-source discovery
 corpus remains separately available with its original manifest and no complete
 evidence requirements. The original 52-record custody profile remains available
 at `efb05c66616a9cd4328a86cf412780fe7bc7cf0b`. Its bounded historical acceptance
 does not establish broad or current-law sufficiency. A new default does not
-rewrite either earlier version, context identity or acceptance receipt.
+rewrite any earlier version or acceptance receipt. Context identities also bind
+the selected engine output: adding an approved version does not assert that
+every old question will be byte-identical under every later engine. The explicit
+historical custody regression still requires its original context identity.
+
+The retained 0.5.0 local integration reads exact immutable DWP Git blobs and
+verifies all four versions through the official SDK 2 and SDK 1 clients, plus
+four compact replay cases. It verifies each requested source hash and refuses
+to replace an existing receipt. Independent local cases use fresh service
+admission windows; this is transport/integrity assurance, not a hosted quota
+test. Earlier local and public receipts remain unchanged. The remote verifier
+paces every service HTTP request by at least 750 ms, records counts and spacing,
+and disables automatic retries. Production bounds are unchanged.
 
 Preserve the complete package in `structuredContent` and JSON text, including
 missing evidence, scope, rights, paths and budget omissions. A smaller requested
