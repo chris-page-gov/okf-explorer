@@ -115,40 +115,28 @@ actual DWP journeys and native host invocation are separate gates.
 
 ## Fresh Heritage assurance
 
-The existing Heritage corpus was also exercised against this application build
-in installed Chrome, independently of the synthetic Ask tests. All 100
-questions met the required threshold of 80, with a mean of 92.6. The tiny,
-faithful and synthetic-isolation journeys all passed, with no failed actions,
-execution errors or validation-only records.
+The existing Heritage corpus was exercised against the context-budget correction
+on 20 September 2026 using Playwright with installed Google Chrome. All 100
+questions met the required threshold of 80, with a mean of 92.6.
+The tiny, faithful and synthetic-isolation journeys all passed, with no failed
+actions, execution errors or validation-only records.
 
-The question results were recorded at `2026-09-16T01:50:20.411000Z`; the journey
-results at `2026-09-16T01:48:20.803000Z`. Both bind application tree
-`f449bdf90c3ec5f567094c30bd0778a5d1ed4b01fe9239de52d28acc13cd3fcf` and manifest
-`add0678f94f1c4f1a0fdc7b7d683c22d126c453f50f988556d7fd8ec4cf007c0`.
-These were fresh browser executions after the optional-metadata validation
-correction. Earlier passing results retain their original build identities in
-Git history; they were not relabelled as evidence for the corrected application.
+The question results were recorded at `2026-09-20T19:25:08.290000Z`; the journey
+results at `2026-09-20T19:23:03.338000Z`. Both bind application tree
+`fa442a5f0806c0c9c7f5ab19c1f1362fe48be5cf2a1628414f2bc17114c9dc58` and manifest
+`1a08fe787725fc48c132068d08161c090fd6fae6395ffd01ec47309187e10087`.
+These were fresh browser executions against the corrected application. Earlier
+passing results retain their original build identities in Git history; they
+were not relabelled as evidence for this build.
 
 The [retained local candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
 binds the exact compressed execution results, application and assembled Site.
-Independent review checked the raw and compressed result identities, all 100
+The materialiser checks the raw and compressed result identities, all 100
 question records, every journey action and assertion, and observation timing.
-The original source roots and generation date remain unchanged. All 60 affected
-Python receipt and compatibility checks passed after materialisation. See the
+The original source roots and generation date remain unchanged. See the
 [evaluation harness](okf-explorer-evaluation.md#evidence-tied-to-an-explorer-build)
 for the governed refresh procedure.
 
 These results establish local runtime assurance. They do not establish public
 deployment identity, native WebMCP host access, domain correctness or specialist
 acceptance. The receipt retains its pending public deployment gate.
-
-Implementation paths are relative to `apps/okf-explorer`:
-
-* `src/lib/components/AskOkf.svelte`
-* `src/lib/context/webmcp.ts` and `webmcp.test.ts`
-* `src/routes/explore/+page.svelte` and `src/routes/styles.css`
-* `tests/ui/ask-okf.spec.ts`
-
-See the [architecture decision](adr-ask-okf-context-assembly.md) and
-[gap analysis](ask-okf-gap-analysis-2026-09-16.md) for the engine and producer
-boundaries.
