@@ -26,14 +26,17 @@ const raw = { name: 'raw-file', setup(build) {
   }));
   build.onLoad({ filter: /.*/, namespace: 'raw' }, async args => ({ contents: await readFile(resolve(root, args.path), 'utf8'), loader: 'text' }));
 } };
-const shared = { tsconfigRaw: { compilerOptions: { target: 'ES2022', useDefineForClassFields: true } }, bundle: true, format: 'esm', target: 'es2022', plugins: [raw], metafile: true, sourcemap: false, legalComments: 'eof' };
+// Keep dependency identities under the logical node_modules path when a checkout
+// reuses a locked installation through a symlink. Real paths otherwise leak into
+// emitted comments and the source receipt, changing bytes across installations.
+const shared = { tsconfigRaw: { compilerOptions: { target: 'ES2022', useDefineForClassFields: true } }, preserveSymlinks: true, bundle: true, format: 'esm', target: 'es2022', plugins: [raw], metafile: true, sourcemap: false, legalComments: 'eof' };
 await mkdir('dist/server', { recursive: true });
 const worker = await build({ ...shared, entryPoints: ['src/worker.ts'], outfile: 'dist/server/index.js', platform: 'browser', conditions: ['workerd', 'browser'] });
 if (Object.keys(worker.metafile.inputs).some(p => /shimsNode|ajvProvider|node:/.test(p))) throw new Error('Worker includes a Node/Ajv dependency.');
 await build({ ...shared, entryPoints: ['src/node.ts'], outfile: 'dist/node.mjs', platform: 'node', packages: 'external' });
 const inputs = {};
 for (const path of [...new Set([...Object.keys(worker.metafile.inputs).filter(p => !p.startsWith('node_modules/')),
-  'package.json', 'package-lock.json'])].sort()) {
+  'scripts/build.mjs', 'package.json', 'package-lock.json'])].sort()) {
   const localPath = path.replace(/^raw:/, '');
   inputs[localPath] = hash(await readFile(localPath));
 }

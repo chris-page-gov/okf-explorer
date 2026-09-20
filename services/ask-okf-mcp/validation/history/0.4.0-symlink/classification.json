@@ -1,0 +1,10 @@
+{
+  "schema": "okf-build-observation-history.v1",
+  "classification": "historical-local-symlink-build-not-portable",
+  "reason": "Esbuild followed the shared node_modules symlink. Dependency real paths entered generated comments and the source-input receipt. This local observation is preserved unchanged; it is not the CI or deployment build.",
+  "integration_receipt_sha256": "58e03be808c90cd407a8d319e34c40e976905eb2a83ea14e3434bc585b8f55c9",
+  "build_receipt_sha256": "c8ecc03c995a3ab9dcf7ed82787db0f5efcde951ec221aed15a61bfd8f4af8e3",
+  "worker_sha256": "a1622d7d20ab3feb0dea076ed8f9d44d31147f50159c8909ca7a2c09539695f6",
+  "replacement": "../../approved-versions-0.4.0.json",
+  "source_meaning": "The retained project/runtime input hashes and package lock are unchanged; the corrected receipt additionally binds the build script. Build identity does not confer source authority."
+}

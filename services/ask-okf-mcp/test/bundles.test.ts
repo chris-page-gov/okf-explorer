@@ -28,6 +28,21 @@ test('retained offline integration receipt binds the executed runner, service bu
   assert.ok(receipt.compact_delivery_versions.every((row: { reconstructed_package_matches_direct_engine: boolean }) => row.reconstructed_package_matches_direct_engine));
 });
 
+test('the superseded local observation retains its original receipt and actual Worker identity', async () => {
+  const base = new URL('../validation/history/0.4.0-symlink/', import.meta.url);
+  const classification = JSON.parse(await readFile(new URL('classification.json', base), 'utf8'));
+  const buildRaw = await readFile(new URL('build-receipt.json', base));
+  const integrationRaw = await readFile(new URL('approved-versions.json', base));
+  const digest = (raw: Uint8Array) => createHash('sha256').update(raw).digest('hex');
+  assert.equal(digest(buildRaw), 'c8ecc03c995a3ab9dcf7ed82787db0f5efcde951ec221aed15a61bfd8f4af8e3');
+  assert.equal(classification.build_receipt_sha256, digest(buildRaw));
+  assert.equal(classification.integration_receipt_sha256, digest(integrationRaw));
+  assert.equal(JSON.parse(integrationRaw.toString()).build_receipt_sha256, digest(buildRaw));
+  assert.equal(classification.worker_sha256, 'a1622d7d20ab3feb0dea076ed8f9d44d31147f50159c8909ca7a2c09539695f6');
+  assert.equal(JSON.parse(buildRaw.toString()).outputs['dist/server/index.js'], classification.worker_sha256);
+  assert.equal(classification.classification, 'historical-local-symlink-build-not-portable');
+});
+
 test('actual vendored loader separates all three versions and preserves historical compact replay', async () => {
   const loader = await approvedLoader();
   const service = createAskService({ loadContext: loader.loadApprovedSource,

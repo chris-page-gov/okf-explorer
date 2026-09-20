@@ -2,6 +2,11 @@
 
 ## 0.4.0 — combined staff evidence candidate
 
+- Make build output and receipts independent of real or symlinked locked
+  dependency installations; bind the build script and test both layouts after
+  relocation. Preserve the original local observation and rerun integration
+  against the corrected build without weakening receipt checks.
+
 - Prepare the combined DMG and ADM corpus as the default, including the proposed
   staff-task concepts, evidence requirements and explicit unresolved obligations.
   Pin the source to `9de52acf1db84b27f8933d80480eaa850e74fa33`; the release

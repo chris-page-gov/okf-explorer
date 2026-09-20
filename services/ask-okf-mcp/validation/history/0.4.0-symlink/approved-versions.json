@@ -1,6 +1,6 @@
 {
   "schema": "okf-approved-version-integration.v1",
-  "observed_at": "2026-09-20T19:59:36.042Z",
+  "observed_at": "2026-09-20T19:47:42.728Z",
   "mode": "offline-local-corpus",
   "limitation": "Actual vendored loader and hash-verified source files; not a remote reachability, hosting or AI acceptance observation.",
   "runner_sha256": "dc2d197e047980349067311c0824b1bb69961de5f29a89d4c12cb6d293b4ad0a",
@@ -8,7 +8,7 @@
     "scripts/verify-delivery.mjs": "85e3b4860fd17f70fe62a2ae108d694f4777c438d470c4b8c4b316a95a1d8642",
     "scripts/verification-cases.mjs": "a457cbaa309241ee3cd2470b5f61c41c4b89ff9fe2edc952fd85b696507f2b7e"
   },
-  "build_receipt_sha256": "ce8a3c704bdad9b72d36d35a6a2e20304861f1683b620aae4f9cc87c1d7b8356",
+  "build_receipt_sha256": "c8ecc03c995a3ab9dcf7ed82787db0f5efcde951ec221aed15a61bfd8f4af8e3",
   "cases": [
     {
       "version": "9de52acf1db84b27f8933d80480eaa850e74fa33",

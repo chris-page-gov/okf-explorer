@@ -73,6 +73,13 @@ retained its historical, bounded sufficient result and original context identity
 The unit suite uses the same real loader and checks the receipt against the
 executed runner and current service build. It requires no DWP checkout or network.
 
+The build keeps logical dependency paths stable across real and symlinked
+locked installations. Tests compare Worker, Node and receipt bytes in both
+layouts. An earlier symlink-dependent local build is [preserved as historical
+evidence](validation/history/0.4.0-symlink/classification.json), with its original
+receipt and Worker hash. The current integration receipt comes from an actual
+rerun after the portability fix; its exact build-hash check remains enforced.
+
 ### Browser assurance
 
 After installing the service dependencies above, use the existing Explorer

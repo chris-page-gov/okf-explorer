@@ -33,6 +33,16 @@ the shared core. The service caches verified public file bytes within an 8 MiB,
 index or manifest URL and digest bind every package, allowing parity with
 Explorer and direct engine calls. The default corpus manifest path matches the
 additive Explorer descriptor's path, not a different alias for identical bytes.
+Build identity is portable across real and symlinked locked dependency
+installations. Esbuild preserves the logical dependency paths, so external
+installation locations do not enter generated comments or the project-source
+receipt. The build script itself, package lock and runtime inputs are hash-bound.
+A regression builds both layouts in a relocated checkout and compares Worker,
+Node and receipt bytes. The original path-dependent local observation remains
+[archived with its actual Worker hash](validation/history/0.4.0-symlink/classification.json);
+it is not relabelled as the later CI-equivalent build. Integration was rerun
+against the corrected build, and CI still requires the exact new receipt hash.
+
 The Worker adapter requests manual redirect handling and rejects all non-OK
 responses, including every 3xx status, without following `Location`. This
 preserves the core's redirect rejection on runtimes which reject the `error`
