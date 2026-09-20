@@ -3,7 +3,7 @@
   "fixture_kind": "synthetic",
   "source": {
     "path": "apps/okf-explorer/src/test/contextFixture.ts",
-    "sha256": "d8804aebc4b7d5a78e495c726152ed8df4234f7e405e3b423f9dcb13a934f941"
+    "sha256": "a0d9d030a39c36c28286ba61639392a67c59da46f83ca8336d7b8010f3b3f5a5"
   },
   "export": {
     "path": "index.json",

@@ -99,8 +99,24 @@ authoring or a corrected evaluation expectation.
 
 In a controlled scheduling experiment, a cached local fetcher added ten
 milliseconds per file. Three repeats across five cases, alternating engine order,
-produced median times of 300–413 milliseconds before and 163–196 milliseconds
-after. This measures the scheduling change under an artificial delay. It is not
+produced median times of 304–393 milliseconds before and 155–193 milliseconds
+after in the [retained portable DWP comparison](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/context-performance.md).
+This measures the scheduling change under an artificial delay. It is not
 a public-network benchmark, a service-level promise or evidence of answer
 accuracy. Published browser journeys and historical model-trial receipts require
 their own exact input and deployment identities.
+
+Changing engine or application bytes also invalidates receipts that bind those
+bytes. The synthetic context replay, remote service integration and Heritage
+browser evidence must be executed again; an unchanged source corpus does not
+make an earlier application receipt current. Their required CI gates remain in
+place, and earlier versioned observations remain in Git history.
+
+The refreshed remote compatibility run also records a bounded behaviour change
+for the older DWP `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` corpus: the larger
+working-index allowance retains 128 relationships rather than 127, with the same
+64 selected records and an insufficient evidence status. Its context identifier
+therefore changes. The other two approved versions retain their context
+identifiers. An old replay recipe whose expected identifier no longer matches
+continues to fail closed; this refresh does not claim byte-for-byte compatibility
+for every historical package.

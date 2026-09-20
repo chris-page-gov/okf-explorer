@@ -1,6 +1,6 @@
 {
   "schema": "okf-approved-version-integration.v1",
-  "observed_at": "2026-09-20T19:59:36.042Z",
+  "observed_at": "2026-09-20T21:54:17.424Z",
   "mode": "offline-local-corpus",
   "limitation": "Actual vendored loader and hash-verified source files; not a remote reachability, hosting or AI acceptance observation.",
   "runner_sha256": "dc2d197e047980349067311c0824b1bb69961de5f29a89d4c12cb6d293b4ad0a",
@@ -8,7 +8,7 @@
     "scripts/verify-delivery.mjs": "85e3b4860fd17f70fe62a2ae108d694f4777c438d470c4b8c4b316a95a1d8642",
     "scripts/verification-cases.mjs": "a457cbaa309241ee3cd2470b5f61c41c4b89ff9fe2edc952fd85b696507f2b7e"
   },
-  "build_receipt_sha256": "ce8a3c704bdad9b72d36d35a6a2e20304861f1683b620aae4f9cc87c1d7b8356",
+  "build_receipt_sha256": "5d2bf8de3c1d1c72b102bfee268743828259ccb62d719b6be6910714123b3fa2",
   "cases": [
     {
       "version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
@@ -32,11 +32,11 @@
         "index_url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752/full-dmg/context/corpus/manifest.json",
         "index_sha256": "aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95"
       },
-      "context_id": "urn:sha256:fbd44c332557919cc4e387a6991613c1b0a0316325a47f64143f5244e15ebea1",
-      "package_sha256": "7518a122490f1955cfb4788075adf5c8028dc4835014976a4e74c0bdc2db889c",
+      "context_id": "urn:sha256:e8ed7b421e18a02f08e2dba1bfbb411e1032ef213d204f1a6d0ccb966f703b55",
+      "package_sha256": "34f69dc615e91dee2e0cab846d9afa88ae2b86152794b32c8c58328e11673327",
       "evidence_status": "insufficient",
       "selected_records": 64,
-      "relationships": 127,
+      "relationships": 128,
       "slices": 9,
       "exact_replay": true
     },

@@ -9,6 +9,10 @@
   reservations and unchanged aggregate limits. Retain exact source and ranking
   checks; increase only the semantic/base-index ceiling to an explicit 8 MiB.
   Package, manifest, posting and record-shard limits remain unchanged.
+- Replay synthetic context, three-version remote integration and exact-build
+  Heritage acceptance after the engine change: all 100 questions and three
+  fixture journeys pass. Document the older corpus context-identity change;
+  mismatched historical replay recipes continue to fail closed.
 
 - Serve the additive DWP staff-semantic corpus by default in Ask OKF service
   0.4.0, retaining both earlier approved corpus versions and exact replay links.
