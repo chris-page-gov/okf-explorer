@@ -31,6 +31,8 @@ jobs:
           fetch-depth: 0
       - name: Set up locked Python toolchain
         uses: ./.github/actions/setup-locked-python
+      - name: Check documentation lockstep
+        run: uv run --locked python scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
       - name: Build fail-closed impact plan
         id: plan
         run: >-
@@ -339,8 +341,6 @@ jobs:
           fetch-depth: 0
       - name: Set up locked Python toolchain
         uses: ./.github/actions/setup-locked-python
-      - name: Check documentation lockstep
-        run: uv run --locked python scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
       - name: Validate bundle, viewer and OKF conformance
         run: |
           uv run --locked python scripts/build_okf_bundle.py --check
