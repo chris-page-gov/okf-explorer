@@ -5,6 +5,15 @@ producer index. It resolves declared concept phrases, follows directed
 relationships and checks the producer's scoped evidence requirements. It does
 not generate an AI answer or decide whether a person qualifies for a benefit.
 
+The byte budget includes source text, provenance, traversal paths and gap
+explanations. When the package is too large, the engine removes whole selected
+records and recalculates missing requirements before measuring again. It must
+not discard an otherwise usable package merely because a final missing-evidence
+explanation was added after trimming. If the remaining metadata itself cannot
+fit, an explicit insufficient-evidence fallback remains valid. Smaller packages
+can omit important material; their budget diagnostics are part of the evidence
+boundary, not an answer-quality score.
+
 Search remains a separate discovery operation. Its ranking is not a substitute
 for the context engine's dependency and provenance checks. The
 [inspection](ask-okf-gap-analysis-2026-09-16.md) and
