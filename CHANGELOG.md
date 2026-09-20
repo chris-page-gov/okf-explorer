@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Count missing-evidence explanations while trimming Ask OKF packages to their
+  byte budget. Retain whole evidence records when they fit, rather than falling
+  back to an empty package after adding final diagnostics. Add generic boundary
+  regressions; keep genuine metadata-only budget failures explicit.
+  Replay the non-DWP acceptance receipt against the updated engine hash;
+  its evidence package and context identifier remain unchanged.
+
 - Include the bounded, transitive Markdown reading closure in the documentation
   cache identity, so changes to linked service guides and changelogs rebuild
   their rendered pages and exact-source alternates. Keep unrelated service

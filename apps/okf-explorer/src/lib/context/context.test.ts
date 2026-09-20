@@ -183,6 +183,45 @@ describe('governed context assembly, independent of any domain', () => {
     expect(result.budget.truncated).toBe(true);
     expect(result.selected.some((i) => i.record.id.endsWith('/library'))).toBe(false);
   });
+  it('budgets missing-evidence diagnostics before dropping otherwise usable whole passages', async () => {
+    const index = await studyClubContextFixture();
+    const library = index.records.find((record) => record.id.endsWith('evidence/library'))!;
+    library.text = 'The fictional library has a recorded access note. '.repeat(180);
+    library.provenance[0].literal_sha256 = await contextSha256(library.text);
+    const reading = index.requirements[0];
+    reading.required.push(...Array.from({ length: 24 }, (_, i) => `${BASE}evidence/unrecorded-access-qualification-${i}`));
+    const complete = await assembleContext(index, 'Reading circle');
+    const diagnosticBytes = new TextEncoder().encode(JSON.stringify(complete.missing_evidence)).length;
+    // The selected items fit before diagnostics. The complete package does not.
+    // Dropping the large library passage leaves room for the exact activity
+    // passage and every current missing-evidence diagnostic.
+    const maxBytes = complete.budget.used_bytes - diagnosticBytes + 160;
+    const result = await assembleContext(index, 'Reading circle', { max_bytes: maxBytes });
+    expect(result.budget.used_bytes).toBe(new TextEncoder().encode(JSON.stringify(result)).length);
+    expect(result.budget.used_bytes).toBeLessThanOrEqual(maxBytes);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(result.budget.truncated).toBe(true);
+    expect(result.selected.map((item) => item.record.id)).toEqual([`${BASE}concept/reading`, `${BASE}evidence/reading`]);
+    expect(result.selected[1].record.text).toBe(index.records[0].text);
+    expect(result.missing_evidence.some((issue) => issue.code === 'metadata_budget')).toBe(false);
+    const requiredIssues = result.missing_evidence.filter((issue) => issue.code === 'missing_required_evidence');
+    expect(requiredIssues).toHaveLength(1);
+    expect(requiredIssues[0].ids).toEqual(result.requirements[0].missing);
+    expect(requiredIssues[0].ids).toContain(library.id);
+    expect(requiredIssues[0].ids).not.toContain(`${BASE}evidence/reading`);
+  });
+  it('still returns a bounded refusal when diagnostics alone cannot fit', async () => {
+    const index = await studyClubContextFixture();
+    index.requirements[0].required.push(...Array.from({ length: 150 }, (_, i) => `${BASE}evidence/unrecorded-qualification-${i}`));
+    const result = await assembleContext(index, 'Reading circle', { max_bytes: 8192 });
+    expect(result.selected).toHaveLength(0);
+    expect(result.relationships).toHaveLength(0);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(result.ai_answer).toBeNull();
+    expect(result.missing_evidence.map((issue) => issue.code)).toEqual(['metadata_budget']);
+    expect(result.budget.used_bytes).toBe(new TextEncoder().encode(JSON.stringify(result)).length);
+    expect(result.budget.used_bytes).toBeLessThanOrEqual(8192);
+  });
   it('terminates cycles and gives reproducible package identities and explanations', async () => {
     const index = await studyClubContextFixture();
     index.assertions.push({ ...index.assertions[0], id: `${BASE}assertion/cycle`, source: `${BASE}evidence/library`, target: `${BASE}concept/reading` });

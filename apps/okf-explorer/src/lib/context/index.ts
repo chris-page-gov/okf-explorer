@@ -401,6 +401,12 @@ export async function assembleContext(
   if (resolution.ambiguities.length) addIssue(missing, { code: 'ambiguous_concepts', message: 'At least one phrase has multiple candidate concepts; no candidate was chosen silently.', ids: resolution.ambiguities.flatMap((a) => a.candidates) });
 
   const refresh = () => {
+    // Derived requirement diagnostics must be refreshed with the selection and
+    // included in every size check. Previous diagnostics must not make retained
+    // records look ungoverned or accumulate stale omissions after trimming.
+    for (let i = missing.length - 1; i >= 0; i--) {
+      if (missing[i].code === 'missing_required_evidence') missing.splice(i, 1);
+    }
     base.selected = [...selected.values()];
     base.relationships = [...relationships.values()];
     base.requirements = applicable.map((r) => {
@@ -433,6 +439,10 @@ export async function assembleContext(
     base.evidence_status = base.conflicts.length ? 'conflicting'
       : !missing.length && !omissions.length && base.requirements.length
         && base.requirements.every((r) => r.status === 'supported-within-declared-scope') ? 'sufficient' : 'insufficient';
+    for (const requirement of base.requirements) {
+      if (requirement.missing.length) addIssue(missing, { code: 'missing_required_evidence',
+        message: `Evidence required by ${requirement.label} was absent, omitted or lacked governance.`, ids: requirement.missing });
+    }
   };
   refresh();
   // Reserve the hash and final byte-counter digits. Never cut an evidence passage.
@@ -446,10 +456,6 @@ export async function assembleContext(
     }
     addIssue(omissions, { code: 'byte_budget', message: 'A whole item was omitted to meet the package byte budget.', ids: [id] });
     refresh();
-  }
-  for (const requirement of base.requirements) {
-    if (requirement.missing.length) addIssue(missing, { code: 'missing_required_evidence',
-      message: `Evidence required by ${requirement.label} was absent, omitted or lacked governance.`, ids: requirement.missing });
   }
   // Large indexes can themselves contain more diagnostic metadata than the
   // caller permits. Fail closed with a bounded diagnostic, not a partial answer.
