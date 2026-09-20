@@ -19,7 +19,7 @@ export function landingResponse(): Response {
 <aside><strong>Independent experimental publication.</strong> This is not an official DWP service, benefits advice, an award calculation or an individual entitlement decision. Do not submit claimant personal data.</aside>
 <h2>Start with the evidence</h2><p>The default corpus contains 331 DMG PDFs and 182 ADM PDFs: 19,090 measured pages, including 18,197 pages with extracted text. The 893 empty extractions remain accounted for.</p>
 <p><a href="${CORPUS_EXPLORER_URL}">Open DMG and ADM evidence in Ask OKF Explorer</a></p>
-<p>Choose <strong>Ask OKF</strong> to retrieve source pages across both collections. Reader, Search, Graph and Timeline now cover both manuals. Use the Source family facet to distinguish DMG and ADM, then inspect conceptual relationships and the official PDF pages.</p>
+<p>Choose <strong>Ask OKF</strong> to retrieve source pages across both collections. Reader, Search, Graph and Timeline now cover both manuals. Use the Source manual facet to distinguish DMG and ADM, then inspect conceptual relationships and the official PDF pages.</p>
 <p>The semantic layer also includes 20 selected statutory units with source and version provenance. These are machine extractions, not specialist-approved interpretations or a complete legal dependency set.</p>
 <p>Packages remain <strong>insufficient</strong>: staff-task profiles now declare missing scope, legal and review obligations explicitly. A useful source match is a research lead, not a complete answer.</p>
 <ul><li><a href="https://chris-page-gov.github.io/okf-dwp/docs/learning-path.html">Follow the beginner learning path</a></li>

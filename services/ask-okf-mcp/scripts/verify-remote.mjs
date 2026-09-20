@@ -7,12 +7,13 @@ import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/cli
 import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/client/validators/cf-worker';
 import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
-import { APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
+import { APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, verifyBundledContext, verifyBundledCorpus } from '../src/registry.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
 import { INPUT_SCHEMA, OUTPUT_SCHEMA } from '../src/contracts.ts';
 import { MANIFEST_INPUT_SCHEMA, MANIFEST_OUTPUT_SCHEMA, EVIDENCE_INPUT_SCHEMA, EVIDENCE_OUTPUT_SCHEMA } from '../src/deliveryContracts.ts';
 import { verifyCompactDelivery } from './verify-delivery.mjs';
 import { verificationCases } from './verification-cases.mjs';
+import { createPacedFetch } from './paced-fetch.mjs';
 
 const args = process.argv.slice(2);
 if (args.length !== 4 || args[0] !== '--endpoint' || args[2] !== '--output') {
@@ -30,9 +31,12 @@ const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json
 const legacy = await verifyBundledContext(indexText, descriptorText);
 const approved = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-corpus-manifest.json', import.meta.url), 'utf8'));
 const corpusFetch = createCorpusFetcher(approved);
+const staff = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-staff-corpus-manifest.json', import.meta.url), 'utf8'), STAFF_APPROVED_BUNDLE.version);
+const staffFetch = createCorpusFetcher(staff);
 const previous = await verifyBundledCorpus(await readFile(new URL('../vendor/okf-dwp-previous-corpus-manifest.json', import.meta.url), 'utf8'), PREVIOUS_APPROVED_BUNDLE.version);
 const previousFetch = createCorpusFetcher(previous);
 const corpusSources = new Map([[APPROVED_BUNDLE.version, { source: approved, fetch: corpusFetch }],
+  [STAFF_APPROVED_BUNDLE.version, { source: staff, fetch: staffFetch }],
   [PREVIOUS_APPROVED_BUNDLE.version, { source: previous, fetch: previousFetch }]]);
 async function directContext(item) {
   if (item.version === LEGACY_APPROVED_BUNDLE.version) return assembleContext(legacy.index, item.question, item.budget, legacy.binding);
@@ -76,6 +80,11 @@ const verifierHelperPath = relative(repositoryRoot, fileURLToPath(verifierHelper
 const verifierCasesURL = new URL('./verification-cases.mjs', import.meta.url);
 const verifierCasesBytes = await readFile(verifierCasesURL);
 const verifierCasesPath = relative(repositoryRoot, fileURLToPath(verifierCasesURL)).replaceAll('\\', '/');
+const verifierPacingURL = new URL('./paced-fetch.mjs', import.meta.url);
+const verifierPacingBytes = await readFile(verifierPacingURL);
+const verifierPacingPath = relative(repositoryRoot, fileURLToPath(verifierPacingURL)).replaceAll('\\', '/');
+let verifierPacingMatchesCommit = false;
+try { verifierPacingMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierPacingPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierPacingBytes); } catch { /* Explicit working-tree pacing helper. */ }
 let verifierCasesMatchesCommit = false;
 try { verifierCasesMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierCasesPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierCasesBytes); } catch { /* Explicit working-tree acceptance cases. */ }
 let verifierHelperMatchesCommit = false;
@@ -84,18 +93,20 @@ const verifierPath = relative(repositoryRoot, fileURLToPath(import.meta.url)).re
 let verifierMatchesCommit = false;
 try { verifierMatchesCommit = hash(execFileSync('git', ['show', comparisonCommit + ':' + verifierPath], { cwd: repositoryRoot, stdio: ['ignore', 'pipe', 'ignore'] })) === hash(verifierBytes); } catch { /* An uncommitted verification script is explicitly classified. */ }
 const expectedAnnotations = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
-const healthResponse = await fetch(new URL('/health', endpoint), { signal: AbortSignal.timeout(15000) });
+const remotePacing = createPacedFetch();
+const healthResponse = await remotePacing.fetch(new URL('/health', endpoint), { signal: AbortSignal.timeout(15000) });
 if (!healthResponse.ok) throw new Error(`Health check returned HTTP ${healthResponse.status}.`);
 const health = await healthResponse.json();
 if (health.ready !== true || health.bundle_version !== APPROVED_BUNDLE.version || health.index_sha256 !== APPROVED_BUNDLE.index_sha256) {
   throw new Error('Remote approved bundle identity differs from the comparison source.');
 }
-const verification = verificationCases(APPROVED_BUNDLE.version, PREVIOUS_APPROVED_BUNDLE.version, LEGACY_APPROVED_BUNDLE.version);
+const verification = verificationCases(APPROVED_BUNDLE.version, PREVIOUS_APPROVED_BUNDLE.version, LEGACY_APPROVED_BUNDLE.version, STAFF_APPROVED_BUNDLE.version);
 const cases = verification.full;
 const client = new Client({ name: 'okf-remote-sdk-acceptance', version: '1.0.0' }, {
   versionNegotiation: { mode: { pin: '2026-07-28' } }, jsonSchemaValidator: new CfWorkerJsonSchemaValidator()
 });
-const transport = new StreamableHTTPClientTransport(endpoint);
+const transport = new StreamableHTTPClientTransport(endpoint, { fetch: remotePacing.fetch,
+  reconnectionOptions: { maxRetries: 0, maxReconnectionDelay: 1000, initialReconnectionDelay: 1000, reconnectionDelayGrowFactor: 1 } });
 const started = new Date().toISOString();
 const results = [];
 let toolsHash;
@@ -161,7 +172,8 @@ try {
 // Detect a concurrent source or verifier change during the network verification as well.
 if (hash(await readFile(fileURLToPath(import.meta.url))) !== hash(verifierBytes)
   || hash(await readFile(verifierHelperURL)) !== hash(verifierHelperBytes)
-  || hash(await readFile(verifierCasesURL)) !== hash(verifierCasesBytes)) throw new Error('Verifier changed during verification.');
+  || hash(await readFile(verifierCasesURL)) !== hash(verifierCasesBytes)
+  || hash(await readFile(verifierPacingURL)) !== hash(verifierPacingBytes)) throw new Error('Verifier changed during verification.');
 for (const [path, digest] of Object.entries(buildReceipt.inputs)) await checkSource(path, digest);
 const receipt = {
   schema: 'okf-remote-mcp-sdk-verification.v1', endpoint: endpoint.href, started_at: started,
@@ -174,10 +186,14 @@ const receipt = {
       supporting_files: [{ path: verifierHelperPath, sha256: hash(verifierHelperBytes), matches_comparison_commit: verifierHelperMatchesCommit,
         classification: verifierHelperMatchesCommit ? 'committed' : 'working-tree-verifier' },
         { path: verifierCasesPath, sha256: hash(verifierCasesBytes), matches_comparison_commit: verifierCasesMatchesCommit,
-          classification: verifierCasesMatchesCommit ? 'committed' : 'working-tree-verifier' }] } },
+          classification: verifierCasesMatchesCommit ? 'committed' : 'working-tree-verifier' },
+        { path: verifierPacingPath, sha256: hash(verifierPacingBytes), matches_comparison_commit: verifierPacingMatchesCommit,
+          classification: verifierPacingMatchesCommit ? 'committed' : 'working-tree-verifier' }] } },
   comparison_worker_sha256: buildReceipt.outputs['dist/server/index.js'],
   deployment_identity_note: 'The remote health endpoint confirms the immutable bundle identity. The comparator Worker digest is not itself proof of the deployed Worker bytes; retain the hosting deployment receipt separately.',
   bundle_version: APPROVED_BUNDLE.version, binding: approved.binding, snapshot: APPROVED_BUNDLE.snapshot,
+  request_pacing: { ...remotePacing.receipt, scope: 'All remote service HTTP requests including health and SDK discovery; direct immutable source downloads are separate.',
+    sdk_reconnection_retries: 0, failure_policy: 'Stop on failure; no automatic tool-call or HTTP retry.' },
   tool: 'ask_okf', tools: toolContracts.map(tool => tool.name), tool_discovery_canonical_sha256: toolsHash,
   input_schema_matches: true, output_schema_matches: true, annotations: expectedAnnotations, health, cases: results, compact_delivery: compactDelivery, compact_delivery_versions: compactDeliveryVersions, passed: true,
   limitations: ['This official SDK client verification does not prove ChatGPT or Voice integration.',

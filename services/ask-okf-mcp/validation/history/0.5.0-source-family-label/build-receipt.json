@@ -1,0 +1,42 @@
+{
+  "schema": "okf-remote-mcp-build.v1",
+  "service_version": "0.5.0",
+  "inputs": {
+    "../../apps/okf-explorer/src/lib/context/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "../../apps/okf-explorer/src/lib/context/delivery.ts": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90",
+    "../../apps/okf-explorer/src/lib/context/index.ts": "bade207cbc414b9a057778fdc28564d1c0f9c03e7548b3644a3fb9ec9b8731e6",
+    "../../profiles/context-assembly/v1/common.schema.json": "346f86667daec3ab9d6f21d007d7c7c948c04de8f4439818d8185a13e6267a2b",
+    "../../profiles/context-assembly/v1/package.schema.json": "0f7f4e5b3038c27f67577cf662084125e4785c8bd072c28ea62ba4a557970280",
+    "package-lock.json": "aaa0e91680427a5b731aef8229fad2bb8c309c81d6431f815f478681812df6bf",
+    "package.json": "2f6ec3fc9cc1b72f57ec6ac63c7ba68aae80a24e1e67775961e9e99efd100773",
+    "vendor/okf-dwp-assembly-index.json": "38159445a60d4bcabc23cb2cf728e14cbd0a4b55013276c291356e7a1452ff54",
+    "vendor/okf-dwp-corpus-manifest.json": "06362458d013322b565e13884066fd896b68986df8be93c09a02979eab8f199b",
+    "vendor/okf-dwp-descriptor.json": "9881779ab550efe9f73da1e16acd8c8dcb64933c9981bb290b66ff51572853f3",
+    "vendor/okf-dwp-previous-corpus-manifest.json": "aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95",
+    "vendor/okf-dwp-staff-corpus-manifest.json": "9d20d0a6af54050bdddcd3550a2c01abe26c360754a27d2f7781dd03054db265",
+    "scripts/build.mjs": "f4db95f9531c5c49ee602ebdbd53f23cab4d845eae95a3daf4b7b597d5a9af18",
+    "src/bundles.ts": "5ec1d2be62399576f42831ffd679f62fda8da04adecda260fcba6a646acbacd4",
+    "src/contracts.ts": "4e2a32851fffd3bfa0910f000fdd227ada583ef91ea1aab5419777690ba8dc88",
+    "src/corpusFetch.ts": "90fef25ec9f8cdc4cdfdf7aee1a4cc3dcd59738f4abf1624356a7a83038a85ed",
+    "src/deliveryContracts.ts": "20b69c2db91e46f078db29932ad0b4c9c0a30c1b2723b7d66f09e716086e6321",
+    "src/landing.ts": "d50aaa8cc9ec387b1763b5d4b35e4c959a47b68dd9467bcce9fc2471432a706c",
+    "src/registry.ts": "e9ba4b2804f0e0dd280793460709b72959e4b3219a376c3c9d1475497793d76d",
+    "src/review.ts": "69a625c4956b16c10a7d58a63625481ed8a9520ff9acf01ec36471b6e2652687",
+    "src/service.ts": "1b2c3c015066a9460d71b45459af02cac99a296aa1288e4fd754808d0fc85460",
+    "src/worker.ts": "b8c64b7091c54d16a2bce49a5b081f80a297131778fc5d3de443c75e1e819981",
+    "vendor/okf-dwp-corpus-release.json": "cdb8332cc0a0d608bcb52e8bcf7fbf7111a7db8d370fe0862967edf2863a1baf",
+    "vendor/okf-dwp-previous-corpus-release.json": "ebcdf9b3b400cd9a39acff8ef969161396023b958f5b09d8b7892af4834cb08d",
+    "vendor/okf-dwp-staff-corpus-release.json": "9cfe03d547c33ae00b297041f4d941ce51584c28adcc4c940a6293cc1d996985"
+  },
+  "outputs": {
+    "dist/server/index.js": "a014dd4e4a11f303753151c3e97e266c8315256963fdd7eea2b94fd4daf84fa0",
+    "dist/node.mjs": "85814b34cf20d55878df71467df87fb51888f04e58a48896c1ce8f1f28372bba"
+  },
+  "worker_node_dependencies": false,
+  "bundle_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+  "historical_bundle_versions": [
+    "9de52acf1db84b27f8933d80480eaa850e74fa33",
+    "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+    "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+  ]
+}

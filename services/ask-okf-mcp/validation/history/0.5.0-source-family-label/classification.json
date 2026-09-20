@@ -1,0 +1,15 @@
+{
+  "schema": "okf-build-observation-history.v1",
+  "classification": "historical-local-candidate-stale-interface-label",
+  "reason": "This actual four-version candidate run preceded correction of the landing-page facet name from Source manual to Source family. It was not deployed. Preserve the observation and regenerate the current receipt after the wording correction.",
+  "integration_receipt_sha256": "59ab3f768f0b265348912bff8669e73ea716396b6193cb1374c8f714e4abd9bd",
+  "build_receipt_sha256": "26545b9218c19f68ba332371b3b6e4a6e71251a6c7328f00162511fa21d9bfb5",
+  "worker_sha256": "a014dd4e4a11f303753151c3e97e266c8315256963fdd7eea2b94fd4daf84fa0",
+  "changed_source": {
+    "path": "src/landing.ts",
+    "retained_path": "landing-source.txt",
+    "sha256": "d50aaa8cc9ec387b1763b5d4b35e4c959a47b68dd9467bcce9fc2471432a706c"
+  },
+  "replacement": "../../approved-versions-0.5.0.json",
+  "source_meaning": "Only landing-page wording changes in the replacement build; evidence versions, shared engine and context identities are unchanged. The earlier generated Worker is not retained; its observed hash is recorded."
+}
