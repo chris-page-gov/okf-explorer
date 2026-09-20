@@ -86,3 +86,5 @@ Third-party sources retain their own rights and attribution.
 ## GitHub Pages
 
 See [governed Pages publication](docs/development.md#github-pages).
+
+For Ask OKF ambiguity and input limits, see [alternative meanings and bounded loading](docs/context-alternatives-and-bounded-loading.md).

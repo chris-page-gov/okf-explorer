@@ -8,8 +8,9 @@ const ORIGIN = 'https://ask-okf.fixture.test';
 const BUNDLE = `${ORIGIN}/okf-explorer.json`;
 const UNSUPPORTED = `${ORIGIN}/unsupported.json`;
 
-async function installFixture(page: Page, options: { missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean; corpus?: boolean; wrongCorpusPage?: boolean } = {}) {
+async function installFixture(page: Page, options: { ambiguous?: boolean; missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean; corpus?: boolean; wrongCorpusPage?: boolean } = {}) {
   const context = await studyClubContextFixture();
+  if (options.ambiguous) context.records.find(record => record.id.endsWith('concept/repair'))!.aliases!.push('Reading circle');
   if (options.malformedReview) (context.records[0] as unknown as Record<string, unknown>).review_status = { toString: 'not-callable' };
   if (options.missing) context.records = context.records.filter((record) => !record.id.endsWith('evidence/library'));
   if (options.injection) {
@@ -113,6 +114,28 @@ async function openAsk(page: Page, bundle = BUNDLE) {
   await page.getByRole('button', { name: 'Ask OKF', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ask OKF', exact: true })).toBeVisible();
 }
+
+test('ambiguous alternatives show separate evidence and remain unresolved', async ({ page }) => {
+  await installFixture(page, { ambiguous: true });
+  await openAsk(page);
+  await page.getByLabel('Question', { exact: true }).fill('Reading circle');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  await expect(page.locator('[data-evidence-status]')).toHaveText('Insufficient evidence');
+  await expect(page.getByRole('heading', { name: 'Ambiguous terms', exact: true })).toBeVisible();
+  await expect(page.getByText('No declared concepts were resolved.', { exact: true })).toBeVisible();
+  for (const [label, meaning] of [['Library room', 'Reading circle'], ['Workshop room', 'Repair demonstration']]) {
+    const evidence = page.locator('.evidence-item').filter({ has: page.getByRole('heading', { name: label, exact: true }) });
+    await expect(evidence.locator('.alternative-meaning')).toHaveText(`Alternative meaning: ${meaning}. This meaning remains unresolved.`);
+    await evidence.getByText('Selection reasons and provenance', { exact: true }).click();
+    await expect(evidence).toContainText('Ambiguous alternative for');
+  }
+  await page.getByText('Machine-readable package', { exact: true }).click();
+  const context = JSON.parse(await page.getByLabel('Evidence package JSON').inputValue());
+  expect(context.resolved_concepts).toEqual([]);
+  expect(context.requirements).toEqual([]);
+  expect(context.ambiguities[0].candidates).toHaveLength(2);
+  expect(context.ai_answer).toBeNull();
+});
 
 test('malformed review metadata fails closed without crashing the evidence interface', async ({ page }) => {
   const errors: string[] = [];

@@ -1,6 +1,6 @@
 /** Hash-bound full-source lexical discovery. No source text is executed or treated as a completeness rule. */
 // @ts-ignore -- Explicit extension also supports the pinned Node type-stripping consumer.
-import { assembleContext, canonicalJson, validateContextIndex } from './index.ts';
+import { assembleContext, canonicalJson, MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from './index.ts';
 import type { ContextBinding, ContextBudget, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
 
 type Reference = { path: string; bytes: number; sha256: string; encoding?: 'gzip'; decoded_bytes?: number; decoded_sha256?: string };
@@ -14,6 +14,7 @@ export type ContextCorpusManifest = {
 export const CORPUS_LIMITS = Object.freeze({ query_tokens: 24, candidates: 16, files: 64,
   fetched_bytes: 16 * 1024 * 1024, decoded_bytes: 32 * 1024 * 1024 });
 const FILE_LIMIT = 4 * 1024 * 1024;
+const FETCH_CONCURRENCY = 4;
 const HASH = /^[a-f0-9]{64}$/;
 // English question scaffolding: pronouns and broad request/action verbs are
 // poor evidence discriminators even when rare in a formal source corpus.
@@ -31,13 +32,13 @@ function check(value: unknown, message: string): asserts value { if (!value) thr
 function object(value: unknown): value is Record<string, any> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function integer(value: unknown, max = 1_000_000): value is number { return Number.isSafeInteger(value) && Number(value) >= 0 && Number(value) <= max; }
 function size(value: unknown): number { return new TextEncoder().encode(JSON.stringify(value)).length; }
-function reference(value: unknown): void {
+function reference(value: unknown, limit = FILE_LIMIT): void {
   check(object(value), 'file reference required');
   check(typeof value.path === 'string' && value.path.length <= 240 && /^[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*$/.test(value.path)
     && !value.path.split('/').some((s: string) => s === '.' || s === '..'), 'unsafe relative file path');
-  check(integer(value.bytes, FILE_LIMIT) && value.bytes > 0 && HASH.test(value.sha256), 'file byte/hash binding required');
+  check(integer(value.bytes, limit) && value.bytes > 0 && HASH.test(value.sha256), 'file byte/hash binding required');
   check(value.encoding === undefined || value.encoding === 'gzip', 'unsupported compression');
-  if (value.encoding) check(integer(value.decoded_bytes, FILE_LIMIT) && value.decoded_bytes > 0 && HASH.test(value.decoded_sha256), 'decoded byte/hash binding required');
+  if (value.encoding) check(integer(value.decoded_bytes, limit) && value.decoded_bytes > 0 && HASH.test(value.decoded_sha256), 'decoded byte/hash binding required');
 }
 export function validateContextCorpusManifest(raw: unknown): ContextCorpusManifest {
   check(object(raw) && raw.schema === 'okf-context-corpus.v1' && size(raw) <= FILE_LIMIT, 'unsupported or oversized manifest');
@@ -46,7 +47,7 @@ export function validateContextCorpusManifest(raw: unknown): ContextCorpusManife
   // Reuse the existing governance contract for identity, scope and limitations.
   validateContextIndex({ schema: 'okf-context-index.v1', bundle: raw.bundle, scope: raw.scope,
     limitations: raw.limitations, records: [], assertions: [], requirements: [] });
-  reference(raw.base_index);
+  reference(raw.base_index, MAX_CONTEXT_INDEX_BYTES);
   check(object(raw.counts) && ['documents', 'pages', 'nonempty_pages', 'empty_pages', 'tokenless_pages'].every(k => integer(raw.counts[k])), 'invalid source counts');
   check(raw.counts.nonempty_pages + raw.counts.empty_pages === raw.counts.pages && raw.counts.tokenless_pages <= raw.counts.nonempty_pages, 'inconsistent page counts');
   check(object(raw.records) && integer(raw.records.count) && raw.records.count === raw.counts.nonempty_pages
@@ -112,8 +113,12 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     const decodedLength = ref.decoded_bytes || ref.bytes;
     if (retrieval.fetched_files + 1 > CORPUS_LIMITS.files || retrieval.fetched_bytes + ref.bytes > CORPUS_LIMITS.fetched_bytes
       || retrieval.decoded_bytes + decodedLength > CORPUS_LIMITS.decoded_bytes) {
+      fetched.set(ref.path, null);
       omit('retrieval_resource_budget', 'A hash-bound corpus file was omitted at the fixed retrieval resource limit.', [ref.path]); return null;
     }
+    // Reserve in deterministic request order before any await. Parallel reads
+    // cannot oversubscribe the existing transfer or decoded resource ceilings.
+    retrieval.fetched_files++; retrieval.fetched_bytes += ref.bytes; retrieval.decoded_bytes += decodedLength;
     const url = new URL(ref.path, root); check(url.origin === root.origin && url.pathname.startsWith(root.pathname), 'file escaped corpus root');
     const response = await fetcher(url.href, { redirect: 'error', credentials: 'omit', signal: AbortSignal.timeout(15000) });
     check(response.ok && (!response.url || response.url === url.href), `file unavailable or redirected: ${ref.path}`);
@@ -122,8 +127,16 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     let decoded = transferred;
     if (ref.encoding === 'gzip') decoded = await readLimited(new Blob([transferred as BlobPart]).stream().pipeThrough(new DecompressionStream('gzip')), decodedLength);
     check(decoded.length === decodedLength && await digest(decoded) === (ref.decoded_sha256 || ref.sha256), `decoded integrity failed: ${ref.path}`);
-    retrieval.fetched_files++; retrieval.fetched_bytes += transferred.length; retrieval.decoded_bytes += decoded.length;
     const value = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(decoded)); fetched.set(ref.path, value); return value;
+  };
+  const loadMany = async (references: Reference[]) => {
+    const unique = [...new Map(references.map(ref => [ref.path, ref])).values()];
+    for (let start = 0; start < unique.length; start += FETCH_CONCURRENCY) {
+      const batch = await Promise.allSettled(unique.slice(start, start + FETCH_CONCURRENCY).map(load));
+      // Await all admitted reads before failing; do not leave requests running
+      // after an integrity error or start another batch after a failed batch.
+      for (const result of batch) if (result.status === 'rejected') throw result.reason;
+    }
   };
   const base = validateContextIndex(await load(manifest.base_index), manifest.semantic_source_snapshot);
   const wanted = corpusTokens(question).filter(t => !STOP.has(t));
@@ -131,17 +144,19 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
   retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
   if (retrieval.omitted_query_tokens.length) omit('retrieval_query_budget', 'Some query terms exceeded the fixed lexical query limit.');
   const ranking = new Map<number, { score: number; matched: string[] }>();
+  await loadMany(retrieval.query_tokens.map(token => manifest.search.shards[corpusBucket(token)]));
   for (const token of retrieval.query_tokens) {
     const bucket = corpusBucket(token); const shard = await load(manifest.search.shards[bucket]); if (!shard) continue;
     check(shard.schema === 'okf-context-postings.v1' && object(shard.postings), 'invalid postings shard');
     const postings: unknown = Object.hasOwn(shard.postings, token) ? shard.postings[token] : [];
     check(Array.isArray(postings) && postings.length <= manifest.records.count, 'invalid posting list');
+    const increment = 1 + Math.floor(1000 * Math.log2(1 + manifest.records.count / Math.max(1, postings.length)));
     let previous = -1;
     for (const ordinal of postings) {
       check(integer(ordinal) && ordinal < manifest.records.count && ordinal > previous, 'invalid or repeated posting ordinal'); previous = ordinal;
       const item = ranking.get(ordinal) || { score: 0, matched: [] };
       // Integer inverse document frequency, reproducible in every runtime. No learned ranking or hidden answer key.
-      item.score += 1 + Math.floor(1000 * Math.log2(1 + manifest.records.count / Math.max(1, postings.length)));
+      item.score += increment;
       item.matched.push(token); ranking.set(ordinal, item);
     }
   }
@@ -152,6 +167,7 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     limitations: [...manifest.limitations, 'Lexical ranking uses question terms only; declared concept resolution remains separate. Ranking is integer inverse-document-frequency; ties use canonical record order.'], records: [...base.records] };
   const byId = new Map(index.records.map(r => [r.id, r]));
   const evidenceSeeds: Array<{ id: string; reason: string }> = [];
+  await loadMany(ranked.map(([ordinal]) => manifest.records.shards.find(s => ordinal >= s.first_ordinal && ordinal < s.first_ordinal + s.count)!));
   for (const [ordinal, rank] of ranked) {
     const ref = manifest.records.shards.find(s => ordinal >= s.first_ordinal && ordinal < s.first_ordinal + s.count)!;
     const shard = await load(ref); if (!shard) continue;
@@ -164,7 +180,7 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     check(!existing || canonicalJson(existing) === canonicalJson(record), 'conflicting duplicate evidence');
     if (!existing) {
       index.records.push(record);
-      if (size(index) > FILE_LIMIT) { index.records.pop(); omit('retrieval_index_budget', 'A whole candidate page was omitted to keep the working evidence index within 4 MiB.', [record.id]); continue; }
+      if (size(index) > MAX_CONTEXT_INDEX_BYTES) { index.records.pop(); omit('retrieval_index_budget', 'A whole candidate page was omitted to keep the working evidence index within 8 MiB.', [record.id]); continue; }
       byId.set(record.id, record);
     }
     check(!evidenceSeeds.some(s => s.id === record.id), 'duplicate candidate record');

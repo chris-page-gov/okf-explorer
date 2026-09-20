@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { gzipSync } from 'node:zlib';
 // @ts-ignore -- Node-only test fixture.
 import { createHash } from 'node:crypto';
-import { assembleCorpusContext, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
-import { studyClubContextFixture } from '../../test/contextFixture';
+import { assembleCorpusContext, CORPUS_LIMITS, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
+import { MAX_CONTEXT_INDEX_BYTES } from './index';
+import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
 const sha = (v: Uint8Array) => createHash('sha256').update(v).digest('hex');
 async function fixture(count = 2, texts?: string[]) {
   const base = await studyClubContextFixture(); const template = base.records[0];
@@ -33,6 +34,108 @@ async function fixture(count = 2, texts?: string[]) {
   return { manifest, files, calls, fetcher, binding, put, base };
 }
 describe('full-source governed corpus discovery', () => {
+  it('loads a base index above 4 MiB while keeping whole-page discovery and output bounds', async () => {
+    const f = await fixture();
+    const base = await sizedStudyClubContextFixture(4 * 1024 * 1024 + 1);
+    f.manifest.base_index = f.put('base-index.json', base);
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher);
+    expect(result.selected.some(row => row.record.text === 'Orchards and apples.')).toBe(true);
+    expect(result.retrieval!.fetched_bytes).toBeGreaterThan(4 * 1024 * 1024);
+    expect(result.retrieval!.limits).toEqual(CORPUS_LIMITS);
+    expect(CORPUS_LIMITS.fetched_bytes).toBe(16 * 1024 * 1024);
+    expect(CORPUS_LIMITS.decoded_bytes).toBe(32 * 1024 * 1024);
+    expect(result.budget.used_bytes).toBeLessThanOrEqual(524288);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it.each(['base-transfer', 'base-decoded', 'record-transfer', 'record-decoded', 'posting-transfer', 'posting-decoded', 'manifest'])('retains explicit per-kind resource caps: %s', async variant => {
+    const f = await fixture();
+    f.manifest.base_index.bytes = MAX_CONTEXT_INDEX_BYTES;
+    expect(validateContextCorpusManifest(f.manifest)).toBe(f.manifest);
+    if (variant === 'manifest') f.manifest.scope = 'x'.repeat(4 * 1024 * 1024);
+    else {
+      const ref = variant.startsWith('base') ? f.manifest.base_index : variant.startsWith('record')
+        ? f.manifest.records.shards[0] : f.manifest.search.shards['00'];
+      const limit = variant.startsWith('base') ? MAX_CONTEXT_INDEX_BYTES : 4 * 1024 * 1024;
+      if (variant.endsWith('decoded')) {
+        ref.encoding = 'gzip'; ref.decoded_bytes = limit + 1; ref.decoded_sha256 = 'a'.repeat(64);
+      } else ref.bytes = limit + 1;
+    }
+    await expect(assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher)).rejects.toThrow(/byte\/hash|oversized/);
+    expect(f.calls).toEqual([]);
+  });
+  it('omits a whole candidate when the expanded working index would exceed 8 MiB', async () => {
+    const f = await fixture(1, ['apples ' + 'x'.repeat(8000)]);
+    const base = await sizedStudyClubContextFixture(MAX_CONTEXT_INDEX_BYTES - 4000);
+    f.manifest.base_index = f.put('base-index.json', base);
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher);
+    expect(result.retrieval!.omissions.some(row => row.code === 'retrieval_index_budget')).toBe(true);
+    expect(result.selected.some(row => row.record.id === 'https://example.test/evidence/0')).toBe(false);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(result.budget.truncated).toBe(true);
+  });
+  const distinctTerms = () => {
+    const seen = new Set<string>(); const terms: string[] = [];
+    for (let i = 0; terms.length < 12; i++) {
+      const word = `fruit${i}`; const bucket = corpusBucket(word);
+      if (!seen.has(bucket)) { seen.add(bucket); terms.push(word); }
+    }
+    return terms;
+  };
+  it('loads at most four unique files concurrently without changing evidence or accounting', async () => {
+    const words = distinctTerms();
+    const f = await fixture(2, [words.join(' '), 'A different orchard.']);
+    const query = words.join(' ');
+    const expected = await assembleCorpusContext(f.manifest, f.binding, query, {}, f.fetcher);
+    f.calls.length = 0;
+    let active = 0, peak = 0;
+    const delayed: typeof fetch = async (url, options) => {
+      active++; peak = Math.max(peak, active);
+      try {
+        // Different completion order must not alter ranking or package identity.
+        await new Promise(resolve => setTimeout(resolve, String(url).length % 3 + 2));
+        return await f.fetcher(url, options);
+      } finally { active--; }
+    };
+    expect(await assembleCorpusContext(f.manifest, f.binding, query, {}, delayed)).toEqual(expected);
+    expect(peak).toBe(4); expect(active).toBe(0);
+    expect(new Set(f.calls).size).toBe(f.calls.length);
+    expect(expected.retrieval!.fetched_files).toBe(f.calls.length);
+    expect(expected.retrieval!.fetched_bytes).toBe(f.calls.reduce((sum, name) => sum + f.files.get(name)!.length, 0));
+  });
+  it.each([false, true])('reserves transfer and decoded bytes before parallel requests (gzip=%s)', async gzip => {
+    const words = distinctTerms(); const f = await fixture();
+    for (const word of words) {
+      const bucket = corpusBucket(word);
+      f.manifest.search.shards[bucket] = f.put(`search/${bucket}.json${gzip ? '.gz' : ''}`,
+        { schema: 'okf-context-postings.v1', postings: { [word]: [0] }, padding: 'x'.repeat(3 * 1024 * 1024) }, gzip);
+    }
+    const result = await assembleCorpusContext(f.manifest, f.binding, words.join(' '), {}, f.fetcher);
+    expect(result.retrieval!.fetched_bytes).toBeLessThanOrEqual(CORPUS_LIMITS.fetched_bytes);
+    expect(result.retrieval!.decoded_bytes).toBeLessThanOrEqual(CORPUS_LIMITS.decoded_bytes);
+    expect(result.retrieval!.fetched_files).toBe(f.calls.length);
+    expect(new Set(f.calls).size).toBe(f.calls.length);
+    const omitted = result.retrieval!.omissions.filter(issue => issue.code === 'retrieval_resource_budget');
+    expect(omitted.length).toBeGreaterThan(0);
+    expect(new Set(omitted.map(issue => issue.ids[0])).size).toBe(omitted.length);
+    expect(result.evidence_status).toBe('insufficient'); expect(result.budget.truncated).toBe(true);
+  });
+  it('settles admitted reads and stops before another batch after an integrity failure', async () => {
+    const words = distinctTerms(); const f = await fixture();
+    const failPath = f.manifest.search.shards[corpusBucket(words[0])].path;
+    let active = 0; const started: string[] = [];
+    const failing: typeof fetch = async (url, options) => {
+      const name = new URL(String(url)).pathname.replace('/corpus/', ''); started.push(name);
+      active++;
+      try {
+        if (name === failPath) return new Response('corrupt');
+        await new Promise(resolve => setTimeout(resolve, 2));
+        return await f.fetcher(url, options);
+      } finally { active--; }
+    };
+    await expect(assembleCorpusContext(f.manifest, f.binding, words.join(' '), {}, failing)).rejects.toThrow('integrity');
+    expect(active).toBe(0);
+    expect(started).toHaveLength(5); // Base index plus one four-file batch.
+  });
   it('retrieves whole evidence outside the base graph reproducibly without asserting completeness', async () => {
     const f = await fixture(); const one = await assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher);
     expect(one).toEqual(await assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher));

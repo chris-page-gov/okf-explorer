@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Keep ambiguous Ask OKF meanings inspectable as separately labelled evidence
+  branches without resolving them or activating their evidence requirements.
+  Preserve bounded paths through shared junctions and expose path-limit omissions.
+- Load up to four hash-bound corpus files concurrently with deterministic budget
+  reservations and unchanged aggregate limits. Retain exact source and ranking
+  checks; increase only the semantic/base-index ceiling to an explicit 8 MiB.
+  Package, manifest, posting and record-shard limits remain unchanged.
+
 - Serve the additive DWP staff-semantic corpus by default in Ask OKF service
   0.4.0, retaining both earlier approved corpus versions and exact replay links.
   Verify the real three-version loader and compact delivery against hash-bound

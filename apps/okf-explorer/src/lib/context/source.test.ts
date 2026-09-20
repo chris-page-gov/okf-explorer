@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { loadLargeCorpus } from '../sources/largeCorpus';
-import { contextSha256 } from './index';
-import { studyClubContextFixture } from '../../test/contextFixture';
+import { contextSha256, MAX_CONTEXT_INDEX_BYTES } from './index';
+import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
 import type { LargeCorpusDescriptor } from '../types';
 import type { ContextCorpusManifest } from './corpus';
 
@@ -47,6 +47,25 @@ async function corpusFixture() {
 }
 
 describe('optional context source adapter', () => {
+  it('loads a hash-bound direct semantic index above 4 MiB', async () => {
+    const { descriptor, payloads } = await fixture();
+    const index = await sizedStudyClubContextFixture(4 * 1024 * 1024 + 1);
+    const text = JSON.stringify(index);
+    payloads.set('https://example.test/context.json', text);
+    descriptor.entrypoints.context_assembly = { path: 'context.json', bytes: new TextEncoder().encode(text).length,
+      sha256: await contextSha256(text), compression: 'identity' };
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    const bound = await source.loadContextAssembly!();
+    expect('index' in bound && bound.index.records.length).toBe(index.records.length);
+  });
+  it.each([false, true])('rejects an oversized optional context reference before fetching (corpus=%s)', async corpus => {
+    const { descriptor, fetcher } = corpus ? await corpusFixture() : await fixture();
+    const name = corpus ? 'context_corpus' : 'context_assembly';
+    (descriptor.entrypoints[name] as { bytes: number }).bytes = (corpus ? 4 * 1024 * 1024 : MAX_CONTEXT_INDEX_BYTES) + 1;
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    await expect(source.loadContextAssembly!()).rejects.toThrow(`at most ${corpus ? 4 : 8} MiB`);
+    expect(fetcher.mock.calls.some(([url]) => String(url).endsWith(corpus ? 'corpus.json' : 'context.json'))).toBe(false);
+  });
   it('does not fetch the index until requested and reuses verified bytes', async () => {
     const { descriptor, index, fetcher } = await fixture();
     const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);

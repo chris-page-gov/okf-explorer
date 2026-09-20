@@ -48,7 +48,7 @@ import {
 } from '$lib/viewer/providerDatapack';
 import { isHttpUrl } from '$lib/viewer/helpers';
 import { normaliseEndpointLabelIndex } from '$lib/viewer/endpointLabels';
-import { validateContextIndex } from '$lib/context/index';
+import { MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from '$lib/context/index';
 import { validateContextCorpusManifest } from '$lib/context/corpus';
 import type { BoundContextSource } from '$lib/context/types';
 import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
@@ -2292,11 +2292,12 @@ export async function loadLargeCorpus(
     if (!contextPromise) {
       contextPromise = (async () => {
         const contextReference = descriptorEntrypoint(descriptor, corpusDeclared ? 'context_corpus' : 'context_assembly');
+        const contextByteLimit = corpusDeclared ? 4 * 1024 * 1024 : MAX_CONTEXT_INDEX_BYTES;
         if (!descriptorSnapshot) throw new Error('Context index requires a descriptor snapshot binding.');
         if (!contextReference || typeof contextReference !== 'object' || !SHA256.test(resourceHash(contextReference))
           || !Number.isSafeInteger(contextReference.bytes) || !contextReference.bytes
-          || contextReference.bytes > 4 * 1024 * 1024) {
-          throw new Error('Context index requires SHA-256 and a byte binding of at most 4 MiB.');
+          || contextReference.bytes > contextByteLimit) {
+          throw new Error(`Context index requires SHA-256 and a byte binding of at most ${contextByteLimit / 1024 / 1024} MiB.`);
         }
         const path = safeRelativeResourcePath(resourcePath(contextReference));
         if (contextReference.compression && contextReference.compression !== 'identity') {
