@@ -33,6 +33,10 @@ jobs:
         uses: ./.github/actions/setup-locked-python
       - name: Check documentation lockstep
         run: uv run --locked python scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
+      - name: Check receipt-backed remote release documentation
+        run: |
+          uv run --locked python scripts/check_remote_release_docs.py
+          uv run --locked python -m unittest tests.test_remote_release_docs -v
       - name: Build fail-closed impact plan
         id: plan
         run: >-

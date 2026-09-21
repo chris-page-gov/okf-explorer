@@ -817,6 +817,19 @@
         "timeout_minutes": 5
       },
       {
+        "id": "check-remote-release-docs",
+        "kind": "check",
+        "planes": [
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/check_remote_release_docs.py",
+        "source": "docs/remote-mcp-publication.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
         "id": "check-british-english",
         "kind": "check",
         "planes": [

@@ -7,12 +7,41 @@ an answer. Do not submit claimant names or other personal information.
 This is an independent experimental publication, not an official DWP service.
 The [architecture decision](adr-remote-ask-okf.md) and
 [context guide](context-assembly.md) describe the separation between evidence
-assembly and AI reasoning.
+assembly and AI reasoning. The [publication procedure](remote-mcp-publication.md)
+explains how release claims stay tied to the recorded evidence.
 
 Service-only changes must update this top-level guide and the root changelog as
 well as their service documentation. The pull-request impact gate checks that
 requirement before deciding which expensive checks are needed; Pages checks it
 again before publication.
+
+<!-- ask-okf-publication:start -->
+## Recorded public deployment: 0.6.0
+
+For the **latest recorded deployment and verification**, use the shared
+[DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
+
+On 21 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/deployment.json)
+records service **0.6.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/sdk/attempt-02/observation.json)
+passed **11 evidence cases and 121 requests**,
+reconstructing complete packages from bounded reads. It recorded
+10,322,602 received bytes, no automatic retries and no model calls.
+
+| Identity | Recorded value |
+| --- | --- |
+| DWP source | `723bcc5b015ab38a026625c2148edbd784edf7c7` |
+| Context engine | `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` |
+| Deployed runtime | `0472b75a9dd353d6094a83ca9f752c4d78914168` |
+| SDK verifier | `03d0264c02a6d59d75013df4bffba279b3d4aa9c` |
+| Local Worker SHA-256 | `9e8840a9e31bac105dce0b40037300423cffe9dec90bbbab29b7541dd29b28ac` |
+
+The hosting record and public health report have different scopes: health does not
+independently attest hosted Worker bytes. Delivery checks do not establish complete
+legal evidence, specialist acceptance, answer quality or compatibility with a
+particular ChatGPT, Data agent or Voice client. This observation includes no new
+public browser journey. Earlier failures and observations retain their own scope.
+<!-- ask-okf-publication:end -->
 
 ## Smaller responses and inspectable evidence
 
@@ -39,9 +68,9 @@ fail-closed controls. The [additive delivery receipts](https://github.com/chris-
 separate hosting, SDK and browser evidence. This does not establish ChatGPT
 Voice support or legal answer quality.
 
-## Approved versions and release status
+## Historical service 0.5.0 observation — 20 September 2026
 
-Service **0.5.0** uses the household and statutory source revision
+Service **0.5.0** used the household and statutory source revision
 `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` by default. It includes both manuals,
 51 authored concepts, 96 selected guidance pages and 20 selected dated statutory
 units. The wider source collection remains 513 PDFs and 19,090 measured pages.
@@ -49,7 +78,7 @@ Selected evidence is an aid to review: all 40 development tasks still return
 insufficient context and retain 203 named obligations. A retrieved legal passage
 does not establish how the law applies to an individual.
 
-The public deployment uses Explorer commit
+That public deployment used Explorer commit
 `d538de99e6567633204253cd88b87cbe325ac39a`. On 20 September 2026, an actual
 remote SDK run passed seven full-context cases and four compact reconstructions
 across the four approved source revisions. All 93 requests succeeded without
@@ -69,9 +98,9 @@ context identity. A changed engine can produce a different context from the
 same source; a stale context identity fails closed rather than opening different
 evidence under the old identity.
 
-### Candidate 0.6.0: qualification evidence and reproducible links
+### Service 0.6.0 preparation and evidence scope
 
-The prepared 0.6.0 default is immutable DWP source
+The 0.6.0 source is immutable DWP source
 `723bcc5b015ab38a026625c2148edbd784edf7c7`. Its semantic base contains
 903 records and 1,482 relationships, including 51 authored concepts,
 98 selected guidance pages, 20 statutory units and 39 required-support
@@ -86,13 +115,12 @@ at 512 KiB and four original historical complete-package comparisons. The
 care-home package remains insufficient; the unknown-term control contains no
 selected evidence. See the [candidate observations](../services/ask-okf-mcp/validation/candidates/release-0.6.0-2026-09-21/README.md).
 
-**This is not deployed.** The public acceptance described above remains 0.5.0.
-A [new bounded live verifier](../services/ask-okf-mcp/VERSIONED-REMOTE-VERIFICATION.md)
-will compare exact compact packages after an authorised deployment. Its health
-check reports source and engine identity; a separate hosting record must bind
-the actual Worker bytes.
+The local candidate checks preceded the recorded public deployment above. The
+[bounded live verifier](../services/ask-okf-mcp/VERSIONED-REMOTE-VERIFICATION.md)
+compares exact compact packages. Its health check reports source and engine
+identity; the separate hosting record binds the publication identities.
 
-### Candidate: reproducible evidence links across assembler updates
+### Reproducible evidence links across assembler updates
 
 The [versioned replay decision](adr-versioned-evidence-replay.md) adds a separate
 identity for the **assembler**, the program that selects and packages evidence.
@@ -106,13 +134,12 @@ assembler reproduced the package; it does not invent the unknown original
 assembler. Unknown combinations, changed content and exhausted replay limits
 fail with an explanation. No replacement answer is supplied.
 
-This is an **undeployed candidate**. Local integration reproduced eight approved
+Before publication, local integration reproduced eight approved
 source/assembler combinations, including the original 0.5.0 care-home package,
-and retained separate browser and integrity checks. The candidate preserves the
+and retained separate browser and integrity checks. The service preserves the
 full-package contract and exposes replay details beside it. Compact reads still
-transfer exact evidence in bounded parts. Deployment and actual public-client
-verification are separate release gates; the live release described above
-remains 0.5.0. See the [candidate receipts](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/README.md).
+transfer exact evidence in bounded parts. These local checks remain distinct from
+the later public deployment and SDK observation above. See the [candidate receipts](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/README.md).
 
 ### Historical full-source release
 

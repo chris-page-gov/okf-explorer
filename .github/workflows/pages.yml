@@ -38,6 +38,10 @@ jobs:
       - name: Enforce documentation and changelog lockstep
         if: github.event_name == 'push'
         run: uv run --locked python scripts/check_documentation_lockstep.py --base HEAD^
+      - name: Check receipt-backed remote release documentation
+        run: |
+          uv run --locked python scripts/check_remote_release_docs.py
+          uv run --locked python -m unittest tests.test_remote_release_docs -v
 
   adversarial-gate:
     runs-on: ubuntu-latest

@@ -1,14 +1,16 @@
 # Remote Ask OKF transport
 
-Decision: 19 September 2026; updated 21 September 2026 for the undeployed service 0.6.0 candidate.
+Decision: 19 September 2026; updated 21 September 2026 for service 0.6.0.
+For the latest recorded deployment and separate verification, see the
+[shared publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md).
 The original full-source HTTPS deployment and official SDK package parity were
 verified on 19 September. An independent 43-case raw HTTP run also passed
 complete-package parity. Those are historical observations. The new combined
-household/statutory-evidence candidate has separate local verification; hosting and client
-acceptance require new receipts. See the
+household/statutory-evidence implementation has separate local verification.
+Hosting, SDK and client acceptance each require their own receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
-The remote service is a tool-only adapter. This undeployed candidate statically
+The remote service is a tool-only adapter. It statically
 imports two frozen versions of Explorer's deterministic `assembleContext` and
 `assembleCorpusContext` implementations. Their manifests bind exact modules from
 commits `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and
