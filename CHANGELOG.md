@@ -1,5 +1,9 @@
 # Changelog
 
+## Preserved evidence navigation — 21 September 2026
+
+- Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
+
 ## Unreleased
 
 - Prepare undeployed Ask OKF service 0.6.0 with the final partner/household
