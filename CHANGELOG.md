@@ -8,7 +8,8 @@
   ordinary, multiline and Unicode questions across all three tools.
 - Explain how to refresh an installed connection and establish tool access in
   each new AI session. Keep missing tools, connector validation, public MCP
-  delivery and model answer quality as separate observed outcomes.
+  delivery and model answer quality as separate observed outcomes. Distinguish
+  the connection smoke test from the fixed staff benchmark.
 - Check historical 0.6.0 receipts against their retained build and runner;
   preserve every archived observation when the current Worker changes.
 

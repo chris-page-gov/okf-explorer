@@ -3,7 +3,7 @@
 ## 0.6.1 — complete questions in connected clients
 
 - Anchor the shared question pattern so both substring and whole-string regex
-  matching accept the same non-blank text. The original `\\S` matched a single
+  matching accept the same non-blank text. The original `\S` matched a single
   non-whitespace character; a client applying a whole-string match rejected
   ordinary questions before contacting the service. A one-character control
   succeeded. The fix keeps types, lengths, budgets and evidence selection intact.
