@@ -117,7 +117,7 @@ service's own source retrieval or its hosting platform's costs.
   allowed pair's full package from bounded slices. A new question defaults to
   the current engine; subsequent catalogue and evidence requests retain its
   explicit engine ID, source, context ID and budget.
-- SDK v1 discovers the same tools and returns the same current catalogue.
+- SDK v1 discovers byte-equivalent canonical tool rows and returns the same current catalogue. Each SDK's protocol-era result envelope is validated separately: v2 declares the exact server identity, `ttlMs: 0` and `cacheScope: private`; v1 has no such envelope fields. Input/output schemas, read-only annotations and all tool-level trust/authentication metadata remain checked, and complete tool rows are compared without dropping fields.
 - Every catalogue page, ordered record ID, evidence slice, selected-record
   provenance and complete canonical package matches the direct local reference.
 - The current and original historical cases also read a selected evidence
@@ -151,7 +151,7 @@ them. Transport telemetry retains hashes rather than raw response or question
 bodies. There is no model call or collection of anonymous users' questions.
 
 `failure.json` records the bounded request telemetry and completed case summaries
-if admission or an actual run fails. It does not retain raw error strings. A
+if admission or an actual run fails. It also records a fixed verification-stage label, the active prepared case identifier, and discovery envelope/tool-row hashes and counts when available. It does not retain raw error strings or arbitrary server metadata values. A
 partly completed failed attempt stays in its own directory. Creating a fresh
 attempt never overwrites a prior observation.
 
@@ -167,3 +167,22 @@ streaming limits, pacing, no-retry failure, symlink rejection, altered evidence
 and provenance, and both installed SDKs against the real in-process service.
 Injected clocks and service adapters in these tests are labelled offline test
 controls. They produce no `actual-public-http` receipt.
+
+
+## SDK envelope compatibility correction
+
+The first public 0.6.0 attempt completed all 11 prepared evidence cases, then
+failed after SDK v1's successful `tools/list` response. Its failed receipt remains
+unchanged. An offline reproduction against the actual in-process service and the
+locked SDKs identified equal complete tool rows but different top-level result
+envelopes: v2 includes server/cache metadata that v1 omits. Comparing their whole
+result hashes incorrectly rejected this compatible discovery.
+
+The verifier now validates both exact envelope contracts and compares the hash
+of the complete ordered tool array. It retains separate whole-result,
+envelope and tool-row digests for each SDK; `tools_canonical_sha256` retains its
+existing meaning as the whole v2 result digest. No schema or tool metadata is
+normalised away. Unknown envelope fields, weakened schemas, changed annotations,
+changed trust/authentication metadata and even description-only differences
+between SDKs fail the controls. Fifteen offline controls pass, including both
+real SDKs; this correction is not a claim that another public attempt passed.
