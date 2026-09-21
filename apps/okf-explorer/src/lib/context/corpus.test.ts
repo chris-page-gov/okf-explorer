@@ -4,7 +4,7 @@ import { gzipSync } from 'node:zlib';
 // @ts-ignore -- Node-only test fixture.
 import { createHash } from 'node:crypto';
 import { assembleCorpusContext, CORPUS_LIMITS, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
-import { MAX_CONTEXT_INDEX_BYTES } from './index';
+import { MAX_CONTEXT_INDEX_BYTES, resolveConcepts } from './index';
 import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
 const sha = (v: Uint8Array) => createHash('sha256').update(v).digest('hex');
 async function fixture(count = 2, texts?: string[]) {
@@ -162,12 +162,48 @@ describe('full-source governed corpus discovery', () => {
     expect(result.retrieval?.candidate_count).toBe(1);
     expect(result.selected.map(item => item.record.text)).toEqual(['Library tickets abroad require a return plan.']);
     expect(result.retrieval?.candidates[0].matched).toEqual(['tickets', 'abroad']);
+    expect(result.unresolved_terms).toEqual(['abroad', 'tickets']);
+    expect(result.unresolved_terms).toEqual(resolveConcepts(f.base, question).unresolved);
     expect(result.evidence_status).toBe('insufficient');
   });
   it('retains substantive receiving and payment terms when filtering question scaffolding', async () => {
     const f = await fixture();
     const result = await assembleCorpusContext(f.manifest, f.binding, 'What payment is she receiving?', {}, f.fetcher);
     expect(result.retrieval?.query_tokens).toEqual(['payment', 'receiving']);
+    expect(result.unresolved_terms).toEqual(['payment', 'receiving']);
+  });
+  it('uses the same scaffolding classification for travel discovery and missing-concept diagnostics', async () => {
+    const f = await fixture(2, ['Your go during. Stationery instructions.', 'Library tickets during travel require a return plan.']);
+    const question = 'What happens to your tickets during travel?';
+    const result = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+    expect(result.retrieval?.query_tokens).toEqual(['tickets', 'travel']);
+    expect(result.unresolved_terms).toEqual(['tickets', 'travel']);
+    expect(result.unresolved_terms).toEqual(resolveConcepts(f.base, question).unresolved);
+    expect(result.selected.map(item => item.record.text)).toEqual(['Library tickets during travel require a return plan.']);
+    expect(result.resolved_concepts).toEqual([]);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher)).toEqual(result);
+  });
+  it('preserves qualification and identifier tokens in both discovery and diagnostics', async () => {
+    const f = await fixture();
+    const terms = ['loss', 'lost', 'not', 'without', 'unless', 'except', 'only', 'before', 'after', 'until', '2026', 'alpha42'];
+    const result = await assembleCorpusContext(f.manifest, f.binding, `Explain ${terms.join(' ')}`, {}, f.fetcher);
+    expect(result.retrieval?.query_tokens).toEqual(terms);
+    expect(result.unresolved_terms).toEqual([...terms].sort());
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('still resolves a declared Go alias when lexical scaffolding supplies no candidates', async () => {
+    const f = await fixture();
+    const base = await studyClubContextFixture();
+    const concept = base.records.find(record => record.kind === 'concept')!;
+    concept.aliases = [{ label: 'Go', case_sensitive: true }];
+    f.manifest.base_index = f.put('base-index.json', base);
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Explain Go', {}, f.fetcher);
+    expect(result.retrieval?.query_tokens).toEqual([]);
+    expect(result.retrieval?.candidate_count).toBe(0);
+    expect(result.resolved_concepts.map(record => record.id)).toEqual([concept.id]);
+    expect(result.unresolved_terms).toEqual([]);
+    expect(result.evidence_status).toBe('sufficient');
   });
   it.each(['../outside', 'https://evil.test/data', '/outside', 'records/%2e%2e/x', 'records/../x', 'records\\x'])('rejects unsafe reference %s before fetching', async path => {
     const f = await fixture(); f.manifest.base_index.path = path;

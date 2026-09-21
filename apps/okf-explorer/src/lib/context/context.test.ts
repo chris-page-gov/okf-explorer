@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { assembleContext, canonicalJson, contextSha256, explainContext, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, validateContextIndex } from './index';
+import { assembleContext, canonicalJson, contextSha256, explainContext, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index';
 import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
 
 const BASE = 'https://example.test/study-club/';
@@ -194,6 +194,60 @@ describe('governed context assembly, independent of any domain', () => {
     index.records.find((r) => r.id.endsWith('concept/reading'))!.aliases = [{ label: 'RC', case_sensitive: true }];
     expect((await assembleContext(index, 'RC')).resolved_concepts).toHaveLength(1);
     expect((await assembleContext(index, 'rc')).resolved_concepts).toHaveLength(0);
+  });
+  it('does not report pronouns or request scaffolding as missing domain concepts', async () => {
+    const index = await studyClubContextFixture();
+    const known = await assembleContext(index, 'What happens to your Reading circle if you go?');
+    expect(known.unresolved_terms).toEqual([]);
+    expect(known.evidence_status).toBe('sufficient');
+    const unknown = await assembleContext(index, 'What happens to your Reading circle during teleportation?');
+    expect(unknown.unresolved_terms).toEqual(['teleportation']);
+    expect(unknown.missing_evidence.map(issue => issue.code)).toContain('unresolved_terms');
+    expect(unknown.evidence_status).toBe('insufficient');
+    expect(unknown.question).toBe('What happens to your Reading circle during teleportation?');
+  });
+  it('keeps unmodelled qualifications, negation, substantive terms and identifiers visible', async () => {
+    const terms = ['loss', 'lost', 'payment', 'receiving', 'not', 'without', 'unless', 'except', 'only', 'before', 'after', 'until', '12003', '2026', 'alpha42'];
+    const resolution = resolveConcepts(await studyClubContextFixture(), terms.join(' '));
+    expect(resolution.unresolved).toEqual([...terms].sort());
+    expect(resolution.resolved).toEqual([]);
+  });
+  it.each(['not', 'without', 'loss'])('does not declare a known topic sufficient after discarding %s', async qualification => {
+    const result = await assembleContext(await studyClubContextFixture(), `${qualification} Reading circle`);
+    expect(result.resolved_concepts).toHaveLength(1);
+    expect(result.unresolved_terms).toEqual([qualification]);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(result.missing_evidence.map(issue => issue.code)).toContain('unresolved_terms');
+  });
+  it('matches declared programming-name and short aliases before classifying scaffolding', async () => {
+    const index = await studyClubContextFixture();
+    const concept = index.records.find(record => record.id === `${BASE}concept/reading`)!;
+    concept.aliases = [{ label: 'Go', case_sensitive: true }, { label: 'IS', case_sensitive: true }, 'Go during recess'];
+    for (const question of ['Explain Go', 'What is IS?', 'Explain Go during recess']) {
+      const result = resolveConcepts(index, question);
+      expect(result.resolved.map(record => record.id)).toEqual([concept.id]);
+      expect(result.unresolved).toEqual([]);
+    }
+    expect(resolveConcepts(index, 'What is go?').resolved).toEqual([]);
+    const phrase = resolveConcepts(index, 'Explain Go during recess');
+    expect(phrase.resolved[0].matched).toEqual(['Go during recess']);
+  });
+  it('does not erase ambiguity for a declared alias that is also scaffolding', async () => {
+    const index = await studyClubContextFixture();
+    for (const row of index.records.filter(record => record.kind === 'concept')) row.aliases = [{ label: 'Go', case_sensitive: true }];
+    const result = await assembleContext(index, 'Explain Go');
+    expect(result.ambiguities[0].candidates).toHaveLength(2);
+    expect(result.resolved_concepts).toEqual([]);
+    expect(result.requirements).toEqual([]);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('does not manufacture completeness when a question contains only scaffolding', async () => {
+    const result = await assembleContext(await studyClubContextFixture(), 'Please tell me what happens if you go during this');
+    expect(result.unresolved_terms).toEqual([]);
+    expect(result.resolved_concepts).toEqual([]);
+    expect(result.selected).toEqual([]);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(result.missing_evidence.map(issue => issue.code)).toEqual(expect.arrayContaining(['unresolved_task', 'no_evidence_requirements']));
   });
   it('coalesces repeated ambiguous phrases and duplicate aliases', async () => {
     const index = await studyClubContextFixture();
