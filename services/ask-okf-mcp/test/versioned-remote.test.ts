@@ -4,7 +4,7 @@ import { mkdtemp, writeFile, rm, symlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { parseArguments, approvedPairs, enforceCensus, boundedRemoteFetch, boundedFile, noLinks,
-  verifyDelivery, LIMITS, PUBLIC_QUESTION, canonical, sha } from '../scripts/verify-versioned-remote.ts';
+  verifyDelivery, validateToolDiscovery, compareToolDiscovery, discoveryDiagnostic, LIMITS, PUBLIC_QUESTION, canonical, sha } from '../scripts/verify-versioned-remote.ts';
 
 const origin = 'https://ask-okf.example.test';
 const cli = ['--origin', origin, '--source-version', '1'.repeat(40), '--expected-worker-sha256', '2'.repeat(64),
@@ -171,11 +171,19 @@ test('official SDKs traverse actual in-process service with exact compact compar
   const reconnect = { maxRetries: 0, maxReconnectionDelay: 1000, initialReconnectionDelay: 1000, reconnectionDelayGrowFactor: 1 };
   try {
     await client.connect(new StreamableHTTPClientTransport(new URL(PUBLIC_ORIGIN + '/okf/mcp'), { fetch: remote.fetch, reconnectionOptions: reconnect }));
-    assert.equal((await client.listTools()).tools.length, 3);
+    const askContracts = await import('../src/contracts.ts');
+    const expected = [['ask_okf', askContracts.INPUT_SCHEMA, askContracts.OUTPUT_SCHEMA],
+      ['ask_okf_manifest', contracts.MANIFEST_INPUT_SCHEMA, contracts.MANIFEST_OUTPUT_SCHEMA],
+      ['read_okf_evidence', contracts.EVIDENCE_INPUT_SCHEMA, contracts.EVIDENCE_OUTPUT_SCHEMA]] as const;
+    const v2 = validateToolDiscovery(await client.listTools(), expected, 'v2', registry.SERVICE_VERSION);
     const received = await verifyDelivery(client as any, item, PUBLIC_ORIGIN);
     assert.equal(received.complete, canonical(assembled.context));
     await legacy.connect(new oldTransport.StreamableHTTPClientTransport(new URL(PUBLIC_ORIGIN + '/okf/mcp'), { fetch: remote.fetch, reconnectionOptions: reconnect }));
-    assert.equal((await legacy.listTools()).tools.length, 3);
+    const v1 = validateToolDiscovery(await legacy.listTools(), expected, 'v1', registry.SERVICE_VERSION);
+    compareToolDiscovery(v2, v1);
+    assert.equal(v1.tools_sha256, v2.tools_sha256);
+    assert.notEqual(v1.result_sha256, v2.result_sha256, 'Real protocol-era envelopes differ');
+    assert.notEqual(v1.envelope_sha256, v2.envelope_sha256);
     const first = await legacy.callTool({ name: 'ask_okf_manifest', arguments: { ...item.request, delivery_bytes: 16384 } });
     assert.equal(canonical(first.structuredContent), canonical(item.manifests[0]));
     assert.ok(remote.receipt.request_count <= item.calls + 8);
@@ -253,4 +261,44 @@ test('special-file inputs are rejected before blocking open and ordinary missing
     await assert.rejects(boundedFile(root), /regular file/);
     await assert.rejects(boundedFile(join(root, 'missing')), /ENOENT/);
   } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+
+test('cross-SDK discovery admits only exact known envelopes and preserves complete tool semantics', () => {
+  const input = { type: 'object', properties: { question: { type: 'string' } }, required: ['question'], additionalProperties: false };
+  const output = { type: 'object', properties: { evidence_status: { const: 'insufficient' } } };
+  const expected = [['fixture', input, output]] as const;
+  const tool = { name: 'fixture', title: 'Synthetic fixture', description: 'Retain all qualifications.', inputSchema: input, outputSchema: output,
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    _meta: { 'okf/untrustedContent': true, securitySchemes: [{ type: 'noauth' }] } };
+  const legacy = { tools: [tool] };
+  const current = { tools: [tool], _meta: { 'io.modelcontextprotocol/serverInfo': { name: 'ask-okf', version: '0.6.0' } }, ttlMs: 0, cacheScope: 'private' };
+  const v2 = validateToolDiscovery(current, expected, 'v2', '0.6.0');
+  compareToolDiscovery(v2, validateToolDiscovery(legacy, expected, 'v1', '0.6.0'));
+  for (const mutate of [
+    (x: any) => x.tools[0].inputSchema.additionalProperties = true,
+    (x: any) => x.tools[0].outputSchema.properties.evidence_status.const = 'sufficient',
+    (x: any) => x.tools[0].annotations.readOnlyHint = false,
+    (x: any) => x.tools[0]._meta['okf/untrustedContent'] = false,
+    (x: any) => x.tools[0]._meta.securitySchemes = [{ type: 'oauth2' }],
+    (x: any) => x.tools[0]._meta.extra = 'unexpected',
+    (x: any) => x.tools.push(x.tools[0])
+  ]) { const changed = structuredClone(legacy); mutate(changed); assert.throws(() => validateToolDiscovery(changed, expected, 'v1', '0.6.0')); }
+  for (const mutate of [(x: any) => x.ttlMs = 10, (x: any) => x.cacheScope = 'public',
+    (x: any) => x._meta['io.modelcontextprotocol/serverInfo'].version = 'wrong', (x: any) => x.extra = true,
+    (x: any) => delete x._meta]) {
+    const changed = structuredClone(current); mutate(changed); assert.throws(() => validateToolDiscovery(changed, expected, 'v2', '0.6.0'), /envelope/);
+  }
+  assert.throws(() => validateToolDiscovery(current, expected, 'v1', '0.6.0'), /envelope/);
+  // No projection of tool rows: even a description-only difference is rejected across SDKs.
+  const changed = structuredClone(legacy); changed.tools[0].description = 'Different conditions.';
+  assert.throws(() => compareToolDiscovery(v2, validateToolDiscovery(changed, expected, 'v1', '0.6.0')), /Complete SDK tool rows/);
+});
+
+test('discovery failure diagnostics retain only digests and counts, never server text or metadata values', () => {
+  const diagnostic = discoveryDiagnostic({ tools: [{ name: 'untrusted-private-name', description: 'untrusted-private-body' }], _meta: { credential: 'untrusted-private-token' } });
+  assert.deepEqual(Object.keys(diagnostic).sort(), ['envelope_sha256', 'result_sha256', 'tool_count', 'tools_sha256']);
+  assert.equal(diagnostic.tool_count, 1);
+  assert.ok(!JSON.stringify(diagnostic).includes('untrusted-private'));
+  for (const key of ['envelope_sha256', 'result_sha256', 'tools_sha256'] as const) assert.match(diagnostic[key]!, /^[a-f0-9]{64}$/);
 });
