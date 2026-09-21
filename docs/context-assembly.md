@@ -148,6 +148,14 @@ count. Assessor requirements never enter the assembler. Add `--check` to replay
 the deterministic checks against an existing receipt; this preserves the
 original observation timestamp.
 
+The committed study-club execution is a current-engine regression fixture. If
+the engine changes, run its command without `--check` to obtain fresh evidence,
+then replay it with `--check`. Its earlier observations remain in Git history;
+do not replace recorded implementation hashes by hand. This does not refresh
+frozen service engines or their historical packages. Application changes also
+require the separate [Heritage browser evidence refresh](okf-explorer-evaluation.md#evidence-tied-to-an-explorer-build),
+even when a synthetic context package happens to retain the same identity.
+
 Run the focused contract and evaluator controls with:
 
 ```sh

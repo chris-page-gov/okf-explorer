@@ -54,6 +54,9 @@
   meaningful qualifications and identifiers; remove misleading missing-concept
   reports for pronouns and broad request wording. Add cross-domain regressions
   while preserving frozen service engines and historical context packages.
+  Refresh the generated study-club execution and local Heritage browser
+  evidence against the new application build, using actual evaluations rather
+  than rebinding earlier passes. Document these separate evidence lifecycles.
 
 - Add an offline exporter and small static reader for explicitly approved,
   fixed evidence examples. Preserve canonical packages and source/engine
