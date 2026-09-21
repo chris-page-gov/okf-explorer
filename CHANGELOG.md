@@ -1,5 +1,9 @@
 # Changelog
 
+## Preserved evidence navigation — 21 September 2026
+
+- Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
+
 ## Unreleased
 
 - Add an offline exporter and small static reader for explicitly approved,

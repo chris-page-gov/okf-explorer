@@ -475,3 +475,5 @@ This endpoint is a public test deployment. No production service-level promise,
 specialist domain approval or claimant case-handling authorisation follows from
 its availability. Review hosting limits, monitoring, retention and source-update
 ownership before depending on it operationally.
+
+The [preserved development history](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/history/index.md) has a separate static navigation page. The original artefact inventory and every retained observation remain unchanged.
