@@ -25,7 +25,7 @@ export const INPUT_SCHEMA = {
   type: 'object', additionalProperties: false, required: ['bundle', 'question'],
   properties: {
     bundle: { type: 'string', enum: ['okf-dwp'], description: 'Approved public bundle identifier; URLs are not accepted.' },
-    version: { type: 'string', enum: [...APPROVED_VERSIONS], description: 'Immutable approved revision. Omit for the pinned household and statutory-evidence DMG and ADM corpus; earlier staff, discovery and custody profiles remain available by their explicit revisions.' },
+    version: { type: 'string', enum: [...APPROVED_VERSIONS], description: 'Immutable approved revision. Omit for the pinned partner and household qualification corpus; earlier household, staff, discovery and custody profiles remain available by their explicit revisions.' },
     engine_id: { type: 'string', enum: [...APPROVED_ENGINE_IDS], description: 'Exact allowlisted assembler implementation. Preserve the returned engine_id on every replay and continuation. Omit only for a new current-engine task or historical compatibility with an expected context_id.' },
     context_id: { type: 'string', pattern: '^urn:sha256:[a-f0-9]{64}$', description: 'Expected context identity. A mismatch never creates replacement evidence. Without engine_id, at most two approved engines may be tried.' },
     question: { type: 'string', minLength: 1, maxLength: 2000, pattern: '\\S', description: 'General knowledge task. Do not include claimant personal data.' },

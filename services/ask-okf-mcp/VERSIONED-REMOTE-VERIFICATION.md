@@ -54,8 +54,12 @@ engines produce eight pairs; adding a fifth source supported only by the
 current engine produces nine. An unsupported pair is never added merely to
 complete a rectangular matrix.
 
-Only the existing public care-home acceptance question is used. Its original
-wording is preserved exactly, including its typographical error. The original
+Only two explicit public questions are used: the existing care-home acceptance
+question and the unknown-term control `xylophonicquasarteleportation`. The
+unknown-term control is actually assembled for the current source and engine at
+512 KiB; it is separately labelled and must return no selected records and an
+insufficient status. The care-home question preserves its original wording
+exactly, including its typographical error. The original
 0.5.0 care-home case is replayed with its original source, budget and expected
 context ID and without an engine ID. Its complete canonical package must match
 the frozen 0.5.0 receipt. Historical origin remains unspecified; successful
@@ -73,7 +77,8 @@ The planned HTTP upper bound is:
 
 ```text
 sum(catalogue pages + evidence slices for each permitted pair
-    + catalogue pages + evidence slices for the original historical case)
+    + catalogue pages + evidence slices for the original historical case
+    + catalogue pages + evidence slices for the current unknown-term control)
 + 10 setup/discovery/closure/legacy-comparison requests
 + 4 negative controls
 + 1 incompatible-pair control, only when an incompatible approved pair exists
@@ -141,7 +146,7 @@ ChatGPT connector acceptance or live Voice access.
 reported health catalogue, comparator and source hashes, actual request count,
 per-response status/size/digest/time, package identities, provenance digests,
 negative-control outcomes and an artefact hash manifest. Received canonical
-packages are retained as gzip files; only the fixed public question appears in
+packages are retained as gzip files; only the two fixed public questions appear in
 them. Transport telemetry retains hashes rather than raw response or question
 bodies. There is no model call or collection of anonymous users' questions.
 

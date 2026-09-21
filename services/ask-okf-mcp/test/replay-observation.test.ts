@@ -6,8 +6,8 @@ import { tmpdir } from 'node:os';
 import { boundedFile, freshDirectory, verifiedBuild } from '../scripts/replay-observation-files.ts';
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { ENGINES } from '../src/engines.ts';
-import { APPROVED_VERSIONS } from '../src/registry.ts';
+import { ENGINES, CURRENT_ENGINE_ID } from '../src/engines.ts';
+import { APPROVED_VERSIONS, BUNDLE_VERSION } from '../src/registry.ts';
 
 test('observation files reject oversized inputs, linked files/parents and existing output directories', async () => {
   const root = await mkdtemp(join(tmpdir(), 'okf-replay-admission-'));
@@ -41,7 +41,7 @@ test('both immutable engine manifests bind all three files and explicit source c
     const base = new URL(`../vendor/engines/${engine.source_commit}/`, import.meta.url);
     const { engine_id, ...manifest } = JSON.parse(await readFile(new URL('manifest.json', base), 'utf8'));
     assert.equal(engine_id, 'urn:okf:context-engine:sha256:' + sha(canonicalJson(manifest)));
-    assert.equal(engine.engine_id, engine_id); assert.deepEqual(engine.source_versions, [...APPROVED_VERSIONS]);
+    assert.equal(engine.engine_id, engine_id); assert.deepEqual(engine.source_versions, APPROVED_VERSIONS.filter(version => engine.engine_id === CURRENT_ENGINE_ID || version !== BUNDLE_VERSION));
     assert.deepEqual(Object.keys(manifest.files).sort(), ['corpus.ts', 'index.ts', 'types.ts']);
     for (const [name, ref] of Object.entries(manifest.files) as [string, any][]) {
       const raw = await readFile(new URL(name, base)); assert.equal(raw.length, ref.bytes); assert.equal(sha(raw), ref.sha256);

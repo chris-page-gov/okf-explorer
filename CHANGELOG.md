@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Prepare undeployed Ask OKF service 0.6.0 with the final partner/household
+  qualification corpus. Retain all four historical sources and their exact
+  replay paths; admit the new source only with the current assembler.
+  Verify ten local cases, including 512 KiB care-home and empty-control packages,
+  without promoting missing evidence, legal review or model acceptance.
+  Extend the separate bounded live verifier to both exact public questions;
+  preserve all earlier public observations.
+
 - Add an undeployed, versioned evidence-replay candidate. Bind new review links
   to approved source and assembler identities; check older links against a
   bounded compatible set and return only the complete matching package. Keep

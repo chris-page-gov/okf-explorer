@@ -5,22 +5,18 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
-[Service changelog](CHANGELOG.md). The package version remains **0.5.0** for
-the combined DMG and ADM Reader, household/care-home concepts and selected
-statutory evidence. This checkout additionally contains an **undeployed engine-pinned replay candidate**.
-It retains both the required-evidence and preceding assemblers, preserves the four
-approved source versions and expected context-ID guards, and discloses the actual
-engine in a separate delivery envelope. The historical full-package schema and
-bytes, read-only scope and Content Security Policy (CSP) remain intact. Candidate
-checks do not attest a new public 0.5.0 deployment. See the
-[decision record](../../docs/adr-versioned-evidence-replay.md) and
-[new local observations](validation/candidates/versioned-replay-2026-09-21/README.md).
+[Service changelog](CHANGELOG.md). This checkout prepares **service 0.6.0**, an
+**undeployed candidate**. Its default is the final partner/household qualification
+source `723bcc5b015ab38a026625c2148edbd784edf7c7`. It retains all four sources
+available in 0.5.0. The new source uses the current c4f assembler only; the four
+older sources retain both frozen assemblers. This gives nine approved pairs.
 
-The default release is pinned to DWP commit
-`3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`. The build verifies its manifest;
-an unpinned or altered release fails closed.
-Local tests are not a deployment receipt or a claim that hosting injects no
-scripts or cookies. Earlier 0.3.x observations remain historical evidence.
+The build verifies the exact manifest and both engine archives. Historical
+context IDs and complete-package hashes remain enforced. The published service
+still has its separate 0.5.0 acceptance record; local candidate checks do not
+attest a new deployment. See the [release candidate observation](validation/candidates/release-0.6.0-2026-09-21/README.md),
+[versioned replay decision](../../docs/adr-versioned-evidence-replay.md) and
+[successor live verification protocol](VERSIONED-REMOTE-VERIFICATION.md).
 
 ## Run and check
 
@@ -52,29 +48,28 @@ configuration in `src/service.ts`, not caller-supplied parameters.
 
 ### Reproduce versioned local replay
 
-The [new candidate observation](validation/candidates/versioned-replay-2026-09-21/README.md)
-checks four immutable source versions with both frozen assemblers. Every earlier
-compact package must match the complete-package SHA-256 recorded by the original
-0.5.0 observation. It also checks both SDK generations, catalogue order and exact
-full-package reconstruction. Old links without an engine retain their expected
-context IDs; they try at most two compatible engines and report the originating
-engine as unknown. No match or different complete bytes means no evidence.
+The [0.6.0 candidate observation](validation/candidates/release-0.6.0-2026-09-21/README.md)
+checks ten actual local cases: the current care-home and unknown-term questions
+at 512 KiB, plus eight historical source/assembler combinations. The four
+preceding-engine packages match the original 0.5.0 complete-package hashes.
+Both SDK generations check the catalogue; bounded reads reconstruct every
+complete package. The care-home package remains insufficient.
 
-From this directory, with the four approved DWP commits in a local Git repository:
+With all five approved DWP commits in a local Git repository:
 
 ```sh
 npm run build
-node --experimental-strip-types scripts/verify-versioned-replay.ts \
+node --experimental-strip-types scripts/verify-release-0.6.ts \
   --dwp-root /path/to/okf-dwp --out /path/to/new-observation
 npm run check
 npm test
 ```
 
-The output directory must be new. The runner reads hash-verified immutable Git
-blobs, not DWP working-tree files, and makes no network or model calls. It
-preserves compressed canonical packages as validation evidence, not as a public
-snapshot-serving API. Its results do not establish public reachability, legal
-answerability or hosting performance.
+The output directory must be new. This reads verified immutable Git blobs and
+makes no HTTP or model calls. It is not a public hosting, latency or legal
+acceptance check. The preceding `verify-versioned-replay.ts` runner and its
+four-source observations remain frozen; reproduce them from their recorded
+source revision, not against the changed five-source registry.
 
 The [original 0.5.0 observation](validation/approved-versions-0.5.0.json),
 [required-evidence observation](validation/candidates/required-evidence-2026-09-21/README.md)
@@ -165,7 +160,7 @@ Release observations distinguish candidate checks from actual deployment.
 `version` is optional. Omission selects the combined
 staff-semantic corpus: 513 PDFs, 19,090 measured DMG/ADM pages and 18,197 non-empty
 evidence records. The 893 empty extractions remain accounted for. Its additive
-semantic base has 901 records and 1,427 assertions, including 51 authored
+semantic base has 903 records and 1,482 assertions, including 51 authored
 concepts, 40 staff-task profiles, legislative reference metadata and 20 selected
 statutory units linked by 43 source-backed references. Machine extraction and
 normalisation remain distinct from official sources and specialist approval.
@@ -174,7 +169,8 @@ in the 18,197 PDF-page evidence records or the 513-PDF source count.
 
 | Source selection | Behaviour |
 | --- | --- |
-| Omit `version`, or `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` | Combined DMG and ADM corpus with household/care-home concepts, proposed staff-task requirements and selected statutory bodies |
+| Omit `version`, or `723bcc5b015ab38a026625c2148edbd784edf7c7` | Partner/household qualifications with 39 required-support relationships; current engine only |
+| `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` | Combined DMG and ADM corpus with household/care-home concepts, proposed staff-task requirements and selected statutory bodies |
 | `9de52acf1db84b27f8933d80480eaa850e74fa33` | Earlier staff semantic corpus with metadata-only legal references, retained with its own manifest and binding |
 | `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` | Earlier full-source discovery corpus, retained byte for byte with its own manifest and binding |
 | `efb05c66616a9cd4328a86cf412780fe7bc7cf0b` | Original 52-record custody acceptance profile, with its original immutable index and result |
@@ -212,7 +208,7 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Security and operational limits
 
-- All three approved corpus manifests are vendored and hash-verified at build and first
+- All four approved corpus manifests are vendored and hash-verified at build and first
   use. The shared engine fetches only manifest-listed, hash-bound assets below
   the approved immutable GitHub revision. Redirects and arbitrary URLs are
   rejected. Provenance links are data, never fetch targets. The original custody
@@ -261,16 +257,15 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Assurance and deployment
 
-The undeployed shared-engine candidate passes local registry, SDK transport and HTML-header tests.
-The registry rejects cross-version manifest swaps and modified bytes; all three
-historical versions stay explicit. Pending metadata prevents release builds.
-The primary `compact_delivery` receipt now covers the exact staff question
-“Does Pension Credit stop is a citizen moves into a care home permanently if
-they are self-funding?” at a 256 KiB context budget. The supplied question's
-wording is preserved. `compact_delivery_versions` also retains prior-staff
-Child DLA/PIP, the discovery-corpus abroad case and original custody replay.
-The live verifier has seven full-package cases and four compact cases, all
-using their version-specific source binding.
+The undeployed 0.6.0 candidate passes registry, SDK transport and HTML-header
+controls. Cross-version manifest swaps and the previous engine/new source
+combination fail closed. Four historical source versions remain explicit.
+The new local integration preserves the original care-home wording and verifies
+both current public questions at a 512 KiB context budget. The current care-home
+package is 523,326 bytes with 55 records and 115 relationships; it remains
+insufficient. The actual unknown-term control has zero selected records and also
+remains insufficient. Whole-package transport equality does not close evidence
+or applicability gaps.
 
 Hosting, response headers, body transformations, cookies and client behaviour
 need separate deployment receipts tied to the engine actually published. Earlier
@@ -317,14 +312,28 @@ SHA-256 together. A pending publication blocks the release build. The new defaul
 manifest path is `combined/context/corpus/manifest.json`, matching the additive
 Explorer descriptor so identical questions/budgets use the same binding.
 Recopy the final manifest if the combined projection changes before pinning.
-The preceding staff release and discovery release remain in separately named
-`okf-dwp-staff-corpus-*` and `okf-dwp-previous-corpus-*` vendor files. The original
+The preceding household, staff and discovery releases remain in separately named
+`okf-dwp-household-corpus-*`, `okf-dwp-staff-corpus-*` and
+`okf-dwp-previous-corpus-*` vendor files. The original
 custody index remains vendored separately. Regenerate the Worker and rerun context
 acceptance checks. Preserve explicit
 historical versions; never change a public version to serve different bytes.
 No mutable branch alias, model fallback or general web search is provided.
 
 ## Verify a remote deployment
+
+For this candidate, use the [new bounded verifier](VERSIONED-REMOTE-VERIFICATION.md).
+It defaults to an offline plan, binds the exact source/engine catalogue and
+requires `--execute-public` for an authorised live observation. Its received
+compact slices reconstruct the same 512 KiB contexts. Public acceptance remains
+pending. Health reports identities; only a separate hosting publication record
+can bind the deployed Worker.
+
+### Historical 0.5.0 verification procedure
+
+The procedure below records the preceding four-source verifier. It remains
+unchanged for historical reproduction at its recorded release commit. Do not
+use it as the acceptance protocol for 0.6.0.
 
 The official SDK acceptance client calls the exact imprisonment, hospital and
 staff questions across the four approved versions. It pins MCP `2026-07-28`, validates discovery

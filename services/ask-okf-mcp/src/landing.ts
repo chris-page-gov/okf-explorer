@@ -1,8 +1,10 @@
-import { APPROVED_BUNDLE, BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION } from './registry.ts';
+import { APPROVED_BUNDLE, BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION } from './registry.ts';
 
 const explorer = 'https://chris-page-gov.github.io/okf-explorer/explore/?bundle=';
 export const CORPUS_EXPLORER_URL = explorer + encodeURIComponent(
   `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/combined/okf-explorer.json`);
+export const HOUSEHOLD_EXPLORER_URL = explorer + encodeURIComponent(
+  `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${HOUSEHOLD_BUNDLE_VERSION}/combined/okf-explorer.json`);
 export const LEGACY_EXPLORER_URL = explorer + encodeURIComponent(
   `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${LEGACY_BUNDLE_VERSION}/full-dmg/okf-explorer.json`);
 export const STAFF_EXPLORER_URL = explorer + encodeURIComponent(
@@ -30,6 +32,7 @@ export function landingResponse(): Response {
 <p>Opening the endpoint as an ordinary web page returns <code>405 Method Not Allowed</code>: an MCP client calls it using POST. Use Explorer above to inspect evidence yourself.</p>
 <p><a href="https://chris-page-gov.github.io/okf-explorer/docs/remote-mcp.html">Read the connection guide and delivery limitations</a>. Tool access, complete ChatGPT delivery and live Voice access are separate checks.</p>
 <p>Default immutable revision: <code>${APPROVED_BUNDLE.version}</code>. <a href="/health">Inspect the service identity</a>.</p>
+<h2>Earlier household and statutory corpus</h2><p><a href="${HOUSEHOLD_EXPLORER_URL}">Open the original household and statutory evidence release</a>. Explicit version <code>${HOUSEHOLD_BUNDLE_VERSION}</code> preserves the source used by service 0.5.0 and its historical evidence links.</p>
 <h2>Earlier staff semantic corpus</h2><p><a href="${STAFF_EXPLORER_URL}">Open the preceding staff-question evidence release</a>. Explicit version <code>${STAFF_BUNDLE_VERSION}</code> preserves its original semantic profiles and metadata-only legal references.</p>
 <h2>Earlier discovery corpus</h2><p><a href="${PREVIOUS_EXPLORER_URL}">Open the earlier full-source discovery corpus</a>. Its captured DMG and ADM sources remain available by explicitly requesting version <code>${PREVIOUS_BUNDLE_VERSION}</code>. That version does not include the new staff-task semantic profiles.</p>
 <h2>Historical custody acceptance case</h2><p><a href="${LEGACY_EXPLORER_URL}">Open the original 52-record custody profile</a>. To call it remotely, explicitly request version <code>${LEGACY_BUNDLE_VERSION}</code>. Its earlier acceptance receipts do not establish delivery of the new full-source corpus.</p>

@@ -3,19 +3,20 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { gunzipSync } from 'node:zlib';
-import { boundedFile, verifiedBuild } from '../scripts/replay-observation-files.ts';
+import { boundedFile } from '../scripts/replay-observation-files.ts';
 import { CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID } from '../src/engines.ts';
 import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { APPROVED_VERSIONS } from '../src/registry.ts';
+import { APPROVED_VERSIONS, BUNDLE_VERSION } from '../src/registry.ts';
 
+const historicalVersions = APPROVED_VERSIONS.filter(version => version !== BUNDLE_VERSION);
 const base = new URL('../validation/candidates/versioned-replay-2026-09-21/', import.meta.url);
 const sha = (raw: string | Uint8Array) => createHash('sha256').update(raw).digest('hex');
 const read = async (path: string) => boundedFile(fileURLToPath(new URL(path, base)));
 const json = async (path: string) => JSON.parse((await read(path)).toString());
 
-test('current versioned candidate binds actual build, frozen engines, source pairs and original full-package hashes', async () => {
+test('preserved versioned candidate binds its retained actual build, frozen engines, source pairs and original full-package hashes', async () => {
   const receipt = await json('integration/observation.json');
-  const current = await verifiedBuild(fileURLToPath(new URL('../', import.meta.url)));
+  const raw = await read('integration/build-receipt.json'); const current = { raw, value: JSON.parse(raw.toString()) };
   assert.equal(receipt.classification, 'undeployed-local-engine-pinned-replay');
   assert.equal(receipt.network_calls, 0); assert.equal(receipt.model_calls, 0);
   assert.equal(receipt.build_receipt_sha256, sha(current.raw));
@@ -27,8 +28,8 @@ test('current versioned candidate binds actual build, frozen engines, source pai
     assert.equal(raw.length, ref.bytes); assert.equal(sha(raw), ref.sha256);
   }
   assert.equal(receipt.cases.length, 8);
-  assert.deepEqual(receipt.cases.map((row: any) => row.source_version), APPROVED_VERSIONS.flatMap(version => [version, version]));
-  assert.deepEqual(receipt.cases.map((row: any) => row.engine_id), APPROVED_VERSIONS.flatMap(() => [CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID]));
+  assert.deepEqual(receipt.cases.map((row: any) => row.source_version), historicalVersions.flatMap(version => [version, version]));
+  assert.deepEqual(receipt.cases.map((row: any) => row.engine_id), historicalVersions.flatMap(() => [CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID]));
   const oldRaw = await boundedFile(fileURLToPath(new URL('../validation/approved-versions-0.5.0.json', import.meta.url)));
   assert.equal(sha(oldRaw), receipt.original_receipt_sha256);
   const original = JSON.parse(oldRaw.toString());
@@ -58,7 +59,7 @@ test('candidate inventory binds measured sizes, documentation and every retained
     const raw = await read(path); assert.equal(raw.length, ref.bytes); assert.equal(sha(raw), ref.sha256);
   }
   const sizes = await json('build-sizes.json');
-  const current = await verifiedBuild(fileURLToPath(new URL('../', import.meta.url)));
+  const raw = await read('integration/build-receipt.json'); const current = { raw, value: JSON.parse(raw.toString()) };
   const previous = JSON.parse((await boundedFile(fileURLToPath(new URL('../validation/candidates/required-evidence-2026-09-21/build-receipt.json', import.meta.url)))).toString());
   for (const path of ['dist/server/index.js', 'dist/node.mjs']) {
     assert.equal(sizes.outputs[path].candidate.sha256, current.value.outputs[path]);
@@ -66,9 +67,9 @@ test('candidate inventory binds measured sizes, documentation and every retained
   }
 });
 
-test('current local Chrome observation and preserved development attempts retain exact artefacts', async () => {
+test('preserved local Chrome observation and preserved development attempts retain exact artefacts', async () => {
   const observation = await json('browser/observation.json');
-  const current = await verifiedBuild(fileURLToPath(new URL('../', import.meta.url)));
+  const raw = await read('integration/build-receipt.json'); const current = { raw, value: JSON.parse(raw.toString()) };
   assert.equal(observation.classification, 'local-chrome-actual-adapter');
   assert.equal(observation.build_receipt_sha256, sha(current.raw));
   assert.equal(observation.runner_sha256, sha(await boundedFile(fileURLToPath(new URL('../scripts/verify-versioned-review.ts', import.meta.url)))));

@@ -1,9 +1,26 @@
 {
   "compilerOptions": {
-    "target": "ES2022", "module": "NodeNext", "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true, "resolveJsonModule": true,
-    "strict": true, "noEmit": true, "skipLibCheck": true,
-    "lib": ["ES2023", "DOM"], "types": ["node"]
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/verify-versioned-replay.ts", "scripts/verify-versioned-review.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "scripts/verify-versioned-replay.ts",
+    "scripts/verify-versioned-review.ts",
+    "scripts/verify-release-0.6.ts"
+  ]
 }

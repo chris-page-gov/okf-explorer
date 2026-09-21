@@ -69,6 +69,29 @@ context identity. A changed engine can produce a different context from the
 same source; a stale context identity fails closed rather than opening different
 evidence under the old identity.
 
+### Candidate 0.6.0: qualification evidence and reproducible links
+
+The prepared 0.6.0 default is immutable DWP source
+`723bcc5b015ab38a026625c2148edbd784edf7c7`. Its semantic base contains
+903 records and 1,482 relationships, including 51 authored concepts,
+98 selected guidance pages, 20 statutory units and 39 required-support
+relationships. These relationships identify passages that should travel together
+so that a qualification is not separated from the rule it limits. They do not
+make the interpretation official or close the 203 outstanding staff obligations.
+
+All four previous source revisions remain selectable. The new source is approved
+only for the current c4f assembler; the older sources retain both frozen
+assemblers. Ten local adapter/SDK cases pass, including both current questions
+at 512 KiB and four original historical complete-package comparisons. The
+care-home package remains insufficient; the unknown-term control contains no
+selected evidence. See the [candidate observations](../services/ask-okf-mcp/validation/candidates/release-0.6.0-2026-09-21/README.md).
+
+**This is not deployed.** The public acceptance described above remains 0.5.0.
+A [new bounded live verifier](../services/ask-okf-mcp/VERSIONED-REMOTE-VERIFICATION.md)
+will compare exact compact packages after an authorised deployment. Its health
+check reports source and engine identity; a separate hosting record must bind
+the actual Worker bytes.
+
 ### Candidate: reproducible evidence links across assembler updates
 
 The [versioned replay decision](adr-versioned-evidence-replay.md) adds a separate

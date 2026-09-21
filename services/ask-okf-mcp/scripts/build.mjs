@@ -25,15 +25,18 @@ const corpusRelease = JSON.parse(await readFile('vendor/okf-dwp-corpus-release.j
 if (corpusRelease.publication_status !== 'pinned' || !/^[a-f0-9]{40}$/.test(corpusRelease.version || '')) {
   throw new Error('Corpus publication is pending: pin an approved immutable DWP commit before building a release.');
 }
+const householdRelease = JSON.parse(await readFile('vendor/okf-dwp-household-corpus-release.json', 'utf8'));
+if (householdRelease.publication_status !== 'pinned' || householdRelease.version !== '3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84' || householdRelease.version === corpusRelease.version) throw new Error('Exact original household source must remain separately available.');
 const staffRelease = JSON.parse(await readFile('vendor/okf-dwp-staff-corpus-release.json', 'utf8'));
 if (staffRelease.publication_status !== 'pinned' || !/^[a-f0-9]{40}$/.test(staffRelease.version || '') || staffRelease.version === corpusRelease.version) throw new Error('Distinct immutable staff corpus version is required.');
 const previousRelease = JSON.parse(await readFile('vendor/okf-dwp-previous-corpus-release.json', 'utf8'));
 if (previousRelease.publication_status !== 'pinned' || !/^[a-f0-9]{40}$/.test(previousRelease.version || '')
-  || [corpusRelease.version, staffRelease.version].includes(previousRelease.version)) throw new Error('Distinct immutable corpus versions are required.');
+  || [corpusRelease.version, householdRelease.version, staffRelease.version].includes(previousRelease.version)) throw new Error('Distinct immutable corpus versions are required.');
 const approved = [
   ['vendor/okf-dwp-assembly-index.json', '38159445a60d4bcabc23cb2cf728e14cbd0a4b55013276c291356e7a1452ff54'],
   ['vendor/okf-dwp-descriptor.json', '9881779ab550efe9f73da1e16acd8c8dcb64933c9981bb290b66ff51572853f3'],
   ['vendor/okf-dwp-corpus-manifest.json', corpusRelease.manifest_sha256],
+  ['vendor/okf-dwp-household-corpus-manifest.json', householdRelease.manifest_sha256],
   ['vendor/okf-dwp-staff-corpus-manifest.json', staffRelease.manifest_sha256],
   ['vendor/okf-dwp-previous-corpus-manifest.json', previousRelease.manifest_sha256]
 ];
@@ -59,10 +62,10 @@ for (const path of [...new Set([...Object.keys(worker.metafile.inputs).filter(p 
   const localPath = path.replace(/^raw:/, '');
   inputs[localPath] = hash(await readFile(localPath));
 }
-const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.5.0', inputs,
+const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.6.0', inputs,
   engines: engineManifests,
   outputs: { 'dist/server/index.js': hash(await readFile('dist/server/index.js')), 'dist/node.mjs': hash(await readFile('dist/node.mjs')) },
   worker_node_dependencies: false, bundle_version: corpusRelease.version,
-  historical_bundle_versions: [staffRelease.version, previousRelease.version, 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b'] };
+  historical_bundle_versions: [householdRelease.version, staffRelease.version, previousRelease.version, 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b'] };
 await writeFile('dist/build-receipt.json', JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify({ built: ['dist/server/index.js', 'dist/node.mjs'], worker_sha256: receipt.outputs['dist/server/index.js'] }));

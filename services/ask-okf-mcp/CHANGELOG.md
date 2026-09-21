@@ -1,6 +1,18 @@
 # Ask OKF service changelog
 
-## Unreleased — engine-pinned replay candidate
+## 0.6.0 — undeployed partner and qualification candidate
+
+- Pin final combined source `723bcc5b015ab38a026625c2148edbd784edf7c7` by
+  exact manifest bytes. Retain 0.5.0's four sources and both archived engines;
+  allow the new source only with the current c4f engine, giving nine pairs.
+- Preserve historical packages and prior observations. Add ten actual local
+  adapter/SDK cases, including the care-home question and an unknown-term
+  control at 512 KiB. Four earlier complete-package hashes reproduce exactly.
+- Add explicit current question/budget identities to the successor compact live
+  verifier. It remains opt-in, bounded and undeployed; no new public-service or
+  model acceptance is claimed. Keep all 203 staff obligations open.
+
+## Earlier undeployed engine-pinned replay candidate
 
 - Retain exact c4f and b9 assembler modules with build-verified manifests and
   explicit compatibility for the four existing approved source revisions.

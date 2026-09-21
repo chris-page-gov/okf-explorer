@@ -9,7 +9,7 @@ import type { ApprovedSource } from './registry.ts';
 
 // Explicit compatibility pairs. A future registry addition must not silently
 // authorise an older assembler for a new source or schema.
-const versions = Object.freeze([
+const historicalVersions = Object.freeze([
   '3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84',
   '9de52acf1db84b27f8933d80480eaa850e74fa33',
   'bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752',
@@ -23,11 +23,11 @@ export const CURRENT_ENGINE_ID = currentManifest.engine_id;
 export const PREVIOUS_ENGINE_ID = previousManifest.engine_id;
 // Static imports only: no caller URL, executable selection or dynamic imports.
 export const ENGINES: readonly EngineAdapter[] = Object.freeze([
-  Object.freeze({ engine_id: CURRENT_ENGINE_ID, source_commit: currentManifest.source_commit, source_versions: versions,
+  Object.freeze({ engine_id: CURRENT_ENGINE_ID, source_commit: currentManifest.source_commit, source_versions: Object.freeze(['723bcc5b015ab38a026625c2148edbd784edf7c7', ...historicalVersions]),
     assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) =>
       'manifest' in source ? currentCorpus.assembleCorpusContext(source.manifest, source.binding, question, budget, fetcher)
         : current.assembleContext(source.index, question, budget, source.binding) }),
-  Object.freeze({ engine_id: PREVIOUS_ENGINE_ID, source_commit: previousManifest.source_commit, source_versions: versions,
+  Object.freeze({ engine_id: PREVIOUS_ENGINE_ID, source_commit: previousManifest.source_commit, source_versions: historicalVersions,
     assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) =>
       'manifest' in source ? previousCorpus.assembleCorpusContext(source.manifest, source.binding, question, budget, fetcher)
         : previous.assembleContext(source.index, question, budget, source.binding) })
