@@ -6,7 +6,7 @@ import householdRelease from '../vendor/okf-dwp-household-corpus-release.json' w
 import staffRelease from '../vendor/okf-dwp-staff-corpus-release.json' with { type: 'json' };
 import previousRelease from '../vendor/okf-dwp-previous-corpus-release.json' with { type: 'json' };
 
-export const SERVICE_VERSION = '0.6.0';
+export const SERVICE_VERSION = '0.6.1';
 export const LEGACY_BUNDLE_VERSION = 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b';
 export const LEGACY_APPROVED_BUNDLE = {
   id: 'okf-dwp',
