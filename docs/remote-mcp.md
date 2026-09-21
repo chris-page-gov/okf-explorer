@@ -322,7 +322,9 @@ connection metadata after changes to tool names, descriptions or schemas.
 
 ### Test the intended session
 
-Use a general question without claimant information:
+Use a general question without claimant information. This is a connection smoke
+test, not the fixed Staff 012 comparison; the linked DWP client guide below
+supplies that benchmark's exact question, source, engine and budget.
 
 ```text
 Use the Ask OKF tools in this session. If they are unavailable, say
