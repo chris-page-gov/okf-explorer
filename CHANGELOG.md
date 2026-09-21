@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add an undeployed, versioned evidence-replay candidate. Bind new review links
+  to approved source and assembler identities; check older links against a
+  bounded compatible set and return only the complete matching package. Keep
+  unknown original assembler identity explicit, preserve full-package output,
+  and expose replay provenance alongside compact delivery. Retain local tests,
+  eight source/assembler integration cases and browser observations separately
+  from the still-live 0.5.0 deployment.
+
 - Give valid, bundle-declared evidence paths priority when node, relationship or
   byte limits would otherwise omit them. Use at most one additional allocation
   pass from the original resolved seeds, retain whole passages and explain the

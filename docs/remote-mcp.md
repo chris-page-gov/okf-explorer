@@ -69,6 +69,28 @@ context identity. A changed engine can produce a different context from the
 same source; a stale context identity fails closed rather than opening different
 evidence under the old identity.
 
+### Candidate: reproducible evidence links across assembler updates
+
+The [versioned replay decision](adr-versioned-evidence-replay.md) adds a separate
+identity for the **assembler**, the program that selects and packages evidence.
+A fixed source alone cannot reproduce a package if that program changes. New
+review links therefore record both identities and the expected context digest.
+
+Older links without an assembler identity can be checked against a small,
+explicitly approved set of compatible versions. The service returns evidence
+only if its complete package matches the expected identity. It identifies which
+assembler reproduced the package; it does not invent the unknown original
+assembler. Unknown combinations, changed content and exhausted replay limits
+fail with an explanation. No replacement answer is supplied.
+
+This is an **undeployed candidate**. Local integration reproduced eight approved
+source/assembler combinations, including the original 0.5.0 care-home package,
+and retained separate browser and integrity checks. The candidate preserves the
+full-package contract and exposes replay details beside it. Compact reads still
+transfer exact evidence in bounded parts. Deployment and actual public-client
+verification are separate release gates; the live release described above
+remains 0.5.0. See the [candidate receipts](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/README.md).
+
 ### Historical full-source release
 
 The earlier full-source default used DWP revision
