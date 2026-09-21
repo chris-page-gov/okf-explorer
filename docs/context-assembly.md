@@ -186,6 +186,37 @@ Reader and Ask can have different declared coverage: for example, a DMG Reader
 can expose an Ask corpus that also includes ADM. Evidence without a corresponding
 Reader record links directly to its cited source.
 
+### Question wording and unresolved terms
+
+Lexical discovery and unresolved-term diagnostics share one English question
+word classifier. Question wording such as `your`, `go` and `during` does not
+become a missing domain concept simply because it appears
+in a question. For example, without declared aliases, “What happens to your
+tickets during travel?” retains `tickets` and `travel` as unresolved terms.
+Relevant source pages can still be discovered without resolving those concepts;
+the package remains insufficient when no declared evidence requirements cover it.
+
+Declared aliases are matched against the complete question **before** unknown
+words are filtered. A bundle can therefore declare `Go`, a case-sensitive short
+name or a longer phrase containing these words. Case sensitivity, longest-phrase
+matching and ambiguity remain governed by the bundle. A scaffolding-only
+question still has an unresolved task and cannot become sufficient merely
+because its unresolved-word list is empty.
+
+Substantive terms such as `loss`, `payment` and `receiving`, identifiers and
+qualification words such as `not`, `without`, `unless`, `except`, `only`,
+`before`, `after` and `until` remain visible unless a declared alias covers them.
+This is a conservative word classification, not a parser for negation, dates
+or legal conditions. The original question is retained unchanged. The existing
+Unicode alias matching and ASCII corpus tokenisation remain distinct; sharing
+the classifier does not change the source index format or its resource limits.
+
+This implementation changes affected context contents and therefore context
+identifiers. Frozen service assemblers and retained observations are unchanged;
+a later service release must admit any new assembler explicitly and verify its
+own source and engine pairing. These local changes alone do not update a live
+service or establish client, model or legal acceptance.
+
 ## Relationships in large views
 
 Graph and Links expose bounded pages of relationships with counts and navigation.

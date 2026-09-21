@@ -49,6 +49,12 @@
 
 ## Unreleased
 
+- Share English question-scaffolding classification between corpus discovery
+  and unresolved-term diagnostics. Preserve declared aliases, ambiguity,
+  meaningful qualifications and identifiers; remove misleading missing-concept
+  reports for pronouns and broad request wording. Add cross-domain regressions
+  while preserving frozen service engines and historical context packages.
+
 - Add an offline exporter and small static reader for explicitly approved,
   fixed evidence examples. Preserve canonical packages and source/engine
   declarations; expose bounded, hash-checked records, provenance, gaps and

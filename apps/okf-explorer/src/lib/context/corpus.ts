@@ -1,6 +1,6 @@
 /** Hash-bound full-source lexical discovery. No source text is executed or treated as a completeness rule. */
 // @ts-ignore -- Explicit extension also supports the pinned Node type-stripping consumer.
-import { assembleContext, canonicalJson, MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from './index.ts';
+import { assembleContext, canonicalJson, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from './index.ts';
 import type { ContextBinding, ContextBudget, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
 
 type Reference = { path: string; bytes: number; sha256: string; encoding?: 'gzip'; decoded_bytes?: number; decoded_sha256?: string };
@@ -16,18 +16,6 @@ export const CORPUS_LIMITS = Object.freeze({ query_tokens: 24, candidates: 16, f
 const FILE_LIMIT = 4 * 1024 * 1024;
 const FETCH_CONCURRENCY = 4;
 const HASH = /^[a-f0-9]{64}$/;
-// English question scaffolding: pronouns and broad request/action verbs are
-// poor evidence discriminators even when rare in a formal source corpus.
-// Domain terms (including receiving/payment), identifiers and rules stay intact.
-const STOP = new Set(('a an the and or but to of for from on in into at with without by as is are was were be been being ' +
-  'has have had do does did will would can could should may might i we you they it its their this that these those ' +
-  'what which who how why when where whether explain show describe compare find give tell please happens happen ' +
-  'effect effects affect affects distinguish distinguishing difference differences between each all any some both ' +
-  'trace conclusion conclusions relevant given following about against over under than then also need needed ' +
-  'information evidence source sources question answer me my us our such so if not must meaning means mean ' +
-  'regarding relates concerning details detail ' +
-  'your yours yourself yourselves mine myself he him his himself she her hers herself ' +
-  'ours ourselves them theirs themselves itself go going get getting').split(' '));
 function check(value: unknown, message: string): asserts value { if (!value) throw new Error(`Invalid context corpus: ${message}`); }
 function object(value: unknown): value is Record<string, any> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function integer(value: unknown, max = 1_000_000): value is number { return Number.isSafeInteger(value) && Number(value) >= 0 && Number(value) <= max; }
@@ -139,7 +127,7 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     }
   };
   const base = validateContextIndex(await load(manifest.base_index), manifest.semantic_source_snapshot);
-  const wanted = corpusTokens(question).filter(t => !STOP.has(t));
+  const wanted = corpusTokens(question).filter(t => !isQuestionScaffolding(t));
   retrieval.query_tokens = wanted.filter(t => t.length <= 64).slice(0, CORPUS_LIMITS.query_tokens);
   retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
   if (retrieval.omitted_query_tokens.length) omit('retrieval_query_budget', 'Some query terms exceeded the fixed lexical query limit.');

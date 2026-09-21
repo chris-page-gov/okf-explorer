@@ -24,15 +24,26 @@ const REQUIRES = 'http://purl.org/dc/terms/requires';
 const MAX_RESOLUTION_OPERATIONS = 500_000;
 const HASH = /^[a-f0-9]{64}$/;
 const STATUSES = new Set(['official', 'normalized', 'inferred', 'model-derived']);
-// Linguistic scaffolding only. Domain aliases and dependencies belong to bundles.
-const CONNECTIVES = new Set(('a an the and or but to of for from on in into at with without by as ' +
+// Shared English question scaffolding for lexical ranking and unknown-word
+// diagnostics. This is not a domain vocabulary or a semantic interpretation:
+// resolve declared aliases first, and retain the original question unchanged.
+// Negation, exceptions, substantive loss/payment terms and identifiers are not
+// scaffolding. Undeclared qualifications must remain visible to the consumer.
+const QUESTION_SCAFFOLDING = new Set(('a an the and or but to of for from on in into at with by as ' +
   'is are was were be been being has have had do does did will would can could should may might ' +
   'i we you they it its their this that these those what which who how why when where whether ' +
   'explain show describe compare find give tell please happens happen effect effects affect affects ' +
-  'distinguish distinguishing difference differences between loss lost each all any some both ' +
+  'distinguish distinguishing difference differences between each all any some both ' +
   'trace conclusion conclusions relevant given following about against over under than then also ' +
-  'need needed information evidence source sources question answer me my us our such so if not ' +
-  'must meaning means mean regarding relates concerning details detail').split(' '));
+  'need needed information evidence source sources question answer me my us our such so if ' +
+  'must meaning means mean regarding relates concerning details detail during ' +
+  'your yours yourself yourselves mine myself he him his himself she her hers herself ' +
+  'ours ourselves them theirs themselves itself go going get getting').split(' '));
+
+/** Classify one already-normalised token; never filter a phrase before alias matching. */
+export function isQuestionScaffolding(token: string): boolean {
+  return QUESTION_SCAFFOLDING.has(token);
+}
 
 export function canonicalJson(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
@@ -258,7 +269,7 @@ export function resolveConcepts(index: ContextIndex, question: string): {
   return {
     resolved: [...resolved.values()].sort((a, b) => a.id.localeCompare(b.id)),
     ambiguities: ambiguities.sort((a, b) => a.phrase.localeCompare(b.phrase)),
-    unresolved: [...new Set(query.filter((token, i) => !covered.has(i) && !CONNECTIVES.has(token)))].sort(),
+    unresolved: [...new Set(query.filter((token, i) => !covered.has(i) && !isQuestionScaffolding(token)))].sort(),
     truncated
   };
 }
