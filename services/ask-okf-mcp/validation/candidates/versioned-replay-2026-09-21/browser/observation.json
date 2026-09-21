@@ -1,0 +1,154 @@
+{
+  "schema": "okf-versioned-review-browser.v1",
+  "classification": "local-chrome-actual-adapter",
+  "started_at": "2026-09-21T00:29:43.688Z",
+  "completed_at": "2026-09-21T00:29:44.847Z",
+  "browser": "153.0.8010.52",
+  "build_receipt_sha256": "71b742c1de0ecc29ddf0d0c7da52993c16f9dd52e07bd8765b1fe88c3833a187",
+  "worker_sha256": "0720239e4657fba2fcaa037a2fdfb6fa7ba16f4adcc9c92db4bb99cfadcff706",
+  "runner_sha256": "1d0f9fa88fc88bca1cdaa83a735934fc8efd598146d1deb562206afae64e90c4",
+  "corpus_network_calls": 0,
+  "public_service_calls": 0,
+  "model_calls": 0,
+  "context_id": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+  "source_version": "efb05c66616a9cd4328a86cf412780fe7bc7cf0b",
+  "engine_ids": [
+    "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+    "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73"
+  ],
+  "verified": [
+    "inert opening",
+    "keyboard submit",
+    "historical origin unspecified",
+    "pinned catalogue continuation",
+    "exact record text",
+    "bounded package view",
+    "explicit replay link",
+    "historical unavailable has no fallback",
+    "pinned mismatch",
+    "explicit new question",
+    "unknown engine fragment rejected"
+  ],
+  "tool_calls": [
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": null,
+      "expected_context": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+      "section": null
+    },
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "expected_context": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+      "section": null
+    },
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "expected_context": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+      "section": null
+    },
+    {
+      "name": "read_okf_evidence",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "expected_context": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+      "section": "record_text"
+    },
+    {
+      "name": "read_okf_evidence",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "expected_context": "urn:sha256:267a05e8c6f02d49caac92c17078a8c90c1f915be22c9d8d118945f32b145cea",
+      "section": "package"
+    },
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": null,
+      "expected_context": "urn:sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "section": null
+    },
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "expected_context": "urn:sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "section": null
+    },
+    {
+      "name": "ask_okf_manifest",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "expected_context": null,
+      "section": null
+    }
+  ],
+  "responses": [
+    {
+      "sha256": "044e2c9ed7411cda3430af364e41e6046c677f0b388815628665470b35126cc8",
+      "bytes": 33502,
+      "status": 200
+    },
+    {
+      "sha256": "748369eb4d99aa69f7d16bc2d4bbbad6c7c8fe36790507394bf5d6bf3cca2910",
+      "bytes": 34876,
+      "status": 200
+    },
+    {
+      "sha256": "dbba9b3bb29d9932caa9f651f8c6b8c68cbe3b62348c1070ab37fd9e964672ed",
+      "bytes": 12654,
+      "status": 200
+    },
+    {
+      "sha256": "48d75d189e1eeb571ea25e246e6bdd04771f4436ec57f7e21d30e966202e9c71",
+      "bytes": 3619,
+      "status": 200
+    },
+    {
+      "sha256": "a80ca20f562051063273e5f36e8c1ba084e211cfece3555d38041507b5d8a17e",
+      "bytes": 34235,
+      "status": 200
+    },
+    {
+      "sha256": "aea4ed76ec63a6d3ba44b79b0e931349d7dd56f4dcdec9c4d2d75d4de03eead2",
+      "bytes": 271,
+      "status": 200
+    },
+    {
+      "sha256": "a0d47725cb9456eee8efc6bc8f829b0158e986bd02e320973b9306905a75a246",
+      "bytes": 205,
+      "status": 200
+    },
+    {
+      "sha256": "96791222e0f4fcd90625be760d924b7389a1342f41d7092255a27d6edce8e495",
+      "bytes": 6506,
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "artifacts": {
+    "historical-replay.png": {
+      "bytes": 128928,
+      "sha256": "5c6f430b23a351f0270ca9c20cb835dd78534d34ed73e537b3d9242aca9bf45e"
+    },
+    "historical-unavailable.png": {
+      "bytes": 118572,
+      "sha256": "ce7198aa1896e01703286428f2284fbf7723c3afe16be574a50e1d6a6283d2e0"
+    },
+    "executed-runner.ts": {
+      "bytes": 10216,
+      "sha256": "1d0f9fa88fc88bca1cdaa83a735934fc8efd598146d1deb562206afae64e90c4"
+    },
+    "build-receipt.json": {
+      "bytes": 5126,
+      "sha256": "71b742c1de0ecc29ddf0d0c7da52993c16f9dd52e07bd8765b1fe88c3833a187"
+    },
+    "observation-files.ts": {
+      "bytes": 3302,
+      "sha256": "116db3ff05f0aacf11751bfc72026716230632e9a4707d2e00776b85a0f00f6a"
+    },
+    "approved-loader.ts": {
+      "bytes": 12382,
+      "sha256": "cde858cf3b82d958da985881f061dff1e9057dc75cc80e5afc28cf3a97e20159"
+    }
+  },
+  "limitations": [
+    "Local Chrome custody-profile journey; not public deployment, full-corpus browser coverage, screen-reader acceptance or ChatGPT/Voice acceptance."
+  ]
+}

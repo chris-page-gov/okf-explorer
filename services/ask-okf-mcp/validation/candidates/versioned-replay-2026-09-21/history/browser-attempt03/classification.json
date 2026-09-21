@@ -1,0 +1,24 @@
+{
+  "schema": "okf-local-attempt-classification.v1",
+  "classification": "preserved-development-observation",
+  "retrospective": true,
+  "note": "Preliminary local Chrome pass after hashchange correction. Superseded by the final candidate observation with stronger bounded local-input admission and helper/build provenance.",
+  "files": {
+    "executed-runner.ts": {
+      "bytes": 9935,
+      "sha256": "ff3b59befabc73ffaff615286cf265c868a5a61e73894035c3745027b5b6c59e"
+    },
+    "historical-replay.png": {
+      "bytes": 128928,
+      "sha256": "5c6f430b23a351f0270ca9c20cb835dd78534d34ed73e537b3d9242aca9bf45e"
+    },
+    "historical-unavailable.png": {
+      "bytes": 118572,
+      "sha256": "ce7198aa1896e01703286428f2284fbf7723c3afe16be574a50e1d6a6283d2e0"
+    },
+    "observation.json": {
+      "bytes": 5189,
+      "sha256": "b24c807b336398ed704a401de907e6c89b156659345cb2d6bfacc65e3e41f118"
+    }
+  }
+}

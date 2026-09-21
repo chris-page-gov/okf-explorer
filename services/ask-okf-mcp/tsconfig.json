@@ -5,5 +5,5 @@
     "strict": true, "noEmit": true, "skipLibCheck": true,
     "lib": ["ES2023", "DOM"], "types": ["node"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/verify-versioned-replay.ts", "scripts/verify-versioned-review.ts"]
 }

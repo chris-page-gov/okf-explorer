@@ -1,5 +1,22 @@
 # Ask OKF service changelog
 
+## Unreleased — engine-pinned replay candidate
+
+- Retain exact c4f and b9 assembler modules with build-verified manifests and
+  explicit compatibility for the four existing approved source revisions.
+- Add engine identity to replay recipes, catalogue/read envelopes and health.
+  Preserve historical v1 package bytes and the expected context-ID guard.
+- Reconstruct old engine-unspecified links using at most two sequential bounded
+  attempts. Compare complete package bytes; keep originating-engine uncertainty
+  visible and fail closed for unavailable or ambiguous replay.
+- Share file, transfer, decoded-work and deadline bounds across attempts. Keep
+  read-only tools, inert source data, privacy and CSP boundaries.
+- Clear stale evidence when a replay fragment changes in the same tab. Preserve
+  engine/context/package identity through catalogue and evidence pagination.
+- Retain separate local two-engine/four-source and Chrome observations. Earlier
+  observations remain unchanged; package version and public deployment are not
+  promoted by this candidate.
+
 ## 0.5.0 — household and statutory evidence candidate
 
 - Pin the default combined corpus to

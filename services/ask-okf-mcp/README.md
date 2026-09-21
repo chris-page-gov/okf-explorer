@@ -7,12 +7,14 @@ official DWP service or individual benefits advice.
 
 [Service changelog](CHANGELOG.md). The package version remains **0.5.0** for
 the combined DMG and ADM Reader, household/care-home concepts and selected
-statutory evidence. This checkout additionally contains an **undeployed shared-engine
-candidate** for required-evidence allocation, with a
-[separate local integration observation](validation/candidates/required-evidence-2026-09-21/README.md).
-It preserves the four approved source versions and existing read-only contracts,
-limits and Content Security Policy (CSP). Candidate checks do not attest a new
-public 0.5.0 deployment.
+statutory evidence. This checkout additionally contains an **undeployed engine-pinned replay candidate**.
+It retains both the required-evidence and preceding assemblers, preserves the four
+approved source versions and expected context-ID guards, and discloses the actual
+engine in a separate delivery envelope. The historical full-package schema and
+bytes, read-only scope and Content Security Policy (CSP) remain intact. Candidate
+checks do not attest a new public 0.5.0 deployment. See the
+[decision record](../../docs/adr-versioned-evidence-replay.md) and
+[new local observations](validation/candidates/versioned-replay-2026-09-21/README.md).
 
 The default release is pinned to DWP commit
 `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`. The build verifies its manifest;
@@ -37,7 +39,8 @@ The local development endpoint is `http://127.0.0.1:8787/mcp`. The equivalent
 `/okf/mcp` route avoids a hosting-platform-reserved `/mcp` path; the public
 landing page advertises `/okf/mcp`. Both routes use the same handler and tools.
 `GET /health`
-verifies the vendored default corpus manifest and reports its immutable identity.
+verifies the vendored default corpus manifest and reports its immutable identity,
+current `engine_id` and the approved source/engine compatibility pairs.
 Source shards are verified when requested, so health does not claim every remote
 asset is currently reachable. `ASK_OKF_PORT`
 changes the local port. The Node wrapper binds loopback deliberately. HTTPS
@@ -47,63 +50,47 @@ with dynamic code generation prohibited. Build metadata is in
 `dist/build-receipt.json`. Host and origin allow-lists are deployment-owned source
 configuration in `src/service.ts`, not caller-supplied parameters.
 
-### Reproduce the four-version local integration
+### Reproduce versioned local replay
 
-The [current engine-candidate receipt](validation/candidates/required-evidence-2026-09-21/approved-versions.json)
-checks the actual vendored source loader, all four immutable version identities,
-official SDK 2 and SDK 1 full-package parity, and lossless compact replay of each
-complete package. It also checks that a
-historical replay cannot silently switch to the current version. The local
-corpus reader verifies every requested file against its manifest digest; it
-makes no network calls and does not establish remote reachability or hosting.
+The [new candidate observation](validation/candidates/versioned-replay-2026-09-21/README.md)
+checks four immutable source versions with both frozen assemblers. Every earlier
+compact package must match the complete-package SHA-256 recorded by the original
+0.5.0 observation. It also checks both SDK generations, catalogue order and exact
+full-package reconstruction. Old links without an engine retain their expected
+context IDs; they try at most two compatible engines and report the originating
+engine as unknown. No match or different complete bytes means no evidence.
 
-From this service directory, with all four documented DWP commits available in
-a local Git repository. The runner reads exact immutable Git blobs, not the
-working-tree files; it refuses to overwrite an existing observation:
+From this directory, with the four approved DWP commits in a local Git repository:
 
 ```sh
 npm run build
-node --experimental-strip-types scripts/verify-approved-versions.ts \
-  --dwp-root /path/to/okf-dwp \
-  --out /tmp/approved-versions-0.5.0-new-run.json
+node --experimental-strip-types scripts/verify-versioned-replay.ts \
+  --dwp-root /path/to/okf-dwp --out /path/to/new-observation
 npm run check
 npm test
 ```
 
-The candidate run verified 108 immutable source files and reproduced all four
-custody contexts through both SDK versions. It also ran the live verifier’s
-exact compact cases locally: self-funded permanent care-home admission at
-256 KiB on the current corpus, Child DLA/PIP at 256 KiB on the earlier staff
-corpus, the abroad question at 32 KiB on the discovery corpus, and original
-custody replay. Source text, provenance, paths,
-diagnostics, relationships and complete package slices matched the shared engine.
-The three corpus packages remained insufficient; the original custody package
-retained its historical, bounded sufficient result and original context identity.
-The candidate care-home package contains 35 selected records and 61 relationships;
-the [preserved original 0.5.0 observation](validation/approved-versions-0.5.0.json)
-contained 35 records and 50 relationships. This
-is bounded evidence delivery, not a finding that the question can be answered
-completely. The unit suite uses the same real loader and checks the receipt against the
-executed runner and current service build. It requires no DWP checkout or network.
+The output directory must be new. The runner reads hash-verified immutable Git
+blobs, not DWP working-tree files, and makes no network or model calls. It
+preserves compressed canonical packages as validation evidence, not as a public
+snapshot-serving API. Its results do not establish public reachability, legal
+answerability or hosting performance.
 
-The build keeps logical dependency paths stable across real and symlinked
-locked installations. Tests compare Worker, Node and receipt bytes in both
-layouts. An earlier symlink-dependent local build is [preserved as historical
-evidence](validation/history/0.4.0-symlink/classification.json), with its original
-receipt and Worker hash. The [0.4.0 receipt](validation/approved-versions-0.4.0.json)
-also remains unchanged. The new receipt comes from an actual four-version run
-against this candidate; its exact build-hash check remains enforced. Each
-receipt attests its recorded engine and bindings, not arbitrary future engines.
-The [first 0.5.0 candidate observation](validation/history/0.5.0-source-family-label/classification.json)
-is also preserved: its landing page still called the Reader facet “Source
-manual”. The subsequent original 0.5.0 build corrected this to “Source family”
-and reran the integration without changing context identities. The new
-required-evidence engine observation is separate: it changes three corpus
-custody context identifiers and the compact care-home identifier. The other
-three compact identifiers remain exact. See the
-[candidate comparison and boundaries](validation/candidates/required-evidence-2026-09-21/README.md#context-identity-changes-are-explicit).
-An immutable source version does not freeze a future engine's package identity;
-older receipts and replay identifiers remain tied to their recorded engine.
+The [original 0.5.0 observation](validation/approved-versions-0.5.0.json),
+[required-evidence observation](validation/candidates/required-evidence-2026-09-21/README.md)
+and all earlier build/receipt archives remain unchanged. Their previous runners
+belong to those historical source checkouts; use the new runner above for this
+checkout's engine envelopes. The original care-home example contains 35 records
+and 50 relationships; the newer engine's same-source package contains 35 records
+and 61 relationships. Both remain insufficient. Preserving their bytes does not
+upgrade their evidence status.
+
+The build verifies both frozen implementation manifests and every declared module.
+It also keeps logical dependency paths stable across real and symlinked locked
+installations; a regression compares Worker, Node and receipt bytes. An earlier
+path-dependent build remains [historical evidence](validation/history/0.4.0-symlink/classification.json).
+Each observation binds its actual implementation and build, never arbitrary future
+code. A new source revision requires an explicit source/engine compatibility entry.
 
 ### Browser assurance
 
@@ -140,12 +127,14 @@ Since version 0.3.0, two read-only tools are available alongside the unchanged f
 - `read_okf_evidence`: reassemble and verify the same context, then read selected
   evidence, provenance, paths, gaps or the full package in bounded exact slices.
 
-Use the manifest's `question`, `replay.version`, `replay.budget` and `context_id`
+Use the manifest's `question`, `replay.version`, `replay.engine_id`, `replay.budget` and `context_id`
 unchanged for every read. Request `section: "diagnostics"` to inspect boundaries,
 then `section: "record_text", record_id: "<selected ID>"` for a passage and
 `record_metadata` for provenance and inclusion reasons. Follow `next_offset`
 until null and check `content_sha256` before treating a value as complete.
-Catalogue continuation uses `delivery.next_offset` and requires `context_id`.
+Catalogue continuation uses `delivery.next_offset` and retains the same engine and
+expected `context_id`. The separate `replay_identity.package_sha256` binds the
+complete canonical package; the older context-ID convention is not its full-byte hash.
 
 A result defaults to 16 KiB; `delivery_bytes` allows up to 64 KiB without changing
 selection. MCP's text/structured copies and link envelope can be larger than a

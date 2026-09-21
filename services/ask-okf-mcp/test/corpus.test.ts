@@ -127,8 +127,12 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
     assert.equal(result.isError, undefined);
     assert.equal(canonicalJson(result.structuredContent), canonicalJson(expected));
     const blocks = result.content as Array<{ type: string; text?: string }>;
-    assert.equal(blocks.length, 1); assert.equal(blocks[0].type, 'text');
+    assert.equal(blocks.length, 2); assert.equal(blocks[0].type, 'text');
     assert.equal(canonicalJson(JSON.parse(blocks[0].text!)), canonicalJson(expected));
+    const identity = JSON.parse(blocks[1].text!).replay_identity;
+    assert.equal(identity.mode, 'current-default');
+    assert.match(identity.engine_id, /^urn:okf:context-engine:sha256:[a-f0-9]{64}$/);
+    assert.deepEqual((result._meta as any)['okf/replay'], identity);
     assert.equal(expected.evidence_status, 'insufficient');
     assert.equal(expected.selected[0].record.text, 'Synthetic hospital source passage used only to test transport parity. This is not legal guidance.');
     assert.equal(versions.at(-1), BUNDLE_VERSION);

@@ -2,6 +2,7 @@ import { fromJsonSchema } from '@modelcontextprotocol/server';
 import { INPUT_SCHEMA, validator, type AskInput } from './contracts.ts';
 import { EVIDENCE_SECTIONS, type ContextManifest, type EvidenceRead, type EvidenceSection } from '../../../apps/okf-explorer/src/lib/context/delivery.ts';
 import type { ContextBudget } from '../../../apps/okf-explorer/src/lib/context/types.ts';
+import type { ReplayIdentity } from './replay.ts';
 
 const text = { type: 'string' };
 const integer = { type: 'integer', minimum: 0 };
@@ -15,11 +16,18 @@ const offset = { type: 'integer', minimum: 0, maximum: 2_000_000 };
 const maxBytes = { type: 'integer', minimum: 8192, maximum: 65536 };
 export type ManifestInput = AskInput & { context_id?: string; offset?: number; delivery_bytes?: number };
 export type EvidenceInput = AskInput & { context_id: string; section: EvidenceSection; record_id?: string; offset?: number; delivery_bytes?: number };
-export type ReplayRecipe = AskInput & { version: string; budget: ContextBudget; context_id: string };
+export type ReplayRecipe = AskInput & { version: string; budget: ContextBudget; context_id: string; engine_id: string };
 export type ManifestResult = ContextManifest & {
-  replay: { bundle: string; version: string; budget: ContextBudget }; review_url: string;
+  replay: { bundle: string; version: string; budget: ContextBudget; engine_id: string }; review_url: string;
+  replay_identity: ReplayIdentity;
   response_bytes: number; response_limit: number;
 };
+export type EvidenceResult = EvidenceRead & { replay_identity: ReplayIdentity };
+export const REPLAY_IDENTITY_SCHEMA = object({ engine_id: INPUT_SCHEMA.properties.engine_id,
+  mode: { type: 'string', enum: ['current-default', 'explicit-engine', 'historical-compatible'] },
+  original_engine_id: { anyOf: [INPUT_SCHEMA.properties.engine_id, { type: 'null' }] },
+  matching_engine_ids: { type: 'array', minItems: 1, maxItems: 2, uniqueItems: true, items: INPUT_SCHEMA.properties.engine_id },
+  package_sha256: hash });
 export const MANIFEST_INPUT_SCHEMA = {
   ...INPUT_SCHEMA,
   properties: { ...INPUT_SCHEMA.properties,
@@ -52,7 +60,8 @@ export const MANIFEST_OUTPUT_SCHEMA = object({
   records: { type: 'array', maxItems: 200, items: record },
   delivery: object({ offset: integer, returned: integer, total: integer, next_offset: nullableInteger, max_bytes: integer, used_bytes: integer }),
   instructions: text,
-  replay: object({ bundle: INPUT_SCHEMA.properties.bundle, version: INPUT_SCHEMA.properties.version, budget: INPUT_SCHEMA.properties.budget }),
+  replay: object({ bundle: INPUT_SCHEMA.properties.bundle, version: INPUT_SCHEMA.properties.version, budget: INPUT_SCHEMA.properties.budget, engine_id: INPUT_SCHEMA.properties.engine_id }),
+  replay_identity: REPLAY_IDENTITY_SCHEMA,
   review_url: text, response_bytes: integer, response_limit: integer
 });
 export const EVIDENCE_OUTPUT_SCHEMA = object({
@@ -62,12 +71,12 @@ export const EVIDENCE_OUTPUT_SCHEMA = object({
   total_characters: integer, character_unit: { const: 'utf-16-code-units' }, offset: integer, end_offset: integer,
   next_offset: nullableInteger, data: text,
   delivery: object({ max_bytes: integer, used_bytes: integer, partial: bool }),
-  context_truncated: bool, retrieval_truncated: bool, ai_answer: { type: 'null' }
+  context_truncated: bool, retrieval_truncated: bool, ai_answer: { type: 'null' }, replay_identity: REPLAY_IDENTITY_SCHEMA
 });
 export const manifestInputContract = fromJsonSchema<ManifestInput>(MANIFEST_INPUT_SCHEMA, validator);
 export const manifestOutputContract = fromJsonSchema<ManifestResult>(MANIFEST_OUTPUT_SCHEMA, validator);
 export const evidenceInputContract = fromJsonSchema<EvidenceInput>(EVIDENCE_INPUT_SCHEMA, validator);
-export const evidenceOutputContract = fromJsonSchema<EvidenceRead>(EVIDENCE_OUTPUT_SCHEMA, validator);
+export const evidenceOutputContract = fromJsonSchema<EvidenceResult>(EVIDENCE_OUTPUT_SCHEMA, validator);
 
 /** Fragment stays in the browser; it is not sent with GET /review or in referrers. */
 export function reviewLink(origin: string, recipe: ReplayRecipe): string {

@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { assembleContext } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { contextManifest, readContextEvidence } from '../../../apps/okf-explorer/src/lib/context/delivery.ts';
-import { reviewLink } from '../src/deliveryContracts.ts';
 import { LEGACY_BUNDLE_VERSION, verifyBundledContext } from '../src/registry.ts';
 // @ts-ignore -- Portable verifier is JavaScript used by the live SDK script.
 import { verifyCompactDelivery } from '../scripts/verify-delivery.mjs';
@@ -24,7 +23,8 @@ function client(mutate: Mutation = () => {}) {
     try {
       if (name === 'ask_okf_manifest') {
         const extra = { replay: { bundle: request.bundle, version: request.version, budget },
-          review_url: reviewLink(origin, { ...request, budget: budget as any, context_id: context.context_id }),
+          // This fixture exercises the preserved pre-engine-pin verifier.
+          review_url: origin + '/review/#' + Buffer.from(JSON.stringify({ ...request, budget, context_id: context.context_id })).toString('base64url'),
           response_bytes: 0, response_limit: input.delivery_bytes };
         const reserve = Buffer.byteLength(JSON.stringify(extra)) + 32;
         value = { ...await contextManifest(context, { offset: input.offset, max_bytes: input.delivery_bytes - reserve }), ...extra };

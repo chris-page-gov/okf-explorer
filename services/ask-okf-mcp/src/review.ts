@@ -1,4 +1,5 @@
 import { APPROVED_VERSIONS, BUNDLE_VERSION } from './registry.ts';
+import { APPROVED_ENGINE_IDS, CURRENT_ENGINE_ID } from './engines.ts';
 
 /** Static shell. The URL fragment is inert until the user explicitly invokes replay. */
 export function reviewResponse(): Response {
@@ -14,6 +15,7 @@ body{font:1.05rem/1.6 system-ui,sans-serif;max-width:68rem;margin:2rem auto;padd
 <form id="review-form"><label for="question">General question</label><textarea id="question" maxlength="2000" required></textarea>
 <label for="version">Approved source version</label><select id="version"></select>
 <p id="recipe-info">Use a link returned by Ask OKF, or enter a new general question.</p>
+<p id="engine-info">A new question uses the current approved assembler. Historical links retain their expected evidence identity.</p>
 <button type="submit">Recreate evidence</button></form>
 <p id="status" role="status" aria-live="polite"></p>
 <section id="context" hidden><h2>Verified context</h2><p id="identity"></p><p id="boundary"></p>
@@ -26,7 +28,7 @@ body{font:1.05rem/1.6 system-ui,sans-serif;max-width:68rem;margin:2rem auto;padd
 }
 
 /** Standalone, dependency-free browser code; render all returned content as text. */
-function reviewApp(config: { versions: string[]; defaultVersion: string }) {
+function reviewApp(config: { versions: string[]; defaultVersion: string; engines: readonly string[]; currentEngine: string }) {
   const element = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const question = element<HTMLTextAreaElement>('question');
   const version = element<HTMLSelectElement>('version');
@@ -38,6 +40,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
   const nextPart = element<HTMLButtonElement>('read-next');
   let recipe: any = null;
   let current: any = null;
+  let originIdentity: any = null;
   let nextOffset: number | null = null;
   let readRequest: any = null;
   let partOffset: number | null = null;
@@ -65,6 +68,8 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     const data = text.trimStart().startsWith('{') ? JSON.parse(text)
       : JSON.parse(text.split('\n').find(line => line.startsWith('data: '))?.slice(6) ?? 'null');
     if (!response.ok || !data || data.error || data.result?.isError || !data.result?.structuredContent) {
+      const detail = data?.result?.content?.[0]?.text;
+      if (typeof detail === 'string' && detail.length < 400 && /^(Historical replay |The pinned engine |Replay exceeded )/.test(detail)) throw new Error(detail);
       throw new Error('The approved evidence could not be verified. Check the source version, replay identity or connection.');
     }
     return data.result.structuredContent;
@@ -74,34 +79,48 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     option.textContent = id === config.defaultVersion ? `Full source corpus — ${id}` : `Historical bounded profile — ${id}`;
     version.append(option);
   }
-  if (location.hash.length > 1) {
+  const loadRecipe = () => {
+    recipe = null; question.value = ''; version.value = config.defaultVersion;
+    status.textContent = '';
+    element('recipe-info').textContent = 'Use a link returned by Ask OKF, or enter a new general question.';
+    element('engine-info').textContent = 'New context assembler: ' + config.currentEngine;
+    if (location.hash.length > 1) {
     try {
       const encoded = location.hash.slice(1);
       if (encoded.length > 16000 || !/^[a-zA-Z0-9_-]+$/.test(encoded)) throw new Error();
       const data = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(
         atob(encoded.replaceAll('-', '+').replaceAll('_', '/')), char => char.charCodeAt(0))));
       if (!data || typeof data !== 'object' || Array.isArray(data)
-        || Object.keys(data).some(key => !['bundle', 'question', 'version', 'budget', 'context_id'].includes(key))
+        || Object.keys(data).some(key => !['bundle', 'question', 'version', 'budget', 'context_id', 'engine_id'].includes(key))
         || data.bundle !== 'okf-dwp' || typeof data.question !== 'string' || !data.question.trim() || data.question.length > 2000
-        || !config.versions.includes(data.version) || !/^urn:sha256:[a-f0-9]{64}$/.test(data.context_id)) throw new Error();
+        || !config.versions.includes(data.version) || !/^urn:sha256:[a-f0-9]{64}$/.test(data.context_id)
+        || (data.engine_id !== undefined && !config.engines.includes(data.engine_id))) throw new Error();
       recipe = data; question.value = data.question; version.value = data.version;
       element('recipe-info').textContent = 'This link requests exact replay of ' + data.context_id + '. No evidence has been loaded yet.';
+      element('engine-info').textContent = data.engine_id ? 'Pinned assembler: ' + data.engine_id
+        : 'This historical link does not specify its originating engine. At most two approved assemblers will be tried; the expected context ID will not be replaced.';
     } catch { status.textContent = 'The replay fragment is invalid. Enter a new general question; the invalid fragment will not be sent.'; }
-  }
+    }
+  };
+  loadRecipe();
   const clearRead = () => {
     element('read-heading').textContent = 'Evidence reader'; element('read-source').replaceChildren();
     readSequence++; partOffset = null; readRequest = null; nextPart.hidden = true; element('read-data').textContent = '';
     element('read-status').textContent = 'Select a record or diagnostic section.';
   };
   const invalidate = () => {
-    generation++; recipe = null; current = null; output.hidden = true; records.replaceChildren(); recordSummaries.clear(); clearRead();
+    generation++; recipe = null; current = null; originIdentity = null; output.hidden = true; records.replaceChildren(); recordSummaries.clear(); clearRead();
     element('replay-link').replaceChildren();
     status.textContent = 'Question or version changed. Recreate evidence to make a new context.';
     element('recipe-info').textContent = 'This will create a new context, rather than replay the shared identity.';
+    element('engine-info').textContent = 'New context assembler: ' + config.currentEngine;
   };
   question.addEventListener('input', invalidate); version.addEventListener('change', invalidate);
+  // A different replay link in the same tab is a new inert recipe. Never leave
+  // the previous evidence visible under the new URL or submit its old identity.
+  window.addEventListener('hashchange', () => { invalidate(); loadRecipe(); });
   const args = () => ({ bundle: 'okf-dwp', question: current.question, version: current.replay.version,
-    budget: current.replay.budget, context_id: current.context_id });
+    budget: current.replay.budget, context_id: current.context_id, engine_id: current.replay.engine_id });
   async function read(section: string, record_id?: string, offset = 0) {
     const run = generation;
     const sequence = ++readSequence;
@@ -117,7 +136,9 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     try {
       const result = await call('read_okf_evidence', { ...args(), section, ...(record_id ? { record_id } : {}), offset });
       if (generation !== run || sequence !== readSequence) return;
-      if (result.context_id !== current.context_id || result.record_id !== (record_id ?? null) || result.section !== section || result.offset !== offset) throw new Error('The returned evidence identity differs.');
+      if (result.context_id !== current.context_id || result.record_id !== (record_id ?? null) || result.section !== section || result.offset !== offset
+        || result.replay_identity?.engine_id !== current.replay.engine_id
+        || result.replay_identity?.package_sha256 !== current.replay_identity.package_sha256) throw new Error('The returned evidence identity differs.');
       element('read-data').textContent = result.data;
       element('read-status').textContent = `${result.evidence_status}. Characters ${result.offset}–${result.end_offset} of ${result.total_characters}. `
         + (result.delivery.partial ? 'Partial view: read the other parts before relying on this passage. ' : 'Complete selected value. ')
@@ -126,9 +147,14 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     } catch (error) { if (generation === run && sequence === readSequence) element('read-status').textContent = error instanceof Error ? error.message : 'Evidence unavailable.'; }
   }
   function render(result: any, append = false) {
-    if (!append) { records.replaceChildren(); recordSummaries.clear(); }
+    if (!config.engines.includes(result.replay?.engine_id) || result.replay_identity?.engine_id !== result.replay.engine_id
+      || !/^[a-f0-9]{64}$/.test(result.replay_identity.package_sha256)) throw new Error('The returned assembler identity is not approved.');
+    if (!append) { records.replaceChildren(); recordSummaries.clear(); originIdentity = result.replay_identity; }
     current = result; output.hidden = false;
     element('identity').textContent = result.context_id + ' · source ' + result.bundle.snapshot;
+    element('engine-info').textContent = 'Reconstructed by ' + result.replay.engine_id + '. '
+      + (originIdentity?.mode === 'historical-compatible' ? 'The original link did not specify an engine; its originating engine remains unknown. ' : '')
+      + 'Complete package SHA-256: ' + result.replay_identity.package_sha256;
     const summary = result.summary;
     element('boundary').textContent = `${result.evidence_status.toUpperCase()}: ${summary.selected_records} selected records, ${summary.relationships} relationships; `
       + `${summary.missing_evidence} evidence gaps, ${summary.ambiguities} ambiguities, ${summary.conflicts} declared conflicts. `
@@ -156,11 +182,12 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     event.preventDefault(); const run = ++generation;
     output.hidden = true; current = null; records.replaceChildren(); recordSummaries.clear(); clearRead(); status.textContent = 'Verifying source files and recreating evidence…';
     element('replay-link').replaceChildren();
-    const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value };
+    const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value, engine_id: config.currentEngine };
     try {
       const result = await call('ask_okf_manifest', request);
       if (generation !== run) return;
       if (recipe && result.context_id !== recipe.context_id) throw new Error('The replay context does not match the shared identity.');
+      if (request.engine_id && result.replay?.engine_id !== request.engine_id) throw new Error('The replay assembler differs from the requested implementation.');
       render(result);
     } catch (error) { if (generation === run) status.textContent = error instanceof Error ? error.message : 'Evidence unavailable.'; }
   });
@@ -169,7 +196,8 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
     try {
       const result = await call('ask_okf_manifest', { ...args(), offset: nextOffset });
       if (generation !== run) return;
-      if (result.context_id !== current.context_id) throw new Error('Catalogue context differs.');
+      if (result.context_id !== current.context_id || result.replay?.engine_id !== current.replay.engine_id
+        || result.replay_identity?.package_sha256 !== current.replay_identity.package_sha256) throw new Error('Catalogue context or assembler differs.');
       render(result, true);
     } catch (error) { if (generation === run) status.textContent = error instanceof Error ? error.message : 'Catalogue unavailable.'; }
     finally { more.disabled = false; }
@@ -184,6 +212,6 @@ function reviewApp(config: { versions: string[]; defaultVersion: string }) {
 }
 
 export function reviewScriptResponse(): Response {
-  return new Response(`(${reviewApp.toString()})(${JSON.stringify({ versions: APPROVED_VERSIONS, defaultVersion: BUNDLE_VERSION })});`,
+  return new Response(`(${reviewApp.toString()})(${JSON.stringify({ versions: APPROVED_VERSIONS, defaultVersion: BUNDLE_VERSION, engines: APPROVED_ENGINE_IDS, currentEngine: CURRENT_ENGINE_ID })});`,
     { headers: { 'Content-Type': 'text/javascript; charset=utf-8' } });
 }

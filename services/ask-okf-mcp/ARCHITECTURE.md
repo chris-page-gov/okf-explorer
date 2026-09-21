@@ -8,10 +8,16 @@ household/statutory-evidence candidate has separate local verification; hosting 
 acceptance require new receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
-The remote service is a tool-only adapter. It imports the same deterministic
-`assembleContext` and `assembleCorpusContext` implementations used by Explorer and WebMCP. It does not
+The remote service is a tool-only adapter. This undeployed candidate statically
+imports two frozen versions of Explorer's deterministic `assembleContext` and
+`assembleCorpusContext` implementations. Their manifests bind exact modules from
+commits `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and
+`b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55`. It does not
 implement search, retrieval, interpretation or model answering. The existing
-`okf-governed-context.v1` package remains the output contract.
+`okf-governed-context.v1` package remains the full-package output contract.
+Precise implementation identity appears in a separate transport envelope; the
+package's `engine` field remains a capability-family label. See the
+[versioned replay decision](../../docs/adr-versioned-evidence-replay.md).
 
 The official MCP TypeScript SDK v2 provides a Web Fetch-compatible HTTP handler,
 with explicit support for earlier stateless Streamable HTTP clients. A Node
@@ -89,11 +95,21 @@ missing evidence, scope, rights, paths and budget omissions. A smaller requested
 budget is handled by the core and may make the package insufficient. There is no
 silent clipping, general-knowledge fallback, external search or model call.
 
-Compact reads require the same question, approved version, budget and context
+Compact reads require the same question, approved version, engine ID, budget and context
 identifier. The service reassembles that context and rejects mismatches before
 returning a selected record or slice. Browser review links contain this replay
 recipe in a fragment. They are inert until the user selects **Recreate evidence**;
 there is no stored audit log or AI-answer replay.
+
+Old recipes with an expected context ID and no engine get at most two sequential
+compatible attempts. Matching context IDs also require equal complete canonical
+package bytes. A match does not establish the historical originating engine.
+The two attempts share 64 file/decode operations, 16 MiB unique transfer,
+32 MiB decoded work and a checked 60-second deadline. The public-byte cache is
+invocation-scoped and does not retain questions. Unknown/incompatible engines,
+different complete bytes or unavailable historical results return no evidence.
+Every new replay link explicitly pins its reconstruction engine. Opening another
+fragment in the same tab clears the previous result and remains inert until submit.
 
 The HTTP boundary limits request bodies, concurrency, methods and origins. It
 accepts no credentials, persistence, write tools or filesystem paths. Diagnostics

@@ -19,7 +19,7 @@ test('release package, lock, registry and build agree without changing locked de
   assert.deepEqual(build.historical_bundle_versions, [STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
 });
 
-test('undeployed engine candidate integration binds the executed runner, current build and four approved versions', async () => {
+test('preserved required-evidence candidate binds its executed runner, retained build and four approved versions', async () => {
   const base = '../validation/candidates/required-evidence-2026-09-21/';
   const receipt = JSON.parse(await readFile(new URL(base + 'approved-versions.json', import.meta.url), 'utf8'));
   const classification = JSON.parse(await readFile(new URL(base + 'classification.json', import.meta.url), 'utf8'));
@@ -36,7 +36,7 @@ test('undeployed engine candidate integration binds the executed runner, current
   assert.equal(classification.build_receipt_sha256, receipt.build_receipt_sha256);
   assert.equal(receipt.runner_sha256, await digest('../scripts/verify-approved-versions.ts'));
   for (const [path, expected] of Object.entries(receipt.supporting_files)) assert.equal(await digest('../' + path), expected);
-  assert.equal(receipt.build_receipt_sha256, await digest('../dist/build-receipt.json'));
+  assert.equal(receipt.build_receipt_sha256, 'c9820a92a4445e5119657d570fe8b5cfd7d61ebc83cbf18c9525dee758fb4724');
   assert.equal(receipt.mode, 'offline-local-corpus');
   assert.deepEqual(receipt.cases.map((row: { version: string }) => row.version), [BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.ok(receipt.cases.every((row: { exact_replay: boolean; slices: number }) => row.exact_replay && row.slices > 0));

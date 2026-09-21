@@ -1,0 +1,23 @@
+{
+  "schema": "okf-context-engine-manifest.v1",
+  "source_commit": "c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e",
+  "family": "okf-context-assembly.v1",
+  "files": {
+    "index.ts": {
+      "sha256": "cc9fe1c162e1ad505f080712b6eacf0bad843f0e32d6f953b697b8349b2c4ca8",
+      "bytes": 39770,
+      "source_path": "apps/okf-explorer/src/lib/context/index.ts"
+    },
+    "corpus.ts": {
+      "sha256": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+      "bytes": 15530,
+      "source_path": "apps/okf-explorer/src/lib/context/corpus.ts"
+    },
+    "types.ts": {
+      "sha256": "d9eff934ec504c3fbd2afff672ae1d3a8a275e84cc11b71fed8a3e1b0edfdcf3",
+      "bytes": 4714,
+      "source_path": "apps/okf-explorer/src/lib/context/types.ts"
+    }
+  },
+  "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652"
+}

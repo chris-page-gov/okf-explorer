@@ -1,0 +1,20 @@
+{
+  "schema": "okf-local-attempt-classification.v1",
+  "classification": "preserved-development-observation",
+  "retrospective": true,
+  "note": "Real Chrome timed out at same-document fragment change: the previous recipe remained active. No mismatch evidence was returned. The subsequent hashchange correction clears old evidence and parses the new recipe inertly.",
+  "files": {
+    "executed-runner.ts": {
+      "bytes": 9935,
+      "sha256": "ff3b59befabc73ffaff615286cf265c868a5a61e73894035c3745027b5b6c59e"
+    },
+    "failure.json": {
+      "bytes": 236,
+      "sha256": "bb7f56319531e6a32ee47588e92f1eb2417ce4e1f28314f6c7325ce132c6a06f"
+    },
+    "historical-replay.png": {
+      "bytes": 128928,
+      "sha256": "5c6f430b23a351f0270ca9c20cb835dd78534d34ed73e537b3d9242aca9bf45e"
+    }
+  }
+}
