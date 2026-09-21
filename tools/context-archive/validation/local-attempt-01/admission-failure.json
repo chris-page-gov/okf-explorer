@@ -1,0 +1,8 @@
+{
+  "classification": "failed-before-browser-launch",
+  "observed_error": "listen EPERM: operation not permitted 127.0.0.1",
+  "explanation": "The first executed harness did not catch the HTTP server admission error. Its executed source and generated archive manifest remain retained. No browser journey occurred. The following attempt adds error retention and requests local-listen permission.",
+  "browser_launched": false,
+  "public_calls": 0,
+  "model_calls": 0
+}

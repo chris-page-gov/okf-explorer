@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-09-19",
+  "modified": "2026-09-21",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -588,7 +588,8 @@
       "paths": [
         "apps/okf-explorer/**",
         "services/ask-okf-mcp/**",
-        "scripts/stage_remote_mcp_site.mjs"
+        "scripts/stage_remote_mcp_site.mjs",
+        "tools/context-archive/**"
       ],
       "command_ids": [
         "check-app",
@@ -596,7 +597,8 @@
         "build-app",
         "check-remote-mcp",
         "test-remote-mcp",
-        "build-remote-mcp"
+        "build-remote-mcp",
+        "test-context-archive"
       ]
     },
     {
@@ -1034,6 +1036,19 @@
         "network": "none",
         "mutates": "generated-only",
         "timeout_minutes": 10
+      },
+      {
+        "id": "test-context-archive",
+        "kind": "test",
+        "planes": [
+          "application"
+        ],
+        "command": "node --experimental-strip-types --test tools/context-archive/archive.test.ts",
+        "source": "docs/context-assembly.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
       }
     ]
   },
@@ -1059,7 +1074,8 @@
       "tests/**",
       "uk-government-apis/**",
       "legislation/**",
-      "services/ask-okf-mcp/**"
+      "services/ask-okf-mcp/**",
+      "tools/context-archive/**"
     ],
     "documentation_paths": [
       "README.md",

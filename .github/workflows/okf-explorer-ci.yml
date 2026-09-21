@@ -92,6 +92,8 @@ jobs:
         run: uv run --locked python -m unittest tests.test_context_assembly -v
       - name: Reject modified or unbounded archived comparison inputs
         run: node --test validation/context-allocation/2026-09-21/admission.test.mjs
+      - name: Verify retained evidence archives and fail-closed delivery
+        run: node --experimental-strip-types --test tools/context-archive/archive.test.ts
       - name: Replay the non-DWP end-to-end context case
         run: >-
           node --experimental-strip-types scripts/run_context_evaluation.mjs

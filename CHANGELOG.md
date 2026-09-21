@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add an offline exporter and small static reader for explicitly approved,
+  fixed evidence examples. Preserve canonical packages and source/engine
+  declarations; expose bounded, hash-checked records, provenance, gaps and
+  directed relationships without storing anonymous questions or changing the
+  live service. Add eleven offline controls to the context-assembly CI gate
+  and publication contract. Retain a local Chrome journey with seven focused
+  checks and its earlier failures; public publication remains a separate gate.
+
 - Prepare undeployed Ask OKF service 0.6.0 with the final partner/household
   qualification corpus. Retain all four historical sources and their exact
   replay paths; admit the new source only with the current assembler.
