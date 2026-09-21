@@ -29,14 +29,16 @@ test('0.6 pins final combined bytes, retains all four old sources and rejects th
   } finally { await service.close(); await loader.close(); }
 });
 
-test('current local release receipt binds its actual build and ten whole packages while preserving historical replay', async () => {
+test('preserved 0.6.0 local release receipt binds its archived build, runner and ten whole packages', async () => {
   const receipt = await json(candidate + 'observation.json');
-  const buildRaw = await read('dist/build-receipt.json');
+  const buildRaw = await read(candidate + 'build-receipt.json');
+  assert.equal(JSON.parse(buildRaw.toString()).service_version, '0.6.0');
   assert.equal(receipt.classification, 'undeployed-local-release-0.6.0'); assert.equal(receipt.service_version, '0.6.0');
   assert.equal(receipt.network_calls, 0); assert.equal(receipt.model_calls, 0);
-  assert.equal(receipt.build_receipt_sha256, sha(buildRaw)); assert.deepEqual(await read(candidate + 'build-receipt.json'), buildRaw);
+  assert.equal(receipt.build_receipt_sha256, sha(buildRaw));
+  assert.equal(sha(buildRaw), 'fdeff2abf124ea685b9d0d4af2c5cd50c7b82c4c1c0e0aa6a95ea2c7eb1b46ad');
   assert.equal(receipt.worker_sha256, JSON.parse(buildRaw.toString()).outputs['dist/server/index.js']);
-  assert.equal(receipt.runner_sha256, sha(await read('scripts/verify-release-0.6.ts')));
+  assert.equal(receipt.runner_sha256, sha(await read(candidate + 'executed-runner.ts')));
   assert.equal(receipt.cases.length, 10);
   assert.equal(new Set(receipt.cases.map((row: any) => row.source_version + ':' + row.engine_id)).size, 9);
   assert.equal(Object.keys(receipt.files).length, 74); assert.equal(receipt.source_bytes, 23768700);
@@ -69,7 +71,7 @@ test('current local release receipt binds its actual build and ten whole package
   assert.equal(receipt.cases[1].records, 0); assert.equal(receipt.cases[1].relationships, 0);
 });
 
-test('outer candidate inventory binds all 34 preserved and current artefacts with a bounded census', async () => {
+test('historical outer candidate inventory binds all 34 preserved artefacts with a bounded census', async () => {
   const base = 'validation/candidates/release-0.6.0-2026-09-21/';
   const manifest = await json(base + 'artifact-manifest.json');
   assert.equal(manifest.schema, 'okf-release-candidate-artifacts.v1');
@@ -90,6 +92,6 @@ test('outer candidate inventory binds all 34 preserved and current artefacts wit
   const first = await json(base + 'integration/observation.json');
   const current = await json(base + 'integration-02/observation.json');
   assert.deepEqual(first.cases, current.cases, 'The guardrail rerun preserves every complete package');
-  const sizes = await json(base + 'build-sizes.json'), build = await json('dist/build-receipt.json');
+  const sizes = await json(base + 'build-sizes.json'), build = await json(candidate + 'build-receipt.json');
   for (const path of ['dist/server/index.js', 'dist/node.mjs']) assert.equal(sizes.outputs[path].candidate.sha256, build.outputs[path]);
 });

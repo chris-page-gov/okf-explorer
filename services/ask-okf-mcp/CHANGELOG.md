@@ -1,5 +1,20 @@
 # Ask OKF service changelog
 
+## 0.6.1 — complete questions in connected clients
+
+- Anchor the shared question pattern so both substring and whole-string regex
+  matching accept the same non-blank text. The original `\S` matched a single
+  non-whitespace character; a client applying a whole-string match rejected
+  ordinary questions before contacting the service. A one-character control
+  succeeded. The fix keeps types, lengths, budgets and evidence selection intact.
+- Cover all three tools, Unicode, multiline questions, blank and overlong
+  inputs, and equivalence with the original accepted set. Preserve all 0.6.0
+  receipt bytes and validate their own historical build and runner.
+- An installed connection must refresh its tool metadata after publication.
+  A new session needs the plugin selected. See the
+  [connection guide](../../docs/remote-mcp.md#connect-in-chatgpt) and the shared
+  publication record below; code and local tests do not establish client access.
+
 <!-- ask-okf-publication:start -->
 ## Recorded public deployment: 0.6.0
 

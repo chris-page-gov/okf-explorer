@@ -284,7 +284,22 @@ identities, not claims about today's law or the deployment date.
 ## Connect in ChatGPT
 
 The current [OpenAI connection guide](https://developers.openai.com/plugins/deploy/connect-chatgpt)
-gives this route, checked on 19 September 2026:
+and [plugin quickstart](https://developers.openai.com/plugins/quickstart)
+give the following route, checked on 21 September 2026. A reachable website does
+not install a tool in an AI session.
+
+### Refresh an existing connection
+
+1. Open **ChatGPT Plugins** and the existing **Ask OKF** connection.
+2. Select **Refresh** after a service schema change. Confirm that its actions
+   include `ask_okf`, `ask_okf_manifest` and `read_okf_evidence`, all read-only.
+3. Start a new Work conversation and explicitly select or mention **Ask OKF**.
+   A conversation opened before refresh may retain older tool metadata.
+4. Run the bounded acceptance prompt below. If the intended client cannot see
+   the tools, record **no call made**; opening the site or using ordinary web
+   retrieval does not establish MCP access.
+
+### Create a connection when none exists
 
 1. Open **Settings**, then **Security and login**, and enable **Developer mode**
    if available and not already enabled.
@@ -294,8 +309,8 @@ gives this route, checked on 19 September 2026:
 4. Under **Connection**, enter
    `https://ask-okf.crpage.chatgpt.site/okf/mcp` and choose **No Auth**.
    This public read-only service requires no account credentials.
-5. Review the discovered tool: `ask_okf`. It must be read-only and contain no
-   write operations.
+5. Review the three discovered tools: `ask_okf`, `ask_okf_manifest` and
+   `read_okf_evidence`. They must be read-only and contain no write operations.
 6. Complete **Create**, then **Connect** if offered. Start a new conversation,
    open **Add files and more**, type **Ask OKF** and select the matching plugin.
    Check that its named pill appears before submitting the question.
@@ -304,6 +319,49 @@ Availability depends on account and workspace policy. A Pro subscription is
 not, by itself, evidence that a specific client can connect. Observe connection,
 tool invocation and returned evidence in the intended account. Refresh the
 connection metadata after changes to tool names, descriptions or schemas.
+
+### Test the intended session
+
+Use a general question without claimant information. This is a connection smoke
+test, not the fixed Staff 012 comparison; the linked DWP client guide below
+supplies that benchmark's exact question, source, engine and budget.
+
+```text
+Use the Ask OKF tools in this session. If they are unavailable, say
+"No callable Ask OKF tool is available; no MCP call was made" and stop.
+
+Call ask_okf_manifest with bundle "okf-dwp", question
+"What happens to Pension Credit when a claimant moves into a care home?",
+budget {"max_bytes":524288,"max_nodes":80,"max_relationships":100,"max_depth":3},
+and delivery_bytes 16384. Read diagnostics, then relevant record_text and
+record_metadata with read_okf_evidence. Copy the returned question, source
+version, engine_id, budget and context_id exactly for every read. Follow
+next_offset to complete each value and distinguish partial reads from complete
+ones. Do not use web search or general model knowledge to fill evidence gaps.
+
+Report actual tool names, source/engine/context identities, evidence status,
+source links, missing evidence and the review_url. Distinguish source passages,
+project interpretation and your own reasoning. Do not claim legal sufficiency
+from successful delivery. Finally call ask_okf_manifest for the unknown term
+"xylophonicquasarteleportation"; it should return no selected records and
+insufficient evidence. Keep the actual failure if any call fails.
+```
+
+Record each client separately: tools visible, schema version observed, calls
+attempted, returned identities and result or error. A brokered client may hide
+MCP initialisation and discovery messages; do not claim a raw protocol trace
+that was not observed. Do not publish client metadata, location or account IDs.
+
+On 21 September, refreshing the installed ChatGPT connection exposed all three
+tools and five approved sources. An existing Codex session still advertised
+the older single-tool schema. Its ordinary multi-character control was rejected
+by connector validation, while `x` reached the service and returned an
+insufficient empty package. Service 0.6.1 uses an equivalent anchored question
+pattern for clients that apply whole-string matching. Local regression tests do
+not prove that an installed client's metadata has refreshed. The Data agent's
+reported no-tool session remains a distinct acceptance gap until it performs
+the calls itself. The [DWP client guide](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/chatgpt-connection.md)
+retains the evolving client observations separately from public SDK verification.
 
 ## Tool contract
 
