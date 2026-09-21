@@ -1,0 +1,52 @@
+{
+  "schema": "okf-local-attempt-classification.v1",
+  "classification": "preserved-development-observation",
+  "retrospective": true,
+  "note": "Preliminary eight-pair local integration pass before the independent deadline correction. Superseded by the final candidate observation; do not treat this earlier build as final.",
+  "files": {
+    "build-receipt.json": {
+      "bytes": 5039,
+      "sha256": "1182a9ea3a9c8fb5142cb4c2c3d1c413386c165f321dec2079be3b970d845191"
+    },
+    "context-0-current.json.gz": {
+      "bytes": 36385,
+      "sha256": "24b9ad7ac48c9989e511ba577321fed27f8dfa1eb5489a12f47cd86a3cefc91f"
+    },
+    "context-0-previous.json.gz": {
+      "bytes": 37826,
+      "sha256": "b1c87f83de5fd0ddd976d6f53f8764c9e05a16103626b2ccd4eaa60ad8fcf357"
+    },
+    "context-1-current.json.gz": {
+      "bytes": 37179,
+      "sha256": "31ddfe42cb16d7549257962274b943f1ed62d51ec5bbe64906ee26f5271269d4"
+    },
+    "context-1-previous.json.gz": {
+      "bytes": 37179,
+      "sha256": "31ddfe42cb16d7549257962274b943f1ed62d51ec5bbe64906ee26f5271269d4"
+    },
+    "context-2-current.json.gz": {
+      "bytes": 8645,
+      "sha256": "55e8e8eccfd602ddc2462557ec6e0c284abed00bdae74a9a8143d3e944682cc3"
+    },
+    "context-2-previous.json.gz": {
+      "bytes": 8645,
+      "sha256": "55e8e8eccfd602ddc2462557ec6e0c284abed00bdae74a9a8143d3e944682cc3"
+    },
+    "context-3-current.json.gz": {
+      "bytes": 59095,
+      "sha256": "a9ffbdb1783557b6f3c7469acbd1cdc73c20453d4e1fcded0d9a692f4c943ea7"
+    },
+    "context-3-previous.json.gz": {
+      "bytes": 59095,
+      "sha256": "a9ffbdb1783557b6f3c7469acbd1cdc73c20453d4e1fcded0d9a692f4c943ea7"
+    },
+    "executed-runner.ts": {
+      "bytes": 13341,
+      "sha256": "4c99f8bb64b1448060d0933beed5ad247a8d4388b2767872c5b5e88d4da6004b"
+    },
+    "observation.json": {
+      "bytes": 21064,
+      "sha256": "25cb2bf568ec9d440721870d523c5085ea7d4df145b6ff2a35fa79187b3b40ee"
+    }
+  }
+}

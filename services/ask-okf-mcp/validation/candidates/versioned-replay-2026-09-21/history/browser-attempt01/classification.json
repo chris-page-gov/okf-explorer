@@ -1,0 +1,12 @@
+{
+  "schema": "okf-local-attempt-classification.v1",
+  "classification": "preserved-development-observation",
+  "retrospective": true,
+  "note": "Sandbox refused loopback listen before browser launch. The early harness did not emit a failure receipt; this is a retrospective classification of the retained executed script and observed process failure (EPERM).",
+  "files": {
+    "executed-runner.ts": {
+      "bytes": 9842,
+      "sha256": "5dbf335b83c6e562cf5f6002f773ce1281693c1ca5b51bf3b8e51cb8601cb1da"
+    }
+  }
+}

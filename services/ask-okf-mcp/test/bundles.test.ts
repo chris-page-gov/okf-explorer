@@ -4,28 +4,28 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { canonicalJson, assembleContext } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { createAskService } from '../src/service.ts';
-import { SERVICE_VERSION, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION } from '../src/registry.ts';
+import { SERVICE_VERSION, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION } from '../src/registry.ts';
 import { approvedLoader, callTool, custodyQuestion } from '../scripts/verify-approved-versions.ts';
 
 test('release package, lock, registry and build agree without changing locked dependencies', async () => {
   const json = async (path: string) => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
   const pkg = await json('../package.json'); const lock = await json('../package-lock.json');
   const build = await json('../dist/build-receipt.json');
-  assert.equal(SERVICE_VERSION, '0.5.0');
+  assert.equal(SERVICE_VERSION, '0.6.0');
   assert.equal(pkg.version, SERVICE_VERSION); assert.equal(lock.version, SERVICE_VERSION);
   assert.equal(lock.packages[''].version, SERVICE_VERSION); assert.equal(build.service_version, SERVICE_VERSION);
   assert.deepEqual(lock.packages[''].dependencies, pkg.dependencies);
   assert.deepEqual(lock.packages[''].devDependencies, pkg.devDependencies);
-  assert.deepEqual(build.historical_bundle_versions, [STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.deepEqual(build.historical_bundle_versions, [HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
 });
 
-test('undeployed engine candidate integration binds the executed runner, current build and four approved versions', async () => {
+test('preserved required-evidence candidate binds its executed runner, retained build and four approved versions', async () => {
   const base = '../validation/candidates/required-evidence-2026-09-21/';
   const receipt = JSON.parse(await readFile(new URL(base + 'approved-versions.json', import.meta.url), 'utf8'));
   const classification = JSON.parse(await readFile(new URL(base + 'classification.json', import.meta.url), 'utf8'));
   const digest = async (path: string) => createHash('sha256').update(await readFile(new URL(path, import.meta.url))).digest('hex');
   assert.equal(classification.classification, 'undeployed-required-evidence-engine-candidate');
-  assert.equal(classification.service_version, SERVICE_VERSION);
+  assert.equal(classification.service_version, '0.5.0');
   assert.equal(classification.deployment_verified, false);
   assert.equal(classification.network_calls, 0);
   assert.equal(classification.model_calls, 0);
@@ -36,11 +36,11 @@ test('undeployed engine candidate integration binds the executed runner, current
   assert.equal(classification.build_receipt_sha256, receipt.build_receipt_sha256);
   assert.equal(receipt.runner_sha256, await digest('../scripts/verify-approved-versions.ts'));
   for (const [path, expected] of Object.entries(receipt.supporting_files)) assert.equal(await digest('../' + path), expected);
-  assert.equal(receipt.build_receipt_sha256, await digest('../dist/build-receipt.json'));
+  assert.equal(receipt.build_receipt_sha256, 'c9820a92a4445e5119657d570fe8b5cfd7d61ebc83cbf18c9525dee758fb4724');
   assert.equal(receipt.mode, 'offline-local-corpus');
-  assert.deepEqual(receipt.cases.map((row: { version: string }) => row.version), [BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.deepEqual(receipt.cases.map((row: { version: string }) => row.version), [HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.ok(receipt.cases.every((row: { exact_replay: boolean; slices: number }) => row.exact_replay && row.slices > 0));
-  assert.equal(receipt.cases[0].binding.index_sha256, APPROVED_BUNDLE.index_sha256);
+  assert.equal(receipt.cases[0].binding.index_sha256, HOUSEHOLD_APPROVED_BUNDLE.index_sha256);
   assert.equal(receipt.cases[1].binding.index_sha256, STAFF_APPROVED_BUNDLE.index_sha256);
   assert.equal(receipt.cases[2].binding.index_sha256, PREVIOUS_APPROVED_BUNDLE.index_sha256);
   assert.equal(receipt.cases[3].binding.index_sha256, LEGACY_APPROVED_BUNDLE.index_sha256);
@@ -51,7 +51,7 @@ test('undeployed engine candidate integration binds the executed runner, current
   assert.equal(receipt.compact_delivery.context_budget.max_bytes, 262144);
   assert.ok(receipt.compact_delivery.selected_records > 0);
   assert.equal(receipt.compact_delivery.evidence_status, 'insufficient');
-  assert.deepEqual(receipt.compact_delivery_versions.map((row: { bundle_version: string }) => row.bundle_version), [BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.deepEqual(receipt.compact_delivery_versions.map((row: { bundle_version: string }) => row.bundle_version), [HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.ok(receipt.compact_delivery_versions.every((row: { reconstructed_package_matches_direct_engine: boolean }) => row.reconstructed_package_matches_direct_engine));
 });
 
@@ -109,8 +109,8 @@ test('the earlier 0.5.0 candidate observation is preserved and only its facet la
   assert.equal(digest(previousLanding), classification.changed_source.sha256);
   assert.equal(JSON.parse(previousBuild.toString()).outputs['dist/server/index.js'], classification.worker_sha256);
   assert.equal(JSON.parse(previousReceipt.toString()).build_receipt_sha256, classification.build_receipt_sha256);
-  assert.equal(previousLanding.toString().replace('Source manual facet', 'Source family facet'),
-    await readFile(new URL('../src/landing.ts', import.meta.url), 'utf8'));
+  const retainedBuild = JSON.parse(await readFile(new URL('../validation/candidates/versioned-replay-2026-09-21/integration/build-receipt.json', import.meta.url), 'utf8'));
+  assert.equal(digest(Buffer.from(previousLanding.toString().replace('Source manual facet', 'Source family facet'))), retainedBuild.inputs['src/landing.ts']);
   const current = JSON.parse(await readFile(new URL('../validation/approved-versions-0.5.0.json', import.meta.url), 'utf8'));
   const previous = JSON.parse(previousReceipt.toString());
   assert.deepEqual(current.cases, previous.cases);
@@ -118,17 +118,20 @@ test('the earlier 0.5.0 candidate observation is preserved and only its facet la
     previous.compact_delivery_versions.map((row: { context_id: string }) => row.context_id));
 });
 
-test('actual vendored loader separates all four versions and preserves historical compact replay', async () => {
+test('actual vendored loader separates all five versions and preserves historical compact replay', async () => {
   const loader = await approvedLoader();
   const service = createAskService({ loadContext: loader.loadApprovedSource,
     fetchCorpus: async () => { throw new Error('The vendored custody replay must not fetch corpus files'); } });
   try {
     const current = await loader.loadApprovedSource();
+    const household = await loader.loadApprovedSource(HOUSEHOLD_BUNDLE_VERSION);
     const staff = await loader.loadApprovedSource(STAFF_BUNDLE_VERSION);
     const previous = await loader.loadApprovedSource(PREVIOUS_BUNDLE_VERSION);
     const legacy = await loader.loadApprovedSource(LEGACY_BUNDLE_VERSION);
-    assert.ok('manifest' in current && 'manifest' in staff && 'manifest' in previous && 'index' in legacy);
+    assert.ok('manifest' in household && 'manifest' in current && 'manifest' in staff && 'manifest' in previous && 'index' in legacy);
     assert.equal(current.binding.index_sha256, APPROVED_BUNDLE.index_sha256);
+    assert.equal(household.binding.index_sha256, HOUSEHOLD_APPROVED_BUNDLE.index_sha256);
+    assert.strictEqual(await loader.loadApprovedSource(HOUSEHOLD_BUNDLE_VERSION), household);
     assert.equal(staff.binding.index_sha256, STAFF_APPROVED_BUNDLE.index_sha256);
     assert.notEqual(current.manifest.base_index.sha256, staff.manifest.base_index.sha256);
     assert.equal(previous.binding.index_sha256, PREVIOUS_APPROVED_BUNDLE.index_sha256);

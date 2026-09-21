@@ -11,7 +11,7 @@ import { assembleContext, canonicalJson, contextSha256 } from '../../../apps/okf
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import { createAskService, PUBLIC_ORIGIN, type Diagnostic } from '../src/service.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
-import { BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE,
+import { BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE,
   PREVIOUS_APPROVED_BUNDLE, APPROVED_VERSIONS, verifyBundledCorpus, verifyBundledContext } from '../src/registry.ts';
 import type { ContextRecord } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 
@@ -80,13 +80,19 @@ test('vendored corpus identity verifies, and modified manifest bytes fail closed
 
 test('current and earlier corpus versions retain separate immutable identities', async () => {
   const current = await verifyBundledCorpus(manifestText);
+  const householdText = await readFile(new URL('../vendor/okf-dwp-household-corpus-manifest.json', import.meta.url), 'utf8');
+  const household = await verifyBundledCorpus(householdText, HOUSEHOLD_BUNDLE_VERSION);
+  assert.equal(household.binding.index_sha256, HOUSEHOLD_APPROVED_BUNDLE.index_sha256);
+  assert.equal(HOUSEHOLD_BUNDLE_VERSION, '3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84');
+  await assert.rejects(verifyBundledCorpus(householdText), /integrity/);
+  await assert.rejects(verifyBundledCorpus(manifestText, HOUSEHOLD_BUNDLE_VERSION), /integrity/);
   const staff = await verifyBundledCorpus(staffManifestText, STAFF_BUNDLE_VERSION);
   const previous = await verifyBundledCorpus(previousManifestText, PREVIOUS_BUNDLE_VERSION);
   assert.equal(PREVIOUS_BUNDLE_VERSION, 'bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752');
   assert.equal(PREVIOUS_APPROVED_BUNDLE.index_sha256, 'aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95');
   assert.equal(previous.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/full-dmg/context/corpus/manifest.json`);
   assert.equal(current.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/combined/context/corpus/manifest.json`);
-  assert.deepEqual(APPROVED_VERSIONS, [BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.deepEqual(APPROVED_VERSIONS, [BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.equal(STAFF_BUNDLE_VERSION, '9de52acf1db84b27f8933d80480eaa850e74fa33');
   assert.equal(staff.binding.index_sha256, STAFF_APPROVED_BUNDLE.index_sha256);
   assert.notEqual(current.manifest.base_index.sha256, staff.manifest.base_index.sha256);
@@ -127,8 +133,12 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
     assert.equal(result.isError, undefined);
     assert.equal(canonicalJson(result.structuredContent), canonicalJson(expected));
     const blocks = result.content as Array<{ type: string; text?: string }>;
-    assert.equal(blocks.length, 1); assert.equal(blocks[0].type, 'text');
+    assert.equal(blocks.length, 2); assert.equal(blocks[0].type, 'text');
     assert.equal(canonicalJson(JSON.parse(blocks[0].text!)), canonicalJson(expected));
+    const identity = JSON.parse(blocks[1].text!).replay_identity;
+    assert.equal(identity.mode, 'current-default');
+    assert.match(identity.engine_id, /^urn:okf:context-engine:sha256:[a-f0-9]{64}$/);
+    assert.deepEqual((result._meta as any)['okf/replay'], identity);
     assert.equal(expected.evidence_status, 'insufficient');
     assert.equal(expected.selected[0].record.text, 'Synthetic hospital source passage used only to test transport parity. This is not legal guidance.');
     assert.equal(versions.at(-1), BUNDLE_VERSION);

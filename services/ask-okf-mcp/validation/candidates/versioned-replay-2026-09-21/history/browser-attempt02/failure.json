@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-09-21T00:22:14.851Z",
+  "failed_at": "2026-09-21T00:22:45.833Z",
+  "runner_sha256": "ff3b59befabc73ffaff615286cf265c868a5a61e73894035c3745027b5b6c59e",
+  "category": "TimeoutError",
+  "completed_tool_calls": 6
+}

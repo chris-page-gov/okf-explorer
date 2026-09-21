@@ -1,0 +1,63 @@
+{
+  "schema": "okf-remote-mcp-build.v1",
+  "service_version": "0.5.0",
+  "inputs": {
+    "../../apps/okf-explorer/src/lib/context/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "../../apps/okf-explorer/src/lib/context/delivery.ts": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90",
+    "../../apps/okf-explorer/src/lib/context/index.ts": "cc9fe1c162e1ad505f080712b6eacf0bad843f0e32d6f953b697b8349b2c4ca8",
+    "../../profiles/context-assembly/v1/common.schema.json": "346f86667daec3ab9d6f21d007d7c7c948c04de8f4439818d8185a13e6267a2b",
+    "../../profiles/context-assembly/v1/package.schema.json": "0f7f4e5b3038c27f67577cf662084125e4785c8bd072c28ea62ba4a557970280",
+    "package-lock.json": "aaa0e91680427a5b731aef8229fad2bb8c309c81d6431f815f478681812df6bf",
+    "package.json": "2f6ec3fc9cc1b72f57ec6ac63c7ba68aae80a24e1e67775961e9e99efd100773",
+    "vendor/okf-dwp-assembly-index.json": "38159445a60d4bcabc23cb2cf728e14cbd0a4b55013276c291356e7a1452ff54",
+    "vendor/okf-dwp-corpus-manifest.json": "06362458d013322b565e13884066fd896b68986df8be93c09a02979eab8f199b",
+    "vendor/okf-dwp-descriptor.json": "9881779ab550efe9f73da1e16acd8c8dcb64933c9981bb290b66ff51572853f3",
+    "vendor/okf-dwp-previous-corpus-manifest.json": "aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95",
+    "vendor/okf-dwp-staff-corpus-manifest.json": "9d20d0a6af54050bdddcd3550a2c01abe26c360754a27d2f7781dd03054db265",
+    "scripts/build.mjs": "bd13282eb413ceaf5a480ff7f6a46aaa733909cd98e946c2aa5bd15c32f2af7c",
+    "src/bundles.ts": "5ec1d2be62399576f42831ffd679f62fda8da04adecda260fcba6a646acbacd4",
+    "src/contracts.ts": "8a5ec4fdb5bd241c1286db245fc436b76d78531b98d4fc113e5f689cb817bf3d",
+    "src/corpusFetch.ts": "90fef25ec9f8cdc4cdfdf7aee1a4cc3dcd59738f4abf1624356a7a83038a85ed",
+    "src/deliveryContracts.ts": "87ffa6ead9608fb1745c8fc4cdec3a737b697e5538a0a9fa86e6b18c03294eb1",
+    "src/engines.ts": "0e826efbeef8dd46583a891e9aaaa77acc0d9cf9a283a43dc1fd8ea01ab8538c",
+    "src/landing.ts": "3a66eeccf751d420809753e6ca7c564f3c84c761f566e95cc25f005cf22bac25",
+    "src/registry.ts": "e9ba4b2804f0e0dd280793460709b72959e4b3219a376c3c9d1475497793d76d",
+    "src/replay.ts": "342dda18b0325659dc72631be2cf05d5b53d4f9571b7622dfef162bbfc8208a4",
+    "src/replayDelivery.ts": "a192c5d16c6625c5fc29edff7e8e259333cc52b86a7143666faf674cc133fa52",
+    "src/review.ts": "1b85576612b8e565cc5a93a559ebf5f2e1454ce0f64dfd930db8cfdb038f3402",
+    "src/service.ts": "63bdc6891c6675a0156cce6f4d266b4dc90f6bc4b2175f55741bbfa41d4f4c22",
+    "src/worker.ts": "b8c64b7091c54d16a2bce49a5b081f80a297131778fc5d3de443c75e1e819981",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/index.ts": "bade207cbc414b9a057778fdc28564d1c0f9c03e7548b3644a3fb9ec9b8731e6",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/manifest.json": "2a36610b52ef0e5415c008b39a597dd20b54b935e9db2ef0051b79451fcae117",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/types.ts": "248b7db16fa1faf2cb6c5c07c8347b926ae649a528b79e92bca3816829938b65",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/index.ts": "cc9fe1c162e1ad505f080712b6eacf0bad843f0e32d6f953b697b8349b2c4ca8",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/manifest.json": "592dbb65ce150dc6c1892457f2799dd9d12d245a1dc83a2ae6bc292da8bfcc0e",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/types.ts": "d9eff934ec504c3fbd2afff672ae1d3a8a275e84cc11b71fed8a3e1b0edfdcf3",
+    "vendor/okf-dwp-corpus-release.json": "cdb8332cc0a0d608bcb52e8bcf7fbf7111a7db8d370fe0862967edf2863a1baf",
+    "vendor/okf-dwp-previous-corpus-release.json": "ebcdf9b3b400cd9a39acff8ef969161396023b958f5b09d8b7892af4834cb08d",
+    "vendor/okf-dwp-staff-corpus-release.json": "9cfe03d547c33ae00b297041f4d941ce51584c28adcc4c940a6293cc1d996985"
+  },
+  "engines": [
+    {
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "source_commit": "c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e"
+    },
+    {
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "source_commit": "b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55"
+    }
+  ],
+  "outputs": {
+    "dist/server/index.js": "3fac76f81f2615a36a54bf3bb117ce6c161780e0bdc26d66b4ab324679c86536",
+    "dist/node.mjs": "c31742aab21473b8ce6b0bbb8fb375156dde6bf9b6f803be8afc1eca1568694a"
+  },
+  "worker_node_dependencies": false,
+  "bundle_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+  "historical_bundle_versions": [
+    "9de52acf1db84b27f8933d80480eaa850e74fa33",
+    "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+    "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+  ]
+}

@@ -1,6 +1,6 @@
 # Remote Ask OKF transport
 
-Decision: 19 September 2026; updated 21 September 2026 for service 0.5.0.
+Decision: 19 September 2026; updated 21 September 2026 for the undeployed service 0.6.0 candidate.
 The original full-source HTTPS deployment and official SDK package parity were
 verified on 19 September. An independent 43-case raw HTTP run also passed
 complete-package parity. Those are historical observations. The new combined
@@ -8,10 +8,16 @@ household/statutory-evidence candidate has separate local verification; hosting 
 acceptance require new receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
-The remote service is a tool-only adapter. It imports the same deterministic
-`assembleContext` and `assembleCorpusContext` implementations used by Explorer and WebMCP. It does not
+The remote service is a tool-only adapter. This undeployed candidate statically
+imports two frozen versions of Explorer's deterministic `assembleContext` and
+`assembleCorpusContext` implementations. Their manifests bind exact modules from
+commits `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and
+`b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55`. It does not
 implement search, retrieval, interpretation or model answering. The existing
-`okf-governed-context.v1` package remains the output contract.
+`okf-governed-context.v1` package remains the full-package output contract.
+Precise implementation identity appears in a separate transport envelope; the
+package's `engine` field remains a capability-family label. See the
+[versioned replay decision](../../docs/adr-versioned-evidence-replay.md).
 
 The official MCP TypeScript SDK v2 provides a Web Fetch-compatible HTTP handler,
 with explicit support for earlier stateless Streamable HTTP clients. A Node
@@ -22,7 +28,7 @@ exact verified slices. Anonymous access exposes only allow-listed immutable
 public source versions; it does not confer source authority or give individual
 advice. Compact delivery changes transfer size, not evidence selection.
 
-At build time, verify all three vendored OKF-DWP corpus manifests and historical descriptor/context-index bytes
+At build time, verify all four vendored OKF-DWP corpus manifests and historical descriptor/context-index bytes
 against fixed SHA-256 values and compose the existing canonical package schema
 from local references. At request time, accept only a logical bundle identifier
 and allow-listed immutable version. No request can supply a URL. Default corpus
@@ -52,7 +58,7 @@ The default combined DMG/ADM corpus includes 40 proposed staff-task evidence
 profiles and 203 explicit open obligations. Its contexts remain insufficient
 while scope, evidence closure, legal version, applicability and independent
 review are unresolved. Its 19,090 measured pages include 893 explicit empty-text
-exclusions. Its semantic base contains 901 records and 1,427 assertions, including
+exclusions. Its semantic base contains 903 records and 1,482 assertions, including
 51 authored concepts and 20 selected statutory units with 43 source-backed
 references. Source text is held as machine-extracted, normalised evidence with
 derived authority, version and acquisition metadata; it is never labelled as
@@ -60,7 +66,13 @@ specialist-approved interpretation. Unresolved extent, amendments, applicability
 and citation dependencies remain explicit. The additional bodies do not close
 the 203 obligations or establish a complete legal dependency set.
 
-The default is pinned to `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84`.
+The candidate default is pinned to `723bcc5b015ab38a026625c2148edbd784edf7c7`.
+It adds partner/household qualifications, 98 selected guidance pages and
+39 required-support relationships. Only the current c4f engine is approved for
+this source. The original household/statutory source at
+`3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` remains separately vendored, with
+both historical engines available. Five sources and these explicit compatibility
+choices give nine supported source/engine pairs.
 The preceding `9de52acf1db84b27f8933d80480eaa850e74fa33` staff semantic
 corpus remains separately available, including its original metadata-only legal
 references, manifest bytes and binding.
@@ -74,6 +86,13 @@ rewrite any earlier version or acceptance receipt. Context identities also bind
 the selected engine output: adding an approved version does not assert that
 every old question will be byte-identical under every later engine. The explicit
 historical custody regression still requires its original context identity.
+
+The new 0.6.0 local integration checks ten cases against 74 exact Git files:
+the current care-home and actual unknown-term control at 512 KiB, then the
+eight historical source/engine combinations. Four complete packages match the
+original 0.5.0 hashes. These are local observations, not public acceptance.
+The [successor live verifier](VERSIONED-REMOTE-VERIFICATION.md) separately checks
+compact delivery with an explicit immutable source and engine plan.
 
 The retained 0.5.0 local integration reads exact immutable DWP Git blobs and
 verifies all four versions through the official SDK 2 and SDK 1 clients, plus
@@ -89,11 +108,21 @@ missing evidence, scope, rights, paths and budget omissions. A smaller requested
 budget is handled by the core and may make the package insufficient. There is no
 silent clipping, general-knowledge fallback, external search or model call.
 
-Compact reads require the same question, approved version, budget and context
+Compact reads require the same question, approved version, engine ID, budget and context
 identifier. The service reassembles that context and rejects mismatches before
 returning a selected record or slice. Browser review links contain this replay
 recipe in a fragment. They are inert until the user selects **Recreate evidence**;
 there is no stored audit log or AI-answer replay.
+
+Old recipes with an expected context ID and no engine get at most two sequential
+compatible attempts. Matching context IDs also require equal complete canonical
+package bytes. A match does not establish the historical originating engine.
+The two attempts share 64 file/decode operations, 16 MiB unique transfer,
+32 MiB decoded work and a checked 60-second deadline. The public-byte cache is
+invocation-scoped and does not retain questions. Unknown/incompatible engines,
+different complete bytes or unavailable historical results return no evidence.
+Every new replay link explicitly pins its reconstruction engine. Opening another
+fragment in the same tab clears the previous result and remains inert until submit.
 
 The HTTP boundary limits request bodies, concurrency, methods and origins. It
 accepts no credentials, persistence, write tools or filesystem paths. Diagnostics

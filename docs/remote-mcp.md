@@ -69,6 +69,51 @@ context identity. A changed engine can produce a different context from the
 same source; a stale context identity fails closed rather than opening different
 evidence under the old identity.
 
+### Candidate 0.6.0: qualification evidence and reproducible links
+
+The prepared 0.6.0 default is immutable DWP source
+`723bcc5b015ab38a026625c2148edbd784edf7c7`. Its semantic base contains
+903 records and 1,482 relationships, including 51 authored concepts,
+98 selected guidance pages, 20 statutory units and 39 required-support
+relationships. These relationships identify passages that should travel together
+so that a qualification is not separated from the rule it limits. They do not
+make the interpretation official or close the 203 outstanding staff obligations.
+
+All four previous source revisions remain selectable. The new source is approved
+only for the current c4f assembler; the older sources retain both frozen
+assemblers. Ten local adapter/SDK cases pass, including both current questions
+at 512 KiB and four original historical complete-package comparisons. The
+care-home package remains insufficient; the unknown-term control contains no
+selected evidence. See the [candidate observations](../services/ask-okf-mcp/validation/candidates/release-0.6.0-2026-09-21/README.md).
+
+**This is not deployed.** The public acceptance described above remains 0.5.0.
+A [new bounded live verifier](../services/ask-okf-mcp/VERSIONED-REMOTE-VERIFICATION.md)
+will compare exact compact packages after an authorised deployment. Its health
+check reports source and engine identity; a separate hosting record must bind
+the actual Worker bytes.
+
+### Candidate: reproducible evidence links across assembler updates
+
+The [versioned replay decision](adr-versioned-evidence-replay.md) adds a separate
+identity for the **assembler**, the program that selects and packages evidence.
+A fixed source alone cannot reproduce a package if that program changes. New
+review links therefore record both identities and the expected context digest.
+
+Older links without an assembler identity can be checked against a small,
+explicitly approved set of compatible versions. The service returns evidence
+only if its complete package matches the expected identity. It identifies which
+assembler reproduced the package; it does not invent the unknown original
+assembler. Unknown combinations, changed content and exhausted replay limits
+fail with an explanation. No replacement answer is supplied.
+
+This is an **undeployed candidate**. Local integration reproduced eight approved
+source/assembler combinations, including the original 0.5.0 care-home package,
+and retained separate browser and integrity checks. The candidate preserves the
+full-package contract and exposes replay details beside it. Compact reads still
+transfer exact evidence in bounded parts. Deployment and actual public-client
+verification are separate release gates; the live release described above
+remains 0.5.0. See the [candidate receipts](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/README.md).
+
 ### Historical full-source release
 
 The earlier full-source default used DWP revision
@@ -430,3 +475,5 @@ This endpoint is a public test deployment. No production service-level promise,
 specialist domain approval or claimant case-handling authorisation follows from
 its availability. Review hosting limits, monitoring, retention and source-update
 ownership before depending on it operationally.
+
+The [preserved development history](../services/ask-okf-mcp/validation/candidates/versioned-replay-2026-09-21/history/index.md) has a separate static navigation page. The original artefact inventory and every retained observation remain unchanged.

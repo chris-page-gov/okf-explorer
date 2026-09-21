@@ -1,6 +1,26 @@
 # Changelog
 
+## Preserved evidence navigation — 21 September 2026
+
+- Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
+
 ## Unreleased
+
+- Prepare undeployed Ask OKF service 0.6.0 with the final partner/household
+  qualification corpus. Retain all four historical sources and their exact
+  replay paths; admit the new source only with the current assembler.
+  Verify ten local cases, including 512 KiB care-home and empty-control packages,
+  without promoting missing evidence, legal review or model acceptance.
+  Extend the separate bounded live verifier to both exact public questions;
+  preserve all earlier public observations.
+
+- Add an undeployed, versioned evidence-replay candidate. Bind new review links
+  to approved source and assembler identities; check older links against a
+  bounded compatible set and return only the complete matching package. Keep
+  unknown original assembler identity explicit, preserve full-package output,
+  and expose replay provenance alongside compact delivery. Retain local tests,
+  eight source/assembler integration cases and browser observations separately
+  from the still-live 0.5.0 deployment.
 
 - Give valid, bundle-declared evidence paths priority when node, relationship or
   byte limits would otherwise omit them. Use at most one additional allocation

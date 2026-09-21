@@ -1,0 +1,30 @@
+{
+  "schema": "okf-local-build-size-comparison.v1",
+  "scope": "Locally measured raw/gzip9 bytes. No hosted compression, memory, capacity or latency claim.",
+  "outputs": {
+    "dist/server/index.js": {
+      "previous": {
+        "bytes": 3457792,
+        "gzip_9_bytes": 628143,
+        "sha256": "0720239e4657fba2fcaa037a2fdfb6fa7ba16f4adcc9c92db4bb99cfadcff706"
+      },
+      "candidate": {
+        "bytes": 4195412,
+        "gzip_9_bytes": 762017,
+        "sha256": "9e8840a9e31bac105dce0b40037300423cffe9dec90bbbab29b7541dd29b28ac"
+      }
+    },
+    "dist/node.mjs": {
+      "previous": {
+        "bytes": 2836456,
+        "gzip_9_bytes": 505896,
+        "sha256": "831197496f66f0da021ad839458586a8ba592c2d0c596a408fa35248e7106a12"
+      },
+      "candidate": {
+        "bytes": 3574079,
+        "gzip_9_bytes": 639611,
+        "sha256": "9e1bdf7f937303256482c68138a5bd5871e799d1d040d4d6763f1174d4b038ae"
+      }
+    }
+  }
+}
