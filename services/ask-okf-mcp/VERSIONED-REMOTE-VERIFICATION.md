@@ -4,8 +4,10 @@ This is the successor to the frozen service 0.5.0 live verifier. It has its own
 runner and receipts. Older verifiers, published observations and received
 packages remain unchanged.
 
-The new runner is **prepared for a later authorised live check**. Its offline
-unit tests and in-process SDK checks are not public-service observations.
+This runner supports separately authorised, version-specific public checks.
+See the [shared publication record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md)
+for retained deployments and observations. Its offline unit tests and in-process
+SDK checks are not public-service observations.
 
 ## What the identities mean
 
@@ -185,4 +187,5 @@ existing meaning as the whole v2 result digest. No schema or tool metadata is
 normalised away. Unknown envelope fields, weakened schemas, changed annotations,
 changed trust/authentication metadata and even description-only differences
 between SDKs fail the controls. Fifteen offline controls pass, including both
-real SDKs; this correction is not a claim that another public attempt passed.
+real SDKs. The subsequent successful 0.6.0 attempt is linked from the shared
+publication record. Later releases need their own exact build and observation.

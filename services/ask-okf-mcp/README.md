@@ -9,6 +9,14 @@ official DWP service or individual benefits advice.
 [Publication procedure](../../docs/remote-mcp-publication.md). Software preparation
 and recorded public deployment are separate states.
 
+Service 0.6.1 changes only the advertised non-blank question pattern and version
+bookkeeping. Some connected clients match a regex against the entire question;
+the equivalent anchored pattern accepts complete questions there too. All three
+tools share the constraint. The source registry, frozen engines and evidence
+selection remain unchanged. Refresh installed tool metadata after publication
+and test the intended client session using the
+[connection guide](../../docs/remote-mcp.md#connect-in-chatgpt).
+
 <!-- ask-okf-publication:start -->
 ## Recorded public deployment: 0.6.0
 
@@ -82,7 +90,8 @@ preceding-engine packages match the original 0.5.0 complete-package hashes.
 Both SDK generations check the catalogue; bounded reads reconstruct every
 complete package. The care-home package remains insufficient.
 
-With all five approved DWP commits in a local Git repository:
+To reproduce the historical 0.6.0 candidate, use its recorded Explorer checkout
+with all five approved DWP commits in a local Git repository:
 
 ```sh
 npm run build
@@ -102,7 +111,10 @@ The [original 0.5.0 observation](validation/approved-versions-0.5.0.json),
 [required-evidence observation](validation/candidates/required-evidence-2026-09-21/README.md)
 and all earlier build/receipt archives remain unchanged. Their previous runners
 belong to those historical source checkouts; use the new runner above for this
-checkout's engine envelopes. The original care-home example contains 35 records
+historical candidate's engine envelopes. For this checkout, use the
+[versioned verification protocol](VERSIONED-REMOTE-VERIFICATION.md), supplying
+the exact current software version and committed build. Its offline mode makes
+no HTTP requests. The original care-home example contains 35 records
 and 50 relationships; the newer engine's same-source package contains 35 records
 and 61 relationships. Both remain insufficient. Preserving their bytes does not
 upgrade their evidence status.

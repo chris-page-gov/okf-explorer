@@ -1,5 +1,17 @@
 # Changelog
 
+## Service 0.6.1 client question compatibility — 21 September 2026
+
+- Make the shared non-blank question pattern compatible with clients that match
+  the whole string. Preserve the accepted questions, 2,000-character limit,
+  read-only tools, source versions and evidence engines. Add regressions for
+  ordinary, multiline and Unicode questions across all three tools.
+- Explain how to refresh an installed connection and establish tool access in
+  each new AI session. Keep missing tools, connector validation, public MCP
+  delivery and model answer quality as separate observed outcomes.
+- Check historical 0.6.0 receipts against their retained build and runner;
+  preserve every archived observation when the current Worker changes.
+
 ## Recorded service publication and documentation consistency — 21 September 2026
 
 - Correct the remote guide and service README to reflect the retained 0.6.0 public deployment and SDK observation. Keep source, runtime, engine and verifier identities separate.
