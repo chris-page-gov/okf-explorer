@@ -46,6 +46,12 @@ checks from lexical search scores and later model-answer assessment.
 AI clients through a read-only MCP service. The guide separates source coverage,
 transport tests, actual ChatGPT invocation and Voice compatibility.
 
+[Retained evidence examples](docs/adr-retained-evidence-examples.md) add an
+offline export and small static reader for approved fixed packages. Follow the
+[seven-step recorded-evidence demonstration](docs/retained-evidence-demo.md)
+to inspect source text, provenance, relationships and gaps without a live AI
+call. Publication and an actual public-host check remain separate gates.
+
 ## Contribute
 
 Use the [development guide](docs/development.md) for locked setup, local builds,

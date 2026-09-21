@@ -107,6 +107,28 @@ the index URL, exact index digest and bundle snapshot. A local evaluation can
 use a public source locator while reading frozen local bytes; its receipt says
 which happened and makes no claim that the URL was fetched.
 
+## Retain an approved example
+
+An explicitly approved fixed package can also be exported as a small static
+archive. Its catalogue and evidence links preserve the exact selection and
+whole-package hash; opening it does not run the assembler or submit a question.
+This is a recorded example, separate from live replay and any AI-generated
+answer. It does not upgrade missing evidence or establish current applicability.
+
+The [archive decision](adr-retained-evidence-examples.md),
+[profile](../profiles/context-archive/v1/README.md) and
+[beginner demonstration](retained-evidence-demo.md) explain the contract and
+reader. The focused offline check is part of the existing `context-assembly`
+CI gate and the repository publication contract:
+
+```sh
+node --experimental-strip-types --test tools/context-archive/archive.test.ts
+```
+
+Its synthetic and retained local cases test exact bytes, bounded resources and
+failure behaviour. An adopting publisher must separately approve its examples,
+bind the generated files and verify the actual public host.
+
 ## Execute an independent evaluation
 
 From the Explorer checkout, use the locked Python environment and Node 26:

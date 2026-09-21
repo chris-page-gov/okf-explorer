@@ -16,6 +16,7 @@ workers as well as contributors.
 ## Use and learn
 
 - [Use Explorer](use-okf-explorer.md): current search, facets, highlighting, keeping sets, panels and evidence.
+- [Inspect a retained evidence example](retained-evidence-demo.md): a seven-step demonstration of a fixed package, its source links and its limits.
 - [AI Infrastructure walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md): one concept across Markdown and Explorer.
 - [Beginner reference](beginners/index.md): explanations when you need them, without required sequential reading.
 - [Optional project studio](project-studio/index.md): research and create a larger bundle; app creation is optional.
