@@ -11,7 +11,7 @@ test('release package, lock, registry and build agree without changing locked de
   const json = async (path: string) => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
   const pkg = await json('../package.json'); const lock = await json('../package-lock.json');
   const build = await json('../dist/build-receipt.json');
-  assert.equal(SERVICE_VERSION, '0.6.0');
+  assert.equal(SERVICE_VERSION, '0.6.1');
   assert.equal(pkg.version, SERVICE_VERSION); assert.equal(lock.version, SERVICE_VERSION);
   assert.equal(lock.packages[''].version, SERVICE_VERSION); assert.equal(build.service_version, SERVICE_VERSION);
   assert.deepEqual(lock.packages[''].dependencies, pkg.dependencies);
