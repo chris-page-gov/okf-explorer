@@ -1,6 +1,34 @@
 # Ask OKF service changelog
 
-## 0.6.0 — undeployed partner and qualification candidate
+<!-- ask-okf-publication:start -->
+## Recorded public deployment: 0.6.0
+
+For the **latest recorded deployment and verification**, use the shared
+[DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
+
+On 21 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/deployment.json)
+records service **0.6.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/sdk/attempt-02/observation.json)
+passed **11 evidence cases and 121 requests**,
+reconstructing complete packages from bounded reads. It recorded
+10,322,602 received bytes, no automatic retries and no model calls.
+
+| Identity | Recorded value |
+| --- | --- |
+| DWP source | `723bcc5b015ab38a026625c2148edbd784edf7c7` |
+| Context engine | `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` |
+| Deployed runtime | `0472b75a9dd353d6094a83ca9f752c4d78914168` |
+| SDK verifier | `03d0264c02a6d59d75013df4bffba279b3d4aa9c` |
+| Local Worker SHA-256 | `9e8840a9e31bac105dce0b40037300423cffe9dec90bbbab29b7541dd29b28ac` |
+
+The hosting record and public health report have different scopes: health does not
+independently attest hosted Worker bytes. Delivery checks do not establish complete
+legal evidence, specialist acceptance, answer quality or compatibility with a
+particular ChatGPT, Data agent or Voice client. This observation includes no new
+public browser journey. Earlier failures and observations retain their own scope.
+<!-- ask-okf-publication:end -->
+
+## 0.6.0 — partner and qualification preparation
 
 - Pin final combined source `723bcc5b015ab38a026625c2148edbd784edf7c7` by
   exact manifest bytes. Retain 0.5.0's four sources and both archived engines;
@@ -9,10 +37,10 @@
   adapter/SDK cases, including the care-home question and an unknown-term
   control at 512 KiB. Four earlier complete-package hashes reproduce exactly.
 - Add explicit current question/budget identities to the successor compact live
-  verifier. It remains opt-in, bounded and undeployed; no new public-service or
-  model acceptance is claimed. Keep all 203 staff obligations open.
+  verifier. It remains opt-in and bounded. The later public observation above
+  does not establish model acceptance. Keep all 203 staff obligations open.
 
-## Earlier undeployed engine-pinned replay candidate
+## Earlier engine-pinned replay preparation
 
 - Retain exact c4f and b9 assembler modules with build-verified manifests and
   explicit compatibility for the four existing approved source revisions.

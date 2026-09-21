@@ -1,6 +1,8 @@
 # Keep evidence replay stable across assembler upgrades
 
-Status: implemented local candidate, not deployed. Decision date: 21 September 2026.
+Status: implemented. Decision date: 21 September 2026.
+Deployment and verification are recorded separately in the
+[shared publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md).
 
 ## Problem
 

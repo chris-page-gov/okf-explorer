@@ -5,18 +5,45 @@ engine. It serves approved immutable public OKF-DWP versions anonymously. It mak
 model calls and requires no API key. This is an independent experiment, not an
 official DWP service or individual benefits advice.
 
-[Service changelog](CHANGELOG.md). This checkout prepares **service 0.6.0**, an
-**undeployed candidate**. Its default is the final partner/household qualification
-source `723bcc5b015ab38a026625c2148edbd784edf7c7`. It retains all four sources
-available in 0.5.0. The new source uses the current c4f assembler only; the four
-older sources retain both frozen assemblers. This gives nine approved pairs.
+[Service changelog](CHANGELOG.md) · [Software version](package.json) ·
+[Publication procedure](../../docs/remote-mcp-publication.md). Software preparation
+and recorded public deployment are separate states.
 
-The build verifies the exact manifest and both engine archives. Historical
-context IDs and complete-package hashes remain enforced. The published service
-still has its separate 0.5.0 acceptance record; local candidate checks do not
-attest a new deployment. See the [release candidate observation](validation/candidates/release-0.6.0-2026-09-21/README.md),
+<!-- ask-okf-publication:start -->
+## Recorded public deployment: 0.6.0
+
+For the **latest recorded deployment and verification**, use the shared
+[DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
+
+On 21 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/deployment.json)
+records service **0.6.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/sdk/attempt-02/observation.json)
+passed **11 evidence cases and 121 requests**,
+reconstructing complete packages from bounded reads. It recorded
+10,322,602 received bytes, no automatic retries and no model calls.
+
+| Identity | Recorded value |
+| --- | --- |
+| DWP source | `723bcc5b015ab38a026625c2148edbd784edf7c7` |
+| Context engine | `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` |
+| Deployed runtime | `0472b75a9dd353d6094a83ca9f752c4d78914168` |
+| SDK verifier | `03d0264c02a6d59d75013df4bffba279b3d4aa9c` |
+| Local Worker SHA-256 | `9e8840a9e31bac105dce0b40037300423cffe9dec90bbbab29b7541dd29b28ac` |
+
+The hosting record and public health report have different scopes: health does not
+independently attest hosted Worker bytes. Delivery checks do not establish complete
+legal evidence, specialist acceptance, answer quality or compatibility with a
+particular ChatGPT, Data agent or Voice client. This observation includes no new
+public browser journey. Earlier failures and observations retain their own scope.
+<!-- ask-okf-publication:end -->
+
+The default source retains all four sources available in 0.5.0. It uses the c4f
+assembler; the older sources retain both frozen assemblers, giving nine approved
+pairs. The build checks the exact manifest and both engine archives. Historical
+context IDs and complete-package hashes remain enforced. See the
+[local preparation observation](validation/candidates/release-0.6.0-2026-09-21/README.md),
 [versioned replay decision](../../docs/adr-versioned-evidence-replay.md) and
-[successor live verification protocol](VERSIONED-REMOTE-VERIFICATION.md).
+[live verification protocol](VERSIONED-REMOTE-VERIFICATION.md).
 
 ## Run and check
 
@@ -257,7 +284,7 @@ service does not claim ChatGPT Deep Research compatibility.
 
 ## Assurance and deployment
 
-The undeployed 0.6.0 candidate passes registry, SDK transport and HTML-header
+The 0.6.0 implementation passes registry, SDK transport and HTML-header
 controls. Cross-version manifest swaps and the previous engine/new source
 combination fail closed. Four historical source versions remain explicit.
 The new local integration preserves the original care-home wording and verifies
@@ -269,8 +296,8 @@ or applicability gaps.
 
 Hosting, response headers, body transformations, cookies and client behaviour
 need separate deployment receipts tied to the engine actually published. Earlier
-0.5.0 observations do not attest this changed candidate. No hosting issue is
-declared closed by these source changes.
+0.5.0 observations do not attest 0.6.0. The dated 0.6.0 hosting and SDK records
+above do not establish new public-browser or client-specific acceptance.
 
 The earlier full-source public HTTPS service was verified on 19 September 2026 using
 the official SDK 2.0.0 with protocol `2026-07-28`. Its imprisonment and hospital
@@ -322,11 +349,12 @@ No mutable branch alias, model fallback or general web search is provided.
 
 ## Verify a remote deployment
 
-For this candidate, use the [new bounded verifier](VERSIONED-REMOTE-VERIFICATION.md).
+For a new observation, use the [bounded verifier](VERSIONED-REMOTE-VERIFICATION.md).
 It defaults to an offline plan, binds the exact source/engine catalogue and
 requires `--execute-public` for an authorised live observation. Its received
-compact slices reconstruct the same 512 KiB contexts. Public acceptance remains
-pending. Health reports identities; only a separate hosting publication record
+compact slices reconstruct the same 512 KiB contexts. Each run needs its own
+receipt; the dated observation above is preserved. Health reports identities;
+only a separate hosting publication record
 can bind the deployed Worker.
 
 ### Historical 0.5.0 verification procedure

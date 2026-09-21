@@ -1,5 +1,30 @@
 # Changelog
 
+## Recorded service publication and documentation consistency — 21 September 2026
+
+- Correct the remote guide and service README to reflect the retained 0.6.0 public deployment and SDK observation. Keep source, runtime, engine and verifier identities separate.
+- Derive the three dated status blocks from immutable DWP receipts and check them in pull-request and Pages gates. The shared DWP publication page is the reference for later recorded deployments; a dated observation is not a live health check.
+- Preserve frozen candidate records, failed observations and earlier browser results. Public delivery does not establish Data agent, ChatGPT Voice, legal or answer-quality acceptance.
+
+## Service 0.6.0 preparation — 21 September 2026
+
+- Prepare Ask OKF service 0.6.0 with the final partner/household
+  qualification corpus. Retain all four historical sources and their exact
+  replay paths; admit the new source only with the current assembler.
+  Verify ten local cases, including 512 KiB care-home and empty-control packages,
+  without promoting missing evidence, legal review or model acceptance.
+  Extend the separate bounded live verifier to both exact public questions;
+  preserve all earlier public observations.
+
+- Add versioned evidence replay. Bind new review links
+  to approved source and assembler identities; check older links against a
+  bounded compatible set and return only the complete matching package. Keep
+  unknown original assembler identity explicit, preserve full-package output,
+  and expose replay provenance alongside compact delivery. Retain local tests,
+  eight source/assembler integration cases and browser observations separately
+  from the earlier 0.5.0 deployment.
+  The later 0.6.0 public observation is recorded above.
+
 ## SDK discovery verification — 21 September 2026
 
 - Compare complete tool definitions across MCP SDK versions while validating their distinct server/cache envelopes. Preserve exact schemas, read-only annotations and trust metadata.
@@ -19,22 +44,6 @@
   and publication contract. Retain a local Chrome journey with seven focused
   checks and its earlier failures; public publication remains a separate gate.
 
-- Prepare undeployed Ask OKF service 0.6.0 with the final partner/household
-  qualification corpus. Retain all four historical sources and their exact
-  replay paths; admit the new source only with the current assembler.
-  Verify ten local cases, including 512 KiB care-home and empty-control packages,
-  without promoting missing evidence, legal review or model acceptance.
-  Extend the separate bounded live verifier to both exact public questions;
-  preserve all earlier public observations.
-
-- Add an undeployed, versioned evidence-replay candidate. Bind new review links
-  to approved source and assembler identities; check older links against a
-  bounded compatible set and return only the complete matching package. Keep
-  unknown original assembler identity explicit, preserve full-package output,
-  and expose replay provenance alongside compact delivery. Retain local tests,
-  eight source/assembler integration cases and browser observations separately
-  from the still-live 0.5.0 deployment.
-
 - Give valid, bundle-declared evidence paths priority when node, relationship or
   byte limits would otherwise omit them. Use at most one additional allocation
   pass from the original resolved seeds, retain whole passages and explain the
@@ -46,7 +55,7 @@
 - Show each large-corpus record's declared type in the detail badge before and
   after loading its full record. Use collection vocabulary only as a fallback,
   so mixed corpora do not label every item as the same kind of document.
-- Retain a separate, undeployed service integration observation for the changed
+- Retain a separate local service integration observation for the changed
   engine: four approved source versions and four compact cases pass. Record
   changed corpus context identifiers explicitly and preserve the earlier 0.5.0
   receipts. A fixed source version alone does not freeze a future engine's
