@@ -26,6 +26,37 @@ export const canonical = (value: any): string => Array.isArray(value) ? `[${valu
   : value && typeof value === 'object' ? `{${Object.keys(value).sort().filter(key => value[key] !== undefined).map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}` : JSON.stringify(value);
 function equal(actual: unknown, expected: unknown, label: string) { if (canonical(actual) !== canonical(expected)) throw new Error(label); }
 
+export type ToolContract = readonly [string, unknown, unknown];
+/** Retain hashes/counts only: no discovery strings or arbitrary metadata in failure telemetry. */
+export function discoveryDiagnostic(result: any) {
+  const envelope = result && typeof result === 'object' && !Array.isArray(result)
+    ? Object.fromEntries(Object.entries(result).filter(([key]) => key !== 'tools')) : null;
+  return { result_sha256: sha(canonical(result)), envelope_sha256: sha(canonical(envelope)),
+    tools_sha256: Array.isArray(result?.tools) ? sha(canonical(result.tools)) : null,
+    tool_count: Array.isArray(result?.tools) ? result.tools.length : null };
+}
+/** SDK v2's protocol-era cache/server envelope is absent in SDK v1; tool rows are never projected or normalised. */
+export function validateToolDiscovery(result: any, expected: readonly ToolContract[], sdk: 'v1' | 'v2', serviceVersion: string) {
+  assert.ok(result && typeof result === 'object' && !Array.isArray(result) && Array.isArray(result.tools), 'Invalid tool discovery result');
+  const envelope = Object.fromEntries(Object.entries(result).filter(([key]) => key !== 'tools'));
+  equal(envelope, sdk === 'v2' ? { _meta: { 'io.modelcontextprotocol/serverInfo': { name: 'ask-okf', version: serviceVersion } },
+    ttlMs: 0, cacheScope: 'private' } : {}, 'SDK discovery envelope differs');
+  assert.equal(result.tools.length, expected.length);
+  assert.equal(new Set(result.tools.map((tool: any) => tool.name)).size, expected.length, 'Duplicate tool identity');
+  for (const [name, input, output] of expected) {
+    const tool = result.tools.find((row: any) => row.name === name); assert.ok(tool, 'Expected tool is absent');
+    equal(tool.inputSchema, input, 'Input schema differs'); equal(tool.outputSchema, output, 'Output schema differs');
+    equal(tool.annotations, { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, 'Tool is not governed read-only');
+    equal(tool._meta, { 'okf/untrustedContent': true, securitySchemes: [{ type: 'noauth' }] }, 'Tool trust or authentication metadata differs');
+  }
+  return discoveryDiagnostic(result);
+}
+export function compareToolDiscovery(v2: ReturnType<typeof discoveryDiagnostic>, v1: ReturnType<typeof discoveryDiagnostic>) {
+  assert.ok(v2.tools_sha256 && v1.tools_sha256, 'Tool rows missing');
+  assert.equal(v1.tools_sha256, v2.tools_sha256, 'Complete SDK tool rows differ');
+  assert.equal(v1.tool_count, v2.tool_count, 'SDK tool census differs');
+}
+
 export type Arguments = { origin: string; sourceVersion: string; worker: string; serviceVersion: string;
   comparisonCommit: string; dwpRoot: string; output: string; executePublic: boolean };
 export function parseArguments(args: string[]): Arguments {
@@ -424,6 +455,8 @@ export async function main(argv = process.argv.slice(2)) {
   const started = new Date().toISOString(); let prepared: Awaited<ReturnType<typeof preparation>> | undefined;
   let remote: ReturnType<typeof boundedRemoteFetch> | undefined; const completed: any[] = [];
   const runnerRaw = await boundedFile(fileURLToPath(import.meta.url));
+  let stage = 'offline-preparation', activeCaseId: string | null = null;
+  const discoveries: Partial<Record<'sdk_v1' | 'sdk_v2', ReturnType<typeof discoveryDiagnostic>>> = {};
   try {
     prepared = await preparation(args);
     const plan = { schema: 'okf-versioned-remote-plan.v1', classification: 'offline-local-reference-plan',
@@ -444,6 +477,7 @@ export async function main(argv = process.argv.slice(2)) {
     if (!args.executePublic) { console.log(JSON.stringify({ mode: 'offline-plan-only', predicted_requests: prepared.predicted, pairs: prepared.pairs.length })); return; }
     // Only this explicit CLI branch supplies actual global fetch to the gate.
     remote = boundedRemoteFetch(args.origin, prepared.predicted);
+    stage = 'public-health';
     const healthResponse = await remote.fetch(new URL('/health', args.origin));
     const health = await healthResponse.json();
     const { registry, engines } = prepared;
@@ -452,50 +486,52 @@ export async function main(argv = process.argv.slice(2)) {
       approved_versions: [...registry.APPROVED_VERSIONS], engine: 'okf-context-assembly.v1', engine_id: engines.CURRENT_ENGINE_ID,
       approved_engines: engines.ENGINE_CATALOGUE };
     equal(health, expectedHealth, 'Actual health/source/engine catalogue differs from the approved comparator');
+    stage = 'sdk-imports';
     const [{ Client, StreamableHTTPClientTransport }, { CfWorkerJsonSchemaValidator }, oldClient, oldTransport, contracts, delivery] = await Promise.all([
       import('@modelcontextprotocol/client'), import('@modelcontextprotocol/client/validators/cf-worker'),
       import('@modelcontextprotocol/sdk/client/index.js'), import('@modelcontextprotocol/sdk/client/streamableHttp.js'),
       import('../src/contracts.ts'), import('../src/deliveryContracts.ts')]);
     const endpoint = new URL('/okf/mcp', args.origin);
     const reconnect = { maxRetries: 0, maxReconnectionDelay: 1000, initialReconnectionDelay: 1000, reconnectionDelayGrowFactor: 1 };
-    const expectedContracts = [
+    const expectedContracts: ToolContract[] = [
       ['ask_okf', contracts.INPUT_SCHEMA, contracts.OUTPUT_SCHEMA],
       ['ask_okf_manifest', delivery.MANIFEST_INPUT_SCHEMA, delivery.MANIFEST_OUTPUT_SCHEMA],
       ['read_okf_evidence', delivery.EVIDENCE_INPUT_SCHEMA, delivery.EVIDENCE_OUTPUT_SCHEMA]
     ];
-    const validateTools = (result: any) => {
-      assert.equal(result.tools.length, expectedContracts.length);
-      for (const [name, input, output] of expectedContracts) {
-        const tool = result.tools.find((row: any) => row.name === name); assert.ok(tool);
-        equal(tool.inputSchema, input, 'Input schema differs'); equal(tool.outputSchema, output, 'Output schema differs');
-        equal(tool.annotations, { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, 'Tool is not governed read-only');
-        assert.equal(tool._meta?.['okf/untrustedContent'], true); equal(tool._meta?.securitySchemes, [{ type: 'noauth' }], 'Authentication contract differs');
-      }
-      return sha(canonical(result));
-    };
-    let toolsSha: string;
     const client = new Client({ name: 'okf-versioned-live-verifier', version: '1.0.0' }, { jsonSchemaValidator: new CfWorkerJsonSchemaValidator(), versionNegotiation: { mode: { pin: '2026-07-28' } } });
     try {
+      stage = 'sdk-v2-connect';
       await client.connect(new StreamableHTTPClientTransport(endpoint, { fetch: remote.fetch, reconnectionOptions: reconnect }));
-      toolsSha = validateTools(await client.listTools());
+      stage = 'sdk-v2-tools-list'; const tools = await client.listTools();
+      discoveries.sdk_v2 = discoveryDiagnostic(tools); stage = 'sdk-v2-tools-contract';
+      validateToolDiscovery(tools, expectedContracts, 'v2', args.serviceVersion);
       for (const item of prepared.cases) {
+        stage = 'sdk-v2-evidence-delivery'; activeCaseId = item.id;
         const result = await verifyDelivery(client as any, item, args.origin); completed.push(result.receipt);
         await writeFile(resolve(args.output, `${item.id}.received-package.json.gz`), gzipSync(result.complete, { level: 9 }), { flag: 'wx' });
       }
+      activeCaseId = null;
     } finally { await client.close(); }
     const legacy = new oldClient.Client({ name: 'okf-versioned-legacy-live-verifier', version: '1.0.0' });
     try {
+      stage = 'sdk-v1-connect';
       await legacy.connect(new oldTransport.StreamableHTTPClientTransport(endpoint, { fetch: remote.fetch, reconnectionOptions: reconnect }));
-      assert.equal(validateTools(await legacy.listTools()), toolsSha!);
+      stage = 'sdk-v1-tools-list'; const tools = await legacy.listTools();
+      discoveries.sdk_v1 = discoveryDiagnostic(tools); stage = 'sdk-v1-tools-contract';
+      validateToolDiscovery(tools, expectedContracts, 'v1', args.serviceVersion);
+      stage = 'cross-sdk-tool-rows'; compareToolDiscovery(discoveries.sdk_v2!, discoveries.sdk_v1);
       const first = prepared.cases.find(item => item.inspectRecord && item.request.version === args.sourceVersion)!;
+      stage = 'sdk-v1-evidence-catalogue';
       const result = toolValue(await legacy.callTool({ name: 'ask_okf_manifest', arguments: { ...first.request, delivery_bytes: 16384 } }));
       equal(result, first.manifests[0], 'Legacy SDK catalogue differs');
     } finally { await legacy.close(); }
+    stage = 'negative-controls';
     const negatives = prepared.negatives;
     for (const [index, control] of negatives.entries()) {
       const response = await remote.fetch(endpoint, negativeRequest(control.args, index + 1));
       verifyNegativeEnvelope(await boundedErrorBody(response), index + 1, control.expected);
     }
+    stage = 'post-run-immutable-inputs';
     // A local source or verifier edit during the live run invalidates acceptance.
     for (const [path, ref] of Object.entries(prepared.inputs)) assert.equal(sha(await boundedFile(resolve(repositoryRoot, path))), ref.sha256);
     assert.equal(sha(await boundedFile(fileURLToPath(import.meta.url))), sha(runnerRaw));
@@ -503,13 +539,14 @@ export async function main(argv = process.argv.slice(2)) {
     for (const name of ['plan.json', 'executed-verifier.ts', 'build-receipt.json', ...prepared.cases.map(item => `${item.id}.received-package.json.gz`)]) {
       const raw = await boundedFile(resolve(args.output, name)); artifacts[name] = { bytes: raw.length, sha256: sha(raw) };
     }
+    stage = 'retain-observation';
     await writeFile(resolve(args.output, 'observation.json'), JSON.stringify({ schema: 'okf-versioned-remote-verification.v1',
       classification: 'actual-public-http', passed: true, started_at: started, completed_at: new Date().toISOString(),
       origin: args.origin, expected_service_version: args.serviceVersion, expected_worker_sha256: args.worker,
       deployed_worker_bytes_independently_verified: false, comparison_commit: args.comparisonCommit,
       current_source_version: args.sourceVersion, engine_catalogue: health.approved_engines, observed_health: health,
       build_receipt_sha256: sha(prepared.buildRaw), runner_sha256: sha(runnerRaw), original_0_5_receipt_sha256: prepared.oldReceiptSha,
-      tools_canonical_sha256: toolsSha!, sdk_v2: '2.0.0 / 2026-07-28', sdk_v1: '1.30.0',
+      tools_canonical_sha256: discoveries.sdk_v2!.result_sha256, tool_discovery: discoveries, complete_tool_rows_equal: true, sdk_v2: '2.0.0 / 2026-07-28', sdk_v1: '1.30.0',
       predicted_request_upper_bound: prepared.predicted, transport: remote.receipt, cases: completed,
       negative_controls: negatives.map(row => ({ id: row.id, no_evidence_returned: true, expected_error_canonical_sha256: sha(canonical(row.expected)) })),
       incompatible_pair_control: prepared.incompatible ? 'passed' : 'not-applicable-no-incompatible-approved-pair',
@@ -523,7 +560,7 @@ export async function main(argv = process.argv.slice(2)) {
       classification: remote ? 'actual-public-http-failed' : 'offline-admission-failed', started_at: started, failed_at: new Date().toISOString(),
       runner_sha256: sha(runnerRaw), comparison_commit: args.comparisonCommit, expected_worker_sha256: args.worker,
       completed_cases: completed, transport: remote?.receipt ?? { request_count: 0 }, failure: 'verification-failed-no-retry',
-      raw_errors_retained: false }, null, 2) + '\n', { flag: 'wx' });
+      failure_stage: stage, active_case_id: activeCaseId, tool_discovery: discoveries, raw_errors_retained: false }, null, 2) + '\n', { flag: 'wx' });
     throw error;
   } finally { await prepared?.loader.close(); }
 }

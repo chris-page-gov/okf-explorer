@@ -1,5 +1,10 @@
 # Changelog
 
+## SDK discovery verification — 21 September 2026
+
+- Compare complete tool definitions across MCP SDK versions while validating their distinct server/cache envelopes. Preserve exact schemas, read-only annotations and trust metadata.
+- Retain bounded stage diagnostics for failed verification. Fifteen controls include both real SDKs against the local service; the public failed attempt remains recorded separately. Runtime and deployed Worker bytes are unchanged.
+
 ## Preserved evidence navigation — 21 September 2026
 
 - Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
