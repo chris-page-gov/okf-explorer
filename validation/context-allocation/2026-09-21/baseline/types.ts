@@ -55,8 +55,7 @@ export type ContextRequirement = {
   /** Resolved concepts whose evidence needs this scoped profile covers. */
   covers?: string[];
   required: string[];
-  /** Directed evidence routes which must survive assembly. Valid paths may receive
-   * priority after budget loss; their endpoints never become retrieval seeds. */
+  /** Directed evidence routes which must survive assembly; never retrieval seeds. */
   required_paths?: ContextPath[];
   scope: string;
   limitations?: string[];

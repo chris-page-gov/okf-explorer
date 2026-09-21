@@ -284,87 +284,10 @@ function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[]
   return issues;
 }
 
-type AllocationPlan = {
-  paths: Array<{ requirement: string; path: ContextPath }>;
-  prefixes: Map<string, string>;
-  records: Set<string>;
-};
-const pathKey = (path: ContextPath) => `${path.seed}\n${path.assertions.join('\n')}`;
-
-/** Paths only receive priority when every declared hop is already traversable.
- * The index limits bound this inspection to 500 * 100 * 8 hops. Digests are
- * computed once per referenced record. No endpoint becomes a retrieval seed.
- */
-async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number): Promise<AllocationPlan> {
-  const seeds = new Set(resolved.map(row => row.id));
-  const records = new Map(index.records.map(row => [row.id, row]));
-  const assertions = new Map(index.assertions.map(row => [row.id, row]));
-  const validRecord = new Map<string, boolean>();
-  const plan: AllocationPlan = { paths: [], prefixes: new Map(), records: new Set() };
-  const seen = new Set<string>();
-  for (const requirement of [...index.requirements].sort((a, b) => a.id.localeCompare(b.id))) {
-    if (!requirement.when_all.every(id => seeds.has(id))) continue;
-    for (const path of requirement.required_paths || []) {
-      if (!seeds.has(path.seed) || path.assertions.length > maxDepth
-        || new Set(path.records).size !== path.records.length) continue;
-      let valid = true;
-      for (const id of path.records) {
-        if (!validRecord.has(id)) {
-          const row = records.get(id);
-          let accepted = !!row && row.access === 'public' && !governanceIssues(row).length;
-          if (accepted && row!.kind === 'evidence') {
-            const digest = await contextSha256(row!.text);
-            accepted = row!.provenance.every(p => !p.literal_sha256 || p.literal_sha256 === digest);
-          }
-          validRecord.set(id, accepted);
-        }
-        if (!validRecord.get(id)) { valid = false; break; }
-      }
-      if (!valid || path.assertions.some((id, i) => {
-        const edge = assertions.get(id);
-        return !edge || edge.source !== path.records[i] || edge.target !== path.records[i + 1]
-          || !CONTEXT_PREDICATES.has(edge.predicate) || governanceIssues(edge).length > 0;
-      })) continue;
-      const key = pathKey(path);
-      if (seen.has(key)) continue;
-      seen.add(key); plan.paths.push({ requirement: requirement.id, path });
-      path.records.forEach(id => plan.records.add(id));
-      for (let n = 0; n <= path.assertions.length; n++) {
-        const prefix = pathKey({ ...path, assertions: path.assertions.slice(0, n) });
-        if (!plan.prefixes.has(prefix)) plan.prefixes.set(prefix, requirement.id);
-      }
-    }
-  }
-  return plan;
-}
-
-function retainedPath(context: ContextPackage, path: ContextPath): boolean {
-  const records = new Set(context.selected.map(row => row.record.id));
-  const edges = new Map(context.relationships.map(row => [row.id, row]));
-  return path.records.every(id => records.has(id)) && path.assertions.every((id, i) => {
-    const edge = edges.get(id);
-    return edge?.source === path.records[i] && edge.target === path.records[i + 1];
-  });
-}
-
 /** No fetch, model call, browser state or DWP-specific behaviour is allowed here. */
 export async function assembleContext(
   raw: ContextIndex, question: string, requested: Partial<ContextBudget> = {}, binding?: ContextBinding,
   discovery?: ContextAssemblyOptions
-): Promise<ContextPackage> {
-  const baseline = await assembleContextPass(raw, question, requested, binding, discovery);
-  const pressure = baseline.budget.omissions.filter(issue =>
-    ['node_budget', 'relationship_budget', 'byte_budget'].includes(issue.code));
-  if (!pressure.length || !baseline.resolved_concepts.length) return baseline;
-  const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth);
-  const lost = plan.paths.some(({ path }) => !retainedPath(baseline, path)
-    && pressure.some(issue => issue.ids.some(id => path.records.includes(id) || path.assertions.includes(id))));
-  return lost ? assembleContextPass(raw, question, requested, baseline.binding, discovery, plan) : baseline;
-}
-
-async function assembleContextPass(
-  raw: ContextIndex, question: string, requested: Partial<ContextBudget> = {}, binding?: ContextBinding,
-  discovery?: ContextAssemblyOptions, allocation?: AllocationPlan
 ): Promise<ContextPackage> {
   if (typeof question !== 'string' || !question.trim() || question.length > 4000) {
     throw new Error('Provide a question of 1–4000 characters.');
@@ -396,8 +319,7 @@ async function assembleContextPass(
   }
   if (resolution.truncated) omissions.push({ code: 'resolution_budget',
     message: 'Concept resolution reached its fixed comparison budget; interpretation is incomplete.', ids: [] });
-  type QueueItem = { id: string; path: ContextPath; reason: string; alternative?: string };
-  const queue: QueueItem[] = (discovery?.evidenceSeeds || []).map((row) => ({
+  const queue: Array<{ id: string; path: ContextPath; reason: string; alternative?: string }> = (discovery?.evidenceSeeds || []).map((row) => ({
     id: row.id, path: { seed: row.id, assertions: [], records: [row.id] }, reason: row.reason
   })).concat(resolution.resolved.map((row) => ({
     id: row.id, path: { seed: row.id, assertions: [], records: [row.id] },
@@ -416,40 +338,13 @@ async function assembleContextPass(
   const addIssue = (rows: ContextIssue[], issue: ContextIssue) => {
     if (!rows.some((r) => r.code === issue.code && r.ids.join('|') === issue.ids.join('|'))) rows.push(issue);
   };
-  const priorityQueue: QueueItem[] = [];
-  const deferred: Array<{ assertion: ContextAssertion; item: QueueItem }> = [];
-  let priorityCursor = 0, cursor = 0;
-  const isPriority = (item: QueueItem) => !item.alternative && !!allocation?.prefixes.has(pathKey(item.path));
-  const enqueue = (item: QueueItem) => {
-    if (isPriority(item)) priorityQueue.push(item); else queue.push(item);
-  };
-  if (allocation) {
-    const initial = queue.splice(0);
-    initial.forEach(enqueue);
-  }
-  const admit = (assertion: ContextAssertion, item: QueueItem) => {
-    if (relationships.size >= limit.max_relationships && !relationships.has(assertion.id)) {
-      addIssue(omissions, { code: 'relationship_budget', message: 'The relationship budget prevented traversal.', ids: [assertion.id, assertion.target] }); return;
-    }
-    relationships.set(assertion.id, assertion);
-    governanceIssues(assertion).forEach(issue => addIssue(missing, issue));
-    enqueue(item);
-  };
-  while (priorityCursor < priorityQueue.length || cursor < queue.length || deferred.length) {
-    // Finish declared path prefixes before ordinary fan-out consumes edge slots.
-    // Non-priority edges are deferred, never discarded or implicitly followed.
-    if (priorityCursor >= priorityQueue.length && deferred.length) {
-      for (const row of deferred.splice(0)) admit(row.assertion, row.item);
-    }
-    const item = priorityCursor < priorityQueue.length ? priorityQueue[priorityCursor++] : queue[cursor++];
-    if (!item) continue;
-    const prioritised = isPriority(item);
-    if (prioritised) item.reason += `; budget priority for bundle-declared required path in ${allocation!.prefixes.get(pathKey(item.path))}. Authority is unchanged.`;
+  for (let cursor = 0; cursor < queue.length; cursor++) {
+    const item = queue[cursor];
     const existing = selected.get(item.id);
     if (existing) {
       const unseenPath = !existing.paths.some((p) => p.seed === item.path.seed && p.assertions.join('|') === item.path.assertions.join('|'));
-      if (existing.paths.length >= 4 && unseenPath && (item.alternative || prioritised)) {
-        addIssue(omissions, { code: item.alternative ? 'alternative_path_budget' : 'required_path_budget', message: 'The fixed four-path-per-record limit prevented following another ' + (item.alternative ? 'alternative' : 'required') + ' path.', ids: [item.id, item.path.seed] });
+      if (existing.paths.length >= 4 && unseenPath && item.alternative) {
+        addIssue(omissions, { code: 'alternative_path_budget', message: 'The fixed four-path-per-record limit prevented following another alternative path.', ids: [item.id, item.path.seed] });
       }
       const acceptedPath = existing.paths.length < 4 && unseenPath;
       if (acceptedPath) {
@@ -458,7 +353,7 @@ async function assembleContextPass(
       }
       // Preserve each alternative's path through a shared junction. Re-expansion
       // is bounded by the same four stored paths, never by all possible walks.
-      if ((!item.alternative && !prioritised) || !acceptedPath) continue;
+      if (!item.alternative || !acceptedPath) continue;
     }
     const record = existing?.record || recordById.get(item.id);
     if (!record) { addIssue(missing, { code: 'missing_record', message: 'A traversed destination is absent from this index.', ids: [item.id] }); continue; }
@@ -482,12 +377,15 @@ async function assembleContextPass(
       if (item.path.assertions.length >= limit.max_depth) {
         addIssue(omissions, { code: 'depth_budget', message: 'The traversal depth prevented following a relationship.', ids: [assertion.id, assertion.target] }); continue;
       }
-      const next: QueueItem = { id: assertion.target, path: { seed: item.path.seed,
+      if (relationships.size >= limit.max_relationships && !relationships.has(assertion.id)) {
+        addIssue(omissions, { code: 'relationship_budget', message: 'The relationship budget prevented traversal.', ids: [assertion.id, assertion.target] }); continue;
+      }
+      relationships.set(assertion.id, assertion);
+      governanceIssues(assertion).forEach((issue) => addIssue(missing, issue));
+      queue.push({ id: assertion.target, path: { seed: item.path.seed,
         assertions: [...item.path.assertions, assertion.id], records: [...item.path.records, assertion.target] },
         ...(item.alternative ? { alternative: item.alternative } : {}),
-        reason: `${item.alternative ? item.alternative + '. ' : ''}Followed ${assertion.predicate} from ${record.id}` };
-      if (prioritised && !isPriority(next)) deferred.push({ assertion, item: next });
-      else admit(assertion, next);
+        reason: `${item.alternative ? item.alternative + '. ' : ''}Followed ${assertion.predicate} from ${record.id}` });
     }
   }
   const seedIds = new Set(resolution.resolved.map((row) => row.id));
@@ -506,7 +404,6 @@ async function assembleContextPass(
     ai_answer: null,
     ...(discovery ? { retrieval: discovery.retrieval } : {})
   };
-  if (allocation) base.limitations.push('One additional allocation pass prioritised valid bundle-declared required paths after budget loss. Only original seeds and declared directed edges were used; priority does not upgrade authority or establish completeness.');
   if (discovery) {
     base.limitations.push('Lexical matches are candidate evidence, not resolved concepts or proof of applicability. Full-corpus indexing does not establish complete policy coverage.');
   }
@@ -531,20 +428,10 @@ async function assembleContextPass(
     // included in every size check. Previous diagnostics must not make retained
     // records look ungoverned or accumulate stale omissions after trimming.
     for (let i = missing.length - 1; i >= 0; i--) {
-      if (['missing_required_evidence', 'missing_dependency'].includes(missing[i].code)) missing.splice(i, 1);
+      if (missing[i].code === 'missing_required_evidence') missing.splice(i, 1);
     }
     base.selected = [...selected.values()];
     base.relationships = [...relationships.values()];
-    // Consult the declared graph: trimming an incident edge must not hide a
-    // dependency of a source record which still survives. Rebuild on refresh.
-    // Keep the traversal order of already-visible dependencies. Append declared
-    // edges lost during allocation without reordering an otherwise equal result.
-    const dependencyEdges = [...relationships.values(), ...index.assertions.filter(edge => !relationships.has(edge.id))];
-    for (const assertion of dependencyEdges) {
-      if (assertion.predicate === REQUIRES && selected.has(assertion.source) && !selected.has(assertion.target)) {
-        addIssue(missing, { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.', ids: [assertion.source, assertion.target] });
-      }
-    }
     base.requirements = applicable.map((r) => {
       const absent = new Set(r.required.filter((id) => !selected.has(id) || missing.some((m) => m.ids.includes(id))));
       for (const path of r.required_paths || []) {
@@ -564,6 +451,11 @@ async function assembleContextPass(
         addIssue(base.conflicts, { code: 'declared_conflict', message: 'The bundle declares conflicting evidence; resolve scope before drawing a conclusion.', ids: [record.id, other].sort() });
       }
     }
+    for (const assertion of relationships.values()) {
+      if (assertion.predicate === REQUIRES && !selected.has(assertion.target)) {
+        addIssue(missing, { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.', ids: [assertion.source, assertion.target] });
+      }
+    }
     base.budget.used_nodes = selected.size;
     base.budget.used_relationships = relationships.size;
     base.budget.truncated = omissions.length > 0;
@@ -578,8 +470,7 @@ async function assembleContextPass(
   refresh();
   // Reserve the hash and final byte-counter digits. Never cut an evidence passage.
   while (bytes(base) + 100 > limit.max_bytes && selected.size) {
-    const reverse = [...selected.keys()].reverse();
-    const id = (allocation ? reverse.find(key => !allocation.records.has(key)) : undefined) || reverse[0];
+    const id = [...selected.keys()].at(-1)!;
     selected.delete(id);
     for (const [key, edge] of relationships) if (edge.source === id || edge.target === id) relationships.delete(key);
     for (const [key, selection] of selected) {

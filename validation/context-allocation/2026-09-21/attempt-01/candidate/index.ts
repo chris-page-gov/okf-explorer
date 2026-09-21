@@ -537,10 +537,7 @@ async function assembleContextPass(
     base.relationships = [...relationships.values()];
     // Consult the declared graph: trimming an incident edge must not hide a
     // dependency of a source record which still survives. Rebuild on refresh.
-    // Keep the traversal order of already-visible dependencies. Append declared
-    // edges lost during allocation without reordering an otherwise equal result.
-    const dependencyEdges = [...relationships.values(), ...index.assertions.filter(edge => !relationships.has(edge.id))];
-    for (const assertion of dependencyEdges) {
+    for (const assertion of index.assertions) {
       if (assertion.predicate === REQUIRES && selected.has(assertion.source) && !selected.has(assertion.target)) {
         addIssue(missing, { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.', ids: [assertion.source, assertion.target] });
       }

@@ -60,6 +60,14 @@ specified direction, even if another route reached those records. Paths are
 checked after traversal and never used to seed it. Missing paths make the
 requirement insufficient; finding all the named records alone is not enough.
 
+If a node, relationship or byte budget loses a valid declared path, the engine
+may make one additional allocation pass prioritising that path from the same
+resolved seeds. Its endpoints never become hidden seeds. Whole records and
+qualifications remain subject to all existing caps and governance checks. The
+[allocation decision](adr-required-evidence-allocation.md) explains this bounded
+behaviour and the separate correction that keeps declared dependencies visible
+when their supporting edge is trimmed.
+
 The producer remains responsible for the quality and completeness of that
 modelling. A missing relationship can produce an incomplete package even when
 the original source document exists. A complete declared dependency closure

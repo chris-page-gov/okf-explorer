@@ -97,6 +97,7 @@
     canDisplaySourceInline,
     narrativeRouteGroups,
     recordNarrative,
+    recordTypeLabel,
     sourceAccesses,
     sourceOpenLabel,
     type ResolvedLargeSourceAccess
@@ -8383,7 +8384,7 @@
               {@const seriesPeers = relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               {@const distinctAlternatives = distinctDatasetAlternatives(largeDetail.dataset)}
               {@const sourceAccessRows = sourceAccesses(largeDetail.dataset, largeDetail.resources)}
-              <span class="badge">{capitalise(recordSingular())}</span>
+              <span class="badge">{recordTypeLabel(largeDetail.dataset, capitalise(recordSingular()))}</span>
               <h2>{largeLabelForRoute(largeDetail.route)}</h2>
               {#if datasetMatchReason(largeDetail.dataset)}
                 <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
@@ -8863,7 +8864,7 @@
                 <pre>{jsonText(largeDetail.publisher)}</pre>
               </details>
             {:else if largeDetail.kind === 'search'}
-              <span class="badge">{capitalise(recordSingular())}</span>
+              <span class="badge">{recordTypeLabel(largeDetail.result, capitalise(recordSingular()))}</span>
               <h2>{largeDatasetLabel(largeDetail.result)}</h2>
               <div class="detail-actions primary-detail-actions">
                 {#if largeHasRecordLocator()}

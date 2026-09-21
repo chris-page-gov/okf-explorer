@@ -1,0 +1,20 @@
+{
+  "schema": "okf-scoped-custody-allocation-regression.v1",
+  "dwp_commit": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+  "baseline_commit": "b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55",
+  "index_sha256": "38159445a60d4bcabc23cb2cf728e14cbd0a4b55013276c291356e7a1452ff54",
+  "case_sha256": "9eab17eb3a01fb8e3e7137d4440386da752d31e1f6a746713a02cd1ebe9108fd",
+  "candidate_engine": {
+    "index.ts": "cc9fe1c162e1ad505f080712b6eacf0bad843f0e32d6f953b697b8349b2c4ca8",
+    "types.ts": "d9eff934ec504c3fbd2afff672ae1d3a8a275e84cc11b71fed8a3e1b0edfdcf3"
+  },
+  "runner_sha256": "2eb89b12a007c96bcea538e134b9cda78080d4f9e6a45ddd7b95c13df09d2d31",
+  "exact_package_preserved": true,
+  "before_context_id": "urn:sha256:2f7f91af02e098db5447eb1f3e92d0ac78449e3dacc8be68c3fce89a6657d7a9",
+  "after_context_id": "urn:sha256:2f7f91af02e098db5447eb1f3e92d0ac78449e3dacc8be68c3fce89a6657d7a9",
+  "package_sha256": "4ba5d3ff0e5cdaeee541c8f7790c55881eeaeef8fb0945df983a7eee5c679389",
+  "records": 52,
+  "relationships": 127,
+  "evidence_status": "sufficient",
+  "limitation": "Sufficient only within the original captured custody scope; not a full-corpus, current-law, model-answer or public-host observation."
+}

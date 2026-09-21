@@ -19,9 +19,21 @@ test('release package, lock, registry and build agree without changing locked de
   assert.deepEqual(build.historical_bundle_versions, [STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
 });
 
-test('retained offline integration receipt binds the executed runner, service build and four versions', async () => {
-  const receipt = JSON.parse(await readFile(new URL('../validation/approved-versions-0.5.0.json', import.meta.url), 'utf8'));
+test('undeployed engine candidate integration binds the executed runner, current build and four approved versions', async () => {
+  const base = '../validation/candidates/required-evidence-2026-09-21/';
+  const receipt = JSON.parse(await readFile(new URL(base + 'approved-versions.json', import.meta.url), 'utf8'));
+  const classification = JSON.parse(await readFile(new URL(base + 'classification.json', import.meta.url), 'utf8'));
   const digest = async (path: string) => createHash('sha256').update(await readFile(new URL(path, import.meta.url))).digest('hex');
+  assert.equal(classification.classification, 'undeployed-required-evidence-engine-candidate');
+  assert.equal(classification.service_version, SERVICE_VERSION);
+  assert.equal(classification.deployment_verified, false);
+  assert.equal(classification.network_calls, 0);
+  assert.equal(classification.model_calls, 0);
+  assert.equal(classification.integration_receipt_sha256, await digest(base + 'approved-versions.json'));
+  assert.equal(classification.build_receipt_sha256, await digest(base + 'build-receipt.json'));
+  const retainedBuild = JSON.parse(await readFile(new URL(base + 'build-receipt.json', import.meta.url), 'utf8'));
+  assert.equal(classification.worker_sha256, retainedBuild.outputs['dist/server/index.js']);
+  assert.equal(classification.build_receipt_sha256, receipt.build_receipt_sha256);
   assert.equal(receipt.runner_sha256, await digest('../scripts/verify-approved-versions.ts'));
   for (const [path, expected] of Object.entries(receipt.supporting_files)) assert.equal(await digest('../' + path), expected);
   assert.equal(receipt.build_receipt_sha256, await digest('../dist/build-receipt.json'));
@@ -41,6 +53,33 @@ test('retained offline integration receipt binds the executed runner, service bu
   assert.equal(receipt.compact_delivery.evidence_status, 'insufficient');
   assert.deepEqual(receipt.compact_delivery_versions.map((row: { bundle_version: string }) => row.bundle_version), [BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.ok(receipt.compact_delivery_versions.every((row: { reconstructed_package_matches_direct_engine: boolean }) => row.reconstructed_package_matches_direct_engine));
+});
+
+test('candidate comparison preserves previous observations and exposes changed context identities', async () => {
+  const json = async (path: string) => JSON.parse(await readFile(new URL('../validation/' + path, import.meta.url), 'utf8'));
+  const base = 'candidates/required-evidence-2026-09-21/';
+  const candidate = await json(base + 'approved-versions.json');
+  const classification = await json(base + 'classification.json');
+  const previous = await json('approved-versions-0.5.0.json');
+  const digest = async (path: string) => createHash('sha256').update(await readFile(new URL('../' + path, import.meta.url))).digest('hex');
+  assert.equal(await digest('validation/approved-versions-0.5.0.json'), '44f6018ace34f72ce0f6085e92c51f3d2d9b57ecd223f7c37a3ddc7141d2c56b');
+  assert.equal(await digest('validation/approved-versions-0.4.0.json'), 'e8b350ff52c9534f31bdf0ae1b9df70ab82b9ceb9224ffdd78be6ebd7c397f67');
+  for (const [path, expected] of Object.entries(classification.preserved_observations)) assert.equal(await digest(path), expected);
+  assert.equal(classification.source_versions_unchanged, true);
+  assert.deepEqual(candidate.cases.map((row: any) => row.binding), previous.cases.map((row: any) => row.binding));
+  const compare = (rows: any[], older: any[]) => rows.map((row, index) => ({
+    case_id: row.id ?? 'custody', source_version: row.version ?? row.bundle_version,
+    previous_context_id: older[index].context_id, candidate_context_id: row.context_id,
+    context_id_changed: row.context_id !== older[index].context_id,
+    selected_records: row.selected_records, selected_relationships: row.relationships ?? row.selected_relationships,
+    evidence_status: row.evidence_status
+  }));
+  assert.deepEqual(classification.context_comparison, {
+    full_custody: compare(candidate.cases, previous.cases),
+    compact: compare(candidate.compact_delivery_versions, previous.compact_delivery_versions)
+  });
+  assert.deepEqual(classification.context_comparison.full_custody.map((row: any) => row.context_id_changed), [true, true, true, false]);
+  assert.deepEqual(classification.context_comparison.compact.map((row: any) => row.context_id_changed), [true, false, false, false]);
 });
 
 test('the superseded local observation retains its original receipt and actual Worker identity', async () => {

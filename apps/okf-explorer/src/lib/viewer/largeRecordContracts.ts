@@ -18,6 +18,15 @@ function nonEmpty(value: unknown): value is string {
   return typeof value === 'string' && Boolean(value.trim());
 }
 
+/** Preserve the producer's type label; collection vocabulary is only a fallback. */
+export function recordTypeLabel(
+  record: { record_type?: unknown; type?: unknown },
+  collectionLabel: string
+): string {
+  const declared = [record.record_type, record.type].find(nonEmpty);
+  return declared?.trim() || collectionLabel;
+}
+
 function httpUrl(value: string): boolean {
   try {
     return ['http:', 'https:'].includes(new URL(value).protocol);

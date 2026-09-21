@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+- Give valid, bundle-declared evidence paths priority when node, relationship or
+  byte limits would otherwise omit them. Use at most one additional allocation
+  pass from the original resolved seeds, retain whole passages and explain the
+  priority without changing source authority. Keep missing paths and truncation
+  explicit when the required evidence still cannot fit.
+- Report a retained source's declared dependencies even after supporting edges
+  are trimmed. This corrects a diagnostic gap and changes affected context
+  identities; historical packages and model trials remain unchanged.
+- Show each large-corpus record's declared type in the detail badge before and
+  after loading its full record. Use collection vocabulary only as a fallback,
+  so mixed corpora do not label every item as the same kind of document.
+- Retain a separate, undeployed service integration observation for the changed
+  engine: four approved source versions and four compact cases pass. Record
+  changed corpus context identifiers explicitly and preserve the earlier 0.5.0
+  receipts. A fixed source version alone does not freeze a future engine's
+  assembled package.
+- Re-execute all 100 Heritage questions and three browser journeys against the
+  revised application, retaining exact build identities and fresh results.
+
 - Document the published Ask OKF service 0.5.0, its household/statutory default
   and all four explicitly selectable source revisions in the top-level guide.
   Record seven actual full-context and four compact SDK passes, three functional
