@@ -1419,3 +1419,14 @@ source-of-truth changes.
   covering facet search/open state, graph legend/drawer, bundle suggestion
   dismissal, and timeline latest/quarter ordering.
 - `git diff --check`
+
+## Learning presentation for small bundles
+
+- Added an opt-in learning path with ordered goal cards, contextual record pages,
+  connections and expandable source evidence.
+- Small bundles can declare conceptual facets. Source and review filters remain
+  available as secondary information; existing bundles retain their defaults.
+- File imports now honour a valid authored starting route and clear stale
+  inspections. URL-loaded bundles retain explicit deep links and filter state.
+- Added a reusable content-design guide and tests for presentation validation,
+  legacy behaviour and conceptual facet intersections.
