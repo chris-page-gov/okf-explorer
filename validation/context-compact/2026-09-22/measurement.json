@@ -1,0 +1,946 @@
+{
+  "schema": "okf-logical-compact-observation.v1",
+  "observed_at": "2026-09-22T18:41:18.575Z",
+  "dwp_commit": "bd94537742aeab0dcd016efaf04f898ef84c7f8e",
+  "dwp_snapshot": "dwp-logical-context-8d69291b80daf0e78260",
+  "manifest_sha256": "aacbff0a0e16bb9fc5ce71502c877b12645411d153fc39f58cf018eda4da0292",
+  "boundary": "Local fixed-source observation, no network or model calls. Exact per-result JSON bound excludes any host envelope. All evidence remains insufficient; no service admission, legal completeness, latency, token or answer-quality claim.",
+  "engine": [
+    {
+      "path": "apps/okf-explorer/src/lib/context/index.ts",
+      "sha256": "39b6b0de58b1075356b7cd2ceaf2ef31824c02047164dcd26fa15066f8547496"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/types.ts",
+      "sha256": "aa4e31fa433aaec10d482d64dd358cf1e4db66c17c6036f6d069c7f30f50055e"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpus.ts",
+      "sha256": "6c53e69bb70f55039315cac3e1e43380392e1b7d234608c95e2358201db423b8"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/unit.ts",
+      "sha256": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/delivery.ts",
+      "sha256": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/webmcp.ts",
+      "sha256": "455a8cebf9e4f184e19cb6f12d45d02ca00d3a2c2d85501e9536c3c1437756ca"
+    }
+  ],
+  "runner_sha256": "180cc45267f38ce3669bd13667a1239f09eb6944d89c147222edb4c9cfc0907c",
+  "inputs": [
+    {
+      "path": "evaluation/logical-units/run/units-logical-pc-abroad-32768.json.gz",
+      "sha256": "972b22381af8c8bc43b0be976d0e57a812a769c5d4c6e4fcf49fde17a3e99ffe",
+      "bytes": 1269
+    },
+    {
+      "path": "evaluation/logical-units/run/units-logical-pc-care-home-alternatives-32768.json.gz",
+      "sha256": "373e2b617f6f1133ad598fdf417e8cd72ad17c57e48b9630b1f520213d1f533b",
+      "bytes": 1348
+    },
+    {
+      "path": "evaluation/logical-units/run/units-logical-pc-household-abroad-32768.json.gz",
+      "sha256": "8fda7a6a1f092a9c2dcf086bc35e92fb10e3cdda25d5917409504cdd7bb01084",
+      "bytes": 1403
+    },
+    {
+      "path": "evaluation/logical-units/run/units-logical-pc-temporary-care-32768.json.gz",
+      "sha256": "e93f5c90000c43cd5fe21dd7d1a19b03f9c146e4ea5d9bbda5bc93218295d1ba",
+      "bytes": 5269
+    },
+    {
+      "path": "evaluation/logical-units/run/units-logical-uc-temporary-absence-32768.json.gz",
+      "sha256": "25534f39d76383ce46385e467a417ade4b761e590b092d92bbe7d78a0a15ca96",
+      "bytes": 1392
+    },
+    {
+      "path": "logical-context/base-index.json",
+      "sha256": "751c0917fa56ec9314eb15023b306e564076aacc0bbd2769665ac3623653e5f2",
+      "bytes": 1417413
+    },
+    {
+      "path": "logical-context/manifest.json",
+      "sha256": "aacbff0a0e16bb9fc5ce71502c877b12645411d153fc39f58cf018eda4da0292",
+      "bytes": 724856
+    },
+    {
+      "path": "logical-context/records/0015.json.gz",
+      "sha256": "cd948303d546807b6f44bf852ea1b6559c4caf644c047455dce8ffd6c2711a8f",
+      "bytes": 45088
+    },
+    {
+      "path": "logical-context/records/0021.json.gz",
+      "sha256": "1833d3818284fd333e89093745d9b3e006d9751c420035cd519cf375908c56b1",
+      "bytes": 41194
+    },
+    {
+      "path": "logical-context/records/0054.json.gz",
+      "sha256": "113fecce4a547c3ff60463592dbf7d57090aadba1e59fe567e498d31746e93be",
+      "bytes": 51525
+    },
+    {
+      "path": "logical-context/records/0082.json.gz",
+      "sha256": "a9f34331d2eff6fe40f962a5cee38f6894f7a2b28f747be3af49e7c72fdf0b0a",
+      "bytes": 202168
+    },
+    {
+      "path": "logical-context/records/0083.json.gz",
+      "sha256": "0c4659520e32585d61492fc2a3bcc9fa0f322971b6f2f679a9b217fac2838478",
+      "bytes": 203768
+    },
+    {
+      "path": "logical-context/records/0084.json.gz",
+      "sha256": "00af396621509936058eccd032944450dd5981a191b8e97490ff9afe9ed794b3",
+      "bytes": 206850
+    },
+    {
+      "path": "logical-context/records/0085.json.gz",
+      "sha256": "a9b470a53c573d96810b15bf543f1cc5dbed03827516f0180e968d996393ce73",
+      "bytes": 186581
+    },
+    {
+      "path": "logical-context/records/0086.json.gz",
+      "sha256": "d5fb3143a6ebad710efc2e28c84e1848b94de6bb54dfb022b1c2e75603ee1748",
+      "bytes": 47786
+    },
+    {
+      "path": "logical-context/records/0088.json.gz",
+      "sha256": "668d61ebca9f98ea4e98b288d5f990f97d24b4b01cfa13947faa281e32cad0ef",
+      "bytes": 46578
+    },
+    {
+      "path": "logical-context/records/0092.json.gz",
+      "sha256": "059fee89f59e11e3e56a573918857c50fc33377b2a69c372f3d4698fe7e04505",
+      "bytes": 62340
+    },
+    {
+      "path": "logical-context/records/0109.json.gz",
+      "sha256": "1a5bfa9c2f49faff6bf5cb93ee7d249073d10dcca24e707380ef4b0b5a171f98",
+      "bytes": 59333
+    },
+    {
+      "path": "logical-context/records/0111.json.gz",
+      "sha256": "33114065e32240b0d99a1399dfb4495a1f3fae83b02f9ba4db1a1ac839407339",
+      "bytes": 61179
+    },
+    {
+      "path": "logical-context/records/0143.json.gz",
+      "sha256": "4fd8de3810d2e502790653da9029a8a3560362331c358b838231182432fd8555",
+      "bytes": 48551
+    },
+    {
+      "path": "logical-context/records/0157.json.gz",
+      "sha256": "c8fe280daa98792247d2afaea919476a88d712352ebfd21d5d2bd09b96ba3333",
+      "bytes": 62969
+    },
+    {
+      "path": "logical-context/records/0161.json.gz",
+      "sha256": "d72746479b4c5c9661e9fc92c6807a338d45b6ba687f6ef4461e1c69a5f0c987",
+      "bytes": 84367
+    },
+    {
+      "path": "logical-context/records/0162.json.gz",
+      "sha256": "7149d45575de427b9dbf545d31eb785d08d60c839784d3c3bcc4ee6bd3ed580a",
+      "bytes": 54987
+    },
+    {
+      "path": "logical-context/records/0168.json.gz",
+      "sha256": "7a40dcd187e988655a22afb753a66b0a1d54a1ad23bf133d0b466d1a7dd985a9",
+      "bytes": 71298
+    },
+    {
+      "path": "logical-context/records/0170.json.gz",
+      "sha256": "3de8834a6fabb13e033eff2a283a4243685a3e798bdf4f054ea9d6863c925345",
+      "bytes": 45902
+    },
+    {
+      "path": "logical-context/records/0171.json.gz",
+      "sha256": "0d8cf830067d4e3edcc5c315601eed07cf196b956f6148e2f5525e803ed3906b",
+      "bytes": 50313
+    },
+    {
+      "path": "logical-context/records/0185.json.gz",
+      "sha256": "de70e1a9223648cc08e72c6f50d86fe808147870cd75085a3254d668aadcdfb8",
+      "bytes": 51932
+    },
+    {
+      "path": "logical-context/records/0194.json.gz",
+      "sha256": "5c06f2e178b6c2dcf510b55718ae6fd413d0d2fd85a86eba6d5729c80bbbdb96",
+      "bytes": 62193
+    },
+    {
+      "path": "logical-context/records/0195.json.gz",
+      "sha256": "a7697a5a293423295a2cab3471a7fc98280818bbbe6dfbd5594008239ef4a19c",
+      "bytes": 62450
+    },
+    {
+      "path": "logical-context/records/0202.json.gz",
+      "sha256": "1b1ffa6b30934925d83ad4b5e7cd25af2a41c215092d1cd0e2aa7cc27b3d46e1",
+      "bytes": 53295
+    },
+    {
+      "path": "logical-context/records/0204.json.gz",
+      "sha256": "c576e3dd171da3d4d5d0436a9af83b01272874b29a0b5d057bb34d55cb1cc76e",
+      "bytes": 75271
+    },
+    {
+      "path": "logical-context/records/0214.json.gz",
+      "sha256": "f917eb6f883564ba28f42c706806b6d3a2d2cc7429c1773eae7d219c9c2e1a6b",
+      "bytes": 52209
+    },
+    {
+      "path": "logical-context/records/0215.json.gz",
+      "sha256": "68cbf68f3cba458f60e0262c95ae38e7c46e148f4eba4783333e15a2d9b43508",
+      "bytes": 53307
+    },
+    {
+      "path": "logical-context/records/0242.json.gz",
+      "sha256": "1ccf1ba2cdb045c4b5955c151443ab57812e771f391f8ddc8159696ca39ade3f",
+      "bytes": 55187
+    },
+    {
+      "path": "logical-context/records/0245.json.gz",
+      "sha256": "7a6de1ba42f0adf75e1f1158fdf11f9342c9b5b621acf47283a5f1fce33f407f",
+      "bytes": 46910
+    },
+    {
+      "path": "logical-context/records/0246.json.gz",
+      "sha256": "6ee0d115cbcac19e8cc8e68dbd54a32c4c14b50ba661d82fd0d22e31197057dd",
+      "bytes": 58401
+    },
+    {
+      "path": "logical-context/records/0263.json.gz",
+      "sha256": "c836de0d99e1ede484014a06219f7a11a0bb43c5cb76c420b80019c256e2d118",
+      "bytes": 40035
+    },
+    {
+      "path": "logical-context/records/0334.json.gz",
+      "sha256": "96e24204bc7331a080542218faee31437ee5570a466ab0df4594d031c7a3aaf6",
+      "bytes": 46242
+    },
+    {
+      "path": "logical-context/records/0366.json.gz",
+      "sha256": "166c099ff21d7ca4b39df425eee976597b14c089b38674128770fa1358686b62",
+      "bytes": 60479
+    },
+    {
+      "path": "logical-context/search/09.json.gz",
+      "sha256": "35615017dd74f528d13ae6b76fa245d06cd5da7d6b48f8fd0205026a583855ee",
+      "bytes": 10556
+    },
+    {
+      "path": "logical-context/search/14.json.gz",
+      "sha256": "543c2baf495783156a52388327d90b4e2488a654e692977baab00787286ac0a4",
+      "bytes": 38647
+    },
+    {
+      "path": "logical-context/search/3a.json.gz",
+      "sha256": "7d345d4bafdb125f28ef4e8a650926df4d4c7634487f55ef9e83dbd7e440dd8e",
+      "bytes": 13595
+    },
+    {
+      "path": "logical-context/search/4b.json.gz",
+      "sha256": "ad1ee48d2f7a20e0c05ddc67a5537c19a3b9de795de9e45d1e334404d78c5940",
+      "bytes": 29481
+    },
+    {
+      "path": "logical-context/search/63.json.gz",
+      "sha256": "4885d8baadac61ed92c3fd4cd449a6006732cbed701a7ac5742df7dd406bab50",
+      "bytes": 42608
+    },
+    {
+      "path": "logical-context/search/87.json.gz",
+      "sha256": "cb4e8e1fffa9f1e58faeaea18b08dc6e9e99accbb451663942598e632a377432",
+      "bytes": 20445
+    },
+    {
+      "path": "logical-context/search/8b.json.gz",
+      "sha256": "8557ec0f9c6f502db94d281eb92fda15c042a43a0dfec5213f33597dfb1a496c",
+      "bytes": 34706
+    },
+    {
+      "path": "logical-context/search/bd.json.gz",
+      "sha256": "ad8a06308078bb46fd0aa193a6b4557d55377e735a0cb665c0a7b77e81a1378e",
+      "bytes": 35099
+    },
+    {
+      "path": "logical-context/search/d2.json.gz",
+      "sha256": "ef9f1d50b7ddb0beb08314dd89c844855af2e64b17f20050435ef8c327b74a26",
+      "bytes": 26197
+    },
+    {
+      "path": "logical-context/search/d5.json.gz",
+      "sha256": "4db6bc7d6121665d0e9149b8d890962ac8b4b60a49db92a4c57e0011c7c42d65",
+      "bytes": 20708
+    },
+    {
+      "path": "logical-context/search/e9.json.gz",
+      "sha256": "ccd4fb77db199847eb5bd5b9df369cfba4d264c1c88f84105f4e8e024ba74863",
+      "bytes": 19952
+    },
+    {
+      "path": "logical-context/search/f4.json.gz",
+      "sha256": "a4842b37d67dfdeae0b4d060c7dda4e5f83957179c03edf5499be63df332dfc9",
+      "bytes": 27033
+    }
+  ],
+  "rows": [
+    {
+      "id": "logical-pc-abroad",
+      "question": "What happens to Pension Credit if I go abroad?",
+      "baseline_inline_32k": {
+        "context_id": "urn:sha256:82c574e072104ee575aadeec8f9f5a651c6ccb784db00dbe5c55b4328777dcf7",
+        "bytes": 3556,
+        "evidence_status": "insufficient",
+        "records": 0,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "metadata_budget"
+        ],
+        "affected_missing_ids": 0,
+        "requirements": 0,
+        "missing_requirements": 0,
+        "section_bytes": {
+          "ai_answer": 4,
+          "ambiguities": 2,
+          "binding": 220,
+          "budget": 282,
+          "bundle": 186,
+          "conflicts": 2,
+          "context_id": 77,
+          "engine": 25,
+          "evidence_status": 14,
+          "limitations": 108,
+          "missing_evidence": 124,
+          "question": 48,
+          "relationships": 2,
+          "requirements": 2,
+          "resolved_concepts": 2,
+          "retrieval": 2087,
+          "schema": 25,
+          "scope": 61,
+          "selected": 2,
+          "unresolved_terms": 2
+        }
+      },
+      "grouped_inline_32k": {
+        "context_id": "urn:sha256:7ee60694df7e326f192432f906594f24f1b67bfdfa6d1aef4d9e7e4dbe777003",
+        "bytes": 29030,
+        "evidence_status": "insufficient",
+        "records": 1,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 35,
+        "requirements": 1,
+        "missing_requirements": 19,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 48,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 364,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 1803,
+          "relationships": 2,
+          "requirements": 8145,
+          "missing_evidence": 4836,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 4992,
+          "ai_answer": 4,
+          "retrieval": 5470
+        }
+      },
+      "assembled_512k": {
+        "context_id": "urn:sha256:edbd5ef94c536ae4ccf2015c2e36afc49939553c6b217cff27d9211d81c4b9ce",
+        "bytes": 522305,
+        "evidence_status": "insufficient",
+        "records": 19,
+        "evidence_records": 18,
+        "source_text_bytes": 272511,
+        "missing_codes": [
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 21,
+        "requirements": 1,
+        "missing_requirements": 5,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 48,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 364,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 485589,
+          "relationships": 15381,
+          "requirements": 6381,
+          "missing_evidence": 3072,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 2630,
+          "ai_answer": 4,
+          "retrieval": 5470
+        }
+      },
+      "delivery": {
+        "max_bytes": 32768,
+        "requests": 59,
+        "maximum_result_bytes": 32768,
+        "total_result_bytes": 1130262,
+        "verified": [
+          "selected-catalogue-identity",
+          "whole-package",
+          "relationships",
+          "diagnostics",
+          "every-evidence-text",
+          "every-evidence-metadata-and-span",
+          "unchanged-context-identity"
+        ]
+      }
+    },
+    {
+      "id": "logical-uc-temporary-absence",
+      "question": "Explain Universal Credit during temporary absence abroad.",
+      "baseline_inline_32k": {
+        "context_id": "urn:sha256:e2e545a2d45280cabd4d2d16fb6e668ac031aa97d750aefdfbd4cef8288f8035",
+        "bytes": 4352,
+        "evidence_status": "insufficient",
+        "records": 0,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "metadata_budget"
+        ],
+        "affected_missing_ids": 0,
+        "requirements": 0,
+        "missing_requirements": 0,
+        "section_bytes": {
+          "ai_answer": 4,
+          "ambiguities": 2,
+          "binding": 220,
+          "budget": 282,
+          "bundle": 186,
+          "conflicts": 2,
+          "context_id": 77,
+          "engine": 25,
+          "evidence_status": 14,
+          "limitations": 108,
+          "missing_evidence": 124,
+          "question": 59,
+          "relationships": 2,
+          "requirements": 2,
+          "resolved_concepts": 2,
+          "retrieval": 2872,
+          "schema": 25,
+          "scope": 61,
+          "selected": 2,
+          "unresolved_terms": 2
+        }
+      },
+      "grouped_inline_32k": {
+        "context_id": "urn:sha256:431111526921d4abc3dd123491234feae747ba3a752c3c701d287b583e0c9112",
+        "bytes": 30727,
+        "evidence_status": "insufficient",
+        "records": 1,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "missing_required_evidence",
+          "uncovered_resolved_concept",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 32,
+        "requirements": 1,
+        "missing_requirements": 16,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 59,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 570,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 2538,
+          "relationships": 2,
+          "requirements": 6993,
+          "missing_evidence": 4646,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 5944,
+          "ai_answer": 4,
+          "retrieval": 6605
+        }
+      },
+      "assembled_512k": {
+        "context_id": "urn:sha256:c541765f8329cfb624448b613eef7804eb02c8b84a854a6df2a8650741fd12ee",
+        "bytes": 506605,
+        "evidence_status": "insufficient",
+        "records": 17,
+        "evidence_records": 16,
+        "source_text_bytes": 270421,
+        "missing_codes": [
+          "missing_required_evidence",
+          "uncovered_resolved_concept",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 21,
+        "requirements": 1,
+        "missing_requirements": 5,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 59,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 570,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 471592,
+          "relationships": 11710,
+          "requirements": 5629,
+          "missing_evidence": 3282,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 3788,
+          "ai_answer": 4,
+          "retrieval": 6605
+        }
+      },
+      "delivery": {
+        "max_bytes": 32768,
+        "requests": 55,
+        "maximum_result_bytes": 32768,
+        "total_result_bytes": 1091336,
+        "verified": [
+          "selected-catalogue-identity",
+          "whole-package",
+          "relationships",
+          "diagnostics",
+          "every-evidence-text",
+          "every-evidence-metadata-and-span",
+          "unchanged-context-identity"
+        ]
+      }
+    },
+    {
+      "id": "logical-pc-household-abroad",
+      "question": "What happens to Pension Credit when a partner goes abroad?",
+      "baseline_inline_32k": {
+        "context_id": "urn:sha256:3ac387485578e911b07809bc61afb7599042f33989a03fcab5180876ce833767",
+        "bytes": 4162,
+        "evidence_status": "insufficient",
+        "records": 0,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "metadata_budget"
+        ],
+        "affected_missing_ids": 0,
+        "requirements": 0,
+        "missing_requirements": 0,
+        "section_bytes": {
+          "ai_answer": 4,
+          "ambiguities": 2,
+          "binding": 220,
+          "budget": 282,
+          "bundle": 186,
+          "conflicts": 2,
+          "context_id": 77,
+          "engine": 25,
+          "evidence_status": 14,
+          "limitations": 108,
+          "missing_evidence": 124,
+          "question": 60,
+          "relationships": 2,
+          "requirements": 2,
+          "resolved_concepts": 2,
+          "retrieval": 2681,
+          "schema": 25,
+          "scope": 61,
+          "selected": 2,
+          "unresolved_terms": 2
+        }
+      },
+      "grouped_inline_32k": {
+        "context_id": "urn:sha256:3ac387485578e911b07809bc61afb7599042f33989a03fcab5180876ce833767",
+        "bytes": 4162,
+        "evidence_status": "insufficient",
+        "records": 0,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "metadata_budget"
+        ],
+        "affected_missing_ids": 0,
+        "requirements": 0,
+        "missing_requirements": 0,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 60,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 61,
+          "evidence_status": 14,
+          "resolved_concepts": 2,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 2,
+          "relationships": 2,
+          "requirements": 2,
+          "missing_evidence": 124,
+          "conflicts": 2,
+          "limitations": 108,
+          "budget": 282,
+          "ai_answer": 4,
+          "retrieval": 2681
+        }
+      },
+      "assembled_512k": {
+        "context_id": "urn:sha256:6b3bc713e7151b45703e1c4220007119b5eca6976a215e08f75719fad87b2992",
+        "bytes": 453250,
+        "evidence_status": "insufficient",
+        "records": 20,
+        "evidence_records": 19,
+        "source_text_bytes": 219104,
+        "missing_codes": [
+          "missing_dependency",
+          "missing_required_evidence",
+          "unresolved_terms",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 27,
+        "requirements": 2,
+        "missing_requirements": 9,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 60,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 554,
+          "ambiguities": 2,
+          "unresolved_terms": 8,
+          "selected": 401854,
+          "relationships": 22436,
+          "requirements": 10586,
+          "missing_evidence": 4387,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 3701,
+          "ai_answer": 4,
+          "retrieval": 6296
+        }
+      },
+      "delivery": {
+        "max_bytes": 32768,
+        "requests": 59,
+        "maximum_result_bytes": 32768,
+        "total_result_bytes": 988960,
+        "verified": [
+          "selected-catalogue-identity",
+          "whole-package",
+          "relationships",
+          "diagnostics",
+          "every-evidence-text",
+          "every-evidence-metadata-and-span",
+          "unchanged-context-identity"
+        ]
+      }
+    },
+    {
+      "id": "logical-pc-temporary-care",
+      "question": "What happens to Pension Credit during temporary care home residence?",
+      "baseline_inline_32k": {
+        "context_id": "urn:sha256:3037ca7b5762aba9a5370adbfa95d0333f57bac1a23f74eba252275e6df0da31",
+        "bytes": 32463,
+        "evidence_status": "insufficient",
+        "records": 1,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 26,
+        "requirements": 1,
+        "missing_requirements": 10,
+        "section_bytes": {
+          "ai_answer": 4,
+          "ambiguities": 2,
+          "binding": 220,
+          "budget": 8653,
+          "bundle": 186,
+          "conflicts": 2,
+          "context_id": 77,
+          "engine": 25,
+          "evidence_status": 14,
+          "limitations": 2437,
+          "missing_evidence": 5996,
+          "question": 70,
+          "relationships": 2,
+          "requirements": 4332,
+          "resolved_concepts": 432,
+          "retrieval": 6299,
+          "schema": 25,
+          "scope": 95,
+          "selected": 3309,
+          "unresolved_terms": 2
+        }
+      },
+      "grouped_inline_32k": {
+        "context_id": "urn:sha256:0e13ed6560afdb8fb77bbd2026cf66591c826303b4dc4626b0849664035928c5",
+        "bytes": 32221,
+        "evidence_status": "insufficient",
+        "records": 2,
+        "evidence_records": 1,
+        "source_text_bytes": 450,
+        "missing_codes": [
+          "missing_dependency",
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 25,
+        "requirements": 1,
+        "missing_requirements": 9,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 70,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 432,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 7225,
+          "relationships": 1630,
+          "requirements": 4198,
+          "missing_evidence": 4103,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 4894,
+          "ai_answer": 4,
+          "retrieval": 6299
+        }
+      },
+      "assembled_512k": {
+        "context_id": "urn:sha256:31b34de604f69fd70e20051719e0f8787940446a99b1b95356a98d6f393d830f",
+        "bytes": 503671,
+        "evidence_status": "insufficient",
+        "records": 16,
+        "evidence_records": 15,
+        "source_text_bytes": 285163,
+        "missing_codes": [
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 20,
+        "requirements": 1,
+        "missing_requirements": 4,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 70,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 432,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 477090,
+          "relationships": 6867,
+          "requirements": 3561,
+          "missing_evidence": 3110,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 2872,
+          "ai_answer": 4,
+          "retrieval": 6299
+        }
+      },
+      "delivery": {
+        "max_bytes": 32768,
+        "requests": 53,
+        "maximum_result_bytes": 32768,
+        "total_result_bytes": 1081459,
+        "verified": [
+          "selected-catalogue-identity",
+          "whole-package",
+          "relationships",
+          "diagnostics",
+          "every-evidence-text",
+          "every-evidence-metadata-and-span",
+          "unchanged-context-identity"
+        ]
+      }
+    },
+    {
+      "id": "logical-pc-care-home-alternatives",
+      "question": "What happens to Pension Credit during permanent care home residence?",
+      "baseline_inline_32k": {
+        "context_id": "urn:sha256:9813ed0b9548bb6ce9a63c27e14d5ea82b2a9d64e520f0b96b1d7c6e63a748e4",
+        "bytes": 4195,
+        "evidence_status": "insufficient",
+        "records": 0,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "metadata_budget"
+        ],
+        "affected_missing_ids": 0,
+        "requirements": 0,
+        "missing_requirements": 0,
+        "section_bytes": {
+          "ai_answer": 4,
+          "ambiguities": 2,
+          "binding": 220,
+          "budget": 282,
+          "bundle": 186,
+          "conflicts": 2,
+          "context_id": 77,
+          "engine": 25,
+          "evidence_status": 14,
+          "limitations": 108,
+          "missing_evidence": 124,
+          "question": 70,
+          "relationships": 2,
+          "requirements": 2,
+          "resolved_concepts": 2,
+          "retrieval": 2704,
+          "schema": 25,
+          "scope": 61,
+          "selected": 2,
+          "unresolved_terms": 2
+        }
+      },
+      "grouped_inline_32k": {
+        "context_id": "urn:sha256:2cdd7a71d3bc1f668d86239e8b5531509e0ca78a61de422d65d64984567563e0",
+        "bytes": 30554,
+        "evidence_status": "insufficient",
+        "records": 1,
+        "evidence_records": 0,
+        "source_text_bytes": 0,
+        "missing_codes": [
+          "missing_dependency",
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 35,
+        "requirements": 1,
+        "missing_requirements": 17,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 70,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 402,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 2077,
+          "relationships": 2,
+          "requirements": 7132,
+          "missing_evidence": 4959,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 6062,
+          "ai_answer": 4,
+          "retrieval": 6480
+        }
+      },
+      "assembled_512k": {
+        "context_id": "urn:sha256:4736c03da371009907af58ca8aa3228ae6d3afb64c97078ae44ceb957d106184",
+        "bytes": 482268,
+        "evidence_status": "insufficient",
+        "records": 15,
+        "evidence_records": 14,
+        "source_text_bytes": 278674,
+        "missing_codes": [
+          "missing_dependency",
+          "missing_required_evidence",
+          "unresolved_unit_boundary"
+        ],
+        "affected_missing_ids": 23,
+        "requirements": 1,
+        "missing_requirements": 5,
+        "section_bytes": {
+          "schema": 25,
+          "context_id": 77,
+          "engine": 25,
+          "question": 70,
+          "bundle": 186,
+          "binding": 220,
+          "scope": 95,
+          "evidence_status": 14,
+          "resolved_concepts": 402,
+          "ambiguities": 2,
+          "unresolved_terms": 2,
+          "selected": 447413,
+          "relationships": 11358,
+          "requirements": 5590,
+          "missing_evidence": 3417,
+          "conflicts": 2,
+          "limitations": 2437,
+          "budget": 4168,
+          "ai_answer": 4,
+          "retrieval": 6480
+        }
+      },
+      "delivery": {
+        "max_bytes": 32768,
+        "requests": 51,
+        "maximum_result_bytes": 32768,
+        "total_result_bytes": 1034677,
+        "verified": [
+          "selected-catalogue-identity",
+          "whole-package",
+          "relationships",
+          "diagnostics",
+          "every-evidence-text",
+          "every-evidence-metadata-and-span",
+          "unchanged-context-identity"
+        ]
+      }
+    }
+  ]
+}

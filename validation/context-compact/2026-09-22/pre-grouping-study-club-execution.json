@@ -1,7 +1,7 @@
 {
   "schema": "okf-context-execution-receipt.v1",
-  "started_at": "2026-09-22T18:40:03.502Z",
-  "observed_at": "2026-09-22T18:40:03.740Z",
+  "started_at": "2026-09-22T13:50:33.427Z",
+  "observed_at": "2026-09-22T13:50:33.694Z",
   "execution": {
     "schema": "okf-context-execution.v1",
     "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
@@ -19,7 +19,7 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/index.ts",
-          "sha256": "39b6b0de58b1075356b7cd2ceaf2ef31824c02047164dcd26fa15066f8547496"
+          "sha256": "0978fc518ebd78b35e0c3b40e3695a65dd31500908c34f5df4b880f979876778"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/types.ts",
@@ -31,7 +31,7 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/webmcp.ts",
-          "sha256": "455a8cebf9e4f184e19cb6f12d45d02ca00d3a2c2d85501e9536c3c1437756ca"
+          "sha256": "6f2ab1badb66f5f8dd87bffaf3c44bf1bb8c3242ed2b1547d4f0fa1b3a1b98cc"
         },
         {
           "path": "profiles/context-assembly/v1/common.schema.json",

@@ -169,3 +169,16 @@ blank fields and collection fallback. The shared context engine has 18 bounded
 allocation/dependency controls. Its [DWP development comparison](../validation/context-allocation/2026-09-21/README.md)
 and the [separate service integration](../services/ask-okf-mcp/validation/candidates/required-evidence-2026-09-21/README.md)
 record their own source bindings, changed context identifiers and limits.
+
+## Additive compact-tool checks, 22 September 2026
+
+The 16 September receipt above records the original two-tool interface. The
+current adapter additionally registers `okf_context_manifest` and
+`okf_read_evidence`. They use the same assembled package and the shared lossless
+delivery helpers; their bounded catalogue is not evidence or an AI answer.
+
+The added browser journey reconstructs a package through exact reads, verifies
+its complete digest and equality with both the retained explanation and the
+visible JSON, including a two-page logical passage and its source spans. This
+fixture still tests the registration contract, not native AI-host access. Local
+checks and deployed identity verification remain separate release gates.

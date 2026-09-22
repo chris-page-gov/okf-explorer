@@ -269,3 +269,38 @@ uv run --locked python scripts/check_context_assembly.py --corpus path/to/manife
 Shape validation does not check source inclusion. The producer must verify each
 span against its frozen extraction; Explorer verifies the unit's own bytes,
 joins, fragment hashes and provenance bindings without fetching those sources.
+
+## Small responses without shrinking the evidence selection
+
+**Assembly bytes** limit the complete selected package. **Delivery bytes** limit
+one tool response. Reducing the first can remove a qualification; using smaller
+responses for the second can carry the same complete selected package in parts.
+
+The optional browser page tools support this sequence:
+
+1. Call `okf_context_manifest` with `question`, `budget: {max_bytes: 524288}`
+   and `delivery_bytes: 32768`. Its catalogue is not source evidence.
+2. If `delivery.next_offset` is present, repeat that call with `offset` and the
+   returned `context_id`. Keep the question and assembly budget identical.
+3. Call `okf_read_evidence` with that `context_id`, a `section` and
+   `delivery_bytes: 32768`. Use `package` to reconstruct every field, or inspect
+   `diagnostics`, `relationships`, `record_metadata` and `record_text`. The two
+   record sections also require a selected `record_id`.
+4. For each value, follow `next_offset` to null, concatenate `data` in order and
+   verify its complete `content_sha256`. A partial slice can omit a qualification.
+
+This uses the same context shown in Ask OKF. Text, logical-unit spans, provenance,
+requirements and gaps are retained during complete reconstruction. Delivery
+pagination does not change the context identity or evidence status. A fully
+transferred `insufficient` package remains insufficient.
+
+The browser keeps at most four contexts for its currently loaded bundle. An
+expired or mismatched identity fails closed; rebuild the same context to inspect
+it again. This does not establish that a particular ChatGPT or other AI session
+has callable page tools. The remote service has separate source-admission and
+replay controls described in the [compact delivery decision](adr-compact-evidence-delivery.md).
+
+In logical-unit corpus v2 packages, identical item-local issue messages may list
+several affected IDs in one row. Every ID is retained; dependency pairs and path
+requirements remain distinct. Compare affected identities as well as row counts
+when auditing diagnostics. Existing v1 page packages are not regrouped.
