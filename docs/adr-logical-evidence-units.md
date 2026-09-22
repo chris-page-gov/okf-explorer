@@ -106,3 +106,12 @@ is replaced and no new source compatibility pair is inferred. Historical
 release-specific runners and all stored observations remain bound to their
 original releases; the current verifier must use a newly approved build when a
 service later adopts logical units.
+
+### Portable replay inputs
+
+The v1 compatibility check retains both the original expected package and the
+exact synthetic manifest and compressed resources that reproduce it. The first
+Linux CI run exposed a fixture problem: regenerating gzip on another zlib
+implementation changed the compressed size and hashes. Retaining input bytes
+fixes the test's portability without changing the engine or the expected
+historical package. A tampering control still rejects altered compressed bytes.
