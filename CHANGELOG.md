@@ -73,6 +73,11 @@
 
 ## Unreleased
 
+- Open learning-hub guides with normal browser navigation so static documents do
+  not first fail as application routes. The DWP Try link now reaches a beginner
+  launch guide for the actual learning programme, with its evidence and assessment
+  limits, rather than the separate guide for programme designers.
+
 - Add optional logical evidence units with exact source spans and explicit
   boundary uncertainty. Corpus v2 separates physical page and retrieval-unit
   counts and loads bounded declared destinations beyond lexical candidates.

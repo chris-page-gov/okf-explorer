@@ -1,0 +1,80 @@
+{
+  "schema": "okf-native-browser-observation.v1",
+  "observed_at": "2026-09-22T19:33:25.575Z",
+  "engine_commit": "4445adecc2a760c9658def2c1664a02c71f53b39",
+  "public_app_tree_sha256": "94824747b84f20b2e496efe253a1a5887816594e91fcc7e97d8102f129267825",
+  "public_app_manifest_sha256": "4db342b8959e834a81286a03bf08a2ed287bc5b69d4375470930d7d4505a70b3",
+  "source_commit": "7412d1d02e023794ebb1d5a5f385f08f59be7ee2",
+  "source_snapshot": "dwp-logical-context-2653e68ba636b1e9d537",
+  "binding": {
+    "index_sha256": "c040b484c4a73dffce7d542fd6089677fc626a286c6004b8570c79f2b296bdc6",
+    "index_url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/7412d1d02e023794ebb1d5a5f385f08f59be7ee2/logical-context/manifest.json"
+  },
+  "transport": "Native Edge document.modelContext.getTools / executeTool, invoked through CUA's documented CDP developer interface; no registration shim or browser settings changed.",
+  "tool_names": ["okf_build_context", "okf_context_manifest", "okf_explain_context", "okf_read_evidence"],
+  "question": "What happens to Pension Credit if I go abroad?",
+  "assembly_budget_bytes": 524288,
+  "delivery_budget_bytes": 32768,
+  "context_id": "urn:sha256:be290a407caa5c691d865749382e1dd6cb278adae729037090b8f6b74c62595d",
+  "package_bytes": 443633,
+  "package_canonical_sha256": "ccd65e1409d491eb84de8f81d70ca9a522b4f4dea45b40bf8516e3dcd6bfc09d",
+  "selected_records": 22,
+  "source_evidence_units": 21,
+  "relationships": 12,
+  "manifest": {"requests": 1, "returned": 22, "total": 22, "next_offset": null, "used_bytes": 16259},
+  "reads": [
+    {"section": "package", "requests": 15, "maximum_result_bytes": 32768, "result_bytes": 469378, "content_sha256": "ccd65e1409d491eb84de8f81d70ca9a522b4f4dea45b40bf8516e3dcd6bfc09d"},
+    {"section": "record_metadata", "requests": 1, "maximum_result_bytes": 5711, "result_bytes": 5711, "content_sha256": "b18bf9e5cad6539cf8fd5d44e024e0c4d49b28ee54841b6d06c27c850465dc42"},
+    {"section": "record_text", "requests": 1, "maximum_result_bytes": 1928, "result_bytes": 1928, "content_sha256": "95b253484446c964888a3e2fcb3f71d5db12dc24a227421dff454bf855839f2f"},
+    {"section": "diagnostics", "requests": 1, "maximum_result_bytes": 30187, "result_bytes": 30187, "content_sha256": "2f7fed1792f35516a02ddc637dd4db7c08d39e9904f44693a2b871fdcfea2dfc"},
+    {"section": "relationships", "requests": 1, "maximum_result_bytes": 24508, "result_bytes": 24508, "content_sha256": "7018dffd5a15ca0fb79eb441d21225fa0eefe9852797ceb4d8f3e324a82d0be7"}
+  ],
+  "multi_page_example": {
+    "id": "https://chris-page-gov.github.io/okf-dwp/id/unit/dmg/dmg-vol2-ch7-part6/v1-6856ae01407984fc/spc-077001-16a64dc4da2d",
+    "label": "SPC claimant temporary absence: gateway and four-week examples",
+    "spans": 2,
+    "source_urls": ["https://assets.publishing.service.gov.uk/media/6426e57e7de82b000c3133eb/dmg-ch07-06.pdf#page=8", "https://assets.publishing.service.gov.uk/media/6426e57e7de82b000c3133eb/dmg-ch07-06.pdf#page=9"],
+    "exact_span_metadata_parity": true,
+    "exact_text_reasons_paths_parity": true
+  },
+  "verification": {
+    "all_read_offsets_contiguous": true,
+    "all_read_context_ids_unchanged": true,
+    "all_complete_values_hash_verified": true,
+    "all_read_result_bytes_within_delivery_bound": true,
+    "exact_explain_context_parity": true,
+    "exact_human_visible_json_parity": true,
+    "exact_diagnostics_relationships_parity": true,
+    "ask_ui_console_errors": []
+  },
+  "evidence_status": "insufficient",
+  "visible_status": "Insufficient evidence",
+  "retrieval_truncated": true,
+  "context_truncated": true,
+  "missing_evidence_codes": ["missing_dependency", "missing_required_evidence", "unresolved_unit_boundary"],
+  "retained_attempts_and_limits": [
+    "The initial native executeTool call with object arguments was rejected before execution: Failed to parse input arguments. The native interface requires JSON string arguments; the documented successful call above used those.",
+    "The source_page_ids summary field was initially read using a nonexistent source_id key, producing null. The real returned metadata was inspected: source_url and locator identify PDF pages 8 and 9. The corrected receipt records those source URLs and preserves the verified complete metadata hash.",
+    "One additional record_metadata read inspected the two complete span objects after reconstruction. It is excluded from the reconstruction read counts above.",
+    "The full explain_context response and DOM JSON were separate local parity checks, not claimed to be bounded transport results. Counts above include intentionally redundant section checks and are not minimum production request counts.",
+    "Native browser WebMCP was observed. Remote service adoption and ChatGPT, Data Agent or Voice client interoperability were not tested or changed.",
+    "Complete transport does not establish complete evidence, applicability, legal currency or specialist acceptance."
+  ],
+  "learning_entry_observation": {
+    "hub_url": "https://chris-page-gov.github.io/okf-explorer/",
+    "clicked_label": "Try DWP learning paths",
+    "destination": "https://chris-page-gov.github.io/okf-explorer/docs/learning-presentation.html",
+    "displayed_heading": "Designing a learning bundle for Explorer",
+    "console_error": "d: Not found: /okf-explorer/docs/learning-presentation.html",
+    "status": "follow-up correction authorised; generic destination and SPA/static-document transition need correction"
+  },
+  "ci": {
+    "reviewed_pr": "https://github.com/chris-page-gov/okf-explorer/pull/142",
+    "reviewed_head": "d47dd936a76d59b6d8070c46efb91a65f69caead",
+    "reviewed_ci": "https://github.com/chris-page-gov/okf-explorer/actions/runs/35770757171",
+    "merged_ci": "https://github.com/chris-page-gov/okf-explorer/actions/runs/35773110307",
+    "merged_pages": "https://github.com/chris-page-gov/okf-explorer/actions/runs/35773025656",
+    "merged_tree_equals_reviewed_tree": true,
+    "merged_ci_boundary": "Always-on context, remote, adversarial and guard checks passed; unchanged-main impact jobs skipped. The identical reviewed PR tree passed 681 Vitest, 507 Python, 375 full browser and 78 builder/browser tests."
+  }
+}

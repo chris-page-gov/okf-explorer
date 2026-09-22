@@ -119,3 +119,26 @@ fixed-source claim that one 32 KiB inline case retains a passage. The separate
 labels the new source-admission boundary explicitly. Run it with the same two
 arguments as the earlier runner against the exact candidate bytes to make a new
 observation.
+
+## Public native browser observation
+
+[PR 142](https://github.com/chris-page-gov/okf-explorer/pull/142) was merged as
+`4445adecc2a760c9658def2c1664a02c71f53b39`; its exact merged CI and Pages checks
+passed. The full reviewed tree passed 681 Vitest tests, 507 Python contracts,
+375 full browser tests and 78 builder/browser checks.
+
+[The retained native Edge receipt](public-native-edge.json) records all four
+tools on the public app and DWP source commit
+`7412d1d02e023794ebb1d5a5f385f08f59be7ee2`. The Pension Credit abroad question
+retained 21 evidence units. Its 443,633-byte package reconstructed exactly through
+15 package reads, each bounded to 32 KiB. Additional record and section reads
+matched, including the two source spans at PDF pages 8–9. The native explanation
+and human-visible JSON matched the reconstructed package; the Ask UI had no
+console errors. Source binding URLs are part of context identity, so this public
+context ID differs from the earlier local-path observation.
+
+The package remains **insufficient**, with the same reported evidence gaps and
+truncation. This proves native browser tool operation, not remote-service
+adoption or ChatGPT, Data Agent or Voice client interoperability. The receipt
+also preserves an unrelated learning-hub navigation failure, addressed by the
+separate [learning navigation correction](../../learning-navigation/2026-09-22/README.md).
