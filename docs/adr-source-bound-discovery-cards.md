@@ -159,6 +159,42 @@ use existing 32 KiB exact reads to deliver it; a small response bound and a smal
 evidence-selection budget are different choices. No obligation is silently
 discarded to create the appearance of a useful small result.
 
+## Optional conjunctive routing conditions
+
+A source may discuss a shared topic in several different programmes. Finding
+the topic alone must not activate every programme-specific route. An assertion
+may therefore declare a closed `context_guard` containing `when_all`: one to
+eight unique, absolute concept identifiers. This means “follow this route only
+when all these declared concepts resolve directly from the question”. It is a
+navigation condition, not a new statement of legal applicability.
+
+```json
+{"context_guard":{"when_all":["https://example.test/concept/reading-circle","https://example.test/concept/equipment"]}}
+```
+
+The same check governs lazy destination loading, ordinary graph traversal,
+required-path allocation and `requires` dependency diagnostics. Only public
+records whose kind is `concept` can satisfy the condition. Evidence records,
+concepts merely reached through a relationship, ambiguous alternatives and
+assessor requirements cannot activate it. Missing, private or non-concept guard
+identifiers fail closed and remain visible as unavailable concepts.
+
+An encountered guard produces an optional `routing_guards` explanation with its
+assertion/source/target identifiers, all required concepts, missing or unavailable
+concepts and matched/unmatched result. The complete assertion remains in its
+bound index or exact incident reader. Loader-supplied explanations are recomputed
+against the current validated index and question; duplicate or altered decisions
+are rejected. An unmatched condition is not itself a resource truncation or
+evidence gap. An applicable requirement demanding a blocked path still reports
+that path as missing.
+
+Guards constrain relationship traversal; they are not exclusion filters over
+lexical discovery. Independently matched source passages remain visibly lexical
+candidates, without a claim that the guarded programme applies. A consumer must
+inspect the selection reason and scope. Unguarded bundles add no guard fields and
+retain their preceding v1/v2 package bytes. Oversized guard explanations use the
+existing explicit metadata refusal rather than silently dropping conditions.
+
 ## Reader and future presentation
 
 Existing Reader records, narratives, related links, resources and rich semantic

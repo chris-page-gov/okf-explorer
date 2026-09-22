@@ -1,0 +1,153 @@
+{
+  "candidate": {
+    "explorer_manifest_sha256": "b04036e1774f6ee7b5a6e3f764ac645ac26d3f53b3dc7741dc2fb5fc81e24220",
+    "explorer_tree_sha256": "d3420a7e2673d6f172fc6f53a3f70e603b6fdfcefcf670ce3b681b90c3871397",
+    "generated_at": "2026-08-03T10:29:12Z",
+    "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+    "heritage_release_root_sha256": "7ceed0df108ba2f524b01791b305ed73b8d5ab945606ecb330ed8b17a1e445f9",
+    "site_file_count": 10569,
+    "site_internal_references": 7773,
+    "site_reading_pages": 360,
+    "site_size_gate": {
+      "headroom_bytes": 180789854,
+      "limit_bytes": 1000000000,
+      "site_bytes": 819210146,
+      "status": "passed"
+    },
+    "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
+    "site_tree_sha256": "38a9139a6d1645f6fa0e2e759713e420152501bfcf0d337dd9852d4351efa6e6",
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+    "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
+    "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
+  },
+  "determinism": {
+    "builds": 1,
+    "comparison_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
+    "comparison_tree_sha256": "6599441223b0b502cd11a6e849bf6feb3742cc66af10b276b62aca5f5e3ab3cb",
+    "corpora": {
+      "faithful": {
+        "builds": 1,
+        "comparison_tree_sha256": "6599441223b0b502cd11a6e849bf6feb3742cc66af10b276b62aca5f5e3ab3cb",
+        "differences": 0,
+        "files_per_build": 3131
+      },
+      "synthetic": {
+        "builds": 1,
+        "comparison_tree_sha256": "d20a9b81345df876b1daeaafe8f312dc32e165504ad089f51ac64e5611531644",
+        "differences": 0,
+        "files_per_build": 355
+      },
+      "tiny": {
+        "builds": 1,
+        "comparison_tree_sha256": "a9250e6fc9bec964360ae410d53297d292910f9bb24a05c59f1901e2533a4186",
+        "differences": 0,
+        "files_per_build": 514
+      }
+    },
+    "differences": 0,
+    "files_per_build": 3131,
+    "status": "passed"
+  },
+  "local_journeys": {
+    "base_url": "http://127.0.0.1:8002/",
+    "errors": 0,
+    "failed": 0,
+    "journey_ids": [
+      "journey-tiny",
+      "journey-faithful",
+      "journey-synthetic-isolation"
+    ],
+    "journeys_run": 3,
+    "manifest": "evaluation-foundry/fixtures/heritage-warwickshire/journeys.json",
+    "manifest_sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb",
+    "passed": 3,
+    "result": "evidence/receipts/local-journey-results.json.gz",
+    "result_gzip_sha256": "48be56c93f8a0c214bc9d8490a4cc7e48cc613b6cce9a4a96367e5af7f9f60f9",
+    "result_json_sha256": "edf0351da623869b23ccde011f17a0da3e5aa1595ef7141718bccc28c6da0ac2",
+    "start_bundles": [
+      "/publication/tiny/okf-explorer.json",
+      "/publication/okf-explorer.json",
+      "/publication/synthetic/okf-explorer.json"
+    ],
+    "status": "passed",
+    "validation_only": 0
+  },
+  "observed_at": "2026-09-22T23:14:35Z",
+  "producer_materials": {
+    "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
+    "bytes": 400721,
+    "file_count": 5,
+    "materials": [
+      {
+        "bytes": 114,
+        "path": "requirements-okf.txt",
+        "sha256": "20ccd9cc40f53fcc3215136fd1f01a1ddf10412437ff73bdb5f8139bc7dab540"
+      },
+      {
+        "bytes": 161378,
+        "path": "scripts/build_heritage_evaluation.py",
+        "sha256": "33880f7334994c5b171ad914153ddc3605a46b350f914c2e6c192423c0bfc9f9"
+      },
+      {
+        "bytes": 159127,
+        "path": "scripts/build_uk_government_api_okf.py",
+        "sha256": "0efd88256ce84ab91a33e8554f8e91206127f3e70619655d1d671d250c6021c3"
+      },
+      {
+        "bytes": 20224,
+        "path": "scripts/heritage_build_io.py",
+        "sha256": "5ce235df82926726c3deb2d47c3f2666f364a3e5e6095bcb62e7a067b062e973"
+      },
+      {
+        "bytes": 59878,
+        "path": "scripts/okf_semantic.py",
+        "sha256": "de4a070c78d468c5aaebbf8c5d55d50eebfa5a0a14797c381a469aa4a75a4ced"
+      }
+    ],
+    "root_sha256": "6c675bd907409a8f5510c34f3690b2f7df2147ef4380de6ce7847b200df834c5",
+    "schema": "okf-heritage-producer-materials.v1"
+  },
+  "publication_shell_rebind": {
+    "change_class": "full-candidate-rebuild",
+    "rationale": "This receipt was materialised from a full current candidate: no corpus, Explorer, Site or browser-evidence identity was carried forward from the previous receipt.",
+    "rerun_gates": [
+      "faithful/tiny/synthetic corpus material and release-root validation",
+      "faithful/tiny/synthetic deterministic tree identity",
+      "100-question functionality evaluation",
+      "faithful/tiny/synthetic local browser journeys",
+      "Explorer build-manifest identity",
+      "Exact heritage producer material identity",
+      "Site inventory, capacity and tree identity"
+    ],
+    "reused_gates": [],
+    "reused_unchanged_roots": [],
+    "status": "passed"
+  },
+  "question_suite": {
+    "average_accessibility": 20.0,
+    "average_display": 24.2,
+    "average_plain_language_and_government_style": 17.2,
+    "average_retrieval": 31.2,
+    "average_total": 92.6,
+    "base_url": "http://127.0.0.1:8002/",
+    "bundle": "/publication/okf-explorer.json",
+    "questions_run": 100,
+    "questions_scored": 100,
+    "result": "evidence/receipts/question-suite-results.json.gz",
+    "result_gzip_sha256": "d84900186d292a807fdbe82817e15ec3873595d3f6c4eb6a7b4f70ac42de5e39",
+    "result_json_sha256": "653b3e06ce7f42a1f7acc2a0803c61ac290d4ea922c50dbc9a0722bb90f44dc9",
+    "scores_at_least_80": 100,
+    "scores_below_60": 0,
+    "status": "passed",
+    "suite": "evaluation-foundry/fixtures/heritage-warwickshire/questions.json",
+    "suite_sha256": "2b902715554c8508b5159e7521c78b3e5267b8f952d7a2d121f34db94539620d"
+  },
+  "schema": "okf-heritage-local-candidate-receipt.v1",
+  "scope": "Full local candidate rebuild binding the current faithful, tiny and synthetic corpus trees, current Explorer build, deterministic Site candidate identity and exact supplied browser-result bytes. This receipt does not claim that GitHub Pages is deployed.",
+  "terminal_publication_gate": {
+    "claim": "No public URL is verified by this local receipt.",
+    "journey_id": "journey-publication",
+    "rich_page_identity_check": "pending-terminal-real-browser-check",
+    "status": "pending"
+  }
+}

@@ -117,3 +117,25 @@ dependency version was changed. The independent review's first test invocation
 also unintentionally entered broader browser/listener checks; macOS sandbox
 permissions refused those listeners. Its direct focused rerun is recorded
 separately from the successful authorised browser observation above.
+
+## Separate scoped-route increment
+
+After the allocation correction was frozen at `58776a79`, DWP's unchanged-source
+run retained all 47 declared paths at 512 KiB and all 82 legacy v2 packages were
+byte-identical. Its 40 v3 questions still returned metadata refusals at 32 KiB.
+Those observations are retained by the DWP producer and do not establish legal
+answerability. They preceded the separate routing-guard change described below.
+
+The optional guard increment prevents a shared-topic route from activating
+without all its declared question concepts. Synthetic controls distinguish two
+fictional activities, lexical matches, ambiguous or reached concepts, malformed
+and unavailable identifiers, required-path gaps and forged loader diagnostics.
+The first v2 guard test attempted a new question against a replay fixture that
+stored only its original posting shards; it failed closed on the missing file.
+The separate test fixture now explicitly supplies its other empty buckets;
+the retained replay and source files were not changed.
+
+`pre-guards/` preserves the allocation candidate's study-club and Heritage
+observations. Its `observed_at` was corrected from a local-time transcription to
+the actual UTC clock, without changing any browser-result or app hash. A fresh
+guarded-app observation is required before its current-app receipt is published.

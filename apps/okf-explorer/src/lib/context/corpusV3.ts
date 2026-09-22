@@ -1,10 +1,10 @@
 /** Separately versioned source-bound discovery. Cards are navigation, not evidence. */
 // @ts-ignore -- Explicit extensions support independently pinned Node consumers.
-import { assembleContext, canonicalJson, contextSha256, CONTEXT_PREDICATES, governanceIssues, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
+import { assembleContext, canonicalJson, contextGuardDecision, contextSha256, CONTEXT_PREDICATES, governanceIssues, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
 // @ts-ignore -- No top-level access to the legacy constants: this is a dispatch cycle only.
 import { CORPUS_LIMITS, UNIT_REFERENCE_LIMITS, corpusBucket, validateContextCorpusManifest } from './corpus.ts';
 import type { ContextRecordShard, LegacyContextCorpusManifest, Reference } from './corpus.ts';
-import type { ContextAssertion, ContextBinding, ContextBudget, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
+import type { ContextAssertion, ContextBinding, ContextBudget, ContextGuardDecision, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
 
 export type DiscoveryRanking = { schema: 'okf-bm25.v1'; k1: 1.2; b: 0.75; score_scale: 1000000; fields: readonly ['source', 'discovery'] };
 export const DISCOVERY_RANKING: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25.v1', k1: 1.2, b: 0.75, score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const) });
@@ -302,6 +302,8 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     check(entry, `missing committed adjacency entry: ${id}`); return entry;
   };
   const visited = new Map<string, number>(), attempted = new Set<string>(), includedEdges = new Set<string>(), inspected = new Set<string>();
+  const resolvedIds = new Set(resolveConcepts(base, question).resolved.map(r => r.id));
+  const guardDecisions = new Map<string, ContextGuardDecision>();
   const expand = async (seeds: string[]) => {
   const queue = seeds.map(id => ({ id, depth: 0 }));
   for (let i = 0; i < queue.length; i++) {
@@ -330,6 +332,11 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
         includedEdges.add(edge.id);
       }
       if (!CONTEXT_PREDICATES.has(edge.predicate)) continue;
+      const guard = contextGuardDecision(edge, byId, resolvedIds);
+      if (guard) {
+        guardDecisions.set(edge.id, guard);
+        if (guard.status === 'unmatched') continue;
+      }
       if (depth >= budget.max_depth) { if (!byId.has(edge.target)) omit('referenced_depth_budget', 'A declared destination exceeds the requested traversal depth.', [edge.id, edge.target]); continue; }
       if ((visited.get(edge.target) ?? Infinity) > depth + 1) queue.push({ id: edge.target, depth: depth + 1 });
     }
@@ -338,7 +345,7 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
   // Actual concept aliases supply seeds, never assessor requirements. Complete
   // their declared outgoing paths before lexical candidates spend the shared
   // file budget. All phases retain the same transfer/work/depth ceilings.
-  await expand([...new Set(resolveConcepts(base, question).resolved.map(r => r.id))].sort());
+  await expand([...resolvedIds].sort());
   const wanted = [...new Set(discoveryTokens(question))].filter(t => !isQuestionScaffolding(t));
   retrieval.query_tokens = wanted.filter(t => t.length <= 64).slice(0, CORPUS_LIMITS.query_tokens);
   retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
@@ -390,5 +397,6 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')}). The card is not evidence or a concept-resolution claim.` });
   }
   await expand([...new Set(evidenceSeeds.map(r => r.id))].sort());
-  return assembleContext(index, question, requested, binding, { evidenceSeeds, retrieval });
+  return assembleContext(index, question, requested, binding, { evidenceSeeds, retrieval,
+    ...(guardDecisions.size ? { guardDecisions: [...guardDecisions.values()] } : {}) });
 }

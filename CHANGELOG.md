@@ -1,5 +1,17 @@
 # Changelog
 
+## Scoped context routes — 23 September 2026
+
+- Add optional conjunctive routing guards to bundle assertions. Evaluate them
+  from directly resolved public concepts before loading or following a route;
+  retain matched and unmatched reasons without treating a navigation guard as
+  legal applicability or turning evidence requirements into retrieval seeds.
+- Preserve unguarded replay and exact source metadata. Reject fabricated guard
+  diagnostics, report blocked required paths, and keep metadata refusals explicit.
+- Retain the preceding current-app receipts before refreshing the guarded
+  candidate. Correct their observation time using the actual UTC clock; source,
+  application and browser-result hashes are unchanged by that timestamp fix.
+
 ## Discovery budget allocation — 23 September 2026
 
 - Prioritise real resolved-concept paths before lexical candidates spend the

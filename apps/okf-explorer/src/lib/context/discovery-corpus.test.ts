@@ -32,6 +32,37 @@ describe('source-bound discovery corpus v3', () => {
     expect(result.relationships.map(x => x.id)).toEqual([f.assertions[1].id]);
     expect(result.missing_evidence.some(x => x.code === 'no_evidence_requirements')).toBe(true);
   });
+  it('also respects an opt-in guard during v2 lazy loading without changing retained unguarded replay', async () => {
+    const f = structuredClone(retainedV2);
+    const basePath = f.manifest.base_index.path;
+    const base = JSON.parse(new TextDecoder().decode(Uint8Array.from(f.files[basePath as keyof typeof f.files])));
+    const concept = base.records[0]; concept.label = 'Fabricated topic'; concept.aliases = [];
+    const approval = { ...concept, id: 'https://example.test/concept/approval', route: 'concept/approval', label: 'Approval' };
+    base.records.push(approval); base.assertions[0].context_guard = { when_all: [concept.id, approval.id] };
+    const text = canonicalJson(base), bytes = new TextEncoder().encode(text);
+    (f.files as Record<string, number[]>)[basePath] = [...bytes];
+    Object.assign(f.manifest.base_index, { bytes: bytes.length, sha256: await contextSha256(text) });
+    // The retained replay stores only its original request's posting shards.
+    // This separate guard fixture explicitly supplies the other empty buckets.
+    const empty = canonicalJson({ schema: 'okf-context-postings.v1', postings: {} });
+    for (const ref of Object.values(f.manifest.search.shards)) {
+      if ((f.files as Record<string, number[]>)[ref.path]) continue;
+      const encoded = new TextEncoder().encode(empty);
+      (f.files as Record<string, number[]>)[ref.path] = [...encoded];
+      Object.assign(ref, { bytes: encoded.length, sha256: await contextSha256(empty) });
+    }
+    const calls: string[] = [];
+    const fetcher: typeof fetch = async url => {
+      const path = new URL(String(url)).pathname.slice('/corpus/'.length); calls.push(path);
+      return new Response(Uint8Array.from(f.files[path as keyof typeof f.files]));
+    };
+    const blocked = await assembleCorpusContext(validateContextCorpusManifest(f.manifest), f.binding, 'Fabricated topic', {}, fetcher);
+    expect(calls.some(path => path.startsWith('records/'))).toBe(false);
+    expect(blocked.routing_guards![0]).toMatchObject({ status: 'unmatched', missing_concepts: [approval.id] });
+    const admitted = await assembleCorpusContext(validateContextCorpusManifest(f.manifest), f.binding, 'Fabricated topic approval', {}, fetcher);
+    expect(admitted.routing_guards![0].status).toBe('matched');
+    expect(admitted.selected.filter(row => row.record.kind === 'evidence')).toHaveLength(2);
+  });
   it('resolves only actual concept aliases and loads complete declared paths without lexical evidence', async () => {
     const f = await discoveryFixture();
     const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', {}, f.fetcher);
@@ -72,6 +103,28 @@ describe('source-bound discovery corpus v3', () => {
     expect(bm25Contribution(10, 2, 1, 20, 200)).toBe(1481605);
     expect(bm25Contribution(10, 2, 2, 20, 200)).toBeLessThan(2 * bm25Contribution(10, 2, 1, 20, 200));
     expect(bm25Contribution(10, 2, 1, 100, 200)).toBeLessThan(bm25Contribution(10, 2, 1, 20, 200));
+  });
+  it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
+    const f = await discoveryFixture(3, 1);
+    const topic = { ...f.concept, id: 'https://example.test/concept/equipment', route: 'concept/equipment', label: 'Equipment', aliases: [] };
+    f.base.records.push(topic);
+    f.assertions[0].context_guard = { when_all: [f.concept.id, topic.id] };
+    await f.build();
+    const blocked = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', {}, f.fetcher);
+    expect(blocked.selected.some(row => row.record.kind === 'evidence')).toBe(false);
+    expect(f.calls.some(path => path.startsWith('units/'))).toBe(false);
+    expect(blocked.routing_guards).toHaveLength(1);
+    expect(blocked.routing_guards![0]).toMatchObject({ status: 'unmatched', missing_concepts: [topic.id] });
+    expect(blocked.requirements[0].missing).toContain(f.assertions[0].id);
+    expect(blocked.retrieval!.truncated).toBe(false);
+    const before = canonicalJson(blocked);
+    const incident = blocked.retrieval!.discovery!.adjacency[0] as DiscoveryIncidentReference;
+    expect((await readDiscoveryIncident(f.manifest, f.binding, incident, f.fetcher)).outgoing[0].context_guard).toEqual(f.assertions[0].context_guard);
+    expect(canonicalJson(blocked)).toBe(before);
+    const admitted = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle equipment', {}, f.fetcher);
+    expect(admitted.routing_guards![0].status).toBe('matched');
+    expect(admitted.selected.map(row => row.record.id)).toContain(f.records.at(-1)!.id);
+    expect(admitted.requirements[0].status).toBe('supported-within-declared-scope');
   });
   it.each(['metadata', 'text', 'ordinal', 'card-id', 'official', 'provenance', 'extra'])('rejects corrupt or stale cards: %s', async variant => {
     const f = await discoveryFixture();

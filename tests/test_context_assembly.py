@@ -178,6 +178,28 @@ class ContextAssemblyContractTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 validate_documents({'package': broken})
 
+    def test_context_routing_guards_are_optional_closed_and_bounded(self):
+        index = copy.deepcopy(self.documents['index'])
+        index['assertions'][0]['context_guard'] = {'when_all': ['urn:concept:activity', 'urn:concept:topic']}
+        validate_documents({'index': index})
+        for change in ('empty', 'duplicate', 'too-many', 'not-iri', 'extra'):
+            broken = copy.deepcopy(index)
+            guard = broken['assertions'][0]['context_guard']
+            if change == 'empty': guard['when_all'] = []
+            elif change == 'duplicate': guard['when_all'] = ['urn:concept:one'] * 2
+            elif change == 'too-many': guard['when_all'] = [f'urn:concept:{n}' for n in range(9)]
+            elif change == 'not-iri': guard['when_all'] = ['do something']
+            else: guard['instructions'] = 'execute this'
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                validate_documents({'index': broken})
+        pack = copy.deepcopy(self.documents['package'])
+        pack['routing_guards'] = [{'assertion_id': 'urn:edge:one', 'source': 'urn:concept:topic',
+            'target': 'urn:evidence:one', 'when_all': ['urn:concept:activity', 'urn:concept:topic'],
+            'missing_concepts': ['urn:concept:activity'], 'unavailable_concepts': [], 'status': 'unmatched'}]
+        validate_documents({'package': pack})
+        pack['routing_guards'][0]['instructions'] = 'execute this'
+        with self.assertRaises(ValueError): validate_documents({'package': pack})
+
 
 if __name__ == '__main__':
     unittest.main()

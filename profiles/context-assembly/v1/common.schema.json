@@ -264,6 +264,25 @@
         },
         "original_assertion_id": {
           "type": "string"
+        },
+        "context_guard": {
+          "type": "object",
+          "properties": {
+            "when_all": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+              }
+            }
+          },
+          "required": [
+            "when_all"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -681,6 +700,69 @@
       ],
       "additionalProperties": false,
       "description": "Exact incident metadata locator. Hash id with the corpus bucket algorithm, read the bound manifest relationship shard and verify the complete entry hash. This is an audit reference, not selected evidence."
+    },
+    "context_guard_decision": {
+      "type": "object",
+      "properties": {
+        "assertion_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "when_all": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+          }
+        },
+        "missing_concepts": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+          }
+        },
+        "unavailable_concepts": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9+.-]*:[^\\s]+$"
+          }
+        },
+        "status": {
+          "enum": [
+            "matched",
+            "unmatched"
+          ]
+        }
+      },
+      "required": [
+        "assertion_id",
+        "source",
+        "target",
+        "when_all",
+        "missing_concepts",
+        "unavailable_concepts",
+        "status"
+      ],
+      "additionalProperties": false
     }
   }
 }

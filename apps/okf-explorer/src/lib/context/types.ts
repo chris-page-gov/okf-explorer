@@ -64,6 +64,18 @@ export type ContextAssertion = {
   provenance: ContextProvenance[];
   /** Existing bundle assertion identity, when this is a projection. */
   original_assertion_id?: string;
+  /** Routing condition, not a legal applicability assertion or an evidence seed. */
+  context_guard?: { when_all: string[] };
+};
+
+export type ContextGuardDecision = {
+  assertion_id: string;
+  source: string;
+  target: string;
+  when_all: string[];
+  missing_concepts: string[];
+  unavailable_concepts: string[];
+  status: 'matched' | 'unmatched';
 };
 
 /** Author-declared evidence needs, not an answer key or an engine rule. */
@@ -153,6 +165,8 @@ export type ContextRetrieval = {
 export type ContextAssemblyOptions = {
   evidenceSeeds: Array<{ id: string; reason: string }>;
   retrieval: ContextRetrieval;
+  /** Guard decisions already encountered by the bounded lazy graph loader. */
+  guardDecisions?: ContextGuardDecision[];
 };
 export type ContextRequirementResult = ContextRequirement & {
   status: 'supported-within-declared-scope' | 'insufficient';
@@ -172,6 +186,8 @@ export type ContextPackage = {
   unresolved_terms: string[];
   selected: ContextSelection[];
   relationships: ContextAssertion[];
+  /** Present only when an explicitly guarded route was inspected. */
+  routing_guards?: ContextGuardDecision[];
   requirements: ContextRequirementResult[];
   missing_evidence: ContextIssue[];
   conflicts: ContextIssue[];

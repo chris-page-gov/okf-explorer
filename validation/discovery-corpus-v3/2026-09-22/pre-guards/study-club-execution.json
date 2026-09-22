@@ -1,7 +1,7 @@
 {
   "schema": "okf-context-execution-receipt.v1",
-  "started_at": "2026-09-22T23:23:53.295Z",
-  "observed_at": "2026-09-22T23:23:53.591Z",
+  "started_at": "2026-09-22T23:05:47.267Z",
+  "observed_at": "2026-09-22T23:05:47.541Z",
   "execution": {
     "schema": "okf-context-execution.v1",
     "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
@@ -11,11 +11,11 @@
       "implementation": [
         {
           "path": "apps/okf-explorer/src/lib/context/corpus.ts",
-          "sha256": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f"
+          "sha256": "32c83ab744e45da081288ecfb23dd837c56b18084dfc5ae1cf4810bac700c4ac"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
-          "sha256": "cf906d6e3e07c6bae67b27c51e99d94a94d7c59fdcc8c9923d3c7807d37e220e"
+          "sha256": "d129d94a61c795d65996b7e206aa0715536645f27a274a702df8eaedabbb3282"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/delivery.ts",
@@ -23,11 +23,11 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/index.ts",
-          "sha256": "d04a5ef58e8561e7847773ef41d6c4ac6946f910738977d3c289d4e32ab91dd2"
+          "sha256": "89abbadf190883f3346ba3eca4ad25d9f85cdc658ec602d9bfdeebcbf05b1ab3"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/types.ts",
-          "sha256": "90a33955d7e75fefbf13e2cb5ca9724a70f3db3bddd246322264fb9ba583da50"
+          "sha256": "27a61c10e73bce3a26e727d20bd97dc7ea07a6cf13874657da7d70d549d504fc"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/unit.ts",
@@ -39,7 +39,7 @@
         },
         {
           "path": "profiles/context-assembly/v1/common.schema.json",
-          "sha256": "008855c14748a157f900c0290f0a106f12a253631ea5b802f36a095696a2bfeb"
+          "sha256": "3254763c16a5aff9a569f9818ebd8200b308ecdc5a29f7cca5c3812aed8dd207"
         },
         {
           "path": "profiles/context-assembly/v1/context-adjacency.schema.json",
@@ -83,7 +83,7 @@
         },
         {
           "path": "profiles/context-assembly/v1/package.schema.json",
-          "sha256": "8bd891a934544254b57154c19eeaf30b1237b1c259a704babddebd3b7f5328ae"
+          "sha256": "f739177136b3a307a849c87fd949482237c662d9ad0551fb11cd64600f922c28"
         },
         {
           "path": "scripts/check_context_assembly.py",

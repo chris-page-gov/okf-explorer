@@ -1,6 +1,6 @@
 /** Hash-bound full-source lexical discovery. No source text is executed or treated as a completeness rule. */
 // @ts-ignore -- Explicit extension also supports the pinned Node type-stripping consumer.
-import { assembleContext, canonicalJson, CONTEXT_PREDICATES, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
+import { assembleContext, canonicalJson, contextGuardDecision, CONTEXT_PREDICATES, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
 import type { ContextBinding, ContextBudget, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
 // @ts-ignore -- Pinned Node consumers use explicit TypeScript extensions.
 import { assembleDiscoveryCorpusContext, validateDiscoveryCorpusManifest, type DiscoveryCorpusManifest } from './corpusV3.ts';
@@ -222,6 +222,7 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     retrieval.candidates.push({ id: record.id, ...rank });
     evidenceSeeds.push({ id: record.id, reason: `${logical ? 'Whole-unit' : 'Whole-page'} lexical candidate: ${rank.matched.join(', ')}; score ${rank.score}. This is not an applicability or completeness assertion.` });
   }
+  const guardDecisions = new Map<string, import('./types.ts').ContextGuardDecision>();
   if (logical) {
     // Load destinations only along actual directed paths from resolved concepts
     // or lexical candidates. Requirement endpoints never become new seeds.
@@ -229,7 +230,8 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     for (const edge of [...index.assertions].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)) {
       const rows = outgoing.get(edge.source) || []; rows.push(edge); outgoing.set(edge.source, rows);
     }
-    const seeds = [...new Set([...resolveConcepts(base, question).resolved.map(row => row.id), ...evidenceSeeds.map(row => row.id)])].sort();
+    const resolvedIds = new Set(resolveConcepts(base, question).resolved.map(row => row.id));
+    const seeds = [...new Set([...resolvedIds, ...evidenceSeeds.map(row => row.id)])].sort();
     const queue = seeds.map(id => ({ id, depth: 0 })); const visited = new Set<string>(); const attempted = new Set<string>();
     let inspected = 0;
     for (let cursor = 0; cursor < queue.length; cursor++) {
@@ -255,6 +257,11 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
           omit('referenced_relationship_budget', 'The bounded declared-relationship loading limit was reached.', [id]); break;
         }
         inspected++;
+        const guard = contextGuardDecision(edge, byId, resolvedIds);
+        if (guard) {
+          guardDecisions.set(edge.id, guard);
+          if (guard.status === 'unmatched') continue;
+        }
         if (depth >= unitBudget!.max_depth) {
           if (!byId.has(edge.target)) omit('referenced_depth_budget', 'A declared destination exceeds the requested traversal depth.', [edge.id, edge.target]);
           continue;
@@ -264,5 +271,6 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     }
     retrieval.units!.examined_relationships = inspected;
   }
-  return assembleContext(index, question, budget, binding, { evidenceSeeds, retrieval });
+  return assembleContext(index, question, budget, binding, { evidenceSeeds, retrieval,
+    ...(guardDecisions.size ? { guardDecisions: [...guardDecisions.values()] } : {}) });
 }
