@@ -72,3 +72,26 @@ The current local checks pass 680 Vitest tests, eight independent context
 contract controls and all 13 Ask OKF Chrome journeys. The current study-club
 execution and exact replay also pass. Public deployment and genuine external AI
 client invocation remain separate acceptance gates.
+
+## Local app assurance
+
+The deterministic app tree is
+`94824747b84f20b2e496efe253a1a5887816594e91fcc7e97d8102f129267825`;
+its manifest SHA-256 is
+`4db342b8959e834a81286a03bf08a2ed287bc5b69d4375470930d7d4505a70b3`.
+The independent local Heritage observation passed all 100 questions at the
+existing 80-point threshold (mean 92.6), and all three declared journeys. These
+are Explorer regression checks over the frozen Heritage fixture, not DWP legal
+acceptance or an answer-accuracy metric.
+
+`pre-grouping-heritage/` preserves the previous receipt and its two compressed
+result files unchanged. The current canonical receipt was materialised from new
+question and journey observations bound to this exact app and assembled Site.
+Source snapshot dates and source corpus bytes are unchanged.
+
+An additional successful multi-page catalogue-continuation test passed after
+the 680-test run (35 current transport tests in total). Final Svelte checking
+reports zero errors and warnings. Twelve retained-archive controls pass; the
+app contract suite passes 93 checks with one existing skip. Sandbox-only browser
+launch and loopback-listen failures were retained and retried outside that
+restriction. No failed assertion or source identity was weakened to obtain a pass.
