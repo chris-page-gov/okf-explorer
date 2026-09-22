@@ -27,10 +27,11 @@ export async function freshDirectory(path: string) { await noSymlinks(dirname(re
 
 const inputs = new Set([
   '../../apps/okf-explorer/src/lib/context/corpus.ts', '../../apps/okf-explorer/src/lib/context/delivery.ts', '../../apps/okf-explorer/src/lib/context/index.ts',
+  '../../apps/okf-explorer/src/lib/context/unit.ts', '../../profiles/context-assembly/v1/evidence-unit.schema.json',
   '../../profiles/context-assembly/v1/common.schema.json', '../../profiles/context-assembly/v1/package.schema.json',
   'package-lock.json', 'package.json', 'scripts/build.mjs',
   ...['bundles', 'contracts', 'corpusFetch', 'deliveryContracts', 'engines', 'landing', 'node', 'registry', 'replay', 'replayDelivery', 'review', 'service', 'worker'].map(name => `src/${name}.ts`),
-  ...['assembly-index', 'corpus-manifest', 'descriptor', 'previous-corpus-manifest', 'staff-corpus-manifest', 'corpus-release', 'previous-corpus-release', 'staff-corpus-release'].map(name => `vendor/okf-dwp-${name}.json`),
+  ...['assembly-index', 'corpus-manifest', 'descriptor', 'household-corpus-manifest', 'previous-corpus-manifest', 'staff-corpus-manifest', 'corpus-release', 'household-corpus-release', 'previous-corpus-release', 'staff-corpus-release'].map(name => `vendor/okf-dwp-${name}.json`),
   ...['b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55', 'c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e'].flatMap(commit =>
     ['corpus.ts', 'index.ts', 'types.ts', 'manifest.json'].map(name => `vendor/engines/${commit}/${name}`))
 ]);

@@ -16,6 +16,24 @@ export type ContextProvenance = {
   literal_sha256?: string;
 };
 
+/** Ordered source selections. Offsets are half-open UTF-8 byte offsets in the
+ * decoded source text and in record.text, never offsets in JSON/PDF bytes. */
+export type EvidenceUnit = {
+  schema: 'okf-evidence-unit.v1';
+  kind: 'section' | 'paragraph' | 'table' | 'definition' | 'exception' | 'cross-reference' | 'compound' | 'unresolved-fragment' | 'page-fallback';
+  boundary_status: 'machine-detected' | 'author-declared';
+  completeness: 'complete-within-declared-boundary' | 'unresolved' | 'fallback';
+  offset_unit: 'utf-8-bytes';
+  joiner: '' | '\n' | '\n\n';
+  spans: Array<{
+    source_url: string; source_sha256: string;
+    extraction_url: string; extraction_sha256: string;
+    locator: string; source_text_sha256: string; source_text_bytes: number;
+    source_start: number; source_end: number; unit_start: number; unit_end: number;
+    literal_sha256: string;
+  }>;
+};
+
 export type ContextRecord = {
   id: string;
   route: string;
@@ -31,6 +49,7 @@ export type ContextRecord = {
   access: 'public' | 'restricted';
   review_status?: string;
   conflicts_with?: string[];
+  evidence_unit?: EvidenceUnit;
 };
 
 export type ContextAssertion = {
@@ -111,6 +130,13 @@ export type ContextRetrieval = {
   limits: { query_tokens: number; candidates: number; files: number; fetched_bytes: number; decoded_bytes: number };
   truncated: boolean;
   omissions: ContextIssue[];
+  /** Additive v2 counters; absent for unchanged v1 page-corpus packages. */
+  units?: {
+    corpus_schema: 'okf-context-corpus.v2';
+    referenced_records: string[];
+    examined_relationships: number;
+    limits: { referenced_records: number; examined_relationships: number };
+  };
 };
 export type ContextAssemblyOptions = {
   evidenceSeeds: Array<{ id: string; reason: string }>;

@@ -255,6 +255,22 @@
             <summary>{item.record.kind === 'evidence' ? 'Read whole source passage' : 'Read project-authored context'}</summary>
             <pre class="evidence-text">{item.record.text}</pre>
           </details>
+          {#if item.record.evidence_unit}
+            {@const unit = item.record.evidence_unit}
+            <details class="unit-provenance">
+              <summary>Logical unit and exact source spans</summary>
+              <p>{unit.kind} · {unit.boundary_status} · {unit.completeness}</p>
+              <p>A detected or declared boundary is not specialist acceptance. The unit retains whole passages; its producer checks inclusion in the original source.</p>
+              <p>Offsets count UTF-8 bytes from zero, including the start and excluding the end. These differ from the text positions used for delivery slices.</p>
+              <ol>{#each unit.spans as span}<li>
+                <p><a href={span.source_url} target="_blank" rel="noopener noreferrer">{span.locator}</a> · <a href={span.extraction_url} target="_blank" rel="noopener noreferrer">Captured extraction</a></p>
+                <p>Source bytes {span.source_start}–{span.source_end}; unit bytes {span.unit_start}–{span.unit_end}.</p>
+                <p>Fragment SHA-256: <code>{span.literal_sha256}</code></p>
+                <p>Source SHA-256: <code>{span.source_sha256}</code>; extraction SHA-256: <code>{span.extraction_sha256}</code>.</p>
+                <p>Source text SHA-256: <code>{span.source_text_sha256}</code> ({span.source_text_bytes} bytes).</p>
+              </li>{/each}</ol>
+            </details>
+          {/if}
           <details>
             <summary>Selection reasons and provenance</summary>
             <ul>{#each item.reasons as reason}<li>{reason}</li>{/each}</ul>

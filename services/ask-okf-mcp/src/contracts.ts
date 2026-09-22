@@ -2,6 +2,7 @@ import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/server/valida
 import { fromJsonSchema } from '@modelcontextprotocol/server';
 import common from '../../../profiles/context-assembly/v1/common.schema.json' with { type: 'json' };
 import packageSchema from '../../../profiles/context-assembly/v1/package.schema.json' with { type: 'json' };
+import evidenceUnit from '../../../profiles/context-assembly/v1/evidence-unit.schema.json' with { type: 'json' };
 import type { ContextBudget, ContextPackage } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 import { APPROVED_VERSIONS } from './registry.ts';
 import { APPROVED_ENGINE_IDS } from './engines.ts';
@@ -12,13 +13,16 @@ export function composePackageSchema() {
     if (Array.isArray(value)) return value.map(rewrite);
     if (!value || typeof value !== 'object') return value;
     return Object.fromEntries(Object.entries(value).map(([key, item]) => {
+      if (key === '$ref' && item === evidenceUnit.$id) return [key, '#/$defs/evidence_unit'];
       if (key === '$ref' && typeof item === 'string' && item.startsWith('common.schema.json#/$defs/')) {
         return [key, item.replace('common.schema.json#/$defs/', '#/$defs/')];
       }
       return [key, rewrite(item)];
     }));
   };
-  return { ...rewrite(packageSchema) as Record<string, unknown>, $defs: structuredClone(common.$defs) };
+  const { $id: _unitId, $schema: _unitDialect, ...unitDefinition } = evidenceUnit;
+  return { ...rewrite(packageSchema) as Record<string, unknown>,
+    $defs: rewrite({ ...common.$defs, evidence_unit: unitDefinition }) as typeof common.$defs & { evidence_unit: typeof unitDefinition } };
 }
 export const OUTPUT_SCHEMA = composePackageSchema();
 export const INPUT_SCHEMA = {

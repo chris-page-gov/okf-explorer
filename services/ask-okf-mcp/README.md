@@ -409,3 +409,17 @@ versions, counts, evidence status and timings. It excludes source passages and
 question text. Retain the hosting receipt separately: matching data and a local
 build digest alone do not prove which Worker build was deployed. SDK success is
 also separate from actual ChatGPT and Voice acceptance.
+
+## Logical-unit consumer compatibility
+
+The shared context profile can describe exact logical-unit source spans. Current
+schema composition resolves that optional shape from pinned local files, and
+compact `record_metadata` reads preserve every span. The archive exporter binds
+its added validator and schema dependencies explicitly. These are consumer
+capabilities, not new source or engine approvals.
+
+The two frozen service adapters remain restricted to corpus v1 and refuse
+corpus v2 before fetching evidence. Their source compatibility pairs, module
+bytes and historical receipts remain unchanged. A public logical-unit service
+requires a separately reviewed immutable engine, source approval and actual
+verification. See the [logical-unit decision](../../docs/adr-logical-evidence-units.md).

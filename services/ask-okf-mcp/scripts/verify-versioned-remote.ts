@@ -222,7 +222,7 @@ async function preparation(args: Arguments) {
     const absolute = resolve(serviceRoot, path); const local = relative(repositoryRoot, absolute).replaceAll('\\', '/');
     safeRepositoryPath(local);
     if (inputs[local]) { if (digest) assert.equal(inputs[local].sha256, digest); return; }
-    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|types\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|delivery)\.ts|profiles\/context-assembly\/v1\/(common|package)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
+    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|types\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|delivery|unit)\.ts|profiles\/context-assembly\/v1\/(common|package|evidence-unit)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
     const raw = await boundedFile(absolute); if (digest) assert.equal(sha(raw), digest);
     equal(sha(gitFile(repositoryRoot, args.comparisonCommit, local)), sha(raw), 'Comparator input differs from exact commit');
     inputs[local] = { bytes: raw.length, sha256: sha(raw) };

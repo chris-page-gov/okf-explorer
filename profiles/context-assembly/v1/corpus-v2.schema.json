@@ -1,0 +1,277 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-context-corpus.v2"
+    },
+    "bundle": {
+      "$ref": "common.schema.json#/$defs/bundle"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_source_snapshot": {
+      "type": "string"
+    },
+    "base_index": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8388608
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "encoding": {
+          "const": "gzip"
+        },
+        "decoded_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8388608
+        },
+        "decoded_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "dependentRequired": {
+        "encoding": [
+          "decoded_bytes",
+          "decoded_sha256"
+        ]
+      }
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "nonempty_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "empty_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "tokenless_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "documents",
+        "pages",
+        "nonempty_pages",
+        "empty_pages",
+        "tokenless_pages"
+      ],
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "shards": {
+          "type": "array",
+          "maxItems": 16000,
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240,
+                "pattern": "^[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4194304
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "encoding": {
+                "const": "gzip"
+              },
+              "decoded_bytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4194304
+              },
+              "decoded_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "first_ordinal": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10000
+              },
+              "first_id": {
+                "type": "string",
+                "maxLength": 2000,
+                "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+              },
+              "last_id": {
+                "type": "string",
+                "maxLength": 2000,
+                "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+              }
+            },
+            "required": [
+              "path",
+              "bytes",
+              "sha256",
+              "first_ordinal",
+              "count",
+              "first_id",
+              "last_id"
+            ],
+            "additionalProperties": false,
+            "dependentRequired": {
+              "encoding": [
+                "decoded_bytes",
+                "decoded_sha256"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "count",
+        "shards"
+      ],
+      "additionalProperties": false
+    },
+    "search": {
+      "type": "object",
+      "properties": {
+        "tokenisation": {
+          "const": "nfkd-lowercase-ascii-alphanumeric-min2-v1"
+        },
+        "bucket_algorithm": {
+          "const": "fnv1a32-high-byte-hex-v1"
+        },
+        "shards": {
+          "type": "object",
+          "minProperties": 256,
+          "maxProperties": 256,
+          "patternProperties": {
+            "^[a-f0-9]{2}$": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240,
+                  "pattern": "^[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4194304
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "encoding": {
+                  "const": "gzip"
+                },
+                "decoded_bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4194304
+                },
+                "decoded_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "bytes",
+                "sha256"
+              ],
+              "additionalProperties": false,
+              "dependentRequired": {
+                "encoding": [
+                  "decoded_bytes",
+                  "decoded_sha256"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "tokenisation",
+        "bucket_algorithm",
+        "shards"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "bundle",
+    "scope",
+    "limitations",
+    "semantic_source_snapshot",
+    "base_index",
+    "counts",
+    "records",
+    "search"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/corpus-v2.schema.json",
+  "title": "Logical-unit corpus manifest v2",
+  "description": "Physical page counts and logical record counts are independent. Runtime also verifies ascending disjoint ID ranges, ordinal continuity, safe paths and byte/hash bindings."
+}

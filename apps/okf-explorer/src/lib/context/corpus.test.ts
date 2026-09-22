@@ -6,6 +6,8 @@ import { createHash } from 'node:crypto';
 import { assembleCorpusContext, CORPUS_LIMITS, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
 import { MAX_CONTEXT_INDEX_BYTES, resolveConcepts } from './index';
 import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
+import retainedV1 from '../../test/fixtures/context-corpus-v1-74e29.json';
+import retainedV1Inputs from '../../test/fixtures/context-corpus-v1-74e29-inputs.json';
 const sha = (v: Uint8Array) => createHash('sha256').update(v).digest('hex');
 async function fixture(count = 2, texts?: string[]) {
   const base = await studyClubContextFixture(); const template = base.records[0];
@@ -34,6 +36,34 @@ async function fixture(count = 2, texts?: string[]) {
   return { manifest, files, calls, fetcher, binding, put, base };
 }
 describe('full-source governed corpus discovery', () => {
+  it('replays the complete v1 package captured from immutable 74e29 without changing its identity', async () => {
+    // Gzip is valid but not byte-identical across zlib implementations. Exact
+    // replay therefore uses retained input bytes, including their manifest.
+    const manifest = validateContextCorpusManifest(retainedV1Inputs.manifest);
+    const binding = { index_url: retainedV1.binding.index_url,
+      index_sha256: sha(new TextEncoder().encode(JSON.stringify(manifest))) };
+    expect(binding).toEqual(retainedV1.binding);
+    const calls: string[] = [];
+    const fetcher = (async (url: string | URL | Request) => {
+      const path = new URL(String(url)).pathname.replace('/corpus/', '');
+      calls.push(path);
+      const bytes = retainedV1Inputs.files[path as keyof typeof retainedV1Inputs.files];
+      if (!bytes) throw new Error(`Unexpected replay resource: ${path}`);
+      return new Response(Uint8Array.from(bytes));
+    }) as typeof fetch;
+    expect(await assembleCorpusContext(manifest, binding, 'apples', {}, fetcher)).toEqual(retainedV1);
+    expect(calls.sort()).toEqual(Object.keys(retainedV1Inputs.files).sort());
+  });
+  it('rejects tampered compressed v1 replay bytes without changing the retained expectation', async () => {
+    const manifest = validateContextCorpusManifest(retainedV1Inputs.manifest);
+    const fetcher = (async (url: string | URL | Request) => {
+      const path = new URL(String(url)).pathname.replace('/corpus/', '');
+      const bytes = Uint8Array.from(retainedV1Inputs.files[path as keyof typeof retainedV1Inputs.files]);
+      if (path.endsWith('.gz')) bytes[bytes.length - 1] ^= 1;
+      return new Response(bytes);
+    }) as typeof fetch;
+    await expect(assembleCorpusContext(manifest, retainedV1.binding, 'apples', {}, fetcher)).rejects.toThrow(/transfer integrity/);
+  });
   it('loads a base index above 4 MiB while keeping whole-page discovery and output bounds', async () => {
     const f = await fixture();
     const base = await sizedStudyClubContextFixture(4 * 1024 * 1024 + 1);

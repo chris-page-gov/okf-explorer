@@ -1,0 +1,173 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-evidence-unit.v1"
+    },
+    "kind": {
+      "enum": [
+        "section",
+        "paragraph",
+        "table",
+        "definition",
+        "exception",
+        "cross-reference",
+        "compound",
+        "unresolved-fragment",
+        "page-fallback"
+      ]
+    },
+    "boundary_status": {
+      "enum": [
+        "machine-detected",
+        "author-declared"
+      ]
+    },
+    "completeness": {
+      "enum": [
+        "complete-within-declared-boundary",
+        "unresolved",
+        "fallback"
+      ]
+    },
+    "offset_unit": {
+      "const": "utf-8-bytes"
+    },
+    "joiner": {
+      "enum": [
+        "",
+        "\n",
+        "\n\n"
+      ]
+    },
+    "spans": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          },
+          "extraction_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "extraction_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_text_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "literal_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "source_text_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "source_start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "source_end": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "unit_start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "unit_end": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          }
+        },
+        "required": [
+          "source_url",
+          "extraction_url",
+          "locator",
+          "source_sha256",
+          "extraction_sha256",
+          "source_text_sha256",
+          "literal_sha256",
+          "source_text_bytes",
+          "source_start",
+          "source_end",
+          "unit_start",
+          "unit_end"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "kind",
+    "boundary_status",
+    "completeness",
+    "offset_unit",
+    "joiner",
+    "spans"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/evidence-unit.schema.json",
+  "title": "Exact logical evidence-unit metadata v1",
+  "description": "Shape only. Runtime validates whole-text coverage, UTF-8 offsets, joins, provenance and fragment hashes; producer verifies inclusion in original source text.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "unresolved-fragment"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "completeness": {
+            "const": "unresolved"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "page-fallback"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "completeness": {
+            "const": "fallback"
+          }
+        }
+      }
+    }
+  ]
+}
