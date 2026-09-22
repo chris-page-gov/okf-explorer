@@ -24,7 +24,12 @@ test('HUB-E2E-01 gives a beginner a complete static starting point', async ({ br
   );
   await expect(page.getByRole('heading', { name: 'An optional project course' })).toBeVisible();
   await expect(page.locator('.journey-grid > li')).toHaveCount(8);
-  await expect(page.locator('.bundle-card')).toHaveCount(3);
+  await expect(page.locator('.bundle-card')).toHaveCount(4);
+  const dwp = page.locator('.bundle-card').filter({ hasText: 'DWP learning paths' });
+  await expect(dwp.getByRole('link', { name: 'Open in Explorer' })).toHaveAttribute(
+    'href',
+    './explore/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json#overview'
+  );
   await context.close();
 });
 
