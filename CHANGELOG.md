@@ -9,6 +9,8 @@
   local candidate against the exact app: 100 Heritage questions and three
   journeys pass. Publication still requires the merged CI and live identity gates.
 
+- Retain a separate compact-delivery observation for the later DWP semantic candidate: exact 32 KiB responses preserve the selected 512 KiB packages, while all five 32 KiB inline cases still lack source evidence and all contexts remain insufficient.
+
 ## Learning-path review and large-bundle teaching — 22 September 2026
 
 - Add DWP learning paths to the home catalogue and Reader bundle selector, with explicit evidence and training limitations.

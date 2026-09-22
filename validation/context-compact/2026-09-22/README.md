@@ -95,3 +95,27 @@ reports zero errors and warnings. Twelve retained-archive controls pass; the
 app contract suite passes 93 checks with one existing skip. Sandbox-only browser
 launch and loopback-listen failures were retained and retried outside that
 restriction. No failed assertion or source identity was weakened to obtain a pass.
+
+## Later DWP semantic candidate
+
+`dwp-semantic-candidate.json` is a separate transport check after additional
+source-backed units and dependencies were built in DWP. It does not replace
+`measurement.json`. Its manifest, engine modules and every actual input are
+bound by digest. The recorded checkout base is explicitly not a claim that the
+then-uncommitted candidate occurs in that Git commit. DWP admission, commit,
+publication and specialist acceptance must be established separately.
+
+For this later candidate, all five 32 KiB inline packages retain **zero** source
+units. Complete 512 KiB assemblies retain 21, 19, 23, 15 and 14 source units for
+the five questions in the order above. All were reconstructed without changes
+through results bounded to 32,768 bytes, including each unit's source metadata,
+spans, text, reasons and paths, plus the whole package and diagnostics. All remain
+**insufficient**. The deliberately redundant verification uses 61, 62, 69, 53 and
+51 calls, not a measured minimum client cost.
+
+This candidate has new evidence requirements: it must not inherit the earlier
+fixed-source claim that one 32 KiB inline case retains a passage. The separate
+`measure-candidate.mjs` keeps the original runner and observation unchanged and
+labels the new source-admission boundary explicitly. Run it with the same two
+arguments as the earlier runner against the exact candidate bytes to make a new
+observation.
