@@ -6,6 +6,12 @@ import * as previousCorpus from '../vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd
 import previousManifest from '../vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/manifest.json' with { type: 'json' };
 import type { ContextBudget, ContextPackage } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 import type { ApprovedSource } from './registry.ts';
+import type { ContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
+
+function legacyManifest(manifest: ContextCorpusManifest): currentCorpus.ContextCorpusManifest {
+  if (manifest.schema !== 'okf-context-corpus.v1') throw new Error('Frozen engines do not support logical-unit corpus v2.');
+  return { ...manifest, schema: 'okf-context-corpus.v1' };
+}
 
 // Explicit compatibility pairs. A future registry addition must not silently
 // authorise an older assembler for a new source or schema.
@@ -25,11 +31,11 @@ export const PREVIOUS_ENGINE_ID = previousManifest.engine_id;
 export const ENGINES: readonly EngineAdapter[] = Object.freeze([
   Object.freeze({ engine_id: CURRENT_ENGINE_ID, source_commit: currentManifest.source_commit, source_versions: Object.freeze(['723bcc5b015ab38a026625c2148edbd784edf7c7', ...historicalVersions]),
     assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) =>
-      'manifest' in source ? currentCorpus.assembleCorpusContext(source.manifest, source.binding, question, budget, fetcher)
+      'manifest' in source ? currentCorpus.assembleCorpusContext(legacyManifest(source.manifest), source.binding, question, budget, fetcher)
         : current.assembleContext(source.index, question, budget, source.binding) }),
   Object.freeze({ engine_id: PREVIOUS_ENGINE_ID, source_commit: previousManifest.source_commit, source_versions: historicalVersions,
     assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) =>
-      'manifest' in source ? previousCorpus.assembleCorpusContext(source.manifest, source.binding, question, budget, fetcher)
+      'manifest' in source ? previousCorpus.assembleCorpusContext(legacyManifest(source.manifest), source.binding, question, budget, fetcher)
         : previous.assembleContext(source.index, question, budget, source.binding) })
 ]);
 export const APPROVED_ENGINE_IDS = Object.freeze(ENGINES.map(engine => engine.engine_id));

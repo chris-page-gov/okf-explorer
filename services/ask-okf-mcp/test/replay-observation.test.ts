@@ -9,6 +9,13 @@ import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.
 import { ENGINES, CURRENT_ENGINE_ID } from '../src/engines.ts';
 import { APPROVED_VERSIONS, BUNDLE_VERSION } from '../src/registry.ts';
 
+test('current build admission includes every live import and keeps the frozen engines bound', async () => {
+  const { value } = await verifiedBuild(new URL('..', import.meta.url).pathname);
+  assert.ok(value.inputs['../../apps/okf-explorer/src/lib/context/unit.ts']);
+  assert.ok(value.inputs['../../profiles/context-assembly/v1/evidence-unit.schema.json']);
+  assert.ok(value.inputs['vendor/okf-dwp-household-corpus-manifest.json']);
+});
+
 test('observation files reject oversized inputs, linked files/parents and existing output directories', async () => {
   const root = await mkdtemp(join(tmpdir(), 'okf-replay-admission-'));
   try {

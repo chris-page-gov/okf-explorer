@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { assembleCorpusContext, CORPUS_LIMITS, corpusBucket, corpusTokens, validateContextCorpusManifest, type ContextCorpusManifest } from './corpus';
 import { MAX_CONTEXT_INDEX_BYTES, resolveConcepts } from './index';
 import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
+import retainedV1 from '../../test/fixtures/context-corpus-v1-74e29.json';
 const sha = (v: Uint8Array) => createHash('sha256').update(v).digest('hex');
 async function fixture(count = 2, texts?: string[]) {
   const base = await studyClubContextFixture(); const template = base.records[0];
@@ -34,6 +35,10 @@ async function fixture(count = 2, texts?: string[]) {
   return { manifest, files, calls, fetcher, binding, put, base };
 }
 describe('full-source governed corpus discovery', () => {
+  it('replays the complete v1 package captured from immutable 74e29 without changing its identity', async () => {
+    const f = await fixture();
+    expect(await assembleCorpusContext(f.manifest, f.binding, 'apples', {}, f.fetcher)).toEqual(retainedV1);
+  });
   it('loads a base index above 4 MiB while keeping whole-page discovery and output bounds', async () => {
     const f = await fixture();
     const base = await sizedStudyClubContextFixture(4 * 1024 * 1024 + 1);

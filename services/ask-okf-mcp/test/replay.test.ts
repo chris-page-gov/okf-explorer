@@ -20,6 +20,11 @@ const code = (value: string) => (error: unknown) => error instanceof ReplayError
 const fake = (engine_id: string, assemble: EngineAdapter['assemble']): EngineAdapter => ({ engine_id,
   source_commit: '0'.repeat(40), source_versions: [LEGACY_BUNDLE_VERSION], assemble });
 
+test('frozen adapters refuse the new corpus family before reading any files', () => {
+  const value = { manifest: { schema: 'okf-context-corpus.v2' }, binding: source.binding } as ApprovedCorpus;
+  for (const adapter of ENGINES) assert.throws(() => adapter.assemble(value, 'question', {}, noFetch), /Frozen engines/);
+});
+
 test('new and explicit assemblies disclose exact engines without altering package bytes or family', async () => {
   assert.equal(initial.identity.engine_id, CURRENT_ENGINE_ID);
   assert.equal(initial.identity.mode, 'current-default');

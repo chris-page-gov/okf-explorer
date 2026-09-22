@@ -49,6 +49,13 @@
 
 ## Unreleased
 
+- Add optional logical evidence units with exact source spans and explicit
+  boundary uncertainty. Corpus v2 separates physical page and retrieval-unit
+  counts and loads bounded declared destinations beyond lexical candidates.
+  Preserve whole-unit qualifications, source provenance, read-only delivery,
+  corpus v1 package identity and frozen service engines. Add integrity, budget,
+  ambiguity and compatibility controls; expose spans in Ask OKF.
+
 - Share English question-scaffolding classification between corpus discovery
   and unresolved-term diagnostics. Preserve declared aliases, ambiguity,
   meaningful qualifications and identifiers; remove misleading missing-concept

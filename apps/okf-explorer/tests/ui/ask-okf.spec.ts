@@ -2,14 +2,16 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { contextSha256 } from '../../src/lib/context/index';
 import { studyClubContextFixture } from '../../src/test/contextFixture';
+import { unitFixture } from '../../src/test/unitFixture';
 import { corpusBucket, type ContextCorpusManifest } from '../../src/lib/context/corpus';
 
 const ORIGIN = 'https://ask-okf.fixture.test';
 const BUNDLE = `${ORIGIN}/okf-explorer.json`;
 const UNSUPPORTED = `${ORIGIN}/unsupported.json`;
 
-async function installFixture(page: Page, options: { ambiguous?: boolean; missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean; corpus?: boolean; wrongCorpusPage?: boolean } = {}) {
+async function installFixture(page: Page, options: { unit?: boolean; ambiguous?: boolean; missing?: boolean; injection?: boolean; malformedReview?: boolean; waitForIndex?: Promise<void>; wrongHash?: boolean; corpus?: boolean; wrongCorpusPage?: boolean } = {}) {
   const context = await studyClubContextFixture();
+  if (options.unit) context.records[0] = await unitFixture(['Café reading.', 'Only with a booking.'], context.records[0].id);
   if (options.ambiguous) context.records.find(record => record.id.endsWith('concept/repair'))!.aliases!.push('Reading circle');
   if (options.malformedReview) (context.records[0] as unknown as Record<string, unknown>).review_status = { toString: 'not-callable' };
   if (options.missing) context.records = context.records.filter((record) => !record.id.endsWith('evidence/library'));
@@ -114,6 +116,32 @@ async function openAsk(page: Page, bundle = BUNDLE) {
   await page.getByRole('button', { name: 'Ask OKF', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ask OKF', exact: true })).toBeVisible();
 }
+
+test('logical evidence exposes exact cross-page spans and retained qualifications', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await installFixture(page, { unit: true });
+  await openAsk(page);
+  await page.getByLabel('Question', { exact: true }).fill('Reading circle');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  const evidence = page.locator('.evidence-item').filter({ has: page.getByRole('heading', { name: 'Synthetic logical passage', exact: true }) });
+  await evidence.getByText('Read whole source passage', { exact: true }).click();
+  await expect(evidence.locator('.evidence-text')).toHaveText('Café reading.\nOnly with a booking.');
+  const summary = evidence.getByText('Logical unit and exact source spans', { exact: true });
+  await summary.focus(); await page.keyboard.press('Enter');
+  await expect(evidence.locator('.unit-provenance')).toContainText('author-declared');
+  await expect(evidence.locator('.unit-provenance')).toContainText('not specialist acceptance');
+  await expect(evidence.locator('.unit-provenance')).toContainText('Source bytes 8–22; unit bytes 0–14.');
+  await expect(evidence.getByRole('link', { name: 'Synthetic page 2', exact: true })).toHaveAttribute('href', 'https://example.test/source/1.pdf');
+  await page.getByText('Machine-readable package', { exact: true }).click();
+  const context = JSON.parse(await page.getByLabel('Evidence package JSON').inputValue());
+  expect(context.selected.find((row: any) => row.record.evidence_unit).record.evidence_unit.spans).toHaveLength(2);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(summary).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
 
 test('ambiguous alternatives show separate evidence and remain unresolved', async ({ page }) => {
   await installFixture(page, { ambiguous: true });

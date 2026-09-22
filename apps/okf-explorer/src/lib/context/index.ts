@@ -2,6 +2,8 @@ import type {
   ContextAssertion, ContextBinding, ContextBudget, ContextIndex, ContextIssue,
   ContextPackage, ContextPath, ContextRecord, ContextResolution, ContextSelection, ContextAssemblyOptions
 } from './types.ts';
+// @ts-ignore -- Explicit extension supports the pinned Node consumer.
+import { evidenceUnitIntegrity, validateEvidenceUnit } from './unit.ts';
 export type * from './types.ts';
 
 // Semantic/base indexes can hold an authored graph larger than one corpus shard.
@@ -117,7 +119,7 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
   for (const row of value.records) {
     assert(object(row) && iri(row.id) && !ids.has(row.id as string), 'duplicate or invalid record ID');
     fields(row, ['id', 'route', 'label', 'kind', 'aliases', 'text', 'assertion_status', 'authority', 'scope',
-      'provenance', 'rights', 'access', 'review_status', 'conflicts_with'], 'record');
+      'provenance', 'rights', 'access', 'review_status', 'conflicts_with', 'evidence_unit'], 'record');
     ids.add(row.id as string);
     assert(typeof row.route === 'string' && /^[a-z][a-z0-9-]*(?:\/[A-Za-z0-9._~-]+)+$/.test(row.route), 'unsafe record route');
     assert(typeof row.label === 'string' && row.label.length > 0 && row.label.length <= 500, 'invalid label');
@@ -140,6 +142,7 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
     }
     assert(row.conflicts_with === undefined || (Array.isArray(row.conflicts_with)
       && row.conflicts_with.length <= 100 && row.conflicts_with.every(iri)), 'invalid conflicts');
+    validateEvidenceUnit(row as ContextRecord);
   }
   const assertionIds = new Set<string>();
   for (const row of value.assertions) {
@@ -292,6 +295,9 @@ function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[]
     && (!row.text.trim() || !row.provenance.some((p) => HASH.test(p.literal_sha256 || '')))) {
     add('missing_evidence', 'Evidence requires a complete passage and a literal digest.');
   }
+  if ('kind' in row && row.evidence_unit && row.evidence_unit.completeness !== 'complete-within-declared-boundary') {
+    add('unresolved_unit_boundary', 'The detected unit boundary or fallback does not establish a complete source passage.');
+  }
   return issues;
 }
 
@@ -325,7 +331,8 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
           let accepted = !!row && row.access === 'public' && !governanceIssues(row).length;
           if (accepted && row!.kind === 'evidence') {
             const digest = await contextSha256(row!.text);
-            accepted = row!.provenance.every(p => !p.literal_sha256 || p.literal_sha256 === digest);
+            accepted = row!.provenance.every(p => !p.literal_sha256 || p.literal_sha256 === digest)
+              && await evidenceUnitIntegrity(row!);
           }
           validRecord.set(id, accepted);
         }
@@ -482,6 +489,9 @@ async function assembleContextPass(
       const digest = await contextSha256(record.text);
       if (record.provenance.some((p) => p.literal_sha256 && p.literal_sha256 !== digest)) {
         addIssue(missing, { code: 'evidence_digest_mismatch', message: 'The passage does not match its declared literal digest.', ids: [record.id] });
+      }
+      if (!await evidenceUnitIntegrity(record)) {
+        addIssue(missing, { code: 'unit_fragment_integrity', message: 'A declared source-span fragment digest differs from the exact unit text.', ids: [record.id] });
       }
     }
     for (const assertion of outgoing.get(item.id) || []) {

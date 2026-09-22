@@ -43,6 +43,23 @@ test('approved index and descriptor bytes bind the unchanged engine package', as
   assert.equal(validate(expected).valid, true);
 });
 
+test('output schema resolves optional unit metadata locally and rejects invalid conditional shapes', () => {
+  const value = structuredClone(expected);
+  const record: any = value.selected.find(row => row.record.kind === 'evidence')!.record;
+  const p = record.provenance[0], length = Buffer.byteLength(record.text);
+  record.evidence_unit = { schema: 'okf-evidence-unit.v1', kind: 'paragraph', boundary_status: 'machine-detected', completeness: 'unresolved',
+    offset_unit: 'utf-8-bytes', joiner: '', spans: [{ source_url: p.url, source_sha256: p.source_sha256,
+      extraction_url: p.url, extraction_sha256: p.source_sha256, locator: p.locator, source_text_sha256: p.source_sha256,
+      source_text_bytes: length, source_start: 0, source_end: length, unit_start: 0, unit_end: length, literal_sha256: p.source_sha256 }] };
+  const validate = validator.getValidator(OUTPUT_SCHEMA);
+  assert.equal(validate(value).valid, true); // Shape only, not an assertion of source inclusion.
+  assert.equal(/"\$ref":"https?:/.test(JSON.stringify(OUTPUT_SCHEMA)), false);
+  record.evidence_unit.kind = 'page-fallback';
+  assert.equal(validate(value).valid, false);
+  record.evidence_unit.kind = 'paragraph'; record.kind = 'concept';
+  assert.equal(validate(value).valid, false);
+});
+
 test('digest mismatches fail closed before health or tool output', async () => {
   await assert.rejects(verifyBundledContext(indexText + ' ', descriptorText), /integrity/);
   await assert.rejects(verifyBundledContext(indexText, descriptorText + ' '), /integrity/);

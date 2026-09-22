@@ -66,3 +66,11 @@ passage as complete evidence. Changing examples cancels the previous request.
 
 No anonymous question is stored. No write-capable or model tool is introduced.
 No missing evidence, authority or current applicability is inferred by export.
+
+The current exporter also admits optional logical-unit metadata. Its explicit
+15-file input inventory includes the unit validator and local evidence-unit
+schema. It checks exact fragment integrity before writing an archive, and
+preserves source spans in the complete record metadata. Earlier 13-file exporter
+observations keep their original bytes and declared identities. Neither export
+nor fragment validation independently verifies inclusion in the original PDF;
+that remains the producer's source check.

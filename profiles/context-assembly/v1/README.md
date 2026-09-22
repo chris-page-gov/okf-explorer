@@ -36,3 +36,16 @@ The governed package may contain a `retrieval` object recording whole-page lexic
 candidates, corpus coverage, query terms, transfer budgets and omissions. This is
 separate from concept resolution and completeness requirements. See the
 [full-source decision](../../../docs/adr-full-source-context-discovery.md).
+
+## Optional logical evidence units and corpus v2
+
+- [Evidence-unit metadata](evidence-unit.schema.json) describes exact ordered
+  UTF-8 source spans, explicit joins and boundary uncertainty. It is optional on
+  existing evidence records. Whole-text provenance hashes retain their meaning.
+- [Corpus v2 manifest](corpus-v2.schema.json) separates physical page counts from
+  retrieval-unit counts and declares bounded ID ranges for loading referenced
+  destinations. It retains the existing posting and record-shard formats.
+
+See the [decision](../../../docs/adr-logical-evidence-units.md) for source-inclusion,
+whole-unit and authority boundaries. The consumer checks cross-field offsets,
+ordering, fragment hashes and budgets in addition to these shape schemas.

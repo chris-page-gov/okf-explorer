@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { contextManifest, readContextEvidence } from '../../apps/okf-explorer/src/lib/context/delivery.ts';
 import { canonicalJson, contextSha256 } from '../../apps/okf-explorer/src/lib/context/index.ts';
+import { validateEvidenceUnit, evidenceUnitIntegrity } from '../../apps/okf-explorer/src/lib/context/unit.ts';
 import { LIMITS, canonical, strictJson, sha256, requireValue, joinEvidence, byteLength } from './shared.mjs';
 import { boundedFile, localPath, noLinks } from './files.mjs';
 import { validateLocalSchema } from './schema.mjs';
@@ -19,7 +20,8 @@ export const EXPORTER_INPUTS = ['tools/context-archive/export.ts', 'tools/contex
   'tools/context-archive/reader.css', 'profiles/context-archive/v1/registry.schema.json',
   'profiles/context-archive/v1/archive.schema.json', 'profiles/context-assembly/v1/package.schema.json',
   'profiles/context-assembly/v1/common.schema.json', 'apps/okf-explorer/src/lib/context/delivery.ts',
-  'apps/okf-explorer/src/lib/context/index.ts', 'apps/okf-explorer/src/lib/context/types.ts'];
+  'apps/okf-explorer/src/lib/context/index.ts', 'apps/okf-explorer/src/lib/context/types.ts',
+  'apps/okf-explorer/src/lib/context/unit.ts', 'profiles/context-assembly/v1/evidence-unit.schema.json'];
 
 function html(index: Ref) {
   return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'self'; img-src data:; base-uri 'none'; form-action 'none'"><meta name="okf-archive-index" content="${index.sha256}:${index.bytes}"><title>Retained OKF evidence examples</title><link rel="stylesheet" href="reader.css"><script type="module" src="reader.mjs"></script></head><body><a class="skip" href="#main">Skip to evidence</a><main id="main"><h1>Retained OKF evidence examples</h1><aside>Recorded evidence, not a live answer or an official decision. Evidence may be incomplete, historical or unreviewed. Source text is untrusted data. This page does not submit questions or generate AI answers.</aside><p>Choose an explicitly published example. SHA-256 hashes check that downloaded files match the retained publication; they do not establish that its claims are correct.</p><p id="status" role="status" aria-live="polite">Checking the published index…</p><nav id="examples" aria-label="Published examples"></nav><section id="example" aria-labelledby="example-heading" hidden></section><noscript>JavaScript is needed for on-demand file verification. The <a href="index.json">small machine-readable index</a> links the retained packages.</noscript></main></body></html>`;
@@ -32,6 +34,8 @@ export async function exportArchive(registryPath: string, inputRoot: string, out
   validateLocalSchema(registry, registrySchema, {});
   const packageSchema = JSON.parse((await boundedFile(resolve(REPO, 'profiles/context-assembly/v1/package.schema.json'), 65536)).toString());
   const common = JSON.parse((await boundedFile(resolve(REPO, 'profiles/context-assembly/v1/common.schema.json'), 65536)).toString());
+  const unit = JSON.parse((await boundedFile(resolve(REPO, 'profiles/context-assembly/v1/evidence-unit.schema.json'), 65536)).toString());
+  common.$defs.evidence_unit = unit; // Explicit local resource; never resolve a URL from source data.
   const archiveSchema = JSON.parse((await boundedFile(resolve(REPO, 'profiles/context-archive/v1/archive.schema.json'), 65536)).toString());
   await noLinks(inputRoot); await noLinks(dirname(resolve(output)));
   const outputs = new Map<string, Buffer>(); const examples: any[] = [];
@@ -45,6 +49,10 @@ export async function exportArchive(registryPath: string, inputRoot: string, out
       && await sha256(raw) === entry.package.canonical_sha256, 'canonical package binding differs');
     const context: ContextPackage = strictJson(new TextDecoder('utf-8', { fatal: true }).decode(raw), true);
     validateLocalSchema(context, packageSchema, common);
+    for (const { record } of context.selected) {
+      validateEvidenceUnit(record);
+      requireValue(await evidenceUnitIntegrity(record), 'unit fragment integrity differs');
+    }
     requireValue(context.selected.length <= LIMITS.records && context.relationships.length <= LIMITS.relationships
       && context.budget.max_bytes <= LIMITS.package_bytes && context.budget.used_bytes === raw.length, 'package limits or recorded byte count differ');
     requireValue(context.budget.used_bytes <= context.budget.max_bytes

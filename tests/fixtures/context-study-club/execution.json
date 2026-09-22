@@ -1,7 +1,7 @@
 {
   "schema": "okf-context-execution-receipt.v1",
-  "started_at": "2026-09-21T21:07:57.068Z",
-  "observed_at": "2026-09-21T21:07:57.310Z",
+  "started_at": "2026-09-22T13:50:33.427Z",
+  "observed_at": "2026-09-22T13:50:33.694Z",
   "execution": {
     "schema": "okf-context-execution.v1",
     "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
@@ -11,7 +11,7 @@
       "implementation": [
         {
           "path": "apps/okf-explorer/src/lib/context/corpus.ts",
-          "sha256": "11ada4b6bc2cbfa6c3aaae8b3f18b5b00017a37a306d6a8c3046c320daa3461b"
+          "sha256": "6c53e69bb70f55039315cac3e1e43380392e1b7d234608c95e2358201db423b8"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/delivery.ts",
@@ -19,11 +19,15 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/index.ts",
-          "sha256": "a8cc427b84372508db63bd785ddd454d3001324528f1c45f4c5ba65ed8df7a17"
+          "sha256": "0978fc518ebd78b35e0c3b40e3695a65dd31500908c34f5df4b880f979876778"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/types.ts",
-          "sha256": "d9eff934ec504c3fbd2afff672ae1d3a8a275e84cc11b71fed8a3e1b0edfdcf3"
+          "sha256": "aa4e31fa433aaec10d482d64dd358cf1e4db66c17c6036f6d069c7f30f50055e"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/unit.ts",
+          "sha256": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/webmcp.ts",
@@ -31,7 +35,11 @@
         },
         {
           "path": "profiles/context-assembly/v1/common.schema.json",
-          "sha256": "346f86667daec3ab9d6f21d007d7c7c948c04de8f4439818d8185a13e6267a2b"
+          "sha256": "180b2677bd47f61b2ed36b7be62a0bf59bb9979c15adc224d8aad8a4ed6a9f6f"
+        },
+        {
+          "path": "profiles/context-assembly/v1/corpus-v2.schema.json",
+          "sha256": "25004674e7a1e7f16beedab0d83495afb4a033d69a650d4c84e231adcb9eb8eb"
         },
         {
           "path": "profiles/context-assembly/v1/evaluation-case.schema.json",
@@ -42,16 +50,20 @@
           "sha256": "33aec80def165fef197f8cc742da464ff11da77aeb47640603189ecb4a28a751"
         },
         {
+          "path": "profiles/context-assembly/v1/evidence-unit.schema.json",
+          "sha256": "9d86a7343b3f0da70e115fec8fa7e4bea1627fec89d95e0a6a45d2dd976833a6"
+        },
+        {
           "path": "profiles/context-assembly/v1/index.schema.json",
           "sha256": "4bc2e83c1243a1e4b89b6d1a41deca7549f14afa44e854750717a7d4908fb93e"
         },
         {
           "path": "profiles/context-assembly/v1/package.schema.json",
-          "sha256": "0f7f4e5b3038c27f67577cf662084125e4785c8bd072c28ea62ba4a557970280"
+          "sha256": "7becd991181d0dfcf51caae5956778a810f7f6a3a6eb79d595f57d72139bceab"
         },
         {
           "path": "scripts/check_context_assembly.py",
-          "sha256": "48f3c37a6e8dbeb8d3ac25cba12e626667fd4528dcdcdaf2b8747f0a93efddec"
+          "sha256": "8bae31bf9ee383df087374450f77839815d9a977510db84506cbfd945786e0e0"
         },
         {
           "path": "scripts/evaluate_context_package.mjs",

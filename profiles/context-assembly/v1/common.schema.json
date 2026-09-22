@@ -138,6 +138,9 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "evidence_unit": {
+          "$ref": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/evidence-unit.schema.json"
         }
       },
       "required": [
@@ -153,7 +156,23 @@
         "rights",
         "access"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "evidence_unit"
+            ]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "evidence"
+              }
+            }
+          }
+        }
+      ]
     },
     "assertion": {
       "type": "object",

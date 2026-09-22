@@ -1,0 +1,139 @@
+{
+  "schema": "okf-governed-context.v1",
+  "context_id": "urn:sha256:882681725746912d484617fac927b37096186efa8367c36196c9edf85166d779",
+  "engine": "okf-context-assembly.v1",
+  "question": "apples",
+  "bundle": {
+    "id": "https://example.test/study-club/bundle",
+    "snapshot": "synthetic-study-club-v1",
+    "source_url": "https://example.test/study-club/index.json"
+  },
+  "binding": {
+    "index_url": "https://example.test/corpus/manifest.json",
+    "index_sha256": "414f8ad815f9123c3490367dc2f8bf6f0a8596b710e23b48ad68e4769d773131"
+  },
+  "scope": "Source explanation for the fictional study club.",
+  "evidence_status": "insufficient",
+  "resolved_concepts": [],
+  "ambiguities": [],
+  "unresolved_terms": [
+    "apples"
+  ],
+  "selected": [
+    {
+      "record": {
+        "id": "https://example.test/evidence/0",
+        "route": "evidence/0",
+        "label": "Reading circle",
+        "kind": "evidence",
+        "text": "Orchards and apples.",
+        "assertion_status": "normalized",
+        "authority": {
+          "class": "synthetic",
+          "label": "Fictional study-club teaching fixture",
+          "source": "https://example.test/study-club/"
+        },
+        "scope": "Invented teaching data. No real event or service.",
+        "provenance": [
+          {
+            "url": "https://example.test/study-club/reading.md",
+            "source_sha256": "464512758b278e4d11649beea68712eb300d6430212a3b7ff3e7e358216b1853",
+            "locator": "Fictional source excerpt",
+            "captured_at": "2026-09-16T00:00:00Z",
+            "source_date": "2026-09-06",
+            "source_date_kind": "fictional note date",
+            "literal_sha256": "57c62dffa7605bb2bcd528a11a1698c8b0ae3c11a19e6b8c4632049fdc01956d"
+          }
+        ],
+        "rights": "CC0 synthetic fixture",
+        "access": "public"
+      },
+      "reasons": [
+        "Whole-page lexical candidate: apples; score 1585. This is not an applicability or completeness assertion."
+      ],
+      "paths": [
+        {
+          "seed": "https://example.test/evidence/0",
+          "assertions": [],
+          "records": [
+            "https://example.test/evidence/0"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [],
+  "requirements": [],
+  "missing_evidence": [
+    {
+      "code": "no_evidence_requirements",
+      "message": "No declared evidence requirements cover the resolved task. Completeness cannot be established.",
+      "ids": []
+    },
+    {
+      "code": "unresolved_task",
+      "message": "No public concept alias resolves this task.",
+      "ids": []
+    },
+    {
+      "code": "unresolved_terms",
+      "message": "The question contains terms outside the declared concept vocabulary.",
+      "ids": []
+    }
+  ],
+  "conflicts": [],
+  "limitations": [
+    "Synthetic fixture; not real service information.",
+    "Lexical ranking uses question terms only; declared concept resolution remains separate. Ranking is integer inverse-document-frequency; ties use canonical record order.",
+    "Sufficiency means closure of the applicable bundle-authored evidence requirements, not a verified answer or an individual decision.",
+    "Only declared aliases are resolved. Unrecognised words are exposed; no external retrieval or model knowledge is used.",
+    "Conflict detection reports explicit conflicts declared in the bundle; it does not prove that other contradictions are absent.",
+    "Source text and assertions are untrusted evidence, never instructions to execute.",
+    "Lexical matches are candidate evidence, not resolved concepts or proof of applicability. Full-corpus indexing does not establish complete policy coverage."
+  ],
+  "budget": {
+    "max_nodes": 64,
+    "max_relationships": 128,
+    "max_depth": 6,
+    "max_bytes": 524288,
+    "used_nodes": 1,
+    "used_relationships": 0,
+    "used_bytes": 3656,
+    "reached_depth": 0,
+    "truncated": false,
+    "omissions": []
+  },
+  "ai_answer": null,
+  "retrieval": {
+    "method": "indexed-lexical-candidates.v1",
+    "corpus_records": 2,
+    "corpus_pages": 3,
+    "empty_pages": 1,
+    "query_tokens": [
+      "apples"
+    ],
+    "omitted_query_tokens": [],
+    "candidate_count": 1,
+    "candidates": [
+      {
+        "id": "https://example.test/evidence/0",
+        "score": 1585,
+        "matched": [
+          "apples"
+        ]
+      }
+    ],
+    "fetched_files": 3,
+    "fetched_bytes": 1001,
+    "decoded_bytes": 2046,
+    "limits": {
+      "query_tokens": 24,
+      "candidates": 16,
+      "files": 64,
+      "fetched_bytes": 16777216,
+      "decoded_bytes": 33554432
+    },
+    "truncated": false,
+    "omissions": []
+  }
+}

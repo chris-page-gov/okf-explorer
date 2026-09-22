@@ -416,6 +416,50 @@
           "items": {
             "$ref": "common.schema.json#/$defs/issue"
           }
+        },
+        "units": {
+          "type": "object",
+          "properties": {
+            "corpus_schema": {
+              "const": "okf-context-corpus.v2"
+            },
+            "referenced_records": {
+              "type": "array",
+              "maxItems": 200,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "examined_relationships": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2000
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "referenced_records": {
+                  "const": 200
+                },
+                "examined_relationships": {
+                  "const": 2000
+                }
+              },
+              "required": [
+                "referenced_records",
+                "examined_relationships"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "corpus_schema",
+            "referenced_records",
+            "examined_relationships",
+            "limits"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [

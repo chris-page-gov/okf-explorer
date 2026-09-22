@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
-import { exportArchive } from './export.ts';
+import { exportArchive, EXPORTER_INPUTS } from './export.ts';
 import { prepareSynthetic, syntheticContext, retainedRegistry } from './fixtures.ts';
 import { boundedFile, readAdmittedRegularFile } from './files.mjs';
 import { canonical, strictJson, sha256, joinEvidence, LIMITS } from './shared.mjs';
@@ -131,4 +131,31 @@ test('schema admission treats prototype names as unexpected fields and absent de
   }
   assert.throws(()=>validateLocalSchema('x',{oneOf:[{unknownFutureConstraint:1},{type:'string'}]},{}),/unsupported/);
   assert.throws(()=>validateLocalSchema({},{type:'object',properties:{absent:{unknownFutureConstraint:1}}},{}),/unsupported/);
+  assert.throws(()=>validateLocalSchema({},{if:{required:['absent']},then:{unknownFutureConstraint:1}},{}),/unsupported/);
+  assert.throws(()=>validateLocalSchema([1,1],{type:'array',uniqueItems:true},{}),/duplicate/);
+  assert.throws(()=>validateLocalSchema({kind:'fallback'},{allOf:[{if:{properties:{kind:{const:'fallback'}}},then:{required:['unresolved']}}]},{}),/missing/);
+});
+
+test('logical-unit archives retain source spans and reject rehashed false fragments', async t => {
+  for (const corrupt of [false, true]) {
+    const context = await syntheticContext(); const record: any = context.selected.find(x=>x.record.kind==='evidence')!.record;
+    const p = record.provenance[0], length = Buffer.byteLength(record.text);
+    record.evidence_unit = { schema:'okf-evidence-unit.v1', kind:'paragraph', boundary_status:'machine-detected', completeness:'unresolved',
+      offset_unit:'utf-8-bytes', joiner:'', spans:[{ source_url:p.url,source_sha256:p.source_sha256,extraction_url:p.url,extraction_sha256:p.source_sha256,
+        locator:p.locator,source_text_sha256:p.literal_sha256,source_text_bytes:length,source_start:0,source_end:length,unit_start:0,unit_end:length,
+        literal_sha256:corrupt?'a'.repeat(64):p.literal_sha256 }] };
+    context.context_id='urn:sha256:'+await sha256(canonical({...context,context_id:undefined,budget:{...context.budget,used_bytes:undefined}}));
+    for(let i=0;i<4;i++)context.budget.used_bytes=Buffer.byteLength(canonical(context));
+    const f=await fixture(t,context), output=resolve(f.root,'export');
+    if(corrupt) await assert.rejects(exportArchive(resolve(f.input,'registry.json'),f.input,output),/unit fragment integrity/);
+    else {
+      await exportArchive(resolve(f.input,'registry.json'),f.input,output);
+      const manifest=JSON.parse(await readFile(resolve(output,'artifact-manifest.json'),'utf8'));
+      assert.deepEqual(manifest.exporter_files.map((x:any)=>x.path).sort(),[...EXPORTER_INPUTS].sort());
+      assert.ok(EXPORTER_INPUTS.includes('apps/okf-explorer/src/lib/context/unit.ts'));
+      const index=JSON.parse(await readFile(resolve(output,'index.json'),'utf8'));
+      assert.ok(index);
+      assert.deepEqual(JSON.parse(await readFile(resolve(output,f.registry.cases[0].package.canonical_sha256,'package.json'),'utf8')),context);
+    }
+  }
 });

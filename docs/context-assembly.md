@@ -234,3 +234,38 @@ stack. Overview Links uses the bundle's actual record routes rather than assumin
 a `dataset/` prefix. A page counter describes loaded relationships, not a claim
 that an entire remote graph has already been fetched. These display controls do
 not add relationships missing from the producer's semantic model.
+
+## Logical evidence units
+
+A logical unit is a complete declared passage, such as a definition, rule,
+exception or table. It may cross physical page boundaries. It preserves exact
+source fragments and qualifications within that boundary; it does not make
+missing concept relationships or legal review complete.
+
+A producer can attach optional `okf-evidence-unit.v1` metadata to an evidence
+record. Ask OKF shows its boundary status, completeness and exact source spans.
+The machine-readable package and compact `record_metadata` reads retain the
+same metadata. Source-span positions count UTF-8 bytes, whereas delivery slices
+count JavaScript text positions; neither is a PDF byte position.
+
+For a corpus of these records, use `okf-context-corpus.v2`. Physical `counts`
+remain a page census; `records.count` counts retrieval units independently.
+The consumer can load declared referenced destinations beyond the 16 lexical
+candidates, starting from actual resolved concepts or lexical evidence. It never
+turns an expected answer or a required destination into a search seed.
+
+Uncertain boundaries, fallback pages, absent destinations and exhausted budgets
+remain explicit. Whole units are retained or omitted, never shortened to fit.
+An author-declared boundary does not upgrade source authority or specialist
+review. Existing corpus v1 behaviour and frozen service engines are preserved.
+
+Read the [decision and producer contract](adr-logical-evidence-units.md). Validate
+v2 manifest shape offline with:
+
+```sh
+uv run --locked python scripts/check_context_assembly.py --corpus path/to/manifest.json
+```
+
+Shape validation does not check source inclusion. The producer must verify each
+span against its frozen extraction; Explorer verifies the unit's own bytes,
+joins, fragment hashes and provenance bindings without fetching those sources.
