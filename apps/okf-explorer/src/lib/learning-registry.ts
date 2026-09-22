@@ -71,5 +71,15 @@ export const learningRegistry: BundleRegistryEntry[] = [
     "version": "1.0.0",
     "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
     "home_url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/"
+  },
+  {
+    "id": "https://chris-page-gov.github.io/okf-explorer/bundles/dwp-learning-paths",
+    "title": "DWP learning paths",
+    "description": "Twelve role-based paths and 112 activities covering the DWP demonstrations, with inspectable evidence, practice artefacts and facilitator assessment. Independent teaching material; not official DWP training or a complete statement of entitlement.",
+    "kind": "large-corpus",
+    "status": "experimental",
+    "version": "2026.09.22",
+    "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-explorer.json",
+    "home_url": "https://chris-page-gov.github.io/okf-dwp/"
   }
 ];

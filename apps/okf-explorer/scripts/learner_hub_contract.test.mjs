@@ -9,6 +9,8 @@ test('built learner hub is static, small and split from Explorer', async () => {
   assert.match(root, /Use knowledge you can inspect <em>with your AI<\/em>/);
   assert.match(root, /docs\/project-studio\/index\.html/);
   assert.match(root, /Open worked example/);
+  assert.match(root, /DWP learning paths/);
+  assert.match(root, /okf-dwp%2Fmain%2Fcombined%2Fokf-explorer/);
   assert.match(root, /docs\/onboarding\/try-a-bundle\.html/);
   assert.match(root, /docs\/onboarding\/first-bundle\.html/);
   assert.match(root, /okf-heritage-coventry-warwickshire%2Ftiny%2Fokf-explorer\.json/);
@@ -29,7 +31,7 @@ test('landing-page bundle projection matches the governed registry', async () =>
     fields.filter(key => key in bundle).map(key => [key, bundle[key]])
   )));
   const catalogue = JSON.parse(await readFile(new URL('../src/lib/learning-catalogue.json', import.meta.url), 'utf8'));
-  assert.equal(catalogue.filter(entry => entry.featured).length, 3);
+  assert.equal(catalogue.filter(entry => entry.featured).length, 4);
   assert.equal(catalogue.find(entry => entry.id === 'government-evidence').kind, 'application');
   assert.deepEqual(catalogue.filter(entry => entry.kind === 'bundle').map(entry => entry.bundle_id).sort(),
     governed.bundles.map(bundle => bundle.id.split('/').at(-1)).sort());

@@ -147,6 +147,9 @@
             <p>{example.question}</p>
             <p>{example.limit}</p>
             <div class="card-actions">
+              {#if 'explorer_url' in example && example.explorer_url}
+                <a href={`./explore/${new URL(example.explorer_url).search}${new URL(example.explorer_url).hash}`}>Open in Explorer</a>
+              {/if}
               <a href={`./${example.guide.replace(/\.md$/, '.html')}`}>Try {example.title}</a>
             </div>
           </article>

@@ -191,3 +191,22 @@ test('authored DWP curriculum exposes all 112 real lesson routes and supporting 
   expect(new Set(requests.filter(p=>/records-\d+/.test(p))).size).toBeLessThan(5);
   expect(errors).toEqual([]);
 });
+
+test('DWP learning paths can be opened from the home catalogue and bundle selector',async({page})=>{
+  test.skip(!env.OKF_DWP_CURRICULUM,'Set OKF_DWP_CURRICULUM for the real curriculum journey.');
+  const root=resolve(env.OKF_DWP_CURRICULUM!);
+  await page.route('https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/**',async route=>{
+    const relative=new URL(route.request().url()).pathname.split('/main/combined/')[1];
+    const file=resolve(root,relative);if(!file.startsWith(root+sep))return route.abort();
+    try{await route.fulfill({body:await readFile(file),contentType:file.endsWith('.gz')?'application/gzip':'application/json',headers:{'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:404,body:'Missing fixture'});}
+  });
+  await page.goto('/');
+  const card=page.locator('article').filter({has:page.getByRole('heading',{name:'DWP learning paths',exact:true})});
+  await card.getByRole('link',{name:'Open in Explorer',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'DWP demonstration learning programme',exact:true})).toBeVisible();
+  const input=page.getByRole('textbox',{name:'Bundle or descriptor URL'});
+  await input.fill('DWP learning paths');
+  await page.locator('.bundle-suggestions').getByRole('button',{name:/DWP learning paths/}).first().click();
+  await expect(input).toHaveValue('https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-explorer.json');
+  await expect(page.getByRole('heading',{name:'DWP demonstration learning programme',exact:true})).toBeVisible();
+});

@@ -224,3 +224,18 @@ notes, licences and a SHA-256 inventory. It excludes the facilitator private
 key. Run `node serve.mjs` inside the package and open the printed localhost
 address. This is a portable review artefact; it does not publish or certify a
 production service. Rehearse the packaged bytes before sharing them.
+
+## Find DWP learning paths
+
+On the Explorer home page, choose **DWP learning paths** in the featured example
+catalogue, then **Open in Explorer**. Inside Explorer, focus the **Bundle or
+descriptor URL** field, replace its contents with **DWP learning paths**, and choose the matching suggestion.
+Both routes load the combined DWP Reader at its learning catalogue. Choose a
+role, expand a path and open an activity or supporting record. The separate
+logical-unit corpus does not contain these lesson records.
+
+The registry follows the producer's reviewed main branch. A changed programme
+or bundle snapshot requires reassessment; it does not carry an earlier pass
+forward automatically. Corpus-wide semantic review, compact evidence delivery
+and remote-service adoption remain separate work. A lesson or assessment pass
+does not close those evidence gaps.

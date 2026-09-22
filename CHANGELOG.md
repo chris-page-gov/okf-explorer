@@ -2,6 +2,8 @@
 
 ## Learning-path review and large-bundle teaching — 22 September 2026
 
+- Add DWP learning paths to the home catalogue and Reader bundle selector, with explicit evidence and training limitations.
+
 - Add opt-in assessed large-bundle programmes with source-record links, prerequisite checks, local journals and signed facilitator decisions. Keep practice ticks separate from assessed passes and bind decisions to the learner, programme and bundle snapshot.
 
 - Integrate the draft small-bundle learning presentation with current main.

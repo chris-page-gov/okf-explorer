@@ -285,6 +285,49 @@
           "version": [
             "1.0.0"
           ]
+        },
+        {
+          "@id": "https://chris-page-gov.github.io/okf-explorer/bundles/dwp-learning-paths",
+          "@type": "okf:Bundle",
+          "conformsTo": [
+            "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+          ],
+          "description": [
+            "Twelve role-based paths and 112 activities covering the DWP demonstrations, with inspectable evidence, practice artefacts and facilitator assessment. Independent teaching material; not official DWP training or a complete statement of entitlement."
+          ],
+          "descriptor": [
+            "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-explorer.json"
+          ],
+          "documentation": [
+            "https://github.com/chris-page-gov/okf-dwp/blob/main/docs/learning/README.md"
+          ],
+          "home": [
+            "https://chris-page-gov.github.io/okf-dwp/"
+          ],
+          "license": [
+            "https://github.com/chris-page-gov/okf-dwp/blob/main/NOTICE.md"
+          ],
+          "publisher": [
+            "https://github.com/chris-page-gov"
+          ],
+          "recordTypeLabel": [
+            "large-corpus"
+          ],
+          "repository": [
+            "https://github.com/chris-page-gov/okf-dwp"
+          ],
+          "semanticDescriptor": [
+            "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-bundle.yamlld"
+          ],
+          "status": [
+            "experimental"
+          ],
+          "title": [
+            "DWP learning paths"
+          ],
+          "version": [
+            "2026.09.22"
+          ]
         }
       ],
       "conformsTo": [

@@ -73,6 +73,18 @@ application is not a bundle descriptor, and an entry is not a conformance claim.
 
 ## Use knowledge at work
 
+### DWP learning paths
+
+**For:** advisers, policy reviewers, evidence reviewers and service designers. **Kind:** bundle. **Readiness:** Local curriculum and assessment journeys checked on 22 September 2026; specialist validation remains open.
+
+**Try:** Can you trace a claim to its source, identify missing qualifications and explain when the evidence is insufficient?
+
+**Use with AI:** Choose a role, follow the lessons, inspect evidence and export a fictional artefact for facilitator assessment.
+
+**Limit:** Independent teaching material. Source boundaries and legal interpretations remain uncertain; a learning pass does not establish entitlement or complete evidence.
+
+[Open in Explorer](https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json#overview) · [Follow the exercise or guide](../../docs/learning-presentation.md) · [Producer and source material](https://github.com/chris-page-gov/okf-dwp)
+
 ### A Life in the UK
 
 **For:** knowledge workers and service designers. **Kind:** collection. **Readiness:** Producer collection and dated development trial; check current release.
