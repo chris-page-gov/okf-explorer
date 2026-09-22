@@ -12,6 +12,15 @@ export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking
 export type DiscoveryCard = Pick<ContextRecord, 'id' | 'label' | 'assertion_status' | 'authority' | 'scope' | 'provenance' | 'rights' | 'access'> & {
   evidence_id: string; evidence_sha256: string; heading_path: string[]; summary: string; search_aliases: string[];
 };
+/** Exact lazy metadata locator; context evidence and authority remain inline. */
+export type DiscoveryCardReference = {
+  schema: 'okf-discovery-card-reference.v1'; id: string; evidence_id: string;
+  card_sha256: string; ordinal: number;
+};
+export type DiscoveryIncidentReference = {
+  schema: 'okf-discovery-incident-reference.v1'; id: string; incident_sha256: string;
+  outgoing_count: number; incoming_count: number;
+};
 export type DiscoveryCorpusManifest = Omit<LegacyContextCorpusManifest, 'schema' | 'search'> & {
   schema: 'okf-context-corpus.v3';
   discovery: { count: number; shards: Array<Reference & { first_ordinal: number; count: number }> };
@@ -108,6 +117,66 @@ async function streamBytes(stream: ReadableStream<Uint8Array> | null, limit: num
 }
 async function hashBytes(bytes: Uint8Array) { return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes as BufferSource)), n => n.toString(16).padStart(2, '0')).join(''); }
 
+async function readDiscoveryFile(shard: Reference, binding: ContextBinding, fetcher: typeof fetch): Promise<unknown> {
+  const root = new URL('.', binding.index_url), url = new URL(shard.path, root);
+  check(['https:', 'http:'].includes(root.protocol) && !root.username && !root.password && HASH.test(binding.index_sha256)
+    && url.origin === root.origin && url.pathname.startsWith(root.pathname), 'discovery reference root');
+  const response = await fetcher(url.href, { redirect: 'error', credentials: 'omit', signal: AbortSignal.timeout(15000) });
+  check(response.ok && (!response.url || response.url === url.href), 'discovery reference unavailable or redirected');
+  const transferred = await streamBytes(response.body, shard.bytes);
+  check(transferred.length === shard.bytes && await hashBytes(transferred) === shard.sha256, 'discovery reference transfer integrity');
+  const bytes = shard.encoding === 'gzip' ? await streamBytes(new Blob([transferred as BlobPart]).stream().pipeThrough(new DecompressionStream('gzip')), shard.decoded_bytes!) : transferred;
+  check(bytes.length === (shard.decoded_bytes || shard.bytes) && await hashBytes(bytes) === (shard.decoded_sha256 || shard.sha256), 'discovery reference decoded integrity');
+  return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+}
+
+/** Load full navigation metadata on demand, never as a substitute for evidence. */
+export async function readDiscoveryCard(raw: DiscoveryCorpusManifest, binding: ContextBinding,
+  reference: DiscoveryCardReference, fetcher: typeof fetch = fetch): Promise<DiscoveryCard> {
+  const manifest = validateDiscoveryCorpusManifest(raw);
+  check(object(reference), 'card reference');
+  keys(reference, ['schema', 'id', 'evidence_id', 'card_sha256', 'ordinal']);
+  check(reference.schema === 'okf-discovery-card-reference.v1' && ID.test(reference.id) && ID.test(reference.evidence_id)
+    && HASH.test(reference.card_sha256) && integer(reference.ordinal) && reference.ordinal < manifest.records.count, 'card reference identity');
+  const declared = manifest.discovery.shards.find(s => reference.ordinal >= s.first_ordinal && reference.ordinal < s.first_ordinal + s.count)!;
+  const { first_ordinal, count } = declared;
+  const value = await readDiscoveryFile(declared, binding, fetcher);
+  check(object(value), 'card reference shard'); keys(value, ['schema', 'first_ordinal', 'cards']);
+  check(value.schema === 'okf-discovery-cards.v1' && value.first_ordinal === first_ordinal && Array.isArray(value.cards) && value.cards.length === count, 'card reference ordinal');
+  const card = validateCard(value.cards[reference.ordinal - first_ordinal]);
+  check(card.access === 'public' && card.id === reference.id && card.evidence_id === reference.evidence_id
+    && await contextSha256(canonicalJson(card)) === reference.card_sha256, 'card reference content integrity or access');
+  return card;
+}
+
+/** Inspect all committed incident rows without adding them to evidence or seeds. */
+export async function readDiscoveryIncident(raw: DiscoveryCorpusManifest, binding: ContextBinding,
+  reference: DiscoveryIncidentReference, fetcher: typeof fetch = fetch): Promise<IncidentEntry> {
+  const manifest = validateDiscoveryCorpusManifest(raw);
+  check(object(reference), 'incident reference');
+  keys(reference, ['schema', 'id', 'incident_sha256', 'outgoing_count', 'incoming_count']);
+  check(reference.schema === 'okf-discovery-incident-reference.v1' && ID.test(reference.id) && reference.id.length <= 2000
+    && HASH.test(reference.incident_sha256) && integer(reference.outgoing_count, 30000) && integer(reference.incoming_count, 30000), 'incident reference identity');
+  const value = await readDiscoveryFile(manifest.relationships.shards[corpusBucket(reference.id)], binding, fetcher);
+  check(object(value), 'incident reference shard'); keys(value, ['schema', 'entries']);
+  check(value.schema === 'okf-context-adjacency-bucket.v1' && Array.isArray(value.entries) && value.entries.length <= 10000, 'incident reference entries');
+  const matches = value.entries.filter((e: any) => e.id === reference.id);
+  check(matches.length === 1 && await contextSha256(canonicalJson(matches[0])) === reference.incident_sha256, 'incident reference content integrity');
+  const entry = matches[0] as IncidentEntry;
+  keys(entry, ['id', 'outgoing', 'incoming', 'outgoing_count', 'incoming_count', 'outgoing_ids_sha256', 'incoming_ids_sha256']);
+  for (const direction of ['outgoing', 'incoming'] as const) {
+    const rows = entry[direction];
+    check(Array.isArray(rows) && rows.length === reference[direction + '_count' as 'outgoing_count' | 'incoming_count']
+      && rows.length === entry[direction + '_count' as 'outgoing_count' | 'incoming_count'], 'incident reference count');
+    validateContextIndex({ schema: 'okf-context-index.v1', bundle: manifest.bundle, scope: manifest.scope,
+      limitations: [], records: [], assertions: rows, requirements: [] });
+    let previous = '';
+    for (const row of rows) { check(row.id > previous && row[direction === 'outgoing' ? 'source' : 'target'] === entry.id, 'incident reference direction'); previous = row.id; }
+    check(await contextSha256(canonicalJson(rows.map(e => e.id))) === entry[direction + '_ids_sha256' as 'outgoing_ids_sha256' | 'incoming_ids_sha256'], 'incident reference commitment');
+  }
+  return entry;
+}
+
 export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifest, binding: ContextBinding, question: string,
   requested: Partial<ContextBudget> = {}, fetcher: typeof fetch = fetch): Promise<ContextPackage> {
   const manifest = validateDiscoveryCorpusManifest(raw); const budget = normaliseContextBudget(requested);
@@ -118,7 +187,8 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     corpus_pages: manifest.counts.pages, empty_pages: manifest.counts.empty_pages, query_tokens: [], omitted_query_tokens: [],
     candidate_count: 0, candidates: [], fetched_files: 0, fetched_bytes: 0, decoded_bytes: 0, limits: { ...CORPUS_LIMITS }, truncated: false, omissions: [],
     units: { corpus_schema: 'okf-context-corpus.v3', referenced_records: [], examined_relationships: 0, limits: { ...UNIT_REFERENCE_LIMITS } },
-    discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS } } };
+    discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS },
+      admission_order: 'resolved-concept-paths-before-lexical-candidates.v1' } };
   const omit = (code: string, message: string, ids: string[] = []) => { retrieval.truncated = true; retrieval.omissions.push({ code, message, ids }); };
   const cache = new Map<string, Promise<any | null>>();
   const load = (reference: Reference): Promise<any | null> => {
@@ -156,42 +226,6 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     'Discovery cards are source-bound navigation summaries, not source evidence, resolved concepts or applicability assertions.',
     'BM25 source and discovery channels are independently scored with fixed parameters and canonical ordinal ties. Incoming references are not reversed into traversal.'], records: [...base.records], assertions: [] };
   const byId = new Map(index.records.map(r => [r.id, r]));
-  const wanted = [...new Set(discoveryTokens(question))].filter(t => !isQuestionScaffolding(t));
-  retrieval.query_tokens = wanted.filter(t => t.length <= 64).slice(0, CORPUS_LIMITS.query_tokens);
-  retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
-  if (retrieval.omitted_query_tokens.length) omit('retrieval_query_budget', 'Some query terms exceeded the fixed lexical query limit.');
-  await loadMany(retrieval.query_tokens.map(t => manifest.search.shards[corpusBucket(t)]));
-  const ranks = new Map<number, Rank>(); let postingRows = 0;
-  const lengths = new Map<number, string>();
-  for (const token of retrieval.query_tokens) {
-    const shard = await load(manifest.search.shards[corpusBucket(token)]); if (!shard) continue;
-    check(object(shard), 'postings shard'); keys(shard, ['schema', 'postings']);
-    check(shard.schema === 'okf-context-postings.v2' && object(shard.postings), 'postings schema');
-    const rows = Object.hasOwn(shard.postings, token) ? shard.postings[token] : [];
-    check(Array.isArray(rows) && rows.length <= manifest.records.count, 'posting list');
-    let previous = -1;
-    for (const p of rows) {
-      check(Array.isArray(p) && p.length === 5 && p.every(n => integer(n)) && p[0] < manifest.records.count && p[0] > previous,
-        'invalid or repeated posting'); previous = p[0];
-      check((p[1] || p[3]) && p[1] <= p[2] && p[3] <= p[4]
-        && p[2] <= manifest.search.total_tokens.source && p[4] <= manifest.search.total_tokens.discovery, 'posting frequency or length');
-    }
-    const sourceDf = rows.filter(p => p[1] > 0).length, discoveryDf = rows.filter(p => p[3] > 0).length;
-    for (const p of rows as Posting[]) {
-      if (++postingRows > DISCOVERY_LIMITS.posting_rows || (!ranks.has(p[0]) && ranks.size >= DISCOVERY_LIMITS.ranking_records)) {
-        omit('retrieval_ranking_budget', 'BM25 ranking reached its explicit posting or candidate work bound.'); break;
-      }
-      const length = `${p[2]}:${p[4]}`; check(!lengths.has(p[0]) || lengths.get(p[0]) === length, 'inconsistent document lengths'); lengths.set(p[0], length);
-      const rank: Rank = ranks.get(p[0]) || { score: 0, source_score: 0, discovery_score: 0, matched: [], matched_source: [], matched_discovery: [], facts: new Map() };
-      rank.source_score += bm25Contribution(manifest.records.count, sourceDf, p[1], p[2], manifest.search.total_tokens.source);
-      rank.discovery_score += bm25Contribution(manifest.records.count, discoveryDf, p[3], p[4], manifest.search.total_tokens.discovery);
-      rank.score = rank.source_score + rank.discovery_score; rank.matched.push(token); rank.facts.set(token, p);
-      if (p[1]) rank.matched_source.push(token); if (p[3]) rank.matched_discovery.push(token); ranks.set(p[0], rank);
-    }
-  }
-  retrieval.candidate_count = ranks.size;
-  const ranked = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]).slice(0, CORPUS_LIMITS.candidates);
-  if (ranks.size > ranked.length) omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
   const recordCache = new Map<string, ContextRecord[]>(), cardCache = new Map<string, DiscoveryCard[]>();
   const cardIds = new Map<string, string>();
   const readRecords = async (reference: ContextRecordShard): Promise<ContextRecord[] | null> => {
@@ -231,18 +265,6 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     byId.set(record.id, record); return true;
   };
   const evidenceSeeds: Array<{ id: string; reason: string }> = [];
-  for (const [ordinal, rank] of ranked) {
-    const unit = await readUnit(ordinal); if (!unit) continue;
-    const source = discoveryTokens(unit.record.text), discovery = discoveryTokens(discoveryText(unit.card));
-    for (const [token, p] of rank.facts) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
-      && p[3] === discovery.filter(t => t === token).length && p[4] === discovery.length, 'postings differ from bound source or discovery text');
-    if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); continue; }
-    if (!include(unit.record)) continue;
-    retrieval.candidates.push({ id: unit.record.id, score: rank.score, matched: rank.matched });
-    retrieval.discovery!.candidates.push({ card: unit.card, source_score: rank.source_score, discovery_score: rank.discovery_score,
-      matched_source: rank.matched_source, matched_discovery: rank.matched_discovery });
-    evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')}). The card is not evidence or a concept-resolution claim.` });
-  }
   const adjacencyCache = new Map<string, IncidentEntry[]>(); const assertionSeen = new Map<string, string>();
   const knownEntries = new Map<string, IncidentEntry>(), assertionRows = new Map<string, ContextAssertion>();
   const incident = async (id: string): Promise<IncidentEntry | null> => {
@@ -279,10 +301,11 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     const entry = adjacencyCache.get(bucket)!.find(e => e.id === id);
     check(entry, `missing committed adjacency entry: ${id}`); return entry;
   };
-  const seeds = [...new Set([...resolveConcepts(base, question).resolved.map(r => r.id), ...evidenceSeeds.map(r => r.id)])].sort();
-  const queue = seeds.map(id => ({ id, depth: 0 })), visited = new Set<string>(), attempted = new Set<string>(), includedEdges = new Set<string>();
+  const visited = new Map<string, number>(), attempted = new Set<string>(), includedEdges = new Set<string>(), inspected = new Set<string>();
+  const expand = async (seeds: string[]) => {
+  const queue = seeds.map(id => ({ id, depth: 0 }));
   for (let i = 0; i < queue.length; i++) {
-    const { id, depth } = queue[i]; if (visited.has(id)) continue; visited.add(id);
+    const { id, depth } = queue[i]; if ((visited.get(id) ?? Infinity) <= depth) continue; visited.set(id, depth);
     if (!byId.has(id)) {
       if (attempted.size >= UNIT_REFERENCE_LIMITS.referenced_records) { omit('referenced_record_budget', 'The declared-destination loading limit was reached.', [id]); continue; }
       attempted.add(id); const range = manifest.records.shards.find(s => s.first_id! <= id && id <= s.last_id!);
@@ -294,7 +317,11 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     }
     if (byId.get(id)!.access !== 'public') continue;
     const entry = await incident(id); if (!entry) continue;
-    retrieval.discovery!.adjacency.push({ id, outgoing_ids: entry.outgoing.map(e => e.id), incoming_ids: entry.incoming.map(e => e.id) });
+    if (!inspected.has(id)) {
+      retrieval.discovery!.adjacency.push({ schema: 'okf-discovery-incident-reference.v1', id,
+        incident_sha256: await contextSha256(canonicalJson(entry)), outgoing_count: entry.outgoing_count, incoming_count: entry.incoming_count });
+      inspected.add(id);
+    }
     for (const edge of entry.outgoing) {
       if (!includedEdges.has(edge.id)) {
         if (retrieval.units!.examined_relationships >= UNIT_REFERENCE_LIMITS.examined_relationships) { omit('referenced_relationship_budget', 'The declared relationship loading limit was reached.', [id, edge.id, edge.target]); continue; }
@@ -304,8 +331,64 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
       }
       if (!CONTEXT_PREDICATES.has(edge.predicate)) continue;
       if (depth >= budget.max_depth) { if (!byId.has(edge.target)) omit('referenced_depth_budget', 'A declared destination exceeds the requested traversal depth.', [edge.id, edge.target]); continue; }
-      if (!visited.has(edge.target)) queue.push({ id: edge.target, depth: depth + 1 });
+      if ((visited.get(edge.target) ?? Infinity) > depth + 1) queue.push({ id: edge.target, depth: depth + 1 });
     }
   }
+  };
+  // Actual concept aliases supply seeds, never assessor requirements. Complete
+  // their declared outgoing paths before lexical candidates spend the shared
+  // file budget. All phases retain the same transfer/work/depth ceilings.
+  await expand([...new Set(resolveConcepts(base, question).resolved.map(r => r.id))].sort());
+  const wanted = [...new Set(discoveryTokens(question))].filter(t => !isQuestionScaffolding(t));
+  retrieval.query_tokens = wanted.filter(t => t.length <= 64).slice(0, CORPUS_LIMITS.query_tokens);
+  retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
+  if (retrieval.omitted_query_tokens.length) omit('retrieval_query_budget', 'Some query terms exceeded the fixed lexical query limit.');
+  await loadMany(retrieval.query_tokens.map(t => manifest.search.shards[corpusBucket(t)]));
+  const ranks = new Map<number, Rank>(); let postingRows = 0;
+  const lengths = new Map<number, string>();
+  for (const token of retrieval.query_tokens) {
+    const shard = await load(manifest.search.shards[corpusBucket(token)]); if (!shard) continue;
+    check(object(shard), 'postings shard'); keys(shard, ['schema', 'postings']);
+    check(shard.schema === 'okf-context-postings.v2' && object(shard.postings), 'postings schema');
+    const rows = Object.hasOwn(shard.postings, token) ? shard.postings[token] : [];
+    check(Array.isArray(rows) && rows.length <= manifest.records.count, 'posting list');
+    let previous = -1;
+    for (const p of rows) {
+      check(Array.isArray(p) && p.length === 5 && p.every(n => integer(n)) && p[0] < manifest.records.count && p[0] > previous,
+        'invalid or repeated posting'); previous = p[0];
+      check((p[1] || p[3]) && p[1] <= p[2] && p[3] <= p[4]
+        && p[2] <= manifest.search.total_tokens.source && p[4] <= manifest.search.total_tokens.discovery, 'posting frequency or length');
+    }
+    const sourceDf = rows.filter(p => p[1] > 0).length, discoveryDf = rows.filter(p => p[3] > 0).length;
+    for (const p of rows as Posting[]) {
+      if (++postingRows > DISCOVERY_LIMITS.posting_rows || (!ranks.has(p[0]) && ranks.size >= DISCOVERY_LIMITS.ranking_records)) {
+        omit('retrieval_ranking_budget', 'BM25 ranking reached its explicit posting or candidate work bound.'); break;
+      }
+      const length = `${p[2]}:${p[4]}`; check(!lengths.has(p[0]) || lengths.get(p[0]) === length, 'inconsistent document lengths'); lengths.set(p[0], length);
+      const rank: Rank = ranks.get(p[0]) || { score: 0, source_score: 0, discovery_score: 0, matched: [], matched_source: [], matched_discovery: [], facts: new Map() };
+      rank.source_score += bm25Contribution(manifest.records.count, sourceDf, p[1], p[2], manifest.search.total_tokens.source);
+      rank.discovery_score += bm25Contribution(manifest.records.count, discoveryDf, p[3], p[4], manifest.search.total_tokens.discovery);
+      rank.score = rank.source_score + rank.discovery_score; rank.matched.push(token); rank.facts.set(token, p);
+      if (p[1]) rank.matched_source.push(token); if (p[3]) rank.matched_discovery.push(token); ranks.set(p[0], rank);
+    }
+  }
+  retrieval.candidate_count = ranks.size;
+  const ranked = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]).slice(0, CORPUS_LIMITS.candidates);
+  if (ranks.size > ranked.length) omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
+  for (const [ordinal, rank] of ranked) {
+    const unit = await readUnit(ordinal); if (!unit) continue;
+    const source = discoveryTokens(unit.record.text), discovery = discoveryTokens(discoveryText(unit.card));
+    for (const [token, p] of rank.facts) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
+      && p[3] === discovery.filter(t => t === token).length && p[4] === discovery.length, 'postings differ from bound source or discovery text');
+    if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); continue; }
+    if (!include(unit.record)) continue;
+    retrieval.candidates.push({ id: unit.record.id, score: rank.score, matched: rank.matched });
+    const card: DiscoveryCardReference = { schema: 'okf-discovery-card-reference.v1', id: unit.card.id,
+      evidence_id: unit.record.id, card_sha256: await contextSha256(canonicalJson(unit.card)), ordinal };
+    retrieval.discovery!.candidates.push({ card, source_score: rank.source_score, discovery_score: rank.discovery_score,
+      matched_source: rank.matched_source, matched_discovery: rank.matched_discovery });
+    evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')}). The card is not evidence or a concept-resolution claim.` });
+  }
+  await expand([...new Set(evidenceSeeds.map(r => r.id))].sort());
   return assembleContext(index, question, requested, binding, { evidenceSeeds, retrieval });
 }

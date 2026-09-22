@@ -102,6 +102,14 @@ assertions using the existing `references`, `requires` and SKOS predicates.
 Incoming assertions support navigation and audit; they are never silently
 reversed or used to create new search seeds. Requirements never create seeds.
 
+The admission order is explicit: finish the naturally reachable paths from
+resolved concepts before reading lexical candidates. Both phases share the same
+file, byte, depth and work ceilings. This prevents scattered lexical shards from
+spending the file allowance before an already identified concept can reach its
+declared guidance. A later lexical seed can revisit an earlier node at a shorter
+depth; this neither reverses an edge nor invents a seed from an assessor's
+requirements. A lexical candidate omitted by a shared ceiling remains reported.
+
 Missing cards, stale whole-record bindings, malformed incident commitments,
 inconsistent directions, missing declared adjacency entries and altered files
 reject the input. A declared destination absent from the unit inventory remains
@@ -119,6 +127,37 @@ The assembled package can be larger than a transport response. Existing
 `okf_context_manifest` and `okf_read_evidence` return exact bounded portions,
 including discovery diagnostics and complete unit metadata. Transport does not
 change the context identity, truncate a rule or resolve an evidence gap.
+
+### Compact diagnostics and exact metadata reads
+
+Every candidate's complete card is still read and checked before admission.
+The returned diagnostic carries `okf-discovery-card-reference.v1`: the card and
+evidence IDs, absolute ordinal and SHA-256 of the complete canonical card. Use
+the context-bound manifest's discovery inventory to locate the containing
+shard. `readDiscoveryCard` verifies its transfer and decompression bindings,
+ordinal, complete card hash, identities and public access before returning the
+original metadata, including provenance, authority, scope and aliases.
+
+Likewise, each inspected incident set has an
+`okf-discovery-incident-reference.v1` with the record ID, incoming/outgoing counts
+and hash of the complete entry. Hash the record ID with the manifest's existing
+bucket algorithm to locate its relationship shard. `readDiscoveryIncident`
+returns the exact incoming and outgoing assertions after validating the file,
+entry, counts, directions and commitments. These helpers read only manifest-bound
+metadata; they do not turn it into selected evidence or new traversal seeds.
+
+The package keeps the independently matched source/discovery words and scores.
+Its selected source records, relationships, source spans and unresolved
+obligations remain inline and unchanged. Earlier retained v3 packages containing
+full diagnostics remain schema-valid. V1/v2 packages do not use this mechanism.
+The lazy metadata reads do not change an assembled context's identity.
+
+This fixes duplicated diagnostic overhead, not every small-package limit. A
+32 KiB assembly can still correctly return `metadata_budget` when its explicit
+obligations and whole units do not fit. Assemble a larger bounded package and
+use existing 32 KiB exact reads to deliver it; a small response bound and a small
+evidence-selection budget are different choices. No obligation is silently
+discarded to create the appearance of a useful small result.
 
 ## Reader and future presentation
 

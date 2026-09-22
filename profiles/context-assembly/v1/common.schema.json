@@ -609,6 +609,78 @@
         "search_aliases"
       ],
       "additionalProperties": false
+    },
+    "discovery_card_reference": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "okf-discovery-card-reference.v1"
+        },
+        "id": {
+          "type": "string",
+          "maxLength": 2000,
+          "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+        },
+        "evidence_id": {
+          "type": "string",
+          "maxLength": 2000,
+          "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+        },
+        "card_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "ordinal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "evidence_id",
+        "card_sha256",
+        "ordinal"
+      ],
+      "additionalProperties": false,
+      "description": "Bound navigation metadata locator. Select the ordinal from the context-bound manifest discovery inventory, verify its transferred/decoded file and complete card hashes. Complete evidence remains separate."
+    },
+    "discovery_incident_reference": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "okf-discovery-incident-reference.v1"
+        },
+        "id": {
+          "type": "string",
+          "maxLength": 2000,
+          "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+        },
+        "incident_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "outgoing_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30000
+        },
+        "incoming_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30000
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "incident_sha256",
+        "outgoing_count",
+        "incoming_count"
+      ],
+      "additionalProperties": false,
+      "description": "Exact incident metadata locator. Hash id with the corpus bucket algorithm, read the bound manifest relationship shard and verify the complete entry hash. This is an audit reference, not selected evidence."
     }
   }
 }

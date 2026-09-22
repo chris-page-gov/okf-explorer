@@ -1,5 +1,16 @@
 # Changelog
 
+## Discovery budget allocation — 23 September 2026
+
+- Prioritise real resolved-concept paths before lexical candidates spend the
+  shared corpus-reading allowance; preserve the existing limits and v1/v2 replay.
+- Replace repeated full card and incident diagnostics with exact metadata
+  references and bounded lazy readers. Keep whole evidence, provenance, matching
+  channels and unresolved obligations distinct and inspectable.
+- Retain the failed first full-corpus acceptance and stale-receipt CI run.
+  Small inline contexts can still refuse insufficient space; larger assembled
+  contexts use the existing exact-read transport without hiding that limit.
+
 ## Source-bound discovery cards — 22 September 2026
 
 - Add an opt-in corpus v3 contract for separately sharded discovery cards,

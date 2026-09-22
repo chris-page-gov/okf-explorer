@@ -525,7 +525,14 @@
                 "type": "object",
                 "properties": {
                   "card": {
-                    "$ref": "common.schema.json#/$defs/discovery_card"
+                    "oneOf": [
+                      {
+                        "$ref": "common.schema.json#/$defs/discovery_card"
+                      },
+                      {
+                        "$ref": "common.schema.json#/$defs/discovery_card_reference"
+                      }
+                    ]
                   },
                   "source_score": {
                     "type": "integer",
@@ -561,31 +568,41 @@
             "adjacency": {
               "type": "array",
               "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "outgoing_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "incoming_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "outgoing_ids",
+                      "incoming_ids"
+                    ],
+                    "additionalProperties": false
                   },
-                  "outgoing_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "incoming_ids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                  {
+                    "$ref": "common.schema.json#/$defs/discovery_incident_reference"
                   }
-                },
-                "required": [
-                  "id",
-                  "outgoing_ids",
-                  "incoming_ids"
-                ],
-                "additionalProperties": false
+                ]
               }
+            },
+            "admission_order": {
+              "const": "resolved-concept-paths-before-lexical-candidates.v1"
             }
           },
           "required": [

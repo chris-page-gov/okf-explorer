@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 // @ts-ignore -- Node-only compression control; runtime uses bounded Web Streams.
 import { gzipSync } from 'node:zlib';
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from './corpus';
-import { bm25Contribution, discoveryTokens } from './corpusV3';
+import { bm25Contribution, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
 import { canonicalJson, contextSha256 } from './index';
 import { contextManifest, readContextEvidence } from './delivery';
 import { discoveryFixture } from '../../test/discoveryFixture';
@@ -27,7 +27,8 @@ describe('source-bound discovery corpus v3', () => {
     expect(result.selected[0].record.evidence_unit!.spans).toHaveLength(2);
     expect(result.selected.some(x => x.record.id === f.cards[0].id)).toBe(false);
     expect(result.retrieval!.discovery!.candidates[0]).toMatchObject({ source_score: 0, matched_source: [], matched_discovery: ['fruit', 'gathering'] });
-    expect(result.retrieval!.discovery!.adjacency.find(x => x.id === f.records[0].id)!.incoming_ids).toEqual([f.assertions[0].id]);
+    const incident = result.retrieval!.discovery!.adjacency.find(x => x.id === f.records[0].id)! as DiscoveryIncidentReference;
+    expect((await readDiscoveryIncident(f.manifest, f.binding, incident, f.fetcher)).incoming.map(e => e.id)).toEqual([f.assertions[0].id]);
     expect(result.relationships.map(x => x.id)).toEqual([f.assertions[1].id]);
     expect(result.missing_evidence.some(x => x.code === 'no_evidence_requirements')).toBe(true);
   });
@@ -113,9 +114,63 @@ describe('source-bound discovery corpus v3', () => {
     f.files.set(ref.path, compressed);
     const result = await assembleCorpusContext(f.manifest, f.binding, 'orchard', {}, f.fetcher);
     expect(result.selected[0].record).toEqual(f.records[0]);
-    expect(result.retrieval!.discovery!.candidates[0].card).toEqual(f.cards[0]);
+    const card = result.retrieval!.discovery!.candidates[0].card as DiscoveryCardReference;
+    expect(await readDiscoveryCard(f.manifest, f.binding, card, f.fetcher)).toEqual(f.cards[0]);
     ref.decoded_bytes = 100;
     await expect(assembleCorpusContext(f.manifest, f.binding, 'orchard', {}, f.fetcher)).rejects.toThrow('exceeds its binding');
+  });
+  it('keeps complete cards lazy so previews cannot crowd all exact evidence out of a small package', async () => {
+    const f = await discoveryFixture(16, 16);
+    for (const card of f.cards) { card.summary = 'Long navigation preview '.repeat(75); card.scope = 'Unreviewed navigation scope. '.repeat(75); }
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'quartz', { max_bytes: 32768 }, f.fetcher);
+    expect(result.selected.some(s => s.record.kind === 'evidence')).toBe(true);
+    expect(new TextEncoder().encode(canonicalJson(result)).length).toBeLessThanOrEqual(32768);
+    const before = canonicalJson(result);
+    for (const candidate of result.retrieval!.discovery!.candidates) {
+      const reference = candidate.card as DiscoveryCardReference;
+      expect(reference.schema).toBe('okf-discovery-card-reference.v1'); expect(reference).not.toHaveProperty('summary');
+      const full = await readDiscoveryCard(f.manifest, f.binding, reference, f.fetcher);
+      expect(full).toEqual(f.cards[reference.ordinal]);
+    }
+    expect(canonicalJson(result)).toBe(before);
+  });
+  it.each(['digest', 'ordinal', 'card-id', 'evidence-id'])('rejects stale lazy card references: %s', async variant => {
+    const f = await discoveryFixture();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'orchard', {}, f.fetcher);
+    const reference = structuredClone(result.retrieval!.discovery!.candidates[0].card) as DiscoveryCardReference;
+    if (variant === 'digest') reference.card_sha256 = '0'.repeat(64);
+    if (variant === 'ordinal') reference.ordinal++;
+    if (variant === 'card-id') reference.id += '-wrong';
+    if (variant === 'evidence-id') reference.evidence_id += '-wrong';
+    await expect(readDiscoveryCard(f.manifest, f.binding, reference, f.fetcher)).rejects.toThrow();
+  });
+  it('reconstructs every incident ID, scope and provenance from compact diagnostics without changing context', async () => {
+    const f = await discoveryFixture(); const result = await assembleCorpusContext(f.manifest, f.binding, 'orchard', {}, f.fetcher);
+    const before = canonicalJson(result);
+    for (const item of result.retrieval!.discovery!.adjacency) {
+      const reference = item as DiscoveryIncidentReference;
+      const full = await readDiscoveryIncident(f.manifest, f.binding, reference, f.fetcher);
+      expect(full.outgoing).toEqual(f.assertions.filter(e => e.source === item.id));
+      expect(full.incoming).toEqual(f.assertions.filter(e => e.target === item.id));
+      await expect(readDiscoveryIncident(f.manifest, f.binding, { ...reference, incident_sha256: '0'.repeat(64) }, f.fetcher)).rejects.toThrow();
+      await expect(readDiscoveryIncident(f.manifest, f.binding, { ...reference, outgoing_count: reference.outgoing_count + 1 }, f.fetcher)).rejects.toThrow();
+    }
+    expect(canonicalJson(result)).toBe(before);
+  });
+  it('admits declared concept paths before dispersed lexical candidates spend the same file limit', async () => {
+    const f = await discoveryFixture(70, 1);
+    f.assertions[0].target = f.records[68].id;
+    f.assertions[1].source = f.records[68].id;
+    f.base.requirements[0].required = [f.records[68].id, f.records[69].id];
+    f.base.requirements[0].required_paths![0].records = [f.concept.id, f.records[68].id, f.records[69].id];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle quartz', { max_bytes: 524288 }, f.fetcher);
+    expect(result.requirements[0].status).toBe('supported-within-declared-scope');
+    expect(result.retrieval!.fetched_files).toBeLessThanOrEqual(64);
+    expect(result.retrieval!.discovery!.admission_order).toBe('resolved-concept-paths-before-lexical-candidates.v1');
+    expect(f.calls.indexOf('units/68.json')).toBeLessThan(f.calls.indexOf('units/0.json'));
+    expect(result.selected.find(s => s.record.id === f.records[69].id)!.paths[0].assertions).toEqual(f.assertions.map(e => e.id));
   });
   it('exposes missing destinations and required dependencies at requested depth', async () => {
     const f = await discoveryFixture();
@@ -126,6 +181,19 @@ describe('source-bound discovery corpus v3', () => {
     const absent = await assembleCorpusContext(f.manifest, f.binding, 'orchard', {}, f.fetcher);
     expect(absent.retrieval!.omissions.some(x => x.code === 'referenced_record_missing')).toBe(true);
     expect(absent.evidence_status).toBe('insufficient');
+  });
+  it('revisits a depth-limited concept destination when it is also a shallower lexical seed', async () => {
+    const f = await discoveryFixture();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle orchard', { max_depth: 1 }, f.fetcher);
+    // The concept reaches A at depth 1. The later lexical A seed reaches B at
+    // depth 1, without charging either A's edge or its diagnostics twice.
+    expect(result.retrieval!.candidates.map(x => x.id)).toEqual([f.records[0].id]);
+    expect(result.selected.map(x => x.record.id)).toContain(f.records.at(-1)!.id);
+    expect(result.retrieval!.units!.referenced_records).toContain(f.records.at(-1)!.id);
+    expect(result.retrieval!.units!.examined_relationships).toBe(2);
+    const inspected = result.retrieval!.discovery!.adjacency.map(x => x.id);
+    expect(new Set(inspected).size).toBe(inspected.length);
+    expect(result.relationships.map(x => x.id).sort()).toEqual(f.assertions.map(x => x.id).sort());
   });
   it('does not expose a restricted card or its source text', async () => {
     const f = await discoveryFixture(); f.records[0].access = f.cards[0].access = 'restricted';

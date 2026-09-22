@@ -1,7 +1,7 @@
 {
   "schema": "okf-context-execution-receipt.v1",
-  "started_at": "2026-09-22T23:05:47.267Z",
-  "observed_at": "2026-09-22T23:05:47.541Z",
+  "started_at": "2026-09-22T18:40:03.502Z",
+  "observed_at": "2026-09-22T18:40:03.740Z",
   "execution": {
     "schema": "okf-context-execution.v1",
     "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
@@ -11,11 +11,7 @@
       "implementation": [
         {
           "path": "apps/okf-explorer/src/lib/context/corpus.ts",
-          "sha256": "32c83ab744e45da081288ecfb23dd837c56b18084dfc5ae1cf4810bac700c4ac"
-        },
-        {
-          "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
-          "sha256": "d129d94a61c795d65996b7e206aa0715536645f27a274a702df8eaedabbb3282"
+          "sha256": "6c53e69bb70f55039315cac3e1e43380392e1b7d234608c95e2358201db423b8"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/delivery.ts",
@@ -23,11 +19,11 @@
         },
         {
           "path": "apps/okf-explorer/src/lib/context/index.ts",
-          "sha256": "89abbadf190883f3346ba3eca4ad25d9f85cdc658ec602d9bfdeebcbf05b1ab3"
+          "sha256": "39b6b0de58b1075356b7cd2ceaf2ef31824c02047164dcd26fa15066f8547496"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/types.ts",
-          "sha256": "27a61c10e73bce3a26e727d20bd97dc7ea07a6cf13874657da7d70d549d504fc"
+          "sha256": "aa4e31fa433aaec10d482d64dd358cf1e4db66c17c6036f6d069c7f30f50055e"
         },
         {
           "path": "apps/okf-explorer/src/lib/context/unit.ts",
@@ -39,31 +35,11 @@
         },
         {
           "path": "profiles/context-assembly/v1/common.schema.json",
-          "sha256": "3254763c16a5aff9a569f9818ebd8200b308ecdc5a29f7cca5c3812aed8dd207"
-        },
-        {
-          "path": "profiles/context-assembly/v1/context-adjacency.schema.json",
-          "sha256": "d43ed7b05efb681b61d871a913bd39ac85b1d19c097b6a26e535870b788c4092"
+          "sha256": "180b2677bd47f61b2ed36b7be62a0bf59bb9979c15adc224d8aad8a4ed6a9f6f"
         },
         {
           "path": "profiles/context-assembly/v1/corpus-v2.schema.json",
           "sha256": "25004674e7a1e7f16beedab0d83495afb4a033d69a650d4c84e231adcb9eb8eb"
-        },
-        {
-          "path": "profiles/context-assembly/v1/corpus-v3.schema.json",
-          "sha256": "3e95f1974a0008f12afd0db507bd5e8a48b7da5bfe192a09d9413f4033af752d"
-        },
-        {
-          "path": "profiles/context-assembly/v1/discovery-card.schema.json",
-          "sha256": "66018a9a916e2ba9bf2d44f55648c252dae8f9709e32c5e28adca3f4579b6eb2"
-        },
-        {
-          "path": "profiles/context-assembly/v1/discovery-cards.schema.json",
-          "sha256": "c862a894099f53f5a181465e0e99692c2d2e72e9b3e682fb6dde64af206c33cd"
-        },
-        {
-          "path": "profiles/context-assembly/v1/discovery-postings.schema.json",
-          "sha256": "f9f351ff29ba32dc00d4473422b84cd0fef97a626ddc19db17a15982bdc8dfdd"
         },
         {
           "path": "profiles/context-assembly/v1/evaluation-case.schema.json",
@@ -83,11 +59,11 @@
         },
         {
           "path": "profiles/context-assembly/v1/package.schema.json",
-          "sha256": "f739177136b3a307a849c87fd949482237c662d9ad0551fb11cd64600f922c28"
+          "sha256": "7becd991181d0dfcf51caae5956778a810f7f6a3a6eb79d595f57d72139bceab"
         },
         {
           "path": "scripts/check_context_assembly.py",
-          "sha256": "f4da839fd397a53165f36e921ca67432cc0f54bb74833a7f91cd9ddb40eee5e4"
+          "sha256": "8bae31bf9ee383df087374450f77839815d9a977510db84506cbfd945786e0e0"
         },
         {
           "path": "scripts/evaluate_context_package.mjs",

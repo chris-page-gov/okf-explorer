@@ -142,11 +142,12 @@ export type ContextRetrieval = {
     ranking: import('./corpusV3.ts').DiscoveryRanking;
     limits: { posting_rows: number; ranking_records: number };
     candidates: Array<{
-      card: import('./corpusV3.ts').DiscoveryCard;
+      card: import('./corpusV3.ts').DiscoveryCard | import('./corpusV3.ts').DiscoveryCardReference;
       source_score: number; discovery_score: number;
       matched_source: string[]; matched_discovery: string[];
     }>;
-    adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] }>;
+    adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] } | import('./corpusV3.ts').DiscoveryIncidentReference>;
+    admission_order?: 'resolved-concept-paths-before-lexical-candidates.v1';
   };
 };
 export type ContextAssemblyOptions = {

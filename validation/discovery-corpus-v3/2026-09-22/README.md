@@ -7,7 +7,7 @@ for the exact producer contract and fixed ranking parameters.
 
 ## Checks completed
 
-Final local checks: 713 application unit tests, 31 focused v3 controls within
+Initial local checks at `770cab5b`: 713 application unit tests, 31 focused v3 controls within
 that suite, nine schema/evaluation tests, 12 archive tests and 92 service tests
 pass. Svelte reports zero errors and warnings. The deterministic application
 build has tree SHA-256
@@ -64,3 +64,56 @@ discovery ranking contributions, candidate and dependency retention, diagnostic
 bytes, transferred/decoded bytes, exact delivery reads and unresolved obligations.
 Keep the questions and source fixed before comparing outcomes; do not tune the
 declared baseline ranking parameters to those questions.
+
+## Full-corpus feedback and candidate correction
+
+The first DWP producer experiment used engine `770cab5b` and retained all
+forty questions at both budgets. It exposed two limitations: repeated full-card
+metadata prevented useful 32 KiB inline results, and eager lexical hydration
+spent the shared 64-file allowance before two declared concept paths finished.
+The original result remains a failed acceptance attempt, not a replaced success.
+
+The next candidate gives already resolved concepts' outgoing paths priority
+and returns exact card/incident metadata references, with separately bounded
+read helpers. Neither ranking parameters nor resource limits change. Generic
+controls recover complete lazy metadata and reject altered hashes, IDs, ordinals
+and counts; source units and every reported obligation remain separate.
+720 application tests, ten schema checks and Svelte checking pass locally.
+Independent review found no blocker. The subsequently added regression confirms
+that a unit first reached at maximum concept depth can later act as a shallower
+lexical seed, without counting its edges or diagnostics twice; all 39 focused
+discovery controls pass with that addition.
+
+A development observation over the same DWP manifest restores the two reported
+path regressions at 512 KiB, without claiming an answer or completeness. Small
+32 KiB inline contexts still refuse metadata honestly; larger assembly followed
+by exact bounded reads remains necessary for these cases. The independent final
+forty-case observation belongs to the DWP repository and remains a separate gate.
+
+## Preserved CI failure
+
+Draft PR 144's first CI run, `35793799419`, passed the app, remote service,
+documentation and release-policy checks. Its context-execution and Python
+contract jobs correctly rejected old current-app receipts: the study-club
+receipt pinned the preceding implementation and the Heritage receipt pinned the
+preceding app build. `pre-v3/` preserves that execution and the three Heritage
+receipt files unchanged. The next refresh must execute the current engine and
+actual browser journeys; rebinding old observations would not satisfy the gate.
+
+That refresh has now run against the candidate app: all 100 Heritage questions
+meet the suite's 80-point threshold (mean 92.6), and all three local interaction
+journeys pass. The current receipt binds those new observations to app tree
+`d3420a7e2673d6f172fc6f53a3f70e603b6fdfcefcf670ce3b681b90c3871397`
+and manifest
+`b04036e1774f6ee7b5a6e3f764ac645ac26d3f53b3dc7741dc2fb5fc81e24220`.
+The study-club execution was freshly run with the candidate implementation;
+its complete v1 context package remains byte-equivalent to the retained package.
+These are actual local observations, not a public v3 deployment or DWP acceptance.
+
+The first local receipt-refresh invocation could not install an uncached
+dependency offline. The unchanged lockfile was verified against the existing
+locked project environment, which then executed the refresh successfully. No
+dependency version was changed. The independent review's first test invocation
+also unintentionally entered broader browser/listener checks; macOS sandbox
+permissions refused those listeners. Its direct focused rerun is recorded
+separately from the successful authorised browser observation above.

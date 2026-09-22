@@ -147,5 +147,37 @@ class ContextAssemblyContractTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
+    def test_compact_discovery_locators_are_closed_and_bound_to_metadata(self):
+        pack = copy.deepcopy(self.documents['package'])
+        card = {'schema': 'okf-discovery-card-reference.v1', 'id': 'urn:card:one',
+                'evidence_id': 'urn:evidence:one', 'card_sha256': 'a' * 64, 'ordinal': 0}
+        incident = {'schema': 'okf-discovery-incident-reference.v1', 'id': 'urn:evidence:one',
+                    'incident_sha256': 'b' * 64, 'outgoing_count': 1, 'incoming_count': 0}
+        pack['retrieval'] = {'method': 'source-bound-discovery-bm25.v1', 'corpus_records': 1,
+            'corpus_pages': 2, 'empty_pages': 0, 'candidate_count': 1, 'fetched_files': 3,
+            'fetched_bytes': 1000, 'decoded_bytes': 2000, 'query_tokens': ['alpha'],
+            'omitted_query_tokens': [], 'candidates': [{'id': 'urn:evidence:one', 'matched': ['alpha'], 'score': 2}],
+            'limits': {'query_tokens': 24, 'candidates': 16, 'files': 64,
+                       'fetched_bytes': 16777216, 'decoded_bytes': 33554432}, 'truncated': False, 'omissions': [],
+            'discovery': {'ranking': {'schema': 'okf-bm25.v1', 'k1': 1.2, 'b': .75, 'score_scale': 1000000,
+                                     'fields': ['source', 'discovery']},
+                          'limits': {'posting_rows': 2000000, 'ranking_records': 200000},
+                          'candidates': [{'card': card, 'source_score': 1, 'discovery_score': 1,
+                                          'matched_source': ['alpha'], 'matched_discovery': ['alpha']}],
+                          'adjacency': [incident], 'admission_order': 'resolved-concept-paths-before-lexical-candidates.v1'}}
+        validate_documents({'package': pack})
+        for change in ('card-hash', 'incident-hash', 'missing-ordinal', 'inline-instruction', 'negative-count'):
+            broken = copy.deepcopy(pack)
+            candidate = broken['retrieval']['discovery']['candidates'][0]['card']
+            edge = broken['retrieval']['discovery']['adjacency'][0]
+            if change == 'card-hash': candidate['card_sha256'] = 'missing'
+            elif change == 'incident-hash': del edge['incident_sha256']
+            elif change == 'missing-ordinal': del candidate['ordinal']
+            elif change == 'inline-instruction': candidate['execute'] = 'untrusted data'
+            else: edge['incoming_count'] = -1
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                validate_documents({'package': broken})
+
+
 if __name__ == '__main__':
     unittest.main()
