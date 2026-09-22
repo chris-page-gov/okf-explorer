@@ -59,7 +59,10 @@ class LearningCatalogueTest(unittest.TestCase):
 
     def test_launch_links_use_admitted_identity_and_explicit_reviewed_variant(self):
         entries = learning_catalogue.resolve_catalogue(self.entries, self.bundles)
-        self.assertEqual(6, sum('explorer_url' in entry for entry in entries))
+        self.assertEqual(7, sum('explorer_url' in entry for entry in entries))
+        dwp = next(entry for entry in entries if entry['title'] == 'DWP learning paths')
+        self.assertIn('okf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json', dwp['explorer_url'])
+        self.assertTrue(dwp['explorer_url'].endswith('#overview'))
         heritage = next(entry for entry in entries if entry['id'] == 'heritage')
         self.assertIn('tiny%2Fokf-explorer.json', heritage['explorer_url'])
         self.assertTrue(heritage['explorer_url'].endswith('#asset/1342941'))
