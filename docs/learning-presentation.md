@@ -82,3 +82,72 @@ existing facets and catalogue behaviour.
 A producer's counts and loader tests do not prove these journeys. Browser
 acceptance is a separate gate. The AI in Action exemplar is private and is not
 included in this repository, fixtures or publication outputs.
+
+## Learning paths for large bundles
+
+A large-corpus descriptor can opt in with the top-level `learning_presentation`
+field below. This separate version describes an ordered teaching overlay; it
+adds no semantic assertions and does not infer a curriculum from search ranking.
+Producers create paths in their authored descriptor source and regenerate their
+normal projections. Existing large bundles need no changes.
+
+```json
+{
+  "schema": "okf-large-learning-presentation.v1",
+  "title": "Learn to assess evidence",
+  "introduction": "Read, practise and explain your judgement.",
+  "paths": [{
+    "id": "assess-evidence",
+    "title": "Assess a source",
+    "description": "Check the source before using its conclusions.",
+    "steps": [{
+      "route": "dataset/example",
+      "title": "Read the original evidence",
+      "outcome": "Explain what this source does and does not establish.",
+      "practice": "Write down two limitations and check the supporting passages.",
+      "minutes": 15
+    }]
+  }]
+}
+```
+
+The Reader supports up to 12 paths with 24 steps each. Each path needs a unique
+lower-case identifier, a title and at least one step. Each step needs a local
+record route (for example `dataset/example` or a source-native `chapter/77`),
+title and observable outcome.
+Practice prompts and durations of 1 to 480 minutes are optional. Duplicate routes
+within a path and malformed contracts disable the overlay. Producers must check
+that every declared route exists in their published corpus; syntax validation
+alone cannot establish route existence without loading the relevant records.
+
+The overlay loads no records itself. Selecting a step uses the existing Reader
+selection, URL history, inspection and evidence controls. A record locator keeps
+record loading targeted; older corpora without one use their existing full index
+when a step is selected. Scope restrictions remain active and explain when a
+step cannot be opened. Search, facets and the catalogue remain available.
+
+Ordered steps show outcomes, practice prompts and estimated time. Learners can
+mark steps complete and reset progress. Progress stays in memory for the loaded
+bundle and resets on reload or switching bundles; it is neither assessment nor
+certification. Explicit deep links select the matching step without moving the
+user elsewhere. Keyboard focus and selected-step announcements are supported.
+
+## Review evidence — 22 September 2026
+
+The review branch integrates PR #139 with main at `69d38b1c`. Small conceptual
+facets now require a valid presentation declaring their keys. Focused regression
+checks cover legacy fallback, malformed contracts, route limits, ordered practice,
+selection history and reversible progress. Six Chrome journeys passed, including
+the local DWP pilot (URL, File, search, Graph and switching) and a combined DWP
+learning overlay using a source-native chapter route. The latter confirms zero
+eager record-shard requests and targeted record loading after selection. Its
+teaching prompts are test-authored; the DWP corpus itself is unchanged. These
+checks do not certify every staff journey or policy interpretation. Unavailable learning records leave the current selection intact and explain the
+publication gap. The retained Heritage receipt requires evidence for the exact
+application build.
+
+Run the portable journeys with `pnpm --dir apps/okf-explorer exec playwright test
+tests/ui/learning-path.spec.ts --project=chrome`. For local producer checks, set
+`OKF_DWP_PILOT` to the public pilot JSON file and `OKF_DWP_COMBINED` to the
+combined corpus directory. Without those variables, the two producer checks are
+explicitly skipped; the repository does not embed either external corpus.

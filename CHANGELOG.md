@@ -1,5 +1,14 @@
 # Changelog
 
+## Learning-path review and large-bundle teaching — 22 September 2026
+
+- Integrate the draft small-bundle learning presentation with current main.
+- Gate conceptual facets on the declared learning presentation.
+- Add optional ordered learning paths to large descriptors, with outcomes,
+  practice prompts, time estimates and reversible progress for the loaded session.
+- Keep record and evidence inspection on existing Reader routes and loading paths.
+  Preserve legacy bundles and document producer bounds and acceptance limits.
+
 ## Service 0.6.1 client question compatibility — 21 September 2026
 
 - Make the shared non-blank question pattern compatible with clients that match

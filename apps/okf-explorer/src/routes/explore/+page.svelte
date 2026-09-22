@@ -12,6 +12,8 @@
   import ExplorationToolbar from '$lib/components/ExplorationToolbar.svelte';
   import ResultList, { type ResultItem } from '$lib/components/ResultList.svelte';
   import { emptyExploration, explorationFromUrl, writeExploration, previewValue, keepPreview, hasSelection, matchesSelection, matchesReductions, highlightFirst, selectionLabel, MAX_FOLDED_MEMBERS, type Exploration, type Reduction, type FoldedSet } from '$lib/viewer/facetSelection';
+  import LargeLearningReader from '$lib/components/LargeLearningReader.svelte';
+  import { largeLearningPresentation } from '$lib/viewer/largeLearning';
   import LearningReader from '$lib/components/LearningReader.svelte';
   import { learningPresentation, initialSmallRoute } from '$lib/viewer/smallPresentation';
   import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
@@ -598,7 +600,9 @@
   ]);
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let federationOverview = $derived(source?.kind === 'small' ? source.federation : undefined);
+  let largeLearning = $derived(source?.kind === 'large' ? largeLearningPresentation(source.descriptor.learning_presentation) : null);
   let learning = $derived(learningPresentation(smallCorpus));
+  let learningKeys = $derived(learning?.facets.map(facet => facet.key) || []);
   let smallFacetDefinitions = $derived(learning ? [...learning.facets, ...SMALL_FACETS] : SMALL_FACETS);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
   let typeList = $derived([...new Set(nodeList.map((node) => node.type || 'Node'))].sort((a, b) => a.localeCompare(b)));
@@ -607,7 +611,7 @@
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
-      if (!matchesReductions(reductions, key => smallFacetValues(node, key))) return false;
+      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys))) return false;
       if (!query) return true;
       return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
@@ -618,7 +622,7 @@
   let smallGeospatialRouteIds: Set<string> = $derived(
     new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
   );
-  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights)));
+  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)));
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -695,10 +699,10 @@
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, (geospatialFilter ? 1 : 0) + reductions.length));
   let pinnedLabels = $derived(pins);
   let largeExplorationScope = $derived(currentLargeExplorationScope());
-  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).length);
+  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).length);
   let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
-  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key) })));
-  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights) })));
+  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys) })));
+  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys) })));
   let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
 
   function currentLargeExplorationScope() {
@@ -829,7 +833,7 @@
       if (!largeExplorationScope.scopeIds || !largeExplorationScope.highlightedIds) return;
       const selected = new Set(largeExplorationScope.highlightedIds);
       members = largeExplorationScope.scopeIds.filter(id => selected.has(id) === highlighted);
-    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights) === highlighted).map(node => node.id);
+    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys) === highlighted).map(node => node.id);
     members = members.filter(id => !foldedIds.has(id));
     if (!members.length || members.length > MAX_FOLDED_MEMBERS) return;
     foldedSets = [...foldedSets, { id: crypto.randomUUID(), label: `${highlighted ? '' : 'Outside '} ${selectionLabel(largeFacetHighlights)}`.trim(), members }];
@@ -838,7 +842,7 @@
   function foldedSetCounts() {
     if (source?.kind === 'large' && !largeExplorationScope.scopeIds) return {};
     const scope = new Set(source?.kind === 'large' ? largeExplorationScope.scopeIds : visibleNodes.map(node => node.id));
-    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).map(node => node.id));
+    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).map(node => node.id));
     return Object.fromEntries(foldedSets.map(fold => [fold.id, { inScope: fold.members.filter(id => scope.has(id)).length, highlighted: fold.members.filter(id => scope.has(id) && selected.has(id)).length }]));
   }
 
@@ -2263,6 +2267,21 @@
     smallInspectedRelationship = null;
     rightCollapsed = false;
     syncExplorerUrl(true);
+  }
+
+  async function selectLargeLearningRoute(route: string) {
+    if (!largeRouteInReduction(route)) { error = 'This learning step is outside the current scope. Reset the scope to open it.'; return; }
+    const learningSource = source;
+    const requestId = loadRequest;
+    const record = largeHasRecordLocator()
+      ? await ensureLargeDataset(route)
+      : (await ensureLargeFullIndex())?.datasets.find(dataset => datasetRoute(dataset) === route);
+    if (source !== learningSource || requestId !== loadRequest) return;
+    if (!record) {
+      error ||= 'This learning step has no available record in the published corpus. Choose another step or contact the bundle producer.';
+      return;
+    }
+    selectLargeRoute(route);
   }
 
   function selectLargeRoute(route: string) {
@@ -6859,6 +6878,11 @@
         />
       {:else if source?.kind === 'large'}
         <section class="large-view">
+          {#if activeView === 'reader' && largeLearning}
+            {#key source}
+              <LargeLearningReader presentation={largeLearning} selected={largeInspectedRoute || largeSelectedRoute} onselect={selectLargeLearningRoute} />
+            {/key}
+          {/if}
           {#if source.descriptor.assertion_scope === 'synthetic-fixture'}
             <aside class="semantic-scope-notice" data-relationship-scope="synthetic-fixture" aria-label="Synthetic fixture boundary">
               <strong>Synthetic assurance fixture</strong>

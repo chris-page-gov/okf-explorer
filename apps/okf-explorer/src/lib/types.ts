@@ -332,6 +332,8 @@ export type LargeReleaseDataPlaneIndex = {
 };
 
 export type LargeCorpusDescriptor = {
+  /** Optional bounded teaching overlay, validated by the Reader. */
+  learning_presentation?: unknown;
   '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
   '@id'?: string;
   schema: 'okf-explorer-large-corpus.v1' | string;

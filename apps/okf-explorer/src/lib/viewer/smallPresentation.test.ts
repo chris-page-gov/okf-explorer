@@ -32,9 +32,10 @@ describe('opt-in learning presentation', () => {
   });
   it('uses conceptual values for counts and intersections without inventing them from filenames', () => {
     const nodes = Object.values(corpus().nodes);
+    expect(nodes.map(node => smallIsHighlighted(node, { topic: ['Team value'] }))).toEqual([false, false, false]);
     const selection = { topic: ['Team value'], workshop: ['Condensed'] };
-    expect(nodes.map(node => smallIsHighlighted(node, selection))).toEqual([true, false, false]);
-    expect(smallFacetRows(nodes, nodes, selection, 'capability')).toEqual([{ value: 'Test value', label: 'Test value', count: 2, highlighted: 1 }]);
+    expect(nodes.map(node => smallIsHighlighted(node, selection, ['topic', 'workshop']))).toEqual([true, false, false]);
+    expect(smallFacetRows(nodes, nodes, selection, 'capability', ['topic', 'workshop', 'capability'])).toEqual([{ value: 'Test value', label: 'Test value', count: 2, highlighted: 1 }]);
     expect(conceptualFacetValues({ id: 'safeguard/security.md', title: 'Security' }, 'topic')).toEqual([]);
   });
   it('bounds labels and values and ignores malformed classifications', () => {
