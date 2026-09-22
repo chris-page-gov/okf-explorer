@@ -4,7 +4,7 @@ Start with a question, inspect the evidence, then make a small bundle of your
 own. These guides serve consumers, domain experts, students and knowledge
 workers as well as contributors.
 
-## Start Here
+## Start here
 
 - [Start with knowledge you can inspect](onboarding/index.md): choose a useful first task.
 - [Try a bundle with AI](onboarding/try-a-bundle.md): a worked evidence question with a human fallback.
@@ -23,13 +23,14 @@ workers as well as contributors.
 
 ## Author and maintain
 
+- [Learning presentation](learning-presentation.md): design goal-led journeys and conceptual filters.
 - [Bundle authoring](okf-bundle-authoring.md): core fields, optional domain profiles and richer publication.
 - [Foundry prompt kit](okf-authoring-prompt-kit.md): governed production authoring after the small starter.
 - [Build and publication method](okf-build-and-publication-methodology.md): impact planning, source intake and release gates.
 - [Development guide](development.md) and [repository guide](repository-guide.md): maintain Explorer itself.
 - [Technical reference map](reference/index.md): contracts, domain specifications, evaluations and history.
 
-## Quality And Review
+## Quality and review
 
 Use [conformance](okf-conformance.md), the
 [evaluation harness](okf-explorer-evaluation.md) and the
@@ -37,7 +38,7 @@ Use [conformance](okf-conformance.md), the
 A passing structure or integrity check is not proof of correctness, freshness
 or official endorsement.
 
-## Dated Review Records
+## Dated review records
 
 [Historical reviews and postmortems](reference/index.md#dated-review-records)
 retain the evidence and decisions at their stated dates. Follow current task

@@ -1,3 +1,4 @@
+import { conceptualFacetValues } from './smallPresentation';
 import type { OkfNode } from '$lib/types';
 import { okfConceptPresentation, trustTierLabel } from '$lib/okfV02';
 import { hasSelection, matchesSelection, type FacetSelection } from './facetSelection';
@@ -15,7 +16,7 @@ export function smallFacetValues(node: OkfNode, key: string): string[] {
   const presentation = okfConceptPresentation(node);
   if (key === 'trust') return [trustTierLabel(presentation.trustTier)];
   if (key === 'lifecycle') return [presentation.status];
-  return [];
+  return conceptualFacetValues(node, key);
 }
 
 export function smallIsHighlighted(node: OkfNode, selection: FacetSelection): boolean {
