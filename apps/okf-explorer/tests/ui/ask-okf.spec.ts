@@ -4,6 +4,7 @@ import { contextSha256 } from '../../src/lib/context/index';
 import { studyClubContextFixture } from '../../src/test/contextFixture';
 import { unitFixture } from '../../src/test/unitFixture';
 import { corpusBucket, type ContextCorpusManifest } from '../../src/lib/context/corpus';
+import type { EvidenceRead } from '../../src/lib/context/delivery';
 
 const ORIGIN = 'https://ask-okf.fixture.test';
 const BUNDLE = `${ORIGIN}/okf-explorer.json`;
@@ -351,4 +352,41 @@ test('a corpus page integrity failure cannot downgrade to the narrow index or in
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await page.locator('input.search-input').fill('Reading');
   await expect(page).toHaveURL(/q=Reading/);
+});
+
+test('compact page tools return the UI context with complete cross-page provenance', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await installFixture(page, { unit: true });
+  await openAsk(page);
+  await expect(page.locator('.tool-status')).toContainText('Read-only page tools registered');
+  const receipt = await page.evaluate(async () => {
+    const tools = await (document as any).modelContext.getTools();
+    const catalogue = await tools.find((tool: any) => tool.name === 'okf_context_manifest').execute({
+      question: 'Reading circle', budget: { max_bytes: 524288 }, delivery_bytes: 8192
+    });
+    const read = tools.find((tool: any) => tool.name === 'okf_read_evidence');
+    const parts: string[] = []; let offset: number | null = 0, digest = '';
+    do {
+      const part: EvidenceRead = await read.execute({ context_id: catalogue.context_id, section: 'package', offset, delivery_bytes: 8192 });
+      if (new TextEncoder().encode(JSON.stringify(part)).length > 8192) throw new Error('Delivery exceeded its byte limit');
+      parts.push(part.data); offset = part.next_offset; digest = part.content_sha256;
+    } while (offset !== null);
+    const raw = parts.join('');
+    const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw))), x => x.toString(16).padStart(2, '0')).join('');
+    if (hash !== digest) throw new Error('Reconstructed package digest differs');
+    const explained = await tools.find((tool: any) => tool.name === 'okf_explain_context').execute({ context_id: catalogue.context_id });
+    return { catalogue, reconstructed: JSON.parse(raw), explained, slices: parts.length };
+  });
+  expect(receipt.reconstructed).toEqual(receipt.explained);
+  expect(receipt.slices).toBeGreaterThan(1);
+  expect(receipt.catalogue.delivery.used_bytes).toBeLessThanOrEqual(8192);
+  const unit = receipt.reconstructed.selected.find((row: any) => row.record.evidence_unit);
+  expect(unit.record.text).toBe('Café reading.\nOnly with a booking.');
+  expect(unit.record.evidence_unit.spans).toHaveLength(2);
+  await expect(page.locator('[data-context-id]')).toHaveAttribute('data-context-id', receipt.catalogue.context_id);
+  await page.getByRole('button', { name: 'Inspect package JSON', exact: true }).click();
+  expect(JSON.parse(await page.getByRole('textbox', { name: 'Evidence package JSON' }).inputValue())).toEqual(receipt.reconstructed);
+  expect(errors).toEqual([]);
 });

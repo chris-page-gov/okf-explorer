@@ -1,5 +1,16 @@
 # Changelog
 
+## Compact logical-context delivery — 22 September 2026
+
+- Add bounded browser WebMCP catalogue and exact-evidence reads using the existing lossless delivery helpers. Preserve the full assembly budget, package identity, source spans and explicit gaps across paginated responses.
+- Group repeated item-local diagnostics in logical-unit v2 corpora without dropping affected IDs or combining dependency pairs. Preserve the v1 page-corpus representation and frozen receipts.
+- Add strict input, cancellation, reconstruction and browser/UI parity controls. Remote-service admission, default versions and specialist answerability remain separate.
+- Preserve earlier study-club and Heritage receipts, then refresh the current
+  local candidate against the exact app: 100 Heritage questions and three
+  journeys pass. Publication still requires the merged CI and live identity gates.
+
+- Retain a separate compact-delivery observation for the later DWP semantic candidate: exact 32 KiB responses preserve the selected 512 KiB packages, while all five 32 KiB inline cases still lack source evidence and all contexts remain insufficient.
+
 ## Learning-path review and large-bundle teaching — 22 September 2026
 
 - Add DWP learning paths to the home catalogue and Reader bundle selector, with explicit evidence and training limitations.

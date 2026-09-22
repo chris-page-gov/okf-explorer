@@ -92,3 +92,31 @@ checks exercise strict schemas, official SDKs, unchanged legacy package parity,
 static review privacy and deterministic builds. Actual browser, hosted SDK and
 AI-client observations must identify the tested source and deployment; local
 checks do not certify a live host or ChatGPT Voice.
+
+## Browser adapter extension, 22 September 2026
+
+The loaded-bundle WebMCP adapter now exposes `okf_context_manifest` and
+`okf_read_evidence`, reusing these same delivery helpers. The existing
+`okf_build_context` and `okf_explain_context` results are unchanged. A client can
+assemble at 524,288 bytes and receive individual catalogue or exact-read results
+bounded to 32,768 bytes. It need not reduce the assembly budget just to fit an
+individual tool response.
+
+Catalogue continuation requires the same question, budget and context identity.
+Each catalogue request rebuilds through the ordinary UI handler. Exact reads
+require a retained identity in the current loaded-bundle session; at most four
+packages are retained. Changing the bundle cancels calls and clears the retained
+packages. This is session delivery, distinct from the remote service's immutable
+version replay. No new service version, source admission or default changes here.
+
+For `okf-context-corpus.v2` only, the assembler groups identical, independent
+item-local diagnostic messages into an ordered list of all affected IDs. It does
+not group dependency pairs, conflicts or path explanations. It preserves source
+text, scopes, reasons, requirements, integrity failures and authority. Direct
+indexes and v1 page corpora keep their previous representation. A changed v2
+package receives a new identity; historical receipts are not rewritten.
+
+Grouping reduces repeated diagnostic text, but does not remove the need for
+bounded lossless delivery. If complete metadata cannot fit an inline package,
+`metadata_budget` remains an explicit insufficient result. A small transfer is
+not evidence that an answer is complete or more accurate.

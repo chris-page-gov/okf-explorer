@@ -431,7 +431,23 @@ async function assembleContextPass(
     }
   }
   let depth = 0;
+  // In the additive logical-unit corpus, repeated item-local diagnostics can
+  // crowd out the evidence itself. Group only independent one-item issues:
+  // paired dependency/conflict identities and path diagnostics keep their rows.
+  // Existing v1 corpora and direct indexes retain their exact serialisation.
+  const groupItemIssues = discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v2';
+  const itemIssueCodes = new Set(['node_budget', 'byte_budget', 'missing_record', 'restricted_evidence',
+    'missing_scope', 'missing_authority', 'authority_mismatch', 'missing_provenance', 'missing_rights',
+    'missing_evidence', 'unresolved_unit_boundary', 'evidence_digest_mismatch', 'unit_fragment_integrity',
+    'unsupported_predicate', 'uncovered_resolved_concept']);
   const addIssue = (rows: ContextIssue[], issue: ContextIssue) => {
+    if (groupItemIssues && issue.ids.length === 1 && itemIssueCodes.has(issue.code)) {
+      const group = rows.find(row => row.code === issue.code && row.message === issue.message && row.ids.length > 0);
+      if (group) {
+        if (!group.ids.includes(issue.ids[0])) group.ids.push(issue.ids[0]);
+        return;
+      }
+    }
     if (!rows.some((r) => r.code === issue.code && r.ids.join('|') === issue.ids.join('|'))) rows.push(issue);
   };
   const priorityQueue: QueueItem[] = [];
