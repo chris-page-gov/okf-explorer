@@ -106,6 +106,41 @@ class ContextAssemblyContractTests(unittest.TestCase):
                                 cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_discovery_contracts_keep_cards_separate_and_parameters_fixed(self):
+        retained = json.loads((ROOT / 'apps/okf-explorer/src/test/fixtures/context-corpus-v2-ea485af6.json').read_text())
+        manifest = copy.deepcopy(retained['manifest'])
+        manifest['schema'] = 'okf-context-corpus.v3'
+        ref = lambda path: {'path': path, 'bytes': 10, 'sha256': 'a' * 64}
+        manifest['discovery'] = {'count': 2, 'shards': [{**ref('cards.json'), 'first_ordinal': 0, 'count': 2}]}
+        manifest['search'].update(ranking={'schema': 'okf-bm25.v1', 'k1': 1.2, 'b': 0.75,
+            'score_scale': 1000000, 'fields': ['source', 'discovery']}, total_tokens={'source': 8, 'discovery': 6})
+        manifest['relationships'] = {'schema': 'okf-context-adjacency.v1',
+            'bucket_algorithm': 'fnv1a32-high-byte-hex-v1',
+            'shards': {f'{n:02x}': ref(f'adjacency/{n:02x}.json') for n in range(256)}}
+        record = retained['expected']['selected'][0]['record']
+        card = {k: copy.deepcopy(record[k]) for k in ('label', 'assertion_status', 'authority', 'scope', 'provenance', 'rights', 'access')}
+        card.update(id='https://example.test/card/one', evidence_id='https://example.test/evidence/0',
+            evidence_sha256='a' * 64, heading_path=['Fictional manual'], summary='Navigation only.', search_aliases=['harvesting'])
+        cards = {'schema': 'okf-discovery-cards.v1', 'first_ordinal': 0, 'cards': [card]}
+        postings = {'schema': 'okf-context-postings.v2', 'postings': {'harvesting': [[0, 0, 4, 1, 3]]}}
+        adjacency = {'schema': 'okf-context-adjacency-bucket.v1', 'entries': [{'id': card['evidence_id'],
+            'outgoing': [], 'incoming': [], 'outgoing_count': 0, 'incoming_count': 0,
+            'outgoing_ids_sha256': 'a' * 64, 'incoming_ids_sha256': 'a' * 64}]}
+        docs = {'discovery_corpus': manifest, 'discovery_cards': cards,
+                'discovery_postings': postings, 'context_adjacency': adjacency}
+        self.assertEqual(validate_documents(docs)['status'], 'passed-shape-validation')
+        for change in ('parameter', 'channel', 'hash', 'official-card', 'card-evidence', 'unknown', 'float-frequency', 'missing-direction'):
+            changed = copy.deepcopy(docs)
+            if change == 'parameter': changed['discovery_corpus']['search']['ranking']['k1'] = 2
+            elif change == 'channel': changed['discovery_corpus']['search']['ranking']['fields'].reverse()
+            elif change == 'hash': del changed['discovery_cards']['cards'][0]['evidence_sha256']
+            elif change == 'official-card': changed['discovery_cards']['cards'][0]['assertion_status'] = 'official'
+            elif change == 'card-evidence': changed['discovery_cards']['cards'][0]['kind'] = 'evidence'
+            elif change == 'unknown': changed['discovery_corpus']['execute'] = 'untrusted text'
+            elif change == 'float-frequency': changed['discovery_postings']['postings']['harvesting'][0][3] = 1.5
+            else: del changed['context_adjacency']['entries'][0]['incoming_ids_sha256']
+            with self.subTest(change=change), self.assertRaises(ValueError): validate_documents(changed)
+
     def test_portable_control_archive_integrity(self):
         result = subprocess.run(['node', '--test', 'tests/context_control_archive.test.mjs'],
                                 cwd=ROOT, text=True, capture_output=True)

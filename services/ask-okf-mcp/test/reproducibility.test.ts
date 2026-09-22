@@ -20,6 +20,7 @@ test('Worker, Node build and receipt are identical with relocated real and linke
     }
     for (const path of ['apps/okf-explorer/src/lib/context/index.ts', 'apps/okf-explorer/src/lib/context/types.ts',
       'apps/okf-explorer/src/lib/context/corpus.ts',
+      'apps/okf-explorer/src/lib/context/corpusV3.ts',
       'apps/okf-explorer/src/lib/context/delivery.ts',
       'apps/okf-explorer/src/lib/context/unit.ts',
       'profiles/context-assembly/v1/evidence-unit.schema.json',

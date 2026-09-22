@@ -277,7 +277,7 @@ export function resolveConcepts(index: ContextIndex, question: string): {
   };
 }
 
-function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[] {
+export function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[] {
   const issues: ContextIssue[] = [];
   const add = (code: string, message: string) => issues.push({ code, message, ids: [row.id] });
   if (!row.scope.trim()) add('missing_scope', 'The item has no declared applicability scope.');
@@ -435,7 +435,7 @@ async function assembleContextPass(
   // crowd out the evidence itself. Group only independent one-item issues:
   // paired dependency/conflict identities and path diagnostics keep their rows.
   // Existing v1 corpora and direct indexes retain their exact serialisation.
-  const groupItemIssues = discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v2';
+  const groupItemIssues = ['okf-context-corpus.v2', 'okf-context-corpus.v3'].includes(discovery?.retrieval.units?.corpus_schema || '');
   const itemIssueCodes = new Set(['node_budget', 'byte_budget', 'missing_record', 'restricted_evidence',
     'missing_scope', 'missing_authority', 'authority_mismatch', 'missing_provenance', 'missing_rights',
     'missing_evidence', 'unresolved_unit_boundary', 'evidence_digest_mismatch', 'unit_fragment_integrity',
@@ -632,6 +632,7 @@ async function assembleContextPass(
     base.selected = []; base.relationships = []; base.requirements = [];
     base.resolved_concepts = []; base.ambiguities = []; base.unresolved_terms = [];
     if (base.retrieval) base.retrieval = { ...base.retrieval, query_tokens: [], omitted_query_tokens: [], candidates: [], truncated: true, omissions: [{ code: 'metadata_budget', message: 'Retrieval details omitted at the package byte limit.', ids: [] }] };
+    if (base.retrieval?.discovery) delete base.retrieval.discovery;
     base.scope = 'The requested budget is too small for the package metadata.';
     base.limitations = ['No evidence or completeness claim is returned. Increase the byte budget to inspect the full diagnostics.'];
     base.conflicts = []; base.missing_evidence = [{ code: 'metadata_budget', message: 'Question interpretation and evidence diagnostics exceeded the byte budget.', ids: [] }];

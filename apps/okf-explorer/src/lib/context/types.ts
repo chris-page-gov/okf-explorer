@@ -116,7 +116,7 @@ export type ContextSelection = {
 };
 /** Lexical discovery is evidence selection, never an entity-resolution claim. */
 export type ContextRetrieval = {
-  method: 'indexed-lexical-candidates.v1';
+  method: 'indexed-lexical-candidates.v1' | 'source-bound-discovery-bm25.v1';
   corpus_records: number;
   corpus_pages: number;
   empty_pages: number;
@@ -132,10 +132,21 @@ export type ContextRetrieval = {
   omissions: ContextIssue[];
   /** Additive v2 counters; absent for unchanged v1 page-corpus packages. */
   units?: {
-    corpus_schema: 'okf-context-corpus.v2';
+    corpus_schema: 'okf-context-corpus.v2' | 'okf-context-corpus.v3';
     referenced_records: string[];
     examined_relationships: number;
     limits: { referenced_records: number; examined_relationships: number };
+  };
+  /** Source-bound navigation summaries do not become evidence or concepts. */
+  discovery?: {
+    ranking: import('./corpusV3.ts').DiscoveryRanking;
+    limits: { posting_rows: number; ranking_records: number };
+    candidates: Array<{
+      card: import('./corpusV3.ts').DiscoveryCard;
+      source_score: number; discovery_score: number;
+      matched_source: string[]; matched_discovery: string[];
+    }>;
+    adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] }>;
   };
 };
 export type ContextAssemblyOptions = {

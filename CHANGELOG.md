@@ -1,5 +1,17 @@
 # Changelog
 
+## Source-bound discovery cards — 22 September 2026
+
+- Add an opt-in corpus v3 contract for separately sharded discovery cards,
+  whole-record evidence bindings and complete directed relationship inventories.
+  Cards help find passages without becoming source evidence or domain concepts.
+- Add fixed, inspectable BM25 source and discovery channels, explicit resource
+  bounds and fail-closed card, source and incident-relationship checks. Reuse
+  Reader loading and bounded exact evidence delivery; retain v1/v2 replay.
+- Document producer-wide validation, future presentation boundaries and the
+  separate source, semantic, client and answer-quality acceptance gates. No
+  remote service defaults, approved sources or historical engines are changed.
+
 ## Compact logical-context delivery — 22 September 2026
 
 - Add bounded browser WebMCP catalogue and exact-evidence reads using the existing lossless delivery helpers. Preserve the full assembly budget, package identity, source spans and explicit gaps across paginated responses.

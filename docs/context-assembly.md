@@ -237,6 +237,12 @@ not add relationships missing from the producer's semantic model.
 
 ## Logical evidence units
 
+For separately sharded summaries and large relationship graphs, the opt-in
+[source-bound discovery v3 contract](adr-source-bound-discovery-cards.md) keeps
+cards, exact evidence units and actual concepts distinct. Its fixed BM25 ranking
+reports source and discovery matches separately; it loads governed incident
+relationships on demand. The existing v1/v2 corpus contracts remain available.
+
 A logical unit is a complete declared passage, such as a definition, rule,
 exception or table. It may cross physical page boundaries. It preserves exact
 source fragments and qualifications within that boundary; it does not make

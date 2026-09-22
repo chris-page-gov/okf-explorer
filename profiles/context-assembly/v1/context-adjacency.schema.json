@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/context-adjacency.schema.json",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-context-adjacency-bucket.v1"
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 2000,
+            "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+          },
+          "outgoing": {
+            "type": "array",
+            "maxItems": 30000,
+            "items": {
+              "$ref": "common.schema.json#/$defs/assertion"
+            }
+          },
+          "incoming": {
+            "type": "array",
+            "maxItems": 30000,
+            "items": {
+              "$ref": "common.schema.json#/$defs/assertion"
+            }
+          },
+          "outgoing_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "incoming_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "outgoing_ids_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "incoming_ids_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "id",
+          "outgoing",
+          "incoming",
+          "outgoing_count",
+          "incoming_count",
+          "outgoing_ids_sha256",
+          "incoming_ids_sha256"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "entries"
+  ],
+  "additionalProperties": false
+}

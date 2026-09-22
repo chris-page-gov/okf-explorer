@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/discovery-card.schema.json",
+  "title": "Source-bound discovery card (never evidence or a concept)",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "maxLength": 2000,
+      "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+    },
+    "label": {
+      "type": "string"
+    },
+    "assertion_status": {
+      "enum": [
+        "normalized",
+        "inferred",
+        "model-derived"
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "label",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string"
+          },
+          "captured_at": {
+            "type": "string"
+          },
+          "source_date": {
+            "type": "string"
+          },
+          "source_date_kind": {
+            "type": "string"
+          },
+          "literal_sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "source_sha256",
+          "locator",
+          "captured_at"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rights": {
+      "type": "string"
+    },
+    "access": {
+      "enum": [
+        "public",
+        "restricted"
+      ]
+    },
+    "evidence_id": {
+      "type": "string",
+      "maxLength": 2000,
+      "pattern": "^[a-z][a-z0-9+.-]*:[!-~]+$"
+    },
+    "evidence_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "heading_path": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "search_aliases": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    }
+  },
+  "required": [
+    "id",
+    "label",
+    "assertion_status",
+    "authority",
+    "scope",
+    "provenance",
+    "rights",
+    "access",
+    "evidence_id",
+    "evidence_sha256",
+    "heading_path",
+    "summary",
+    "search_aliases"
+  ],
+  "additionalProperties": false
+}

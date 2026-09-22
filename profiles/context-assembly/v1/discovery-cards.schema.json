@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/discovery-cards.schema.json",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-discovery-cards.v1"
+    },
+    "first_ordinal": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cards": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "discovery-card.schema.json"
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "first_ordinal",
+    "cards"
+  ],
+  "additionalProperties": false
+}
