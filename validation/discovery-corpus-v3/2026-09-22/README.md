@@ -139,3 +139,22 @@ the retained replay and source files were not changed.
 observations. Its `observed_at` was corrected from a local-time transcription to
 the actual UTC clock, without changing any browser-result or app hash. A fresh
 guarded-app observation is required before its current-app receipt is published.
+
+The guarded runtime is checkpointed at `c19912ba`. Its 743 application tests,
+11 schema controls, 12 archive tests, nine archive transport controls and Svelte
+checking pass. Independent review reran all 61 focused discovery/guard controls
+after repairing the identified explanation-integrity issue; the
+[review receipt](guard-review-2026-09-23.md) retains that finding and exact hashes.
+The current v1 package remains byte-equivalent, and retained unguarded v2 replay
+passes.
+
+The guarded app's fresh browser observation also passes all 100 Heritage
+questions (mean 92.6) and all three journeys. Its tree SHA-256 is
+`318c218c5b9d321e7a240e0370ad152ec5ec5bd6716f5301ddb9779374ae816c`
+and manifest SHA-256 is
+`0595a30c57c7255f6f07f7a52603ebb1b9c0e2ab4ce310419fa6835a22d50656`.
+The first Site assembly attempt used a plain Vite build without the canonical
+build manifest and correctly failed verification. The governed deterministic
+build then produced that manifest; the repeated Site assembly and actual browser
+observation passed. This refresh does not establish final DWP acceptance or
+public runtime adoption.

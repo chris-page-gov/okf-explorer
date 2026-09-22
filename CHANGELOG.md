@@ -11,6 +11,9 @@
 - Retain the preceding current-app receipts before refreshing the guarded
   candidate. Correct their observation time using the actual UTC clock; source,
   application and browser-result hashes are unchanged by that timestamp fix.
+- Record the guarded candidate's fresh local acceptance: all 100 Heritage
+  questions and all three journeys pass against the exact deterministic build.
+  Independent review and earlier failed attempts remain inspectable.
 
 ## Discovery budget allocation — 23 September 2026
 
