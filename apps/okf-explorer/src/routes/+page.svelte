@@ -84,7 +84,8 @@
 
 <a class="skip-link" href="#start">Skip to getting started</a>
 
-<div class="learning-site">
+<!-- The assembled Site owns static guides; leave navigation to the browser. -->
+<div class="learning-site" data-sveltekit-reload>
   <header class="learning-header">
     <a class="brand" href="./" aria-label="OKF learning hub home">
       <span class="brand-mark" aria-hidden="true">OKF</span>

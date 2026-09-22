@@ -7,6 +7,32 @@ import {
 
 const REVIEW_BUNDLE = 'https://review.fixture.test/okf-bundle.json';
 
+test('HUB-E2E-05 opens static learning guides as documents after hydration', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+  const guides = [
+    { label: 'Start here', path: '/docs/onboarding/index.html', heading: 'Start with a useful question' },
+    { label: 'Try DWP learning paths', path: '/docs/onboarding/dwp-learning-paths.html', heading: 'Try the DWP learning programme' }
+  ];
+  for (const guide of guides) {
+    const requests: { navigation: boolean; type: string }[] = [];
+    await page.route(`**${guide.path}`, async (route) => {
+      requests.push({ navigation: route.request().isNavigationRequest(), type: route.request().resourceType() });
+      await route.fulfill({ contentType: 'text/html', body: `<!doctype html><html lang="en-GB"><title>${guide.heading}</title><h1>${guide.heading}</h1></html>` });
+    });
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    const link = page.getByRole('link', { name: guide.label, exact: true });
+    await expect(link).toHaveAttribute('href', `.${guide.path}`);
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`${guide.path.replaceAll('.', '\\.')}$`));
+    await expect(page.getByRole('heading', { name: guide.heading, exact: true })).toBeVisible();
+    expect(requests).toEqual([{ navigation: true, type: 'document' }]);
+  }
+  expect(errors).toEqual([]);
+});
+
 test('HUB-E2E-01 gives a beginner a complete static starting point', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();

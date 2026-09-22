@@ -83,7 +83,7 @@ application is not a bundle descriptor, and an entry is not a conformance claim.
 
 **Limit:** Independent teaching material. Source boundaries and legal interpretations remain uncertain; a learning pass does not establish entitlement or complete evidence.
 
-[Open in Explorer](https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json#overview) · [Follow the exercise or guide](../../docs/learning-presentation.md) · [Producer and source material](https://github.com/chris-page-gov/okf-dwp)
+[Open in Explorer](https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json#overview) · [Follow the exercise or guide](../../docs/onboarding/dwp-learning-paths.md) · [Producer and source material](https://github.com/chris-page-gov/okf-dwp)
 
 ### A Life in the UK
 

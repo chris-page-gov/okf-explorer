@@ -89,7 +89,7 @@
     "question": "Can you trace a claim to its source, identify missing qualifications and explain when the evidence is insufficient?",
     "access": "Choose a role, follow the lessons, inspect evidence and export a fictional artefact for facilitator assessment.",
     "limit": "Independent teaching material. Source boundaries and legal interpretations remain uncertain; a learning pass does not establish entitlement or complete evidence.",
-    "guide": "docs/learning-presentation.md",
+    "guide": "docs/onboarding/dwp-learning-paths.md",
     "readiness": "Local curriculum and assessment journeys checked on 22 September 2026; specialist validation remains open.",
     "bundle_id": "dwp-learning-paths",
     "featured": true,
