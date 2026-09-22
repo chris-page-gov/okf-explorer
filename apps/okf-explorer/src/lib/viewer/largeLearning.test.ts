@@ -28,3 +28,18 @@ describe('large learning overlay', () => {
     expect(largeLearningPresentation(empty)).toBeNull();
   });
 });
+
+describe('assessed programmes',()=>{
+ const v2=()=>({...fixture(),schema:'okf-large-learning-presentation.v2',programme:{id:'demo',version:'1',assessors:[]},paths:[{...fixture().paths[0],prerequisites:[] as string[],personas:['Evidence reviewer']}]});
+ it('rejects cycles, duplicate and unknown prerequisites',()=>{
+  for(const prerequisites of [['assess'],['missing'],['missing','missing']]){
+   const v=v2();v.paths[0].prerequisites=prerequisites;expect(largeLearningPresentation(v)).toBeNull();
+  }
+ });
+ it('does not silently truncate assessed objectives',()=>{
+  const v=v2();v.paths[0].steps[0].outcome='x'.repeat(801);expect(largeLearningPresentation(v)).toBeNull();
+ });
+ it('accepts bounded programmes with an explicit empty assessor roster',()=>{
+  expect(largeLearningPresentation(v2())?.programme?.id).toBe('demo');
+ });
+});

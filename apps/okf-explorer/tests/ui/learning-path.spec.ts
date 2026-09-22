@@ -129,3 +129,65 @@ test('an unavailable learning record leaves the current selection intact and exp
   await expect(page.getByText('This learning step has no available record in the published corpus. Choose another step or contact the bundle producer.')).toBeVisible();
   await expect(page).toHaveURL(/#overview$/);
 });
+
+test('assessed learning persists signed decisions, gates prerequisites and rejects tampering', async ({ page }) => {
+  // @ts-expect-error -- Node-only Playwright harness.
+  const crypto = await import('node:crypto');
+  const { canonical, sha256 } = await import('../../src/lib/viewer/learningAssessment');
+  const pair = crypto.generateKeyPairSync('ed25519');
+  const assessor = { id:'test-reviewer',name:'Test reviewer',public_key:pair.publicKey.export({format:'der',type:'spki'}).toString('base64') };
+  const v2 = {...learningPresentation,schema:'okf-large-learning-presentation.v2',programme:{id:'test-programme',version:'1',assessors:[assessor]},paths:[
+    {...learningPresentation.paths[0],prerequisites:[],assessment:'Demonstrate scoped evidence.'},
+    {id:'transfer',title:'Transfer the skill',prerequisites:['assess'],assessment:'Test a changed scenario.',steps:[{route:'dataset/ons-record-0002',title:'Reconsider',outcome:'Explain what changes'}]}
+  ]};
+  await openOnsFacetFixture(page,[],{learningPresentation:v2});
+  const assessed=page.getByRole('region',{name:'Assessed learning'});
+  await expect(assessed).toBeVisible();
+  await assessed.locator('summary').filter({hasText:'Transfer the skill'}).click();
+  await expect(assessed.getByRole('button',{name:'Export submission for transfer'})).toBeDisabled();
+  await assessed.locator('summary').filter({hasText:'Check the source'}).click();
+  await assessed.getByRole('textbox',{name:'Assessment artefact for Check the source'}).fill('A fictional traceable artefact with source versions, qualifications and a changed scenario.');
+  const downloadPromise=page.waitForEvent('download');
+  await assessed.getByRole('button',{name:'Export submission for assess',exact:true}).click();
+  const downloaded=await downloadPromise;
+  const submission=JSON.parse(await readFile((await downloaded.path())!,'utf8'));
+  const assessment={schema:'okf-learning-assessment.v1',submission,submission_sha256:await sha256(submission),assessor:assessor.id,decision:'passed',scores:[2,2,2,2,2],critical_failures:[],feedback:'Meets the teaching rubric.',assessed_at:new Date().toISOString()};
+  const signed={assessment,signature:crypto.sign(null,Buffer.from(canonical(assessment)),pair.privateKey).toString('base64')};
+  const input=assessed.getByLabel('Import assessor decision');
+  const upload=(data:unknown)=>input.setInputFiles({name:'assessment.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});
+  await upload({...signed,assessment:{...assessment,feedback:'Tampered decision'}});
+  await expect(assessed.getByRole('status')).toContainText('signature could not be verified');
+  await upload(signed);
+  await expect(assessed.getByRole('status')).toContainText('verified and recorded');
+  await expect(assessed.getByRole('button',{name:'Export submission for transfer'})).toBeEnabled();
+  await page.reload();
+  await expect(assessed).toContainText('Assessed paths: 1/2');
+  await assessed.locator('summary').filter({hasText:'Transfer the skill'}).click();
+  await expect(assessed.getByRole('button',{name:'Export submission for transfer'})).toBeEnabled();
+});
+
+test('authored DWP curriculum exposes all 112 real lesson routes and supporting evidence',async({page})=>{
+  test.skip(!env.OKF_DWP_CURRICULUM,'Set OKF_DWP_CURRICULUM to the generated curriculum directory.');
+  const root=resolve(env.OKF_DWP_CURRICULUM!);const requests:string[]=[];const errors:string[]=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.route('https://dwp-learning.fixture.test/**',async route=>{
+    const pathname=decodeURIComponent(new URL(route.request().url()).pathname),file=resolve(root,`.${pathname}`);
+    if(!file.startsWith(root+sep))return route.abort();requests.push(pathname);
+    try{await route.fulfill({body:await readFile(file),contentType:pathname.endsWith('.gz')?'application/gzip':'application/json',headers:{'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:404,body:'Missing file'});}
+  });
+  await page.goto(`?bundle=${encodeURIComponent('https://dwp-learning.fixture.test/okf-explorer.json')}#overview`);
+  const panel=page.getByRole('region',{name:'Learning paths',exact:true});
+  await expect(panel).toBeVisible();
+  expect(requests.filter(p=>/records-\d+/.test(p))).toHaveLength(0);
+  await panel.locator(':scope > details').first().locator('summary').click();
+  await panel.getByRole('button',{name:'Baseline and role',exact:true}).click();
+  await expect(page).toHaveURL(/#learning\/p01\/s01$/);
+  await panel.getByRole('button',{name:'persona/evidence-assurance-reviewer',exact:true}).first().click();
+  await expect(page).toHaveURL(/#persona\/evidence-assurance-reviewer$/);
+  await page.goBack();await expect(page).toHaveURL(/#learning\/p01\/s01$/);
+  await page.setViewportSize({width:390,height:844});
+  await page.getByRole('button',{name:'Results',exact:true}).click();
+  await expect(panel.getByRole('heading',{name:'DWP demonstration learning programme'})).toBeVisible();
+  expect(new Set(requests.filter(p=>/records-\d+/.test(p))).size).toBeLessThan(5);
+  expect(errors).toEqual([]);
+});

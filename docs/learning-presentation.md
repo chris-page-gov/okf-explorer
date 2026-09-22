@@ -151,3 +151,76 @@ tests/ui/learning-path.spec.ts --project=chrome`. For local producer checks, set
 `OKF_DWP_PILOT` to the public pilot JSON file and `OKF_DWP_COMBINED` to the
 combined corpus directory. Without those variables, the two producer checks are
 explicitly skipped; the repository does not embed either external corpus.
+
+## Assessed large-bundle programmes (v2)
+
+`okf-large-learning-presentation.v2` keeps the same 12-path, 24-step limits.
+It adds a `programme` with `id`, `version` and an `assessors` public-key roster.
+Each path can declare `prerequisites` (path IDs), `personas` (display labels)
+and an `assessment` prompt. Each step can provide `evidence_routes`, which use
+the same bounded record navigation as the lesson itself. Unknown or cyclic
+prerequisites disable the presentation. These are teaching references, not
+new semantic relationships or legal applicability claims.
+
+The Reader keeps a pseudonymous learning journal in browser storage. Learners
+write an artefact, export a submission and send it to their facilitator through
+their chosen channel. The application does not send submissions. A facilitator
+returns a signed assessment; only decisions verified against the bundle's roster
+count towards prerequisites. A practice tick cannot award a pass. Browsing stays
+available when a dependent assessment is locked.
+
+The five rubric scores are traceability, scope, reasoning, counterexample and
+communication, each 0–2. A pass requires at least 8/10, full marks for
+traceability, scope and counterexample, and no critical failure. This is an
+instructional rubric, not an official competency standard. The signature
+identifies the configured assessor; it does not establish their professional
+qualifications. Keep claimant information out of artefacts.
+
+Decisions bind the exact learner, submission hash, programme version and bundle
+snapshot. A later changes-required decision removes the current pass and locks
+dependent assessments. Old versions remain historical and do not unlock the
+current version. Restore/export the journal to move devices; browser storage
+can be cleared and is not a managed training record system. All signatures are
+reverified on restore, including after a roster change. A static bundle is a
+local teaching trust boundary, not a tamper-proof credential service.
+
+### Facilitator setup
+
+With Node.js 22.18 or later, create a key outside the published repository:
+
+```sh
+node apps/okf-explorer/scripts/learning_assessor.mjs keygen /private/path/reviewer reviewer "Programme reviewer"
+```
+
+Add only the generated `.assessor.json` entry to the producer's authored roster
+and regenerate the descriptor. Keep the `.private.pem` file private. Prepare a
+review decision after inspecting the submitted artefact:
+
+```json
+{"decision":"changes_required","scores":[2,1,1,1,2],"critical_failures":[],"feedback":"Retain the governing qualification and test a changed scenario."}
+```
+
+Then sign the exact submission:
+
+```sh
+node apps/okf-explorer/scripts/learning_assessor.mjs assess submission.json decision.json /private/path/reviewer.private.pem /private/path/reviewer.assessor.json assessment.json
+```
+
+The tool rejects a pass that fails the rubric, a mismatched key and an existing
+output file. The Reader rejects tampered, unknown-assessor, cross-learner and
+stale-snapshot decisions. No legal interpretation is automatically graded.
+
+### Portable DWP rehearsal
+
+After building and checking both repositories, package the matching Explorer,
+combined curriculum and unchanged retrieval-unit corpus with:
+
+```sh
+node scripts/package_dwp_learning_demo.mjs /path/to/built-explorer /path/to/okf-dwp /path/to/new-demo-directory
+```
+
+The output contains a local-only Node HTTP server, a landing page, presenter
+notes, licences and a SHA-256 inventory. It excludes the facilitator private
+key. Run `node serve.mjs` inside the package and open the printed localhost
+address. This is a portable review artefact; it does not publish or certify a
+production service. Rehearse the packaged bytes before sharing them.

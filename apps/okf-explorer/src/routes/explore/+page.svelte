@@ -6880,7 +6880,7 @@
         <section class="large-view">
           {#if activeView === 'reader' && largeLearning}
             {#key source}
-              <LargeLearningReader presentation={largeLearning} selected={largeInspectedRoute || largeSelectedRoute} onselect={selectLargeLearningRoute} />
+              <LargeLearningReader snapshot={source.descriptor.snapshot ?? source.descriptor.snapshot_id ?? ""} presentation={largeLearning} selected={largeInspectedRoute || largeSelectedRoute} onselect={selectLargeLearningRoute} />
             {/key}
           {/if}
           {#if source.descriptor.assertion_scope === 'synthetic-fixture'}
