@@ -541,6 +541,7 @@ const searchManifest = {
 };
 
 export type OnsFacetFixtureOptions = {
+  learningPresentation?: unknown;
   conceptualClassification?: boolean;
   withoutSearch?: boolean;
   responseBytes?: number[];
@@ -572,7 +573,8 @@ export async function installOnsFacetFixture(
     const respond = (body: unknown, status = 200) => json(route, body, status, options.responseBytes);
     if (url.pathname === '/okf-explorer.json') {
       const { search_manifest, ...entrypoints } = descriptor.entrypoints;
-      return respond(options.withoutSearch ? { ...descriptor, entrypoints } : descriptor);
+      const declared = { ...descriptor, ...(options.learningPresentation ? { learning_presentation: options.learningPresentation } : {}) };
+      return respond(options.withoutSearch ? { ...declared, entrypoints } : declared);
     }
     if (url.pathname === '/data/manifest.json') {
       const { search, ...indexes } = manifest.indexes;

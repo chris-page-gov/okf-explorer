@@ -58,6 +58,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/exploratory-publication.spec.ts'
   },
+  learning_path: {
+    family: 'ui',
+    file: 'tests/ui/learning-path.spec.ts'
+  },
   learner_hub: {
     family: 'ui',
     file: 'tests/ui/learner-hub.spec.ts'
@@ -93,7 +97,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
     'beginner_navigation',
     'foundry_pages'
   ],
-  reader: ['ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
+  reader: ['learning_path', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
   search: ['ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus'],
   timeline: ['timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus']
 });

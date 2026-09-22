@@ -81,6 +81,26 @@
     "source": "https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years"
   },
   {
+    "id": "dwp-learning-paths",
+    "kind": "bundle",
+    "title": "DWP learning paths",
+    "group": "Use knowledge at work",
+    "audience": "advisers, policy reviewers, evidence reviewers and service designers",
+    "question": "Can you trace a claim to its source, identify missing qualifications and explain when the evidence is insufficient?",
+    "access": "Choose a role, follow the lessons, inspect evidence and export a fictional artefact for facilitator assessment.",
+    "limit": "Independent teaching material. Source boundaries and legal interpretations remain uncertain; a learning pass does not establish entitlement or complete evidence.",
+    "guide": "docs/learning-presentation.md",
+    "readiness": "Local curriculum and assessment journeys checked on 22 September 2026; specialist validation remains open.",
+    "bundle_id": "dwp-learning-paths",
+    "featured": true,
+    "explorer": {
+      "query": "",
+      "route": "overview"
+    },
+    "source": "https://github.com/chris-page-gov/okf-dwp",
+    "explorer_url": "https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fmain%2Fcombined%2Fokf-explorer.json#overview"
+  },
+  {
     "id": "uk-living",
     "kind": "collection",
     "title": "A Life in the UK",

@@ -119,6 +119,23 @@
       "title": "Coventry and Warwickshire Heritage Evaluation",
       "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
       "version": "1.0.0"
+    },
+    {
+      "description": "Twelve role-based paths and 112 activities covering the DWP demonstrations, with inspectable evidence, practice artefacts and facilitator assessment. Independent teaching material; not official DWP training or a complete statement of entitlement.",
+      "documentation_url": "https://github.com/chris-page-gov/okf-dwp/blob/main/docs/learning/README.md",
+      "home_url": "https://chris-page-gov.github.io/okf-dwp/",
+      "id": "https://chris-page-gov.github.io/okf-explorer/bundles/dwp-learning-paths",
+      "kind": "large-corpus",
+      "label": "DWP learning paths",
+      "license": "https://github.com/chris-page-gov/okf-dwp/blob/main/NOTICE.md",
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "publisher": "https://github.com/chris-page-gov",
+      "repository_url": "https://github.com/chris-page-gov/okf-dwp",
+      "semantic_url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-bundle.yamlld",
+      "status": "experimental",
+      "title": "DWP learning paths",
+      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/main/combined/okf-explorer.json",
+      "version": "2026.09.22"
     }
   ],
   "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",

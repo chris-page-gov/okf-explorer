@@ -1,5 +1,18 @@
 # Changelog
 
+## Learning-path review and large-bundle teaching — 22 September 2026
+
+- Add DWP learning paths to the home catalogue and Reader bundle selector, with explicit evidence and training limitations.
+
+- Add opt-in assessed large-bundle programmes with source-record links, prerequisite checks, local journals and signed facilitator decisions. Keep practice ticks separate from assessed passes and bind decisions to the learner, programme and bundle snapshot.
+
+- Integrate the draft small-bundle learning presentation with current main.
+- Gate conceptual facets on the declared learning presentation.
+- Add optional ordered learning paths to large descriptors, with outcomes,
+  practice prompts, time estimates and reversible progress for the loaded session.
+- Keep record and evidence inspection on existing Reader routes and loading paths.
+  Preserve legacy bundles and document producer bounds and acceptance limits.
+
 ## Service 0.6.1 client question compatibility — 21 September 2026
 
 - Make the shared non-blank question pattern compatible with clients that match
@@ -1419,3 +1432,14 @@ source-of-truth changes.
   covering facet search/open state, graph legend/drawer, bundle suggestion
   dismissal, and timeline latest/quarter ordering.
 - `git diff --check`
+
+## Learning presentation for small bundles
+
+- Added an opt-in learning path with ordered goal cards, contextual record pages,
+  connections and expandable source evidence.
+- Small bundles can declare conceptual facets. Source and review filters remain
+  available as secondary information; existing bundles retain their defaults.
+- File imports now honour a valid authored starting route and clear stale
+  inspections. URL-loaded bundles retain explicit deep links and filter state.
+- Added a reusable content-design guide and tests for presentation validation,
+  legacy behaviour and conceptual facet intersections.

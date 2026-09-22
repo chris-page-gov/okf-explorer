@@ -12,6 +12,10 @@
   import ExplorationToolbar from '$lib/components/ExplorationToolbar.svelte';
   import ResultList, { type ResultItem } from '$lib/components/ResultList.svelte';
   import { emptyExploration, explorationFromUrl, writeExploration, previewValue, keepPreview, hasSelection, matchesSelection, matchesReductions, highlightFirst, selectionLabel, MAX_FOLDED_MEMBERS, type Exploration, type Reduction, type FoldedSet } from '$lib/viewer/facetSelection';
+  import LargeLearningReader from '$lib/components/LargeLearningReader.svelte';
+  import { largeLearningPresentation } from '$lib/viewer/largeLearning';
+  import LearningReader from '$lib/components/LearningReader.svelte';
+  import { learningPresentation, initialSmallRoute } from '$lib/viewer/smallPresentation';
   import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
   import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
   import { displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
@@ -596,6 +600,10 @@
   ]);
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let federationOverview = $derived(source?.kind === 'small' ? source.federation : undefined);
+  let largeLearning = $derived(source?.kind === 'large' ? largeLearningPresentation(source.descriptor.learning_presentation) : null);
+  let learning = $derived(learningPresentation(smallCorpus));
+  let learningKeys = $derived(learning?.facets.map(facet => facet.key) || []);
+  let smallFacetDefinitions = $derived(learning ? [...learning.facets, ...SMALL_FACETS] : SMALL_FACETS);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
   let typeList = $derived([...new Set(nodeList.map((node) => node.type || 'Node'))].sort((a, b) => a.localeCompare(b)));
   let baseVisibleNodes = $derived(
@@ -603,7 +611,7 @@
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
-      if (!matchesReductions(reductions, key => smallFacetValues(node, key))) return false;
+      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys))) return false;
       if (!query) return true;
       return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
@@ -614,7 +622,7 @@
   let smallGeospatialRouteIds: Set<string> = $derived(
     new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
   );
-  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights)));
+  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)));
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -691,10 +699,10 @@
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, (geospatialFilter ? 1 : 0) + reductions.length));
   let pinnedLabels = $derived(pins);
   let largeExplorationScope = $derived(currentLargeExplorationScope());
-  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).length);
+  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).length);
   let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
-  let smallFacets = $derived<FacetModel[]>(SMALL_FACETS.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key) })));
-  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights) })));
+  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys) })));
+  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys) })));
   let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
 
   function currentLargeExplorationScope() {
@@ -825,7 +833,7 @@
       if (!largeExplorationScope.scopeIds || !largeExplorationScope.highlightedIds) return;
       const selected = new Set(largeExplorationScope.highlightedIds);
       members = largeExplorationScope.scopeIds.filter(id => selected.has(id) === highlighted);
-    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights) === highlighted).map(node => node.id);
+    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys) === highlighted).map(node => node.id);
     members = members.filter(id => !foldedIds.has(id));
     if (!members.length || members.length > MAX_FOLDED_MEMBERS) return;
     foldedSets = [...foldedSets, { id: crypto.randomUUID(), label: `${highlighted ? '' : 'Outside '} ${selectionLabel(largeFacetHighlights)}`.trim(), members }];
@@ -834,7 +842,7 @@
   function foldedSetCounts() {
     if (source?.kind === 'large' && !largeExplorationScope.scopeIds) return {};
     const scope = new Set(source?.kind === 'large' ? largeExplorationScope.scopeIds : visibleNodes.map(node => node.id));
-    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights)).map(node => node.id));
+    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).map(node => node.id));
     return Object.fromEntries(foldedSets.map(fold => [fold.id, { inScope: fold.members.filter(id => scope.has(id)).length, highlighted: fold.members.filter(id => scope.has(id) && selected.has(id)).length }]));
   }
 
@@ -1533,7 +1541,9 @@
         retrievalSort = retrieval.sort;
         history = rememberHistory({ url: resolvedUrl, title: corpus.title, description: corpus.description, kind: 'bundle' });
         const hash = safeDecodeHash();
-        selectedId = hash && corpus.nodes[hash] ? hash : Object.keys(corpus.nodes)[0] || '';
+        selectedId = initialSmallRoute(corpus, hash);
+        smallOpenFacet = learningPresentation(corpus)?.facets[0]?.key || '';
+      if (learningPresentation(corpus)) { rightCollapsed = true; activePanel = 'content'; }
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
       }
       if (source?.kind === 'small') {
@@ -1721,7 +1731,13 @@
       };
       geospatialFilter = '';
       visibleTypes = new Set([...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))]);
-      selectedId = Object.keys(corpus.nodes)[0] || '';
+      selectedId = initialSmallRoute(corpus);
+      inspectedId = '';
+      smallInspectedRelationship = null;
+      if (learningPresentation(corpus)) activeView = 'reader';
+      smallOpenFacet = learningPresentation(corpus)?.facets[0]?.key || '';
+      if (learningPresentation(corpus)) { rightCollapsed = true; activePanel = 'content'; }
+      syncExplorerUrl();
     } catch (err) {
       if (requestId !== loadRequest) return;
       error = err instanceof Error ? err.message : String(err);
@@ -2239,12 +2255,33 @@
     syncExplorerUrl(true);
   }
 
+  function selectLearningNode(id: string) {
+    selectNode(id);
+    activePanel = 'content';
+    rightCollapsed = true;
+  }
+
   function inspectNode(id: string) {
     activePanel = 'details';
     inspectedId = id;
     smallInspectedRelationship = null;
     rightCollapsed = false;
     syncExplorerUrl(true);
+  }
+
+  async function selectLargeLearningRoute(route: string) {
+    if (!largeRouteInReduction(route)) { error = 'This learning step is outside the current scope. Reset the scope to open it.'; return; }
+    const learningSource = source;
+    const requestId = loadRequest;
+    const record = largeHasRecordLocator()
+      ? await ensureLargeDataset(route)
+      : (await ensureLargeFullIndex())?.datasets.find(dataset => datasetRoute(dataset) === route);
+    if (source !== learningSource || requestId !== loadRequest) return;
+    if (!record) {
+      error ||= 'This learning step has no available record in the published corpus. Choose another step or contact the bundle producer.';
+      return;
+    }
+    selectLargeRoute(route);
   }
 
   function selectLargeRoute(route: string) {
@@ -6530,8 +6567,8 @@
   {/snippet}
 
   {#snippet selectionActions(compact: boolean)}
-      {#if source && (compact || source.kind === 'small' || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length)}
-        <ExplorationToolbar {compact} scopeKnown={source.kind === 'small' || Boolean(largeIndex || largeSearchResponse)} {exploration} highlighted={highlightedCount} total={scopeCount} busy={largeSearching || largeFullLoading} canFold={source.kind === 'small' ? scopeCount <= MAX_FOLDED_MEMBERS : Boolean(largeExplorationScope.scopeIds)} folds={foldedSets} foldCounts={foldedSetCounts()} approximate={source.kind === 'large' && !largeExplorationScope.exact} label={source.kind === 'large' ? facetDisplayLabel : key => SMALL_FACETS.find(facet => facet.key === key)?.label || key} onkeep={keepExploration} onfold={foldExploration} onunfold={(id) => foldedSets = foldedSets.filter(fold => fold.id !== id)} onclear={clearExplorationPreview} onundo={undoExploration} onreset={resetExploration} />
+      {#if source && !(learning && activeView === 'reader' && !smallQuery.trim() && !explorationActive) && (compact || source.kind === 'small' || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length)}
+        <ExplorationToolbar {compact} scopeKnown={source.kind === 'small' || Boolean(largeIndex || largeSearchResponse)} {exploration} highlighted={highlightedCount} total={scopeCount} busy={largeSearching || largeFullLoading} canFold={source.kind === 'small' ? scopeCount <= MAX_FOLDED_MEMBERS : Boolean(largeExplorationScope.scopeIds)} folds={foldedSets} foldCounts={foldedSetCounts()} approximate={source.kind === 'large' && !largeExplorationScope.exact} label={source.kind === 'large' ? facetDisplayLabel : key => smallFacetDefinitions.find(facet => facet.key === key)?.label || key} onkeep={keepExploration} onfold={foldExploration} onunfold={(id) => foldedSets = foldedSets.filter(fold => fold.id !== id)} onclear={clearExplorationPreview} onundo={undoExploration} onreset={resetExploration} />
       {/if}
   {/snippet}
 
@@ -6758,7 +6795,8 @@
           {@render navigationTabs()}
           {#if leftPanelTab === 'facets'}
             <div id="left-panel-facets" role="tabpanel" aria-labelledby="left-tab-facets">
-          <FacetPanel facets={smallFacets} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} />
+          <FacetPanel facets={learning ? smallFacets.filter(f => learning.facets.some(item => item.key === f.key)) : smallFacets} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} />
+          {#if learning}<details><summary>Source and review filters</summary><FacetPanel facets={smallFacets.filter(f => !learning.facets.some(item => item.key === f.key))} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} /></details>{/if}
             </div>
           {:else}
             <div id="left-panel-results" role="tabpanel" aria-labelledby="left-tab-results">
@@ -6840,6 +6878,11 @@
         />
       {:else if source?.kind === 'large'}
         <section class="large-view">
+          {#if activeView === 'reader' && largeLearning}
+            {#key source}
+              <LargeLearningReader snapshot={source.descriptor.snapshot ?? source.descriptor.snapshot_id ?? ""} presentation={largeLearning} selected={largeInspectedRoute || largeSelectedRoute} onselect={selectLargeLearningRoute} />
+            {/key}
+          {/if}
           {#if source.descriptor.assertion_scope === 'synthetic-fixture'}
             <aside class="semantic-scope-notice" data-relationship-scope="synthetic-fixture" aria-label="Synthetic fixture boundary">
               <strong>Synthetic assurance fixture</strong>
@@ -7862,7 +7905,13 @@
             />
           {:else}
             <section class="reader-view shared-reader">
-              <ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} />
+              {#if learning && !smallQuery.trim() && !explorationActive}
+                <LearningReader corpus={smallCorpus} presentation={learning} selected={selectedId} onselect={selectLearningNode} />
+                <details><summary>Browse all {smallResults.length} records</summary><ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} /></details>
+              {:else}
+                {#if learning}<button type="button" onclick={() => { resetExploration(); setSmallQuery(''); selectLearningNode(learning!.start_route); }}>← Learning path</button>{/if}
+                <ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} />
+              {/if}
             </section>
           {/if}
         {:else if activeView === 'graph'}
