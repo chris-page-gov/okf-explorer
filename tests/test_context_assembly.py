@@ -168,6 +168,9 @@ class ContextAssemblyContractTests(unittest.TestCase):
         validate_documents({'package': pack})
         pack['retrieval']['discovery']['admission_order'] = 'lexical-anchor-then-resolved-concept-paths.v1'
         validate_documents({'package': pack})
+        pack['retrieval']['discovery']['admission_order'] = 'lexical-anchor-then-declared-path-prefixes.v1'
+        pack['retrieval']['discovery']['limits']['path_prefixes'] = 2000
+        validate_documents({'package': pack})
         for change in ('card-hash', 'incident-hash', 'missing-ordinal', 'inline-instruction', 'negative-count'):
             broken = copy.deepcopy(pack)
             candidate = broken['retrieval']['discovery']['candidates'][0]['card']

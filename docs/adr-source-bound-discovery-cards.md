@@ -105,14 +105,30 @@ reversed or used to create new search seeds. Requirements never create seeds.
 The admission order is explicit: read the bounded query postings and hydrate
 one highest-ranked whole evidence unit, then follow naturally reachable paths
 from resolved concepts before hydrating the remaining lexical candidates.
-`lexical-anchor-then-resolved-concept-paths.v1` prevents graph fan-out from
+`lexical-anchor-then-declared-path-prefixes.v1` prevents graph fan-out from
 exhausting discovery while preventing the full lexical shortlist from starving
 declared routes. The anchor has the same source/card integrity checks and is
 only candidate evidence. All phases share the same file, byte, depth and work
 ceilings. A later lexical seed can revisit an earlier node at a shorter depth;
 this neither reverses an edge nor invents a seed from an assessor's requirements.
 A lexical candidate omitted by a shared ceiling remains reported. The preceding
-graph-first admission identity remains accepted for retained packages.
+graph-first and anchor-first admission identities remain accepted for retained
+packages.
+
+Within concept expansion, an applicable declared required path can prioritise
+its next hop only after that exact assertion ID, source and target have been
+observed in the reached incident set and its guard has matched. Each path starts
+at an actually resolved concept. A missing or different edge cannot be supplied
+by the requirement, and the requirement never triggers a direct destination
+fetch. Prefixes are de-duplicated; at most 2,000 receive priority work. Reaching
+that bound reports an omission and leaves remaining routes at ordinary priority.
+
+Once source units and their edges have been admitted, an allocation pass may
+retain a required unit whose source boundary is explicitly unresolved. Its text
+and fragment hashes must still verify, and other governance failures remain
+ineligible. The unresolved-boundary diagnostic prevents the unit from satisfying
+the evidence requirement. Prioritising it for inspection does not make an
+incomplete passage complete.
 
 Missing cards, stale whole-record bindings, malformed incident commitments,
 inconsistent directions, missing declared adjacency entries and altered files

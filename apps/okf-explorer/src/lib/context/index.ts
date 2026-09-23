@@ -332,8 +332,10 @@ const pathKey = (path: ContextPath) => `${path.seed}\n${path.assertions.join('\n
 /** Paths only receive priority when every declared hop is already traversable.
  * The index limits bound this inspection to 500 * 100 * 8 hops. Digests are
  * computed once per referenced record. No endpoint becomes a retrieval seed.
+ * V3 may retain an explicitly unresolved boundary for inspection; the ordinary
+ * evidence diagnostics still prevent it from satisfying the requirement.
  */
-async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number): Promise<AllocationPlan> {
+async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number, retainBoundaryUnknowns = false): Promise<AllocationPlan> {
   const seeds = new Set(resolved.map(row => row.id));
   const records = new Map(index.records.map(row => [row.id, row]));
   const assertions = new Map(index.assertions.map(row => [row.id, row]));
@@ -349,7 +351,8 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
       for (const id of path.records) {
         if (!validRecord.has(id)) {
           const row = records.get(id);
-          let accepted = !!row && row.access === 'public' && !governanceIssues(row).length;
+          let accepted = !!row && row.access === 'public' && !governanceIssues(row)
+            .some(issue => !retainBoundaryUnknowns || issue.code !== 'unresolved_unit_boundary');
           if (accepted && row!.kind === 'evidence') {
             const digest = await contextSha256(row!.text);
             accepted = row!.provenance.every(p => !p.literal_sha256 || p.literal_sha256 === digest)
@@ -396,7 +399,8 @@ export async function assembleContext(
   const pressure = baseline.budget.omissions.filter(issue =>
     ['node_budget', 'relationship_budget', 'relationship_byte_budget', 'byte_budget'].includes(issue.code));
   if (!pressure.length || !baseline.resolved_concepts.length) return baseline;
-  const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth);
+  const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth,
+    discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3');
   const lost = plan.paths.some(({ path }) => !retainedPath(baseline, path)
     && pressure.some(issue => issue.ids.some(id => path.records.includes(id) || path.assertions.includes(id))));
   return lost ? assembleContextPass(raw, question, requested, baseline.binding, discovery, plan) : baseline;
@@ -586,6 +590,8 @@ async function assembleContextPass(
     ...(discovery ? { retrieval: discovery.retrieval } : {})
   };
   if (allocation) base.limitations.push('One additional allocation pass prioritised valid bundle-declared required paths after budget loss. Only original seeds and declared directed edges were used; priority does not upgrade authority or establish completeness.');
+  if (allocation && discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3')
+    base.limitations.push('An integrity-checked source unit with an unresolved boundary may receive path priority, but its boundary warning and insufficient evidence status remain.');
   if (discovery) {
     base.limitations.push('Lexical matches are candidate evidence, not resolved concepts or proof of applicability. Full-corpus indexing does not establish complete policy coverage.');
   }

@@ -221,7 +221,7 @@ describe('source-bound discovery corpus v3', () => {
     const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle quartz', { max_bytes: 524288 }, f.fetcher);
     expect(result.requirements[0].status).toBe('supported-within-declared-scope');
     expect(result.retrieval!.fetched_files).toBeLessThanOrEqual(64);
-    expect(result.retrieval!.discovery!.admission_order).toBe('lexical-anchor-then-resolved-concept-paths.v1');
+    expect(result.retrieval!.discovery!.admission_order).toBe('lexical-anchor-then-declared-path-prefixes.v1');
     expect(f.calls.indexOf('units/0.json')).toBeLessThan(f.calls.indexOf('units/68.json'));
     expect(f.calls.indexOf('units/68.json')).toBeLessThan(f.calls.indexOf('units/1.json'));
     expect(result.selected.find(s => s.record.id === f.records[69].id)!.paths[0].assertions).toEqual(f.assertions.map(e => e.id));
@@ -280,6 +280,60 @@ describe('source-bound discovery corpus v3', () => {
     for (const row of omitted) expect(full.outgoing.find(edge => edge.id === row.ids[0])).toEqual(f.assertions.find(edge => edge.id === row.ids[0]));
     expect(result.budget.used_bytes).toBeLessThanOrEqual(131072);
     expect(result.budget.truncated).toBe(true);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('prioritises only actual admitted required-path hops before ordinary graph fan-out', async () => {
+    const f = await discoveryFixture(70, 1);
+    const template = f.assertions[0];
+    f.assertions.splice(0, f.assertions.length, ...f.records.slice(0, 69).map((row, i) => ({
+      ...template, id: template.id + '-' + String(i).padStart(3, '0'), target: row.id
+    })), { ...template, id: template.id + '-qualification', source: f.records[68].id, target: f.records[69].id });
+    f.base.requirements[0].required = [f.records[68].id, f.records[69].id];
+    f.base.requirements[0].required_paths = [{ seed: f.concept.id,
+      assertions: [f.assertions[68].id, f.assertions[69].id], records: [f.concept.id, f.records[68].id, f.records[69].id] }];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', { max_bytes: 524288 }, f.fetcher);
+    expect(result.requirements[0].status).toBe('supported-within-declared-scope');
+    expect(f.calls.indexOf('units/69.json')).toBeLessThan(f.calls.indexOf('units/0.json'));
+    expect(result.retrieval!.fetched_files).toBeLessThanOrEqual(64);
+    expect(result.retrieval!.truncated).toBe(true);
+  });
+  it('never manufactures a required hop or fetches its declared destination when the reached edge differs', async () => {
+    const f = await discoveryFixture();
+    f.assertions[0].target = f.records[1].id;
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', { max_bytes: 524288 }, f.fetcher);
+    expect(result.selected.filter(row => row.record.kind === 'evidence').map(row => row.record.id)).toEqual([f.records[1].id]);
+    expect(result.retrieval!.units!.referenced_records).not.toContain(f.records[0].id);
+    expect(result.retrieval!.units!.referenced_records).not.toContain(f.records[2].id);
+    expect(result.requirements[0].status).toBe('insufficient');
+  });
+  it('retains an integrity-checked required passage with an unresolved boundary without upgrading its status', async () => {
+    const f = await discoveryFixture(6);
+    f.records[5].evidence_unit!.completeness = 'unresolved';
+    f.cards[5].evidence_sha256 = await contextSha256(canonicalJson(f.records[5]));
+    const template = f.assertions[0];
+    f.assertions.push(...f.records.slice(1, 5).map((row, n) => ({ ...template,
+      id: template.id + '-noise-' + n, target: row.id })));
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', { max_nodes: 3, max_bytes: 131072 }, f.fetcher);
+    expect(result.selected.map(row => row.record.id)).toEqual([f.concept.id, f.records[0].id, f.records[5].id]);
+    expect(result.selected[2].record).toEqual(f.records[5]);
+    expect(result.missing_evidence.some(row => row.code === 'unresolved_unit_boundary' && row.ids.includes(f.records[5].id))).toBe(true);
+    expect(result.requirements[0].status).toBe('insufficient');
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('bounds requirement-prefix work while retaining normal traversal and explicit uncertainty', async () => {
+    const f = await discoveryFixture();
+    const requirement = f.base.requirements[0], path = requirement.required_paths![0];
+    f.base.requirements = Array.from({ length: 11 }, (_, n) => ({ ...requirement,
+      id: requirement.id + '-' + n, required_paths: Array.from({ length: 100 }, (_, p) => ({ ...path,
+        assertions: [path.assertions[0], 'urn:absent-assertion:' + n + '-' + p] })) }));
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', { max_bytes: 524288 }, f.fetcher);
+    expect(result.retrieval!.omissions.some(row => row.code === 'retrieval_path_priority_budget')).toBe(true);
+    expect(result.retrieval!.discovery?.limits.path_prefixes).toBe(2000);
+    expect(result.retrieval!.units!.referenced_records).toContain(f.records[2].id);
     expect(result.evidence_status).toBe('insufficient');
   });
   it('keeps dependency and missing-destination diagnostics when an unused full assertion is omitted', async () => {

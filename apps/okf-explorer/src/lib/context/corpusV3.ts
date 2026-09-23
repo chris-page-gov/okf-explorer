@@ -4,11 +4,11 @@ import { assembleContext, canonicalJson, contextGuardDecision, contextSha256, CO
 // @ts-ignore -- No top-level access to the legacy constants: this is a dispatch cycle only.
 import { CORPUS_LIMITS, UNIT_REFERENCE_LIMITS, corpusBucket, validateContextCorpusManifest } from './corpus.ts';
 import type { ContextRecordShard, LegacyContextCorpusManifest, Reference } from './corpus.ts';
-import type { ContextAssertion, ContextBinding, ContextBudget, ContextGuardDecision, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
+import type { ContextAssertion, ContextBinding, ContextBudget, ContextGuardDecision, ContextIndex, ContextPackage, ContextPath, ContextRecord, ContextRetrieval } from './types.ts';
 
 export type DiscoveryRanking = { schema: 'okf-bm25.v1'; k1: 1.2; b: 0.75; score_scale: 1000000; fields: readonly ['source', 'discovery'] };
 export const DISCOVERY_RANKING: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25.v1', k1: 1.2, b: 0.75, score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const) });
-export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000 });
+export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000, path_prefixes: 2000 });
 export type DiscoveryCard = Pick<ContextRecord, 'id' | 'label' | 'assertion_status' | 'authority' | 'scope' | 'provenance' | 'rights' | 'access'> & {
   evidence_id: string; evidence_sha256: string; heading_path: string[]; summary: string; search_aliases: string[];
 };
@@ -188,7 +188,7 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     candidate_count: 0, candidates: [], fetched_files: 0, fetched_bytes: 0, decoded_bytes: 0, limits: { ...CORPUS_LIMITS }, truncated: false, omissions: [],
     units: { corpus_schema: 'okf-context-corpus.v3', referenced_records: [], examined_relationships: 0, limits: { ...UNIT_REFERENCE_LIMITS } },
     discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS },
-      admission_order: 'lexical-anchor-then-resolved-concept-paths.v1' } };
+      admission_order: 'lexical-anchor-then-declared-path-prefixes.v1' } };
   const omit = (code: string, message: string, ids: string[] = []) => { retrieval.truncated = true; retrieval.omissions.push({ code, message, ids }); };
   const cache = new Map<string, Promise<any | null>>();
   const load = (reference: Reference): Promise<any | null> => {
@@ -304,10 +304,46 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
   const visited = new Map<string, number>(), attempted = new Set<string>(), includedEdges = new Set<string>(), inspected = new Set<string>();
   const resolvedIds = new Set(resolveConcepts(base, question).resolved.map(r => r.id));
   const guardDecisions = new Map<string, ContextGuardDecision>();
+  // Requirements may order an already observed route, never supply a record,
+  // assertion or seed. Every hop must still occur in the reached incident set.
+  const priorityPaths = new Map<string, ContextPath[]>();
+  const priorityPathKeys = new Set<string>();
+  for (const requirement of [...base.requirements].sort((a, b) => a.id.localeCompare(b.id))) {
+    if (!requirement.when_all.every(id => resolvedIds.has(id))) continue;
+    for (const path of requirement.required_paths || []) {
+      if (!resolvedIds.has(path.seed) || path.assertions.length > budget.max_depth
+        || new Set(path.records).size !== path.records.length) continue;
+      const key = canonicalJson(path); if (priorityPathKeys.has(key)) continue; priorityPathKeys.add(key);
+      const paths = priorityPaths.get(path.seed) || [];
+      paths.push(path);
+      priorityPaths.set(path.seed, paths);
+    }
+  }
+  const processedPrefixes = new Set<string>();
+  let priorityLimitReported = false;
   const expand = async (seeds: string[]) => {
-  const queue = seeds.map(id => ({ id, depth: 0 }));
-  for (let i = 0; i < queue.length; i++) {
-    const { id, depth } = queue[i]; if ((visited.get(id) ?? Infinity) <= depth) continue; visited.set(id, depth);
+  type Pending = { id: string; depth: number; prefixes: ContextPath[] };
+  const queue: Pending[] = [], priority: Pending[] = [];
+  const enqueue = (item: Pending) => (item.prefixes.length ? priority : queue).push(item);
+  seeds.forEach(id => enqueue({ id, depth: 0, prefixes: priorityPaths.get(id) || [] }));
+  let i = 0, p = 0;
+  while (p < priority.length || i < queue.length) {
+    const item = p < priority.length ? priority[p++] : queue[i++];
+    const { id, depth } = item;
+    const prefixes = item.prefixes.filter(path => {
+      const key = canonicalJson([path, depth]);
+      if (processedPrefixes.has(key)) return false;
+      if (processedPrefixes.size >= DISCOVERY_LIMITS.path_prefixes) {
+        if (!priorityLimitReported) {
+          omit('retrieval_path_priority_budget', 'Declared-path prioritisation reached its fixed prefix work bound; remaining routes have ordinary traversal priority.');
+          priorityLimitReported = true;
+        }
+        return false;
+      }
+      processedPrefixes.add(key); return true;
+    });
+    if ((visited.get(id) ?? Infinity) <= depth && !prefixes.length) continue;
+    visited.set(id, Math.min(visited.get(id) ?? Infinity, depth));
     if (!byId.has(id)) {
       if (attempted.size >= UNIT_REFERENCE_LIMITS.referenced_records) { omit('referenced_record_budget', 'The declared-destination loading limit was reached.', [id]); continue; }
       attempted.add(id); const range = manifest.records.shards.find(s => s.first_id! <= id && id <= s.last_id!);
@@ -338,7 +374,10 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
         if (guard.status === 'unmatched') continue;
       }
       if (depth >= budget.max_depth) { if (!byId.has(edge.target)) omit('referenced_depth_budget', 'A declared destination exceeds the requested traversal depth.', [edge.id, edge.target]); continue; }
-      if ((visited.get(edge.target) ?? Infinity) > depth + 1) queue.push({ id: edge.target, depth: depth + 1 });
+      const nextPrefixes = prefixes.filter(path => path.assertions[depth] === edge.id
+        && path.records[depth] === edge.source && path.records[depth + 1] === edge.target);
+      if (nextPrefixes.length || (visited.get(edge.target) ?? Infinity) > depth + 1)
+        enqueue({ id: edge.target, depth: depth + 1, prefixes: nextPrefixes });
     }
   }
   };

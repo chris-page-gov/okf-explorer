@@ -511,6 +511,11 @@
                 "ranking_records": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "path_prefixes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2000
                 }
               },
               "required": [
@@ -604,7 +609,8 @@
             "admission_order": {
               "enum": [
                 "resolved-concept-paths-before-lexical-candidates.v1",
-                "lexical-anchor-then-resolved-concept-paths.v1"
+                "lexical-anchor-then-resolved-concept-paths.v1",
+                "lexical-anchor-then-declared-path-prefixes.v1"
               ]
             }
           },

@@ -1,5 +1,14 @@
 # Changelog
 
+## Required-path admission — 23 September 2026
+
+- Give applicable declared paths priority only as their exact next directed hop
+  is encountered from a resolved concept. Missing edges are never supplied by
+  requirements; prefix work is explicitly bounded and truncated when necessary.
+- Retain integrity-checked units with unresolved source boundaries for inspection
+  during v3 path allocation. Preserve their warnings and insufficient status.
+  Keep earlier failed comparisons and all legacy replay bytes unchanged.
+
 ## Discovery and evidence allocation — 23 September 2026
 
 - Give bounded lexical discovery one fully checked source unit before graph
