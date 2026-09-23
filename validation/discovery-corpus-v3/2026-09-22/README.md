@@ -201,7 +201,16 @@ and manifest SHA-256
 `57a05e96c5d8e4265ab22b0c2f5fc5a5d4d942ce950ffee7c1e6c118f06f940e`.
 All 100 actual local Heritage questions pass the 80-point threshold (mean 92.6),
 and all three interaction journeys pass. The current receipt binds those new
-observations; its four materialisation controls pass. DWP's separate trial 05
-and actual Reader/Ask browser acceptance remain adoption gates. Neither these
-checks nor the static application release admits the source or engine to the
-remote Ask OKF service.
+observations; its four materialisation controls pass.
+
+DWP trial 05 is now independently accepted for the runtime allocation scope,
+retained at source checkpoint `159da46e09c06d11e300a7d1d2568983e54025ee`:
+all 40 questions retain source evidence at 512 KiB, all 47 inherited and 181 new
+declared source-read paths remain, and all 82 legacy packages are byte-identical.
+The independent audit validated 2,723 retained traversal paths and confirmed
+that 354 explicit inline-edge omissions removed no required path edge. All
+packages remain insufficient; this is evidence retention, not answerability.
+A separate Reader observation found a producer endpoint-catalogue limit; its
+producer-only repair and the next source release need their own actual browser
+acceptance. Neither these checks nor the static application release admits the
+source or engine to the remote Ask OKF service.

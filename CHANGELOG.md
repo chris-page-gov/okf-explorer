@@ -4,7 +4,9 @@
 
 - Refresh the exact candidate browser receipts: 100 Heritage questions and three
   journeys pass. Retain the preceding allocation regression and independent
-  review; final domain and deployed-client checks remain separate.
+  review. The independently checked fixed-source DWP trial retains all 47
+  inherited and 181 new declared source paths, with insufficiency preserved;
+  the next source release and deployed-client checks remain separate.
 
 - Give applicable declared paths priority only as their exact next directed hop
   is encountered from a resolved concept. Missing edges are never supplied by
