@@ -1,5 +1,68 @@
 # Changelog
 
+## Required-path admission — 23 September 2026
+
+- Refresh the exact candidate browser receipts: 100 Heritage questions and three
+  journeys pass. Retain the preceding allocation regression and independent
+  review. The independently checked fixed-source DWP trial retains all 47
+  inherited and 181 new declared source paths, with insufficiency preserved;
+  the next source release and deployed-client checks remain separate.
+
+- Give applicable declared paths priority only as their exact next directed hop
+  is encountered from a resolved concept. Missing edges are never supplied by
+  requirements; prefix work is explicitly bounded and truncated when necessary.
+- Retain integrity-checked units with unresolved source boundaries for inspection
+  during v3 path allocation. Preserve their warnings and insufficient status.
+  Keep earlier failed comparisons and all legacy replay bytes unchanged.
+
+## Discovery and evidence allocation — 23 September 2026
+
+- Give bounded lexical discovery one fully checked source unit before graph
+  expansion, then prioritise resolved-concept paths ahead of the remaining
+  lexical candidates. Keep ranking parameters and all resource limits fixed.
+- Under v3 byte pressure, explicitly omit unused full relationship rows before
+  whole evidence. Preserve selected and declared required paths, every omitted
+  assertion and endpoint ID, exact lazy incident metadata, and missing-dependency
+  checks. Retain the failed full-corpus observation and unmodified v1/v2 replay.
+
+## Scoped context routes — 23 September 2026
+
+- Add optional conjunctive routing guards to bundle assertions. Evaluate them
+  from directly resolved public concepts before loading or following a route;
+  retain matched and unmatched reasons without treating a navigation guard as
+  legal applicability or turning evidence requirements into retrieval seeds.
+- Preserve unguarded replay and exact source metadata. Reject fabricated guard
+  diagnostics, report blocked required paths, and keep metadata refusals explicit.
+- Retain the preceding current-app receipts before refreshing the guarded
+  candidate. Correct their observation time using the actual UTC clock; source,
+  application and browser-result hashes are unchanged by that timestamp fix.
+- Record the guarded candidate's fresh local acceptance: all 100 Heritage
+  questions and all three journeys pass against the exact deterministic build.
+  Independent review and earlier failed attempts remain inspectable.
+
+## Discovery budget allocation — 23 September 2026
+
+- Prioritise real resolved-concept paths before lexical candidates spend the
+  shared corpus-reading allowance; preserve the existing limits and v1/v2 replay.
+- Replace repeated full card and incident diagnostics with exact metadata
+  references and bounded lazy readers. Keep whole evidence, provenance, matching
+  channels and unresolved obligations distinct and inspectable.
+- Retain the failed first full-corpus acceptance and stale-receipt CI run.
+  Small inline contexts can still refuse insufficient space; larger assembled
+  contexts use the existing exact-read transport without hiding that limit.
+
+## Source-bound discovery cards — 22 September 2026
+
+- Add an opt-in corpus v3 contract for separately sharded discovery cards,
+  whole-record evidence bindings and complete directed relationship inventories.
+  Cards help find passages without becoming source evidence or domain concepts.
+- Add fixed, inspectable BM25 source and discovery channels, explicit resource
+  bounds and fail-closed card, source and incident-relationship checks. Reuse
+  Reader loading and bounded exact evidence delivery; retain v1/v2 replay.
+- Document producer-wide validation, future presentation boundaries and the
+  separate source, semantic, client and answer-quality acceptance gates. No
+  remote service defaults, approved sources or historical engines are changed.
+
 ## Compact logical-context delivery — 22 September 2026
 
 - Add bounded browser WebMCP catalogue and exact-evidence reads using the existing lossless delivery helpers. Preserve the full assembly budget, package identity, source spans and explicit gaps across paginated responses.

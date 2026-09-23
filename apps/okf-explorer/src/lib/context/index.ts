@@ -1,6 +1,6 @@
 import type {
   ContextAssertion, ContextBinding, ContextBudget, ContextIndex, ContextIssue,
-  ContextPackage, ContextPath, ContextRecord, ContextResolution, ContextSelection, ContextAssemblyOptions
+  ContextPackage, ContextPath, ContextRecord, ContextResolution, ContextSelection, ContextAssemblyOptions, ContextGuardDecision
 } from './types.ts';
 // @ts-ignore -- Explicit extension supports the pinned Node consumer.
 import { evidenceUnitIntegrity, validateEvidenceUnit } from './unit.ts';
@@ -147,7 +147,7 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
   const assertionIds = new Set<string>();
   for (const row of value.assertions) {
     assert(object(row) && iri(row.id) && !assertionIds.has(row.id as string), 'duplicate or invalid assertion ID');
-    fields(row, ['id', 'source', 'target', 'predicate', 'label', 'assertion_status', 'authority', 'scope', 'provenance', 'original_assertion_id'], 'assertion');
+    fields(row, ['id', 'source', 'target', 'predicate', 'label', 'assertion_status', 'authority', 'scope', 'provenance', 'original_assertion_id', 'context_guard'], 'assertion');
     assertionIds.add(row.id as string);
     assert(iri(row.source) && iri(row.target) && iri(row.predicate), 'invalid assertion endpoints or predicate');
     assert(typeof row.label === 'string' && typeof row.scope === 'string' && object(row.authority)
@@ -155,6 +155,13 @@ export function validateContextIndex(value: unknown, snapshot?: string): Context
     assert(row.provenance.length <= 32 && row.provenance.every(object), 'invalid assertion provenance');
     validateGovernance(row);
     assert(row.original_assertion_id === undefined || iri(row.original_assertion_id), 'invalid original assertion ID');
+    if (row.context_guard !== undefined) {
+      assert(object(row.context_guard), 'invalid context guard');
+      fields(row.context_guard, ['when_all'], 'context guard');
+      const ids = row.context_guard.when_all;
+      assert(Array.isArray(ids) && ids.length > 0 && ids.length <= 8 && ids.every(iri)
+        && new Set(ids).size === ids.length, 'context guard needs 1–8 unique concept IDs');
+    }
   }
   const requirementIds = new Set<string>();
   for (const row of value.requirements) {
@@ -277,7 +284,21 @@ export function resolveConcepts(index: ContextIndex, question: string): {
   };
 }
 
-function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[] {
+/** Only directly resolved public concepts can satisfy a declared routing guard.
+ * Missing/non-concept IDs stay unmatched; graph reachability and requirements
+ * never activate the route. Absent guards preserve the preceding byte contract.
+ */
+export function contextGuardDecision(assertion: ContextAssertion, records: ReadonlyMap<string, ContextRecord>,
+  resolved: ReadonlySet<string>): ContextGuardDecision | undefined {
+  if (!assertion.context_guard) return undefined;
+  const when_all = [...assertion.context_guard.when_all].sort();
+  const unavailable_concepts = when_all.filter(id => records.get(id)?.kind !== 'concept' || records.get(id)?.access !== 'public');
+  const missing_concepts = when_all.filter(id => !resolved.has(id) || unavailable_concepts.includes(id));
+  return { assertion_id: assertion.id, source: assertion.source, target: assertion.target,
+    when_all, missing_concepts, unavailable_concepts, status: missing_concepts.length ? 'unmatched' : 'matched' };
+}
+
+export function governanceIssues(row: ContextRecord | ContextAssertion): ContextIssue[] {
   const issues: ContextIssue[] = [];
   const add = (code: string, message: string) => issues.push({ code, message, ids: [row.id] });
   if (!row.scope.trim()) add('missing_scope', 'The item has no declared applicability scope.');
@@ -311,8 +332,10 @@ const pathKey = (path: ContextPath) => `${path.seed}\n${path.assertions.join('\n
 /** Paths only receive priority when every declared hop is already traversable.
  * The index limits bound this inspection to 500 * 100 * 8 hops. Digests are
  * computed once per referenced record. No endpoint becomes a retrieval seed.
+ * V3 may retain an explicitly unresolved boundary for inspection; the ordinary
+ * evidence diagnostics still prevent it from satisfying the requirement.
  */
-async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number): Promise<AllocationPlan> {
+async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number, retainBoundaryUnknowns = false): Promise<AllocationPlan> {
   const seeds = new Set(resolved.map(row => row.id));
   const records = new Map(index.records.map(row => [row.id, row]));
   const assertions = new Map(index.assertions.map(row => [row.id, row]));
@@ -328,7 +351,8 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
       for (const id of path.records) {
         if (!validRecord.has(id)) {
           const row = records.get(id);
-          let accepted = !!row && row.access === 'public' && !governanceIssues(row).length;
+          let accepted = !!row && row.access === 'public' && !governanceIssues(row)
+            .some(issue => !retainBoundaryUnknowns || issue.code !== 'unresolved_unit_boundary');
           if (accepted && row!.kind === 'evidence') {
             const digest = await contextSha256(row!.text);
             accepted = row!.provenance.every(p => !p.literal_sha256 || p.literal_sha256 === digest)
@@ -341,7 +365,8 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
       if (!valid || path.assertions.some((id, i) => {
         const edge = assertions.get(id);
         return !edge || edge.source !== path.records[i] || edge.target !== path.records[i + 1]
-          || !CONTEXT_PREDICATES.has(edge.predicate) || governanceIssues(edge).length > 0;
+          || !CONTEXT_PREDICATES.has(edge.predicate) || governanceIssues(edge).length > 0
+          || contextGuardDecision(edge, records, seeds)?.status === 'unmatched';
       })) continue;
       const key = pathKey(path);
       if (seen.has(key)) continue;
@@ -372,9 +397,10 @@ export async function assembleContext(
 ): Promise<ContextPackage> {
   const baseline = await assembleContextPass(raw, question, requested, binding, discovery);
   const pressure = baseline.budget.omissions.filter(issue =>
-    ['node_budget', 'relationship_budget', 'byte_budget'].includes(issue.code));
+    ['node_budget', 'relationship_budget', 'relationship_byte_budget', 'byte_budget'].includes(issue.code));
   if (!pressure.length || !baseline.resolved_concepts.length) return baseline;
-  const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth);
+  const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth,
+    discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3');
   const lost = plan.paths.some(({ path }) => !retainedPath(baseline, path)
     && pressure.some(issue => issue.ids.some(id => path.records.includes(id) || path.assertions.includes(id))));
   return lost ? assembleContextPass(raw, question, requested, baseline.binding, discovery, plan) : baseline;
@@ -393,6 +419,21 @@ async function assembleContextPass(
   if (!http(bound.index_url) || !HASH.test(bound.index_sha256)) throw new Error('Invalid context index binding');
   const resolution = resolveConcepts(index, question);
   const recordById = new Map(index.records.map((record) => [record.id, record]));
+  const seedIds = new Set(resolution.resolved.map((row) => row.id));
+  const guardDecisions = new Map<string, ContextGuardDecision>();
+  if (discovery?.guardDecisions !== undefined) {
+    assert(Array.isArray(discovery.guardDecisions) && discovery.guardDecisions.length <= index.assertions.length,
+      'invalid lazy guard decisions');
+    const assertions = new Map(index.assertions.map(row => [row.id, row]));
+    for (const supplied of discovery.guardDecisions) {
+      assert(object(supplied) && typeof supplied.assertion_id === 'string'
+        && !guardDecisions.has(supplied.assertion_id), 'invalid or duplicate lazy guard decision');
+      const edge = assertions.get(supplied.assertion_id);
+      const expected = edge && contextGuardDecision(edge, recordById, seedIds);
+      assert(expected && canonicalJson(supplied) === canonicalJson(expected), 'lazy guard decision differs from the bound assertion and question');
+      guardDecisions.set(expected.assertion_id, expected);
+    }
+  }
   const outgoing = new Map<string, ContextAssertion[]>();
   for (const assertion of [...index.assertions].sort((a, b) => a.id.localeCompare(b.id))) {
     const list = outgoing.get(assertion.source) || [];
@@ -435,7 +476,7 @@ async function assembleContextPass(
   // crowd out the evidence itself. Group only independent one-item issues:
   // paired dependency/conflict identities and path diagnostics keep their rows.
   // Existing v1 corpora and direct indexes retain their exact serialisation.
-  const groupItemIssues = discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v2';
+  const groupItemIssues = ['okf-context-corpus.v2', 'okf-context-corpus.v3'].includes(discovery?.retrieval.units?.corpus_schema || '');
   const itemIssueCodes = new Set(['node_budget', 'byte_budget', 'missing_record', 'restricted_evidence',
     'missing_scope', 'missing_authority', 'authority_mismatch', 'missing_provenance', 'missing_rights',
     'missing_evidence', 'unresolved_unit_boundary', 'evidence_digest_mismatch', 'unit_fragment_integrity',
@@ -515,6 +556,11 @@ async function assembleContextPass(
         if (assertion.predicate) addIssue(missing, { code: 'unsupported_predicate', message: 'A context relationship has an unsupported traversal predicate.', ids: [assertion.id] });
         continue;
       }
+      const guard = contextGuardDecision(assertion, recordById, seedIds);
+      if (guard) {
+        guardDecisions.set(assertion.id, guard);
+        if (guard.status === 'unmatched') continue;
+      }
       if (item.path.records.includes(assertion.target)) continue; // cycle, already represented by a visited node
       if (item.path.assertions.length >= limit.max_depth) {
         addIssue(omissions, { code: 'depth_budget', message: 'The traversal depth prevented following a relationship.', ids: [assertion.id, assertion.target] }); continue;
@@ -527,13 +573,13 @@ async function assembleContextPass(
       else admit(assertion, next);
     }
   }
-  const seedIds = new Set(resolution.resolved.map((row) => row.id));
   const applicable = index.requirements.filter((r) => r.when_all.every((id) => seedIds.has(id)));
   const base: ContextPackage = {
     schema: 'okf-governed-context.v1', context_id: '', engine: 'okf-context-assembly.v1', question,
     bundle: index.bundle, binding: bound, scope: index.scope, evidence_status: 'insufficient',
     resolved_concepts: resolution.resolved, ambiguities: resolution.ambiguities,
     unresolved_terms: resolution.unresolved, selected: [], relationships: [], requirements: [],
+    ...(guardDecisions.size ? { routing_guards: [...guardDecisions.values()].sort((a, b) => a.assertion_id.localeCompare(b.assertion_id)) } : {}),
     missing_evidence: missing, conflicts: [], limitations: [...index.limitations,
       'Sufficiency means closure of the applicable bundle-authored evidence requirements, not a verified answer or an individual decision.',
       'Only declared aliases are resolved. Unrecognised words are exposed; no external retrieval or model knowledge is used.',
@@ -544,6 +590,8 @@ async function assembleContextPass(
     ...(discovery ? { retrieval: discovery.retrieval } : {})
   };
   if (allocation) base.limitations.push('One additional allocation pass prioritised valid bundle-declared required paths after budget loss. Only original seeds and declared directed edges were used; priority does not upgrade authority or establish completeness.');
+  if (allocation && discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3')
+    base.limitations.push('An integrity-checked source unit with an unresolved boundary may receive path priority, but its boundary warning and insufficient evidence status remain.');
   if (discovery) {
     base.limitations.push('Lexical matches are candidate evidence, not resolved concepts or proof of applicability. Full-corpus indexing does not establish complete policy coverage.');
   }
@@ -578,7 +626,8 @@ async function assembleContextPass(
     // edges lost during allocation without reordering an otherwise equal result.
     const dependencyEdges = [...relationships.values(), ...index.assertions.filter(edge => !relationships.has(edge.id))];
     for (const assertion of dependencyEdges) {
-      if (assertion.predicate === REQUIRES && selected.has(assertion.source) && !selected.has(assertion.target)) {
+      if (assertion.predicate === REQUIRES && selected.has(assertion.source) && !selected.has(assertion.target)
+        && contextGuardDecision(assertion, recordById, seedIds)?.status !== 'unmatched') {
         addIssue(missing, { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.', ids: [assertion.source, assertion.target] });
       }
     }
@@ -615,6 +664,24 @@ async function assembleContextPass(
   refresh();
   // Reserve the hash and final byte-counter digits. Never cut an evidence passage.
   while (bytes(base) + 100 > limit.max_bytes && selected.size) {
+    // A v3 incident inventory retains exact assertions for later inspection.
+    // Repeated routes and edges to omitted destinations can cost more than the
+    // source itself. Omit unused full rows explicitly before removing evidence;
+    // never break a retained path or hide a dependency/required-path diagnostic.
+    if (discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3') {
+      const needed = new Set([...selected.values()].flatMap(row => row.paths.flatMap(path => path.assertions)));
+      for (const row of applicable) for (const path of row.required_paths || []) path.assertions.forEach(id => needed.add(id));
+      for (const row of allocation?.paths || []) row.path.assertions.forEach(id => needed.add(id));
+      const unused = [...relationships.values()].reverse().find(edge => !needed.has(edge.id));
+      if (unused) {
+        relationships.delete(unused.id);
+        addIssue(omissions, { code: 'relationship_byte_budget',
+          message: 'An assertion outside the retained paths was omitted whole to preserve source evidence within the byte budget. Its exact incident metadata remains source-bound.',
+          ids: [unused.id, unused.source, unused.target] });
+        refresh();
+        continue;
+      }
+    }
     const reverse = [...selected.keys()].reverse();
     const id = (allocation ? reverse.find(key => !allocation.records.has(key)) : undefined) || reverse[0];
     selected.delete(id);
@@ -631,7 +698,9 @@ async function assembleContextPass(
   if (bytes(base) + 100 > limit.max_bytes) {
     base.selected = []; base.relationships = []; base.requirements = [];
     base.resolved_concepts = []; base.ambiguities = []; base.unresolved_terms = [];
+    if (base.routing_guards) delete base.routing_guards;
     if (base.retrieval) base.retrieval = { ...base.retrieval, query_tokens: [], omitted_query_tokens: [], candidates: [], truncated: true, omissions: [{ code: 'metadata_budget', message: 'Retrieval details omitted at the package byte limit.', ids: [] }] };
+    if (base.retrieval?.discovery) delete base.retrieval.discovery;
     base.scope = 'The requested budget is too small for the package metadata.';
     base.limitations = ['No evidence or completeness claim is returned. Increase the byte budget to inspect the full diagnostics.'];
     base.conflicts = []; base.missing_evidence = [{ code: 'metadata_budget', message: 'Question interpretation and evidence diagnostics exceeded the byte budget.', ids: [] }];
@@ -648,6 +717,7 @@ async function assembleContextPass(
 export function explainContext(context: ContextPackage, recordId?: string): unknown {
   return recordId ? { context_id: context.context_id, evidence_status: context.evidence_status,
     item: context.selected.find((item) => item.record.id === recordId) || null,
+    ...(context.routing_guards ? { routing_guards: context.routing_guards.filter(row => row.source === recordId || row.target === recordId || row.assertion_id === recordId) } : {}),
     missing_evidence: context.missing_evidence.filter((item) => item.ids.includes(recordId)) }
     : context;
 }

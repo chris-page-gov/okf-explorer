@@ -4,6 +4,8 @@ import { contextSha256, MAX_CONTEXT_INDEX_BYTES } from './index';
 import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../test/contextFixture';
 import type { LargeCorpusDescriptor } from '../types';
 import type { ContextCorpusManifest } from './corpus';
+import { assembleCorpusContext } from './corpus';
+import { discoveryFixture } from '../../test/discoveryFixture';
 
 async function fixture() {
   const index = await studyClubContextFixture();
@@ -47,6 +49,21 @@ async function corpusFixture() {
 }
 
 describe('optional context source adapter', () => {
+  it('uses the existing Reader entrypoint to admit a source-bound discovery corpus without changing Reader records', async () => {
+    const { descriptor, payloads, fetcher } = await fixture(); const discovery = await discoveryFixture();
+    const raw = JSON.stringify(discovery.manifest);
+    payloads.set('https://example.test/corpus/manifest.json', raw);
+    descriptor.entrypoints.context_corpus = { path: 'corpus/manifest.json', bytes: new TextEncoder().encode(raw).length, sha256: await contextSha256(raw) };
+    const source = await loadLargeCorpus('https://example.test/bundle.json', descriptor);
+    expect(source.overview.title).toBe('Fixture');
+    expect(fetcher.mock.calls.some(([url]) => String(url).includes('/corpus/'))).toBe(false);
+    const bound = await source.loadContextAssembly!();
+    expect('corpus' in bound && bound.corpus.schema).toBe('okf-context-corpus.v3');
+    if (!('corpus' in bound)) throw new Error('Expected corpus');
+    const result = await assembleCorpusContext(bound.corpus, bound.binding, 'orchard', {}, discovery.fetcher);
+    expect(result.selected[0].record.id).toBe(discovery.records[0].id);
+    expect(result.retrieval!.discovery!.candidates[0].card.id).toBe(discovery.cards[0].id);
+  });
   it('loads a hash-bound direct semantic index above 4 MiB', async () => {
     const { descriptor, payloads } = await fixture();
     const index = await sizedStudyClubContextFixture(4 * 1024 * 1024 + 1);

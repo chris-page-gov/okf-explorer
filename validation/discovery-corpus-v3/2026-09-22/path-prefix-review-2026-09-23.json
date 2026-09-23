@@ -1,0 +1,54 @@
+{
+  "schema": "okf-independent-review.v1",
+  "repository": "chris-page-gov/okf-explorer",
+  "commit": "8a5b8d11a2d99935efca4ba8366812844061d928",
+  "scope": "Read-only incremental v3 observed required-path prefix priority and explicitly unresolved whole-source allocation",
+  "result": "no-blocker-in-reviewed-scope",
+  "bindings": [
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
+      "sha256": "77f18b685d261e4a9d76b5c63214cb8dcdac0e38ce5ecaf4d60ff4ed77dec2f3"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/index.ts",
+      "sha256": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/types.ts",
+      "sha256": "10215859405c3c6b0856af02f7fe48af7d23c0e8a272563512991fcd6e41a807"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/discovery-corpus.test.ts",
+      "sha256": "1f4a0b0c30fa2103ab9c9f772fdef3cf74cf995002eaaaf1f866bfe0cde769ca"
+    },
+    {
+      "path": "profiles/context-assembly/v1/package.schema.json",
+      "sha256": "3fd397be195c9fc889aab5195ee8edf306a44f6b241e7643d57dc4ce116c5d34"
+    },
+    {
+      "path": "tests/test_context_assembly.py",
+      "sha256": "1e97f6fff2751233583c118f306a0876847d37d82e79c197d39992f5b833e281"
+    }
+  ],
+  "observations": [
+    "An applicable declared path changes traversal priority only from an actually resolved concept, after each exact edge ID and source/target pair is observed in reached incident data and its guard matches. It does not create edges, fetch unseen requirement destinations or seed evidence.",
+    "Cyclic paths and paths beyond the requested depth receive no priority. Prefix work is deduplicated, bounded at 2000 and exhaustion emits retrieval_path_priority_budget while ordinary traversal remains available within unchanged shared ceilings.",
+    "The v3 allocation pass may retain an integrity-checked whole source unit whose boundary is unresolved. Other governance checks, access checks and source hashes remain required; the ordinary unresolved-boundary warning and insufficient requirement status are retained.",
+    "The opt-in allocation behaviour is v3-only; legacy v1/v2 behaviour and old optional package fields remain compatible.",
+    "Independent diff review covered generic fan-out, changed-hop rejection, unresolved-boundary retention and explicit prefix-cap controls."
+  ],
+  "owner_reported_validation": {
+    "focused_controls": 68,
+    "app_tests": 750,
+    "schema_evaluation_controls": 11,
+    "svelte_errors": 0,
+    "svelte_warnings": 0,
+    "docs_and_british_checks": "pass",
+    "reviewer_repeated_assemblies": 0
+  },
+  "limitations": [
+    "Priority only orders available evidence within fixed budgets; it does not establish relevance, complete passage boundaries, legal applicability or answerability.",
+    "The six-question diagnostic is not full acceptance. Root owns a new unchanged-source 40-question comparison; previous allocation regressions and all earlier trials remain retained.",
+    "This receipt is code review, not publication, browser or specialist acceptance."
+  ]
+}

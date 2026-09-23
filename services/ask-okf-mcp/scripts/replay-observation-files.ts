@@ -27,6 +27,7 @@ export async function freshDirectory(path: string) { await noSymlinks(dirname(re
 
 const inputs = new Set([
   '../../apps/okf-explorer/src/lib/context/corpus.ts', '../../apps/okf-explorer/src/lib/context/delivery.ts', '../../apps/okf-explorer/src/lib/context/index.ts',
+  '../../apps/okf-explorer/src/lib/context/corpusV3.ts',
   '../../apps/okf-explorer/src/lib/context/unit.ts', '../../profiles/context-assembly/v1/evidence-unit.schema.json',
   '../../profiles/context-assembly/v1/common.schema.json', '../../profiles/context-assembly/v1/package.schema.json',
   'package-lock.json', 'package.json', 'scripts/build.mjs',

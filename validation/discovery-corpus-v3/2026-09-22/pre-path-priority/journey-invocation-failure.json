@@ -1,0 +1,8 @@
+{
+  "schema": "okf-local-verification-failure.v1",
+  "candidate_commit": "af5f5183764afb45fe16a93e82866fffa6a29de7",
+  "failure": "Candidate bundle returned HTTP404: http://127.0.0.1:8002/publication/publication/okf-explorer.json",
+  "cause": "The invocation repeated the publication prefix in both bundle root and candidate path.",
+  "correction": "Use candidate-bundle /okf-explorer.json with bundle-root http://127.0.0.1:8002/publication/. The separate corrected run passed three journeys.",
+  "code_changed": false
+}

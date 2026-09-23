@@ -64,6 +64,18 @@ export type ContextAssertion = {
   provenance: ContextProvenance[];
   /** Existing bundle assertion identity, when this is a projection. */
   original_assertion_id?: string;
+  /** Routing condition, not a legal applicability assertion or an evidence seed. */
+  context_guard?: { when_all: string[] };
+};
+
+export type ContextGuardDecision = {
+  assertion_id: string;
+  source: string;
+  target: string;
+  when_all: string[];
+  missing_concepts: string[];
+  unavailable_concepts: string[];
+  status: 'matched' | 'unmatched';
 };
 
 /** Author-declared evidence needs, not an answer key or an engine rule. */
@@ -116,7 +128,7 @@ export type ContextSelection = {
 };
 /** Lexical discovery is evidence selection, never an entity-resolution claim. */
 export type ContextRetrieval = {
-  method: 'indexed-lexical-candidates.v1';
+  method: 'indexed-lexical-candidates.v1' | 'source-bound-discovery-bm25.v1';
   corpus_records: number;
   corpus_pages: number;
   empty_pages: number;
@@ -132,15 +144,30 @@ export type ContextRetrieval = {
   omissions: ContextIssue[];
   /** Additive v2 counters; absent for unchanged v1 page-corpus packages. */
   units?: {
-    corpus_schema: 'okf-context-corpus.v2';
+    corpus_schema: 'okf-context-corpus.v2' | 'okf-context-corpus.v3';
     referenced_records: string[];
     examined_relationships: number;
     limits: { referenced_records: number; examined_relationships: number };
+  };
+  /** Source-bound navigation summaries do not become evidence or concepts. */
+  discovery?: {
+    ranking: import('./corpusV3.ts').DiscoveryRanking;
+    limits: { posting_rows: number; ranking_records: number; path_prefixes?: number };
+    candidates: Array<{
+      card: import('./corpusV3.ts').DiscoveryCard | import('./corpusV3.ts').DiscoveryCardReference;
+      source_score: number; discovery_score: number;
+      matched_source: string[]; matched_discovery: string[];
+    }>;
+    adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] } | import('./corpusV3.ts').DiscoveryIncidentReference>;
+    admission_order?: 'resolved-concept-paths-before-lexical-candidates.v1' | 'lexical-anchor-then-resolved-concept-paths.v1'
+      | 'lexical-anchor-then-declared-path-prefixes.v1';
   };
 };
 export type ContextAssemblyOptions = {
   evidenceSeeds: Array<{ id: string; reason: string }>;
   retrieval: ContextRetrieval;
+  /** Guard decisions already encountered by the bounded lazy graph loader. */
+  guardDecisions?: ContextGuardDecision[];
 };
 export type ContextRequirementResult = ContextRequirement & {
   status: 'supported-within-declared-scope' | 'insufficient';
@@ -160,6 +187,8 @@ export type ContextPackage = {
   unresolved_terms: string[];
   selected: ContextSelection[];
   relationships: ContextAssertion[];
+  /** Present only when an explicitly guarded route was inspected. */
+  routing_guards?: ContextGuardDecision[];
   requirements: ContextRequirementResult[];
   missing_evidence: ContextIssue[];
   conflicts: ContextIssue[];

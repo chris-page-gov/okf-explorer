@@ -306,7 +306,10 @@
       "type": "object",
       "properties": {
         "method": {
-          "const": "indexed-lexical-candidates.v1"
+          "enum": [
+            "indexed-lexical-candidates.v1",
+            "source-bound-discovery-bm25.v1"
+          ]
         },
         "corpus_records": {
           "type": "integer",
@@ -421,7 +424,10 @@
           "type": "object",
           "properties": {
             "corpus_schema": {
-              "const": "okf-context-corpus.v2"
+              "enum": [
+                "okf-context-corpus.v2",
+                "okf-context-corpus.v3"
+              ]
             },
             "referenced_records": {
               "type": "array",
@@ -460,6 +466,161 @@
             "limits"
           ],
           "additionalProperties": false
+        },
+        "discovery": {
+          "type": "object",
+          "properties": {
+            "ranking": {
+              "type": "object",
+              "properties": {
+                "schema": {
+                  "const": "okf-bm25.v1"
+                },
+                "k1": {
+                  "const": 1.2
+                },
+                "b": {
+                  "const": 0.75
+                },
+                "score_scale": {
+                  "const": 1000000
+                },
+                "fields": {
+                  "const": [
+                    "source",
+                    "discovery"
+                  ]
+                }
+              },
+              "required": [
+                "schema",
+                "k1",
+                "b",
+                "score_scale",
+                "fields"
+              ],
+              "additionalProperties": false
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "posting_rows": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "ranking_records": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "path_prefixes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2000
+                }
+              },
+              "required": [
+                "posting_rows",
+                "ranking_records"
+              ],
+              "additionalProperties": false
+            },
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "card": {
+                    "oneOf": [
+                      {
+                        "$ref": "common.schema.json#/$defs/discovery_card"
+                      },
+                      {
+                        "$ref": "common.schema.json#/$defs/discovery_card_reference"
+                      }
+                    ]
+                  },
+                  "source_score": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "discovery_score": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "matched_source": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "matched_discovery": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "card",
+                  "source_score",
+                  "discovery_score",
+                  "matched_source",
+                  "matched_discovery"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "adjacency": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "outgoing_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "incoming_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "outgoing_ids",
+                      "incoming_ids"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "$ref": "common.schema.json#/$defs/discovery_incident_reference"
+                  }
+                ]
+              }
+            },
+            "admission_order": {
+              "enum": [
+                "resolved-concept-paths-before-lexical-candidates.v1",
+                "lexical-anchor-then-resolved-concept-paths.v1",
+                "lexical-anchor-then-declared-path-prefixes.v1"
+              ]
+            }
+          },
+          "required": [
+            "ranking",
+            "limits",
+            "candidates",
+            "adjacency"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -479,6 +640,14 @@
         "omissions"
       ],
       "additionalProperties": false
+    },
+    "routing_guards": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30000,
+      "items": {
+        "$ref": "common.schema.json#/$defs/context_guard_decision"
+      }
     }
   },
   "required": [

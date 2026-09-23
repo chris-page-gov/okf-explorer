@@ -1,17 +1,20 @@
 /** Hash-bound full-source lexical discovery. No source text is executed or treated as a completeness rule. */
 // @ts-ignore -- Explicit extension also supports the pinned Node type-stripping consumer.
-import { assembleContext, canonicalJson, CONTEXT_PREDICATES, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
+import { assembleContext, canonicalJson, contextGuardDecision, CONTEXT_PREDICATES, isQuestionScaffolding, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, resolveConcepts, validateContextIndex } from './index.ts';
 import type { ContextBinding, ContextBudget, ContextIndex, ContextPackage, ContextRecord, ContextRetrieval } from './types.ts';
+// @ts-ignore -- Pinned Node consumers use explicit TypeScript extensions.
+import { assembleDiscoveryCorpusContext, validateDiscoveryCorpusManifest, type DiscoveryCorpusManifest } from './corpusV3.ts';
 
 export type Reference = { path: string; bytes: number; sha256: string; encoding?: 'gzip'; decoded_bytes?: number; decoded_sha256?: string };
 export type ContextRecordShard = Reference & { first_ordinal: number; count: number; first_id?: string; last_id?: string };
-export type ContextCorpusManifest = {
+export type LegacyContextCorpusManifest = {
   schema: 'okf-context-corpus.v1' | 'okf-context-corpus.v2'; bundle: ContextIndex['bundle']; scope: string; limitations: string[];
   semantic_source_snapshot: string; base_index: Reference;
   counts: { documents: number; pages: number; nonempty_pages: number; empty_pages: number; tokenless_pages: number };
   records: { count: number; shards: ContextRecordShard[] };
   search: { tokenisation: 'nfkd-lowercase-ascii-alphanumeric-min2-v1'; bucket_algorithm: 'fnv1a32-high-byte-hex-v1'; shards: Record<string, Reference> };
 };
+export type ContextCorpusManifest = LegacyContextCorpusManifest | DiscoveryCorpusManifest;
 export const CORPUS_LIMITS = Object.freeze({ query_tokens: 24, candidates: 16, files: 64,
   fetched_bytes: 16 * 1024 * 1024, decoded_bytes: 32 * 1024 * 1024 });
 export const UNIT_REFERENCE_LIMITS = Object.freeze({ referenced_records: 200, examined_relationships: 2000 });
@@ -33,6 +36,7 @@ function reference(value: unknown, limit = FILE_LIMIT): void {
   if (value.encoding) check(integer(value.decoded_bytes, limit) && value.decoded_bytes > 0 && HASH.test(value.decoded_sha256), 'decoded byte/hash binding required');
 }
 export function validateContextCorpusManifest(raw: unknown): ContextCorpusManifest {
+  if (object(raw) && raw.schema === 'okf-context-corpus.v3') return validateDiscoveryCorpusManifest(raw);
   check(object(raw) && ['okf-context-corpus.v1', 'okf-context-corpus.v2'].includes(raw.schema) && size(raw) <= FILE_LIMIT, 'unsupported or oversized manifest');
   check(object(raw.bundle) && typeof raw.bundle.id === 'string' && typeof raw.bundle.snapshot === 'string', 'bundle identity');
   check(typeof raw.semantic_source_snapshot === 'string', 'semantic snapshot required');
@@ -97,6 +101,7 @@ async function readLimited(stream: ReadableStream<Uint8Array> | null, limit: num
 export async function assembleCorpusContext(raw: ContextCorpusManifest, binding: ContextBinding, question: string,
   budget: Partial<ContextBudget> = {}, fetcher: typeof fetch = fetch): Promise<ContextPackage> {
   const manifest = validateContextCorpusManifest(raw);
+  if (manifest.schema === 'okf-context-corpus.v3') return assembleDiscoveryCorpusContext(manifest, binding, question, budget, fetcher);
   const logical = manifest.schema === 'okf-context-corpus.v2';
   const unitBudget = logical ? normaliseContextBudget(budget) : undefined;
   check(typeof question === 'string' && question.trim().length > 0 && question.length <= 4000, 'question must contain 1–4000 characters');
@@ -217,6 +222,7 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     retrieval.candidates.push({ id: record.id, ...rank });
     evidenceSeeds.push({ id: record.id, reason: `${logical ? 'Whole-unit' : 'Whole-page'} lexical candidate: ${rank.matched.join(', ')}; score ${rank.score}. This is not an applicability or completeness assertion.` });
   }
+  const guardDecisions = new Map<string, import('./types.ts').ContextGuardDecision>();
   if (logical) {
     // Load destinations only along actual directed paths from resolved concepts
     // or lexical candidates. Requirement endpoints never become new seeds.
@@ -224,7 +230,8 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     for (const edge of [...index.assertions].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)) {
       const rows = outgoing.get(edge.source) || []; rows.push(edge); outgoing.set(edge.source, rows);
     }
-    const seeds = [...new Set([...resolveConcepts(base, question).resolved.map(row => row.id), ...evidenceSeeds.map(row => row.id)])].sort();
+    const resolvedIds = new Set(resolveConcepts(base, question).resolved.map(row => row.id));
+    const seeds = [...new Set([...resolvedIds, ...evidenceSeeds.map(row => row.id)])].sort();
     const queue = seeds.map(id => ({ id, depth: 0 })); const visited = new Set<string>(); const attempted = new Set<string>();
     let inspected = 0;
     for (let cursor = 0; cursor < queue.length; cursor++) {
@@ -250,6 +257,11 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
           omit('referenced_relationship_budget', 'The bounded declared-relationship loading limit was reached.', [id]); break;
         }
         inspected++;
+        const guard = contextGuardDecision(edge, byId, resolvedIds);
+        if (guard) {
+          guardDecisions.set(edge.id, guard);
+          if (guard.status === 'unmatched') continue;
+        }
         if (depth >= unitBudget!.max_depth) {
           if (!byId.has(edge.target)) omit('referenced_depth_budget', 'A declared destination exceeds the requested traversal depth.', [edge.id, edge.target]);
           continue;
@@ -259,5 +271,6 @@ export async function assembleCorpusContext(raw: ContextCorpusManifest, binding:
     }
     retrieval.units!.examined_relationships = inspected;
   }
-  return assembleContext(index, question, budget, binding, { evidenceSeeds, retrieval });
+  return assembleContext(index, question, budget, binding, { evidenceSeeds, retrieval,
+    ...(guardDecisions.size ? { guardDecisions: [...guardDecisions.values()] } : {}) });
 }

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profiles/context-assembly/v1/discovery-postings.schema.json",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "okf-context-postings.v2"
+    },
+    "postings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "postings"
+  ],
+  "additionalProperties": false
+}

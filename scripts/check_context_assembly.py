@@ -12,7 +12,7 @@ from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "profiles/context-assembly/v1"
-KINDS = {"index": "index", "package": "package", "case": "evaluation-case", "controls": "evaluation-controls", "corpus": "corpus-v2"}
+KINDS = {"index": "index", "package": "package", "case": "evaluation-case", "controls": "evaluation-controls", "corpus": "corpus-v2", "discovery_corpus": "corpus-v3", "discovery_cards": "discovery-cards", "discovery_postings": "discovery-postings", "context_adjacency": "context-adjacency"}
 
 
 def validators() -> dict[str, Draft202012Validator]:
