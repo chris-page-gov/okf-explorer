@@ -394,7 +394,7 @@ export async function assembleContext(
 ): Promise<ContextPackage> {
   const baseline = await assembleContextPass(raw, question, requested, binding, discovery);
   const pressure = baseline.budget.omissions.filter(issue =>
-    ['node_budget', 'relationship_budget', 'byte_budget'].includes(issue.code));
+    ['node_budget', 'relationship_budget', 'relationship_byte_budget', 'byte_budget'].includes(issue.code));
   if (!pressure.length || !baseline.resolved_concepts.length) return baseline;
   const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth);
   const lost = plan.paths.some(({ path }) => !retainedPath(baseline, path)
@@ -658,6 +658,24 @@ async function assembleContextPass(
   refresh();
   // Reserve the hash and final byte-counter digits. Never cut an evidence passage.
   while (bytes(base) + 100 > limit.max_bytes && selected.size) {
+    // A v3 incident inventory retains exact assertions for later inspection.
+    // Repeated routes and edges to omitted destinations can cost more than the
+    // source itself. Omit unused full rows explicitly before removing evidence;
+    // never break a retained path or hide a dependency/required-path diagnostic.
+    if (discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3') {
+      const needed = new Set([...selected.values()].flatMap(row => row.paths.flatMap(path => path.assertions)));
+      for (const row of applicable) for (const path of row.required_paths || []) path.assertions.forEach(id => needed.add(id));
+      for (const row of allocation?.paths || []) row.path.assertions.forEach(id => needed.add(id));
+      const unused = [...relationships.values()].reverse().find(edge => !needed.has(edge.id));
+      if (unused) {
+        relationships.delete(unused.id);
+        addIssue(omissions, { code: 'relationship_byte_budget',
+          message: 'An assertion outside the retained paths was omitted whole to preserve source evidence within the byte budget. Its exact incident metadata remains source-bound.',
+          ids: [unused.id, unused.source, unused.target] });
+        refresh();
+        continue;
+      }
+    }
     const reverse = [...selected.keys()].reverse();
     const id = (allocation ? reverse.find(key => !allocation.records.has(key)) : undefined) || reverse[0];
     selected.delete(id);

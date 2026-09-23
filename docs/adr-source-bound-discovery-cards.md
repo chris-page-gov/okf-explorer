@@ -102,13 +102,17 @@ assertions using the existing `references`, `requires` and SKOS predicates.
 Incoming assertions support navigation and audit; they are never silently
 reversed or used to create new search seeds. Requirements never create seeds.
 
-The admission order is explicit: finish the naturally reachable paths from
-resolved concepts before reading lexical candidates. Both phases share the same
-file, byte, depth and work ceilings. This prevents scattered lexical shards from
-spending the file allowance before an already identified concept can reach its
-declared guidance. A later lexical seed can revisit an earlier node at a shorter
-depth; this neither reverses an edge nor invents a seed from an assessor's
-requirements. A lexical candidate omitted by a shared ceiling remains reported.
+The admission order is explicit: read the bounded query postings and hydrate
+one highest-ranked whole evidence unit, then follow naturally reachable paths
+from resolved concepts before hydrating the remaining lexical candidates.
+`lexical-anchor-then-resolved-concept-paths.v1` prevents graph fan-out from
+exhausting discovery while preventing the full lexical shortlist from starving
+declared routes. The anchor has the same source/card integrity checks and is
+only candidate evidence. All phases share the same file, byte, depth and work
+ceilings. A later lexical seed can revisit an earlier node at a shorter depth;
+this neither reverses an edge nor invents a seed from an assessor's requirements.
+A lexical candidate omitted by a shared ceiling remains reported. The preceding
+graph-first admission identity remains accepted for retained packages.
 
 Missing cards, stale whole-record bindings, malformed incident commitments,
 inconsistent directions, missing declared adjacency entries and altered files
@@ -122,6 +126,17 @@ and 2,000 examined relationships. V3 additionally bounds ranking to 2,000,000
 posting rows and 200,000 distinct records. Cards have a maximum 2,000-character
 summary, 20 heading components and 100 search aliases; every fetched shard is
 bounded before decoding. Whole evidence units still fit or are omitted whole.
+
+V3 byte allocation first omits full relationship rows that appear in neither a
+retained selected path nor an applicable bundle-required path. Repeated routes
+can carry extensive incident provenance; keeping every unused row inline must
+not force whole source units out first. Each `relationship_byte_budget` omission
+retains the exact assertion, source and target IDs and makes the package
+insufficient. The committed incident reference can recover the complete row,
+including its scope, status and provenance. Dependency and requirement checks
+are recomputed against the retained package; an omitted row cannot make a gap
+disappear. Used path assertions and whole evidence remain indivisible. This is
+an allocation policy, not a change to the graph or its authority.
 
 The assembled package can be larger than a transport response. Existing
 `okf_context_manifest` and `okf_read_evidence` return exact bounded portions,

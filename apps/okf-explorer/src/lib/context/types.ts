@@ -159,7 +159,7 @@ export type ContextRetrieval = {
       matched_source: string[]; matched_discovery: string[];
     }>;
     adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] } | import('./corpusV3.ts').DiscoveryIncidentReference>;
-    admission_order?: 'resolved-concept-paths-before-lexical-candidates.v1';
+    admission_order?: 'resolved-concept-paths-before-lexical-candidates.v1' | 'lexical-anchor-then-resolved-concept-paths.v1';
   };
 };
 export type ContextAssemblyOptions = {

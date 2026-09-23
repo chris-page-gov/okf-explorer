@@ -1,5 +1,15 @@
 # Changelog
 
+## Discovery and evidence allocation — 23 September 2026
+
+- Give bounded lexical discovery one fully checked source unit before graph
+  expansion, then prioritise resolved-concept paths ahead of the remaining
+  lexical candidates. Keep ranking parameters and all resource limits fixed.
+- Under v3 byte pressure, explicitly omit unused full relationship rows before
+  whole evidence. Preserve selected and declared required paths, every omitted
+  assertion and endpoint ID, exact lazy incident metadata, and missing-dependency
+  checks. Retain the failed full-corpus observation and unmodified v1/v2 replay.
+
 ## Scoped context routes — 23 September 2026
 
 - Add optional conjunctive routing guards to bundle assertions. Evaluate them

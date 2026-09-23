@@ -211,7 +211,7 @@ describe('source-bound discovery corpus v3', () => {
     }
     expect(canonicalJson(result)).toBe(before);
   });
-  it('admits declared concept paths before dispersed lexical candidates spend the same file limit', async () => {
+  it('admits one lexical anchor then declared concept paths before the remaining dispersed candidates', async () => {
     const f = await discoveryFixture(70, 1);
     f.assertions[0].target = f.records[68].id;
     f.assertions[1].source = f.records[68].id;
@@ -221,9 +221,79 @@ describe('source-bound discovery corpus v3', () => {
     const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle quartz', { max_bytes: 524288 }, f.fetcher);
     expect(result.requirements[0].status).toBe('supported-within-declared-scope');
     expect(result.retrieval!.fetched_files).toBeLessThanOrEqual(64);
-    expect(result.retrieval!.discovery!.admission_order).toBe('resolved-concept-paths-before-lexical-candidates.v1');
-    expect(f.calls.indexOf('units/68.json')).toBeLessThan(f.calls.indexOf('units/0.json'));
+    expect(result.retrieval!.discovery!.admission_order).toBe('lexical-anchor-then-resolved-concept-paths.v1');
+    expect(f.calls.indexOf('units/0.json')).toBeLessThan(f.calls.indexOf('units/68.json'));
+    expect(f.calls.indexOf('units/68.json')).toBeLessThan(f.calls.indexOf('units/1.json'));
     expect(result.selected.find(s => s.record.id === f.records[69].id)!.paths[0].assertions).toEqual(f.assertions.map(e => e.id));
+  });
+  it('retains an exact lexical anchor when declared graph fan-out spends the shared file allowance', async () => {
+    const f = await discoveryFixture(70, 1);
+    const template = f.assertions[0];
+    f.assertions.splice(0, f.assertions.length, ...f.records.slice(0, 69).map((row, i) => ({
+      ...template, id: template.id + '-' + String(i).padStart(3, '0'), target: row.id
+    })));
+    f.cards[69].label = 'Archive focus';
+    f.base.requirements = [];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle archive focus', { max_bytes: 524288 }, f.fetcher);
+    const anchor = result.selected.find(row => row.record.id === f.records[69].id)!;
+    expect(anchor.record).toEqual(f.records[69]);
+    expect(anchor.paths[0]).toEqual({ seed: f.records[69].id, records: [f.records[69].id], assertions: [] });
+    expect(result.retrieval!.candidate_count).toBeGreaterThan(0);
+    expect(result.retrieval!.fetched_files).toBe(64);
+    expect(result.retrieval!.omissions.some(row => row.code === 'retrieval_resource_budget')).toBe(true);
+    expect(result.evidence_status).toBe('insufficient');
+    expect(f.calls.indexOf('units/69.json')).toBeLessThan(f.calls.indexOf('units/0.json'));
+    const firstCalls = [...f.calls]; f.calls.length = 0;
+    expect(await assembleCorpusContext(f.manifest, f.binding, 'Reading circle archive focus', { max_bytes: 524288 }, f.fetcher)).toEqual(result);
+    expect(f.calls).toEqual(firstCalls);
+  });
+  it('omits unused large incident rows before whole evidence, preserving selected and required paths', async () => {
+    const f = await discoveryFixture();
+    const template = f.assertions[0];
+    for (let n = 0; n < 24; n++) f.assertions.push({ ...template,
+      id: template.id + '-parallel-' + String(n).padStart(2, '0'),
+      scope: 'Separate synthetic route scope. '.repeat(250),
+      provenance: template.provenance.map(p => ({ ...p, locator: 'Detailed source location. '.repeat(160) }))
+    });
+    const protectedEdge = f.assertions.at(-1)!;
+    f.base.requirements[0].required_paths!.push({ seed: f.concept.id,
+      records: [f.concept.id, f.records[0].id], assertions: [protectedEdge.id] });
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Reading circle', { max_bytes: 131072 }, f.fetcher);
+    expect(result.selected.filter(row => row.record.kind === 'evidence').map(row => row.record)).toEqual([f.records[0], f.records[2]]);
+    expect(result.relationships.some(row => row.id === protectedEdge.id)).toBe(true);
+    expect(result.requirements[0].status).toBe('supported-within-declared-scope');
+    const omitted = result.budget.omissions.filter(row => row.code === 'relationship_byte_budget');
+    expect(omitted.length).toBeGreaterThan(0);
+    for (const row of omitted) {
+      const edge = f.assertions.find(e => e.id === row.ids[0])!;
+      expect(row.ids).toEqual([edge.id, edge.source, edge.target]);
+      expect(result.relationships.some(e => e.id === edge.id)).toBe(false);
+      expect(result.selected.some(item => item.paths.some(path => path.assertions.includes(edge.id)))).toBe(false);
+      expect(result.requirements.some(req => req.required_paths?.some(path => path.assertions.includes(edge.id)))).toBe(false);
+    }
+    for (const row of result.selected) for (const path of row.paths)
+      expect(path.assertions.every(id => result.relationships.some(edge => edge.id === id))).toBe(true);
+    const reference = result.retrieval!.discovery!.adjacency.find(row => row.id === f.concept.id) as DiscoveryIncidentReference;
+    const full = await readDiscoveryIncident(f.manifest, f.binding, reference, f.fetcher);
+    for (const row of omitted) expect(full.outgoing.find(edge => edge.id === row.ids[0])).toEqual(f.assertions.find(edge => edge.id === row.ids[0]));
+    expect(result.budget.used_bytes).toBeLessThanOrEqual(131072);
+    expect(result.budget.truncated).toBe(true);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('keeps dependency and missing-destination diagnostics when an unused full assertion is omitted', async () => {
+    const f = await discoveryFixture();
+    f.assertions[1].scope = 'Large qualification with a missing destination. '.repeat(2500);
+    f.assertions[1].target = 'https://example.test/unit/missing';
+    f.base.requirements = [];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'orchard', { max_bytes: 32768 }, f.fetcher);
+    expect(result.selected.find(row => row.record.id === f.records[0].id)!.record).toEqual(f.records[0]);
+    expect(result.missing_evidence.find(row => row.code === 'missing_dependency')!.ids).toEqual([f.records[0].id, f.assertions[1].target]);
+    expect(result.missing_evidence.some(row => row.code === 'missing_record' && row.ids.includes(f.assertions[1].target))).toBe(true);
+    expect(result.budget.omissions.find(row => row.code === 'relationship_byte_budget')!.ids).toEqual([f.assertions[1].id, f.assertions[1].source, f.assertions[1].target]);
+    expect(result.evidence_status).toBe('insufficient');
   });
   it('exposes missing destinations and required dependencies at requested depth', async () => {
     const f = await discoveryFixture();

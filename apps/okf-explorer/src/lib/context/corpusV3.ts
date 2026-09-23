@@ -188,7 +188,7 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     candidate_count: 0, candidates: [], fetched_files: 0, fetched_bytes: 0, decoded_bytes: 0, limits: { ...CORPUS_LIMITS }, truncated: false, omissions: [],
     units: { corpus_schema: 'okf-context-corpus.v3', referenced_records: [], examined_relationships: 0, limits: { ...UNIT_REFERENCE_LIMITS } },
     discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS },
-      admission_order: 'resolved-concept-paths-before-lexical-candidates.v1' } };
+      admission_order: 'lexical-anchor-then-resolved-concept-paths.v1' } };
   const omit = (code: string, message: string, ids: string[] = []) => { retrieval.truncated = true; retrieval.omissions.push({ code, message, ids }); };
   const cache = new Map<string, Promise<any | null>>();
   const load = (reference: Reference): Promise<any | null> => {
@@ -342,10 +342,9 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     }
   }
   };
-  // Actual concept aliases supply seeds, never assessor requirements. Complete
-  // their declared outgoing paths before lexical candidates spend the shared
-  // file budget. All phases retain the same transfer/work/depth ceilings.
-  await expand([...resolvedIds].sort());
+  // Bound query discovery before graph fan-out can spend every resource slot.
+  // One highest-ranked whole unit gets an independent lexical seed; the rest
+  // wait behind real concept paths. No requirement supplies a retrieval seed.
   const wanted = [...new Set(discoveryTokens(question))].filter(t => !isQuestionScaffolding(t));
   retrieval.query_tokens = wanted.filter(t => t.length <= 64).slice(0, CORPUS_LIMITS.query_tokens);
   retrieval.omitted_query_tokens = wanted.filter(t => !retrieval.query_tokens.includes(t));
@@ -382,20 +381,23 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
   retrieval.candidate_count = ranks.size;
   const ranked = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]).slice(0, CORPUS_LIMITS.candidates);
   if (ranks.size > ranked.length) omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
-  for (const [ordinal, rank] of ranked) {
-    const unit = await readUnit(ordinal); if (!unit) continue;
+  const admitRanked = async ([ordinal, rank]: [number, Rank]) => {
+    const unit = await readUnit(ordinal); if (!unit) return;
     const source = discoveryTokens(unit.record.text), discovery = discoveryTokens(discoveryText(unit.card));
     for (const [token, p] of rank.facts) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
       && p[3] === discovery.filter(t => t === token).length && p[4] === discovery.length, 'postings differ from bound source or discovery text');
-    if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); continue; }
-    if (!include(unit.record)) continue;
+    if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); return; }
+    if (!include(unit.record)) return;
     retrieval.candidates.push({ id: unit.record.id, score: rank.score, matched: rank.matched });
     const card: DiscoveryCardReference = { schema: 'okf-discovery-card-reference.v1', id: unit.card.id,
       evidence_id: unit.record.id, card_sha256: await contextSha256(canonicalJson(unit.card)), ordinal };
     retrieval.discovery!.candidates.push({ card, source_score: rank.source_score, discovery_score: rank.discovery_score,
       matched_source: rank.matched_source, matched_discovery: rank.matched_discovery });
     evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')}). The card is not evidence or a concept-resolution claim.` });
-  }
+  };
+  if (ranked.length) await admitRanked(ranked[0]);
+  await expand([...resolvedIds].sort());
+  for (const candidate of ranked.slice(1)) await admitRanked(candidate);
   await expand([...new Set(evidenceSeeds.map(r => r.id))].sort());
   return assembleContext(index, question, requested, binding, { evidenceSeeds, retrieval,
     ...(guardDecisions.size ? { guardDecisions: [...guardDecisions.values()] } : {}) });

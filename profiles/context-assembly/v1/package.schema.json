@@ -602,7 +602,10 @@
               }
             },
             "admission_order": {
-              "const": "resolved-concept-paths-before-lexical-candidates.v1"
+              "enum": [
+                "resolved-concept-paths-before-lexical-candidates.v1",
+                "lexical-anchor-then-resolved-concept-paths.v1"
+              ]
             }
           },
           "required": [
