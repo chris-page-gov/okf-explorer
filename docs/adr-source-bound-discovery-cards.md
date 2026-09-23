@@ -252,7 +252,8 @@ quality, affordability or measured speed. No service admission or deployment is
 implied by the browser consumer supporting the new contract.
 
 The [local verification record](../validation/discovery-corpus-v3/2026-09-22/README.md)
-retains the allocation and guarded-engine stages separately, including independent
+retains the allocation, guarded-engine and observed-path-priority stages separately,
+including independent
 review, fixed-source DWP limitations and fresh identity-bound Heritage browser
 receipts. Those regression receipts do not substitute for the final domain or
 public-client acceptance gates.

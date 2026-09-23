@@ -2,6 +2,10 @@
 
 ## Required-path admission — 23 September 2026
 
+- Refresh the exact candidate browser receipts: 100 Heritage questions and three
+  journeys pass. Retain the preceding allocation regression and independent
+  review; final domain and deployed-client checks remain separate.
+
 - Give applicable declared paths priority only as their exact next directed hop
   is encountered from a resolved concept. Missing edges are never supplied by
   requirements; prefix work is explicitly bounded and truncated when necessary.

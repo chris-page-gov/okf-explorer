@@ -1,0 +1,53 @@
+{
+  "schema": "okf-independent-review.v1",
+  "repository": "chris-page-gov/okf-explorer",
+  "commit": "af5f5183764afb45fe16a93e82866fffa6a29de7",
+  "scope": "Read-only incremental v3 lexical anchor and explicit unused-assertion byte allocation correction",
+  "result": "no-blocker-in-reviewed-scope",
+  "bindings": [
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
+      "sha256": "d563fe53f793e4b88be6be05f010775d6875e19bfa91bdf3c72502754914c339"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/index.ts",
+      "sha256": "900ad5f64767d83d1b19ae23b48a0029eba1d1348bbc6abcd336c9c861f8b1ca"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/types.ts",
+      "sha256": "ebe55fc93b6d76446c8cbfa9ca52675ff08204578efd65ca17684e9d342d18d5"
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/discovery-corpus.test.ts",
+      "sha256": "a3b9a276f30dbefb838a8a7b525ffdd81c93a5c7499ea36d6bd1a3ef84d00ae4"
+    },
+    {
+      "path": "profiles/context-assembly/v1/package.schema.json",
+      "sha256": "6376ebb8bb4b42b365538216d1b87912957c9f3b74a3afb682e69e9901d2d930"
+    }
+  ],
+  "observations": [
+    "Bounded query postings and one highest-ranked whole source/card are admitted before actual resolved-concept fan-out; remaining lexical candidates follow.",
+    "Ranking, source/card identity, guards and resource ceilings remain unchanged. Requirements do not supply retrieval seeds.",
+    "The v3-only byte-pressure loop omits whole full assertion rows only if no selected path, applicable required path or allocation path uses them.",
+    "Every omitted assertion retains its ID and both endpoints in explicit relationship_byte_budget diagnostics; its exact incident metadata remains source-bound and recoverable.",
+    "Refresh checks original declared REQUIRES edges even when a full row was omitted, retaining missing-dependency diagnostics.",
+    "Generic controls cover64-file fan-out, required-edge protection, selected-path integrity, exact metadata recovery and missing dependencies."
+  ],
+  "owner_reported_validation": {
+    "focused_controls": 64,
+    "app_tests": 746,
+    "schema_evaluation_controls": 11,
+    "svelte_errors": 0,
+    "svelte_warnings": 0,
+    "docs_and_british_checks": "pass",
+    "reviewer_repeated_assemblies": 0
+  },
+  "limitations": [
+    "One lexical anchor is not a guarantee of relevant evidence or of legal answerability.",
+    "Graph-first versus lexical-first resource competition remains bounded and explicitly reported.",
+    "Omitted full relationship rows reduce inline graph detail; an AI client must use bound incident reads to reconstruct them.",
+    "Owner four-question probe was positive but not treated as full acceptance; unchanged40-question comparison is separate.",
+    "No deployment, browser, specialist acceptance or answer quality claim follows from this code review."
+  ]
+}

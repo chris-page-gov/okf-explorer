@@ -158,3 +158,50 @@ build manifest and correctly failed verification. The governed deterministic
 build then produced that manifest; the repeated Site assembly and actual browser
 observation passed. This refresh does not establish final DWP acceptance or
 public runtime adoption.
+
+## Final-corpus allocation checks and retained regressions
+
+The larger source-led DWP corpus exposed a further competition between graph
+metadata and complete evidence. Its trial 03 retained all 47 inherited declared
+paths, but one question returned no source evidence at 512 KiB. Shared file
+limits could be spent before a lexical source was read, and large unused
+incident rows could force whole evidence units out of the inline package.
+
+The `af5f5183` candidate admitted one complete lexical source before actual
+concept traversal and omitted unused inline relationship rows under byte
+pressure. Omission IDs and committed incident metadata remained inspectable;
+selected and required paths were protected. Generic controls and a new actual
+Heritage browser run passed, but DWP trial 04 lost an inherited declared path
+(46 of 47 retained). That domain regression remains a failed acceptance attempt.
+`pre-admission-balance/` preserves the preceding candidate receipts, and
+`pre-path-priority/` preserves the `af5f5183` observations. The latter also retains
+a mistaken local journey URL invocation; its corrected invocation passed all
+three journeys. No test expectation was weakened to discard that failure.
+
+The separately reviewed `8a5b8d11` candidate gives applicable declared paths
+priority only after their exact, guarded edge prefixes are observed from an
+actually resolved concept. Requirements do not create edges or seed evidence.
+Prefix work is bounded at 2,000 and exhaustion remains explicit. Integrity-bound
+whole units with unresolved boundaries can be retained for review; their existing
+boundary warnings and insufficient status remain. Ranking parameters and all
+existing transport limits are unchanged.
+
+Local checks on this candidate pass: 750 application tests, including 68 focused
+discovery and guard controls; 11 Python schema/evaluation controls; and Svelte
+with zero errors and warnings. Documentation, British English and whitespace
+checks pass. A fresh study-club execution preserves the full retained v1 package,
+and the retained v2 replay control passes. The independent
+[path-prefix review](path-prefix-review-2026-09-23.json) records the exact code
+bindings and boundaries; the preceding
+[allocation review](anchor-allocation-review-2026-09-23.json) is also retained.
+
+Its deterministic app build has tree SHA-256
+`430fbf5477e0d8f7597ac745e1d84b289e4c519751a12c6c9ee42d459196c662`
+and manifest SHA-256
+`57a05e96c5d8e4265ab22b0c2f5fc5a5d4d942ce950ffee7c1e6c118f06f940e`.
+All 100 actual local Heritage questions pass the 80-point threshold (mean 92.6),
+and all three interaction journeys pass. The current receipt binds those new
+observations; its four materialisation controls pass. DWP's separate trial 05
+and actual Reader/Ask browser acceptance remain adoption gates. Neither these
+checks nor the static application release admits the source or engine to the
+remote Ask OKF service.
