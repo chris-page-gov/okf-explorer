@@ -311,14 +311,20 @@ hard contract/core errors from explicit migration warnings so legacy local
 predicate names or descriptor-only YAML-LD remain visible rather than being
 silently treated as complete.
 
-The reviewed `okf-uk-living` producer must also declare the complete rich
-relationship runtime: its manifest, bounded gzip plane chunks, SHA-256 route
-locator and buckets, and the four executable Draft 2020-12 runtime schemas.
-The reconciler validates every row against the pinned local schemas, rejects
-remote or recursive schema references, and checks both route-scoped and
-whole-plane loading against the Reader's aggregate row, chunk, compressed-byte
-and retained-text ceilings. When a reviewed producer is checked from a renamed
-worktree, bind its external identity explicitly without granting write access:
+The reviewed `okf-uk-living` and `okf-uk-government-apis` producers must also
+declare the complete rich relationship runtime: its manifest, bounded gzip
+plane chunks, SHA-256 route locator and buckets, and the four executable Draft
+2020-12 runtime schemas. References inside an Explorer descriptor are resolved
+from that descriptor's publication directory, including when the publication
+is nested under `bundle/`. Compatibility relationship chunks remain separate
+from the exact shard set committed by the rich-runtime manifest.
+
+The reconciler validates every rich-runtime row against the pinned local
+schemas, rejects remote or recursive schema references, and checks both
+route-scoped and whole-plane loading against the Reader's aggregate row,
+chunk, compressed-byte and retained-text ceilings. When a reviewed producer is
+checked from a renamed worktree, bind its external identity explicitly without
+granting write access:
 
 ```sh
 uv run --locked python scripts/reconcile_okf_repositories.py \

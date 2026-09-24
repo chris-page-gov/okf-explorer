@@ -460,13 +460,97 @@ PRESETS: dict[str, Preset] = {
         setup=("python -m pip install -e \".[test]\"",),
     ),
     "okf-uk-government-apis": Preset(
-        "large-corpus-producer", "bundle/index.md", "generated-yaml-ld-sharded-graph",
-        ("scripts/", "context/", "schemas/", "tests/fixtures/"),
-        (("bundle/okf-bundle.yamlld", "semantic-yaml-ld", True), ("bundle/okf-bundle.jsonld", "semantic-json-ld", True), ("bundle/okf-explorer.json", "explorer-runtime", True), ("bundle/data/relationships-*.json.gz", "relationship-runtime", True), ("bundle/data/semantic/manifest.json", "semantic-manifest", True), ("bundle/data/semantic/*.jsonld.gz", "semantic-json-ld-shards", True), ("bundle/context/okf-bundle-v1.jsonld", "semantic-context", True), ("bundle/schemas/okf-relationship-assertion.v2.schema.json", "relationship-schema", True), ("bundle/data/predicate-registry.json", "predicate-registry", True)),
-        "generated-yaml-ld-sharded-assertion-graph", "generated-from-one-assertion-source-across-pinned-shards", "json-large-corpus-adjacency",
-        ("python3 scripts/upgrade_publication.py", "python3 scripts/build_checksums.py"),
-        ("python3 -m unittest discover -s tests -v", "python3 scripts/check_bundle.py", "python3 scripts/build_checksums.py --check", "python3 ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict"),
-        ("The semantic graph is a metadata-only catalogue snapshot, not live service state or an assurance register; publication of changed bytes remains subject to the repository's existing review and release gates.",),
+        "large-corpus-producer",
+        "bundle/index.md",
+        "generated-yaml-ld-sharded-graph",
+        (
+            "scripts/",
+            "sources/wayfinder/2026-09-24/",
+            "context/",
+            "profiles/bundle-wiki/v1/",
+            "profiles/bundle-wiki/v1.vendor-lock.json",
+            "pyproject.toml",
+            "schemas/",
+            "tests/fixtures/",
+            "uv.lock",
+        ),
+        (
+            ("bundle/okf-bundle.yamlld", "semantic-yaml-ld", True),
+            ("bundle/okf-bundle.jsonld", "semantic-json-ld", True),
+            ("bundle/okf-explorer.json", "explorer-runtime", True),
+            (
+                "bundle/data/relationships-*.json.gz",
+                "relationship-runtime",
+                True,
+            ),
+            ("bundle/data/semantic/manifest.json", "semantic-manifest", True),
+            (
+                "bundle/data/semantic/*.jsonld.gz",
+                "semantic-json-ld-shards",
+                True,
+            ),
+            (
+                "bundle/data/semantic/validation-report.json",
+                "semantic-validation",
+                True,
+            ),
+            (
+                "bundle/data/relationship-runtime/manifest.json",
+                "relationship-runtime-manifest",
+                True,
+            ),
+            (
+                "bundle/data/relationship-runtime/planes/**/*.json.gz",
+                "relationship-runtime",
+                True,
+            ),
+            (
+                "bundle/data/relationship-runtime/route-locator/manifest.json",
+                "relationship-route-locator",
+                True,
+            ),
+            (
+                "bundle/data/relationship-runtime/route-locator/*.json.gz",
+                "relationship-route-locator",
+                True,
+            ),
+            (
+                "bundle/context/okf-bundle-v1.jsonld",
+                "semantic-context",
+                True,
+            ),
+            (
+                "bundle/schemas/okf-relationship-assertion.v2.schema.json",
+                "relationship-schema",
+                True,
+            ),
+            (
+                "bundle/schemas/relationship-*.schema.json",
+                "relationship-runtime-schema",
+                True,
+            ),
+            ("bundle/data/predicate-registry.json", "predicate-registry", True),
+        ),
+        "generated-yaml-ld-sharded-assertion-graph",
+        "generated-from-one-assertion-source-across-pinned-shards",
+        "federation-control-plane-plus-bounded-rich-relationship-runtime",
+        (
+            "uv run --locked python scripts/upgrade_publication.py",
+            "uv run --locked python scripts/build_checksums.py",
+        ),
+        (
+            "uv run --locked python -m unittest discover -s tests -v",
+            "uv run --locked python scripts/check_bundle.py",
+            "uv run --locked python scripts/build_checksums.py --check",
+            "uv run --project ../okf-explorer --locked python ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict",
+        ),
+        (
+            "The semantic graph is a metadata-only catalogue snapshot, not live service state or an assurance register; publication of changed bytes remains subject to the repository's existing review and release gates.",
+            "The complete assertion graph remains in semantic shards and compatibility chunks. The default rich Reader runtime is a governed material subset selected to remain within aggregate row, compressed-byte and retained-text ceilings; excluded bulk facet and reciprocal compatibility edges remain available outside that default projection.",
+            "Wayfinder records are fictional synthetic comparison material with record-level rights not specified. Their relationships are rejected from real-world catalogue admission and are not default-loaded through the bounded material runtime.",
+        ),
+        setup=("uv sync --locked",),
+        requires_rich_relationship_runtime=True,
     ),
     "okf-uk-legislation": Preset(
         "federation", "whole-law/index.md", "generated-yaml-ld-sharded-graph",
@@ -2302,6 +2386,65 @@ def _rich_runtime_declared_paths(
     return paths
 
 
+def _rich_runtime_publication_paths(
+    repo: Path,
+    preset: Preset,
+    role: str,
+    publication_root: Path,
+    *,
+    within: Path | None = None,
+) -> set[str]:
+    """Return reviewed outputs in the descriptor's path namespace.
+
+    Explorer descriptor references are relative to the directory containing the
+    descriptor. Preset declarations remain repository-relative, so the deep
+    audit must deliberately translate between those two namespaces.
+    """
+    paths: set[str] = set()
+    scope_root = publication_root / within if within is not None else None
+    for relative in _rich_runtime_declared_paths(repo, preset, role):
+        try:
+            path = contained_repository_path(repo, relative)
+        except ValueError as exc:
+            raise ArtifactReadError(
+                f"invalid reviewed {role} path {relative}: {exc}"
+            ) from exc
+        if not path.is_relative_to(publication_root):
+            raise ArtifactReadError(
+                f"reviewed {role} output lies outside the Explorer publication root: "
+                f"{relative}"
+            )
+        if scope_root is not None and not path.is_relative_to(scope_root):
+            continue
+        paths.add(path.relative_to(publication_root).as_posix())
+    return paths
+
+
+def _rich_runtime_literal_publication_paths(
+    repo: Path,
+    preset: Preset,
+    role: str,
+    publication_root: Path,
+) -> set[str]:
+    """Return non-glob reviewed outputs in the publication path namespace."""
+    paths: set[str] = set()
+    for item in preset.outputs:
+        if item[1] != role or any(character in item[0] for character in "*?["):
+            continue
+        _, path = _rich_runtime_path(
+            repo,
+            item[0],
+            f"reviewed {role} output",
+        )
+        if not path.is_relative_to(publication_root):
+            raise ArtifactReadError(
+                f"reviewed {role} output lies outside the Explorer publication root: "
+                f"{item[0]}"
+            )
+        paths.add(path.relative_to(publication_root).as_posix())
+    return paths
+
+
 def _rich_runtime_descriptor_path(preset: Preset) -> str:
     paths = [item[0] for item in preset.outputs if item[1] == "explorer-runtime"]
     if len(paths) != 1 or any(character in paths[0] for character in "*?["):
@@ -2448,6 +2591,7 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
         raise ArtifactReadError(
             f"required Explorer descriptor is absent: {descriptor_relative}"
         )
+    publication_root = descriptor_path.parent
     _, descriptor_value = _rich_runtime_json(
         descriptor_path, f"Explorer descriptor {descriptor_relative}"
     )
@@ -2460,7 +2604,9 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
         data_manifest_reference, "Explorer data-manifest entrypoint"
     )
     data_manifest_relative, data_manifest_path = _rich_runtime_path(
-        repo, data_manifest_relative, "Explorer data-manifest entrypoint"
+        publication_root,
+        data_manifest_relative,
+        "Explorer data-manifest entrypoint",
     )
     if not data_manifest_path.is_file():
         raise ArtifactReadError(
@@ -2551,15 +2697,20 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             "descriptor and data-manifest relationship-runtime byte counts differ"
         )
 
-    expected_runtime_paths = _rich_runtime_declared_paths(
-        repo, preset, "relationship-runtime-manifest"
+    expected_runtime_paths = _rich_runtime_publication_paths(
+        repo,
+        preset,
+        "relationship-runtime-manifest",
+        publication_root,
     )
     if expected_runtime_paths != {descriptor_runtime_path}:
         raise ArtifactReadError(
             "relationship-runtime entrypoint differs from the reviewed required manifest"
         )
     runtime_relative, runtime_path = _rich_runtime_path(
-        repo, descriptor_runtime_path, "relationship-runtime manifest"
+        publication_root,
+        descriptor_runtime_path,
+        "relationship-runtime manifest",
     )
     if not runtime_path.is_file():
         raise ArtifactReadError(
@@ -2606,7 +2757,7 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
         runtime.get("generated_at"), "relationship-runtime generation time"
     )
     semantic_manifest_relative, semantic_manifest_path = _rich_runtime_path(
-        repo,
+        publication_root,
         runtime.get("semantic_manifest"),
         "relationship-runtime semantic manifest",
     )
@@ -2616,7 +2767,7 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             f"{semantic_manifest_relative}"
         )
     assertion_contract_relative, assertion_contract_path = _rich_runtime_path(
-        repo,
+        publication_root,
         runtime.get("assertion_contract"),
         "relationship-runtime assertion contract",
     )
@@ -2626,14 +2777,19 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             f"{assertion_contract_relative}"
         )
     row_contract_relative, row_contract_path = _rich_runtime_path(
-        repo, runtime.get("row_contract"), "relationship-runtime row contract"
+        publication_root,
+        runtime.get("row_contract"),
+        "relationship-runtime row contract",
     )
     if not row_contract_path.is_file():
         raise ArtifactReadError(
             f"relationship-runtime row contract is absent: {row_contract_relative}"
         )
-    declared_runtime_schemas = _rich_runtime_declared_paths(
-        repo, preset, "relationship-runtime-schema"
+    declared_runtime_schemas = _rich_runtime_publication_paths(
+        repo,
+        preset,
+        "relationship-runtime-schema",
+        publication_root,
     )
     if row_contract_relative not in declared_runtime_schemas:
         raise ArtifactReadError(
@@ -2657,8 +2813,13 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             f"relationship-runtime exceeds the {MAX_RICH_RUNTIME_PLANES}-plane limit"
         )
 
-    declared_chunk_paths = _rich_runtime_declared_paths(
-        repo, preset, "relationship-runtime"
+    runtime_directory = Path(runtime_relative).parent
+    declared_chunk_paths = _rich_runtime_publication_paths(
+        repo,
+        preset,
+        "relationship-runtime",
+        publication_root,
+        within=runtime_directory,
     )
     plane_names: set[str] = set()
     plane_ids: set[str] = set()
@@ -2734,7 +2895,9 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             chunk_label = f"{label} chunk {chunk_index}"
             chunk = _rich_runtime_object(chunk_value, chunk_label)
             chunk_relative, chunk_path = _rich_runtime_path(
-                repo, chunk.get("path"), f"{chunk_label} path"
+                publication_root,
+                chunk.get("path"),
+                f"{chunk_label} path",
             )
             if chunk_relative in chunk_plane:
                 raise ArtifactReadError(
@@ -2892,7 +3055,7 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
         runtime.get("route_locator"), "relationship-runtime route locator"
     )
     locator_relative, locator_path = _rich_runtime_path(
-        repo,
+        publication_root,
         locator_reference.get("path"),
         "relationship-runtime route-locator path",
     )
@@ -2908,16 +3071,18 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
     locator_hash = _rich_runtime_hash(
         locator_reference.get("sha256"), "relationship-runtime route-locator SHA-256"
     )
-    declared_locator_paths = _rich_runtime_declared_paths(
-        repo, preset, "relationship-route-locator"
+    declared_locator_paths = _rich_runtime_publication_paths(
+        repo,
+        preset,
+        "relationship-route-locator",
+        publication_root,
     )
-    reviewed_locator_manifests = {
-        item[0]
-        for item in preset.outputs
-        if item[1] == "relationship-route-locator" and not any(
-            character in item[0] for character in "*?["
-        )
-    }
+    reviewed_locator_manifests = _rich_runtime_literal_publication_paths(
+        repo,
+        preset,
+        "relationship-route-locator",
+        publication_root,
+    )
     if locator_relative not in reviewed_locator_manifests:
         raise ArtifactReadError(
             "relationship-runtime route locator is not the reviewed locator manifest"
@@ -2979,7 +3144,9 @@ def _validate_rich_relationship_runtime(repo: Path, preset: Preset) -> None:
             )
         seen_prefixes.add(prefix)
         bucket_relative, bucket_path = _rich_runtime_path(
-            repo, metadata.get("path"), f"{metadata_label} path"
+            publication_root,
+            metadata.get("path"),
+            f"{metadata_label} path",
         )
         if (
             bucket_relative != template.replace("{prefix}", prefix)
