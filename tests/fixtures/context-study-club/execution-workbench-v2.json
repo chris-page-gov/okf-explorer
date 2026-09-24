@@ -1,0 +1,935 @@
+{
+  "schema": "okf-context-execution-receipt.v1",
+  "started_at": "2026-09-24T06:46:08.579Z",
+  "observed_at": "2026-09-24T06:46:09.052Z",
+  "execution": {
+    "schema": "okf-context-execution.v1",
+    "method": "Actual transport-independent engine execution over supplied local index bytes; the index URL is an identity locator, not a claim of fetching it; exact-identity A–H assessment; no model call.",
+    "inputs": {
+      "index_sha256": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a",
+      "case_sha256": "655300337cde2a5c0a2caa7933164e01ad430b5cce1b80abcb41e541e8cd46dc",
+      "implementation": [
+        {
+          "path": "apps/okf-explorer/src/lib/context/corpus.ts",
+          "sha256": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
+          "sha256": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/delivery.ts",
+          "sha256": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/index.ts",
+          "sha256": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/packageDelivery.ts",
+          "sha256": "f05cd5cf6378ecb9e33f5c8a4d43a6bd74d7c6983413316d3663b5bd733f7b35"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/types.ts",
+          "sha256": "febf83b5c65153fd2e49ac070b6117525463034fb1b33534a086a1cc7bbb42cc"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/unit.ts",
+          "sha256": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6"
+        },
+        {
+          "path": "apps/okf-explorer/src/lib/context/webmcp.ts",
+          "sha256": "455a8cebf9e4f184e19cb6f12d45d02ca00d3a2c2d85501e9536c3c1437756ca"
+        },
+        {
+          "path": "profiles/context-assembly/v1/common.schema.json",
+          "sha256": "e53099c72351860fd34c26dd88914f5984d749d4eec13aef4fa151d1c96713e2"
+        },
+        {
+          "path": "profiles/context-assembly/v1/context-adjacency.schema.json",
+          "sha256": "d43ed7b05efb681b61d871a913bd39ac85b1d19c097b6a26e535870b788c4092"
+        },
+        {
+          "path": "profiles/context-assembly/v1/corpus-v2.schema.json",
+          "sha256": "25004674e7a1e7f16beedab0d83495afb4a033d69a650d4c84e231adcb9eb8eb"
+        },
+        {
+          "path": "profiles/context-assembly/v1/corpus-v3.schema.json",
+          "sha256": "80a551ad81fb6efb705bff11923ea5d8bfdec994a99086db0bdf31b065472f23"
+        },
+        {
+          "path": "profiles/context-assembly/v1/discovery-card.schema.json",
+          "sha256": "7941fc4ee6c042d5c187949e8289e31346042df9a9e2fe1e49963c57f77f84bd"
+        },
+        {
+          "path": "profiles/context-assembly/v1/discovery-cards.schema.json",
+          "sha256": "c862a894099f53f5a181465e0e99692c2d2e72e9b3e682fb6dde64af206c33cd"
+        },
+        {
+          "path": "profiles/context-assembly/v1/discovery-postings.schema.json",
+          "sha256": "f9f351ff29ba32dc00d4473422b84cd0fef97a626ddc19db17a15982bdc8dfdd"
+        },
+        {
+          "path": "profiles/context-assembly/v1/evaluation-case.schema.json",
+          "sha256": "33e7762c57e5926ece25ed9555f347e6812b6a7fa99446fba0ad24e350b1e585"
+        },
+        {
+          "path": "profiles/context-assembly/v1/evaluation-controls.schema.json",
+          "sha256": "33aec80def165fef197f8cc742da464ff11da77aeb47640603189ecb4a28a751"
+        },
+        {
+          "path": "profiles/context-assembly/v1/evidence-unit.schema.json",
+          "sha256": "9d86a7343b3f0da70e115fec8fa7e4bea1627fec89d95e0a6a45d2dd976833a6"
+        },
+        {
+          "path": "profiles/context-assembly/v1/index.schema.json",
+          "sha256": "4bc2e83c1243a1e4b89b6d1a41deca7549f14afa44e854750717a7d4908fb93e"
+        },
+        {
+          "path": "profiles/context-assembly/v1/package.schema.json",
+          "sha256": "c97dfacbd77d2b5ca1a92db65aa446613e0df58eeb24179be4b1720d1e0ff610"
+        },
+        {
+          "path": "scripts/check_context_assembly.py",
+          "sha256": "f4da839fd397a53165f36e921ca67432cc0f54bb74833a7f91cd9ddb40eee5e4"
+        },
+        {
+          "path": "scripts/evaluate_context_package.mjs",
+          "sha256": "e5530e231ec9757644a87fbec3490b757282474dcb7b9ca7f2a97dced822bc11"
+        },
+        {
+          "path": "scripts/run_context_evaluation.mjs",
+          "sha256": "eb19c75fd2e73dfacd991c39eb05b5e78cb8ae419d8342fc8c458fda41f13afa"
+        }
+      ]
+    },
+    "requested_budget": {},
+    "schema_validation": {
+      "boundary": "Shape only; evidence integrity and sufficiency require separate engine and evaluation checks.",
+      "documents": [
+        "package"
+      ],
+      "status": "passed-shape-validation"
+    },
+    "package": {
+      "schema": "okf-governed-context.v1",
+      "context_id": "urn:sha256:fe1916d4c4c836a6d8cc0784b2d5bc0685ba3800463ccf10d517c2b8a46b3404",
+      "engine": "okf-context-assembly.v1",
+      "question": "Explain Reading circle",
+      "bundle": {
+        "id": "https://example.test/study-club/bundle",
+        "snapshot": "synthetic-study-club-v1",
+        "source_url": "https://example.test/study-club/index.json"
+      },
+      "binding": {
+        "index_url": "https://example.test/study-club/index.json",
+        "index_sha256": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a"
+      },
+      "scope": "Source explanation for the fictional study club.",
+      "evidence_status": "sufficient",
+      "resolved_concepts": [
+        {
+          "id": "https://example.test/study-club/concept/reading",
+          "label": "Reading circle",
+          "matched": [
+            "Reading circle"
+          ],
+          "method": "declared-phrase",
+          "confidence": "exact-alias"
+        }
+      ],
+      "ambiguities": [],
+      "unresolved_terms": [],
+      "selected": [
+        {
+          "record": {
+            "id": "https://example.test/study-club/concept/reading",
+            "route": "concept/reading",
+            "label": "Reading circle",
+            "kind": "concept",
+            "text": "Navigation concept for Reading circle.",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Fictional study-club teaching fixture",
+              "source": "https://example.test/study-club/"
+            },
+            "scope": "Invented teaching data. No real event or service.",
+            "provenance": [
+              {
+                "url": "https://example.test/study-club/reading.md",
+                "source_sha256": "464512758b278e4d11649beea68712eb300d6430212a3b7ff3e7e358216b1853",
+                "locator": "Fictional source excerpt",
+                "captured_at": "2026-09-16T00:00:00Z",
+                "source_date": "2026-09-06",
+                "source_date_kind": "fictional note date"
+              }
+            ],
+            "rights": "CC0 synthetic fixture",
+            "access": "public",
+            "aliases": [
+              "Reading circle"
+            ]
+          },
+          "reasons": [
+            "Declared phrase match: Reading circle"
+          ],
+          "paths": [
+            {
+              "seed": "https://example.test/study-club/concept/reading",
+              "assertions": [],
+              "records": [
+                "https://example.test/study-club/concept/reading"
+              ]
+            }
+          ]
+        },
+        {
+          "record": {
+            "id": "https://example.test/study-club/evidence/reading",
+            "route": "evidence/reading",
+            "label": "Reading circle",
+            "kind": "evidence",
+            "text": "The reading circle meets on Tuesday at 18:30 in the [Library room](library-room.md). It is free.",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Fictional study-club teaching fixture",
+              "source": "https://example.test/study-club/"
+            },
+            "scope": "Invented teaching data. No real event or service.",
+            "provenance": [
+              {
+                "url": "https://example.test/study-club/reading.md",
+                "source_sha256": "464512758b278e4d11649beea68712eb300d6430212a3b7ff3e7e358216b1853",
+                "locator": "Fictional source excerpt",
+                "captured_at": "2026-09-16T00:00:00Z",
+                "source_date": "2026-09-06",
+                "source_date_kind": "fictional note date",
+                "literal_sha256": "464512758b278e4d11649beea68712eb300d6430212a3b7ff3e7e358216b1853"
+              }
+            ],
+            "rights": "CC0 synthetic fixture",
+            "access": "public"
+          },
+          "reasons": [
+            "Followed http://purl.org/dc/terms/requires from https://example.test/study-club/concept/reading"
+          ],
+          "paths": [
+            {
+              "seed": "https://example.test/study-club/concept/reading",
+              "assertions": [
+                "https://example.test/study-club/assertion/0"
+              ],
+              "records": [
+                "https://example.test/study-club/concept/reading",
+                "https://example.test/study-club/evidence/reading"
+              ]
+            }
+          ]
+        },
+        {
+          "record": {
+            "id": "https://example.test/study-club/evidence/library",
+            "route": "evidence/library",
+            "label": "Library room",
+            "kind": "evidence",
+            "text": "The Library room is recorded as step-free. No address or capacity is recorded.",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Fictional study-club teaching fixture",
+              "source": "https://example.test/study-club/"
+            },
+            "scope": "Invented teaching data. No real event or service.",
+            "provenance": [
+              {
+                "url": "https://example.test/study-club/library.md",
+                "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+                "locator": "Fictional source excerpt",
+                "captured_at": "2026-09-16T00:00:00Z",
+                "source_date": "2026-09-06",
+                "source_date_kind": "fictional note date",
+                "literal_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+              }
+            ],
+            "rights": "CC0 synthetic fixture",
+            "access": "public"
+          },
+          "reasons": [
+            "Followed http://purl.org/dc/terms/requires from https://example.test/study-club/evidence/reading"
+          ],
+          "paths": [
+            {
+              "seed": "https://example.test/study-club/concept/reading",
+              "assertions": [
+                "https://example.test/study-club/assertion/0",
+                "https://example.test/study-club/assertion/1"
+              ],
+              "records": [
+                "https://example.test/study-club/concept/reading",
+                "https://example.test/study-club/evidence/reading",
+                "https://example.test/study-club/evidence/library"
+              ]
+            }
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "id": "https://example.test/study-club/assertion/0",
+          "source": "https://example.test/study-club/concept/reading",
+          "target": "https://example.test/study-club/evidence/reading",
+          "predicate": "http://purl.org/dc/terms/requires",
+          "label": "requires contextual evidence",
+          "assertion_status": "model-derived",
+          "authority": {
+            "class": "synthetic",
+            "label": "Explicit synthetic evidence dependency",
+            "source": "https://example.test/study-club/"
+          },
+          "scope": "Context dependency; not a domain predicate inferred from a hyperlink.",
+          "provenance": [
+            {
+              "url": "https://example.test/study-club/reading.md",
+              "source_sha256": "464512758b278e4d11649beea68712eb300d6430212a3b7ff3e7e358216b1853",
+              "locator": "Fictional source excerpt",
+              "captured_at": "2026-09-16T00:00:00Z",
+              "source_date": "2026-09-06",
+              "source_date_kind": "fictional note date"
+            }
+          ]
+        },
+        {
+          "id": "https://example.test/study-club/assertion/1",
+          "source": "https://example.test/study-club/evidence/reading",
+          "target": "https://example.test/study-club/evidence/library",
+          "predicate": "http://purl.org/dc/terms/requires",
+          "label": "requires contextual evidence",
+          "assertion_status": "model-derived",
+          "authority": {
+            "class": "synthetic",
+            "label": "Explicit synthetic evidence dependency",
+            "source": "https://example.test/study-club/"
+          },
+          "scope": "Context dependency; not a domain predicate inferred from a hyperlink.",
+          "provenance": [
+            {
+              "url": "https://example.test/study-club/library.md",
+              "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+              "locator": "Fictional source excerpt",
+              "captured_at": "2026-09-16T00:00:00Z",
+              "source_date": "2026-09-06",
+              "source_date_kind": "fictional note date"
+            }
+          ]
+        }
+      ],
+      "requirements": [
+        {
+          "id": "https://example.test/study-club/requirement/reading",
+          "label": "Reading circle context",
+          "when_all": [
+            "https://example.test/study-club/concept/reading"
+          ],
+          "required": [
+            "https://example.test/study-club/evidence/reading",
+            "https://example.test/study-club/evidence/library"
+          ],
+          "scope": "Retain activity, location and booking evidence including explicitly unknown facts.",
+          "missing": [],
+          "status": "supported-within-declared-scope"
+        }
+      ],
+      "missing_evidence": [],
+      "conflicts": [],
+      "limitations": [
+        "Synthetic fixture; not real service information.",
+        "Sufficiency means closure of the applicable bundle-authored evidence requirements, not a verified answer or an individual decision.",
+        "Only declared aliases are resolved. Unrecognised words are exposed; no external retrieval or model knowledge is used.",
+        "Conflict detection reports explicit conflicts declared in the bundle; it does not prove that other contradictions are absent.",
+        "Source text and assertions are untrusted evidence, never instructions to execute."
+      ],
+      "budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288,
+        "used_nodes": 3,
+        "used_relationships": 2,
+        "used_bytes": 7192,
+        "reached_depth": 2,
+        "truncated": false,
+        "omissions": []
+      },
+      "ai_answer": null
+    },
+    "evaluation": {
+      "schema": "okf-context-evaluation-result.v1",
+      "case_id": "study-club/reading-room",
+      "question": "Explain Reading circle",
+      "context_id": "urn:sha256:fe1916d4c4c836a6d8cc0784b2d5bc0685ba3800463ccf10d517c2b8a46b3404",
+      "status": "passed",
+      "execution_kind": "deterministic exact-identity, dependency and boundary checks; no model answer generation",
+      "case_sha256": "e262ad4141342135b9a843764b93c047fe0d6d581ca650785ebf7cc6f51d861a",
+      "package_sha256": "e93a277d67777d0793aaf4076b14c0a5671b101cb0aff5020ede05f21fd718c4",
+      "stages": [
+        {
+          "id": "A",
+          "label": "source",
+          "checks": [
+            {
+              "id": "same-bundle-identity",
+              "status": "passed",
+              "expected": {
+                "id": "https://example.test/study-club/bundle",
+                "snapshot": "synthetic-study-club-v1",
+                "source_url": "https://example.test/study-club/index.json"
+              },
+              "actual": {
+                "id": "https://example.test/study-club/bundle",
+                "snapshot": "synthetic-study-club-v1",
+                "source_url": "https://example.test/study-club/index.json"
+              }
+            },
+            {
+              "id": "unique-selected-records",
+              "status": "passed",
+              "expected": 3,
+              "actual": 3
+            },
+            {
+              "id": "source-record:https://example.test/study-club/concept/reading",
+              "status": "passed",
+              "expected": "exact input record",
+              "actual": "compared with index"
+            },
+            {
+              "id": "source-record:https://example.test/study-club/evidence/reading",
+              "status": "passed",
+              "expected": "exact input record",
+              "actual": "compared with index"
+            },
+            {
+              "id": "source-record:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": "exact input record",
+              "actual": "compared with index"
+            },
+            {
+              "id": "required-source:https://example.test/study-club/evidence/library:Fictional source excerpt",
+              "status": "passed",
+              "expected": {
+                "record_id": "https://example.test/study-club/evidence/library",
+                "route": "evidence/library",
+                "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+                "locator": "Fictional source excerpt",
+                "literal_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+              },
+              "actual": {
+                "route": "evidence/library",
+                "provenance": [
+                  {
+                    "url": "https://example.test/study-club/library.md",
+                    "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+                    "locator": "Fictional source excerpt",
+                    "captured_at": "2026-09-16T00:00:00Z",
+                    "source_date": "2026-09-06",
+                    "source_date_kind": "fictional note date",
+                    "literal_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+                  }
+                ]
+              }
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "B",
+          "label": "semantic",
+          "checks": [
+            {
+              "id": "selected-concept:https://example.test/study-club/concept/reading",
+              "status": "passed",
+              "expected": "concept",
+              "actual": "concept"
+            },
+            {
+              "id": "unique-assertions",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "id": "input-assertion:https://example.test/study-club/assertion/0",
+              "status": "passed",
+              "expected": "exact input assertion",
+              "actual": "compared with index"
+            },
+            {
+              "id": "input-assertion:https://example.test/study-club/assertion/1",
+              "status": "passed",
+              "expected": "exact input assertion",
+              "actual": "compared with index"
+            },
+            {
+              "id": "required-assertion:https://example.test/study-club/evidence/reading->https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": {
+                "source": "https://example.test/study-club/evidence/reading",
+                "target": "https://example.test/study-club/evidence/library",
+                "predicate": "http://purl.org/dc/terms/requires"
+              },
+              "actual": [
+                "https://example.test/study-club/assertion/1"
+              ]
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "C",
+          "label": "retrieval",
+          "checks": [
+            {
+              "id": "actual-question",
+              "status": "passed",
+              "expected": "Explain Reading circle",
+              "actual": "Explain Reading circle"
+            },
+            {
+              "id": "resolved-concept:https://example.test/study-club/concept/reading",
+              "status": "passed",
+              "expected": "https://example.test/study-club/concept/reading",
+              "actual": [
+                "https://example.test/study-club/concept/reading"
+              ]
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "D",
+          "label": "traversal",
+          "checks": [
+            {
+              "id": "required-path:https://example.test/study-club/concept/reading:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": {
+                "seed": "https://example.test/study-club/concept/reading",
+                "assertions": [
+                  "https://example.test/study-club/assertion/0",
+                  "https://example.test/study-club/assertion/1"
+                ],
+                "records": [
+                  "https://example.test/study-club/concept/reading",
+                  "https://example.test/study-club/evidence/reading",
+                  "https://example.test/study-club/evidence/library"
+                ]
+              },
+              "actual": [
+                {
+                  "seed": "https://example.test/study-club/concept/reading",
+                  "assertions": [],
+                  "records": [
+                    "https://example.test/study-club/concept/reading"
+                  ]
+                },
+                {
+                  "seed": "https://example.test/study-club/concept/reading",
+                  "assertions": [
+                    "https://example.test/study-club/assertion/0"
+                  ],
+                  "records": [
+                    "https://example.test/study-club/concept/reading",
+                    "https://example.test/study-club/evidence/reading"
+                  ]
+                },
+                {
+                  "seed": "https://example.test/study-club/concept/reading",
+                  "assertions": [
+                    "https://example.test/study-club/assertion/0",
+                    "https://example.test/study-club/assertion/1"
+                  ],
+                  "records": [
+                    "https://example.test/study-club/concept/reading",
+                    "https://example.test/study-club/evidence/reading",
+                    "https://example.test/study-club/evidence/library"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "selection-has-path:https://example.test/study-club/concept/reading",
+              "status": "passed",
+              "expected": "at least one retained path from a resolved seed",
+              "actual": 1
+            },
+            {
+              "id": "valid-directed-path:0:0",
+              "status": "passed",
+              "expected": "resolved seed and exact directed retained assertions to selected record",
+              "actual": {
+                "seed": "https://example.test/study-club/concept/reading",
+                "assertions": [],
+                "records": [
+                  "https://example.test/study-club/concept/reading"
+                ]
+              }
+            },
+            {
+              "id": "selection-has-path:https://example.test/study-club/evidence/reading",
+              "status": "passed",
+              "expected": "at least one retained path from a resolved seed",
+              "actual": 1
+            },
+            {
+              "id": "valid-directed-path:1:0",
+              "status": "passed",
+              "expected": "resolved seed and exact directed retained assertions to selected record",
+              "actual": {
+                "seed": "https://example.test/study-club/concept/reading",
+                "assertions": [
+                  "https://example.test/study-club/assertion/0"
+                ],
+                "records": [
+                  "https://example.test/study-club/concept/reading",
+                  "https://example.test/study-club/evidence/reading"
+                ]
+              }
+            },
+            {
+              "id": "selection-has-path:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": "at least one retained path from a resolved seed",
+              "actual": 1
+            },
+            {
+              "id": "valid-directed-path:2:0",
+              "status": "passed",
+              "expected": "resolved seed and exact directed retained assertions to selected record",
+              "actual": {
+                "seed": "https://example.test/study-club/concept/reading",
+                "assertions": [
+                  "https://example.test/study-club/assertion/0",
+                  "https://example.test/study-club/assertion/1"
+                ],
+                "records": [
+                  "https://example.test/study-club/concept/reading",
+                  "https://example.test/study-club/evidence/reading",
+                  "https://example.test/study-club/evidence/library"
+                ]
+              }
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "E",
+          "label": "assembly",
+          "checks": [
+            {
+              "id": "required-evidence:https://example.test/study-club/evidence/reading",
+              "status": "passed",
+              "expected": "whole evidence record",
+              "actual": "evidence"
+            },
+            {
+              "id": "required-evidence:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": "whole evidence record",
+              "actual": "evidence"
+            },
+            {
+              "id": "selected-count",
+              "status": "passed",
+              "expected": 3,
+              "actual": 3
+            },
+            {
+              "id": "relationship-count",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "id": "exact-package-byte-count",
+              "status": "passed",
+              "expected": 7192,
+              "actual": 7192
+            },
+            {
+              "id": "bounded:used_nodes",
+              "status": "passed",
+              "expected": {
+                "maximum": 64
+              },
+              "actual": 3
+            },
+            {
+              "id": "bounded:used_relationships",
+              "status": "passed",
+              "expected": {
+                "maximum": 128
+              },
+              "actual": 2
+            },
+            {
+              "id": "bounded:used_bytes",
+              "status": "passed",
+              "expected": {
+                "maximum": 524288
+              },
+              "actual": 7192
+            },
+            {
+              "id": "bounded:reached_depth",
+              "status": "passed",
+              "expected": {
+                "maximum": 6
+              },
+              "actual": 2
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "F",
+          "label": "provenance",
+          "checks": [
+            {
+              "id": "index-binding-present",
+              "status": "passed",
+              "expected": "SHA-256 and index locator",
+              "actual": {
+                "index_url": "https://example.test/study-club/index.json",
+                "index_sha256": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a"
+              }
+            },
+            {
+              "id": "index-binding-exact",
+              "status": "passed",
+              "expected": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a",
+              "actual": "8b72846170961d2f61e3f5d522e3d31da9c3c02e544e503b9162eb965e738e2a"
+            },
+            {
+              "id": "context-identity-recomputed",
+              "status": "passed",
+              "expected": "urn:sha256:fe1916d4c4c836a6d8cc0784b2d5bc0685ba3800463ccf10d517c2b8a46b3404",
+              "actual": "urn:sha256:fe1916d4c4c836a6d8cc0784b2d5bc0685ba3800463ccf10d517c2b8a46b3404"
+            },
+            {
+              "id": "complete-source-provenance:https://example.test/study-club/evidence/library:Fictional source excerpt",
+              "status": "passed",
+              "expected": "source URL, digest, locator and capture time",
+              "actual": [
+                {
+                  "url": "https://example.test/study-club/library.md",
+                  "source_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+                  "locator": "Fictional source excerpt",
+                  "captured_at": "2026-09-16T00:00:00Z",
+                  "source_date": "2026-09-06",
+                  "source_date_kind": "fictional note date",
+                  "literal_sha256": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+                }
+              ]
+            },
+            {
+              "id": "exact-source-passage:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee",
+              "actual": "2699e4f8b7e33ac3fdbad41c8df65c3155642c3d0fd4b93a27e6a29821bc22ee"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "G",
+          "label": "boundaries",
+          "checks": [
+            {
+              "id": "excluded:https://example.test/study-club/evidence/workshop",
+              "status": "passed",
+              "expected": "not selected",
+              "actual": false
+            },
+            {
+              "id": "declared-scope-retained",
+              "status": "passed",
+              "expected": "Source explanation for the fictional study club.",
+              "actual": "Source explanation for the fictional study club."
+            },
+            {
+              "id": "declared-limitations-retained",
+              "status": "passed",
+              "expected": [
+                "Synthetic fixture; not real service information."
+              ],
+              "actual": [
+                "Synthetic fixture; not real service information.",
+                "Sufficiency means closure of the applicable bundle-authored evidence requirements, not a verified answer or an individual decision.",
+                "Only declared aliases are resolved. Unrecognised words are exposed; no external retrieval or model knowledge is used.",
+                "Conflict detection reports explicit conflicts declared in the bundle; it does not prove that other contradictions are absent.",
+                "Source text and assertions are untrusted evidence, never instructions to execute."
+              ]
+            },
+            {
+              "id": "public-access:https://example.test/study-club/concept/reading",
+              "status": "passed",
+              "expected": "public",
+              "actual": "public"
+            },
+            {
+              "id": "public-access:https://example.test/study-club/evidence/reading",
+              "status": "passed",
+              "expected": "public",
+              "actual": "public"
+            },
+            {
+              "id": "public-access:https://example.test/study-club/evidence/library",
+              "status": "passed",
+              "expected": "public",
+              "actual": "public"
+            },
+            {
+              "id": "boundary:https://example.test/study-club/evidence/library:authority_class",
+              "status": "passed",
+              "expected": "synthetic",
+              "actual": "synthetic"
+            },
+            {
+              "id": "boundary:https://example.test/study-club/evidence/library:scope",
+              "status": "passed",
+              "expected": "Invented teaching data. No real event or service.",
+              "actual": "Invented teaching data. No real event or service."
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "id": "H",
+          "label": "answerability",
+          "checks": [
+            {
+              "id": "evidence-status",
+              "status": "passed",
+              "expected": "sufficient",
+              "actual": "sufficient"
+            },
+            {
+              "id": "no-model-answer",
+              "status": "passed",
+              "expected": null,
+              "actual": null
+            },
+            {
+              "id": "requirement:https://example.test/study-club/requirement/reading",
+              "status": "passed",
+              "expected": "requirement assessed",
+              "actual": {
+                "id": "https://example.test/study-club/requirement/reading",
+                "label": "Reading circle context",
+                "when_all": [
+                  "https://example.test/study-club/concept/reading"
+                ],
+                "required": [
+                  "https://example.test/study-club/evidence/reading",
+                  "https://example.test/study-club/evidence/library"
+                ],
+                "scope": "Retain activity, location and booking evidence including explicitly unknown facts.",
+                "missing": [],
+                "status": "supported-within-declared-scope"
+              }
+            },
+            {
+              "id": "requirement-declaration:https://example.test/study-club/requirement/reading",
+              "status": "passed",
+              "expected": {
+                "id": "https://example.test/study-club/requirement/reading",
+                "label": "Reading circle context",
+                "when_all": [
+                  "https://example.test/study-club/concept/reading"
+                ],
+                "required": [
+                  "https://example.test/study-club/evidence/reading",
+                  "https://example.test/study-club/evidence/library"
+                ],
+                "scope": "Retain activity, location and booking evidence including explicitly unknown facts."
+              },
+              "actual": {
+                "id": "https://example.test/study-club/requirement/reading",
+                "label": "Reading circle context",
+                "when_all": [
+                  "https://example.test/study-club/concept/reading"
+                ],
+                "required": [
+                  "https://example.test/study-club/evidence/reading",
+                  "https://example.test/study-club/evidence/library"
+                ],
+                "scope": "Retain activity, location and booking evidence including explicitly unknown facts."
+              }
+            },
+            {
+              "id": "sufficiency-covers-all-resolved-concepts",
+              "status": "passed",
+              "expected": [
+                "https://example.test/study-club/concept/reading"
+              ],
+              "actual": [
+                "https://example.test/study-club/concept/reading"
+              ]
+            },
+            {
+              "id": "sufficiency-has-declared-requirement",
+              "status": "passed",
+              "expected": "at least one applicable requirement",
+              "actual": 1
+            },
+            {
+              "id": "sufficiency-retains-required-evidence",
+              "status": "passed",
+              "expected": "all declared required records retained",
+              "actual": [
+                {
+                  "id": "https://example.test/study-club/requirement/reading",
+                  "label": "Reading circle context",
+                  "when_all": [
+                    "https://example.test/study-club/concept/reading"
+                  ],
+                  "required": [
+                    "https://example.test/study-club/evidence/reading",
+                    "https://example.test/study-club/evidence/library"
+                  ],
+                  "scope": "Retain activity, location and booking evidence including explicitly unknown facts.",
+                  "missing": [],
+                  "status": "supported-within-declared-scope"
+                }
+              ]
+            },
+            {
+              "id": "sufficiency-retains-required-paths",
+              "status": "passed",
+              "expected": "all declared exact directed chains retained",
+              "actual": []
+            },
+            {
+              "id": "sufficiency-without-omissions-or-conflicts",
+              "status": "passed",
+              "expected": "no omitted, missing, conflicting or ambiguous requirements",
+              "actual": {
+                "truncated": false,
+                "missing": [],
+                "conflicts": [],
+                "ambiguities": []
+              }
+            }
+          ],
+          "status": "passed"
+        }
+      ],
+      "limitations": [
+        "A passing case establishes its declared structural evidence requirements, not specialist acceptance or legal correctness."
+      ]
+    }
+  }
+}

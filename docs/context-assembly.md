@@ -1,5 +1,9 @@
 # Governed context assembly
 
+To examine a retained result beside its source, use the
+[Evidence workbench](evidence-workbench.md). It separates discovery descriptions,
+selected evidence, traversal, delivery and local review proposals.
+
 Ask OKF assembles a bounded evidence package from an explicitly declared
 producer index. It resolves declared concept phrases, follows directed
 relationships and checks the producer's scoped evidence requirements. It does

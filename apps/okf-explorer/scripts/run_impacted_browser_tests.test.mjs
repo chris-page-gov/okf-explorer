@@ -71,6 +71,7 @@ test('publication selectors include rendered Foundry pages and request Site asse
     [
       'accessibility',
       'ask_okf',
+      'evidence_workbench',
       'exploratory_publication',
       'learner_hub',
       'beginner_navigation',
@@ -90,7 +91,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 17);
+  assert.equal(plan.suites.length, 18);
   const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
     .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
   assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
@@ -105,7 +106,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 17);
+  assert.equal(empty.suites.length, 18);
   assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),

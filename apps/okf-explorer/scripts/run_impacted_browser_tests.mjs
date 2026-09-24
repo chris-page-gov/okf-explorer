@@ -14,6 +14,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/ask-okf.spec.ts'
   },
+  evidence_workbench: {
+    family: 'ui',
+    file: 'tests/ui/evidence-workbench.spec.ts'
+  },
   timeline_provenance: {
     family: 'ui',
     file: 'tests/ui/timeline-provenance.spec.ts'
@@ -90,6 +94,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
   links: ['small_bundle', 'large_corpus', 'endpoint_labels', 'relationship_pagination', 'federation'],
   map: ['map', 'large_corpus'],
   publication: [
+    'evidence_workbench',
     'accessibility',
     'ask_okf',
     'exploratory_publication',
@@ -123,7 +128,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
-  evidence: ['ask_okf', 'small_bundle', 'foundry_pages'],
+  evidence: ['evidence_workbench', 'ask_okf', 'small_bundle', 'foundry_pages'],
   graph: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   impact: ['foundry_pages'],
   journey: ['large_corpus', 'foundry_pages'],
@@ -148,7 +153,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   profile: ['endpoint_labels', 'exploratory_publication', 'foundry_pages'],
   provenance: ['ask_okf', 'timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus', 'foundry_pages'],
   python: ['foundry_pages'],
-  question: ['ask_okf', 'large_corpus'],
+  question: ['evidence_workbench', 'ask_okf', 'large_corpus'],
   registry: ['small_bundle', 'learner_hub', 'foundry_pages'],
   relationship: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   release: ['foundry_pages'],

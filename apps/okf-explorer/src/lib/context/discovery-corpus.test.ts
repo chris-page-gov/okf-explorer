@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 // @ts-ignore -- Node-only compression control; runtime uses bounded Web Streams.
 import { gzipSync } from 'node:zlib';
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from './corpus';
-import { bm25Contribution, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
+import { bm25Contribution, DISCOVERY_RANKING, DISCOVERY_RANKING_V2, discoveryPhraseMatches, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
 import { canonicalJson, contextSha256 } from './index';
 import { contextManifest, readContextEvidence } from './delivery';
 import { discoveryFixture } from '../../test/discoveryFixture';
@@ -103,6 +103,146 @@ describe('source-bound discovery corpus v3', () => {
     expect(bm25Contribution(10, 2, 1, 20, 200)).toBe(1481605);
     expect(bm25Contribution(10, 2, 2, 20, 200)).toBeLessThan(2 * bm25Contribution(10, 2, 1, 20, 200));
     expect(bm25Contribution(10, 2, 1, 100, 200)).toBeLessThan(bm25Contribution(10, 2, 1, 20, 200));
+  });
+  it('uses an opt-in source-bound ranking to find varied wording within the fixed shortlist without resolving a concept', async () => {
+    const f = await discoveryFixture(24, 8);
+    // The first 23 source passages contain incidental question words. The last
+    // unit has producer-authored discovery wording grounded in its own source.
+    for (let i = 0; i < 23; i++) {
+      f.cards[i].summary = 'General mineral collection records';
+    }
+    f.cards[23].label = 'Written permission to remove specimens';
+    f.cards[23].search_aliases = [
+      'Written permission for quartz collection',
+      'Approval before removing a specimen',
+      'Exceptions for permitted removal'
+    ];
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    await f.build();
+    const v1 = structuredClone(f.manifest);
+    v1.search.ranking = structuredClone(DISCOVERY_RANKING);
+    for (const question of ['Is quartz collection allowed with written permission?', 'Can quartz collection remove a specimen after approval?']) {
+      const previous = await assembleCorpusContext(v1, f.binding, question, {}, f.fetcher);
+      const result = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+      expect(result.retrieval!.candidates.map(c => c.id)).toContain(f.records[23].id);
+      expect(result.retrieval!.discovery!.ranking).toEqual(DISCOVERY_RANKING_V2);
+      expect(result.resolved_concepts).toEqual([]);
+      expect(result.evidence_status).toBe('insufficient');
+      const candidate = result.retrieval!.discovery!.candidates.find(c => c.card.evidence_id === f.records[23].id)!;
+      expect(result.retrieval!.candidates.find(c => c.id === f.records[23].id)!.score)
+        .toBe(candidate.source_score + 2 * candidate.discovery_score);
+      const previousPosition = previous.retrieval!.candidates.findIndex(c => c.id === f.records[23].id);
+      const weightedPosition = result.retrieval!.candidates.findIndex(c => c.id === f.records[23].id);
+      expect(weightedPosition).toBeLessThanOrEqual(previousPosition < 0 ? 16 : previousPosition);
+    }
+    // Negation remains in the question and cannot make discovery a legal answer.
+    const negative = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection must not proceed without permission?', {}, f.fetcher);
+    expect(negative.question).toContain('not');
+    expect(negative.evidence_status).toBe('insufficient');
+    const invalid = structuredClone(f.manifest);
+    (invalid.search.ranking as { weights: { discovery: number } }).weights.discovery = 20;
+    expect(() => validateContextCorpusManifest(invalid)).toThrow('unsupported ranking parameters');
+  });
+  it('loads the top lexical unit’s source dependency before broad secondary candidates consume the file bound', async () => {
+    const f = await discoveryFixture(70, 1);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'quartz fruit gathering', {}, f.fetcher);
+    expect(result.retrieval!.discovery!.admission_order).toBe('lexical-anchor-dependencies-before-concept-paths.v2');
+    expect(result.retrieval!.candidates[0].id).toBe(f.records[0].id);
+    expect(result.retrieval!.units!.referenced_records).toContain(f.records.at(-1)!.id);
+    expect(result.selected.map(row => row.record.id)).toContain(f.records.at(-1)!.id);
+    expect(result.evidence_status).toBe('insufficient');
+  });
+  it('admits exact source-bound alias routes inside the same 16-candidate limit without a concept claim', async () => {
+    const f = await discoveryFixture(24, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    f.cards[23].search_aliases = ['Written permission'];
+    f.manifest.search.alias_routes = [{ ordinal: 23, phrase: 'Written permission' }];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Is written permission needed for quartz collection?', {}, f.fetcher);
+    expect(result.retrieval!.candidates).toHaveLength(16);
+    expect(result.retrieval!.candidates[0]).toMatchObject({ id: f.records[23].id, alias_phrase: 'Written permission' });
+    expect(result.retrieval!.discovery!.candidates[0].alias_phrase).toBe('Written permission');
+    expect(result.selected.find(row => row.record.id === f.records[23].id)?.reasons.join(' ')).toContain('Source-bound alias route');
+    expect(result.resolved_concepts).toEqual([]);
+    expect(result.evidence_status).toBe('insufficient');
+    const negative = await assembleCorpusContext(f.manifest, f.binding, 'Is permission written down?', {}, f.fetcher);
+    expect(negative.retrieval!.candidates.some(row => row.alias_phrase)).toBe(false);
+    expect(discoveryPhraseMatches(discoveryTokens('rewritten permission'), discoveryTokens('written permission'))).toBe(false);
+  });
+  it('keeps multiple matched alias targets explicit and rejects routes that differ from bound cards', async () => {
+    const f = await discoveryFixture();
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    f.cards[0].search_aliases.push('Quartz collection');
+    f.cards[1].search_aliases.push('Quartz collection');
+    f.manifest.search.alias_routes = [{ ordinal: 0, phrase: 'Quartz collection' }, { ordinal: 1, phrase: 'Quartz collection' }];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection', {}, f.fetcher);
+    expect(result.retrieval!.candidates.slice(0, 2).map(row => row.id)).toEqual([f.records[0].id, f.records[1].id]);
+    expect(result.retrieval!.candidates.slice(0, 2).map(row => row.alias_phrase)).toEqual(['Quartz collection', 'Quartz collection']);
+    expect(result.evidence_status).toBe('insufficient');
+    f.manifest.search.alias_routes![0].phrase = 'Absent from card';
+    await expect(assembleCorpusContext(f.manifest, f.binding, 'Absent from card', {}, f.fetcher)).rejects.toThrow('alias route differs');
+    f.manifest.search.alias_routes![0].phrase = 'Quartz';
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('two content words');
+    f.manifest.search.alias_routes![0].phrase = 'Quartz collection';
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING);
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('alias routes require bounded v2 ranking');
+  });
+  it('matches bounded authored word groups with an explicit scope and keeps navigation separate from authority', async () => {
+    const f = await discoveryFixture(24, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    const pattern = { id: 'specimen-permission', scope_group: 0 as const,
+      all_of: [['fictional teaching manual'], ['specimen', 'sample'], ['permission', 'approval']] };
+    f.cards[23].route_patterns = [pattern];
+    f.manifest.search.alias_routes = [{ ordinal: 23, pattern }];
+    await f.build();
+    const matched = await assembleCorpusContext(f.manifest, f.binding,
+      'In the fictional teaching manual, is approval needed to take a sample?', {}, f.fetcher);
+    expect(matched.retrieval!.candidates).toHaveLength(16);
+    expect(matched.retrieval!.candidates[0]).toMatchObject({ id: f.records[23].id,
+      alias_pattern_id: 'specimen-permission', matched_groups: ['fictional teaching manual', 'sample', 'approval'] });
+    expect(matched.selected.find(row => row.record.id === f.records[23].id)?.reasons.join(' '))
+      .toContain('Source-bound navigation pattern');
+    expect(matched.resolved_concepts).toEqual([]);
+    expect(matched.evidence_status).toBe('insufficient');
+    for (const question of ['In a different manual, is approval needed to take a sample?',
+      'In the fictional teaching manual, how is a sample labelled?']) {
+      const negative = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+      expect(negative.retrieval!.candidates.some(row => row.alias_pattern_id)).toBe(false);
+      expect(negative.evidence_status).toBe('insufficient');
+    }
+    const wrongScope = await assembleCorpusContext(f.manifest, f.binding,
+      'Is written permission required in a different manual?', {}, f.fetcher);
+    expect(wrongScope.retrieval!.candidates.map(row => row.id)).not.toContain(f.records[23].id);
+    expect(wrongScope.retrieval!.omissions).toContainEqual(expect.objectContaining({
+      code: 'retrieval_scope_mismatch', ids: [f.records[23].id]
+    }));
+    expect(wrongScope.retrieval!.omissions.find(row => row.code === 'retrieval_scope_mismatch')!.message)
+      .toContain('fictional teaching manual');
+    const unpatterned = await assembleCorpusContext(f.manifest, f.binding,
+      'Quartz collection needs written permission in a different manual?', {}, f.fetcher);
+    expect(unpatterned.retrieval!.candidates.some(row => row.id === f.records[0].id)).toBe(true);
+    expect(unpatterned.retrieval!.candidates.some(row => row.id === f.records[23].id)).toBe(false);
+    f.cards[23].route_patterns = [];
+    await f.build();
+    await expect(assembleCorpusContext(f.manifest, f.binding,
+      'Fictional teaching manual sample approval', {}, f.fetcher)).rejects.toThrow('route pattern differs');
+    pattern.all_of[0] = ['manual'];
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('specific scope');
+  });
+  it('reports matched alias routes lost at the four-route bound while keeping the total candidate cap', async () => {
+    const f = await discoveryFixture(8, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    for (let i = 0; i < 5; i++) f.cards[i].search_aliases.push('Quartz collection');
+    f.manifest.search.alias_routes = Array.from({ length: 5 }, (_, ordinal) => ({ ordinal, phrase: 'Quartz collection' }));
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection', {}, f.fetcher);
+    expect(result.retrieval!.candidates.filter(row => row.alias_phrase)).toHaveLength(4);
+    expect(result.retrieval!.candidates.length).toBeLessThanOrEqual(16);
+    expect(result.retrieval!.omissions.some(row => row.code === 'retrieval_alias_budget')).toBe(true);
+    expect(result.evidence_status).toBe('insufficient');
   });
   it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
     const f = await discoveryFixture(3, 1);

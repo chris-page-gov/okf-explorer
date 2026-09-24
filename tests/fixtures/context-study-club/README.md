@@ -23,7 +23,7 @@ From the repository root:
 node --experimental-strip-types scripts/run_context_evaluation.mjs \
   --index tests/fixtures/context-study-club/index.json \
   --case tests/fixtures/context-study-club/case.json \
-  --output tests/fixtures/context-study-club/execution.json --check
+  --output tests/fixtures/context-study-club/execution-workbench-v2.json --check
 ```
 
 The retained execution observes three selected records and all A–H stages
@@ -31,3 +31,8 @@ passing. It demonstrates this specific synthetic dependency, not accuracy on
 arbitrary datasets. The engine's separate unit controls exercise missing,
 ambiguous, conflicting, restricted and budget-limited cases. The DWP acceptance
 also executes mutations of its own real source index.
+
+The 24 September workbench integration records its current consumer in
+`execution-workbench-v2.json`. The original `execution.json` remains unchanged
+as a historical observation. This new run compares the same source and case;
+implementation hashes include the additional delivery module and schemas.

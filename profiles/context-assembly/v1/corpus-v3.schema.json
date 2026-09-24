@@ -252,35 +252,64 @@
           "additionalProperties": false
         },
         "ranking": {
-          "type": "object",
-          "properties": {
-            "schema": {
-              "const": "okf-bm25.v1"
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "schema": { "const": "okf-bm25.v1" },
+                "k1": { "const": 1.2 },
+                "b": { "const": 0.75 },
+                "score_scale": { "const": 1000000 },
+                "fields": { "const": ["source", "discovery"] }
+              },
+              "required": ["schema", "k1", "b", "score_scale", "fields"],
+              "additionalProperties": false
             },
-            "k1": {
-              "const": 1.2
-            },
-            "b": {
-              "const": 0.75
-            },
-            "score_scale": {
-              "const": 1000000
-            },
-            "fields": {
-              "const": [
-                "source",
-                "discovery"
-              ]
+            {
+              "type": "object",
+              "properties": {
+                "schema": { "const": "okf-bm25-weighted.v2" },
+                "k1": { "const": 1.2 },
+                "b": { "const": 0.75 },
+                "score_scale": { "const": 1000000 },
+                "fields": { "const": ["source", "discovery"] },
+                "weights": {
+                  "type": "object",
+                  "properties": { "source": { "const": 1 }, "discovery": { "const": 2 } },
+                  "required": ["source", "discovery"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["schema", "k1", "b", "score_scale", "fields", "weights"],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "schema",
-            "k1",
-            "b",
-            "score_scale",
-            "fields"
-          ],
-          "additionalProperties": false
+          ]
+        },
+        "alias_routes": {
+          "type": "array",
+          "maxItems": 2000,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "ordinal": { "type": "integer", "minimum": 0 },
+                  "phrase": { "type": "string", "minLength": 1, "maxLength": 500 }
+                },
+                "required": ["ordinal", "phrase"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "ordinal": { "type": "integer", "minimum": 0 },
+                  "pattern": { "$ref": "discovery-card.schema.json#/$defs/route_pattern" }
+                },
+                "required": ["ordinal", "pattern"],
+                "additionalProperties": false
+              }
+            ]
+          }
         },
         "total_tokens": {
           "type": "object",
@@ -310,6 +339,12 @@
         "ranking",
         "total_tokens"
       ],
+      "if": { "required": ["alias_routes"] },
+      "then": {
+        "properties": {
+          "ranking": { "properties": { "schema": { "const": "okf-bm25-weighted.v2" } } }
+        }
+      },
       "additionalProperties": false
     },
     "discovery": {

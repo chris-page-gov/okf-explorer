@@ -18,6 +18,7 @@ access page tools, links or files. Explorer does not itself run an AI model.
 | Find an answer, review a subject, work or learn | [Audience journeys](docs/onboarding/audience-journeys.md) |
 | Create a small collection | [First bundle: files, commands and expected answers](docs/onboarding/first-bundle.md) |
 | Search, select and inspect records | [Use Explorer](docs/use-okf-explorer.md) |
+| Compare selected evidence with its source and propose corrections | [Evidence workbench](docs/evidence-workbench.md) |
 
 The catalogue includes the experimental **govuk-webmcp** application as a
 submitted, frozen competition candidate. Its introduction lives here; no

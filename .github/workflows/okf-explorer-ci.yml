@@ -103,7 +103,7 @@ jobs:
           node --experimental-strip-types scripts/run_context_evaluation.mjs
           --index tests/fixtures/context-study-club/index.json
           --case tests/fixtures/context-study-club/case.json
-          --output tests/fixtures/context-study-club/execution.json
+          --output tests/fixtures/context-study-club/execution-workbench-v2.json
           --check
 
   remote-mcp:

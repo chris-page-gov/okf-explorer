@@ -1,5 +1,22 @@
 # Changelog
 
+## Evidence workbench and bounded delivery — 24 September 2026
+
+- Add a reusable Evidence workbench for inspecting retained question packages,
+  source PDF locations, whole passages, concepts, relationships, dependencies and
+  selection traces. Export review proposals locally without changing sources.
+- Deliver and reconstruct canonical context packages through responses of at
+  most 32 KiB, preserving provenance, gaps and context identity independently of
+  the larger assembly budget. Verify hashes, bounds and exact continuations.
+- Add opt-in weighted discovery and bounded source-bound navigation routes;
+  prioritise the leading discovered unit's dependencies before broad expansion.
+  Preserve the existing ranking contract and frozen replay behaviour.
+- Retain the original staff question review brief separately from current
+  engine findings. Attempt a sandboxed cited-PDF preview with a direct-link
+  fallback, and expose the complete machine-readable package.
+- Keep candidate selection, useful answers, specialist acceptance and public
+  client observations as separate claims. See the [workbench guide](docs/evidence-workbench.md).
+
 ## Required-path admission — 23 September 2026
 
 - Refresh the exact candidate browser receipts: 100 Heritage questions and three

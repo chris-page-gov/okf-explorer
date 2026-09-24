@@ -9,7 +9,7 @@
       (() => {
         const landingFragments = new Set(['', '#start', '#journey', '#subjects', '#bundles', '#people', '#concepts', '#responsible', '#help']);
         const route = location.pathname.split('/').filter(Boolean).at(-1) || '';
-        if (route !== 'explore' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
+        if (route !== 'explore' && route !== 'evidence' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
           location.replace(`${location.pathname}explore/${location.search}${location.hash}`);
         }
       })();

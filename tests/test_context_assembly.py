@@ -141,6 +141,20 @@ class ContextAssemblyContractTests(unittest.TestCase):
             else: del changed['context_adjacency']['entries'][0]['incoming_ids_sha256']
             with self.subTest(change=change), self.assertRaises(ValueError): validate_documents(changed)
 
+    def test_package_ranking_matches_corpus_without_an_extra_schema_dependency(self):
+        profile = ROOT / 'profiles/context-assembly/v1'
+        corpus = json.loads((profile / 'corpus-v3.schema.json').read_text())
+        package = json.loads((profile / 'package.schema.json').read_text())
+        corpus_ranking = corpus['properties']['search']['properties']['ranking']
+        package_ranking = package['properties']['retrieval']['properties']['discovery']['properties']['ranking']
+        self.assertEqual(package_ranking, corpus_ranking)
+        self.assertNotIn('$ref', package_ranking)
+        common = json.loads((profile / 'common.schema.json').read_text())
+        card = json.loads((profile / 'discovery-card.schema.json').read_text())
+        self.assertEqual(common['$defs']['route_pattern'], card['$defs']['route_pattern'])
+        self.assertEqual(common['$defs']['discovery_card']['properties']['route_patterns']['items'],
+                         {'$ref': '#/$defs/route_pattern'})
+
     def test_portable_control_archive_integrity(self):
         result = subprocess.run(['node', '--test', 'tests/context_control_archive.test.mjs'],
                                 cwd=ROOT, text=True, capture_output=True)
