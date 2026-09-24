@@ -5,6 +5,7 @@ import test from 'node:test';
 test('built learner hub is static, small and split from Explorer', async () => {
   const root = await readFile(new URL('../build/index.html', import.meta.url), 'utf8');
   const explorer = await stat(new URL('../build/explore/index.html', import.meta.url));
+  const explorerHtml = await readFile(new URL('../build/explore/index.html', import.meta.url), 'utf8');
 
   assert.match(root, /Use knowledge you can inspect <em>with your AI<\/em>/);
   assert.match(root, /docs\/project-studio\/index\.html/);
@@ -19,7 +20,11 @@ test('built learner hub is static, small and split from Explorer', async () => {
   assert.match(root, /"learningResourceType"/);
   assert.ok(Buffer.byteLength(root) < 40_000, 'root HTML must remain below 40 KB');
   assert.ok(explorer.isFile(), 'Explorer must be emitted as /explore/index.html');
-  assert.doesNotMatch(root, /nodes\/4\.[A-Za-z0-9_-]+\.js/);
+  // Router indexes change when routes are added. Inspect the emitted page's
+  // final node preload (after its layouts), rather than assuming a node number.
+  const explorerPageModule = [...explorerHtml.matchAll(/nodes\/\d+\.[A-Za-z0-9_-]+\.js/g)].at(-1)?.[0];
+  assert.ok(explorerPageModule, 'Explorer must declare a page module');
+  assert.ok(!root.includes(explorerPageModule), 'learner hub must not preload the Explorer page module');
 });
 
 test('landing-page bundle projection matches the governed registry', async () => {
