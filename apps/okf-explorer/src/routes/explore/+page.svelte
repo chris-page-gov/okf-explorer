@@ -6482,6 +6482,7 @@
       <h1 aria-label="OKF Explorer"><a class="hub-link" href="../" aria-label="Return to the OKF learning hub">OKF Explorer</a></h1>
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
+      <a class="changes-link" href="../evidence/">Evidence workbench</a>
     </div>
     <nav class="tabs" aria-label="Views">
       {#each VIEW_MODES as view}
