@@ -476,7 +476,40 @@
         "discovery": {
           "type": "object",
           "properties": {
-            "ranking": { "$ref": "corpus-v3.schema.json#/properties/search/properties/ranking" },
+            "ranking": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "schema": { "const": "okf-bm25.v1" },
+                    "k1": { "const": 1.2 },
+                    "b": { "const": 0.75 },
+                    "score_scale": { "const": 1000000 },
+                    "fields": { "const": ["source", "discovery"] }
+                  },
+                  "required": ["schema", "k1", "b", "score_scale", "fields"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "schema": { "const": "okf-bm25-weighted.v2" },
+                    "k1": { "const": 1.2 },
+                    "b": { "const": 0.75 },
+                    "score_scale": { "const": 1000000 },
+                    "fields": { "const": ["source", "discovery"] },
+                    "weights": {
+                      "type": "object",
+                      "properties": { "source": { "const": 1 }, "discovery": { "const": 2 } },
+                      "required": ["source", "discovery"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["schema", "k1", "b", "score_scale", "fields", "weights"],
+                  "additionalProperties": false
+                }
+              ]
+            },
             "limits": {
               "type": "object",
               "properties": {
