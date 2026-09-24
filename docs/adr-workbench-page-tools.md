@@ -1,6 +1,6 @@
 # ADR: shared evidence inspection and page tools
 
-Date: 24 September 2026. Status: implemented candidate; deployment and host
+Date: 24 September 2026. Status: implemented; deployment and host
 acceptance are recorded separately in the [verification record](workbench-tools-verification.md).
 
 ## Starting point and design review

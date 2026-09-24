@@ -1,7 +1,7 @@
 # Workbench page-tool verification
 
-Recorded on 24 September 2026. This is candidate verification, not a claim of
-deployed AI-host compatibility. The [design](adr-workbench-page-tools.md) and
+Recorded on 24 September 2026. Local checks and public browser observations are
+reported separately; neither proves AI-host compatibility. The [design](adr-workbench-page-tools.md) and
 [user guide](workbench-page-tools.md) explain the boundaries.
 
 ## Reproducible application measurement
@@ -118,7 +118,35 @@ The current assistant connection advertises `pageAssets` and `cdp`, with no
 dedicated `webmcp` capability. These native developer calls therefore do **not**
 prove integrated assistant-host invocation. No host setting was changed and no
 panel renderer was invoked. The tested fallbacks are typed data, ordinary page
-controls and a deep link. Public deployment needs its own exact-build check.
+controls and a deep link.
+
+## Observed public workbench release
+
+The protected checks passed before [Explorer PR146](https://github.com/chris-page-gov/okf-explorer/pull/146)
+and [DWP PR39](https://github.com/chris-page-gov/okf-dwp/pull/39) merged. Each
+merged Git tree matches its reviewed candidate. Explorer Pages run `36056044297`
+passed build, deployment and its exact-identity browser check.
+
+A separate Chrome journey then verified the public workbench in 9.1 seconds:
+68 observed responses, no console errors, blocked calculation inspection for
+staff-016, all four qualified carer interaction rows for staff-039, and the Graph,
+Requirements and unknown Rates views. The 390-pixel page had no horizontal
+overflow. Chrome did not expose native page tools; that gate is **unavailable**,
+not a successful AI-client integration.
+
+| Binding | Observed value |
+| --- | --- |
+| Explorer source | `ce975e90704d1e7cdd15e15c304a92d39759bd99` |
+| Explorer application tree SHA-256 | `2156ce7311499be99c5d01e5322f7a3db27e3305352ca588710cf38757e0d919` |
+| Explorer application manifest SHA-256 | `72707262ade5bee62818b030489ab1f941f8246a5908e50e38b7ae8f2165008e` |
+| DWP source | `d31f16fb7143d04b9de73e14cd493cfb832ae83e` |
+| Additive DWP manifest SHA-256 | `294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f` |
+
+[Open the observed calculation-inspection case](https://chris-page-gov.github.io/okf-explorer/evidence/?manifest=https%3A%2F%2Fraw.githubusercontent.com%2Fchris-page-gov%2Fokf-dwp%2Fd31f16fb7143d04b9de73e14cd493cfb832ae83e%2Fevaluation%2Fevidence-workbench%2Ftools-manifest.json&case=staff-016&tab=calculation).
+The source manifest is immutable; the application URL can later serve a newer
+build. These observations cover the workbench, not DWP's separate learning-site
+publication, an award calculation or a complete legal answer. All 40 retained
+contexts remain insufficient.
 
 ## Remaining gates
 
@@ -127,5 +155,5 @@ controls and a deep link. Public deployment needs its own exact-build check.
   the staff questions.
 - Reviewed dated rate and executable calculation contracts; the newly identified
   GOV.UK adviser calculation guide is a source lead outside the frozen packages.
-- A new public deployment receipt. Earlier PR145 receipts describe the earlier
-  build and must not be relabelled as evidence for this candidate.
+- A later application release requires a new public observation. Earlier PR145
+  receipts and the PR146 observation above retain their own exact builds.

@@ -2,6 +2,10 @@
 
 ## Workbench page tools and model inspection — 24 September 2026
 
+- Record the public PR146 workbench observation separately from local checks:
+  exact application and DWP manifest hashes, qualified interaction rows,
+  blocked calculations and the unavailable native-tool gate in Chrome.
+
 - Add seven optional native WebMCP page tools over shared, bounded workbench
   services, with snapshot-bound references, exact passage continuations,
   cancellation and revision-checked display changes.
