@@ -1,10 +1,10 @@
 import type { ContextPackage, ContextRecord } from '$lib/context/types';
 import { isHttpUrl } from '$lib/viewer/helpers';
 import { sha256Hex } from '$lib/sources/releaseDataPlane';
-import { PACKAGE_DELIVERY_LIMITS, reconstructContextPackage } from '$lib/context/packageDelivery';
+import { PACKAGE_DELIVERY_LIMITS, reconstructContextPackage, validateCanonicalContextPackage } from '$lib/context/packageDelivery';
 
 export const MAX_MANIFEST_BYTES = 256 * 1024;
-export const MAX_PACKAGE_BYTES = 4 * 1024 * 1024;
+export const MAX_PACKAGE_BYTES = 512 * 1024;
 const SHA256 = /^[a-f0-9]{64}$/;
 const CASE_ID = /^[a-z0-9][a-z0-9._-]*$/;
 
@@ -27,6 +27,10 @@ function object(value: unknown): value is Record<string, unknown> {
 
 function nonempty(value: unknown, limit = 2000): value is string {
   return typeof value === 'string' && value.trim().length > 0 && value.length <= limit;
+}
+
+function strings(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string');
 }
 
 export function manifestUrl(input: string, base: string): URL {
@@ -85,10 +89,14 @@ export function parseManifest(value: unknown, source: URL): WorkbenchManifest {
 
 async function boundedJson(url: URL, maxBytes: number, signal?: AbortSignal): Promise<{ value: unknown; bytes: Uint8Array }> {
   const response = await fetch(url, { signal, cache: 'no-store', redirect: 'follow', credentials: 'omit' });
-  if (!response.ok) throw new Error(`Could not load ${url.pathname}: HTTP ${response.status}.`);
-  if (response.url !== url.href) throw new Error('Redirected evidence files are not accepted.');
+  async function reject(message: string): Promise<never> {
+    await response.body?.cancel().catch(() => {});
+    throw new Error(message);
+  }
+  if (!response.ok) return reject(`Could not load ${url.pathname}: HTTP ${response.status}.`);
+  if (response.url !== url.href) return reject('Redirected evidence files are not accepted.');
   const claimed = Number(response.headers.get('content-length') || 0);
-  if (claimed > maxBytes) throw new Error(`Evidence file exceeds the ${maxBytes.toLocaleString('en-GB')} byte limit.`);
+  if (claimed > maxBytes) return reject(`Evidence file exceeds the ${maxBytes.toLocaleString('en-GB')} byte limit.`);
   const reader = response.body?.getReader();
   if (!reader) throw new Error('Could not read the evidence file.');
   const chunks: Uint8Array[] = [];
@@ -101,6 +109,9 @@ async function boundedJson(url: URL, maxBytes: number, signal?: AbortSignal): Pr
       if (count > maxBytes) throw new Error(`Evidence file exceeds the ${maxBytes.toLocaleString('en-GB')} byte limit.`);
       chunks.push(next.value);
     }
+  } catch (cause) {
+    await reader.cancel().catch(() => {});
+    throw cause;
   } finally {
     reader.releaseLock();
   }
@@ -121,14 +132,21 @@ export function parsePackage(value: unknown, expected: WorkbenchCase): ContextPa
     throw new Error('The selected question has an invalid or mismatched context package.');
   }
   if (value.selected.length > 1000 || value.relationships.length > 3000) throw new Error('Context package exceeds display limits.');
+  for (const field of ['max_nodes', 'max_relationships', 'max_bytes', 'used_nodes', 'used_relationships', 'used_bytes']) {
+    if (!Number.isSafeInteger(value.budget[field]) || Number(value.budget[field]) < 0) throw new Error('Context package contains an invalid budget.');
+  }
   for (const item of value.selected) {
-    if (!object(item) || !object(item.record) || !nonempty(item.record.id, 500) || !nonempty(item.record.label, 500) || typeof item.record.text !== 'string' || !Array.isArray(item.record.provenance) || !Array.isArray(item.reasons) || !Array.isArray(item.paths) || item.record.provenance.some((row: unknown) => !object(row) || typeof row.url !== 'string' || typeof row.locator !== 'string')) throw new Error('Context package contains an invalid selected record.');
-    if (item.record.evidence_unit !== undefined && (!object(item.record.evidence_unit) || !Array.isArray(item.record.evidence_unit.spans) || item.record.evidence_unit.spans.some((span: unknown) => !object(span) || typeof span.locator !== 'string' || !Number.isSafeInteger(span.unit_start) || !Number.isSafeInteger(span.unit_end)))) throw new Error('Context package contains an invalid passage unit.');
+    if (!object(item) || !object(item.record) || !nonempty(item.record.id, 500) || !nonempty(item.record.label, 500) || typeof item.record.text !== 'string' || !Array.isArray(item.record.provenance) || !strings(item.reasons) || !Array.isArray(item.paths) || item.paths.some((path: unknown) => !object(path) || !strings(path.records)) || item.record.provenance.some((row: unknown) => !object(row) || typeof row.url !== 'string' || typeof row.locator !== 'string')) throw new Error('Context package contains an invalid selected record.');
+    if (item.record.evidence_unit !== undefined && (!object(item.record.evidence_unit) || !Array.isArray(item.record.evidence_unit.spans) || item.record.evidence_unit.spans.some((span: unknown) => !object(span) || typeof span.locator !== 'string' || typeof span.extraction_url !== 'string' || !Number.isSafeInteger(span.source_start) || !Number.isSafeInteger(span.source_end) || !Number.isSafeInteger(span.unit_start) || !Number.isSafeInteger(span.unit_end)))) throw new Error('Context package contains an invalid passage unit.');
   }
   for (const row of value.relationships) if (!object(row) || typeof row.source !== 'string' || typeof row.target !== 'string' || typeof row.label !== 'string') throw new Error('Context package contains an invalid relationship.');
-  for (const row of value.requirements) if (!object(row) || !nonempty(row.label) || !Array.isArray(row.missing)) throw new Error('Context package contains an invalid requirement.');
-  for (const row of [...value.missing_evidence, ...value.conflicts, ...value.budget.omissions]) if (!object(row) || typeof row.code !== 'string' || typeof row.message !== 'string' || !Array.isArray(row.ids)) throw new Error('Context package contains an invalid diagnostic.');
-  if (value.retrieval !== undefined && (!object(value.retrieval) || !Array.isArray(value.retrieval.candidates) || !Array.isArray(value.retrieval.query_tokens) || !Array.isArray(value.retrieval.omissions))) throw new Error('Context package contains an invalid retrieval trace.');
+  for (const row of value.requirements) if (!object(row) || !nonempty(row.label) || !strings(row.missing) || (row.limitations !== undefined && !strings(row.limitations))) throw new Error('Context package contains an invalid requirement.');
+  const issue = (row: unknown) => object(row) && typeof row.code === 'string' && typeof row.message === 'string' && strings(row.ids);
+  for (const row of [...value.missing_evidence, ...value.conflicts, ...value.budget.omissions]) if (!issue(row)) throw new Error('Context package contains an invalid diagnostic.');
+  for (const row of value.resolved_concepts) if (!object(row) || typeof row.label !== 'string' || !strings(row.matched) || typeof row.method !== 'string') throw new Error('Context package contains an invalid concept.');
+  for (const row of value.ambiguities) if (!object(row) || typeof row.phrase !== 'string' || !strings(row.candidates)) throw new Error('Context package contains an invalid ambiguity.');
+  if (!strings(value.unresolved_terms) || !strings(value.limitations)) throw new Error('Context package contains invalid limitations or terms.');
+  if (value.retrieval !== undefined && (!object(value.retrieval) || !Array.isArray(value.retrieval.candidates) || value.retrieval.candidates.some((row: unknown) => !object(row) || typeof row.id !== 'string' || !strings(row.matched) || typeof row.score !== 'number') || !strings(value.retrieval.query_tokens) || !Array.isArray(value.retrieval.omissions) || value.retrieval.omissions.some((row: unknown) => !issue(row)))) throw new Error('Context package contains an invalid retrieval trace.');
   return value as ContextPackage;
 }
 
@@ -143,9 +161,10 @@ export async function loadPackage(item: WorkbenchCase, manifest: URL, signal?: A
     return parsePackage(JSON.parse(await reconstructContextPackage(parts, item.package.sha256)), item);
   }
   const url = packageUrl(item.package.url, manifest);
-  const { value, bytes } = await boundedJson(url, MAX_PACKAGE_BYTES, signal);
+  const { bytes } = await boundedJson(url, MAX_PACKAGE_BYTES, signal);
   if (await sha256Hex(bytes) !== item.package.sha256) throw new Error('Context package SHA-256 does not match the manifest.');
-  return parsePackage(value, item);
+  const canonical = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  return parsePackage(await validateCanonicalContextPackage(canonical, item.package.sha256), item);
 }
 
 export function sourcePageUrl(record: ContextRecord): string | null {

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { canonicalJson } from '../../src/lib/context/index';
 
 const hash = async (value: string) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
 const question = 'What evidence is needed?';
@@ -19,8 +20,15 @@ const packageValue = {
   budget: { max_nodes: 10, max_relationships: 10, max_depth: 2, max_bytes: 524288, used_nodes: 1, used_relationships: 0, used_bytes: 2000, reached_depth: 0, truncated: false, omissions: [] }, ai_answer: null
 };
 
+async function canonicalPackage(value: typeof packageValue): Promise<string> {
+  const copy = structuredClone(value);
+  copy.context_id = `urn:sha256:${await hash(canonicalJson({ ...copy, context_id: undefined, budget: { ...copy.budget, used_bytes: undefined } }))}`;
+  for (let i = 0; i < 6; i++) copy.budget.used_bytes = new TextEncoder().encode(canonicalJson(copy)).length;
+  return canonicalJson(copy);
+}
+
 test('loads one hash-bound case lazily, inspects source and exports a local review', async ({ page }) => {
-  const packageJson = JSON.stringify(packageValue);
+  const packageJson = await canonicalPackage(packageValue);
   const manifest = { schema: 'okf-evidence-workbench.v1', title: 'Staff evidence review', publication: { label: 'Experimental', source_date: '2024-01-01', captured_at: '2026-09-24' }, questions: [
     { id: 'q-01', label: 'Question 1', question, package: { url: 'packages/q-01.json', sha256: await hash(packageJson) } },
     { id: 'q-02', label: 'Question 2', question: 'Another question?', package: { url: 'packages/q-02.json', sha256: '0'.repeat(64) } }
@@ -64,4 +72,55 @@ test('reports a package hash mismatch without displaying content', async ({ page
   await page.goto('/evidence/?manifest=/evaluation/evidence-workbench/manifest.json');
   await expect(page.getByRole('alert')).toContainText('SHA-256 does not match');
   await expect(page.getByRole('heading', { name: question })).toHaveCount(0);
+});
+
+test('bare workbench route gives load guidance without requesting an absent manifest', async ({ page }) => {
+  let requested = false;
+  await page.route(url => new URL(url).pathname.endsWith('/evaluation/evidence-workbench/manifest.json'), route => { requested = true; return route.abort(); });
+  await page.goto('/evidence/');
+  await expect(page.getByRole('heading', { name: 'Open an evidence review' })).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(requested).toBe(false);
+});
+
+test('rapid case switch keeps the latest package and its status', async ({ page }) => {
+  const first = await canonicalPackage(packageValue);
+  const secondQuestion = 'Which evidence is needed next?';
+  const second = await canonicalPackage({ ...packageValue, question: secondQuestion });
+  const manifest = { schema: 'okf-evidence-workbench.v1', title: 'Rapid review', publication: { label: 'Experimental' }, questions: [
+    { id: 'q-01', label: 'Question 1', question, package: { url: 'q-01.json', sha256: await hash(first) } },
+    { id: 'q-02', label: 'Question 2', question: secondQuestion, package: { url: 'q-02.json', sha256: await hash(second) } }
+  ] };
+  let firstStarted = false;
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(manifest) }));
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/q-01.json', async route => {
+    firstStarted = true;
+    await new Promise(resolve => setTimeout(resolve, 400));
+    await route.fulfill({ status: 200, contentType: 'application/json', body: first }).catch(() => {});
+  });
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/q-02.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: second }));
+  await page.goto('/evidence/?manifest=/evaluation/evidence-workbench/manifest.json');
+  await expect.poll(() => firstStarted).toBe(true);
+  await page.getByRole('link', { name: /Question 2/ }).click();
+  await expect(page.getByRole('heading', { name: secondQuestion })).toBeVisible();
+  await page.waitForTimeout(500);
+  await expect(page.getByRole('heading', { name: secondQuestion })).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.locator('.busy')).toHaveCount(0);
+});
+
+test('browser history reloads a different manifest', async ({ page }) => {
+  const content = await canonicalPackage(packageValue);
+  const reference = { id: 'q-01', label: 'Question 1', question, package: { url: 'q.json', sha256: await hash(content) } };
+  await page.route(url => new URL(url).pathname === '/review-a/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ schema: 'okf-evidence-workbench.v1', title: 'Manifest A', publication: { label: 'A' }, questions: [reference] }) }));
+  await page.route(url => new URL(url).pathname === '/review-b/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ schema: 'okf-evidence-workbench.v1', title: 'Manifest B', publication: { label: 'B' }, questions: [reference] }) }));
+  await page.route(url => ['/review-a/q.json', '/review-b/q.json'].includes(new URL(url).pathname), route => route.fulfill({ status: 200, contentType: 'application/json', body: content }));
+  await page.goto('/evidence/?manifest=/review-a/manifest.json');
+  await expect(page.getByRole('heading', { name: 'Manifest A' })).toBeVisible();
+  await page.getByLabel('Review manifest URL').fill('http://127.0.0.1:4173/review-b/manifest.json');
+  await page.getByRole('button', { name: 'Load' }).click();
+  await expect(page.getByRole('heading', { name: 'Manifest B' })).toBeVisible();
+  await page.goBack();
+  await expect(page.getByRole('heading', { name: 'Manifest A' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: question })).toBeVisible();
 });

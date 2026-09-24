@@ -25,6 +25,7 @@
   let reviewComment = $state('');
   let reviewMessage = $state('');
   let controller: AbortController | null = null;
+  let requestGeneration = 0;
 
   const records = $derived(context?.selected ?? []);
   const selected = $derived(records.find(item => item.record.id === selectedRecordId) ?? records[0] ?? null);
@@ -45,31 +46,38 @@
     window.history[mode === 'push' ? 'pushState' : 'replaceState'](window.history.state, '', link(caseId, recordId, chosenTab));
   }
 
+  function beginRequest() {
+    controller?.abort();
+    const active = new AbortController();
+    const generation = ++requestGeneration;
+    controller = active;
+    return { active, current: () => controller === active && generation === requestGeneration && !active.signal.aborted };
+  }
+
   async function openCase(item: WorkbenchCase, wantedRecord = '', historyMode: 'push' | 'replace' | 'none' = 'push') {
     if (!sourceUrl) return;
-    controller?.abort();
-    controller = new AbortController();
+    const source = sourceUrl;
+    const request = beginRequest();
     selectedCase = item;
     context = null;
     selectedRecordId = '';
     error = '';
     loading = true;
     try {
-      const loaded = await loadPackage(item, sourceUrl, controller.signal);
-      if (controller.signal.aborted) return;
+      const loaded = await loadPackage(item, source, request.active.signal);
+      if (!request.current()) return;
       context = loaded;
       selectedRecordId = loaded.selected.some(row => row.record.id === wantedRecord) ? wantedRecord : loaded.selected[0]?.record.id ?? '';
       syncAddress(item.id, selectedRecordId, tab, historyMode);
     } catch (cause) {
-      if (!controller.signal.aborted) error = cause instanceof Error ? cause.message : String(cause);
+      if (request.current()) error = cause instanceof Error ? cause.message : String(cause);
     } finally {
-      if (!controller.signal.aborted) loading = false;
+      if (request.current()) loading = false;
     }
   }
 
-  async function openManifest(raw: string, wantedCase = '', wantedRecord = '') {
-    controller?.abort();
-    controller = new AbortController();
+  async function openManifest(raw: string, wantedCase = '', wantedRecord = '', historyMode: 'push' | 'replace' | 'none' = 'push') {
+    const request = beginRequest();
     sourceUrl = null;
     manifest = null;
     selectedCase = null;
@@ -78,17 +86,17 @@
     loading = true;
     try {
       const url = manifestUrl(raw, window.location.href);
-      const loaded = await loadManifest(url, controller.signal);
-      if (controller.signal.aborted) return;
+      const loaded = await loadManifest(url, request.active.signal);
+      if (!request.current()) return;
       input = url.href;
       sourceUrl = url;
       manifest = loaded;
       const item = loaded.questions.find(row => row.id === wantedCase) ?? loaded.questions[0];
-      if (item) await openCase(item, wantedRecord, 'replace');
+      if (item) await openCase(item, wantedRecord, historyMode);
     } catch (cause) {
-      if (!controller.signal.aborted) error = cause instanceof Error ? cause.message : String(cause);
+      if (request.current()) error = cause instanceof Error ? cause.message : String(cause);
     } finally {
-      if (!controller.signal.aborted) loading = false;
+      if (request.current()) loading = false;
     }
   }
 
@@ -152,13 +160,43 @@
     const chosen = params.get('tab');
     if (tabs.some(item => item.id === chosen)) tab = chosen as Tab;
     input = params.get('manifest') || new URL('../evaluation/evidence-workbench/manifest.json', window.location.href).href;
-    void openManifest(input, params.get('case') ?? '', params.get('record') ?? '');
+    if (params.has('manifest')) void openManifest(input, params.get('case') ?? '', params.get('record') ?? '', 'replace');
     const followHistory = () => {
       const state = new URLSearchParams(window.location.search);
       const nextTab = state.get('tab');
       tab = tabs.some(item => item.id === nextTab) ? nextTab as Tab : 'source';
+      const nextManifest = state.get('manifest');
       const nextCase = state.get('case') ?? '';
       const nextRecord = state.get('record') ?? '';
+      if (!nextManifest) {
+        controller?.abort();
+        requestGeneration++;
+        sourceUrl = null;
+        manifest = null;
+        selectedCase = null;
+        context = null;
+        loading = false;
+        error = '';
+        return;
+      }
+      let wantedUrl: URL;
+      try { wantedUrl = manifestUrl(nextManifest, window.location.href); }
+      catch (cause) {
+        controller?.abort();
+        requestGeneration++;
+        sourceUrl = null;
+        manifest = null;
+        selectedCase = null;
+        context = null;
+        loading = false;
+        error = cause instanceof Error ? cause.message : String(cause);
+        return;
+      }
+      if (!sourceUrl || wantedUrl.href !== sourceUrl.href) {
+        input = nextManifest;
+        void openManifest(nextManifest, nextCase, nextRecord, 'none');
+        return;
+      }
       if (nextCase && nextCase !== selectedCase?.id) {
         const item = manifest?.questions.find(row => row.id === nextCase);
         if (item) void openCase(item, nextRecord, 'none');
@@ -167,7 +205,7 @@
       }
     };
     window.addEventListener('popstate', followHistory);
-    return () => { controller?.abort(); window.removeEventListener('popstate', followHistory); };
+    return () => { controller?.abort(); requestGeneration++; window.removeEventListener('popstate', followHistory); };
   });
 </script>
 
@@ -285,7 +323,7 @@
         {:else if !loading}<p>Select a question to inspect its evidence.</p>{/if}
       </main>
     </div>
-  {:else if !loading}<main id="evidence-main"><p>Load an evidence workbench manifest to inspect questions and source records.</p></main>{/if}
+  {:else if !loading}<main id="evidence-main"><h2>Open an evidence review</h2><p>Enter the URL of a published evidence workbench manifest above to inspect its questions, source records and review gaps. The DWP exemplar uses the suggested URL already in the field.</p></main>{/if}
 </div>
 
 <style>
