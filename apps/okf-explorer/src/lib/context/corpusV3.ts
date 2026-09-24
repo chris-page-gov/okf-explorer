@@ -193,7 +193,8 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     candidate_count: 0, candidates: [], fetched_files: 0, fetched_bytes: 0, decoded_bytes: 0, limits: { ...CORPUS_LIMITS }, truncated: false, omissions: [],
     units: { corpus_schema: 'okf-context-corpus.v3', referenced_records: [], examined_relationships: 0, limits: { ...UNIT_REFERENCE_LIMITS } },
     discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS },
-      admission_order: 'lexical-anchor-then-declared-path-prefixes.v1' } };
+      admission_order: manifest.search.ranking.schema === 'okf-bm25-weighted.v2'
+        ? 'lexical-anchor-dependencies-before-concept-paths.v2' : 'lexical-anchor-then-declared-path-prefixes.v1' } };
   const omit = (code: string, message: string, ids: string[] = []) => { retrieval.truncated = true; retrieval.omissions.push({ code, message, ids }); };
   const cache = new Map<string, Promise<any | null>>();
   const load = (reference: Reference): Promise<any | null> => {
@@ -444,6 +445,11 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')})${manifest.search.ranking.schema === 'okf-bm25.v1' ? '' : ', declared ranking ' + manifest.search.ranking.schema}. The card is not evidence or a concept-resolution claim.` });
   };
   if (ranked.length) await admitRanked(ranked[0]);
+  // With opt-in weighted discovery, follow the best whole source unit's
+  // declared dependencies before broad concept routes or secondary candidates
+  // spend the fixed file budget. Legacy v1 keeps its exact admission order.
+  if (manifest.search.ranking.schema === 'okf-bm25-weighted.v2' && evidenceSeeds.length)
+    await expand([evidenceSeeds[0].id]);
   await expand([...resolvedIds].sort());
   for (const candidate of ranked.slice(1)) await admitRanked(candidate);
   await expand([...new Set(evidenceSeeds.map(r => r.id))].sort());

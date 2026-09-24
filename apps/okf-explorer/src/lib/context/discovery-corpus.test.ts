@@ -143,6 +143,17 @@ describe('source-bound discovery corpus v3', () => {
     (invalid.search.ranking as { weights: { discovery: number } }).weights.discovery = 20;
     expect(() => validateContextCorpusManifest(invalid)).toThrow('unsupported ranking parameters');
   });
+  it('loads the top lexical unit’s source dependency before broad secondary candidates consume the file bound', async () => {
+    const f = await discoveryFixture(70, 1);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'quartz fruit gathering', {}, f.fetcher);
+    expect(result.retrieval!.discovery!.admission_order).toBe('lexical-anchor-dependencies-before-concept-paths.v2');
+    expect(result.retrieval!.candidates[0].id).toBe(f.records[0].id);
+    expect(result.retrieval!.units!.referenced_records).toContain(f.records.at(-1)!.id);
+    expect(result.selected.map(row => row.record.id)).toContain(f.records.at(-1)!.id);
+    expect(result.evidence_status).toBe('insufficient');
+  });
   it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
     const f = await discoveryFixture(3, 1);
     const topic = { ...f.concept, id: 'https://example.test/concept/equipment', route: 'concept/equipment', label: 'Equipment', aliases: [] };
