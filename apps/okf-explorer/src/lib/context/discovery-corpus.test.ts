@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 // @ts-ignore -- Node-only compression control; runtime uses bounded Web Streams.
 import { gzipSync } from 'node:zlib';
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from './corpus';
-import { bm25Contribution, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
+import { bm25Contribution, DISCOVERY_RANKING, DISCOVERY_RANKING_V2, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
 import { canonicalJson, contextSha256 } from './index';
 import { contextManifest, readContextEvidence } from './delivery';
 import { discoveryFixture } from '../../test/discoveryFixture';
@@ -103,6 +103,45 @@ describe('source-bound discovery corpus v3', () => {
     expect(bm25Contribution(10, 2, 1, 20, 200)).toBe(1481605);
     expect(bm25Contribution(10, 2, 2, 20, 200)).toBeLessThan(2 * bm25Contribution(10, 2, 1, 20, 200));
     expect(bm25Contribution(10, 2, 1, 100, 200)).toBeLessThan(bm25Contribution(10, 2, 1, 20, 200));
+  });
+  it('uses an opt-in source-bound ranking to find varied wording within the fixed shortlist without resolving a concept', async () => {
+    const f = await discoveryFixture(24, 8);
+    // The first 23 source passages contain incidental question words. The last
+    // unit has producer-authored discovery wording grounded in its own source.
+    for (let i = 0; i < 23; i++) {
+      f.cards[i].summary = 'General mineral collection records';
+    }
+    f.cards[23].label = 'Written permission to remove specimens';
+    f.cards[23].search_aliases = [
+      'Written permission for quartz collection',
+      'Approval before removing a specimen',
+      'Exceptions for permitted removal'
+    ];
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    await f.build();
+    const v1 = structuredClone(f.manifest);
+    v1.search.ranking = structuredClone(DISCOVERY_RANKING);
+    for (const question of ['Is quartz collection allowed with written permission?', 'Can quartz collection remove a specimen after approval?']) {
+      const previous = await assembleCorpusContext(v1, f.binding, question, {}, f.fetcher);
+      const result = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+      expect(result.retrieval!.candidates.map(c => c.id)).toContain(f.records[23].id);
+      expect(result.retrieval!.discovery!.ranking).toEqual(DISCOVERY_RANKING_V2);
+      expect(result.resolved_concepts).toEqual([]);
+      expect(result.evidence_status).toBe('insufficient');
+      const candidate = result.retrieval!.discovery!.candidates.find(c => c.card.evidence_id === f.records[23].id)!;
+      expect(result.retrieval!.candidates.find(c => c.id === f.records[23].id)!.score)
+        .toBe(candidate.source_score + 2 * candidate.discovery_score);
+      const previousPosition = previous.retrieval!.candidates.findIndex(c => c.id === f.records[23].id);
+      const weightedPosition = result.retrieval!.candidates.findIndex(c => c.id === f.records[23].id);
+      expect(weightedPosition).toBeLessThanOrEqual(previousPosition < 0 ? 16 : previousPosition);
+    }
+    // Negation remains in the question and cannot make discovery a legal answer.
+    const negative = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection must not proceed without permission?', {}, f.fetcher);
+    expect(negative.question).toContain('not');
+    expect(negative.evidence_status).toBe('insufficient');
+    const invalid = structuredClone(f.manifest);
+    (invalid.search.ranking as { weights: { discovery: number } }).weights.discovery = 20;
+    expect(() => validateContextCorpusManifest(invalid)).toThrow('unsupported ranking parameters');
   });
   it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
     const f = await discoveryFixture(3, 1);

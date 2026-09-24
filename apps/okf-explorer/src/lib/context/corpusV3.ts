@@ -6,8 +6,13 @@ import { CORPUS_LIMITS, UNIT_REFERENCE_LIMITS, corpusBucket, validateContextCorp
 import type { ContextRecordShard, LegacyContextCorpusManifest, Reference } from './corpus.ts';
 import type { ContextAssertion, ContextBinding, ContextBudget, ContextGuardDecision, ContextIndex, ContextPackage, ContextPath, ContextRecord, ContextRetrieval } from './types.ts';
 
-export type DiscoveryRanking = { schema: 'okf-bm25.v1'; k1: 1.2; b: 0.75; score_scale: 1000000; fields: readonly ['source', 'discovery'] };
+export type DiscoveryRanking = { schema: 'okf-bm25.v1'; k1: 1.2; b: 0.75; score_scale: 1000000; fields: readonly ['source', 'discovery'] }
+  | { schema: 'okf-bm25-weighted.v2'; k1: 1.2; b: 0.75; score_scale: 1000000;
+    fields: readonly ['source', 'discovery']; weights: { source: 1; discovery: 2 } };
 export const DISCOVERY_RANKING: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25.v1', k1: 1.2, b: 0.75, score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const) });
+/** Opt-in ranking: authored navigation wording can compete with incidental words in long source passages. */
+export const DISCOVERY_RANKING_V2: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25-weighted.v2', k1: 1.2, b: 0.75,
+  score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const), weights: Object.freeze({ source: 1, discovery: 2 }) });
 export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000, path_prefixes: 2000 });
 export type DiscoveryCard = Pick<ContextRecord, 'id' | 'label' | 'assertion_status' | 'authority' | 'scope' | 'provenance' | 'rights' | 'access'> & {
   evidence_id: string; evidence_sha256: string; heading_path: string[]; summary: string; search_aliases: string[];
@@ -69,7 +74,7 @@ export function validateDiscoveryCorpusManifest(raw: unknown): DiscoveryCorpusMa
   keys(raw, ['schema', 'bundle', 'scope', 'limitations', 'semantic_source_snapshot', 'base_index', 'counts', 'records', 'search', 'discovery', 'relationships'], ['extensions']);
   check(raw.schema === 'okf-context-corpus.v3' && size(raw) <= 4 * 1024 * 1024, 'schema or manifest byte limit');
   check(object(raw.search), 'search'); keys(raw.search, ['tokenisation', 'bucket_algorithm', 'shards', 'ranking', 'total_tokens']);
-  check(canonicalJson(raw.search.ranking) === canonicalJson(DISCOVERY_RANKING), 'unsupported ranking parameters');
+  check([DISCOVERY_RANKING, DISCOVERY_RANKING_V2].some(r => canonicalJson(raw.search.ranking) === canonicalJson(r)), 'unsupported ranking parameters');
   check(object(raw.search.total_tokens), 'token totals'); keys(raw.search.total_tokens, ['source', 'discovery']);
   check(Object.values(raw.search.total_tokens).every(n => integer(n, 1_000_000_000_000)), 'invalid token totals');
   validateContextCorpusManifest({ ...raw, schema: 'okf-context-corpus.v2', search: { tokenisation: raw.search.tokenisation,
@@ -224,7 +229,9 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
   check(base.records.every(row => row.kind === 'concept' || row.kind === 'scope'), 'v3 base records are concepts or scopes; evidence requires a bound card and unit shard');
   const index: ContextIndex = { ...base, bundle: manifest.bundle, scope: manifest.scope, limitations: [...manifest.limitations,
     'Discovery cards are source-bound navigation summaries, not source evidence, resolved concepts or applicability assertions.',
-    'BM25 source and discovery channels are independently scored with fixed parameters and canonical ordinal ties. Incoming references are not reversed into traversal.'], records: [...base.records], assertions: [] };
+    manifest.search.ranking.schema === 'okf-bm25.v1'
+      ? 'BM25 source and discovery channels are independently scored with fixed parameters and canonical ordinal ties. Incoming references are not reversed into traversal.'
+      : 'BM25 source and discovery channels are independently scored with declared fixed weights and canonical ordinal ties. Incoming references are not reversed into traversal.'], records: [...base.records], assertions: [] };
   const byId = new Map(index.records.map(r => [r.id, r]));
   const recordCache = new Map<string, ContextRecord[]>(), cardCache = new Map<string, DiscoveryCard[]>();
   const cardIds = new Map<string, string>();
@@ -413,7 +420,9 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
       const rank: Rank = ranks.get(p[0]) || { score: 0, source_score: 0, discovery_score: 0, matched: [], matched_source: [], matched_discovery: [], facts: new Map() };
       rank.source_score += bm25Contribution(manifest.records.count, sourceDf, p[1], p[2], manifest.search.total_tokens.source);
       rank.discovery_score += bm25Contribution(manifest.records.count, discoveryDf, p[3], p[4], manifest.search.total_tokens.discovery);
-      rank.score = rank.source_score + rank.discovery_score; rank.matched.push(token); rank.facts.set(token, p);
+      rank.score = rank.source_score + rank.discovery_score * (manifest.search.ranking.schema === 'okf-bm25-weighted.v2'
+        ? manifest.search.ranking.weights.discovery : 1);
+      rank.matched.push(token); rank.facts.set(token, p);
       if (p[1]) rank.matched_source.push(token); if (p[3]) rank.matched_discovery.push(token); ranks.set(p[0], rank);
     }
   }
@@ -432,7 +441,7 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
       evidence_id: unit.record.id, card_sha256: await contextSha256(canonicalJson(unit.card)), ordinal };
     retrieval.discovery!.candidates.push({ card, source_score: rank.source_score, discovery_score: rank.discovery_score,
       matched_source: rank.matched_source, matched_discovery: rank.matched_discovery });
-    evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')}). The card is not evidence or a concept-resolution claim.` });
+    evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')})${manifest.search.ranking.schema === 'okf-bm25.v1' ? '' : ', declared ranking ' + manifest.search.ranking.schema}. The card is not evidence or a concept-resolution claim.` });
   };
   if (ranked.length) await admitRanked(ranked[0]);
   await expand([...resolvedIds].sort());
