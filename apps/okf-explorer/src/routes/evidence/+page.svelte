@@ -1,15 +1,22 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
+  import { pushState, replaceState } from '$app/navigation';
   import type { ContextPackage, ContextRecord, ContextSelection } from '$lib/context/types';
-  import { loadManifest, loadPackage, manifestUrl, reviewDownload, sourcePageUrl, unitSpanText, type WorkbenchCase, type WorkbenchManifest } from '$lib/evidence/workbench';
+  import { loadManifestWithIdentity, loadPackage, manifestUrl, reviewDownload, sourcePageUrl, unitSpanText, type WorkbenchCase, type WorkbenchManifest } from '$lib/evidence/workbench';
   import { isHttpUrl } from '$lib/viewer/helpers';
+  import WorkbenchDataView from '$lib/evidence/WorkbenchDataView.svelte';
+  import { WorkbenchSession } from '$lib/evidence/session';
+  import { documentWorkbenchRegistry, registerWorkbenchTools } from '$lib/evidence/webmcp';
+  import { DATA_VIEWS, type DataView, type Presentation, type ViewPayload, type WorkbenchView } from '$lib/evidence/toolTypes';
 
-  type Tab = 'source' | 'extraction' | 'passage' | 'ontology' | 'definitions' | 'trace' | 'review';
+  type Tab = WorkbenchView;
   const tabs: Array<{ id: Tab; label: string }> = [
     { id: 'source', label: 'Original source' }, { id: 'extraction', label: 'Extracted text and structure' },
     { id: 'passage', label: 'Complete passage' }, { id: 'ontology', label: 'Concepts and relationships' },
     { id: 'definitions', label: 'Definitions and exceptions' }, { id: 'trace', label: 'Retrieval trace' },
-    { id: 'review', label: 'Review proposal' }
+    { id: 'review', label: 'Review proposal' }, { id: 'graph', label: 'Graph' },
+    { id: 'interactions', label: 'Interactions' }, { id: 'requirements', label: 'Requirements' },
+    { id: 'rates', label: 'Rates' }, { id: 'calculation', label: 'Calculation stages' }
   ];
   let input = $state('');
   let sourceUrl = $state<URL | null>(null);
@@ -26,6 +33,114 @@
   let reviewMessage = $state('');
   let controller: AbortController | null = null;
   let requestGeneration = 0;
+  let stateRevision = $state(0);
+  let manifestDigest = $state<string | null>(null);
+  let dataPayload = $state<ViewPayload | null>(null);
+  let dataNextCursor = $state<string | null>(null);
+  let dataPartial = $state(false);
+  let dataError = $state('');
+  let dataLoading = $state(false);
+  let dataController: AbortController | null = null;
+  let toolMessage = $state('Checking optional page tools…');
+  let session: WorkbenchSession | null = null;
+
+  function isDataView(value: Tab): value is DataView { return DATA_VIEWS.includes(value as DataView); }
+  function clearData() {
+    dataController?.abort();
+    dataController = null;
+    dataPayload = null;
+    dataNextCursor = null;
+    dataPartial = false;
+    dataError = '';
+    dataLoading = false;
+  }
+  function advanceRevision() { stateRevision++; clearData(); }
+  function clearReviewDraft() {
+    if (reviewComment.trim()) reviewMessage = 'Unsaved proposal text was cleared when you changed evidence.';
+    reviewComment = '';
+  }
+
+  async function loadDataView(cursor?: string) {
+    if (!session || !selectedCase || !manifestDigest || !isDataView(tab)) return;
+    dataController?.abort();
+    const active = new AbortController();
+    dataController = active;
+    const revision = stateRevision, caseId = selectedCase.id, view = tab;
+    dataLoading = true;
+    dataError = '';
+    try {
+      const result = await session.invoke('okf_get_view_data', {
+        view, case_id: caseId, max_bytes: 32768, snapshot_id: `sha256:${manifestDigest}`,
+        ...(cursor ? { cursor } : {})
+      }, { signal: active.signal });
+      if (active.signal.aborted || stateRevision !== revision || selectedCase?.id !== caseId || tab !== view) return;
+      if (result.error) throw new Error(`${result.error.message} ${result.error.recovery}`);
+      const next = result.data as ViewPayload | undefined;
+      if (!next || next.schema !== 'okf-workbench-view.v1' || next.kind !== view || !next.coverage) throw new Error('The view response did not contain a bounded display page.');
+      if (cursor) {
+        const previous = dataPayload;
+        if (!previous || previous.kind !== next.kind || previous.title !== next.title || previous.authority !== next.authority ||
+          previous.coverage?.total_rows !== next.coverage.total_rows || next.coverage.offset !== previous.rows.length ||
+          next.coverage.delivered_rows !== next.rows.length || dataNextCursor !== cursor) throw new Error('The continuation does not follow the displayed page. Reload this view.');
+        dataPayload = { ...next, rows: [...previous.rows, ...next.rows], coverage: { ...next.coverage, offset: 0, delivered_rows: previous.rows.length + next.rows.length } };
+      } else dataPayload = next;
+      dataNextCursor = next.coverage.next_cursor;
+      dataPartial = !next.coverage.complete || !result.delivery.complete;
+    } catch (cause) {
+      if (!active.signal.aborted && stateRevision === revision) dataError = cause instanceof Error ? cause.message : String(cause);
+    } finally {
+      if (dataController === active) { dataController = null; dataLoading = false; }
+    }
+  }
+
+  async function presentSelection(selection: Presentation, expectedRevision: number, signal: AbortSignal): Promise<void> {
+    if (signal.aborted || stateRevision !== expectedRevision || !sourceUrl || !manifest || !manifestDigest) throw new Error('The workbench page changed before presentation.');
+    const item = manifest.questions.find(row => row.id === selection.case_id);
+    if (!item) throw new Error('The requested case is not in the admitted manifest.');
+    if (reviewComment.trim() && (selectedCase?.id !== item.id || selection.record_id && selectedRecordId !== selection.record_id || tab !== selection.view))
+      throw new Error('A review proposal has unsaved text. Download or clear it before changing the page.');
+    const source = sourceUrl, digest = manifestDigest;
+    const loaded = selectedCase?.id === item.id && context ? context : await loadPackage(item, source, signal);
+    let visual: ViewPayload | null = null;
+    if (isDataView(selection.view) && selection.result_id) {
+      visual = session?.getRetainedView(selection.result_id) ?? null;
+      if (!visual || visual.kind !== selection.view) throw new Error('The retained view has expired or belongs to another page session.');
+    }
+    if (signal.aborted || stateRevision !== expectedRevision || sourceUrl !== source || manifestDigest !== digest) throw new Error('The workbench page changed before presentation.');
+    if (reviewComment.trim() && (selectedCase?.id !== item.id || selection.record_id && selectedRecordId !== selection.record_id || tab !== selection.view))
+      throw new Error('A review proposal has unsaved text. Download or clear it before changing the page.');
+    if (selection.record_id && !loaded.selected.some(row => row.record.id === selection.record_id)) throw new Error('The requested record is absent from this case.');
+    controller?.abort(); requestGeneration++;
+    advanceRevision();
+    selectedCase = item;
+    context = loaded;
+    selectedRecordId = selection.record_id ?? loaded.selected[0]?.record.id ?? '';
+    tab = selection.view;
+    error = ''; loading = false;
+    if (visual) {
+      dataPayload = visual;
+      dataNextCursor = visual.coverage?.next_cursor ?? null;
+      dataPartial = !visual.coverage?.complete;
+    }
+    syncAddress(item.id, selectedRecordId, tab);
+    if (isDataView(tab) && !visual) {
+      await loadDataView();
+      if (dataError) throw new Error(dataError);
+    }
+    await tick();
+  }
+
+  function followRecordRef(ref: string) {
+    if (!session) return;
+    const revision = stateRevision;
+    try {
+      const pointer = session.resolveReference(ref);
+      const signal = new AbortController().signal;
+      void presentSelection({ ...pointer, view: 'source' }, revision, signal).catch(cause => {
+        if (stateRevision === revision) error = cause instanceof Error ? cause.message : String(cause);
+      });
+    } catch (cause) { if (stateRevision === revision) error = cause instanceof Error ? cause.message : String(cause); }
+  }
 
   const records = $derived(context?.selected ?? []);
   const selected = $derived(records.find(item => item.record.id === selectedRecordId) ?? records[0] ?? null);
@@ -43,10 +158,12 @@
 
   function syncAddress(caseId: string, recordId: string, chosenTab: Tab, mode: 'push' | 'replace' | 'none' = 'push') {
     if (mode === 'none') return;
-    window.history[mode === 'push' ? 'pushState' : 'replaceState'](window.history.state, '', link(caseId, recordId, chosenTab));
+    if (mode === 'push') pushState(link(caseId, recordId, chosenTab), {});
+    else replaceState(link(caseId, recordId, chosenTab), {});
   }
 
   function beginRequest() {
+    advanceRevision();
     controller?.abort();
     const active = new AbortController();
     const generation = ++requestGeneration;
@@ -58,6 +175,7 @@
     if (!sourceUrl) return;
     const source = sourceUrl;
     const request = beginRequest();
+    if (selectedCase?.id !== item.id) clearReviewDraft();
     selectedCase = item;
     context = null;
     selectedRecordId = '';
@@ -69,6 +187,7 @@
       context = loaded;
       selectedRecordId = loaded.selected.some(row => row.record.id === wantedRecord) ? wantedRecord : loaded.selected[0]?.record.id ?? '';
       syncAddress(item.id, selectedRecordId, tab, historyMode);
+      if (isDataView(tab)) void loadDataView();
     } catch (cause) {
       if (request.current()) error = cause instanceof Error ? cause.message : String(cause);
     } finally {
@@ -78,20 +197,24 @@
 
   async function openManifest(raw: string, wantedCase = '', wantedRecord = '', historyMode: 'push' | 'replace' | 'none' = 'push') {
     const request = beginRequest();
+    session?.reset();
+    clearReviewDraft();
     sourceUrl = null;
     manifest = null;
+    manifestDigest = null;
     selectedCase = null;
     context = null;
     error = '';
     loading = true;
     try {
       const url = manifestUrl(raw, window.location.href);
-      const loaded = await loadManifest(url, request.active.signal);
+      const loaded = await loadManifestWithIdentity(url, request.active.signal);
       if (!request.current()) return;
       input = url.href;
       sourceUrl = url;
-      manifest = loaded;
-      const item = loaded.questions.find(row => row.id === wantedCase) ?? loaded.questions[0];
+      manifest = loaded.manifest;
+      manifestDigest = loaded.sha256;
+      const item = loaded.manifest.questions.find(row => row.id === wantedCase) ?? loaded.manifest.questions[0];
       if (item) await openCase(item, wantedRecord, historyMode);
     } catch (cause) {
       if (request.current()) error = cause instanceof Error ? cause.message : String(cause);
@@ -110,27 +233,31 @@
   function chooseRecord(event: MouseEvent, item: ContextSelection) {
     if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    advanceRevision();
     selectedRecordId = item.record.id;
-    reviewComment = '';
-    reviewMessage = '';
+    clearReviewDraft();
     syncAddress(selectedCase?.id ?? '', selectedRecordId, tab);
+    if (isDataView(tab)) void loadDataView();
   }
 
   function chooseTab(event: MouseEvent, next: Tab) {
     if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    advanceRevision();
     tab = next;
     syncAddress(selectedCase?.id ?? '', selected?.record.id ?? '', tab);
+    if (isDataView(tab)) void loadDataView();
   }
 
   function chooseRecordTab(event: MouseEvent, item: ContextSelection, next: Tab) {
     if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    advanceRevision();
     selectedRecordId = item.record.id;
-    reviewComment = '';
-    reviewMessage = '';
+    clearReviewDraft();
     tab = next;
     syncAddress(selectedCase?.id ?? '', item.record.id, tab);
+    if (isDataView(tab)) void loadDataView();
   }
 
   function recordLabel(id: string): string {
@@ -159,12 +286,22 @@
   }
 
   onMount(() => {
+    session = new WorkbenchSession({
+      state: () => ({ revision: stateRevision, loading, manifest, manifestUrl: sourceUrl?.href ?? null,
+        manifestDigest, caseId: selectedCase?.id ?? null, recordId: selectedRecordId || null, view: tab, context }),
+      present: presentSelection,
+      deepLink: selection => new URL(link(selection.case_id, selection.record_id ?? '', selection.view), window.location.href).href
+    });
+    const registration = registerWorkbenchTools(documentWorkbenchRegistry(document), session);
+    let mounted = true;
+    void registration.ready.then(status => { if (mounted) toolMessage = status.message; });
     const params = new URLSearchParams(window.location.search);
     const chosen = params.get('tab');
     if (tabs.some(item => item.id === chosen)) tab = chosen as Tab;
     input = params.get('manifest') || new URL('../evaluation/evidence-workbench/manifest.json', window.location.href).href;
     if (params.has('manifest')) void openManifest(input, params.get('case') ?? '', params.get('record') ?? '', 'replace');
     const followHistory = () => {
+      advanceRevision();
       const state = new URLSearchParams(window.location.search);
       const nextTab = state.get('tab');
       tab = tabs.some(item => item.id === nextTab) ? nextTab as Tab : 'source';
@@ -174,10 +311,13 @@
       if (!nextManifest) {
         controller?.abort();
         requestGeneration++;
+        clearReviewDraft();
         sourceUrl = null;
         manifest = null;
+        manifestDigest = null;
         selectedCase = null;
         context = null;
+        selectedRecordId = '';
         loading = false;
         error = '';
         return;
@@ -187,10 +327,13 @@
       catch (cause) {
         controller?.abort();
         requestGeneration++;
+        clearReviewDraft();
         sourceUrl = null;
         manifest = null;
+        manifestDigest = null;
         selectedCase = null;
         context = null;
+        selectedRecordId = '';
         loading = false;
         error = cause instanceof Error ? cause.message : String(cause);
         return;
@@ -200,15 +343,27 @@
         void openManifest(nextManifest, nextCase, nextRecord, 'none');
         return;
       }
-      if (nextCase && nextCase !== selectedCase?.id) {
-        const item = manifest?.questions.find(row => row.id === nextCase);
+      const targetCase = nextCase || manifest?.questions[0]?.id || '';
+      if (nextCase && !manifest?.questions.some(row => row.id === nextCase)) {
+        controller?.abort();
+        requestGeneration++;
+        clearReviewDraft();
+        selectedCase = null;
+        context = null;
+        selectedRecordId = '';
+        loading = false;
+        error = 'The requested case is not in this review manifest.';
+      } else if (targetCase && targetCase !== selectedCase?.id) {
+        const item = manifest?.questions.find(row => row.id === targetCase);
         if (item) void openCase(item, nextRecord, 'none');
       } else {
+        if (selectedRecordId !== nextRecord) clearReviewDraft();
         selectedRecordId = records.some(row => row.record.id === nextRecord) ? nextRecord : records[0]?.record.id ?? '';
+        if (isDataView(tab)) void loadDataView();
       }
     };
     window.addEventListener('popstate', followHistory);
-    return () => { controller?.abort(); requestGeneration++; window.removeEventListener('popstate', followHistory); };
+    return () => { mounted = false; registration.dispose(); session?.dispose(); session = null; dataController?.abort(); controller?.abort(); requestGeneration++; window.removeEventListener('popstate', followHistory); };
   });
 </script>
 
@@ -223,9 +378,10 @@
     <div><a href="../explore/">← Explorer</a><h1>Evidence workbench</h1><p>Trace a staff question back to source pages, passages and declared evidence needs.</p></div>
     <form onsubmit={(event) => { event.preventDefault(); void openManifest(input); }}>
       <label for="manifest-url">Review manifest URL</label>
-      <div><input id="manifest-url" type="url" bind:value={input} required /><button type="submit">Load</button></div>
+      <div><input id="manifest-url" type="url" bind:value={input} oninput={() => stateRevision++} required /><button type="submit">Load</button></div>
     </form>
   </header>
+  <p class="tool-status" role="status">{toolMessage}</p>
   {#if error}<p class="alert" role="alert">{error}</p>{/if}
   {#if loading}<p class="busy" role="status">Loading selected evidence…</p>{/if}
   {#if manifest}
@@ -234,7 +390,7 @@
         <h2 id="cases-title">{manifest.title}</h2>
         <p>{manifest.questions.length} questions · {manifest.publication.label}</p>
         <label for="case-filter">Find a question</label>
-        <input id="case-filter" type="search" bind:value={filter} />
+        <input id="case-filter" type="search" bind:value={filter} oninput={() => stateRevision++} />
         <nav aria-label="Staff questions">
           {#each visibleCases as item}
             <a href={link(item.id, '', 'source')} class:current={selectedCase?.id === item.id} aria-current={selectedCase?.id === item.id ? 'page' : undefined} onclick={(event) => chooseCase(event, item)}><span>{item.label}</span><small>{item.question}</small></a>
@@ -277,7 +433,13 @@
               <nav class="tab-list" aria-label="Evidence views">
                 {#each tabs as item}<a href={link(selectedCase.id, selected?.record.id ?? '', item.id)} class:active={tab === item.id} aria-current={tab === item.id ? 'page' : undefined} onclick={(event) => chooseTab(event, item.id)}>{item.label}</a>{/each}
               </nav>
-              {#if tab === 'source'}
+              {#if isDataView(tab)}
+                {#if dataError}<p class="alert" role="alert">{dataError}</p>{/if}
+                {#if dataLoading}<p role="status">Loading {tab} view…</p>{/if}
+                {#if dataPayload}<WorkbenchDataView payload={dataPayload} onRecord={followRecordRef} />{/if}
+                {#if dataPartial && dataPayload?.coverage}<p class="note" role="status">This is a partial view. Showing {dataPayload.coverage.delivered_rows} of {dataPayload.coverage.total_rows} rows.</p>{/if}
+                {#if dataNextCursor}<button type="button" disabled={dataLoading} onclick={() => { if (dataNextCursor) void loadDataView(dataNextCursor); }}>Load more rows</button>{/if}
+              {:else if tab === 'source'}
                 {#if selected}
                   <h4>Original source</h4>
                   <p>The source document is separate from the extracted and project-authored material. Follow the cited locator to check the page.</p>
@@ -329,7 +491,7 @@
                 {#if context.limitations.length}<h5>Limitations</h5><ul>{#each context.limitations as limitation}<li>{limitation}</li>{/each}</ul>{/if}
               {:else if tab === 'review'}
                 <h4>Review and change proposal</h4><p>Write a local proposal for a specialist to assess. Downloading it does not edit the original document, extraction, semantic source or published package.</p>
-                {#if selected}<form class="review-form" onsubmit={(event) => { event.preventDefault(); exportProposal(); }}><label for="review-status">Proposed review outcome</label><select id="review-status" bind:value={reviewStatus}><option value="needs-specialist-review">Needs specialist review</option><option value="boundary-correction">Passage boundary correction</option><option value="relationship-correction">Relationship correction</option><option value="source-check">Source or locator check</option><option value="no-change">No change proposed</option></select><label for="review-comment">Evidence and suggested change</label><textarea id="review-comment" bind:value={reviewComment} rows="8" maxlength="10000" required placeholder="Describe the issue, cite the source page and explain the proposed change."></textarea><button type="submit" disabled={!reviewComment.trim()}>Download review proposal</button></form>{#if reviewMessage}<p role="status">{reviewMessage}</p>{/if}{:else}<p>Select a record to propose a review.</p>{/if}
+                {#if selected}<form class="review-form" onsubmit={(event) => { event.preventDefault(); exportProposal(); }}><label for="review-status">Proposed review outcome</label><select id="review-status" bind:value={reviewStatus} onchange={() => stateRevision++}><option value="needs-specialist-review">Needs specialist review</option><option value="boundary-correction">Passage boundary correction</option><option value="relationship-correction">Relationship correction</option><option value="source-check">Source or locator check</option><option value="no-change">No change proposed</option></select><label for="review-comment">Evidence and suggested change</label><textarea id="review-comment" bind:value={reviewComment} oninput={() => stateRevision++} rows="8" maxlength="10000" required placeholder="Describe the issue, cite the source page and explain the proposed change."></textarea><button type="submit" disabled={!reviewComment.trim()}>Download review proposal</button></form>{#if reviewMessage}<p role="status">{reviewMessage}</p>{/if}{:else}<p>Select a record to propose a review.</p>{/if}
               {/if}
             </section>
           </div>
@@ -397,6 +559,7 @@
   .review-form button { justify-self: start; }
   .alert { margin: 1rem; padding: 1rem; border: 2px solid #aa2929; background: #fff4f3; }
   .busy { padding: 1rem; }
+  .tool-status { margin: 0; padding: .35rem 1.5rem; background: #eaf4ff; color: #163b5e; font-size: .9rem; }
   @media (max-width: 1000px) { .columns, .record-layout { grid-template-columns: 1fr; } .cases nav, .record-list nav { max-height: 15rem; } }
   @media (max-width: 650px) { .masthead { display: block; } .masthead form { margin-top: 1rem; } .facts { grid-template-columns: 1fr; } }
 </style>

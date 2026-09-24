@@ -1,0 +1,27 @@
+{
+  "schema": "okf-workbench-result.v1",
+  "snapshot_id": null,
+  "evidence_status": "not-loaded",
+  "state_revision": 0,
+  "data": {
+    "ready": false,
+    "selected_case_id": null,
+    "selected_record_id": null,
+    "view": "source"
+  },
+  "delivery": {
+    "complete": true,
+    "next_cursor": null,
+    "bytes": 499,
+    "characters": 499,
+    "estimated_tokens": 125
+  },
+  "error": {
+    "code": "not_ready",
+    "message": "No evidence snapshot is loaded.",
+    "recovery": "Load an evidence workbench manifest, then call okf_get_state again."
+  },
+  "limitations": [
+    "No source evidence was selected."
+  ]
+}

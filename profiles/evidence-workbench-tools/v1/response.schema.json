@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/okf/evidence-workbench-tools/v1/response.schema.json",
+  "title": "OKF evidence workbench application result, version 1",
+  "description": "Application-level result schema. This is not a WebMCP registration field or MCP transport envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "snapshot_id", "evidence_status", "state_revision", "delivery", "limitations"],
+  "properties": {
+    "schema": { "const": "okf-workbench-result.v1" },
+    "snapshot_id": { "type": ["string", "null"], "minLength": 1 },
+    "result_id": { "type": "string", "minLength": 1 },
+    "evidence_status": { "enum": ["sufficient", "insufficient", "conflicting", "not-loaded"] },
+    "state_revision": { "type": "integer", "minimum": 0 },
+    "data": { "type": "object" },
+    "delivery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["complete", "next_cursor", "bytes", "characters", "estimated_tokens"],
+      "properties": {
+        "complete": { "type": "boolean" },
+        "next_cursor": { "type": ["string", "null"], "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "characters": { "type": "integer", "minimum": 0 },
+        "estimated_tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "error": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "message", "recovery"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "recovery": { "type": "string", "minLength": 1 }
+      }
+    },
+    "limitations": { "type": "array", "items": { "type": "string" } }
+  }
+}

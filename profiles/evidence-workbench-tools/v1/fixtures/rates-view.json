@@ -1,0 +1,52 @@
+{
+  "schema": "okf-workbench-result.v1",
+  "snapshot_id": "sha256:synthetic-example",
+  "evidence_status": "insufficient",
+  "state_revision": 2,
+  "data": {
+    "schema": "okf-workbench-view.v1",
+    "kind": "rates",
+    "title": "Rates and applicable periods",
+    "fields": [
+      {
+        "key": "rate",
+        "label": "Rate",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "label": "Value",
+        "type": "number",
+        "unit": "GBP"
+      }
+    ],
+    "rows": [],
+    "time_basis": {
+      "assessment_date": null,
+      "effective_from": null,
+      "effective_to": null
+    },
+    "provenance": [],
+    "limitations": [
+      "No reviewed typed rates contract is admitted."
+    ],
+    "authority": "retained-evidence-projection",
+    "coverage": {
+      "offset": 0,
+      "total_rows": 0,
+      "delivered_rows": 0,
+      "complete": true,
+      "next_cursor": null
+    }
+  },
+  "delivery": {
+    "complete": true,
+    "next_cursor": null,
+    "bytes": 800,
+    "characters": 800,
+    "estimated_tokens": 200
+  },
+  "limitations": [
+    "No source evidence was selected."
+  ]
+}

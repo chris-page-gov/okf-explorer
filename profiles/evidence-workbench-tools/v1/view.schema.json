@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/okf/evidence-workbench-tools/v1/view.schema.json",
+  "title": "OKF evidence workbench view payload, version 1",
+  "description": "Renderer-neutral, bounded data returned inside an okf-workbench-result.v1 envelope. No executable renderer or remote configuration is admitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "kind", "title", "fields", "rows", "time_basis", "provenance", "limitations", "authority", "coverage"],
+  "properties": {
+    "schema": { "const": "okf-workbench-view.v1" },
+    "kind": { "enum": ["graph", "interactions", "requirements", "rates", "calculation"] },
+    "title": { "$ref": "#/$defs/label" },
+    "fields": {
+      "type": "array", "maxItems": 16,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["key", "label", "type"],
+        "properties": {
+          "key": { "enum": ["source", "predicate", "target", "status", "requirement", "missing", "qualification", "from", "to", "effect", "distinction", "rate", "value", "period", "stage", "description", "gaps", "group", "type", "unit", "required"] },
+          "label": { "$ref": "#/$defs/label" },
+          "type": { "enum": ["string", "number", "boolean"] },
+          "unit": { "$ref": "#/$defs/label" }
+        }
+      }
+    },
+    "rows": { "type": "array", "maxItems": 80, "items": { "$ref": "#/$defs/row" } },
+    "nodes": {
+      "type": "array", "maxItems": 20,
+      "items": { "type": "object", "additionalProperties": false, "required": ["ref", "label", "status"],
+        "properties": { "ref": { "$ref": "#/$defs/ref" }, "label": { "$ref": "#/$defs/label" }, "status": { "$ref": "#/$defs/label" } } }
+    },
+    "edges": {
+      "type": "array", "maxItems": 40,
+      "items": { "type": "object", "additionalProperties": false, "required": ["ref", "source", "target", "label", "status"],
+        "properties": { "ref": { "$ref": "#/$defs/ref" }, "source": { "$ref": "#/$defs/ref" }, "target": { "$ref": "#/$defs/ref" }, "label": { "$ref": "#/$defs/label" }, "status": { "$ref": "#/$defs/label" } } }
+    },
+    "time_basis": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assessment_date", "effective_from", "effective_to"],
+      "properties": { "assessment_date": { "$ref": "#/$defs/nullableDate" }, "effective_from": { "$ref": "#/$defs/nullableDate" }, "effective_to": { "$ref": "#/$defs/nullableDate" } }
+    },
+    "provenance": {
+      "type": "array", "maxItems": 512,
+      "items": { "type": "object", "additionalProperties": false, "required": ["ref", "url", "locator", "source_date"],
+        "properties": { "ref": { "$ref": "#/$defs/ref" }, "url": { "type": "string", "maxLength": 2048, "pattern": "^https://[^/@?#]+(?::[0-9]+)?(?:[/?#]|$)" }, "locator": { "type": "string", "maxLength": 500 }, "source_date": { "type": ["string", "null"], "maxLength": 300, "description": "Original source date label, preserving partial precision such as year or month; not an assessment date." } } }
+    },
+    "limitations": { "type": "array", "maxItems": 100, "items": { "type": "string", "maxLength": 1600 } },
+    "authority": { "enum": ["retained-evidence-projection", "authored-unreviewed-proposal"] },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["offset", "total_rows", "delivered_rows", "complete", "next_cursor"],
+      "properties": {
+        "offset": { "type": "integer", "minimum": 0 },
+        "total_rows": { "type": "integer", "minimum": 0 },
+        "delivered_rows": { "type": "integer", "minimum": 0, "maximum": 80 },
+        "complete": { "type": "boolean" },
+        "next_cursor": { "type": ["string", "null"], "minLength": 1, "maxLength": 512 }
+      }
+    }
+  },
+  "$defs": {
+    "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "ref": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "nullableDate": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] },
+    "cell": { "anyOf": [
+      { "type": "string", "maxLength": 16384 }, { "type": "number" }, { "type": "boolean" }, { "type": "null" },
+      { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/ref" } }
+    ] },
+    "row": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "source": { "$ref": "#/$defs/cell" }, "predicate": { "$ref": "#/$defs/cell" }, "target": { "$ref": "#/$defs/cell" },
+        "status": { "$ref": "#/$defs/cell" }, "requirement": { "$ref": "#/$defs/cell" }, "missing": { "$ref": "#/$defs/cell" },
+        "qualification": { "$ref": "#/$defs/cell" }, "from": { "$ref": "#/$defs/cell" }, "to": { "$ref": "#/$defs/cell" },
+        "effect": { "$ref": "#/$defs/cell" }, "distinction": { "$ref": "#/$defs/cell" }, "rate": { "$ref": "#/$defs/cell" },
+        "value": { "$ref": "#/$defs/cell" }, "period": { "$ref": "#/$defs/cell" }, "stage": { "$ref": "#/$defs/cell" },
+        "description": { "$ref": "#/$defs/cell" }, "gaps": { "$ref": "#/$defs/cell" }, "group": { "$ref": "#/$defs/cell" },
+        "type": { "$ref": "#/$defs/cell" }, "unit": { "$ref": "#/$defs/cell" }, "required": { "$ref": "#/$defs/cell" },
+        "ref": { "$ref": "#/$defs/ref" }, "target_ref": { "$ref": "#/$defs/ref" },
+        "references": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/ref" } }
+      }
+    }
+  }
+}

@@ -91,3 +91,13 @@ consumer, then verify the actual journey.
 
 The first producer is OKF-DWP's 40 public staff-question occurrences. Other
 bundles can use the same contracts without importing DWP-specific logic.
+
+## Page tools and shared views
+
+The [page tools guide](workbench-page-tools.md) explains optional WebMCP access,
+bounded evidence reads and the shared graph, interaction, requirements, rates
+and calculation-readiness views. The page renders the same typed data returned
+to a compatible AI client. Optional source-bound model proposals add inspection
+without changing the saved evidence packages. Calculation execution remains
+unavailable. See the [design decision](adr-workbench-page-tools.md) and
+[verification record](workbench-tools-verification.md) for the separate gates.

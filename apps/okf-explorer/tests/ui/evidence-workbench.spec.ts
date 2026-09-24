@@ -124,3 +124,63 @@ test('browser history reloads a different manifest', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Manifest A' })).toBeVisible();
   await expect(page.getByRole('heading', { name: question })).toBeVisible();
 });
+
+test('page tools and manual data tabs present the same retained view with reversible history', async ({ page }) => {
+  const content = await canonicalPackage(packageValue);
+  const fixture = { schema: 'okf-evidence-workbench.v1', title: 'Tool review', publication: { label: 'Experimental' }, questions: [
+    { id: 'q-01', label: 'Question 1', question, package: { url: 'q.json', sha256: await hash(content) } }
+  ] };
+  await page.addInitScript(() => {
+    const tools = new Map<string, unknown>();
+    Object.defineProperty(document, 'modelContext', { configurable: true, value: {
+      registerTool(tool: { name: string }) { tools.set(tool.name, tool); }
+    } });
+    Object.defineProperty(window, '__workbenchTools', { value: tools });
+  });
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/q.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: content }));
+  await page.goto('/evidence/');
+  await expect(page.getByText('Workbench page tools registered.')).toBeVisible();
+  const before = await page.evaluate(async () => {
+    const tools = (window as unknown as { __workbenchTools: Map<string, { execute: (input: unknown) => Promise<unknown> }> }).__workbenchTools;
+    return { count: tools.size, state: await tools.get('okf_get_state')!.execute({}) };
+  });
+  expect(before.count).toBe(7);
+  expect((before.state as { data: { ready: boolean } }).data.ready).toBe(false);
+  await page.getByLabel('Review manifest URL').fill(new URL('/evaluation/evidence-workbench/manifest.json', page.url()).href);
+  await page.getByRole('button', { name: 'Load' }).click();
+  await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  const retained = await page.evaluate(async () => {
+    const tools = (window as unknown as { __workbenchTools: Map<string, { execute: (input: unknown) => Promise<any> }> }).__workbenchTools;
+    const state = await tools.get('okf_get_state')!.execute({});
+    const snapshot_id = state.snapshot_id;
+    const data = await tools.get('okf_get_view_data')!.execute({ view: 'graph', case_id: 'q-01', max_bytes: 32768, snapshot_id });
+    const shown = await tools.get('okf_show_view')!.execute({ result_id: data.result_id, expected_revision: state.state_revision, snapshot_id });
+    return { data, shown };
+  });
+  expect(retained.data.error).toBeUndefined();
+  expect(retained.data.data.coverage.complete).toBe(true);
+  expect(retained.shown.error).toBeUndefined();
+  await expect(page.getByRole('link', { name: 'Graph', exact: true })).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('heading', { name: 'Directed graph' })).toBeVisible();
+  await expect(page.getByRole('table').first().getByRole('button', { name: /img src/ })).toBeVisible();
+  await page.goBack();
+  await expect(page.getByRole('link', { name: 'Original source' })).toHaveAttribute('aria-current', 'page');
+  await page.goForward();
+  await expect(page.getByRole('link', { name: 'Graph', exact: true })).toHaveAttribute('aria-current', 'page');
+  await page.getByRole('table').first().getByRole('button', { name: /img src/ }).click();
+  await expect(page.getByRole('link', { name: 'Original source' })).toHaveAttribute('aria-current', 'page');
+  await page.goBack();
+  await expect(page.getByRole('link', { name: 'Graph', exact: true })).toHaveAttribute('aria-current', 'page');
+  await page.getByRole('link', { name: 'Requirements', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Evidence requirements', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Rates', exact: true }).click();
+  await expect(page.getByText('Unknown rates and readiness values are not zero.')).toBeVisible();
+  await page.getByRole('link', { name: 'Calculation stages' }).click();
+  await expect(page.getByText('It does not calculate an award or decide entitlement.')).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  expect(await page.locator('img').count()).toBe(0);
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations).toEqual([]);
+});

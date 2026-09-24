@@ -1,0 +1,39 @@
+{
+  "schema": "okf-workbench-result.v1",
+  "snapshot_id": "sha256:synthetic-example",
+  "evidence_status": "insufficient",
+  "state_revision": 2,
+  "data": {
+    "model_id": "synthetic-room-model",
+    "status": "blocked",
+    "execution_allowed": false,
+    "authority": "authored-unreviewed-proposal",
+    "effective_period": {
+      "from": null,
+      "to": null
+    },
+    "jurisdiction": null,
+    "items": [
+      {
+        "id": "room-cost",
+        "label": "Check the room cost",
+        "gaps": [
+          "No reviewed rates or rounding rule."
+        ]
+      }
+    ],
+    "gaps": [
+      "Synthetic example only. Source applicability remains unresolved."
+    ]
+  },
+  "delivery": {
+    "complete": true,
+    "next_cursor": null,
+    "bytes": 656,
+    "characters": 656,
+    "estimated_tokens": 164
+  },
+  "limitations": [
+    "No source evidence was selected."
+  ]
+}
