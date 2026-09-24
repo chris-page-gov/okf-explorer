@@ -323,7 +323,400 @@ def _write_rich_runtime_fixture(
     _fixture_write_json(repo / "okf.semantic.json", contract)
 
 
+def _write_nested_rich_runtime_fixture(repo: Path) -> None:
+    """Write a bundle-rooted runtime beside a separate compatibility chunk."""
+    repo.mkdir()
+    publication = repo / "bundle"
+    (publication / "index.md").parent.mkdir(parents=True, exist_ok=True)
+    (publication / "index.md").write_text(
+        '---\nokf_version: "0.2"\n---\n\n# UK government API fixture\n',
+        encoding="utf-8",
+    )
+
+    assertion_schema_path = (
+        publication / "schemas/okf-relationship-assertion.v2.schema.json"
+    )
+    _fixture_write_json(
+        assertion_schema_path,
+        {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://example.test/schema/semantic-assertion.json",
+            "type": "object",
+        },
+    )
+    for name, (discriminator, required) in (
+        reconcile.RICH_RUNTIME_SCHEMA_CONTRACTS.items()
+    ):
+        _fixture_write_json(
+            publication / "schemas" / name,
+            {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$id": f"https://example.test/schema/{name}",
+                "type": "object",
+                "required": list(required),
+                "properties": {
+                    **{field: {} for field in required},
+                    "schema": {"const": discriminator},
+                },
+            },
+        )
+
+    _fixture_write_json(
+        publication / "data/semantic/manifest.json",
+        {"@context": {}, "@graph": []},
+    )
+    snapshot = "fixture-2026-09-24"
+    generated_at = "2026-09-24T00:00:00Z"
+    assertion_id = "urn:okf:assertion:uk-api-one"
+    route = "record/wayfinder-one"
+    row = {
+        "schema": "okf-relationship-runtime-row.v1",
+        "id": assertion_id,
+        "assertion_id": assertion_id,
+        "source": route,
+        "target": route,
+        "source_route": route,
+        "target_route": route,
+        "source_iri": "https://example.test/id/wayfinder-one",
+        "target_iri": "https://example.test/id/wayfinder-one",
+        "predicate": "https://example.test/vocabulary/related",
+        "predicate_iri": "https://example.test/vocabulary/related",
+        "kind": "related",
+        "label": "is related to",
+        "inverse_label": "is related from",
+        "direction": "source-to-target",
+        "assertion_status": "normalized",
+        "assertion_scope": "real-world",
+        "authority": {
+            "class": "derived",
+            "label": "Fixture derivation",
+            "source": "https://example.test/source",
+        },
+        "derivation": "urn:okf:derivation:fixture",
+        "observed_at": generated_at,
+        "evidence": [
+            {
+                "@id": "urn:okf:evidence:fixture",
+                "type": "SourceRecord",
+                "url": "https://example.test/source",
+                "source_field": "fixture",
+                "source_value_sha256": "1" * 64,
+                "retrieved_at": generated_at,
+            }
+        ],
+        "rights": {
+            "source": "https://example.test/rights",
+            "assertion": "Fixture rights statement",
+        },
+        "plane": "urn:okf:plane:core",
+        "lifecycle": "active",
+        "active": True,
+    }
+
+    compatibility_path = "data/relationships-000.json.gz"
+    _fixture_write_gzip_json(publication / compatibility_path, [row])
+    runtime_path = "data/relationship-runtime/manifest.json"
+    chunk_path = (
+        "data/relationship-runtime/planes/core/relationships-000.json.gz"
+    )
+    chunk_data = _fixture_write_gzip_json(publication / chunk_path, [row])
+    chunk = {
+        "id": "urn:okf:chunk:core-000",
+        "path": chunk_path,
+        "media_type": "application/json",
+        "content_encoding": "gzip",
+        "bytes": len(chunk_data),
+        "sha256": _fixture_digest(chunk_data),
+        "count": 1,
+        "records": 1,
+    }
+
+    prefix = _fixture_digest(route.encode("utf-8"))[:2]
+    bucket_path = (
+        f"data/relationship-runtime/route-locator/bucket-{prefix}.json.gz"
+    )
+    assertion_digest = reconcile._rich_runtime_assertion_digest([assertion_id])
+    bucket = {
+        "schema": reconcile.RICH_RUNTIME_LOCATOR_BUCKET_SCHEMA,
+        "hash_algorithm": reconcile.RICH_RUNTIME_LOCATOR_ALGORITHM,
+        "bucket": prefix,
+        "generated_at": generated_at,
+        "routes": [
+            {
+                "route": route,
+                "chunks": [chunk_path],
+                "planes": [
+                    {
+                        "name": "core",
+                        "chunks": [chunk_path],
+                        "assertions": 1,
+                        "assertion_ids_sha256": assertion_digest,
+                    }
+                ],
+            }
+        ],
+        "counts": {"routes": 1, "chunk_references": 1},
+    }
+    bucket_data = _fixture_write_gzip_json(publication / bucket_path, bucket)
+    locator_path = "data/relationship-runtime/route-locator/manifest.json"
+    locator = {
+        "schema": reconcile.RICH_RUNTIME_LOCATOR_SCHEMA,
+        "hash_algorithm": reconcile.RICH_RUNTIME_LOCATOR_ALGORITHM,
+        "generated_at": generated_at,
+        "bucket_path_template": (
+            "data/relationship-runtime/route-locator/bucket-{prefix}.json.gz"
+        ),
+        "buckets": [
+            {
+                "bucket": prefix,
+                "path": bucket_path,
+                "content_encoding": "gzip",
+                "bytes": len(bucket_data),
+                "sha256": _fixture_digest(bucket_data),
+                "routes": 1,
+                "chunk_references": 1,
+            }
+        ],
+        "counts": {"routes": 1, "buckets": 1, "chunk_references": 1},
+    }
+    locator_data = _fixture_write_json(publication / locator_path, locator)
+    runtime = {
+        "schema": reconcile.RICH_RUNTIME_SCHEMA,
+        "@id": "urn:okf:runtime:uk-government-apis",
+        "snapshot": snapshot,
+        "generated_at": generated_at,
+        "semantic_manifest": "data/semantic/manifest.json",
+        "assertion_contract": "schemas/okf-relationship-assertion.v2.schema.json",
+        "row_contract": "schemas/relationship-runtime-row.schema.json",
+        "default_planes": ["core"],
+        "planes": [
+            {
+                "name": "core",
+                "id": "urn:okf:plane:core",
+                "active": True,
+                "lifecycle": "active",
+                "assertion_scope": "real-world",
+                "authority_classes": ["derived"],
+                "assertions": 1,
+                "chunks": [chunk],
+            }
+        ],
+        "totals": {
+            "active_assertions": 1,
+            "historical_assertions": 0,
+            "rejected_assertions": 0,
+            "all_assertions": 1,
+            "chunks": 1,
+        },
+        "loading_policy": "bounded-route-hydration",
+        "route_locator": {
+            "id": "urn:okf:route-locator:uk-government-apis",
+            "path": locator_path,
+            "routes": 1,
+            "buckets": 1,
+            "sha256": _fixture_digest(locator_data),
+        },
+    }
+    runtime_data = _fixture_write_json(publication / runtime_path, runtime)
+    runtime_reference = {
+        "path": runtime_path,
+        "sha256": _fixture_digest(runtime_data),
+        "bytes": len(runtime_data),
+    }
+    _fixture_write_json(
+        publication / "okf-explorer.json",
+        {
+            "okf_version": "0.2",
+            "snapshot": snapshot,
+            "entrypoints": {
+                "data_manifest": "data/manifest.json",
+                "relationship_runtime": runtime_reference,
+            },
+            "entrypoint_integrity": {
+                "relationship_runtime": runtime_reference,
+            },
+        },
+    )
+    _fixture_write_json(
+        publication / "data/manifest.json",
+        {
+            "snapshot": snapshot,
+            "indexes": {"relationship_runtime": runtime_reference},
+        },
+    )
+
+    preset = reconcile.PRESETS["okf-uk-government-apis"]
+    contract = reconcile.contract_for("okf-uk-government-apis", preset)
+    contract["semantic_layer"]["profile"] = "https://example.test/profile/"
+    contract["semantic_layer"]["authoritative_inputs"] = ["bundle/index.md"]
+    retained_roles = {
+        "explorer-runtime",
+        "relationship-runtime-manifest",
+        "relationship-runtime",
+        "relationship-route-locator",
+        "relationship-runtime-schema",
+        "relationship-schema",
+    }
+    contract["semantic_layer"]["outputs"] = [
+        declaration
+        for declaration in contract["semantic_layer"]["outputs"]
+        if declaration["role"] in retained_roles
+    ]
+    contract["relationship_contract"]["schema"] = (
+        "https://example.test/schema/semantic-assertion.json"
+    )
+    _fixture_write_json(repo / "okf.semantic.json", contract)
+
+
 class ReconcileOkfRepositoriesTests(unittest.TestCase):
+    def test_uk_government_api_preset_matches_the_reviewed_contract(self) -> None:
+        preset = reconcile.PRESETS["okf-uk-government-apis"]
+        contract = reconcile.contract_for("okf-uk-government-apis", preset)
+
+        self.assertTrue(preset.requires_rich_relationship_runtime)
+        self.assertEqual(
+            {
+                "repository": {
+                    "name": "okf-uk-government-apis",
+                    "role": "large-corpus-producer",
+                    "root_index": "bundle/index.md",
+                },
+                "state": "generated-yaml-ld-sharded-graph",
+                "inputs": [
+                    "scripts/",
+                    "context/",
+                    "profiles/bundle-wiki/v1/",
+                    "profiles/bundle-wiki/v1.vendor-lock.json",
+                    "pyproject.toml",
+                    "schemas/",
+                    "tests/fixtures/",
+                    "uv.lock",
+                ],
+                "outputs": [
+                    reconcile.output(
+                        "bundle/okf-bundle.yamlld", "semantic-yaml-ld", True
+                    ),
+                    reconcile.output(
+                        "bundle/okf-bundle.jsonld", "semantic-json-ld", True
+                    ),
+                    reconcile.output(
+                        "bundle/okf-explorer.json", "explorer-runtime", True
+                    ),
+                    reconcile.output(
+                        "bundle/data/relationships-*.json.gz",
+                        "relationship-runtime",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/semantic/manifest.json",
+                        "semantic-manifest",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/semantic/*.jsonld.gz",
+                        "semantic-json-ld-shards",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/semantic/validation-report.json",
+                        "semantic-validation",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/relationship-runtime/manifest.json",
+                        "relationship-runtime-manifest",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/relationship-runtime/planes/**/*.json.gz",
+                        "relationship-runtime",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/relationship-runtime/route-locator/manifest.json",
+                        "relationship-route-locator",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/relationship-runtime/route-locator/*.json.gz",
+                        "relationship-route-locator",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/context/okf-bundle-v1.jsonld",
+                        "semantic-context",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/schemas/okf-relationship-assertion.v2.schema.json",
+                        "relationship-schema",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/schemas/relationship-*.schema.json",
+                        "relationship-runtime-schema",
+                        True,
+                    ),
+                    reconcile.output(
+                        "bundle/data/predicate-registry.json",
+                        "predicate-registry",
+                        True,
+                    ),
+                ],
+                "authoring": "generated-yaml-ld-sharded-assertion-graph",
+                "direct_triples": (
+                    "generated-from-one-assertion-source-across-pinned-shards"
+                ),
+                "delivery": (
+                    "federation-control-plane-plus-bounded-rich-relationship-runtime"
+                ),
+                "limitations": [
+                    "The semantic graph is a metadata-only catalogue snapshot, not live service state or an assurance register; publication of changed bytes remains subject to the repository's existing review and release gates.",
+                    "The complete assertion graph remains in semantic shards and compatibility chunks. The default rich Reader runtime is a governed material subset selected to remain within aggregate row, compressed-byte and retained-text ceilings; excluded bulk facet and reciprocal compatibility edges remain available outside that default projection.",
+                ],
+                "setup": ["uv sync --locked"],
+                "build": [
+                    "uv run --locked python scripts/upgrade_publication.py",
+                    "uv run --locked python scripts/build_checksums.py",
+                ],
+                "check": [
+                    "uv run --locked python -m unittest discover -s tests -v",
+                    "uv run --locked python scripts/check_bundle.py",
+                    "uv run --locked python scripts/build_checksums.py --check",
+                    "uv run --project ../okf-explorer --locked python ../okf-explorer/scripts/reconcile_okf_repositories.py --repo . --strict",
+                ],
+            },
+            {
+                "repository": contract["repository"],
+                "state": contract["semantic_layer"]["state"],
+                "inputs": contract["semantic_layer"]["authoritative_inputs"],
+                "outputs": contract["semantic_layer"]["outputs"],
+                "authoring": contract["relationship_contract"]["authoring"],
+                "direct_triples": contract["relationship_contract"][
+                    "direct_triple_policy"
+                ],
+                "delivery": contract["reader"]["delivery"],
+                "limitations": contract["semantic_layer"]["limitations"],
+                "setup": contract["tooling"]["setup"],
+                "build": contract["tooling"]["build"],
+                "check": contract["tooling"]["check"],
+            },
+        )
+
+    def test_uk_government_api_nested_runtime_passes_with_compatibility_chunks(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory) / "okf-uk-government-apis"
+            _write_nested_rich_runtime_fixture(repo)
+
+            result = reconcile.audit_repo(repo, strict=True)
+
+            self.assertEqual("conformant", result["status"], result)
+            self.assertEqual([], result["errors"])
+            self.assertEqual([], result["warnings"])
+            self.assertEqual(2, result["relationship_files_declared"])
+
     def test_uk_living_preset_requires_the_reader_rich_runtime_surfaces(self) -> None:
         preset = reconcile.PRESETS["okf-uk-living"]
 

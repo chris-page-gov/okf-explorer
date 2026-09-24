@@ -1,5 +1,16 @@
 # Changelog
 
+## Cross-repository rich-runtime reconciliation — 24 September 2026
+
+- Require the reviewed `okf-uk-government-apis` producer to declare its
+  bounded rich relationship runtime, route locator, executable schemas,
+  validation receipt and governed `uv` commands.
+- Resolve descriptor, manifest, runtime, locator and chunk references from the
+  Explorer publication root. Keep separate compatibility relationship chunks
+  outside the exact rich-runtime shard set.
+- Add a nested `bundle/` regression fixture and retain complete digest, route,
+  schema and Reader-ceiling checks in strict reconciliation.
+
 ## Workbench page tools and model inspection — 24 September 2026
 
 - Record the public PR146 workbench observation separately from local checks:
