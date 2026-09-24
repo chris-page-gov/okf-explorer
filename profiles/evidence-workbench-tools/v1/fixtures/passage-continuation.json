@@ -1,0 +1,28 @@
+{
+  "schema": "okf-workbench-result.v1",
+  "snapshot_id": "sha256:synthetic-example",
+  "evidence_status": "insufficient",
+  "state_revision": 2,
+  "data": {
+    "ref": "e-synthetic",
+    "text": "First condition.\n\n",
+    "text_sha256": "example-full-text-digest",
+    "range": {
+      "start": 0,
+      "end": 18,
+      "total": 45,
+      "unit": "UTF-16 code units"
+    },
+    "whole_passage_delivered": false
+  },
+  "delivery": {
+    "complete": false,
+    "next_cursor": "c-synthetic-next",
+    "bytes": 494,
+    "characters": 494,
+    "estimated_tokens": 124
+  },
+  "limitations": [
+    "No source evidence was selected."
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "okf-workbench-result.v1",
+  "snapshot_id": "sha256:example-snapshot",
+  "result_id": "example-result",
+  "evidence_status": "insufficient",
+  "state_revision": 3,
+  "data": {
+    "case_id": "staff-001",
+    "items": [
+      {
+        "ref": "example-record",
+        "title": "Capital evidence",
+        "locator": "DMG 84861",
+        "review_status": "unreviewed"
+      }
+    ],
+    "gaps": [
+      "A required source dependency is unresolved."
+    ]
+  },
+  "delivery": {
+    "complete": true,
+    "next_cursor": null,
+    "bytes": 545,
+    "characters": 545,
+    "estimated_tokens": 137
+  },
+  "limitations": [
+    "Evidence delivery does not establish entitlement or legal sufficiency."
+  ]
+}

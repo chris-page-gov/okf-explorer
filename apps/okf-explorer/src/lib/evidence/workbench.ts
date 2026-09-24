@@ -2,6 +2,7 @@ import type { ContextPackage, ContextRecord } from '$lib/context/types';
 import { isHttpUrl } from '$lib/viewer/helpers';
 import { sha256Hex } from '$lib/sources/releaseDataPlane';
 import { PACKAGE_DELIVERY_LIMITS, reconstructContextPackage, validateCanonicalContextPackage } from '$lib/context/packageDelivery';
+import { validateWorkbenchModels, type WorkbenchModelling } from './modelValidation';
 
 export const MAX_MANIFEST_BYTES = 256 * 1024;
 export const MAX_PACKAGE_BYTES = 512 * 1024;
@@ -17,7 +18,7 @@ export type WorkbenchCase = {
   scope_gaps?: string[];
   package: { url: string; sha256: string; parts?: Array<{ url: string; sha256: string; bytes: number }> };
 };
-export type WorkbenchManifest = {
+export type WorkbenchManifest = WorkbenchModelling & {
   schema: 'okf-evidence-workbench.v1';
   title: string;
   publication: { label: string; source_date?: string; captured_at?: string };
@@ -94,6 +95,7 @@ export function parseManifest(value: unknown, source: URL): WorkbenchManifest {
     }
     ids.add(item.id);
   }
+  validateWorkbenchModels(value, ids);
   return value as WorkbenchManifest;
 }
 
@@ -133,8 +135,12 @@ async function boundedJson(url: URL, maxBytes: number, signal?: AbortSignal): Pr
 }
 
 export async function loadManifest(url: URL, signal?: AbortSignal): Promise<WorkbenchManifest> {
-  const { value } = await boundedJson(url, MAX_MANIFEST_BYTES, signal);
-  return parseManifest(value, url);
+  return (await loadManifestWithIdentity(url, signal)).manifest;
+}
+
+export async function loadManifestWithIdentity(url: URL, signal?: AbortSignal): Promise<{ manifest: WorkbenchManifest; sha256: string }> {
+  const { value, bytes } = await boundedJson(url, MAX_MANIFEST_BYTES, signal);
+  return { manifest: parseManifest(value, url), sha256: await sha256Hex(bytes) };
 }
 
 export function parsePackage(value: unknown, expected: WorkbenchCase): ContextPackage {

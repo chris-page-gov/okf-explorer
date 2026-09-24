@@ -1,0 +1,4185 @@
+{
+  "schema": "okf-workbench-tools-measurement.v1",
+  "method": "Actual static WorkbenchSession over locally hash-verified candidate packages; no model or network calls.",
+  "inputs": {
+    "manifest_path": "../okf-dwp-workbench-models/evaluation/evidence-workbench/tools-manifest.json",
+    "manifest_sha256": "294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f",
+    "manifest_bytes": 182324,
+    "explorer_base_commit": "e6084059f9b09633cfb8385be20099b952915e82",
+    "explorer_files_sha256": {
+      "apps/okf-explorer/src/lib/evidence/session.ts": "2ae2c15a864c7db09e796afb505bb5a4c165bd4b7b3b3ab6900002582f1ed520",
+      "apps/okf-explorer/src/lib/evidence/toolContracts.ts": "0761fca881dcb5e3627c80abe5cf5d9e4246fd39ea3dc0424ab8f7979b3ca658",
+      "apps/okf-explorer/src/lib/evidence/toolTypes.ts": "a3f4cf9d5bee88bcddcb48f68eff06fb4b0e50474e9cc451f7c2b26bbaf50633",
+      "apps/okf-explorer/src/lib/evidence/workbench.ts": "bff393190ba42bc048fffcaf1481ea2b4cc9cc13d1e215954c78046d1069a39a",
+      "apps/okf-explorer/src/lib/evidence/modelValidation.ts": "e2607809e308908b8518dded72bacdcd66e585320beb9e69b268c91a2b3b91f0",
+      "apps/okf-explorer/src/lib/context/packageDelivery.ts": "f05cd5cf6378ecb9e33f5c8a4d43a6bd74d7c6983413316d3663b5bd733f7b35",
+      "apps/okf-explorer/src/lib/sources/releaseDataPlane.ts": "6fa91c927af9b03798ccda04d75a38a51b8beb7e885004e27ef87554e66f6759",
+      "scripts/measure_workbench_tools.mjs": "b8e1f582e162660791a6c0e815b1c5922c8d5af6aefa61d9a2c529443750ae2c"
+    },
+    "dwp_registry_sha256": "3c28bd57e3a0892a60c1fc3379c08cd06ab9c7e209e61a4614abee511d49730a",
+    "dwp_corpus_sha256": "4e65253f72b2d771164d5ddd64374ed8142cf66b4a249f193a1fe44d5679f519"
+  },
+  "descriptor": {
+    "tools": 7,
+    "serialised_bytes": 8640,
+    "characters": 8640,
+    "estimated_tokens": 2160,
+    "maximum_name": 21,
+    "maximum_description": 186
+  },
+  "limits": {
+    "case_count": 40,
+    "requested_view_cap_bytes": 32768,
+    "local_file_ceiling_bytes": 524288
+  },
+  "measurement": {
+    "calls": [
+      {
+        "journey": "staff-039",
+        "tool": "okf_search_evidence",
+        "input": {
+          "query": "Carers Allowance impact on other benefits",
+          "scope": "questions",
+          "limit": 10,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 2287,
+        "response_characters": 2285,
+        "reported_bytes": 2287,
+        "reported_characters": 2285,
+        "estimated_tokens": 572,
+        "elapsed_ms": 1.699,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_get_state",
+        "input": {},
+        "response_bytes": 967,
+        "response_characters": 967,
+        "reported_bytes": 967,
+        "reported_characters": 967,
+        "estimated_tokens": 242,
+        "elapsed_ms": 0.053,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_search_evidence",
+        "input": {
+          "query": "carer allowance",
+          "scope": "evidence",
+          "case_id": "staff-039",
+          "limit": 3,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1388,
+        "response_characters": 1386,
+        "reported_bytes": 1388,
+        "reported_characters": 1386,
+        "estimated_tokens": 347,
+        "elapsed_ms": 0.613,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_get_evidence",
+        "input": {
+          "ref": "e-88e798cf-fd59-4ce8-b901-0a7410392063",
+          "section": "passage",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1707,
+        "response_characters": 1705,
+        "reported_bytes": 1707,
+        "reported_characters": 1705,
+        "estimated_tokens": 427,
+        "elapsed_ms": 0.269,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_get_relationships",
+        "input": {
+          "ref": "e-88e798cf-fd59-4ce8-b901-0a7410392063",
+          "depth": 1,
+          "limit": 10,
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 6212,
+        "response_characters": 6206,
+        "reported_bytes": 6212,
+        "reported_characters": 6206,
+        "estimated_tokens": 1552,
+        "elapsed_ms": 0.393,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-039",
+          "view": "interactions",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 3188,
+        "response_characters": 3176,
+        "reported_bytes": 3188,
+        "reported_characters": 3176,
+        "estimated_tokens": 794,
+        "elapsed_ms": 0.427,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "staff-039",
+        "tool": "okf_show_view",
+        "input": {
+          "case_id": "staff-039",
+          "result_id": "v-b941b787-896a-4e9f-bab8-ee972522d2fa",
+          "expected_revision": 1,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 642,
+        "response_characters": 642,
+        "reported_bytes": 642,
+        "reported_characters": 642,
+        "estimated_tokens": 161,
+        "elapsed_ms": 0.066,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_search_evidence",
+        "input": {
+          "query": "What inputs are required for the Pension Credit calculation?",
+          "scope": "questions",
+          "limit": 10,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 2282,
+        "response_characters": 2282,
+        "reported_bytes": 2282,
+        "reported_characters": 2282,
+        "estimated_tokens": 571,
+        "elapsed_ms": 0.251,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_calculation",
+        "input": {
+          "case_id": "staff-015",
+          "section": "inputs",
+          "model_id": "pension-credit-source-inspection-v1",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1728,
+        "response_characters": 1728,
+        "reported_bytes": 1728,
+        "reported_characters": 1728,
+        "estimated_tokens": 432,
+        "elapsed_ms": 0.253,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_calculation",
+        "input": {
+          "case_id": "staff-015",
+          "section": "stages",
+          "model_id": "pension-credit-source-inspection-v1",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 2511,
+        "response_characters": 2509,
+        "reported_bytes": 2511,
+        "reported_characters": 2509,
+        "estimated_tokens": 628,
+        "elapsed_ms": 0.194,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-015",
+          "view": "calculation",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 3991,
+        "response_characters": 3989,
+        "reported_bytes": 3991,
+        "reported_characters": 3989,
+        "estimated_tokens": 998,
+        "elapsed_ms": 0.378,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_search_evidence",
+        "input": {
+          "query": "Given these inputs what is the formula for calculating Pension Credit?",
+          "scope": "questions",
+          "limit": 10,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 2282,
+        "response_characters": 2282,
+        "reported_bytes": 2282,
+        "reported_characters": 2282,
+        "estimated_tokens": 571,
+        "elapsed_ms": 0.288,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_calculation",
+        "input": {
+          "case_id": "staff-016",
+          "section": "inputs",
+          "model_id": "pension-credit-source-inspection-v1",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1728,
+        "response_characters": 1728,
+        "reported_bytes": 1728,
+        "reported_characters": 1728,
+        "estimated_tokens": 432,
+        "elapsed_ms": 0.134,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_calculation",
+        "input": {
+          "case_id": "staff-016",
+          "section": "stages",
+          "model_id": "pension-credit-source-inspection-v1",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 2511,
+        "response_characters": 2509,
+        "reported_bytes": 2511,
+        "reported_characters": 2509,
+        "estimated_tokens": 628,
+        "elapsed_ms": 0.118,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "formula",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-016",
+          "view": "calculation",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 4178,
+        "response_characters": 4176,
+        "reported_bytes": 4178,
+        "reported_characters": 4176,
+        "estimated_tokens": 1044,
+        "elapsed_ms": 0.237,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-001",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 18858,
+        "response_characters": 18700,
+        "reported_bytes": 18858,
+        "reported_characters": 18700,
+        "estimated_tokens": 4675,
+        "elapsed_ms": 0.486,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-001",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 3342,
+        "response_characters": 3342,
+        "reported_bytes": 3342,
+        "reported_characters": 3342,
+        "estimated_tokens": 836,
+        "elapsed_ms": 0.106,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-001",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1334,
+        "response_characters": 1334,
+        "reported_bytes": 1334,
+        "reported_characters": 1334,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.057,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-002",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 14599,
+        "response_characters": 14485,
+        "reported_bytes": 14599,
+        "reported_characters": 14485,
+        "estimated_tokens": 3622,
+        "elapsed_ms": 0.384,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-002",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8645,
+        "response_characters": 8645,
+        "reported_bytes": 8645,
+        "reported_characters": 8645,
+        "estimated_tokens": 2162,
+        "elapsed_ms": 0.259,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-002",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1334,
+        "response_characters": 1334,
+        "reported_bytes": 1334,
+        "reported_characters": 1334,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.059,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-003",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 10411,
+        "response_characters": 10333,
+        "reported_bytes": 10411,
+        "reported_characters": 10333,
+        "estimated_tokens": 2584,
+        "elapsed_ms": 0.288,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-003",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8132,
+        "response_characters": 8130,
+        "reported_bytes": 8132,
+        "reported_characters": 8130,
+        "estimated_tokens": 2033,
+        "elapsed_ms": 0.201,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-003",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1334,
+        "response_characters": 1334,
+        "reported_bytes": 1334,
+        "reported_characters": 1334,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.051,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-004",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 20420,
+        "response_characters": 20176,
+        "reported_bytes": 20420,
+        "reported_characters": 20176,
+        "estimated_tokens": 5044,
+        "elapsed_ms": 1.048,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-004",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 9103,
+        "response_characters": 9103,
+        "reported_bytes": 9103,
+        "reported_characters": 9103,
+        "estimated_tokens": 2276,
+        "elapsed_ms": 0.16,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-004",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1334,
+        "response_characters": 1334,
+        "reported_bytes": 1334,
+        "reported_characters": 1334,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.055,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-005",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 17719,
+        "response_characters": 17569,
+        "reported_bytes": 17719,
+        "reported_characters": 17569,
+        "estimated_tokens": 4393,
+        "elapsed_ms": 0.481,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-005",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7921,
+        "response_characters": 7921,
+        "reported_bytes": 7921,
+        "reported_characters": 7921,
+        "estimated_tokens": 1981,
+        "elapsed_ms": 0.149,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-005",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1334,
+        "response_characters": 1334,
+        "reported_bytes": 1334,
+        "reported_characters": 1334,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.034,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-006",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 27347,
+        "response_characters": 27113,
+        "reported_bytes": 27347,
+        "reported_characters": 27113,
+        "estimated_tokens": 6779,
+        "elapsed_ms": 0.496,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-006",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 9186,
+        "response_characters": 9186,
+        "reported_bytes": 9186,
+        "reported_characters": 9186,
+        "estimated_tokens": 2297,
+        "elapsed_ms": 0.163,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-006",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.038,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-007",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 21195,
+        "response_characters": 21033,
+        "reported_bytes": 21195,
+        "reported_characters": 21033,
+        "estimated_tokens": 5259,
+        "elapsed_ms": 0.468,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-007",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 12295,
+        "response_characters": 12295,
+        "reported_bytes": 12295,
+        "reported_characters": 12295,
+        "estimated_tokens": 3074,
+        "elapsed_ms": 0.184,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-007",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.04,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-008",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 13884,
+        "response_characters": 13744,
+        "reported_bytes": 13884,
+        "reported_characters": 13744,
+        "estimated_tokens": 3436,
+        "elapsed_ms": 0.313,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-008",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 5493,
+        "response_characters": 5493,
+        "reported_bytes": 5493,
+        "reported_characters": 5493,
+        "estimated_tokens": 1374,
+        "elapsed_ms": 0.091,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-008",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.035,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-009",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 11784,
+        "response_characters": 11700,
+        "reported_bytes": 11784,
+        "reported_characters": 11700,
+        "estimated_tokens": 2925,
+        "elapsed_ms": 0.264,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-009",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 12765,
+        "response_characters": 12765,
+        "reported_bytes": 12765,
+        "reported_characters": 12765,
+        "estimated_tokens": 3192,
+        "elapsed_ms": 0.173,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-009",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.035,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-010",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 28018,
+        "response_characters": 27778,
+        "reported_bytes": 28018,
+        "reported_characters": 27778,
+        "estimated_tokens": 6945,
+        "elapsed_ms": 0.456,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-010",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8934,
+        "response_characters": 8934,
+        "reported_bytes": 8934,
+        "reported_characters": 8934,
+        "estimated_tokens": 2234,
+        "elapsed_ms": 0.137,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-010",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.035,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-011",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 18404,
+        "response_characters": 18286,
+        "reported_bytes": 18404,
+        "reported_characters": 18286,
+        "estimated_tokens": 4572,
+        "elapsed_ms": 0.37,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-011",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8609,
+        "response_characters": 8609,
+        "reported_bytes": 8609,
+        "reported_characters": 8609,
+        "estimated_tokens": 2153,
+        "elapsed_ms": 0.139,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-011",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.036,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-012",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25077,
+        "response_characters": 24975,
+        "reported_bytes": 25077,
+        "reported_characters": 24975,
+        "estimated_tokens": 6244,
+        "elapsed_ms": 0.396,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-012",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25662,
+        "response_characters": 25662,
+        "reported_bytes": 25662,
+        "reported_characters": 25662,
+        "estimated_tokens": 6416,
+        "elapsed_ms": 0.266,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-012",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.04,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-013",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25077,
+        "response_characters": 24975,
+        "reported_bytes": 25077,
+        "reported_characters": 24975,
+        "estimated_tokens": 6244,
+        "elapsed_ms": 0.421,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-013",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25662,
+        "response_characters": 25662,
+        "reported_bytes": 25662,
+        "reported_characters": 25662,
+        "estimated_tokens": 6416,
+        "elapsed_ms": 0.229,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-013",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.042,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-014",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25109,
+        "response_characters": 24905,
+        "reported_bytes": 25109,
+        "reported_characters": 24905,
+        "estimated_tokens": 6227,
+        "elapsed_ms": 0.526,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-014",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 19118,
+        "response_characters": 19116,
+        "reported_bytes": 19118,
+        "reported_characters": 19116,
+        "estimated_tokens": 4779,
+        "elapsed_ms": 0.418,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-014",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.037,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-015",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 28857,
+        "response_characters": 28609,
+        "reported_bytes": 28857,
+        "reported_characters": 28609,
+        "estimated_tokens": 7153,
+        "elapsed_ms": 0.528,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-015",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8934,
+        "response_characters": 8934,
+        "reported_bytes": 8934,
+        "reported_characters": 8934,
+        "estimated_tokens": 2234,
+        "elapsed_ms": 0.149,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-015",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.04,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-016",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 28857,
+        "response_characters": 28609,
+        "reported_bytes": 28857,
+        "reported_characters": 28609,
+        "estimated_tokens": 7153,
+        "elapsed_ms": 0.496,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-016",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8934,
+        "response_characters": 8934,
+        "reported_bytes": 8934,
+        "reported_characters": 8934,
+        "estimated_tokens": 2234,
+        "elapsed_ms": 0.149,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-016",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.039,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-017",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25109,
+        "response_characters": 24905,
+        "reported_bytes": 25109,
+        "reported_characters": 24905,
+        "estimated_tokens": 6227,
+        "elapsed_ms": 0.481,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-017",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 18933,
+        "response_characters": 18931,
+        "reported_bytes": 18933,
+        "reported_characters": 18931,
+        "estimated_tokens": 4733,
+        "elapsed_ms": 0.406,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-017",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.046,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-018",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 23709,
+        "response_characters": 23615,
+        "reported_bytes": 23709,
+        "reported_characters": 23615,
+        "estimated_tokens": 5904,
+        "elapsed_ms": 0.485,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-018",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 3868,
+        "response_characters": 3868,
+        "reported_bytes": 3868,
+        "reported_characters": 3868,
+        "estimated_tokens": 967,
+        "elapsed_ms": 0.07,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-018",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.054,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-019",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 16991,
+        "response_characters": 16895,
+        "reported_bytes": 16991,
+        "reported_characters": 16895,
+        "estimated_tokens": 4224,
+        "elapsed_ms": 0.481,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-019",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 6357,
+        "response_characters": 6357,
+        "reported_bytes": 6357,
+        "reported_characters": 6357,
+        "estimated_tokens": 1590,
+        "elapsed_ms": 0.119,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-019",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.046,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-020",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 24742,
+        "response_characters": 24550,
+        "reported_bytes": 24742,
+        "reported_characters": 24550,
+        "estimated_tokens": 6138,
+        "elapsed_ms": 0.479,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-020",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 9281,
+        "response_characters": 9281,
+        "reported_bytes": 9281,
+        "reported_characters": 9281,
+        "estimated_tokens": 2321,
+        "elapsed_ms": 0.146,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-020",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.042,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-021",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 25384,
+        "response_characters": 25176,
+        "reported_bytes": 25384,
+        "reported_characters": 25176,
+        "estimated_tokens": 6294,
+        "elapsed_ms": 0.587,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-021",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 12700,
+        "response_characters": 12700,
+        "reported_bytes": 12700,
+        "reported_characters": 12700,
+        "estimated_tokens": 3175,
+        "elapsed_ms": 0.271,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-021",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.064,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-022",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 16142,
+        "response_characters": 16016,
+        "reported_bytes": 16142,
+        "reported_characters": 16016,
+        "estimated_tokens": 4004,
+        "elapsed_ms": 0.396,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-022",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8579,
+        "response_characters": 8579,
+        "reported_bytes": 8579,
+        "reported_characters": 8579,
+        "estimated_tokens": 2145,
+        "elapsed_ms": 0.141,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-022",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.043,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-023",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 28942,
+        "response_characters": 28786,
+        "reported_bytes": 28942,
+        "reported_characters": 28786,
+        "estimated_tokens": 7197,
+        "elapsed_ms": 0.562,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-023",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7583,
+        "response_characters": 7581,
+        "reported_bytes": 7583,
+        "reported_characters": 7581,
+        "estimated_tokens": 1896,
+        "elapsed_ms": 0.196,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-023",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.042,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-024",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 16533,
+        "response_characters": 16353,
+        "reported_bytes": 16533,
+        "reported_characters": 16353,
+        "estimated_tokens": 4089,
+        "elapsed_ms": 0.555,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-024",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7640,
+        "response_characters": 7638,
+        "reported_bytes": 7640,
+        "reported_characters": 7638,
+        "estimated_tokens": 1910,
+        "elapsed_ms": 0.214,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-024",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.052,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-025",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 13991,
+        "response_characters": 13871,
+        "reported_bytes": 13991,
+        "reported_characters": 13871,
+        "estimated_tokens": 3468,
+        "elapsed_ms": 0.408,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-025",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8748,
+        "response_characters": 8744,
+        "reported_bytes": 8748,
+        "reported_characters": 8744,
+        "estimated_tokens": 2186,
+        "elapsed_ms": 0.198,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-025",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.042,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-026",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8086,
+        "response_characters": 7996,
+        "reported_bytes": 8086,
+        "reported_characters": 7996,
+        "estimated_tokens": 1999,
+        "elapsed_ms": 0.334,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-026",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 8721,
+        "response_characters": 8715,
+        "reported_bytes": 8721,
+        "reported_characters": 8715,
+        "estimated_tokens": 2179,
+        "elapsed_ms": 0.276,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-026",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.047,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-027",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 12117,
+        "response_characters": 11989,
+        "reported_bytes": 12117,
+        "reported_characters": 11989,
+        "estimated_tokens": 2998,
+        "elapsed_ms": 0.351,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-027",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7753,
+        "response_characters": 7753,
+        "reported_bytes": 7753,
+        "reported_characters": 7753,
+        "estimated_tokens": 1939,
+        "elapsed_ms": 0.127,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-027",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.047,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-028",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 13947,
+        "response_characters": 13791,
+        "reported_bytes": 13947,
+        "reported_characters": 13791,
+        "estimated_tokens": 3448,
+        "elapsed_ms": 0.445,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-028",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7632,
+        "response_characters": 7632,
+        "reported_bytes": 7632,
+        "reported_characters": 7632,
+        "estimated_tokens": 1908,
+        "elapsed_ms": 0.139,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-028",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.049,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-029",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 17105,
+        "response_characters": 16943,
+        "reported_bytes": 17105,
+        "reported_characters": 16943,
+        "estimated_tokens": 4236,
+        "elapsed_ms": 0.482,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-029",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 9450,
+        "response_characters": 9444,
+        "reported_bytes": 9450,
+        "reported_characters": 9444,
+        "estimated_tokens": 2361,
+        "elapsed_ms": 0.25,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-029",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.048,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-030",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 15344,
+        "response_characters": 15232,
+        "reported_bytes": 15344,
+        "reported_characters": 15232,
+        "estimated_tokens": 3808,
+        "elapsed_ms": 0.426,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-030",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7631,
+        "response_characters": 7629,
+        "reported_bytes": 7631,
+        "reported_characters": 7629,
+        "estimated_tokens": 1908,
+        "elapsed_ms": 0.32,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-030",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.095,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-031",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 15847,
+        "response_characters": 15679,
+        "reported_bytes": 15847,
+        "reported_characters": 15679,
+        "estimated_tokens": 3920,
+        "elapsed_ms": 0.413,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-031",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 7019,
+        "response_characters": 7019,
+        "reported_bytes": 7019,
+        "reported_characters": 7019,
+        "estimated_tokens": 1755,
+        "elapsed_ms": 0.11,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-031",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 1335,
+        "response_characters": 1335,
+        "reported_bytes": 1335,
+        "reported_characters": 1335,
+        "estimated_tokens": 334,
+        "elapsed_ms": 0.042,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-032",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 15643,
+        "response_characters": 15535,
+        "reported_bytes": 15643,
+        "reported_characters": 15535,
+        "estimated_tokens": 3884,
+        "elapsed_ms": 0.435,
+        "evidence_status": "insufficient",
+        "complete": true,
+        "error": null
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-032",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.123,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-032",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.036,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-033",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.095,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-033",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.031,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-033",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.029,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-034",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.081,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-034",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.034,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-034",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.029,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-035",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.094,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-035",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.036,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-035",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.032,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-036",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.092,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-036",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.032,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-036",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.029,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-037",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.089,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-037",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.035,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-037",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.033,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-038",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.103,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-038",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.035,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-038",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.052,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-039",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.079,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-039",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.028,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-039",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.026,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-040",
+          "view": "graph",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.083,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-040",
+          "view": "requirements",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.032,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      },
+      {
+        "journey": "all-40",
+        "tool": "okf_get_view_data",
+        "input": {
+          "case_id": "staff-040",
+          "view": "rates",
+          "max_bytes": 32768,
+          "snapshot_id": "sha256:294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f"
+        },
+        "response_bytes": 603,
+        "response_characters": 603,
+        "reported_bytes": 603,
+        "reported_characters": 603,
+        "estimated_tokens": 151,
+        "elapsed_ms": 0.03,
+        "evidence_status": "insufficient",
+        "complete": false,
+        "error": "journey_budget"
+      }
+    ],
+    "total_reply_bytes": 1034538,
+    "total_reply_characters": 1029552,
+    "total_reply_estimated_tokens": 257436,
+    "whole_package_baseline_bytes": 20303318,
+    "local_file_reads": 724,
+    "local_file_bytes": 23243768,
+    "network_calls": 0,
+    "model_calls": 0
+  },
+  "baseline": {
+    "staff-039": {
+      "package_sha256": "80e8af9cc56719802aa13085c13e8bab8f53706b1588e2ff5e3adff2a5ac4c91",
+      "package_bytes": 519628,
+      "context_id": "urn:sha256:43727cfe8665e0434b01d9720d2e75e62a459836a58913534e64be39bda845d3",
+      "evidence_status": "insufficient",
+      "selected_records": 48,
+      "relationships": 61,
+      "source_record_ids_sha256": "155ee0d69e051e123f03c1dc07e7ed37afa604b972371ccebc8d7ecabe58ceda"
+    },
+    "staff-015": {
+      "package_sha256": "489aaafc1847e571265481b1d145bbaec51a00a3d265cc2b231ae1339273b68a",
+      "package_bytes": 508934,
+      "context_id": "urn:sha256:5fa204e35a0a19ab93db3193a35be49233f742f04313c210e8815a2c8632bb1d",
+      "evidence_status": "insufficient",
+      "selected_records": 37,
+      "relationships": 73,
+      "source_record_ids_sha256": "7792408f357b0fc75f954bca2909f3b88ea74e96dbf819d7eec5d62d69824c50"
+    },
+    "staff-016": {
+      "package_sha256": "fc97c431b38381a6cee896dd8d1a8ef25b2b9b32f47da9318ce962231d3bac2e",
+      "package_bytes": 505109,
+      "context_id": "urn:sha256:0a1388a88bd18998396f1b87d7f0a111944b929718b41d7ae89ec340c890850d",
+      "evidence_status": "insufficient",
+      "selected_records": 36,
+      "relationships": 73,
+      "source_record_ids_sha256": "a38c55567bd90f721f0b6ac75c1772acd7399a9c735de4d4366cab8f99b5595b"
+    },
+    "staff-001": {
+      "package_sha256": "a7e6c65038ffe2a1d75346ad048e529a0ecf00b3a8f9b6bbae8c560107c635b7",
+      "package_bytes": 459114,
+      "context_id": "urn:sha256:4ba6339a1aab484c632f3f0f0514abd485a3d1c1172b2822b394e4a6edd05501",
+      "evidence_status": "insufficient",
+      "selected_records": 47,
+      "relationships": 70,
+      "source_record_ids_sha256": "dde05a15e843bd80b8dc077ce06c44ad15d09e8e4e60f530272783ec378519cb"
+    },
+    "staff-002": {
+      "package_sha256": "9479c0cab5d4ff5779e8af6c89cbe04bf13776e2361150e92068bac775ad154c",
+      "package_bytes": 518649,
+      "context_id": "urn:sha256:f2f7a137785d9707d7ad55932f52fe66c41787f07bff777b526471091b818f54",
+      "evidence_status": "insufficient",
+      "selected_records": 52,
+      "relationships": 72,
+      "source_record_ids_sha256": "82accc08d87765c7711ad5176d477d2189a572fb330f12c7580944a164b9edee"
+    },
+    "staff-003": {
+      "package_sha256": "36695c6da14d96f9334e17b2ab89cdea0040b6194c1d794f26010c13ff85b834",
+      "package_bytes": 522904,
+      "context_id": "urn:sha256:eff013d43f4348990c22c212854cb4d6fe978fe14d5d2096dd919c7dbf66c4ea",
+      "evidence_status": "insufficient",
+      "selected_records": 48,
+      "relationships": 57,
+      "source_record_ids_sha256": "e5a84e36278d3ab86b09057c2c63634a64739de75703fc7ba8e65b35197af90f"
+    },
+    "staff-004": {
+      "package_sha256": "20fb7948157cd7363dabb01ae0b825f5562dd57a0827d29b864a079ed63acbae",
+      "package_bytes": 512586,
+      "context_id": "urn:sha256:d67875f404ad0a45b937e9a26997dfb5950dd14e217d2e81452968fb495fdf5d",
+      "evidence_status": "insufficient",
+      "selected_records": 46,
+      "relationships": 77,
+      "source_record_ids_sha256": "f6e043735d44c2e79fc7ce218251a6fa367fe8a4e6d642eb81b471697d5ab15f"
+    },
+    "staff-005": {
+      "package_sha256": "9f688a284db5cc071a727c1a50bdb9f469eaf8989edf0a241c954a4edfbf24ae",
+      "package_bytes": 512750,
+      "context_id": "urn:sha256:1a7c328ab70e5e181a07eede3260b922be0aee62c096ce445ca9676c30df0ab2",
+      "evidence_status": "insufficient",
+      "selected_records": 52,
+      "relationships": 69,
+      "source_record_ids_sha256": "bf1845df1bc1a109e002da43e8f5b025122c0b1e83a36bb149687873128d0f0e"
+    },
+    "staff-006": {
+      "package_sha256": "09c3fd4636fa7ef5e31f426b62bad6686c68b2f220371af45c950fc504da29cd",
+      "package_bytes": 516227,
+      "context_id": "urn:sha256:88fe2cba3792174a4fb1202fbe55586b62b3dfdc31da87b4c378df9d78aa5e39",
+      "evidence_status": "insufficient",
+      "selected_records": 30,
+      "relationships": 47,
+      "source_record_ids_sha256": "598cb2ec614b3209b3c3292bfda23d4e677170c5c973db9ac4ca21cae70809ce"
+    },
+    "staff-007": {
+      "package_sha256": "cd286dd7ebf0e6caf3bb151ae19552dc46d5d25c5bb2305c5a9cdfc07a0056cd",
+      "package_bytes": 522647,
+      "context_id": "urn:sha256:232c17067863aa391034ebcac8c91d7916b655bd9fdc7dff9e1755c9cdfbec1b",
+      "evidence_status": "insufficient",
+      "selected_records": 35,
+      "relationships": 44,
+      "source_record_ids_sha256": "fda6d0ff7fe68f696dfdc1653d8b3b2f611a87188fcee054f8f9bf06d1622741"
+    },
+    "staff-008": {
+      "package_sha256": "e63226c47839cc2edfc500d2f45582a43ead0fb48d53ba32c5b718cc107fa797",
+      "package_bytes": 519279,
+      "context_id": "urn:sha256:ce10fd84f678d1e47e58bc716eaa5de331af0b23d3ca718a7c5ebaca96acc138",
+      "evidence_status": "insufficient",
+      "selected_records": 44,
+      "relationships": 44,
+      "source_record_ids_sha256": "703392c080a12b19a351194d328b05cbc7544ab1969c2f56c6c7e15c97c3f94c"
+    },
+    "staff-009": {
+      "package_sha256": "14c3b5d7f76e579dbf6c0d10517e98a1ac2536b12684a42738626aa40659eacd",
+      "package_bytes": 521615,
+      "context_id": "urn:sha256:dec58dd5ad24c92cae71eaff20aaba857b5142ac2f70a08648aa3f314eb7b55c",
+      "evidence_status": "insufficient",
+      "selected_records": 39,
+      "relationships": 43,
+      "source_record_ids_sha256": "6f9737b4932ecf14ce6dd1b4a5981ff6d2e011884b2aec028594a742aa41df2a"
+    },
+    "staff-010": {
+      "package_sha256": "310529c5524c9c2d66d918f1875cfcdc530d4e967cbfc74434d703a390dc81fc",
+      "package_bytes": 517638,
+      "context_id": "urn:sha256:18dede7c9b8de2fa7c50f03f70a3690483fc12ffd4e9cb0e3853a79d1e9cbeb4",
+      "evidence_status": "insufficient",
+      "selected_records": 30,
+      "relationships": 58,
+      "source_record_ids_sha256": "8900dc3f92991d41cfdc42af81522ecf6e72c5a0c535cb754278240430780a5b"
+    },
+    "staff-011": {
+      "package_sha256": "6b2897b64958bf5ac3b1e2ac6661136e397977dee797f518efe145b18f266a38",
+      "package_bytes": 516620,
+      "context_id": "urn:sha256:60e04490b2fea910666ec96f5e94a88819492ff55b0a91ce5a725188eca9ffe2",
+      "evidence_status": "insufficient",
+      "selected_records": 54,
+      "relationships": 70,
+      "source_record_ids_sha256": "ff2b1421b4a32e588a08093c06fdcad7d4ba136e47447b8f3b7e28a7a29fa7ed"
+    },
+    "staff-012": {
+      "package_sha256": "ec9a19b3291e1f2386efda8e4d5f540eed9dc178cc8b827ab697c3451ffd8f6a",
+      "package_bytes": 517399,
+      "context_id": "urn:sha256:7e22711cae81edb4ca73f85dc169f8629bea4a49a93c6bd8d2af929b24e9650e",
+      "evidence_status": "insufficient",
+      "selected_records": 25,
+      "relationships": 44,
+      "source_record_ids_sha256": "2d59abfb630bd370aeeac1819ec0bf518df17f25dfd6332e2a05d212a144b19b"
+    },
+    "staff-013": {
+      "package_sha256": "f73aa7cd4a1536daf47843f475e048263ed7f1c5a8b5967c0b6db91cbac059a2",
+      "package_bytes": 517557,
+      "context_id": "urn:sha256:4d0803837502e4cdea178282d42db77a75cafaa9c06f0bc256c7f92f83cc12ce",
+      "evidence_status": "insufficient",
+      "selected_records": 25,
+      "relationships": 44,
+      "source_record_ids_sha256": "2d59abfb630bd370aeeac1819ec0bf518df17f25dfd6332e2a05d212a144b19b"
+    },
+    "staff-014": {
+      "package_sha256": "756574018453d2cd485108422978029b2db616daf56e26d8a157fc8bdf823c26",
+      "package_bytes": 518933,
+      "context_id": "urn:sha256:7118d088c8992b419907684ff57e27aa9282bc67e4f290ec7657e45aeab28f54",
+      "evidence_status": "insufficient",
+      "selected_records": 33,
+      "relationships": 54,
+      "source_record_ids_sha256": "118b50aab452d016734ecf9a1b3d140ace1febfa30b9e195199cf05680172eee"
+    },
+    "staff-017": {
+      "package_sha256": "00ae02920e50f08d6301a9ec9e268e834f4f9403acfe59d2456be40f55f7a098",
+      "package_bytes": 522951,
+      "context_id": "urn:sha256:4f525b16f77c436ed0a610978ce3ca490187cca87cc0a1f85c336a33eb6576bd",
+      "evidence_status": "insufficient",
+      "selected_records": 36,
+      "relationships": 58,
+      "source_record_ids_sha256": "5143a8ba45f747fcf5e78b3d56a765b578590f96e040d657a407d35fafa45d8d"
+    },
+    "staff-018": {
+      "package_sha256": "597e326539f5f39b6b1cc02e83424613bc596470e84d0848411230b1cfd5d3b5",
+      "package_bytes": 514831,
+      "context_id": "urn:sha256:cc286957387f25d81516a45d88db4a7568d0889c6c511aa654a64278b31d527c",
+      "evidence_status": "insufficient",
+      "selected_records": 49,
+      "relationships": 77,
+      "source_record_ids_sha256": "6dd506870cf217beb23d614dd000c6928737a713132bbb730cc3a37970bc896d"
+    },
+    "staff-019": {
+      "package_sha256": "57449d5c3e52c03323435e17edced88c608f3669c02f0d036ea3a5e6925eb25d",
+      "package_bytes": 472669,
+      "context_id": "urn:sha256:4ebe74d7f68bf37022c1380c6b93000ee520ad37f77f2b12ccffa1792bdf782a",
+      "evidence_status": "insufficient",
+      "selected_records": 53,
+      "relationships": 69,
+      "source_record_ids_sha256": "2b2d1d8d883039f4dbefeae3094bd3f6ea6da4ecbbb5bbf2fa8cdba39ac83e6f"
+    },
+    "staff-020": {
+      "package_sha256": "78f0d58ca151be6436d365ae05ea4710f1ca2bc32f64cb044d2973b0a368ad76",
+      "package_bytes": 523969,
+      "context_id": "urn:sha256:b958dd63826b7fa6641b85bcda293c9536b0739cadd75a8b22b53e5ed7cf9690",
+      "evidence_status": "insufficient",
+      "selected_records": 35,
+      "relationships": 53,
+      "source_record_ids_sha256": "dc536e6dbcdd3a4fd26323a7676c6690ed9098b1960e98686490414bd3aecade"
+    },
+    "staff-021": {
+      "package_sha256": "671a82f710d242171708d82d62c062e3ae3e5e4ae42d5ba8ef888a7298aa1cac",
+      "package_bytes": 520758,
+      "context_id": "urn:sha256:debec98b738b62d30d99860a145c12feedc47ac423c7c60e834bc64345350089",
+      "evidence_status": "insufficient",
+      "selected_records": 23,
+      "relationships": 39,
+      "source_record_ids_sha256": "83fe2b21bedcde0cc1fb23e50e5ba2ea584e495007454a6fbbb4410de48a1c7b"
+    },
+    "staff-022": {
+      "package_sha256": "849c922d7b795e213e76c4afc7fdd7030b164bf24b1d38adf4ac17c6aeb65a97",
+      "package_bytes": 518980,
+      "context_id": "urn:sha256:194875c2dbe89c74b557bfc669daca1abf667539e56cc635065a6ea448405612",
+      "evidence_status": "insufficient",
+      "selected_records": 52,
+      "relationships": 76,
+      "source_record_ids_sha256": "78cabbc64552847b8bc42c5f9613aa6cd4069dcdf46d235cd36a41c8e7b18c6b"
+    },
+    "staff-023": {
+      "package_sha256": "3a5654530e7670bed846cb6d9ae4bed33bff02eed07c1e8f24c2577a0e0f20c6",
+      "package_bytes": 521829,
+      "context_id": "urn:sha256:f41c2b1452ad90af175faa6887c20d1203827f97dc2b93db9ca1f4e63184706b",
+      "evidence_status": "insufficient",
+      "selected_records": 48,
+      "relationships": 83,
+      "source_record_ids_sha256": "9ec14d9f9dd7f5ce63b70b5dbb7ae6d76da4407a17901fe2bdb5743d5a65d0e5"
+    },
+    "staff-024": {
+      "package_sha256": "273f2d4ca5d58cf085daf1f5fa40440093214af45b2990f2e6f3bf13697bbf86",
+      "package_bytes": 432139,
+      "context_id": "urn:sha256:eabfa5d21854239589dcaa195f13d8096455674ecf13601bf348027bd8841c0e",
+      "evidence_status": "insufficient",
+      "selected_records": 45,
+      "relationships": 50,
+      "source_record_ids_sha256": "abb60ab80231b2f6b6454ee0a26450f5256da35e33b34528e5f80ea988fe6846"
+    },
+    "staff-025": {
+      "package_sha256": "683e30cbfa13c50698ca4f9f4dfe6c752df35ab4c506f500bceeb12992e75dcd",
+      "package_bytes": 515359,
+      "context_id": "urn:sha256:7c6b20e69472edae9ff0f382086293f97b15d1581800f305d2d0b09223922756",
+      "evidence_status": "insufficient",
+      "selected_records": 56,
+      "relationships": 62,
+      "source_record_ids_sha256": "e70725c3298b1b8f46b52e7a7f23d2609a75d3c990df71ffd098e1a7e0a9a9c0"
+    },
+    "staff-026": {
+      "package_sha256": "f7d11bff48828de0a25cc1f4d06078f77f72b8d65cc221fcca76ef72b24370e6",
+      "package_bytes": 521362,
+      "context_id": "urn:sha256:1169e2def38b6f83cd88339b89e4e8817aa6d6bbf052c3f8d88506b8618625a5",
+      "evidence_status": "insufficient",
+      "selected_records": 53,
+      "relationships": 53,
+      "source_record_ids_sha256": "21610194d65815f9bc0d3ebe871f53d2489f3fbc46d60ee96d42567d714c171f"
+    },
+    "staff-027": {
+      "package_sha256": "a001ee4c9a4487e85c1f6c8e149e546c74aef6b99f7c3b900ce3ee8df1ac72da",
+      "package_bytes": 397884,
+      "context_id": "urn:sha256:025c6d156ae47a654767ecda48c7f18112060881650ab5ca316b73bd9ba93027",
+      "evidence_status": "insufficient",
+      "selected_records": 46,
+      "relationships": 44,
+      "source_record_ids_sha256": "35dad61e99e90de33da4ebfbb41543b163f4253becfbfb210a5c4ef6df204d41"
+    },
+    "staff-028": {
+      "package_sha256": "1420904baef544bd8db70e26fe0544dd3ece3ee0001d6bc344e23d93f9d55eff",
+      "package_bytes": 402820,
+      "context_id": "urn:sha256:9f2fcf3532ad87efbffde49e9960410fbb2cedbb2c35424dfba90f0d857feb8a",
+      "evidence_status": "insufficient",
+      "selected_records": 47,
+      "relationships": 45,
+      "source_record_ids_sha256": "dd28c95b88131f538d622906d67d0f26ef9264de09334bfda4138cd49c683e65"
+    },
+    "staff-029": {
+      "package_sha256": "3de6736649982eecd9e5e5ce3ff7f01e6b00ca9b3dc8f8bbddde1a8a9c7d85fa",
+      "package_bytes": 519770,
+      "context_id": "urn:sha256:273c4d3c5531f871ce5534d8c44f8fee793d0099102d8691c4e67e29ce8faf49",
+      "evidence_status": "insufficient",
+      "selected_records": 37,
+      "relationships": 60,
+      "source_record_ids_sha256": "a236662fa54e47f064f7a6fb1d24a9ba1dddef12ecbb6036798a72574af82066"
+    },
+    "staff-030": {
+      "package_sha256": "b14091942f1ea0728e4ef97ca5108c1cd5770e59cf303563f3b561240e850bd0",
+      "package_bytes": 522456,
+      "context_id": "urn:sha256:369959012f1601433d519298cf95b39fd2a6d5e0f03946f02dcc524cb255254e",
+      "evidence_status": "insufficient",
+      "selected_records": 49,
+      "relationships": 61,
+      "source_record_ids_sha256": "2b4e9c1f4f4f139eac532406f4c6407ae3b70fa4eef88aeec9f13885edfb0698"
+    },
+    "staff-031": {
+      "package_sha256": "f0c5c96d6c02b793c3152566b16269f72cb6184b5b76932520eab63c87c61ca0",
+      "package_bytes": 517293,
+      "context_id": "urn:sha256:7c223a66591cda333f8d5760c7ecb356045f15ace83255ff2aaa395d17091e8f",
+      "evidence_status": "insufficient",
+      "selected_records": 49,
+      "relationships": 59,
+      "source_record_ids_sha256": "b66d85f640315ce78b2c25ef1a0365b64e0e5cb878593bc816bd84406270d42d"
+    },
+    "staff-032": {
+      "package_sha256": "f5765c1360cb585c2ea436d31102baa8c07cc5d53f97fb159dac826e1f5dc261",
+      "package_bytes": 523779,
+      "context_id": "urn:sha256:17c00fbc32bdc3fa15b428500653e313204ce21a98536916cb8539a1a0f6c0a5",
+      "evidence_status": "insufficient",
+      "selected_records": 49,
+      "relationships": 64,
+      "source_record_ids_sha256": "78d1bba388f8775c957d6a61524ccef158e6806118986f552acde883fc0b92f0"
+    },
+    "staff-033": {
+      "package_sha256": "f7d11bff48828de0a25cc1f4d06078f77f72b8d65cc221fcca76ef72b24370e6",
+      "package_bytes": 521362,
+      "context_id": "urn:sha256:1169e2def38b6f83cd88339b89e4e8817aa6d6bbf052c3f8d88506b8618625a5",
+      "evidence_status": "insufficient",
+      "selected_records": 53,
+      "relationships": 53,
+      "source_record_ids_sha256": "21610194d65815f9bc0d3ebe871f53d2489f3fbc46d60ee96d42567d714c171f"
+    },
+    "staff-034": {
+      "package_sha256": "3c06b629dcfdb04252de92fc7b5aa54875df39660aa29681353d50f4ee948339",
+      "package_bytes": 519511,
+      "context_id": "urn:sha256:0096b7b56a048d1b3ebb9f881e33bd7ca8b7ecf4a45224ecbd273eed27f0c20f",
+      "evidence_status": "insufficient",
+      "selected_records": 53,
+      "relationships": 59,
+      "source_record_ids_sha256": "81cc7588e472d2f6e01ee5bd46c09b6dfb259df97de4b6cad25adcc98a7c2aea"
+    },
+    "staff-035": {
+      "package_sha256": "5f2b1092f883b7a2286cd1a529073c4718d8644417af32af96785b9d16cbb993",
+      "package_bytes": 523561,
+      "context_id": "urn:sha256:2cb585cb316dbe6869ae1f8505aa3404d566f779ae506e56f539e9140a271452",
+      "evidence_status": "insufficient",
+      "selected_records": 56,
+      "relationships": 52,
+      "source_record_ids_sha256": "587de45c64f9c922861ced5de13ab59ce4c74e3b9eecd9eae14168cfb1927fda"
+    },
+    "staff-036": {
+      "package_sha256": "f842468964058a9935a37eadd48879735950a018c1a00b2fc1d7a9e2599e34b2",
+      "package_bytes": 515740,
+      "context_id": "urn:sha256:251f240eaa674c8158c9d9f738916101fb33a8ae01d66536c0379c1dee712ae9",
+      "evidence_status": "insufficient",
+      "selected_records": 46,
+      "relationships": 53,
+      "source_record_ids_sha256": "bf175b33a322c1a3c1a1650d588f0ac7818638afb72950110c720048272f86d5"
+    },
+    "staff-037": {
+      "package_sha256": "b8ad804378e1847aa22fd92f9781300a3234835dc1d21a921f9dbf94b660519e",
+      "package_bytes": 523616,
+      "context_id": "urn:sha256:4dc0d815e9720f445f8f7286e3fa266d504e3d869f728dde98de4eda8ddfc39e",
+      "evidence_status": "insufficient",
+      "selected_records": 54,
+      "relationships": 65,
+      "source_record_ids_sha256": "9164eddf1db3b6efee4e76bf2b2afa0048017339d29cda2e18e930888cf57101"
+    },
+    "staff-038": {
+      "package_sha256": "aa043e4bdb78d9453723be4474abea62303165804cd2fdbccda863eb40183502",
+      "package_bytes": 515852,
+      "context_id": "urn:sha256:2c52e0d861b8bb873044fa4a5fffc82f62c6d40924cbca75f8c23a9ef873bb71",
+      "evidence_status": "insufficient",
+      "selected_records": 50,
+      "relationships": 74,
+      "source_record_ids_sha256": "eeedc30ed41fd51ecd924e53e6bfe6716c7f77d0012133109d16bb7bec0f203b"
+    },
+    "staff-040": {
+      "package_sha256": "9d6e9e4c0bae8a49cdc9b720b03f1f15b4102de872566953dc29ceaeebfc0886",
+      "package_bytes": 507238,
+      "context_id": "urn:sha256:35884d2d9e7e4937e177b17299773e7b4380a928426805578c0ce33bb2c7c7cf",
+      "evidence_status": "insufficient",
+      "selected_records": 45,
+      "relationships": 73,
+      "source_record_ids_sha256": "8151689053a6edc87c1fdf41cc7da09697d5b13adaba4c80c8aaaea7aa42d8c3"
+    }
+  },
+  "all40": [
+    {
+      "id": "staff-001",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 22,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 1,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-002",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 19,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-003",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 11,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-004",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 31,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-005",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 24,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-006",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 37,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-007",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 27,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-008",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 14,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 1,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-009",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 13,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-010",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 39,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-011",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 24,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-012",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 32,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-013",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 32,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-014",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 33,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-015",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 40,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-016",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 40,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-017",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 33,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-018",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 31,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 1,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-019",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 21,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-020",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 32,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-021",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 32,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-022",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 21,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-023",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 39,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-024",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 21,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-025",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 17,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-026",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 6,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-027",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 13,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-028",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 17,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-029",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 24,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": false,
+          "rows": 3,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-030",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 19,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-031",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 19,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": null,
+          "complete": true,
+          "rows": 2,
+          "limitations": 2
+        },
+        "rates": {
+          "error": null,
+          "complete": true,
+          "rows": 0,
+          "limitations": 3,
+          "unknowns_visible": true
+        }
+      }
+    },
+    {
+      "id": "staff-032",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": null,
+          "complete": true,
+          "rows": 21,
+          "limitations": 3
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-033",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-034",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-035",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-036",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-037",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-038",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-039",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    },
+    {
+      "id": "staff-040",
+      "evidence_status": "insufficient",
+      "views": {
+        "graph": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "requirements": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null
+        },
+        "rates": {
+          "error": "journey_budget",
+          "complete": false,
+          "rows": null,
+          "limitations": null,
+          "unknowns_visible": false
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-032",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-033",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-034",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-035",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-036",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-037",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-038",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-039",
+      "reason": "rates_unknowns_not_visible"
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "tool": "okf_get_view_data",
+      "code": "journey_budget",
+      "message": "This session reached its cumulative tool budget."
+    },
+    {
+      "journey": "all-40",
+      "case_id": "staff-040",
+      "reason": "rates_unknowns_not_visible"
+    }
+  ],
+  "limitations": [
+    "Retrieval and view delivery do not establish evidence sufficiency or legal applicability.",
+    "Call times are local observations, not network or assistant-host latency.",
+    "Estimated tokens use the service character heuristic, not a model tokenizer."
+  ]
+}

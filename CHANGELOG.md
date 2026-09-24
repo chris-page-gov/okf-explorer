@@ -1,5 +1,20 @@
 # Changelog
 
+## Workbench page tools and model inspection — 24 September 2026
+
+- Add seven optional native WebMCP page tools over shared, bounded workbench
+  services, with snapshot-bound references, exact passage continuations,
+  cancellation and revision-checked display changes.
+- Add renderer-neutral directed graph, interaction, requirements, rates and
+  calculation-readiness views. Human controls and tool presentation share the
+  same values, source links, row-coverage notices and accessible tables.
+- Admit optional blocked model and interaction proposals without changing the
+  original retained packages. No rule execution, rate inference or award
+  calculation is provided. Document the Java/MongoDB destination separately.
+- Keep native registration, real AI-host invocation, panel rendering and
+  deployment as distinct verification claims. See the
+  [page tools guide](docs/workbench-page-tools.md).
+
 ## Evidence workbench and bounded delivery — 24 September 2026
 
 - Add a reusable Evidence workbench for inspecting retained question packages,
