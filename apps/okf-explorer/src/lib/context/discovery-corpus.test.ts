@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 // @ts-ignore -- Node-only compression control; runtime uses bounded Web Streams.
 import { gzipSync } from 'node:zlib';
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from './corpus';
-import { bm25Contribution, DISCOVERY_RANKING, DISCOVERY_RANKING_V2, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
+import { bm25Contribution, DISCOVERY_RANKING, DISCOVERY_RANKING_V2, discoveryPhraseMatches, discoveryTokens, readDiscoveryCard, readDiscoveryIncident, type DiscoveryCardReference, type DiscoveryIncidentReference } from './corpusV3';
 import { canonicalJson, contextSha256 } from './index';
 import { contextManifest, readContextEvidence } from './delivery';
 import { discoveryFixture } from '../../test/discoveryFixture';
@@ -153,6 +153,42 @@ describe('source-bound discovery corpus v3', () => {
     expect(result.retrieval!.units!.referenced_records).toContain(f.records.at(-1)!.id);
     expect(result.selected.map(row => row.record.id)).toContain(f.records.at(-1)!.id);
     expect(result.evidence_status).toBe('insufficient');
+  });
+  it('admits exact source-bound alias routes inside the same 16-candidate limit without a concept claim', async () => {
+    const f = await discoveryFixture(24, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    f.cards[23].search_aliases = ['Written permission'];
+    f.manifest.search.alias_routes = [{ ordinal: 23, phrase: 'Written permission' }];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Is written permission needed for quartz collection?', {}, f.fetcher);
+    expect(result.retrieval!.candidates).toHaveLength(16);
+    expect(result.retrieval!.candidates[0]).toMatchObject({ id: f.records[23].id, alias_phrase: 'Written permission' });
+    expect(result.retrieval!.discovery!.candidates[0].alias_phrase).toBe('Written permission');
+    expect(result.selected.find(row => row.record.id === f.records[23].id)?.reasons.join(' ')).toContain('Source-bound alias route');
+    expect(result.resolved_concepts).toEqual([]);
+    expect(result.evidence_status).toBe('insufficient');
+    const negative = await assembleCorpusContext(f.manifest, f.binding, 'Is permission written down?', {}, f.fetcher);
+    expect(negative.retrieval!.candidates.some(row => row.alias_phrase)).toBe(false);
+    expect(discoveryPhraseMatches(discoveryTokens('rewritten permission'), discoveryTokens('written permission'))).toBe(false);
+  });
+  it('keeps multiple matched alias targets explicit and rejects routes that differ from bound cards', async () => {
+    const f = await discoveryFixture();
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    f.cards[0].search_aliases.push('Quartz collection');
+    f.cards[1].search_aliases.push('Quartz collection');
+    f.manifest.search.alias_routes = [{ ordinal: 0, phrase: 'Quartz collection' }, { ordinal: 1, phrase: 'Quartz collection' }];
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection', {}, f.fetcher);
+    expect(result.retrieval!.candidates.slice(0, 2).map(row => row.id)).toEqual([f.records[0].id, f.records[1].id]);
+    expect(result.retrieval!.candidates.slice(0, 2).map(row => row.alias_phrase)).toEqual(['Quartz collection', 'Quartz collection']);
+    expect(result.evidence_status).toBe('insufficient');
+    f.manifest.search.alias_routes![0].phrase = 'Absent from card';
+    await expect(assembleCorpusContext(f.manifest, f.binding, 'Absent from card', {}, f.fetcher)).rejects.toThrow('alias route differs');
+    f.manifest.search.alias_routes![0].phrase = 'Quartz';
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('two content words');
+    f.manifest.search.alias_routes![0].phrase = 'Quartz collection';
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING);
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('alias routes require bounded v2 ranking');
   });
   it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
     const f = await discoveryFixture(3, 1);

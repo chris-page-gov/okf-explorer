@@ -285,6 +285,19 @@
             }
           ]
         },
+        "alias_routes": {
+          "type": "array",
+          "maxItems": 2000,
+          "items": {
+            "type": "object",
+            "properties": {
+              "ordinal": { "type": "integer", "minimum": 0 },
+              "phrase": { "type": "string", "minLength": 1, "maxLength": 500 }
+            },
+            "required": ["ordinal", "phrase"],
+            "additionalProperties": false
+          }
+        },
         "total_tokens": {
           "type": "object",
           "properties": {
@@ -313,6 +326,12 @@
         "ranking",
         "total_tokens"
       ],
+      "if": { "required": ["alias_routes"] },
+      "then": {
+        "properties": {
+          "ranking": { "properties": { "schema": { "const": "okf-bm25-weighted.v2" } } }
+        }
+      },
       "additionalProperties": false
     },
     "discovery": {

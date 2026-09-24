@@ -13,7 +13,9 @@ export const DISCOVERY_RANKING: DiscoveryRanking = Object.freeze({ schema: 'okf-
 /** Opt-in ranking: authored navigation wording can compete with incidental words in long source passages. */
 export const DISCOVERY_RANKING_V2: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25-weighted.v2', k1: 1.2, b: 0.75,
   score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const), weights: Object.freeze({ source: 1, discovery: 2 }) });
-export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000, path_prefixes: 2000 });
+export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000,
+  path_prefixes: 2000, alias_routes: 2000, matched_alias_routes: 4 });
+export type DiscoveryAliasRoute = { ordinal: number; phrase: string };
 export type DiscoveryCard = Pick<ContextRecord, 'id' | 'label' | 'assertion_status' | 'authority' | 'scope' | 'provenance' | 'rights' | 'access'> & {
   evidence_id: string; evidence_sha256: string; heading_path: string[]; summary: string; search_aliases: string[];
 };
@@ -29,7 +31,8 @@ export type DiscoveryIncidentReference = {
 export type DiscoveryCorpusManifest = Omit<LegacyContextCorpusManifest, 'schema' | 'search'> & {
   schema: 'okf-context-corpus.v3';
   discovery: { count: number; shards: Array<Reference & { first_ordinal: number; count: number }> };
-  search: LegacyContextCorpusManifest['search'] & { ranking: DiscoveryRanking; total_tokens: { source: number; discovery: number } };
+  search: LegacyContextCorpusManifest['search'] & { ranking: DiscoveryRanking; total_tokens: { source: number; discovery: number };
+    alias_routes?: DiscoveryAliasRoute[] };
   relationships: { schema: 'okf-context-adjacency.v1'; bucket_algorithm: 'fnv1a32-high-byte-hex-v1'; shards: Record<string, Reference> };
   /** Producer-owned metadata, never followed or interpreted as instructions. */
   extensions?: Record<string, unknown>;
@@ -62,6 +65,11 @@ export function discoveryTokens(text: string): string[] {
   return text.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().match(/[a-z0-9]{2,}/g) || [];
 }
 export function discoveryText(card: DiscoveryCard): string { return [card.label, ...card.heading_path, card.summary, ...card.search_aliases].join('\n'); }
+/** Discovery routes use exact normalised word sequences; the producer supplies explicit variants. */
+export function discoveryPhraseMatches(question: readonly string[], phrase: readonly string[]): boolean {
+  return phrase.length >= 2 && question.some((word, start) => word === phrase[0]
+    && phrase.every((part, offset) => question[start + offset] === part));
+}
 /** Fixed parameters, separately quantised channels and ordinal ties are part of v1. */
 export function bm25Contribution(documents: number, frequency: number, tf: number, length: number, totalTokens: number): number {
   if (!tf) return 0;
@@ -73,8 +81,23 @@ export function validateDiscoveryCorpusManifest(raw: unknown): DiscoveryCorpusMa
   check(object(raw), 'manifest');
   keys(raw, ['schema', 'bundle', 'scope', 'limitations', 'semantic_source_snapshot', 'base_index', 'counts', 'records', 'search', 'discovery', 'relationships'], ['extensions']);
   check(raw.schema === 'okf-context-corpus.v3' && size(raw) <= 4 * 1024 * 1024, 'schema or manifest byte limit');
-  check(object(raw.search), 'search'); keys(raw.search, ['tokenisation', 'bucket_algorithm', 'shards', 'ranking', 'total_tokens']);
+  check(object(raw.search), 'search'); keys(raw.search, ['tokenisation', 'bucket_algorithm', 'shards', 'ranking', 'total_tokens'], ['alias_routes']);
   check([DISCOVERY_RANKING, DISCOVERY_RANKING_V2].some(r => canonicalJson(raw.search.ranking) === canonicalJson(r)), 'unsupported ranking parameters');
+  if (raw.search.alias_routes !== undefined) {
+    check(raw.search.ranking.schema === 'okf-bm25-weighted.v2' && Array.isArray(raw.search.alias_routes)
+      && raw.search.alias_routes.length <= DISCOVERY_LIMITS.alias_routes, 'alias routes require bounded v2 ranking');
+    const seen = new Set<string>();
+    for (const route of raw.search.alias_routes) {
+      check(object(route), 'alias route'); keys(route, ['ordinal', 'phrase']);
+      check(integer(route.ordinal, raw.records?.count) && route.ordinal < raw.records.count
+        && typeof route.phrase === 'string' && route.phrase.length <= 500, 'alias route shape');
+      const words = discoveryTokens(route.phrase);
+      check(words.length >= 2 && words.length <= 12 && words.filter(word => !isQuestionScaffolding(word)).length >= 2,
+        'alias route needs 2–12 words including two content words');
+      const key = `${route.ordinal}:${route.phrase}`;
+      check(!seen.has(key), 'duplicate alias route'); seen.add(key);
+    }
+  }
   check(object(raw.search.total_tokens), 'token totals'); keys(raw.search.total_tokens, ['source', 'discovery']);
   check(Object.values(raw.search.total_tokens).every(n => integer(n, 1_000_000_000_000)), 'invalid token totals');
   validateContextCorpusManifest({ ...raw, schema: 'okf-context-corpus.v2', search: { tokenisation: raw.search.tokenisation,
@@ -427,31 +450,57 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
       if (p[1]) rank.matched_source.push(token); if (p[3]) rank.matched_discovery.push(token); ranks.set(p[0], rank);
     }
   }
-  retrieval.candidate_count = ranks.size;
-  const ranked = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]).slice(0, CORPUS_LIMITS.candidates);
-  if (ranks.size > ranked.length) omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
-  const admitRanked = async ([ordinal, rank]: [number, Rank]) => {
+  const lexical = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]);
+  const queryWords = discoveryTokens(question);
+  const matchedRoutes = (manifest.search.alias_routes || []).filter(route =>
+    discoveryPhraseMatches(queryWords, discoveryTokens(route.phrase)))
+    .sort((a, b) => discoveryTokens(b.phrase).length - discoveryTokens(a.phrase).length
+      || a.ordinal - b.ordinal || a.phrase.localeCompare(b.phrase));
+  // The route index is compact producer-authored navigation metadata. It is
+  // never trusted until the exact phrase is found on the hash-bound card.
+  const routeMatches = new Map<number, string>();
+  for (const route of matchedRoutes) {
+    if (!routeMatches.has(route.ordinal)) routeMatches.set(route.ordinal, route.phrase);
+  }
+  const plannedRoutes = [...routeMatches].slice(0, DISCOVERY_LIMITS.matched_alias_routes);
+  if (routeMatches.size > plannedRoutes.length)
+    omit('retrieval_alias_budget', 'Some matched source-bound alias routes exceeded the fixed alias admission limit.');
+  const planned: Array<[number, Rank | undefined, string | undefined]> = plannedRoutes.map(([ordinal, phrase]) => [ordinal, ranks.get(ordinal), phrase]);
+  const includedOrdinals = new Set(planned.map(([ordinal]) => ordinal));
+  for (const [ordinal, rank] of lexical) {
+    if (planned.length >= CORPUS_LIMITS.candidates) break;
+    if (!includedOrdinals.has(ordinal)) { planned.push([ordinal, rank, undefined]); includedOrdinals.add(ordinal); }
+  }
+  retrieval.candidate_count = new Set([...ranks.keys(), ...routeMatches.keys()]).size;
+  if (retrieval.candidate_count > planned.length)
+    omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
+  const admitRanked = async ([ordinal, rank, phrase]: [number, Rank | undefined, string | undefined]) => {
     const unit = await readUnit(ordinal); if (!unit) return;
+    if (phrase) check(unit.card.search_aliases.includes(phrase), 'alias route differs from its bound discovery card');
     const source = discoveryTokens(unit.record.text), discovery = discoveryTokens(discoveryText(unit.card));
-    for (const [token, p] of rank.facts) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
+    for (const [token, p] of rank?.facts || []) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
       && p[3] === discovery.filter(t => t === token).length && p[4] === discovery.length, 'postings differ from bound source or discovery text');
     if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); return; }
     if (!include(unit.record)) return;
-    retrieval.candidates.push({ id: unit.record.id, score: rank.score, matched: rank.matched });
+    retrieval.candidates.push({ id: unit.record.id, score: rank?.score || 0, matched: rank?.matched || [],
+      ...(phrase ? { alias_phrase: phrase } : {}) });
     const card: DiscoveryCardReference = { schema: 'okf-discovery-card-reference.v1', id: unit.card.id,
       evidence_id: unit.record.id, card_sha256: await contextSha256(canonicalJson(unit.card)), ordinal };
-    retrieval.discovery!.candidates.push({ card, source_score: rank.source_score, discovery_score: rank.discovery_score,
-      matched_source: rank.matched_source, matched_discovery: rank.matched_discovery });
-    evidenceSeeds.push({ id: unit.record.id, reason: `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank.source_score} (${rank.matched_source.join(', ')}), discovery score ${rank.discovery_score} (${rank.matched_discovery.join(', ')})${manifest.search.ranking.schema === 'okf-bm25.v1' ? '' : ', declared ranking ' + manifest.search.ranking.schema}. The card is not evidence or a concept-resolution claim.` });
+    retrieval.discovery!.candidates.push({ card, source_score: rank?.source_score || 0, discovery_score: rank?.discovery_score || 0,
+      matched_source: rank?.matched_source || [], matched_discovery: rank?.matched_discovery || [],
+      ...(phrase ? { alias_phrase: phrase } : {}) });
+    evidenceSeeds.push({ id: unit.record.id, reason: phrase
+      ? `Source-bound alias route '${phrase}' on discovery card ${unit.card.id}; BM25 score ${rank?.score || 0}. The route is navigation, not evidence or a concept-resolution claim.`
+      : `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank!.source_score} (${rank!.matched_source.join(', ')}), discovery score ${rank!.discovery_score} (${rank!.matched_discovery.join(', ')})${manifest.search.ranking.schema === 'okf-bm25.v1' ? '' : ', declared ranking ' + manifest.search.ranking.schema}. The card is not evidence or a concept-resolution claim.` });
   };
-  if (ranked.length) await admitRanked(ranked[0]);
+  if (planned.length) await admitRanked(planned[0]);
   // With opt-in weighted discovery, follow the best whole source unit's
   // declared dependencies before broad concept routes or secondary candidates
   // spend the fixed file budget. Legacy v1 keeps its exact admission order.
   if (manifest.search.ranking.schema === 'okf-bm25-weighted.v2' && evidenceSeeds.length)
     await expand([evidenceSeeds[0].id]);
   await expand([...resolvedIds].sort());
-  for (const candidate of ranked.slice(1)) await admitRanked(candidate);
+  for (const candidate of planned.slice(1)) await admitRanked(candidate);
   await expand([...new Set(evidenceSeeds.map(r => r.id))].sort());
   return assembleContext(index, question, requested, binding, { evidenceSeeds, retrieval,
     ...(guardDecisions.size ? { guardDecisions: [...guardDecisions.values()] } : {}) });
