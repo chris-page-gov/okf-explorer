@@ -125,7 +125,10 @@
 
   function chooseRecordTab(event: MouseEvent, item: ContextSelection, next: Tab) {
     if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    chooseRecord(event, item);
+    event.preventDefault();
+    selectedRecordId = item.record.id;
+    reviewComment = '';
+    reviewMessage = '';
     tab = next;
     syncAddress(selectedCase?.id ?? '', item.record.id, tab);
   }
