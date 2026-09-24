@@ -67,6 +67,16 @@ optional registration, tool-to-page retained presentation, safe source links,
 and a 390-pixel layout with Axe accessibility checks. These tests use a mock
 registry where needed; they are separate from native observations below.
 
+The existing Heritage regression suite was also rerun in Chrome against the
+assembled static candidate: all 100 questions scored at least 80 (mean 92.6),
+and all three local journeys passed. The refreshed
+[candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
+binds the observed application bytes. The preceding receipt and compressed
+browser results remain byte-for-byte in
+`validation/workbench-tools/2026-09-24/pre-tools-heritage/`.
+These are general Explorer regression checks, not DWP answer-quality results
+or public-deployment evidence.
+
 ## Native browser and host observations
 
 On the isolated local candidate, the connected Edge browser reported
