@@ -246,6 +246,7 @@
             <p><strong>Declared evidence status:</strong> {context.evidence_status}. This is an assembly result within the declared scope, not an answer or legal decision.</p>
             <p><strong>Scope:</strong> {context.scope}</p>
             <p class="identity">Snapshot {context.bundle.snapshot} · Context {context.context_id} · Index {context.binding.index_sha256}</p>
+            {#if sourceUrl}<p><a href={new URL(selectedCase.package.url, sourceUrl).href} target="_blank" rel="noopener noreferrer">Open full machine-readable evidence package ↗</a></p>{/if}
             <p class="identity">Manifest source date: {manifest.publication.source_date || 'Not supplied'} · Manifest capture date: {manifest.publication.captured_at || 'Not supplied'}</p>
           </header>
           {#if selectedCase.ambiguities?.length || selectedCase.required_evidence?.length || selectedCase.scope_gaps?.length}

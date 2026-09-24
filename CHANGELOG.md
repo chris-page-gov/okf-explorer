@@ -11,6 +11,9 @@
 - Add opt-in weighted discovery and bounded source-bound navigation routes;
   prioritise the leading discovered unit's dependencies before broad expansion.
   Preserve the existing ranking contract and frozen replay behaviour.
+- Retain the original staff question review brief separately from current
+  engine findings. Attempt a sandboxed cited-PDF preview with a direct-link
+  fallback, and expose the complete machine-readable package.
 - Keep candidate selection, useful answers, specialist acceptance and public
   client observations as separate claims. See the [workbench guide](docs/evidence-workbench.md).
 

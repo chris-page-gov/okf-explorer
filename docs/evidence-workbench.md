@@ -22,11 +22,13 @@ URL can retain `manifest`, `case`, `record` and `tab` parameters for sharing.
 ## Review a question
 
 1. Choose a question. Only that question's package is downloaded.
-2. Read its evidence status, budget omissions and unresolved requirements.
+2. Read the original question review brief, then its current evidence status,
+   budget omissions and unresolved requirements. Original expectations are
+   labelled separately from the engine’s current findings.
 3. Choose a selected record. Open the cited PDF page beside its extracted text.
 4. Use the tabs to inspect the whole passage, source spans, conceptual
    relationships, dependencies and selection trace.
-5. Inspect the machine-readable package or export a local review proposal.
+5. Open the complete machine-readable package or export a local review proposal.
 
 A PDF page number identifies a location. A logical unit groups text which
 belongs together, potentially across several pages. A discovery card is a short
