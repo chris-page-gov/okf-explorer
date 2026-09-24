@@ -12,6 +12,9 @@ export type WorkbenchCase = {
   id: string;
   label: string;
   question: string;
+  ambiguities?: string[];
+  required_evidence?: string[];
+  scope_gaps?: string[];
   package: { url: string; sha256: string; parts?: Array<{ url: string; sha256: string; bytes: number }> };
 };
 export type WorkbenchManifest = {
@@ -31,6 +34,10 @@ function nonempty(value: unknown, limit = 2000): value is string {
 
 function strings(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(item => typeof item === 'string');
+}
+
+function briefItems(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length <= 30 && value.every(item => nonempty(item, 2000));
 }
 
 export function manifestUrl(input: string, base: string): URL {
@@ -70,6 +77,9 @@ export function parseManifest(value: unknown, source: URL): WorkbenchManifest {
   for (const item of value.questions) {
     if (!object(item) || !nonempty(item.id, 100) || !CASE_ID.test(item.id) || ids.has(item.id) || !nonempty(item.label, 300) || !nonempty(item.question) || !object(item.package) || !SHA256.test(String(item.package.sha256))) {
       throw new Error('Manifest has an invalid or duplicate question entry.');
+    }
+    for (const field of ['ambiguities', 'required_evidence', 'scope_gaps']) {
+      if (item[field] !== undefined && !briefItems(item[field])) throw new Error(`Manifest has an invalid ${field} review brief.`);
     }
     packageUrl(String(item.package.url), source);
     if (item.package.parts !== undefined) {

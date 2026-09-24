@@ -248,6 +248,15 @@
             <p class="identity">Snapshot {context.bundle.snapshot} · Context {context.context_id} · Index {context.binding.index_sha256}</p>
             <p class="identity">Manifest source date: {manifest.publication.source_date || 'Not supplied'} · Manifest capture date: {manifest.publication.captured_at || 'Not supplied'}</p>
           </header>
+          {#if selectedCase.ambiguities?.length || selectedCase.required_evidence?.length || selectedCase.scope_gaps?.length}
+            <section class="review-brief" aria-labelledby="review-brief-title">
+              <h3 id="review-brief-title">Original question review brief</h3>
+              <p>These notes came with the question catalogue. They describe the intended review and its recorded gaps; they are separate from the current context package's requirements and retrieval findings.</p>
+              {#if selectedCase.ambiguities?.length}<h4>Recorded ambiguities</h4><ul>{#each selectedCase.ambiguities as item}<li>{item}</li>{/each}</ul>{/if}
+              {#if selectedCase.required_evidence?.length}<h4>Evidence identified for review</h4><ul>{#each selectedCase.required_evidence as item}<li>{item}</li>{/each}</ul>{/if}
+              {#if selectedCase.scope_gaps?.length}<h4>Recorded scope gaps</h4><ul>{#each selectedCase.scope_gaps as item}<li>{item}</li>{/each}</ul>{/if}
+            </section>
+          {/if}
           <div class="record-layout">
             <aside class="record-list" aria-labelledby="records-title">
               <h3 id="records-title">Selected records ({records.length})</h3>
@@ -272,8 +281,8 @@
                   <h5>Cited source locations</h5>
                   <ul>{#each selected.record.provenance as citation}{@const cited = sourcePageUrl({ ...selected.record, provenance: [citation] })}<li>{citation.locator || 'Locator not supplied'}{#if cited} · <a href={cited} target="_blank" rel="noopener noreferrer">Open this location ↗</a>{/if}</li>{/each}</ul>
                   <dl class="facts"><dt>Source locator</dt><dd>{selected.record.provenance.map(item => item.locator).join('; ') || 'Not supplied'}</dd><dt>Source publication date</dt><dd>{sourceDate(selected.record)}</dd><dt>Captured</dt><dd>{capturedAt(selected.record)}</dd><dt>Source SHA-256</dt><dd>{selected.record.provenance.map(item => item.source_sha256).filter(Boolean).join('; ') || 'Not supplied'}</dd><dt>Rights</dt><dd>{selected.record.rights || 'Not supplied'}</dd></dl>
-                  {#if sourceLink && sourceUrl && new URL(sourceLink).origin === window.location.origin && /\.pdf(?:#|$)/i.test(sourceLink)}
-                    <iframe title={`Original PDF for ${selected.record.label}`} src={sourceLink}></iframe>
+                  {#if sourceLink && new URL(sourceLink).protocol === 'https:' && /\.pdf(?:#|$)/i.test(sourceLink)}
+                    <iframe title={`Original PDF for ${selected.record.label}`} src={sourceLink} sandbox="allow-scripts allow-downloads" referrerpolicy="no-referrer" loading="lazy"></iframe>
                     <p><a href={sourceLink} target="_blank" rel="noopener noreferrer">Open PDF in a new tab if the embedded viewer is unavailable</a></p>
                   {/if}
                   <p class="note">PDF page navigation uses the recorded locator. Text offsets do not identify pixels in the PDF.</p>
@@ -359,6 +368,8 @@
   main { min-width: 0; padding: 1rem 1.3rem 3rem; }
   .case-heading { background: white; padding: 1rem; border: 1px solid #c4d0db; border-radius: .3rem; }
   .case-heading h2, .case-heading p { margin: .35rem 0; }
+  .review-brief { margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid #c4d0db; border-radius: .3rem; }
+  .review-brief h3 { margin-top: 0; }
   .identity { overflow-wrap: anywhere; color: #526477; font-size: .8rem; }
   .eyebrow { color: #526477; text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .06em; }
   .record-layout { display: grid; grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }

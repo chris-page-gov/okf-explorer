@@ -25,6 +25,14 @@ describe('evidence workbench manifest', () => {
     expect(() => parseManifest({ ...manifest, questions: Array.from({ length: 101 }, (_, i) => ({ ...entry, id: `q-${i}` })) }, url)).toThrow();
   });
 
+  it('retains bounded original question review notes and rejects malformed arrays', () => {
+    const reviewCase = { ...entry, ambiguities: ['Temporary or permanent absence?'], required_evidence: ['Applicable benefit rule and date'], scope_gaps: ['Coverage unconfirmed'] };
+    expect(parseManifest({ ...manifest, questions: [reviewCase] }, url).questions[0]).toMatchObject(reviewCase);
+    for (const invalid of ['not an array', [''], [3], Array.from({ length: 31 }, () => 'gap'), ['x'.repeat(2001)]]) {
+      expect(() => parseManifest({ ...manifest, questions: [{ ...reviewCase, scope_gaps: invalid }] }, url)).toThrow('scope_gaps');
+    }
+  });
+
   it('requires the selected question to match its package', () => {
     const value = { schema: 'okf-governed-context.v1', question: entry.question, context_id: 'urn:sha256:' + hash, scope: 'Review', bundle: { snapshot: 'one' }, binding: { index_sha256: hash }, selected: [], relationships: [], requirements: [], missing_evidence: [], conflicts: [], resolved_concepts: [], ambiguities: [], unresolved_terms: [], limitations: [], budget: { omissions: [], max_nodes: 10, max_relationships: 10, max_bytes: 8192, used_nodes: 0, used_relationships: 0, used_bytes: 1000 }, evidence_status: 'insufficient' };
     expect(parsePackage(value, entry).question).toBe(entry.question);
