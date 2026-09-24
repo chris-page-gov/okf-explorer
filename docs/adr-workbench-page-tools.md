@@ -81,7 +81,8 @@ is segmented into ordered exact ranges with its complete-text hash; no fragment
 is labelled a complete passage. The source's own completeness status remains
 independent of whether its retained text has all been delivered.
 
-Limits per snapshot session are 128 calls, 1 MiB returned bodies, 512 evidence
+Limits per snapshot session are 128 admitted calls, 1 MiB successful response
+bodies, 512 evidence
 references, 32 cursors and 32 retained view results. References expire after ten
 minutes. Three packages are cached; eviction causes a verified reload. Graphs
 allow depth one or two, at most 20 nodes and 40 edges, with omitted assertions
@@ -89,6 +90,9 @@ reported. A graph view is one bounded value, not disconnected partial geometry.
 Table pages carry explicit row coverage and a continuation. Presenting a retained
 page never claims the other pages were shown. Explicitly reloading a manifest
 starts a new session; these are resource limits, not an authentication boundary.
+Each pending call reserves its requested byte ceiling until it finishes, so
+parallel reads cannot bypass the cumulative budget. Small error responses are
+bounded individually and excluded from the successful-body total.
 
 Bodies report encoded bytes, JavaScript character count and a token estimate
 (`ceil(characters / 4)`). This is not measured model billing. Journey metrics

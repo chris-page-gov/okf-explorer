@@ -73,7 +73,8 @@ evidence tests. All 93 runnable Node contract tests passed (one is skipped).
 The first Node attempt was blocked by sandbox restrictions on browser launch
 and localhost listeners; the permitted retry passed. One Chrome UI check could
 not load while a concurrent build rewrote `.svelte-kit`; its error log identified
-the absent generated module, and the isolated retry is recorded separately.
+the absent generated module. The isolated retry passed; the other 20 browser
+checks passed in the original run.
 
 Chrome, Firefox and WebKit journeys cover manual navigation, back/forward,
 optional registration, tool-to-page retained presentation, safe source links,
@@ -86,13 +87,18 @@ and all three local journeys passed. The refreshed
 [candidate receipt](../evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json)
 binds the observed application bytes. The preceding receipt and compressed
 browser results remain byte-for-byte in
-`validation/workbench-tools/2026-09-24/pre-tools-heritage/`.
+`validation/workbench-tools/2026-09-24/pre-tools-heritage/` and
+`validation/workbench-tools/2026-09-24/pre-concurrency-review-heritage/`.
+The final local receipt binds source commit `57c2e572` and application tree
+`2156ce7311499be99c5d01e5322f7a3db27e3305352ca588710cf38757e0d919`;
+all 53 affected receipt and evaluation tests passed after the refresh.
 These are general Explorer regression checks, not DWP answer-quality results
 or public-deployment evidence.
 
 ## Native browser and host observations
 
-On the isolated local candidate, the connected Edge browser reported
+Before the final concurrency and history corrections, the connected Edge browser
+on the isolated local candidate reported
 `Edg/153.0.0.0`, a secure localhost context and all seven native tools. Calls
 through native `document.modelContext.executeTool` exercised state, search,
 view data, presentation, blocked calculation inspection, evidence and directed
