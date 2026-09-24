@@ -302,6 +302,11 @@
     if (params.has('manifest')) void openManifest(input, params.get('case') ?? '', params.get('record') ?? '', 'replace');
     const followHistory = () => {
       advanceRevision();
+      // A history entry supersedes even a request for the same case. The
+      // pending request must not publish its older tab or push another entry.
+      controller?.abort();
+      requestGeneration++;
+      loading = false;
       const state = new URLSearchParams(window.location.search);
       const nextTab = state.get('tab');
       tab = tabs.some(item => item.id === nextTab) ? nextTab as Tab : 'source';
@@ -309,8 +314,6 @@
       const nextCase = state.get('case') ?? '';
       const nextRecord = state.get('record') ?? '';
       if (!nextManifest) {
-        controller?.abort();
-        requestGeneration++;
         clearReviewDraft();
         sourceUrl = null;
         manifest = null;
@@ -325,8 +328,6 @@
       let wantedUrl: URL;
       try { wantedUrl = manifestUrl(nextManifest, window.location.href); }
       catch (cause) {
-        controller?.abort();
-        requestGeneration++;
         clearReviewDraft();
         sourceUrl = null;
         manifest = null;
@@ -345,15 +346,13 @@
       }
       const targetCase = nextCase || manifest?.questions[0]?.id || '';
       if (nextCase && !manifest?.questions.some(row => row.id === nextCase)) {
-        controller?.abort();
-        requestGeneration++;
         clearReviewDraft();
         selectedCase = null;
         context = null;
         selectedRecordId = '';
         loading = false;
         error = 'The requested case is not in this review manifest.';
-      } else if (targetCase && targetCase !== selectedCase?.id) {
+      } else if (targetCase && (targetCase !== selectedCase?.id || !context)) {
         const item = manifest?.questions.find(row => row.id === targetCase);
         if (item) void openCase(item, nextRecord, 'none');
       } else {

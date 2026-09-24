@@ -20,7 +20,7 @@ node scripts/measure_workbench_tools.mjs \
 
 Use a new output filename for each observation; preserve the published receipts.
 
-See [measurement.json](../validation/workbench-tools/2026-09-24/measurement.json)
+See [measurement-reviewed.json](../validation/workbench-tools/2026-09-24/measurement-reviewed.json)
 for every call, source and engine-file hash. DWP's additive manifest SHA-256 is
 `294c665de0060769fe05c8e4774d864c540f9b24678791771ee9ed5054b3a65f`.
 
@@ -56,11 +56,24 @@ partial-view coverage, source references restricted to delivered rows, same-hash
 reload cancellation and model/case mismatch rejection. Adapter tests check
 registration lifetime, cancellation, schemas and descriptor size.
 
-Independent review found and corrected three flaws before publication: a
+Independent review found and corrected flaws before publication: a
 same-digest reload could let an older read resume; partial model tables included
 sources from undisplayed rows; and an explicit model ID could be paired with an
 unrelated case. Browser checks also found a missing keyboard focus target on
-scrollable tables. These failures have regression coverage.
+scrollable tables. A second review corrected concurrent calls bypassing the
+cumulative byte ceiling and a delayed package read overriding Back/Forward
+navigation. Model citations absent from an already loaded package now fail
+closed; citations into unopened packages are verified when opened. These
+failures have regression coverage. The earlier
+[measurement](../validation/workbench-tools/2026-09-24/measurement.json) remains
+unchanged; the reviewed replay binds the corrected source files.
+
+The reviewed application has 809 passing unit tests, including 48 focused
+evidence tests. All 93 runnable Node contract tests passed (one is skipped).
+The first Node attempt was blocked by sandbox restrictions on browser launch
+and localhost listeners; the permitted retry passed. One Chrome UI check could
+not load while a concurrent build rewrote `.svelte-kit`; its error log identified
+the absent generated module, and the isolated retry is recorded separately.
 
 Chrome, Firefox and WebKit journeys cover manual navigation, back/forward,
 optional registration, tool-to-page retained presentation, safe source links,

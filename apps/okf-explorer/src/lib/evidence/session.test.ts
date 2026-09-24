@@ -169,6 +169,25 @@ describe('synthetic workbench session', () => {
     expect(h.session.metrics.calls).toBe(1);
   });
 
+  it('reserves capacity across concurrent calls and releases it on completion', async () => {
+    const h = harness();
+    const replies = await Promise.all(Array.from({ length: 64 }, () => h.session.invoke('okf_search_evidence', { query: 'club', max_bytes: SESSION_LIMITS.max_bytes })));
+    const successful = replies.filter(reply => !reply.error);
+    expect(successful).toHaveLength(SESSION_LIMITS.journey_bytes / SESSION_LIMITS.max_bytes);
+    expect(replies.filter(reply => reply.error?.code === 'journey_budget')).toHaveLength(32);
+    expect(h.session.metrics.bytes).toBe(successful.reduce((sum, reply) => sum + exactBytes(reply), 0));
+    expect(h.session.metrics.bytes).toBeLessThanOrEqual(SESSION_LIMITS.journey_bytes);
+    expect((await h.session.invoke('okf_search_evidence', { query: 'club', max_bytes: SESSION_LIMITS.max_bytes })).error).toBeUndefined();
+  });
+
+  it('releases reserved capacity after failed requests', async () => {
+    const h = harness();
+    for (let index = 0; index < 40; index++) {
+      expect((await h.session.invoke('okf_get_evidence', { ref: 'absent', section: 'passage', max_bytes: SESSION_LIMITS.max_bytes })).error?.code).toBe('unknown_ref');
+    }
+    expect((await h.session.invoke('okf_search_evidence', { query: 'club', max_bytes: SESSION_LIMITS.max_bytes })).error).toBeUndefined();
+  });
+
   it('aborts an in-flight local package read when the same manifest is explicitly reloaded', async () => {
     const h = harness();
     h.state.context = null;
@@ -229,5 +248,22 @@ describe('synthetic workbench session', () => {
     expect(data(result)).toMatchObject({ status: 'blocked', execution_allowed: false, authority: 'authored-unreviewed-proposal' });
     expect(JSON.stringify(result)).not.toContain('award_amount');
     expect((await h.session.invoke('okf_simulate_benefit', {})).error?.code).toBe('unknown_tool');
+  });
+
+  it('rejects model and interaction citations missing from their loaded package', async () => {
+    const h = harness();
+    h.state.manifest!.calculation_models![0].stages[0].evidence[0].record_id = `${base}absent`;
+    h.state.manifest!.interaction_proposals![0].evidence[0].record_id = `${base}absent`;
+    const inputs = [
+      ['okf_get_calculation', { model_id: 'club-model', section: 'stages' }],
+      ['okf_get_view_data', { case_id: caseId, view: 'calculation' }],
+      ['okf_get_view_data', { case_id: caseId, view: 'interactions' }]
+    ] as const;
+    for (const [name, input] of inputs) {
+      const result = await h.session.invoke(name, input);
+      expect(result.error?.code).toBe('missing_model_evidence');
+      expect(result.data).toBeUndefined();
+      expect(result.result_id).toBeUndefined();
+    }
   });
 });

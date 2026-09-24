@@ -26,6 +26,7 @@ export class WorkbenchSession {
   private results = new Map<string, Result>();
   private contexts = new Map<string, ContextPackage>();
   private activeRequests = new Set<AbortController>();
+  private reservations = new Map<AbortController, number>();
   private disposed = false;
   readonly metrics = { calls: 0, bytes: 0, estimated_tokens: 0, elapsed_ms: 0 };
 
@@ -33,7 +34,7 @@ export class WorkbenchSession {
   dispose() { this.disposed = true; this.cancelPending(); this.clear(); }
   /** Explicit human reload, including the same manifest, starts a new bounded journey. */
   reset() { this.cancelPending(); this.clear(); this.snapshot = null; Object.assign(this.metrics, { calls: 0, bytes: 0, estimated_tokens: 0, elapsed_ms: 0 }); }
-  private cancelPending() { for (const request of this.activeRequests) request.abort(); }
+  private cancelPending() { for (const request of this.activeRequests) request.abort(); this.reservations.clear(); }
   private clear() { this.refs.clear(); this.cursors.clear(); this.results.clear(); this.contexts.clear(); }
   private fresh(signal: AbortSignal, snapshot?: string | null) {
     if (signal.aborted || this.disposed) throw new DOMException('The workbench request was cancelled.', 'AbortError');
@@ -64,6 +65,12 @@ export class WorkbenchSession {
   private ref(caseId: string, recordId: string) {
     for (const [id, value] of this.refs) if (value.caseId === caseId && value.recordId === recordId) return id;
     return this.retain(this.refs, this.token('e'), { caseId, recordId, expires: this.now() + SESSION_LIMITS.expiry_ms }, SESSION_LIMITS.references);
+  }
+  private modelRef(caseId: string, recordId: string, context?: ContextPackage) {
+    const state = this.port.state();
+    const known = context ?? (state.caseId === caseId ? state.context : this.contexts.get(caseId));
+    if (known && !known.selected.some(row => row.record.id === recordId)) throw new ToolFailure('missing_model_evidence', 'A model cites evidence absent from its retained question package.', 'Review the model citation against its admitted package. No clickable source reference was returned.');
+    return this.ref(caseId, recordId);
   }
   resolveReference(id: string): { case_id: string; record_id: string } {
     this.sync(); const value = this.refs.get(id);
@@ -195,7 +202,10 @@ export class WorkbenchSession {
       if (!TOOL_NAMES.includes(name as WorkbenchToolName)) throw new ToolFailure('unknown_tool', 'Unsupported workbench operation.');
       const values = validateToolInput(name as WorkbenchToolName, input) as Record<string, unknown>;
       cap = Number(values.max_bytes ?? SESSION_LIMITS.default_bytes);
-      if (this.metrics.calls >= SESSION_LIMITS.calls || this.metrics.bytes + cap > SESSION_LIMITS.journey_bytes) throw new ToolFailure('journey_budget', 'This session reached its cumulative tool budget.', 'Continue with the manual interface or explicitly reload the manifest for a new bounded session.');
+      const reserved = [...this.reservations.values()].reduce((sum, value) => sum + value, 0);
+      if (this.metrics.calls >= SESSION_LIMITS.calls || this.metrics.bytes + reserved + cap > SESSION_LIMITS.journey_bytes) throw new ToolFailure('journey_budget', 'This session reached its cumulative tool budget.', 'Finish pending requests, continue with the manual interface or explicitly reload the manifest for a new bounded session.');
+      // Reserve before the first await: concurrent reads share the same journey ceiling.
+      this.reservations.set(active, cap);
       this.metrics.calls++;
       if (name !== 'okf_get_state') this.admitted(values.snapshot_id);
       const result = await this.run(name, values, cap, signal);
@@ -211,6 +221,7 @@ export class WorkbenchSession {
       return this.bounded(result, cap);
     } finally {
       options.signal?.removeEventListener('abort', cancel); this.activeRequests.delete(active);
+      this.reservations.delete(active);
       if (!signal.aborted) this.metrics.elapsed_ms += performance.now() - started;
     }
   }
@@ -273,7 +284,7 @@ export class WorkbenchSession {
         components: model.components, gaps: model.gaps };
       const stage = values.stage_id ? model.stages.find(row => row.id === values.stage_id) : undefined;
       if (values.stage_id && !stage) throw new ToolFailure('unknown_stage', 'This stage is not declared by the chosen model.');
-      const stages = (stage ? [stage] : model.stages).map(row => ({ ...row, evidence: row.evidence.map(ref => ({ ref: this.ref(ref.case_id, ref.record_id), case_id: ref.case_id })) }));
+      const stages = (stage ? [stage] : model.stages).map(row => ({ ...row, evidence: row.evidence.map(ref => ({ ref: this.modelRef(ref.case_id, ref.record_id), case_id: ref.case_id })) }));
       const rows = stage || values.section === 'stages' ? stages : values.section === 'inputs' ? model.inputs : model.stages.map(row => ({ id: row.id, label: row.label, gaps: row.gaps }));
       return this.page(name, values, { rows, data: { ...data, section: values.section ?? 'overview', follow_up: 'okf_get_evidence' } }, cap);
     }
@@ -358,7 +369,7 @@ export class WorkbenchSession {
       provenance: [], limitations: [navigation, `Retained context status: ${context.evidence_status}. Retrieval and assembly omissions remain in the evidence package.`], authority: 'retained-evidence-projection' };
     const field = (key: string, label: string) => ({ key, label, type: 'string' as const });
     const cite = (id: string, linkedCase = caseId) => {
-      const ref = this.ref(linkedCase, id), record = linkedCase === caseId ? context.selected.find(row => row.record.id === id)?.record : undefined;
+      const ref = this.modelRef(linkedCase, id, linkedCase === caseId ? context : undefined), record = linkedCase === caseId ? context.selected.find(row => row.record.id === id)?.record : undefined;
       if (record && !result.provenance.some(p => p.ref === ref)) {
         const source = record.provenance[0];
         if (source && sourcePageUrl(record)) result.provenance.push({ ref, url: sourcePageUrl(record)!, locator: source.locator, source_date: source.source_date ?? null });

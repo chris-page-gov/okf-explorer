@@ -109,6 +109,36 @@ test('rapid case switch keeps the latest package and its status', async ({ page 
   await expect(page.locator('.busy')).toHaveCount(0);
 });
 
+test('same-case Back and Forward cancel an older package load without adding history', async ({ page }) => {
+  const content = await canonicalPackage(packageValue);
+  const manifest = { schema: 'okf-evidence-workbench.v1', title: 'History review', publication: { label: 'Experimental' }, questions: [
+    { id: 'q-01', label: 'Question 1', question, package: { url: 'q.json', sha256: await hash(content) } }
+  ] };
+  let requests = 0;
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(manifest) }));
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/q.json', async route => {
+    requests++;
+    if (requests === 2) await new Promise(resolve => setTimeout(resolve, 450));
+    await route.fulfill({ status: 200, contentType: 'application/json', body: content }).catch(() => {});
+  });
+  await page.goto('/evidence/?manifest=/evaluation/evidence-workbench/manifest.json&case=q-01');
+  await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  await page.getByRole('link', { name: 'Retrieval trace' }).click();
+  await expect(page.getByRole('link', { name: 'Retrieval trace' })).toHaveAttribute('aria-current', 'page');
+  await page.getByRole('link', { name: /Question 1/ }).click();
+  await expect.poll(() => requests).toBe(2);
+  await page.goBack();
+  await expect(page.getByRole('link', { name: 'Original source' })).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  await page.waitForTimeout(500);
+  await expect(page.getByRole('link', { name: 'Original source' })).toHaveAttribute('aria-current', 'page');
+  await page.goForward();
+  await expect(page.getByRole('link', { name: 'Retrieval trace' })).toHaveAttribute('aria-current', 'page');
+  await expect(page).toHaveURL(/tab=trace/);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.locator('.busy')).toHaveCount(0);
+});
+
 test('browser history reloads a different manifest', async ({ page }) => {
   const content = await canonicalPackage(packageValue);
   const reference = { id: 'q-01', label: 'Question 1', question, package: { url: 'q.json', sha256: await hash(content) } };
@@ -117,7 +147,7 @@ test('browser history reloads a different manifest', async ({ page }) => {
   await page.route(url => ['/review-a/q.json', '/review-b/q.json'].includes(new URL(url).pathname), route => route.fulfill({ status: 200, contentType: 'application/json', body: content }));
   await page.goto('/evidence/?manifest=/review-a/manifest.json');
   await expect(page.getByRole('heading', { name: 'Manifest A' })).toBeVisible();
-  await page.getByLabel('Review manifest URL').fill('http://127.0.0.1:4173/review-b/manifest.json');
+  await page.getByLabel('Review manifest URL').fill(new URL('/review-b/manifest.json', page.url()).href);
   await page.getByRole('button', { name: 'Load' }).click();
   await expect(page.getByRole('heading', { name: 'Manifest B' })).toBeVisible();
   await page.goBack();
