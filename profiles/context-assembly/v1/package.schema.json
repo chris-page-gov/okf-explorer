@@ -368,6 +368,12 @@
               "score": {
                 "type": "integer",
                 "minimum": 0
+              },
+              "alias_phrase": { "type": "string" },
+              "alias_pattern_id": { "type": "string" },
+              "matched_groups": {
+                "type": "array",
+                "items": { "type": "string" }
               }
             },
             "required": [
@@ -470,37 +476,7 @@
         "discovery": {
           "type": "object",
           "properties": {
-            "ranking": {
-              "type": "object",
-              "properties": {
-                "schema": {
-                  "const": "okf-bm25.v1"
-                },
-                "k1": {
-                  "const": 1.2
-                },
-                "b": {
-                  "const": 0.75
-                },
-                "score_scale": {
-                  "const": 1000000
-                },
-                "fields": {
-                  "const": [
-                    "source",
-                    "discovery"
-                  ]
-                }
-              },
-              "required": [
-                "schema",
-                "k1",
-                "b",
-                "score_scale",
-                "fields"
-              ],
-              "additionalProperties": false
-            },
+            "ranking": { "$ref": "corpus-v3.schema.json#/properties/search/properties/ranking" },
             "limits": {
               "type": "object",
               "properties": {
@@ -516,7 +492,11 @@
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 2000
-                }
+                },
+                "alias_routes": { "const": 2000 },
+                "pattern_routes": { "const": 128 },
+                "alias_query_tokens": { "const": 64 },
+                "matched_alias_routes": { "const": 4 }
               },
               "required": [
                 "posting_rows",
@@ -558,6 +538,12 @@
                     "items": {
                       "type": "string"
                     }
+                  },
+                  "alias_phrase": { "type": "string" },
+                  "alias_pattern_id": { "type": "string" },
+                  "matched_groups": {
+                    "type": "array",
+                    "items": { "type": "string" }
                   }
                 },
                 "required": [
@@ -610,7 +596,8 @@
               "enum": [
                 "resolved-concept-paths-before-lexical-candidates.v1",
                 "lexical-anchor-then-resolved-concept-paths.v1",
-                "lexical-anchor-then-declared-path-prefixes.v1"
+                "lexical-anchor-then-declared-path-prefixes.v1",
+                "lexical-anchor-dependencies-before-concept-paths.v2"
               ]
             }
           },

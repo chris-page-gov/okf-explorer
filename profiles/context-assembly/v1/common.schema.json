@@ -610,6 +610,11 @@
             "type": "string",
             "maxLength": 500
           }
+        },
+        "route_patterns": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "$ref": "discovery-card.schema.json#/$defs/route_pattern" }
         }
       },
       "required": [

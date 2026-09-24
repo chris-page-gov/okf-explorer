@@ -13,11 +13,14 @@ export const DISCOVERY_RANKING: DiscoveryRanking = Object.freeze({ schema: 'okf-
 /** Opt-in ranking: authored navigation wording can compete with incidental words in long source passages. */
 export const DISCOVERY_RANKING_V2: DiscoveryRanking = Object.freeze({ schema: 'okf-bm25-weighted.v2', k1: 1.2, b: 0.75,
   score_scale: 1000000, fields: Object.freeze(['source', 'discovery'] as const), weights: Object.freeze({ source: 1, discovery: 2 }) });
-export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000,
-  path_prefixes: 2000, alias_routes: 2000, matched_alias_routes: 4 });
-export type DiscoveryAliasRoute = { ordinal: number; phrase: string };
+export const DISCOVERY_LIMITS = Object.freeze({ posting_rows: 2_000_000, ranking_records: 200_000, path_prefixes: 2000 });
+export const ALIAS_LIMITS = Object.freeze({ alias_routes: 2000, pattern_routes: 128, alias_query_tokens: 64, matched_alias_routes: 4 });
+export type DiscoveryRoutePattern = { id: string; scope_group: 0; all_of: string[][] };
+export type DiscoveryAliasRoute = { ordinal: number; phrase: string; pattern?: never }
+  | { ordinal: number; pattern: DiscoveryRoutePattern; phrase?: never };
 export type DiscoveryCard = Pick<ContextRecord, 'id' | 'label' | 'assertion_status' | 'authority' | 'scope' | 'provenance' | 'rights' | 'access'> & {
   evidence_id: string; evidence_sha256: string; heading_path: string[]; summary: string; search_aliases: string[];
+  route_patterns?: DiscoveryRoutePattern[];
 };
 /** Exact lazy metadata locator; context evidence and authority remain inline. */
 export type DiscoveryCardReference = {
@@ -70,6 +73,46 @@ export function discoveryPhraseMatches(question: readonly string[], phrase: read
   return phrase.length >= 2 && question.some((word, start) => word === phrase[0]
     && phrase.every((part, offset) => question[start + offset] === part));
 }
+function patternShape(raw: unknown): asserts raw is DiscoveryRoutePattern {
+  check(object(raw), 'route pattern'); keys(raw, ['id', 'scope_group', 'all_of']);
+  check(typeof raw.id === 'string' && /^[a-z][a-z0-9-]{0,79}$/.test(raw.id)
+    && raw.scope_group === 0 && Array.isArray(raw.all_of) && raw.all_of.length >= 3 && raw.all_of.length <= 4,
+    'route pattern identity, scope or group count');
+  let alternatives = 0;
+  for (const [index, group] of raw.all_of.entries()) {
+    check(Array.isArray(group) && group.length >= 1 && group.length <= 8, 'route pattern alternatives');
+    for (const phrase of group) {
+      check(typeof phrase === 'string' && phrase.length <= 120, 'route pattern phrase');
+      const tokens = discoveryTokens(phrase);
+      check(tokens.length >= (index === 0 ? 2 : 1) && tokens.length <= 6
+        && tokens.filter(token => !isQuestionScaffolding(token)).length >= (index === 0 ? 2 : 1),
+      'route pattern needs a specific scope and substantive alternatives');
+      alternatives++;
+    }
+  }
+  check(alternatives <= 24, 'route pattern alternative budget');
+}
+/** All groups must match; within each group the longest literal variant wins. */
+export function discoveryPatternMatches(question: readonly string[], pattern: DiscoveryRoutePattern): string[] | null {
+  const matched: string[] = [];
+  for (const group of pattern.all_of) {
+    const variants = group.filter(phrase => {
+      const tokens = discoveryTokens(phrase);
+      return question.some((word, start) => word === tokens[0]
+        && tokens.every((part, offset) => question[start + offset] === part));
+    }).sort((a, b) => discoveryTokens(b).length - discoveryTokens(a).length || a.localeCompare(b));
+    if (!variants.length) return null;
+    matched.push(variants[0]);
+  }
+  return matched;
+}
+function discoveryPatternScopeMatches(question: readonly string[], pattern: DiscoveryRoutePattern): boolean {
+  return pattern.all_of[pattern.scope_group].some(phrase => {
+    const tokens = discoveryTokens(phrase);
+    return question.some((word, start) => word === tokens[0]
+      && tokens.every((part, offset) => question[start + offset] === part));
+  });
+}
 /** Fixed parameters, separately quantised channels and ordinal ties are part of v1. */
 export function bm25Contribution(documents: number, frequency: number, tf: number, length: number, totalTokens: number): number {
   if (!tf) return 0;
@@ -85,18 +128,23 @@ export function validateDiscoveryCorpusManifest(raw: unknown): DiscoveryCorpusMa
   check([DISCOVERY_RANKING, DISCOVERY_RANKING_V2].some(r => canonicalJson(raw.search.ranking) === canonicalJson(r)), 'unsupported ranking parameters');
   if (raw.search.alias_routes !== undefined) {
     check(raw.search.ranking.schema === 'okf-bm25-weighted.v2' && Array.isArray(raw.search.alias_routes)
-      && raw.search.alias_routes.length <= DISCOVERY_LIMITS.alias_routes, 'alias routes require bounded v2 ranking');
-    const seen = new Set<string>();
+      && raw.search.alias_routes.length <= ALIAS_LIMITS.alias_routes, 'alias routes require bounded v2 ranking');
+    const seen = new Set<string>(); let patternCount = 0;
     for (const route of raw.search.alias_routes) {
-      check(object(route), 'alias route'); keys(route, ['ordinal', 'phrase']);
-      check(integer(route.ordinal, raw.records?.count) && route.ordinal < raw.records.count
-        && typeof route.phrase === 'string' && route.phrase.length <= 500, 'alias route shape');
-      const words = discoveryTokens(route.phrase);
-      check(words.length >= 2 && words.length <= 12 && words.filter(word => !isQuestionScaffolding(word)).length >= 2,
-        'alias route needs 2–12 words including two content words');
-      const key = `${route.ordinal}:${route.phrase}`;
+      check(object(route), 'alias route');
+      check(integer(route.ordinal, raw.records?.count) && route.ordinal < raw.records.count, 'alias route ordinal');
+      const phraseRoute = Object.hasOwn(route, 'phrase');
+      keys(route, phraseRoute ? ['ordinal', 'phrase'] : ['ordinal', 'pattern']);
+      if (phraseRoute) {
+        check(typeof route.phrase === 'string' && route.phrase.length <= 500, 'alias route phrase');
+        const words = discoveryTokens(route.phrase);
+        check(words.length >= 2 && words.length <= 12 && words.filter(word => !isQuestionScaffolding(word)).length >= 2,
+          'alias route needs 2–12 words including two content words');
+      } else { patternShape(route.pattern); patternCount++; }
+      const key = `${route.ordinal}:${phraseRoute ? route.phrase : canonicalJson(route.pattern)}`;
       check(!seen.has(key), 'duplicate alias route'); seen.add(key);
     }
+    check(patternCount <= ALIAS_LIMITS.pattern_routes, 'route pattern count budget');
   }
   check(object(raw.search.total_tokens), 'token totals'); keys(raw.search.total_tokens, ['source', 'discovery']);
   check(Object.values(raw.search.total_tokens).every(n => integer(n, 1_000_000_000_000)), 'invalid token totals');
@@ -123,13 +171,19 @@ export function validateDiscoveryCorpusManifest(raw: unknown): DiscoveryCorpusMa
 }
 function validateCard(raw: unknown): DiscoveryCard {
   check(object(raw), 'card');
-  keys(raw, ['id', 'evidence_id', 'evidence_sha256', 'label', 'heading_path', 'summary', 'search_aliases', 'assertion_status', 'authority', 'scope', 'provenance', 'rights', 'access']);
+  keys(raw, ['id', 'evidence_id', 'evidence_sha256', 'label', 'heading_path', 'summary', 'search_aliases', 'assertion_status', 'authority', 'scope', 'provenance', 'rights', 'access'], ['route_patterns']);
   check(ID.test(raw.id) && raw.id.length <= 2000 && ID.test(raw.evidence_id) && raw.evidence_id.length <= 2000
     && raw.id !== raw.evidence_id && HASH.test(raw.evidence_sha256), 'card identity or evidence binding');
   check(Array.isArray(raw.heading_path) && raw.heading_path.length <= 20 && raw.heading_path.every((s: unknown) => typeof s === 'string' && s.length <= 500), 'heading path');
   check(typeof raw.summary === 'string' && raw.summary.length <= 2000, 'card summary');
   check(Array.isArray(raw.search_aliases) && raw.search_aliases.length <= 100
     && raw.search_aliases.every((s: unknown) => typeof s === 'string' && s.length <= 500), 'search aliases');
+  if (raw.route_patterns !== undefined) {
+    check(Array.isArray(raw.route_patterns) && raw.route_patterns.length <= 8, 'card route patterns');
+    raw.route_patterns.forEach(patternShape);
+    check(new Set(raw.route_patterns.map((pattern: DiscoveryRoutePattern) => pattern.id)).size === raw.route_patterns.length,
+      'duplicate card route pattern');
+  }
   const row: ContextRecord = { id: raw.id, route: 'discovery/card', label: raw.label, kind: 'scope', text: raw.summary,
     assertion_status: raw.assertion_status, authority: raw.authority, scope: raw.scope, provenance: raw.provenance, rights: raw.rights, access: raw.access };
   validateContextIndex({ schema: 'okf-context-index.v1', bundle: { id: 'urn:validation:card', snapshot: 'shape', source_url: 'https://example.invalid/' }, scope: 'Shape validation', limitations: [], records: [row], assertions: [], requirements: [] });
@@ -215,7 +269,8 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     corpus_pages: manifest.counts.pages, empty_pages: manifest.counts.empty_pages, query_tokens: [], omitted_query_tokens: [],
     candidate_count: 0, candidates: [], fetched_files: 0, fetched_bytes: 0, decoded_bytes: 0, limits: { ...CORPUS_LIMITS }, truncated: false, omissions: [],
     units: { corpus_schema: 'okf-context-corpus.v3', referenced_records: [], examined_relationships: 0, limits: { ...UNIT_REFERENCE_LIMITS } },
-    discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS },
+    discovery: { ranking: manifest.search.ranking, candidates: [], adjacency: [], limits: { ...DISCOVERY_LIMITS,
+      ...(manifest.search.ranking.schema === 'okf-bm25-weighted.v2' ? ALIAS_LIMITS : {}) },
       admission_order: manifest.search.ranking.schema === 'okf-bm25-weighted.v2'
         ? 'lexical-anchor-dependencies-before-concept-paths.v2' : 'lexical-anchor-then-declared-path-prefixes.v1' } };
   const omit = (code: string, message: string, ids: string[] = []) => { retrieval.truncated = true; retrieval.omissions.push({ code, message, ids }); };
@@ -451,21 +506,35 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
     }
   }
   const lexical = [...ranks].sort((a, b) => b[1].score - a[1].score || a[0] - b[0]);
-  const queryWords = discoveryTokens(question);
-  const matchedRoutes = (manifest.search.alias_routes || []).filter(route =>
-    discoveryPhraseMatches(queryWords, discoveryTokens(route.phrase)))
-    .sort((a, b) => discoveryTokens(b.phrase).length - discoveryTokens(a.phrase).length
-      || a.ordinal - b.ordinal || a.phrase.localeCompare(b.phrase));
+  const queryWords = discoveryTokens(question).slice(0, ALIAS_LIMITS.alias_query_tokens);
+  if (manifest.search.alias_routes?.length && discoveryTokens(question).length > ALIAS_LIMITS.alias_query_tokens)
+    omit('retrieval_alias_query_budget', 'Source-bound alias matching used only the first 64 normalised question words.');
+  type MatchedRoute = { ordinal: number; phrase?: string; pattern?: DiscoveryRoutePattern;
+    matched_groups?: string[]; specificity: number };
+  const matchedRoutes: MatchedRoute[] = [];
+  for (const route of manifest.search.alias_routes || []) {
+    if (route.phrase !== undefined) {
+      const words = discoveryTokens(route.phrase);
+      if (discoveryPhraseMatches(queryWords, words))
+        matchedRoutes.push({ ordinal: route.ordinal, phrase: route.phrase, specificity: words.length });
+    } else {
+      const matched_groups = discoveryPatternMatches(queryWords, route.pattern!);
+      if (matched_groups) matchedRoutes.push({ ordinal: route.ordinal, pattern: route.pattern,
+        matched_groups, specificity: matched_groups.reduce((sum, phrase) => sum + discoveryTokens(phrase).length, 0) });
+    }
+  }
+  matchedRoutes.sort((a, b) => b.specificity - a.specificity || a.ordinal - b.ordinal
+    || (a.phrase || a.pattern!.id).localeCompare(b.phrase || b.pattern!.id));
   // The route index is compact producer-authored navigation metadata. It is
   // never trusted until the exact phrase is found on the hash-bound card.
-  const routeMatches = new Map<number, string>();
+  const routeMatches = new Map<number, MatchedRoute>();
   for (const route of matchedRoutes) {
-    if (!routeMatches.has(route.ordinal)) routeMatches.set(route.ordinal, route.phrase);
+    if (!routeMatches.has(route.ordinal)) routeMatches.set(route.ordinal, route);
   }
-  const plannedRoutes = [...routeMatches].slice(0, DISCOVERY_LIMITS.matched_alias_routes);
+  const plannedRoutes = [...routeMatches].slice(0, ALIAS_LIMITS.matched_alias_routes);
   if (routeMatches.size > plannedRoutes.length)
     omit('retrieval_alias_budget', 'Some matched source-bound alias routes exceeded the fixed alias admission limit.');
-  const planned: Array<[number, Rank | undefined, string | undefined]> = plannedRoutes.map(([ordinal, phrase]) => [ordinal, ranks.get(ordinal), phrase]);
+  const planned: Array<[number, Rank | undefined, MatchedRoute | undefined]> = plannedRoutes.map(([ordinal, route]) => [ordinal, ranks.get(ordinal), route]);
   const includedOrdinals = new Set(planned.map(([ordinal]) => ordinal));
   for (const [ordinal, rank] of lexical) {
     if (planned.length >= CORPUS_LIMITS.candidates) break;
@@ -474,23 +543,37 @@ export async function assembleDiscoveryCorpusContext(raw: DiscoveryCorpusManifes
   retrieval.candidate_count = new Set([...ranks.keys(), ...routeMatches.keys()]).size;
   if (retrieval.candidate_count > planned.length)
     omit('retrieval_candidate_budget', 'Only the highest-ranked source-bound units fit the fixed lexical candidate limit.');
-  const admitRanked = async ([ordinal, rank, phrase]: [number, Rank | undefined, string | undefined]) => {
+  const admitRanked = async ([ordinal, rank, route]: [number, Rank | undefined, MatchedRoute | undefined]) => {
     const unit = await readUnit(ordinal); if (!unit) return;
-    if (phrase) check(unit.card.search_aliases.includes(phrase), 'alias route differs from its bound discovery card');
+    if (route?.phrase) check(unit.card.search_aliases.includes(route.phrase), 'alias route differs from its bound discovery card');
+    if (route?.pattern) check(unit.card.route_patterns?.some(pattern => canonicalJson(pattern) === canonicalJson(route.pattern)),
+      'route pattern differs from its bound discovery card');
     const source = discoveryTokens(unit.record.text), discovery = discoveryTokens(discoveryText(unit.card));
     for (const [token, p] of rank?.facts || []) check(p[1] === source.filter(t => t === token).length && p[2] === source.length
       && p[3] === discovery.filter(t => t === token).length && p[4] === discovery.length, 'postings differ from bound source or discovery text');
     if (unit.record.access !== 'public') { omit('restricted_record', 'A ranked unit is not public.', [unit.record.id]); return; }
+    if (manifest.search.ranking.schema === 'okf-bm25-weighted.v2' && unit.card.route_patterns?.length
+      && !unit.card.route_patterns.some(pattern => discoveryPatternScopeMatches(queryWords, pattern))) {
+      const scopes = [...new Set(unit.card.route_patterns.flatMap(pattern => pattern.all_of[pattern.scope_group]))].sort();
+      omit('retrieval_scope_mismatch',
+        `A candidate with authored navigation patterns did not match a declared question scope: ${scopes.join(' | ')}. This is unresolved navigation, not legal inapplicability.`,
+        [unit.record.id]);
+      return;
+    }
     if (!include(unit.record)) return;
     retrieval.candidates.push({ id: unit.record.id, score: rank?.score || 0, matched: rank?.matched || [],
-      ...(phrase ? { alias_phrase: phrase } : {}) });
+      ...(route?.phrase ? { alias_phrase: route.phrase } : {}),
+      ...(route?.pattern ? { alias_pattern_id: route.pattern.id, matched_groups: route.matched_groups } : {}) });
     const card: DiscoveryCardReference = { schema: 'okf-discovery-card-reference.v1', id: unit.card.id,
       evidence_id: unit.record.id, card_sha256: await contextSha256(canonicalJson(unit.card)), ordinal };
     retrieval.discovery!.candidates.push({ card, source_score: rank?.source_score || 0, discovery_score: rank?.discovery_score || 0,
       matched_source: rank?.matched_source || [], matched_discovery: rank?.matched_discovery || [],
-      ...(phrase ? { alias_phrase: phrase } : {}) });
-    evidenceSeeds.push({ id: unit.record.id, reason: phrase
-      ? `Source-bound alias route '${phrase}' on discovery card ${unit.card.id}; BM25 score ${rank?.score || 0}. The route is navigation, not evidence or a concept-resolution claim.`
+      ...(route?.phrase ? { alias_phrase: route.phrase } : {}),
+      ...(route?.pattern ? { alias_pattern_id: route.pattern.id, matched_groups: route.matched_groups } : {}) });
+    evidenceSeeds.push({ id: unit.record.id, reason: route?.pattern
+      ? `Source-bound navigation pattern ${route.pattern.id} on discovery card ${unit.card.id}; matched declared groups: ${route.matched_groups!.join(' | ')}. The pattern is not evidence, legal applicability or a concept-resolution claim.`
+      : route?.phrase
+      ? `Source-bound alias route '${route.phrase}' on discovery card ${unit.card.id}; BM25 score ${rank?.score || 0}. The route is navigation, not evidence or a concept-resolution claim.`
       : `Source-bound discovery card ${unit.card.id}; BM25 source score ${rank!.source_score} (${rank!.matched_source.join(', ')}), discovery score ${rank!.discovery_score} (${rank!.matched_discovery.join(', ')})${manifest.search.ranking.schema === 'okf-bm25.v1' ? '' : ', declared ranking ' + manifest.search.ranking.schema}. The card is not evidence or a concept-resolution claim.` });
   };
   if (planned.length) await admitRanked(planned[0]);

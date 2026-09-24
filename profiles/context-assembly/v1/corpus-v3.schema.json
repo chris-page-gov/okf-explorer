@@ -289,13 +289,26 @@
           "type": "array",
           "maxItems": 2000,
           "items": {
-            "type": "object",
-            "properties": {
-              "ordinal": { "type": "integer", "minimum": 0 },
-              "phrase": { "type": "string", "minLength": 1, "maxLength": 500 }
-            },
-            "required": ["ordinal", "phrase"],
-            "additionalProperties": false
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "ordinal": { "type": "integer", "minimum": 0 },
+                  "phrase": { "type": "string", "minLength": 1, "maxLength": 500 }
+                },
+                "required": ["ordinal", "phrase"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "ordinal": { "type": "integer", "minimum": 0 },
+                  "pattern": { "$ref": "discovery-card.schema.json#/$defs/route_pattern" }
+                },
+                "required": ["ordinal", "pattern"],
+                "additionalProperties": false
+              }
+            ]
           }
         },
         "total_tokens": {

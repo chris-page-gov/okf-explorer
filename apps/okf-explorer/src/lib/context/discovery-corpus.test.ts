@@ -190,6 +190,60 @@ describe('source-bound discovery corpus v3', () => {
     f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING);
     expect(() => validateContextCorpusManifest(f.manifest)).toThrow('alias routes require bounded v2 ranking');
   });
+  it('matches bounded authored word groups with an explicit scope and keeps navigation separate from authority', async () => {
+    const f = await discoveryFixture(24, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    const pattern = { id: 'specimen-permission', scope_group: 0 as const,
+      all_of: [['fictional teaching manual'], ['specimen', 'sample'], ['permission', 'approval']] };
+    f.cards[23].route_patterns = [pattern];
+    f.manifest.search.alias_routes = [{ ordinal: 23, pattern }];
+    await f.build();
+    const matched = await assembleCorpusContext(f.manifest, f.binding,
+      'In the fictional teaching manual, is approval needed to take a sample?', {}, f.fetcher);
+    expect(matched.retrieval!.candidates).toHaveLength(16);
+    expect(matched.retrieval!.candidates[0]).toMatchObject({ id: f.records[23].id,
+      alias_pattern_id: 'specimen-permission', matched_groups: ['fictional teaching manual', 'sample', 'approval'] });
+    expect(matched.selected.find(row => row.record.id === f.records[23].id)?.reasons.join(' '))
+      .toContain('Source-bound navigation pattern');
+    expect(matched.resolved_concepts).toEqual([]);
+    expect(matched.evidence_status).toBe('insufficient');
+    for (const question of ['In a different manual, is approval needed to take a sample?',
+      'In the fictional teaching manual, how is a sample labelled?']) {
+      const negative = await assembleCorpusContext(f.manifest, f.binding, question, {}, f.fetcher);
+      expect(negative.retrieval!.candidates.some(row => row.alias_pattern_id)).toBe(false);
+      expect(negative.evidence_status).toBe('insufficient');
+    }
+    const wrongScope = await assembleCorpusContext(f.manifest, f.binding,
+      'Is written permission required in a different manual?', {}, f.fetcher);
+    expect(wrongScope.retrieval!.candidates.map(row => row.id)).not.toContain(f.records[23].id);
+    expect(wrongScope.retrieval!.omissions).toContainEqual(expect.objectContaining({
+      code: 'retrieval_scope_mismatch', ids: [f.records[23].id]
+    }));
+    expect(wrongScope.retrieval!.omissions.find(row => row.code === 'retrieval_scope_mismatch')!.message)
+      .toContain('fictional teaching manual');
+    const unpatterned = await assembleCorpusContext(f.manifest, f.binding,
+      'Quartz collection needs written permission in a different manual?', {}, f.fetcher);
+    expect(unpatterned.retrieval!.candidates.some(row => row.id === f.records[0].id)).toBe(true);
+    expect(unpatterned.retrieval!.candidates.some(row => row.id === f.records[23].id)).toBe(false);
+    f.cards[23].route_patterns = [];
+    await f.build();
+    await expect(assembleCorpusContext(f.manifest, f.binding,
+      'Fictional teaching manual sample approval', {}, f.fetcher)).rejects.toThrow('route pattern differs');
+    pattern.all_of[0] = ['manual'];
+    expect(() => validateContextCorpusManifest(f.manifest)).toThrow('specific scope');
+  });
+  it('reports matched alias routes lost at the four-route bound while keeping the total candidate cap', async () => {
+    const f = await discoveryFixture(8, 8);
+    f.manifest.search.ranking = structuredClone(DISCOVERY_RANKING_V2);
+    for (let i = 0; i < 5; i++) f.cards[i].search_aliases.push('Quartz collection');
+    f.manifest.search.alias_routes = Array.from({ length: 5 }, (_, ordinal) => ({ ordinal, phrase: 'Quartz collection' }));
+    await f.build();
+    const result = await assembleCorpusContext(f.manifest, f.binding, 'Quartz collection', {}, f.fetcher);
+    expect(result.retrieval!.candidates.filter(row => row.alias_phrase)).toHaveLength(4);
+    expect(result.retrieval!.candidates.length).toBeLessThanOrEqual(16);
+    expect(result.retrieval!.omissions.some(row => row.code === 'retrieval_alias_budget')).toBe(true);
+    expect(result.evidence_status).toBe('insufficient');
+  });
   it('uses the same conjunctive guard for lazy admission and assembly without hydrating an unmatched destination', async () => {
     const f = await discoveryFixture(3, 1);
     const topic = { ...f.concept, id: 'https://example.test/concept/equipment', route: 'concept/equipment', label: 'Equipment', aliases: [] };

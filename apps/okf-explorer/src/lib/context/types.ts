@@ -135,7 +135,8 @@ export type ContextRetrieval = {
   query_tokens: string[];
   omitted_query_tokens: string[];
   candidate_count: number;
-  candidates: Array<{ id: string; matched: string[]; score: number; alias_phrase?: string }>;
+  candidates: Array<{ id: string; matched: string[]; score: number; alias_phrase?: string;
+    alias_pattern_id?: string; matched_groups?: string[] }>;
   fetched_files: number;
   fetched_bytes: number;
   decoded_bytes: number;
@@ -152,11 +153,13 @@ export type ContextRetrieval = {
   /** Source-bound navigation summaries do not become evidence or concepts. */
   discovery?: {
     ranking: import('./corpusV3.ts').DiscoveryRanking;
-    limits: { posting_rows: number; ranking_records: number; path_prefixes?: number };
+    limits: { posting_rows: number; ranking_records: number; path_prefixes?: number;
+      alias_routes?: number; pattern_routes?: number; alias_query_tokens?: number; matched_alias_routes?: number };
     candidates: Array<{
       card: import('./corpusV3.ts').DiscoveryCard | import('./corpusV3.ts').DiscoveryCardReference;
       source_score: number; discovery_score: number;
       matched_source: string[]; matched_discovery: string[]; alias_phrase?: string;
+      alias_pattern_id?: string; matched_groups?: string[];
     }>;
     adjacency: Array<{ id: string; outgoing_ids: string[]; incoming_ids: string[] } | import('./corpusV3.ts').DiscoveryIncidentReference>;
     admission_order?: 'resolved-concept-paths-before-lexical-candidates.v1' | 'lexical-anchor-then-resolved-concept-paths.v1'
