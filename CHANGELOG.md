@@ -4,7 +4,9 @@
 
 - Require the reviewed `okf-uk-government-apis` producer to declare its
   bounded rich relationship runtime, route locator, executable schemas,
-  validation receipt and governed `uv` commands.
+  validation receipt and governed `uv` commands. Preserve the Wayfinder source
+  as fictional synthetic comparison material with rights not specified and no
+  default real-world runtime admission.
 - Resolve descriptor, manifest, runtime, locator and chunk references from the
   Explorer publication root. Keep separate compatibility relationship chunks
   outside the exact rich-runtime shard set.

@@ -465,6 +465,7 @@ PRESETS: dict[str, Preset] = {
         "generated-yaml-ld-sharded-graph",
         (
             "scripts/",
+            "sources/wayfinder/2026-09-24/",
             "context/",
             "profiles/bundle-wiki/v1/",
             "profiles/bundle-wiki/v1.vendor-lock.json",
@@ -546,6 +547,7 @@ PRESETS: dict[str, Preset] = {
         (
             "The semantic graph is a metadata-only catalogue snapshot, not live service state or an assurance register; publication of changed bytes remains subject to the repository's existing review and release gates.",
             "The complete assertion graph remains in semantic shards and compatibility chunks. The default rich Reader runtime is a governed material subset selected to remain within aggregate row, compressed-byte and retained-text ceilings; excluded bulk facet and reciprocal compatibility edges remain available outside that default projection.",
+            "Wayfinder records are fictional synthetic comparison material with record-level rights not specified. Their relationships are rejected from real-world catalogue admission and are not default-loaded through the bounded material runtime.",
         ),
         setup=("uv sync --locked",),
         requires_rich_relationship_runtime=True,
