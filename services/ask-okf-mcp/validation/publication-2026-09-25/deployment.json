@@ -1,0 +1,33 @@
+{
+  "schema": "okf-compact-delivery-deployment.v1",
+  "service_version": "0.7.0",
+  "source_commit": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+  "runtime_commit": "31d8c3436ed289bfd694b7889a9e5edea834ea8b",
+  "runtime_worker_sha256": "9c7f31dc62e40b69de10a22aa7685becb16bbe22531d6ee78a9bbc357adfc680",
+  "site_source_commit": "bcf60d0e79b73b293cf8f4cf18cf7377b491edf8",
+  "site_version_id": "appgprj_6aaa652874f48191a8281478fe48e936~appgver_22edc63add448191b299e9ef8ea17b10",
+  "site_version_number": 12,
+  "archive_storage": {
+    "archive_format": "tar",
+    "sediment_file_id": "file_00000000578082468d8da71674638146",
+    "content_hash": "sha256:d766255eeb4f47a80d9a7ce0c529102678260d0a6d0b8e1e445bbe85faf51a5c",
+    "size_bytes": 4843520,
+    "file_count": 2
+  },
+  "deployment": {
+    "id": "appgdep_6ab67ecbef488191a2a1fc7e933f6af5",
+    "project_id": "appgprj_6aaa652874f48191a8281478fe48e936",
+    "title": "Ask OKF evidence service",
+    "version_id": "appgprj_6aaa652874f48191a8281478fe48e936~appgver_22edc63add448191b299e9ef8ea17b10",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://ask-okf.crpage.chatgpt.site",
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6aaa652874f48191a8281478fe48e936",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-09-25T14:02:03.243246+00:00"
+  },
+  "boundary": "Local build and uploaded archive identities are retained with the hosting publication record. The public health endpoint does not independently attest Worker bytes. No model or specialist acceptance follows.",
+  "archive_sha256": "sha256:0a83a00a415ea473610cceaf7f2da24c75103b9b49cde62deb1cebb61cb73e01"
+}
