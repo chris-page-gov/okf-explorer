@@ -1,6 +1,8 @@
 # Evidence workbench passage boundaries: design v1
 
-**Status:** proposal for review, 25 September 2026. **Sequence:** next after the current service and sidebar release. [Explorer #150](https://github.com/chris-page-gov/okf-explorer/issues/150) owns the generic controls; [DWP #42](https://github.com/chris-page-gov/okf-dwp/issues/42) owns source-bound acceptance under `DWP-BL-007.remaining-structural-review`. No parser or corpus change is part of this design.
+**Status:** design record with a local implementation, 25 September 2026. [Explorer #150](https://github.com/chris-page-gov/okf-explorer/issues/150) owns the generic controls; [DWP #42](https://github.com/chris-page-gov/okf-dwp/issues/42) owns source-bound acceptance under `DWP-BL-007.remaining-structural-review`.
+
+**Implementation note, 25 September 2026:** The generic [passage review profile](../profiles/evidence-workbench-passages/v1/index.md) and `/evidence/passages/` route deliver phases 1 and 2 as local inspection and isolated correction preview. They validate exact extracted bytes, case and settings hashes, show a verified PDF page beside extracted text, traverse the 28 supplied cases, and export local review JSON. Phase 3 has producer-supplied census and per-case impact; effects of an edited browser correction remain unknown until separately measured. The phase 4 question replay is supplied by the producer outside this generic browser route. Independent source, specialist and producer adoption decisions in phase 5 remain separate gates. This browser view does not change frozen corpora or confer legal acceptance. The proposal wording below is retained as the original design history.
 
 ## Purpose and existing contract
 

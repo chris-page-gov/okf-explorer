@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/evidence-workbench-passages/v1/correction.schema.json",
+  "title": "Local passage boundary correction proposal",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "id", "version", "case_id", "source_sha256", "baseline_sha256", "operation", "rationale", "uncertainty", "added_spans", "units"],
+  "properties": {
+    "schema": { "const": "okf-passage-correction.v1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+    "version": { "type": "string", "minLength": 1 },
+    "case_id": { "type": "string", "minLength": 1 },
+    "source_sha256": { "$ref": "case.schema.json#/$defs/sha256" },
+    "baseline_sha256": { "$ref": "case.schema.json#/$defs/sha256" },
+    "operation": { "enum": ["split", "join", "role-change"] },
+    "rationale": { "type": "string", "minLength": 1 },
+    "uncertainty": { "type": "string", "maxLength": 2000 },
+    "added_spans": { "type": "array", "maxItems": 100, "items": { "$ref": "case.schema.json#/$defs/span" } },
+    "units": { "$ref": "case.schema.json#/$defs/units" }
+  }
+}

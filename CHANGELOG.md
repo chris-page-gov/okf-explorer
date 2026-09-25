@@ -1,5 +1,23 @@
 # Changelog
 
+## Passage-boundary Evidence workbench — 25 September 2026
+
+- Add the generic `/evidence/passages/` review route and versioned, closed
+  manifest, case and correction profiles. Reviewers can inspect hash-verified
+  PDF pages beside exact extracted text, navigate the supplied 28-case queue,
+  compare parked and successor units, and preview source-bound split, join or
+  role corrections without changing a corpus.
+- Show parser rules and hash-checked settings in folded provenance, retain
+  failed previews, and export local review records with exact input and result
+  identities. Keep preview, independent review and producer adoption separate.
+- Verify the 28-case source fixture and PDF rendering in a browser. Refresh the
+  build-bound Heritage browser receipt, preserving the preceding framework
+  receipt and results under `validation/passage-boundaries/pre-workbench/`.
+- Keep full document and corpus after-counts unknown because other units and
+  IDs are not validated in an isolated preview. Distinguish producer-supplied
+  downstream evidence from effects of an edited browser correction. Preserve
+  the preceding receipt before refreshing this build's browser evidence.
+
 ## Explorer framework and bundler update — 25 September 2026
 
 - Update SvelteKit to 2.70.3, the Svelte Vite plugin to 7.3.0, Svelte to 5.57.0,

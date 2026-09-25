@@ -19,6 +19,14 @@ Open `/evidence/` in Explorer and supply a workbench manifest URL. A manifest is
 a small catalogue of public questions and links to their exact evidence. The
 URL can retain `manifest`, `case`, `record` and `tab` parameters for sharing.
 
+For source passage boundaries, open `/evidence/passages/` and supply a passage
+review manifest. This separate view checks one case at a time against its
+versioned, hash-bound source extraction. It renders a verified PDF page beside
+its exact extracted text, with current and proposed units below. It accepts a local split,
+join or role correction as a preview and exports a review record; it does not
+adopt that correction. See the [passage review profile](../profiles/evidence-workbench-passages/v1/index.md)
+for the manifest, case and correction contracts.
+
 ## Review a question
 
 1. Choose a question. Only that question's package is downloaded.
