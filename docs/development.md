@@ -151,6 +151,13 @@ accepting dependency updates. For Playwright updates, run the affected Chrome
 journeys locally; the terminal-equivalent CI assurance then repeats the
 browser contract across Chrome, Firefox and WebKit.
 
+Before accepting an automated dependency update, follow the
+[dependency maintenance checks](dependency-maintenance.md). The dependency
+policy check preserves the reviewed security override and checks the resolved
+Vitest and coverage versions. Regenerate the dependency inventory after a
+reviewed lockfile change; do not disable frozen installation or the checks to
+make an update pass.
+
 When `apps/okf-explorer/build/` exists,
 `uv run --locked python scripts/build_site.py` copies it to `_site/explore/`. The
 root `index.html` is the learning hub; bundle-bearing root URLs redirect to `explore/` and preserve query-string and hash

@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import process from 'node:process';
 
 import YAML from 'yaml';
+import { checkDependencyPolicy } from './check_dependency_policy.mjs';
 
 const APP = resolve(import.meta.dirname, '..');
 const ROOT = resolve(APP, '../..');
@@ -42,6 +43,7 @@ async function build() {
   const lockBytes = await readFile(LOCK);
   const lock = YAML.parse(lockBytes.toString('utf8'));
   const packageDocument = JSON.parse(await readFile(PACKAGE, 'utf8'));
+  checkDependencyPolicy(packageDocument, lock);
   const components = Object.entries(lock.packages || {}).map(([key, row]) => {
     const { name, version } = packageIdentity(key);
     const component = {
@@ -95,7 +97,7 @@ async function build() {
         components: [{
           name: 'build_sbom.mjs',
           type: 'application',
-          version: '1.0.0'
+          version: '1.1.0'
         }]
       }
     },

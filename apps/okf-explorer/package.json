@@ -9,7 +9,7 @@
     "build:determinism": "node scripts/check_deterministic_build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "test": "vitest run && pnpm build:determinism && node --test scripts/learner_hub_contract.test.mjs && node --test scripts/app_build_manifest.test.mjs scripts/pages_fallback.test.mjs scripts/runtime_acceptance_contract.test.mjs scripts/external_bundle_acceptance_contract.test.mjs scripts/acceptance_invocation_lock.test.mjs scripts/run_impacted_browser_tests.test.mjs scripts/observe_protected_links.test.mjs scripts/verify_okf_deployment.test.mjs",
+    "test": "pnpm deps:check && node --test scripts/check_dependency_policy.test.mjs && vitest run && pnpm build:determinism && node --test scripts/learner_hub_contract.test.mjs && node --test scripts/app_build_manifest.test.mjs scripts/pages_fallback.test.mjs scripts/runtime_acceptance_contract.test.mjs scripts/external_bundle_acceptance_contract.test.mjs scripts/acceptance_invocation_lock.test.mjs scripts/run_impacted_browser_tests.test.mjs scripts/observe_protected_links.test.mjs scripts/verify_okf_deployment.test.mjs",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:foundry": "playwright test --config=playwright.foundry.config.ts",
@@ -24,27 +24,30 @@
     "acceptance:legislation": "node scripts/run_acceptance_invocation.mjs legislation",
     "benchmark:search": "node ../../scripts/benchmark_static_search.mjs",
     "sbom": "node scripts/build_sbom.mjs",
-    "sbom:check": "node scripts/build_sbom.mjs --check"
+    "sbom:check": "node scripts/build_sbom.mjs --check",
+    "deps:check": "node scripts/check_dependency_policy.mjs"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
-    "@playwright/test": "^1.62.1",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "^1.63.0",
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.70.2",
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.11",
     "svelte": "^5.56.8",
     "svelte-check": "^4.7.4",
     "typescript": "^6.0.3",
     "vite": "^8.2.0",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "pnpm": {
     "overrides": {
-      "cookie": "^0.7.2"
+      "cookie": "^0.7.2",
+      "devalue@<5.9.2": "5.9.2",
+      "nanoid@<3.3.18": "3.3.18"
     }
   },
   "dependencies": {
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.1"
   }
 }

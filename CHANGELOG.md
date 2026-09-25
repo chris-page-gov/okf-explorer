@@ -1,5 +1,17 @@
 # Changelog
 
+## Dependency security and maintenance repairs — 25 September 2026
+
+- Update Vitest and its matching coverage package to 4.1.11, YAML to 2.9.1,
+  Playwright to 1.63.0 and axe to 4.13.0 while preserving the cookie security
+  override. Regenerate the dependency inventory from the reviewed lockfile.
+- Patch audited transitive devalue and nanoid copies to 5.9.2 and 3.3.18 with
+  conditional overrides and checks against vulnerable duplicate copies.
+- Add a deterministic dependency-policy guard and regression cases for lost
+  overrides, vulnerable copies and mismatched coverage dependencies.
+- Update the pinned pnpm setup and Pages deployment actions without changing
+  workflow permissions. Document the review, inventory and validation steps.
+
 ## Remote service 0.7.0 public observation — 25 September 2026
 
 - Bind the Explorer service guides to retained DWP hosting and public SDK
