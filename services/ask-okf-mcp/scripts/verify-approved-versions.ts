@@ -18,7 +18,6 @@ import { corpusAssetReferences } from '../src/corpusAssets.ts';
 import { resolveReplay } from '../src/replay.ts';
 import { bindEvidenceRead } from '../src/replayDelivery.ts';
 import { reviewLink } from '../src/deliveryContracts.ts';
-import { prepareDelivery, verifyDelivery } from './verify-versioned-remote.ts';
 import { createAskService, PUBLIC_ORIGIN } from '../src/service.ts';
 import { APPROVED_VERSIONS, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, type ApprovedSource } from '../src/registry.ts';
 // @ts-ignore -- Fixed acceptance cases shared with the live verifier.
@@ -57,6 +56,10 @@ export async function callTool(service: ReturnType<typeof createAskService>, nam
 }
 
 async function main() {
+  // This legacy integration CLI uses the current compact comparator only when
+  // invoked directly. Keeping this import here avoids an evaluation cycle when
+  // the public verifier imports approvedLoader from this module.
+  const { prepareDelivery, verifyDelivery } = await import('./verify-versioned-remote.ts');
   const args = process.argv.slice(2);
   assert.equal(args.length, 4, 'Use --dwp-root /path/to/okf-dwp --out receipt.json');
   assert.equal(args[0], '--dwp-root'); assert.equal(args[2], '--out');
