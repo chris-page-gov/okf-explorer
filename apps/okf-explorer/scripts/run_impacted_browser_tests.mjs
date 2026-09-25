@@ -18,6 +18,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/evidence-workbench.spec.ts'
   },
+  passage_boundaries: {
+    family: 'ui',
+    file: 'tests/ui/passage-boundaries.spec.ts'
+  },
   timeline_provenance: {
     family: 'ui',
     file: 'tests/ui/timeline-provenance.spec.ts'
@@ -95,6 +99,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
   map: ['map', 'large_corpus'],
   publication: [
     'evidence_workbench',
+    'passage_boundaries',
     'accessibility',
     'ask_okf',
     'exploratory_publication',
@@ -128,7 +133,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
-  evidence: ['evidence_workbench', 'ask_okf', 'small_bundle', 'foundry_pages'],
+  evidence: ['evidence_workbench', 'passage_boundaries', 'ask_okf', 'small_bundle', 'foundry_pages'],
   graph: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   impact: ['foundry_pages'],
   journey: ['large_corpus', 'foundry_pages'],
