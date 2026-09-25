@@ -11,6 +11,8 @@
   overrides, vulnerable copies and mismatched coverage dependencies.
 - Update the pinned pnpm setup and Pages deployment actions without changing
   workflow permissions. Document the review, inventory and validation steps.
+- Make local browser tests own their server, with an explicit port for parallel
+  worktrees, so an older checkout cannot silently satisfy a new candidate's tests.
 
 ## Remote service 0.7.0 public observation — 25 September 2026
 
