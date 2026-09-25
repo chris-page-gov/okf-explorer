@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { boundedFile, canonical, sha, PUBLIC_QUESTION, PUBLIC_UNKNOWN_QUESTION, approvedPairs } from '../scripts/verify-versioned-remote.ts';
-import { APPROVED_VERSIONS, BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, APPROVED_BUNDLE, HOUSEHOLD_APPROVED_BUNDLE } from '../src/registry.ts';
-import { CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES } from '../src/engines.ts';
+import { APPROVED_VERSIONS, PRIOR_BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, PRIOR_APPROVED_BUNDLE, HOUSEHOLD_APPROVED_BUNDLE } from '../src/registry.ts';
+import { PRIOR_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES } from '../src/engines.ts';
 import { approvedLoader, callTool } from '../scripts/verify-approved-versions.ts';
 import { createAskService } from '../src/service.ts';
 const root = new URL('../', import.meta.url);
@@ -13,17 +13,17 @@ const json = async (path: string) => JSON.parse((await read(path)).toString());
 const candidate = 'validation/candidates/release-0.6.0-2026-09-21/integration-02/';
 
 test('0.6 pins final combined bytes, retains all four old sources and rejects the older engine for its new source', async () => {
-  assert.equal(BUNDLE_VERSION, '723bcc5b015ab38a026625c2148edbd784edf7c7');
+  assert.equal(PRIOR_BUNDLE_VERSION, '723bcc5b015ab38a026625c2148edbd784edf7c7');
   assert.equal(HOUSEHOLD_BUNDLE_VERSION, '3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84');
-  assert.equal(APPROVED_VERSIONS.length, 5); assert.equal(approvedPairs(APPROVED_VERSIONS, ENGINES).length, 9);
-  assert.equal(APPROVED_BUNDLE.index_sha256, 'be9fb7be5d942a74a550812e3ca858b4fbbca81f8afaf8d14b5f731eca08212a');
-  assert.equal(APPROVED_BUNDLE.snapshot, 'dwp-combined-context-574558533a74278179f3');
+  assert.equal(APPROVED_VERSIONS.length, 6); assert.equal(approvedPairs(APPROVED_VERSIONS, ENGINES).length, 10);
+  assert.equal(PRIOR_APPROVED_BUNDLE.index_sha256, 'be9fb7be5d942a74a550812e3ca858b4fbbca81f8afaf8d14b5f731eca08212a');
+  assert.equal(PRIOR_APPROVED_BUNDLE.snapshot, 'dwp-combined-context-574558533a74278179f3');
   assert.equal(sha(await read('vendor/okf-dwp-household-corpus-manifest.json')), HOUSEHOLD_APPROVED_BUNDLE.index_sha256);
   assert.equal(HOUSEHOLD_APPROVED_BUNDLE.index_sha256, '06362458d013322b565e13884066fd896b68986df8be93c09a02979eab8f199b');
   const loader = await approvedLoader(); let fetched = 0;
   const service = createAskService({ loadContext: loader.loadApprovedSource, fetchCorpus: async () => { fetched++; throw new Error('Excluded engine must not retrieve'); } });
   try {
-    const result = await callTool(service, 'ask_okf_manifest', { bundle: 'okf-dwp', version: BUNDLE_VERSION, engine_id: PREVIOUS_ENGINE_ID, question: PUBLIC_QUESTION });
+    const result = await callTool(service, 'ask_okf_manifest', { bundle: 'okf-dwp', version: PRIOR_BUNDLE_VERSION, engine_id: PREVIOUS_ENGINE_ID, question: PUBLIC_QUESTION });
     assert.deepEqual(result, { isError: true, content: [{ type: 'text', text: 'The engine is unknown or is not approved for this source version.' }] });
     assert.equal(fetched, 0);
   } finally { await service.close(); await loader.close(); }
@@ -64,7 +64,7 @@ test('preserved 0.6.0 local release receipt binds its archived build, runner and
     }
   }
   for (const [index, question] of [PUBLIC_QUESTION, PUBLIC_UNKNOWN_QUESTION].entries()) {
-    const row = receipt.cases[index]; assert.equal(row.engine_id, CURRENT_ENGINE_ID); assert.equal(row.source_version, BUNDLE_VERSION);
+    const row = receipt.cases[index]; assert.equal(row.engine_id, PRIOR_ENGINE_ID); assert.equal(row.source_version, PRIOR_BUNDLE_VERSION);
     assert.equal(row.question_sha256, sha(question)); assert.equal(row.context_budget.max_bytes, 524288);
     assert.equal(row.evidence_status, 'insufficient');
   }

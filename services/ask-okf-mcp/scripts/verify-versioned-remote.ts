@@ -112,9 +112,13 @@ function gitFile(root: string, commit: string, path: string, expected?: { bytes:
 export type Pair = { source_version: string; engine_id: string };
 export function approvedPairs(versions: readonly string[], engines: readonly { engine_id: string; source_versions: readonly string[] }[]): Pair[] {
   assert.ok(versions.length > 0 && versions.length <= 16 && new Set(versions).size === versions.length);
-  assert.ok(engines.length > 0 && engines.length <= 2 && new Set(engines.map(row => row.engine_id)).size === engines.length);
+  assert.ok(engines.length > 0 && engines.length <= 3 && new Set(engines.map(row => row.engine_id)).size === engines.length);
   const result: Pair[] = [];
-  for (const version of versions) for (const engine of engines) if (engine.source_versions.includes(version)) result.push({ source_version: version, engine_id: engine.engine_id });
+  for (const version of versions) {
+    const compatible = engines.filter(engine => engine.source_versions.includes(version));
+    assert.ok(compatible.length > 0 && compatible.length <= 2, 'Per-source replay attempt cap exceeded');
+    for (const engine of compatible) result.push({ source_version: version, engine_id: engine.engine_id });
+  }
   assert.ok(result.length > 0 && result.length <= LIMITS.pairs, 'Source/engine pair cap exceeded');
   return result;
 }
@@ -222,7 +226,7 @@ async function preparation(args: Arguments) {
     const absolute = resolve(serviceRoot, path); const local = relative(repositoryRoot, absolute).replaceAll('\\', '/');
     safeRepositoryPath(local);
     if (inputs[local]) { if (digest) assert.equal(inputs[local].sha256, digest); return; }
-    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|types\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|delivery|unit)\.ts|profiles\/context-assembly\/v1\/(common|package|evidence-unit)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
+    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|engine-admission\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|corpusV3\.ts|types\.ts|unit\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|corpusV3|delivery|unit)\.ts|profiles\/context-assembly\/v1\/(common|package|evidence-unit)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
     const raw = await boundedFile(absolute); if (digest) assert.equal(sha(raw), digest);
     equal(sha(gitFile(repositoryRoot, args.comparisonCommit, local)), sha(raw), 'Comparator input differs from exact commit');
     inputs[local] = { bytes: raw.length, sha256: sha(raw) };
@@ -248,6 +252,7 @@ async function preparation(args: Arguments) {
   const { bindEvidenceRead } = await import('../src/replayDelivery.ts');
   const { reviewLink } = await import('../src/deliveryContracts.ts');
   const { approvedLoader } = await import('./verify-approved-versions.ts');
+  const { corpusAssetReferences } = await import('../src/corpusAssets.ts');
   assert.equal(registry.SERVICE_VERSION, args.serviceVersion); assert.equal(registry.BUNDLE_VERSION, args.sourceVersion);
   const pairs = approvedPairs(registry.APPROVED_VERSIONS, engines.ENGINES);
   const loader = await approvedLoader();
@@ -273,7 +278,7 @@ async function preparation(args: Arguments) {
       const raw = acquire(version, source.binding.index_url.slice(prefix.length)); assert.equal(sha(raw), source.binding.index_sha256);
       equal(JSON.parse(new TextDecoder().decode(raw)), 'manifest' in source ? source.manifest : source.index, 'Vendored source differs from immutable DWP bytes');
       const refs = new Map<string, any>();
-      if ('manifest' in source) for (const ref of [source.manifest.base_index, ...source.manifest.records.shards, ...Object.values(source.manifest.search.shards)]) {
+      if ('manifest' in source) for (const ref of corpusAssetReferences(source.manifest)) {
         const url = new URL(ref.path, source.binding.index_url).href; assert.ok(url.startsWith(prefix)); refs.set(url, ref);
       }
       fetchers.set(version, async (input, init) => {

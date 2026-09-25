@@ -1,9 +1,12 @@
 import { canonicalJson, contextSha256 } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import type { ContextBudget, ContextPackage } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 import type { ApprovedSource, ApprovedCorpus } from './registry.ts';
-import { CURRENT_ENGINE_ID, ENGINES, type EngineAdapter } from './engines.ts';
+import { CURRENT_ENGINE_ID, PRIOR_ENGINE_ID, ENGINES, type EngineAdapter } from './engines.ts';
+import { BUNDLE_VERSION } from './registry.ts';
+import { corpusAssetReferences } from './corpusAssets.ts';
+import { ENGINE_CATALOGUE_LIMIT, COMPATIBLE_REPLAY_LIMIT } from './enginePolicy.ts';
 
-export const REPLAY_LIMITS = Object.freeze({ attempts: 2, files: 64, fetched_bytes: 16 * 1024 * 1024,
+export const REPLAY_LIMITS = Object.freeze({ attempts: COMPATIBLE_REPLAY_LIMIT, files: 64, fetched_bytes: 16 * 1024 * 1024,
   decoded_bytes: 32 * 1024 * 1024, timeout_ms: 60000 });
 export type ReplayIdentity = {
   engine_id: string;
@@ -32,7 +35,7 @@ export function replayFailure(cause: unknown): string | undefined {
  */
 export function createReplayFetcher(source: ApprovedCorpus, upstream: typeof fetch) {
   const root = new URL('.', source.binding.index_url);
-  const refs = new Map([source.manifest.base_index, ...source.manifest.records.shards, ...Object.values(source.manifest.search.shards)]
+  const refs = new Map(corpusAssetReferences(source.manifest)
     .map(ref => [new URL(ref.path, root).href, ref]));
   const cached = new Map<string, Promise<Uint8Array>>();
   const usage = { files: 0, fetched_bytes: 0, decoded_bytes: 0 };
@@ -76,11 +79,13 @@ export async function resolveReplay(source: ApprovedSource, input: ReplayInput, 
   adapters: readonly EngineAdapter[] = ENGINES, clock = () => performance.now()): Promise<{ context: ContextPackage; identity: ReplayIdentity }> {
   const started = clock();
   const deadline = () => { if (clock() - started >= REPLAY_LIMITS.timeout_ms) throw new ReplayError('replay_budget'); };
-  if (!adapters.length || adapters.length > REPLAY_LIMITS.attempts || new Set(adapters.map(e => e.engine_id)).size !== adapters.length) throw new ReplayError('engine_unavailable');
+  if (!adapters.length || adapters.length > ENGINE_CATALOGUE_LIMIT || new Set(adapters.map(e => e.engine_id)).size !== adapters.length) throw new ReplayError('engine_unavailable');
   const compatible = adapters.filter(e => e.source_versions.includes(input.version));
   const historical = !input.engine_id && !!input.context_id;
-  const candidates = historical ? compatible : compatible.filter(e => e.engine_id === (input.engine_id ?? CURRENT_ENGINE_ID));
+  const defaultEngine = input.version === BUNDLE_VERSION ? CURRENT_ENGINE_ID : PRIOR_ENGINE_ID;
+  const candidates = historical ? compatible : compatible.filter(e => e.engine_id === (input.engine_id ?? defaultEngine));
   if (!candidates.length) throw new ReplayError(historical ? 'historical_unavailable' : 'engine_unavailable');
+  if (candidates.length > REPLAY_LIMITS.attempts) throw new ReplayError('replay_budget');
   const request = 'manifest' in source ? createReplayFetcher(source, upstream) : null;
   let selected: { context: ContextPackage; canonical: string; engine_id: string } | undefined;
   const matches: string[] = [];

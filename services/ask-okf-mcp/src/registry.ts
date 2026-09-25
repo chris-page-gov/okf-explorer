@@ -2,11 +2,12 @@ import { contextSha256, validateContextIndex } from '../../../apps/okf-explorer/
 import type { ContextBinding, ContextIndex } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 import { validateContextCorpusManifest, type ContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import corpusRelease from '../vendor/okf-dwp-corpus-release.json' with { type: 'json' };
+import evidenceConnectRelease from '../vendor/okf-dwp-evidence-connect-corpus-release.json' with { type: 'json' };
 import householdRelease from '../vendor/okf-dwp-household-corpus-release.json' with { type: 'json' };
 import staffRelease from '../vendor/okf-dwp-staff-corpus-release.json' with { type: 'json' };
 import previousRelease from '../vendor/okf-dwp-previous-corpus-release.json' with { type: 'json' };
 
-export const SERVICE_VERSION = '0.6.1';
+export const SERVICE_VERSION = '0.7.0';
 export const LEGACY_BUNDLE_VERSION = 'efb05c66616a9cd4328a86cf412780fe7bc7cf0b';
 export const LEGACY_APPROVED_BUNDLE = {
   id: 'okf-dwp',
@@ -20,11 +21,17 @@ export const LEGACY_APPROVED_BUNDLE = {
 } as const;
 // Publication stays visibly pending until a reviewed immutable DWP revision is
 // known. The release build rejects this state; no mutable branch URL is used.
-export const BUNDLE_VERSION = corpusRelease.version ?? `unpublished-${corpusRelease.manifest_sha256.slice(0, 16)}`;
-export const APPROVED_BUNDLE = {
-  id: 'okf-dwp', version: BUNDLE_VERSION, snapshot: corpusRelease.snapshot,
-  index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/${corpusRelease.manifest_path}`,
+export const PRIOR_BUNDLE_VERSION = corpusRelease.version ?? `unpublished-${corpusRelease.manifest_sha256.slice(0, 16)}`;
+export const PRIOR_APPROVED_BUNDLE = {
+  id: 'okf-dwp', version: PRIOR_BUNDLE_VERSION, snapshot: corpusRelease.snapshot,
+  index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PRIOR_BUNDLE_VERSION}/${corpusRelease.manifest_path}`,
   index_sha256: corpusRelease.manifest_sha256, index_bytes: corpusRelease.manifest_bytes
+} as const;
+export const BUNDLE_VERSION = evidenceConnectRelease.version;
+export const APPROVED_BUNDLE = {
+  id: 'okf-dwp', version: BUNDLE_VERSION, snapshot: evidenceConnectRelease.snapshot,
+  index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/${evidenceConnectRelease.manifest_path}`,
+  index_sha256: evidenceConnectRelease.manifest_sha256, index_bytes: evidenceConnectRelease.manifest_bytes
 } as const;
 export const HOUSEHOLD_BUNDLE_VERSION = householdRelease.version;
 export const HOUSEHOLD_APPROVED_BUNDLE = {
@@ -44,7 +51,7 @@ export const PREVIOUS_APPROVED_BUNDLE = {
   index_url: `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/${previousRelease.manifest_path}`,
   index_sha256: previousRelease.manifest_sha256, index_bytes: previousRelease.manifest_bytes
 } as const;
-export const APPROVED_VERSIONS = [BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION] as const;
+export const APPROVED_VERSIONS = [BUNDLE_VERSION, PRIOR_BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION] as const;
 
 export type ApprovedContext = { index: ContextIndex; binding: ContextBinding };
 export type ApprovedCorpus = { manifest: ContextCorpusManifest; binding: ContextBinding };
@@ -68,7 +75,7 @@ export async function verifyBundledContext(indexText: string, descriptorText: st
 
 /** Verify the approved manifest before its pinned, hash-bound shard retrieval. */
 export async function verifyBundledCorpus(manifestText: string, version = BUNDLE_VERSION): Promise<ApprovedCorpus> {
-  const approved = version === BUNDLE_VERSION ? APPROVED_BUNDLE : version === HOUSEHOLD_BUNDLE_VERSION ? HOUSEHOLD_APPROVED_BUNDLE : version === STAFF_BUNDLE_VERSION ? STAFF_APPROVED_BUNDLE : version === PREVIOUS_BUNDLE_VERSION ? PREVIOUS_APPROVED_BUNDLE : undefined;
+  const approved = version === BUNDLE_VERSION ? APPROVED_BUNDLE : version === PRIOR_BUNDLE_VERSION ? PRIOR_APPROVED_BUNDLE : version === HOUSEHOLD_BUNDLE_VERSION ? HOUSEHOLD_APPROVED_BUNDLE : version === STAFF_BUNDLE_VERSION ? STAFF_APPROVED_BUNDLE : version === PREVIOUS_BUNDLE_VERSION ? PREVIOUS_APPROVED_BUNDLE : undefined;
   if (!approved) throw new Error('Bundle version is not approved.');
   if (new TextEncoder().encode(manifestText).byteLength !== approved.index_bytes
     || await contextSha256(manifestText) !== approved.index_sha256) {

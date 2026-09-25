@@ -30,9 +30,10 @@ const inputs = new Set([
   '../../apps/okf-explorer/src/lib/context/corpusV3.ts',
   '../../apps/okf-explorer/src/lib/context/unit.ts', '../../profiles/context-assembly/v1/evidence-unit.schema.json',
   '../../profiles/context-assembly/v1/common.schema.json', '../../profiles/context-assembly/v1/package.schema.json',
-  'package-lock.json', 'package.json', 'scripts/build.mjs',
-  ...['bundles', 'contracts', 'corpusFetch', 'deliveryContracts', 'engines', 'landing', 'node', 'registry', 'replay', 'replayDelivery', 'review', 'service', 'worker'].map(name => `src/${name}.ts`),
-  ...['assembly-index', 'corpus-manifest', 'descriptor', 'household-corpus-manifest', 'previous-corpus-manifest', 'staff-corpus-manifest', 'corpus-release', 'household-corpus-release', 'previous-corpus-release', 'staff-corpus-release'].map(name => `vendor/okf-dwp-${name}.json`),
+  'package-lock.json', 'package.json', 'scripts/build.mjs', 'scripts/engine-admission.mjs',
+  ...['bundles', 'contracts', 'corpusAssets', 'corpusFetch', 'deliveryContracts', 'enginePolicy', 'engines', 'landing', 'node', 'registry', 'replay', 'replayDelivery', 'review', 'service', 'worker'].map(name => `src/${name}.ts`),
+  ...['assembly-index', 'corpus-manifest', 'descriptor', 'evidence-connect-corpus-manifest', 'evidence-connect-corpus-release', 'evidence-connect-descriptor', 'household-corpus-manifest', 'previous-corpus-manifest', 'staff-corpus-manifest', 'corpus-release', 'household-corpus-release', 'previous-corpus-release', 'staff-corpus-release'].map(name => `vendor/okf-dwp-${name}.json`),
+  ...['corpus.ts', 'corpusV3.ts', 'index.ts', 'types.ts', 'unit.ts', 'manifest.json'].map(name => `vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/${name}`),
   ...['b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55', 'c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e'].flatMap(commit =>
     ['corpus.ts', 'index.ts', 'types.ts', 'manifest.json'].map(name => `vendor/engines/${commit}/${name}`))
 ]);

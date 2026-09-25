@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canonicalJson, contextSha256 } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES, type EngineAdapter } from '../src/engines.ts';
+import { CURRENT_ENGINE_ID, PRIOR_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES, type EngineAdapter } from '../src/engines.ts';
 import { resolveReplay, ReplayError, createReplayFetcher, REPLAY_LIMITS } from '../src/replay.ts';
 import { verifyBundledContext, LEGACY_BUNDLE_VERSION, type ApprovedCorpus } from '../src/registry.ts';
 import { readContextEvidence } from '../../../apps/okf-explorer/src/lib/context/delivery.ts';
@@ -22,11 +22,11 @@ const fake = (engine_id: string, assemble: EngineAdapter['assemble']): EngineAda
 
 test('frozen adapters refuse the new corpus family before reading any files', () => {
   const value = { manifest: { schema: 'okf-context-corpus.v2' }, binding: source.binding } as ApprovedCorpus;
-  for (const adapter of ENGINES) assert.throws(() => adapter.assemble(value, 'question', {}, noFetch), /Frozen engines/);
+  for (const adapter of ENGINES) assert.throws(() => adapter.assemble(value, 'question', {}, noFetch), /Frozen engines|Evidence Connect requires/);
 });
 
 test('new and explicit assemblies disclose exact engines without altering package bytes or family', async () => {
-  assert.equal(initial.identity.engine_id, CURRENT_ENGINE_ID);
+  assert.equal(initial.identity.engine_id, PRIOR_ENGINE_ID);
   assert.equal(initial.identity.mode, 'current-default');
   assert.equal(initial.context.engine, 'okf-context-assembly.v1');
   assert.equal(initial.identity.package_sha256, await contextSha256(canonicalJson(expected)));

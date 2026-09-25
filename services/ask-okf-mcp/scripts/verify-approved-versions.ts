@@ -11,12 +11,16 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { assembleContext, canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { assembleCorpusContext } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
+import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
+import { contextManifest, readContextEvidence } from '../../../apps/okf-explorer/src/lib/context/delivery.ts';
+import { ENGINES, CURRENT_ENGINE_ID, PRIOR_ENGINE_ID } from '../src/engines.ts';
+import { corpusAssetReferences } from '../src/corpusAssets.ts';
+import { resolveReplay } from '../src/replay.ts';
+import { bindEvidenceRead } from '../src/replayDelivery.ts';
+import { reviewLink } from '../src/deliveryContracts.ts';
+import { prepareDelivery, verifyDelivery } from './verify-versioned-remote.ts';
 import { createAskService, PUBLIC_ORIGIN } from '../src/service.ts';
 import { APPROVED_VERSIONS, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, type ApprovedSource } from '../src/registry.ts';
-// @ts-ignore -- The live and offline verifiers share portable JavaScript helpers.
-import { verifyCompactDelivery } from './verify-delivery.mjs';
 // @ts-ignore -- Fixed acceptance cases shared with the live verifier.
 import { verificationCases } from './verification-cases.mjs';
 
@@ -71,7 +75,7 @@ async function main() {
     assert.ok(source.binding.index_url.startsWith(prefix));
     assert.equal(sha(gitBytes(version, source.binding.index_url.slice(prefix.length))), source.binding.index_sha256,
       'Vendored manifest must equal its exact immutable DWP Git blob');
-    for (const file of [source.manifest.base_index, ...source.manifest.records.shards, ...Object.values(source.manifest.search.shards)]) {
+    for (const file of corpusAssetReferences(source.manifest)) {
       const url = new URL(file.path, source.binding.index_url).href;
       assert.ok(url.startsWith(prefix));
       allowed.set(url, { version, path: url.slice(prefix.length), sha256: file.sha256, bytes: file.bytes });
@@ -108,9 +112,8 @@ async function main() {
   try {
     for (const version of APPROVED_VERSIONS) {
       const source = sources.get(version)!;
-      const expected = 'manifest' in source
-        ? await assembleCorpusContext(source.manifest, source.binding, custodyQuestion, {}, fetchCorpus)
-        : await assembleContext(source.index, custodyQuestion, undefined, source.binding);
+      const engine = ENGINES.find(row => row.engine_id === (version === BUNDLE_VERSION ? CURRENT_ENGINE_ID : PRIOR_ENGINE_ID))!;
+      const expected = await engine.assemble(source, custodyQuestion, undefined, fetchCorpus);
       const sdk = await sdkService();
       try {
         for (const client of [sdk.client, sdk.legacy]) {
@@ -146,13 +149,14 @@ async function main() {
     const compact = [];
     for (const item of verificationCases(BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION).compact) {
       const source = sources.get(item.version)!;
-      const context = 'manifest' in source
-        ? await assembleCorpusContext(source.manifest, source.binding, item.question, item.budget ?? {}, fetchCorpus)
-        : await assembleContext(source.index, item.question, item.budget, source.binding);
+      const request = { bundle: 'okf-dwp', version: item.version, question: item.question,
+        ...(item.budget ? { budget: item.budget } : {}) };
+      const assembled = await resolveReplay(source, request, fetchCorpus);
       const sdk = await sdkService();
       try {
-        compact.push({ ...await verifyCompactDelivery(sdk.client, context, { bundle: 'okf-dwp', version: item.version,
-          question: item.question, ...(item.budget ? { budget: item.budget } : {}) }, PUBLIC_ORIGIN, { read_bytes: 32768 }), id: item.id });
+        const expected = await prepareDelivery({ id: item.id, case_kind: 'offline-source-pair', request,
+          ...assembled, inspectRecord: true }, PUBLIC_ORIGIN, { delivery: { contextManifest, readContextEvidence }, bindEvidenceRead, reviewLink });
+        compact.push((await verifyDelivery(sdk.client, expected, PUBLIC_ORIGIN)).receipt);
       } finally { await sdk.close(); }
     }
     const receipt = { schema: 'okf-approved-version-integration.v1', observed_at: new Date().toISOString(),

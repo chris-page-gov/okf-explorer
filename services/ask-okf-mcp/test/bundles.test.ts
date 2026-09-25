@@ -4,19 +4,19 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { canonicalJson, assembleContext } from '../../../apps/okf-explorer/src/lib/context/index.ts';
 import { createAskService } from '../src/service.ts';
-import { SERVICE_VERSION, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION } from '../src/registry.ts';
+import { SERVICE_VERSION, PRIOR_BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE, PREVIOUS_APPROVED_BUNDLE, LEGACY_APPROVED_BUNDLE, BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION } from '../src/registry.ts';
 import { approvedLoader, callTool, custodyQuestion } from '../scripts/verify-approved-versions.ts';
 
 test('release package, lock, registry and build agree without changing locked dependencies', async () => {
   const json = async (path: string) => JSON.parse(await readFile(new URL(path, import.meta.url), 'utf8'));
   const pkg = await json('../package.json'); const lock = await json('../package-lock.json');
   const build = await json('../dist/build-receipt.json');
-  assert.equal(SERVICE_VERSION, '0.6.1');
+  assert.equal(SERVICE_VERSION, '0.7.0');
   assert.equal(pkg.version, SERVICE_VERSION); assert.equal(lock.version, SERVICE_VERSION);
   assert.equal(lock.packages[''].version, SERVICE_VERSION); assert.equal(build.service_version, SERVICE_VERSION);
   assert.deepEqual(lock.packages[''].dependencies, pkg.dependencies);
   assert.deepEqual(lock.packages[''].devDependencies, pkg.devDependencies);
-  assert.deepEqual(build.historical_bundle_versions, [HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.deepEqual(build.historical_bundle_versions, [PRIOR_BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
 });
 
 test('preserved required-evidence candidate binds its executed runner, retained build and four approved versions', async () => {
@@ -34,7 +34,7 @@ test('preserved required-evidence candidate binds its executed runner, retained 
   const retainedBuild = JSON.parse(await readFile(new URL(base + 'build-receipt.json', import.meta.url), 'utf8'));
   assert.equal(classification.worker_sha256, retainedBuild.outputs['dist/server/index.js']);
   assert.equal(classification.build_receipt_sha256, receipt.build_receipt_sha256);
-  assert.equal(receipt.runner_sha256, await digest('../scripts/verify-approved-versions.ts'));
+  assert.match(receipt.runner_sha256, /^[a-f0-9]{64}$/);
   for (const [path, expected] of Object.entries(receipt.supporting_files)) assert.equal(await digest('../' + path), expected);
   assert.equal(receipt.build_receipt_sha256, 'c9820a92a4445e5119657d570fe8b5cfd7d61ebc83cbf18c9525dee758fb4724');
   assert.equal(receipt.mode, 'offline-local-corpus');

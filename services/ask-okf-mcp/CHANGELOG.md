@@ -1,5 +1,19 @@
 # Ask OKF service changelog
 
+## 0.7.0 — Evidence Connect source admission
+
+- Pin the immutable Evidence Connect corpus and descriptor from DWP commit
+  `7eeded763042ddd0070f4fed834c6074149e8e2f`, and a compatible v3 engine
+  from Explorer commit `d6930bbcddaab616deec002d9e6efff6e3aae953`.
+- Make Evidence Connect the default source while retaining all earlier source
+  versions, frozen engine pairs and engine-specific replay identities.
+- Bind discovery and relationship assets to the manifest allow-list and shared
+  per-request resource limits. Verify actual local source text and cursor
+  rejection without making model calls.
+- Update the landing page, tool version description and public verifier for
+  six sources, three engines and ten permitted pairs. Deployment and connected
+  client acceptance require separate observations.
+
 ## 0.6.1 — complete questions in connected clients
 
 - Anchor the shared question pattern so both substring and whole-string regex

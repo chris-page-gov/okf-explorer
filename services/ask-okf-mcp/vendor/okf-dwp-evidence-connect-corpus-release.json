@@ -1,0 +1,17 @@
+{
+  "schema": "okf-remote-corpus-release.v2",
+  "publication_status": "pinned",
+  "selection": "default",
+  "version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+  "snapshot": "evidence-connect-754be67f82c82e31d17c",
+  "manifest_path": "structured-context/evidence-connect-manifest.json",
+  "manifest_sha256": "4e65253f72b2d771164d5ddd64374ed8142cf66b4a249f193a1fe44d5679f519",
+  "manifest_bytes": 494115,
+  "descriptor_path": "structured-context/evidence-connect-explorer.json",
+  "descriptor_sha256": "749c19b034df38e6d7b745f38d743ba688a79ca782de2e25eb3060717d272f68",
+  "descriptor_bytes": 8280,
+  "corpus_schema": "okf-context-corpus.v3",
+  "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+  "engine_commit": "d6930bbcddaab616deec002d9e6efff6e3aae953",
+  "limitation": "Source-bound evidence delivery only; legal answerability and client acceptance require separate review."
+}

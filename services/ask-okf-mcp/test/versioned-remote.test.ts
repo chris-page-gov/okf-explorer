@@ -163,7 +163,7 @@ test('official SDKs traverse actual in-process service with exact compact compar
   const item = await prepareDelivery({ id: 'offline-sdk-control', request, ...assembled, inspectRecord: true }, PUBLIC_ORIGIN,
     { delivery, bindEvidenceRead: replayDelivery.bindEvidenceRead, reviewLink: contracts.reviewLink });
   assert.equal(item.identity.mode, 'current-default');
-  assert.equal(item.manifests[0].replay.engine_id, engines.CURRENT_ENGINE_ID);
+  assert.equal(item.manifests[0].replay.engine_id, engines.PRIOR_ENGINE_ID);
   const service = createAskService({ loadContext: async () => source, fetchCorpus: noNetwork });
   const remote = boundedRemoteFetch(PUBLIC_ORIGIN, enforceCensus([item.calls], 8), async (input, init) => service.fetch(new Request(input, init)), clock());
   const client = new Client({ name: 'offline-successor-control', version: '1' }, { jsonSchemaValidator: new CfWorkerJsonSchemaValidator(), versionNegotiation: { mode: { pin: '2026-07-28' } } });

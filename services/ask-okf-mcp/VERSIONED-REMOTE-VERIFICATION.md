@@ -51,10 +51,11 @@ blobs, assembles each permitted source/engine pair and prepares the exact
 expected catalogue and evidence slices. It writes `plan.json`, the executed
 runner and its build receipt. It does not create a passing live observation.
 
-The approved registry determines the pairs. Four sources supported by two
-engines produce eight pairs; adding a fifth source supported only by the
-current engine produces nine. An unsupported pair is never added merely to
-complete a rectangular matrix.
+The approved registry determines the pairs. Four historical sources support
+two frozen engines; the preceding combined source supports one of those
+engines; the new Evidence Connect source supports its separately pinned v3
+engine. Six sources and three engines therefore give ten permitted pairs.
+An unsupported pair is never added merely to complete a rectangular matrix.
 
 Only two explicit public questions are used: the existing care-home acceptance
 question and the unknown-term control `xylophonicquasarteleportation`. The

@@ -6,8 +6,8 @@ import { tmpdir } from 'node:os';
 import { boundedFile, freshDirectory, verifiedBuild } from '../scripts/replay-observation-files.ts';
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { ENGINES, CURRENT_ENGINE_ID } from '../src/engines.ts';
-import { APPROVED_VERSIONS, BUNDLE_VERSION } from '../src/registry.ts';
+import { ENGINES, CURRENT_ENGINE_ID, PRIOR_ENGINE_ID } from '../src/engines.ts';
+import { APPROVED_VERSIONS, BUNDLE_VERSION, PRIOR_BUNDLE_VERSION } from '../src/registry.ts';
 
 test('current build admission includes every live import and keeps the frozen engines bound', async () => {
   const { value } = await verifiedBuild(new URL('..', import.meta.url).pathname);
@@ -42,14 +42,18 @@ test('build admission rejects receipt path injection before reading any declared
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test('both immutable engine manifests bind all three files and explicit source compatibility', async () => {
+test('all immutable engine manifests bind exact files and explicit source compatibility', async () => {
   const sha = (raw: string | Uint8Array) => createHash('sha256').update(raw).digest('hex');
   for (const engine of ENGINES) {
     const base = new URL(`../vendor/engines/${engine.source_commit}/`, import.meta.url);
     const { engine_id, ...manifest } = JSON.parse(await readFile(new URL('manifest.json', base), 'utf8'));
     assert.equal(engine_id, 'urn:okf:context-engine:sha256:' + sha(canonicalJson(manifest)));
-    assert.equal(engine.engine_id, engine_id); assert.deepEqual(engine.source_versions, APPROVED_VERSIONS.filter(version => engine.engine_id === CURRENT_ENGINE_ID || version !== BUNDLE_VERSION));
-    assert.deepEqual(Object.keys(manifest.files).sort(), ['corpus.ts', 'index.ts', 'types.ts']);
+    const expected = engine.engine_id === CURRENT_ENGINE_ID ? [BUNDLE_VERSION]
+      : engine.engine_id === PRIOR_ENGINE_ID ? APPROVED_VERSIONS.filter(version => version !== BUNDLE_VERSION)
+        : APPROVED_VERSIONS.filter(version => version !== BUNDLE_VERSION && version !== PRIOR_BUNDLE_VERSION);
+    assert.equal(engine.engine_id, engine_id); assert.deepEqual(engine.source_versions, expected);
+    assert.deepEqual(Object.keys(manifest.files).sort(), engine.engine_id === CURRENT_ENGINE_ID
+      ? ['corpus.ts', 'corpusV3.ts', 'index.ts', 'types.ts', 'unit.ts'] : ['corpus.ts', 'index.ts', 'types.ts']);
     for (const [name, ref] of Object.entries(manifest.files) as [string, any][]) {
       const raw = await readFile(new URL(name, base)); assert.equal(raw.length, ref.bytes); assert.equal(sha(raw), ref.sha256);
     }

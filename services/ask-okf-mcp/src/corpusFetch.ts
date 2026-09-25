@@ -1,4 +1,5 @@
 import type { ApprovedCorpus } from './registry.ts';
+import { corpusAssetReferences } from './corpusAssets.ts';
 
 export const CORPUS_CACHE_BYTES = 8 * 1024 * 1024;
 export const CORPUS_CACHE_FILES = 64;
@@ -6,7 +7,7 @@ export const CORPUS_CACHE_FILES = 64;
 /** Bounded transport cache for immutable public files, never questions/packages. */
 export function createCorpusFetcher(source: ApprovedCorpus, upstream: typeof fetch = fetch): typeof fetch {
   const root = new URL('.', source.binding.index_url);
-  const refs = [source.manifest.base_index, ...source.manifest.records.shards, ...Object.values(source.manifest.search.shards)];
+  const refs = corpusAssetReferences(source.manifest);
   const allowed = new Map(refs.map(ref => [new URL(ref.path, root).href, ref]));
   const cached = new Map<string, Uint8Array>();
   const pending = new Map<string, Promise<Uint8Array>>();
