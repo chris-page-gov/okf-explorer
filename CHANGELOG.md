@@ -1,5 +1,11 @@
 # Changelog
 
+## Remote service 0.7.0 public observation — 25 September 2026
+
+- Bind the Explorer service guides to retained DWP hosting and public SDK
+  receipts for 0.7.0. Preserve the earlier 0.6.0 observation and separate
+  delivery verification from connected-client, Voice and legal acceptance.
+
 ## Passage-boundary review design — 25 September 2026
 
 - Record a versioned proposal for generic Evidence workbench passage inspection,

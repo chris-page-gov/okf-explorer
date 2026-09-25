@@ -13,7 +13,7 @@ import stat
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-RECEIPTS = Path('services/ask-okf-mcp/validation/publication-2026-09-21')
+RECEIPTS = Path('services/ask-okf-mcp/validation/publication-2026-09-25')
 DOCS = ('docs/remote-mcp.md', 'services/ask-okf-mcp/README.md',
         'services/ask-okf-mcp/CHANGELOG.md')
 GUIDES = ('services/ask-okf-mcp/ARCHITECTURE.md', 'docs/adr-versioned-evidence-replay.md')
@@ -21,8 +21,8 @@ START = '<!-- ask-okf-publication:start -->'
 END = '<!-- ask-okf-publication:end -->'
 CURRENT = 'https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md'
 SOURCE_PATHS = {
-    'deployment.json': 'validation/compact-delivery/v0.6.0/deployment.json',
-    'observation.json': 'validation/compact-delivery/v0.6.0/sdk/attempt-02/observation.json',
+    'deployment.json': 'validation/compact-delivery/v0.7.0/deployment.json',
+    'observation.json': 'validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json',
 }
 
 

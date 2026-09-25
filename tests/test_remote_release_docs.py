@@ -15,7 +15,7 @@ class RemoteReleaseDocumentationTests(unittest.TestCase):
 
     def test_real_retained_observation_and_three_guides_match(self):
         expected = release.render(self.binding, self.deployment, self.observation)
-        self.assertIn('11 evidence cases and 121 requests', expected)
+        self.assertIn('12 evidence cases and 135 requests', expected)
         self.assertIn(release.CURRENT, expected)
         for path in release.DOCS:
             release.check_document((release.ROOT / path).read_text(), expected)
@@ -50,13 +50,13 @@ class RemoteReleaseDocumentationTests(unittest.TestCase):
 
     def test_edited_counts_and_missing_markers_are_rejected(self):
         expected = release.render(self.binding, self.deployment, self.observation)
-        for altered in (expected.replace('121 requests', '120 requests'),
+        for altered in (expected.replace('135 requests', '134 requests'),
                         expected.replace(release.START, ''), expected + release.END):
             with self.assertRaises(ValueError):
                 release.check_document(altered, expected)
 
     def test_failed_or_different_deployment_cannot_be_described_as_verified(self):
-        for field, value in [('service_version', '0.7.0'), ('source_commit', 'a' * 40),
+        for field, value in [('service_version', '0.8.0'), ('source_commit', 'a' * 40),
                              ('runtime_worker_sha256', 'a' * 64)]:
             d = deepcopy(self.deployment); d[field] = value
             with self.subTest(field=field), self.assertRaises(ValueError):
@@ -80,12 +80,14 @@ class RemoteReleaseDocumentationTests(unittest.TestCase):
             release.validate(self.deployment, o)
 
     def test_deployment_after_observation_requires_new_evidence(self):
-        d = deepcopy(self.deployment); d['deployment']['updated_at'] = '2026-09-22T00:00:00Z'
+        d = deepcopy(self.deployment); d['deployment']['updated_at'] = '2026-09-26T00:00:00Z'
         with self.assertRaisesRegex(ValueError, 'chronology'):
             release.validate(d, self.observation)
 
-    def test_runtime_and_verifier_are_distinct(self):
-        self.assertNotEqual(self.deployment['runtime_commit'], self.observation['comparison_commit'])
+    def test_runtime_and_verifier_are_separately_recorded(self):
+        # The 0.7.0 SDK verifier used the same commit as the deployed runtime;
+        # their roles remain separate even when the values happen to coincide.
+        self.assertEqual(self.deployment['runtime_commit'], self.observation['comparison_commit'])
         release.validate(self.deployment, self.observation)
 
 

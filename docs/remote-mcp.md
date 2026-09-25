@@ -34,25 +34,25 @@ merely to fit a chat message: assembly selects evidence; delivery controls
 how much of that evidence crosses the connection at once.
 
 <!-- ask-okf-publication:start -->
-## Recorded public deployment: 0.6.0
+## Recorded public deployment: 0.7.0
 
 For the **latest recorded deployment and verification**, use the shared
 [DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
 
-On 21 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/deployment.json)
-records service **0.6.0** as deployed. The separate
-[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/d45774648f00008ffff744a9c8d37bd154070d1c/validation/compact-delivery/v0.6.0/sdk/attempt-02/observation.json)
-passed **11 evidence cases and 121 requests**,
+On 25 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/deployment.json)
+records service **0.7.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json)
+passed **12 evidence cases and 135 requests**,
 reconstructing complete packages from bounded reads. It recorded
-10,322,602 received bytes, no automatic retries and no model calls.
+11,974,541 received bytes, no automatic retries and no model calls.
 
 | Identity | Recorded value |
 | --- | --- |
-| DWP source | `723bcc5b015ab38a026625c2148edbd784edf7c7` |
-| Context engine | `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` |
-| Deployed runtime | `0472b75a9dd353d6094a83ca9f752c4d78914168` |
-| SDK verifier | `03d0264c02a6d59d75013df4bffba279b3d4aa9c` |
-| Local Worker SHA-256 | `9e8840a9e31bac105dce0b40037300423cffe9dec90bbbab29b7541dd29b28ac` |
+| DWP source | `7eeded763042ddd0070f4fed834c6074149e8e2f` |
+| Context engine | `d6930bbcddaab616deec002d9e6efff6e3aae953` |
+| Deployed runtime | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
+| SDK verifier | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
+| Local Worker SHA-256 | `9c7f31dc62e40b69de10a22aa7685becb16bbe22531d6ee78a9bbc357adfc680` |
 
 The hosting record and public health report have different scopes: health does not
 independently attest hosted Worker bytes. Delivery checks do not establish complete
