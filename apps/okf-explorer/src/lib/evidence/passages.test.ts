@@ -65,6 +65,33 @@ describe('passage boundary review', () => {
     const result = await previewCorrection(item, data, { ...correction(item), operation: 'role-change', units: [proposed], added_spans: [] });
     expect(result.accepted).toBe(true);
   });
+  test('keeps full counts and ad-hoc downstream effects unknown when added spans may overlap untouched units', async () => {
+    const item = fixture();
+    item.before = [unit('old', [{ page: 1, start_utf8: 0, end_utf8: 5 }], 'Alpha')];
+    item.coverage = { candidate_bytes_outside_old_passage: 4, covered_once_bytes: 5, old_passage_bytes: 5, scope: 'Affected passage only' };
+    item.impact = { document_unit_count_before: 10, corpus_unit_count_before: 100, dependencies: ['producer-dependency'], discovery_records: ['producer-discovery'], question_packages: ['producer-question'], budget_omissions: ['producer-omission'] };
+    const data = await loaded(item);
+    const result = await previewCorrection(item, data, correction(item));
+    expect(result.accepted).toBe(true);
+    const impact = result.impact as { document: Record<string, unknown>; corpus: Record<string, unknown>; downstream: Record<string, Record<string, unknown>> };
+    expect(impact.document).toMatchObject({ affected_unit_delta: 1, full_units_before: 10, full_units_after: 'unknown', explicitly_added_source_bytes: 4 });
+    expect(impact.document.full_units_after_reason).toMatch(/overlap units outside/);
+    expect(impact.corpus).toMatchObject({ affected_unit_delta: 1, isolated_projection_units_before: 100, isolated_projection_units_after: 'unknown' });
+    expect(impact.downstream.correction_effects).toEqual({ dependencies: 'unknown', discovery_records: 'unknown', question_packages: 'unknown', budget_omissions: 'unknown' });
+    expect(impact.downstream.supplied_producer_case_evidence).toEqual({ dependencies: ['producer-dependency'], discovery_records: ['producer-discovery'], question_packages: ['producer-question'], budget_omissions: ['producer-omission'] });
+  });
+  test('keeps full counts unknown even without added spans because outside IDs are not checked', async () => {
+    const item = fixture();
+    item.impact = { document_unit_count_before: 10, corpus_unit_count_before: 100 };
+    const data = await loaded(item);
+    const result = await previewCorrection(item, data, correction(item));
+    expect(result.accepted).toBe(true);
+    const impact = result.impact as { document: Record<string, unknown>; corpus: Record<string, unknown> };
+    expect(impact.document.full_units_after).toBe('unknown');
+    expect(impact.corpus.isolated_projection_units_after).toBe('unknown');
+    expect(impact.document.affected_unit_delta).toBe(1);
+    expect(impact.document.full_units_after_reason).toMatch(/IDs outside this case were not validated/);
+  });
   test('rejects lost, overlapping and invalid source spans', async () => {
     const item = fixture(), data = await loaded(item);
     expect((await previewCorrection(item, data, { ...correction(item), units: [{ ...item.after[0], id: 'old' }, item.after[1]] })).error).toMatch(/existing unit ID/i);

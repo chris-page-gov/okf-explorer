@@ -13,6 +13,10 @@
 - Verify the 28-case source fixture and PDF rendering in a browser. Refresh the
   build-bound Heritage browser receipt, preserving the preceding framework
   receipt and results under `validation/passage-boundaries/pre-workbench/`.
+- Keep full document and corpus after-counts unknown because other units and
+  IDs are not validated in an isolated preview. Distinguish producer-supplied
+  downstream evidence from effects of an edited browser correction. Preserve
+  the preceding receipt before refreshing this build's browser evidence.
 
 ## Explorer framework and bundler update — 25 September 2026
 

@@ -21,10 +21,14 @@ change tied to the same source and baseline hashes. `added_spans` explicitly
 names source bytes outside the old passage. Preview rejects stale identities,
 invalid spans, lost or overlapping bytes, undeclared additions, changed text
 and undeclared joiners. It keeps failed previews visible and never edits the
-producer's files. The four impact scales use supplied counts where available
-and say `unknown` when dependencies, discovery records, question packages or
-budget omissions have not been measured. An ID migration proposal does not
-redirect legal references.
+producer's files. The four impact scales retain supplied baseline counts and
+report the local unit delta. Full document and corpus after-counts remain
+`unknown` because this isolated preview has no validated catalogue of other
+units or IDs; added spans may also overlap untouched units. Supplied producer
+case evidence for dependencies, discovery records, question packages and
+budget omissions is labelled
+separately from the edited correction's unmeasured downstream effects. An ID
+migration proposal does not redirect legal references.
 
 The route is `/evidence/passages/?manifest=…`. A producer can publish the
 manifest and its case and extraction files from any corpus that follows these
