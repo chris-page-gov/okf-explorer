@@ -1,5 +1,18 @@
 # Changelog
 
+## Explorer framework and bundler update — 25 September 2026
+
+- Update SvelteKit to 2.70.3, the Svelte Vite plugin to 7.3.0, Svelte to 5.57.0,
+  svelte-check to 4.7.6 and Vite to 8.3.0 as a reviewed framework set.
+- Pin transitive Rolldown and its native bindings to the reviewed 1.2.9
+  release. Keep the earlier security overrides and regenerate the dependency
+  inventory from the new lockfile.
+- Record the build and browser checks required for framework changes in the
+  dependency maintenance guide. Make the Foundry Site browser harness own its
+  server as well, so it cannot reuse an older worktree's Site.
+- Refresh the Heritage browser evidence for the updated application and bind
+  its receipt to the final assembled Site. Preserve the preceding results.
+
 ## Dependency security and maintenance repairs — 25 September 2026
 
 - Update Vitest and its matching coverage package to 4.1.11, YAML to 2.9.1,
