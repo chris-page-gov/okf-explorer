@@ -1,5 +1,12 @@
 # Changelog
 
+## Passage-boundary review design — 25 September 2026
+
+- Record a versioned proposal for generic Evidence workbench passage inspection,
+  isolated correction previews and source-bound impact review. DWP's 28 known
+  historical-amendment candidates remain acceptance fixtures; no corpus, parser
+  or service behaviour changes in this design.
+
 ## Remote evidence-connect admission and connection guidance — 25 September 2026
 
 - Prepare service 0.7.0 to admit the newer, immutable DWP evidence-connect
