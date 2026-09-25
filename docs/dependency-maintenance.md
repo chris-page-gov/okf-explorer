@@ -78,6 +78,12 @@ compiler require the supported Chrome, Firefox and WebKit checks. A failed
 inventory check is different from a functional test failure; a skipped browser
 check is still missing validation.
 
+Local browser checks own their server and fail if its port is already occupied.
+This prevents a different worktree's older application from satisfying the
+tests. For parallel work, choose a free port explicitly, for example
+`PLAYWRIGHT_PORT=4183 pnpm test:e2e`. Do not stop another task's server or use
+its results as evidence for this candidate.
+
 ## Build and deployment actions
 
 GitHub Actions updates can affect code running during builds or deployment.
