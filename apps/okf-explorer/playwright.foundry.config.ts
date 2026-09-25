@@ -1,6 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const localBaseURL = 'http://127.0.0.1:4174/';
+const localPort = process.env.PLAYWRIGHT_FOUNDRY_PORT ?? process.env.PLAYWRIGHT_PORT ?? '4174';
+if (!/^\d+$/.test(localPort) || Number(localPort) < 1 || Number(localPort) > 65535) {
+  throw new Error('PLAYWRIGHT_FOUNDRY_PORT must be an integer from 1 to 65535.');
+}
+const localBaseURL = `http://127.0.0.1:${localPort}/`;
 const suppliedBaseURL = process.env.PLAYWRIGHT_BASE_URL;
 
 export default defineConfig({
@@ -39,9 +43,9 @@ export default defineConfig({
     : {
         webServer: {
           command:
-            'uv run --project ../.. --locked python -m http.server 4174 --bind 127.0.0.1 --directory ../../_site',
+            `uv run --project ../.. --locked python -m http.server ${localPort} --bind 127.0.0.1 --directory ../../_site`,
           url: localBaseURL,
-          reuseExistingServer: !process.env.CI,
+          reuseExistingServer: false,
           timeout: 30_000
         }
       })

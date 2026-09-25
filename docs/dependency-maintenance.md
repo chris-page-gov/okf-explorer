@@ -43,6 +43,29 @@ coverage. It is a targeted guard, not a replacement for vulnerability alerts or
 reviewing upstream changes. Pre-release replacements need an explicit policy
 review rather than silently passing the stable-version checks.
 
+## Framework and bundler baseline
+
+The reviewed framework set uses SvelteKit 2.70.3, the Svelte Vite plugin 7.3.0,
+Svelte 5.57.0, svelte-check 4.7.6 and Vite 8.3.0. Vite uses Rolldown to produce
+the static application. The `rolldown: 1.2.9` override keeps its native bindings
+on the reviewed version while Vite's permitted range also admits later releases.
+Remove or change that pin only after reviewing the new Rolldown release and
+testing the resulting build. The conditional nanoid override remains in place;
+the current lockfile selects the newer safe copy, 3.3.19.
+
+Framework updates can change generated HTML, CSS and JavaScript even when no
+application source changes. Review the exact lockfile and regenerated SBOM,
+then run the deterministic build, Site checks and the full Chrome, Firefox and
+WebKit browser contract before accepting a candidate. Local checks do not
+establish the identity of a later Pages deployment.
+
+For this update, the 100-question Heritage suite and three local journeys were
+run against the rebuilt application. The preceding receipt and results are
+retained under `validation/dependency-updates/2026-09-25/pre-framework/`.
+The final receipt also binds those browser results to the assembled Site after
+the security documentation commit was included; that documentation change did
+not change the application or Heritage corpus evaluated in the browser.
+
 ## Review and validate a candidate
 
 1. Start from current `main` on a feature branch. Inspect the complete diff,
@@ -82,7 +105,9 @@ Local browser checks own their server and fail if its port is already occupied.
 This prevents a different worktree's older application from satisfying the
 tests. For parallel work, choose a free port explicitly, for example
 `PLAYWRIGHT_PORT=4183 pnpm test:e2e`. Do not stop another task's server or use
-its results as evidence for this candidate.
+its results as evidence for this candidate. The full browser command uses that
+port for the application and then the generated Site in sequence. Set
+`PLAYWRIGHT_FOUNDRY_PORT` if the Site needs a different free port.
 
 An application rebuild also invalidates the current Heritage browser receipt's
 application identity. Follow the [receipt refresh procedure](okf-explorer-evaluation.md)
