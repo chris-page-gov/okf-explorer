@@ -59,6 +59,13 @@ then run the deterministic build, Site checks and the full Chrome, Firefox and
 WebKit browser contract before accepting a candidate. Local checks do not
 establish the identity of a later Pages deployment.
 
+For this update, the 100-question Heritage suite and three local journeys were
+run against the rebuilt application. The preceding receipt and results are
+retained under `validation/dependency-updates/2026-09-25/pre-framework/`.
+The final receipt also binds those browser results to the assembled Site after
+the security documentation commit was included; that documentation change did
+not change the application or Heritage corpus evaluated in the browser.
+
 ## Review and validate a candidate
 
 1. Start from current `main` on a feature branch. Inspect the complete diff,

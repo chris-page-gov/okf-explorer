@@ -6,16 +6,16 @@
     "heritage_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
     "heritage_release_root_sha256": "7ceed0df108ba2f524b01791b305ed73b8d5ab945606ecb330ed8b17a1e445f9",
     "site_file_count": 10606,
-    "site_internal_references": 7911,
+    "site_internal_references": 7912,
     "site_reading_pages": 369,
     "site_size_gate": {
-      "headroom_bytes": 180451636,
+      "headroom_bytes": 180449025,
       "limit_bytes": 1000000000,
-      "site_bytes": 819548364,
+      "site_bytes": 819550975,
       "status": "passed"
     },
     "site_tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
-    "site_tree_sha256": "916d56a118e8aff228e21980cc61618015d5b5b789e299a5395204e9d74a11b7",
+    "site_tree_sha256": "5c3ea7caaa45abc711370f0ad5dc17ed5b3154ba91f95229e5342f6e65309626",
     "snapshot": "heritage-coventry-warwickshire-20260803-v2",
     "synthetic_release_root_sha256": "459b5ba43dd408d33cf9259b9f86ef62fd78eeb60156330f1f9a4217c72e3372",
     "tiny_release_root_sha256": "c7050fd0fcc63d225fe64fd356e623cd949038db853a9bc7137227657dcc0c12"
@@ -72,7 +72,7 @@
     "status": "passed",
     "validation_only": 0
   },
-  "observed_at": "2026-09-25T17:25:15Z",
+  "observed_at": "2026-09-25T17:30:06Z",
   "producer_materials": {
     "algorithm": "sha256-over-canonical-json-path-bytes-digest-list-v1",
     "bytes": 400721,
